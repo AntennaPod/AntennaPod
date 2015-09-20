@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +10,15 @@ import android.view.ViewGroup;
 
 import com.mobeta.android.dslv.DragSortListView;
 
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.greenrobot.event.EventBus;
@@ -69,7 +73,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             @Override
             public void remove(int which) {
                 Log.d(TAG, "remove(" + which + ")");
-                if(subscription != null) {
+                if (subscription != null) {
                     subscription.unsubscribe();
                 }
                 FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
@@ -110,29 +114,11 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     }
 
     @Override
-    protected void startItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
-        }
-        itemLoader = new NewItemLoader();
-        itemLoader.execute();
-    }
-
-    private class NewItemLoader extends AllEpisodesFragment.ItemLoader {
-
-        @Override
-        protected Object[] doInBackground(Void... params) {
-            Context context = mainActivity.get();
-            if (context != null) {
-                return new Object[] {
-                        DBReader.getNewItemsList(),
-                        DBReader.getQueueIDList(),
-                        null // see ItemAccess.isNew
-                };
-            } else {
-                return null;
-            }
-        }
+    protected Pair<List<FeedItem>,LongList> loadData() {
+        List<FeedItem> items;
+        items = DBReader.getNewItemsList();
+        LongList queuedIds = DBReader.getQueueIDList();
+        return Pair.create(items, queuedIds);
     }
 
 }

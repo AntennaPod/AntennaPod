@@ -814,9 +814,8 @@ public class PodDBAdapter implements AutoCloseable {
     }
 
     public boolean isItemInFavorites(FeedItem item) {
-        String query = String.format("SELECT %s from %s WHERE %s=%d AND %s=%d",
-                KEY_ID, TABLE_NAME_FAVORITES, KEY_FEEDITEM, item.getId(), KEY_FEED,
-                item.getFeedId());
+        String query = String.format("SELECT %s from %s WHERE %s=%d",
+                KEY_ID, TABLE_NAME_FAVORITES, KEY_FEEDITEM, item.getId());
         Cursor c = db.rawQuery(query, null);
         int count = c.getCount();
         c.close();
