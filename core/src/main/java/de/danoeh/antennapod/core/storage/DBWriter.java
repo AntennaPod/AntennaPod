@@ -461,7 +461,18 @@ public class DBWriter {
     }
 
     public static Future<?> addFavoriteItemById(final long itemId) {
-        return addFavoriteItem(DBReader.getFeedItem(itemId));
+        return dbExec.submit(() -> {
+            final FeedItem item = DBReader.getFeedItem(itemId);
+            if (item == null) {
+                Log.d(TAG, "Can't find item for itemId " + itemId);
+                return;
+            }
+            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+            adapter.addFavoriteItem(item);
+            adapter.close();
+            item.addTag(FeedItem.TAG_FAVORITE);
+            EventBus.getDefault().post(FavoritesEvent.added(item));
+        });
     }
 
     public static Future<?> removeFavoriteItem(final FeedItem item) {
