@@ -318,8 +318,7 @@ public class DBWriter {
                     if (item != null) {
                         queue.add(index, item);
                         adapter.setQueue(queue);
-                        // no need to tag the item here, since we got it right out of the database
-                        // and no one is ever going to see it...
+                        item.addTag(FeedItem.TAG_QUEUE);
                         EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
                         if (item.isNew()) {
                             DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
