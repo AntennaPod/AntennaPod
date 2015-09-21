@@ -91,6 +91,12 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
+            android:key="prefSkipRemovesFromQueue"
+            android:summary="@string/pref_skip_removes_from_queue_sum"
+            android:title="@string/pref_skip_removes_from_queue_title"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
             android:key="prefAutoDelete"
             android:summary="@string/pref_auto_delete_sum"
             android:title="@string/pref_auto_delete_title"/>

@@ -577,7 +577,7 @@ public class PlaybackService extends Service {
                 e.printStackTrace();
                 // isInQueue remains false
             }
-            if (isInQueue) {
+            if (isInQueue && UserPreferences.isSkipRemoveFromQueue()) {
                 DBWriter.removeQueueItem(PlaybackService.this, item, true);
             }
             DBWriter.addItemToPlaybackHistory(media);
@@ -875,29 +875,28 @@ public class PlaybackService extends Service {
                                 .setWhen(0) // we don't need the time
                                 .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
                         IntList actionList = new IntList();
-                        int actionIndex = 0;
                         if (playerStatus == PlayerStatus.PLAYING) {
                             notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
                                     getString(R.string.pause_label),
                                     pauseButtonPendingIntent);
-                            actionList.add(actionIndex++);
+                            actionList.add(actionList.size());
                         } else {
                             notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
                                     getString(R.string.play_label),
                                     playButtonPendingIntent);
-                            actionList.add(actionIndex++);
+                            actionList.add(actionList.size());
                         }
                         if (UserPreferences.isFollowQueue()) {
                             notificationBuilder.addAction(android.R.drawable.ic_media_next,
                                     getString(R.string.skip_episode_label),
                                     skipButtonPendingIntent);
-                            actionList.add(actionIndex++);
+                            actionList.add(actionList.size());
                         }
                         if (UserPreferences.isPersistNotify()) {
                             notificationBuilder.addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
                                     getString(R.string.stop_label),
                                     stopButtonPendingIntent);
-                            actionList.add(actionIndex++);
+                            actionList.add(actionList.size());
                         }
 
                         if (Build.VERSION.SDK_INT >= 21) {
