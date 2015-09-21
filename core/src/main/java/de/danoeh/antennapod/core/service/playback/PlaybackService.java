@@ -14,7 +14,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.RemoteControlClient;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -164,7 +163,6 @@ public class PlaybackService extends Service {
 
     private static final int NOTIFICATION_ID = 1;
 
-    private RemoteControlClient remoteControlClient;
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
 
@@ -343,7 +341,7 @@ public class PlaybackService extends Service {
 
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                endPlayback(true);
+                endPlayback(true, true);
                 break;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 mediaPlayer.seekDelta(UserPreferences.getFastFowardSecs() * 1000);
@@ -544,13 +542,13 @@ public class PlaybackService extends Service {
         }
 
         @Override
-        public boolean endPlayback(boolean playNextEpisode) {
-            PlaybackService.this.endPlayback(true);
+        public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            PlaybackService.this.endPlayback(playNextEpisode, wasSkipped);
             return true;
         }
     };
 
-    private void endPlayback(boolean playNextEpisode) {
+    private void endPlayback(boolean playNextEpisode, boolean wasSkipped) {
         Log.d(TAG, "Playback ended");
 
         final Playable playable = mediaPlayer.getPlayable();
@@ -577,7 +575,7 @@ public class PlaybackService extends Service {
                 e.printStackTrace();
                 // isInQueue remains false
             }
-            if (isInQueue && UserPreferences.isSkipRemoveFromQueue()) {
+            if (isInQueue && (!wasSkipped || UserPreferences.shouldSkipRemoveFromQueue())) {
                 DBWriter.removeQueueItem(PlaybackService.this, item, true);
             }
             DBWriter.addItemToPlaybackHistory(media);
@@ -1094,7 +1092,7 @@ public class PlaybackService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (StringUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
-                mediaPlayer.endPlayback();
+                mediaPlayer.endPlayback(true);
             }
         }
     };

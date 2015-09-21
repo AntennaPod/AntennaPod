@@ -217,7 +217,7 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_FOLLOW_QUEUE, false);
     }
 
-    public static boolean isSkipRemoveFromQueue() { return prefs.getBoolean(PREF_SKIP_REMOVES, false); }
+    public static boolean shouldSkipRemoveFromQueue() { return prefs.getBoolean(PREF_SKIP_REMOVES, false); }
 
     public static boolean isAutoDelete() {
         return prefs.getBoolean(PREF_AUTO_DELETE, false);
