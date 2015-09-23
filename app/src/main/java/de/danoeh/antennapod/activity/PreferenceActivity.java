@@ -102,13 +102,17 @@ public class PreferenceActivity extends ActionBarActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
-            instance.preferenceController.onCreate();
+            if(instance.preferenceController != null) {
+                instance.preferenceController.onCreate();
+            }
         }
 
         @Override
         public void onResume() {
             super.onResume();
-            instance.preferenceController.onResume();
+            if(instance.preferenceController != null) {
+                instance.preferenceController.onResume();
+            }
         }
     }
 }
