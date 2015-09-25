@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothA2dp;
@@ -867,7 +868,7 @@ public class PlaybackService extends Service {
                             PlaybackService.this)
                             .setContentTitle(contentTitle)
                             .setContentText(contentText)
-                            .setOngoing(true)
+                            .setOngoing(false)
                             .setContentIntent(pIntent)
                             .setLargeIcon(icon)
                             .setSmallIcon(smallIcon)
@@ -891,23 +892,26 @@ public class PlaybackService extends Service {
                                 skipButtonPendingIntent);
                         actionList.add(actionList.size());
                     }
-                    if (UserPreferences.isPersistNotify()) {
-                        notificationBuilder.addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
-                                getString(R.string.stop_label),
-                                stopButtonPendingIntent);
-                        actionList.add(actionList.size());
-                    }
 
                     notificationBuilder.setStyle(new android.support.v7.app.NotificationCompat.MediaStyle()
                             .setMediaSession(mediaPlayer.getSessionToken())
                             .setShowActionsInCompactView(actionList.toArray())
-                            .setShowCancelButton(true))
+                            .setShowCancelButton(true)
+                            .setCancelButtonIntent(stopButtonPendingIntent))
                             .setVisibility(Notification.VISIBILITY_PUBLIC)
                             .setColor(Notification.COLOR_DEFAULT);
 
                     notification = notificationBuilder.build();
 
-                    startForeground(NOTIFICATION_ID, notification);
+                    if (playerStatus == PlayerStatus.PLAYING ||
+                            playerStatus == PlayerStatus.PREPARING ||
+                            playerStatus == PlayerStatus.SEEKING) {
+                        startForeground(NOTIFICATION_ID, notification);
+                    } else {
+                        stopForeground(false);
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(NOTIFICATION_ID, notification);
+                    }
                     Log.d(TAG, "Notification set up");
                 }
             }
