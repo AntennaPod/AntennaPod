@@ -83,7 +83,7 @@
             android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
             android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:enabled="true"
             android:key="prefFollowQueue"
             android:summary="@string/pref_followQueue_sum"

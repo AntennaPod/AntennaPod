@@ -214,7 +214,7 @@ public class UserPreferences {
 
 
     public static boolean isFollowQueue() {
-        return prefs.getBoolean(PREF_FOLLOW_QUEUE, false);
+        return prefs.getBoolean(PREF_FOLLOW_QUEUE, true);
     }
 
     public static boolean shouldSkipRemoveFromQueue() { return prefs.getBoolean(PREF_SKIP_REMOVES, false); }
