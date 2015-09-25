@@ -8,14 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobeta.android.dslv.DragSortListView;
-
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
@@ -25,23 +22,23 @@ import de.greenrobot.event.EventBus;
 
 
 /**
- * Like 'EpisodesFragment' except that it only shows new episodes and
- * supports swiping to mark as read.
+ * Like 'EpisodesFragment' except that it only shows favorite episodes and
+ * supports swiping to remove from favorites.
  */
 
-public class NewEpisodesFragment extends AllEpisodesFragment {
+public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
-    public static final String TAG = "NewEpisodesFragment";
+    public static final String TAG = "FavoriteEpisodesFrag";
 
-    private static final String PREF_NAME = "PrefNewEpisodesFragment";
+    private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
 
     private UndoBarController undoBarController;
 
-    public NewEpisodesFragment() {
-        super(true, PREF_NAME);
+    public FavoriteEpisodesFragment() {
+        super(false, PREF_NAME);
     }
 
-    public void onEvent(QueueEvent event) {
+    public void onEvent(FavoritesEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         loadItems();
     }
@@ -69,22 +66,19 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.episodes_fragment_with_undo);
 
-        listView.setRemoveListener(new DragSortListView.RemoveListener() {
-            @Override
-            public void remove(int which) {
-                Log.d(TAG, "remove(" + which + ")");
-                if (subscription != null) {
-                    subscription.unsubscribe();
-                }
-                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-                // we're marking it as unplayed since the user didn't actually play it
-                // but they don't want it considered 'NEW' anymore
-                DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-                undoBarController.showUndoBar(false,
-                        getString(R.string.marked_as_read_label), new FeedItemUndoToken(item,
-                                which)
-                );
+        listView.setRemoveListener(which -> {
+            Log.d(TAG, "remove(" + which + ")");
+            if (subscription != null) {
+                subscription.unsubscribe();
             }
+            FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
+
+            DBWriter.removeFavoriteItem(item);
+
+            undoBarController.showUndoBar(false,
+                    getString(R.string.removed_item), new FeedItemUndoToken(item,
+                            which)
+            );
         });
 
         undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
@@ -95,19 +89,13 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             public void onUndo(FeedItemUndoToken token) {
                 if (token != null) {
                     long itemId = token.getFeedItemId();
-                    DBWriter.markItemPlayed(FeedItem.NEW, itemId);
+                    DBWriter.addFavoriteItemById(itemId);
                 }
             }
+
             @Override
             public void onHide(FeedItemUndoToken token) {
-                if (token != null && context != null) {
-                    long itemId = token.getFeedItemId();
-                    FeedItem item = DBReader.getFeedItem(itemId);
-                    FeedMedia media = item.getMedia();
-                    if(media != null && media.hasAlmostEnded() && item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                        DBWriter.deleteFeedMediaOfItem(context, media.getId());
-                    }
-                }
+                // nothing to do
             }
         });
         return root;
@@ -116,9 +104,8 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     @Override
     protected Pair<List<FeedItem>,LongList> loadData() {
         List<FeedItem> items;
-        items = DBReader.getNewItemsList();
+        items = DBReader.getFavoriteItemsList();
         LongList queuedIds = DBReader.getQueueIDList();
         return Pair.create(items, queuedIds);
     }
-
 }

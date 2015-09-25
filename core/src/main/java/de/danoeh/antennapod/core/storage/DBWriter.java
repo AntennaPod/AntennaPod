@@ -26,6 +26,7 @@ import java.util.concurrent.Future;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
@@ -33,7 +34,7 @@ import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -317,6 +318,7 @@ public class DBWriter {
                     if (item != null) {
                         queue.add(index, item);
                         adapter.setQueue(queue);
+                        item.addTag(FeedItem.TAG_QUEUE);
                         EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
                         if (item.isNew()) {
                             DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
@@ -335,8 +337,13 @@ public class DBWriter {
     }
 
     public static Future<?> addQueueItem(final Context context,
-                                         final long... itemIds) {
-        return addQueueItem(context, false, itemIds);
+                                         final FeedItem... items) {
+        LongList itemIds = new LongList(items.length);
+        for (FeedItem item : items) {
+            itemIds.add(item.getId());
+            item.addTag(FeedItem.TAG_QUEUE);
+        }
+        return addQueueItem(context, false, itemIds.toArray());
     }
 
     /**
@@ -371,7 +378,7 @@ public class DBWriter {
                                     queue.add(item);
                                 }
                                 queueModified = true;
-                                if(item.isNew()) {
+                                if (item.isNew()) {
                                     markAsUnplayedIds.add(item.getId());
                                 }
                             }
@@ -380,8 +387,8 @@ public class DBWriter {
                     if (queueModified) {
                         adapter.setQueue(queue);
                         EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
-                        if(markAsUnplayedIds.size() > 0) {
-                                DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
+                        if (markAsUnplayedIds.size() > 0) {
+                            DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
                         }
                     }
                 }
@@ -424,9 +431,10 @@ public class DBWriter {
 
             if (queue != null) {
                 int position = queue.indexOf(item);
-                if(position >= 0) {
+                if (position >= 0) {
                     queue.remove(position);
                     adapter.setQueue(queue);
+                    item.removeTag(FeedItem.TAG_QUEUE);
                     EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.REMOVED, item, position));
                 } else {
                     Log.w(TAG, "Queue was not modified by call to removeQueueItem");
@@ -440,6 +448,41 @@ public class DBWriter {
             }
         });
 
+    }
+
+    public static Future<?> addFavoriteItem(final FeedItem item) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+            adapter.addFavoriteItem(item);
+            adapter.close();
+            item.addTag(FeedItem.TAG_FAVORITE);
+            EventBus.getDefault().post(FavoritesEvent.added(item));
+        });
+    }
+
+    public static Future<?> addFavoriteItemById(final long itemId) {
+        return dbExec.submit(() -> {
+            final FeedItem item = DBReader.getFeedItem(itemId);
+            if (item == null) {
+                Log.d(TAG, "Can't find item for itemId " + itemId);
+                return;
+            }
+            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+            adapter.addFavoriteItem(item);
+            adapter.close();
+            item.addTag(FeedItem.TAG_FAVORITE);
+            EventBus.getDefault().post(FavoritesEvent.added(item));
+        });
+    }
+
+    public static Future<?> removeFavoriteItem(final FeedItem item) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+            adapter.removeFavoriteItem(item);
+            adapter.close();
+            item.removeTag(FeedItem.TAG_FAVORITE);
+            EventBus.getDefault().post(FavoritesEvent.removed(item));
+        });
     }
 
     /**

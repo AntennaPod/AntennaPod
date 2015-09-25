@@ -67,7 +67,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                         DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
                     }
                 } else if(userChoseAddToQueue() && !queueIds.contains(item.getId())) {
-                    DBWriter.addQueueItem(context, item.getId());
+                    DBWriter.addQueueItem(context, item);
                     Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
                 } else {
                     confirmMobileDownload(context, item);
@@ -124,7 +124,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             onlyAddToQueueTimeStamp = System.currentTimeMillis();
-                            DBWriter.addQueueItem(context, item.getId());
+                            DBWriter.addQueueItem(context, item);
                             Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
                         }
                     })

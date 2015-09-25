@@ -56,7 +56,7 @@ import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.UserPreferences;

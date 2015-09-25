@@ -361,13 +361,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void queueChecked() {
-        LongList orderedIds = new LongList();
-        for(FeedItem episode : episodes) {
-            if(checkedIds.contains(episode.getId())) {
-               orderedIds.add((episode.getId()));
-            }
-        }
-        DBWriter.addQueueItem(getActivity(), false, orderedIds.toArray());
+        DBWriter.addQueueItem(getActivity(), episodes.toArray(new FeedItem[0]));
         close();
     }
 

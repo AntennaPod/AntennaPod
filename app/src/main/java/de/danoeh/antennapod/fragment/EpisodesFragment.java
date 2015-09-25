@@ -23,7 +23,8 @@ public class EpisodesFragment extends Fragment {
 
     public static final int POS_NEW_EPISODES = 0;
     public static final int POS_ALL_EPISODES = 1;
-    public static final int TOTAL_COUNT = 2;
+    public static final int POS_FAV_EPISODES = 2;
+    public static final int TOTAL_COUNT = 3;
 
 
     private TabLayout tabLayout;
@@ -91,6 +92,8 @@ public class EpisodesFragment extends Fragment {
                     return new AllEpisodesFragment();
                 case POS_NEW_EPISODES:
                     return new NewEpisodesFragment();
+                case POS_FAV_EPISODES:
+                    return new FavoriteEpisodesFragment();
             }
             return null;
         }
@@ -107,6 +110,8 @@ public class EpisodesFragment extends Fragment {
                     return resources.getString(R.string.all_episodes_short_label);
                 case POS_NEW_EPISODES:
                     return resources.getString(R.string.new_label);
+                case POS_FAV_EPISODES:
+                    return resources.getString(R.string.favorite_episodes_label);
                 default:
                     return super.getPageTitle(position);
             }

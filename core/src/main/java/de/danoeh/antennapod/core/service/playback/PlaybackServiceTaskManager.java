@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.greenrobot.event.EventBus;

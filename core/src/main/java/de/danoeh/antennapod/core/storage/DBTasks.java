@@ -601,7 +601,7 @@ public final class DBTasks {
                 Cursor searchResult = adapter.searchItemTitles(feedID,
                         query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(items);
+                DBReader.loadAdditionalFeedItemListData(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -625,7 +625,7 @@ public final class DBTasks {
                 Cursor searchResult = adapter.searchItemDescriptions(feedID,
                         query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(items);
+                DBReader.loadAdditionalFeedItemListData(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -649,7 +649,7 @@ public final class DBTasks {
                 Cursor searchResult = adapter.searchItemContentEncoded(feedID,
                         query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(items);
+                DBReader.loadAdditionalFeedItemListData(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -672,7 +672,7 @@ public final class DBTasks {
                 Cursor searchResult = adapter.searchItemChapters(feedID,
                         query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(items);
+                DBReader.loadAdditionalFeedItemListData(items);
                 setResult(items);
                 searchResult.close();
             }

@@ -1129,7 +1129,7 @@ public class DownloadService extends Service {
 
                 DBWriter.setFeedMedia(media).get();
                 if (!DBTasks.isInQueue(DownloadService.this, item.getId())) {
-                    DBWriter.addQueueItem(DownloadService.this, item.getId()).get();
+                    DBWriter.addQueueItem(DownloadService.this, item).get();
                 }
             } catch (ExecutionException e) {
                 e.printStackTrace();

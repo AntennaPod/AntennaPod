@@ -47,7 +47,7 @@ import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;

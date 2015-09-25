@@ -338,7 +338,6 @@ public class AllEpisodesFragment extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         FeedItem item = itemAccess.getItem(adapterInfo.position);
-
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.allepisodes_context, menu);
 
@@ -353,11 +352,27 @@ public class AllEpisodesFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        if (!getUserVisibleHint()) {
+            // we're not visible, don't do anything.
+            return false;
+        }
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if(menuInfo == null) {
+        if (menuInfo == null) {
             menuInfo = lastMenuInfo;
         }
-        FeedItem selectedItem = itemAccess.getItem(menuInfo.position);
+        if (menuInfo == null) {
+            Log.e(TAG, "menuInfo is null, not doing anything");
+            return false;
+        }
+
+        FeedItem selectedItem = null;
+
+        // make sure the item still makes sense
+        if (menuInfo.position >= 0 && menuInfo.position < itemAccess.getCount()) {
+            selectedItem = itemAccess.getItem(menuInfo.position);
+        } else {
+            Log.d(TAG, "Selected item at position " + menuInfo.position + " does not exist, only " + itemAccess.getCount() + " items available");
+        }
 
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
@@ -452,12 +467,7 @@ public class AllEpisodesFragment extends Fragment {
     };
 
     private void updateShowOnlyEpisodesListViewState() {
-        if (showOnlyNewEpisodes) {
-            listView.setEmptyView(null);
-            txtvEmpty.setVisibility(View.GONE);
-        } else {
-            listView.setEmptyView(txtvEmpty);
-        }
+        listView.setEmptyView(txtvEmpty);
     }
 
     protected void loadItems() {
@@ -488,13 +498,9 @@ public class AllEpisodesFragment extends Fragment {
                 });
     }
 
-    private Pair<List<FeedItem>,LongList> loadData() {
+    protected Pair<List<FeedItem>,LongList> loadData() {
         List<FeedItem> items;
-        if(showOnlyNewEpisodes) {
-            items = DBReader.getNewItemsList();
-        } else {
-            items = DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
-        }
+        items = DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
         LongList queuedIds = DBReader.getQueueIDList();
         return Pair.create(items, queuedIds);
     }

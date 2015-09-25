@@ -25,7 +25,7 @@ import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -277,7 +277,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     private Pair<List<FeedItem>, LongList> loadData() {
         List<FeedItem> history = DBReader.getPlaybackHistory();
         LongList queue = DBReader.getQueueIDList();
-        DBReader.loadFeedDataOfFeedItemlist(history);
+        DBReader.loadAdditionalFeedItemListData(history);
         return Pair.create(history, queue);
     }
 

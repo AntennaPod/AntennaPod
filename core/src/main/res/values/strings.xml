@@ -12,6 +12,7 @@
     <string name="new_episodes_label">New Episodes</string>
     <string name="all_episodes_label">All Episodes</string>
     <string name="all_episodes_short_label">All</string>
+    <string name="favorite_episodes_label">Favorites</string>
     <string name="new_label">New</string>
     <string name="waiting_list_label">Waiting List</string>
     <string name="settings_label">Settings</string>
@@ -137,6 +138,8 @@
     <string name="add_to_queue_label">Add to Queue</string>
     <string name="added_to_queue_label">Added to Queue</string>
     <string name="remove_from_queue_label">Remove from Queue</string>
+    <string name="add_to_favorite_label">Add to Favorites</string>
+    <string name="remove_from_favorite_label">Remove from Favorites</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="support_label">Flattr this</string>
     <string name="enqueue_all_new">Enqueue all</string>
@@ -145,6 +148,7 @@
     <string name="activate_auto_download">Activate Auto Download</string>
     <string name="deactivate_auto_download">Deactivate Auto Download</string>
     <string name="reset_position">Reset Playback Position</string>
+    <string name="removed_item">Item removed</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>

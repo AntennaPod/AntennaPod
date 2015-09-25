@@ -72,7 +72,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.skip_episode_item, false);
         }
 
-        boolean isInQueue = queueAccess.contains(selectedItem.getId());
+        boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
         if(queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId()) {
             mi.setItemVisibility(R.id.move_to_top_item, false);
         }
@@ -123,6 +123,11 @@ public class FeedItemMenuHandler {
         if (selectedItem.getPaymentLink() == null || !selectedItem.getFlattrStatus().flattrable()) {
             mi.setItemVisibility(R.id.support_item, false);
         }
+
+        boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
+        mi.setItemVisibility(R.id.add_to_favorites_item, !isFavorite);
+        mi.setItemVisibility(R.id.remove_from_favorites_item, isFavorite);
+
         return true;
     }
 
@@ -188,10 +193,16 @@ public class FeedItemMenuHandler {
             case R.id.move_to_bottom_item:
                 DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
             case R.id.add_to_queue_item:
-                DBWriter.addQueueItem(context, selectedItem.getId());
+                DBWriter.addQueueItem(context, selectedItem);
                 break;
             case R.id.remove_from_queue_item:
                 DBWriter.removeQueueItem(context, selectedItem, true);
+                break;
+            case R.id.add_to_favorites_item:
+                DBWriter.addFavoriteItem(selectedItem);
+                break;
+            case R.id.remove_from_favorites_item:
+                DBWriter.removeFavoriteItem(selectedItem);
                 break;
             case R.id.reset_position:
                 selectedItem.getMedia().setPosition(0);

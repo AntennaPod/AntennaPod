@@ -104,6 +104,30 @@ public final class DBReader {
         return result;
     }
 
+
+    /**
+     * Loads additional data in to the feed items from other database queries
+     * @param items the FeedItems who should have other data loaded
+     */
+    public static void loadAdditionalFeedItemListData(List<FeedItem> items) {
+        loadTagsOfFeedItemList(items);
+        loadFeedDataOfFeedItemList(items);
+    }
+
+    public static void loadTagsOfFeedItemList(List<FeedItem> items) {
+        LongList favoriteIds = getFavoriteIDList();
+        LongList queueIds = getQueueIDList();
+
+        for (FeedItem item : items) {
+            if (favoriteIds.contains(item.getId())) {
+                item.addTag(FeedItem.TAG_FAVORITE);
+            }
+            if (queueIds.contains(item.getId())) {
+                item.addTag(FeedItem.TAG_QUEUE);
+            }
+        }
+    }
+
     /**
      * Takes a list of FeedItems and loads their corresponding Feed-objects from the database.
      * The feedID-attribute of a FeedItem must be set to the ID of its feed or the method will
@@ -111,7 +135,7 @@ public final class DBReader {
      *
      * @param items   The FeedItems whose Feed-objects should be loaded.
      */
-    public static void loadFeedDataOfFeedItemlist(List<FeedItem> items) {
+    public static void loadFeedDataOfFeedItemList(List<FeedItem> items) {
         List<Feed> feeds = getFeedList();
         for (FeedItem item : items) {
             for (Feed feed : feeds) {
@@ -251,7 +275,7 @@ public final class DBReader {
         Cursor itemlistCursor = adapter.getQueueCursor();
         List<FeedItem> items = extractItemlistFromCursor(adapter, itemlistCursor);
         itemlistCursor.close();
-        loadFeedDataOfFeedItemlist(items);
+        loadAdditionalFeedItemListData(items);
         return items;
     }
 
@@ -316,7 +340,7 @@ public final class DBReader {
         List<FeedItem> items = extractItemlistFromCursor(adapter,
                 itemlistCursor);
         itemlistCursor.close();
-        loadFeedDataOfFeedItemlist(items);
+        loadAdditionalFeedItemListData(items);
         Collections.sort(items, new FeedItemPubdateComparator());
 
         adapter.close();
@@ -338,7 +362,7 @@ public final class DBReader {
         List<FeedItem> items = extractItemlistFromCursor(adapter, itemlistCursor);
         itemlistCursor.close();
 
-        loadFeedDataOfFeedItemlist(items);
+        loadAdditionalFeedItemListData(items);
 
         adapter.close();
 
@@ -360,11 +384,42 @@ public final class DBReader {
         List<FeedItem> items = extractItemlistFromCursor(adapter, itemlistCursor);
         itemlistCursor.close();
 
-        loadFeedDataOfFeedItemlist(items);
+        loadAdditionalFeedItemListData(items);
 
         adapter.close();
 
         return items;
+    }
+
+    public static List<FeedItem> getFavoriteItemsList() {
+        Log.d(TAG, "getFavoriteItemsList()");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+
+        Cursor itemlistCursor = adapter.getFavoritesCursor();
+        List<FeedItem> items = extractItemlistFromCursor(adapter, itemlistCursor);
+        itemlistCursor.close();
+
+        loadAdditionalFeedItemListData(items);
+
+        adapter.close();
+
+        return items;
+    }
+
+    static LongList getFavoriteIDList() {
+        PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+        Cursor favoritesCursor = adapter.getFavoritesCursor();
+
+        LongList favoriteIDs = new LongList(favoritesCursor.getCount());
+        if (favoritesCursor.moveToFirst()) {
+            do {
+                favoriteIDs.add(favoritesCursor.getLong(0));
+            } while (favoritesCursor.moveToNext());
+        }
+        favoritesCursor.close();
+        return favoriteIDs;
     }
 
     /**
@@ -382,7 +437,7 @@ public final class DBReader {
         List<FeedItem> items = extractItemlistFromCursor(adapter, itemlistCursor);
         itemlistCursor.close();
 
-        loadFeedDataOfFeedItemlist(items);
+        loadAdditionalFeedItemListData(items);
 
         adapter.close();
 
@@ -411,7 +466,7 @@ public final class DBReader {
         mediaCursor.close();
         Cursor itemCursor = adapter.getFeedItemCursor(itemIds);
         List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
-        loadFeedDataOfFeedItemlist(items);
+        loadAdditionalFeedItemListData(items);
         itemCursor.close();
         adapter.close();
 
@@ -533,7 +588,7 @@ public final class DBReader {
             List<FeedItem> list = extractItemlistFromCursor(adapter, itemCursor);
             if (list.size() > 0) {
                 item = list.get(0);
-                loadFeedDataOfFeedItemlist(list);
+                loadAdditionalFeedItemListData(list);
                 if (item.hasChapters()) {
                     loadChaptersOfFeedItem(adapter, item);
                 }
@@ -556,7 +611,7 @@ public final class DBReader {
         Cursor itemCursor = adapter.getFeedItemCursor(ids);
         if (itemCursor.moveToFirst()) {
             result = extractItemlistFromCursor(adapter, itemCursor);
-            loadFeedDataOfFeedItemlist(result);
+            loadAdditionalFeedItemListData(result);
             for(FeedItem item : result) {
                 if (item.hasChapters()) {
                     loadChaptersOfFeedItem(adapter, item);
@@ -596,7 +651,7 @@ public final class DBReader {
             List<FeedItem> list = extractItemlistFromCursor(adapter, itemCursor);
             if (list.size() > 0) {
                 item = list.get(0);
-                loadFeedDataOfFeedItemlist(list);
+                loadAdditionalFeedItemListData(list);
                 if (item.hasChapters()) {
                     loadChaptersOfFeedItem(adapter, item);
                 }

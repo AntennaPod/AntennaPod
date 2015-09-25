@@ -39,7 +39,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Implements methods for accessing the database
  */
-public class PodDBAdapter {
+public class PodDBAdapter implements AutoCloseable {
     
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
@@ -113,6 +113,7 @@ public class PodDBAdapter {
     public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
     public static final String TABLE_NAME_QUEUE = "Queue";
     public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
+    public static final String TABLE_NAME_FAVORITES = "Favorites";
 
     // SQL Statements for creating new tables
     private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -197,6 +198,10 @@ public class PodDBAdapter {
     public static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_SIMPLECHAPTERS + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_SIMPLECHAPTERS + " ("
             + KEY_FEEDITEM + ")";
+
+    public static final String CREATE_TABLE_FAVORITES = "CREATE TABLE "
+            + TABLE_NAME_FAVORITES + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
     
     /**
      * Select all columns from the feed-table
@@ -785,6 +790,38 @@ public class PodDBAdapter {
         db.execSQL(sql);
     }
 
+    /**
+     * Adds the item to favorites
+     */
+    public void addFavoriteItem(FeedItem item) {
+        // don't add an item that's already there...
+        if (isItemInFavorites(item)) {
+            Log.d(TAG, "item already in favorites");
+            return;
+        }
+        ContentValues values = new ContentValues();
+        values.put(KEY_FEEDITEM, item.getId());
+        values.put(KEY_FEED, item.getFeedId());
+        db.insert(TABLE_NAME_FAVORITES, null, values);
+    }
+
+    public void removeFavoriteItem(FeedItem item) {
+        String deleteClause = String.format("DELETE FROM %s WHERE %s=%s AND %s=%s",
+                TABLE_NAME_FAVORITES,
+                KEY_FEEDITEM, item.getId(),
+                KEY_FEED, item.getFeedId());
+        db.execSQL(deleteClause);
+    }
+
+    public boolean isItemInFavorites(FeedItem item) {
+        String query = String.format("SELECT %s from %s WHERE %s=%d",
+                KEY_ID, TABLE_NAME_FAVORITES, KEY_FEEDITEM, item.getId());
+        Cursor c = db.rawQuery(query, null);
+        int count = c.getCount();
+        c.close();
+        return count > 0;
+    }
+
     public long getDownloadLogSize() {
         final String query = String.format("SELECT COUNT(%s) FROM %s", KEY_ID, TABLE_NAME_DOWNLOAD_LOG);
         Cursor result = db.rawQuery(query, null);
@@ -987,6 +1024,19 @@ public class PodDBAdapter {
 
     public Cursor getQueueIDCursor() {
         Cursor c = db.query(TABLE_NAME_QUEUE, new String[]{KEY_FEEDITEM}, null, null, null, null, KEY_ID + " ASC", null);
+        return c;
+    }
+
+
+    public final Cursor getFavoritesCursor() {
+        Object[] args = new String[] {
+                SEL_FI_SMALL_STR,
+                TABLE_NAME_FEED_ITEMS, TABLE_NAME_FAVORITES,
+                TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
+                TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM,
+                TABLE_NAME_FAVORITES + "." + KEY_ID };
+        String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s", args);
+        Cursor c = db.rawQuery(query, null);
         return c;
     }
 
@@ -1374,7 +1424,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 1030002;
+        private final static int VERSION = 1040000;
 
         private Context context;
 
@@ -1400,6 +1450,7 @@ public class PodDBAdapter {
             db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
             db.execSQL(CREATE_TABLE_QUEUE);
             db.execSQL(CREATE_TABLE_SIMPLECHAPTERS);
+            db.execSQL(CREATE_TABLE_FAVORITES);
 
             db.execSQL(CREATE_INDEX_FEEDITEMS_FEED);
             db.execSQL(CREATE_INDEX_FEEDITEMS_IMAGE);

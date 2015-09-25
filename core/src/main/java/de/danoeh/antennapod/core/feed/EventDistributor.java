@@ -112,9 +112,7 @@ public class EventDistributor extends Observable {
 		addEvent(DOWNLOAD_HANDLED);
 	}
 
-    public void sendPlayerStatusUpdateBroadcast() {
-        addEvent(PLAYER_STATUS_UPDATE);
-    }
+    public void sendPlayerStatusUpdateBroadcast() { addEvent(PLAYER_STATUS_UPDATE); }
 
 	public static abstract class EventListener implements Observer {
 
