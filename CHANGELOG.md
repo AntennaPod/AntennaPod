@@ -5,6 +5,16 @@ Version 1.4
 -----------
 
 * BLUETOOTH PERMISSION: Needed to be able to resume playback when a Bluetooth device reconnects with your phone
+* VIBRATE PERMISSION: Used optionally with the sleep timer
+* Native variable speed playback (experimental via options)
+* Improved sleep timer
+* Mark episodes as 'favorite'
+* Notification can skip episodes
+* Keep episodes when skipping them
+* Episode art on lock screen
+* Better OPML sharing
+* Usability improvements
+* Bug fixes
 
 Version 1.3
 -----------
