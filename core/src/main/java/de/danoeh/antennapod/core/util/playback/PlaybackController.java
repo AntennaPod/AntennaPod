@@ -120,6 +120,7 @@ public abstract class PlaybackController {
             throw new IllegalStateException(
                     "Can't call init() after release() has been called");
         }
+        checkMediaInfoLoaded();
     }
 
     /**

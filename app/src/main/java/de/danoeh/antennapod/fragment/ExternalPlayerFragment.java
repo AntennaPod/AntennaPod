@@ -141,26 +141,12 @@ public class ExternalPlayerFragment extends Fragment {
 
             @Override
             public void onShutdownNotification() {
-                if (fragmentLayout != null) {
-                    fragmentLayout.setVisibility(View.GONE);
-                }
-                controller = setupPlaybackController();
-                if (butPlay != null) {
-                    butPlay.setOnClickListener(controller
-                            .newOnPlayButtonClickListener());
-                }
+                playbackDone();
             }
 
             @Override
             public void onPlaybackEnd() {
-                if (fragmentLayout != null) {
-                    fragmentLayout.setVisibility(View.GONE);
-                }
-                controller = setupPlaybackController();
-                if (butPlay != null) {
-                    butPlay.setOnClickListener(controller
-                            .newOnPlayButtonClickListener());
-                }
+                playbackDone();
             }
 
             @Override
@@ -190,6 +176,21 @@ public class ExternalPlayerFragment extends Fragment {
         if (controller != null) {
             controller.pause();
         }
+    }
+
+    private void playbackDone() {
+        if (fragmentLayout != null) {
+            fragmentLayout.setVisibility(View.GONE);
+        }
+        if (controller != null) {
+            controller.release();
+        }
+        controller = setupPlaybackController();
+        if (butPlay != null) {
+            butPlay.setOnClickListener(controller
+                    .newOnPlayButtonClickListener());
+        }
+        controller.init();
     }
 
     private boolean loadMediaInfo() {
