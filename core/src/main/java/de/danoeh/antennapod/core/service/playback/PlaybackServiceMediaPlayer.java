@@ -275,7 +275,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     private void updateMediaSessionMetadata() {
         executor.execute(() -> {
             final Playable p = this.media;
-            if(p == null) {
+            if (p == null) {
                 return;
             }
             MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
@@ -930,25 +930,22 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     };
 
 
-    public void endPlayback() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                releaseWifiLockIfNecessary();
+    public void endPlayback(final boolean wasSkipped) {
+        executor.submit(() -> {
+            playerLock.lock();
+            releaseWifiLockIfNecessary();
 
-                if (playerStatus != PlayerStatus.INDETERMINATE) {
-                    setPlayerStatus(PlayerStatus.INDETERMINATE, media);
-                }
-                if (mediaPlayer != null) {
-                    mediaPlayer.reset();
-
-                }
-                audioManager.abandonAudioFocus(audioFocusChangeListener);
-                callback.endPlayback(true);
-
-                playerLock.unlock();
+            if (playerStatus != PlayerStatus.INDETERMINATE) {
+                setPlayerStatus(PlayerStatus.INDETERMINATE, media);
             }
+            if (mediaPlayer != null) {
+                mediaPlayer.reset();
+
+            }
+            audioManager.abandonAudioFocus(audioFocusChangeListener);
+            callback.endPlayback(true, wasSkipped);
+
+            playerLock.unlock();
         });
     }
 
@@ -1006,20 +1003,20 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         }
     }
 
-    public static interface PSMPCallback {
-        public void statusChanged(PSMPInfo newInfo);
+    public interface PSMPCallback {
+        void statusChanged(PSMPInfo newInfo);
 
-        public void shouldStop();
+        void shouldStop();
 
-        public void playbackSpeedChanged(float s);
+        void playbackSpeedChanged(float s);
 
-        public void onBufferingUpdate(int percent);
+        void onBufferingUpdate(int percent);
 
-        public boolean onMediaPlayerInfo(int code);
+        boolean onMediaPlayerInfo(int code);
 
-        public boolean onMediaPlayerError(Object inObj, int what, int extra);
+        boolean onMediaPlayerError(Object inObj, int what, int extra);
 
-        public boolean endPlayback(boolean playNextEpisode);
+        boolean endPlayback(boolean playNextEpisode, boolean wasSkipped);
     }
 
     private IPlayer setMediaPlayerListeners(IPlayer mp) {
@@ -1062,7 +1059,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     };
 
     private void genericOnCompletion() {
-        endPlayback();
+        endPlayback(false);
     }
 
     private final org.antennapod.audio.MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener = new org.antennapod.audio.MediaPlayer.OnBufferingUpdateListener() {
@@ -1177,7 +1174,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         @Override
         public void onSkipToNext() {
             super.onSkipToNext();
-            endPlayback();
+            endPlayback(true);
         }
 
         @Override
@@ -1266,7 +1263,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                     case KeyEvent.KEYCODE_MEDIA_NEXT:
                     {
                         Log.d(TAG, "Received next event from RemoteControlClient");
-                        endPlayback();
+                        endPlayback(true);
                         return true;
                     }
                     default:

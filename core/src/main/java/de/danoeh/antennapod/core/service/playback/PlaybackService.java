@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothA2dp;
@@ -14,12 +15,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.RemoteControlClient;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -48,6 +49,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -163,7 +165,6 @@ public class PlaybackService extends Service {
 
     private static final int NOTIFICATION_ID = 1;
 
-    private RemoteControlClient remoteControlClient;
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
 
@@ -342,6 +343,8 @@ public class PlaybackService extends Service {
 
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
+                mediaPlayer.endPlayback(true);
+                break;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 mediaPlayer.seekDelta(UserPreferences.getFastFowardSecs() * 1000);
                 break;
@@ -541,13 +544,13 @@ public class PlaybackService extends Service {
         }
 
         @Override
-        public boolean endPlayback(boolean playNextEpisode) {
-            PlaybackService.this.endPlayback(true);
+        public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            PlaybackService.this.endPlayback(playNextEpisode, wasSkipped);
             return true;
         }
     };
 
-    private void endPlayback(boolean playNextEpisode) {
+    private void endPlayback(boolean playNextEpisode, boolean wasSkipped) {
         Log.d(TAG, "Playback ended");
 
         final Playable playable = mediaPlayer.getPlayable();
@@ -574,7 +577,7 @@ public class PlaybackService extends Service {
                 e.printStackTrace();
                 // isInQueue remains false
             }
-            if (isInQueue) {
+            if (isInQueue && (!wasSkipped || UserPreferences.shouldSkipRemoveFromQueue())) {
                 DBWriter.removeQueueItem(PlaybackService.this, item, true);
             }
             DBWriter.addItemToPlaybackHistory(media);
@@ -821,80 +824,94 @@ public class PlaybackService extends Service {
                 final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
 
                 if (!Thread.currentThread().isInterrupted() && started && info.playable != null) {
-                    String contentText = info.playable.getFeedTitle();
-                    String contentTitle = info.playable.getEpisodeTitle();
+                    String contentText = info.playable.getEpisodeTitle();
+                    String contentTitle = info.playable.getFeedTitle();
                     Notification notification = null;
-                    if (android.os.Build.VERSION.SDK_INT >= 16) {
-                        Intent pauseButtonIntent = new Intent( // pause button intent
-                                PlaybackService.this, PlaybackService.class);
-                        pauseButtonIntent.putExtra(
-                                MediaButtonReceiver.EXTRA_KEYCODE,
-                                KeyEvent.KEYCODE_MEDIA_PAUSE);
-                        PendingIntent pauseButtonPendingIntent = PendingIntent
-                                .getService(PlaybackService.this, 0,
-                                        pauseButtonIntent,
-                                        PendingIntent.FLAG_UPDATE_CURRENT);
-                        Intent playButtonIntent = new Intent( // play button intent
-                                PlaybackService.this, PlaybackService.class);
-                        playButtonIntent.putExtra(
-                                MediaButtonReceiver.EXTRA_KEYCODE,
-                                KeyEvent.KEYCODE_MEDIA_PLAY);
-                        PendingIntent playButtonPendingIntent = PendingIntent
-                                .getService(PlaybackService.this, 1,
-                                        playButtonIntent,
-                                        PendingIntent.FLAG_UPDATE_CURRENT);
-                        Intent stopButtonIntent = new Intent( // stop button intent
-                                PlaybackService.this, PlaybackService.class);
-                        stopButtonIntent.putExtra(
-                                MediaButtonReceiver.EXTRA_KEYCODE,
-                                KeyEvent.KEYCODE_MEDIA_STOP);
-                        PendingIntent stopButtonPendingIntent = PendingIntent
-                                .getService(PlaybackService.this, 2,
-                                        stopButtonIntent,
-                                        PendingIntent.FLAG_UPDATE_CURRENT);
-                        Notification.Builder notificationBuilder = new Notification.Builder(
-                                PlaybackService.this)
-                                .setContentTitle(contentTitle)
-                                .setContentText(contentText)
-                                .setOngoing(true)
-                                .setContentIntent(pIntent)
-                                .setLargeIcon(icon)
-                                .setSmallIcon(smallIcon)
-                                .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
-                        if (playerStatus == PlayerStatus.PLAYING) {
-                            notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
-                                    getString(R.string.pause_label),
-                                    pauseButtonPendingIntent);
-                        } else {
-                            notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
-                                    getString(R.string.play_label),
-                                    playButtonPendingIntent);
-                        }
-                        if (UserPreferences.isPersistNotify()) {
-                            notificationBuilder.addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
-                                    getString(R.string.stop_label),
-                                    stopButtonPendingIntent);
-                        }
 
-                        if (Build.VERSION.SDK_INT >= 21) {
-                            notificationBuilder.setStyle(new Notification.MediaStyle()
-                                    .setMediaSession((android.media.session.MediaSession.Token) mediaPlayer.getSessionToken().getToken())
-                                    .setShowActionsInCompactView(0))
-                                    .setVisibility(Notification.VISIBILITY_PUBLIC)
-                                    .setColor(Notification.COLOR_DEFAULT);
-                        }
-
-                        notification = notificationBuilder.build();
+                    Intent pauseButtonIntent = new Intent( // pause button intent
+                            PlaybackService.this, PlaybackService.class);
+                    pauseButtonIntent.putExtra(
+                            MediaButtonReceiver.EXTRA_KEYCODE,
+                            KeyEvent.KEYCODE_MEDIA_PAUSE);
+                    PendingIntent pauseButtonPendingIntent = PendingIntent
+                            .getService(PlaybackService.this, 0,
+                                    pauseButtonIntent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    Intent playButtonIntent = new Intent( // play button intent
+                            PlaybackService.this, PlaybackService.class);
+                    playButtonIntent.putExtra(
+                            MediaButtonReceiver.EXTRA_KEYCODE,
+                            KeyEvent.KEYCODE_MEDIA_PLAY);
+                    PendingIntent playButtonPendingIntent = PendingIntent
+                            .getService(PlaybackService.this, 1,
+                                    playButtonIntent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    Intent stopButtonIntent = new Intent( // stop button intent
+                            PlaybackService.this, PlaybackService.class);
+                    stopButtonIntent.putExtra(
+                            MediaButtonReceiver.EXTRA_KEYCODE,
+                            KeyEvent.KEYCODE_MEDIA_STOP);
+                    PendingIntent stopButtonPendingIntent = PendingIntent
+                            .getService(PlaybackService.this, 2,
+                                    stopButtonIntent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    Intent skipButtonIntent = new Intent(
+                            PlaybackService.this, PlaybackService.class);
+                    skipButtonIntent.putExtra(
+                            MediaButtonReceiver.EXTRA_KEYCODE,
+                            KeyEvent.KEYCODE_MEDIA_NEXT);
+                    PendingIntent skipButtonPendingIntent = PendingIntent
+                            .getService(PlaybackService.this, 3,
+                                    skipButtonIntent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    NotificationCompat.Builder notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(
+                            PlaybackService.this)
+                            .setContentTitle(contentTitle)
+                            .setContentText(contentText)
+                            .setOngoing(false)
+                            .setContentIntent(pIntent)
+                            .setLargeIcon(icon)
+                            .setSmallIcon(smallIcon)
+                            .setWhen(0) // we don't need the time
+                            .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
+                    IntList actionList = new IntList();
+                    if (playerStatus == PlayerStatus.PLAYING) {
+                        notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
+                                getString(R.string.pause_label),
+                                pauseButtonPendingIntent);
+                        actionList.add(actionList.size());
                     } else {
-                        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
-                                PlaybackService.this)
-                                .setContentTitle(contentTitle)
-                                .setContentText(contentText).setOngoing(true)
-                                .setContentIntent(pIntent).setLargeIcon(icon)
-                                .setSmallIcon(smallIcon);
-                        notification = notificationBuilder.build();
+                        notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
+                                getString(R.string.play_label),
+                                playButtonPendingIntent);
+                        actionList.add(actionList.size());
                     }
-                    startForeground(NOTIFICATION_ID, notification);
+                    if (UserPreferences.isFollowQueue()) {
+                        notificationBuilder.addAction(android.R.drawable.ic_media_next,
+                                getString(R.string.skip_episode_label),
+                                skipButtonPendingIntent);
+                        actionList.add(actionList.size());
+                    }
+
+                    notificationBuilder.setStyle(new android.support.v7.app.NotificationCompat.MediaStyle()
+                            .setMediaSession(mediaPlayer.getSessionToken())
+                            .setShowActionsInCompactView(actionList.toArray())
+                            .setShowCancelButton(true)
+                            .setCancelButtonIntent(stopButtonPendingIntent))
+                            .setVisibility(Notification.VISIBILITY_PUBLIC)
+                            .setColor(Notification.COLOR_DEFAULT);
+
+                    notification = notificationBuilder.build();
+
+                    if (playerStatus == PlayerStatus.PLAYING ||
+                            playerStatus == PlayerStatus.PREPARING ||
+                            playerStatus == PlayerStatus.SEEKING) {
+                        startForeground(NOTIFICATION_ID, notification);
+                    } else {
+                        stopForeground(false);
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(NOTIFICATION_ID, notification);
+                    }
                     Log.d(TAG, "Notification set up");
                 }
             }
@@ -1071,7 +1088,7 @@ public class PlaybackService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (StringUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
-                mediaPlayer.endPlayback();
+                mediaPlayer.endPlayback(true);
             }
         }
     };

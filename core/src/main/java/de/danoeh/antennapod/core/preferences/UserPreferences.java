@@ -57,6 +57,7 @@ public class UserPreferences {
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
+    public static final String PREF_SKIP_REMOVES = "prefSkipRemovesFromQueue";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     public static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
@@ -213,8 +214,10 @@ public class UserPreferences {
 
 
     public static boolean isFollowQueue() {
-        return prefs.getBoolean(PREF_FOLLOW_QUEUE, false);
+        return prefs.getBoolean(PREF_FOLLOW_QUEUE, true);
     }
+
+    public static boolean shouldSkipRemoveFromQueue() { return prefs.getBoolean(PREF_SKIP_REMOVES, false); }
 
     public static boolean isAutoDelete() {
         return prefs.getBoolean(PREF_AUTO_DELETE, false);
