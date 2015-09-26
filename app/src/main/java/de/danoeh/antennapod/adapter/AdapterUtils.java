@@ -61,6 +61,7 @@ public class AdapterUtils {
                                         txtvPos.setText("");
                                     }
                                 }, error -> {
+                                    txtvPos.setText("");
                                     Log.e(TAG, Log.getStackTraceString(error));
                                 });
             } else {

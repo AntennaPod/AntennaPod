@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,13 +148,17 @@ public class QueueListAdapter extends BaseAdapter {
                     holder.progressLeft.setText("{fa-spinner}");
                     Iconify.addIcons(holder.progressLeft);
                     NetworkUtils.getFeedMediaSizeObservable(media)
-                            .subscribe(size -> {
+                            .subscribe(
+                                    size -> {
                                         if (size > 0) {
                                             holder.progressLeft.setText(Converter.byteToString(size));
                                         } else {
                                             holder.progressLeft.setText("");
                                         }
-                            });
+                                    }, error -> {
+                                        holder.progressLeft.setText("");
+                                        Log.e(TAG, Log.getStackTraceString(error));
+                                    });
                 } else {
                     holder.progressLeft.setText("");
                 }
