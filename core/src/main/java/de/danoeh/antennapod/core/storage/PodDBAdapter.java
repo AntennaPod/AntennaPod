@@ -1424,7 +1424,7 @@ public class PodDBAdapter implements AutoCloseable {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 1040000;
+        private final static int VERSION = 1040001;
 
         private Context context;
 
@@ -1654,6 +1654,9 @@ public class PodDBAdapter implements AutoCloseable {
                 db.execSQL("UPDATE FeedItems SET auto_download=0 WHERE " +
                         "(read=1 OR id IN (SELECT feeditem FROM FeedMedia WHERE position>0 OR downloaded=1)) " +
                         "AND id NOT IN (SELECT feeditem FROM Queue)");
+            }
+            if(oldVersion < 1040001) {
+                db.execSQL(CREATE_TABLE_FAVORITES);
             }
             EventBus.getDefault().post(ProgressEvent.end());
         }
