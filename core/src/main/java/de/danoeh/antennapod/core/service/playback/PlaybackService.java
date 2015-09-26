@@ -343,7 +343,7 @@ public class PlaybackService extends Service {
 
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                endPlayback(true, true);
+                mediaPlayer.endPlayback(true);
                 break;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 mediaPlayer.seekDelta(UserPreferences.getFastFowardSecs() * 1000);
