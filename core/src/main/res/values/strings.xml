@@ -252,8 +252,9 @@
     <!--  Variable Speed -->
     <string name="download_plugin_label">Download Plugin</string>
     <string name="no_playback_plugin_title">Plugin Not Installed</string>
-    <string name="no_playback_plugin_msg">For variable speed playback to work, a third party library must be installed.\n\nTap \'Download Plugin\' to download a free plugin from the Play Store\n\nAny problems found using this plugin are not the responsibility of AntennaPod and should be reported to the plugin owner.</string>
+    <string name="no_playback_plugin_or_sonic_msg">For variable speed playback to work, you have to install a third party library or enable the experimental Sonic player [Android 4.1+].\n\nTap \'Download Plugin\' to download a free plugin from the Play Store.\n\nAny problems found using this plugin are not the responsibility of AntennaPod and should be reported to the plugin owner.</string>
     <string name="set_playback_speed_label">Playback Speeds</string>
+    <string name="enable_sonic">Enable Sonic</string>
 
     <!-- Empty list labels -->
     <string name="no_items_label">There are no items in this list.</string>

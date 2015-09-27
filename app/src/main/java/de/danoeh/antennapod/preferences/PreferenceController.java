@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -14,6 +15,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -48,7 +50,8 @@ import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 /**
  * Sets up a preference UI that lets the user change user preferences.
  */
-public class PreferenceController {
+public class PreferenceController implements SharedPreferences.OnSharedPreferenceChangeListener {
+
     private static final String TAG = "PreferenceController";
     public static final String PREF_FLATTR_SETTINGS = "prefFlattrSettings";
     public static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
@@ -71,6 +74,18 @@ public class PreferenceController {
 
     public PreferenceController(PreferenceUI ui) {
         this.ui = ui;
+        PreferenceManager.getDefaultSharedPreferences(ui.getActivity().getApplicationContext())
+            .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(UserPreferences.PREF_SONIC)) {
+            CheckBoxPreference prefSonic = (CheckBoxPreference) ui.findPreference(UserPreferences.PREF_SONIC);
+            if(prefSonic != null) {
+                prefSonic.setChecked(sharedPreferences.getBoolean(UserPreferences.PREF_SONIC, false));
+            }
+        }
     }
 
     /**
@@ -601,8 +616,7 @@ public class PreferenceController {
                 hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, new DialogInterface
-                .OnClickListener() {
+        builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 UserPreferences.setHiddenDrawerItems(context, hiddenDrawerItems);
@@ -646,12 +660,12 @@ public class PreferenceController {
                     minute = updateTime[1];
                 }
                 TimePickerDialog timePickerDialog = new TimePickerDialog(context,
-                        (view, selectedHourOfDay, selectedMinute) -> {
-                            if (view.getTag() == null) { // onTimeSet() may get called twice!
-                                view.setTag("TAGGED");
-                                UserPreferences.setUpdateTimeOfDay(selectedHourOfDay, selectedMinute);
-                            }
-                        }, hourOfDay, minute, DateFormat.is24HourFormat(context));
+                    (view, selectedHourOfDay, selectedMinute) -> {
+                        if (view.getTag() == null) { // onTimeSet() may get called twice!
+                            view.setTag("TAGGED");
+                            UserPreferences.setUpdateTimeOfDay(selectedHourOfDay, selectedMinute);
+                        }
+                    }, hourOfDay, minute, DateFormat.is24HourFormat(context));
                 timePickerDialog.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay));
                 timePickerDialog.show();
             }

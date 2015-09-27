@@ -480,6 +480,12 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_SONIC, false);
     }
 
+    public static void enableSonic(boolean enable) {
+        prefs.edit()
+            .putBoolean(PREF_SONIC, enable)
+            .apply();
+    }
+
     /**
      * Return the folder where the app stores all of its data. This method will
      * return the standard data folder if none has been set by the user.
