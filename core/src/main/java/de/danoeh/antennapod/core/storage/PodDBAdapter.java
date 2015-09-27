@@ -39,7 +39,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Implements methods for accessing the database
  */
-public class PodDBAdapter implements AutoCloseable {
+public class PodDBAdapter {
     
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
