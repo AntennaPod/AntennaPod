@@ -29,7 +29,7 @@ dependencies {
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.0.3'
     compile 'com.afollestad:material-dialogs:0.7.8.0'
 
-    compile 'com.github.AntennaPod:AntennaPod-AudioPlayer:v1.0'
+    compile 'com.github.AntennaPod:AntennaPod-AudioPlayer:v1.0.1'
 
     compile project(':core')
     compile project(':library:drag-sort-listview')
