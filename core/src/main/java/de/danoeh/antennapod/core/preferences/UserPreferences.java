@@ -67,6 +67,7 @@ public class UserPreferences {
     // Network
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
+    public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
@@ -216,6 +217,8 @@ public class UserPreferences {
     public static boolean isFollowQueue() {
         return prefs.getBoolean(PREF_FOLLOW_QUEUE, true);
     }
+
+    public static int getEpisodeCleanupDays() { return Integer.valueOf(prefs.getString(PREF_EPISODE_CLEANUP, "3")); }
 
     public static boolean shouldSkipRemoveFromQueue() { return prefs.getBoolean(PREF_SKIP_REMOVES, false); }
 

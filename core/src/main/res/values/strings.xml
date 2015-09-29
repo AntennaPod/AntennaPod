@@ -86,6 +86,8 @@
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
     <string name="send_label">Send...</string>
+    <string name="episode_cleanup_never">Never</string>
+    <string name="episode_cleanup_immediately">when not in queue</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
@@ -266,6 +268,8 @@
     <string name="queue_label">Queue</string>
     <string name="services_label">Services</string>
     <string name="flattr_label">Flattr</string>
+    <string name="pref_episode_cleanup_title">Episode Cleanup</string>
+    <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if space is needed</string>
     <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
@@ -417,6 +421,10 @@
         <item quantity="other">%d hours</item>
     </plurals>
 
+    <plurals name="time_days_quantified">
+        <item quantity="one">1 day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
     <!-- gpodder.net -->
     <string name="gpodnet_taglist_header">CATEGORIES</string>
     <string name="gpodnet_toplist_header">TOP PODCASTS</string>
