@@ -18,7 +18,7 @@ import de.danoeh.antennapod.core.util.LongList;
 /**
  * Implementation of the EpisodeCleanupAlgorithm interface used by AntennaPod.
  */
-public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
+public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
 
     private static final String TAG = "APCleanupAlgorithm";
     /** the number of days after playback to wait before an item is eligible to be cleaned up */
@@ -29,7 +29,7 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
     }
 
     @Override
-    public int performCleanup(Context context, Integer numberOfEpisodesToDelete) {
+    public int performCleanup(Context context, int numberOfEpisodesToDelete) {
         List<FeedItem> candidates = new ArrayList<>();
         List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
         LongList queue = DBReader.getQueueIDList();
@@ -89,7 +89,7 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
     }
 
     @Override
-    public Integer getDefaultCleanupParameter() {
+    public int getDefaultCleanupParameter() {
         return 0;
     }
 }

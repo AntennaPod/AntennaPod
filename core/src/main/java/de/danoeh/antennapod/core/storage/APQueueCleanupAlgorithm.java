@@ -18,12 +18,12 @@ import de.danoeh.antennapod.core.util.LongList;
  * A cleanup algorithm that removes any item that isn't in the queue and isn't a favorite
  * but only if space is needed.
  */
-public class APQueueCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
+public class APQueueCleanupAlgorithm extends EpisodeCleanupAlgorithm {
 
     private static final String TAG = "APQueueCleanupAlgorithm";
 
     @Override
-    public int performCleanup(Context context, Integer numberOfEpisodesToDelete) {
+    public int performCleanup(Context context, int numberOfEpisodesToDelete) {
         List<FeedItem> candidates = new ArrayList<>();
         List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
         LongList queue = DBReader.getQueueIDList();
@@ -73,7 +73,7 @@ public class APQueueCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer>
     }
 
     @Override
-    public Integer getDefaultCleanupParameter() {
+    public int getDefaultCleanupParameter() {
         return 0;
     }
 }

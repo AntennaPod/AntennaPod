@@ -492,7 +492,7 @@ public class UserPreferences {
     }
 
 
-    public static EpisodeCleanupAlgorithm<Integer> getEpisodeCleanupAlgorithm() {
+    public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
         int cleanupValue = prefs.getInt(PREF_EPISODE_CLEANUP, -1);
         if (cleanupValue == -1) {
             return new APQueueCleanupAlgorithm();

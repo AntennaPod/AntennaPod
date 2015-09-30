@@ -332,9 +332,7 @@ public final class DBTasks {
                 @Override
                 public void run() {
                     ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
-                            .performCleanup(context,
-                                    ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
-                                            .getPerformCleanupParameter(items.length));
+                            .makeRoomForEpisodes(context, items.length);
                 }
 
             }.start();
@@ -390,8 +388,7 @@ public final class DBTasks {
      * @param context Used for accessing the DB.
      */
     public static void performAutoCleanup(final Context context) {
-        ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().performCleanup(context,
-                ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().getDefaultCleanupParameter());
+        ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().performCleanup(context);
     }
 
     /**

@@ -6,19 +6,19 @@ import android.util.Log;
 /**
  * A cleanup algorithm that never removes anything
  */
-public class APNullCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
+public class APNullCleanupAlgorithm extends EpisodeCleanupAlgorithm {
 
     private static final String TAG = "APNullCleanupAlgorithm";
 
     @Override
-    public int performCleanup(Context context, Integer parameter) {
+    public int performCleanup(Context context, int parameter) {
         // never clean anything up
         Log.i(TAG, "performCleanup: Not removing anything");
         return 0;
     }
 
     @Override
-    public Integer getDefaultCleanupParameter() {
+    public int getDefaultCleanupParameter() {
         return 0;
     }
 }

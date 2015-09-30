@@ -2,27 +2,60 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 
-import java.util.List;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
-
-public interface EpisodeCleanupAlgorithm<T> {
+public abstract class EpisodeCleanupAlgorithm {
 
     /**
      * Deletes downloaded episodes that are no longer needed. What episodes are deleted and how many
      * of them depends on the implementation.
      *
-     * @param context   Can be used for accessing the database
-     * @param parameter An additional parameter. This parameter is either returned by getDefaultCleanupParameter
-     *                  or getPerformCleanupParameter.
+     * @param context     Can be used for accessing the database
+     * @param numToRemove An additional parameter. This parameter is either returned by getDefaultCleanupParameter
+     *                    or getPerformCleanupParameter.
      * @return The number of episodes that were deleted.
      */
-    int performCleanup(Context context, T parameter);
+    public abstract int performCleanup(Context context, int numToRemove);
+
+    public int performCleanup(Context context) {
+        return performCleanup(context, getDefaultCleanupParameter());
+    }
 
     /**
      * Returns a parameter for performCleanup. The implementation of this interface should decide how much
      * space to free to satisfy the episode cache conditions. If the conditions are already satisfied, this
      * method should not have any effects.
      */
-    T getDefaultCleanupParameter();
+    public abstract int getDefaultCleanupParameter();
+
+    /**
+     * Cleans up just enough episodes to make room for the requested number
+     *
+     * @param context            Can be used for accessing the database
+     * @param amountOfRoomNeeded the number of episodes we need space for
+     * @return The number of epiosdes that were deleted
+     */
+    public int makeRoomForEpisodes(Context context, int amountOfRoomNeeded) {
+        return performCleanup(context, getNumEpisodesToCleanup(amountOfRoomNeeded));
+    }
+
+    /**
+     * @param amountOfRoomNeeded the number of episodes we want to download
+     * @return the number of episodes to delete in order to make room
+     */
+    protected int getNumEpisodesToCleanup(final int amountOfRoomNeeded) {
+        if (amountOfRoomNeeded >= 0
+                && UserPreferences.getEpisodeCacheSize() != UserPreferences
+                .getEpisodeCacheSizeUnlimited()) {
+            int downloadedEpisodes = DBReader
+                    .getNumberOfDownloadedEpisodes();
+            if (downloadedEpisodes + amountOfRoomNeeded >= UserPreferences
+                    .getEpisodeCacheSize()) {
+
+                return downloadedEpisodes + amountOfRoomNeeded
+                        - UserPreferences.getEpisodeCacheSize();
+            }
+        }
+        return 0;
+    }
 }

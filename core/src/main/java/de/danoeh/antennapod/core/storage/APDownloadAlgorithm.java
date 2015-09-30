@@ -70,8 +70,8 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
 
                     int autoDownloadableEpisodes = candidates.size();
                     int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
-                    int deletedEpisodes = UserPreferences.getEpisodeCleanupAlgorithm().performCleanup(context,
-                            getPerformAutoCleanupArgs(autoDownloadableEpisodes));
+                    int deletedEpisodes = UserPreferences.getEpisodeCleanupAlgorithm()
+                            .makeRoomForEpisodes(context, autoDownloadableEpisodes);
                     boolean cacheIsUnlimited = UserPreferences.getEpisodeCacheSize() == UserPreferences
                             .getEpisodeCacheSizeUnlimited();
                     int episodeCacheSize = UserPreferences.getEpisodeCacheSize();
