@@ -27,6 +27,10 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
+import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -217,8 +221,6 @@ public class UserPreferences {
     public static boolean isFollowQueue() {
         return prefs.getBoolean(PREF_FOLLOW_QUEUE, true);
     }
-
-    public static int getEpisodeCleanupDays() { return Integer.valueOf(prefs.getString(PREF_EPISODE_CLEANUP, "3")); }
 
     public static boolean shouldSkipRemoveFromQueue() { return prefs.getBoolean(PREF_SKIP_REMOVES, false); }
 
@@ -489,6 +491,18 @@ public class UserPreferences {
             .apply();
     }
 
+
+    public static EpisodeCleanupAlgorithm<Integer> getEpisodeCleanupAlgorithm() {
+        int cleanupValue = prefs.getInt(PREF_EPISODE_CLEANUP, -1);
+        if (cleanupValue == -1) {
+            return new APQueueCleanupAlgorithm();
+        } else if (cleanupValue == -2) {
+            return new APNullCleanupAlgorithm();
+        } else {
+            return new APCleanupAlgorithm(cleanupValue);
+        }
+    }
+
     /**
      * Return the folder where the app stores all of its data. This method will
      * return the standard data folder if none has been set by the user.
@@ -648,5 +662,4 @@ public class UserPreferences {
     public static int readEpisodeCacheSize(String valueFromPrefs) {
         return readEpisodeCacheSizeInternal(valueFromPrefs);
     }
-
 }

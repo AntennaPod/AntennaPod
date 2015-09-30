@@ -55,7 +55,8 @@
     </string-array>
 
     <string-array name="episode_cleanup_entries">
-        <item>@string/episode_cleanup_immediately</item>
+        <item>@string/episode_cleanup_queue_removal</item>
+        <item>0</item>
         <item>1</item>
         <item>3</item>
         <item>5</item>
@@ -64,12 +65,13 @@
     </string-array>
 
     <string-array name="episode_cleanup_values">
+        <item>-1</item>
         <item>0</item>
         <item>1</item>
         <item>3</item>
         <item>5</item>
         <item>7</item>
-        <item>-1</item>
+        <item>-2</item>
     </string-array>
 
     <string-array name="playback_speed_values">

@@ -4,12 +4,14 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.LongList;
 
@@ -19,19 +21,34 @@ import de.danoeh.antennapod.core.util.LongList;
 public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
 
     private static final String TAG = "APCleanupAlgorithm";
+    /** the number of days after playback to wait before an item is eligible to be cleaned up */
+    private final int numberOfDaysAfterPlayback;
+
+    public APCleanupAlgorithm(int numberOfDaysAfterPlayback) {
+        this.numberOfDaysAfterPlayback = numberOfDaysAfterPlayback;
+    }
 
     @Override
-    public int performCleanup(Context context, Integer episodeNumber) {
+    public int performCleanup(Context context, Integer numberOfEpisodesToDelete) {
         List<FeedItem> candidates = new ArrayList<>();
         List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
         LongList queue = DBReader.getQueueIDList();
         List<FeedItem> delete;
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1 * numberOfDaysAfterPlayback);
+        Date mostRecentDateForDeletion = cal.getTime();
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia() && item.getMedia().isDownloaded()
                     && !queue.contains(item.getId()) && item.isPlayed()) {
-                candidates.add(item);
+                FeedMedia media = item.getMedia();
+                // make sure this candidate was played at least the proper amount of days prior
+                // to now
+                if (media != null
+                        && media.getPlaybackCompletionDate() != null
+                        && media.getPlaybackCompletionDate().before(mostRecentDateForDeletion)) {
+                    candidates.add(item);
+                }
             }
-
         }
 
         Collections.sort(candidates, (lhs, rhs) -> {
@@ -47,8 +64,8 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
             return l.compareTo(r);
         });
 
-        if (candidates.size() > episodeNumber) {
-            delete = candidates.subList(0, episodeNumber);
+        if (candidates.size() > numberOfEpisodesToDelete) {
+            delete = candidates.subList(0, numberOfEpisodesToDelete);
         } else {
             delete = candidates;
         }
@@ -66,34 +83,13 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
 
         Log.i(TAG, String.format(
                 "Auto-delete deleted %d episodes (%d requested)", counter,
-                episodeNumber));
+                numberOfEpisodesToDelete));
 
         return counter;
     }
 
     @Override
     public Integer getDefaultCleanupParameter() {
-        return getPerformAutoCleanupArgs(0);
-    }
-
-    @Override
-    public Integer getPerformCleanupParameter(List<FeedItem> items) {
-        return getPerformAutoCleanupArgs(items.size());
-    }
-
-    static int getPerformAutoCleanupArgs(final int episodeNumber) {
-        if (episodeNumber >= 0
-                && UserPreferences.getEpisodeCacheSize() != UserPreferences
-                .getEpisodeCacheSizeUnlimited()) {
-            int downloadedEpisodes = DBReader
-                    .getNumberOfDownloadedEpisodes();
-            if (downloadedEpisodes + episodeNumber >= UserPreferences
-                    .getEpisodeCacheSize()) {
-
-                return downloadedEpisodes + episodeNumber
-                        - UserPreferences.getEpisodeCacheSize();
-            }
-        }
         return 0;
     }
 }

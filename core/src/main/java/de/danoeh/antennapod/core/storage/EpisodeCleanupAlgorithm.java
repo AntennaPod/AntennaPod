@@ -17,20 +17,12 @@ public interface EpisodeCleanupAlgorithm<T> {
      *                  or getPerformCleanupParameter.
      * @return The number of episodes that were deleted.
      */
-    public int performCleanup(Context context, T parameter);
+    int performCleanup(Context context, T parameter);
 
     /**
      * Returns a parameter for performCleanup. The implementation of this interface should decide how much
      * space to free to satisfy the episode cache conditions. If the conditions are already satisfied, this
      * method should not have any effects.
      */
-    public T getDefaultCleanupParameter();
-
-    /**
-     * Returns a parameter for performCleanup.
-     *
-     * @param items A list of FeedItems that are about to be downloaded. The implementation of this interface
-     *              should decide how much space to free to satisfy the episode cache conditions.
-     */
-    public T getPerformCleanupParameter(List<FeedItem> items);
+    T getDefaultCleanupParameter();
 }

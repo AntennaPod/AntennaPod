@@ -87,7 +87,12 @@
     <string name="feed_auto_download_never">Never</string>
     <string name="send_label">Send...</string>
     <string name="episode_cleanup_never">Never</string>
-    <string name="episode_cleanup_immediately">when not in queue</string>
+    <string name="episode_cleanup_queue_removal">When not in queue</string>
+    <string name="episode_cleanup_after_listening">After listening</string>
+    <plurals name="episode_cleanup_days_after_listening">
+        <item quantity="one">1 day after listening</item>
+        <item quantity="other">%d days after listening</item>
+    </plurals>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
@@ -421,10 +426,6 @@
         <item quantity="other">%d hours</item>
     </plurals>
 
-    <plurals name="time_days_quantified">
-        <item quantity="one">1 day</item>
-        <item quantity="other">%d days</item>
-    </plurals>
     <!-- gpodder.net -->
     <string name="gpodnet_taglist_header">CATEGORIES</string>
     <string name="gpodnet_toplist_header">TOP PODCASTS</string>

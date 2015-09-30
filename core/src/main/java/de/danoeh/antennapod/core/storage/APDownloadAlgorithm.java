@@ -19,8 +19,6 @@ import de.danoeh.antennapod.core.util.PowerUtils;
 public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     private static final String TAG = "APDownloadAlgorithm";
 
-    private final APCleanupAlgorithm cleanupAlgorithm = new APCleanupAlgorithm();
-
     /**
      * Looks for undownloaded episodes in the queue or list of new items and request a download if
      * 1. Network is available
@@ -72,8 +70,8 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
 
                     int autoDownloadableEpisodes = candidates.size();
                     int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
-                    int deletedEpisodes = cleanupAlgorithm.performCleanup(context,
-                            APCleanupAlgorithm.getPerformAutoCleanupArgs(autoDownloadableEpisodes));
+                    int deletedEpisodes = UserPreferences.getEpisodeCleanupAlgorithm().performCleanup(context,
+                            getPerformAutoCleanupArgs(autoDownloadableEpisodes));
                     boolean cacheIsUnlimited = UserPreferences.getEpisodeCacheSize() == UserPreferences
                             .getEpisodeCacheSizeUnlimited();
                     int episodeCacheSize = UserPreferences.getEpisodeCacheSize();
@@ -100,6 +98,22 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                 }
             }
         };
+    }
+
+    private int getPerformAutoCleanupArgs(final int numberOfEpisodesToDownload) {
+        if (numberOfEpisodesToDownload >= 0
+                && UserPreferences.getEpisodeCacheSize() != UserPreferences
+                .getEpisodeCacheSizeUnlimited()) {
+            int downloadedEpisodes = DBReader
+                    .getNumberOfDownloadedEpisodes();
+            if (downloadedEpisodes + numberOfEpisodesToDownload >= UserPreferences
+                    .getEpisodeCacheSize()) {
+
+                return downloadedEpisodes + numberOfEpisodesToDownload
+                        - UserPreferences.getEpisodeCacheSize();
+            }
+        }
+        return 0;
     }
 
 }

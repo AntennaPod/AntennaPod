@@ -334,7 +334,7 @@ public final class DBTasks {
                     ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
                             .performCleanup(context,
                                     ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
-                                            .getPerformCleanupParameter(Arrays.asList(items)));
+                                            .getPerformCleanupParameter(items.length));
                 }
 
             }.start();
