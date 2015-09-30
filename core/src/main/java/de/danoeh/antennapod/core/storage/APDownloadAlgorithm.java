@@ -99,21 +99,4 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
             }
         };
     }
-
-    private int getPerformAutoCleanupArgs(final int numberOfEpisodesToDownload) {
-        if (numberOfEpisodesToDownload >= 0
-                && UserPreferences.getEpisodeCacheSize() != UserPreferences
-                .getEpisodeCacheSizeUnlimited()) {
-            int downloadedEpisodes = DBReader
-                    .getNumberOfDownloadedEpisodes();
-            if (downloadedEpisodes + numberOfEpisodesToDownload >= UserPreferences
-                    .getEpisodeCacheSize()) {
-
-                return downloadedEpisodes + numberOfEpisodesToDownload
-                        - UserPreferences.getEpisodeCacheSize();
-            }
-        }
-        return 0;
-    }
-
 }
