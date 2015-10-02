@@ -26,10 +26,12 @@ public class APQueueCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     public int performCleanup(Context context, int numberOfEpisodesToDelete) {
         List<FeedItem> candidates = new ArrayList<>();
         List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
-        LongList queue = DBReader.getQueueIDList();
         List<FeedItem> delete;
         for (FeedItem item : downloadedItems) {
-            if (!queue.contains(item.getId())) {
+            if (item.hasMedia()
+                    && item.getMedia().isDownloaded()
+                    && !item.isTagged(FeedItem.TAG_QUEUE)
+                    && !item.isTagged(FeedItem.TAG_FAVORITE)) {
                 candidates.add(item);
             }
         }

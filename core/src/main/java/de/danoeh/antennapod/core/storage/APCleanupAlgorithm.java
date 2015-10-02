@@ -32,14 +32,16 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     public int performCleanup(Context context, int numberOfEpisodesToDelete) {
         List<FeedItem> candidates = new ArrayList<>();
         List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
-        LongList queue = DBReader.getQueueIDList();
         List<FeedItem> delete;
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -1 * numberOfDaysAfterPlayback);
         Date mostRecentDateForDeletion = cal.getTime();
         for (FeedItem item : downloadedItems) {
-            if (item.hasMedia() && item.getMedia().isDownloaded()
-                    && !queue.contains(item.getId()) && item.isPlayed()) {
+            if (item.hasMedia()
+                    && item.getMedia().isDownloaded()
+                    && !item.isTagged(FeedItem.TAG_QUEUE)
+                    && item.isPlayed()
+                    && !item.isTagged(FeedItem.TAG_FAVORITE)) {
                 FeedMedia media = item.getMedia();
                 // make sure this candidate was played at least the proper amount of days prior
                 // to now
