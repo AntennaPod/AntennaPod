@@ -307,4 +307,19 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
                 Timeout.getLargeTimeout()));
     }
 
+    public void testEpisodeCleanupNumDays() {
+        solo.clickOnText(solo.getString(R.string.pref_episode_cleanup_title));
+        solo.waitForText(solo.getString(R.string.episode_cleanup_after_listening));
+        solo.clickOnText("5");
+        assertTrue(solo.waitForCondition(() -> {
+                    EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
+                    if (alg instanceof APCleanupAlgorithm) {
+                        APCleanupAlgorithm cleanupAlg = (APCleanupAlgorithm)alg;
+                        return cleanupAlg.getNumberOfDaysAfterPlayback() == 5;
+                    }
+                    return false;
+                },
+                Timeout.getLargeTimeout()));
+    }
+
 }
