@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.test.FlakyTest;
 import android.test.InstrumentationTestCase;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,27 +91,8 @@ public class DBCleanupTests extends InstrumentationTestCase {
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();
-        for (int i = 0; i < NUM_ITEMS; i++) {
-            Date itemDate = new Date(NUM_ITEMS - i);
-            FeedItem item = new FeedItem(0, "title", "id", "link", itemDate, FeedItem.PLAYED, feed);
+        populateItems(NUM_ITEMS, feed, items, files, FeedItem.PLAYED, false, false);
 
-            File f = new File(destFolder, "file " + i);
-            assertTrue(f.createNewFile());
-            files.add(f);
-            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, itemDate, 0));
-            items.add(item);
-        }
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.close();
-
-        assertTrue(feed.getId() != 0);
-        for (FeedItem item : items) {
-            assertTrue(item.getId() != 0);
-            assertTrue(item.getMedia().getId() != 0);
-        }
         DBTasks.performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             if (i < EPISODE_CACHE_SIZE) {
@@ -120,6 +100,42 @@ public class DBCleanupTests extends InstrumentationTestCase {
             } else {
                 assertFalse(files.get(i).exists());
             }
+        }
+    }
+
+    protected void populateItems(final int numItems, Feed feed, List<FeedItem> items,
+                                 List<File> files, int itemState, boolean addToQueue,
+                                 boolean addToFavorites) throws IOException {
+        for (int i = 0; i < numItems; i++) {
+            Date itemDate = new Date(numItems - i);
+            Date playbackCompletionDate = null;
+            if (itemState == FeedItem.PLAYED) {
+                playbackCompletionDate = itemDate;
+            }
+            FeedItem item = new FeedItem(0, "title", "id", "link", itemDate, itemState, feed);
+
+            File f = new File(destFolder, "file " + i);
+            assertTrue(f.createNewFile());
+            files.add(f);
+            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, playbackCompletionDate, 0));
+            items.add(item);
+        }
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        if (addToQueue) {
+            adapter.setQueue(items);
+        }
+        if (addToFavorites) {
+            adapter.setFavorites(items);
+        }
+        adapter.close();
+
+        assertTrue(feed.getId() != 0);
+        for (FeedItem item : items) {
+            assertTrue(item.getId() != 0);
+            assertTrue(item.getMedia().getId() != 0);
         }
     }
 
@@ -131,28 +147,8 @@ public class DBCleanupTests extends InstrumentationTestCase {
         List<FeedItem> items = new ArrayList<FeedItem>();
         feed.setItems(items);
         List<File> files = new ArrayList<File>();
-        for (int i = 0; i < NUM_ITEMS; i++) {
-            Date itemDate = new Date(NUM_ITEMS - i);
-            FeedItem item = new FeedItem(0, "title", "id", "link", itemDate, FeedItem.UNPLAYED, feed);
+        populateItems(NUM_ITEMS, feed, items, files, FeedItem.UNPLAYED, false, false);
 
-            File f = new File(destFolder, "file " + i);
-            assertTrue(f.createNewFile());
-            assertTrue(f.exists());
-            files.add(f);
-            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, itemDate, 0));
-            items.add(item);
-        }
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.close();
-
-        assertTrue(feed.getId() != 0);
-        for (FeedItem item : items) {
-            assertTrue(item.getId() != 0);
-            assertTrue(item.getMedia().getId() != 0);
-        }
         DBTasks.performAutoCleanup(context);
         for (File file : files) {
             assertTrue(file.exists());
@@ -167,29 +163,8 @@ public class DBCleanupTests extends InstrumentationTestCase {
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();
-        for (int i = 0; i < NUM_ITEMS; i++) {
-            Date itemDate = new Date(NUM_ITEMS - i);
-            FeedItem item = new FeedItem(0, "title", "id", "link", itemDate, FeedItem.PLAYED, feed);
+        populateItems(NUM_ITEMS, feed, items, files, FeedItem.PLAYED, true, false);
 
-            File f = new File(destFolder, "file " + i);
-            assertTrue(f.createNewFile());
-            assertTrue(f.exists());
-            files.add(f);
-            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, itemDate, 0));
-            items.add(item);
-        }
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.setQueue(items);
-        adapter.close();
-
-        assertTrue(feed.getId() != 0);
-        for (FeedItem item : items) {
-            assertTrue(item.getId() != 0);
-            assertTrue(item.getMedia().getId() != 0);
-        }
         DBTasks.performAutoCleanup(context);
         for (File file : files) {
             assertTrue(file.exists());
@@ -227,28 +202,8 @@ public class DBCleanupTests extends InstrumentationTestCase {
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();
-        for (int i = 0; i < NUM_ITEMS; i++) {
-            Date itemDate = new Date(NUM_ITEMS - i);
-            FeedItem item = new FeedItem(0, "title", "id", "link", itemDate, FeedItem.PLAYED, feed);
-            File f = new File(destFolder, "file " + i);
-            assertTrue(f.createNewFile());
-            assertTrue(f.exists());
-            files.add(f);
-            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, itemDate, 0));
-            items.add(item);
-        }
+        populateItems(NUM_ITEMS, feed, items, files, FeedItem.PLAYED, false, true);
 
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.setFavorites(items);
-        adapter.close();
-
-        assertTrue(feed.getId() != 0);
-        for (FeedItem item : items) {
-            assertTrue(item.getId() != 0);
-            assertTrue(item.getMedia().getId() != 0);
-        }
         DBTasks.performAutoCleanup(context);
         for (File file : files) {
             assertTrue(file.exists());
