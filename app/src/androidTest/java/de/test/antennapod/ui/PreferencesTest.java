@@ -19,6 +19,10 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 
 public class PreferencesTest extends ActivityInstrumentationTestCase2<PreferenceActivity>  {
 
@@ -265,4 +269,42 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         solo.clickOnText(solo.getString(R.string.pref_autodl_wifi_filter_title));
         assertTrue(solo.waitForCondition(() -> enableWifiFilter == UserPreferences.isEnableAutodownloadWifiFilter(), Timeout.getLargeTimeout()));
     }
+
+    public void testEpisodeCleanupQueueOnly() {
+        solo.clickOnText(solo.getString(R.string.pref_episode_cleanup_title));
+        solo.waitForText(solo.getString(R.string.episode_cleanup_queue_removal));
+        solo.clickOnText(solo.getString(R.string.episode_cleanup_queue_removal));
+        assertTrue(solo.waitForCondition(() -> {
+                    EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
+                    return alg instanceof APQueueCleanupAlgorithm;
+                },
+                Timeout.getLargeTimeout()));
+    }
+
+    public void testEpisodeCleanupNeverAlg() {
+        solo.clickOnText(solo.getString(R.string.pref_episode_cleanup_title));
+        solo.waitForText(solo.getString(R.string.episode_cleanup_never));
+        solo.clickOnText(solo.getString(R.string.episode_cleanup_never));
+        assertTrue(solo.waitForCondition(() -> {
+                    EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
+                    return alg instanceof APNullCleanupAlgorithm;
+                },
+                Timeout.getLargeTimeout()));
+    }
+
+    public void testEpisodeCleanupClassic() {
+        solo.clickOnText(solo.getString(R.string.pref_episode_cleanup_title));
+        solo.waitForText(solo.getString(R.string.episode_cleanup_after_listening));
+        solo.clickOnText(solo.getString(R.string.episode_cleanup_after_listening));
+        assertTrue(solo.waitForCondition(() -> {
+                    EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
+                    if (alg instanceof APCleanupAlgorithm) {
+                        APCleanupAlgorithm cleanupAlg = (APCleanupAlgorithm)alg;
+                        return cleanupAlg.getNumberOfDaysAfterPlayback() == 0;
+                    }
+                    return false;
+                },
+                Timeout.getLargeTimeout()));
+    }
+
 }

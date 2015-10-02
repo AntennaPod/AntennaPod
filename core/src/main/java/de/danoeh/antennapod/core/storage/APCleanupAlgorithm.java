@@ -94,4 +94,6 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     public int getDefaultCleanupParameter() {
         return getNumEpisodesToCleanup(0);
     }
+
+    public int getNumberOfDaysAfterPlayback() { return numberOfDaysAfterPlayback; }
 }
