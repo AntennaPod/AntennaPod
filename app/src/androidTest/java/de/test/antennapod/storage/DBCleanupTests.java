@@ -77,7 +77,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
 
         SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
         prefEdit.putString(UserPreferences.PREF_EPISODE_CACHE_SIZE, Integer.toString(EPISODE_CACHE_SIZE));
-        prefEdit.putInt(UserPreferences.PREF_EPISODE_CLEANUP, cleanupAlgorithm);
+        prefEdit.putString(UserPreferences.PREF_EPISODE_CLEANUP, Integer.toString(cleanupAlgorithm));
         prefEdit.commit();
 
         UserPreferences.init(context);
