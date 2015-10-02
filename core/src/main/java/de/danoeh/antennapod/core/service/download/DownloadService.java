@@ -130,7 +130,6 @@ public class DownloadService extends Service {
 
 
     private NotificationCompat.Builder notificationCompatBuilder;
-    private Notification.BigTextStyle notificationBuilder;
     private int NOTIFICATION_ID = 2;
     private int REPORT_ID = 3;
 
@@ -322,23 +321,16 @@ public class DownloadService extends Service {
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
     }
 
-    @SuppressLint("NewApi")
     private void setupNotificationBuilders() {
         Bitmap icon = BitmapFactory.decodeResource(getResources(),
                 R.drawable.stat_notify_sync);
 
-        if (android.os.Build.VERSION.SDK_INT >= 16) {
-            notificationBuilder = new Notification.BigTextStyle(
-                    new Notification.Builder(this).setOngoing(true)
-                            .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this)).setLargeIcon(icon)
-                            .setSmallIcon(R.drawable.stat_notify_sync)
-            );
-        } else {
             notificationCompatBuilder = new NotificationCompat.Builder(this)
-                    .setOngoing(true).setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
+                    .setOngoing(true)
+                    .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
                     .setLargeIcon(icon)
                     .setSmallIcon(R.drawable.stat_notify_sync);
-        }
+
         Log.d(TAG, "Notification set up");
     }
 
@@ -346,58 +338,48 @@ public class DownloadService extends Service {
      * Updates the contents of the service's notifications. Should be called
      * before setupNotificationBuilders.
      */
-    @SuppressLint("NewApi")
     private Notification updateNotifications() {
         String contentTitle = getString(R.string.download_notification_title);
         int numDownloads = requester.getNumberOfDownloads();
         String downloadsLeft;
         if (numDownloads > 0) {
-            downloadsLeft = requester.getNumberOfDownloads()
-                    + getString(R.string.downloads_left);
+            downloadsLeft = requester.getNumberOfDownloads() + getString(R.string.downloads_left);
         } else {
             downloadsLeft = getString(R.string.downloads_processing);
         }
-        if (android.os.Build.VERSION.SDK_INT >= 16) {
+        if (notificationCompatBuilder != null) {
 
-            if (notificationBuilder != null) {
-
-                StringBuilder bigText = new StringBuilder("");
-                for (int i = 0; i < downloads.size(); i++) {
-                    Downloader downloader = downloads.get(i);
-                    final DownloadRequest request = downloader
-                            .getDownloadRequest();
-                    if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-                        if (request.getTitle() != null) {
-                            if (i > 0) {
-                                bigText.append("\n");
-                            }
-                            bigText.append("\u2022 " + request.getTitle());
+            StringBuilder bigText = new StringBuilder("");
+            for (int i = 0; i < downloads.size(); i++) {
+                Downloader downloader = downloads.get(i);
+                final DownloadRequest request = downloader
+                        .getDownloadRequest();
+                if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+                    if (request.getTitle() != null) {
+                        if (i > 0) {
+                            bigText.append("\n");
                         }
-                    } else if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                        if (request.getTitle() != null) {
-                            if (i > 0) {
-                                bigText.append("\n");
-                            }
-                            bigText.append("\u2022 " + request.getTitle()
-                                    + " (" + request.getProgressPercent()
-                                    + "%)");
-                        }
+                        bigText.append("\u2022 " + request.getTitle());
                     }
+                } else if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                    if (request.getTitle() != null) {
+                        if (i > 0) {
+                            bigText.append("\n");
+                        }
+                        bigText.append("\u2022 " + request.getTitle()
+                                + " (" + request.getProgressPercent()
+                                + "%)");
+                    }
+                }
 
-                }
-                notificationBuilder.setSummaryText(downloadsLeft);
-                notificationBuilder.setBigContentTitle(contentTitle);
-                if (bigText != null) {
-                    notificationBuilder.bigText(bigText.toString());
-                }
-                return notificationBuilder.build();
             }
-        } else {
-            if (notificationCompatBuilder != null) {
-                notificationCompatBuilder.setContentTitle(contentTitle);
-                notificationCompatBuilder.setContentText(downloadsLeft);
-                return notificationCompatBuilder.build();
+            notificationCompatBuilder.setContentTitle(contentTitle);
+            notificationCompatBuilder.setContentText(downloadsLeft);
+            if (bigText != null) {
+                notificationCompatBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText.toString()));
             }
+            notificationCompatBuilder.setColor(0xff424242);
+            return notificationCompatBuilder.build();
         }
         return null;
     }
