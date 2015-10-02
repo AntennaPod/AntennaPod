@@ -110,7 +110,7 @@ public class DBTasksTest extends InstrumentationTestCase {
     }
 
     @FlakyTest(tolerance = 3)
-    public void testPerformAutoCleanupShouldNotDeleteBecauseUnread() throws IOException {
+    public void testPerformAutoCleanupShouldNotDeleteBecauseUnplayed() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
         Feed feed = new Feed("url", new Date(), "title");
