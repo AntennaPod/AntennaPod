@@ -98,6 +98,9 @@ public class UserPreferences {
     // Experimental
     public static final String PREF_SONIC = "prefSonic";
     public static final String PREF_NORMALIZER = "prefNormalizer";
+    public static final int EPISODE_CLEANUP_QUEUE = -1;
+    public static final int EPISODE_CLEANUP_NULL = -2;
+    public static final int EPISODE_CLEANUP_DEFAULT = 0;
 
     // Constants
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
@@ -494,9 +497,9 @@ public class UserPreferences {
 
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
         int cleanupValue = prefs.getInt(PREF_EPISODE_CLEANUP, -1);
-        if (cleanupValue == -1) {
+        if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
             return new APQueueCleanupAlgorithm();
-        } else if (cleanupValue == -2) {
+        } else if (cleanupValue == EPISODE_CLEANUP_NULL) {
             return new APNullCleanupAlgorithm();
         } else {
             return new APCleanupAlgorithm(cleanupValue);

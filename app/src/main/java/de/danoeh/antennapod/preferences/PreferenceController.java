@@ -442,9 +442,9 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         String[] entries = new String[values.length];
         for (int x = 0; x < values.length; x++) {
             int v = Integer.parseInt(values[x]);
-            if (v == -1) {
+            if (v == UserPreferences.EPISODE_CLEANUP_QUEUE) {
                 entries[x] = res.getString(R.string.episode_cleanup_queue_removal);
-            } else if (v == -2){
+            } else if (v == UserPreferences.EPISODE_CLEANUP_NULL){
                 entries[x] = res.getString(R.string.episode_cleanup_never);
             } else if (v == 0) {
                 entries[x] = res.getString(R.string.episode_cleanup_after_listening);

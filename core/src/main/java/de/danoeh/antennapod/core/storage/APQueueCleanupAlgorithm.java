@@ -74,6 +74,6 @@ public class APQueueCleanupAlgorithm extends EpisodeCleanupAlgorithm {
 
     @Override
     public int getDefaultCleanupParameter() {
-        return 0;
+        return getNumEpisodesToCleanup(0);
     }
 }

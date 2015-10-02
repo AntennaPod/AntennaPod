@@ -65,6 +65,7 @@ public class DBTasksTest extends InstrumentationTestCase {
 
         SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
         prefEdit.putString(UserPreferences.PREF_EPISODE_CACHE_SIZE, Integer.toString(EPISODE_CACHE_SIZE));
+        prefEdit.putInt(UserPreferences.PREF_EPISODE_CLEANUP, UserPreferences.EPISODE_CLEANUP_DEFAULT);
         prefEdit.commit();
 
         UserPreferences.init(context);
