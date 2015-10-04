@@ -378,7 +378,6 @@ public class DownloadService extends Service {
             if (bigText != null) {
                 notificationCompatBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText.toString()));
             }
-            notificationCompatBuilder.setColor(0xff424242);
             return notificationCompatBuilder.build();
         }
         return null;
