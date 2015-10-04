@@ -965,9 +965,15 @@ public final class DBReader {
                     List<FeedItem> items = DBReader.getFeedItemList(rhs);
                     rhs.setItems(items);
                 }
-                Date d1 = lhs.getMostRecentItem().getPubDate();
-                Date d2 = rhs.getMostRecentItem().getPubDate();
-                return d2.compareTo(d1);
+                if(lhs.getMostRecentItem() == null) {
+                    return 1;
+                } else if(rhs.getMostRecentItem() == null) {
+                    return -1;
+                } else {
+                    Date d1 = lhs.getMostRecentItem().getPubDate();
+                    Date d2 = rhs.getMostRecentItem().getPubDate();
+                    return d2.compareTo(d1);
+                }
             };
         }
 
