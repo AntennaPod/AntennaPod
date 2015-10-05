@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -947,12 +948,32 @@ public final class DBReader {
                     return 1;
                 }
             };
-        } else {
+        } else if(feedOrder == UserPreferences.FEED_ORDER_ALPHABETICAL) {
             comparator = (lhs, rhs) -> {
                 if(lhs.getTitle() == null) {
                     return 1;
                 }
                 return lhs.getTitle().compareTo(rhs.getTitle());
+            };
+        } else {
+            comparator = (lhs, rhs) -> {
+                if(lhs.getItems() == null || lhs.getItems().size() == 0) {
+                    List<FeedItem> items = DBReader.getFeedItemList(lhs);
+                    lhs.setItems(items);
+                }
+                if(rhs.getItems() == null || rhs.getItems().size() == 0) {
+                    List<FeedItem> items = DBReader.getFeedItemList(rhs);
+                    rhs.setItems(items);
+                }
+                if(lhs.getMostRecentItem() == null) {
+                    return 1;
+                } else if(rhs.getMostRecentItem() == null) {
+                    return -1;
+                } else {
+                    Date d1 = lhs.getMostRecentItem().getPubDate();
+                    Date d2 = rhs.getMostRecentItem().getPubDate();
+                    return d2.compareTo(d1);
+                }
             };
         }
 
