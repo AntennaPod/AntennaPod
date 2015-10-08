@@ -20,7 +20,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -577,7 +576,10 @@ public class PlaybackService extends Service {
                 e.printStackTrace();
                 // isInQueue remains false
             }
-            if (isInQueue && (!wasSkipped || UserPreferences.shouldSkipRemoveFromQueue())) {
+
+            boolean shouldKeep = wasSkipped && UserPreferences.shouldSkipKeepEpisode();
+
+            if (isInQueue && !shouldKeep) {
                 DBWriter.removeQueueItem(PlaybackService.this, item, true);
             }
             DBWriter.addItemToPlaybackHistory(media);
@@ -588,7 +590,7 @@ public class PlaybackService extends Service {
             }
 
             // Delete episode if enabled
-            if(item.getFeed().getPreferences().getCurrentAutoDelete()) {
+            if(item.getFeed().getPreferences().getCurrentAutoDelete() && !shouldKeep ) {
                 DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
                 Log.d(TAG, "Episode Deleted");
             }
