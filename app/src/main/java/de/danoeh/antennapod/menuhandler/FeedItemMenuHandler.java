@@ -100,10 +100,9 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
 
-        if (!(state == FeedItem.State.UNREAD || state == FeedItem.State.IN_PROGRESS)) {
+        if (selectedItem.isPlayed()) {
             mi.setItemVisibility(R.id.mark_read_item, false);
-        }
-        if (!(state == FeedItem.State.IN_PROGRESS || state == FeedItem.State.READ)) {
+        } else {
             mi.setItemVisibility(R.id.mark_unread_item, false);
         }
 
