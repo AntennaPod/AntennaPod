@@ -89,10 +89,10 @@
     <string name="send_label">Send...</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_queue_removal">When not in queue</string>
-    <string name="episode_cleanup_after_listening">After listening</string>
+    <string name="episode_cleanup_after_listening">After finishing</string>
     <plurals name="episode_cleanup_days_after_listening">
-        <item quantity="one">1 day after listening</item>
-        <item quantity="other">%d days after listening</item>
+        <item quantity="one">1 day after finishing</item>
+        <item quantity="other">%d days after finishing</item>
     </plurals>
 
     <!-- 'Add Feed' Activity labels -->
