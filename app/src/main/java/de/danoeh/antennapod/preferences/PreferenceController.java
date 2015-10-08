@@ -366,7 +366,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                             public boolean onPreferenceChange(Preference preference, Object o) {
                                 if (o instanceof String) {
                                     int newValue = Integer.valueOf((String) o) * 1024 * 1024;
-                                    if(newValue != UserPreferences.getImageCacheSize()) {
+                                    if (newValue != UserPreferences.getImageCacheSize()) {
                                         AlertDialog.Builder dialog = new AlertDialog.Builder(ui.getActivity());
                                         dialog.setTitle(android.R.string.dialog_alert_title);
                                         dialog.setMessage(R.string.pref_restart_required);
@@ -379,6 +379,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                             }
                         }
                 );
+        buildEpisodeCleanupPreference();
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences
@@ -430,6 +431,28 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             }
         }
         return entries;
+    }
+
+    private void buildEpisodeCleanupPreference() {
+        final Resources res = ui.getActivity().getResources();
+
+        ListPreference pref = (ListPreference) ui.findPreference(UserPreferences.PREF_EPISODE_CLEANUP);
+        String[] values = res.getStringArray(
+                R.array.episode_cleanup_values);
+        String[] entries = new String[values.length];
+        for (int x = 0; x < values.length; x++) {
+            int v = Integer.parseInt(values[x]);
+            if (v == UserPreferences.EPISODE_CLEANUP_QUEUE) {
+                entries[x] = res.getString(R.string.episode_cleanup_queue_removal);
+            } else if (v == UserPreferences.EPISODE_CLEANUP_NULL){
+                entries[x] = res.getString(R.string.episode_cleanup_never);
+            } else if (v == 0) {
+                entries[x] = res.getString(R.string.episode_cleanup_after_listening);
+            } else {
+                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, v, v);
+            }
+        }
+        pref.setEntries(entries);
     }
 
     private void buildSmartMarkAsPlayedPreference() {

@@ -27,6 +27,10 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
+import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -67,6 +71,7 @@ public class UserPreferences {
     // Network
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
+    public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
@@ -93,6 +98,9 @@ public class UserPreferences {
     // Experimental
     public static final String PREF_SONIC = "prefSonic";
     public static final String PREF_NORMALIZER = "prefNormalizer";
+    public static final int EPISODE_CLEANUP_QUEUE = -1;
+    public static final int EPISODE_CLEANUP_NULL = -2;
+    public static final int EPISODE_CLEANUP_DEFAULT = 0;
 
     // Constants
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
@@ -487,6 +495,18 @@ public class UserPreferences {
             .apply();
     }
 
+
+    public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
+        int cleanupValue = Integer.valueOf(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+        if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
+            return new APQueueCleanupAlgorithm();
+        } else if (cleanupValue == EPISODE_CLEANUP_NULL) {
+            return new APNullCleanupAlgorithm();
+        } else {
+            return new APCleanupAlgorithm(cleanupValue);
+        }
+    }
+
     /**
      * Return the folder where the app stores all of its data. This method will
      * return the standard data folder if none has been set by the user.
@@ -646,5 +666,4 @@ public class UserPreferences {
     public static int readEpisodeCacheSize(String valueFromPrefs) {
         return readEpisodeCacheSizeInternal(valueFromPrefs);
     }
-
 }

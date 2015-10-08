@@ -790,6 +790,21 @@ public class PodDBAdapter {
         db.execSQL(sql);
     }
 
+    public void setFavorites(List<FeedItem> favorites) {
+        ContentValues values = new ContentValues();
+        db.beginTransaction();
+        db.delete(TABLE_NAME_FAVORITES, null, null);
+        for (int i = 0; i < favorites.size(); i++) {
+            FeedItem item = favorites.get(i);
+            values.put(KEY_ID, i);
+            values.put(KEY_FEEDITEM, item.getId());
+            values.put(KEY_FEED, item.getFeed().getId());
+            db.insertWithOnConflict(TABLE_NAME_FAVORITES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
     /**
      * Adds the item to favorites
      */
