@@ -191,7 +191,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             }
         }
         externalPlayerFragment = new ExternalPlayerFragment();
-        transaction.replace(R.id.playerFragment, externalPlayerFragment);
+        transaction.replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG);
         transaction.commit();
 
         checkFirstLaunch();

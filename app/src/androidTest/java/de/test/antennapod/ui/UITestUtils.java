@@ -47,6 +47,7 @@ public class UITestUtils {
     public static final int NUM_ITEMS_PER_FEED = 10;
 
     public static final int HOME_VIEW = (Build.VERSION.SDK_INT >= 11) ? android.R.id.home : R.id.home;
+    public static final String TEST_FILE_NAME = "3sec.mp3";
 
 
     private Context context;
@@ -119,7 +120,7 @@ public class UITestUtils {
         }
         Assert.assertFalse(mediaFile.exists());
 
-        InputStream in = context.getAssets().open("testfile.mp3");
+        InputStream in = context.getAssets().open(TEST_FILE_NAME);
         Assert.assertNotNull(in);
 
         FileOutputStream out = new FileOutputStream(mediaFile);
