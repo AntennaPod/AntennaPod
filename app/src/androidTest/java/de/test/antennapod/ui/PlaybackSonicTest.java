@@ -91,6 +91,7 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
 
     private void openNavDrawer() {
         solo.clickOnScreen(50, 50);
+        getInstrumentation().waitForIdleSync();
     }
 
     private void setContinuousPlaybackPreference(boolean value) {
@@ -113,8 +114,10 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         View targetView = drawerView.getChildAt(EPISODES_DRAWER_LIST_INDEX);
         solo.waitForView(targetView);
         solo.clickOnView(targetView);
+        getInstrumentation().waitForIdleSync();
         solo.waitForText(solo.getString(R.string.all_episodes_short_label));
         solo.clickOnText(solo.getString(R.string.all_episodes_short_label));
+        getInstrumentation().waitForIdleSync();
 
         final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
@@ -141,6 +144,7 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         // this should be 'Queue'
         View targetView = drawerView.getChildAt(QUEUE_DRAWER_LIST_INDEX);
         solo.waitForView(targetView);
+        getInstrumentation().waitForIdleSync();
         solo.clickOnView(targetView);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
 
