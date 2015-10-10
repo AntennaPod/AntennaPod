@@ -3,13 +3,15 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,10 +30,12 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.fragment.ItemFragment;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
 /**
  * List adapter for the list of new episodes
@@ -82,6 +86,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.item = null;
         holder.mainActivity = mainActivity;
         holder.position = -1;
+        // so we can grab this later
+        view.setTag(holder);
 
         return holder;
     }
@@ -229,9 +235,58 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         }
     };
 
+    private Menu popupMenu;
+    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
+        @Override
+        public void setItemVisibility(int id, boolean visible) {
+            if(popupMenu == null) {
+                return;
+            }
+            MenuItem item = popupMenu.findItem(id);
+            if (item != null) {
+                item.setVisible(visible);
+            }
+        }
+    };
 
-    public static class Holder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+    private final boolean showContextMenu(View view) {
+        // Create a PopupMenu, giving it the clicked view for an anchor
+        PopupMenu popup = new PopupMenu(mainActivity, view);
+        Menu menu = popup.getMenu();
+
+        // Inflate our menu resource into the PopupMenu's Menu
+        popup.getMenuInflater().inflate(R.menu.allepisodes_context, popup.getMenu());
+
+        Holder holder = (Holder) view.getTag();
+        FeedItem item = holder.item;
+        if (item == null) {
+            return false;
+        }
+
+        popupMenu = menu;
+        FeedItemMenuHandler.onPrepareMenu(context, contextMenuInterface, item, true, null);
+
+        // Set a listener so we are notified if a menu item is clicked
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                try {
+                    FeedItemMenuHandler.onMenuItemClicked(context, menuItem.getItemId(), item);
+                    return true;
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
+
+        popup.show();
+        return true;
+    }
+
+
+    public class Holder extends RecyclerView.ViewHolder
+        implements View.OnClickListener, View.OnLongClickListener{
         TextView placeholder;
         TextView title;
         TextView pubDate;
@@ -248,7 +303,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         public Holder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            itemView.setOnCreateContextMenuListener(mainActivity);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -261,6 +316,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         public FeedItem getFeedItem() { return item; }
 
         public int getItemPosition() { return position; }
+
+        @Override
+        public boolean onLongClick(View view) {
+            return showContextMenu(view);
+        }
     }
 
     public interface ItemAccess {

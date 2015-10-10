@@ -78,11 +78,8 @@ public class AllEpisodesFragment extends Fragment {
     private AllEpisodesRecycleAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
-    private ContextMenu contextMenu;
-    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 
     private List<FeedItem> episodes;
-    private LongList queuedItemsIds;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
@@ -297,7 +294,7 @@ public class AllEpisodesFragment extends Fragment {
         txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
 
-        registerForContextMenu(listView);
+        //registerForContextMenu(listView);
 
         if (!itemsLoaded) {
             progLoading.setVisibility(View.VISIBLE);
@@ -311,75 +308,6 @@ public class AllEpisodesFragment extends Fragment {
         }
 
         return root;
-    }
-
-    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
-        @Override
-        public void setItemVisibility(int id, boolean visible) {
-            if(contextMenu == null) {
-                return;
-            }
-            MenuItem item = contextMenu.findItem(id);
-            if (item != null) {
-                item.setVisible(visible);
-            }
-        }
-    };
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        if (menuInfo == null) { return; }
-        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItem item = itemAccess.getItem(adapterInfo.position);
-        MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.allepisodes_context, menu);
-
-        if (item != null) {
-            menu.setHeaderTitle(item.getTitle());
-        }
-
-        contextMenu = menu;
-        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queuedItemsIds);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (!getUserVisibleHint()) {
-            // we're not visible, don't do anything.
-            return false;
-        }
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-            if (menuInfo == null) {
-            menuInfo = lastMenuInfo;
-        }
-        if (menuInfo == null) {
-            Log.e(TAG, "menuInfo is null, not doing anything");
-            return false;
-        }
-
-        FeedItem selectedItem = null;
-
-        // make sure the item still makes sense
-        if (menuInfo.position >= 0 && menuInfo.position < itemAccess.getCount()) {
-            selectedItem = itemAccess.getItem(menuInfo.position);
-        } else {
-            Log.d(TAG, "Selected item at position " + menuInfo.position + " does not exist, only " + itemAccess.getCount() + " items available");
-        }
-
-        if (selectedItem == null) {
-            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
-            return super.onContextItemSelected(item);
-        }
-
-        try {
-            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            return true;
-        }
     }
 
     private void onFragmentLoaded() {
@@ -439,11 +367,10 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public boolean isInQueue(FeedItem item) {
-            if (itemsLoaded) {
-                return queuedItemsIds.contains(item.getId());
-            } else {
-                return false;
+            if (item != null) {
+                return item.isTagged(FeedItem.TAG_QUEUE);
             }
+            return false;
         }
     };
 
@@ -478,8 +405,7 @@ public class AllEpisodesFragment extends Fragment {
                     listView.setVisibility(View.VISIBLE);
                     progLoading.setVisibility(View.GONE);
                     if (data != null) {
-                        episodes = data.first;
-                        queuedItemsIds = data.second;
+                        episodes = data;
                         itemsLoaded = true;
                         if (viewsCreated && activity.get() != null) {
                             onFragmentLoaded();
@@ -490,11 +416,8 @@ public class AllEpisodesFragment extends Fragment {
                 });
     }
 
-    protected Pair<List<FeedItem>,LongList> loadData() {
-        List<FeedItem> items;
-        items = DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
-        LongList queuedIds = DBReader.getQueueIDList();
-        return Pair.create(items, queuedIds);
+    protected List<FeedItem> loadData() {
+        return DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
     }
 
 }
