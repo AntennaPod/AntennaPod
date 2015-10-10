@@ -17,15 +17,12 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 
 /**
  * test cases for starting and ending playback from the MainActivity and AudioPlayerActivity
@@ -40,15 +37,6 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     private UITestUtils uiTestUtils;
 
     private Context context;
-
-    private PlaybackController getPlaybackController() {
-        ExternalPlayerFragment fragment = (ExternalPlayerFragment)getActivity().getSupportFragmentManager().findFragmentByTag(ExternalPlayerFragment.TAG);
-        return fragment.getPlaybackControllerTestingOnly();
-    }
-
-    private FeedMedia getCurrentMedia() {
-        return (FeedMedia)getPlaybackController().getMedia();
-    }
 
     public PlaybackTest() {
         super(MainActivity.class);
@@ -125,12 +113,12 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
         long mediaId = episodes.get(0).getMedia().getId();
         boolean playing = solo.waitForCondition(() -> {
-            if (getCurrentMedia() != null) {
-                return getCurrentMedia().getId() == mediaId;
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
-        }, Timeout.getLargeTimeout());
+        }, Timeout.getSmallTimeout());
         assertTrue(playing);
     }
 
@@ -145,17 +133,18 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         solo.waitForView(targetView);
         solo.clickOnView(targetView);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
+
         final List<FeedItem> queue = DBReader.getQueue();
         solo.clickOnImageButton(1);
         assertTrue(solo.waitForView(solo.getView(R.id.butPlay)));
         long mediaId = queue.get(0).getMedia().getId();
         boolean playing = solo.waitForCondition(() -> {
-            if(getCurrentMedia() != null) {
-                return getCurrentMedia().getId() == mediaId;
+            if(uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
-        }, Timeout.getLargeTimeout());
+        }, Timeout.getSmallTimeout());
 
         assertTrue(playing);
     }
@@ -181,19 +170,19 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         final FeedItem first = queue.get(0);
         startLocalPlaybackFromQueue();
         boolean stopped = solo.waitForCondition(() -> {
-            // the condition is met when playback ends and we're not playing
-            // anything else. When playback ends, currentMedia is set to null.
-            if (getPlaybackController().getStatus() != PlayerStatus.PLAYING) {
+            if (uiTestUtils.getPlaybackController(getActivity()).getStatus()
+                    != PlayerStatus.PLAYING) {
                 return true;
-            } else if (getCurrentMedia() != null) {
-                return getCurrentMedia().getId() != first.getMedia().getId();
+            } else if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId()
+                        != first.getMedia().getId();
             } else {
                 return true;
             }
-        }, Timeout.getLargeTimeout());
+        }, Timeout.getSmallTimeout());
         assertTrue(stopped);
         Thread.sleep(1000);
-        PlayerStatus status = getPlaybackController().getStatus();
+        PlayerStatus status = uiTestUtils.getPlaybackController(getActivity()).getStatus();
         assertFalse(status.equals(PlayerStatus.PLAYING));
     }
 
@@ -207,16 +196,18 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
         startLocalPlaybackFromQueue();
         boolean firstPlaying = solo.waitForCondition(() -> {
-            if (getCurrentMedia() != null) {
-                return getCurrentMedia().getId() == first.getMedia().getId();
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId()
+                        == first.getMedia().getId();
             } else {
                 return false;
             }
-        }, Timeout.getLargeTimeout());
+        }, Timeout.getSmallTimeout());
         assertTrue(firstPlaying);
         boolean secondPlaying = solo.waitForCondition(() -> {
-            if (getCurrentMedia() != null) {
-                return getCurrentMedia().getId() == second.getMedia().getId();
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId()
+                        == second.getMedia().getId();
             } else {
                 return false;
             }
@@ -236,23 +227,24 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         startLocalPlayback();
         long mediaId = episodes.get(0).getMedia().getId();
         boolean startedPlaying = solo.waitForCondition(() -> {
-            if (getCurrentMedia() != null) {
-                return getCurrentMedia().getId() == mediaId;
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
-        }, Timeout.getLargeTimeout());
+        }, Timeout.getSmallTimeout());
         assertTrue(startedPlaying);
 
         boolean stoppedPlaying = solo.waitForCondition(() -> {
-            return getCurrentMedia() == null || getCurrentMedia().getId() != mediaId;
+            return uiTestUtils.getCurrentMedia(getActivity()) == null
+                    || uiTestUtils.getCurrentMedia(getActivity()).getId() != mediaId;
         }, Timeout.getLargeTimeout());
         assertTrue(stoppedPlaying);
 
         startLocalPlayback();
         boolean startedReplay = solo.waitForCondition(() -> {
-            if(getCurrentMedia() != null) {
-                return getCurrentMedia().getId() == mediaId;
+            if(uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }

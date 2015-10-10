@@ -46,98 +46,6 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
 
     private Context context;
 
-    private PlaybackController controller;
-    protected FeedMedia currentMedia;
-
-    private PlaybackController createController(Activity activity) {
-        return new PlaybackController(activity, false) {
-
-            @Override
-            public void setupGUI() {
-            }
-
-            @Override
-            public void onPositionObserverUpdate() {
-            }
-
-            @Override
-            public void onBufferStart() {
-            }
-
-            @Override
-            public void onBufferEnd() {
-            }
-
-            @Override
-            public void onBufferUpdate(float progress) {
-            }
-
-            @Override
-            public void handleError(int code) {
-            }
-
-            @Override
-            public void onReloadNotification(int code) {
-            }
-
-            @Override
-            public void onSleepTimerUpdate() {
-            }
-
-            @Override
-            public ImageButton getPlayButton() {
-                return null;
-            }
-
-            @Override
-            public void postStatusMsg(int msg) {
-            }
-
-            @Override
-            public void clearStatusMsg() {
-            }
-
-            @Override
-            public boolean loadMediaInfo() {
-                Playable playable = controller.getMedia();
-                if(playable == null) {
-                    currentMedia = null;
-                    return true;
-                } else if(playable instanceof  FeedMedia) {
-                    currentMedia = (FeedMedia) playable;
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            @Override
-            public void onAwaitingVideoSurface() {
-            }
-
-            @Override
-            public void onServiceQueried() {
-            }
-
-            @Override
-            public void onShutdownNotification() {
-            }
-
-            @Override
-            public void onPlaybackEnd() {
-                currentMedia = null;
-            }
-
-            @Override
-            public void onPlaybackSpeedChange() {
-            }
-
-            @Override
-            protected void setScreenOn(boolean enable) {
-            }
-        };
-    }
-
     public PlaybackSonicTest() {
         super(MainActivity.class);
     }
@@ -158,9 +66,6 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
                 .putBoolean(UserPreferences.PREF_SONIC, true)
                 .commit();
 
-        controller = createController(getActivity());
-        controller.init();
-
         solo = new Solo(getInstrumentation(), getActivity());
 
         uiTestUtils = new UITestUtils(context);
@@ -174,7 +79,6 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
 
     @Override
     public void tearDown() throws Exception {
-        controller.release();
         solo.finishOpenedActivities();
         uiTestUtils.tearDown();
 
@@ -218,8 +122,8 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
         long mediaId = episodes.get(0).getMedia().getId();
         boolean playing = solo.waitForCondition(() -> {
-            if (currentMedia != null) {
-                return currentMedia.getId() == mediaId;
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
@@ -238,15 +142,15 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         View targetView = drawerView.getChildAt(QUEUE_DRAWER_LIST_INDEX);
         solo.waitForView(targetView);
         solo.clickOnView(targetView);
-
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
+
         final List<FeedItem> queue = DBReader.getQueue();
         solo.clickOnImageButton(1);
         assertTrue(solo.waitForView(solo.getView(R.id.butPlay)));
         long mediaId = queue.get(0).getMedia().getId();
         boolean playing = solo.waitForCondition(() -> {
-            if(currentMedia != null) {
-                return currentMedia.getId() == mediaId;
+            if(uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
@@ -276,15 +180,19 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
 
         startLocalPlaybackFromQueue();
         boolean stopped = solo.waitForCondition(() -> {
-            if (currentMedia != null) {
-                return currentMedia.getId() != first.getMedia().getId();
+            if (uiTestUtils.getPlaybackController(getActivity()).getStatus()
+                    != PlayerStatus.PLAYING) {
+                return true;
+            } else if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId()
+                        != first.getMedia().getId();
             } else {
-                return false;
+                return true;
             }
         }, Timeout.getSmallTimeout());
         assertTrue(stopped);
         Thread.sleep(1000);
-        PlayerStatus status = controller.getStatus();
+        PlayerStatus status = uiTestUtils.getPlaybackController(getActivity()).getStatus();
         assertFalse(status.equals(PlayerStatus.PLAYING));
     }
 
@@ -298,16 +206,18 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
 
         startLocalPlaybackFromQueue();
         boolean firstPlaying = solo.waitForCondition(() -> {
-            if (currentMedia != null) {
-                return currentMedia.getId() == first.getMedia().getId();
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId()
+                        == first.getMedia().getId();
             } else {
                 return false;
             }
         }, Timeout.getSmallTimeout());
         assertTrue(firstPlaying);
         boolean secondPlaying = solo.waitForCondition(() -> {
-            if (currentMedia != null) {
-                return currentMedia.getId() == second.getMedia().getId();
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId()
+                        == second.getMedia().getId();
             } else {
                 return false;
             }
@@ -327,8 +237,8 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         startLocalPlayback();
         long mediaId = episodes.get(0).getMedia().getId();
         boolean startedPlaying = solo.waitForCondition(() -> {
-            if (currentMedia != null) {
-                return currentMedia.getId() == mediaId;
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
@@ -336,14 +246,15 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         assertTrue(startedPlaying);
 
         boolean stoppedPlaying = solo.waitForCondition(() -> {
-            return currentMedia == null || currentMedia.getId() != mediaId;
+            return uiTestUtils.getCurrentMedia(getActivity()) == null
+                    || uiTestUtils.getCurrentMedia(getActivity()).getId() != mediaId;
         }, Timeout.getLargeTimeout());
         assertTrue(stoppedPlaying);
 
         startLocalPlayback();
         boolean startedReplay = solo.waitForCondition(() -> {
-            if(currentMedia != null) {
-                return currentMedia.getId() == mediaId;
+            if(uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
