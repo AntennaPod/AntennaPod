@@ -66,6 +66,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.episodes_fragment_with_undo);
 
+        /** TODO!
         listView.setRemoveListener(which -> {
             Log.d(TAG, "remove(" + which + ")");
             if (subscription != null) {
@@ -80,6 +81,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
                             which)
             );
         });
+         */
 
         undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
 

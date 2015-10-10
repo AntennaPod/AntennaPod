@@ -69,6 +69,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.episodes_fragment_with_undo);
 
+        /** TODO!
         listView.setRemoveListener(new DragSortListView.RemoveListener() {
             @Override
             public void remove(int which) {
@@ -86,6 +87,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                 );
             }
         });
+         */
 
         undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
 

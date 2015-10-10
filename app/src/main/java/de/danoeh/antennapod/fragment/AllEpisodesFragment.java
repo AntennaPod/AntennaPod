@@ -9,7 +9,10 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -23,14 +26,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mobeta.android.dslv.DragSortListView;
-
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.AllEpisodesListAdapter;
+import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -72,8 +74,8 @@ public class AllEpisodesFragment extends Fragment {
     private static final String PREF_KEY_LIST_SELECTION = "list_selection";
 
     private String prefName;
-    protected DragSortListView listView;
-    private AllEpisodesListAdapter listAdapter;
+    protected RecyclerView listView;
+    private AllEpisodesRecycleAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
     private ContextMenu contextMenu;
@@ -94,6 +96,7 @@ public class AllEpisodesFragment extends Fragment {
     private boolean isUpdatingFeeds;
 
     protected Subscription subscription;
+    private RecyclerView.LayoutManager layoutManager;
 
     public AllEpisodesFragment() {
         // by default we show all the episodes
@@ -167,8 +170,7 @@ public class AllEpisodesFragment extends Fragment {
         SharedPreferences.Editor editor = prefs.edit();
         View v = listView.getChildAt(0);
         int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
-        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getFirstVisiblePosition());
-        editor.putInt(PREF_KEY_LIST_TOP, top);
+        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getVerticalScrollbarPosition());
         editor.commit();
     }
 
@@ -177,11 +179,10 @@ public class AllEpisodesFragment extends Fragment {
         int listSelection = prefs.getInt(PREF_KEY_LIST_SELECTION, 0);
         int top = prefs.getInt(PREF_KEY_LIST_TOP, 0);
         if (listSelection > 0 || top > 0) {
-            listView.setSelectionFromTop(listSelection, top);
+            listView.scrollToPosition(listSelection);
             // restore once, then forget
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(PREF_KEY_LIST_SELECTION, 0);
-            editor.putInt(PREF_KEY_LIST_TOP, 0);
             editor.commit();
         }
     }
@@ -289,20 +290,12 @@ public class AllEpisodesFragment extends Fragment {
 
         View root = inflater.inflate(fragmentResource, container, false);
 
-        listView = (DragSortListView) root.findViewById(android.R.id.list);
+        listView = (RecyclerView) root.findViewById(android.R.id.list);
+        layoutManager = new LinearLayoutManager(getActivity());
+        listView.setLayoutManager(layoutManager);
+
         txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
-                if (item != null) {
-                    ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
-                }
-
-            }
-        });
 
         registerForContextMenu(listView);
 
@@ -336,6 +329,7 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+        if (menuInfo == null) { return; }
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         FeedItem item = itemAccess.getItem(adapterInfo.position);
         MenuInflater inflater = getActivity().getMenuInflater();
@@ -357,7 +351,7 @@ public class AllEpisodesFragment extends Fragment {
             return false;
         }
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if (menuInfo == null) {
+            if (menuInfo == null) {
             menuInfo = lastMenuInfo;
         }
         if (menuInfo == null) {
@@ -390,10 +384,9 @@ public class AllEpisodesFragment extends Fragment {
 
     private void onFragmentLoaded() {
         if (listAdapter == null) {
-            listAdapter = new AllEpisodesListAdapter(activity.get(), itemAccess,
+            listAdapter = new AllEpisodesRecycleAdapter(activity.get(), activity.get(), itemAccess,
                     new DefaultActionButtonCallback(activity.get()), showOnlyNewEpisodes);
             listView.setAdapter(listAdapter);
-            listView.setEmptyView(txtvEmpty);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
@@ -413,7 +406,7 @@ public class AllEpisodesFragment extends Fragment {
         }
     };
 
-    private AllEpisodesListAdapter.ItemAccess itemAccess = new AllEpisodesListAdapter.ItemAccess() {
+    protected AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
 
         @Override
         public int getCount() {
@@ -467,7 +460,6 @@ public class AllEpisodesFragment extends Fragment {
     };
 
     private void updateShowOnlyEpisodesListViewState() {
-        listView.setEmptyView(txtvEmpty);
     }
 
     protected void loadItems() {

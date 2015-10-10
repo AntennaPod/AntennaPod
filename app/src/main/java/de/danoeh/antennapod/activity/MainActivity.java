@@ -153,7 +153,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navList.setAdapter(navAdapter);
         navList.setOnItemClickListener(navListClickListener);
         navList.setOnItemLongClickListener(newListLongClickListener);
-        registerForContextMenu(navList);
+        //registerForContextMenu(navList);
 
         navAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -521,7 +521,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             return super.onOptionsItemSelected(item);
         }
     }
-
+/*
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -542,7 +542,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         // we may need to reference this elsewhere...
         lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
     }
-
+    */
+/*
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -593,7 +594,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 return super.onContextItemSelected(item);
         }
     }
-
+*/
     private DBReader.NavDrawerData navDrawerData;
     private AsyncTask<Void, Void, DBReader.NavDrawerData> loadTask;
     private int selectedNavListIndex = 0;

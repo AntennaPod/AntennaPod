@@ -7,6 +7,15 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarStyle="outsideOverlay"
+        android:paddingTop="@dimen/list_vertical_padding"
+        android:paddingBottom="@dimen/list_vertical_padding"
+        android:clipToPadding="false"/>
+    <!--
         <com.mobeta.android.dslv.DragSortListView
             android:id="@android:id/list"
             android:scrollbarStyle="outsideOverlay"
@@ -28,7 +37,7 @@
             dslv:float_background_color="?attr/dragview_float_background"
             dslv:use_default_controller="true"
             tools:background="@android:color/holo_green_dark"/>
-
+-->
     <TextView
         android:id="@id/android:empty"
         android:layout_width="match_parent"
