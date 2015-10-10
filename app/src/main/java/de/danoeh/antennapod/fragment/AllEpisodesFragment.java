@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -76,7 +77,6 @@ public class AllEpisodesFragment extends Fragment {
     private String prefName;
     protected RecyclerView listView;
     private AllEpisodesRecycleAdapter listAdapter;
-    private TextView txtvEmpty;
     private ProgressBar progLoading;
 
     private List<FeedItem> episodes;
@@ -291,14 +291,10 @@ public class AllEpisodesFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         listView.setLayoutManager(layoutManager);
 
-        txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
-
-        //registerForContextMenu(listView);
 
         if (!itemsLoaded) {
             progLoading.setVisibility(View.VISIBLE);
-            txtvEmpty.setVisibility(View.GONE);
         }
 
         viewsCreated = true;
@@ -395,7 +391,6 @@ public class AllEpisodesFragment extends Fragment {
         }
         if (viewsCreated && !itemsLoaded) {
             listView.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
         subscription = Observable.defer(() -> Observable.just(loadData()))

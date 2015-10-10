@@ -39,14 +39,6 @@
             tools:background="@android:color/holo_green_dark"/>
             -->
 
-    <TextView
-        android:id="@id/android:empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/no_items_label"/>
-
     <ProgressBar
         android:id="@+id/progLoading"
         android:layout_width="wrap_content"

@@ -119,10 +119,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     }
 
     @Override
-    protected Pair<List<FeedItem>,LongList> loadData() {
-        List<FeedItem> items;
-        items = DBReader.getFavoriteItemsList();
-        LongList queuedIds = DBReader.getQueueIDList();
-        return Pair.create(items, queuedIds);
+    protected List<FeedItem> loadData() {
+        return DBReader.getFavoriteItemsList();
     }
 }
