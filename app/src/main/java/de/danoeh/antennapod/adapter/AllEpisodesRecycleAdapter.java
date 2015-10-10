@@ -81,6 +81,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.txtvDuration = (TextView) view.findViewById(R.id.txtvDuration);
         holder.item = null;
         holder.mainActivity = mainActivity;
+        holder.position = -1;
 
         return holder;
     }
@@ -90,6 +91,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         final FeedItem item = itemAccess.getItem(position);
         if (item == null) return;
         holder.item = item;
+        holder.position = position;
         holder.placeholder.setVisibility(View.VISIBLE);
         holder.placeholder.setText(item.getFeed().getTitle());
         holder.title.setText(item.getTitle());
@@ -241,6 +243,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         ImageButton butSecondary;
         FeedItem item;
         MainActivity mainActivity;
+        int position;
 
         public Holder(View itemView) {
             super(itemView);
@@ -256,6 +259,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         }
 
         public FeedItem getFeedItem() { return item; }
+
+        public int getItemPosition() { return position; }
     }
 
     public interface ItemAccess {

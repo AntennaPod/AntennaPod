@@ -3,6 +3,8 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import com.mobeta.android.dslv.DragSortListView;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.event.QueueEvent;
@@ -69,25 +72,31 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.episodes_fragment_with_undo);
 
-        /** TODO!
-        listView.setRemoveListener(new DragSortListView.RemoveListener() {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public void remove(int which) {
-                Log.d(TAG, "remove(" + which + ")");
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder)viewHolder;
+                Log.d(TAG, "remove(" + holder.getItemId() + ")");
                 if (subscription != null) {
                     subscription.unsubscribe();
                 }
-                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
+                FeedItem item = holder.getFeedItem();
                 // we're marking it as unplayed since the user didn't actually play it
                 // but they don't want it considered 'NEW' anymore
                 DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
                 undoBarController.showUndoBar(false,
                         getString(R.string.marked_as_read_label), new FeedItemUndoToken(item,
-                                which)
-                );
+                                holder.getItemPosition()));
             }
-        });
-         */
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(listView);
 
         undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
 

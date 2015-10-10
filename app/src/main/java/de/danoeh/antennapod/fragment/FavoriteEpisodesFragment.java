@@ -89,7 +89,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
                     undoBarController.showUndoBar(false,
                             getString(R.string.removed_item), new FeedItemUndoToken(item,
-                                    0)
+                                    holder.getItemPosition())
                     );
                 }
             }
