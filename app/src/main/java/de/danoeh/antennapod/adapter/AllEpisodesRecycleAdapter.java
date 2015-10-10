@@ -79,7 +79,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 .findViewById(R.id.pbar_progress);
         holder.cover = (ImageView) view.findViewById(R.id.imgvCover);
         holder.txtvDuration = (TextView) view.findViewById(R.id.txtvDuration);
-        holder.itemId = 0;
+        holder.item = null;
         holder.mainActivity = mainActivity;
 
         return holder;
@@ -89,7 +89,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
     public void onBindViewHolder(final Holder holder, int position) {
         final FeedItem item = itemAccess.getItem(position);
         if (item == null) return;
-        holder.itemId = item.getId();
+        holder.item = item;
         holder.placeholder.setVisibility(View.VISIBLE);
         holder.placeholder.setText(item.getFeed().getTitle());
         holder.title.setText(item.getTitle());
@@ -239,7 +239,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         ProgressBar progress;
         TextView txtvDuration;
         ImageButton butSecondary;
-        long itemId;
+        FeedItem item;
         MainActivity mainActivity;
 
         public Holder(View itemView) {
@@ -251,9 +251,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         @Override
         public void onClick(View v) {
             if (mainActivity != null) {
-                mainActivity.loadChildFragment(ItemFragment.newInstance(itemId));
+                mainActivity.loadChildFragment(ItemFragment.newInstance(item.getId()));
             }
         }
+
+        public FeedItem getFeedItem() { return item; }
     }
 
     public interface ItemAccess {
