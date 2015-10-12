@@ -283,8 +283,8 @@
     <string name="pref_auto_delete_title">Auto Delete</string>
     <string name="pref_smart_mark_as_played_sum">Mark episodes as played even if less than a certain amount of seconds of playing time is still left</string>
     <string name="pref_smart_mark_as_played_title">Smart mark as played</string>
-    <string name="pref_skip_removes_from_queue_sum">Remove episodes from the queue when they are skipped</string>
-    <string name="pref_skip_removes_from_queue_title">Skip Removes Episode</string>
+    <string name="pref_skip_keeps_episodes_sum">Keep episodes when they are skipped</string>
+    <string name="pref_skip_keeps_episodes_title">Keep Skipped Episodes</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
     <string name="pref_autoUpdateIntervallOrTime_title">Update Interval or Time of Day</string>

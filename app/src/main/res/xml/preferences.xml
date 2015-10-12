@@ -89,11 +89,11 @@
             android:summary="@string/pref_followQueue_sum"
             android:title="@string/pref_followQueue_title"/>
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:enabled="true"
-            android:key="prefSkipRemovesFromQueue"
-            android:summary="@string/pref_skip_removes_from_queue_sum"
-            android:title="@string/pref_skip_removes_from_queue_title"/>
+            android:key="prefSkipKeepsEpisode"
+            android:summary="@string/pref_skip_keeps_episodes_sum"
+            android:title="@string/pref_skip_keeps_episodes_title"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
