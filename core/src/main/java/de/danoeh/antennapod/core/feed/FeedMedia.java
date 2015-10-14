@@ -40,6 +40,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     private int duration;
     private int position; // Current position in file
+    private long lastPlayedTime; // Last time this media was played (in ms)
     private int played_duration; // How many ms of this file have been played (for autoflattring)
     private long size; // File size in Byte
     private String mime_type;
@@ -62,7 +63,8 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mime_type, String file_url, String download_url,
-                     boolean downloaded, Date playbackCompletionDate, int played_duration) {
+                     boolean downloaded, Date playbackCompletionDate, int played_duration,
+                     long lastPlayedTime) {
         super(file_url, download_url, downloaded);
         this.id = id;
         this.item = item;
@@ -73,14 +75,15 @@ public class FeedMedia extends FeedFile implements Playable {
         this.mime_type = mime_type;
         this.playbackCompletionDate = playbackCompletionDate == null
                 ? null : (Date) playbackCompletionDate.clone();
+        this.lastPlayedTime = lastPlayedTime;
     }
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mime_type, String file_url, String download_url,
                      boolean downloaded, Date playbackCompletionDate, int played_duration,
-                     Boolean hasEmbeddedPicture) {
+                     Boolean hasEmbeddedPicture, long lastPlayedTime) {
         this(id, item, duration, position, size, mime_type, file_url, download_url, downloaded,
-                playbackCompletionDate, played_duration);
+                playbackCompletionDate, played_duration, lastPlayedTime);
         this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
 
@@ -95,6 +98,7 @@ public class FeedMedia extends FeedFile implements Playable {
         int indexDownloadUrl = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL);
         int indexDownloaded = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED);
         int indexPlayedDuration = cursor.getColumnIndex(PodDBAdapter.KEY_PLAYED_DURATION);
+        int indexLastPlayedTime = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_PLAYED_TIME);
 
         long mediaId = cursor.getLong(indexId);
         Date playbackCompletionDate = null;
@@ -128,7 +132,8 @@ public class FeedMedia extends FeedFile implements Playable {
                 cursor.getInt(indexDownloaded) > 0,
                 playbackCompletionDate,
                 cursor.getInt(indexPlayedDuration),
-                hasEmbeddedPicture
+                hasEmbeddedPicture,
+                cursor.getLong(indexLastPlayedTime)
         );
     }
 
@@ -231,6 +236,11 @@ public class FeedMedia extends FeedFile implements Playable {
         this.duration = duration;
     }
 
+    @Override
+    public void setLastPlayedTime(long lastPlayedTime) {
+        this.lastPlayedTime = lastPlayedTime;
+    }
+
     public int getPlayedDuration() {
         return played_duration;
     }
@@ -241,6 +251,11 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public int getPosition() {
         return position;
+    }
+
+    @Override
+    public long getLastPlayedTime() {
+        return lastPlayedTime;
     }
 
     public void setPosition(int position) {
@@ -336,6 +351,7 @@ public class FeedMedia extends FeedFile implements Playable {
         dest.writeByte((byte) ((downloaded) ? 1 : 0));
         dest.writeLong((playbackCompletionDate != null) ? playbackCompletionDate.getTime() : 0);
         dest.writeInt(played_duration);
+        dest.writeLong(lastPlayedTime);
     }
 
     @Override
@@ -438,12 +454,13 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void saveCurrentPosition(SharedPreferences pref, int newPosition) {
-        DBWriter.setFeedMediaPlaybackInformation(this);
+    public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timeStamp) {
         if(item.isNew()) {
             DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
         }
         setPosition(newPosition);
+        setLastPlayedTime(timeStamp);
+        DBWriter.setFeedMediaPlaybackInformation(this);
     }
 
     @Override
@@ -488,7 +505,7 @@ public class FeedMedia extends FeedFile implements Playable {
             final long id = in.readLong();
             final long itemID = in.readLong();
             FeedMedia result = new FeedMedia(id, null, in.readInt(), in.readInt(), in.readLong(), in.readString(), in.readString(),
-                    in.readString(), in.readByte() != 0, new Date(in.readLong()), in.readInt());
+                    in.readString(), in.readByte() != 0, new Date(in.readLong()), in.readInt(), in.readLong());
             result.itemID = itemID;
             return result;
         }

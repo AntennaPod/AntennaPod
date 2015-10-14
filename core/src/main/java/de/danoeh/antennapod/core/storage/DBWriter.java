@@ -732,7 +732,7 @@ public class DBWriter {
     }
 
     /**
-     * Saves the 'position' and 'duration' attributes of a FeedMedia object
+     * Saves the 'position', 'duration' and 'last played time' attributes of a FeedMedia object
      *
      * @param media   The FeedMedia object.
      */

@@ -93,7 +93,7 @@ public class DBNullCleanupAlgorithmTest extends InstrumentationTestCase {
             assertTrue(f.createNewFile());
             files.add(f);
             item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true,
-                    new Date(NUM_ITEMS - i), 0));
+                    new Date(NUM_ITEMS - i), 0, 0));
             items.add(item);
         }
 

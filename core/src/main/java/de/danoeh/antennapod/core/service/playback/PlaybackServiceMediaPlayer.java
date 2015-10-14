@@ -39,6 +39,7 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -330,10 +331,14 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 acquireWifiLockIfNecessary();
                 setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
-                mediaPlayer.start();
-                if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
-                    mediaPlayer.seekTo(media.getPosition());
+
+                if (media.getPosition() > 0) {
+                    int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                            media.getPosition(),
+                            media.getLastPlayedTime());
+                    mediaPlayer.seekTo(newPosition);
                 }
+                mediaPlayer.start();
 
                 setPlayerStatus(PlayerStatus.PLAYING, media);
                 pausedBecauseOfTransientAudiofocusLoss = false;

@@ -173,7 +173,7 @@ public class FeedHandlerTest extends InstrumentationTestCase {
             feed.getItems().add(item);
             if (withFeedMedia) {
                 item.setMedia(new FeedMedia(0, item, 4711, 0, 1024*1024, "audio/mp3", null, "http://example.com/media-" + i,
-                        false, null, 0));
+                        false, null, 0, 0));
             }
         }
 

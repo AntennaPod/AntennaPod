@@ -117,7 +117,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
             File f = new File(destFolder, "file " + i);
             assertTrue(f.createNewFile());
             files.add(f);
-            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, playbackCompletionDate, 0));
+            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, playbackCompletionDate, 0, 0));
             items.add(item);
         }
 

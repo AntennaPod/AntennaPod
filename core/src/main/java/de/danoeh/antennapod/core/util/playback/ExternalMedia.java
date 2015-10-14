@@ -20,6 +20,7 @@ public class ExternalMedia implements Playable {
 	public static final String PREF_SOURCE_URL = "ExternalMedia.PrefSourceUrl";
 	public static final String PREF_POSITION = "ExternalMedia.PrefPosition";
 	public static final String PREF_MEDIA_TYPE = "ExternalMedia.PrefMediaType";
+	public static final String PREF_LAST_PLAYED_TIME = "ExternalMedia.PrefLastPlayedTime";
 
 	private String source;
 
@@ -29,6 +30,7 @@ public class ExternalMedia implements Playable {
 	private List<Chapter> chapters;
 	private int duration;
 	private int position;
+	private long lastPlayedTime;
 
 	public ExternalMedia(String source, MediaType mediaType) {
 		super();
@@ -36,9 +38,10 @@ public class ExternalMedia implements Playable {
 		this.mediaType = mediaType;
 	}
 
-	public ExternalMedia(String source, MediaType mediaType, int position) {
+	public ExternalMedia(String source, MediaType mediaType, int position, long lastPlayedTime) {
 		this(source, mediaType);
 		this.position = position;
+		this.lastPlayedTime = lastPlayedTime;
 	}
 
 	@Override
@@ -51,6 +54,7 @@ public class ExternalMedia implements Playable {
 		dest.writeString(source);
 		dest.writeString(mediaType.toString());
 		dest.writeInt(position);
+		dest.writeLong(lastPlayedTime);
 	}
 
 	@Override
@@ -58,6 +62,7 @@ public class ExternalMedia implements Playable {
 		prefEditor.putString(PREF_SOURCE_URL, source);
 		prefEditor.putString(PREF_MEDIA_TYPE, mediaType.toString());
 		prefEditor.putInt(PREF_POSITION, position);
+		prefEditor.putLong(PREF_LAST_PLAYED_TIME, lastPlayedTime);
 	}
 
 	@Override
@@ -145,6 +150,11 @@ public class ExternalMedia implements Playable {
 	}
 
 	@Override
+	public long getLastPlayedTime() {
+		return lastPlayedTime;
+	}
+
+	@Override
 	public MediaType getMediaType() {
 		return mediaType;
 	}
@@ -170,10 +180,12 @@ public class ExternalMedia implements Playable {
 	}
 
 	@Override
-	public void saveCurrentPosition(SharedPreferences pref, int newPosition) {
+	public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timestamp) {
 		SharedPreferences.Editor editor = pref.edit();
 		editor.putInt(PREF_POSITION, newPosition);
+		editor.putLong(PREF_LAST_PLAYED_TIME, timestamp);
 		position = newPosition;
+		lastPlayedTime = timestamp;
 		editor.commit();
 	}
 
@@ -185,6 +197,11 @@ public class ExternalMedia implements Playable {
 	@Override
 	public void setDuration(int newDuration) {
 		duration = newDuration;
+	}
+
+	@Override
+	public void setLastPlayedTime(long lastPlayedTime) {
+		this.lastPlayedTime = lastPlayedTime;
 	}
 
 	@Override
@@ -215,8 +232,12 @@ public class ExternalMedia implements Playable {
 			if (in.dataAvail() > 0) {
 				position = in.readInt();
 			}
-			ExternalMedia extMedia = new ExternalMedia(source, type, position);
-			return extMedia;
+			long lastPlayedTime = 0;
+			if (in.dataAvail() > 0) {
+				lastPlayedTime = in.readLong();
+			}
+
+			return new ExternalMedia(source, type, position, lastPlayedTime);
 		}
 
 		public ExternalMedia[] newArray(int size) {

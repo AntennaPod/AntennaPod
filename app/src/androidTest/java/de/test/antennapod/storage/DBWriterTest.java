@@ -59,6 +59,37 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
+    public void testSetFeedMediaPlaybackInformation() throws IOException, ExecutionException, InterruptedException {
+        final int POSITION = 50;
+        final long LAST_PLAYED_TIME = 1000;
+        final int PLAYED_DURATION = 60;
+        final int DURATION = 100;
+
+        Feed feed = new Feed("url", new Date(), "title");
+        List<FeedItem> items = new ArrayList<>();
+        feed.setItems(items);
+        FeedItem item = new FeedItem(0, "Item", "Item", "url", new Date(), FeedItem.PLAYED, feed);
+        items.add(item);
+        FeedMedia media = new FeedMedia(0, item, DURATION, 1, 1, "mime_type", "dummy path", "download_url", true, null, 0, 0);
+        item.setMedia(media);
+
+        DBWriter.setFeedItem(item).get();
+
+        media.setPosition(POSITION);
+        media.setLastPlayedTime(LAST_PLAYED_TIME);
+        media.setPlayedDuration(PLAYED_DURATION);
+
+        DBWriter.setFeedMediaPlaybackInformation(item.getMedia()).get();
+
+        FeedItem itemFromDb = DBReader.getFeedItem(item.getId());
+        FeedMedia mediaFromDb = itemFromDb.getMedia();
+
+        assertEquals(POSITION, mediaFromDb.getPosition());
+        assertEquals(LAST_PLAYED_TIME, mediaFromDb.getLastPlayedTime());
+        assertEquals(PLAYED_DURATION, mediaFromDb.getPlayedDuration());
+        assertEquals(DURATION, mediaFromDb.getDuration());
+    }
+
     public void testDeleteFeedMediaOfItemFileExists() throws IOException, ExecutionException, InterruptedException {
         File dest = new File(getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER), "testFile");
 
@@ -69,7 +100,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         feed.setItems(items);
         FeedItem item = new FeedItem(0, "Item", "Item", "url", new Date(), FeedItem.PLAYED, feed);
 
-        FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", dest.getAbsolutePath(), "download_url", true, null, 0);
+        FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", dest.getAbsolutePath(), "download_url", true, null, 0, 0);
         item.setMedia(media);
 
         items.add(item);
@@ -113,7 +144,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(enc.createNewFile());
             itemFiles.add(enc);
 
-            FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", true, null, 0);
+            FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", true, null, 0, 0);
             item.setMedia(media);
 
             item.setChapters(new ArrayList<Chapter>());
@@ -180,7 +211,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(enc.createNewFile());
 
             itemFiles.add(enc);
-            FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", true, null, 0);
+            FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", true, null, 0, 0);
             item.setMedia(media);
         }
 
@@ -386,7 +417,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             File enc = new File(destFolder, "file " + i);
             itemFiles.add(enc);
 
-            FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", false, null, 0);
+            FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", false, null, 0, 0);
             item.setMedia(media);
         }
 
@@ -458,7 +489,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             File enc = new File(destFolder, "file " + i);
             itemFiles.add(enc);
 
-            FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", false, null, 0);
+            FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", false, null, 0, 0);
             item.setMedia(media);
         }
 
@@ -499,7 +530,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         Feed feed = new Feed("url", new Date(), "title");
         feed.setItems(new ArrayList<FeedItem>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
-        FeedMedia media = new FeedMedia(0, item, 10, 0, 1, "mime", null, "url", false, playbackCompletionDate, 0);
+        FeedMedia media = new FeedMedia(0, item, 10, 0, 1, "mime", null, "url", false, playbackCompletionDate, 0, 0);
         feed.getItems().add(item);
         item.setMedia(media);
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -796,5 +827,4 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(item.isPlayed());
         }
     }
-
 }
