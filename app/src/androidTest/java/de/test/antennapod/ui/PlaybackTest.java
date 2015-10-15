@@ -1,6 +1,5 @@
 package de.test.antennapod.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.FlakyTest;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.robotium.solo.Solo;
@@ -19,15 +17,12 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
 /**
  * test cases for starting and ending playback from the MainActivity and AudioPlayerActivity
@@ -42,98 +37,6 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     private UITestUtils uiTestUtils;
 
     private Context context;
-
-    private PlaybackController controller;
-    protected FeedMedia currentMedia;
-
-    private PlaybackController createController(Activity activity) {
-        return new PlaybackController(activity, false) {
-
-            @Override
-            public void setupGUI() {
-            }
-
-            @Override
-            public void onPositionObserverUpdate() {
-            }
-
-            @Override
-            public void onBufferStart() {
-            }
-
-            @Override
-            public void onBufferEnd() {
-            }
-
-            @Override
-            public void onBufferUpdate(float progress) {
-            }
-
-            @Override
-            public void handleError(int code) {
-            }
-
-            @Override
-            public void onReloadNotification(int code) {
-            }
-
-            @Override
-            public void onSleepTimerUpdate() {
-            }
-
-            @Override
-            public ImageButton getPlayButton() {
-                return null;
-            }
-
-            @Override
-            public void postStatusMsg(int msg) {
-            }
-
-            @Override
-            public void clearStatusMsg() {
-            }
-
-            @Override
-            public boolean loadMediaInfo() {
-                Playable playable = controller.getMedia();
-                if(playable == null) {
-                    currentMedia = null;
-                    return true;
-                } else if(playable instanceof  FeedMedia) {
-                    currentMedia = (FeedMedia) playable;
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            @Override
-            public void onAwaitingVideoSurface() {
-            }
-
-            @Override
-            public void onServiceQueried() {
-            }
-
-            @Override
-            public void onShutdownNotification() {
-            }
-
-            @Override
-            public void onPlaybackEnd() {
-                currentMedia = null;
-            }
-
-            @Override
-            public void onPlaybackSpeedChange() {
-            }
-
-            @Override
-            protected void setScreenOn(boolean enable) {
-            }
-        };
-    }
 
     public PlaybackTest() {
         super(MainActivity.class);
@@ -154,9 +57,6 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
                 .putBoolean(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT, false)
                 .commit();
 
-        controller = createController(getActivity());
-        controller.init();
-
         solo = new Solo(getInstrumentation(), getActivity());
 
         uiTestUtils = new UITestUtils(context);
@@ -170,7 +70,6 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
     @Override
     public void tearDown() throws Exception {
-        controller.release();
         solo.finishOpenedActivities();
         uiTestUtils.tearDown();
 
@@ -214,8 +113,8 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
         long mediaId = episodes.get(0).getMedia().getId();
         boolean playing = solo.waitForCondition(() -> {
-            if (currentMedia != null) {
-                return currentMedia.getId() == mediaId;
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
@@ -225,7 +124,6 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
     private void startLocalPlaybackFromQueue() {
         openNavDrawer();
-
         // if we try to just click on plain old text then
         // we might wind up clicking on the fragment title and not
         // the drawer element like we want.
@@ -234,19 +132,20 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         View targetView = drawerView.getChildAt(QUEUE_DRAWER_LIST_INDEX);
         solo.waitForView(targetView);
         solo.clickOnView(targetView);
-
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
+
         final List<FeedItem> queue = DBReader.getQueue();
         solo.clickOnImageButton(1);
         assertTrue(solo.waitForView(solo.getView(R.id.butPlay)));
         long mediaId = queue.get(0).getMedia().getId();
         boolean playing = solo.waitForCondition(() -> {
-            if(currentMedia != null) {
-                return currentMedia.getId() == mediaId;
+            if(uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
         }, Timeout.getSmallTimeout());
+
         assertTrue(playing);
     }
 
@@ -269,18 +168,21 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         uiTestUtils.addLocalFeedData(true);
         List<FeedItem> queue = DBReader.getQueue();
         final FeedItem first = queue.get(0);
-
         startLocalPlaybackFromQueue();
         boolean stopped = solo.waitForCondition(() -> {
-            if (currentMedia != null) {
-                return currentMedia.getId() != first.getMedia().getId();
+            if (uiTestUtils.getPlaybackController(getActivity()).getStatus()
+                    != PlayerStatus.PLAYING) {
+                return true;
+            } else if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId()
+                        != first.getMedia().getId();
             } else {
-                return false;
+                return true;
             }
         }, Timeout.getSmallTimeout());
         assertTrue(stopped);
         Thread.sleep(1000);
-        PlayerStatus status = controller.getStatus();
+        PlayerStatus status = uiTestUtils.getPlaybackController(getActivity()).getStatus();
         assertFalse(status.equals(PlayerStatus.PLAYING));
     }
 
@@ -294,16 +196,18 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
         startLocalPlaybackFromQueue();
         boolean firstPlaying = solo.waitForCondition(() -> {
-            if (currentMedia != null) {
-                return currentMedia.getId() == first.getMedia().getId();
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId()
+                        == first.getMedia().getId();
             } else {
                 return false;
             }
         }, Timeout.getSmallTimeout());
         assertTrue(firstPlaying);
         boolean secondPlaying = solo.waitForCondition(() -> {
-            if (currentMedia != null) {
-                return currentMedia.getId() == second.getMedia().getId();
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId()
+                        == second.getMedia().getId();
             } else {
                 return false;
             }
@@ -323,8 +227,8 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         startLocalPlayback();
         long mediaId = episodes.get(0).getMedia().getId();
         boolean startedPlaying = solo.waitForCondition(() -> {
-            if (currentMedia != null) {
-                return currentMedia.getId() == mediaId;
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
@@ -332,14 +236,15 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         assertTrue(startedPlaying);
 
         boolean stoppedPlaying = solo.waitForCondition(() -> {
-            return currentMedia == null || currentMedia.getId() != mediaId;
+            return uiTestUtils.getCurrentMedia(getActivity()) == null
+                    || uiTestUtils.getCurrentMedia(getActivity()).getId() != mediaId;
         }, Timeout.getLargeTimeout());
         assertTrue(stoppedPlaying);
 
         startLocalPlayback();
         boolean startedReplay = solo.waitForCondition(() -> {
-            if(currentMedia != null) {
-                return currentMedia.getId() == mediaId;
+            if(uiTestUtils.getCurrentMedia(getActivity()) != null) {
+                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }

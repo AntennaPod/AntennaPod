@@ -26,7 +26,7 @@ import de.danoeh.antennapod.core.util.playback.PlaybackController;
  * if the PlaybackService is running
  */
 public class ExternalPlayerFragment extends Fragment {
-    private static final String TAG = "ExternalPlayerFragment";
+    public static final String TAG = "ExternalPlayerFragment";
 
     private ViewGroup fragmentLayout;
     private ImageView imgvCover;
@@ -229,5 +229,9 @@ public class ExternalPlayerFragment extends Fragment {
     private String getPositionString(int position, int duration) {
         return Converter.getDurationStringLong(position) + " / "
                 + Converter.getDurationStringLong(duration);
+    }
+
+    public PlaybackController getPlaybackControllerTestingOnly() {
+        return controller;
     }
 }

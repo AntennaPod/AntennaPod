@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
@@ -28,6 +29,8 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.greenrobot.event.EventBus;
 import de.test.antennapod.util.service.download.HTTPBin;
 import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
@@ -47,6 +50,7 @@ public class UITestUtils {
     public static final int NUM_ITEMS_PER_FEED = 10;
 
     public static final int HOME_VIEW = (Build.VERSION.SDK_INT >= 11) ? android.R.id.home : R.id.home;
+    public static final String TEST_FILE_NAME = "3sec.mp3";
 
 
     private Context context;
@@ -119,7 +123,7 @@ public class UITestUtils {
         }
         Assert.assertFalse(mediaFile.exists());
 
-        InputStream in = context.getAssets().open("testfile.mp3");
+        InputStream in = context.getAssets().open(TEST_FILE_NAME);
         Assert.assertNotNull(in);
 
         FileOutputStream out = new FileOutputStream(mediaFile);
@@ -217,5 +221,14 @@ public class UITestUtils {
         adapter.close();
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
         EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
+    }
+
+    public PlaybackController getPlaybackController(MainActivity mainActivity) {
+        ExternalPlayerFragment fragment = (ExternalPlayerFragment)mainActivity.getSupportFragmentManager().findFragmentByTag(ExternalPlayerFragment.TAG);
+        return fragment.getPlaybackControllerTestingOnly();
+    }
+
+    public FeedMedia getCurrentMedia(MainActivity mainActivity) {
+        return (FeedMedia)getPlaybackController(mainActivity).getMedia();
     }
 }
