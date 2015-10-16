@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.service.download;
 import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Protocol;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
@@ -22,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Date;
 
 import de.danoeh.antennapod.core.ClientConfig;
@@ -93,12 +95,23 @@ public class HttpDownloader extends Downloader {
             // add range header if necessary
             if (fileExists) {
                 request.setSoFar(destination.length());
-                httpReq.addHeader("Range",
-                        "bytes=" + request.getSoFar() + "-");
+                httpReq.addHeader("Range", "bytes=" + request.getSoFar() + "-");
                 Log.d(TAG, "Adding range header: " + request.getSoFar());
             }
 
-            Response response = httpClient.newCall(httpReq.build()).execute();
+            Response response = null;
+            try {
+                response = httpClient.newCall(httpReq.build()).execute();
+            } catch(IOException e) {
+                Log.e(TAG, e.toString());
+                if(e.getMessage().contains("PROTOCOL_ERROR")) {
+                    httpClient.setProtocols(Arrays.asList(Protocol.HTTP_1_1));
+                    response = httpClient.newCall(httpReq.build()).execute();
+                }
+                else {
+                    throw e;
+                }
+            }
             responseBody = response.body();
             String contentEncodingHeader = response.header("Content-Encoding");
             boolean isGzip = StringUtils.equalsIgnoreCase(contentEncodingHeader, "gzip");
