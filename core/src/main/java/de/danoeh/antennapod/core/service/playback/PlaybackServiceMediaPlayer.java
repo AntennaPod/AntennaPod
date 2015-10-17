@@ -500,12 +500,19 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 statusBeforeSeeking = playerStatus;
                 setPlayerStatus(PlayerStatus.SEEKING, media);
             }
+            if(seekLatch != null && seekLatch.getCount() > 0) {
+                try {
+                    seekLatch.await(3, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, Log.getStackTraceString(e));
+                }
+            }
             seekLatch = new CountDownLatch(1);
             mediaPlayer.seekTo(t);
             try {
-                seekLatch.await(10, TimeUnit.SECONDS);
+                seekLatch.await(3, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e(TAG, Log.getStackTraceString(e));
             }
         } else if (playerStatus == PlayerStatus.INITIALIZED) {
             media.setPosition(t);
