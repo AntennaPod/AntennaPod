@@ -3,7 +3,6 @@ Change Log
 
 Version 1.4
 -----------
-
 * BLUETOOTH PERMISSION: Needed to be able to resume playback when a Bluetooth device reconnects with your phone
 * VIBRATE PERMISSION: Used optionally with the sleep timer
 * Native variable speed playback (experimental via options)
@@ -12,7 +11,8 @@ Version 1.4
 * Notification can skip episodes
 * Keep episodes when skipping them
 * Episode art on lock screen
-* Better OPML sharing
+* Flexible episode cleanup
+* Rewind after pause
 * Usability improvements
 * Bug fixes
 
