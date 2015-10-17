@@ -25,6 +25,7 @@ import com.bumptech.glide.request.target.Target;
 import org.apache.commons.lang3.Validate;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -78,6 +79,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * have to wait until these operations have finished.
      */
     private final ReentrantLock playerLock;
+    private CountDownLatch seekLatch;
 
     private final PSMPCallback callback;
     private final Context context;
@@ -290,11 +292,11 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                     builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageUri().toString());
                     try {
                         Bitmap art = Glide.with(context)
-                                .load(p.getImageUri())
-                                .asBitmap()
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                                .get();
+                            .load(p.getImageUri())
+                            .asBitmap()
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .get();
                         builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
                     } catch (Exception e) {
                         Log.e(TAG, Log.getStackTraceString(e));
@@ -332,11 +334,11 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 acquireWifiLockIfNecessary();
                 setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
 
-                if (media.getPosition() > 0) {
+                if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                     int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                            media.getPosition(),
-                            media.getLastPlayedTime());
-                    mediaPlayer.seekTo(newPosition);
+                        media.getPosition(),
+                        media.getLastPlayedTime());
+                    seekToSync(newPosition);
                 }
                 mediaPlayer.start();
 
@@ -438,7 +440,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         }
 
         if (media.getPosition() > 0) {
-            mediaPlayer.seekTo(media.getPosition());
+            seekToSync(media.getPosition());
         }
 
         if (media.getDuration() == 0) {
@@ -498,8 +500,20 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 statusBeforeSeeking = playerStatus;
                 setPlayerStatus(PlayerStatus.SEEKING, media);
             }
+            if(seekLatch != null && seekLatch.getCount() > 0) {
+                try {
+                    seekLatch.await(3, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Log.e(TAG, Log.getStackTraceString(e));
+                }
+            }
+            seekLatch = new CountDownLatch(1);
             mediaPlayer.seekTo(t);
-
+            try {
+                seekLatch.await(3, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+            }
         } else if (playerStatus == PlayerStatus.INITIALIZED) {
             media.setPosition(t);
             startWhenPrepared.set(false);
@@ -1142,16 +1156,18 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     };
 
     private final void genericSeekCompleteListener() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                if (playerStatus == PlayerStatus.SEEKING) {
-                    setPlayerStatus(statusBeforeSeeking, media);
-                }
-                playerLock.unlock();
+        Thread t = new Thread(() -> {
+            Log.d(TAG, "genericSeekCompleteListener");
+            if(seekLatch != null) {
+                seekLatch.countDown();
             }
+            playerLock.lock();
+            if (playerStatus == PlayerStatus.SEEKING) {
+                setPlayerStatus(statusBeforeSeeking, media);
+            }
+            playerLock.unlock();
         });
+        t.start();
     }
 
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
