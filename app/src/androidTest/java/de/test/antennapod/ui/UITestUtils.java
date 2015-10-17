@@ -156,7 +156,7 @@ public class UITestUtils {
                 items.add(item);
 
                 File mediaFile = newMediaFile("feed-" + i + "-episode-" + j + ".mp3");
-                item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3", null, hostFile(mediaFile), false, null, 0));
+                item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3", null, hostFile(mediaFile), false, null, 0, 0));
 
             }
             feed.setItems(items);

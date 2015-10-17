@@ -103,7 +103,7 @@ public class PodDBAdapter {
     public static final String KEY_HIDE = "hide";
     public static final String KEY_LAST_UPDATE_FAILED = "last_update_failed";
     public static final String KEY_HAS_EMBEDDED_PICTURE = "has_embedded_picture";
-
+    public static final String KEY_LAST_PLAYED_TIME = "last_played_time";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -160,7 +160,8 @@ public class PodDBAdapter {
             + KEY_PLAYBACK_COMPLETION_DATE + " INTEGER,"
             + KEY_FEEDITEM + " INTEGER,"
             + KEY_PLAYED_DURATION + " INTEGER,"
-            + KEY_HAS_EMBEDDED_PICTURE + " INTEGER)";
+            + KEY_HAS_EMBEDDED_PICTURE + " INTEGER,"
+            + KEY_LAST_PLAYED_TIME + " INTEGER)";
 
     public static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
@@ -444,6 +445,7 @@ public class PodDBAdapter {
         values.put(KEY_DOWNLOADED, media.isDownloaded());
         values.put(KEY_FILE_URL, media.getFile_url());
         values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
+        values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
 
         if (media.getPlaybackCompletionDate() != null) {
             values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
@@ -468,6 +470,7 @@ public class PodDBAdapter {
             values.put(KEY_POSITION, media.getPosition());
             values.put(KEY_DURATION, media.getDuration());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
+            values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
@@ -1439,7 +1442,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 1040001;
+        private final static int VERSION = 1040002;
 
         private Context context;
 
@@ -1672,6 +1675,10 @@ public class PodDBAdapter {
             }
             if(oldVersion < 1040001) {
                 db.execSQL(CREATE_TABLE_FAVORITES);
+            }
+            if (oldVersion < 1040002)  {
+                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
+                        + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME + " INTEGER DEFAULT 0");
             }
             EventBus.getDefault().post(ProgressEvent.end());
         }

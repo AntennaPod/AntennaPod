@@ -923,7 +923,7 @@ public class PlaybackService extends Service {
     }
 
     /**
-     * Saves the current position of the media file to the DB
+     * Persists the current position and last played time of the media file.
      *
      * @param updatePlayedDuration true if played_duration should be updated. This applies only to FeedMedia objects
      * @param deltaPlayedDuration  value by which played_duration should be increased.
@@ -948,8 +948,9 @@ public class PlaybackService extends Service {
                 }
             }
             playable.saveCurrentPosition(PreferenceManager
-                            .getDefaultSharedPreferences(getApplicationContext()),
-                    position
+                    .getDefaultSharedPreferences(getApplicationContext()),
+                    position,
+                    System.currentTimeMillis()
             );
         }
     }
