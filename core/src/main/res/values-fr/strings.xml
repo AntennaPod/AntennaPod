@@ -182,7 +182,7 @@
   <string name="authentication_notification_title">Authentification requise</string>
   <string name="authentication_notification_msg">La ressource que vous avez demandé nécessite un nom d\'utilisateur et un mot de passe</string>
   <string name="confirm_mobile_download_dialog_title">Confirmer téléchargement mobile</string>
-  <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d'ajouter seulement l’épisode à la liste ou vous pouvez autoriser temporairement le téléchargement.\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d\'ajouter seulement l\’épisode à la liste ou vous pouvez autoriser temporairement le téléchargement.\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
   <string name="confirm_mobile_download_dialog_message">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVoulez-vous autoriser temporairement le téléchargement?\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Rajouter à la liste</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Permettre temporairement</string>
