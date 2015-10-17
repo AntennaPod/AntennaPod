@@ -1,3 +1,6 @@
+general:
+  artifacts:
+    - app/build/outputs/apk
 machine:
   java:
     version: oraclejdk8
