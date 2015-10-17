@@ -34,7 +34,7 @@ public class RewindAfterPauseUtilTest extends TestCase {
     }
 
     public void testCalculatePositionWithRewindLongRewind() {
-        final int ORIGINAL_POSITION = 10000;
+        final int ORIGINAL_POSITION = 30000;
         long lastPlayed = System.currentTimeMillis() - RewindAfterPauseUtils.ELAPSED_TIME_FOR_LONG_REWIND - 1000;
         int position = RewindAfterPauseUtils.calculatePositionWithRewind(ORIGINAL_POSITION, lastPlayed);
 
