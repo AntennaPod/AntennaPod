@@ -5,7 +5,6 @@
   <string name="feeds_label">피드</string>
   <string name="add_feed_label">팟캐스트 추가</string>
   <string name="podcasts_label">팟캐스트</string>
-  <string name="episodes_label">에피소드</string>
   <string name="new_episodes_label">새 에피소드</string>
   <string name="all_episodes_label">모든 에피소드</string>
   <string name="new_label">신규</string>
@@ -69,7 +68,6 @@
   <string name="retry_label">다시 시도</string>
   <string name="auto_download_label">자동 다운로드에 포함</string>
   <string name="auto_download_apply_to_items_title">예전 에피소드에 적용</string>
-  <string name="auto_download_apply_to_items_message">새로운 &lt;i&gt;자동 다운로드&lt;/I&gt; 설정은 자동으로 새로운 에피소드에 적용됩니다. 예전 에피소드에도 적용하시겠습니까?</string>
   <string name="auto_delete_label">에피소드 자동 삭제\n(전체 설정보다 우선)</string>
   <string name="parallel_downloads_suffix">\u0020동시 다운로드</string>
   <string name="feed_auto_download_global">전체 설정</string>
@@ -229,7 +227,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">플러그인 다운로드</string>
   <string name="no_playback_plugin_title">플러그인을 설치하지 않았습니다</string>
-  <string name="no_playback_plugin_msg">재생 속도 조절이 동작하려면 외부 라이브러리를 설치해야 합니다.\n\nPlay Store에서 무료 플러그인을 다운로드하려면 \'플러그인 다운로드\'를 누르십시오.\n\n이 플러그인을 사용하면서 생기는 문제는 안테나팟의 책임이 아니므로 해당 플러그인의 관리자에게 문의하십시오.</string>
   <string name="set_playback_speed_label">재생 속도</string>
   <!--Empty list labels-->
   <string name="no_items_label">이 목록에 항목이 없습니다.</string>

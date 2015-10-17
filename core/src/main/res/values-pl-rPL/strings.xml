@@ -5,7 +5,6 @@
   <string name="feeds_label">Kanały</string>
   <string name="add_feed_label">Dodaj podcast</string>
   <string name="podcasts_label">PODCASTY</string>
-  <string name="episodes_label">ODCINKI</string>
   <string name="new_episodes_label">Nowe odcinki</string>
   <string name="all_episodes_label">Wszystkie odcinki</string>
   <string name="new_label">Nowy</string>
@@ -178,7 +177,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Pobierz wtyczkę</string>
   <string name="no_playback_plugin_title">Wtyczka nie zainstalowana</string>
-  <string name="no_playback_plugin_msg">Aby odtwarzać ze zmienną prędkością niezbędna jest instalacja biblioteki innej firmy.\n\nDotknij \'Pobierz wtyczkę\' aby pobrać darmową wtyczkę z Play Store\n\nAntennaPod nie odpowiada za problemy wynikłe z używania tej wtyczki, które powinny zostać zgłoszone bezpośrednio autorowi wtyczki.</string>
   <string name="set_playback_speed_label">Prędkość odtwarzania</string>
   <!--Empty list labels-->
   <string name="no_items_label">Brak elementów na tej liście.</string>

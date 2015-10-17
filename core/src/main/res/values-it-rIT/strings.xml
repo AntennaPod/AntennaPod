@@ -5,9 +5,11 @@
   <string name="feeds_label">Feed</string>
   <string name="add_feed_label">Aggiungi un podcast</string>
   <string name="podcasts_label">PODCAST</string>
-  <string name="episodes_label">EPISODI</string>
+  <string name="episodes_label">Episodi</string>
   <string name="new_episodes_label">Episodi nuovi</string>
   <string name="all_episodes_label">Tutti gli episodi</string>
+  <string name="all_episodes_short_label">Tutti</string>
+  <string name="favorite_episodes_label">Preferiti</string>
   <string name="new_label">Nuovo</string>
   <string name="waiting_list_label">Lista d\'attesa</string>
   <string name="settings_label">Impostazioni</string>
@@ -71,6 +73,12 @@
   <string name="feed_auto_download_global">Globale</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
+  <string name="send_label">Invia...</string>
+  <string name="episode_cleanup_never">Mai</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 giorno dopo il completamento</item>
+    <item quantity="other">%d giorni dopo il completamento</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del feed</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -86,8 +94,10 @@
   <string name="remove_feed_label">Rimuovi un podcast</string>
   <string name="share_label">Condividi...</string>
   <string name="share_link_label">Condividi il link al sito</string>
+  <string name="share_link_with_position_label">Condividi il Link con la Posizione</string>
   <string name="share_feed_url_label">Condividi URL del Feed</string>
   <string name="share_item_url_label">Condividi URL dell\'Episodio</string>
+  <string name="share_item_url_with_position_label">Condividi l\'URL dell\'Episodio con la Posizione</string>
   <string name="feed_delete_confirmation_msg">Per favore conferma la cancellazione di questo feed e di TUTTI gli episodi collegati che sono stati precedentemente scaricati.</string>
   <string name="feed_remover_msg">Rimozione feed</string>
   <string name="load_complete_feed">Ricarica il feed completo</string>
@@ -115,6 +125,8 @@
   <string name="add_to_queue_label">Aggiungi alla coda</string>
   <string name="added_to_queue_label">Aggiunto alla coda</string>
   <string name="remove_from_queue_label">Rimuovi dalla coda</string>
+  <string name="add_to_favorite_label">Aggiungi ai preferiti</string>
+  <string name="remove_from_favorite_label">Rimuovi dai preferiti</string>
   <string name="visit_website_label">Visita il sito</string>
   <string name="support_label">Carica questo su Flattr</string>
   <string name="enqueue_all_new">Accoda tutti</string>
@@ -123,6 +135,7 @@
   <string name="activate_auto_download">Attiva il download automatico</string>
   <string name="deactivate_auto_download">Disattiva il download automatico</string>
   <string name="reset_position">Azzera la posizione della riproduzione</string>
+  <string name="removed_item">Oggetto rimosso</string>
   <!--Download messages and labels-->
   <string name="download_successful">successo</string>
   <string name="download_failed">fallito</string>
@@ -216,7 +229,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Scarica plugin</string>
   <string name="no_playback_plugin_title">Plugin non installato</string>
-  <string name="no_playback_plugin_msg">Perché la riproduzione a velocità variabile funzioni, deve venire installata una libreria di terze parti.\n\nPremi \'Scarica un plugin\' scaricare un plugin gratuito dal Play Store.\n\nTutti i problemi rilevati con questo plugin non sono responsabilità di AntennaPod, e devono essere segnalati al proprietario del plugin.</string>
   <string name="set_playback_speed_label">Velocità di riproduzione</string>
   <!--Empty list labels-->
   <string name="no_items_label">Non ci sono oggetti in questo elenco.</string>
@@ -235,6 +247,7 @@
   <string name="playback_pref">Riproduzione</string>
   <string name="network_pref">Rete</string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Disabilita</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Imposta Intervallo</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Abilita il download dei media solo tramite WiFi</string>
   <string name="pref_followQueue_title">Playback continuo</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Download dei media su WiFi</string>

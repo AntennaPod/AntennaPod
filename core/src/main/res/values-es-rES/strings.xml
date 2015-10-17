@@ -4,7 +4,6 @@
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Canales</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">EPISODIOS</string>
   <string name="new_label">Nuevos</string>
   <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Ajustes</string>

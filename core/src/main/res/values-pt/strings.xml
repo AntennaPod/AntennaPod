@@ -8,6 +8,8 @@
   <string name="episodes_label">Episódios</string>
   <string name="new_episodes_label">Novos episódios</string>
   <string name="all_episodes_label">Todos os episódios</string>
+  <string name="all_episodes_short_label">Todos</string>
+  <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Novo</string>
   <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Definições</string>
@@ -29,6 +31,7 @@
   <string name="drawer_preferences">Preferências do menu</string>
   <string name="drawer_feed_order_unplayed_episodes">Ordenar por contador</string>
   <string name="drawer_feed_order_alphabetical">Ordenar alfabeticamente</string>
+  <string name="drawer_feed_order_last_update">Ordenar por data de publicação</string>
   <string name="drawer_feed_counter_new_unplayed">Número de episódios novos ou por reproduzir</string>
   <string name="drawer_feed_counter_new">Número de novos episódios</string>
   <string name="drawer_feed_counter_unplayed">Número de episódios por reproduzir</string>
@@ -75,6 +78,14 @@
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Nunca</string>
+  <string name="send_label">Enviar...</string>
+  <string name="episode_cleanup_never">Nunca</string>
+  <string name="episode_cleanup_queue_removal">Se não estiver na fila</string>
+  <string name="episode_cleanup_after_listening">Ao terminar</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 dia depois de terminar</item>
+    <item quantity="other">%d dias depois de terminar</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL da fonte</string>
   <string name="etxtFeedurlHint">URL da fonte ou sítio web</string>
@@ -124,6 +135,8 @@
   <string name="add_to_queue_label">Adicionar à fila</string>
   <string name="added_to_queue_label">Adicionado à fila</string>
   <string name="remove_from_queue_label">Remover da fila</string>
+  <string name="add_to_favorite_label">Adicionar aos favoritos</string>
+  <string name="remove_from_favorite_label">Remover dos favoritos</string>
   <string name="visit_website_label">Aceder ao sítio web</string>
   <string name="support_label">Flattr</string>
   <string name="enqueue_all_new">Colocar tudo na fila</string>
@@ -132,6 +145,7 @@
   <string name="activate_auto_download">Ativar transferência automática</string>
   <string name="deactivate_auto_download">Desativar transferência automática</string>
   <string name="reset_position">Repor posição de reprodução</string>
+  <string name="removed_item">Item removido</string>
   <!--Download messages and labels-->
   <string name="download_successful">sucesso</string>
   <string name="download_failed">falha</string>
@@ -229,8 +243,9 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Transferir extra</string>
   <string name="no_playback_plugin_title">Extra não instalado</string>
-  <string name="no_playback_plugin_msg">Para que a velocidade variável de reprodução funcione, tem que instalar um biblioteca de terceiros.\n\nClique em Transferir extra para a transferir no Google Play.\n\nQuaisquer erros que ocorram na utilização do extra devem ser reportados diretamente ao seu programador.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Para que a velocidade variável de reprodução funcione, tem que instalar um biblioteca de terceiros ou ativar o reprodutor Sonic [Android 4.1+].\n\nClique em \'Transferir extra\' para a transferir no Google Play.\n\nQuaisquer erros que ocorram na utilização do extra não são da responsabilidade do AntennaPod e devem ser reportados diretamente ao seu programador.</string>
   <string name="set_playback_speed_label">Velocidades de reprodução</string>
+  <string name="enable_sonic">Ativar Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Não existem itens nesta lista</string>
   <string name="no_feeds_label">Ainda não possui quaisquer fontes</string>
@@ -240,6 +255,8 @@
   <string name="queue_label">Fila</string>
   <string name="services_label">Serviços</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Limpeza de episódios</string>
+  <string name="pref_episode_cleanup_summary">Os episódios que não estiverem na fila ou que não sejam favoritos são elegiveis para remoção se necessitar de espaço</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Pausa na reprodução ao remover os auscultadores</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continuar reprodução ao ligar os auscultadores</string>
   <string name="pref_followQueue_sum">Ir para a faixa seguinte ao terminar a reprodução</string>
@@ -247,6 +264,8 @@
   <string name="pref_auto_delete_title">Eliminação automática</string>
   <string name="pref_smart_mark_as_played_sum">Marcar episódios como reproduzidos mesmo que restem alguns segundos de reprodução</string>
   <string name="pref_smart_mark_as_played_title">Marcar como reproduzido (inteligente)</string>
+  <string name="pref_skip_removes_from_queue_sum">Remover episódios da fila quando forem ignorados</string>
+  <string name="pref_skip_removes_from_queue_title">Remover episódios ao ignorar</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalo de atualização ou hora do dia</string>
@@ -275,14 +294,14 @@
   <string name="user_interface_label">Interface</string>
   <string name="pref_set_theme_title">Tema</string>
   <string name="pref_nav_drawer_title">Personalizar menu de navegação</string>
-  <string name="pref_nav_drawer_sum">Personaliza a aparência do menu de navegação</string>
+  <string name="pref_nav_drawer_sum">Personalizar a aparência do menu de navegação</string>
   <string name="pref_nav_drawer_items_title">Alterar elementos do menu</string>
   <string name="pref_nav_drawer_items_sum">Alterar os itens que aparecem no menu de navegação</string>
   <string name="pref_nav_drawer_feed_order_title">Definir ordem de subscrição</string>
   <string name="pref_nav_drawer_feed_order_sum">Alterar a ordem das suas subscrições</string>
-  <string name="pref_nav_drawer_feed_counter_title">Definir contador de subsrições</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Mudar informação mostrada no contador de subscrições</string>
-  <string name="pref_set_theme_sum">Mudar o aspeto do AntennaPod</string>
+  <string name="pref_nav_drawer_feed_counter_title">Definir contador de subscrições</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Alterar a informação mostrada no contador de subscrições</string>
+  <string name="pref_set_theme_sum">Alterar a aparência do AntennaPod</string>
   <string name="pref_automatic_download_title">Transferência automática</string>
   <string name="pref_automatic_download_sum">Configure a transferência automática dos episódios</string>
   <string name="pref_autodl_wifi_filter_title">Ativar filtro Wi-Fi</string>
@@ -301,10 +320,10 @@
   <string name="pref_gpodnet_authenticate_sum">Aceda à sua conta gpodder.net para poder sincronizar as subscrições</string>
   <string name="pref_gpodnet_logout_title">Sair</string>
   <string name="pref_gpodnet_logout_toast">Sessão terminada</string>
-  <string name="pref_gpodnet_setlogin_information_title">Mudar informação de acesso</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Mudar informação de acesso à sua conta gpodder.net</string>
+  <string name="pref_gpodnet_setlogin_information_title">Alterar informação de acesso</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Alterar a informação de acesso à sua conta gpodder.net</string>
   <string name="pref_playback_speed_title">Velocidades de reprodução</string>
-  <string name="pref_playback_speed_sum">Personalize as velocidades de reprodução disponíveis</string>
+  <string name="pref_playback_speed_sum">Personalizar as velocidades de reprodução disponíveis</string>
   <string name="pref_fast_forward">Tempo a avançar</string>
   <string name="pref_rewind">Tempo a recuar</string>
   <string name="pref_gpodnet_sethostname_title">Definir nome de servidor</string>
@@ -313,6 +332,8 @@
   <string name="pref_expandNotify_sum">Expandir sempre a notificação para mostrar os botões de reprodução</string>
   <string name="pref_persistNotify_title">Controlos de reprodução persistentes</string>
   <string name="pref_persistNotify_sum">Manter controlos de notificação e ecrã de bloqueio ao colocar a reprodução em pausa</string>
+  <string name="pref_lockscreen_background_title">Definir fundo do ecrã de bloqueio</string>
+  <string name="pref_lockscreen_background_sum">Define a imagem do episódio como fundo do ecrã de bloqueio. Efeito colateral: também será mostrada em outras aplicações</string>
   <string name="pref_showDownloadReport_title">Mostrar relatório de erros</string>
   <string name="pref_showDownloadReport_sum">Se a transferência falhar, gera um relatório que mostra os detalhes do erro</string>
   <string name="pref_expand_notify_unsupport_toast">As versões Android anteriores à 4.1 não possuem suporte à expansão de notificações</string>
@@ -321,6 +342,9 @@
   <string name="pref_smart_mark_as_played_disabled">Desativada</string>
   <string name="pref_image_cache_size_title">Cache de imagens</string>
   <string name="pref_image_cache_size_sum">O tamanho da cache de imagens</string>
+  <string name="experimental_pref">Experimental</string>
+  <string name="pref_sonic_title">Reprodutor Sonic</string>
+  <string name="pref_sonic_message">Utilizar reprodutor multimédia Sonic como substituto de Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>
   <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>
@@ -335,6 +359,7 @@
   <string name="found_in_title_label">Encontrado no título</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Os ficheiros OPML permitem-lhe mover os podcasts entre aplicações</string>
+  <string name="opml_import_option">Opção %1$d</string>
   <string name="opml_import_explanation_1">Escolha um caminho especifico no sistema local de ficheiros</string>
   <string name="opml_import_explanation_2">Utilize aplicações externas como o Dropbox, Google Drive ou o seu gestor de ficheiros preferido para abrir o ficheiro OPML</string>
   <string name="opml_import_explanation_3">As aplicações como o Google Mail, Dropbox, Google Drive ou gestores de ficheiros podem <i>abrir</i> os ficheiros OPML <i>através</i> do AntennaPod</string>
@@ -361,6 +386,9 @@
   <string name="sleep_timer_label">Temporizador</string>
   <string name="time_left_label">Tempo restante:\u0020</string>
   <string name="time_dialog_invalid_input">Tem que introduzir um número inteiro</string>
+  <string name="timer_about_to_expire_label"><b>Se o temporizador estiver a expirar:</b></string>
+  <string name="shake_to_reset_label">Agitar para repor</string>
+  <string name="timer_vibration_label">Vibrar</string>
   <string name="time_seconds">segundos</string>
   <string name="time_minutes">minutos</string>
   <string name="time_hours">horas</string>
@@ -442,11 +470,11 @@
   <string name="in_queue_label">Episódio está na fila</string>
   <string name="new_episodes_count_label">Número de novos episódios</string>
   <string name="in_progress_episodes_count_label">Número de episódios que já foi iniciada a reprodução</string>
-  <string name="drag_handle_content_description">Arraste para mudar a posição deste item</string>
+  <string name="drag_handle_content_description">Arraste para alterar a posição deste item</string>
   <string name="load_next_page_label">Carregar próxima página</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autenticação</string>
-  <string name="authentication_descr">Altere o seu nome de utilizador e senha para este podcast e seus episódios</string>
+  <string name="authentication_descr">Altere o seu nome de utilizador e palavra-passe para este podcast e seus episódios</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Atualizando base de dados</string>
   <!--AntennaPodSP-->
