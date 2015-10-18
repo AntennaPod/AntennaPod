@@ -169,7 +169,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      */
     public Feed(String url, Date lastUpdate, String title, String username, String password) {
         this(url, lastUpdate, title);
-        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, username, password);
+        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, "GLOBAL", username, password);
     }
 
     public static Feed fromCursor(Cursor cursor) {
