@@ -8,6 +8,7 @@
   <string name="episodes_label">פרקים</string>
   <string name="new_episodes_label">פרקים חדשים</string>
   <string name="all_episodes_label">כל הפרקים</string>
+  <string name="favorite_episodes_label">מועדפים</string>
   <string name="new_label">חדש</string>
   <string name="waiting_list_label">רשימת המתנה</string>
   <string name="settings_label">הגדרות</string>
@@ -37,6 +38,8 @@
   <!--Other-->
   <string name="confirm_label">אישור</string>
   <string name="cancel_label">בטל</string>
+  <string name="yes">כן</string>
+  <string name="no">לא</string>
   <string name="author_label">מחבר</string>
   <string name="language_label">שפה</string>
   <string name="podcast_settings_label">הגדרות</string>
@@ -63,6 +66,7 @@
   <string name="feed_auto_download_global">לפי הגדרה גלובלית</string>
   <string name="feed_auto_download_always">תמיד</string>
   <string name="feed_auto_download_never">אף פעם</string>
+  <string name="episode_cleanup_never">אף פעם</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">כתובת הזנה</string>
   <string name="etxtFeedurlHint">כתובת של הזנה או אתר אינטרנט</string>
@@ -77,6 +81,7 @@
   <string name="mark_all_read_feed_confirmation_msg">אנא אשר שאתה רוצה לסמן את כל פרקים בהזנה זו כנקראים.</string>
   <string name="show_info_label">הצג מידע</string>
   <string name="remove_feed_label">הסר פודקאסט</string>
+  <string name="share_label">שתף...</string>
   <string name="share_link_label">שתף קישור אתר</string>
   <string name="feed_delete_confirmation_msg">אשר מחיקת הזנה זו ואת כל פרקי ההזנה שהורדת.</string>
   <string name="feed_remover_msg">הסר הזנה</string>
@@ -93,7 +98,9 @@
   <string name="marked_as_read_label">סומן כנקרא</string>
   <string name="mark_unread_label">סמן כלא נקרא</string>
   <string name="add_to_queue_label">הוסף לתור</string>
+  <string name="added_to_queue_label">התווסף לתור</string>
   <string name="remove_from_queue_label">הסר מהתור</string>
+  <string name="add_to_favorite_label">התווסף למועדפים</string>
   <string name="visit_website_label">בקר באתר</string>
   <string name="support_label">תרום באמצעות Flattr</string>
   <string name="enqueue_all_new">הכנס לתור הכל</string>
@@ -187,8 +194,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">הורד תוסף</string>
   <string name="no_playback_plugin_title">תוסף לא מותקן</string>
-  <string name="no_playback_plugin_msg">לאפשר השמעה במהירות משתנה, יש להתקין ספריית צד שלישית.\n\nלחץ על \'הורד תוסף\' להוריד תוסף חינמי מחנות Play.\n\n כל בעיה שתמצא בשימוש עם תוסף זה אינה באחריות של אנטנה-פוד ויש לדווחה לבעל התוסף.
- </string>
   <string name="set_playback_speed_label">מהירויות ניגון</string>
   <!--Empty list labels-->
   <string name="no_items_label">אין פריטים ברשימה זו.</string>

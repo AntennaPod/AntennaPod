@@ -8,6 +8,8 @@
   <string name="episodes_label">Епізоди</string>
   <string name="new_episodes_label">Нові епізоди</string>
   <string name="all_episodes_label">Всі епізоди</string>
+  <string name="all_episodes_short_label">Всі</string>
+  <string name="favorite_episodes_label">Улюблені</string>
   <string name="new_label">Нові</string>
   <string name="waiting_list_label">Черга</string>
   <string name="settings_label">Налаштування</string>
@@ -26,9 +28,10 @@
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
   <string name="drawer_close">Сховати меню</string>
-  <string name="drawer_preferences">Настройки навігації</string>
+  <string name="drawer_preferences">Настройки меню навігації</string>
   <string name="drawer_feed_order_unplayed_episodes">Сортувати за лічильником</string>
   <string name="drawer_feed_order_alphabetical">Сортування за абеткою</string>
+  <string name="drawer_feed_order_last_update">Сортувати за датою публікації</string>
   <string name="drawer_feed_counter_new_unplayed">Кількість нових та непрослуханих епізодів</string>
   <string name="drawer_feed_counter_new">Кількість нових епізодів</string>
   <string name="drawer_feed_counter_unplayed">Кількість непрослуханих епізодів</string>
@@ -54,7 +57,7 @@
   <string name="error_label">Помилка</string>
   <string name="error_msg_prefix">Трапилась помілка:</string>
   <string name="refresh_label">Оновити</string>
-  <string name="external_storage_error_msg">Немає доступної флешки. Зовнішній носій потрібен для коректної роботи додатку</string>
+  <string name="external_storage_error_msg">Немає доступної карти пам\'яті. Зовнішній носій потрібен для коректної роботи додатку</string>
   <string name="chapters_label">Глави</string>
   <string name="shownotes_label">Нотатки до епізода</string>
   <string name="description_label">Опис</string>
@@ -69,12 +72,21 @@
   <string name="retry_label">Повторити знову</string>
   <string name="auto_download_label">Включити до автозавантаження</string>
   <string name="auto_download_apply_to_items_title">Застосувати до попередніх епізодів</string>
-  <string name="auto_download_apply_to_items_message">Нове налаштування <i>Автозавантаження</i> буде автоматично застосоване до нових епізодів.\nБажаєте також застосувати його до попередніх епізодів?</string>
+  <string name="auto_download_apply_to_items_message">Нове налаштування <i>Автозагрузка</i> буде автоматично застосоване до нових епізодів.\nБажаєте також застосувати його до тих епізодів що було опубліковано раніше?</string>
   <string name="auto_delete_label">Автоматичне видалення епізода\n(перевизначити глобальне налаштування за замовчуванням)</string>
-  <string name="parallel_downloads_suffix">\u0020паралельні завантаження</string>
+  <string name="parallel_downloads_suffix">\u0020паралельних завантажень</string>
   <string name="feed_auto_download_global">Для всіх</string>
   <string name="feed_auto_download_always">Завжди</string>
   <string name="feed_auto_download_never">Ніколи</string>
+  <string name="send_label">Надіслати...</string>
+  <string name="episode_cleanup_never">Ніколи</string>
+  <string name="episode_cleanup_queue_removal">Якщо не в черзі</string>
+  <string name="episode_cleanup_after_listening">Після закінчення</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 день після закінчення</item>
+    <item quantity="few">%d дні після закінчення</item>
+    <item quantity="other">%d днів після закінчення</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Посилання на канал</string>
   <string name="etxtFeedurlHint">URL канала або сайта</string>
@@ -96,7 +108,7 @@
   <string name="share_feed_url_label">Поділитись посиланням на канал</string>
   <string name="share_item_url_label">Поділитись посиланням на епізод</string>
   <string name="share_item_url_with_position_label">Поділитись посиланням на епізод з позицією</string>
-  <string name="feed_delete_confirmation_msg">Ви впенені що хочете видаліти канал та всі завантажені епізоди</string>
+  <string name="feed_delete_confirmation_msg">Ви впенені що хочете видаліти канал та всі завантажені епізоди?</string>
   <string name="feed_remover_msg">Удаляю канал</string>
   <string name="load_complete_feed">Оновити канал цілком</string>
   <string name="hide_episodes_title">Приховати епізоди</string>
@@ -124,14 +136,17 @@
   <string name="add_to_queue_label">Додати до черги</string>
   <string name="added_to_queue_label">Додано до черги</string>
   <string name="remove_from_queue_label">Видалити з черги</string>
+  <string name="add_to_favorite_label">Додати до улюблених</string>
+  <string name="remove_from_favorite_label">Видалити з улюблених</string>
   <string name="visit_website_label">Відкрити сайт</string>
   <string name="support_label">Підтримати за допомогою Flattr</string>
   <string name="enqueue_all_new">Додати до черги</string>
   <string name="download_all">Завантажити все</string>
   <string name="skip_episode_label">Пропустити епізод</string>
-  <string name="activate_auto_download">Включити автоматичне завантаження</string>
+  <string name="activate_auto_download">Включити автозавантаження</string>
   <string name="deactivate_auto_download">Виключити автозавантаження</string>
   <string name="reset_position">Вернути початкову позицію відтворення</string>
+  <string name="removed_item">Видалено</string>
   <!--Download messages and labels-->
   <string name="download_successful">успішно</string>
   <string name="download_failed">з помилками</string>
@@ -149,7 +164,7 @@
   <string name="download_error_unauthorized">Помилка автентифікації</string>
   <string name="cancel_all_downloads_label">Скасувати всі завантаження</string>
   <string name="download_canceled_msg">Завантаження скасоване</string>
-  <string name="download_canceled_autodownload_enabled_msg">Завантаження скасоване\nВимкнуто <i>автоматичне завантаження</i> для цього елемента</string>
+  <string name="download_canceled_autodownload_enabled_msg">Завантаження скасоване\n<i>Автозавантаження</i> для цього елемента вимкнуто</string>
   <string name="download_report_title">Завантаження завершені з помилками</string>
   <string name="download_report_content_title">Звіт про завантаження</string>
   <string name="download_error_malformed_url">Невірний URL</string>
@@ -180,7 +195,7 @@
   <string name="player_seeking_msg">Шукаю</string>
   <string name="playback_error_server_died">Сервер помер</string>
   <string name="playback_error_unknown">Невідома помилка</string>
-  <string name="no_media_playing_label">Німає що грати</string>
+  <string name="no_media_playing_label">Немає що грати</string>
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Буферізую</string>
   <string name="playbackservice_notification_title">Грає подкаст</string>
@@ -202,10 +217,10 @@
   <string name="clear_queue_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте вилучити всі епізоди з черги.</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Увійти до Flattr</string>
-  <string name="flattr_auth_explanation">Нажміть цю кнопку для початку авторізації. Буде відкрито flattr в браузері, буде запит на дозвіл доступу Antennapod до flattr. Після надання доступу ви повернетесь до цього екрану автоматично</string>
+  <string name="flattr_auth_explanation">Нажміть цю кнопку для початку авторізації. Буде відкрито flattr в браузері, буде запит на дозвіл доступу AntennaPod до flattr. Після надання доступу ви повернетесь до цього екрану автоматично</string>
   <string name="authenticate_label">Ввісти ім\'я та пароль</string>
   <string name="return_home_label">Повернення до початку</string>
-  <string name="flattr_auth_success">Вийшло авторізуватись. Тепер ви можете flattr things за допомогою додатку</string>
+  <string name="flattr_auth_success">Вдала авторизація. Тепер ви можете flattr things за допомогою додатку</string>
   <string name="no_flattr_token_title">Немає flattr token</string>
   <string name="no_flattr_token_notification_msg">Ваш обліковий запис flattr, здається, не підключений до AntennaPod. Натисніть тут для підключення.</string>
   <string name="no_flattr_token_msg">Здається ваш обліковий запис flattr не під\'єднано до AntennaPod. Ви можете або під\'єднати її або відкривати web сторінку в браузері</string>
@@ -227,10 +242,11 @@
   <string name="flattrd_failed_label">AntennaPod flattr failed</string>
   <string name="flattr_retrieving_status">Retrieving flattr\'ed things</string>
   <!--Variable Speed-->
-  <string name="download_plugin_label">Завантажити Plugin</string>
-  <string name="no_playback_plugin_title">Plugin не встановлено</string>
-  <string name="no_playback_plugin_msg">Для керування швидкістю програвання потрібно встановити додаток.\n\nНатисніть \"Завантажити додаток\" для завантаження безкоштовного додатку з Play Store\n\nЯкщо при використанні plugin виникнуть будь які проблеми - це відповідальність автора додатка, а не автора AntennaPod.</string>
+  <string name="download_plugin_label">Завантажити додаток</string>
+  <string name="no_playback_plugin_title">Додаток не встановлено</string>
+  <string name="no_playback_plugin_or_sonic_msg">Для керування швидкістю програвання потрібно встановити додаток або включити експериментальний програвач Sonic [Android 4.1+].\n\nНатисніть \"Завантажити додаток\" для завантаження безкоштовного додатку з Play Store\n\nЯкщо при використанні plugin виникнуть будь які проблеми - це відповідальність автора додатка, а не автора AntennaPod.</string>
   <string name="set_playback_speed_label">Швидкість програвання</string>
+  <string name="enable_sonic">Включити Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Нічого в цьому списку</string>
   <string name="no_feeds_label">Немає підписаних каналів </string>
@@ -240,6 +256,8 @@
   <string name="queue_label">Черга</string>
   <string name="services_label">Сервіси</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Чищення епізодів</string>
+  <string name="pref_episode_cleanup_summary">У разі нестачі пам\'яті видалять епізоди які не знаходяться ні в списку улюблених ні в черзі.</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Зупинятись коли навушники витягнуті</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Поновити відтворення коли навушники повторно під’єднано</string>
   <string name="pref_followQueue_sum">Перейти до наступного епізода в черзі коли поточний закінчено</string>
@@ -247,13 +265,15 @@
   <string name="pref_auto_delete_title">Автовидалення</string>
   <string name="pref_smart_mark_as_played_sum">Позначити епізоди як грані навіть якщо залишилось менш ніж зазначене число секунд до кінця відтворення</string>
   <string name="pref_smart_mark_as_played_title">Розумне позначення граних епізодів</string>
+  <string name="pref_skip_removes_from_queue_sum">Видаляти епізод з черги у разі його пропуска при прослуховуванні</string>
+  <string name="pref_skip_removes_from_queue_title">Видалення епізода пропуском</string>
   <string name="playback_pref">Відтворення</string>
   <string name="network_pref">Мережа</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Частота оновлень або оновлення в зазначений час</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Визначити інтервал часу або визначити час щодня для автооновлення</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Можливо встановити <i>інтервал</i> як то \"кожні 2 години\", встановити <i>час щодня</i> як то \"7:00\" або <i>відклюсити</i> автоматичне оновлення взагалі.\n\n<small>Зверніть увагу: Час оновлення не є точним. Можливі короткі затримки.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Можливо встановити <i>інтервал</i> як то \"кожні 2 години\", встановити <i>час щодня</i> як то \"7:00\" або <i>відключити</i> автоматичне оновлення взагалі.\n\n<small>Зверніть увагу: Час оновлення не є точним. Можливі короткі затримки.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Вимкнути</string>
-  <string name="pref_autoUpdateIntervallOrTime_Interval">Встановити інтервал</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Інтервал</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Встановити час щодня</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Завантажувати тільки через Wifi</string>
   <string name="pref_followQueue_title">Грати безперервно</string>
@@ -274,21 +294,21 @@
   <string name="pref_auto_flattr_sum">Налаштування автоматичного заохочення авторів через сервіс flattr</string>
   <string name="user_interface_label">Вигляд</string>
   <string name="pref_set_theme_title">Обрати тему</string>
-  <string name="pref_nav_drawer_title">Налаштувати панель навігації</string>
-  <string name="pref_nav_drawer_sum">Налаштувати вигляд панелі навігації</string>
-  <string name="pref_nav_drawer_items_title">Змінити настройки навігації</string>
-  <string name="pref_nav_drawer_items_sum">Вибрати елементи для використання у навігації</string>
+  <string name="pref_nav_drawer_title">Налаштувати меню навігації</string>
+  <string name="pref_nav_drawer_sum">Налаштувати вигляд меню навігації</string>
+  <string name="pref_nav_drawer_items_title">Налаштувати зміст меню навігації</string>
+  <string name="pref_nav_drawer_items_sum">Вибрати елементи які мають бути у меню навігації</string>
   <string name="pref_nav_drawer_feed_order_title">Встановити порядок підписок</string>
   <string name="pref_nav_drawer_feed_order_sum">Змінити порядок ваших підписок</string>
-  <string name="pref_nav_drawer_feed_counter_title">Встановити лічильник підписок</string>
+  <string name="pref_nav_drawer_feed_counter_title">Налаштувати лічильник підписок</string>
   <string name="pref_nav_drawer_feed_counter_sum">Змінити інформацію яку відображає лічильник підписок</string>
   <string name="pref_set_theme_sum">Змінити вигляд AntennaPod</string>
-  <string name="pref_automatic_download_title">Автоматичне завантаження</string>
-  <string name="pref_automatic_download_sum">Налаштування автоматичного завантаження епізодів</string>
+  <string name="pref_automatic_download_title">Автозавантаження</string>
+  <string name="pref_automatic_download_sum">Налаштування автозавантаження епізодів</string>
   <string name="pref_autodl_wifi_filter_title">Увімкнути фільтр Wi-Fi</string>
-  <string name="pref_autodl_wifi_filter_sum">Дозволити автоматичне завантаження тільки в цих Wi-Fi мережах</string>
+  <string name="pref_autodl_wifi_filter_sum">Дозволити автозавантаження тільки в цих Wi-Fi мережах</string>
   <string name="pref_automatic_download_on_battery_title">Завантаження без зарядного пристрою</string>
-  <string name="pref_automatic_download_on_battery_sum">Дозволити завантаження коли зарядний пристрій не підключено</string>
+  <string name="pref_automatic_download_on_battery_sum">Дозволити автозавантаження коли зарядний пристрій не підключено</string>
   <string name="pref_parallel_downloads_title">Паралельні завантаження</string>
   <string name="pref_episode_cache_title">Кеш епізодів</string>
   <string name="pref_theme_title_light">Світла</string>
@@ -312,7 +332,9 @@
   <string name="pref_expandNotify_title">Розгорнути повідомлення</string>
   <string name="pref_expandNotify_sum">Завжди розгортати повідомлення, щоб показати кнопки керування.</string>
   <string name="pref_persistNotify_title">Завжди показувати елементи керування відтворенням</string>
-  <string name="pref_persistNotify_sum">Показувати повідомлення та елементи керування на lockscreen в режимі паузи.</string>
+  <string name="pref_persistNotify_sum">Показувати повідомлення та елементи керування на екрані блокування в режимі паузи.</string>
+  <string name="pref_lockscreen_background_title">Змінювати фон екрана блокування</string>
+  <string name="pref_lockscreen_background_sum">Встановити картинку поточного епізода як фон екрана блокування. Побічний ефект - це зображення буде також видно в інших додатках.</string>
   <string name="pref_showDownloadReport_title">Показати звіт про завантаження</string>
   <string name="pref_showDownloadReport_sum">У разі помилки при завантаженні створити детальний звіт про помилку.</string>
   <string name="pref_expand_notify_unsupport_toast">Android до версії 4.1 не підтримує розширені повідомлення.</string>
@@ -321,6 +343,9 @@
   <string name="pref_smart_mark_as_played_disabled">Вимкнено</string>
   <string name="pref_image_cache_size_title">Розмір кеша зображень</string>
   <string name="pref_image_cache_size_sum">Розмір дискового кеша для зображень.</string>
+  <string name="experimental_pref">Експериментальні</string>
+  <string name="pref_sonic_title">Програвач Sonic</string>
+  <string name="pref_sonic_message">Використовивать вбудований програвач sonic media player замість Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -335,6 +360,7 @@
   <string name="found_in_title_label">Знайдено у назві</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML файли дозволяют вам перенести подкасти з однієї программи до іншої</string>
+  <string name="opml_import_option">Варіант %1$d</string>
   <string name="opml_import_explanation_1">Виберіть локальну папку.</string>
   <string name="opml_import_explanation_2">Вибрати OPML файл за допомогою таких додатків як Dropbox, Google Drive або файловий менеджер.</string>
   <string name="opml_import_explanation_3">Багато додатків таких як Google Mail, Dropbox, Google Drive та більшість файлових менеджерів здатні <i>відкрити</i> OPML файли <i>для</i> AntennaPod.</string>
@@ -361,6 +387,9 @@
   <string name="sleep_timer_label">Таймер сну</string>
   <string name="time_left_label">Залишилось:\u0020</string>
   <string name="time_dialog_invalid_input">Помилка вводу, час повинен бути цілим</string>
+  <string name="timer_about_to_expire_label"><b>Коли таймер добігає кінця:</b></string>
+  <string name="shake_to_reset_label">Струснути для перезапуска таймера</string>
+  <string name="timer_vibration_label">Вібрувати</string>
   <string name="time_seconds">секунд</string>
   <string name="time_minutes">хвилин</string>
   <string name="time_hours">годин</string>

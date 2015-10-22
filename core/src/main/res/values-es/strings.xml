@@ -5,9 +5,11 @@
   <string name="feeds_label">Canales</string>
   <string name="add_feed_label">Añadir podcast</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">EPISODIOS</string>
+  <string name="episodes_label">Episodios</string>
   <string name="new_episodes_label">Episodios nuevos</string>
   <string name="all_episodes_label">Todos los episodios</string>
+  <string name="all_episodes_short_label">Todos</string>
+  <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Nuevos</string>
   <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Ajustes</string>
@@ -29,6 +31,7 @@
   <string name="drawer_preferences">Preferencias del cajón</string>
   <string name="drawer_feed_order_unplayed_episodes">Ordenar por cuenta</string>
   <string name="drawer_feed_order_alphabetical">Ordenar alfabéticamente</string>
+  <string name="drawer_feed_order_last_update">Ordenar por fecha de publicación</string>
   <string name="drawer_feed_counter_new_unplayed">Cantidad de episodios nuevos y no escuchados</string>
   <string name="drawer_feed_counter_new">Cantidad de episodios nuevos</string>
   <string name="drawer_feed_counter_unplayed">Cantidad de episodios no escuchados</string>
@@ -75,6 +78,14 @@
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Siempre</string>
   <string name="feed_auto_download_never">Nunca</string>
+  <string name="send_label">Enviar...</string>
+  <string name="episode_cleanup_never">Nunca</string>
+  <string name="episode_cleanup_queue_removal">Cuando no esté en cola</string>
+  <string name="episode_cleanup_after_listening">Después de acabar</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 día después de acabar</item>
+    <item quantity="other">%d días después de acabar</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
   <string name="etxtFeedurlHint">URL del canal o del sitio web</string>
@@ -124,6 +135,8 @@
   <string name="add_to_queue_label">Añadir a la cola</string>
   <string name="added_to_queue_label">Añadido a la cola</string>
   <string name="remove_from_queue_label">Quitar de la cola</string>
+  <string name="add_to_favorite_label">Agregar a Favoritos</string>
+  <string name="remove_from_favorite_label">Eliminar de Favoritos</string>
   <string name="visit_website_label">Visitar el sitio web</string>
   <string name="support_label">Añadir a Flattr</string>
   <string name="enqueue_all_new">Ponerlos todos en cola</string>
@@ -132,6 +145,7 @@
   <string name="activate_auto_download">Activar descarga automática</string>
   <string name="deactivate_auto_download">Desactivar descarga automática</string>
   <string name="reset_position">Resetear posición de reproducción</string>
+  <string name="removed_item">Elemento elminado</string>
   <!--Download messages and labels-->
   <string name="download_successful">exitoso</string>
   <string name="download_failed">fallido</string>
@@ -229,8 +243,9 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Descargar complemento</string>
   <string name="no_playback_plugin_title">Complemento no instalado</string>
-  <string name="no_playback_plugin_msg">Para que funcione la reproducción a velocidad variable, es necesaria una librería de terceros.\n\nPulsa «Descargar plugin» para descargar un plugin gratuito desde el Play Store\n\nCualquier problema relacionado con este plugin no es responsabilidad de AntennaPod y deberían ser reportados al autor del plugin.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Para que funcione la reproducción a velocidad variable, es necesaria una librería de terceros o habilitar el reproductor experimental Sonic Player [Android 4.1+].\n\nPulsa «Descargar plugin» para descargar un plugin gratuito desde el Play Store\n\nCualquier problema relacionado con este plugin no es responsabilidad de AntennaPod y deberían ser reportados al autor del plugin.</string>
   <string name="set_playback_speed_label">Velocidades de reproducción</string>
+  <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Esta lista no tiene elementos.</string>
   <string name="no_feeds_label">No se ha suscrito a ningún canal.</string>
@@ -240,6 +255,8 @@
   <string name="queue_label">Cola</string>
   <string name="services_label">Servicios</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Limpieza de episodios</string>
+  <string name="pref_episode_cleanup_summary">Los episodios que no están en la cola ni son favoritos serían candidatos a eliminarse si hace falta espacio</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Pausar la reproducción al desconectar los auriculares</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reanudar reproducción cuando se reconecten los auriculares</string>
   <string name="pref_followQueue_sum">Saltar al siguiente elemento de la cola al acabar la reproducción</string>
@@ -247,6 +264,8 @@
   <string name="pref_auto_delete_title">Eliminar automáticamente</string>
   <string name="pref_smart_mark_as_played_sum">Marcar episodios como escuchados incluso si todavía quedan unos segundos por escuchar</string>
   <string name="pref_smart_mark_as_played_title">Marcar como escuchado inteligente</string>
+  <string name="pref_skip_removes_from_queue_sum">Eliminar episodios de la cola cuando al saltarlos</string>
+  <string name="pref_skip_removes_from_queue_title">Saltar elimina el episodio</string>
   <string name="playback_pref">Reproducción</string>
   <string name="network_pref">Red</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalo de actualización u hora del día</string>
@@ -313,6 +332,8 @@
   <string name="pref_expandNotify_sum">Expandir siempre la notificación para mostrar los botones de reproducción</string>
   <string name="pref_persistNotify_title">Controles de reproducción persistentes</string>
   <string name="pref_persistNotify_sum">Mantener la notificación y controles en pantalla de bloqueo cuando se pausa.</string>
+  <string name="pref_lockscreen_background_title">Establecer fondo de pantalla de bloqueo</string>
+  <string name="pref_lockscreen_background_sum">Establecer el fondo de pantalla de bloqueo desde la imagen del episodio. Como efecto lateral, esto también mostrará la imagen en aplicaciones de terceros.</string>
   <string name="pref_showDownloadReport_title">Mostrar informe de descarga</string>
   <string name="pref_showDownloadReport_sum">Si la descarga falla, generar un informe con los detalles del fallo</string>
   <string name="pref_expand_notify_unsupport_toast">Las versiones de Android anteriores a la 4.1 no soportan notificaciones expandidas</string>
@@ -321,6 +342,9 @@
   <string name="pref_smart_mark_as_played_disabled">Deshabilitado</string>
   <string name="pref_image_cache_size_title">Tamaño de la caché de imágenes</string>
   <string name="pref_image_cache_size_sum">Tamaño de la caché en disco para imágenes.</string>
+  <string name="experimental_pref">Experimental</string>
+  <string name="pref_sonic_title">Sonic media player</string>
+  <string name="pref_sonic_message">Usar sonic media player integrado como sustitución de Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Hacer Flattr del episodio en cuanto se haya reproducido el %d por ciento</string>
@@ -335,6 +359,7 @@
   <string name="found_in_title_label">Encontrado en el título</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Los archivos OPML le permiten migrar sus podcasts de una aplicación a otra.</string>
+  <string name="opml_import_option">Opción %1$d</string>
   <string name="opml_import_explanation_1">Elegir un una ruta del sistema de ficheros local.</string>
   <string name="opml_import_explanation_2">Usar una aplicación externa tipo Dropbox, Google Drive or su gestor de ficheros favorito para abrir un archivo OPML.</string>
   <string name="opml_import_explanation_3">Muchas aplicaciones como Google Mail, Dropbox, Google Drive y la mayoría de gestores de ficheros pueden <i>abrir</i> archivos OPML <i>con</i> AntennaPod.</string>
@@ -361,6 +386,9 @@
   <string name="sleep_timer_label">Temporizador</string>
   <string name="time_left_label">Tiempo restante:\u0020</string>
   <string name="time_dialog_invalid_input">Entrada no válida, el tiempo debe ser un entero</string>
+  <string name="timer_about_to_expire_label"><b>Cuando el temporizador vaya a expirara:</b></string>
+  <string name="shake_to_reset_label">Agitar para reiniciar temporizador</string>
+  <string name="timer_vibration_label">Vibrar</string>
   <string name="time_seconds">segundos</string>
   <string name="time_minutes">minutos</string>
   <string name="time_hours">horas</string>

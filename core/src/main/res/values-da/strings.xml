@@ -5,7 +5,6 @@
   <string name="feeds_label">Feeds</string>
   <string name="add_feed_label">Tilføj podcast</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">EPISODER</string>
   <string name="new_episodes_label">Nye episoder</string>
   <string name="all_episodes_label">Alle episoder</string>
   <string name="new_label">Nye</string>
@@ -178,7 +177,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent Plugin</string>
   <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
-  <string name="no_playback_plugin_msg">For at variabel afspilningshastighed virker skal der installeres et 3. part bibliotek.\n\nTap \'Download Plugin\' for at downloade et gratis plugin fra Play Store\n\nHvis der findes nogen problemer med dette plugin, så er det ikke AntennaPods ansvar, og problemet bør reporteres til ejeren af pluginet. </string>
   <string name="set_playback_speed_label">Afspilningshastigheder</string>
   <!--Empty list labels-->
   <string name="no_items_label">Der er ingen emner i denne liste.</string>

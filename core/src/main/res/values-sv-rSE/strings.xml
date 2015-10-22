@@ -5,7 +5,6 @@
   <string name="feeds_label">Flöden</string>
   <string name="add_feed_label">Lägg till Podcast</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">EPISODER</string>
   <string name="new_episodes_label">Nya Episoder</string>
   <string name="all_episodes_label">Alla Episoder</string>
   <string name="new_label">Ny</string>
@@ -69,7 +68,6 @@
   <string name="retry_label">Försök igen</string>
   <string name="auto_download_label">Inkludera i automatiska nedladdningar</string>
   <string name="auto_download_apply_to_items_title">Applicera på Föregående Episoder</string>
-  <string name="auto_download_apply_to_items_message">Den nya inställningen <i>Automatisk Nedladdning</i> kommer automatiskt att appliceras på nya episoder.\nVill du också applicera det på tidigare episoder?</string>
   <string name="auto_delete_label">Ta automatiskt bort episod\n(åsidosätter global standardinställning)</string>
   <string name="parallel_downloads_suffix">\u0020parallella nedladdningar</string>
   <string name="feed_auto_download_global">Global</string>
@@ -229,7 +227,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Ladda ner tillägg</string>
   <string name="no_playback_plugin_title">Tillägg ej installerat</string>
-  <string name="no_playback_plugin_msg">För att variabel uppspelningshastighet skall fungera måste ett tredjepartstillägg installeras.\n\nTryck på \'Ladda ner tillägg\' för att ladda ner ett gratis tillägg från Play Store.\n\nAntennaPod ansvarar inte för problem med detta tillägg och de bör rapporteras till tilläggets skapare.</string>
   <string name="set_playback_speed_label">Uppspelningshastigheter</string>
   <!--Empty list labels-->
   <string name="no_items_label">Det finns inget i denna lista.</string>

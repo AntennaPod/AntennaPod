@@ -5,9 +5,11 @@
   <string name="feeds_label">Kanály</string>
   <string name="add_feed_label">Přidat podcast</string>
   <string name="podcasts_label">PODCASTY</string>
-  <string name="episodes_label">EPIZODY</string>
+  <string name="episodes_label">Epizody</string>
   <string name="new_episodes_label">Nové epizody</string>
   <string name="all_episodes_label">Všechny epizody</string>
+  <string name="all_episodes_short_label">Vše</string>
+  <string name="favorite_episodes_label">Oblíbené</string>
   <string name="new_label">Nový</string>
   <string name="waiting_list_label">Seznam nepřečtených</string>
   <string name="settings_label">Nastavení</string>
@@ -29,6 +31,7 @@
   <string name="drawer_preferences">Nastavení panelu</string>
   <string name="drawer_feed_order_unplayed_episodes">Řadit dle počtu</string>
   <string name="drawer_feed_order_alphabetical">Řadit abecedně</string>
+  <string name="drawer_feed_order_last_update">Řadit dle data zveřejnění</string>
   <string name="drawer_feed_counter_new_unplayed">Počet nových a nepřehraných epizod</string>
   <string name="drawer_feed_counter_new">Počet nových epizod</string>
   <string name="drawer_feed_counter_unplayed">Počet nepřehraných epizod</string>
@@ -70,12 +73,21 @@
   <string name="retry_label">Zkusit znovu</string>
   <string name="auto_download_label">Zahrnout do automaticky stahovaných</string>
   <string name="auto_download_apply_to_items_title">Použít na předchozí epizody</string>
-  <string name="auto_download_apply_to_items_message">Nová funkce <i>auto stahování</i> bude automaticky použita na nové epizody.\nChcete ji také použít na předchozí epizody?</string>
+  <string name="auto_download_apply_to_items_message">Nové nastavení <i>automatického stahování</i> bude použito pro nové epizody.\nChcete ho použít také na epizody zveřejněné dříve?</string>
   <string name="auto_delete_label">Automaticky smazat epizodu\n(přeskočit globální nastavení)</string>
   <string name="parallel_downloads_suffix">\u0020paralelních stahování</string>
   <string name="feed_auto_download_global">Globální</string>
   <string name="feed_auto_download_always">Vždy</string>
   <string name="feed_auto_download_never">Nikdy</string>
+  <string name="send_label">Odeslat...</string>
+  <string name="episode_cleanup_never">Nikdy</string>
+  <string name="episode_cleanup_queue_removal">Pokud není ve frontě</string>
+  <string name="episode_cleanup_after_listening">Po dokončení</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 den po dokončení</item>
+    <item quantity="few">%d dny po dokončení</item>
+    <item quantity="other">%d dnů po dokončení</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL kanálu</string>
   <string name="etxtFeedurlHint">URL nebo webová stránka kanálu</string>
@@ -125,6 +137,8 @@
   <string name="add_to_queue_label">Přidat do fronty</string>
   <string name="added_to_queue_label">Přidáno do fronty</string>
   <string name="remove_from_queue_label">Odebrat z fronty</string>
+  <string name="add_to_favorite_label">Přidat k oblíbeným</string>
+  <string name="remove_from_favorite_label">Odebrat z obíbených</string>
   <string name="visit_website_label">Navštívit stránku</string>
   <string name="support_label">Flattrovat</string>
   <string name="enqueue_all_new">Vše do fronty</string>
@@ -133,6 +147,7 @@
   <string name="activate_auto_download">Aktivovat automatické stahování</string>
   <string name="deactivate_auto_download">Deaktivovat automatické stahování</string>
   <string name="reset_position">Vymazat pozici přehrávání</string>
+  <string name="removed_item">Položka odebrána</string>
   <!--Download messages and labels-->
   <string name="download_successful">úspěšné</string>
   <string name="download_failed">selhalo</string>
@@ -228,10 +243,11 @@
   <string name="flattrd_failed_label">AntennaPod flattr selhal</string>
   <string name="flattr_retrieving_status">Získávání flattrovaných příspěvků</string>
   <!--Variable Speed-->
-  <string name="download_plugin_label">Stáhnout plugin</string>
-  <string name="no_playback_plugin_title">Plugin není nainstalován</string>
-  <string name="no_playback_plugin_msg">Pro možnost měnit rychlost přehrávání musí být nainstalovaná knihovna třetí strany.\n\nKlikněte na \"Stáhnout Plugin\" ke stažení pluginu z Obchodu Play.\n\nAntennaPod nenese žádnou odpovědnost za jakékoliv problémy způsobené tímto pluginem.</string>
+  <string name="download_plugin_label">Stáhnout modul</string>
+  <string name="no_playback_plugin_title">Modul není nainstalován</string>
+  <string name="no_playback_plugin_or_sonic_msg">Pro možnost měnit rychlost přehrávání musí být nainstalovaná knihovna třetí strany nebo povolen experimentální přehrávač Sonic [Android 4.1+].\n\nKlikněte na \"Stáhnout modul\" k jeho stažení z Obchodu Play.\n\nAntennaPod nenese žádnou odpovědnost za jakékoliv problémy způsobené tímto modulem. Chyby hlaste jeho vývojářům.</string>
   <string name="set_playback_speed_label">Rychlosti přehrávání</string>
+  <string name="enable_sonic">Povolit Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Žádné položky v seznamu.</string>
   <string name="no_feeds_label">Zatím nebyly přidány žádné kanály.</string>
@@ -241,6 +257,8 @@
   <string name="queue_label">Fronta</string>
   <string name="services_label">Služby</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Vyčistit epizody</string>
+  <string name="pref_episode_cleanup_summary">Epizody které nejsou ve frontě a nejsou označeny jako oblíbené lze smazat pro uvolnění místa</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Při odpojení sluchátek pozastavit přehrávání.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Pokračovat v přehrávání po připojení sluchátek</string>
   <string name="pref_followQueue_sum">Po přehrání položky z fronty přejít automaticky na další</string>
@@ -248,6 +266,8 @@
   <string name="pref_auto_delete_title">Automatické mazání</string>
   <string name="pref_smart_mark_as_played_sum">Označit epizody jako poslechnuté i pokud ještě zbývá určitý počet sekund přehrávání do jejich konce</string>
   <string name="pref_smart_mark_as_played_title">Chytré označování jako poslechnuté</string>
+  <string name="pref_skip_removes_from_queue_sum">Odstranit epizody z fronty při jejich přeskočení</string>
+  <string name="pref_skip_removes_from_queue_title">Přeskočení odstraní epizody</string>
   <string name="playback_pref">Přehrávání</string>
   <string name="network_pref">Síť</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Aktualizovat interval nebo čas v průběhu dne</string>
@@ -314,6 +334,8 @@
   <string name="pref_expandNotify_sum">Vždy zobrazovat tlačítka pro přehrávání v upozornění.</string>
   <string name="pref_persistNotify_title">Pevné ovládání přehrávání</string>
   <string name="pref_persistNotify_sum">Zachovat upozornění a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
+  <string name="pref_lockscreen_background_title">Nastavit pozadí uzamčené obrazovky</string>
+  <string name="pref_lockscreen_background_sum">Nastavit pozadí uzamčené obrazovky na obrázek aktuální epizody. Jako vedlejší efekt zobrazí toto nastavení obrázek i v aplikacích třetích stran. </string>
   <string name="pref_showDownloadReport_title">Zobrazit report stahování</string>
   <string name="pref_showDownloadReport_sum">Pokud selže stahování, vygenerovat report zobrazující detaily o chybě.</string>
   <string name="pref_expand_notify_unsupport_toast">Verze Androidu nižší než 4.1 nepodporují rozšířená upozornění.</string>
@@ -322,6 +344,9 @@
   <string name="pref_smart_mark_as_played_disabled">Vypnuto</string>
   <string name="pref_image_cache_size_title">Velikost odkládací paměti obrázků</string>
   <string name="pref_image_cache_size_sum">Velikost diskové paměti pro obrázky.</string>
+  <string name="experimental_pref">Experimentální</string>
+  <string name="pref_sonic_title">Přehrávač médií Sonic</string>
+  <string name="pref_sonic_message">Použít vestavěný přehrávač médií Sonic, jako náhradu za Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Povolit automatické flattrování</string>
   <string name="auto_flattr_after_percent">Flattrovat díl jakmile bude odehráno %d procent</string>
@@ -336,6 +361,7 @@
   <string name="found_in_title_label">Nalezeno v názvu</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML soubory umožňují přenést vaše podcasty z jednoho přehrávače na jiný.</string>
+  <string name="opml_import_option">Možnost %1$d</string>
   <string name="opml_import_explanation_1">Vybrat umístění v místním souborovém systému.</string>
   <string name="opml_import_explanation_2">Použít externí aplikaci jako třeba Dropbox, Google Drive nebo oblíbeného správce souborů k otevření OPML souboru.</string>
   <string name="opml_import_explanation_3">Mnoho aplikací jako třeba Google Mail, Dropbox, Google Drive a většina správců souborů umí <i>otevřít</i> OPML soubory <i>v aplikaci</i> AntennaPod.</string>
@@ -362,6 +388,9 @@
   <string name="sleep_timer_label">Časovač vypnutí</string>
   <string name="time_left_label">Zbývající čas:\u0020</string>
   <string name="time_dialog_invalid_input">Neplatný vstup, musí být zadáno celé číslo</string>
+  <string name="timer_about_to_expire_label"><b>Těsně před vypršením časovače:</b></string>
+  <string name="shake_to_reset_label">Potřesením vynulovat časovač</string>
+  <string name="timer_vibration_label">Vibrovat</string>
   <string name="time_seconds">sekund</string>
   <string name="time_minutes">minut</string>
   <string name="time_hours">hodin</string>

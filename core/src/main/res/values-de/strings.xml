@@ -5,9 +5,11 @@
   <string name="feeds_label">Feeds</string>
   <string name="add_feed_label">Podcast hinzufügen</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">EPISODEN</string>
+  <string name="episodes_label">Episoden</string>
   <string name="new_episodes_label">Neue Episoden</string>
   <string name="all_episodes_label">Alle Episoden</string>
+  <string name="all_episodes_short_label">Alle</string>
+  <string name="favorite_episodes_label">Favoriten</string>
   <string name="new_label">Neu</string>
   <string name="waiting_list_label">Warteliste</string>
   <string name="settings_label">Einstellungen</string>
@@ -29,6 +31,7 @@
   <string name="drawer_preferences">Seitenleisten-Einstellungen</string>
   <string name="drawer_feed_order_unplayed_episodes">Sortieren nach Zähler</string>
   <string name="drawer_feed_order_alphabetical">Alphabetisch sortieren</string>
+  <string name="drawer_feed_order_last_update">Sortiere nach Veröffentlichungsdatum</string>
   <string name="drawer_feed_counter_new_unplayed">Anzahl neuer und ungespielter Episoden</string>
   <string name="drawer_feed_counter_new">Anzahl neuer Episoden</string>
   <string name="drawer_feed_counter_unplayed">Anzahl ungespielter Episoden</string>
@@ -69,12 +72,20 @@
   <string name="retry_label">Erneut versuchen</string>
   <string name="auto_download_label">Automatisch herunterladen</string>
   <string name="auto_download_apply_to_items_title">Auf bisherige Episoden anwenden</string>
-  <string name="auto_download_apply_to_items_message">Die neue Einstellung zum <i>Automatischen Download</i> wird automatisch auf neue Episoden angewandt.\nMöchtest du sie auch auf die bisherige Episoden anwenden?</string>
+  <string name="auto_download_apply_to_items_message">Die neue <i>Auto-Download</i>-Einstellung wird automatisch auf neue Episoden angewandt.\nMöchtest du sie auch auf schon veröffentlichte Episoden anwenden?</string>
   <string name="auto_delete_label">Episoden automatisch löschen\n(überschreibt globale Vorgabe)</string>
   <string name="parallel_downloads_suffix">\u0020gleichzeitige Downloads</string>
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Immer</string>
   <string name="feed_auto_download_never">Nie</string>
+  <string name="send_label">Senden...</string>
+  <string name="episode_cleanup_never">Nie</string>
+  <string name="episode_cleanup_queue_removal">Wenn nicht in der Abspielliste</string>
+  <string name="episode_cleanup_after_listening">wenn fertig gespielt gespielt</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 Tag nachdem fertig gespielt</item>
+    <item quantity="other">%d Tage nachdem fertig gespielt</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
   <string name="etxtFeedurlHint">URL des Feeds oder der Webseite</string>
@@ -124,6 +135,8 @@
   <string name="add_to_queue_label">Zur Abspielliste hinzufügen</string>
   <string name="added_to_queue_label">Zur Abspielliste hinzugefügt</string>
   <string name="remove_from_queue_label">Aus der Abspielliste entfernen</string>
+  <string name="add_to_favorite_label">Zu Favoriten hinzufügen</string>
+  <string name="remove_from_favorite_label">Aus Favoriten entfernen</string>
   <string name="visit_website_label">Webseite besuchen</string>
   <string name="support_label">Flattrn</string>
   <string name="enqueue_all_new">Alle zur Abspielliste hinzufügen</string>
@@ -132,6 +145,7 @@
   <string name="activate_auto_download">Automatischen Download aktivieren</string>
   <string name="deactivate_auto_download">Automatischen Download deaktivieren</string>
   <string name="reset_position">Wiedergabe-Position zurücksetzen</string>
+  <string name="removed_item">Element entfernt</string>
   <!--Download messages and labels-->
   <string name="download_successful">erfolgreich</string>
   <string name="download_failed">fehlgeschlagen</string>
@@ -229,8 +243,9 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Plugin herunterladen</string>
   <string name="no_playback_plugin_title">Plugin nicht installiert</string>
-  <string name="no_playback_plugin_msg">Um die Wiedergabegeschwindigkeit zu verändern, muss eine Drittanbieter-Bibliothek heruntegeladen werden. Drücke auf \"Plugin herunterladen\", um ein kostenloses Plugin aus dem Play Store zu installieren. Probleme, die bei der Benutzung des Plugins auftreten, sollten dem Entwickler des Plugins gemeldet werden.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Damit die variable Wiedergabegeschwindigkeit funktioniert, musst du eine Drittanbieterbibliothek oder den experimentellen Sonic Player [Android 4.1+] heruntegeladen.\n\n Drücke \"Plugin herunterladen\", um ein kostenloses Plugin aus dem Play Store zu installieren.\n\nProbleme, die bei der Benutzung des Plugins auftreten, liegen nicht im Verantwortungsbereich von AntennaPod, und sollten dem Entwickler des Plugins gemeldet werden.</string>
   <string name="set_playback_speed_label">Wiedergabegeschwindigkeiten</string>
+  <string name="enable_sonic">Sonic aktivieren</string>
   <!--Empty list labels-->
   <string name="no_items_label">Es sind keine Einträge in dieser Liste.</string>
   <string name="no_feeds_label">Du hast noch keine Feeds abonniert.</string>
@@ -240,6 +255,8 @@
   <string name="queue_label">Abspielliste</string>
   <string name="services_label">Dienste</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Episodenaufräumer</string>
+  <string name="pref_episode_cleanup_summary">Episoden, die nicht in der Abspielliste und nicht favorisiert sind, werden zum Aufräumen freigegeben, wenn Speicherplatz benötigt wird</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Pausiere die Wiedergabe, wenn der Kopfhörer entfernt worden ist.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder reingesteckt werden</string>
   <string name="pref_followQueue_sum">Springe zur nächsten Episode, wenn die vorherige Episode endet</string>
@@ -247,6 +264,8 @@
   <string name="pref_auto_delete_title">Automatisches Löschen</string>
   <string name="pref_smart_mark_as_played_sum">Episoden werden als gespielt markiert, wenn weniger als eine bestimmte Anzahl Sekunden Restspielzeit übrig sind</string>
   <string name="pref_smart_mark_as_played_title">Schlaues als gespielt markieren</string>
+  <string name="pref_skip_removes_from_queue_sum">Epsoden aus der Abspielliste entfernen, wenn sie übersprungen werden</string>
+  <string name="pref_skip_removes_from_queue_title">Überspringen entfernt Episoden</string>
   <string name="playback_pref">Wiedergabe</string>
   <string name="network_pref">Netzwerk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Aktualisierungsintervall oder -tageszeit</string>
@@ -313,6 +332,8 @@
   <string name="pref_expandNotify_sum">Erweiterte Wiedergabebenachrichtigung mit Abspiel-, Pause- und Stop-Knöpfen anzeigen.</string>
   <string name="pref_persistNotify_title">Persistente Wiedergabesteurung</string>
   <string name="pref_persistNotify_sum">Zeige Wiedergabebedienelemente in der Benachrichtigung und im Lockscreen an, während die Wiedergabe pausiert ist.</string>
+  <string name="pref_lockscreen_background_title">Lockscreen-Hintergrund einstellen</string>
+  <string name="pref_lockscreen_background_sum">Verwende das aktuelle Episodenbild als Lockscreen-Hintergrund. Es wird als Nebeneffekt auch in anderen Apps gezeigt.</string>
   <string name="pref_showDownloadReport_title">Zeige Download-Bericht</string>
   <string name="pref_showDownloadReport_sum">Wenn Downloads fehlschlagen, erstelle einen Bericht, der die Details des Fehlschlages beschreibt.</string>
   <string name="pref_expand_notify_unsupport_toast">Android-Versionen vor 4.1 unterstützen keine erweiterten Benachrichtigungen.</string>
@@ -321,6 +342,9 @@
   <string name="pref_smart_mark_as_played_disabled">Deaktiviert</string>
   <string name="pref_image_cache_size_title">Größe des Bilder-Zwischenspeichers</string>
   <string name="pref_image_cache_size_sum">Größe des Zwischenspeichers für Bilder</string>
+  <string name="experimental_pref">Experimentell</string>
+  <string name="pref_sonic_title">Sonic Media Player</string>
+  <string name="pref_sonic_message">Benutze den eingebauten Sonic Media Player als Ersatz für Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
   <string name="auto_flattr_after_percent">Flattr eine Episode, sobald %d Prozent gespielt worden sind</string>
@@ -335,6 +359,7 @@
   <string name="found_in_title_label">In Titel gefunden</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Mit OPML Dateien kannst du deine Podcasts von einem Podcatcher auf einen anderen übertragen</string>
+  <string name="opml_import_option">Option %1$d</string>
   <string name="opml_import_explanation_1">Wähle einen bestimmten Dateipfad aus dem lokalen Dateisystem.</string>
   <string name="opml_import_explanation_2">Verwende externe Anwendungen wie Dropbox, Google Drive oder deinen Lieblingsdateimanager, um eine OPML-Datei zu öffnen.</string>
   <string name="opml_import_explanation_3">Viele Anwendungen wie Google Mail, Dropbox, Google Drive und die meisten Dateimanager können OPML-Dateien &lt;i&gt;mit&lt;/ i&gt; AntennaPod &lt;i&gt;öffnen&lt;/i&gt;.</string>
@@ -361,6 +386,9 @@
   <string name="sleep_timer_label">Schlummerfunktion</string>
   <string name="time_left_label">Zeit übrig:\u0020</string>
   <string name="time_dialog_invalid_input">Ungültige Eingabe, Zeit muss eine Ganzzahl sein</string>
+  <string name="timer_about_to_expire_label"><b>Wenn der Timer gleich abläuft:</b></string>
+  <string name="shake_to_reset_label">Timer durch Schütteln zurücksetzen</string>
+  <string name="timer_vibration_label">Vibriere</string>
   <string name="time_seconds">Sekunden</string>
   <string name="time_minutes">Minuten</string>
   <string name="time_hours">Stunden</string>

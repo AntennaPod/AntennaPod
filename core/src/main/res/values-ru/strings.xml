@@ -5,7 +5,6 @@
   <string name="feeds_label">Каналы</string>
   <string name="add_feed_label">Добавить подкаст</string>
   <string name="podcasts_label">Подкасты</string>
-  <string name="episodes_label">Выпуски</string>
   <string name="new_episodes_label">Новые выпуски</string>
   <string name="all_episodes_label">Все выпуски</string>
   <string name="new_label">Новые</string>
@@ -195,7 +194,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Загрузить плагин</string>
   <string name="no_playback_plugin_title">Плагин не установлен</string>
-  <string name="no_playback_plugin_msg">Для работы переменной скорости воспроизведения нужно установить библиотеку стороннего разработчика.\n\nНажмите \"Загрузить плагин\", чтобы скачать бесплатный плагин из Play Store\n\nЛюбые вопросы по работе плагина находятся вне ответственности AntennaPod и должны быть направлены владельцу плагина.</string>
   <string name="set_playback_speed_label">Скорость воспроизведения</string>
   <!--Empty list labels-->
   <string name="no_items_label">Список пуст</string>

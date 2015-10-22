@@ -5,9 +5,11 @@
   <string name="feeds_label">Flux</string>
   <string name="add_feed_label">Ajouter un podcast</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">ÉPISODES</string>
+  <string name="episodes_label">Épisodes</string>
   <string name="new_episodes_label">Nouveaux épisodes</string>
   <string name="all_episodes_label">Tous les épisodes</string>
+  <string name="all_episodes_short_label">Tout</string>
+  <string name="favorite_episodes_label">Favoris</string>
   <string name="new_label">Nouveau</string>
   <string name="waiting_list_label">Liste d\'attente</string>
   <string name="settings_label">Préférences</string>
@@ -19,15 +21,17 @@
   <string name="cancel_download_label">Annuler les téléchargements</string>
   <string name="playback_history_label">Journal des lectures</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_auth_label">identifiants gpodder.net</string>
+  <string name="gpodnet_auth_label">Identifiants gpodder.net</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publié récemment</string>
   <string name="episode_filter_label">N\'afficher que les nouveaux épisodes</string>
   <!--Main activity-->
   <string name="drawer_open">Ouvrir le menu</string>
   <string name="drawer_close">Fermer le menu</string>
+  <string name="drawer_preferences">Préférences du volet</string>
   <string name="drawer_feed_order_unplayed_episodes">Trier par compteur</string>
   <string name="drawer_feed_order_alphabetical">Trier alphabétiquement</string>
+  <string name="drawer_feed_order_last_update">Trier par date de publication</string>
   <string name="drawer_feed_counter_new_unplayed">Nombre de nouveaux épisodes non-lus</string>
   <string name="drawer_feed_counter_new">Nombre de nouveaux épisodes</string>
   <string name="drawer_feed_counter_unplayed">Nombre d\'épisodes non-lus</string>
@@ -68,10 +72,20 @@
   <string name="retry_label">Réessayer</string>
   <string name="auto_download_label">Télécharger automatiquement à l\'avenir</string>
   <string name="auto_download_apply_to_items_title">Appliquer aux épisodes précédents</string>
+  <string name="auto_download_apply_to_items_message">Le nouveau paramètre <i>Téléchargement Automatique</i> sera automatiquement appliqué sur chaque nouvel épisode.\nVoulez-vous faire de même avec les épisodes précédents ?</string>
+  <string name="auto_delete_label">Supprimer Épisode Automatiquement\n(redéfini les paramètres par défaut)</string>
   <string name="parallel_downloads_suffix">\u0020téléchargements parallèles</string>
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Toujours</string>
   <string name="feed_auto_download_never">Jamais</string>
+  <string name="send_label">Envoyer....</string>
+  <string name="episode_cleanup_never">Jamais</string>
+  <string name="episode_cleanup_queue_removal">Quand l’épisode n\'est pas dans la liste</string>
+  <string name="episode_cleanup_after_listening">Après avoir terminé</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 jour après avoir été écouté</item>
+    <item quantity="other">%d jours après avoir été écouté</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL du flux</string>
   <string name="etxtFeedurlHint">URL ou flux ou site web</string>
@@ -121,6 +135,8 @@
   <string name="add_to_queue_label">Ajouter à la liste</string>
   <string name="added_to_queue_label">Ajouté à la liste</string>
   <string name="remove_from_queue_label">Supprimer de la liste</string>
+  <string name="add_to_favorite_label">Ajouter aux Favoris</string>
+  <string name="remove_from_favorite_label">Supprimer des Favoris</string>
   <string name="visit_website_label">Visiter le site</string>
   <string name="support_label">Flattr ça!</string>
   <string name="enqueue_all_new">Ajouter tous à la liste</string>
@@ -128,6 +144,8 @@
   <string name="skip_episode_label">Passer cet épisode</string>
   <string name="activate_auto_download">Activer téléchargement automatique</string>
   <string name="deactivate_auto_download">Désactiver téléchargement automatique</string>
+  <string name="reset_position">Remettre a zéro la position de lecture actuelle</string>
+  <string name="removed_item">Élément retiré</string>
   <!--Download messages and labels-->
   <string name="download_successful">terminé</string>
   <string name="download_failed">échoué</string>
@@ -145,6 +163,7 @@
   <string name="download_error_unauthorized">Erreur d\'authentification</string>
   <string name="cancel_all_downloads_label">Annuler tous les téléchargements</string>
   <string name="download_canceled_msg">Téléchargement annulé</string>
+  <string name="download_canceled_autodownload_enabled_msg">Téléchargement annulé\n <i>Téléchargement Automatique</i> désactivé pour cet élément</string>
   <string name="download_report_title">Téléchargements terminés</string>
   <string name="download_report_content_title">Rapport des téléchargements</string>
   <string name="download_error_malformed_url">URL incorrecte</string>
@@ -163,6 +182,8 @@
   <string name="authentication_notification_title">Authentification requise</string>
   <string name="authentication_notification_msg">La ressource que vous avez demandé nécessite un nom d\'utilisateur et un mot de passe</string>
   <string name="confirm_mobile_download_dialog_title">Confirmer téléchargement mobile</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d\'ajouter seulement l\’épisode à la liste ou vous pouvez autoriser temporairement le téléchargement.\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
+  <string name="confirm_mobile_download_dialog_message">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVoulez-vous autoriser temporairement le téléchargement?\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Rajouter à la liste</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Permettre temporairement</string>
   <!--Mediaplayer messages-->
@@ -222,8 +243,9 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Télécharger une extension</string>
   <string name="no_playback_plugin_title">Extension non installée</string>
-  <string name="no_playback_plugin_msg">Pour pouvoir changer la vitesse de lecture il est nécessaire d\'installer une librairie tierce.\n\nSélectionnez \"Télécharger une extension\" pour télécharger une extension gratuite depuis le Play Store\n\nLes problèmes concernant les extensions sont de la responsabilité de leur créateur et non d\'AntennaPod. Veillez à notifier le créateur de l\'extension de tout problème.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Pour pouvoir changer la vitesse de lecture il est nécessaire d\'installer une librairie tierce ou d\'activer le lecteur expérimental Sonic [Android 4.1+].\n\nSélectionnez \"Télécharger une extension\" pour télécharger une extension gratuite depuis le Play Store\n\nLes problèmes concernant les extensions sont de la responsabilité de leur créateur et non d\'AntennaPod. Veillez à notifier le créateur de l\'extension de tout problème.</string>
   <string name="set_playback_speed_label">Vitesses de lecture</string>
+  <string name="enable_sonic">Activer Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Cette liste est vide.</string>
   <string name="no_feeds_label">Vous n\'êtes encore abonné à aucun flux.</string>
@@ -233,17 +255,25 @@
   <string name="queue_label">Liste</string>
   <string name="services_label">Services</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Nettoyage des épisodes</string>
+  <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont ni dans la liste ni dans les favoris peuvent être supprimés s\'il l\'espace disque devient faible</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Interrompre la lecture lorsque le casque est débranché</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
-  <string name="pref_auto_delete_title">Supression automatique</string>
+  <string name="pref_auto_delete_title">Suppression automatique</string>
   <string name="pref_smart_mark_as_played_sum">Marquer les épisodes comme lus même s\'il reste encore moins d\'un certain intervalle de temps</string>
   <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligent</string>
+  <string name="pref_skip_removes_from_queue_sum">Retirer les épisodes de la liste lorsqu\'ils sont passés</string>
+  <string name="pref_skip_removes_from_queue_title">Passer l’épisode le retire de la liste</string>
   <string name="playback_pref">Lecture</string>
   <string name="network_pref">Réseau</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">Intervalle de mise à jour ou heure de la journée</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Indiquer un intervalle ou une heure spécifique de mise à jour des flux</string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez mettre en place un <i>intervalle</i> comme \"toutes les 2 heures\", une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note: Il est possible qu\'il y ait des délais car les heures mises à jours sont inexactes.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Désactiver</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Définir intervalle</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Régler l\'heure</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Ne télécharger les épisodes que par Wi-Fi</string>
   <string name="pref_followQueue_title">Lecture continue</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Téléchargement en Wi-Fi</string>
@@ -263,6 +293,10 @@
   <string name="pref_auto_flattr_sum">Configurer les paiements flattr automatiques</string>
   <string name="user_interface_label">Interface utilisateur</string>
   <string name="pref_set_theme_title">Choisir un thème</string>
+  <string name="pref_nav_drawer_title">Personnaliser le volet de navigation</string>
+  <string name="pref_nav_drawer_sum">Personnaliser l\'apparence du volet de navigation</string>
+  <string name="pref_nav_drawer_items_title">Changer les éléments du volet de navigation</string>
+  <string name="pref_nav_drawer_items_sum">Choisir quels éléments apparaissent dans le volet de navigation</string>
   <string name="pref_nav_drawer_feed_order_title">Définir ordre des abonnements</string>
   <string name="pref_nav_drawer_feed_order_sum">Change l\'ordre de vos abonnements</string>
   <string name="pref_nav_drawer_feed_counter_title">Définir compteur des abonnements</string>
@@ -298,6 +332,8 @@
   <string name="pref_expandNotify_sum">Toujours étendre les notifications pour montrer les boutons de lecture</string>
   <string name="pref_persistNotify_title">Boutons de lecture permanents</string>
   <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verouillage quand la lecture est en pause</string>
+  <string name="pref_lockscreen_background_title">Changer l’arrière plan de l\'écran de déverrouillage</string>
+  <string name="pref_lockscreen_background_sum">Placer l\'image de l’épisode en arrière plan de l\'écran de déverrouillage. Cela a pour effet secondaire de montrer l\'image dans les apps tierces.</string>
   <string name="pref_showDownloadReport_title">Afficher rapport des téléchargements</string>
   <string name="pref_showDownloadReport_sum">Si les téléchargements échouent, générer un rapport des détails des échecs.</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android antérieures à 4.1 ne sont pas compatibles avec les notifications élargies</string>
@@ -306,6 +342,9 @@
   <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
   <string name="pref_image_cache_size_title">Taille de la cache d\'image</string>
   <string name="pref_image_cache_size_sum">Taille de l’espace disque pour stocker temporairement les images.</string>
+  <string name="experimental_pref">Expérimental</string>
+  <string name="pref_sonic_title">Lecteur multimédia Sonic</string>
+  <string name="pref_sonic_message">Utiliser le lecteur multimédia interne Sonic au lieu de Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
   <string name="auto_flattr_after_percent">Lancer un paiement flattr pour un épisode dès que %d de l\'épisode a été joué</string>
@@ -320,6 +359,7 @@
   <string name="found_in_title_label">Trouvé dans le titre</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Les fichiers OPML vous permettent de bouger vos podcasts d\'un logiciel à un autre.</string>
+  <string name="opml_import_option">Option %1$d</string>
   <string name="opml_import_explanation_1">Choisir un chemin de fichier spécifique dans le système de fichiers local</string>
   <string name="opml_import_explanation_2">Utiliser une application tierce comme Dropbox, Google Drive ou votre gestionnaire de fichier favori pour ouvrir un fichier OPML</string>
   <string name="opml_import_explanation_3">De nombreuses applications comme Google Mail, Dropbox ou Google Drive et la plupart des gestionnaires de fichiers peuvent <i>ouvrir</i> les fichiers OPML <i>avec</i> AntennaPod.</string>
@@ -346,6 +386,9 @@
   <string name="sleep_timer_label">Arrêt automatique</string>
   <string name="time_left_label">Durée restante :\u0020</string>
   <string name="time_dialog_invalid_input">Entrée invalide, la durée doit être un nombre entier</string>
+  <string name="timer_about_to_expire_label"><b>Quand le minuteur est sur le point de se terminer:</b></string>
+  <string name="shake_to_reset_label">Secouer afin de remettre le minuteur a zéro</string>
+  <string name="timer_vibration_label">Vibrer</string>
   <string name="time_seconds">secondes</string>
   <string name="time_minutes">minutes</string>
   <string name="time_hours">heures</string>
