@@ -71,8 +71,8 @@ public class AllEpisodesFragment extends Fragment {
 
     private static final int RECENT_EPISODES_LIMIT = 150;
     private static final String DEFAULT_PREF_NAME = "PrefAllEpisodesFragment";
-    private static final String PREF_KEY_LIST_TOP = "list_top";
-    private static final String PREF_KEY_LIST_SELECTION = "list_selection";
+    private static final String PREF_SCROLL_POSITION = "scroll_position";
+    private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
     private String prefName;
     protected RecyclerView listView;
@@ -93,7 +93,7 @@ public class AllEpisodesFragment extends Fragment {
     private boolean isUpdatingFeeds;
 
     protected Subscription subscription;
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
 
     public AllEpisodesFragment() {
         // by default we show all the episodes
@@ -163,23 +163,32 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     private void saveScrollPosition() {
+        int firstItem = layoutManager.findFirstVisibleItemPosition();
+        View firstItemView = layoutManager.findViewByPosition(firstItem);
+        float topOffset;
+        if(firstItemView == null) {
+            topOffset = 0;
+        } else {
+            topOffset = firstItemView.getTop();
+        }
+
         SharedPreferences prefs = getActivity().getSharedPreferences(prefName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        View v = listView.getChildAt(0);
-        int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
-        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getVerticalScrollbarPosition());
+        editor.putInt(PREF_SCROLL_POSITION, firstItem);
+        editor.putFloat(PREF_SCROLL_OFFSET, topOffset);
         editor.commit();
     }
 
     private void restoreScrollPosition() {
         SharedPreferences prefs = getActivity().getSharedPreferences(prefName, Context.MODE_PRIVATE);
-        int listSelection = prefs.getInt(PREF_KEY_LIST_SELECTION, 0);
-        int top = prefs.getInt(PREF_KEY_LIST_TOP, 0);
-        if (listSelection > 0 || top > 0) {
-            listView.scrollToPosition(listSelection);
+        int position = prefs.getInt(PREF_SCROLL_POSITION, 0);
+        float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
+        if (position > 0 || offset > 0) {
+            layoutManager.scrollToPositionWithOffset(position, (int) offset);
             // restore once, then forget
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(PREF_KEY_LIST_SELECTION, 0);
+            editor.putInt(PREF_SCROLL_POSITION, 0);
+            editor.putInt(PREF_SCROLL_OFFSET, 0);
             editor.commit();
         }
     }
