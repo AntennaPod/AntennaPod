@@ -566,7 +566,6 @@ public class PlaybackService extends Service {
         if (playable instanceof FeedMedia) {
             FeedMedia media = (FeedMedia) playable;
             FeedItem item = media.getItem();
-            DBWriter.markItemPlayed(item, FeedItem.PLAYED, true);
 
             try {
                 final List<FeedItem> queue = taskManager.getQueue();
@@ -579,9 +578,15 @@ public class PlaybackService extends Service {
 
             boolean shouldKeep = wasSkipped && UserPreferences.shouldSkipKeepEpisode();
 
-            if (isInQueue && !shouldKeep) {
-                DBWriter.removeQueueItem(PlaybackService.this, item, true);
+            if (!shouldKeep) {
+                // only mark the item as played if we're not keeping it anyways
+                DBWriter.markItemPlayed(item, FeedItem.PLAYED, true);
+
+                if (isInQueue) {
+                    DBWriter.removeQueueItem(PlaybackService.this, item, true);
+                }
             }
+
             DBWriter.addItemToPlaybackHistory(media);
 
             // auto-flattr if enabled
