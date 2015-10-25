@@ -551,8 +551,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             menuInfo = lastMenuInfo;
         }
 
-        if(menuInfo.targetView.getParent() instanceof ListView == false
-                || ((ListView)menuInfo.targetView.getParent()).getId() != R.id.nav_list) {
+        if(menuInfo == null
+            || menuInfo.targetView == null
+            || menuInfo.targetView.getParent() == null
+            || menuInfo.targetView.getParent() instanceof ListView == false
+            || ((ListView)menuInfo.targetView.getParent()).getId() != R.id.nav_list) {
             return false;
         }
         final int position = menuInfo.position;
