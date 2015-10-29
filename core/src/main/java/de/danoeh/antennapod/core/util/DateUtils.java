@@ -88,9 +88,13 @@ public class DateUtils {
         for(String pattern : patterns) {
             parser.applyPattern(pattern);
             pos.setIndex(0);
-            Date result = parser.parse(date, pos);
-            if(result != null && pos.getIndex() == date.length()) {
-                return result;
+            try {
+                Date result = parser.parse(date, pos);
+                if (result != null && pos.getIndex() == date.length()) {
+                    return result;
+                }
+            } catch(Exception e) {
+                Log.e(TAG, Log.getStackTraceString(e));
             }
         }
 
