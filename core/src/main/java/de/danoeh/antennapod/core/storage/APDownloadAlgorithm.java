@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -53,6 +54,9 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     final List<FeedItem> newItems = DBReader.getNewItemsList();
                     candidates = new ArrayList<FeedItem>(queue.size() + newItems.size());
                     candidates.addAll(queue);
+
+                    // append older episodes first
+                    Collections.reverse(newItems);
                     for(FeedItem newItem : newItems) {
                         if(candidates.contains(newItem) == false) {
                             candidates.add(newItem);
