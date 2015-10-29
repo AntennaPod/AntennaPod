@@ -182,7 +182,7 @@
   <string name="authentication_notification_title">Authentification requise</string>
   <string name="authentication_notification_msg">La ressource que vous avez demandé nécessite un nom d\'utilisateur et un mot de passe</string>
   <string name="confirm_mobile_download_dialog_title">Confirmer téléchargement mobile</string>
-  <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d\'ajouter seulement l\’épisode à la liste ou vous pouvez autoriser temporairement le téléchargement.\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d'ajouter seulement l’épisode à la liste ou vous pouvez autoriser temporairement le téléchargement.\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
   <string name="confirm_mobile_download_dialog_message">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVoulez-vous autoriser temporairement le téléchargement?\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Rajouter à la liste</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Permettre temporairement</string>
@@ -264,8 +264,6 @@
   <string name="pref_auto_delete_title">Suppression automatique</string>
   <string name="pref_smart_mark_as_played_sum">Marquer les épisodes comme lus même s\'il reste encore moins d\'un certain intervalle de temps</string>
   <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligent</string>
-  <string name="pref_skip_removes_from_queue_sum">Retirer les épisodes de la liste lorsqu\'ils sont passés</string>
-  <string name="pref_skip_removes_from_queue_title">Passer l’épisode le retire de la liste</string>
   <string name="playback_pref">Lecture</string>
   <string name="network_pref">Réseau</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalle de mise à jour ou heure de la journée</string>

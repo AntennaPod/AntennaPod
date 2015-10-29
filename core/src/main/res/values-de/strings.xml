@@ -264,8 +264,8 @@
   <string name="pref_auto_delete_title">Automatisches Löschen</string>
   <string name="pref_smart_mark_as_played_sum">Episoden werden als gespielt markiert, wenn weniger als eine bestimmte Anzahl Sekunden Restspielzeit übrig sind</string>
   <string name="pref_smart_mark_as_played_title">Schlaues als gespielt markieren</string>
-  <string name="pref_skip_removes_from_queue_sum">Epsoden aus der Abspielliste entfernen, wenn sie übersprungen werden</string>
-  <string name="pref_skip_removes_from_queue_title">Überspringen entfernt Episoden</string>
+  <string name="pref_skip_keeps_episodes_sum">Behalte Episoden beim Überspringen</string>
+  <string name="pref_skip_keeps_episodes_title">Behalte übersprungene Episoden</string>
   <string name="playback_pref">Wiedergabe</string>
   <string name="network_pref">Netzwerk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Aktualisierungsintervall oder -tageszeit</string>
