@@ -264,8 +264,8 @@
   <string name="pref_auto_delete_title">Eliminar automáticamente</string>
   <string name="pref_smart_mark_as_played_sum">Marcar episodios como escuchados incluso si todavía quedan unos segundos por escuchar</string>
   <string name="pref_smart_mark_as_played_title">Marcar como escuchado inteligente</string>
-  <string name="pref_skip_removes_from_queue_sum">Eliminar episodios de la cola cuando al saltarlos</string>
-  <string name="pref_skip_removes_from_queue_title">Saltar elimina el episodio</string>
+  <string name="pref_skip_keeps_episodes_sum">Conservar episodios al saltarlos</string>
+  <string name="pref_skip_keeps_episodes_title">Conservar episodios saltados</string>
   <string name="playback_pref">Reproducción</string>
   <string name="network_pref">Red</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalo de actualización u hora del día</string>

@@ -263,8 +263,8 @@
   <string name="pref_auto_delete_title">自動削除</string>
   <string name="pref_smart_mark_as_played_sum">一定の秒数未満の再生時間がまだ残っている場合でも、エピソードを再生済としてマークします</string>
   <string name="pref_smart_mark_as_played_title">再生済としてスマートマーク</string>
-  <string name="pref_skip_removes_from_queue_sum">エピソードをスキップしたときに、エピソードをキューから削除します</string>
-  <string name="pref_skip_removes_from_queue_title">スキップでエピソードを削除</string>
+  <string name="pref_skip_keeps_episodes_sum">エピソードをスキップした時に残しておきます</string>
+  <string name="pref_skip_keeps_episodes_title">エピソードのスキップ時に残す</string>
   <string name="playback_pref">再生</string>
   <string name="network_pref">ネットワーク</string>
   <string name="pref_autoUpdateIntervallOrTime_title">間隔または時間を更新</string>

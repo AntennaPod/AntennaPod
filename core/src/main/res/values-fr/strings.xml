@@ -88,7 +88,7 @@
   </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL du flux</string>
-  <string name="etxtFeedurlHint">URL ou flux ou site web</string>
+  <string name="etxtFeedurlHint">URL du flux</string>
   <string name="txtvfeedurl_label">Ajouter un podcast par son URL</string>
   <string name="podcastdirectories_label">Trouver le podcast dans la bibliothèque</string>
   <string name="podcastdirectories_descr">Vous pouvez chercher de nouveaux podcasts en filtrant par nom, catégorie ou popularité dans la bibliothèque gpodder.net, ou sur l\'iTunes Store.</string>
@@ -96,8 +96,8 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marquer tous les épisodes comme lus</string>
   <string name="mark_all_read_msg">Tous les épisodes ont été marqués comme lus</string>
-  <string name="mark_all_read_confirmation_msg">Veuillez confirmer que vous voulez bien marquer tous les épisodes comme lus</string>
-  <string name="mark_all_read_feed_confirmation_msg">Veuillez confirmer que vous voulez bien marquer tous les épisode de ce flux comme lus</string>
+  <string name="mark_all_read_confirmation_msg">Confirmer le marquage de tous les épisode comme lus</string>
+  <string name="mark_all_read_feed_confirmation_msg">Confirmer le marquage de tous les épisode de ce flux comme lus</string>
   <string name="mark_all_seen_label">Marquer tout les épisodes comme vus</string>
   <string name="show_info_label">Voir les détails</string>
   <string name="remove_feed_label">Supprimer le podcast</string>
@@ -115,8 +115,8 @@
   <string name="hide_unplayed_episodes_label">Non joués</string>
   <string name="hide_paused_episodes_label">En pause</string>
   <string name="hide_played_episodes_label">Joués</string>
-  <string name="hide_queued_episodes_label">Rajouté à la liste</string>
-  <string name="hide_not_queued_episodes_label">Pas rajouté à la liste</string>
+  <string name="hide_queued_episodes_label">Rajouté à la liste d\'attente</string>
+  <string name="hide_not_queued_episodes_label">Pas rajouté à la liste d\'attente</string>
   <string name="hide_downloaded_episodes_label">Téléchargé</string>
   <string name="hide_not_downloaded_episodes_label">Non téléchargé</string>
   <string name="filtered_label">Filtré</string>
@@ -216,16 +216,16 @@
   <string name="clear_queue_confirmation_msg">Veuillez confirmer que vous voulez bien supprimer TOUS les épisodes de la file d\'attente</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Connecter à Flattr</string>
-  <string name="flattr_auth_explanation">Appuyez sur le bouton ci-dessous pour vous authentifier. Vous serez envoyés à l\'écran de connexion Flattr dans le navigateur, et il vous sera demandé de donner à AntennaPod la permission de flattr. Une fois ceci fait, vous reviendrez automatiquement à cet écran.</string>
+  <string name="flattr_auth_explanation">Appuyez sur le bouton ci-dessous pour vous authentifier. Voter navigateur va s\'ouvrir et vous serez envoyés vers l\'écran de connexion Flattr afin de donner à AntennaPod la permission de flattr. Une fois fait, vous reviendrez automatiquement à cet écran.</string>
   <string name="authenticate_label">S\'authentifier</string>
-  <string name="return_home_label">Revenir au départ</string>
+  <string name="return_home_label">Retourner à l\'écran d\'accueil</string>
   <string name="flattr_auth_success">L\'authentification a réussi. Vous pouvez maintenant flattr depuis cette application.</string>
   <string name="no_flattr_token_title">Aucun jeton Flattr trouvé.</string>
   <string name="no_flattr_token_notification_msg">Votre compte flattr ne semble pas être connecté à AntennaPod. Cliquer ici pour vous connecter.</string>
   <string name="no_flattr_token_msg">Votre compte Flattr se semble pas être connecté à AntennaPod. Vous pouvez soit connecter votre compte Flattr à AntennaPod pour pouvoir flattr depuis l\'application, ou vous pouvez aller sur le site de ce que vous voulez flattr.</string>
   <string name="authenticate_now_label">S\'authentifier</string>
   <string name="action_forbidden_title">Action interdite</string>
-  <string name="action_forbidden_msg">AntennaPod n\'a pas la permission pour cette action. Il est possible que l\'accès à votre compte depuis AntennaPod ait été révoqué. Vous pouvez vous authentifier à nouveau, ou bien visiter le site à flattr directement.</string>
+  <string name="action_forbidden_msg">AntennaPod n\'a pas la permission pour cette action. Il est possible que l\'accès à votre compte depuis AntennaPod ait été révoqué. Vous pouvez vous authentifier à nouveau, ou bien visiter le site à Flattrer directement.</string>
   <string name="access_revoked_title">Accès révoqué</string>
   <string name="access_revoked_info">Vous avez révoqué le jeton d\'accès d\'AntennaPod à votre compte. Pour terminer cette opération, vous devez retirer AntennaPod de la liste des applications autorisées sur le site web de Flattr.</string>
   <!--Flattr-->
@@ -238,12 +238,12 @@
   <string name="flattring_thing">En train de Flattrer %s</string>
   <string name="flattring_label">AntennaPod est en train de Flattrer</string>
   <string name="flattrd_label">AntennaPod a Flattré</string>
-  <string name="flattrd_failed_label">Flattr d\'AntennaPod a échoué</string>
+  <string name="flattrd_failed_label">Le Flattr d\'AntennaPod a échoué</string>
   <string name="flattr_retrieving_status">Obtention de la liste des choses Flattrées</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Télécharger une extension</string>
   <string name="no_playback_plugin_title">Extension non installée</string>
-  <string name="no_playback_plugin_or_sonic_msg">Pour pouvoir changer la vitesse de lecture il est nécessaire d\'installer une librairie tierce ou d\'activer le lecteur expérimental Sonic [Android 4.1+].\n\nSélectionnez \"Télécharger une extension\" pour télécharger une extension gratuite depuis le Play Store\n\nLes problèmes concernant les extensions sont de la responsabilité de leur créateur et non d\'AntennaPod. Veillez à notifier le créateur de l\'extension de tout problème.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Pour pouvoir changer la vitesse de lecture il est nécessaire d\'installer une librairie tierce ou d\'activer le lecteur expérimental Sonic [Android 4.1+].\n\nSélectionnez \"Télécharger une extension\" pour télécharger une extension gratuite depuis le Play Store.\n\nLes problème rencontrés avec cette extension ne sont pas de la responsabilité d\'AntennaPod. Veillez à notifier le créateur de l\'extension pour tout problème.</string>
   <string name="set_playback_speed_label">Vitesses de lecture</string>
   <string name="enable_sonic">Activer Sonic</string>
   <!--Empty list labels-->
@@ -262,15 +262,15 @@
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
   <string name="pref_auto_delete_title">Suppression automatique</string>
-  <string name="pref_smart_mark_as_played_sum">Marquer les épisodes comme lus même s\'il reste encore moins d\'un certain intervalle de temps</string>
-  <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligent</string>
+  <string name="pref_smart_mark_as_played_sum">Marquer les épisodes comme lus même s\'il reste encore un certain nombre de secondes à jouer</string>
+  <string name="pref_smart_mark_as_played_title">Marquer comme lu de manière intelligente</string>
   <string name="pref_skip_keeps_episodes_sum">Garder les épisodes quand ils sont passés</string>
   <string name="pref_skip_keeps_episodes_title">Garder les épisodes passés</string>
   <string name="playback_pref">Lecture</string>
   <string name="network_pref">Réseau</string>
-  <string name="pref_autoUpdateIntervallOrTime_title">Intervalle de mise à jour ou heure de la journée</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">Mettre à jour l’intervalle ou l\'heure</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Indiquer un intervalle ou une heure spécifique de mise à jour des flux</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez mettre en place un <i>intervalle</i> comme \"toutes les 2 heures\", une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note: Il est possible qu\'il y ait des délais car les heures mises à jours sont inexactes.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez mettre en place un <i>intervalle</i> comme \"toutes les 2 heures\", une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note: Il est possible qu\'il y ait un délai car l\'heure de mise à jour peut être inexacte.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Désactiver</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Définir intervalle</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Régler l\'heure</string>
@@ -297,7 +297,7 @@
   <string name="pref_nav_drawer_sum">Personnaliser l\'apparence du volet de navigation</string>
   <string name="pref_nav_drawer_items_title">Changer les éléments du volet de navigation</string>
   <string name="pref_nav_drawer_items_sum">Choisir quels éléments apparaissent dans le volet de navigation</string>
-  <string name="pref_nav_drawer_feed_order_title">Définir ordre des abonnements</string>
+  <string name="pref_nav_drawer_feed_order_title">Définir l\'ordre des abonnements</string>
   <string name="pref_nav_drawer_feed_order_sum">Change l\'ordre de vos abonnements</string>
   <string name="pref_nav_drawer_feed_counter_title">Définir le compteur d\'abonnements</string>
   <string name="pref_nav_drawer_feed_counter_sum">Changer l\'information affichée par le compteur d\'abonnements</string>
@@ -340,8 +340,8 @@
   <string name="pref_queueAddToFront_sum">Ajouter de nouveaux épisodes en tête de file</string>
   <string name="pref_queueAddToFront_title">Mettre au début de la file d\'attente</string>
   <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
-  <string name="pref_image_cache_size_title">Taille de la cache d\'image</string>
-  <string name="pref_image_cache_size_sum">Taille de l’espace disque pour stocker temporairement les images.</string>
+  <string name="pref_image_cache_size_title">Taille du cache de l\'image</string>
+  <string name="pref_image_cache_size_sum">Taille de l’espace de stockage temporaire des images.</string>
   <string name="experimental_pref">Expérimental</string>
   <string name="pref_sonic_title">Lecteur multimédia Sonic</string>
   <string name="pref_sonic_message">Utiliser le lecteur multimédia interne Sonic au lieu de Prestissimo</string>
@@ -358,7 +358,7 @@
   <string name="search_label">Recherche</string>
   <string name="found_in_title_label">Trouvé dans le titre</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Les fichiers OPML vous permettent de bouger vos podcasts d\'un logiciel à un autre.</string>
+  <string name="opml_import_txtv_button_lable">Les fichiers OPML vous permettent d\'exporter vos podcasts d\'un logiciel à un autre.</string>
   <string name="opml_import_option">Option %1$d</string>
   <string name="opml_import_explanation_1">Choisir un chemin de fichier spécifique dans le système de fichiers local</string>
   <string name="opml_import_explanation_2">Utiliser une application tierce comme Dropbox, Google Drive ou votre gestionnaire de fichier favori pour ouvrir un fichier OPML</string>
@@ -383,7 +383,7 @@
   <string name="set_sleeptimer_label">Définir le minuteur d\'arrêt automatique</string>
   <string name="disable_sleeptimer_label">Désactiver le minuteur d\'arrêt automatique</string>
   <string name="enter_time_here_label">Entrer l\'heure</string>
-  <string name="sleep_timer_label">Arrêt automatique</string>
+  <string name="sleep_timer_label">Minuteur de mise en  veille</string>
   <string name="time_left_label">Durée restante :\u0020</string>
   <string name="time_dialog_invalid_input">Entrée invalide, la durée doit être un nombre entier</string>
   <string name="timer_about_to_expire_label"><b>Quand le minuteur est sur le point de se terminer:</b></string>
@@ -416,7 +416,7 @@
   <string name="username_label">Identifiant</string>
   <string name="password_label">Mot de passe</string>
   <string name="gpodnetauth_device_title">Choix de l\'appareil</string>
-  <string name="gpodnetauth_device_descr">Créez un nouvel appareil à utiliser pour votre compte gpodder.net ou choisissez un appareil existant :</string>
+  <string name="gpodnetauth_device_descr">Créer un nouvel appareil pour votre compte gpodder.net ou choisir un appareil existant :</string>
   <string name="gpodnetauth_device_deviceID">ID de l\'appareil :\u0020</string>
   <string name="gpodnetauth_device_caption">Légende</string>
   <string name="gpodnetauth_device_butCreateNewDevice">Créer un nouvel appareil</string>
@@ -492,7 +492,7 @@
   <string name="downloaded_label">Téléchargés</string>
   <string name="selected_downloaded_label">Episodes téléchargés sélectionnés</string>
   <string name="not_downloaded_label">Non téléchargés</string>
-  <string name="selected_not_downloaded_label">Les épisodes non téléchargés ont été sélectioné</string>
+  <string name="selected_not_downloaded_label">Épisodes non téléchargés sélectionnés</string>
   <string name="sort_title"><b>Trier par ...</b></string>
   <string name="sort_title_a_z">Titre (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titre (Z \u2192 A)</string>
