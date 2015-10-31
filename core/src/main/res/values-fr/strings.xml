@@ -94,11 +94,11 @@
   <string name="podcastdirectories_descr">Vous pouvez chercher de nouveaux podcasts en filtrant par nom, catégorie ou popularité dans la bibliothèque gpodder.net, ou sur l\'iTunes Store.</string>
   <string name="browse_gpoddernet_label">Chercher sur gpodder.net</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Tous marquer comme lus</string>
+  <string name="mark_all_read_label">Marquer tous les épisodes comme lus</string>
   <string name="mark_all_read_msg">Tous les épisodes ont été marqués comme lus</string>
   <string name="mark_all_read_confirmation_msg">Veuillez confirmer que vous voulez bien marquer tous les épisodes comme lus</string>
   <string name="mark_all_read_feed_confirmation_msg">Veuillez confirmer que vous voulez bien marquer tous les épisode de ce flux comme lus</string>
-  <string name="mark_all_seen_label">Marquer tout comme vu</string>
+  <string name="mark_all_seen_label">Marquer tout les épisodes comme vus</string>
   <string name="show_info_label">Voir les détails</string>
   <string name="remove_feed_label">Supprimer le podcast</string>
   <string name="share_label">Partager...</string>
@@ -120,7 +120,7 @@
   <string name="hide_downloaded_episodes_label">Téléchargé</string>
   <string name="hide_not_downloaded_episodes_label">Non téléchargé</string>
   <string name="filtered_label">Filtré</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Dernière mise à jour échouée</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} La dernière mise à jour a échouée</string>
   <!--actions on feeditems-->
   <string name="download_label">Télécharger</string>
   <string name="play_label">Lire</string>
@@ -164,12 +164,12 @@
   <string name="cancel_all_downloads_label">Annuler tous les téléchargements</string>
   <string name="download_canceled_msg">Téléchargement annulé</string>
   <string name="download_canceled_autodownload_enabled_msg">Téléchargement annulé\n <i>Téléchargement Automatique</i> désactivé pour cet élément</string>
-  <string name="download_report_title">Téléchargements terminés</string>
+  <string name="download_report_title">Téléchargements terminés avec des erreurs</string>
   <string name="download_report_content_title">Rapport des téléchargements</string>
   <string name="download_error_malformed_url">URL incorrecte</string>
   <string name="download_error_io_error">Erreur d\'E/S</string>
   <string name="download_error_request_error">Erreur de requête</string>
-  <string name="download_error_db_access">Problème dans l\'accès à la base de données</string>
+  <string name="download_error_db_access">Problème d\'accès à la base de données</string>
   <string name="downloads_left">\u0020téléchargements restants</string>
   <string name="downloads_processing">Traitement des téléchargements</string>
   <string name="download_notification_title">Téléchargement des données du podcast</string>
@@ -181,11 +181,11 @@
   <string name="download_request_error_dialog_message_prefix">Une erreur s\'est produite durant le téléchargement du fichier :\u0020</string>
   <string name="authentication_notification_title">Authentification requise</string>
   <string name="authentication_notification_msg">La ressource que vous avez demandé nécessite un nom d\'utilisateur et un mot de passe</string>
-  <string name="confirm_mobile_download_dialog_title">Confirmer téléchargement mobile</string>
-  <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d\'ajouter seulement l\’épisode à la liste ou vous pouvez autoriser temporairement le téléchargement.\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
+  <string name="confirm_mobile_download_dialog_title">Confirmer le téléchargement mobile</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d\'ajouter seulement l\'épisode à la liste ou vous pouvez autoriser temporairement le téléchargement.\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
   <string name="confirm_mobile_download_dialog_message">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVoulez-vous autoriser temporairement le téléchargement?\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Rajouter à la liste</string>
-  <string name="confirm_mobile_download_dialog_enable_temporarily">Permettre temporairement</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Autoriser temporairement</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Erreur !</string>
   <string name="player_stopped_msg">Pas de lecture en cours</string>
@@ -221,7 +221,7 @@
   <string name="return_home_label">Revenir au départ</string>
   <string name="flattr_auth_success">L\'authentification a réussi. Vous pouvez maintenant flattr depuis cette application.</string>
   <string name="no_flattr_token_title">Aucun jeton Flattr trouvé.</string>
-  <string name="no_flattr_token_notification_msg">Votre compte flattr semble ne pas être connecté à AntennaPod. Touchez ici pour vous connecter.</string>
+  <string name="no_flattr_token_notification_msg">Votre compte flattr ne semble pas être connecté à AntennaPod. Cliquer ici pour vous connecter.</string>
   <string name="no_flattr_token_msg">Votre compte Flattr se semble pas être connecté à AntennaPod. Vous pouvez soit connecter votre compte Flattr à AntennaPod pour pouvoir flattr depuis l\'application, ou vous pouvez aller sur le site de ce que vous voulez flattr.</string>
   <string name="authenticate_now_label">S\'authentifier</string>
   <string name="action_forbidden_title">Action interdite</string>
@@ -256,7 +256,7 @@
   <string name="services_label">Services</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Nettoyage des épisodes</string>
-  <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont ni dans la liste ni dans les favoris peuvent être supprimés s\'il l\'espace disque devient faible</string>
+  <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont ni dans la liste ni dans les favoris peuvent être supprimés si l\'espace disque devient faible</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Interrompre la lecture lorsque le casque est débranché</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
@@ -264,8 +264,8 @@
   <string name="pref_auto_delete_title">Suppression automatique</string>
   <string name="pref_smart_mark_as_played_sum">Marquer les épisodes comme lus même s\'il reste encore moins d\'un certain intervalle de temps</string>
   <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligent</string>
-  <string name="pref_skip_removes_from_queue_sum">Retirer les épisodes de la liste lorsqu\'ils sont passés</string>
-  <string name="pref_skip_removes_from_queue_title">Passer l’épisode le retire de la liste</string>
+  <string name="pref_skip_keeps_episodes_sum">Garder les épisodes quand ils sont passés</string>
+  <string name="pref_skip_keeps_episodes_title">Garder les épisodes passés</string>
   <string name="playback_pref">Lecture</string>
   <string name="network_pref">Réseau</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalle de mise à jour ou heure de la journée</string>
@@ -279,7 +279,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">Téléchargement en Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Déconnexion du casque</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Reconnexion du casque</string>
-  <string name="pref_mobileUpdate_title">Mise à jour mobile</string>
+  <string name="pref_mobileUpdate_title">Mises à jour mobile</string>
   <string name="pref_mobileUpdate_sum">Autoriser les mises à jour à travers la connexion de données mobile</string>
   <string name="refreshing_label">Mise à jour en cours</string>
   <string name="flattr_settings_label">Paramètres Flattr</string>
@@ -299,8 +299,8 @@
   <string name="pref_nav_drawer_items_sum">Choisir quels éléments apparaissent dans le volet de navigation</string>
   <string name="pref_nav_drawer_feed_order_title">Définir ordre des abonnements</string>
   <string name="pref_nav_drawer_feed_order_sum">Change l\'ordre de vos abonnements</string>
-  <string name="pref_nav_drawer_feed_counter_title">Définir compteur des abonnements</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Change l\'information affichée à côté du compteur des abonnements</string>
+  <string name="pref_nav_drawer_feed_counter_title">Définir le compteur d\'abonnements</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Changer l\'information affichée par le compteur d\'abonnements</string>
   <string name="pref_set_theme_sum">Modifier l\'apparence d\'AntennaPod.</string>
   <string name="pref_automatic_download_title">Téléchargement automatique</string>
   <string name="pref_automatic_download_sum">Configurer le téléchargement automatique des épisodes.</string>
@@ -334,7 +334,7 @@
   <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verouillage quand la lecture est en pause</string>
   <string name="pref_lockscreen_background_title">Changer l’arrière plan de l\'écran de déverrouillage</string>
   <string name="pref_lockscreen_background_sum">Placer l\'image de l’épisode en arrière plan de l\'écran de déverrouillage. Cela a pour effet secondaire de montrer l\'image dans les apps tierces.</string>
-  <string name="pref_showDownloadReport_title">Afficher rapport des téléchargements</string>
+  <string name="pref_showDownloadReport_title">Afficher le rapport de téléchargements</string>
   <string name="pref_showDownloadReport_sum">Si les téléchargements échouent, générer un rapport des détails des échecs.</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android antérieures à 4.1 ne sont pas compatibles avec les notifications élargies</string>
   <string name="pref_queueAddToFront_sum">Ajouter de nouveaux épisodes en tête de file</string>
@@ -445,7 +445,7 @@
   <string name="folder_not_empty_dialog_msg">Le répertoire que vous avez choisi n\'est pas vide. Les fichiers téléchargés seront ajoutés à ce répertoire. Continuer malgré tout ?</string>
   <string name="set_to_default_folder">Choisir le répertoire par défaut</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Mettre la lecture en pause au lieu de baisser le volume quand une autre application veut jouer un son</string>
-  <string name="pref_pausePlaybackForFocusLoss_title">Mettre en pause lors des interruptions</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Mettre en pause lors d\'interruptions</string>
   <string name="pref_resumeAfterCall_sum">Reprendre la lecture après un appel téléphonique</string>
   <string name="pref_resumeAfterCall_title">Reprendre après appel</string>
   <string name="pref_restart_required">AntennaPod doit être redémarré afin que ce changement prenne effet</string>
@@ -482,17 +482,17 @@
   <string name="search_itunes_label">Chercher sur iTunes</string>
   <string name="select_label"><b>Sélectionner ...</b></string>
   <string name="all_label">Tout</string>
-  <string name="selected_all_label">Sélectionné tous les épisodes</string>
+  <string name="selected_all_label">Tous les épisodes ont été sélectionné</string>
   <string name="none_label">Aucun</string>
-  <string name="deselected_all_label">Désélectionné tous les épisodes</string>
+  <string name="deselected_all_label">Tous les épisodes ont été désélectionné</string>
   <string name="played_label">Joués</string>
-  <string name="selected_played_label">Sélectionné tous les épisodes joués</string>
+  <string name="selected_played_label">Episodes joués sélectionnés</string>
   <string name="unplayed_label">Non joués</string>
-  <string name="selected_unplayed_label">Sélectionné tous les épisodes non joués</string>
+  <string name="selected_unplayed_label">Episodes non joués sélectionnés</string>
   <string name="downloaded_label">Téléchargés</string>
-  <string name="selected_downloaded_label">Sélectionné tous les épisodes téléchargés</string>
+  <string name="selected_downloaded_label">Episodes téléchargés sélectionnés</string>
   <string name="not_downloaded_label">Non téléchargés</string>
-  <string name="selected_not_downloaded_label">Sélectionné tous les épisodes non téléchargés</string>
+  <string name="selected_not_downloaded_label">Les épisodes non téléchargés ont été sélectioné</string>
   <string name="sort_title"><b>Trier par ...</b></string>
   <string name="sort_title_a_z">Titre (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titre (Z \u2192 A)</string>
