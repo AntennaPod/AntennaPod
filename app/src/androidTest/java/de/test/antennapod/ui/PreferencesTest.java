@@ -125,6 +125,18 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> unpauseOnHeadsetReconnect == UserPreferences.isUnpauseOnHeadsetReconnect(), Timeout.getLargeTimeout()));
     }
 
+    public void testBluetoothReconnect() {
+        if(UserPreferences.isPauseOnHeadsetDisconnect() == false) {
+            solo.clickOnText(solo.getString(R.string.pref_pauseOnHeadsetDisconnect_title));
+            assertTrue(solo.waitForCondition(() -> UserPreferences.isPauseOnHeadsetDisconnect(), Timeout.getLargeTimeout()));
+        }
+        final boolean unpauseOnBluetoothReconnect = UserPreferences.isUnpauseOnBluetoothReconnect();
+        solo.clickOnText(solo.getString(R.string.pref_unpauseOnBluetoothReconnect_title));
+        assertTrue(solo.waitForCondition(() -> unpauseOnBluetoothReconnect != UserPreferences.isUnpauseOnBluetoothReconnect(), Timeout.getLargeTimeout()));
+        solo.clickOnText(solo.getString(R.string.pref_unpauseOnBluetoothReconnect_title));
+        assertTrue(solo.waitForCondition(() -> unpauseOnBluetoothReconnect == UserPreferences.isUnpauseOnBluetoothReconnect(), Timeout.getLargeTimeout()));
+    }
+
     public void testContinuousPlayback() {
         final boolean continuousPlayback = UserPreferences.isFollowQueue();
         solo.clickOnText(solo.getString(R.string.pref_followQueue_title));
