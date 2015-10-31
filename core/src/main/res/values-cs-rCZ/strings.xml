@@ -266,8 +266,8 @@
   <string name="pref_auto_delete_title">Automatické mazání</string>
   <string name="pref_smart_mark_as_played_sum">Označit epizody jako poslechnuté i pokud ještě zbývá určitý počet sekund přehrávání do jejich konce</string>
   <string name="pref_smart_mark_as_played_title">Chytré označování jako poslechnuté</string>
-  <string name="pref_skip_removes_from_queue_sum">Odstranit epizody z fronty při jejich přeskočení</string>
-  <string name="pref_skip_removes_from_queue_title">Přeskočení odstraní epizody</string>
+  <string name="pref_skip_keeps_episodes_sum">Neodstraňovat epizody při jejich přeskočení</string>
+  <string name="pref_skip_keeps_episodes_title">Nemazat přeskočené epizody</string>
   <string name="playback_pref">Přehrávání</string>
   <string name="network_pref">Síť</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Aktualizovat interval nebo čas v průběhu dne</string>

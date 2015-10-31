@@ -57,7 +57,7 @@
   <string name="error_label">Erro</string>
   <string name="error_msg_prefix">Ocorreu um erro:</string>
   <string name="refresh_label">Atualizar</string>
-  <string name="external_storage_error_msg">Não existe um cartão SD. Certifique-se que inseriu o cartão corretamente.</string>
+  <string name="external_storage_error_msg">Cartão SD não disponível. Certifique-se de que inseriu o cartão corretamente para que a aplicação funcione corretamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="shownotes_label">Notas</string>
   <string name="description_label">Descrição</string>
@@ -88,7 +88,7 @@
   </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL da fonte</string>
-  <string name="etxtFeedurlHint">URL da fonte ou sítio web</string>
+  <string name="etxtFeedurlHint">URL da fonte ou do sítio web</string>
   <string name="txtvfeedurl_label">Adicionar podcast via URL</string>
   <string name="podcastdirectories_label">Localizar podcasts no diretório</string>
   <string name="podcastdirectories_descr">Pode procurar por novos podcasts no gPodder.net e também na loja iTunes. Pode procurar por nome, categoria e popularidade.</string>
@@ -264,8 +264,8 @@
   <string name="pref_auto_delete_title">Eliminação automática</string>
   <string name="pref_smart_mark_as_played_sum">Marcar episódios como reproduzidos mesmo que restem alguns segundos de reprodução</string>
   <string name="pref_smart_mark_as_played_title">Marcar como reproduzido (inteligente)</string>
-  <string name="pref_skip_removes_from_queue_sum">Remover episódios da fila quando forem ignorados</string>
-  <string name="pref_skip_removes_from_queue_title">Remover episódios ao ignorar</string>
+  <string name="pref_skip_keeps_episodes_sum">Manter episódio mesmo se forem ignorados</string>
+  <string name="pref_skip_keeps_episodes_title">Manter episódios ignorados</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalo de atualização ou hora do dia</string>

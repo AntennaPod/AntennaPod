@@ -265,8 +265,6 @@
   <string name="pref_auto_delete_title">Автовидалення</string>
   <string name="pref_smart_mark_as_played_sum">Позначити епізоди як грані навіть якщо залишилось менш ніж зазначене число секунд до кінця відтворення</string>
   <string name="pref_smart_mark_as_played_title">Розумне позначення граних епізодів</string>
-  <string name="pref_skip_removes_from_queue_sum">Видаляти епізод з черги у разі його пропуска при прослуховуванні</string>
-  <string name="pref_skip_removes_from_queue_title">Видалення епізода пропуском</string>
   <string name="playback_pref">Відтворення</string>
   <string name="network_pref">Мережа</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Частота оновлень або оновлення в зазначений час</string>

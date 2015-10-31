@@ -5,8 +5,11 @@
   <string name="feeds_label">Flöden</string>
   <string name="add_feed_label">Lägg till Podcast</string>
   <string name="podcasts_label">PODCASTS</string>
+  <string name="episodes_label">Episoder</string>
   <string name="new_episodes_label">Nya Episoder</string>
   <string name="all_episodes_label">Alla Episoder</string>
+  <string name="all_episodes_short_label">Alla</string>
+  <string name="favorite_episodes_label">Favoriter</string>
   <string name="new_label">Ny</string>
   <string name="waiting_list_label">Väntelista</string>
   <string name="settings_label">Inställningar</string>
@@ -28,6 +31,7 @@
   <string name="drawer_preferences">Lådinställningar</string>
   <string name="drawer_feed_order_unplayed_episodes">Sortera efter räknare</string>
   <string name="drawer_feed_order_alphabetical">Sortera alfabetiskt</string>
+  <string name="drawer_feed_order_last_update">Sortera efter publiceringsdatum</string>
   <string name="drawer_feed_counter_new_unplayed">Antal nya och ospelade episoder</string>
   <string name="drawer_feed_counter_new">Antal nya episoder</string>
   <string name="drawer_feed_counter_unplayed">Antal ospelade episoder</string>
@@ -68,11 +72,20 @@
   <string name="retry_label">Försök igen</string>
   <string name="auto_download_label">Inkludera i automatiska nedladdningar</string>
   <string name="auto_download_apply_to_items_title">Applicera på Föregående Episoder</string>
+  <string name="auto_download_apply_to_items_message">Den nya inställningen <i>Automatisk Nedladdning</i> kommer automatiskt att appliceras på nya episoder.\nVill du även applicera det på tidigare publicerade episoder?</string>
   <string name="auto_delete_label">Ta automatiskt bort episod\n(åsidosätter global standardinställning)</string>
   <string name="parallel_downloads_suffix">\u0020parallella nedladdningar</string>
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Alltid</string>
   <string name="feed_auto_download_never">Aldrig</string>
+  <string name="send_label">Skicka...</string>
+  <string name="episode_cleanup_never">Aldrig</string>
+  <string name="episode_cleanup_queue_removal">Om inte köad</string>
+  <string name="episode_cleanup_after_listening">Efter avslutad</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 dag efter färdigspelad</item>
+    <item quantity="other">%d dagar efter färdigspelad</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Flödets URL</string>
   <string name="etxtFeedurlHint">URL till flöde eller webbsida</string>
@@ -122,6 +135,8 @@
   <string name="add_to_queue_label">Lägg till i kön</string>
   <string name="added_to_queue_label">Lägg till i Kö</string>
   <string name="remove_from_queue_label">Ta bort från Kön</string>
+  <string name="add_to_favorite_label">Lägg till i Favoriter</string>
+  <string name="remove_from_favorite_label">Ta bort från Favoriter</string>
   <string name="visit_website_label">Besök websidan</string>
   <string name="support_label">Flattra det här</string>
   <string name="enqueue_all_new">Lägg till alla i kön</string>
@@ -130,6 +145,7 @@
   <string name="activate_auto_download">Aktivera Automatisk Nedladdning</string>
   <string name="deactivate_auto_download">Avaktivera Automatisk Nedladdning</string>
   <string name="reset_position">Nollställ Uppspelningspositionen</string>
+  <string name="removed_item">Borttagen</string>
   <!--Download messages and labels-->
   <string name="download_successful">lyckades</string>
   <string name="download_failed">misslyckades</string>
@@ -227,7 +243,9 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Ladda ner tillägg</string>
   <string name="no_playback_plugin_title">Tillägg ej installerat</string>
+  <string name="no_playback_plugin_or_sonic_msg">För att variabel uppspelningshastighet ska funger måste du installera ett tredjepartsbibliotek eller aktivera den experimentella spelaren Sonic [Android 4.1+].\n\nTryck på \'Ladda ner Plugin\' för att ladda ner en gratis plugin från Play Store.\n\nAntennaPod ansvarar inte för eventualla problem som upptäcks vid användning av denna plugin och de bör rapporteras till pluginens ägare.</string>
   <string name="set_playback_speed_label">Uppspelningshastigheter</string>
+  <string name="enable_sonic">Aktivera Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Det finns inget i denna lista.</string>
   <string name="no_feeds_label">Du har inte prenumererat på något flöde ännu.</string>
@@ -237,6 +255,8 @@
   <string name="queue_label">Kö</string>
   <string name="services_label">Tjänster</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Episodupprensning</string>
+  <string name="pref_episode_cleanup_summary">Episoder som inte ligger i kön och inte är favoriter bör kunna tas bort om det behövs utrymme</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Pausa uppspelningen när hörlurarna bortkopplas</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Fortsätt uppspelningen när hörlurarna återansluts</string>
   <string name="pref_followQueue_sum">Hoppa till nästa i kön när uppspelningen är klar</string>
@@ -244,6 +264,8 @@
   <string name="pref_auto_delete_title">Automatisk borttagning</string>
   <string name="pref_smart_mark_as_played_sum">Markera episoder som spelade även om mindre än ett visst antal sekunder är kvar</string>
   <string name="pref_smart_mark_as_played_title">Smart markering av uppspelat innehåll</string>
+  <string name="pref_skip_keeps_episodes_sum">Ta inte bort episoder när de hoppas över</string>
+  <string name="pref_skip_keeps_episodes_title">Behåll Överhoppade Episoder</string>
   <string name="playback_pref">Uppspelning</string>
   <string name="network_pref">Nätverk </string>
   <string name="pref_autoUpdateIntervallOrTime_title">Uppdateringsintervall eller Tid på Dagen</string>
@@ -310,6 +332,8 @@
   <string name="pref_expandNotify_sum">Expandera alltid notifieringen för att visa uppspelningskontrollerna.</string>
   <string name="pref_persistNotify_title">Bestående Uppspelningskontroller</string>
   <string name="pref_persistNotify_sum">Behåll notifiering och kontroller på låsskärmen när uppspelningen pausas.</string>
+  <string name="pref_lockscreen_background_title">Sätt Låsskärmens Bakgrund</string>
+  <string name="pref_lockscreen_background_sum">Sätt låsskärmens bakgrund till den spelade episodens bild. En bieffekt är att även tredjepartsappar kan visa bilden.</string>
   <string name="pref_showDownloadReport_title">Visa Nedladdningsrapport</string>
   <string name="pref_showDownloadReport_sum">Visa en rapport med detaljer om felet när nedladdningar misslyckas.</string>
   <string name="pref_expand_notify_unsupport_toast">Androidversioner före 4.1 har inte stöd för expanderade notifieringar.</string>
@@ -318,6 +342,9 @@
   <string name="pref_smart_mark_as_played_disabled">Avaktiverad</string>
   <string name="pref_image_cache_size_title">Bildcachestorlek</string>
   <string name="pref_image_cache_size_sum">Storleken på bildcachen på disken.</string>
+  <string name="experimental_pref">Experimentell</string>
+  <string name="pref_sonic_title">Sonic mediaspelare</string>
+  <string name="pref_sonic_message">Använd inbyggda mediaspelaren Sonic som en ersättning för Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>
@@ -332,6 +359,7 @@
   <string name="found_in_title_label">Hittad i titeln</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML-filer låter dig flytta dina podcasts från en podcatcher till en annan.</string>
+  <string name="opml_import_option">Val %1$d</string>
   <string name="opml_import_explanation_1">Välj en specifik sökväg från det lokala filsystemet.</string>
   <string name="opml_import_explanation_2">Använd en extern applikation som Dropbox, Google Drive eller ditt favoritval av filhanterare för att öppna en OPML fil.</string>
   <string name="opml_import_explanation_3">Flera applikationer som Google Mail, Dropbox, Google Drive och de flesta filhanterare kan <i>öppna</i> OPML filer <i>med</i> AntennaPod.</string>
@@ -358,6 +386,9 @@
   <string name="sleep_timer_label">Sömntimer</string>
   <string name="time_left_label">Återstående tid:\u0020</string>
   <string name="time_dialog_invalid_input">Ogiltigt tal, tiden måste vara ett heltal</string>
+  <string name="timer_about_to_expire_label"><b>När timern är nära noll:</b></string>
+  <string name="shake_to_reset_label">Skaka för att återställa</string>
+  <string name="timer_vibration_label">Vibrera</string>
   <string name="time_seconds">sekunder</string>
   <string name="time_minutes">minuter</string>
   <string name="time_hours">timmar</string>
