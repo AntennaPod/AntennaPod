@@ -2,6 +2,8 @@ package de.danoeh.antennapod;
 
 import android.app.Application;
 import android.content.res.Configuration;
+import android.os.Build;
+import android.os.StrictMode;
 
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -38,6 +40,22 @@ public class PodcastApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
+		if(BuildConfig.DEBUG) {
+			StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder()
+				.detectLeakedSqlLiteObjects()
+				.penaltyLog()
+				.penaltyDropBox();
+			if (Build.VERSION.SDK_INT >= 11) {
+				builder.detectActivityLeaks();
+				builder.detectLeakedClosableObjects();
+			}
+			if(Build.VERSION.SDK_INT >= 16) {
+				builder.detectLeakedRegistrationObjects();
+			}
+			StrictMode.setVmPolicy(builder.build());
+		}
+
 		singleton = this;
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 
