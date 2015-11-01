@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
@@ -125,7 +124,7 @@ public class UserPreferences {
         Log.d(TAG, "Creating new instance of UserPreferences");
         Validate.notNull(context);
 
-        UserPreferences.context = context;
+        UserPreferences.context = context.getApplicationContext();
         UserPreferences.prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         createImportDirectory();
@@ -425,7 +424,7 @@ public class UserPreferences {
              .apply();
     }
 
-    public static void setHiddenDrawerItems(Context context, List<String> items) {
+    public static void setHiddenDrawerItems(List<String> items) {
         String str = StringUtils.join(items, ',');
         prefs.edit()
              .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
@@ -628,8 +627,8 @@ public class UserPreferences {
     public static void restartUpdateIntervalAlarm(long triggerAtMillis, long intervalMillis) {
         Log.d(TAG, "Restarting update alarm.");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
-                new Intent(ClientConfig.applicationCallbacks.getApplicationInstance(), FeedUpdateReceiver.class), 0);
+        Intent intent = new Intent(context, FeedUpdateReceiver.class);
+        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmManager.cancel(updateIntent);
         if (intervalMillis > 0) {
             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
@@ -648,7 +647,7 @@ public class UserPreferences {
         Log.d(TAG, "Restarting update alarm.");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
-                new Intent(ClientConfig.applicationCallbacks.getApplicationInstance(), FeedUpdateReceiver.class), 0);
+                new Intent(context, FeedUpdateReceiver.class), 0);
         alarmManager.cancel(updateIntent);
 
         Calendar now = Calendar.getInstance();

@@ -91,7 +91,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testClickNavDrawer() throws Exception {
         uiTestUtils.addLocalFeedData(false);
 
-        UserPreferences.setHiddenDrawerItems(getInstrumentation().getTargetContext(), new ArrayList<String>());
+        UserPreferences.setHiddenDrawerItems(new ArrayList<String>());
 
         // queue
         openNavDrawer();
@@ -147,7 +147,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     public void testDrawerPreferencesHideSomeElements() {
-        UserPreferences.setHiddenDrawerItems(getInstrumentation().getTargetContext(), new ArrayList<String>());
+        UserPreferences.setHiddenDrawerItems(new ArrayList<String>());
         openNavDrawer();
         solo.clickLongOnText(solo.getString(R.string.queue_label));
         solo.waitForDialogToOpen();
@@ -163,7 +163,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     public void testDrawerPreferencesUnhideSomeElements() {
         List<String> hidden = Arrays.asList(PlaybackHistoryFragment.TAG, DownloadsFragment.TAG);
-        UserPreferences.setHiddenDrawerItems(getInstrumentation().getTargetContext(), hidden);
+        UserPreferences.setHiddenDrawerItems(hidden);
         openNavDrawer();
         solo.clickLongOnText(solo.getString(R.string.queue_label));
         solo.waitForDialogToOpen();
@@ -178,7 +178,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     public void testDrawerPreferencesHideAllElements() {
-        UserPreferences.setHiddenDrawerItems(getInstrumentation().getTargetContext(), new ArrayList<String>());
+        UserPreferences.setHiddenDrawerItems(new ArrayList<String>());
         String[] titles = getInstrumentation().getTargetContext().getResources().getStringArray(R.array.nav_drawer_titles);
 
         openNavDrawer();
@@ -197,7 +197,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     public void testDrawerPreferencesHideCurrentElement() {
-        UserPreferences.setHiddenDrawerItems(getInstrumentation().getTargetContext(), new ArrayList<String>());
+        UserPreferences.setHiddenDrawerItems(new ArrayList<String>());
 
         openNavDrawer();
         String downloads = solo.getString(R.string.downloads_label);

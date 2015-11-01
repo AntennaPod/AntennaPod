@@ -259,7 +259,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                UserPreferences.setHiddenDrawerItems(MainActivity.this, hiddenDrawerItems);
+                UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
             }
         });
         builder.setNegativeButton(R.string.cancel_label, null);

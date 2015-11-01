@@ -642,7 +642,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                UserPreferences.setHiddenDrawerItems(context, hiddenDrawerItems);
+                UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
             }
         });
         builder.setNegativeButton(R.string.cancel_label, null);
