@@ -28,11 +28,13 @@ public class TypeGetter {
 	public Type getType(Feed feed) throws UnsupportedFeedtypeException {
 		XmlPullParserFactory factory;
 		if (feed.getFile_url() != null) {
+			Reader reader = null;
 			try {
 				factory = XmlPullParserFactory.newInstance();
 				factory.setNamespaceAware(true);
 				XmlPullParser xpp = factory.newPullParser();
-				xpp.setInput(createReader(feed));
+				reader = createReader(feed);
+				xpp.setInput(reader);
 				int eventType = xpp.getEventType();
 
 				while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -88,6 +90,14 @@ public class TypeGetter {
 
             } catch (IOException e) {
 				e.printStackTrace();
+			} finally {
+				if(reader != null) {
+					try {
+						reader.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 		if (BuildConfig.DEBUG)
