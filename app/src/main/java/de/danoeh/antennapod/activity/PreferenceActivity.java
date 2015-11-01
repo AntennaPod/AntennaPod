@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import java.lang.ref.WeakReference;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.preferences.PreferenceController;
@@ -26,7 +28,7 @@ public class PreferenceActivity extends ActionBarActivity {
 
     private PreferenceController preferenceController;
     private MainFragment prefFragment;
-    private static PreferenceActivity instance;
+    private static WeakReference<PreferenceActivity> instance;
 
 
     private final PreferenceController.PreferenceUI preferenceUI = new PreferenceController.PreferenceUI() {
@@ -47,8 +49,8 @@ public class PreferenceActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // This must be the FIRST thing we do, otherwise other code may not have the
         // reference it needs
-        instance = this;
-        
+        instance = new WeakReference<PreferenceActivity>(this);
+
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
 
@@ -102,16 +104,18 @@ public class PreferenceActivity extends ActionBarActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
-            if(instance.preferenceController != null) {
-                instance.preferenceController.onCreate();
+            PreferenceActivity activity = instance.get();
+            if(activity != null && activity.preferenceController != null) {
+                activity.preferenceController.onCreate();
             }
         }
 
         @Override
         public void onResume() {
             super.onResume();
-            if(instance.preferenceController != null) {
-                instance.preferenceController.onResume();
+            PreferenceActivity activity = instance.get();
+            if(activity != null && activity.preferenceController != null) {
+                activity.preferenceController.onResume();
             }
         }
     }
