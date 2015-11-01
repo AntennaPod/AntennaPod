@@ -5,11 +5,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.1'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.2'
+        classpath "com.android.tools.build:gradle:1.3.1"
+        classpath "me.tatarka:gradle-retrolambda:3.2.3"
+        classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        // Exclude the version that the android plugin depends on.
+        configurations.classpath.exclude group: "com.android.tools.external.lombok"
     }
 }
 
@@ -19,10 +20,10 @@ allprojects {
     }
 }
 
-// Disable predex if requested (we can't predex in Circle CI
+// Disable predex if requested (we can"t predex in Circle CI
 // See http://tools.android.com/tech-docs/new-build-system/tips#TOC-Improving-Build-Server-performance
 // and https://circleci.com/docs/android
-project.ext.preDexLibs = !project.hasProperty('disablePreDex')
+project.ext.preDexLibs = !project.hasProperty("disablePreDex")
 
 subprojects {
     project.plugins.whenPluginAdded { plugin ->
@@ -34,6 +35,24 @@ subprojects {
     }
 }
 
+project.ext {
+    compileSdkVersion = 22
+    buildToolsVersion = "22.0.1"
+    minSdkVersion = 10
+    targetSdkVersion = 22
+
+    supportVersion = "22.2.1"
+    commonsioVersion = "2.4"
+    commonslangVersion = "3.4"
+    eventbusVersion = "2.4.0"
+    flattr4jVersion = "2.12"
+    glideVersion = "3.6.1"
+    jsoupVersion = "1.7.3"
+    rxAndroidVersion = "1.0.1"
+    okhttpVersion = "2.5.0"
+    okioVersion = "1.6.0"
+}
+
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = "2.4"
 }
