@@ -39,7 +39,7 @@
             android:summary="@string/pref_expandNotify_sum"
             android:title="@string/pref_expandNotify_title"/>
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:enabled="true"
             android:key="prefPersistNotify"
             android:summary="@string/pref_persistNotify_sum"
