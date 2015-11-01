@@ -420,7 +420,7 @@ public class UserPreferences {
              .apply();
     }
 
-    public static void setHiddenDrawerItems(Context context, List<String> items) {
+    public static void setHiddenDrawerItems(List<String> items) {
         String str = StringUtils.join(items, ',');
         prefs.edit()
              .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
