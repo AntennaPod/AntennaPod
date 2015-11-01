@@ -366,10 +366,14 @@ public class PlaybackServiceTaskManager {
                     }
                     if (waitingTime <= 0) {
                         Log.d(TAG, "Sleep timer expired");
-                        shakeListener.pause();
-                        shakeListener = null;
+                        if(shakeListener != null) {
+                            shakeListener.pause();
+                            shakeListener = null;
+                        }
                         if (!Thread.currentThread().isInterrupted()) {
                             callback.onSleepTimerExpired();
+                        } else {
+                            Log.d(TAG, "Sleep timer interrupted");
                         }
                     }
                 } catch (InterruptedException e) {
