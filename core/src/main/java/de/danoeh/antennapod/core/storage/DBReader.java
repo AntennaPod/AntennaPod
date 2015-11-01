@@ -950,10 +950,15 @@ public final class DBReader {
             };
         } else if(feedOrder == UserPreferences.FEED_ORDER_ALPHABETICAL) {
             comparator = (lhs, rhs) -> {
-                if(lhs.getTitle() == null) {
+                String t1 = lhs.getTitle();
+                String t2 = rhs.getTitle();
+                if(t1 == null) {
                     return 1;
+                } else if(t2 == null) {
+                    return -1;
+                } else {
+                    return t1.toLowerCase().compareTo(t2.toLowerCase());
                 }
-                return lhs.getTitle().compareTo(rhs.getTitle());
             };
         } else {
             comparator = (lhs, rhs) -> {
