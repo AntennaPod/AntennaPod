@@ -123,7 +123,7 @@ public class UserPreferences {
         Log.d(TAG, "Creating new instance of UserPreferences");
         Validate.notNull(context);
 
-        UserPreferences.context = context;
+        UserPreferences.context = context.getApplicationContext();
         UserPreferences.prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         createImportDirectory();
