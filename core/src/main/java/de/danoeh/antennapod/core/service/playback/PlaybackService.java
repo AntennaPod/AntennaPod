@@ -18,6 +18,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -531,7 +532,7 @@ public class PlaybackService extends Service {
 
         @Override
         public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-            final String TAG = "PlaybackService.onErrorListener";
+            final String TAG = "PlaybackSvc.onErrorLtsn";
             Log.w(TAG, "An error has occured: " + what + " " + extra);
             if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
                 mediaPlayer.pause(true, false);
@@ -1022,7 +1023,7 @@ public class PlaybackService extends Service {
                         pauseIfPauseOnDisconnect();
                     } else if (state == PLUGGED) {
                         Log.d(TAG, "Headset was plugged in during playback.");
-                        unpauseIfPauseOnDisconnect();
+                        unpauseIfPauseOnDisconnect(false);
                     }
                 } else {
                     Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
@@ -1038,7 +1039,7 @@ public class PlaybackService extends Service {
                 int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
                 if (state == BluetoothA2dp.STATE_CONNECTED) {
                     Log.d(TAG, "Received bluetooth connection intent");
-                    unpauseIfPauseOnDisconnect();
+                    unpauseIfPauseOnDisconnect(true);
                 }
             }
         }
@@ -1071,10 +1072,20 @@ public class PlaybackService extends Service {
         }
     }
 
-    private void unpauseIfPauseOnDisconnect() {
+    /**
+     * @param bluetooth true if the event for unpausing came from bluetooth
+     */
+    private void unpauseIfPauseOnDisconnect(boolean bluetooth) {
         if (transientPause) {
             transientPause = false;
-            if (UserPreferences.isPauseOnHeadsetDisconnect() && UserPreferences.isUnpauseOnHeadsetReconnect()) {
+            if (!bluetooth && UserPreferences.isUnpauseOnHeadsetReconnect()) {
+                mediaPlayer.resume();
+            } else if (bluetooth && UserPreferences.isUnpauseOnBluetoothReconnect()){
+                // let the user know we've started playback again...
+                Vibrator v = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                if(v != null) {
+                    v.vibrate(500);
+                }
                 mediaPlayer.resume();
             }
         }

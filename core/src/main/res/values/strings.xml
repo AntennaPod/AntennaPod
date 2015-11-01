@@ -276,8 +276,9 @@
     <string name="flattr_label">Flattr</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
     <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if space is needed</string>
-    <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
+    <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
+    <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
@@ -298,6 +299,7 @@
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones Disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
+    <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
     <string name="refreshing_label">Refreshing</string>

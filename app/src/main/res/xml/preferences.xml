@@ -73,7 +73,7 @@
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefPauseOnHeadsetDisconnect"
-            android:summary="@string/pref_pauseOnHeadsetDisconnect_sum"
+            android:summary="@string/pref_pauseOnDisconnect_sum"
             android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
         <CheckBoxPreference
             android:defaultValue="true"
@@ -82,6 +82,13 @@
             android:key="prefUnpauseOnHeadsetReconnect"
             android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
             android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:dependency="prefPauseOnHeadsetDisconnect"
+            android:key="prefUnpauseOnBluetoothReconnect"
+            android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
+            android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
         <CheckBoxPreference
             android:defaultValue="true"
             android:enabled="true"
