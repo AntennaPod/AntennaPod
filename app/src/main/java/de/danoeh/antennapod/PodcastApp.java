@@ -45,7 +45,7 @@ public class PodcastApp extends Application {
 			StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder()
 				.detectLeakedSqlLiteObjects()
 				.penaltyLog()
-				.penaltyDeath();
+				.penaltyDropBox();
 			if (Build.VERSION.SDK_INT >= 11) {
 				builder.detectActivityLeaks();
 				builder.detectLeakedClosableObjects();
