@@ -51,7 +51,6 @@ import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 
 /**
  * Sets up a preference UI that lets the user change user preferences.
@@ -69,7 +68,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public static final String PREF_ABOUT = "prefAbout";
     public static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     public static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
-    public static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
     public static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
     public static final String PREF_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
     public static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
@@ -304,14 +302,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                             }
                         }
                 );
-        ui.findPreference(PreferenceController.PREF_PLAYBACK_SPEED_LAUNCHER)
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        VariableSpeedDialog.showDialog(activity);
-                        return true;
-                    }
-                });
         ui.findPreference(PreferenceController.PREF_GPODNET_SETLOGIN_INFORMATION).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

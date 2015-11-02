@@ -262,7 +262,6 @@
     <string name="download_plugin_label">Download Plugin</string>
     <string name="no_playback_plugin_title">Plugin Not Installed</string>
     <string name="no_playback_plugin_or_sonic_msg">For variable speed playback to work, you have to install a third party library or enable the experimental Sonic player [Android 4.1+].\n\nTap \'Download Plugin\' to download a free plugin from the Play Store.\n\nAny problems found using this plugin are not the responsibility of AntennaPod and should be reported to the plugin owner.</string>
-    <string name="set_playback_speed_label">Playback Speeds</string>
     <string name="enable_sonic">Enable Sonic</string>
 
     <!-- Empty list labels -->
@@ -346,8 +345,6 @@
     <string name="pref_gpodnet_logout_toast">Logout was successful</string>
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
-    <string name="pref_playback_speed_title">Playback Speeds</string>
-    <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
     <string name="pref_fast_forward">Fast forward time</string>
     <string name="pref_rewind">Rewind time</string>
     <string name="pref_gpodnet_sethostname_title">Set hostname</string>
@@ -554,5 +551,15 @@
     <string name="rating_never_label">Leave me alone</string>
     <string name="rating_later_label">Remind me later</string>
     <string name="rating_now_label">Sure, let\'s do this!</string>
+
+    <!-- Audio controls -->
+    <string name="audio_controls">Audio controls</string>
+    <string name="playback_speed">Playback Speed</string>
+    <string name="volume">Volume</string>
+    <string name="left_short">L</string>
+    <string name="right_short">R</string>
+    <string name="audio_effects">Audio Effects</string>
+    <string name="stereo_to_mono">Downmix: Stereo to mono</string>
+    <string name="sonic_only">Sonic only</string>
 
 </resources>

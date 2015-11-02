@@ -24,6 +24,7 @@ import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -293,6 +294,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
             builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
+
             if (p.getImageUri() != null && UserPreferences.setLockscreenBackground()) {
                 builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageUri().toString());
                 try {
@@ -322,13 +324,10 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * This method is executed on an internal executor service.
      */
     public void resume() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                resumeSync();
-                playerLock.unlock();
-            }
+        executor.submit(() -> {
+            playerLock.lock();
+            resumeSync();
+            playerLock.unlock();
         });
     }
 
@@ -339,7 +338,15 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                     AudioManager.AUDIOFOCUS_GAIN);
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 acquireWifiLockIfNecessary();
-                setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
+                float speed = 1.0f;
+                try {
+                    speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
+                } catch(NumberFormatException e) {
+                    Log.e(TAG, Log.getStackTraceString(e));
+                    UserPreferences.setPlaybackSpeed(String.valueOf(speed));
+                }
+                setSpeed(speed);
+                setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                     int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
@@ -690,24 +697,39 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * Sets the playback speed.
      * This method is executed on an internal executor service.
      */
-    public void setVolume(final float volume) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                setVolumeSync(volume);
-            }
-        });
+    public void setVolume(final float volumeLeft, float volumeRight) {
+        executor.submit(() -> setVolumeSync(volumeLeft, volumeRight));
     }
 
     /**
      * Sets the playback speed.
      * This method is executed on the caller's thread.
      */
-    private void setVolumeSync(float volume) {
+    private void setVolumeSync(float volumeLeft, float volumeRight) {
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            mediaPlayer.setVolume(volume, volume);
-            Log.d(TAG, "Media player volume was set to " + volume);
+            mediaPlayer.setVolume(volumeLeft, volumeRight);
+            Log.d(TAG, "Media player volume was set to " + volumeLeft + " " + volumeRight);
+        }
+        playerLock.unlock();
+    }
+
+    /**
+     * Returns true if the mediaplayer can mix stereo down to mono
+     */
+    public boolean canDownmix() {
+        boolean retVal = false;
+        if (mediaPlayer != null && media != null && media.getMediaType() == MediaType.AUDIO) {
+            retVal = mediaPlayer.canDownmix();
+        }
+        return retVal;
+    }
+
+    public void setDownmix(boolean enable) {
+        playerLock.lock();
+        if (media != null && media.getMediaType() == MediaType.AUDIO) {
+            mediaPlayer.setDownmix(enable);
+            Log.d(TAG, "Media player downmix was set to " + enable);
         }
         playerLock.unlock();
     }

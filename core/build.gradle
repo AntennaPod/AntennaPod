@@ -40,7 +40,6 @@ repositories {
 dependencies {
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
-    compile "com.android.support:design:$supportVersion"
     compile "org.apache.commons:commons-lang3:$commonslangVersion"
     compile ("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
         exclude group: "org.json", module: "json"

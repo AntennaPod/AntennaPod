@@ -33,6 +33,6 @@
     <dimen name="listitem_icon_leftpadding">16dp</dimen>
     <dimen name="listitem_icon_rightpadding">16dp</dimen>
 
-    <dimen name="audioplayer_playercontrols_length">64dp</dimen>
+    <dimen name="audioplayer_playercontrols_length">48dp</dimen>
 
 </resources>

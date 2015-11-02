@@ -65,7 +65,6 @@ public class UserPreferences {
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
-    public static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
     public static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
 
@@ -95,9 +94,12 @@ public class UserPreferences {
     public static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
     public static final String IMAGE_CACHE_DEFAULT_VALUE = "100";
     public static final int IMAGE_CACHE_SIZE_MINIMUM = 20;
+    public static final String PREF_LEFT_VOLUME = "prefLeftVolume";
+    public static final String PREF_RIGHT_VOLUME = "prefRightVolume";
 
     // Experimental
     public static final String PREF_SONIC = "prefSonic";
+    public static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
     public static final String PREF_NORMALIZER = "prefNormalizer";
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
@@ -252,8 +254,23 @@ public class UserPreferences {
         return prefs.getString(PREF_PLAYBACK_SPEED, "1.0");
     }
 
-    public static String[] getPlaybackSpeedArray() {
-        return readPlaybackSpeedArray(prefs.getString(PREF_PLAYBACK_SPEED_ARRAY, null));
+
+    public static float getLeftVolume() {
+        int volume = prefs.getInt(PREF_LEFT_VOLUME, 100);
+        if(volume == 100) {
+            return 1.0f;
+        } else {
+            return (float) (1 - (Math.log(100 - volume) / Math.log(100)));
+        }
+    }
+
+    public static float getRightVolume() {
+        int volume = prefs.getInt(PREF_RIGHT_VOLUME, 100);
+        if(volume == 100) {
+            return 1.0f;
+        } else {
+            return (float) (1 - (Math.log(100 - volume) / Math.log(100)));
+        }
     }
 
     public static boolean shouldPauseForFocusLoss() {
@@ -375,14 +392,13 @@ public class UserPreferences {
              .apply();
     }
 
-    public static void setPlaybackSpeedArray(String[] speeds) {
-        JSONArray jsonArray = new JSONArray();
-        for (String speed : speeds) {
-            jsonArray.put(speed);
-        }
+    public static void setVolume(int leftVolume, int rightVolume) {
+        assert(0 <= leftVolume && leftVolume <= 100);
+        assert(0 <= rightVolume && rightVolume <= 100);
         prefs.edit()
-             .putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString())
-             .apply();
+            .putInt(PREF_LEFT_VOLUME, leftVolume)
+            .putInt(PREF_RIGHT_VOLUME, rightVolume)
+            .apply();
     }
 
     public static void setAutodownloadSelectedNetworks(String[] value) {
@@ -467,34 +483,6 @@ public class UserPreferences {
         }
     }
 
-    private static String[] readPlaybackSpeedArray(String valueFromPrefs) {
-        String[] selectedSpeeds = null;
-        // If this preference hasn't been set yet, return the default options
-        if (valueFromPrefs == null) {
-            String[] allSpeeds = context.getResources().getStringArray(R.array.playback_speed_values);
-            List<String> speedList = new LinkedList<String>();
-            for (String speedStr : allSpeeds) {
-                float speed = Float.parseFloat(speedStr);
-                if (speed < 2.0001 && speed * 10 % 1 == 0) {
-                    speedList.add(speedStr);
-                }
-            }
-            selectedSpeeds = speedList.toArray(new String[speedList.size()]);
-        } else {
-            try {
-                JSONArray jsonArray = new JSONArray(valueFromPrefs);
-                selectedSpeeds = new String[jsonArray.length()];
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    selectedSpeeds[i] = jsonArray.getString(i);
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, "Got JSON error when trying to get speeds from JSONArray");
-                e.printStackTrace();
-            }
-        }
-        return selectedSpeeds;
-    }
-
     public static boolean useSonic() {
         return prefs.getBoolean(PREF_SONIC, false);
     }
@@ -503,6 +491,16 @@ public class UserPreferences {
         prefs.edit()
             .putBoolean(PREF_SONIC, enable)
             .apply();
+    }
+
+    public static boolean stereoToMono() {
+        return prefs.getBoolean(PREF_STEREO_TO_MONO, false);
+    }
+
+    public static void stereoToMono(boolean enable) {
+        prefs.edit()
+                .putBoolean(PREF_STEREO_TO_MONO, enable)
+                .apply();
     }
 
 

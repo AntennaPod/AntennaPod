@@ -398,19 +398,25 @@ public class PlaybackService extends Service {
 
         @Override
         public void onSleepTimerAlmostExpired() {
-            mediaPlayer.setVolume(0.1f);
+            float leftVolume = 0.1f * UserPreferences.getLeftVolume();
+            float rightVolume = 0.1f * UserPreferences.getRightVolume();
+            mediaPlayer.setVolume(leftVolume, rightVolume);
         }
 
         @Override
         public void onSleepTimerExpired() {
             mediaPlayer.pause(true, true);
-            mediaPlayer.setVolume(1.0f);
+            float leftVolume = UserPreferences.getLeftVolume();
+            float rightVolume = UserPreferences.getRightVolume();
+            mediaPlayer.setVolume(leftVolume, rightVolume);
             sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
         }
 
         @Override
         public void onSleepTimerReset() {
-            mediaPlayer.setVolume(1.0f);
+            float leftVolume = UserPreferences.getLeftVolume();
+            float rightVolume = UserPreferences.getRightVolume();
+            mediaPlayer.setVolume(leftVolume, rightVolume);
         }
 
         @Override
@@ -1165,16 +1171,28 @@ public class PlaybackService extends Service {
 
     public Playable getPlayable() { return mediaPlayer.getPlayable(); }
 
-    public void setSpeed(float speed) {
-        mediaPlayer.setSpeed(speed);
-    }
-
     public boolean canSetSpeed() {
         return mediaPlayer.canSetSpeed();
     }
 
+    public void setSpeed(float speed) {
+        mediaPlayer.setSpeed(speed);
+    }
+
+    public void setVolume(float leftVolume, float rightVolume) {
+        mediaPlayer.setVolume(leftVolume, rightVolume);
+    }
+
     public float getCurrentPlaybackSpeed() {
         return mediaPlayer.getPlaybackSpeed();
+    }
+
+    public boolean canDownmix() {
+        return mediaPlayer.canDownmix();
+    }
+
+    public void setDownmix(boolean enable) {
+        mediaPlayer.setDownmix(enable);
     }
 
     public boolean isStartWhenPrepared() {

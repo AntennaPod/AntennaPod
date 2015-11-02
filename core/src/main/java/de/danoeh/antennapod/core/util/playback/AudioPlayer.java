@@ -37,4 +37,9 @@ public class AudioPlayer extends MediaPlayer implements IPlayer {
 	protected boolean useSonic() {
 		return UserPreferences.useSonic();
 	}
+
+	@Override
+	protected boolean downmix() {
+		return UserPreferences.stereoToMono();
+	}
 }

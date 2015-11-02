@@ -131,6 +131,7 @@
             android:summary="@string/pref_playback_speed_sum"
             android:title="@string/pref_playback_speed_title" />
 
+
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
