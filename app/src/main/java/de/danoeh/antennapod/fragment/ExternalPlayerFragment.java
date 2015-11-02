@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -80,36 +79,8 @@ public class ExternalPlayerFragment extends Fragment {
         return new PlaybackController(getActivity(), true) {
 
             @Override
-            public void setupGUI() {
-            }
-
-            @Override
             public void onPositionObserverUpdate() {
                 ExternalPlayerFragment.this.onPositionObserverUpdate();
-            }
-
-            @Override
-            public void onReloadNotification(int code) {
-            }
-
-            @Override
-            public void onBufferStart() {
-            }
-
-            @Override
-            public void onBufferEnd() {
-            }
-
-            @Override
-            public void onBufferUpdate(float progress) {
-            }
-
-            @Override
-            public void onSleepTimerUpdate() {
-            }
-
-            @Override
-            public void handleError(int code) {
             }
 
             @Override
@@ -117,13 +88,6 @@ public class ExternalPlayerFragment extends Fragment {
                 return butPlay;
             }
 
-            @Override
-            public void postStatusMsg(int msg) {
-            }
-
-            @Override
-            public void clearStatusMsg() {
-            }
 
             @Override
             public boolean loadMediaInfo() {
@@ -136,14 +100,6 @@ public class ExternalPlayerFragment extends Fragment {
             }
 
             @Override
-            public void onAwaitingVideoSurface() {
-            }
-
-            @Override
-            public void onServiceQueried() {
-            }
-
-            @Override
             public void onShutdownNotification() {
                 playbackDone();
             }
@@ -151,10 +107,6 @@ public class ExternalPlayerFragment extends Fragment {
             @Override
             public void onPlaybackEnd() {
                 playbackDone();
-            }
-
-            @Override
-            public void onPlaybackSpeedChange() {
             }
         };
     }

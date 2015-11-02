@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,6 +25,8 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.AudioplayerActivity;
+import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -36,11 +37,15 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Displays the description of a Playable object in a Webview.
  */
-public class ItemDescriptionFragment extends Fragment {
+public class ItemDescriptionFragment extends Fragment implements AudioplayerContentFragment {
 
     private static final String TAG = "ItemDescriptionFragment";
 
@@ -55,12 +60,13 @@ public class ItemDescriptionFragment extends Fragment {
     private static final String ARG_HIGHLIGHT_TIMECODES = "arg.highlightTimecodes";
 
     private WebView webvDescription;
+    private String webvData;
 
     private ShownotesProvider shownotesProvider;
     private Playable media;
 
 
-    private AsyncTask<Void, Void, Void> webViewLoader;
+    private Subscription webViewLoader;
 
     /**
      * URL that was selected via long-press.
@@ -111,12 +117,10 @@ public class ItemDescriptionFragment extends Fragment {
                     && Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
-            webvDescription.setBackgroundColor(getResources().getColor(
-                    R.color.black));
+            webvDescription.setBackgroundColor(getResources().getColor(R.color.black));
         }
         webvDescription.getSettings().setUseWideViewPort(false);
-        webvDescription.getSettings().setLayoutAlgorithm(
-                LayoutAlgorithm.NARROW_COLUMNS);
+        webvDescription.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
         webvDescription.getSettings().setLoadWithOverviewMode(true);
         webvDescription.setOnLongClickListener(webViewLongClickListener);
         webvDescription.setWebViewClient(new WebViewClient() {
@@ -142,14 +146,7 @@ public class ItemDescriptionFragment extends Fragment {
                 super.onPageFinished(view, url);
                 Log.d(TAG, "Page finished");
                 // Restoring the scroll position might not always work
-                view.postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        restoreFromPreference();
-                    }
-
-                }, 50);
+                view.postDelayed(() -> restoreFromPreference(), 50);
             }
 
         });
@@ -159,26 +156,11 @@ public class ItemDescriptionFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Log.d(TAG, "Fragment attached");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d(TAG, "Fragment detached");
-        if (webViewLoader != null) {
-            webViewLoader.cancel(true);
-        }
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Fragment destroyed");
         if (webViewLoader != null) {
-            webViewLoader.cancel(true);
+            webViewLoader.unsubscribe();
         }
         if (webvDescription != null) {
             webvDescription.removeAllViews();
@@ -194,7 +176,6 @@ public class ItemDescriptionFragment extends Fragment {
         Bundle args = getArguments();
         saveState = args.getBoolean(ARG_SAVE_STATE, false);
         highlightTimecodes = args.getBoolean(ARG_HIGHLIGHT_TIMECODES, false);
-
     }
 
     @Override
@@ -204,46 +185,21 @@ public class ItemDescriptionFragment extends Fragment {
         if (args.containsKey(ARG_PLAYABLE)) {
             media = args.getParcelable(ARG_PLAYABLE);
             shownotesProvider = media;
-            startLoader();
+            load();
         } else if (args.containsKey(ARG_FEEDITEM_ID)) {
-            AsyncTask<Void, Void, FeedItem> itemLoadTask = new AsyncTask<Void, Void, FeedItem>() {
-
-                @Override
-                protected FeedItem doInBackground(Void... voids) {
-                    return DBReader.getFeedItem(getArguments().getLong(ARG_FEEDITEM_ID));
-                }
-
-                @Override
-                protected void onPostExecute(FeedItem feedItem) {
-                    super.onPostExecute(feedItem);
-                    shownotesProvider = feedItem;
-                    startLoader();
-                }
-            };
-            if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-                itemLoadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                itemLoadTask.execute();
-            }
-        }
-
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @SuppressLint("NewApi")
-    private void startLoader() {
-        webViewLoader = createLoader();
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webViewLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            webViewLoader.execute();
+            long id = getArguments().getLong(ARG_FEEDITEM_ID);
+            Observable.defer(() -> Observable.just(DBReader.getFeedItem(id)))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(feedItem -> {
+                        shownotesProvider = feedItem;
+                        load();
+                    }, error -> {
+                        Log.e(TAG, Log.getStackTraceString(error));
+                    });
         }
     }
+
 
     private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
 
@@ -338,49 +294,31 @@ public class ItemDescriptionFragment extends Fragment {
         }
     }
 
-    private AsyncTask<Void, Void, Void> createLoader() {
-        return new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected void onCancelled() {
-                super.onCancelled();
-                webViewLoader = null;
-            }
+    private void load() {
+        Log.d(TAG, "load()");
+        if(webViewLoader != null) {
+            webViewLoader.unsubscribe();
+        }
+        if(shownotesProvider == null) {
+            return;
+        }
+        webViewLoader = Observable.defer(() -> Observable.just(loadData()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    webvData = data;
+                    webvDescription.loadDataWithBaseURL(null, data, "text/html",
+                            "utf-8", "about:blank");
+                    Log.d(TAG, "Webview loaded");
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
+    }
 
-            String data;
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-                // /webvDescription.loadData(url, "text/html", "utf-8");
-                webvDescription.loadDataWithBaseURL(null, data, "text/html",
-                        "utf-8", "about:blank");
-                Log.d(TAG, "Webview loaded");
-                webViewLoader = null;
-            }
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                Log.d(TAG, "Loading Webview");
-                try {
-                    Activity activity = getActivity();
-                    if (activity != null) {
-                        Timeline timeline = new Timeline(activity, shownotesProvider);
-                        data = timeline.processShownotes(highlightTimecodes);
-                    } else {
-                        cancel(true);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-        };
+    private String loadData() {
+        Timeline timeline = new Timeline(getActivity(), shownotesProvider);
+        String data = timeline.processShownotes(highlightTimecodes);
+        return data;
     }
 
     @Override
@@ -410,7 +348,7 @@ public class ItemDescriptionFragment extends Fragment {
     }
 
     private boolean restoreFromPreference() {
-        if (saveState) {
+        if (!saveState) {
             Log.d(TAG, "Restoring from preferences");
             Activity activity = getActivity();
             if (activity != null) {
@@ -433,15 +371,19 @@ public class ItemDescriptionFragment extends Fragment {
 
     private void onTimecodeLinkSelected(String link) {
         int time = Timeline.getTimecodeLinkTime(link);
-        if (getActivity() != null && getActivity() instanceof ItemDescriptionFragmentCallback) {
-            PlaybackController pc = ((ItemDescriptionFragmentCallback) getActivity()).getPlaybackController();
+        if (getActivity() != null && getActivity() instanceof AudioplayerActivity) {
+            PlaybackController pc = ((AudioplayerActivity) getActivity()).getPlaybackController();
             if (pc != null) {
                 pc.seekTo(time);
             }
         }
     }
 
-    public interface ItemDescriptionFragmentCallback {
-        public PlaybackController getPlaybackController();
+    @Override
+    public void onDataSetChanged(Playable media) {
+        this.media = media;
+        this.shownotesProvider = media;
+        load();
     }
+
 }

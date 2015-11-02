@@ -1,54 +1,43 @@
 package de.danoeh.antennapod.activity;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Bundle;
+import android.os.Build;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextMenu;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.viewpagerindicator.CirclePageIndicator;
 
-import org.apache.commons.lang3.ArrayUtils;
+import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.ChapterListAdapter;
+import de.danoeh.antennapod.adapter.ChaptersListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.feed.SimpleChapter;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -57,8 +46,14 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.fragment.AddFeedFragment;
+import de.danoeh.antennapod.fragment.ChaptersFragment;
 import de.danoeh.antennapod.fragment.CoverFragment;
+import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
+import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
+import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 import rx.Observable;
@@ -69,84 +64,37 @@ import rx.schedulers.Schedulers;
 /**
  * Activity for playing audio files.
  */
-public class AudioplayerActivity extends MediaplayerActivity implements ItemDescriptionFragment.ItemDescriptionFragmentCallback,
-        NavDrawerActivity {
+public class AudioplayerActivity extends MediaplayerActivity implements NavDrawerActivity {
 
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
-    private static final int POS_NONE = -1;
 
     final String TAG = "AudioplayerActivity";
     private static final String PREFS = "AudioPlayerActivityPreferences";
     private static final String PREF_KEY_SELECTED_FRAGMENT_POSITION = "selectedFragmentPosition";
-    private static final String PREF_PLAYABLE_ID = "playableId";
+
+    public static final String[] NAV_DRAWER_TAGS = {
+            QueueFragment.TAG,
+            EpisodesFragment.TAG,
+            DownloadsFragment.TAG,
+            PlaybackHistoryFragment.TAG,
+            AddFeedFragment.TAG
+    };
 
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
     private ListView navList;
-    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
     private View navDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    private int mPosition = -1;
 
-    private Fragment[] detachedFragments;
-
-    private CoverFragment coverFragment;
-    private ItemDescriptionFragment descriptionFragment;
-    private ListFragment chapterFragment;
-
-    private Fragment currentlyShownFragment;
-    private int currentlyShownPosition = -1;
-    private int lastShownPosition = POS_NONE;
-    /**
-     * Used if onResume was called without loadMediaInfo.
-     */
-    private int savedPosition = -1;
-
-    private TextView txtvTitle;
-    private Button butPlaybackSpeed;
-    private ImageButton butNavChaptersShownotes;
-    private ImageButton butShowCover;
+    private Playable media;
+    private ViewPager mPager;
+    private AudioplayerPagerAdapter mPagerAdapter;
 
     private Subscription subscription;
-
-    private PopupWindow popupWindow;
-
-    private void resetFragmentView() {
-        FragmentTransaction fT = getSupportFragmentManager().beginTransaction();
-
-        if (coverFragment != null) {
-            Log.d(TAG, "Removing cover fragment");
-            fT.remove(coverFragment);
-        }
-        if (descriptionFragment != null) {
-            Log.d(TAG, "Removing description fragment");
-            fT.remove(descriptionFragment);
-        }
-        if (chapterFragment != null) {
-            Log.d(TAG, "Removing chapter fragment");
-            fT.remove(chapterFragment);
-        }
-        if (currentlyShownFragment != null) {
-            Log.d(TAG, "Removing currently shown fragment");
-            fT.remove(currentlyShownFragment);
-        }
-        for (int i = 0; i < detachedFragments.length; i++) {
-            Fragment f = detachedFragments[i];
-            if (f != null) {
-                Log.d(TAG, "Removing detached fragment");
-                fT.remove(f);
-            }
-        }
-        fT.commit();
-        currentlyShownFragment = null;
-        coverFragment = null;
-        descriptionFragment = null;
-        chapterFragment = null;
-        currentlyShownPosition = -1;
-        detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
-    }
 
     @Override
     protected void onStop() {
@@ -156,6 +104,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             subscription.unsubscribe();
         }
         EventDistributor.getInstance().unregister(contentUpdate);
+        saveCurrentFragment();
     }
 
     @Override
@@ -163,29 +112,16 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         setTheme(UserPreferences.getNoTitleTheme());
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
-    }
+    private void saveCurrentFragment() {
+        if(mPager == null) {
+            return;
+        }
 
-    private void savePreferences() {
         Log.d(TAG, "Saving preferences");
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        if (currentlyShownPosition >= 0 && controller != null
-                && controller.getMedia() != null) {
-            editor.putInt(PREF_KEY_SELECTED_FRAGMENT_POSITION,
-                    currentlyShownPosition);
-            editor.putString(PREF_PLAYABLE_ID, controller.getMedia()
-                    .getIdentifier().toString());
-        } else {
-            editor.putInt(PREF_KEY_SELECTED_FRAGMENT_POSITION, -1);
-            editor.putString(PREF_PLAYABLE_ID, "");
-        }
-        editor.commit();
-
-        savedPosition = currentlyShownPosition;
+        prefs.edit()
+                .putInt(PREF_KEY_SELECTED_FRAGMENT_POSITION, mPager.getCurrentItem())
+                .commit();
     }
 
     @Override
@@ -194,53 +130,11 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        // super.onSaveInstanceState(outState); would cause crash
-        Log.d(TAG, "onSaveInstanceState");
-    }
-
-    @Override
-    protected void onPause() {
-        savePreferences();
-        resetFragmentView();
-        super.onPause();
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        restoreFromPreferences();
-    }
-
-    /**
-     * Tries to restore the selected fragment position from the Activity's
-     * preferences.
-     *
-     * @return true if restoreFromPrefernces changed the activity's state
-     */
-    private boolean restoreFromPreferences() {
+    private void loadLastFragment() {
         Log.d(TAG, "Restoring instance state");
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        int savedPosition = prefs.getInt(PREF_KEY_SELECTED_FRAGMENT_POSITION,
-                -1);
-        String playableId = prefs.getString(PREF_PLAYABLE_ID, "");
-
-        if (savedPosition != -1
-                && controller != null
-                && controller.getMedia() != null
-                && controller.getMedia().getIdentifier().toString()
-                .equals(playableId)) {
-            switchToFragment(savedPosition);
-            return true;
-        } else if (controller == null || controller.getMedia() == null) {
-            Log.d(TAG, "Couldn't restore from preferences: controller or media was null");
-        } else {
-            Log.d(TAG, "Couldn't restore from preferences: savedPosition was -1 or saved identifier and playable identifier didn't match.\nsavedPosition: "
-                                + savedPosition + ", id: " + playableId);
-
-        }
-        return false;
+        int lastPosition = prefs.getInt(PREF_KEY_SELECTED_FRAGMENT_POSITION, -1);
+        mPager.setCurrentItem(lastPosition);
     }
 
     @Override
@@ -260,9 +154,11 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                     true);
             startService(launchIntent);
         }
-        if (savedPosition != -1) {
-            switchToFragment(savedPosition);
+        if(mPagerAdapter != null && controller != null && controller.getMedia() != media) {
+            media = controller.getMedia();
+            mPagerAdapter.notifyDataSetChanged();
         }
+
 
         EventDistributor.getInstance().register(contentUpdate);
         loadData();
@@ -292,147 +188,25 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     protected void clearStatusMsg() {
         // TODO Hide progress bar here
-
     }
 
-    /**
-     * Changes the currently displayed fragment.
-     *
-     * @param pos Must be POS_COVER, POS_DESCR, or POS_CHAPTERS
-     */
-    private void switchToFragment(int pos) {
-        Log.d(TAG, "Switching contentView to position " + pos);
-        if (currentlyShownPosition != pos && controller != null) {
-            Playable media = controller.getMedia();
-            if (media != null) {
-                FragmentTransaction ft = getSupportFragmentManager()
-                        .beginTransaction();
-                if (currentlyShownFragment != null) {
-                    detachedFragments[currentlyShownPosition] = currentlyShownFragment;
-                    ft.detach(currentlyShownFragment);
-                }
-                switch (pos) {
-                    case POS_COVER:
-                        if (coverFragment == null) {
-                            Log.i(TAG, "Using new coverfragment");
-                            coverFragment = CoverFragment.newInstance(media);
-                        }
-                        currentlyShownFragment = coverFragment;
-                        break;
-                    case POS_DESCR:
-                        if (descriptionFragment == null) {
-                            descriptionFragment = ItemDescriptionFragment
-                                    .newInstance(media, true, true);
-                        }
-                        currentlyShownFragment = descriptionFragment;
-                        break;
-                    case POS_CHAPTERS:
-                        if (chapterFragment == null) {
-                            chapterFragment = new ListFragment() {
-
-                                @Override
-                                public void onViewCreated(View view, Bundle savedInstanceState) {
-                                    super.onViewCreated(view, savedInstanceState);
-                                    // add padding
-                                    final ListView lv = getListView();
-                                    lv.setClipToPadding(false);
-                                    final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
-                                    lv.setPadding(0, vertPadding, 0, vertPadding);
-                                }
-                            };
-                            chapterFragment.setListAdapter(new ChapterListAdapter(
-                                    AudioplayerActivity.this, 0, media
-                                    .getChapters(), media, position -> {
-                                        Chapter chapter = (Chapter)
-                                                chapterFragment.getListAdapter().getItem(position);
-                                        controller.seekToChapter(chapter);
-                                    }
-                            ));
-                        }
-                        currentlyShownFragment = chapterFragment;
-                        break;
-                }
-                if (currentlyShownFragment != null) {
-                    lastShownPosition = currentlyShownPosition;
-                    currentlyShownPosition = pos;
-                    if (detachedFragments[pos] != null) {
-                        Log.d(TAG, "Reattaching fragment at position " + pos);
-                        ft.attach(detachedFragments[pos]);
-                    } else {
-                        ft.add(R.id.contentView, currentlyShownFragment);
-                    }
-                    ft.disallowAddToBackStack();
-                    ft.commit();
-                    updateNavButtonDrawable();
-                }
-            }
-        }
-    }
-
-    /**
-     * Switches to the fragment that was displayed before the current one or the description fragment
-     * if no fragment was previously displayed.
-     */
-    public void switchToLastFragment() {
-        if (lastShownPosition != POS_NONE) {
-            switchToFragment(lastShownPosition);
-        } else {
-            switchToFragment(POS_DESCR);
-        }
-    }
-
-    private void updateNavButtonDrawable() {
-
-        final int[] buttonTexts = new int[]{R.string.show_shownotes_label,
-                R.string.show_chapters_label};
-
-        final TypedArray drawables = obtainStyledAttributes(new int[]{
-                R.attr.navigation_shownotes, R.attr.navigation_chapters});
-        final Playable media = controller.getMedia();
-        if (butNavChaptersShownotes != null && butShowCover != null && media != null) {
-
-            butNavChaptersShownotes.setTag(R.id.imageloader_key, null);
-            setNavButtonVisibility();
-            switch (currentlyShownPosition) {
-                case POS_COVER:
-                    butShowCover.setVisibility(View.GONE);
-                    if (lastShownPosition == POS_CHAPTERS) {
-                        butNavChaptersShownotes.setImageDrawable(drawables.getDrawable(1));
-                        butNavChaptersShownotes.setContentDescription(getString(buttonTexts[1]));
-                    } else {
-                        butNavChaptersShownotes.setImageDrawable(drawables.getDrawable(0));
-                        butNavChaptersShownotes.setContentDescription(getString(buttonTexts[0]));
-                    }
-                    break;
-                case POS_DESCR:
-                    butShowCover.setVisibility(View.VISIBLE);
-                    butNavChaptersShownotes.setImageDrawable(drawables.getDrawable(1));
-                    butNavChaptersShownotes.setContentDescription(getString(buttonTexts[1]));
-                    break;
-                case POS_CHAPTERS:
-                    butShowCover.setVisibility(View.VISIBLE);
-                    butNavChaptersShownotes.setImageDrawable(drawables.getDrawable(0));
-                    butNavChaptersShownotes.setContentDescription(getString(buttonTexts[0]));
-                    break;
-            }
-        }
-        drawables.recycle();
-    }
 
     @Override
     protected void setupGUI() {
         super.setupGUI();
-        resetFragmentView();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            findViewById(R.id.shadow).setVisibility(View.GONE);
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBar);
+            float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+            appBarLayout.setElevation(px);
+        }
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);
-        butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
-        butNavChaptersShownotes = (ImageButton) findViewById(R.id.butNavChaptersShownotes);
-        butShowCover = (ImageButton) findViewById(R.id.butCover);
-        txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerToggle.setDrawerIndicatorEnabled(false);
@@ -450,6 +224,15 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             }
             drawerLayout.closeDrawer(navDrawer);
         });
+        navList.setOnItemLongClickListener((parent, view, position, id) -> {
+            if (position < navAdapter.getTags().size()) {
+                showDrawerPreferencesDialog();
+                return true;
+            } else {
+                mPosition = position;
+                return false;
+            }
+        });
         registerForContextMenu(navList);
         drawerToggle.syncState();
 
@@ -458,128 +241,15 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             startActivity(new Intent(AudioplayerActivity.this, PreferenceController.getPreferenceActivity()));
         });
 
-        butNavChaptersShownotes.setOnClickListener(v -> {
-            if (currentlyShownPosition == POS_CHAPTERS) {
-                switchToFragment(POS_DESCR);
-            } else if (currentlyShownPosition == POS_DESCR) {
-                switchToFragment(POS_CHAPTERS);
-            } else if (currentlyShownPosition == POS_COVER) {
-                switchToLastFragment();
-            }
-        });
-
-        butShowCover.setOnClickListener(v -> switchToFragment(POS_COVER));
-
-        butPlaybackSpeed.setOnClickListener(v -> {
-            if (controller != null && controller.canSetPlaybackSpeed()) {
-                String[] availableSpeeds = UserPreferences
-                        .getPlaybackSpeedArray();
-                String currentSpeed = UserPreferences.getPlaybackSpeed();
-
-                // Provide initial value in case the speed list has changed
-                // out from under us
-                // and our current speed isn't in the new list
-                String newSpeed;
-                if (availableSpeeds.length > 0) {
-                    newSpeed = availableSpeeds[0];
-                } else {
-                    newSpeed = "1.0";
-                }
-
-                for (int i = 0; i < availableSpeeds.length; i++) {
-                    if (availableSpeeds[i].equals(currentSpeed)) {
-                        if (i == availableSpeeds.length - 1) {
-                            newSpeed = availableSpeeds[0];
-                        } else {
-                            newSpeed = availableSpeeds[i + 1];
-                        }
-                        break;
-                    }
-                }
-                UserPreferences.setPlaybackSpeed(newSpeed);
-                controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
-            }
-        });
-
-        butPlaybackSpeed.setOnLongClickListener(v -> {
-
-            String[] availableSpeeds = getResources().getStringArray(R.array.playback_speed_values);
-            String currentSpeed = UserPreferences.getPlaybackSpeed();
-
-            LayoutInflater inflater = getLayoutInflater();
-            View popupView = inflater.inflate(R.layout.choose_speed_dialog, null);
-            TextView txtvSelectedSpeed = (TextView) popupView.findViewById(R.id.txtvSelectedSpeed);
-            SeekBar sbSelectSpeed = (SeekBar) popupView.findViewById(R.id.sbSelectSpeed);
-
-            txtvSelectedSpeed.setText(currentSpeed);
-            int progress = ArrayUtils.indexOf(availableSpeeds, currentSpeed);
-            int max = Math.max(progress, ArrayUtils.indexOf(availableSpeeds, "2.50"));
-            sbSelectSpeed.setMax(max);
-            sbSelectSpeed.setProgress(progress);
-            sbSelectSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    txtvSelectedSpeed.setText(availableSpeeds[progress]);
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    String selectedSpeed = availableSpeeds[sbSelectSpeed.getProgress()];
-                    UserPreferences.setPlaybackSpeed(selectedSpeed);
-                    controller.setPlaybackSpeed(Float.parseFloat(selectedSpeed));
-                    if (popupWindow != null && popupWindow.isShowing()) {
-                        popupWindow.dismiss();
-                    }
-                    ScaleAnimation anim = new ScaleAnimation(1.0f, 1.33f, 1.0f, 1.33f,
-                            butPlaybackSpeed.getWidth()/2, butPlaybackSpeed.getHeight()/2);
-                    anim.setDuration(150);
-                    anim.setRepeatMode(ScaleAnimation.REVERSE);
-                    anim.setRepeatCount(1);
-                    anim.setInterpolator(new LinearInterpolator());
-                    butPlaybackSpeed.startAnimation(anim);
-                }
-            });
-            popupWindow = new PopupWindow(popupView,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    true);
-            popupWindow.setBackgroundDrawable(new BitmapDrawable());
-            popupWindow.setOutsideTouchable(true);
-            popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-            return true;
-        });
-    }
-
-    private void setNavButtonVisibility() {
-        if (butNavChaptersShownotes != null) {
-            if (controller != null) {
-                Playable media = controller.getMedia();
-                if (media != null) {
-                    if (media.getChapters() != null || currentlyShownPosition == POS_COVER) {
-                        butNavChaptersShownotes.setVisibility(View.VISIBLE);
-                        return;
-                    }
-                }
-            }
-            butNavChaptersShownotes.setVisibility(View.GONE);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        if(mPager.getAdapter() == null) {
+            mPagerAdapter = new AudioplayerPagerAdapter(getSupportFragmentManager());
+            mPager.setAdapter(mPagerAdapter);
+            CirclePageIndicator pageIndicator = (CirclePageIndicator) findViewById(R.id.page_indicator);
+            pageIndicator.setViewPager(mPager);
+            loadLastFragment();
         }
-
-    }
-
-    @Override
-    protected void onPlaybackSpeedChange() {
-        super.onPlaybackSpeedChange();
-        updateButPlaybackSpeed();
-    }
-
-    private void updateButPlaybackSpeed() {
-        if (controller != null && controller.canSetPlaybackSpeed()) {
-            butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed());
-        }
+        mPager.onSaveInstanceState();
     }
 
     @Override
@@ -593,48 +263,17 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         if (!super.loadMediaInfo()) {
             return false;
         }
-        final Playable media = controller.getMedia();
-        if (media == null) {
-            return false;
+        if(controller.getMedia() != media) {
+            media = controller.getMedia();
+            mPagerAdapter.notifyDataSetChanged();
         }
-        txtvTitle.setText(media.getEpisodeTitle());
-        getSupportActionBar().setTitle("");
-        Glide.with(this)
-                .load(media.getImageUri())
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
-                .into(butShowCover);
-
-        setNavButtonVisibility();
-
-        if (currentlyShownPosition == -1) {
-            if (!restoreFromPreferences()) {
-                switchToFragment(POS_COVER);
-            }
-        }
-        if (currentlyShownFragment instanceof AudioplayerContentFragment) {
-            ((AudioplayerContentFragment) currentlyShownFragment)
-                    .onDataSetChanged(media);
-        }
-
-        if (controller == null
-                || !controller.canSetPlaybackSpeed()) {
-            butPlaybackSpeed.setVisibility(View.GONE);
-        } else {
-            butPlaybackSpeed.setVisibility(View.VISIBLE);
-        }
-
-        updateButPlaybackSpeed();
         return true;
     }
 
     public void notifyMediaPositionChanged() {
-        if (chapterFragment != null) {
-            ArrayAdapter<SimpleChapter> adapter = (ArrayAdapter<SimpleChapter>) chapterFragment
-                    .getListAdapter();
+        ListFragment chapterFragment = (ListFragment) mPagerAdapter.getItem(POS_CHAPTERS);
+        ChaptersListAdapter adapter = (ChaptersListAdapter) chapterFragment.getListAdapter();
+        if(adapter != null) {
             adapter.notifyDataSetChanged();
         }
     }
@@ -659,7 +298,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         clearStatusMsg();
     }
 
-    @Override
     public PlaybackController getPlaybackController() {
         return controller;
     }
@@ -667,10 +305,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     public boolean isDrawerOpen() {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
-    }
-
-    public interface AudioplayerContentFragment {
-        void onDataSetChanged(Playable media);
     }
 
     @Override
@@ -704,24 +338,15 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         menu.setHeaderTitle(feed.getTitle());
         // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
-
-        // we may need to reference this elsewhere...
-        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        if(menuInfo == null) {
-            menuInfo = lastMenuInfo;
-        }
-
-        if(menuInfo.targetView.getParent() instanceof ListView == false
-                || ((ListView)menuInfo.targetView.getParent()).getId() != R.id.nav_list) {
+        final int position = mPosition;
+        mPosition = -1; // reset
+        if(position < 0) {
             return false;
         }
-        int position = menuInfo.position;
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
@@ -772,11 +397,43 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     public void onBackPressed() {
         if(isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
-        } else {
+        } else if (mPager.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
     }
 
+    public void showDrawerPreferencesDialog() {
+        final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
+        String[] navLabels = new String[NAV_DRAWER_TAGS.length];
+        final boolean[] checked = new boolean[NAV_DRAWER_TAGS.length];
+        for (int i = 0; i < NAV_DRAWER_TAGS.length; i++) {
+            String tag = NAV_DRAWER_TAGS[i];
+            navLabels[i] = navAdapter.getLabel(tag);
+            if (!hiddenDrawerItems.contains(tag)) {
+                checked[i] = true;
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.drawer_preferences);
+        builder.setMultiChoiceItems(navLabels, checked, (dialog, which, isChecked) -> {
+            if (isChecked) {
+                hiddenDrawerItems.remove(NAV_DRAWER_TAGS[which]);
+            } else {
+                hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
+            }
+        });
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.create().show();
+    }
 
     private DBReader.NavDrawerData navDrawerData;
 
@@ -846,5 +503,37 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
     };
+
+    public interface AudioplayerContentFragment {
+        void onDataSetChanged(Playable media);
+    }
+
+    private class AudioplayerPagerAdapter extends FragmentStatePagerAdapter {
+
+        public AudioplayerPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Log.d(TAG, "getItem(" + position + ")");
+            switch (position) {
+                case POS_COVER:
+                    return CoverFragment.newInstance(media);
+                case POS_DESCR:
+                    return ItemDescriptionFragment.newInstance(media, true, true);
+                case POS_CHAPTERS:
+                    return ChaptersFragment.newInstance(media, controller);
+                default:
+                    return null;
+            }
+        }
+
+
+        @Override
+        public int getCount() {
+            return NUM_CONTENT_FRAGMENTS;
+        }
+    }
 
 }

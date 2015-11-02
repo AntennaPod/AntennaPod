@@ -13,7 +13,6 @@
     <attr name="content_discard" format="reference"/>
     <attr name="content_new" format="reference"/>
     <attr name="feed" format="reference"/>
-    <attr name="device_access_time" format="reference"/>
     <attr name="location_web_site" format="reference"/>
     <attr name="navigation_accept" format="reference"/>
     <attr name="navigation_cancel" format="reference"/>
@@ -37,11 +36,16 @@
     <attr name="av_pause_big" format="reference"/>
     <attr name="av_ff_big" format="reference"/>
     <attr name="av_rew_big" format="reference"/>
+    <attr name="av_skip_big" format="reference"/>
     <attr name="ic_settings" format="reference"/>
     <attr name="ic_lock_open" format="reference"/>
     <attr name="ic_lock_closed" format="reference"/>
     <attr name="ic_filter" format="reference"/>
     <attr name="progressBarTheme" format="reference"/>
+    <attr name="ic_fav" format="reference"/>
+    <attr name="ic_unfav" format="reference"/>
+    <attr name="ic_sleep" format="reference"/>
+    <attr name="ic_sleep_off" format="reference"/>
 
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference"/>

@@ -3,17 +3,10 @@ package de.test.antennapod.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.FlakyTest;
 
-import com.robotium.solo.Condition;
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;

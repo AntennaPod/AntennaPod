@@ -1,21 +1,21 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
-import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -30,9 +30,10 @@ public class CoverFragment extends Fragment implements
 
     private Playable media;
 
+    private View root;
+    private TextView txtvPodcastTitle;
+    private TextView txtvEpisodeTitle;
     private ImageView imgvCover;
-
-    private boolean viewCreated = false;
 
     public static CoverFragment newInstance(Playable item) {
         CoverFragment f = new CoverFragment();
@@ -59,38 +60,45 @@ public class CoverFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.cover_fragment, container, false);
+        root = inflater.inflate(R.layout.cover_fragment, container, false);
+        txtvPodcastTitle = (TextView) root.findViewById(R.id.txtvPodcastTitle);
+        txtvEpisodeTitle = (TextView) root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
-        imgvCover.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Activity activity = getActivity();
-                if (activity != null && activity instanceof AudioplayerActivity) {
-                    ((AudioplayerActivity)activity).switchToLastFragment();
-                }
-            }
-        });
-        viewCreated = true;
         return root;
     }
 
     private void loadMediaInfo() {
+        if(imgvCover == null) {
+            return;
+        }
         if (media != null) {
-            imgvCover.post(new Runnable() {
-
-                @Override
-                public void run() {
-                    Context c = getActivity();
-                    if (c != null) {
-                        Glide.with(c)
-                                .load(media.getImageUri())
-                                .placeholder(R.color.light_gray)
-                                .error(R.color.light_gray)
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .dontAnimate()
-                                .into(imgvCover);
-                    }
-                }
+            Log.d(TAG, "feed title: " + media.getFeedTitle());
+            Log.d(TAG, "episode title: " + media.getEpisodeTitle());
+            txtvPodcastTitle.setText(media.getFeedTitle());
+            txtvEpisodeTitle.setText(media.getEpisodeTitle());
+            imgvCover.post(() -> {
+                Glide.with(this)
+                        .load(media.getImageUri())
+                        .asBitmap()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .dontAnimate()
+                        .into(new BitmapImageViewTarget(imgvCover) {
+                            @Override
+                            public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
+                                super.onResourceReady(bitmap, anim);
+                                Palette.Builder builder = new Palette.Builder(bitmap);
+                                builder.generate(palette -> {
+                                    Palette.Swatch swatch = palette.getMutedSwatch();
+                                    if(swatch != null) {
+                                        root.setBackgroundColor(swatch.getRgb());
+                                        txtvPodcastTitle.setTextColor(swatch.getTitleTextColor());
+                                        txtvEpisodeTitle.setTextColor(swatch.getBodyTextColor());
+                                    }
+                                });
+                            }
+                        });
             });
         } else {
             Log.w(TAG, "loadMediaInfo was called while media was null");
@@ -99,12 +107,10 @@ public class CoverFragment extends Fragment implements
 
     @Override
     public void onStart() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "On Start");
+        Log.d(TAG, "On Start");
         super.onStart();
         if (media != null) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Loading media info");
+            Log.d(TAG, "Loading media info");
             loadMediaInfo();
         } else {
             Log.w(TAG, "Unable to load media info: media was null");
@@ -114,10 +120,7 @@ public class CoverFragment extends Fragment implements
     @Override
     public void onDataSetChanged(Playable media) {
         this.media = media;
-        if (viewCreated) {
-            loadMediaInfo();
-        }
-
+        loadMediaInfo();
     }
 
 }

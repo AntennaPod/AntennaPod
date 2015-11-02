@@ -18,7 +18,6 @@
         <item name="attr/av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
         <item name="attr/content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_grey600_24dp</item>
-        <item name="attr/device_access_time">@drawable/ic_timer_grey600_24dp</item>
         <item name="attr/feed">@drawable/ic_feed_grey600_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_grey600_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_grey600_24dp</item>
@@ -45,10 +44,16 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_grey600_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
+        <item name="attr/av_skip_big">@drawable/ic_skip_grey600_36dp</item>
+        <item name="attr/ic_fav">@drawable/ic_star_border_grey600_24dp</item>
+        <item name="attr/ic_unfav">@drawable/ic_star_grey600_24dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_grey600_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_grey600_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_grey600_24dp</item>
+        <item name="attr/ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
+        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
+
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
@@ -67,7 +72,6 @@
         <item name="attr/av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
         <item name="attr/content_discard">@drawable/ic_delete_white_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_white_24dp</item>
-        <item name="attr/device_access_time">@drawable/ic_timer_white_24dp</item>
         <item name="attr/feed">@drawable/ic_feed_white_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_white_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_white_24dp</item>
@@ -94,10 +98,15 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_white_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
+        <item name="attr/av_skip_big">@drawable/ic_skip_white_36dp</item>
+        <item name="attr/ic_fav">@drawable/ic_star_border_white_24dp</item>
+        <item name="attr/ic_unfav">@drawable/ic_star_white_24dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_white_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_white_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_white_24dp</item>
+        <item name="attr/ic_sleep">@drawable/ic_sleep_white_24dp</item>
+        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -118,7 +127,6 @@
         <item name="attr/av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
         <item name="attr/content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_grey600_24dp</item>
-        <item name="attr/device_access_time">@drawable/ic_timer_grey600_24dp</item>
         <item name="attr/feed">@drawable/ic_feed_grey600_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_grey600_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_grey600_24dp</item>
@@ -145,10 +153,15 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_grey600_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
+        <item name="attr/av_skip_big">@drawable/ic_skip_grey600_36dp</item>
+        <item name="attr/ic_fav">@drawable/ic_star_border_grey600_24dp</item>
+        <item name="attr/ic_unfav">@drawable/ic_star_grey600_24dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_grey600_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_grey600_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_grey600_24dp</item>
+        <item name="attr/ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
+        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -168,7 +181,6 @@
         <item name="attr/av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
         <item name="attr/content_discard">@drawable/ic_delete_white_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_white_24dp</item>
-        <item name="attr/device_access_time">@drawable/ic_timer_white_24dp</item>
         <item name="attr/feed">@drawable/ic_feed_white_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_white_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_white_24dp</item>
@@ -195,10 +207,15 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_white_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
+        <item name="attr/av_skip_big">@drawable/ic_skip_white_36dp</item>
+        <item name="attr/ic_fav">@drawable/ic_star_border_white_24dp</item>
+        <item name="attr/ic_unfav">@drawable/ic_star_white_24dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_white_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_white_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_white_24dp</item>
+        <item name="attr/ic_sleep">@drawable/ic_sleep_white_24dp</item>
+        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">

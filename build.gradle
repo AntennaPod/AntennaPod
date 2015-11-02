@@ -50,14 +50,14 @@ project.ext {
     jsoupVersion = "1.7.3"
     iconifyFontawesomeVersion = "2.1.1"
     materialDialogsVersion = "0.8.5.3@aar"
+    okhttpVersion = "2.7.2"
+    okioVersion = "1.6.0"
     recyclerviewFlexibledividerVersion = "1.2.6"
     rxAndroidVersion = "1.1.0"
     rxJavaVersion = "1.1.0"
     rxJavaRulesVersion = "1.1.0.0"
-    okhttpVersion = "2.7.2"
-    okioVersion = "1.6.0"
 
-    audioPlayerVersion = "v1.0.8"
+    audioPlayerVersion = "v1.0.9"
 }
 
 task wrapper(type: Wrapper) {
