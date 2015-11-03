@@ -199,7 +199,9 @@ public class NSAtom extends Namespace {
                             DateUtils.parse(content));
                 }
             } else if (top.equals(IMAGE)) {
-                state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
+                if(state.getFeed().getImage() == null) {
+                    state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
+                }
             }
 
         }
