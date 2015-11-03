@@ -1,10 +1,11 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
-import de.danoeh.antennapod.core.feed.FeedImage;
-import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import org.xml.sax.Attributes;
 
 import java.util.concurrent.TimeUnit;
+
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 
 public class NSITunes extends Namespace {
     public static final String NSTAG = "itunes";
@@ -34,10 +35,9 @@ public class NSITunes extends Namespace {
 
             } else  {
                 // this is the feed image
-                if (state.getFeed().getImage() == null) {
-                    image.setOwner(state.getFeed());
-                    state.getFeed().setImage(image);
-                }
+                // prefer to all other images
+                image.setOwner(state.getFeed());
+                state.getFeed().setImage(image);
             }
 
         }
