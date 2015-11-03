@@ -259,8 +259,9 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Vyčistit epizody</string>
   <string name="pref_episode_cleanup_summary">Epizody které nejsou ve frontě a nejsou označeny jako oblíbené lze smazat pro uvolnění místa</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Při odpojení sluchátek pozastavit přehrávání.</string>
+  <string name="pref_pauseOnDisconnect_sum">Při odpojení sluchátek nebo bluetooth připojení pozastavit přehrávání.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Pokračovat v přehrávání po připojení sluchátek</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Pokračovat v přehrávání po připojení bluetooth</string>
   <string name="pref_followQueue_sum">Po přehrání položky z fronty přejít automaticky na další</string>
   <string name="pref_auto_delete_sum">Smazat díl po jeho přehrání</string>
   <string name="pref_auto_delete_title">Automatické mazání</string>
@@ -281,6 +282,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi stahování</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Sluchátka odpojena</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Sluchátka připojena</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth připojeno</string>
   <string name="pref_mobileUpdate_title">Mobilní aktualizace</string>
   <string name="pref_mobileUpdate_sum">Povolit aktualizace pomocí mobilního připojení</string>
   <string name="refreshing_label">Obnovuji</string>

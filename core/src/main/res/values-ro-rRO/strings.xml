@@ -134,7 +134,6 @@
   <string name="queue_label">Coadă</string>
   <string name="services_label">Servicii</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Pune pauză când căștile sunt deconectate</string>
   <string name="pref_followQueue_sum">Sari la următorul element din coadă cand se termină ascultarea</string>
   <string name="playback_pref">Ascultare</string>
   <string name="network_pref">Rețea</string>

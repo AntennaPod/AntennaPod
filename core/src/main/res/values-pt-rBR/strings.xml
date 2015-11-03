@@ -185,7 +185,6 @@
   <string name="queue_label">Fila</string>
   <string name="services_label">Serviços</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Interromper a reprodução quando o fone de ouvido for desconectado</string>
   <string name="pref_followQueue_sum">Pular para próximo item da fila quando a reprodução terminar</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>

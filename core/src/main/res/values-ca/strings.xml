@@ -257,7 +257,6 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Neteja l\'episodi</string>
   <string name="pref_episode_cleanup_summary">Episodis que no estan a la cua i no són favorits haurien de ser escollits per eliminar-los si es requereix espai</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausa la reproducció en desconnectar els auriculars.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continua la reproducció en connectar novament els auriculars</string>
   <string name="pref_followQueue_sum">Salta al següent element de la cua en acabar la reproducció</string>
   <string name="pref_auto_delete_sum">Suprimeix l\'episodi quan s\'acabi de reproduir</string>

@@ -230,7 +230,6 @@
   <string name="queue_label">播放列表</string>
   <string name="services_label">服务</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">耳机断开时暂停播放 </string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
   <string name="pref_followQueue_sum">播放完成跳转到播放列表下一项</string>
   <string name="pref_auto_delete_sum">当播放完成后删除曲目</string>

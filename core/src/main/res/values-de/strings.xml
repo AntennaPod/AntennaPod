@@ -257,8 +257,9 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Episodenaufräumer</string>
   <string name="pref_episode_cleanup_summary">Episoden, die nicht in der Abspielliste und nicht favorisiert sind, werden zum Aufräumen freigegeben, wenn Speicherplatz benötigt wird</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausiere die Wiedergabe, wenn der Kopfhörer entfernt worden ist.</string>
-  <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder reingesteckt werden</string>
+  <string name="pref_pauseOnDisconnect_sum">Wiedergabe pausieren, wenn Kopfhörer ausgesteckt oder Bluetooth getrennt wird</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder eingesteckt werden</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Wiedergabe fortsetzen, wenn Bluetooth wieder verbunden ist</string>
   <string name="pref_followQueue_sum">Springe zur nächsten Episode, wenn die vorherige Episode endet</string>
   <string name="pref_auto_delete_sum">Episode löschen, wenn die Wiedergabe endet</string>
   <string name="pref_auto_delete_title">Automatisches Löschen</string>
@@ -279,6 +280,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi Medien-Download</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kopfhörer-Trennung</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kopfhörer wieder eingesteckt</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth wieder verbunden</string>
   <string name="pref_mobileUpdate_title">Mobile Aktualisierungen</string>
   <string name="pref_mobileUpdate_sum">Erlaube Aktualisierungen über die mobile Datenverbindung</string>
   <string name="refreshing_label">Aktualisiere</string>
@@ -444,7 +446,7 @@
   <string name="folder_not_empty_dialog_title">Ordner ist nicht leer</string>
   <string name="folder_not_empty_dialog_msg">Der ausgewählte Ordner ist nicht leer. Medien-Downloads und andere Daten werden direkt in diesem Ordner gespeichert. Trotzdem fortfahren?</string>
   <string name="set_to_default_folder">Standardordner auswählen</string>
-  <string name="pref_pausePlaybackForFocusLoss_sum">Pausiere die Wiedergabe statt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Wiedergabe pausieren statt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
   <string name="pref_resumeAfterCall_sum">Wiedergabe fortsetzen, wenn Anruf beendet ist</string>
   <string name="pref_resumeAfterCall_title">Nach Anruf fortsetzen</string>

@@ -257,7 +257,6 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Nettoyage des épisodes</string>
   <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont ni dans la liste ni dans les favoris peuvent être supprimés si l\'espace disque devient faible</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Interrompre la lecture lorsque le casque est débranché</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>

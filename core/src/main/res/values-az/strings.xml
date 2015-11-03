@@ -128,7 +128,6 @@
   <string name="about_pref">Proqram haqqinda</string>
   <string name="queue_label">Növbə</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Qulaqliqı ayiranda oynatma dayanacağ</string>
   <string name="pref_followQueue_sum">Oynatma başa çatanda növbədə irəlidəki epizodu oynat</string>
   <string name="playback_pref">Oynatma</string>
   <string name="network_pref">Şəbəkə</string>

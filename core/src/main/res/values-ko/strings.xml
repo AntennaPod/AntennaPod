@@ -237,7 +237,6 @@
   <string name="queue_label">대기열</string>
   <string name="services_label">서비스</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">헤드폰의 연결이 끊어졌을 때 재생을 일시 중지</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰 다시 연결할 때 재생 계속</string>
   <string name="pref_followQueue_sum">재생을 마쳤을 때 다음 대기열로 이동</string>
   <string name="pref_auto_delete_sum">재생이 끝나면 에피소드 삭제</string>

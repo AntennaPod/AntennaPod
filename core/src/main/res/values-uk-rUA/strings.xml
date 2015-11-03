@@ -258,7 +258,6 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Чищення епізодів</string>
   <string name="pref_episode_cleanup_summary">У разі нестачі пам\'яті видалять епізоди які не знаходяться ні в списку улюблених ні в черзі.</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Зупинятись коли навушники витягнуті</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Поновити відтворення коли навушники повторно під’єднано</string>
   <string name="pref_followQueue_sum">Перейти до наступного епізода в черзі коли поточний закінчено</string>
   <string name="pref_auto_delete_sum">Видалити епізод після повного відтворення</string>

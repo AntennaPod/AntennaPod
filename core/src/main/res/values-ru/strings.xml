@@ -204,7 +204,6 @@
   <string name="queue_label">Очередь</string>
   <string name="services_label">Сервисы</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Приостановить воспроизведение, когда наушники отсоединены</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Продолжать воспроизведение после подключения наушников</string>
   <string name="pref_followQueue_sum">После завершения воспроизведения перейти к следующему в очереди</string>
   <string name="pref_auto_delete_sum">Удалять эпизод после завершения воспроизведения</string>
