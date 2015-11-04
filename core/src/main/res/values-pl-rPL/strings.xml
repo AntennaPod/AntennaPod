@@ -187,7 +187,6 @@
   <string name="queue_label">Kolejka</string>
   <string name="services_label">Usługi</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Wstrzymaj odtwarzanie kiedy słuchawki zostaną odłączone</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wznów odtwarzanie kiedy słuchawki zostaną podłączone ponownie</string>
   <string name="pref_followQueue_sum">Przeskocz do następnego elementu kolejki po zakończeniu odtwarzania</string>
   <string name="pref_auto_delete_sum">Usuń odcinek kiedy jego odtwarzanie zostanie zakończone</string>

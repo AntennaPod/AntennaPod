@@ -152,7 +152,6 @@
   <string name="queue_label">पंक्ति</string>
   <string name="services_label">सेवाएं</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum"> प्लेबैक रोकें जब हेडफोन काट रहे हैं</string>
   <string name="pref_followQueue_sum">प्लेबैक के पूरा होने पर अगली पंक्ति आइटम के लिए जाएँ</string>
   <string name="playback_pref">प्लेबैक</string>
   <string name="network_pref">संजाल</string>

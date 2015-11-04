@@ -257,7 +257,6 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Automatisch opschonen</string>
   <string name="pref_episode_cleanup_summary">Afleveringen die niet in de wachtrij staan en niet zijn gemarkeerd zijn als favoriet, komen in aanmerking voor verwijdering bij automatisch opschonen.</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Afspelen pauzeren wanneer de koptelefoon wordt losgekoppeld</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten wanneer de koptelefoon opnieuw wordt aangesloten</string>
   <string name="pref_followQueue_sum">Volgende item in de wachtrij afspelen als de aflevering voltooid is</string>
   <string name="pref_auto_delete_sum">Afleveringen verwijderen als ze zijn afgespeeld</string>

@@ -32,8 +32,6 @@ build.xml
 gen-external-apklibs
 out
 #transifex downloads
-changelog
-description
 contributers.py
 
 # other

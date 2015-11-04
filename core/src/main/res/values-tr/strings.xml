@@ -237,7 +237,6 @@
   <string name="queue_label">Kuyruk</string>
   <string name="services_label">Servisler</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Kulaklıklar çıkarıldığında çalmayı duraklat</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_followQueue_sum">Çalma tamamlandığında kuyruktaki diğer öğeye geç</string>
   <string name="pref_auto_delete_sum">Çalma bittiğinde bölümü sil</string>

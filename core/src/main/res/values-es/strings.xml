@@ -257,8 +257,9 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Limpieza de episodios</string>
   <string name="pref_episode_cleanup_summary">Los episodios que no están en la cola ni son favoritos serían candidatos a eliminarse si hace falta espacio</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausar la reproducción al desconectar los auriculares</string>
+  <string name="pref_pauseOnDisconnect_sum">Pausar la reproducción al desconectar los auriculares o el bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reanudar reproducción cuando se reconecten los auriculares</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Reanudar reproducción cuando se reconecte el bluetooth</string>
   <string name="pref_followQueue_sum">Saltar al siguiente elemento de la cola al acabar la reproducción</string>
   <string name="pref_auto_delete_sum">Borrar episodio cuando finalice la reproducción</string>
   <string name="pref_auto_delete_title">Eliminar automáticamente</string>
@@ -279,6 +280,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">Descarga de contenidos por WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Desconexión de los cascos</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Reconectar auriculares</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Reconectar Bluetooth</string>
   <string name="pref_mobileUpdate_title">Actualizaciones por red móvil</string>
   <string name="pref_mobileUpdate_sum">Permitir actualizaciones por red de datos móvil</string>
   <string name="refreshing_label">Actualizando</string>

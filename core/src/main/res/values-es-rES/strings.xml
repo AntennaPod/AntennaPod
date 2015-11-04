@@ -119,7 +119,6 @@
   <string name="other_pref">Otros</string>
   <string name="about_pref">Acerca de</string>
   <string name="queue_label">Cola</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausar la reproducción al desconectar los auriculares</string>
   <string name="pref_followQueue_sum">Saltar al siguiente elemento de la cola al acabar la reproducción</string>
   <string name="playback_pref">Reproducción</string>
   <string name="network_pref">Red</string>
