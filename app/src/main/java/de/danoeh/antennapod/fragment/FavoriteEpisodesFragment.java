@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -35,8 +36,6 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
     private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
 
-    private UndoBarController undoBarController;
-
     public FavoriteEpisodesFragment() {
         super(false, PREF_NAME);
     }
@@ -61,13 +60,12 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     @Override
     protected void resetViewState() {
         super.resetViewState();
-        undoBarController = null;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
-                R.layout.episodes_fragment_with_undo);
+                R.layout.all_episodes_fragment);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -87,34 +85,18 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
                 if (item != null) {
                     DBWriter.removeFavoriteItem(item);
 
-                    undoBarController.showUndoBar(false,
-                            getString(R.string.removed_item), new FeedItemUndoToken(item,
-                                    holder.getItemPosition())
-                    );
+                    Snackbar snackbar = Snackbar.make(root, getString(R.string.removed_item),
+                            Snackbar.LENGTH_LONG);
+                    snackbar.setAction(getString(R.string.undo), v -> {
+                        DBWriter.addFavoriteItem(item);
+                    });
+                    snackbar.show();
                 }
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
-
-        undoBarController = new UndoBarController<>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
-
-            private final Context context = getActivity();
-
-            @Override
-            public void onUndo(FeedItemUndoToken token) {
-                if (token != null) {
-                    long itemId = token.getFeedItemId();
-                    DBWriter.addFavoriteItemById(itemId);
-                }
-            }
-
-            @Override
-            public void onHide(FeedItemUndoToken token) {
-                // nothing to do
-            }
-        });
         return root;
     }
 

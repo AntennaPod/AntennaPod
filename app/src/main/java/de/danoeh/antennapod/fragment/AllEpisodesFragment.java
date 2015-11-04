@@ -32,7 +32,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.AllEpisodesListAdapter;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;

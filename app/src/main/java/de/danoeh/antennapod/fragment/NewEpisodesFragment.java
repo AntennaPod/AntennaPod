@@ -2,6 +2,8 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -19,6 +21,7 @@ import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
@@ -37,8 +40,6 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     public static final String TAG = "NewEpisodesFragment";
 
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
-
-    private UndoBarController undoBarController;
 
     public NewEpisodesFragment() {
         super(true, PREF_NAME);
@@ -64,13 +65,12 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     @Override
     protected void resetViewState() {
         super.resetViewState();
-        undoBarController = null;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
-                R.layout.episodes_fragment_with_undo);
+                R.layout.all_episodes_fragment);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -81,6 +81,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder)viewHolder;
+
                 Log.d(TAG, "remove(" + holder.getItemId() + ")");
                 if (subscription != null) {
                     subscription.unsubscribe();
@@ -89,38 +90,28 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                 // we're marking it as unplayed since the user didn't actually play it
                 // but they don't want it considered 'NEW' anymore
                 DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-                undoBarController.showUndoBar(false,
-                        getString(R.string.marked_as_read_label), new FeedItemUndoToken(item,
-                                holder.getItemPosition()));
+
+                final Handler h = new Handler(getActivity().getMainLooper());
+                final Runnable r  = () -> {
+                    FeedMedia media = item.getMedia();
+                    if (media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
+                        DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
+                    }
+                };
+
+                Snackbar snackbar = Snackbar.make(root, getString(R.string.marked_as_read_label),
+                        Snackbar.LENGTH_LONG);
+                snackbar.setAction(getString(R.string.undo), v -> {
+                    DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
+                });
+                snackbar.show();
+                h.postDelayed(r, (int)Math.ceil(snackbar.getDuration() * 1.05f));
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
 
-        undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
-
-            private final Context context = getActivity();
-
-            @Override
-            public void onUndo(FeedItemUndoToken token) {
-                if (token != null) {
-                    long itemId = token.getFeedItemId();
-                    DBWriter.markItemPlayed(FeedItem.NEW, itemId);
-                }
-            }
-            @Override
-            public void onHide(FeedItemUndoToken token) {
-                if (token != null && context != null) {
-                    long itemId = token.getFeedItemId();
-                    FeedItem item = DBReader.getFeedItem(itemId);
-                    FeedMedia media = item.getMedia();
-                    if(media != null && media.hasAlmostEnded() && item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                        DBWriter.deleteFeedMediaOfItem(context, media.getId());
-                    }
-                }
-            }
-        });
         return root;
     }
 
