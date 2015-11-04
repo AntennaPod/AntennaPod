@@ -7,24 +7,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -45,11 +39,9 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.view.DividerItemDecoration;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -73,8 +65,7 @@ public class AllEpisodesFragment extends Fragment {
     private static final String PREF_SCROLL_POSITION = "scroll_position";
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
-    private String prefName;
-    protected RecyclerView listView;
+    protected RecyclerView recyclerView;
     private AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
 
@@ -83,7 +74,6 @@ public class AllEpisodesFragment extends Fragment {
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
-    private final boolean showOnlyNewEpisodes;
 
     private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
 
@@ -94,19 +84,8 @@ public class AllEpisodesFragment extends Fragment {
     protected Subscription subscription;
     private LinearLayoutManager layoutManager;
 
-    public AllEpisodesFragment() {
-        // by default we show all the episodes
-        this(false, DEFAULT_PREF_NAME);
-    }
-
-    // this is only going to be called by our sub-class.
-    // The Android docs say to avoid non-default constructors
-    // but I think this will be OK since it will only be invoked
-    // from a fragment via a default constructor
-    protected AllEpisodesFragment(boolean showOnlyNewEpisodes, String prefName) {
-        this.showOnlyNewEpisodes = showOnlyNewEpisodes;
-        this.prefName = prefName;
-    }
+    protected boolean showOnlyNewEpisodes() { return false; }
+    protected String getPrefName() { return DEFAULT_PREF_NAME; }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -171,7 +150,7 @@ public class AllEpisodesFragment extends Fragment {
             topOffset = firstItemView.getTop();
         }
 
-        SharedPreferences prefs = getActivity().getSharedPreferences(prefName, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_SCROLL_POSITION, firstItem);
         editor.putFloat(PREF_SCROLL_OFFSET, topOffset);
@@ -179,7 +158,7 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     private void restoreScrollPosition() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(prefName, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE);
         int position = prefs.getInt(PREF_SCROLL_POSITION, 0);
         float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
         if (position > 0 || offset > 0) {
@@ -187,7 +166,7 @@ public class AllEpisodesFragment extends Fragment {
             // restore once, then forget
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(PREF_SCROLL_POSITION, 0);
-            editor.putInt(PREF_SCROLL_OFFSET, 0);
+            editor.putFloat(PREF_SCROLL_OFFSET, 0.0f);
             editor.commit();
         }
     }
@@ -295,9 +274,12 @@ public class AllEpisodesFragment extends Fragment {
 
         View root = inflater.inflate(fragmentResource, container, false);
 
-        listView = (RecyclerView) root.findViewById(android.R.id.list);
+        recyclerView = (RecyclerView) root.findViewById(android.R.id.list);
         layoutManager = new LinearLayoutManager(getActivity());
-        listView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(), null);
+        recyclerView.addItemDecoration(itemDecoration);
 
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
 
@@ -317,8 +299,8 @@ public class AllEpisodesFragment extends Fragment {
     private void onFragmentLoaded() {
         if (listAdapter == null) {
             listAdapter = new AllEpisodesRecycleAdapter(activity.get(), activity.get(), itemAccess,
-                    new DefaultActionButtonCallback(activity.get()), showOnlyNewEpisodes);
-            listView.setAdapter(listAdapter);
+                    new DefaultActionButtonCallback(activity.get()), showOnlyNewEpisodes());
+            recyclerView.setAdapter(listAdapter);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
@@ -398,14 +380,14 @@ public class AllEpisodesFragment extends Fragment {
             subscription.unsubscribe();
         }
         if (viewsCreated && !itemsLoaded) {
-            listView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
         subscription = Observable.defer(() -> Observable.just(loadData()))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                    listView.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     progLoading.setVisibility(View.GONE);
                     if (data != null) {
                         episodes = data;

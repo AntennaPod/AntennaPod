@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
@@ -19,9 +17,6 @@ import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
-import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.greenrobot.event.EventBus;
 
 
@@ -36,9 +31,11 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
     private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
 
-    public FavoriteEpisodesFragment() {
-        super(false, PREF_NAME);
-    }
+    @Override
+    protected boolean showOnlyNewEpisodes() { return true; }
+
+    @Override
+    protected String getPrefName() { return PREF_NAME; }
 
     public void onEvent(FavoritesEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
@@ -96,7 +93,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(listView);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
         return root;
     }
 

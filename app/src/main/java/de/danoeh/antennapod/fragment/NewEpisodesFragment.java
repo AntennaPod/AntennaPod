@@ -1,18 +1,14 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.mobeta.android.dslv.DragSortListView;
 
 import java.util.List;
 
@@ -24,9 +20,6 @@ import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
-import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.greenrobot.event.EventBus;
 
 
@@ -41,9 +34,11 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
 
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
 
-    public NewEpisodesFragment() {
-        super(true, PREF_NAME);
-    }
+    @Override
+    protected boolean showOnlyNewEpisodes() { return true; }
+
+    @Override
+    protected String getPrefName() { return PREF_NAME; }
 
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
@@ -110,7 +105,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(listView);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return root;
     }

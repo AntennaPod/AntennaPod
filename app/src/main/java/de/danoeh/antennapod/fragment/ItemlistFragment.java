@@ -463,7 +463,7 @@ public class ItemlistFragment extends ListFragment {
 
     private void refreshHeaderView() {
         if (getListView() == null || feed == null) {
-            Log.e(TAG, "Unable to setup listview: listView = null or feed = null");
+            Log.e(TAG, "Unable to setup listview: recyclerView = null or feed = null");
             return;
         }
         if(feed.hasLastUpdateFailed()) {
@@ -503,7 +503,7 @@ public class ItemlistFragment extends ListFragment {
 
     private void setupHeaderView() {
         if (getListView() == null || feed == null) {
-            Log.e(TAG, "Unable to setup listview: listView = null or feed = null");
+            Log.e(TAG, "Unable to setup listview: recyclerView = null or feed = null");
             return;
         }
         ListView lv = getListView();
@@ -561,7 +561,7 @@ public class ItemlistFragment extends ListFragment {
 
     private void setupFooterView() {
         if (getListView() == null || feed == null) {
-            Log.e(TAG, "Unable to setup listview: listView = null or feed = null");
+            Log.e(TAG, "Unable to setup listview: recyclerView = null or feed = null");
             return;
         }
         if (feed.isPaged() && feed.getNextPageLink() != null) {

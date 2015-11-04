@@ -49,7 +49,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
     private final boolean showOnlyNewEpisodes;
-    private final MainActivity mainActivity;
+    private final WeakReference<MainActivity> mainActivityRef;
 
     public AllEpisodesRecycleAdapter(Context context,
                                      MainActivity mainActivity,
@@ -57,7 +57,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                                      ActionButtonCallback actionButtonCallback,
                                      boolean showOnlyNewEpisodes) {
         super();
-        this.mainActivity = mainActivity;
+        this.mainActivityRef = new WeakReference<>(mainActivity);
         this.context = context;
         this.itemAccess = itemAccess;
         this.actionButtonUtils = new ActionButtonUtils(context);
@@ -84,7 +84,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.cover = (ImageView) view.findViewById(R.id.imgvCover);
         holder.txtvDuration = (TextView) view.findViewById(R.id.txtvDuration);
         holder.item = null;
-        holder.mainActivity = mainActivity;
+        holder.mainActivityRef = mainActivityRef;
         holder.position = -1;
         // so we can grab this later
         view.setTag(holder);
@@ -251,6 +251,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
     private final boolean showContextMenu(View view) {
         // Create a PopupMenu, giving it the clicked view for an anchor
+        MainActivity mainActivity = this.mainActivityRef.get();
+        if (mainActivity == null) {
+            Log.d(TAG, "mainActivity is null");
+            return false;
+        }
         PopupMenu popup = new PopupMenu(mainActivity, view);
         Menu menu = popup.getMenu();
 
@@ -297,7 +302,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         TextView txtvDuration;
         ImageButton butSecondary;
         FeedItem item;
-        MainActivity mainActivity;
+        WeakReference<MainActivity> mainActivityRef;
         int position;
 
         public Holder(View itemView) {
@@ -308,6 +313,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
         @Override
         public void onClick(View v) {
+            MainActivity mainActivity = mainActivityRef.get();
             if (mainActivity != null) {
                 mainActivity.loadChildFragment(ItemFragment.newInstance(item.getId()));
             }
