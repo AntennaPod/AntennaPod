@@ -98,6 +98,8 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                         Snackbar.LENGTH_LONG);
                 snackbar.setAction(getString(R.string.undo), v -> {
                     DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
+                    // don't forget to cancel the thing that's going to remove the media
+                    h.removeCallbacks(r);
                 });
                 snackbar.show();
                 h.postDelayed(r, (int)Math.ceil(snackbar.getDuration() * 1.05f));
