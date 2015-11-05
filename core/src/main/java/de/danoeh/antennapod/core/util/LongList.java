@@ -30,6 +30,17 @@ public final class LongList {
         size = 0;
     }
 
+    public static LongList of(long... values) {
+        if(values == null || values.length == 0) {
+            return new LongList(0);
+        }
+        LongList result = new LongList(values.length);
+        for(long value : values) {
+            result.add(value);
+        }
+        return result;
+    }
+
     @Override
     public int hashCode() {
         int hashCode = 1;

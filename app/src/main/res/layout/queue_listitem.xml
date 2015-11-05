@@ -6,24 +6,28 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/listitem_threeline_height"
     android:orientation="horizontal"
-    android:paddingLeft="16dp"
+    android:paddingLeft="8dp"
+    android:gravity="center_vertical"
+    android:background="?attr/selectableItemBackground"
     tools:background="@android:color/darker_gray" >
 
     <ImageView
         android:id="@+id/drag_handle"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="-8dp"
-        android:layout_marginRight="-64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="-16dp"
+        android:layout_marginRight="-20dp"
+        android:gravity="center"
         android:contentDescription="@string/drag_handle_content_description"
         android:scaleType="fitXY"
         android:src="?attr/dragview_background"
-        tools:src="@drawable/ic_drag_handle"
+        tools:src="@drawable/ic_drag_vertical_grey600_48dp"
         tools:background="@android:color/holo_green_dark" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp">
         <TextView
             android:id="@+id/txtvPlaceholder"
             android:layout_width="@dimen/thumbnail_length_queue_item"
