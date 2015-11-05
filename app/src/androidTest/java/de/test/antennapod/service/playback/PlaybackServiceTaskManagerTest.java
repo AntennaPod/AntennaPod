@@ -97,7 +97,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         };
         EventDistributor.getInstance().register(queueListener);
         List<FeedItem> queue = writeTestQueue("a");
-        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
+        EventBus.getDefault().post(QueueEvent.setQueue(queue));
         countDownLatch.await(5000, TimeUnit.MILLISECONDS);
 
         assertNotNull(queue);
