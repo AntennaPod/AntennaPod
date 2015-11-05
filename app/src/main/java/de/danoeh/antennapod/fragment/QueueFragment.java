@@ -173,7 +173,6 @@ public class QueueFragment extends Fragment {
 
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        IntList positions = new IntList();
         for(int i=0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
             int pos = FeedItemUtil.indexOfItemWithId(queue, item.getId());
@@ -367,7 +366,9 @@ public class QueueFragment extends Fragment {
                     int from = viewHolder.getAdapterPosition();
                     int to = target.getAdapterPosition();
                     Log.d(TAG, "move(" + from + ", " + to + ")");
-                    DBWriter.moveQueueItem(from, to, true);
+                    Collections.swap(queue, from, to);
+                    recyclerAdapter.notifyItemMoved(from, to);
+                    DBWriter.moveQueueItem(from, to, false);
                     return true;
                 }
 
