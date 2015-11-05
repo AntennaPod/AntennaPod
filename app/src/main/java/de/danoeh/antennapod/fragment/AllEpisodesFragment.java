@@ -97,12 +97,6 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        loadItems();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
@@ -117,9 +111,17 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        loadItems();
+        registerForContextMenu(recyclerView);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         saveScrollPosition();
+        unregisterForContextMenu(recyclerView);
     }
 
     @Override
@@ -269,6 +271,9 @@ public class AllEpisodesFragment extends Fragment {
             return false;
         }
         int pos = listAdapter.getPosition();
+        if(pos < 0) {
+            return false;
+        }
         FeedItem selectedItem = itemAccess.getItem(pos);
 
         if (selectedItem == null) {
@@ -305,7 +310,6 @@ public class AllEpisodesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(), null);
         recyclerView.addItemDecoration(itemDecoration);
-        registerForContextMenu(recyclerView);
 
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
 

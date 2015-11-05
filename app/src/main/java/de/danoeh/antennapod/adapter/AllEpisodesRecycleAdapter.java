@@ -198,7 +198,9 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
     }
 
     public int getPosition() {
-        return position;
+        int pos = position;
+        position = -1; // reset
+        return pos;
     }
 
     private class CoverTarget extends GlideDrawableImageViewTarget {
