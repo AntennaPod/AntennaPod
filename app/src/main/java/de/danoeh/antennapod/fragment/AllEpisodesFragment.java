@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -39,7 +40,9 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.DividerItemDecoration;
 import rx.Observable;
@@ -261,6 +264,28 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if(!isVisible()) {
+            return false;
+        }
+        int pos = listAdapter.getPosition();
+        FeedItem selectedItem = itemAccess.getItem(pos);
+
+        if (selectedItem == null) {
+            Log.i(TAG, "Selected item at position " + pos + " was null, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+
+        try {
+            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            return true;
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
@@ -280,6 +305,7 @@ public class AllEpisodesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(), null);
         recyclerView.addItemDecoration(itemDecoration);
+        registerForContextMenu(recyclerView);
 
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
 

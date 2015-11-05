@@ -58,6 +58,8 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     private boolean locked;
 
+    private int position = -1;
+
     public QueueRecyclerAdapter(MainActivity mainActivity,
                                 ItemAccess itemAccess,
                                 ActionButtonCallback actionButtonCallback,
@@ -84,13 +86,19 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
     public void onBindViewHolder(ViewHolder holder, int pos) {
         FeedItem item = itemAccess.getItem(pos);
         holder.bind(item);
-        holder.position = pos;
+        holder.itemView.setOnLongClickListener(v -> {
+            position = pos;
+            return false;
+        });
     }
 
     public int getItemCount() {
         return itemAccess.getCount();
     }
 
+    public int getPosition() {
+        return position;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnCreateContextMenuListener {
@@ -106,7 +114,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         private final ImageButton butSecondary;
         
         private FeedItem item;
-        private int position;
 
         public ViewHolder(View v) {
             super(v);

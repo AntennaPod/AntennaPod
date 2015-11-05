@@ -79,9 +79,6 @@ public class QueueFragment extends Fragment {
     private TextView txtvEmpty;
     private ProgressBar progLoading;
 
-    private ContextMenu contextMenu;
-    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
-
     private List<FeedItem> queue;
     private List<Downloader> downloaderList;
 
@@ -166,7 +163,10 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter.notifyDataSetChanged();
                 break;
             case MOVED:
-                // ItemTouchHelper already handled everything
+                int from = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
+                int to = event.position;
+                Collections.swap(queue, from, to);
+                recyclerAdapter.notifyItemMoved(from, to);
                 break;
         }
     }
@@ -217,7 +217,6 @@ public class QueueFragment extends Fragment {
     }
 
     private void resetViewState() {
-        unregisterForContextMenu(recyclerView);
         blockDownloadObserverUpdate = false;
         if (downloadObserver != null) {
             downloadObserver.onPause();
@@ -319,32 +318,19 @@ public class QueueFragment extends Fragment {
         } else {
             return true;
         }
-
     }
 
-    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
-        @Override
-        public void setItemVisibility(int id, boolean visible) {
-            if(contextMenu == null) {
-                return;
-            }
-            MenuItem item = contextMenu.findItem(id);
-            if (item != null) {
-                item.setVisible(visible);
-            }
-        }
-    };
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if(menuInfo == null) {
-            menuInfo = lastMenuInfo;
+        if(!isVisible()) {
+            return false;
         }
-        FeedItem selectedItem = itemAccess.getItem(menuInfo.position);
+        int pos = recyclerAdapter.getPosition();
+        FeedItem selectedItem = itemAccess.getItem(pos);
 
         if (selectedItem == null) {
-            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
+            Log.i(TAG, "Selected item at position " + pos + " was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
 
@@ -371,6 +357,7 @@ public class QueueFragment extends Fragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(), null);
         recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setHasFixedSize(true);
+        registerForContextMenu(recyclerView);
 
         itemTouchHelper = new ItemTouchHelper(
             new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
@@ -380,8 +367,6 @@ public class QueueFragment extends Fragment {
                     int from = viewHolder.getAdapterPosition();
                     int to = target.getAdapterPosition();
                     Log.d(TAG, "move(" + from + ", " + to + ")");
-                    Collections.swap(queue, from, to);
-                    recyclerAdapter.notifyItemMoved(from, to);
                     DBWriter.moveQueueItem(from, to, true);
                     return true;
                 }
