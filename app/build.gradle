@@ -33,7 +33,6 @@ dependencies {
     compile "com.github.AntennaPod:AntennaPod-AudioPlayer:v1.0.2"
 
     compile project(":core")
-    compile project(":library:drag-sort-listview")
 }
 
 def getMyVersionName() {
