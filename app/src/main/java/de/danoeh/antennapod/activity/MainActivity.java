@@ -153,7 +153,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navList.setAdapter(navAdapter);
         navList.setOnItemClickListener(navListClickListener);
         navList.setOnItemLongClickListener(newListLongClickListener);
-        registerForContextMenu(navList);
 
         navAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -519,78 +518,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             return true;
         } else {
             return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        if(v.getId() != R.id.nav_list) {
-            return;
-        }
-        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        int position = adapterInfo.position;
-        if(position < navAdapter.getSubscriptionOffset()) {
-            return;
-        }
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.nav_feed_context, menu);
-        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
-        menu.setHeaderTitle(feed.getTitle());
-        // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
-
-        // we may need to reference this elsewhere...
-        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-        if(menuInfo == null) {
-            menuInfo = lastMenuInfo;
-        }
-
-        if(menuInfo == null
-            || menuInfo.targetView == null
-            || menuInfo.targetView.getParent() == null
-            || menuInfo.targetView.getParent() instanceof ListView == false
-            || ((ListView)menuInfo.targetView.getParent()).getId() != R.id.nav_list) {
-            return false;
-        }
-        final int position = menuInfo.position;
-        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
-        switch(item.getItemId()) {
-            case R.id.mark_all_seen_item:
-                DBWriter.markFeedSeen(feed.getId());
-                return true;
-            case R.id.mark_all_read_item:
-                DBWriter.markFeedRead(feed.getId());
-                return true;
-            case R.id.remove_item:
-                final FeedRemover remover = new FeedRemover(this, feed) {
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        super.onPostExecute(result);
-                        if(getSelectedNavListIndex() == position) {
-                            loadFragment(EpisodesFragment.TAG, null);
-                        }
-                    }
-                };
-                ConfirmationDialog conDialog = new ConfirmationDialog(this,
-                        R.string.remove_feed_label,
-                        R.string.feed_delete_confirmation_msg) {
-                    @Override
-                    public void onConfirmButtonPressed(
-                            DialogInterface dialog) {
-                        dialog.dismiss();
-                        remover.executeAsync();
-                    }
-                };
-                conDialog.createNewDialog().show();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
         }
     }
 

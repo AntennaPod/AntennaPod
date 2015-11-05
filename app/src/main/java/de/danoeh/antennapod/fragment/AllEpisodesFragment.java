@@ -7,30 +7,26 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.mobeta.android.dslv.DragSortListView;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.AllEpisodesListAdapter;
+import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -43,11 +39,9 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.view.DividerItemDecoration;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -68,24 +62,18 @@ public class AllEpisodesFragment extends Fragment {
 
     private static final int RECENT_EPISODES_LIMIT = 150;
     private static final String DEFAULT_PREF_NAME = "PrefAllEpisodesFragment";
-    private static final String PREF_KEY_LIST_TOP = "list_top";
-    private static final String PREF_KEY_LIST_SELECTION = "list_selection";
+    private static final String PREF_SCROLL_POSITION = "scroll_position";
+    private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
-    private String prefName;
-    protected DragSortListView listView;
-    private AllEpisodesListAdapter listAdapter;
-    private TextView txtvEmpty;
+    protected RecyclerView recyclerView;
+    private AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
-    private ContextMenu contextMenu;
-    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 
     private List<FeedItem> episodes;
-    private LongList queuedItemsIds;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
-    private final boolean showOnlyNewEpisodes;
 
     private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
 
@@ -94,20 +82,10 @@ public class AllEpisodesFragment extends Fragment {
     private boolean isUpdatingFeeds;
 
     protected Subscription subscription;
+    private LinearLayoutManager layoutManager;
 
-    public AllEpisodesFragment() {
-        // by default we show all the episodes
-        this(false, DEFAULT_PREF_NAME);
-    }
-
-    // this is only going to be called by our sub-class.
-    // The Android docs say to avoid non-default constructors
-    // but I think this will be OK since it will only be invoked
-    // from a fragment via a default constructor
-    protected AllEpisodesFragment(boolean showOnlyNewEpisodes, String prefName) {
-        this.showOnlyNewEpisodes = showOnlyNewEpisodes;
-        this.prefName = prefName;
-    }
+    protected boolean showOnlyNewEpisodes() { return false; }
+    protected String getPrefName() { return DEFAULT_PREF_NAME; }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -163,25 +141,32 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     private void saveScrollPosition() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(prefName, Context.MODE_PRIVATE);
+        int firstItem = layoutManager.findFirstVisibleItemPosition();
+        View firstItemView = layoutManager.findViewByPosition(firstItem);
+        float topOffset;
+        if(firstItemView == null) {
+            topOffset = 0;
+        } else {
+            topOffset = firstItemView.getTop();
+        }
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        View v = listView.getChildAt(0);
-        int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
-        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getFirstVisiblePosition());
-        editor.putInt(PREF_KEY_LIST_TOP, top);
+        editor.putInt(PREF_SCROLL_POSITION, firstItem);
+        editor.putFloat(PREF_SCROLL_OFFSET, topOffset);
         editor.commit();
     }
 
     private void restoreScrollPosition() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(prefName, Context.MODE_PRIVATE);
-        int listSelection = prefs.getInt(PREF_KEY_LIST_SELECTION, 0);
-        int top = prefs.getInt(PREF_KEY_LIST_TOP, 0);
-        if (listSelection > 0 || top > 0) {
-            listView.setSelectionFromTop(listSelection, top);
+        SharedPreferences prefs = getActivity().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE);
+        int position = prefs.getInt(PREF_SCROLL_POSITION, 0);
+        float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
+        if (position > 0 || offset > 0) {
+            layoutManager.scrollToPositionWithOffset(position, (int) offset);
             // restore once, then forget
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(PREF_KEY_LIST_SELECTION, 0);
-            editor.putInt(PREF_KEY_LIST_TOP, 0);
+            editor.putInt(PREF_SCROLL_POSITION, 0);
+            editor.putFloat(PREF_SCROLL_OFFSET, 0.0f);
             editor.commit();
         }
     }
@@ -289,26 +274,17 @@ public class AllEpisodesFragment extends Fragment {
 
         View root = inflater.inflate(fragmentResource, container, false);
 
-        listView = (DragSortListView) root.findViewById(android.R.id.list);
-        txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
+        recyclerView = (RecyclerView) root.findViewById(android.R.id.list);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(), null);
+        recyclerView.addItemDecoration(itemDecoration);
+
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
-                if (item != null) {
-                    ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
-                }
-
-            }
-        });
-
-        registerForContextMenu(listView);
 
         if (!itemsLoaded) {
             progLoading.setVisibility(View.VISIBLE);
-            txtvEmpty.setVisibility(View.GONE);
         }
 
         viewsCreated = true;
@@ -320,80 +296,11 @@ public class AllEpisodesFragment extends Fragment {
         return root;
     }
 
-    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
-        @Override
-        public void setItemVisibility(int id, boolean visible) {
-            if(contextMenu == null) {
-                return;
-            }
-            MenuItem item = contextMenu.findItem(id);
-            if (item != null) {
-                item.setVisible(visible);
-            }
-        }
-    };
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItem item = itemAccess.getItem(adapterInfo.position);
-        MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.allepisodes_context, menu);
-
-        if (item != null) {
-            menu.setHeaderTitle(item.getTitle());
-        }
-
-        contextMenu = menu;
-        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queuedItemsIds);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (!getUserVisibleHint()) {
-            // we're not visible, don't do anything.
-            return false;
-        }
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if (menuInfo == null) {
-            menuInfo = lastMenuInfo;
-        }
-        if (menuInfo == null) {
-            Log.e(TAG, "menuInfo is null, not doing anything");
-            return false;
-        }
-
-        FeedItem selectedItem = null;
-
-        // make sure the item still makes sense
-        if (menuInfo.position >= 0 && menuInfo.position < itemAccess.getCount()) {
-            selectedItem = itemAccess.getItem(menuInfo.position);
-        } else {
-            Log.d(TAG, "Selected item at position " + menuInfo.position + " does not exist, only " + itemAccess.getCount() + " items available");
-        }
-
-        if (selectedItem == null) {
-            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
-            return super.onContextItemSelected(item);
-        }
-
-        try {
-            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            return true;
-        }
-    }
-
     private void onFragmentLoaded() {
         if (listAdapter == null) {
-            listAdapter = new AllEpisodesListAdapter(activity.get(), itemAccess,
-                    new DefaultActionButtonCallback(activity.get()), showOnlyNewEpisodes);
-            listView.setAdapter(listAdapter);
-            listView.setEmptyView(txtvEmpty);
+            listAdapter = new AllEpisodesRecycleAdapter(activity.get(), activity.get(), itemAccess,
+                    new DefaultActionButtonCallback(activity.get()), showOnlyNewEpisodes());
+            recyclerView.setAdapter(listAdapter);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
@@ -413,7 +320,7 @@ public class AllEpisodesFragment extends Fragment {
         }
     };
 
-    private AllEpisodesListAdapter.ItemAccess itemAccess = new AllEpisodesListAdapter.ItemAccess() {
+    protected AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
 
         @Override
         public int getCount() {
@@ -446,11 +353,10 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public boolean isInQueue(FeedItem item) {
-            if (itemsLoaded) {
-                return queuedItemsIds.contains(item.getId());
-            } else {
-                return false;
+            if (item != null) {
+                return item.isTagged(FeedItem.TAG_QUEUE);
             }
+            return false;
         }
     };
 
@@ -467,7 +373,6 @@ public class AllEpisodesFragment extends Fragment {
     };
 
     private void updateShowOnlyEpisodesListViewState() {
-        listView.setEmptyView(txtvEmpty);
     }
 
     protected void loadItems() {
@@ -475,19 +380,17 @@ public class AllEpisodesFragment extends Fragment {
             subscription.unsubscribe();
         }
         if (viewsCreated && !itemsLoaded) {
-            listView.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
         subscription = Observable.defer(() -> Observable.just(loadData()))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                    listView.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
                     progLoading.setVisibility(View.GONE);
                     if (data != null) {
-                        episodes = data.first;
-                        queuedItemsIds = data.second;
+                        episodes = data;
                         itemsLoaded = true;
                         if (viewsCreated && activity.get() != null) {
                             onFragmentLoaded();
@@ -498,11 +401,8 @@ public class AllEpisodesFragment extends Fragment {
                 });
     }
 
-    protected Pair<List<FeedItem>,LongList> loadData() {
-        List<FeedItem> items;
-        items = DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
-        LongList queuedIds = DBReader.getQueueIDList();
-        return Pair.create(items, queuedIds);
+    protected List<FeedItem> loadData() {
+        return DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
     }
 
 }

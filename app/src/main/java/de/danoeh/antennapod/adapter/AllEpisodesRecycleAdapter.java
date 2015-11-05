@@ -3,12 +3,15 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,29 +26,38 @@ import com.joanzapata.iconify.Iconify;
 import java.lang.ref.WeakReference;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.fragment.ItemFragment;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
 /**
  * List adapter for the list of new episodes
  */
-public class AllEpisodesListAdapter extends BaseAdapter {
+public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesRecycleAdapter.Holder> {
 
-    private static final String TAG = AllEpisodesListAdapter.class.getSimpleName();
+    private static final String TAG = AllEpisodesRecycleAdapter.class.getSimpleName();
 
     private final Context context;
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
     private final boolean showOnlyNewEpisodes;
+    private final WeakReference<MainActivity> mainActivityRef;
 
-    public AllEpisodesListAdapter(Context context, ItemAccess itemAccess, ActionButtonCallback actionButtonCallback,
-                                  boolean showOnlyNewEpisodes) {
+    public AllEpisodesRecycleAdapter(Context context,
+                                     MainActivity mainActivity,
+                                     ItemAccess itemAccess,
+                                     ActionButtonCallback actionButtonCallback,
+                                     boolean showOnlyNewEpisodes) {
         super();
+        this.mainActivityRef = new WeakReference<>(mainActivity);
         this.context = context;
         this.itemAccess = itemAccess;
         this.actionButtonUtils = new ActionButtonUtils(context);
@@ -54,55 +66,38 @@ public class AllEpisodesListAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return itemAccess.getCount();
+    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.new_episodes_listitem, parent, false);
+        Holder holder = new Holder(view);
+        holder.placeholder = (TextView) view.findViewById(R.id.txtvPlaceholder);
+        holder.title = (TextView) view.findViewById(R.id.txtvTitle);
+        holder.pubDate = (TextView) view
+                .findViewById(R.id.txtvPublished);
+        holder.statusUnread = view.findViewById(R.id.statusUnread);
+        holder.butSecondary = (ImageButton) view
+                .findViewById(R.id.butSecondaryAction);
+        holder.queueStatus = (ImageView) view
+                .findViewById(R.id.imgvInPlaylist);
+        holder.progress = (ProgressBar) view
+                .findViewById(R.id.pbar_progress);
+        holder.cover = (ImageView) view.findViewById(R.id.imgvCover);
+        holder.txtvDuration = (TextView) view.findViewById(R.id.txtvDuration);
+        holder.item = null;
+        holder.mainActivityRef = mainActivityRef;
+        holder.position = -1;
+        // so we can grab this later
+        view.setTag(holder);
+
+        return holder;
     }
 
     @Override
-    public Object getItem(int position) {
-        return itemAccess.getItem(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Holder holder;
-        final FeedItem item = (FeedItem) getItem(position);
-        if (item == null) return null;
-
-        if (convertView == null) {
-            holder = new Holder();
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.new_episodes_listitem,
-                    parent, false);
-            holder.placeholder = (TextView) convertView.findViewById(R.id.txtvPlaceholder);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.pubDate = (TextView) convertView
-                    .findViewById(R.id.txtvPublished);
-            holder.statusUnread = convertView.findViewById(R.id.statusUnread);
-            holder.butSecondary = (ImageButton) convertView
-                    .findViewById(R.id.butSecondaryAction);
-            holder.queueStatus = (ImageView) convertView
-                    .findViewById(R.id.imgvInPlaylist);
-            holder.progress = (ProgressBar) convertView
-                    .findViewById(R.id.pbar_progress);
-            holder.cover = (ImageView) convertView.findViewById(R.id.imgvCover);
-            holder.txtvDuration = (TextView) convertView.findViewById(R.id.txtvDuration);
-            convertView.setTag(holder);
-        } else {
-            holder = (Holder) convertView.getTag();
-        }
-
+    public void onBindViewHolder(final Holder holder, int position) {
+        final FeedItem item = itemAccess.getItem(position);
+        if (item == null) return;
+        holder.item = item;
+        holder.position = position;
         holder.placeholder.setVisibility(View.VISIBLE);
         holder.placeholder.setText(item.getFeed().getTitle());
         holder.title.setText(item.getTitle());
@@ -146,7 +141,7 @@ public class AllEpisodesListAdapter extends BaseAdapter {
                 // item is being downloaded
                 holder.progress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
             } else if (state == FeedItem.State.PLAYING
-                || state == FeedItem.State.IN_PROGRESS) {
+                    || state == FeedItem.State.IN_PROGRESS) {
                 if (media.getDuration() > 0) {
                     int progress = (int) (100.0 * media.getPosition() / media.getDuration());
                     holder.progress.setProgress(progress);
@@ -178,8 +173,20 @@ public class AllEpisodesListAdapter extends BaseAdapter {
                 .fitCenter()
                 .dontAnimate()
                 .into(new CoverTarget(item.getFeed().getImageUri(), holder.placeholder, holder.cover));
+    }
 
-        return convertView;
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemCount() {
+        return itemAccess.getCount();
+    }
+
+    public FeedItem getItem(int position) {
+        return itemAccess.getItem(position);
     }
 
     private class CoverTarget extends GlideDrawableImageViewTarget {
@@ -228,8 +235,63 @@ public class AllEpisodesListAdapter extends BaseAdapter {
         }
     };
 
+    private Menu popupMenu;
+    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
+        @Override
+        public void setItemVisibility(int id, boolean visible) {
+            if(popupMenu == null) {
+                return;
+            }
+            MenuItem item = popupMenu.findItem(id);
+            if (item != null) {
+                item.setVisible(visible);
+            }
+        }
+    };
 
-    static class Holder {
+    private final boolean showContextMenu(View view) {
+        // Create a PopupMenu, giving it the clicked view for an anchor
+        MainActivity mainActivity = this.mainActivityRef.get();
+        if (mainActivity == null) {
+            Log.d(TAG, "mainActivity is null");
+            return false;
+        }
+        PopupMenu popup = new PopupMenu(mainActivity, view);
+        Menu menu = popup.getMenu();
+
+        // Inflate our menu resource into the PopupMenu's Menu
+        popup.getMenuInflater().inflate(R.menu.allepisodes_context, popup.getMenu());
+
+        Holder holder = (Holder) view.getTag();
+        FeedItem item = holder.item;
+        if (item == null) {
+            return false;
+        }
+
+        popupMenu = menu;
+        FeedItemMenuHandler.onPrepareMenu(context, contextMenuInterface, item, true, null);
+
+        // Set a listener so we are notified if a menu item is clicked
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                try {
+                    FeedItemMenuHandler.onMenuItemClicked(context, menuItem.getItemId(), item);
+                    return true;
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
+
+        popup.show();
+        return true;
+    }
+
+
+    public class Holder extends RecyclerView.ViewHolder
+        implements View.OnClickListener, View.OnLongClickListener{
         TextView placeholder;
         TextView title;
         TextView pubDate;
@@ -239,6 +301,32 @@ public class AllEpisodesListAdapter extends BaseAdapter {
         ProgressBar progress;
         TextView txtvDuration;
         ImageButton butSecondary;
+        FeedItem item;
+        WeakReference<MainActivity> mainActivityRef;
+        int position;
+
+        public Holder(View itemView) {
+            super(itemView);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            MainActivity mainActivity = mainActivityRef.get();
+            if (mainActivity != null) {
+                mainActivity.loadChildFragment(ItemFragment.newInstance(item.getId()));
+            }
+        }
+
+        public FeedItem getFeedItem() { return item; }
+
+        public int getItemPosition() { return position; }
+
+        @Override
+        public boolean onLongClick(View view) {
+            return showContextMenu(view);
+        }
     }
 
     public interface ItemAccess {

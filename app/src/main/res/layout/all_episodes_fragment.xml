@@ -7,35 +7,14 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-        <com.mobeta.android.dslv.DragSortListView
-            android:id="@android:id/list"
-            android:scrollbarStyle="outsideOverlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="@dimen/list_vertical_padding"
-            android:paddingBottom="@dimen/list_vertical_padding"
-            android:clipToPadding="false"
-            dslv:collapsed_height="2dp"
-            dslv:drag_enabled="false"
-            dslv:drag_scroll_start="0.33"
-            dslv:float_alpha="0.6"
-            dslv:max_drag_scroll_speed="0.5"
-            dslv:remove_enabled="true"
-            dslv:remove_mode="flingRemove"
-            dslv:slide_shuffle_speed="0.3"
-            dslv:sort_enabled="false"
-            dslv:track_drag_sort="false"
-            dslv:float_background_color="?attr/dragview_float_background"
-            dslv:use_default_controller="true"
-            tools:background="@android:color/holo_green_dark"/>
-
-    <TextView
-        android:id="@id/android:empty"
+    <android.support.v7.widget.RecyclerView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/no_items_label"/>
+        android:scrollbarStyle="outsideOverlay"
+        android:paddingTop="@dimen/list_vertical_padding"
+        android:paddingBottom="@dimen/list_vertical_padding"
+        android:clipToPadding="false"/>
 
     <ProgressBar
         android:id="@+id/progLoading"
