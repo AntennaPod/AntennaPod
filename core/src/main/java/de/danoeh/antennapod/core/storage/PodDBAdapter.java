@@ -1052,8 +1052,8 @@ public class PodDBAdapter {
                 TABLE_NAME_FEED_ITEMS, TABLE_NAME_FAVORITES,
                 TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
                 TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM,
-                TABLE_NAME_FAVORITES + "." + KEY_ID };
-        String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s", args);
+                TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE };
+        String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s DESC", args);
         Cursor c = db.rawQuery(query, null);
         return c;
     }
