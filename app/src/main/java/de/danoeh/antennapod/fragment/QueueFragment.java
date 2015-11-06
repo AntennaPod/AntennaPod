@@ -13,17 +13,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,12 +50,10 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.view.DividerItemDecoration;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -356,8 +354,7 @@ public class QueueFragment extends Fragment {
         recyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(), null);
-        recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
         recyclerView.setHasFixedSize(true);
         registerForContextMenu(recyclerView);
 
