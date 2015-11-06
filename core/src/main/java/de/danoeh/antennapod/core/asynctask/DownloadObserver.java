@@ -15,6 +15,7 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Provides access to the DownloadService's list of items that are currently being downloaded.
@@ -39,6 +40,8 @@ public class DownloadObserver {
     private Thread refresherThread;
     private AtomicBoolean refresherThreadRunning = new AtomicBoolean(false);
 
+    private AtomicInteger users = new AtomicInteger(0);
+
 
     /**
      * Creates a new download observer.
@@ -59,13 +62,18 @@ public class DownloadObserver {
     }
 
     public void onResume() {
-        if (BuildConfig.DEBUG) Log.d(TAG, "DownloadObserver resumed");
-        activity.registerReceiver(contentChangedReceiver, new IntentFilter(DownloadService.ACTION_DOWNLOADS_CONTENT_CHANGED));
-        connectToDownloadService();
+        Log.d(TAG, "DownloadObserver resumed");
+        if(users.getAndIncrement() == 0) {
+            activity.registerReceiver(contentChangedReceiver, new IntentFilter(DownloadService.ACTION_DOWNLOADS_CONTENT_CHANGED));
+            connectToDownloadService();
+        }
     }
 
     public void onPause() {
-        if (BuildConfig.DEBUG) Log.d(TAG, "DownloadObserver paused");
+        Log.d(TAG, "DownloadObserver paused");
+        if(users.decrementAndGet() > 0) {
+            return;
+        }
         try {
             activity.unregisterReceiver(contentChangedReceiver);
         } catch (IllegalArgumentException e) {
