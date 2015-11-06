@@ -169,6 +169,7 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter.notifyItemMoved(from, to);
                 break;
         }
+        onFragmentLoaded();
     }
 
     public void onEventMainThread(FeedItemEvent event) {
@@ -430,7 +431,6 @@ public class QueueFragment extends Fragment {
             txtvEmpty.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
-        recyclerAdapter.notifyDataSetChanged();
 
         restoreScrollPosition();
 
@@ -438,7 +438,10 @@ public class QueueFragment extends Fragment {
         // needs data that may have just been loaded.
         getActivity().supportInvalidateOptionsMenu();
 
-        // refresh information bar
+        refreshInfoBar();
+    }
+
+    private void refreshInfoBar() {
         String info = queue.size() + getString(R.string.episodes_suffix);
         if(queue.size() > 0) {
             long duration = 0;
@@ -549,6 +552,9 @@ public class QueueFragment extends Fragment {
                         progLoading.setVisibility(View.GONE);
                         queue = items;
                         onFragmentLoaded();
+                        if(recyclerAdapter != null) {
+                            recyclerAdapter.notifyDataSetChanged();
+                        }
                     }
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
