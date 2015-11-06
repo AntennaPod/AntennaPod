@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:textSize="12sp"
-        android:text="42 episodes \u2022 5 hours 17 minutes"/>
+        android:text=""/>
 
     <View
         android:id="@+id/divider"
