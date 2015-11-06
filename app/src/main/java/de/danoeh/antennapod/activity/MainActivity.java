@@ -102,7 +102,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private View navDrawer;
     private ListView navList;
     private NavListAdapter navAdapter;
-    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
+    private int mPosition = -1;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -139,11 +139,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
         final FragmentManager fm = getSupportFragmentManager();
 
-        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0);
-            }
+        fm.addOnBackStackChangedListener(() -> {
+            drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0);
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -153,6 +150,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navList.setAdapter(navAdapter);
         navList.setOnItemClickListener(navListClickListener);
         navList.setOnItemLongClickListener(newListLongClickListener);
+        registerForContextMenu(navList);
 
         navAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -161,12 +159,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             }
         });
 
-        findViewById(R.id.nav_settings).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.closeDrawer(navDrawer);
-                startActivity(new Intent(MainActivity.this, PreferenceController.getPreferenceActivity()));
-            }
+        findViewById(R.id.nav_settings).setOnClickListener(v -> {
+            drawerLayout.closeDrawer(navDrawer);
+            startActivity(new Intent(MainActivity.this, PreferenceController.getPreferenceActivity()));
         });
 
         FragmentTransaction transaction = fm.beginTransaction();
@@ -218,12 +213,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private void checkFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    drawerLayout.openDrawer(navDrawer);
-                }
-            }, 1500);
+            new Handler().postDelayed(() -> drawerLayout.openDrawer(navDrawer), 1500);
 
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
@@ -245,21 +235,15 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.drawer_preferences);
-        builder.setMultiChoiceItems(navLabels, checked, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if (isChecked) {
-                    hiddenDrawerItems.remove(NAV_DRAWER_TAGS[which]);
-                } else {
-                    hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
-                }
+        builder.setMultiChoiceItems(navLabels, checked, (dialog, which, isChecked) -> {
+            if (isChecked) {
+                hiddenDrawerItems.remove(NAV_DRAWER_TAGS[which]);
+            } else {
+                hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
-            }
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
@@ -422,6 +406,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 showDrawerPreferencesDialog();
                 return true;
             } else {
+                mPosition = position;
                 return false;
             }
         }
@@ -518,6 +503,68 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             return true;
         } else {
             return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if(v.getId() != R.id.nav_list) {
+            return;
+        }
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        int position = adapterInfo.position;
+        if(position < navAdapter.getSubscriptionOffset()) {
+            return;
+        }
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_feed_context, menu);
+        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
+        menu.setHeaderTitle(feed.getTitle());
+        // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        final int position = mPosition;
+        mPosition = -1; // reset
+        if(position < 0) {
+            return false;
+        }
+        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
+        switch(item.getItemId()) {
+            case R.id.mark_all_seen_item:
+                DBWriter.markFeedSeen(feed.getId());
+                return true;
+            case R.id.mark_all_read_item:
+                DBWriter.markFeedRead(feed.getId());
+                return true;
+            case R.id.remove_item:
+                final FeedRemover remover = new FeedRemover(this, feed) {
+                    @Override
+                    protected void onPostExecute(Void result) {
+                        super.onPostExecute(result);
+                        if(getSelectedNavListIndex() == position) {
+                            loadFragment(EpisodesFragment.TAG, null);
+                        }
+                    }
+                };
+                ConfirmationDialog conDialog = new ConfirmationDialog(this,
+                        R.string.remove_feed_label,
+                        R.string.feed_delete_confirmation_msg) {
+                    @Override
+                    public void onConfirmButtonPressed(
+                            DialogInterface dialog) {
+                        dialog.dismiss();
+                        remover.executeAsync();
+                    }
+                };
+                conDialog.createNewDialog().show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
     }
 
