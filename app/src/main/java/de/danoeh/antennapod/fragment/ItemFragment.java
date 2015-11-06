@@ -324,8 +324,16 @@ public class ItemFragment extends Fragment {
     }
 
     private void updateAppearance() {
+        if (item == null) {
+            Log.d(TAG, "updateAppearance item is null");
+            return;
+        }
+
         txtvTitle.setText(item.getTitle());
-        txtvPublished.setText(DateUtils.formatDateTime(getActivity(), item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
+
+        if (item.getPubDate() != null) {
+            txtvPublished.setText(DateUtils.formatDateTime(getActivity(), item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
+        }
 
         Glide.with(getActivity())
                 .load(item.getImageUri())
