@@ -108,14 +108,6 @@ public class QueueFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        loadItems();
-        EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         if (downloadObserver != null) {
@@ -125,6 +117,15 @@ public class QueueFragment extends Fragment {
         if (queue != null) {
             onFragmentLoaded();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        recyclerView.setAdapter(recyclerAdapter);
+        loadItems();
+        EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -217,6 +218,7 @@ public class QueueFragment extends Fragment {
     }
 
     private void resetViewState() {
+        recyclerAdapter = null;
         blockDownloadObserverUpdate = false;
         if (downloadObserver != null) {
             downloadObserver.onPause();
@@ -552,9 +554,6 @@ public class QueueFragment extends Fragment {
                         progLoading.setVisibility(View.GONE);
                         queue = items;
                         onFragmentLoaded();
-                        if(recyclerAdapter != null) {
-                            recyclerAdapter.notifyDataSetChanged();
-                        }
                     }
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
