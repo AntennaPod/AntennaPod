@@ -79,16 +79,14 @@ public class EpisodesApplyActionFragment extends Fragment {
 
         mListView = (ListView) view.findViewById(android.R.id.list);
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> ListView, View view, int position, long rowId) {
-                long id = episodes.get(position).getId();
-                if (checkedIds.contains(id)) {
-                    checkedIds.remove(id);
-                } else {
-                    checkedIds.add(id);
-                }
-                refreshCheckboxes();
+        mListView.setOnItemClickListener((ListView, view1, position, rowId) -> {
+            long id = episodes.get(position).getId();
+            if (checkedIds.contains(id)) {
+                checkedIds.remove(id);
+            } else {
+                checkedIds.add(id);
             }
+            refreshCheckboxes();
         });
 
         for(FeedItem episode : episodes) {
@@ -101,40 +99,15 @@ public class EpisodesApplyActionFragment extends Fragment {
         checkAll();
 
         btnAddToQueue = (Button) view.findViewById(R.id.btnAddToQueue);
-        btnAddToQueue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                queueChecked();
-            }
-        });
+        btnAddToQueue.setOnClickListener(v -> queueChecked());
         btnMarkAsPlayed = (Button) view.findViewById(R.id.btnMarkAsPlayed);
-        btnMarkAsPlayed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                markedCheckedPlayed();
-            }
-        });
+        btnMarkAsPlayed.setOnClickListener(v -> markedCheckedPlayed());
         btnMarkAsUnplayed = (Button) view.findViewById(R.id.btnMarkAsUnplayed);
-        btnMarkAsUnplayed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                markedCheckedUnplayed();
-            }
-        });
+        btnMarkAsUnplayed.setOnClickListener(v -> markedCheckedUnplayed());
         btnDownload = (Button) view.findViewById(R.id.btnDownload);
-        btnDownload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                downloadChecked();
-            }
-        });
+        btnDownload.setOnClickListener(v -> downloadChecked());
         btnDelete = (Button) view.findViewById(R.id.btnDelete);
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteChecked();
-            }
-        });
+        btnDelete.setOnClickListener(v -> deleteChecked());
 
         return view;
     }
@@ -153,16 +126,13 @@ public class EpisodesApplyActionFragment extends Fragment {
                 FontAwesomeIcons.fa_sort).color(textColor).actionBarSize());
 
         mSelectToggle = menu.findItem(R.id.select_toggle);
-        mSelectToggle.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (checkedIds.size() == episodes.size()) {
-                    checkNone();
-                } else {
-                    checkAll();
-                }
-                return true;
+        mSelectToggle.setOnMenuItemClickListener(item -> {
+            if (checkedIds.size() == episodes.size()) {
+                checkNone();
+            } else {
+                checkAll();
             }
+            return true;
         });
 
         menu.findItem(R.id.select_options).setIcon(new IconDrawable(getActivity(),
@@ -241,14 +211,11 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void sortByTitle(final boolean reverse) {
-        Collections.sort(episodes, new Comparator<FeedItem>() {
-            @Override
-            public int compare(FeedItem lhs, FeedItem rhs) {
-                if (reverse) {
-                    return -1 * lhs.getTitle().compareTo(rhs.getTitle());
-                } else {
-                    return lhs.getTitle().compareTo(rhs.getTitle());
-                }
+        Collections.sort(episodes, (lhs, rhs) -> {
+            if (reverse) {
+                return -1 * lhs.getTitle().compareTo(rhs.getTitle());
+            } else {
+                return lhs.getTitle().compareTo(rhs.getTitle());
             }
         });
         refreshTitles();
@@ -256,20 +223,17 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void sortByDate(final boolean reverse) {
-        Collections.sort(episodes, new Comparator<FeedItem>() {
-            @Override
-            public int compare(FeedItem lhs, FeedItem rhs) {
-                if (lhs.getPubDate() == null) {
-                    return -1;
-                } else if (rhs.getPubDate() == null) {
-                    return 1;
-                }
-                int code = lhs.getPubDate().compareTo(rhs.getPubDate());
-                if (reverse) {
-                    return -1 * code;
-                } else {
-                    return code;
-                }
+        Collections.sort(episodes, (lhs, rhs) -> {
+            if (lhs.getPubDate() == null) {
+                return -1;
+            } else if (rhs.getPubDate() == null) {
+                return 1;
+            }
+            int code = lhs.getPubDate().compareTo(rhs.getPubDate());
+            if (reverse) {
+                return -1 * code;
+            } else {
+                return code;
             }
         });
         refreshTitles();
@@ -277,22 +241,19 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void sortByDuration(final boolean reverse) {
-        Collections.sort(episodes, new Comparator<FeedItem>() {
-            @Override
-            public int compare(FeedItem lhs, FeedItem rhs) {
-                int ordering;
-                if (false == lhs.hasMedia()) {
-                    ordering = 1;
-                } else if (false == rhs.hasMedia()) {
-                    ordering = -1;
-                } else {
-                    ordering = lhs.getMedia().getDuration() - rhs.getMedia().getDuration();
-                }
-            if(reverse) {
-                return -1 * ordering;
+        Collections.sort(episodes, (lhs, rhs) -> {
+            int ordering;
+            if (false == lhs.hasMedia()) {
+                ordering = 1;
+            } else if (false == rhs.hasMedia()) {
+                ordering = -1;
             } else {
-                return ordering;
+                ordering = lhs.getMedia().getDuration() - rhs.getMedia().getDuration();
             }
+        if(reverse) {
+            return -1 * ordering;
+        } else {
+            return ordering;
         }
     });
         refreshTitles();
@@ -361,7 +322,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void queueChecked() {
-        DBWriter.addQueueItem(getActivity(), episodes.toArray(new FeedItem[0]));
+        DBWriter.addQueueItem(getActivity(), true, checkedIds.toArray());
         close();
     }
 
