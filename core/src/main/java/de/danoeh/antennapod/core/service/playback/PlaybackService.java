@@ -786,7 +786,6 @@ public class PlaybackService extends Service {
     /**
      * Prepares notification and starts the service in the foreground.
      */
-    @SuppressLint("NewApi")
     private void setupNotification(final PlaybackServiceMediaPlayer.PSMPInfo info) {
         final PendingIntent pIntent = PendingIntent.getActivity(this, 0,
                 PlaybackService.getPlayerActivityIntent(this),
