@@ -836,18 +836,6 @@ public class PlaybackService extends Service {
                     String contentTitle = info.playable.getFeedTitle();
                     Notification notification = null;
 
-
-
-
-
-
-
-
-
-
-
-
-
                     NotificationCompat.Builder notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(
                             PlaybackService.this)
                             .setContentTitle(contentTitle)
