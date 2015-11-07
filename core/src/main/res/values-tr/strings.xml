@@ -5,8 +5,11 @@
   <string name="feeds_label">Beslemeler</string>
   <string name="add_feed_label">Cep yayını ekle</string>
   <string name="podcasts_label">CEP YAYINLARI</string>
+  <string name="episodes_label">Bölümler</string>
   <string name="new_episodes_label">Yeni bölümler</string>
   <string name="all_episodes_label">Tüm bölümler</string>
+  <string name="all_episodes_short_label">Tümü</string>
+  <string name="favorite_episodes_label">Favoriler</string>
   <string name="new_label">Yeni</string>
   <string name="waiting_list_label">Bekleme listesi</string>
   <string name="settings_label">Ayarlar</string>
@@ -28,6 +31,7 @@
   <string name="drawer_preferences">Çekmece Seçenekleri</string>
   <string name="drawer_feed_order_unplayed_episodes">Sayaca göre sırala</string>
   <string name="drawer_feed_order_alphabetical">Alfabetik olarak sırala</string>
+  <string name="drawer_feed_order_last_update">Yayınlanma tarihine göre sırala</string>
   <string name="drawer_feed_counter_new_unplayed">Yeni ve çalınmamış bölümlerin sayısı</string>
   <string name="drawer_feed_counter_new">Yeni bölümlerin sayısı</string>
   <string name="drawer_feed_counter_unplayed">Çalınmamış bölümlerin sayısı</string>
@@ -73,6 +77,14 @@
   <string name="feed_auto_download_global">Genel</string>
   <string name="feed_auto_download_always">Her zaman</string>
   <string name="feed_auto_download_never">Hiçbir zaman</string>
+  <string name="send_label">Gönder...</string>
+  <string name="episode_cleanup_never">Hiçbir zaman</string>
+  <string name="episode_cleanup_queue_removal">Sırada değilse</string>
+  <string name="episode_cleanup_after_listening">Bittikten sonra</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">Bittikten 1 gün sonra</item>
+    <item quantity="other">Bittikten %d gün sonra</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Besleme Adresi</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -122,6 +134,8 @@
   <string name="add_to_queue_label">Kuyruğa Ekle</string>
   <string name="added_to_queue_label">Kuyruğa Eklendi</string>
   <string name="remove_from_queue_label">Kuyruktan Kaldır</string>
+  <string name="add_to_favorite_label">Favorilere Ekle</string>
+  <string name="remove_from_favorite_label">Favorilerden Kaldır</string>
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
   <string name="support_label">Flattr ile destekle</string>
   <string name="enqueue_all_new">Hepsini kuyruğa ekle</string>
@@ -130,6 +144,7 @@
   <string name="activate_auto_download">Otomatik indirmeyi etkinleştir</string>
   <string name="deactivate_auto_download">Otomatik indirmeyi devre dışı bırak</string>
   <string name="reset_position">Çalme konumunu sıfırla</string>
+  <string name="removed_item">Öge kaldırıldı</string>
   <!--Download messages and labels-->
   <string name="download_successful">başarılı</string>
   <string name="download_failed">başarısız</string>
@@ -228,6 +243,7 @@
   <string name="download_plugin_label">Eklentiyi İndir</string>
   <string name="no_playback_plugin_title">Eklenti Yüklenmedi</string>
   <string name="set_playback_speed_label">Çalma hızları</string>
+  <string name="enable_sonic">Sonic\'i Etkinleştir</string>
   <!--Empty list labels-->
   <string name="no_items_label">Bu listede hiç öge yok.</string>
   <string name="no_feeds_label">Henüz hiçbir beslemeye abone değilsiniz.</string>
@@ -237,7 +253,11 @@
   <string name="queue_label">Kuyruk</string>
   <string name="services_label">Servisler</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Bölüm Temizliği</string>
+  <string name="pref_episode_cleanup_summary">Daha fazla yer gerektiğinde kuyrukta olmayan ve favorilere eklenmemiş bölümler kaldırılmak için uygundur</string>
+  <string name="pref_pauseOnDisconnect_sum">Kulaklıklar çıkarıldığında veya bluetooth bağlantısı kesildiğinde çalmayı duraklat</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetooth yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_followQueue_sum">Çalma tamamlandığında kuyruktaki diğer öğeye geç</string>
   <string name="pref_auto_delete_sum">Çalma bittiğinde bölümü sil</string>
   <string name="pref_auto_delete_title">Otomatik Silme</string>
