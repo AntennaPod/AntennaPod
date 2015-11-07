@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.service.playback;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -212,7 +211,6 @@ public class PlaybackService extends Service {
         return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, mt);
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -223,8 +221,10 @@ public class PlaybackService extends Service {
                 Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(
                 ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-        registerReceiver(bluetoothStateUpdated, new IntentFilter(
-                BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            registerReceiver(bluetoothStateUpdated, new IntentFilter(
+                    BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
+        }
         registerReceiver(audioBecomingNoisy, new IntentFilter(
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
@@ -238,7 +238,6 @@ public class PlaybackService extends Service {
 
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -249,7 +248,9 @@ public class PlaybackService extends Service {
 
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
-        unregisterReceiver(bluetoothStateUpdated);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            unregisterReceiver(bluetoothStateUpdated);
+        }
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
@@ -1012,7 +1013,7 @@ public class PlaybackService extends Service {
      * Pauses playback when the headset is disconnected and the preference is
      * set
      */
-    private BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
+    private final BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
         private static final String TAG = "headsetDisconnected";
         private static final int UNPLUGGED = 0;
         private static final int PLUGGED = 1;
@@ -1037,7 +1038,7 @@ public class PlaybackService extends Service {
         }
     };
 
-    private BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
+    private final BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -1052,7 +1053,7 @@ public class PlaybackService extends Service {
         }
     };
 
-    private BroadcastReceiver audioBecomingNoisy = new BroadcastReceiver() {
+    private final BroadcastReceiver audioBecomingNoisy = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1098,7 +1099,7 @@ public class PlaybackService extends Service {
         }
     }
 
-    private BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1109,7 +1110,7 @@ public class PlaybackService extends Service {
 
     };
 
-    private BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (StringUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
@@ -1119,7 +1120,7 @@ public class PlaybackService extends Service {
         }
     };
 
-    private BroadcastReceiver pauseResumeCurrentEpisodeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver pauseResumeCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (StringUtils.equals(intent.getAction(), ACTION_RESUME_PLAY_CURRENT_EPISODE)) {
@@ -1129,7 +1130,7 @@ public class PlaybackService extends Service {
         }
     };
 
-    private BroadcastReceiver pausePlayCurrentEpisodeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver pausePlayCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (StringUtils.equals(intent.getAction(), ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
