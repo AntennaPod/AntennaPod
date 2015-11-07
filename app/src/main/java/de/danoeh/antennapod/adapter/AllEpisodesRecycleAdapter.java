@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -24,6 +25,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.joanzapata.iconify.Iconify;
+import com.nineoldandroids.view.ViewHelper;
 
 import java.lang.ref.WeakReference;
 
@@ -250,7 +252,9 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
     };
 
     public class Holder extends RecyclerView.ViewHolder
-        implements View.OnClickListener, View.OnCreateContextMenuListener {
+            implements View.OnClickListener,
+                       View.OnCreateContextMenuListener,
+                       ItemTouchHelperViewHolder {
         TextView placeholder;
         TextView title;
         TextView pubDate;
@@ -276,6 +280,16 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             if (mainActivity != null) {
                 mainActivity.loadChildFragment(ItemFragment.newInstance(item.getId()));
             }
+        }
+
+        @Override
+        public void onItemSelected() {
+            ViewHelper.setAlpha(itemView, 0.5f);
+        }
+
+        @Override
+        public void onItemClear() {
+            ViewHelper.setAlpha(itemView, 1.0f);
         }
 
         public FeedItem getFeedItem() { return item; }
@@ -316,5 +330,27 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
         boolean isInQueue(FeedItem item);
 
+    }
+
+    /**
+     * Notifies a View Holder of relevant callbacks from
+     * {@link ItemTouchHelper.Callback}.
+     */
+    public interface ItemTouchHelperViewHolder {
+
+        /**
+         * Called when the {@link ItemTouchHelper} first registers an
+         * item as being moved or swiped.
+         * Implementations should update the item view to indicate
+         * it's active state.
+         */
+        void onItemSelected();
+
+
+        /**
+         * Called when the {@link ItemTouchHelper} has completed the
+         * move or swipe, and the active item state should be cleared.
+         */
+        void onItemClear();
     }
 }

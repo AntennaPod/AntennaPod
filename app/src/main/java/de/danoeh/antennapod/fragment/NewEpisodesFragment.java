@@ -14,6 +14,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
+import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -103,6 +104,32 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                 });
                 snackbar.show();
                 h.postDelayed(r, (int)Math.ceil(snackbar.getDuration() * 1.05f));
+            }
+
+            @Override
+            public void onSelectedChanged(RecyclerView.ViewHolder viewHolder,
+                                          int actionState) {
+                // We only want the active item
+                if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+                    if (viewHolder instanceof AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) {
+                        AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder itemViewHolder =
+                                (AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) viewHolder;
+                        itemViewHolder.onItemSelected();
+                    }
+                }
+
+                super.onSelectedChanged(viewHolder, actionState);
+            }
+            @Override
+            public void clearView(RecyclerView recyclerView,
+                                  RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+
+                if (viewHolder instanceof AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) {
+                    AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder itemViewHolder =
+                            (AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) viewHolder;
+                    itemViewHolder.onItemClear();
+                }
             }
         };
 

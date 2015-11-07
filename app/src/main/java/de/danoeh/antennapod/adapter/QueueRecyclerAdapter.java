@@ -26,6 +26,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.joanzapata.iconify.Iconify;
+import com.nineoldandroids.view.ViewHelper;
 
 import java.lang.ref.WeakReference;
 
@@ -101,7 +102,9 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener, View.OnCreateContextMenuListener {
+            implements View.OnClickListener,
+                       View.OnCreateContextMenuListener,
+                       ItemTouchHelperViewHolder {
 
         private final ImageView dragHandle;
         private final TextView placeholder;
@@ -168,6 +171,16 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             };
             FeedItemMenuHandler.onPrepareMenu(mainActivity.get(), contextMenuInterface, item, true,
                     itemAccess.getQueueIds());
+        }
+
+        @Override
+        public void onItemSelected() {
+            ViewHelper.setAlpha(itemView, 0.5f);
+        }
+
+        @Override
+        public void onItemClear() {
+            ViewHelper.setAlpha(itemView, 1.0f);
         }
 
         public void bind(FeedItem item) {
@@ -248,6 +261,8 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 .dontAnimate()
                 .into(new CoverTarget(item.getFeed().getImageUri(), placeholder, cover));
         }
+
+
     }
     
 
@@ -305,5 +320,27 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         long getItemDownloadSize(FeedItem item);
         int getItemDownloadProgressPercent(FeedItem item);
         LongList getQueueIds();
+    }
+
+    /**
+     * Notifies a View Holder of relevant callbacks from
+     * {@link ItemTouchHelper.Callback}.
+     */
+    public interface ItemTouchHelperViewHolder {
+
+        /**
+         * Called when the {@link ItemTouchHelper} first registers an
+         * item as being moved or swiped.
+         * Implementations should update the item view to indicate
+         * it's active state.
+         */
+        void onItemSelected();
+
+
+        /**
+         * Called when the {@link ItemTouchHelper} has completed the
+         * move or swipe, and the active item state should be cleared.
+         */
+        void onItemClear();
     }
 }
