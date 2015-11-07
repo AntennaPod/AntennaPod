@@ -28,12 +28,12 @@ dependencies {
     compile "de.greenrobot:eventbus:$eventbusVersion"
     compile "io.reactivex:rxandroid:$rxAndroidVersion"
     compile "com.joanzapata.iconify:android-iconify-fontawesome:2.1.0"
-    compile 'com.afollestad:material-dialogs:0.7.8.1'
+    compile "com.afollestad:material-dialogs:0.7.8.1"
+    compile "com.yqritc:recyclerview-flexibledivider:1.2.6"
 
     compile "com.github.AntennaPod:AntennaPod-AudioPlayer:v1.0.2"
 
     compile project(":core")
-    compile project(":library:drag-sort-listview")
 }
 
 def getMyVersionName() {

@@ -220,7 +220,7 @@ public class UITestUtils {
         adapter.setQueue(queue);
         adapter.close();
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
-        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
+        EventBus.getDefault().post(QueueEvent.setQueue(queue));
     }
 
     public PlaybackController getPlaybackController(MainActivity mainActivity) {

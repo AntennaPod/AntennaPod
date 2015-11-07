@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/listitem_threeline_height"
     android:orientation="horizontal"
+    android:background="?attr/selectableItemBackground"
     tools:background="@android:color/darker_gray">
 
     <RelativeLayout

@@ -1,43 +1,45 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mobeta.android.dslv.DragSortListView;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
-import de.danoeh.antennapod.adapter.QueueListAdapter;
+import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -47,10 +49,9 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
-import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
-import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
@@ -71,28 +72,19 @@ public class QueueFragment extends Fragment {
             EventDistributor.PLAYER_STATUS_UPDATE;
 
     private TextView infoBar;
-    private DragSortListView listView;
-    private QueueListAdapter listAdapter;
+    private RecyclerView recyclerView;
+    private QueueRecyclerAdapter recyclerAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
-
-    private ContextMenu contextMenu;
-    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
-
-    private UndoBarController<FeedItemUndoToken> undoBarController;
 
     private List<FeedItem> queue;
     private List<Downloader> downloaderList;
 
-    private boolean itemsLoaded = false;
-    private boolean viewsCreated = false;
     private boolean isUpdatingFeeds = false;
 
     private static final String PREFS = "QueueFragment";
-    private static final String PREF_KEY_LIST_TOP = "list_top";
-    private static final String PREF_KEY_LIST_SELECTION = "list_selection";
-
-    private AtomicReference<Activity> activity = new AtomicReference<Activity>();
+    private static final String PREF_SCROLL_POSITION = "scroll_position";
+    private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
     private DownloadObserver downloadObserver = null;
 
@@ -102,6 +94,8 @@ public class QueueFragment extends Fragment {
     private boolean blockDownloadObserverUpdate = false;
 
     private Subscription subscription;
+    private LinearLayoutManager layoutManager;
+    private ItemTouchHelper itemTouchHelper;
 
 
     @Override
@@ -112,90 +106,117 @@ public class QueueFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        loadItems();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().register(this);
-        this.activity.set((MainActivity) getActivity());
         if (downloadObserver != null) {
             downloadObserver.setActivity(getActivity());
             downloadObserver.onResume();
         }
-        if (viewsCreated && itemsLoaded) {
+        if (queue != null) {
             onFragmentLoaded();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        recyclerView.setAdapter(recyclerAdapter);
+        loadItems();
+        EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         saveScrollPosition();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        if(undoBarController.isShowing()) {
-            undoBarController.close();
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity.set((MainActivity) activity);
     }
 
     public void onEventMainThread(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        if(event.action == QueueEvent.Action.REMOVED) {
-            undoBarController.showUndoBar(false, getString(R.string.removed_from_queue),
-                    new FeedItemUndoToken(event.item, event.position));
+        switch(event.action) {
+            case ADDED:
+                queue.add(event.position, event.item);
+                recyclerAdapter.notifyItemInserted(event.position);
+                break;
+            case SET_QUEUE:
+                queue = event.items;
+                recyclerAdapter.notifyDataSetChanged();
+                break;
+            case REMOVED:
+                int position = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
+                queue.remove(position);
+                recyclerAdapter.notifyItemRemoved(position);
+                break;
+            case CLEARED:
+                queue.clear();
+                recyclerAdapter.notifyDataSetChanged();
+                break;
+            case SORTED:
+                queue = event.items;
+                recyclerAdapter.notifyDataSetChanged();
+                break;
+            case MOVED:
+                int from = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
+                int to = event.position;
+                Collections.swap(queue, from, to);
+                recyclerAdapter.notifyItemMoved(from, to);
+                break;
         }
-        loadItems();
+        onFragmentLoaded();
+    }
+
+    public void onEventMainThread(FeedItemEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        for(int i=0, size = event.items.size(); i < size; i++) {
+            FeedItem item = event.items.get(i);
+            int pos = FeedItemUtil.indexOfItemWithId(queue, item.getId());
+            if(pos >= 0) {
+                queue.remove(pos);
+                queue.add(pos, item);
+                recyclerAdapter.notifyItemChanged(pos);
+            }
+        }
     }
 
     private void saveScrollPosition() {
+        int firstItem = layoutManager.findFirstVisibleItemPosition();
+        View firstItemView = layoutManager.findViewByPosition(firstItem);
+        float topOffset;
+        if(firstItemView == null) {
+            topOffset = 0;
+        } else {
+            topOffset = firstItemView.getTop();
+        }
+
         SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        View v = listView.getChildAt(0);
-        int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
-        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getFirstVisiblePosition());
-        editor.putInt(PREF_KEY_LIST_TOP, top);
+        editor.putInt(PREF_SCROLL_POSITION, firstItem);
+        editor.putFloat(PREF_SCROLL_OFFSET, topOffset);
         editor.commit();
     }
 
     private void restoreScrollPosition() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        int listSelection = prefs.getInt(PREF_KEY_LIST_SELECTION, 0);
-        int top = prefs.getInt(PREF_KEY_LIST_TOP, 0);
-        if(listSelection > 0 || top > 0) {
-            listView.setSelectionFromTop(listSelection, top);
+        int position = prefs.getInt(PREF_SCROLL_POSITION, 0);
+        float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
+        if (position > 0 || offset > 0) {
+            layoutManager.scrollToPositionWithOffset(position, (int) offset);
             // restore once, then forget
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(PREF_KEY_LIST_SELECTION, 0);
-            editor.putInt(PREF_KEY_LIST_TOP, 0);
+            editor.putInt(PREF_SCROLL_POSITION, 0);
+            editor.putFloat(PREF_SCROLL_OFFSET, 0.0f);
             editor.commit();
         }
     }
 
     private void resetViewState() {
-        unregisterForContextMenu(listView);
-        listAdapter = null;
-        activity.set(null);
-        undoBarController = null;
-        viewsCreated = false;
+        recyclerAdapter = null;
         blockDownloadObserverUpdate = false;
         if (downloadObserver != null) {
             downloadObserver.onPause();
@@ -208,17 +229,14 @@ public class QueueFragment extends Fragment {
         resetViewState();
     }
 
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
-        @Override
-        public boolean isRefreshing() {
-            return DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
-        }
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = () -> {
+        return DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
     };
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded) {
+        if (queue != null) {
             inflater.inflate(R.menu.queue, menu);
 
             MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -251,14 +269,9 @@ public class QueueFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.queue_lock:
                     boolean locked = !UserPreferences.isQueueLocked();
-                    if(locked) {
-                        listView.setDragEnabled(false);
-                    } else {
-                        listView.setDragEnabled(true);
-                    }
                     UserPreferences.setQueueLocked(locked);
                     getActivity().supportInvalidateOptionsMenu();
-                    listAdapter.setLocked(locked);
+                    recyclerAdapter.setLocked(locked);
                     return true;
                 case R.id.refresh_item:
                     List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
@@ -305,54 +318,19 @@ public class QueueFragment extends Fragment {
         } else {
             return true;
         }
-
     }
 
-    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
-        @Override
-        public void setItemVisibility(int id, boolean visible) {
-            if(contextMenu == null) {
-                return;
-            }
-            MenuItem item = contextMenu.findItem(id);
-            if (item != null) {
-                item.setVisible(visible);
-            }
-        }
-    };
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItem item = itemAccess.getItem(adapterInfo.position);
-
-        MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.queue_context, menu);
-
-        if (item != null) {
-            menu.setHeaderTitle(item.getTitle());
-        }
-
-        contextMenu = menu;
-        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        LongList queueIds = new LongList(queue.size());
-        for(FeedItem queueItem : queue) {
-            queueIds.add(queueItem.getId());
-        }
-        FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queueIds);
-    }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if(menuInfo == null) {
-            menuInfo = lastMenuInfo;
+        if(!isVisible()) {
+            return false;
         }
-        FeedItem selectedItem = itemAccess.getItem(menuInfo.position);
+        int pos = recyclerAdapter.getPosition();
+        FeedItem selectedItem = itemAccess.getItem(pos);
 
         if (selectedItem == null) {
-            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
+            Log.i(TAG, "Selected item at position " + pos + " was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
 
@@ -373,112 +351,111 @@ public class QueueFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
         infoBar = (TextView) root.findViewById(R.id.info_bar);
-        listView = (DragSortListView) root.findViewById(android.R.id.list);
-        txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
-        progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
-        listView.setEmptyView(txtvEmpty);
+        recyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+        recyclerView.setHasFixedSize(true);
+        registerForContextMenu(recyclerView);
 
-        if(UserPreferences.isQueueLocked()) {
-            listView.setDragEnabled(false);
-        } else {
-            listView.setDragEnabled(true);
-        }
+        itemTouchHelper = new ItemTouchHelper(
+            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
-                if (item != null) {
-                    ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    int from = viewHolder.getAdapterPosition();
+                    int to = target.getAdapterPosition();
+                    Log.d(TAG, "move(" + from + ", " + to + ")");
+                    Collections.swap(queue, from, to);
+                    recyclerAdapter.notifyItemMoved(from, to);
+                    DBWriter.moveQueueItem(from, to, false);
+                    return true;
                 }
-            }
-        });
 
-        listView.setDragSortListener(new DragSortListView.DragSortListener() {
-            @Override
-            public void drag(int from, int to) {
-                Log.d(TAG, "drag");
-                blockDownloadObserverUpdate = true;
-            }
-
-            @Override
-            public void drop(int from, int to) {
-                Log.d(TAG, "drop");
-                blockDownloadObserverUpdate = false;
-                if(subscription != null) {
-                    subscription.unsubscribe();
-                }
-                final FeedItem item = queue.remove(from);
-                queue.add(to, item);
-                listAdapter.notifyDataSetChanged();
-                DBWriter.moveQueueItem(from, to, true);
-            }
-
-            @Override
-            public void remove(int which) {
-                Log.d(TAG, "remove(" + which + ")");
-                if(subscription != null) {
-                    subscription.unsubscribe();
-                }
-                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-                DBWriter.removeQueueItem(getActivity(), item, true);
-            }
-        });
-
-        undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar),
-                new UndoBarController.UndoListener<FeedItemUndoToken>() {
-
-            private final Context context = getActivity();
-
-            @Override
-            public void onUndo(FeedItemUndoToken token) {
-                if (token != null) {
-                    long itemId = token.getFeedItemId();
-                    int position = token.getPosition();
-                    DBWriter.addQueueItemAt(context, itemId, position, false);
-                }
-            }
-
-            @Override
-            public void onHide(FeedItemUndoToken token) {
-                if (token != null && context != null) {
-                    long itemId = token.getFeedItemId();
-                    FeedItem item = DBReader.getFeedItem(itemId);
-                    if(item != null) {
-                        FeedMedia media = item.getMedia();
-                        if (media != null && media.hasAlmostEnded() && item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                            DBWriter.deleteFeedMediaOfItem(context, media.getId());
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    if(subscription != null) {
+                        subscription.unsubscribe();
+                    }
+                    final int position = viewHolder.getAdapterPosition();
+                    Log.d(TAG, "remove(" + position + ")");
+                    final FeedItem item = queue.get(position);
+                    final boolean isRead = item.isPlayed();
+                    DBWriter.markItemPlayed(FeedItem.PLAYED, item.getId());
+                    DBWriter.removeQueueItem(getActivity(), item, true);
+                    Snackbar snackbar = Snackbar.make(root, getString(R.string.marked_as_read_label), Snackbar.LENGTH_LONG);
+                    snackbar.setAction(getString(R.string.undo), v -> {
+                        DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false);
+                        if(false == isRead) {
+                            DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
                         }
+                    });
+                    snackbar.show();
+                }
+
+                @Override
+                public boolean isLongPressDragEnabled() {
+                    return false == UserPreferences.isQueueLocked();
+                }
+
+                @Override
+                public boolean isItemViewSwipeEnabled() {
+                    return false == UserPreferences.isQueueLocked();
+                }
+
+                @Override
+                public void onSelectedChanged(RecyclerView.ViewHolder viewHolder,
+                                              int actionState) {
+                    // We only want the active item
+                    if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+                        if (viewHolder instanceof QueueRecyclerAdapter.ItemTouchHelperViewHolder) {
+                            QueueRecyclerAdapter.ItemTouchHelperViewHolder itemViewHolder =
+                                    (QueueRecyclerAdapter.ItemTouchHelperViewHolder) viewHolder;
+                            itemViewHolder.onItemSelected();
+                        }
+                    }
+
+                    super.onSelectedChanged(viewHolder, actionState);
+                }
+                @Override
+                public void clearView(RecyclerView recyclerView,
+                                      RecyclerView.ViewHolder viewHolder) {
+                    super.clearView(recyclerView, viewHolder);
+
+                    if (viewHolder instanceof QueueRecyclerAdapter.ItemTouchHelperViewHolder) {
+                        QueueRecyclerAdapter.ItemTouchHelperViewHolder itemViewHolder =
+                                (QueueRecyclerAdapter.ItemTouchHelperViewHolder) viewHolder;
+                        itemViewHolder.onItemClear();
                     }
                 }
             }
+        );
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        });
-
-        registerForContextMenu(listView);
-
-        if (!itemsLoaded) {
-            progLoading.setVisibility(View.VISIBLE);
-            txtvEmpty.setVisibility(View.GONE);
-        }
-
-        viewsCreated = true;
-
-        if (itemsLoaded && activity.get() != null) {
-            onFragmentLoaded();
-        }
+        txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
+        txtvEmpty.setVisibility(View.GONE);
+        progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
+        progLoading.setVisibility(View.VISIBLE);
 
         return root;
     }
 
     private void onFragmentLoaded() {
-        if (listAdapter == null) {
-            listAdapter = new QueueListAdapter(activity.get(), itemAccess, new DefaultActionButtonCallback(activity.get()));
-            listView.setAdapter(listAdapter);
-            downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
+        if (recyclerAdapter == null) {
+            MainActivity activity = (MainActivity) getActivity();
+            recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
+                new DefaultActionButtonCallback(activity), itemTouchHelper);
+            recyclerView.setAdapter(recyclerAdapter);
+            downloadObserver = new DownloadObserver(activity, new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
-        listAdapter.notifyDataSetChanged();
+        if(queue == null || queue.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            txtvEmpty.setVisibility(View.VISIBLE);
+        } else {
+            txtvEmpty.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
 
         restoreScrollPosition();
 
@@ -486,7 +463,10 @@ public class QueueFragment extends Fragment {
         // needs data that may have just been loaded.
         getActivity().supportInvalidateOptionsMenu();
 
-        // refresh information bar
+        refreshInfoBar();
+    }
+
+    private void refreshInfoBar() {
         String info = queue.size() + getString(R.string.episodes_suffix);
         if(queue.size() > 0) {
             long duration = 0;
@@ -505,21 +485,21 @@ public class QueueFragment extends Fragment {
         @Override
         public void onContentChanged(List<Downloader> downloaderList) {
             QueueFragment.this.downloaderList = downloaderList;
-            if (listAdapter != null && !blockDownloadObserverUpdate) {
-                listAdapter.notifyDataSetChanged();
+            if (recyclerAdapter != null && !blockDownloadObserverUpdate) {
+                recyclerAdapter.notifyDataSetChanged();
             }
         }
     };
 
-    private QueueListAdapter.ItemAccess itemAccess = new QueueListAdapter.ItemAccess() {
+    private QueueRecyclerAdapter.ItemAccess itemAccess = new QueueRecyclerAdapter.ItemAccess() {
         @Override
         public int getCount() {
-            return (itemsLoaded) ? queue.size() : 0;
+            return queue != null ? queue.size() : 0;
         }
 
         @Override
         public FeedItem getItem(int position) {
-            return (itemsLoaded) ? queue.get(position) : null;
+            return queue != null ? queue.get(position) : null;
         }
 
         @Override
@@ -561,6 +541,11 @@ public class QueueFragment extends Fragment {
             }
             return 0;
         }
+
+        @Override
+        public LongList getQueueIds() {
+            return queue != null ? LongList.of(FeedItemUtil.getIds(queue)) : new LongList(0);
+        }
     };
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -579,23 +564,19 @@ public class QueueFragment extends Fragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        if (viewsCreated && !itemsLoaded) {
-            listView.setVisibility(View.GONE);
+        if (queue == null) {
+            recyclerView.setVisibility(View.GONE);
             txtvEmpty.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
         subscription = Observable.defer(() -> Observable.just(DBReader.getQueue()))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    listView.setVisibility(View.VISIBLE);
-                    progLoading.setVisibility(View.GONE);
-                    if(result != null) {
-                        queue = result;
-                        itemsLoaded = true;
-                        if (viewsCreated && activity.get() != null) {
-                            onFragmentLoaded();
-                        }
+                .subscribe(items -> {
+                    if(items != null) {
+                        progLoading.setVisibility(View.GONE);
+                        queue = items;
+                        onFragmentLoaded();
                     }
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));

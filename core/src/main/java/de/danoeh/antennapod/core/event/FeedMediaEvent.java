@@ -20,5 +20,4 @@ public class FeedMediaEvent {
         return new FeedMediaEvent(Action.UPDATE, media);
     }
 
-
 }

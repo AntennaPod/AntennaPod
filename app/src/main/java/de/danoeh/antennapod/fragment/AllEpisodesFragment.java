@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,9 +41,10 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.view.DividerItemDecoration;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -94,12 +97,6 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        loadItems();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
@@ -114,9 +111,17 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        loadItems();
+        registerForContextMenu(recyclerView);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         saveScrollPosition();
+        unregisterForContextMenu(recyclerView);
     }
 
     @Override
@@ -261,6 +266,31 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if(!isVisible()) {
+            return false;
+        }
+        int pos = listAdapter.getPosition();
+        if(pos < 0) {
+            return false;
+        }
+        FeedItem selectedItem = itemAccess.getItem(pos);
+
+        if (selectedItem == null) {
+            Log.i(TAG, "Selected item at position " + pos + " was null, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+
+        try {
+            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            return true;
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
@@ -278,8 +308,7 @@ public class AllEpisodesFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(), null);
-        recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
 
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
 

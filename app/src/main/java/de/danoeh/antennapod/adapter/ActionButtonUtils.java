@@ -7,6 +7,8 @@ import android.widget.ImageButton;
 
 import org.apache.commons.lang3.Validate;
 
+import java.lang.ref.WeakReference;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -27,7 +29,7 @@ public class ActionButtonUtils {
     public ActionButtonUtils(Context context) {
         Validate.notNull(context);
 
-        this.context = context;
+        this.context = context.getApplicationContext();
         drawables = context.obtainStyledAttributes(new int[] {
                 R.attr.av_play,
                 R.attr.navigation_cancel,

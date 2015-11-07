@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.mobeta.android.dslv"
-      android:versionCode="4"
-      android:versionName="0.6.1">
-    <uses-sdk android:targetSdkVersion="7"
-      android:minSdkVersion="7" />
-</manifest> 

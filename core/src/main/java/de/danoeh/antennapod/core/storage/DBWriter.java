@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -27,6 +28,8 @@ import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
@@ -34,7 +37,6 @@ import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -131,7 +133,7 @@ public class DBWriter {
                     }
                 }
                 Log.d(TAG, "Deleting File. Result: " + result);
-                EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.DELETED_MEDIA, media.getItem()));
+                EventBus.getDefault().post(FeedItemEvent.deletedMedia(Arrays.asList(media.getItem())));
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
         });
@@ -210,8 +212,9 @@ public class DBWriter {
                 adapter.open();
                 if (removed.size() > 0) {
                     adapter.setQueue(queue);
-                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.IRREVERSIBLE_REMOVED,
-                            removed));
+                    for(FeedItem item : removed) {
+                        EventBus.getDefault().post(QueueEvent.irreversibleRemoved(item));
+                    }
                 }
                 adapter.removeFeed(feed);
                 adapter.close();
@@ -319,7 +322,7 @@ public class DBWriter {
                         queue.add(index, item);
                         adapter.setQueue(queue);
                         item.addTag(FeedItem.TAG_QUEUE);
-                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
+                        EventBus.getDefault().post(QueueEvent.added(item, index));
                         if (item.isNew()) {
                             DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
                         }
@@ -365,17 +368,21 @@ public class DBWriter {
                 if (queue != null) {
                     boolean queueModified = false;
                     LongList markAsUnplayedIds = new LongList();
+                    List<QueueEvent> events = new ArrayList<QueueEvent>();
                     for (int i = 0; i < itemIds.length; i++) {
                         if (!itemListContains(queue, itemIds[i])) {
                             final FeedItem item = DBReader.getFeedItem(itemIds[i]);
+
 
                             if (item != null) {
                                 // add item to either front ot back of queue
                                 boolean addToFront = UserPreferences.enqueueAtFront();
                                 if (addToFront) {
                                     queue.add(0 + i, item);
+                                    events.add(QueueEvent.added(item, 0 + i));
                                 } else {
                                     queue.add(item);
+                                    events.add(QueueEvent.added(item, queue.size()-1));
                                 }
                                 queueModified = true;
                                 if (item.isNew()) {
@@ -386,7 +393,9 @@ public class DBWriter {
                     }
                     if (queueModified) {
                         adapter.setQueue(queue);
-                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
+                        for(QueueEvent event : events) {
+                            EventBus.getDefault().post(event);
+                        }
                         if (markAsUnplayedIds.size() > 0) {
                             DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
                         }
@@ -411,7 +420,7 @@ public class DBWriter {
             adapter.clearQueue();
             adapter.close();
 
-            EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.CLEARED));
+            EventBus.getDefault().post(QueueEvent.cleared());
         });
     }
 
@@ -435,7 +444,7 @@ public class DBWriter {
                     queue.remove(position);
                     adapter.setQueue(queue);
                     item.removeTag(FeedItem.TAG_QUEUE);
-                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.REMOVED, item, position));
+                    EventBus.getDefault().post(QueueEvent.removed(item));
                 } else {
                     Log.w(TAG, "Queue was not modified by call to removeQueueItem");
                 }
@@ -512,9 +521,9 @@ public class DBWriter {
         return dbExec.submit(() -> {
             LongList queueIdList = DBReader.getQueueIDList();
             int index = queueIdList.indexOf(itemId);
-            if(index >= 0) {
+            if (index >= 0) {
                 moveQueueItemHelper(index, queueIdList.size() - 1,
-                        broadcastUpdate);
+                    broadcastUpdate);
             } else {
                 Log.e(TAG, "moveQueueItemToBottom: item not found");
             }
@@ -561,7 +570,7 @@ public class DBWriter {
 
                 adapter.setQueue(queue);
                 if (broadcastUpdate) {
-                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.MOVED, item, to));
+                    EventBus.getDefault().post(QueueEvent.moved(item, to));
                 }
             }
         } else {
@@ -955,7 +964,7 @@ public class DBWriter {
                 Collections.sort(queue, comparator);
                 adapter.setQueue(queue);
                 if (broadcastUpdate) {
-                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.SORTED));
+                    EventBus.getDefault().post(QueueEvent.sorted(queue));
                 }
             } else {
                 Log.e(TAG, "sortQueue: Could not load queue");
