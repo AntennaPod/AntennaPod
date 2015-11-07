@@ -577,6 +577,9 @@ public class QueueFragment extends Fragment {
                         progLoading.setVisibility(View.GONE);
                         queue = items;
                         onFragmentLoaded();
+                        if(recyclerAdapter != null) {
+                            recyclerAdapter.notifyDataSetChanged();
+                        }
                     }
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
