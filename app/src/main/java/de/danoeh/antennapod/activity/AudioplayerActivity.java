@@ -45,11 +45,13 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
@@ -742,6 +744,20 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                     public void onConfirmButtonPressed(
                             DialogInterface dialog) {
                         dialog.dismiss();
+                        if (controller != null) {
+                            Playable playable = controller.getMedia();
+                            if (playable != null && playable instanceof FeedMedia) {
+                                FeedMedia media = (FeedMedia) playable;
+                                if (media.getItem().getFeed().getId() == feed.getId()) {
+                                    Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
+                                    remover.skipOnCompletion = true;
+                                    if(controller.getStatus() == PlayerStatus.PLAYING) {
+                                        sendBroadcast(new Intent(
+                                                PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                                    }
+                                }
+                            }
+                        }
                         remover.executeAsync();
                     }
                 };

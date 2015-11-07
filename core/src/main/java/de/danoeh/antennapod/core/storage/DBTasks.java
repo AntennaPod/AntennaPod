@@ -394,14 +394,12 @@ public final class DBTasks {
     /**
      * Returns the successor of a FeedItem in the queue.
      *
-     * @param context Used for accessing the DB.
      * @param itemId  ID of the FeedItem
      * @param queue   Used for determining the successor of the item. If this parameter is null, the method will load
      *                the queue from the database in the same thread.
      * @return Successor of the FeedItem or null if the FeedItem is not in the queue or has no successor.
      */
-    public static FeedItem getQueueSuccessorOfItem(Context context,
-                                                   final long itemId, List<FeedItem> queue) {
+    public static FeedItem getQueueSuccessorOfItem(final long itemId, List<FeedItem> queue) {
         FeedItem result = null;
         if (queue == null) {
             queue = DBReader.getQueue();
