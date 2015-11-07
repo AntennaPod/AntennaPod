@@ -849,13 +849,16 @@ public final class DBReader {
      */
     static FeedImage getFeedImage(PodDBAdapter adapter, final long id) {
         Cursor cursor = adapter.getImageCursor(id);
-        if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
-            return null;
+        try {
+            if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
+                return null;
+            }
+            FeedImage image = FeedImage.fromCursor(cursor);
+            image.setId(id);
+            return image;
+        } finally {
+            cursor.close();
         }
-        FeedImage image = FeedImage.fromCursor(cursor);
-        image.setId(id);
-        cursor.close();
-        return image;
     }
 
     /**
