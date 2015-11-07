@@ -836,23 +836,17 @@ public class PlaybackService extends Service {
                     String contentTitle = info.playable.getFeedTitle();
                     Notification notification = null;
 
-                    PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_PAUSE, 0);
 
-                    PendingIntent playButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_PLAY, 1);
 
-                    PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_STOP, 2);
 
-                    PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_NEXT, 3);
 
-                    PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, 4);
 
-                    PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_REWIND, 5);
+
+
+
+
+
+
 
                     NotificationCompat.Builder notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(
                             PlaybackService.this)
@@ -870,17 +864,23 @@ public class PlaybackService extends Service {
                     int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
 
                     // always let them rewind
+                    PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
+                            KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
                     notificationBuilder.addAction(android.R.drawable.ic_media_rew,
                             getString(R.string.rewind_label),
                             rewindButtonPendingIntent);
                     numActions++;
 
                     if (playerStatus == PlayerStatus.PLAYING) {
+                        PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
+                                KeyEvent.KEYCODE_MEDIA_PAUSE, numActions);
                         notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
                                 getString(R.string.pause_label),
                                 pauseButtonPendingIntent);
                         compactActionList.add(numActions++);
                     } else {
+                        PendingIntent playButtonPendingIntent = getPendingIntentForMediaAction(
+                                KeyEvent.KEYCODE_MEDIA_PLAY, numActions);
                         notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
                                 getString(R.string.play_label),
                                 playButtonPendingIntent);
@@ -888,18 +888,24 @@ public class PlaybackService extends Service {
                     }
 
                     // ff follows play, then we have skip (if it's present)
+                    PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(
+                            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, numActions);
                     notificationBuilder.addAction(android.R.drawable.ic_media_ff,
                             getString(R.string.fast_forward_label),
                             ffButtonPendingIntent);
                     numActions++;
 
                     if (UserPreferences.isFollowQueue()) {
+                        PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
+                                KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
                         notificationBuilder.addAction(android.R.drawable.ic_media_next,
                                 getString(R.string.skip_episode_label),
                                 skipButtonPendingIntent);
                         compactActionList.add(numActions++);
                     }
 
+                    PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
+                            KeyEvent.KEYCODE_MEDIA_STOP, numActions);
                     notificationBuilder.setStyle(new android.support.v7.app.NotificationCompat.MediaStyle()
                             .setMediaSession(mediaPlayer.getSessionToken())
                             .setShowActionsInCompactView(compactActionList.toArray())
@@ -1046,11 +1052,13 @@ public class PlaybackService extends Service {
     private BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (StringUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
-                int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
-                if (state == BluetoothA2dp.STATE_CONNECTED) {
-                    Log.d(TAG, "Received bluetooth connection intent");
-                    unpauseIfPauseOnDisconnect(true);
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                if (StringUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
+                    int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
+                    if (state == BluetoothA2dp.STATE_CONNECTED) {
+                        Log.d(TAG, "Received bluetooth connection intent");
+                        unpauseIfPauseOnDisconnect(true);
+                    }
                 }
             }
         }
