@@ -571,7 +571,7 @@ public class PlaybackService extends Service {
             try {
                 final List<FeedItem> queue = taskManager.getQueue();
                 isInQueue = QueueAccess.ItemListAccess(queue).contains(item.getId());
-                nextItem = DBTasks.getQueueSuccessorOfItem(this, item.getId(), queue);
+                nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 // isInQueue remains false

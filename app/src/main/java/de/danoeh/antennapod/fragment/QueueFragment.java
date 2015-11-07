@@ -149,6 +149,7 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter.notifyDataSetChanged();
                 break;
             case REMOVED:
+            case IRREVERSIBLE_REMOVED:
                 int position = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
                 queue.remove(position);
                 recyclerAdapter.notifyItemRemoved(position);
