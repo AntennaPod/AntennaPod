@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.service.playback;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -212,7 +211,6 @@ public class PlaybackService extends Service {
         return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, mt);
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -223,8 +221,10 @@ public class PlaybackService extends Service {
                 Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(
                 ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-        registerReceiver(bluetoothStateUpdated, new IntentFilter(
-                BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            registerReceiver(bluetoothStateUpdated, new IntentFilter(
+                    BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
+        }
         registerReceiver(audioBecomingNoisy, new IntentFilter(
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
@@ -238,7 +238,6 @@ public class PlaybackService extends Service {
 
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -249,7 +248,9 @@ public class PlaybackService extends Service {
 
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
-        unregisterReceiver(bluetoothStateUpdated);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            unregisterReceiver(bluetoothStateUpdated);
+        }
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
@@ -785,7 +786,6 @@ public class PlaybackService extends Service {
     /**
      * Prepares notification and starts the service in the foreground.
      */
-    @SuppressLint("NewApi")
     private void setupNotification(final PlaybackServiceMediaPlayer.PSMPInfo info) {
         final PendingIntent pIntent = PendingIntent.getActivity(this, 0,
                 PlaybackService.getPlayerActivityIntent(this),
@@ -836,42 +836,6 @@ public class PlaybackService extends Service {
                     String contentTitle = info.playable.getFeedTitle();
                     Notification notification = null;
 
-                    Intent pauseButtonIntent = new Intent( // pause button intent
-                            PlaybackService.this, PlaybackService.class);
-                    pauseButtonIntent.putExtra(
-                            MediaButtonReceiver.EXTRA_KEYCODE,
-                            KeyEvent.KEYCODE_MEDIA_PAUSE);
-                    PendingIntent pauseButtonPendingIntent = PendingIntent
-                            .getService(PlaybackService.this, 0,
-                                    pauseButtonIntent,
-                                    PendingIntent.FLAG_UPDATE_CURRENT);
-                    Intent playButtonIntent = new Intent( // play button intent
-                            PlaybackService.this, PlaybackService.class);
-                    playButtonIntent.putExtra(
-                            MediaButtonReceiver.EXTRA_KEYCODE,
-                            KeyEvent.KEYCODE_MEDIA_PLAY);
-                    PendingIntent playButtonPendingIntent = PendingIntent
-                            .getService(PlaybackService.this, 1,
-                                    playButtonIntent,
-                                    PendingIntent.FLAG_UPDATE_CURRENT);
-                    Intent stopButtonIntent = new Intent( // stop button intent
-                            PlaybackService.this, PlaybackService.class);
-                    stopButtonIntent.putExtra(
-                            MediaButtonReceiver.EXTRA_KEYCODE,
-                            KeyEvent.KEYCODE_MEDIA_STOP);
-                    PendingIntent stopButtonPendingIntent = PendingIntent
-                            .getService(PlaybackService.this, 2,
-                                    stopButtonIntent,
-                                    PendingIntent.FLAG_UPDATE_CURRENT);
-                    Intent skipButtonIntent = new Intent(
-                            PlaybackService.this, PlaybackService.class);
-                    skipButtonIntent.putExtra(
-                            MediaButtonReceiver.EXTRA_KEYCODE,
-                            KeyEvent.KEYCODE_MEDIA_NEXT);
-                    PendingIntent skipButtonPendingIntent = PendingIntent
-                            .getService(PlaybackService.this, 3,
-                                    skipButtonIntent,
-                                    PendingIntent.FLAG_UPDATE_CURRENT);
                     NotificationCompat.Builder notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(
                             PlaybackService.this)
                             .setContentTitle(contentTitle)
@@ -882,28 +846,57 @@ public class PlaybackService extends Service {
                             .setSmallIcon(smallIcon)
                             .setWhen(0) // we don't need the time
                             .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
-                    IntList actionList = new IntList();
+                    IntList compactActionList = new IntList();
+
+
+                    int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
+
+                    // always let them rewind
+                    PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
+                            KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
+                    notificationBuilder.addAction(android.R.drawable.ic_media_rew,
+                            getString(R.string.rewind_label),
+                            rewindButtonPendingIntent);
+                    numActions++;
+
                     if (playerStatus == PlayerStatus.PLAYING) {
+                        PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
+                                KeyEvent.KEYCODE_MEDIA_PAUSE, numActions);
                         notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
                                 getString(R.string.pause_label),
                                 pauseButtonPendingIntent);
-                        actionList.add(actionList.size());
+                        compactActionList.add(numActions++);
                     } else {
+                        PendingIntent playButtonPendingIntent = getPendingIntentForMediaAction(
+                                KeyEvent.KEYCODE_MEDIA_PLAY, numActions);
                         notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
                                 getString(R.string.play_label),
                                 playButtonPendingIntent);
-                        actionList.add(actionList.size());
+                        compactActionList.add(numActions++);
                     }
+
+                    // ff follows play, then we have skip (if it's present)
+                    PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(
+                            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, numActions);
+                    notificationBuilder.addAction(android.R.drawable.ic_media_ff,
+                            getString(R.string.fast_forward_label),
+                            ffButtonPendingIntent);
+                    numActions++;
+
                     if (UserPreferences.isFollowQueue()) {
+                        PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
+                                KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
                         notificationBuilder.addAction(android.R.drawable.ic_media_next,
                                 getString(R.string.skip_episode_label),
                                 skipButtonPendingIntent);
-                        actionList.add(actionList.size());
+                        compactActionList.add(numActions++);
                     }
 
+                    PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
+                            KeyEvent.KEYCODE_MEDIA_STOP, numActions);
                     notificationBuilder.setStyle(new android.support.v7.app.NotificationCompat.MediaStyle()
                             .setMediaSession(mediaPlayer.getSessionToken())
-                            .setShowActionsInCompactView(actionList.toArray())
+                            .setShowActionsInCompactView(compactActionList.toArray())
                             .setShowCancelButton(true)
                             .setCancelButtonIntent(stopButtonPendingIntent))
                             .setVisibility(Notification.VISIBILITY_PUBLIC)
@@ -926,6 +919,18 @@ public class PlaybackService extends Service {
         };
         notificationSetupThread = new Thread(notificationSetupTask);
         notificationSetupThread.start();
+    }
+
+    private PendingIntent getPendingIntentForMediaAction(int keycodeValue, int requestCode) {
+        Intent intent = new Intent(
+                PlaybackService.this, PlaybackService.class);
+        intent.putExtra(
+                MediaButtonReceiver.EXTRA_KEYCODE,
+                keycodeValue);
+        return PendingIntent
+                .getService(PlaybackService.this, requestCode,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -1007,7 +1012,7 @@ public class PlaybackService extends Service {
      * Pauses playback when the headset is disconnected and the preference is
      * set
      */
-    private BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
+    private final BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
         private static final String TAG = "headsetDisconnected";
         private static final int UNPLUGGED = 0;
         private static final int PLUGGED = 1;
@@ -1032,20 +1037,22 @@ public class PlaybackService extends Service {
         }
     };
 
-    private BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
+    private final BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (StringUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
-                int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
-                if (state == BluetoothA2dp.STATE_CONNECTED) {
-                    Log.d(TAG, "Received bluetooth connection intent");
-                    unpauseIfPauseOnDisconnect(true);
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                if (StringUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
+                    int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
+                    if (state == BluetoothA2dp.STATE_CONNECTED) {
+                        Log.d(TAG, "Received bluetooth connection intent");
+                        unpauseIfPauseOnDisconnect(true);
+                    }
                 }
             }
         }
     };
 
-    private BroadcastReceiver audioBecomingNoisy = new BroadcastReceiver() {
+    private final BroadcastReceiver audioBecomingNoisy = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1091,7 +1098,7 @@ public class PlaybackService extends Service {
         }
     }
 
-    private BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1102,7 +1109,7 @@ public class PlaybackService extends Service {
 
     };
 
-    private BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (StringUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
@@ -1112,7 +1119,7 @@ public class PlaybackService extends Service {
         }
     };
 
-    private BroadcastReceiver pauseResumeCurrentEpisodeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver pauseResumeCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (StringUtils.equals(intent.getAction(), ACTION_RESUME_PLAY_CURRENT_EPISODE)) {
@@ -1122,7 +1129,7 @@ public class PlaybackService extends Service {
         }
     };
 
-    private BroadcastReceiver pausePlayCurrentEpisodeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver pausePlayCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (StringUtils.equals(intent.getAction(), ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
