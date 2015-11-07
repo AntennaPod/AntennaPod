@@ -864,44 +864,45 @@ public class PlaybackService extends Service {
                             .setSmallIcon(smallIcon)
                             .setWhen(0) // we don't need the time
                             .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
-                    IntList actionList = new IntList();
+                    IntList compactActionList = new IntList();
 
+
+                    int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
 
                     // always let them rewind
                     notificationBuilder.addAction(android.R.drawable.ic_media_rew,
                             getString(R.string.rewind_label),
                             rewindButtonPendingIntent);
-
-                    int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
+                    numActions++;
 
                     if (playerStatus == PlayerStatus.PLAYING) {
                         notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
                                 getString(R.string.pause_label),
                                 pauseButtonPendingIntent);
-                        actionList.add(++numActions);
+                        compactActionList.add(numActions++);
                     } else {
                         notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
                                 getString(R.string.play_label),
                                 playButtonPendingIntent);
-                        actionList.add(++numActions);
+                        compactActionList.add(numActions++);
                     }
 
                     // ff follows play, then we have skip (if it's present)
                     notificationBuilder.addAction(android.R.drawable.ic_media_ff,
                             getString(R.string.fast_forward_label),
                             ffButtonPendingIntent);
-                    ++numActions;
+                    numActions++;
 
                     if (UserPreferences.isFollowQueue()) {
                         notificationBuilder.addAction(android.R.drawable.ic_media_next,
                                 getString(R.string.skip_episode_label),
                                 skipButtonPendingIntent);
-                        actionList.add(++numActions);
+                        compactActionList.add(numActions++);
                     }
 
                     notificationBuilder.setStyle(new android.support.v7.app.NotificationCompat.MediaStyle()
                             .setMediaSession(mediaPlayer.getSessionToken())
-                            .setShowActionsInCompactView(actionList.toArray())
+                            .setShowActionsInCompactView(compactActionList.toArray())
                             .setShowCancelButton(true)
                             .setCancelButtonIntent(stopButtonPendingIntent))
                             .setVisibility(Notification.VISIBILITY_PUBLIC)
