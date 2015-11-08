@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/user_interface_label">
-        <ListPreference
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:entryValues="@array/theme_values"
             android:entries="@array/theme_options"
             android:title="@string/pref_set_theme_title"
@@ -17,14 +17,14 @@
                 android:key="prefHiddenDrawerItems"
                 android:summary="@string/pref_nav_drawer_items_sum"
                 android:title="@string/pref_nav_drawer_items_title" />
-            <ListPreference
+            <com.afollestad.materialdialogs.prefs.MaterialListPreference
                 android:entryValues="@array/nav_drawer_feed_order_values"
                 android:entries="@array/nav_drawer_feed_order_options"
                 android:title="@string/pref_nav_drawer_feed_order_title"
                 android:key="prefDrawerFeedOrder"
                 android:summary="@string/pref_nav_drawer_feed_order_sum"
                 android:defaultValue="0"/>
-            <ListPreference
+            <com.afollestad.materialdialogs.prefs.MaterialListPreference
                 android:entryValues="@array/nav_drawer_feed_counter_values"
                 android:entries="@array/nav_drawer_feed_counter_options"
                 android:title="@string/pref_nav_drawer_feed_counter_title"
@@ -107,7 +107,7 @@
             android:key="prefAutoDelete"
             android:summary="@string/pref_auto_delete_sum"
             android:title="@string/pref_auto_delete_title"/>
-        <ListPreference
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:defaultValue="30"
             android:entries="@array/smart_mark_as_played_values"
             android:entryValues="@array/smart_mark_as_played_values"
@@ -145,7 +145,7 @@
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title"/>
 
-        <ListPreference
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:defaultValue="-1"
             android:entries="@array/episode_cleanup_entries"
             android:key="prefEpisodeCleanup"
@@ -153,12 +153,12 @@
             android:summary="@string/pref_episode_cleanup_summary"
             android:entryValues="@array/episode_cleanup_values"/>
 
-        <de.danoeh.antennapod.preferences.CustomEditTextPreference
-            android:defaultValue="6"
+        <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+            android:defaultValue="4"
             android:inputType="number"
             android:key="prefParallelDownloads"
             android:title="@string/pref_parallel_downloads_title"/>
-        <ListPreference
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:defaultValue="20"
             android:entries="@array/episode_cache_size_entries"
             android:key="prefEpisodeCacheSize"
