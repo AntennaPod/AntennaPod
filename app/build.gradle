@@ -139,4 +139,13 @@ task filterAbout {
     }
 }
 
-preBuild.dependsOn filterAbout
+task copyTextFiles(type: Copy) {
+    from "../CONTRIBUTORS"
+    from "../LICENSE"
+    into "src/main/assets/"
+    rename { String fileName ->
+        fileName + ".txt"
+    }
+}
+
+preBuild.dependsOn filterAbout, copyTextFiles
