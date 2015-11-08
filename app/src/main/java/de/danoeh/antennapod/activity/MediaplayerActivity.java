@@ -19,6 +19,8 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -291,49 +293,40 @@ public abstract class MediaplayerActivity extends ActionBarActivity
             switch (item.getItemId()) {
                 case R.id.disable_sleeptimer_item:
                     if (controller.serviceAvailable()) {
-                        AlertDialog.Builder stDialog = new AlertDialog.Builder(this);
-                        stDialog.setTitle(R.string.sleep_timer_label);
-                        stDialog.setMessage(getString(R.string.time_left_label)
+
+                        MaterialDialog.Builder stDialog = new MaterialDialog.Builder(this);
+                        stDialog.title(R.string.sleep_timer_label);
+                        stDialog.content(getString(R.string.time_left_label)
                                 + Converter.getDurationStringLong((int) controller
                                 .getSleepTimerTimeLeft()));
-                        stDialog.setPositiveButton(
-                                R.string.disable_sleeptimer_label,
-                                new DialogInterface.OnClickListener() {
+                        stDialog.positiveText(R.string.disable_sleeptimer_label);
+                        stDialog.negativeText(R.string.cancel_label);
+                        stDialog.callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                dialog.dismiss();
+                                controller.disableSleepTimer();
+                            }
 
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                        controller.disableSleepTimer();
-                                    }
-                                }
-                        );
-                        stDialog.setNegativeButton(R.string.cancel_label,
-                                new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                }
-                        );
-                        stDialog.create().show();
+                            @Override
+                            public void onNegative(MaterialDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        });
+                        stDialog.build().show();
                     }
                     break;
                 case R.id.set_sleeptimer_item:
                     if (controller.serviceAvailable()) {
-                        SleepTimerDialog td = new SleepTimerDialog(this, 0, 0) {
+                        SleepTimerDialog td = new SleepTimerDialog(this) {
                             @Override
                             public void onTimerSet(long millis, boolean shakeToReset, boolean vibrate) {
                                 controller.setSleepTimer(millis, shakeToReset, vibrate);
                             }
                         };
-                        td.show();
-
-                        break;
-
+                        td.createNewDialog().show();
                     }
+                    break;
                 case R.id.visit_website_item:
                     Uri uri = Uri.parse(media.getWebsiteLink());
                     startActivity(new Intent(Intent.ACTION_VIEW, uri));
