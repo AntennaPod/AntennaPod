@@ -258,12 +258,16 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Чищення епізодів</string>
   <string name="pref_episode_cleanup_summary">У разі нестачі пам\'яті видалять епізоди які не знаходяться ні в списку улюблених ні в черзі.</string>
+  <string name="pref_pauseOnDisconnect_sum">Зупинятись коли навушники або блютуз від’єднано</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Поновити відтворення коли навушники повторно під’єднано</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Поновити відтворення коли блютуз повторно під’єднано</string>
   <string name="pref_followQueue_sum">Перейти до наступного епізода в черзі коли поточний закінчено</string>
   <string name="pref_auto_delete_sum">Видалити епізод після повного відтворення</string>
   <string name="pref_auto_delete_title">Автовидалення</string>
   <string name="pref_smart_mark_as_played_sum">Позначити епізоди як грані навіть якщо залишилось менш ніж зазначене число секунд до кінця відтворення</string>
   <string name="pref_smart_mark_as_played_title">Розумне позначення граних епізодів</string>
+  <string name="pref_skip_keeps_episodes_sum">Зберігати епізоди що пропущені при програванні  </string>
+  <string name="pref_skip_keeps_episodes_title">Зберігати пропущені при програванні епізоди </string>
   <string name="playback_pref">Відтворення</string>
   <string name="network_pref">Мережа</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Частота оновлень або оновлення в зазначений час</string>
@@ -277,6 +281,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">Завантаження через Wifi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Навушники витягнуті</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Повторне під’єднання навушників</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Повторне під’єднання блютуз</string>
   <string name="pref_mobileUpdate_title">Мобільне оновлення</string>
   <string name="pref_mobileUpdate_sum">Дозволити оновлення через оператора зв\'язку</string>
   <string name="refreshing_label">Оновлення</string>

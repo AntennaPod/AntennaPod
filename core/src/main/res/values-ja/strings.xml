@@ -256,7 +256,9 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">エピソード クリーンアップ</string>
   <string name="pref_episode_cleanup_summary">空き容量が必要な場合、キューに含まれていおらず、お気に入りでもないエピソードは、削除の対象になります</string>
+  <string name="pref_pauseOnDisconnect_sum">ヘッドフォンまたはBluetoothの接続が切断された時、再生を一時停止します</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">ヘッドフォンが再接続された時に再生を再開します</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetoothが再接続された時に再生を再開します</string>
   <string name="pref_followQueue_sum">再生が完了した時に次のキューのアイテムに移動します</string>
   <string name="pref_auto_delete_sum">再生が完了した時にエピソードを削除します</string>
   <string name="pref_auto_delete_title">自動削除</string>
@@ -277,6 +279,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">WiFiメディアダウンロード</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">ヘッドフォン切断</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">ヘッドフォン再接続</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth再接続</string>
   <string name="pref_mobileUpdate_title">モバイル更新</string>
   <string name="pref_mobileUpdate_sum">モバイルデータ接続時に更新を許可します</string>
   <string name="refreshing_label">更新中</string>

@@ -257,7 +257,9 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Nettoyage des épisodes</string>
   <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont ni dans la liste ni dans les favoris peuvent être supprimés si l\'espace disque devient faible</string>
+  <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture lorsque le casque ou le bluetooth sont déconnectés</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le bluetooth se connecte</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
   <string name="pref_auto_delete_title">Suppression automatique</string>
@@ -278,6 +280,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">Téléchargement en Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Déconnexion du casque</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Reconnexion du casque</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Connection bluetooth</string>
   <string name="pref_mobileUpdate_title">Mises à jour mobile</string>
   <string name="pref_mobileUpdate_sum">Autoriser les mises à jour à travers la connexion de données mobile</string>
   <string name="refreshing_label">Mise à jour en cours</string>
