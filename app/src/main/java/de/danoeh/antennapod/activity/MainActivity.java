@@ -278,7 +278,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
     }
 
-    public void loadFragment(final String tag, Bundle args) {
+    public void loadFragment(String tag, Bundle args) {
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment = null;
         switch (tag) {
@@ -299,7 +299,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 break;
             default:
                 // default to the queue
+                tag = QueueFragment.TAG;
                 fragment = new QueueFragment();
+                args = null;
                 break;
         }
         currentTitle = navAdapter.getLabel(tag);
