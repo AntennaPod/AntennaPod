@@ -6,7 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
@@ -34,7 +36,7 @@ public class AboutActivity extends ActionBarActivity {
 
     private WebView webview;
     private LinearLayout webviewContainer;
-    private boolean showingLicense = false;
+    private int depth = 0;
 
     private Subscription subscription;
 
@@ -42,10 +44,11 @@ public class AboutActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.about);
         webviewContainer = (LinearLayout) findViewById(R.id.webvContainer);
         webview = (WebView) findViewById(R.id.webvAbout);
+        webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
             if (Build.VERSION.SDK_INT >= 11
                     && Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
@@ -58,6 +61,7 @@ public class AboutActivity extends ActionBarActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if(url.startsWith("http")) {
+                    depth++;
                     return false;
                 } else {
                     url = url.replace("file:///android_asset/", "");
@@ -104,9 +108,9 @@ public class AboutActivity extends ActionBarActivity {
                                         "    </style>" +
                                         "</head><body><p>" + webViewData + "</p></body></html>";
                                 webViewData = webViewData.replace("\n", "<br/>");
-                                showingLicense = true;
+                                depth++;
                             } else {
-                                showingLicense = false;
+                                depth = 0;
                             }
                             webViewData = String.format(webViewData, colorString);
                             subscriber.onNext(webViewData);
@@ -130,12 +134,23 @@ public class AboutActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        if(showingLicense || webview.canGoBack()) {
+        Log.d(TAG, "depth: " + depth);
+        if(depth == 1) {
             loadAsset("about.html");
-        } else if(webview.canGoBack()) {
+        } else if(depth > 1) {
             webview.goBack();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 

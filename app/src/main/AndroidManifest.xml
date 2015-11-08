@@ -140,6 +140,9 @@
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/about_pref">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
         <activity
             android:name=".activity.OpmlImportFromPathActivity"
