@@ -138,9 +138,9 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 		if (current != null) {
 			if (current == sc) {
 				holder.title.setTextColor(convertView.getResources().getColor(
-						R.color.bright_blue));
+						R.color.holo_blue_light));
                 holder.start.setTextColor(convertView.getResources().getColor(
-                        R.color.bright_blue));
+                        R.color.holo_blue_light));
 			} else {
 				holder.title.setTextColor(defaultTextColor);
                 holder.start.setTextColor(defaultTextColor);

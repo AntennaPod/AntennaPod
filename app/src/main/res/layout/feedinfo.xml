@@ -46,7 +46,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/imgvCover"
             android:layout_marginTop="8dp"
-            android:background="@color/bright_blue"/>
+            android:background="@color/holo_blue_light"/>
     </RelativeLayout>
 
     <ScrollView
