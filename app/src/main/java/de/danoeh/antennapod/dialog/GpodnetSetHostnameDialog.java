@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.dialog;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
 import android.view.View;
@@ -26,28 +26,19 @@ public class GpodnetSetHostnameDialog {
         et.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
         dialog.setTitle(R.string.pref_gpodnet_sethostname_title)
                 .setView(setupContentView(context, et))
-                .setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        final Editable e = et.getText();
-                        if (e != null) {
-                            GpodnetPreferences.setHostname(e.toString());
-                        }
-                        dialog.dismiss();
+                .setPositiveButton(R.string.confirm_label, (dialog1, which) -> {
+                    final Editable e = et.getText();
+                    if (e != null) {
+                        GpodnetPreferences.setHostname(e.toString());
                     }
+                    dialog1.dismiss();
                 })
-                .setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
+                .setNegativeButton(R.string.cancel_label, (dialog1, which) -> {
+                    dialog1.cancel();
                 })
-                .setNeutralButton(R.string.pref_gpodnet_sethostname_use_default_host, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        GpodnetPreferences.setHostname(GpodnetService.DEFAULT_BASE_HOST);
-                        dialog.dismiss();
-                    }
+                .setNeutralButton(R.string.pref_gpodnet_sethostname_use_default_host, (dialog1, which) -> {
+                    GpodnetPreferences.setHostname(GpodnetService.DEFAULT_BASE_HOST);
+                    dialog1.dismiss();
                 })
                 .setCancelable(true);
         return dialog.show();

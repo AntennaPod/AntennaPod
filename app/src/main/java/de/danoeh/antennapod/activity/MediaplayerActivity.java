@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
@@ -8,6 +7,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -493,19 +493,13 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                     AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
                     builder.setTitle(R.string.pref_fast_forward);
                     builder.setSingleChoiceItems(choices, checked,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    choice = values[which];
-                                }
+                            (dialog, which) -> {
+                                choice = values[which];
                             });
                     builder.setNegativeButton(R.string.cancel_label, null);
-                    builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            UserPreferences.setPrefFastForwardSecs(choice);
-                            txtvFF.setText(String.valueOf(choice));
-                        }
+                    builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+                        UserPreferences.setPrefFastForwardSecs(choice);
+                        txtvFF.setText(String.valueOf(choice));
                     });
                     builder.create().show();
                     return true;

@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.os.Environment;
 import android.os.FileObserver;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -84,65 +84,41 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 				adb.setTitle(R.string.folder_not_empty_dialog_title);
 				adb.setMessage(R.string.folder_not_empty_dialog_msg);
 				adb.setNegativeButton(R.string.cancel_label,
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-							}
-						});
+						(dialog, which) -> {
+                            dialog.dismiss();
+                        });
 				adb.setPositiveButton(R.string.confirm_label,
-						new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-								returnSelectedFolder();
-							}
-						});
+						(dialog, which) -> {
+                            dialog.dismiss();
+                            returnSelectedFolder();
+                        });
 				adb.create().show();
 			}
 		});
 
-		butCancel.setOnClickListener(new OnClickListener() {
+		butCancel.setOnClickListener(v -> {
+            setResult(Activity.RESULT_CANCELED);
+            finish();
+        });
 
-			@Override
-			public void onClick(View v) {
-				setResult(Activity.RESULT_CANCELED);
-				finish();
-			}
-		});
+		listDirectories.setOnItemClickListener((adapter, view, position, id) -> {
+            Log.d(TAG, "Selected index: " + position);
+            if (filesInDir != null && position >= 0
+                    && position < filesInDir.length) {
+                changeDirectory(filesInDir[position]);
+            }
+        });
 
-		listDirectories.setOnItemClickListener(new OnItemClickListener() {
+		butNavUp.setOnClickListener(v -> {
+            File parent = null;
+            if (selectedDir != null
+                    && (parent = selectedDir.getParentFile()) != null) {
+                changeDirectory(parent);
+            }
+        });
 
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view,
-					int position, long id) {
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Selected index: " + position);
-				if (filesInDir != null && position >= 0
-						&& position < filesInDir.length) {
-					changeDirectory(filesInDir[position]);
-				}
-			}
-		});
-
-		butNavUp.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				File parent = null;
-				if (selectedDir != null
-						&& (parent = selectedDir.getParentFile()) != null) {
-					changeDirectory(parent);
-				}
-			}
-		});
-
-		filenames = new ArrayList<String>();
-		listDirectoriesAdapter = new ArrayAdapter<String>(this,
+		filenames = new ArrayList<>();
+		listDirectoriesAdapter = new ArrayAdapter<>(this,
 				android.R.layout.simple_list_item_1, filenames);
 		listDirectories.setAdapter(listDirectoriesAdapter);
 		changeDirectory(Environment.getExternalStorageDirectory());
