@@ -28,5 +28,6 @@
     <!-- Theme colors -->
     <color name="primary_light">#FFFFFF</color>
 
+    <color name="blue_bg">#17009ec8</color>
 
 </resources>

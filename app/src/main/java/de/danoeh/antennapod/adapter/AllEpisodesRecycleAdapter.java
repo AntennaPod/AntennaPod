@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -54,6 +55,9 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
     private int position = -1;
 
+    private final int playingBackGroundColor;
+    private final int normalBackGroundColor;
+
     public AllEpisodesRecycleAdapter(Context context,
                                      MainActivity mainActivity,
                                      ItemAccess itemAccess,
@@ -66,6 +70,9 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.actionButtonCallback = actionButtonCallback;
         this.showOnlyNewEpisodes = showOnlyNewEpisodes;
+
+        playingBackGroundColor = context.getResources().getColor(R.color.blue_bg);
+        normalBackGroundColor = context.getResources().getColor(android.R.color.transparent);
     }
 
     @Override
@@ -73,6 +80,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.new_episodes_listitem, parent, false);
         Holder holder = new Holder(view);
+        holder.container = (LinearLayout) view.findViewById(R.id.container);
         holder.placeholder = (TextView) view.findViewById(R.id.txtvPlaceholder);
         holder.title = (TextView) view.findViewById(R.id.txtvTitle);
         holder.pubDate = (TextView) view
@@ -158,6 +166,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 holder.progress.setVisibility(View.GONE);
             }
 
+            if(media.isCurrentlyPlaying()) {
+                holder.container.setBackgroundColor(playingBackGroundColor);
+            } else {
+                holder.container.setBackgroundColor(normalBackGroundColor);
+            }
         } else {
             holder.progress.setVisibility(View.GONE);
             holder.txtvDuration.setVisibility(View.GONE);
@@ -253,6 +266,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             implements View.OnClickListener,
                        View.OnCreateContextMenuListener,
                        ItemTouchHelperViewHolder {
+        LinearLayout container;
         TextView placeholder;
         TextView title;
         TextView pubDate;

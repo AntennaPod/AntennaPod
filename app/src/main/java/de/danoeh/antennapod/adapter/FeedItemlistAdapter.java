@@ -11,6 +11,7 @@ import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,6 +40,9 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
     public static final int SELECTION_NONE = -1;
 
+    private final int playingBackGroundColor;
+    private final int normalBackGroundColor;
+
     public FeedItemlistAdapter(Context context,
                                ItemAccess itemAccess,
                                ActionButtonCallback callback,
@@ -52,6 +56,9 @@ public class FeedItemlistAdapter extends BaseAdapter {
         this.selectedItemIndex = SELECTION_NONE;
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.makePlayedItemsTransparent = makePlayedItemsTransparent;
+
+        playingBackGroundColor = context.getResources().getColor(R.color.blue_bg);
+        normalBackGroundColor = context.getResources().getColor(android.R.color.transparent);
     }
 
     @Override
@@ -80,6 +87,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.feeditemlist_item, parent, false);
+            holder.container = (LinearLayout) convertView
+                    .findViewById(R.id.container);
             holder.title = (TextView) convertView
                     .findViewById(R.id.txtvItemname);
             holder.lenSize = (TextView) convertView
@@ -174,6 +183,14 @@ public class FeedItemlistAdapter extends BaseAdapter {
                     holder.type.setImageBitmap(null);
                     holder.type.setVisibility(View.GONE);
                 }
+
+                if(media.isCurrentlyPlaying()) {
+                    if(media.isCurrentlyPlaying()) {
+                        holder.container.setBackgroundColor(playingBackGroundColor);
+                    } else {
+                        holder.container.setBackgroundColor(normalBackGroundColor);
+                    }
+                }
             }
 
             boolean isInQueue = itemAccess.isInQueue(item);
@@ -197,6 +214,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
     };
 
     static class Holder {
+        LinearLayout container;
         TextView title;
         TextView published;
         TextView lenSize;
