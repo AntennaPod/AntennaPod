@@ -71,8 +71,12 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         this.actionButtonCallback = actionButtonCallback;
         this.showOnlyNewEpisodes = showOnlyNewEpisodes;
 
-        playingBackGroundColor = context.getResources().getColor(R.color.blue_bg);
-        normalBackGroundColor = context.getResources().getColor(android.R.color.transparent);
+        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
+            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_dark);
+        } else {
+            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_light);
+        }
+        normalBackGroundColor = mainActivity.getResources().getColor(android.R.color.transparent);
     }
 
     @Override

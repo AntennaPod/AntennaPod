@@ -75,7 +75,11 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         this.itemTouchHelper = itemTouchHelper;
         locked = UserPreferences.isQueueLocked();
 
-        playingBackGroundColor = mainActivity.getResources().getColor(R.color.blue_bg);
+        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
+            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_dark);
+        } else {
+            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_light);
+        }
         normalBackGroundColor = mainActivity.getResources().getColor(android.R.color.transparent);
     }
 

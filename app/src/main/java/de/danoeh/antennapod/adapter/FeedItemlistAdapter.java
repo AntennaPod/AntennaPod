@@ -57,7 +57,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.makePlayedItemsTransparent = makePlayedItemsTransparent;
 
-        playingBackGroundColor = context.getResources().getColor(R.color.blue_bg);
+        playingBackGroundColor = context.getResources().getColor(R.color.highlight_light);
         normalBackGroundColor = context.getResources().getColor(android.R.color.transparent);
     }
 
