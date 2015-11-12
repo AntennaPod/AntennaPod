@@ -327,11 +327,9 @@ public class QueueFragment extends Fragment {
         if(!isVisible()) {
             return false;
         }
-        int pos = recyclerAdapter.getPosition();
-        FeedItem selectedItem = itemAccess.getItem(pos);
-
+        FeedItem selectedItem = recyclerAdapter.getSelectedItem();
         if (selectedItem == null) {
-            Log.i(TAG, "Selected item at position " + pos + " was null, ignoring selection");
+            Log.i(TAG, "Selected item was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
 

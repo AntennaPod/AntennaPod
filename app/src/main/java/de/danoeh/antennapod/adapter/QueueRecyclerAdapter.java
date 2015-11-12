@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -59,7 +60,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     private boolean locked;
 
-    private int position = -1;
+    private FeedItem selectedItem;
 
     public QueueRecyclerAdapter(MainActivity mainActivity,
                                 ItemAccess itemAccess,
@@ -88,17 +89,18 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         FeedItem item = itemAccess.getItem(pos);
         holder.bind(item);
         holder.itemView.setOnLongClickListener(v -> {
-            position = pos;
+            selectedItem = item;
             return false;
         });
     }
 
-    public int getItemCount() {
-        return itemAccess.getCount();
+    @Nullable
+    public FeedItem getSelectedItem() {
+        return selectedItem;
     }
 
-    public int getPosition() {
-        return position;
+    public int getItemCount() {
+        return itemAccess.getCount();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
