@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +32,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -46,28 +46,25 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
     private static final String TAG = AllEpisodesRecycleAdapter.class.getSimpleName();
 
-    private final Context context;
+    private final WeakReference<MainActivity> mainActivityRef;
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
     private final boolean showOnlyNewEpisodes;
-    private final WeakReference<MainActivity> mainActivityRef;
 
     private int position = -1;
 
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
 
-    public AllEpisodesRecycleAdapter(Context context,
-                                     MainActivity mainActivity,
+    public AllEpisodesRecycleAdapter(MainActivity mainActivity,
                                      ItemAccess itemAccess,
                                      ActionButtonCallback actionButtonCallback,
                                      boolean showOnlyNewEpisodes) {
         super();
         this.mainActivityRef = new WeakReference<>(mainActivity);
-        this.context = context;
         this.itemAccess = itemAccess;
-        this.actionButtonUtils = new ActionButtonUtils(context);
+        this.actionButtonUtils = new ActionButtonUtils(mainActivity);
         this.actionButtonCallback = actionButtonCallback;
         this.showOnlyNewEpisodes = showOnlyNewEpisodes;
 
@@ -120,7 +117,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.placeholder.setVisibility(View.VISIBLE);
         holder.placeholder.setText(item.getFeed().getTitle());
         holder.title.setText(item.getTitle());
-        holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
+        holder.pubDate.setText(DateUtils.formatDateTime(mainActivityRef.get(),
+                item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
         if (showOnlyNewEpisodes || false == item.isNew()) {
             holder.statusUnread.setVisibility(View.INVISIBLE);
         } else {
@@ -192,7 +190,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        Glide.with(context)
+        Glide.with(mainActivityRef.get())
                 .load(item.getImageUri())
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
@@ -239,7 +237,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             TextView txtvPlaceholder = placeholder.get();
             ImageView imgvCover = cover.get();
             if(fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
-                Glide.with(context)
+                Glide.with(mainActivityRef.get())
                         .load(fallbackUri)
                         .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .fitCenter()
