@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -81,7 +82,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.new_episodes_listitem, parent, false);
         Holder holder = new Holder(view);
-        holder.container = (LinearLayout) view.findViewById(R.id.container);
+        holder.container = (FrameLayout) view.findViewById(R.id.container);
         holder.placeholder = (TextView) view.findViewById(R.id.txtvPlaceholder);
         holder.title = (TextView) view.findViewById(R.id.txtvTitle);
         holder.pubDate = (TextView) view
@@ -268,7 +269,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             implements View.OnClickListener,
                        View.OnCreateContextMenuListener,
                        ItemTouchHelperViewHolder {
-        LinearLayout container;
+        FrameLayout container;
         TextView placeholder;
         TextView title;
         TextView pubDate;

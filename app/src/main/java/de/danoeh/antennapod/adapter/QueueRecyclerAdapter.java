@@ -15,9 +15,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -116,7 +116,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                        View.OnCreateContextMenuListener,
                        ItemTouchHelperViewHolder {
 
-        private final LinearLayout container;
+        private final FrameLayout container;
         private final ImageView dragHandle;
         private final TextView placeholder;
         private final ImageView cover;
@@ -131,7 +131,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
         public ViewHolder(View v) {
             super(v);
-            container = (LinearLayout) v.findViewById(R.id.container);
+            container = (FrameLayout) v.findViewById(R.id.container);
             dragHandle = (ImageView) v.findViewById(R.id.drag_handle);
             placeholder = (TextView) v.findViewById(R.id.txtvPlaceholder);
             cover = (ImageView) v.findViewById(R.id.imgvCover);
