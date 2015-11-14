@@ -6,7 +6,8 @@
     <color name="grey600">#757575</color>
     <color name="light_gray">#bfbfbf</color>
     <color name="black">#000000</color>
-    <color name="bright_blue">#33B5E5</color>
+    <color name="holo_blue_light">#33B5E5</color>
+    <color name="holo_blue_dark">#0099CC</color>
     <color name="ics_gray">#858585</color>
     <color name="actionbar_gray">#DDDDDD</color>
     <color name="download_success_green">#669900</color>
@@ -26,7 +27,6 @@
 
     <!-- Theme colors -->
     <color name="primary_light">#FFFFFF</color>
-    <color name="color_accent">#009EC8</color>
 
 
 </resources>

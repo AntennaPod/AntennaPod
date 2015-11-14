@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:textSize="@dimen/text_size_large"
         android:layout_margin="16dp"
-        android:textColor="@color/bright_blue"
+        android:textColor="@color/holo_blue_light"
         android:textStyle="italic"/>
 
     <TextView

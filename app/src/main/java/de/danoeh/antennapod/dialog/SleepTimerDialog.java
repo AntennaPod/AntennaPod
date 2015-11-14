@@ -17,11 +17,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
 
-public abstract class SleepTimerDialog extends Dialog {
+public abstract class SleepTimerDialog {
     
     private static final String TAG = SleepTimerDialog.class.getSimpleName();
 
@@ -35,39 +38,54 @@ public abstract class SleepTimerDialog extends Dialog {
     private String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private SharedPreferences prefs;
 
+    private MaterialDialog dialog;
     private EditText etxtTime;
     private Spinner spTimeUnit;
     private CheckBox cbShakeToReset;
     private CheckBox cbVibrate;
-    private Button butConfirm;
-    private Button butCancel;
+
 
     private TimeUnit[] units = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
 
-    public SleepTimerDialog(Context context, int titleTextId, int leftButtonTextId) {
-        super(context);
+    public SleepTimerDialog(Context context) {
         this.context = context;
         prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        String[] spinnerContent = new String[] {
-                context.getString(R.string.time_seconds),
-                context.getString(R.string.time_minutes),
-                context.getString(R.string.time_hours) };
+    public MaterialDialog createNewDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
+        builder.title(R.string.set_sleeptimer_label);
+        builder.customView(R.layout.time_dialog, false);
+        builder.positiveText(R.string.set_sleeptimer_label);
+        builder.negativeText(R.string.cancel_label);
+        builder.callback(new MaterialDialog.ButtonCallback() {
+            @Override
+            public void onNegative(MaterialDialog dialog) {
+                dialog.dismiss();
+            }
 
-        setContentView(R.layout.time_dialog);
-        etxtTime = (EditText) findViewById(R.id.etxtTime);
-        spTimeUnit = (Spinner) findViewById(R.id.spTimeUnit);
-        cbShakeToReset = (CheckBox) findViewById(R.id.cbShakeToReset);
-        cbVibrate = (CheckBox) findViewById(R.id.cbVibrate);
-        butConfirm = (Button) findViewById(R.id.butConfirm);
-        butCancel = (Button) findViewById(R.id.butCancel);
-
-        setTitle(R.string.set_sleeptimer_label);
+            @Override
+            public void onPositive(MaterialDialog dialog) {
+                try {
+                    savePreferences();
+                    long input = readTimeMillis();
+                    onTimerSet(input, cbShakeToReset.isChecked(), cbVibrate.isChecked());
+                    dialog.dismiss();
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    Toast toast = Toast.makeText(context, R.string.time_dialog_invalid_input,
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+        });
+        dialog = builder.build();
+        
+        View view = dialog.getView();
+        etxtTime = (EditText) view.findViewById(R.id.etxtTime);
+        spTimeUnit = (Spinner) view.findViewById(R.id.spTimeUnit);
+        cbShakeToReset = (CheckBox) view.findViewById(R.id.cbShakeToReset);
+        cbVibrate = (CheckBox) view.findViewById(R.id.cbVibrate);
 
         etxtTime.setText(prefs.getString(PREF_VALUE, "15"));
         etxtTime.addTextChangedListener(new TextWatcher() {
@@ -84,15 +102,16 @@ public abstract class SleepTimerDialog extends Dialog {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-        etxtTime.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
-            }
+        etxtTime.postDelayed(() -> {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
         }, 100);
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this.getContext(),
+        String[] spinnerContent = new String[] {
+                context.getString(R.string.time_seconds),
+                context.getString(R.string.time_minutes),
+                context.getString(R.string.time_hours) };
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item, spinnerContent);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spTimeUnit.setAdapter(spinnerAdapter);
@@ -102,40 +121,16 @@ public abstract class SleepTimerDialog extends Dialog {
         cbShakeToReset.setChecked(prefs.getBoolean(PREF_SHAKE_TO_RESET, true));
         cbVibrate.setChecked(prefs.getBoolean(PREF_VIBRATE, true));
 
-        butConfirm.setText(R.string.set_sleeptimer_label);
-        butConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    savePreferences();
-                    long input = readTimeMillis();
-                    onTimerSet(input, cbShakeToReset.isChecked(), cbVibrate.isChecked());
-                    dismiss();
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    Toast toast = Toast.makeText(context, R.string.time_dialog_invalid_input,
-                            Toast.LENGTH_LONG);
-                    toast.show();
-                }
-            }
-        });
-
-        butCancel.setText(R.string.cancel_label);
-        butCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        return dialog;
     }
 
     private void checkInputLength(int length) {
         if (length > 0) {
             Log.d(TAG, "Length is larger than 0, enabling confirm button");
-            butConfirm.setEnabled(true);
+            dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
         } else {
             Log.d(TAG, "Length is smaller than 0, disabling confirm button");
-            butConfirm.setEnabled(false);
+            dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
         }
     }
 

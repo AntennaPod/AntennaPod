@@ -1,12 +1,12 @@
 package de.danoeh.antennapod.asynctask;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.R;
@@ -37,8 +37,7 @@ public class OpmlImportWorker extends
 
 	@Override
 	protected ArrayList<OpmlElement> doInBackground(Void... params) {
-		if (BuildConfig.DEBUG)
-			Log.d(TAG, "Starting background work");
+		Log.d(TAG, "Starting background work");
 
         if (mReader==null) {
             return null;
@@ -72,21 +71,14 @@ public class OpmlImportWorker extends
         }
 		progDialog.dismiss();
 		if (exception != null) {
-			if (BuildConfig.DEBUG)
-				Log.d(TAG,
-						"An error occurred while trying to parse the opml document");
+			Log.d(TAG, "An error occurred while trying to parse the opml document");
 			AlertDialog.Builder alert = new AlertDialog.Builder(context);
 			alert.setTitle(R.string.error_label);
 			alert.setMessage(context.getString(R.string.opml_reader_error)
 					+ exception.getMessage());
-			alert.setNeutralButton(android.R.string.ok, new OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-
-			});
+			alert.setNeutralButton(android.R.string.ok, (dialog, which) -> {
+                dialog.dismiss();
+            });
 			alert.create().show();
 		}
 	}

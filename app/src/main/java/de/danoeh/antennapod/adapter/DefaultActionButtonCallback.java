@@ -1,9 +1,9 @@
 package de.danoeh.antennapod.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.Validate;

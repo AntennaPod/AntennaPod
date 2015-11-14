@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
@@ -8,6 +7,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -291,49 +293,40 @@ public abstract class MediaplayerActivity extends ActionBarActivity
             switch (item.getItemId()) {
                 case R.id.disable_sleeptimer_item:
                     if (controller.serviceAvailable()) {
-                        AlertDialog.Builder stDialog = new AlertDialog.Builder(this);
-                        stDialog.setTitle(R.string.sleep_timer_label);
-                        stDialog.setMessage(getString(R.string.time_left_label)
+
+                        MaterialDialog.Builder stDialog = new MaterialDialog.Builder(this);
+                        stDialog.title(R.string.sleep_timer_label);
+                        stDialog.content(getString(R.string.time_left_label)
                                 + Converter.getDurationStringLong((int) controller
                                 .getSleepTimerTimeLeft()));
-                        stDialog.setPositiveButton(
-                                R.string.disable_sleeptimer_label,
-                                new DialogInterface.OnClickListener() {
+                        stDialog.positiveText(R.string.disable_sleeptimer_label);
+                        stDialog.negativeText(R.string.cancel_label);
+                        stDialog.callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                dialog.dismiss();
+                                controller.disableSleepTimer();
+                            }
 
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                        controller.disableSleepTimer();
-                                    }
-                                }
-                        );
-                        stDialog.setNegativeButton(R.string.cancel_label,
-                                new DialogInterface.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                }
-                        );
-                        stDialog.create().show();
+                            @Override
+                            public void onNegative(MaterialDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        });
+                        stDialog.build().show();
                     }
                     break;
                 case R.id.set_sleeptimer_item:
                     if (controller.serviceAvailable()) {
-                        SleepTimerDialog td = new SleepTimerDialog(this, 0, 0) {
+                        SleepTimerDialog td = new SleepTimerDialog(this) {
                             @Override
                             public void onTimerSet(long millis, boolean shakeToReset, boolean vibrate) {
                                 controller.setSleepTimer(millis, shakeToReset, vibrate);
                             }
                         };
-                        td.show();
-
-                        break;
-
+                        td.createNewDialog().show();
                     }
+                    break;
                 case R.id.visit_website_item:
                     Uri uri = Uri.parse(media.getWebsiteLink());
                     startActivity(new Intent(Intent.ACTION_VIEW, uri));
@@ -500,19 +493,13 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                     AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
                     builder.setTitle(R.string.pref_fast_forward);
                     builder.setSingleChoiceItems(choices, checked,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    choice = values[which];
-                                }
+                            (dialog, which) -> {
+                                choice = values[which];
                             });
                     builder.setNegativeButton(R.string.cancel_label, null);
-                    builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            UserPreferences.setPrefFastForwardSecs(choice);
-                            txtvFF.setText(String.valueOf(choice));
-                        }
+                    builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+                        UserPreferences.setPrefFastForwardSecs(choice);
+                        txtvFF.setText(String.valueOf(choice));
                     });
                     builder.create().show();
                     return true;
