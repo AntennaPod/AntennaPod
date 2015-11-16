@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.service.download;
 
-import android.support.annotation.NonNull;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
@@ -17,8 +17,6 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-
-import de.danoeh.antennapod.core.BuildConfig;
 
 /**
  * Provides access to a HttpClient singleton.
@@ -151,7 +149,7 @@ public class AntennapodHttpClient {
         }
 
         private void configureSocket(SSLSocket s) {
-            s.setEnabledProtocols(new String[] { "TLSv1.2", "TLSv1.1" } );
+            s.setEnabledProtocols(new String[] { "TLSv1.2", "TLSv1.1", "TLSv1" } );
         }
 
     }
