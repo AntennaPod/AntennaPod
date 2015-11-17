@@ -31,7 +31,7 @@ import de.greenrobot.event.EventBus;
  * to notify the PlaybackService about updates from the running tasks.
  */
 public class PlaybackServiceTaskManager {
-    private static final String TAG = "PlaybackServiceTaskManager";
+    private static final String TAG = "PlaybackServiceTaskMgr";
 
     /**
      * Update interval of position saver in milliseconds.
@@ -81,6 +81,7 @@ public class PlaybackServiceTaskManager {
     }
 
     public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(QueueEvent " + event +")");
         cancelQueueLoader();
         loadQueue();
     }
