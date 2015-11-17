@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -165,8 +164,12 @@ public class QueueFragment extends Fragment {
             case MOVED:
                 int from = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
                 int to = event.position;
-                queue.add(to, queue.remove(from));
-                recyclerAdapter.notifyItemMoved(from, to);
+                if(from != to) {
+                    queue.add(to, queue.remove(from));
+                    recyclerAdapter.notifyItemMoved(from, to);
+                } else {
+                    // QueueFragment itself sent the event and already moved the item
+                }
                 break;
         }
         onFragmentLoaded();
@@ -367,7 +370,7 @@ public class QueueFragment extends Fragment {
                     Log.d(TAG, "move(" + from + ", " + to + ")");
                     queue.add(to, queue.remove(from));
                     recyclerAdapter.notifyItemMoved(from, to);
-                    DBWriter.moveQueueItem(from, to, false);
+                    DBWriter.moveQueueItem(from, to, true);
                     return true;
                 }
 
