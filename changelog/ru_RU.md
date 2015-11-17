@@ -1,13 +1,13 @@
 Список изменений
 ==========
 
-Version 1.4
+Версия 1.4
 -----------
-* BLUETOOTH PERMISSION: Needed to be able to resume playback when a Bluetooth device reconnects with your phone
-* VIBRATE PERMISSION: Used optionally with the sleep timer
-* Native variable speed playback (experimental via options)
+* ДОСТУП К BLUETOOTH: Используется для продолжения воспроизведения, когда Bluetooth-устройство переподключается к вашему телефону
+* ДОСТУП К ВИБРАЦИИ: Используется дополнительно с таймером сна
+* Переменная скорость воспроизведения (экспериментально доступна в опциях)
 * Улучшен таймер сна
-* Mark episodes as 'favorite'
+* Пометить эпизоды как 'избранные'
 * Notification can skip episodes
 * Keep episodes when skipping them
 * Episode art on lock screen
