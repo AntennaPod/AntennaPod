@@ -292,7 +292,8 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     }
 
     public void updateFromOther(Feed other) {
-        super.updateFromOther(other);
+        // don't update feed's download_url, we do that manually if redirected
+        // see AntennapodHttpClient
         if (other.title != null) {
             title = other.title;
         }
