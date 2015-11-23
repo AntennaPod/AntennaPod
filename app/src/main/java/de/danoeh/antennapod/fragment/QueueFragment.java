@@ -162,8 +162,9 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter.notifyDataSetChanged();
                 break;
             case MOVED:
-                break;
+                return;
         }
+        saveScrollPosition();
         onFragmentLoaded();
     }
 
@@ -325,9 +326,15 @@ public class QueueFragment extends Fragment {
 
         switch(item.getItemId()) {
             case R.id.move_to_top_item:
+                int position = FeedItemUtil.indexOfItemWithId(queue, selectedItem.getId());
+                queue.add(0, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, 0);
                 DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
                 return true;
             case R.id.move_to_bottom_item:
+                position = FeedItemUtil.indexOfItemWithId(queue, selectedItem.getId());
+                queue.add(queue.size()-1, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, queue.size()-1);
                 DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
                 return true;
             default:
