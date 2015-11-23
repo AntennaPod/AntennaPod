@@ -1240,71 +1240,66 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         }
     };
 
-        public boolean handleMediaKey(KeyEvent event) {
-            if (event != null
-                    && event.getAction() == KeyEvent.ACTION_DOWN
-                    && event.getRepeatCount() == 0) {
-                switch (event.getKeyCode()) {
-                    case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                    case KeyEvent.KEYCODE_HEADSETHOOK:
-                    {
-                        Log.d(TAG, "Received Play/Pause event from RemoteControlClient");
-                        if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                            resume();
-                        } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                            setStartWhenPrepared(true);
-                            prepare();
-                        } else if (playerStatus == PlayerStatus.PLAYING) {
-                            pause(false, true);
-                            if (UserPreferences.isPersistNotify()) {
-                                pause(false, true);
-                            } else {
-                                pause(true, true);
-                            }
-                        }
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_MEDIA_PLAY:
-                    {
-                        Log.d(TAG, "Received Play event from RemoteControlClient");
-                        if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                            resume();
-                        } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                            setStartWhenPrepared(true);
-                            prepare();
-                        }
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_MEDIA_PAUSE:
-                    {
-                        Log.d(TAG, "Received Pause event from RemoteControlClient");
-                        if (playerStatus == PlayerStatus.PLAYING) {
-                            pause(false, true);
-                        }
+    public boolean handleMediaKey(KeyEvent event) {
+        if (event != null
+                && event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getRepeatCount() == 0) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                case KeyEvent.KEYCODE_HEADSETHOOK: {
+                    Log.d(TAG, "Received Play/Pause event from RemoteControlClient");
+                    if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                        resume();
+                    } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                        setStartWhenPrepared(true);
+                        prepare();
+                    } else if (playerStatus == PlayerStatus.PLAYING) {
+                        pause(false, true);
                         if (UserPreferences.isPersistNotify()) {
                             pause(false, true);
                         } else {
                             pause(true, true);
                         }
-                        return true;
                     }
-                    case KeyEvent.KEYCODE_MEDIA_STOP:
-                    {
-                        Log.d(TAG, "Received Stop event from RemoteControlClient");
-                        stop();
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_MEDIA_NEXT:
-                    {
-                        Log.d(TAG, "Received next event from RemoteControlClient");
-                        endPlayback(true);
-                        return true;
-                    }
-                    default:
-                        Log.d(TAG, "Unhandled key code: " + event.getKeyCode());
-                        break;
+                    return true;
                 }
+                case KeyEvent.KEYCODE_MEDIA_PLAY: {
+                    Log.d(TAG, "Received Play event from RemoteControlClient");
+                    if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                        resume();
+                    } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                        setStartWhenPrepared(true);
+                        prepare();
+                    }
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_PAUSE: {
+                    Log.d(TAG, "Received Pause event from RemoteControlClient");
+                    if (playerStatus == PlayerStatus.PLAYING) {
+                        pause(false, true);
+                    }
+                    if (UserPreferences.isPersistNotify()) {
+                        pause(false, true);
+                    } else {
+                        pause(true, true);
+                    }
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_STOP: {
+                    Log.d(TAG, "Received Stop event from RemoteControlClient");
+                    stop();
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_NEXT: {
+                    Log.d(TAG, "Received next event from RemoteControlClient");
+                    endPlayback(true);
+                    return true;
+                }
+                default:
+                    Log.d(TAG, "Unhandled key code: " + event.getKeyCode());
+                    break;
             }
-            return false;
         }
+        return false;
+    }
 }
