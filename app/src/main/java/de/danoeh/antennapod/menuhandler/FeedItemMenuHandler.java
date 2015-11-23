@@ -186,11 +186,6 @@ public class FeedItemMenuHandler {
                     GpodnetPreferences.enqueueEpisodeAction(actionNew);
                 }
                 break;
-            case R.id.move_to_top_item:
-                DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
-                return true;
-            case R.id.move_to_bottom_item:
-                DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
             case R.id.add_to_queue_item:
                 DBWriter.addQueueItem(context, selectedItem);
                 break;

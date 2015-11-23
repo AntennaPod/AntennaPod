@@ -162,14 +162,6 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter.notifyDataSetChanged();
                 break;
             case MOVED:
-                int from = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
-                int to = event.position;
-                if(from != to) {
-                    queue.add(to, queue.remove(from));
-                    recyclerAdapter.notifyItemMoved(from, to);
-                } else {
-                    // QueueFragment itself sent the event and already moved the item
-                }
                 break;
         }
         onFragmentLoaded();
@@ -331,12 +323,21 @@ public class QueueFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
 
-        try {
-            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            return true;
+        switch(item.getItemId()) {
+            case R.id.move_to_top_item:
+                DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
+                return true;
+            case R.id.move_to_bottom_item:
+                DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
+                return true;
+            default:
+                try {
+                    return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    return true;
+                }
         }
     }
 
