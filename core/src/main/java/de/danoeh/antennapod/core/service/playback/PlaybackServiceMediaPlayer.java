@@ -16,6 +16,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 
@@ -1182,8 +1183,11 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
 
+        private static final String TAG = "MediaSessionCompat";
+
         @Override
         public void onPlay() {
+            Log.d(TAG, "onPlay()");
             if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
                 resume();
             } else if (playerStatus == PlayerStatus.INITIALIZED) {
@@ -1194,7 +1198,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
         @Override
         public void onPause() {
-            super.onPause();
+            Log.d(TAG, "onPause()");
             if (playerStatus == PlayerStatus.PLAYING) {
                 pause(false, true);
             }
@@ -1207,25 +1211,24 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
         @Override
         public void onSkipToNext() {
-            super.onSkipToNext();
-            endPlayback(true);
+            Log.d(TAG, "onSkipToNext()");
         }
 
         @Override
         public void onFastForward() {
-            super.onFastForward();
+            Log.d(TAG, "onFastForward()");
             seekDelta(UserPreferences.getFastFowardSecs() * 1000);
         }
 
         @Override
         public void onRewind() {
-            super.onRewind();
+            Log.d(TAG, "onRewind()");
             seekDelta(-UserPreferences.getRewindSecs() * 1000);
         }
 
         @Override
         public void onSeekTo(long pos) {
-            super.onSeekTo(pos);
+            Log.d(TAG, "onSeekTo()");
             seekTo((int) pos);
         }
 
@@ -1236,11 +1239,12 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 KeyEvent keyEvent = (KeyEvent) mediaButton.getExtras().get(Intent.EXTRA_KEY_EVENT);
                 handleMediaKey(keyEvent);
             }
-            return super.onMediaButtonEvent(mediaButton);
+            return false;
         }
     };
 
     public boolean handleMediaKey(KeyEvent event) {
+        Log.d(TAG, "handleMediaKey(" + event +")");
         if (event != null
                 && event.getAction() == KeyEvent.ACTION_DOWN
                 && event.getRepeatCount() == 0) {
@@ -1291,8 +1295,11 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_NEXT: {
-                    Log.d(TAG, "Received next event from RemoteControlClient");
-                    endPlayback(true);
+                    if(event.getSource() == InputDevice.SOURCE_CLASS_NONE) {
+                        endPlayback(true);
+                    } else {
+                        seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+                    }
                     return true;
                 }
                 default:
