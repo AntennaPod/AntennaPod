@@ -116,9 +116,19 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         PendingIntent buttonReceiverIntent = PendingIntent.getBroadcast(context, 0, mediaButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mediaSession = new MediaSessionCompat(context, TAG, eventReceiver, buttonReceiverIntent);
-        mediaSession.setCallback(sessionCallback);
-        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-        mediaSession.setActive(true);
+
+        try {
+            mediaSession.setCallback(sessionCallback);
+            mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+            mediaSession.setActive(true);
+        } catch (NullPointerException npe) {
+            // on some devices (Huawei) setting active can cause a NullPointerException
+            // even with correct use of the api.
+            // See http://stackoverflow.com/questions/31556679/android-huawei-mediassessioncompat
+            // and https://plus.google.com/+IanLake/posts/YgdTkKFxz7d
+            Log.e(TAG, "NullPointerException while setting up MediaSession");
+            npe.printStackTrace();
+        }
 
         mediaPlayer = null;
         statusBeforeSeeking = null;
