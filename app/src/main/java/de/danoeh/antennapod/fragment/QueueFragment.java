@@ -162,16 +162,9 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter.notifyDataSetChanged();
                 break;
             case MOVED:
-                int from = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
-                int to = event.position;
-                if(from != to) {
-                    queue.add(to, queue.remove(from));
-                    recyclerAdapter.notifyItemMoved(from, to);
-                } else {
-                    // QueueFragment itself sent the event and already moved the item
-                }
-                break;
+                return;
         }
+        saveScrollPosition();
         onFragmentLoaded();
     }
 
@@ -211,11 +204,6 @@ public class QueueFragment extends Fragment {
         float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
         if (position > 0 || offset > 0) {
             layoutManager.scrollToPositionWithOffset(position, (int) offset);
-            // restore once, then forget
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(PREF_SCROLL_POSITION, 0);
-            editor.putFloat(PREF_SCROLL_OFFSET, 0.0f);
-            editor.commit();
         }
     }
 
@@ -336,12 +324,27 @@ public class QueueFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
 
-        try {
-            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            return true;
+        switch(item.getItemId()) {
+            case R.id.move_to_top_item:
+                int position = FeedItemUtil.indexOfItemWithId(queue, selectedItem.getId());
+                queue.add(0, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, 0);
+                DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
+                return true;
+            case R.id.move_to_bottom_item:
+                position = FeedItemUtil.indexOfItemWithId(queue, selectedItem.getId());
+                queue.add(queue.size()-1, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, queue.size()-1);
+                DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
+                return true;
+            default:
+                try {
+                    return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    return true;
+                }
         }
     }
 
