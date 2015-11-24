@@ -1210,8 +1210,15 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         }
 
         @Override
-        public void onSkipToNext() {
-            Log.d(TAG, "onSkipToNext()");
+        public void onSkipToPrevious() {
+            Log.d(TAG, "onSkipToPrevious()");
+            seekDelta(-UserPreferences.getRewindSecs() * 1000);
+        }
+
+        @Override
+        public void onRewind() {
+            Log.d(TAG, "onRewind()");
+            seekDelta(-UserPreferences.getRewindSecs() * 1000);
         }
 
         @Override
@@ -1221,10 +1228,11 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         }
 
         @Override
-        public void onRewind() {
-            Log.d(TAG, "onRewind()");
-            seekDelta(-UserPreferences.getRewindSecs() * 1000);
+        public void onSkipToNext() {
+            Log.d(TAG, "onSkipToNext()");
+            // will be handled by onMediaButtonEvent(KeyEvent.KEYCODE_MEDIA_NEXT)
         }
+
 
         @Override
         public void onSeekTo(long pos) {
