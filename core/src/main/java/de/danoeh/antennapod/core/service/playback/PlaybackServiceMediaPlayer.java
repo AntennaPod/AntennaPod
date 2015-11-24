@@ -1296,8 +1296,12 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 }
                 case KeyEvent.KEYCODE_MEDIA_NEXT: {
                     if(event.getSource() == InputDevice.SOURCE_CLASS_NONE) {
+                        // assume the skip command comes from a notification or the lockscreen
+                        // a >| skip button should actually skip
                         endPlayback(true);
                     } else {
+                        // assume skip command comes from a (bluetooth) media button
+                        // user actually wants to fast-forward
                         seekDelta(UserPreferences.getFastFowardSecs() * 1000);
                     }
                     return true;
