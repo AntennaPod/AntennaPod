@@ -1186,63 +1186,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         private static final String TAG = "MediaSessionCompat";
 
         @Override
-        public void onPlay() {
-            Log.d(TAG, "onPlay()");
-            if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                resume();
-            } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                setStartWhenPrepared(true);
-                prepare();
-            }
-        }
-
-        @Override
-        public void onPause() {
-            Log.d(TAG, "onPause()");
-            if (playerStatus == PlayerStatus.PLAYING) {
-                pause(false, true);
-            }
-            if (UserPreferences.isPersistNotify()) {
-                pause(false, true);
-            } else {
-                pause(true, true);
-            }
-        }
-
-        @Override
-        public void onSkipToPrevious() {
-            Log.d(TAG, "onSkipToPrevious()");
-            seekDelta(-UserPreferences.getRewindSecs() * 1000);
-        }
-
-        @Override
-        public void onRewind() {
-            Log.d(TAG, "onRewind()");
-            seekDelta(-UserPreferences.getRewindSecs() * 1000);
-        }
-
-        @Override
-        public void onFastForward() {
-            Log.d(TAG, "onFastForward()");
-            seekDelta(UserPreferences.getFastFowardSecs() * 1000);
-        }
-
-        @Override
-        public void onSkipToNext() {
-            Log.d(TAG, "onSkipToNext()");
-            // will be handled by onMediaButtonEvent(KeyEvent.KEYCODE_MEDIA_NEXT)
-        }
-
-
-        @Override
-        public void onSeekTo(long pos) {
-            Log.d(TAG, "onSeekTo()");
-            seekTo((int) pos);
-        }
-
-        @Override
         public boolean onMediaButtonEvent(final Intent mediaButton) {
-            Log.d(TAG, "GOT MediaButton EVENT");
+            Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
             if (mediaButton != null) {
                 KeyEvent keyEvent = (KeyEvent) mediaButton.getExtras().get(Intent.EXTRA_KEY_EVENT);
                 handleMediaKey(keyEvent);
@@ -1300,6 +1245,18 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 case KeyEvent.KEYCODE_MEDIA_STOP: {
                     Log.d(TAG, "Received Stop event from RemoteControlClient");
                     stop();
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_PREVIOUS: {
+                    seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_REWIND: {
+                    seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD: {
+                    seekDelta(UserPreferences.getFastFowardSecs() * 1000);
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_NEXT: {
