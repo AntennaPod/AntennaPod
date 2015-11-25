@@ -13,6 +13,7 @@ import android.media.MediaMetadataRetriever;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.util.Arrays;
@@ -187,6 +188,15 @@ public class PodDBAdapter {
     public static final String CREATE_INDEX_FEEDITEMS_IMAGE = "CREATE INDEX "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_IMAGE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_IMAGE + ")";
+
+    public static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX IF NOT EXISTS "
+            + TABLE_NAME_FEED_ITEMS + "_" + KEY_PUBDATE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
+            + KEY_PUBDATE + ")";
+
+    public static final String CREATE_INDEX_FEEDITEMS_READ = "CREATE INDEX IF NOT EXISTS "
+            + TABLE_NAME_FEED_ITEMS + "_" + KEY_READ + " ON " + TABLE_NAME_FEED_ITEMS + " ("
+            + KEY_READ + ")";
+
 
     public static final String CREATE_INDEX_QUEUE_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_QUEUE + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_QUEUE + " ("
@@ -990,14 +1000,16 @@ public class PodDBAdapter {
     }
 
     /**
-     * Returns a cursor for a DB query in the FeedImages table for a given ID.
+     * Returns a cursor for a DB query in the FeedImages table for given IDs.
      *
-     * @param id ID of the FeedImage
+     * @param ids IDs of the FeedImages
      * @return The cursor of the query
      */
-    public final Cursor getImageCursor(final long id) {
-        Cursor c = db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null);
+    public final Cursor getImageCursor(long... ids) {
+        String sql = "SELECT * FROM " + TABLE_NAME_FEED_IMAGES +
+                " WHERE " + KEY_ID + " IN (" + StringUtils.join(ids, ',') + ")";
+        Cursor c = db.rawQuery(sql, null);
+
         return c;
     }
 
@@ -1138,26 +1150,26 @@ public class PodDBAdapter {
         return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
     }
 
-    public final Cursor getFeedMediaCursorByItemID(String... mediaIds) {
-        int length = mediaIds.length;
+    public final Cursor getFeedMediaCursor(String... itemIds) {
+        int length = itemIds.length;
         if (length > IN_OPERATOR_MAXIMUM) {
             Log.w(TAG, "Length of id array is larger than "
                     + IN_OPERATOR_MAXIMUM + ". Creating multiple cursors");
             int numCursors = (int) (((double) length) / (IN_OPERATOR_MAXIMUM)) + 1;
             Cursor[] cursors = new Cursor[numCursors];
             for (int i = 0; i < numCursors; i++) {
-                int neededLength = 0;
-                String[] parts = null;
+                int neededLength;
+                String[] parts;
                 final int elementsLeft = length - i * IN_OPERATOR_MAXIMUM;
 
                 if (elementsLeft >= IN_OPERATOR_MAXIMUM) {
                     neededLength = IN_OPERATOR_MAXIMUM;
-                    parts = Arrays.copyOfRange(mediaIds, i
+                    parts = Arrays.copyOfRange(itemIds, i
                             * IN_OPERATOR_MAXIMUM, (i + 1)
                             * IN_OPERATOR_MAXIMUM);
                 } else {
                     neededLength = elementsLeft;
-                    parts = Arrays.copyOfRange(mediaIds, i
+                    parts = Arrays.copyOfRange(itemIds, i
                             * IN_OPERATOR_MAXIMUM, (i * IN_OPERATOR_MAXIMUM)
                             + neededLength);
                 }
@@ -1169,7 +1181,7 @@ public class PodDBAdapter {
             return new MergeCursor(cursors);
         } else {
             return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_FEEDITEM + " IN "
-                    + buildInOperator(length), mediaIds, null, null, null);
+                    + buildInOperator(length), itemIds, null, null, null);
         }
     }
 
@@ -1442,7 +1454,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 1040002;
+        private final static int VERSION = 1040013;
 
         private Context context;
 
@@ -1472,6 +1484,8 @@ public class PodDBAdapter {
 
             db.execSQL(CREATE_INDEX_FEEDITEMS_FEED);
             db.execSQL(CREATE_INDEX_FEEDITEMS_IMAGE);
+            db.execSQL(CREATE_INDEX_FEEDITEMS_PUBDATE);
+            db.execSQL(CREATE_INDEX_FEEDITEMS_READ);
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
@@ -1680,6 +1694,11 @@ public class PodDBAdapter {
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
                         + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME + " INTEGER DEFAULT 0");
             }
+            if(oldVersion < 1040013) {
+                db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_PUBDATE);
+                db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_READ);
+            }
+
             EventBus.getDefault().post(ProgressEvent.end());
         }
     }

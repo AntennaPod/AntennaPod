@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -189,53 +191,61 @@ public final class DBReader {
         return result;
     }
 
-    private static List<FeedItem> extractItemlistFromCursor(
-            PodDBAdapter adapter, Cursor itemlistCursor) {
-        ArrayList<String> itemIds = new ArrayList<>();
-        List<FeedItem> items = new ArrayList<>(itemlistCursor.getCount());
+    private static List<FeedItem> extractItemlistFromCursor(PodDBAdapter adapter,
+                                                            Cursor cursor) {
+        List<FeedItem> result = new ArrayList<>(cursor.getCount());
 
-        if (itemlistCursor.moveToFirst()) {
-            do {
-                int indexImage = itemlistCursor.getColumnIndex(PodDBAdapter.KEY_IMAGE);
-                long imageId = itemlistCursor.getLong(indexImage);
-                FeedImage image = null;
-                if (imageId != 0) {
-                    image = getFeedImage(adapter, imageId);
-                }
-
-                FeedItem item = FeedItem.fromCursor(itemlistCursor);
-                item.setImage(image);
-
-                itemIds.add(String.valueOf(item.getId()));
-
-                items.add(item);
-            } while (itemlistCursor.moveToNext());
-        }
-
-        extractMediafromItemlist(adapter, items, itemIds);
-        return items;
-    }
-
-    private static void extractMediafromItemlist(PodDBAdapter adapter,
-                                                 List<FeedItem> items, ArrayList<String> itemIds) {
-
-        List<FeedItem> itemsCopy = new ArrayList<>(items);
-        Cursor cursor = adapter.getFeedMediaCursorByItemID(itemIds
-                .toArray(new String[itemIds.size()]));
+        LongList imageIds = new LongList(cursor.getCount());
+        LongList itemIds = new LongList(cursor.getCount());
         if (cursor.moveToFirst()) {
             do {
-                int index = cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
-                long itemId = cursor.getLong(index);
-                // find matching feed item
-                FeedItem item = getMatchingItemForMedia(itemId, itemsCopy);
-                if (item != null) {
-                    FeedMedia media = FeedMedia.fromCursor(cursor);
-                    item.setMedia(media);
-                    item.getMedia().setItem(item);
-                }
+                int indexImage = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE);
+                long imageId = cursor.getLong(indexImage);
+                imageIds.add(imageId);
+
+                FeedItem item = FeedItem.fromCursor(cursor);
+                result.add(item);
+                itemIds.add(item.getId());
             } while (cursor.moveToNext());
+            Map<Long,FeedImage> images = getFeedImages(adapter, imageIds.toArray());
+            Map<Long,FeedMedia> medias = getFeedMedia(adapter, itemIds.toArray());
+            for(int i=0; i < result.size(); i++) {
+                FeedItem item = result.get(i);
+                long imageId = imageIds.get(i);
+                FeedImage image = images.get(imageId);
+                item.setImage(image);
+                FeedMedia media = medias.get(item.getId());
+                item.setMedia(media);
+                if(media != null) {
+                    media.setItem(item);
+                }
+            }
         }
-        cursor.close();
+        return result;
+    }
+
+    private static Map<Long,FeedMedia> getFeedMedia(PodDBAdapter adapter,
+                                                    long... itemIds) {
+
+        ArrayList<String> ids = new ArrayList<>(itemIds.length);
+        for(long itemId : itemIds) {
+            ids.add(String.valueOf(itemId));
+        }
+        Map<Long,FeedMedia> result = new HashMap<>(itemIds.length);
+        Cursor cursor = adapter.getFeedMediaCursor(ids.toArray(new String[0]));
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    int index = cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
+                    long itemId = cursor.getLong(index);
+                    FeedMedia media = FeedMedia.fromCursor(cursor);
+                    result.put(itemId, media);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+        return result;
     }
 
     private static Feed extractFeedFromCursorRow(PodDBAdapter adapter,
@@ -259,16 +269,6 @@ public final class DBReader {
         feed.setPreferences(preferences);
 
         return feed;
-    }
-
-    private static FeedItem getMatchingItemForMedia(long itemId,
-                                                    List<FeedItem> items) {
-        for (FeedItem item : items) {
-            if (item.getId() == itemId) {
-                return item;
-            }
-        }
-        return null;
     }
 
     static List<FeedItem> getQueue(PodDBAdapter adapter) {
@@ -844,21 +844,34 @@ public final class DBReader {
     /**
      * Searches the DB for a FeedImage of the given id.
      *
-     * @param id The id of the object
+     * @param imageId The id of the object
      * @return The found object
      */
-    static FeedImage getFeedImage(PodDBAdapter adapter, final long id) {
-        Cursor cursor = adapter.getImageCursor(id);
+    private static FeedImage getFeedImage(PodDBAdapter adapter, final long imageId) {
+        return getFeedImages(adapter, imageId).get(imageId);
+    }
+
+    /**
+     * Searches the DB for a FeedImage of the given id.
+     *
+     * @param ids The id of the object
+     * @return The found object
+     */
+    private static Map<Long,FeedImage> getFeedImages(PodDBAdapter adapter, final long... ids) {
+        Cursor cursor = adapter.getImageCursor(ids);
+        Map<Long, FeedImage> result = new HashMap<>(cursor.getCount());
         try {
             if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
-                return null;
+                return Collections.emptyMap();
             }
-            FeedImage image = FeedImage.fromCursor(cursor);
-            image.setId(id);
-            return image;
+            do {
+                FeedImage image = FeedImage.fromCursor(cursor);
+                result.put(image.getId(), image);
+            } while(cursor.moveToNext());
         } finally {
             cursor.close();
         }
+        return result;
     }
 
     /**
