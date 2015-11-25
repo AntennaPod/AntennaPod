@@ -7,8 +7,6 @@ import android.widget.ImageButton;
 
 import org.apache.commons.lang3.Validate;
 
-import java.lang.ref.WeakReference;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;

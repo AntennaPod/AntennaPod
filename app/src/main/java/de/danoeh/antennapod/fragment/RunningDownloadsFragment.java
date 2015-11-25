@@ -30,13 +30,14 @@ public class RunningDownloadsFragment extends ListFragment {
     private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
 
-
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
+        downloadObserver = null;
+        setListAdapter(null);
     }
 
     @Override

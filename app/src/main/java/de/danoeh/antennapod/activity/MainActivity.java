@@ -41,10 +41,9 @@ import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.ProgressEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -76,9 +75,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     private static final String TAG = "MainActivity";
 
-    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
-            | EventDistributor.DOWNLOAD_QUEUED
-            | EventDistributor.FEED_LIST_UPDATE
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE
             | EventDistributor.UNREAD_ITEMS_UPDATE;
 
     public static final String PREF_NAME = "MainActivityPrefs";
