@@ -28,6 +28,7 @@ dependencies {
     compile "com.squareup.okio:okio:$okioVersion"
     compile "de.greenrobot:eventbus:$eventbusVersion"
     compile "io.reactivex:rxandroid:$rxAndroidVersion"
+    compile "io.reactivex:rxjava:$rxJavaVersion"
     compile "com.joanzapata.iconify:android-iconify-fontawesome:2.1.0"
     compile "com.afollestad:material-dialogs:0.7.8.1"
     compile "com.yqritc:recyclerview-flexibledivider:1.2.6"

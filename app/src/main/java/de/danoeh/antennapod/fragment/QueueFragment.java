@@ -557,7 +557,12 @@ public class QueueFragment extends Fragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
-                loadItems();
+                Log.d(TAG, "arg: " + arg);
+                if((arg & EventDistributor.DOWNLOAD_QUEUED) != 0) {
+                    recyclerAdapter.notifyDataSetChanged();
+                } else {
+                    loadItems();
+                }
                 if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
                     getActivity().supportInvalidateOptionsMenu();
                 }
@@ -566,6 +571,7 @@ public class QueueFragment extends Fragment {
     };
 
     private void loadItems() {
+        Log.d(TAG, "loadItems()");
         if(subscription != null) {
             subscription.unsubscribe();
         }

@@ -393,7 +393,11 @@ public class AllEpisodesFragment extends Fragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
-                loadItems();
+                if((arg & EventDistributor.DOWNLOAD_QUEUED) != 0) {
+                    listAdapter.notifyDataSetChanged();
+                } else {
+                    loadItems();
+                }
                 if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
                     getActivity().supportInvalidateOptionsMenu();
                 }
