@@ -41,6 +41,7 @@ import java.util.Map;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -63,6 +64,7 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -86,7 +88,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
     // Optional argument: specify a title for the actionbar.
     public static final String ARG_TITLE = "title";
 
-    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.DOWNLOAD_QUEUED | EventDistributor.FEED_LIST_UPDATE;
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
 
     public static final int RESULT_ERROR = 2;
 
@@ -104,6 +106,11 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
     private Subscription download;
     private Subscription parser;
     private Subscription updater;
+
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        setSubscribeButtonState(feed);
+    }
 
     private EventDistributor.EventListener listener = new EventDistributor.EventListener() {
         @Override
@@ -180,7 +187,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
         super.onResume();
         isPaused = false;
         EventDistributor.getInstance().register(listener);
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -188,6 +195,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
         super.onPause();
         isPaused = true;
         EventDistributor.getInstance().unregister(listener);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

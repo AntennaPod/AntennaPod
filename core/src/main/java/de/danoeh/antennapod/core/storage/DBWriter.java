@@ -766,6 +766,7 @@ public class DBWriter {
             adapter.open();
             adapter.setSingleFeedItem(item);
             adapter.close();
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
         });
     }
 

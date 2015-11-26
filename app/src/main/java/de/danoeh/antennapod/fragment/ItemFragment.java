@@ -8,7 +8,6 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
@@ -35,12 +34,16 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
-import de.danoeh.antennapod.core.asynctask.DownloadObserver;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -72,9 +75,7 @@ public class ItemFragment extends Fragment {
 
     private static final String TAG = "ItemFragment";
 
-    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
-            EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.UNREAD_ITEMS_UPDATE;
+    private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE;
 
     private static final String ARG_FEEDITEM = "feeditem";
 
@@ -97,7 +98,6 @@ public class ItemFragment extends Fragment {
     private FeedItem item;
     private LongList queue;
     private String webviewData;
-    private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
 
     private ViewGroup root;
@@ -263,11 +263,7 @@ public class ItemFragment extends Fragment {
     public void onResume() {
         super.onResume();
         EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().register(this);
-        if (downloadObserver != null) {
-            downloadObserver.setActivity(getActivity());
-            downloadObserver.onResume();
-        }
+        EventBus.getDefault().registerSticky(this);
         if(itemsLoaded) {
             updateAppearance();
         }
@@ -294,9 +290,6 @@ public class ItemFragment extends Fragment {
     }
 
     private void resetViewState() {
-        if (downloadObserver != null) {
-            downloadObserver.onPause();
-        }
         Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         toolbar.removeView(header);
     }
@@ -319,8 +312,6 @@ public class ItemFragment extends Fragment {
                     "utf-8", "about:blank");
         }
         updateAppearance();
-        downloadObserver = new DownloadObserver(getActivity(), new Handler(), downloadObserverCallback);
-        downloadObserver.onResume();
     }
 
     private void updateAppearance() {
@@ -486,7 +477,32 @@ public class ItemFragment extends Fragment {
 
     public void onEventMainThread(QueueEvent event) {
         if(event.contains(itemID)) {
-            updateAppearance();
+            load();
+        }
+    }
+
+    public void onEventMainThread(FeedItemEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        for(FeedItem item : event.items) {
+            if(itemID == item.getId()) {
+                load();
+                return;
+            }
+        }
+    }
+
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        DownloaderUpdate update = event.update;
+        downloaderList = update.downloaders;
+        if(item == null || item.getMedia() == null) {
+            return;
+        }
+        long mediaId = item.getMedia().getId();
+        if(ArrayUtils.contains(update.mediaIds, mediaId)) {
+            if (itemsLoaded && getActivity() != null) {
+                updateAppearance();
+            }
         }
     }
 
@@ -495,18 +511,7 @@ public class ItemFragment extends Fragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
-                updateAppearance();
-            }
-        }
-    };
-
-    private final DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
-
-        @Override
-        public void onContentChanged(List<Downloader> downloaderList) {
-            ItemFragment.this.downloaderList = downloaderList;
-            if (itemsLoaded && getActivity() != null) {
-                updateAppearance();
+                load();
             }
         }
     };

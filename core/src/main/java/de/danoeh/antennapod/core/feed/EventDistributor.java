@@ -26,7 +26,6 @@ public class EventDistributor extends Observable {
 	public static final int UNREAD_ITEMS_UPDATE = 2;
 	public static final int DOWNLOADLOG_UPDATE = 8;
 	public static final int PLAYBACK_HISTORY_UPDATE = 16;
-	public static final int DOWNLOAD_QUEUED = 32;
 	public static final int DOWNLOAD_HANDLED = 64;
     public static final int PLAYER_STATUS_UPDATE = 128;
 
@@ -88,10 +87,6 @@ public class EventDistributor extends Observable {
         Validate.isInstanceOf(EventListener.class, observer);
 	}
 
-	public void sendDownloadQueuedBroadcast() {
-		addEvent(DOWNLOAD_QUEUED);
-	}
-
 	public void sendUnreadItemsUpdateBroadcast() {
 		addEvent(UNREAD_ITEMS_UPDATE);
 	}
@@ -106,10 +101,6 @@ public class EventDistributor extends Observable {
 
 	public void sendDownloadLogUpdateBroadcast() {
 		addEvent(DOWNLOADLOG_UPDATE);
-	}
-
-	public void sendDownloadHandledBroadcast() {
-		addEvent(DOWNLOAD_HANDLED);
 	}
 
     public void sendPlayerStatusUpdateBroadcast() { addEvent(PLAYER_STATUS_UPDATE); }

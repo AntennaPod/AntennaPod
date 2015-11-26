@@ -53,7 +53,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -74,6 +75,7 @@ import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeExceptio
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.InvalidFeedException;
+import de.greenrobot.event.EventBus;
 
 /**
  * Manages the download of feedfiles in the app. Downloads can be enqueued viathe startService intent.
@@ -100,12 +102,6 @@ public class DownloadService extends Service {
      * Extra for ACTION_CANCEL_DOWNLOAD
      */
     public static final String EXTRA_DOWNLOAD_URL = "downloadUrl";
-
-    /**
-     * Sent by the DownloadService when the content of the downloads list
-     * changes.
-     */
-    public static final String ACTION_DOWNLOADS_CONTENT_CHANGED = "action.de.danoeh.antennapod.core.service.downloadsContentChanged";
 
     /**
      * Extra for ACTION_ENQUEUE_DOWNLOAD intent.
@@ -155,6 +151,8 @@ public class DownloadService extends Service {
     private static final int SCHED_EX_POOL_SIZE = 1;
     private ScheduledThreadPoolExecutor schedExecutor;
 
+    private Handler postHandler = new Handler();
+
     private final IBinder mBinder = new LocalBinder();
 
     public class LocalBinder extends Binder {
@@ -180,10 +178,7 @@ public class DownloadService extends Service {
                     final int type = status.getFeedfileType();
                     if (successful) {
                         if (type == Feed.FEEDFILETYPE_FEED) {
-                            handleCompletedFeedDownload(downloader
-                                    .getDownloadRequest());
-                        } else if (type == FeedImage.FEEDFILETYPE_FEEDIMAGE) {
-                            handleCompletedImageDownload(status, downloader.getDownloadRequest());
+                            handleCompletedFeedDownload(downloader.getDownloadRequest());
                         } else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                             handleCompletedFeedMediaDownload(status, downloader.getDownloadRequest());
                         }
@@ -202,9 +197,22 @@ public class DownloadService extends Service {
                                 Log.e(TAG, "Download failed");
                                 saveDownloadStatus(status);
                                 handleFailedDownload(status, downloader.getDownloadRequest());
+
+                                // to make lists reload the failed item, we fake an item update
+                                if(type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                                    long id = status.getFeedfileId();
+                                    FeedMedia media = DBReader.getFeedMedia(id);
+                                    EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
+                                }
+                            }
+                        } else {
+                            // if FeedMedia download has been canceled, fake FeedItem update
+                            // so that lists reload that it
+                            if(status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                                FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
+                                EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
                             }
                         }
-                        sendDownloadHandledIntent();
                         queryDownloadsAsync();
                     }
                 } catch (InterruptedException e) {
@@ -305,6 +313,9 @@ public class DownloadService extends Service {
                 UserPreferences.showDownloadReport()) {
             updateReport();
         }
+
+        postHandler.removeCallbacks(postDownloaderTask);
+        EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
 
         stopForeground(true);
         NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -407,15 +418,14 @@ public class DownloadService extends Service {
                 } else {
                     Log.e(TAG, "Could not cancel download with url " + url);
                 }
-                sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+                postDownloaders();
 
             } else if (StringUtils.equals(intent.getAction(), ACTION_CANCEL_ALL_DOWNLOADS)) {
                 for (Downloader d : downloads) {
                     d.cancel();
                     Log.d(TAG, "Cancelled all downloads");
                 }
-                sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
-
+                postDownloaders();
             }
             queryDownloads();
         }
@@ -434,13 +444,14 @@ public class DownloadService extends Service {
         if (downloader != null) {
             numberOfDownloads.incrementAndGet();
             // smaller rss feeds before bigger media files
-            if(request.getFeedfileId() == Feed.FEEDFILETYPE_FEED) {
+            if(request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
                 downloads.add(0, downloader);
             } else {
                 downloads.add(downloader);
             }
             downloadExecutor.submit(downloader);
-            sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+
+            postDownloaders();
         }
 
         queryDownloads();
@@ -471,7 +482,7 @@ public class DownloadService extends Service {
                 boolean rc = downloads.remove(d);
                 Log.d(TAG, "Result of downloads.remove: " + rc);
                 DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
-                sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+                postDownloaders();
             }
         });
     }
@@ -485,10 +496,6 @@ public class DownloadService extends Service {
     private void saveDownloadStatus(DownloadStatus status) {
         reportQueue.add(status);
         DBWriter.addDownloadStatus(status);
-    }
-
-    private void sendDownloadHandledIntent() {
-        EventDistributor.getInstance().sendDownloadHandledBroadcast();
     }
 
     /**
@@ -767,8 +774,6 @@ public class DownloadService extends Service {
                             numberOfDownloads.decrementAndGet();
                         }
 
-                        sendDownloadHandledIntent();
-
                         queryDownloadsAsync();
                     }
                 });
@@ -1039,7 +1044,6 @@ public class DownloadService extends Service {
             image.setDownloaded(true);
 
             saveDownloadStatus(status);
-            sendDownloadHandledIntent();
             DBWriter.setFeedImage(image);
             numberOfDownloads.decrementAndGet();
             queryDownloadsAsync();
@@ -1064,8 +1068,7 @@ public class DownloadService extends Service {
 
         @Override
         public void run() {
-            FeedMedia media = DBReader.getFeedMedia(
-                    request.getFeedfileId());
+            FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
             if (media == null) {
                 throw new IllegalStateException(
                         "Could not find downloaded media object in database");
@@ -1121,7 +1124,6 @@ public class DownloadService extends Service {
             }
 
             saveDownloadStatus(status);
-            sendDownloadHandledIntent();
 
             if(GpodnetPreferences.loggedIn()) {
                 FeedItem item = media.getItem();
@@ -1174,16 +1176,24 @@ public class DownloadService extends Service {
         }
     }
 
-    public List<Downloader> getDownloads() {
-        if (downloads == null) {
-            // this is unusual, but it should be OK, we'll return
-            // an empty list to make it easy for people
-            return new ArrayList<Downloader>();
-        }
 
-        // return a copy of downloads, but the copy doesn't need to be synchronized.
-        synchronized (downloads) {
-            return new ArrayList<Downloader>(downloads);
+    private long lastPost = 0;
+
+    final Runnable postDownloaderTask = new Runnable() {
+        @Override
+        public void run() {
+            List<Downloader> list = Collections.unmodifiableList(downloads);
+            EventBus.getDefault().postSticky(DownloadEvent.refresh(list));
+            postHandler.postDelayed(postDownloaderTask, 1500);
+        }
+    };
+
+    private void postDownloaders() {
+        long now = System.currentTimeMillis();
+        if(now - lastPost >= 250) {
+            postHandler.removeCallbacks(postDownloaderTask);
+            postDownloaderTask.run();
+            lastPost = now;
         }
     }
 
