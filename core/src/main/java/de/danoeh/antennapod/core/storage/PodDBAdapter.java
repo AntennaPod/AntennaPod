@@ -280,7 +280,7 @@ public class PodDBAdapter {
             KEY_CONTENT_ENCODED, KEY_FEED};
 
 
-    private SQLiteDatabase db;
+    private static SQLiteDatabase db;
     private static Context context;
     private static PodDBHelper dbHelper;
     private static int counter = 0;

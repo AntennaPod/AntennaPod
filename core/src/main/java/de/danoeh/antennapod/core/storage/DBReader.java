@@ -171,10 +171,9 @@ public final class DBReader {
         List<FeedItem> items = extractItemlistFromCursor(adapter,
                 itemlistCursor);
         itemlistCursor.close();
+        adapter.close();
 
         Collections.sort(items, new FeedItemPubdateComparator());
-
-        adapter.close();
 
         for (FeedItem item : items) {
             item.setFeed(feed);
@@ -296,7 +295,6 @@ public final class DBReader {
     }
 
     static LongList getQueueIDList(PodDBAdapter adapter) {
-        adapter.open();
         Cursor queueCursor = adapter.getQueueIDCursor();
 
         LongList queueIds = new LongList(queueCursor.getCount());
@@ -342,9 +340,10 @@ public final class DBReader {
                 itemlistCursor);
         itemlistCursor.close();
         loadAdditionalFeedItemListData(items);
+        adapter.close();
+
         Collections.sort(items, new FeedItemPubdateComparator());
 
-        adapter.close();
         return items;
 
     }
@@ -410,7 +409,8 @@ public final class DBReader {
     }
 
     static LongList getFavoriteIDList() {
-        PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
         Cursor favoritesCursor = adapter.getFavoritesCursor();
 
         LongList favoriteIDs = new LongList(favoritesCursor.getCount());
@@ -420,6 +420,7 @@ public final class DBReader {
             } while (favoritesCursor.moveToNext());
         }
         favoritesCursor.close();
+        adapter.close();
         return favoriteIDs;
     }
 
@@ -496,6 +497,7 @@ public final class DBReader {
             } while (logCursor.moveToNext());
         }
         logCursor.close();
+        adapter.close();
         Collections.sort(downloadLog, new DownloadStatusComparator());
         return downloadLog;
     }
@@ -522,6 +524,7 @@ public final class DBReader {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        adapter.close();
         Collections.sort(downloadLog, new DownloadStatusComparator());
         return downloadLog;
     }
