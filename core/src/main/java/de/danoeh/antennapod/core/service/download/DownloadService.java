@@ -614,14 +614,6 @@ public class DownloadService extends Service {
     }
 
     /**
-     * Is called whenever a Feed-Image is downloaded
-     */
-    private void handleCompletedImageDownload(DownloadStatus status, DownloadRequest request) {
-        Log.d(TAG, "Handling completed Image Download");
-        syncExecutor.execute(new ImageHandlerThread(status, request));
-    }
-
-    /**
      * Is called whenever a FeedMedia is downloaded.
      */
     private void handleCompletedFeedMediaDownload(DownloadStatus status, DownloadRequest request) {
@@ -1014,39 +1006,6 @@ public class DownloadService extends Service {
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * Handles a completed image download.
-     */
-    class ImageHandlerThread implements Runnable {
-
-        private DownloadRequest request;
-        private DownloadStatus status;
-
-        public ImageHandlerThread(DownloadStatus status, DownloadRequest request) {
-            Validate.notNull(status);
-            Validate.notNull(request);
-
-            this.status = status;
-            this.request = request;
-        }
-
-        @Override
-        public void run() {
-            FeedImage image = DBReader.getFeedImage(request.getFeedfileId());
-            if (image == null) {
-                throw new IllegalStateException("Could not find downloaded image in database");
-            }
-
-            image.setFile_url(request.getDestination());
-            image.setDownloaded(true);
-
-            saveDownloadStatus(status);
-            DBWriter.setFeedImage(image);
-            numberOfDownloads.decrementAndGet();
-            queryDownloadsAsync();
         }
     }
 
