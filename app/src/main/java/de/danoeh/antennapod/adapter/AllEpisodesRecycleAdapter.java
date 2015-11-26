@@ -163,13 +163,14 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             holder.txtvDuration.setVisibility(View.GONE);
         }
 
-        if (itemAccess.isInQueue(item)) {
+        boolean isInQueue = itemAccess.isInQueue(item);
+        if (isInQueue) {
             holder.queueStatus.setVisibility(View.VISIBLE);
         } else {
             holder.queueStatus.setVisibility(View.INVISIBLE);
         }
 
-        actionButtonUtils.configureActionButton(holder.butSecondary, item);
+        actionButtonUtils.configureActionButton(holder.butSecondary, item, isInQueue);
         holder.butSecondary.setFocusable(false);
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);

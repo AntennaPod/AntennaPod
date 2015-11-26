@@ -176,7 +176,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 }
             }
 
-            actionButtonUtils.configureActionButton(holder.butAction, item);
+            boolean isInQueue = itemAccess.isInQueue(item);
+            actionButtonUtils.configureActionButton(holder.butAction, item, isInQueue);
             holder.butAction.setFocusable(false);
             holder.butAction.setTag(item);
             holder.butAction.setOnClickListener(butActionListener);
