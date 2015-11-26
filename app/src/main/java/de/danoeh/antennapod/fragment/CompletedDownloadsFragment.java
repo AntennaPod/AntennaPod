@@ -156,7 +156,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         if (!itemsLoaded && viewCreated) {
             setListShown(false);
         }
-        subscription = Observable.defer(() -> Observable.just(DBReader.getDownloadedItems()))
+        subscription = Observable.fromCallable(() -> DBReader.getDownloadedItems())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

@@ -772,7 +772,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     private DBReader.NavDrawerData navDrawerData;
 
     private void loadData() {
-        subscription = Observable.defer(() -> Observable.just(DBReader.getNavDrawerData()))
+        subscription = Observable.fromCallable(() -> DBReader.getNavDrawerData())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

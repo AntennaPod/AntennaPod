@@ -252,7 +252,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.defer(() -> Observable.just(loadData()))
+        subscription = Observable.fromCallable(() -> loadData())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

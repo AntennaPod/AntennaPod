@@ -116,7 +116,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EventDistributor.FEED_LIST_UPDATE) != 0) {
-                updater = Observable.defer(() -> Observable.just(DBReader.getFeedList()))
+                updater = Observable.fromCallable(() -> DBReader.getFeedList())
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(feeds -> {

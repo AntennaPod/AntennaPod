@@ -427,7 +427,7 @@ public class AllEpisodesFragment extends Fragment {
             recyclerView.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
-        subscription = Observable.defer(() -> Observable.just(loadData()))
+        subscription = Observable.fromCallable(() -> loadData())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
