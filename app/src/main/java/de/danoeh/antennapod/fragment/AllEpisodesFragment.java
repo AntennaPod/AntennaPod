@@ -335,7 +335,7 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public int getCount() {
-            if (itemsLoaded) {
+            if (episodes != null) {
                 return episodes.size();
             }
             return 0;
@@ -343,7 +343,7 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public FeedItem getItem(int position) {
-            if (itemsLoaded) {
+            if (episodes != null && position < episodes.size()) {
                 return episodes.get(position);
             }
             return null;
