@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.media.MediaMetadataRetriever;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -18,7 +19,6 @@ import org.apache.commons.lang3.Validate;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.ProgressEvent;
@@ -283,7 +283,7 @@ public class PodDBAdapter {
     private SQLiteDatabase db;
     private static Context context;
     private static PodDBHelper dbHelper;
-    private static AtomicInteger counter = new AtomicInteger(0);
+    private static int counter = 0;
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
@@ -298,12 +298,15 @@ public class PodDBAdapter {
 
     private PodDBAdapter() {}
 
-    public PodDBAdapter open() {
-        counter.incrementAndGet();
+    public synchronized PodDBAdapter open() {
+        counter++;
         if (db == null || !db.isOpen() || db.isReadOnly()) {
             Log.v(TAG, "Opening DB");
             try {
                 db = dbHelper.getWritableDatabase();
+                if(Build.VERSION.SDK_INT >= 11) {
+                    db.enableWriteAheadLogging();
+                }
             } catch (SQLException ex) {
                 Log.e(TAG, Log.getStackTraceString(ex));
                 db = dbHelper.getReadableDatabase();
@@ -312,12 +315,13 @@ public class PodDBAdapter {
         return this;
     }
 
-    public void close() {
-        if(counter.decrementAndGet() == 0) {
+    public synchronized void close() {
+        counter--;
+        if(counter == 0) {
             Log.v(TAG, "Closing DB");
             db.close();
+            db = null;
         }
-        db = null;
     }
 
     public static boolean deleteDatabase() {
