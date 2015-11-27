@@ -520,7 +520,7 @@ public class UserPreferences {
      * @return The data folder that has been requested or null if the folder
      * could not be created.
      */
-    public static File getDataFolder(Context context, String type) {
+    public static File getDataFolder(String type) {
         String strDir = prefs.getString(PREF_DATA_FOLDER, null);
         if (strDir == null) {
             Log.d(TAG, "Using default data folder");
@@ -542,7 +542,7 @@ public class UserPreferences {
                 for (int i = 0; i < dirs.length; i++) {
                     if (dirs.length > 0) {
                         if (i < dirs.length - 1) {
-                            dataDir = getDataFolder(context, dirs[i]);
+                            dataDir = getDataFolder(dirs[i]);
                             if (dataDir == null) {
                                 return null;
                             }
@@ -593,7 +593,7 @@ public class UserPreferences {
      * available
      */
     private static void createImportDirectory() {
-        File importDir = getDataFolder(context, IMPORT_DIR);
+        File importDir = getDataFolder(IMPORT_DIR);
         if (importDir != null) {
             if (importDir.exists()) {
                 Log.d(TAG, "Import directory already exists");

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
@@ -169,7 +171,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                         new Preference.OnPreferenceClickListener() {
                             @Override
                             public boolean onPreferenceClick(Preference preference) {
-                                if(Build.VERSION.SDK_INT >= 19) {
+                                if (Build.VERSION.SDK_INT >= 19) {
                                     showChooseDataFolderDialog();
                                 } else {
                                     Intent intent = new Intent(activity, DirectoryChooserActivity.class);
@@ -254,7 +256,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                                             setParallelDownloadsText(value);
                                             return true;
                                         }
-                                    } catch(NumberFormatException e) {
+                                    } catch (NumberFormatException e) {
                                         return false;
                                     }
                                 }
@@ -263,17 +265,19 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                         }
                 );
         // validate and set correct value: number of downloads between 1 and 50 (inclusive)
-        final EditText ev = ((EditTextPreference)ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)).getEditText();
+        final EditText ev = ((EditTextPreference) ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)).getEditText();
         ev.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length() > 0) {
+                if (s.length() > 0) {
                     try {
                         int value = Integer.valueOf(s.toString());
                         if (value <= 0) {
@@ -281,7 +285,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                         } else if (value > 50) {
                             ev.setText("50");
                         }
-                    } catch(NumberFormatException e) {
+                    } catch (NumberFormatException e) {
                         ev.setText("6");
                     }
                     ev.setSelection(ev.getText().length());
@@ -386,11 +390,23 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                             }
                         }
                 );
+        ui.findPreference("prefSendCrashReport").setOnPreferenceClickListener(preference -> {
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.setType("text/plain");
+            String to[] = { "Martin.Fietz@gmail.com" };
+            emailIntent .putExtra(Intent.EXTRA_EMAIL, to);
+            // the attachment
+            emailIntent .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(CrashReportWriter.getFile()));
+            // the mail subject
+            emailIntent .putExtra(Intent.EXTRA_SUBJECT, "AntennaPod Crash Report");
+            String intentTitle = ui.getActivity().getString(R.string.send_email);
+            ui.getActivity().startActivity(Intent.createChooser(emailIntent, intentTitle));
+            return true;
+        });
         buildEpisodeCleanupPreference();
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
-        setSelectedNetworksEnabled(UserPreferences
-                .isEnableAutodownloadWifiFilter());
+        setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
     }
 
     public void onResume() {
@@ -527,6 +543,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY)
                 .setEnabled(UserPreferences.isEnableAutodownload());
 
+        ui.findPreference("prefSendCrashReport").setEnabled(CrashReportWriter.getFile().exists());
+
         if (Build.VERSION.SDK_INT >= 16) {
             ui.findPreference(UserPreferences.PREF_SONIC).setEnabled(true);
         } else {
@@ -558,7 +576,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     private void setDataFolderText() {
-        File f = UserPreferences.getDataFolder(ui.getActivity(), null);
+        File f = UserPreferences.getDataFolder(null);
         if (f != null) {
             ui.findPreference(PreferenceController.PREF_CHOOSE_DATA_DIR)
                     .setSummary(f.getAbsolutePath());
@@ -677,7 +695,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     private void showChooseDataFolderDialog() {
         Context context = ui.getActivity();
-        String dataFolder = UserPreferences.getDataFolder(context, null).getAbsolutePath();
+        String dataFolder = UserPreferences.getDataFolder(null).getAbsolutePath();
         int selectedIndex = -1;
         File[] mediaDirs = ContextCompat.getExternalFilesDirs(context, null);
         String[] folders = new String[mediaDirs.length];

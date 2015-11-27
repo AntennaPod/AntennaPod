@@ -334,7 +334,7 @@ public class DownloadRequester {
 
     private File getExternalFilesDirOrThrowException(Context context,
                                                      String type) throws DownloadRequestException {
-        File result = UserPreferences.getDataFolder(context, type);
+        File result = UserPreferences.getDataFolder(type);
         if (result == null) {
             throw new DownloadRequestException(
                     "Failed to access external storage");
