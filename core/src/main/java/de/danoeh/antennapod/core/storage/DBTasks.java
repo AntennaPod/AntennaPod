@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -258,7 +257,7 @@ public final class DBTasks {
      */
     public static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
-        Log.d(TAG, "id " + feed.getId());
+        Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() +")");
         refreshFeed(context, feed, false);
     }
 
@@ -431,7 +430,7 @@ public final class DBTasks {
         return queue.contains(feedItemId);
     }
 
-    private static Feed searchFeedByIdentifyingValueOrID(Context context, PodDBAdapter adapter,
+    private static Feed searchFeedByIdentifyingValueOrID(PodDBAdapter adapter,
                                                          Feed feed) {
         if (feed.getId() != 0) {
             return DBReader.getFeed(feed.getId(), adapter);
@@ -486,7 +485,7 @@ public final class DBTasks {
             final Feed newFeed = newFeeds[feedIdx];
 
             // Look up feed in the feedslist
-            final Feed savedFeed = searchFeedByIdentifyingValueOrID(context, adapter,
+            final Feed savedFeed = searchFeedByIdentifyingValueOrID(adapter,
                     newFeed);
             if (savedFeed == null) {
                 Log.d(TAG, "Found no existing Feed with title "
