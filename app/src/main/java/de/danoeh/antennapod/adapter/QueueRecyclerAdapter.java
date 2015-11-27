@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -59,6 +60,9 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     private FeedItem selectedItem;
 
+    private final int playingBackGroundColor;
+    private final int normalBackGroundColor;
+
     public QueueRecyclerAdapter(MainActivity mainActivity,
                                 ItemAccess itemAccess,
                                 ActionButtonCallback actionButtonCallback,
@@ -70,6 +74,13 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         this.actionButtonCallback = actionButtonCallback;
         this.itemTouchHelper = itemTouchHelper;
         locked = UserPreferences.isQueueLocked();
+
+        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
+            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_dark);
+        } else {
+            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_light);
+        }
+        normalBackGroundColor = mainActivity.getResources().getColor(android.R.color.transparent);
     }
 
     public void setLocked(boolean locked) {
@@ -105,6 +116,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                        View.OnCreateContextMenuListener,
                        ItemTouchHelperViewHolder {
 
+        private final FrameLayout container;
         private final ImageView dragHandle;
         private final TextView placeholder;
         private final ImageView cover;
@@ -119,6 +131,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
         public ViewHolder(View v) {
             super(v);
+            container = (FrameLayout) v.findViewById(R.id.container);
             dragHandle = (ImageView) v.findViewById(R.id.drag_handle);
             placeholder = (TextView) v.findViewById(R.id.txtvPlaceholder);
             cover = (ImageView) v.findViewById(R.id.imgvCover);
@@ -246,6 +259,12 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                     progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
                     progressBar.setVisibility(View.GONE);
                 }
+
+                if(media.isCurrentlyPlaying()) {
+                    container.setBackgroundColor(playingBackGroundColor);
+                } else {
+                    container.setBackgroundColor(normalBackGroundColor);
+                }
             }
 
             actionButtonUtils.configureActionButton(butSecondary, item, true);
@@ -260,7 +279,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 .dontAnimate()
                 .into(new CoverTarget(item.getFeed().getImageUri(), placeholder, cover));
         }
-
 
     }
     

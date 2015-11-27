@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +12,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -45,27 +47,34 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
     private static final String TAG = AllEpisodesRecycleAdapter.class.getSimpleName();
 
-    private final Context context;
+    private final WeakReference<MainActivity> mainActivityRef;
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
     private final boolean showOnlyNewEpisodes;
-    private final WeakReference<MainActivity> mainActivityRef;
 
     private int position = -1;
 
-    public AllEpisodesRecycleAdapter(Context context,
-                                     MainActivity mainActivity,
+    private final int playingBackGroundColor;
+    private final int normalBackGroundColor;
+
+    public AllEpisodesRecycleAdapter(MainActivity mainActivity,
                                      ItemAccess itemAccess,
                                      ActionButtonCallback actionButtonCallback,
                                      boolean showOnlyNewEpisodes) {
         super();
         this.mainActivityRef = new WeakReference<>(mainActivity);
-        this.context = context;
         this.itemAccess = itemAccess;
-        this.actionButtonUtils = new ActionButtonUtils(context);
+        this.actionButtonUtils = new ActionButtonUtils(mainActivity);
         this.actionButtonCallback = actionButtonCallback;
         this.showOnlyNewEpisodes = showOnlyNewEpisodes;
+
+        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
+            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_dark);
+        } else {
+            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_light);
+        }
+        normalBackGroundColor = mainActivity.getResources().getColor(android.R.color.transparent);
     }
 
     @Override
@@ -73,6 +82,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.new_episodes_listitem, parent, false);
         Holder holder = new Holder(view);
+        holder.container = (FrameLayout) view.findViewById(R.id.container);
         holder.placeholder = (TextView) view.findViewById(R.id.txtvPlaceholder);
         holder.title = (TextView) view.findViewById(R.id.txtvTitle);
         holder.pubDate = (TextView) view
@@ -108,7 +118,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.placeholder.setVisibility(View.VISIBLE);
         holder.placeholder.setText(item.getFeed().getTitle());
         holder.title.setText(item.getTitle());
-        holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
+        holder.pubDate.setText(DateUtils.formatDateTime(mainActivityRef.get(),
+                item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
         if (showOnlyNewEpisodes || false == item.isNew()) {
             holder.statusUnread.setVisibility(View.INVISIBLE);
         } else {
@@ -158,6 +169,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 holder.progress.setVisibility(View.GONE);
             }
 
+            if(media.isCurrentlyPlaying()) {
+                holder.container.setBackgroundColor(playingBackGroundColor);
+            } else {
+                holder.container.setBackgroundColor(normalBackGroundColor);
+            }
         } else {
             holder.progress.setVisibility(View.GONE);
             holder.txtvDuration.setVisibility(View.GONE);
@@ -175,7 +191,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        Glide.with(context)
+        Glide.with(mainActivityRef.get())
                 .load(item.getImageUri())
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
@@ -222,7 +238,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             TextView txtvPlaceholder = placeholder.get();
             ImageView imgvCover = cover.get();
             if(fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
-                Glide.with(context)
+                Glide.with(mainActivityRef.get())
                         .load(fallbackUri)
                         .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .fitCenter()
@@ -253,6 +269,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             implements View.OnClickListener,
                        View.OnCreateContextMenuListener,
                        ItemTouchHelperViewHolder {
+        FrameLayout container;
         TextView placeholder;
         TextView title;
         TextView pubDate;
