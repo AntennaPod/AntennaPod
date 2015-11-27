@@ -264,6 +264,20 @@ public class PodDBAdapter {
     };
 
     /**
+     * All the tables in the database
+     */
+    private static final String[] ALL_TABLES = {
+            TABLE_NAME_FEEDS,
+            TABLE_NAME_FEED_ITEMS,
+            TABLE_NAME_FEED_IMAGES,
+            TABLE_NAME_FEED_MEDIA,
+            TABLE_NAME_DOWNLOAD_LOG,
+            TABLE_NAME_QUEUE,
+            TABLE_NAME_SIMPLECHAPTERS,
+            TABLE_NAME_FAVORITES
+    };
+
+    /**
      * Contains FEEDITEM_SEL_FI_SMALL as comma-separated list. Useful for raw queries.
      */
     private static final String SEL_FI_SMALL_STR;
@@ -325,15 +339,13 @@ public class PodDBAdapter {
     }
 
     public static boolean deleteDatabase() {
-        if(dbHelper != null) {
-            dbHelper.close();
-            dbHelper = null;
+        PodDBAdapter adapter = getInstance();
+        adapter.open();
+        for (String tableName : ALL_TABLES) {
+            db.delete(tableName, "1", null);
         }
-        if(context != null) { // may not have been initialized
-            return context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
-        } else {
-            return false;
-        }
+        adapter.close();
+        return true;
     }
 
     /**
