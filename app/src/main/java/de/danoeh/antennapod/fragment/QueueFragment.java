@@ -100,7 +100,7 @@ public class QueueFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (queue != null) {
-            onFragmentLoaded();
+            onFragmentLoaded(true);
         }
     }
 
@@ -108,7 +108,7 @@ public class QueueFragment extends Fragment {
     public void onResume() {
         super.onResume();
         recyclerView.setAdapter(recyclerAdapter);
-        loadItems();
+        loadItems(true);
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().registerSticky(this);
     }
@@ -156,7 +156,7 @@ public class QueueFragment extends Fragment {
                 return;
         }
         saveScrollPosition();
-        onFragmentLoaded();
+        onFragmentLoaded(false);
     }
 
     public void onEventMainThread(FeedItemEvent event) {
@@ -450,7 +450,7 @@ public class QueueFragment extends Fragment {
         return root;
     }
 
-    private void onFragmentLoaded() {
+    private void onFragmentLoaded(final boolean restoreScrollPosition) {
         if (recyclerAdapter == null) {
             MainActivity activity = (MainActivity) getActivity();
             recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
@@ -465,7 +465,9 @@ public class QueueFragment extends Fragment {
             recyclerView.setVisibility(View.VISIBLE);
         }
 
-        restoreScrollPosition();
+        if (restoreScrollPosition) {
+            restoreScrollPosition();
+        }
 
         // we need to refresh the options menu because it sometimes
         // needs data that may have just been loaded.
@@ -554,7 +556,7 @@ public class QueueFragment extends Fragment {
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
                 Log.d(TAG, "arg: " + arg);
-                loadItems();
+                loadItems(false);
                 if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
                     getActivity().supportInvalidateOptionsMenu();
                 }
@@ -562,7 +564,7 @@ public class QueueFragment extends Fragment {
         }
     };
 
-    private void loadItems() {
+    private void loadItems(final boolean restoreScrollPosition) {
         Log.d(TAG, "loadItems()");
         if(subscription != null) {
             subscription.unsubscribe();
@@ -579,7 +581,7 @@ public class QueueFragment extends Fragment {
                     if(items != null) {
                         progLoading.setVisibility(View.GONE);
                         queue = items;
-                        onFragmentLoaded();
+                        onFragmentLoaded(restoreScrollPosition);
                         if(recyclerAdapter != null) {
                             recyclerAdapter.notifyDataSetChanged();
                         }
