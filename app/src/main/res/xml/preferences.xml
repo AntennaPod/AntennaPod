@@ -90,6 +90,12 @@
             android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
             android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
         <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefHardwareForwardButtonSkips"
+            android:summary="@string/pref_hardwareForwardButtonSkips_sum"
+            android:title="@string/pref_hardwareForwardButtonSkips_title"/>
+        <CheckBoxPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefFollowQueue"
