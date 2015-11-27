@@ -3,14 +3,12 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +32,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -166,13 +163,14 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             holder.txtvDuration.setVisibility(View.GONE);
         }
 
-        if (itemAccess.isInQueue(item)) {
+        boolean isInQueue = itemAccess.isInQueue(item);
+        if (isInQueue) {
             holder.queueStatus.setVisibility(View.VISIBLE);
         } else {
             holder.queueStatus.setVisibility(View.INVISIBLE);
         }
 
-        actionButtonUtils.configureActionButton(holder.butSecondary, item);
+        actionButtonUtils.configureActionButton(holder.butSecondary, item, isInQueue);
         holder.butSecondary.setFocusable(false);
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);

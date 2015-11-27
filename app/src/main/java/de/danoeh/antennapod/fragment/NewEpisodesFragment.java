@@ -14,14 +14,12 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
-import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.greenrobot.event.EventBus;
 
 
 /**
@@ -42,20 +40,8 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     protected String getPrefName() { return PREF_NAME; }
 
     public void onEvent(QueueEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
+        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         loadItems();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

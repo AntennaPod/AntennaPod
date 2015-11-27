@@ -17,7 +17,6 @@ import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.greenrobot.event.EventBus;
 
 
 /**
@@ -38,20 +37,8 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     protected String getPrefName() { return PREF_NAME; }
 
     public void onEvent(FavoritesEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
+        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         loadItems();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

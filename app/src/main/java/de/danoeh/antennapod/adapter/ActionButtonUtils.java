@@ -7,14 +7,10 @@ import android.widget.ImageButton;
 
 import org.apache.commons.lang3.Validate;
 
-import java.lang.ref.WeakReference;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.LongList;
 
 /**
  * Utility methods for the action button that is displayed on the right hand side
@@ -51,7 +47,7 @@ public class ActionButtonUtils {
      * Sets the displayed bitmap and content description of the given
      * action button so that it matches the state of the FeedItem.
      */
-    public void configureActionButton(ImageButton butSecondary, FeedItem item) {
+    public void configureActionButton(ImageButton butSecondary, FeedItem item, boolean isInQueue) {
         Validate.isTrue(butSecondary != null && item != null, "butSecondary or item was null");
 
         final FeedMedia media = item.getMedia();
@@ -66,9 +62,8 @@ public class ActionButtonUtils {
                     butSecondary.setContentDescription(context.getString(labels[1]));
                 } else {
                     // item is not downloaded and not being downloaded
-                    LongList queueIds = DBReader.getQueueIDList();
                     if(DefaultActionButtonCallback.userAllowedMobileDownloads() ||
-                            !DefaultActionButtonCallback.userChoseAddToQueue() || queueIds.contains(item.getId())) {
+                            !DefaultActionButtonCallback.userChoseAddToQueue() || isInQueue) {
                         butSecondary.setVisibility(View.VISIBLE);
                         butSecondary.setImageDrawable(drawables.getDrawable(2));
                         butSecondary.setContentDescription(context.getString(labels[2]));

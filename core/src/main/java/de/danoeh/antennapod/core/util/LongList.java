@@ -177,6 +177,28 @@ public final class LongList {
     }
 
     /**
+     * Removes values from this list.
+     *
+     * @param values  values to remove
+     */
+    public void removeAll(long[] values) {
+        for(long value : values) {
+            remove(value);
+        }
+    }
+
+    /**
+     * Removes values from this list.
+     *
+     * @param list List with values to remove
+     */
+    public void removeAll(LongList list) {
+        for(long value : list.values) {
+            remove(value);
+        }
+    }
+
+    /**
      * Removes an element at a given index, shifting elements at greater
      * indicies down one.
      *

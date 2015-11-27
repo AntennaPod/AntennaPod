@@ -204,7 +204,7 @@ public class SearchFragment extends ListFragment {
         if (viewCreated && !itemsLoaded) {
             setListShown(false);
         }
-        subscription = Observable.defer(() -> Observable.just(performSearch()))
+        subscription = Observable.fromCallable(() -> performSearch())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
