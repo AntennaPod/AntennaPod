@@ -26,81 +26,81 @@ Versie 1.3
 * Automatisch downloaden verbeterd
 * Veel bugfixes en verbeterde gebruiksvriendelijkheid
 
-Version 1.2
+Versie 1.2
 -----------
-* Optionally disable swiping and dragging in the queue
-* Resume playback after phone call
-* Filter episodes in the Podcast feed
-* Hide items in the Nav drawer
-* Customize times for fast forward and rewind
-* Resolved issues with opening some OPML files
-* Various bug fixes and usability improvements
+* Deactiveer vegen en slepen in de wachtrij eventueel
+* Afspelen hervatten na telefoon gesprek
+* Afleveringen filteren in podcast feed
+* Onderdelen verbergen in menu
+* Personaliseer tijden voor vooruit- en achteruitspoelen
+* Opgelostte problemen bij het open van enkele OPML-bestanden
+* Verscheidene problemen opgelost en gebruikersvriendelijkheid verbeterd
 
-Version 1.1
+Versie 1.1
 -----------
-* iTunes podcast integration
-* Swipe to remove items from the queue
-* Set the number of parallel downloads
-* Fix for gpodder.net on old devices
-* Fixed date problems for some feeds
-* Display improvements
+* iTunes podcast integratie
+* Veeg om afleveringen te verwijderen uit de wachtrij
+* Stel het aantal tegelijktijdige downloads in
+* Oplossing voor gpodder.net op oudere apparaten
+* Oplossing voor datum problemen in sommige feeds
+* Weergave verbeteringen
 * Verbeterd gebruiksgemak
-* Several other bugfixes
+* Verscheidene andere oplossingen
 
-Version 1.0
+Versie 1.0
 -----------
-* The queue can now be sorted
-* Added option to delete episode after playback
-* Fixed a bug that caused chapters to be displayed multiple times
-* Several other improvements and bugfixes
+* De wachtrij kan nu gesorteerd worden
+* Mogelijkheid toegevoegd om aflevering te verwijderen na afspelen
+* Oplossing voor probleem waarbij hoofdstukken meerdere malen getoon werden
+* Verscheidene andere verbeteringen en probleem oplossingen
 
 
-Version 0.9.9.6
+Versie 0.9.9.6
 ---------------
-* Fixed problems related to variable playback speed plugins
-* Fixed automatic feed update problems
-* Several other bugfixes and improvements
+* Oplossing gerelateerd aan variabele afspeel snelheid plugins
+* Oplossing voor automatische feed update problemen
+* Diverse andere bugfixes en usability verbeteringen
 
-Version 0.9.9.5
+Versie 0.9.9.5
 ---------------
-* Added support for paged feeds
+* Ondersteuning voor feeds bladeren toegevoegd
 * Verbeterde gebruikersinterface
-* Added Japanese and Turkish translations
-* Fixed more image loading problems
+* Japanse en Turkse vertalingen toegevoegd
+* Meer afbeeldingen laden problemen opgelost
 * Andere bugfixes en verbeteringen
 
-Version 0.9.9.4
+Versie 0.9.9.4
 ---------------
-* Added option to keep notification and lockscreen controls when playback is paused
-* Fixed a bug where episode images were not loaded correctly
-* Fixed battery usage problems
+* Optie toegevoegd om notificatie en vergrendelingsscherm bedieningsknoppen te behouden tijdens pauzering 
+* Probleem opgelost waarbij afleveringafbeeldingen niet goed geladen werden
+* Batterij gebruik probleem opgelost
 
-Version 0.9.9.3
+Versie 0.9.9.3
 ---------------
-* Fixed video playback problems
-* Improved image loading
+* Video afspeel problemen opgelost
+* Laden van afbeeldingen verbeterd
 * Andere bugfixes en verbeteringen
 
-Version 0.9.9.2
+Versie 0.9.9.2
 ---------------
-* Added support for feed discovery if a website URL is entered
-* Added support for 'next'/'previous' media keys
+* Ondersteuning toegevoegd voor het vinden van feed als er een website URL ingevoerd is
+* Ondersteunin voor 'next' en 'previous' media toetsen
 * Verbeterde slaap timer
-* Timestamps in shownotes can now be used to jump to a specific position
-* Automatic Flattring is now configurable
+* Tijdsaanduiding in shownotes kan nu gebruikt worden om naar een specifieke positie te springen
+* Automatisch gebruik van Flattring is nu instelbaar
 * Diverse bugfixes en verbeteringen
 
-Version 0.9.9.1
+Versie 0.9.9.1
 ---------------
 * Diverse bugfixes en verbeteringen
 
-Version 0.9.9.0
+Versie 0.9.9.0
 ---------------
-* New user interface
-* Failed downloads are now resumed when restarted
-* Added support for Podlove Alternate Feeds
-* Added support for "pcast"-protocol
-* Added backup & restore functionality. This feature has to be enabled in the Android settings in order to work
+* Nieuw gebruikersinterface
+* Mislukte downloads worden nu hervat na herstarten
+* Ondersteuning voor Podlove Alternate Feeds
+* Ondersteuning voor "pcast" protocol
+* Backup & restore functie toegevoegd.  Deze functie moet aangezet worden in de Android instellingen om te functioneren
 * Diverse bugfixes en verbeteringen
 
 Version 0.9.8.3
