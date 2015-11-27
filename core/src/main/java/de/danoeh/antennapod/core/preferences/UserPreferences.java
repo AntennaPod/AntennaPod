@@ -60,6 +60,7 @@ public class UserPreferences {
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
     public static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
+    public static final String PREF_HARDWARE_FOWARD_BUTTON_SKIPS = "prefHardwareForwardButtonSkips";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
@@ -223,6 +224,10 @@ public class UserPreferences {
 
     public static boolean isUnpauseOnBluetoothReconnect() {
         return prefs.getBoolean(PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT, false);
+    }
+
+    public static boolean shouldHardwareButtonSkip() {
+        return prefs.getBoolean(PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
     }
 
 
