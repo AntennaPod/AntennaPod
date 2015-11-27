@@ -320,6 +320,7 @@ public class QueueFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
         if(!isVisible()) {
             return false;
         }
