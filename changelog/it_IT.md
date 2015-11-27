@@ -1,6 +1,10 @@
 Registro dei cambiamenti
 ==========
 
+Version 1.4.0.12
+----------------
+* Fix for crash on Huawei devices (media buttons may not work)
+
 Versione 1.4
 -----------
 * BLUETOOTH PERMISSION: Needed to be able to resume playback when a Bluetooth device reconnects with your phone

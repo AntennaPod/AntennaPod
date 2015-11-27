@@ -455,4 +455,5 @@
   <string name="sort_date_old_new">日期 (旧 \u2192 新)</string>
   <string name="sort_duration_short_long">时长 (短 \u2192 长)</string>
   <string name="sort_duration_long_short">时长 (长 \u2192 短)</string>
+  <!--Rating dialog-->
 </resources>

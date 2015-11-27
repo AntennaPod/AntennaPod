@@ -499,4 +499,5 @@
   <string name="sort_date_old_new">Dato (Gammel \u2192 Ny)</string>
   <string name="sort_duration_short_long">Lengde (Kort \u2192 Lang)</string>
   <string name="sort_duration_long_short">Lengde (Lang \u2192 Kort)</string>
+  <!--Rating dialog-->
 </resources>

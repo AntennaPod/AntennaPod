@@ -1,4 +1,4 @@
-Användarvänlig, flexibel podcasthanterare och spelare med öppen källkod
+Användarvänlig och flexibel podcasthanterare och spelare med öppen källkod
 
 AntennaPod är en podcasthanterare och spelare som ger dig omedelbar tillgång till millioner av gratis och betalda podcasts, allt ifrån oberoende podcasters till publiceringsjättar som BBC, NPR och CNN. Lägg till, importera och exportera enkelt deras flöden med hjälp av iTunes podcastdatabas, OPML filer eller enkla RSS URL:er. Spara tid, batterikraft och mobildata med kraftfull automatisering för nedladdning (specifiera tider, intervall och WiFi-nätverk) och borttagning av episoder (baserat på dina favoriter och fördröjningsinställningar).<br>
 Men viktigast: Ladda ner, strömma eller köa episoder och avnjut dem på ditt sätt med justerbar uppspelningshastighet, kapitelstöd och en sovtimer. Du kan till och med visa din uppskattning av innehållsskaparna med vår integrering av Flattr.
@@ -30,13 +30,13 @@ KONTROLLERA SYSTEMET<br>
 AntennaPod är under aktiv utveckling av volontärer. Du kan också bidra, med kod eller kommentarer!
 
 GitHub är platsen att gå till för att be om funktioner, skapa buggrapporter eller bidra med kod:<br>
-www.github.com/AntennaPod/AntennaPod
+https://www.github.com/AntennaPod/AntennaPod
 
 Vår Google Group är platsen för att dela idéer, dina favoritögonblick med podcasting och din uppskattning till volontärerna:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
 Transifex är platsen att gå till för att hjälpa till med översättningen:<br>
-www.transifex.com/antennapod/antennapod
+https://www.transifex.com/antennapod/antennapod
 
 Kolla in vårat Beta Testing program för att få de senaste funktionerna först:<br>
-www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

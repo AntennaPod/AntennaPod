@@ -502,4 +502,5 @@
   <string name="sort_date_old_new">Fecha (Antiguo \u2192 Nuevo)</string>
   <string name="sort_duration_short_long">Duración (Corto \u2192 Largo)</string>
   <string name="sort_duration_long_short">Duración (Largo \u2192 Corto)</string>
+  <!--Rating dialog-->
 </resources>

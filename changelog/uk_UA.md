@@ -1,6 +1,10 @@
 Зміни
 ==========
 
+Version 1.4.0.12
+----------------
+* Fix for crash on Huawei devices (media buttons may not work)
+
 Версія 1.4
 -----------
 * Дозвіл на використання bluetooth: Потрібен для поновлення програвання в разі повторного підключення пристроя Bluetooth

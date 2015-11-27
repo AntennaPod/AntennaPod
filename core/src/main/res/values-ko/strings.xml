@@ -465,4 +465,5 @@
   <string name="sort_date_old_new">시각 (과거 \u2192 최근)</string>
   <string name="sort_duration_short_long">길이 (짧은 \u2192 긴)</string>
   <string name="sort_duration_long_short">길이 (긴 \u2192 짧은)</string>
+  <!--Rating dialog-->
 </resources>

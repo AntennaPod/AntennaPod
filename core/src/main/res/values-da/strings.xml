@@ -346,4 +346,5 @@
   <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra single-purpose apps…</string>
+  <!--Rating dialog-->
 </resources>
