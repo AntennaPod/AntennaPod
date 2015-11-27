@@ -19,7 +19,7 @@ public class StorageUtils {
     private static final String TAG = "StorageUtils";
 
     public static boolean storageAvailable(Context context) {
-        File dir = UserPreferences.getDataFolder(context, null);
+        File dir = UserPreferences.getDataFolder(null);
         if (dir != null) {
             return dir.exists() && dir.canRead() && dir.canWrite();
         } else {
@@ -52,7 +52,7 @@ public class StorageUtils {
      */
     public static long getFreeSpaceAvailable() {
         StatFs stat = new StatFs(UserPreferences.getDataFolder(
-                ClientConfig.applicationCallbacks.getApplicationInstance(), null).getAbsolutePath());
+                null).getAbsolutePath());
         long availableBlocks;
         long blockSize;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
