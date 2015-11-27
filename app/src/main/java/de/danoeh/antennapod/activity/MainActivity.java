@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
 import android.media.AudioManager;
+import android.media.Rating;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,6 +54,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
@@ -449,6 +451,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
+        RatingDialog.init(this);
     }
 
     @Override
@@ -466,8 +469,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG))) {
             handleNavIntent();
         }
-
         loadData();
+        RatingDialog.check();
     }
 
     @Override

@@ -542,4 +542,12 @@
     <string name="sort_date_old_new">Date (Old \u2192 New)</string>
     <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
     <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
+
+    <!-- Rating dialog -->
+    <string name="rating_title">Like AntennaPod?</string>
+    <string name="rating_message">We would appreciate it if you take the time to rate AntennaPod.</string>
+    <string name="rating_never_label">Leave me alone</string>
+    <string name="rating_later_label">Remind me later</string>
+    <string name="rating_now_label">Sure, let\'s do this!</string>
+
 </resources>
