@@ -364,7 +364,7 @@
   <string name="opml_import_option">Option %1$d</string>
   <string name="opml_import_explanation_1">Wähle einen bestimmten Dateipfad aus dem lokalen Dateisystem.</string>
   <string name="opml_import_explanation_2">Verwende externe Anwendungen wie Dropbox, Google Drive oder deinen Lieblingsdateimanager, um eine OPML-Datei zu öffnen.</string>
-  <string name="opml_import_explanation_3">Viele Anwendungen wie Google Mail, Dropbox, Google Drive und die meisten Dateimanager können OPML-Dateien &lt;i&gt;mit&lt;/ i&gt; AntennaPod &lt;i&gt;öffnen&lt;/i&gt;.</string>
+  <string name="opml_import_explanation_3">Viele Anwendungen wie Google Mail, Dropbox, Google Drive und die meisten Dateimanager können OPML-Dateien <i>mit</i> AntennaPod <i>öffnen</i>.</string>
   <string name="start_import_label">Import starten</string>
   <string name="opml_import_label">OPML Import</string>
   <string name="opml_directory_error">FEHLER!</string>
