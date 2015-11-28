@@ -506,4 +506,5 @@
   <string name="sort_date_old_new">Дата (Старі \u2192 Нові)</string>
   <string name="sort_duration_short_long">Тривалість (Короткі \u2192 Довгі)</string>
   <string name="sort_duration_long_short">Тривалість (Довгі \u2192 Короткі)</string>
+  <!--Rating dialog-->
 </resources>

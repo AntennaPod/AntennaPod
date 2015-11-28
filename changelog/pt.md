@@ -1,6 +1,10 @@
 Registo de alterações
 ==========
 
+Versão 1.4.0.12
+----------------
+* Correções para dispositivos Huawei (botões multimédia não funcionavam)
+
 Versão 1.4
 -----------
 * Permissão Bluetooth: para poder continuar a reprodução ao ligar um dispositivo Bluetooth com o seu dispositivo

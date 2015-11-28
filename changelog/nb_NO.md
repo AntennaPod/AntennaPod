@@ -1,6 +1,10 @@
 Endringslogg
 ==========
 
+Version 1.4.0.12
+----------------
+* Fix for crash on Huawei devices (media buttons may not work)
+
 Versjon 1.4
 -----------
 * BLUETOOTH-TILGANG: Kreves for å kunne gjenoppta avspilling når en Bluetooth-enhet kobles til telefonen igjen

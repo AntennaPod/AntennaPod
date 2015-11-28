@@ -435,4 +435,5 @@
   <string name="sort_date_old_new">Data (Old \u2192 New)</string>
   <string name="sort_duration_short_long">Durata (Short \u2192 Long)</string>
   <string name="sort_duration_long_short">Durata (Long \u2192 Short)</string>
+  <!--Rating dialog-->
 </resources>

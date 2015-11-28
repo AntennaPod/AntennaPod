@@ -1,6 +1,10 @@
 Änderungen
 ==========
 
+Version 1.4.0.12
+----------------
+* Behebt Abstürze von Huawei-Geräten (Abspieltasten funktionieren möglicherweise nicht)
+
 Version 1.4
 -----------
 * BLUETOOTH-Berechtigung: Wird benötigt, um bei Wiederverbindung eines Bluetooth-Gerät mit deinem Smartphone mit dem Abspielen fortzufahren 

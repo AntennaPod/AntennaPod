@@ -1,6 +1,10 @@
 Ändringslogg
 ==========
 
+Version 1.4.0.12
+----------------
+* Fixade krash på Huawei enheter (mediaknappar kanske inte fungerar)
+
 Version 1.4
 -----------
 * BLUETOOTH PERMISSION: Behövs för att kunna fortsätta uppspelningen när en blåtandsenhet kopplas tillbaka till telefonen

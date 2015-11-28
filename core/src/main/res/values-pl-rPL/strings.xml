@@ -345,4 +345,5 @@ https://gpodder.net/register/</string>
   <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
+  <!--Rating dialog-->
 </resources>
