@@ -261,8 +261,12 @@ public class AllEpisodesFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
         if(!isVisible()) {
             return false;
+        }
+        if(item.getItemId() == R.id.share_item) {
+            return true; // avoids that the position is reset when we need it in the submenu
         }
         int pos = listAdapter.getPosition();
         if(pos < 0) {
