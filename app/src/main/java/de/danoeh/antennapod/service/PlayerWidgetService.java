@@ -117,41 +117,49 @@ public class PlayerWidgetService extends Service {
         startApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent startAppPending = PendingIntent.getActivity(getBaseContext(), 0, startApp, PendingIntent.FLAG_UPDATE_CURRENT);
 
-
-        if (playbackService != null && playbackService.getPlayable() != null) {
+        boolean nothingPlaying = false;
+        if (playbackService != null) {
             final Playable media = playbackService.getPlayable();
-            Log.d(TAG, "updateViews() playback running");
-            PlayerStatus status = playbackService.getStatus();
-            views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
+            if (media != null) {
+                PlayerStatus status = playbackService.getStatus();
+                views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
 
-            views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
+                views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
 
-            String progressString = getProgressString(media);
-            if (progressString != null) {
-                views.setTextViewText(R.id.txtvProgress, progressString);
-            }
-
-            if (status == PlayerStatus.PLAYING) {
-                views.setImageViewResource(R.id.butPlay, R.drawable.ic_pause_white_24dp);
-                if (Build.VERSION.SDK_INT >= 15) {
-                    views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
+                String progressString = getProgressString(media);
+                if (progressString != null) {
+                    views.setViewVisibility(R.id.txtvProgress, View.VISIBLE);
+                    views.setTextViewText(R.id.txtvProgress, progressString);
                 }
+
+                if (status == PlayerStatus.PLAYING) {
+                    views.setImageViewResource(R.id.butPlay, R.drawable.ic_pause_white_24dp);
+                    if (Build.VERSION.SDK_INT >= 15) {
+                        views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
+                    }
+                } else {
+                    views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
+                    if (Build.VERSION.SDK_INT >= 15) {
+                        views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
+                    }
+                }
+                views.setOnClickPendingIntent(R.id.butPlay,
+                        createMediaButtonIntent());
             } else {
-                views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
-                if (Build.VERSION.SDK_INT >= 15) {
-                    views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
-                }
+                nothingPlaying = true;
             }
-            views.setOnClickPendingIntent(R.id.butPlay,
-                    createMediaButtonIntent());
         } else {
-            Log.d(TAG, "updateViews() setup start app");
+            nothingPlaying = true;
+        }
+
+        if (nothingPlaying) {
+            // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startAppPending);
+            views.setOnClickPendingIntent(R.id.butPlay, startAppPending);
             views.setViewVisibility(R.id.txtvProgress, View.INVISIBLE);
             views.setTextViewText(R.id.txtvTitle,
                     this.getString(R.string.no_media_playing_label));
             views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
-
         }
 
         manager.updateAppWidget(playerWidget, views);
