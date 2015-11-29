@@ -1,4 +1,4 @@
-Gestor e reprodutor de podcasts simples, flexível e Open Souce
+Gestor e reprodutor de podcasts simples, flexível e open souce
 
 O AntennaPod é um gestor de podcasts que lhe permite aceder a milhões de podcasts (gratuitos ou pagos), a partir de diversas fontes tais como as estações BBC, NPR e CNN. A adição de fontes é muito fácil através das base de dados iTunes ou gPodder, ficheiros OPML ou fontes RSS. Poupe tempo, economize energia e dados móveis através dos mecanismos de controlo de transferência de episódios (possibilidade de especificar intervalos ou horas para as transferências e redes WiFi) e de eliminação de episódios (de acordo com as suas preferências).<br>
 Mas ainda mais importante: pode transferir, emitir ou colocar episódios na lista de reprodução ao seu gosto, pode utilizar velocidades variáveis de reprodução, tem suporte a capítulos e um temporizador. Pode também mostrar o seu apreço aos disponibilizadores dos episódios através do serviço Flattr.
@@ -30,13 +30,13 @@ Controlar o sistema<br>
 O AntennaPod é desenvolvido por voluntários. Você também pode contribuir na programação ou reportando os erros encontrados!
 
 O GitHub é o local certo para os pedidos de funcionalidades, relatórios de erros e contribuições:<br>
-www.github.com/AntennaPod/AntennaPod
+https://www.github.com/AntennaPod/AntennaPod
 
 O nosso grupo Google é o local certo para partilhar ideias e agradecer aos nossos voluntários:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
 O Transifex é o local no qual pode ajudar a traduzir a aplicação:<br>
-www.transifex.com/antennapod/antennapod
+https://www.transifex.com/antennapod/antennapod
 
 Junte-se ao nosso programa de testes para obter as funcionalidades mais recentes:<br>
-www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
