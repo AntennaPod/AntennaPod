@@ -75,6 +75,6 @@ public class PlayerWidget extends AppWidgetProvider {
 
     private void setEnabled(Context context, boolean enabled) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(KEY_ENABLED, enabled);
+        prefs.edit().putBoolean(KEY_ENABLED, enabled).apply();
     }
 }
