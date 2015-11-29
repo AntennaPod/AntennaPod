@@ -40,6 +40,18 @@ public class PlayerWidget extends AppWidgetProvider {
         startUpdate(context);
     }
 
+    @Override
+    public void onDisabled(Context context) {
+        super.onDisabled(context);
+        stopUpdate(context);
+    }
+
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+        stopUpdate(context);
+    }
+
     private void startUpdate(Context context) {
         Log.d(TAG, "startUpdate() called with: " + "context = [" + context + "]");
         context.startService(new Intent(context, PlayerWidgetService.class));
