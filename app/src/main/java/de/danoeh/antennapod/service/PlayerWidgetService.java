@@ -23,6 +23,7 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 
 /**
@@ -115,6 +116,7 @@ public class PlayerWidgetService extends Service {
 
         Intent startApp = new Intent(getBaseContext(), MainActivity.class);
         startApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startApp.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, QueueFragment.TAG);
         PendingIntent startAppPending = PendingIntent.getActivity(getBaseContext(), 0, startApp, PendingIntent.FLAG_UPDATE_CURRENT);
 
         boolean nothingPlaying = false;

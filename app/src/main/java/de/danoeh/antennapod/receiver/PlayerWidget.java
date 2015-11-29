@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,17 +15,15 @@ import de.danoeh.antennapod.service.PlayerWidgetService;
 
 public class PlayerWidget extends AppWidgetProvider {
     private static final String TAG = "PlayerWidget";
-
-    // static because there should only ever be one widget...
-    // and otherwise it just keeps getting reset when it gets messages
-    private static boolean enabled = false;
+    private static final String PREFS_NAME = "PlayerWidgetPrefs";
+    private static final String KEY_ENABLED = "WidgetEnabled";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive");
         super.onReceive(context, intent);
-        if (!enabled) {
-            // do nothing
+        // don't do anything if we're not enabled
+        if (!isEnabled(context)) {
             return;
         }
 
@@ -40,7 +39,7 @@ public class PlayerWidget extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         Log.d(TAG, "Widget enabled");
-        enabled = true;
+        setEnabled(context, true);
         startUpdate(context);
     }
 
@@ -55,7 +54,7 @@ public class PlayerWidget extends AppWidgetProvider {
     public void onDisabled(Context context) {
         super.onDisabled(context);
         Log.d(TAG, "Widet disabled");
-        enabled = false;
+        setEnabled(context, false);
         stopUpdate(context);
     }
 
@@ -67,5 +66,15 @@ public class PlayerWidget extends AppWidgetProvider {
     private void stopUpdate(Context context) {
         Log.d(TAG, "stopUpdate() called with: " + "context = [" + context + "]");
         context.stopService(new Intent(context, PlayerWidgetService.class));
+    }
+
+    private boolean isEnabled(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean(KEY_ENABLED, false);
+    }
+
+    private void setEnabled(Context context, boolean enabled) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(KEY_ENABLED, enabled);
     }
 }
