@@ -59,7 +59,6 @@ public class EpisodesApplyActionFragment extends Fragment {
     public EpisodesApplyActionFragment() {
         this.episodes = new ArrayList<>();
         this.idMap = new HashMap<>();
-
     }
 
     public void setEpisodes(List<FeedItem> episodes) {
