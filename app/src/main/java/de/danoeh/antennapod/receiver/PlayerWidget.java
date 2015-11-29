@@ -15,22 +15,33 @@ import de.danoeh.antennapod.service.PlayerWidgetService;
 public class PlayerWidget extends AppWidgetProvider {
     private static final String TAG = "PlayerWidget";
 
+    // static because there should only ever be one widget...
+    // and otherwise it just keeps getting reset when it gets messages
+    private static boolean enabled = false;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive");
         super.onReceive(context, intent);
+        if (!enabled) {
+            // do nothing
+            return;
+        }
+
+        // these come from the PlaybackService when things should get updated
         if (StringUtils.equals(intent.getAction(), PlaybackService.FORCE_WIDGET_UPDATE)) {
             startUpdate(context);
         } else if (StringUtils.equals(intent.getAction(), PlaybackService.STOP_WIDGET_UPDATE)) {
             stopUpdate(context);
         }
-
     }
 
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
         Log.d(TAG, "Widget enabled");
+        enabled = true;
+        startUpdate(context);
     }
 
     @Override
@@ -43,12 +54,8 @@ public class PlayerWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
-        stopUpdate(context);
-    }
-
-    @Override
-    public void onDeleted(Context context, int[] appWidgetIds) {
-        super.onDeleted(context, appWidgetIds);
+        Log.d(TAG, "Widet disabled");
+        enabled = false;
         stopUpdate(context);
     }
 
@@ -61,5 +68,4 @@ public class PlayerWidget extends AppWidgetProvider {
         Log.d(TAG, "stopUpdate() called with: " + "context = [" + context + "]");
         context.stopService(new Intent(context, PlayerWidgetService.class));
     }
-
 }
