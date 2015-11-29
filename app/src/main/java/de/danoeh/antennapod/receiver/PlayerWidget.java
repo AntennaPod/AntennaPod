@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,37 +14,67 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.service.PlayerWidgetService;
 
 public class PlayerWidget extends AppWidgetProvider {
-	private static final String TAG = "PlayerWidget";
+    private static final String TAG = "PlayerWidget";
+    private static final String PREFS_NAME = "PlayerWidgetPrefs";
+    private static final String KEY_ENABLED = "WidgetEnabled";
 
     @Override
-	public void onReceive(Context context, Intent intent) {
-		if (StringUtils.equals(intent.getAction(), PlaybackService.FORCE_WIDGET_UPDATE)) {
-			startUpdate(context);
-		} else if (StringUtils.equals(intent.getAction(), PlaybackService.STOP_WIDGET_UPDATE)) {
-			stopUpdate(context);
-		}
+    public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "onReceive");
+        super.onReceive(context, intent);
+        // don't do anything if we're not enabled
+        if (!isEnabled(context)) {
+            return;
+        }
 
-	}
+        // these come from the PlaybackService when things should get updated
+        if (StringUtils.equals(intent.getAction(), PlaybackService.FORCE_WIDGET_UPDATE)) {
+            startUpdate(context);
+        } else if (StringUtils.equals(intent.getAction(), PlaybackService.STOP_WIDGET_UPDATE)) {
+            stopUpdate(context);
+        }
+    }
 
-	@Override
-	public void onEnabled(Context context) {
-		super.onEnabled(context);
-		if (BuildConfig.DEBUG)
-			Log.d(TAG, "Widget enabled");
-	}
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        Log.d(TAG, "Widget enabled");
+        setEnabled(context, true);
+        startUpdate(context);
+    }
 
-	@Override
-	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-			int[] appWidgetIds) {
-		startUpdate(context);
-	}
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+                         int[] appWidgetIds) {
+        Log.d(TAG, "onUpdate() called with: " + "context = [" + context + "], appWidgetManager = [" + appWidgetManager + "], appWidgetIds = [" + appWidgetIds + "]");
+        startUpdate(context);
+    }
 
-	private void startUpdate(Context context) {
-		context.startService(new Intent(context, PlayerWidgetService.class));
-	}
+    @Override
+    public void onDisabled(Context context) {
+        super.onDisabled(context);
+        Log.d(TAG, "Widet disabled");
+        setEnabled(context, false);
+        stopUpdate(context);
+    }
 
-	private void stopUpdate(Context context) {
-		context.stopService(new Intent(context, PlayerWidgetService.class));
-	}
+    private void startUpdate(Context context) {
+        Log.d(TAG, "startUpdate() called with: " + "context = [" + context + "]");
+        context.startService(new Intent(context, PlayerWidgetService.class));
+    }
 
+    private void stopUpdate(Context context) {
+        Log.d(TAG, "stopUpdate() called with: " + "context = [" + context + "]");
+        context.stopService(new Intent(context, PlayerWidgetService.class));
+    }
+
+    private boolean isEnabled(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean(KEY_ENABLED, false);
+    }
+
+    private void setEnabled(Context context, boolean enabled) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(KEY_ENABLED, enabled).apply();
+    }
 }
