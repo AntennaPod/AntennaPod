@@ -1,5 +1,16 @@
 Changelog
 ==========
+Version 1.4.1
+-------------
+* Performance improvements
+* Hardware buttons now ff and rewind instead of skipping
+* Option to have forward button skip
+* Option to send crash reports directly to developers
+* Highlight currently playing episode
+
+Version 1.4.0.12
+----------------
+* Fix for crash on Huawei devices (media buttons may not work)
 
 Versie 1.4
 -----------
