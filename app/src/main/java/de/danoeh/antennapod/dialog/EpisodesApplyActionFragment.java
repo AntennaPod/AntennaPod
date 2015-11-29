@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,7 +22,6 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,9 +56,16 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private int textColor;
 
-    public EpisodesApplyActionFragment(List<FeedItem> episodes) {
-        this.episodes = episodes;
-        this.idMap = new HashMap<>(episodes.size());
+    public EpisodesApplyActionFragment() {
+        this.episodes = new ArrayList<>();
+        this.idMap = new HashMap<>();
+
+    }
+
+    public void setEpisodes(List<FeedItem> episodes) {
+        this.episodes.clear();
+        this.episodes.addAll(episodes);
+        this.idMap.clear();
         for(FeedItem episode : episodes) {
             this.idMap.put(episode.getId(), episode);
         }
