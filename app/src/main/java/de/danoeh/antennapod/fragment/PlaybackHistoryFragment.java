@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -50,16 +49,13 @@ public class PlaybackHistoryFragment extends ListFragment {
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
 
-    private AtomicReference<Activity> activity = new AtomicReference<Activity>();
-
     private List<Downloader> downloaderList;
 
     private Subscription subscription;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity.set(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
@@ -123,7 +119,6 @@ public class PlaybackHistoryFragment extends ListFragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        activity.set(null);
     }
 
     @Override
@@ -138,7 +133,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
         if (adapter != null) {
-                adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -210,7 +205,8 @@ public class PlaybackHistoryFragment extends ListFragment {
             // played items shoudln't be transparent for this fragment since, *all* items
             // in this fragment will, by definition, be played. So it serves no purpose and can make
             // it harder to read.
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), true, false);
+            adapter = new FeedItemlistAdapter(getActivity(), itemAccess,
+                    new DefaultActionButtonCallback(getActivity()), true, false);
             setListAdapter(adapter);
         }
         setListShown(true);
