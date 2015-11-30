@@ -10,8 +10,6 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +17,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -602,10 +601,7 @@ public class GpodnetService {
             checkStatusCode(response);
             body = response.body();
             result = getStringFromResponseBody(body);
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         } finally {
@@ -652,12 +648,12 @@ public class GpodnetService {
     private void checkStatusCode(@NonNull Response response)
             throws GpodnetServiceException {
         int responseCode = response.code();
-        if (responseCode != HttpStatus.SC_OK) {
-            if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
+        if (responseCode != HttpURLConnection.HTTP_OK) {
+            if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                 throw new GpodnetServiceAuthenticationException("Wrong username or password");
             } else {
-                throw new GpodnetServiceBadStatusCodeException(
-                        "Bad response code: " + responseCode, responseCode);
+                throw new GpodnetServiceBadStatusCodeException("Bad response code: "
+                        + responseCode, responseCode);
             }
         }
     }

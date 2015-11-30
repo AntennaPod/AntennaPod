@@ -11,7 +11,6 @@ import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.internal.http.HttpDate;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpStatus;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -171,7 +170,7 @@ public class HttpDownloader extends Downloader {
 
             String contentRangeHeader = (fileExists) ? response.header("Content-Range") : null;
 
-            if (fileExists && response.code() == HttpStatus.SC_PARTIAL_CONTENT
+            if (fileExists && response.code() == HttpURLConnection.HTTP_PARTIAL
                     && !TextUtils.isEmpty(contentRangeHeader)) {
                 String start = contentRangeHeader.substring("bytes ".length(),
                         contentRangeHeader.indexOf("-"));

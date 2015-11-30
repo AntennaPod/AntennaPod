@@ -2,21 +2,20 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,13 +29,23 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static de.danoeh.antennapod.adapter.itunes.ItunesAdapter.Podcast;
 
 //Searches iTunes store for given string and displays results in a list
 public class ItunesSearchFragment extends Fragment {
-    final String TAG = "ItunesSearchFragment";
+
+    private static final String TAG = "ItunesSearchFragment";
+
+    private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
+
     /**
      *  Search input field
      */
@@ -51,6 +60,8 @@ public class ItunesSearchFragment extends Fragment {
      * List of podcasts retreived from the search
      */
     private List<Podcast> searchResults;
+
+    private Subscription subscription;
 
     /**
      * Replace adapter data with provided search results from SearchTask.
@@ -117,7 +128,7 @@ public class ItunesSearchFragment extends Fragment {
                 //This prevents onQueryTextSubmit() from being called twice when keyboard is used
                 //to submit the query.
                 searchView.clearFocus();
-                new SearchTask(s).execute();
+                search(s);
                 return false;
             }
 
@@ -137,77 +148,59 @@ public class ItunesSearchFragment extends Fragment {
         return view;
     }
 
-    /**
-     * Search the iTunes store for podcasts using the given query
-     */
-    class SearchTask extends AsyncTask<Void,Void,Void> {
-        /**
-         * Incomplete iTunes API search URL
-         */
-        final String apiUrl = "https://itunes.apple.com/search?media=podcast&term=%s";
-
-        /**
-         * Search terms
-         */
-        final String query;
-
-        /**
-         * Search result
-         */
-        final List<Podcast> taskData = new ArrayList<>();
-
-        /**
-         * Constructor
-         *
-         * @param query Search string
-         */
-        public SearchTask(String query) {
-            String encodedQuery = null;
-            try {
-                encodedQuery = URLEncoder.encode(query, "UTF-8");
-            } catch(UnsupportedEncodingException e) {
-                // this won't ever be thrown
-            }
-            if(encodedQuery != null) {
-                this.query = encodedQuery;
-            } else {
-                this.query = query; // failsafe
-            }
+    private void search(String query) {
+        if (subscription != null) {
+            subscription.unsubscribe();
         }
+        subscription = rx.Observable.create((Observable.OnSubscribe<List<Podcast>>) subscriber -> {
+                    String encodedQuery = null;
+                    try {
+                        encodedQuery = URLEncoder.encode(query, "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        // this won't ever be thrown
+                    }
+                    if (encodedQuery == null) {
+                        encodedQuery = query; // failsafe
+                    }
 
-        //Get the podcast data
-        @Override
-        protected Void doInBackground(Void... params) {
+                    //Spaces in the query need to be replaced with '+' character.
+                    String formattedUrl = String.format(API_URL, query).replace(' ', '+');
 
-            //Spaces in the query need to be replaced with '+' character.
-            String formattedUrl = String.format(apiUrl, query).replace(' ', '+');
+                    OkHttpClient client = AntennapodHttpClient.getHttpClient();
+                    Request.Builder httpReq = new Request.Builder()
+                            .url(formattedUrl)
+                            .header("User-Agent", ClientConfig.USER_AGENT);
+                    List<Podcast> podcasts = new ArrayList<>();
+                    try {
+                        Response response = client.newCall(httpReq.build()).execute();
 
-            HttpClient client = new DefaultHttpClient();
-            HttpGet get = new HttpGet(formattedUrl);
+                        if(response.isSuccessful()) {
+                            String resultString = response.body().string();
+                            JSONObject result = new JSONObject(resultString);
+                            JSONArray j = result.getJSONArray("results");
 
-            try {
-                HttpResponse response = client.execute(get);
-                String resultString = EntityUtils.toString(response.getEntity());
-                JSONObject result = new JSONObject(resultString);
-                JSONArray j = result.getJSONArray("results");
-
-                for (int i = 0; i < j.length(); i++){
-                    JSONObject podcastJson = j.getJSONObject(i);
-                    Podcast podcast = new Podcast(podcastJson);
-                    taskData.add(podcast);
-                }
-
-            } catch (IOException | JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        //Save the data and update the list
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            updateData(taskData);
-        }
+                            for (int i = 0; i < j.length(); i++) {
+                                JSONObject podcastJson = j.getJSONObject(i);
+                                Podcast podcast = new Podcast(podcastJson);
+                                podcasts.add(podcast);
+                            }
+                        }
+                        else {
+                            subscriber.onError(new IOException("Unexpected error: " + response));
+                        }
+                    } catch (IOException | JSONException e) {
+                        Log.e(TAG, Log.getStackTraceString(e));
+                    }
+                    subscriber.onNext(podcasts);
+                    subscriber.onCompleted();
+                })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(podcasts -> {
+                    updateData(podcasts);
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
+
 }

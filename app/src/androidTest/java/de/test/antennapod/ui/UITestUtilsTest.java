@@ -1,14 +1,14 @@
 package de.test.antennapod.ui;
 
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import org.apache.http.HttpStatus;
 
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
 
 /**
  * Test for the UITestUtils. Makes sure that all URLs are reachable and that the class does not cause any crashes.
@@ -55,7 +55,7 @@ public class UITestUtilsTest extends InstrumentationTestCase {
         conn.setRequestMethod("GET");
         conn.connect();
         int rc = conn.getResponseCode();
-        assertEquals(HttpStatus.SC_OK, rc);
+        assertEquals(HttpURLConnection.HTTP_OK, rc);
         conn.disconnect();
     }
 
