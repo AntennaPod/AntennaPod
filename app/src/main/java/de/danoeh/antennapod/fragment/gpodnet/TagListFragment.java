@@ -80,7 +80,7 @@ public class TagListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) getActivity()).getMainActivtyActionBar().setTitle(R.string.add_feed_label);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.add_feed_label);
     }
 
     @Override

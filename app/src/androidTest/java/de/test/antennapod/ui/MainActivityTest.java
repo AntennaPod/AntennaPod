@@ -137,7 +137,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     private String getActionbarTitle() {
-        return ((MainActivity)solo.getCurrentActivity()).getMainActivtyActionBar().getTitle().toString();
+        return ((MainActivity)solo.getCurrentActivity()).getSupportActionBar().getTitle().toString();
     }
 
     @FlakyTest(tolerance = 3)

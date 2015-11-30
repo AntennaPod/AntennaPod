@@ -45,7 +45,7 @@ public class TagFragment extends PodcastListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((MainActivity) getActivity()).getMainActivtyActionBar().setTitle(tag.getTitle());
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(tag.getTitle());
     }
 
     @Override

@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -252,10 +251,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         builder.create().show();
     }
 
-    public ActionBar getMainActivtyActionBar() {
-        return getSupportActionBar();
-    }
-
     public boolean isDrawerOpen() {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
@@ -361,10 +356,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     public void dismissChildFragment() {
         getSupportFragmentManager().popBackStack();
-    }
-
-    public Toolbar getToolbar() {
-        return toolbar;
     }
 
     private int getSelectedNavListIndex() {
