@@ -161,7 +161,7 @@ public class HttpDownloader extends Downloader {
                 return;
             }
 
-            if (!StorageUtils.storageAvailable(ClientConfig.applicationCallbacks.getApplicationInstance())) {
+            if (!StorageUtils.storageAvailable()) {
                 onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
                 return;
             }
