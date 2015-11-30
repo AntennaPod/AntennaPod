@@ -4,35 +4,33 @@ import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.widget.IconButton;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -101,7 +99,6 @@ public class ItemFragment extends Fragment {
     private List<Downloader> downloaderList;
 
     private ViewGroup root;
-    private View header;
     private WebView webvDescription;
     private TextView txtvTitle;
     private TextView txtvDuration;
@@ -109,10 +106,9 @@ public class ItemFragment extends Fragment {
     private ImageView imgvCover;
     private ProgressBar progbarDownload;
     private ProgressBar progbarLoading;
-    private Button butAction1;
-    private Button butAction2;
-    private ImageButton butMore;
-    private PopupMenu popupMenu;
+    private IconButton butAction1;
+    private IconButton butAction2;
+    private Menu popupMenu;
 
     private Subscription subscription;
 
@@ -125,7 +121,7 @@ public class ItemFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(false);
+        setHasOptionsMenu(true);
 
         itemID = getArguments().getLong(ARG_FEEDITEM, -1);
     }
@@ -134,15 +130,12 @@ public class ItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
-        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
         View layout = inflater.inflate(R.layout.feeditem_fragment, container, false);
 
-        header = inflater.inflate(R.layout.feeditem_fragment_header, toolbar, false);
         root = (ViewGroup) layout.findViewById(R.id.content_root);
-        txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
-        txtvDuration = (TextView) header.findViewById(R.id.txtvDuration);
-        txtvPublished = (TextView) header.findViewById(R.id.txtvPublished);
+        txtvTitle = (TextView) layout.findViewById(R.id.txtvTitle);
+        txtvDuration = (TextView) layout.findViewById(R.id.txtvDuration);
+        txtvPublished = (TextView) layout.findViewById(R.id.txtvPublished);
         if (Build.VERSION.SDK_INT >= 14) { // ellipsize is causing problems on old versions, see #448
             txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
         }
@@ -172,81 +165,43 @@ public class ItemFragment extends Fragment {
         });
         registerForContextMenu(webvDescription);
 
-        imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
-        progbarDownload = (ProgressBar) header.findViewById(R.id.progbarDownload);
+        imgvCover = (ImageView) layout.findViewById(R.id.imgvCover);
+        progbarDownload = (ProgressBar) layout.findViewById(R.id.progbarDownload);
         progbarLoading = (ProgressBar) layout.findViewById(R.id.progbarLoading);
-        butAction1 = (Button) header.findViewById(R.id.butAction1);
-        butAction2 = (Button) header.findViewById(R.id.butAction2);
-        butMore = (ImageButton) header.findViewById(R.id.butMoreActions);
-        popupMenu = new PopupMenu(getActivity(), butMore);
+        butAction1 = (IconButton) layout.findViewById(R.id.butAction1);
+        butAction2 = (IconButton) layout.findViewById(R.id.butAction2);
 
-        butAction1.setOnClickListener(new View.OnClickListener() {
-                                          DefaultActionButtonCallback actionButtonCallback = new DefaultActionButtonCallback(getActivity());
-
-                                          @Override
-
-                                          public void onClick(View v) {
-                                              if (item == null) {
-                                                  return;
-                                              }
-                                              actionButtonCallback.onActionButtonPressed(item);
-                                              FeedMedia media = item.getMedia();
-                                              if (media != null && media.isDownloaded()) {
-                                                  // playback was started, dialog should close itself
-                                                  ((MainActivity) getActivity()).dismissChildFragment();
-                                              }
-                                          }
-                                      }
-        );
+        butAction1.setOnClickListener(v -> {
+            if (item == null) {
+                return;
+            }
+            DefaultActionButtonCallback actionButtonCallback = new DefaultActionButtonCallback(getActivity());
+            actionButtonCallback.onActionButtonPressed(item);
+            FeedMedia media = item.getMedia();
+            if (media != null && media.isDownloaded()) {
+                // playback was started, dialog should close itself
+                ((MainActivity) getActivity()).dismissChildFragment();
+            }
+        });
 
         butAction2.setOnClickListener(v -> {
-                if (item == null) {
-                    return;
-                }
-
-                if (item.hasMedia()) {
-                    FeedMedia media = item.getMedia();
-                    if (!media.isDownloaded()) {
-                        DBTasks.playMedia(getActivity(), media, true, true, true);
-                        ((MainActivity) getActivity()).dismissChildFragment();
-                    } else {
-                        DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
-                    }
-                } else if (item.getLink() != null) {
-                    Uri uri = Uri.parse(item.getLink());
-                    getActivity().startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                }
+            if (item == null) {
+                return;
             }
-        );
 
-        butMore.setOnClickListener(v -> {
-                if (item == null) {
-                    return;
-                }
-                popupMenu.getMenu().clear();
-                popupMenu.inflate(R.menu.feeditem_options);
-                if (item.hasMedia()) {
-                    FeedItemMenuHandler.onPrepareMenu(getActivity(), popupMenuInterface, item, true, queue);
+            if (item.hasMedia()) {
+                FeedMedia media = item.getMedia();
+                if (!media.isDownloaded()) {
+                    DBTasks.playMedia(getActivity(), media, true, true, true);
+                    ((MainActivity) getActivity()).dismissChildFragment();
                 } else {
-                    // these are already available via button1 and button2
-                    FeedItemMenuHandler.onPrepareMenu(getActivity(), popupMenuInterface, item, true, queue,
-                        R.id.mark_read_item, R.id.visit_website_item);
+                    DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
                 }
-                popupMenu.show();
+            } else if (item.getLink() != null) {
+                Uri uri = Uri.parse(item.getLink());
+                getActivity().startActivity(new Intent(Intent.ACTION_VIEW, uri));
             }
-        );
-
-        popupMenu.setOnMenuItemClickListener(menuItem -> {
-
-                try {
-                    return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    return true;
-                }
-            }
-        );
+        });
 
         return layout;
     }
@@ -254,8 +209,6 @@ public class ItemFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
-        toolbar.addView(header);
         load();
     }
 
@@ -279,7 +232,6 @@ public class ItemFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        resetViewState();
         if(subscription != null) {
             subscription.unsubscribe();
         }
@@ -289,15 +241,37 @@ public class ItemFragment extends Fragment {
         }
     }
 
-    private void resetViewState() {
-        Toolbar toolbar = ((MainActivity) getActivity()).getToolbar();
-        toolbar.removeView(header);
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(item == null) {
+            return;
+        }
+        inflater.inflate(R.menu.feeditem_options, menu);
+        popupMenu = menu;
+        if (item.hasMedia()) {
+            FeedItemMenuHandler.onPrepareMenu(getActivity(), popupMenuInterface, item, true, queue);
+        } else {
+            // these are already available via button1 and button2
+            FeedItemMenuHandler.onPrepareMenu(getActivity(), popupMenuInterface, item, true, queue,
+                    R.id.mark_read_item, R.id.visit_website_item);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        try {
+            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            return true;
+        }
     }
 
     private final FeedItemMenuHandler.MenuInterface popupMenuInterface = new FeedItemMenuHandler.MenuInterface() {
         @Override
         public void setItemVisibility(int id, boolean visible) {
-            MenuItem item = popupMenu.getMenu().findItem(id);
+            MenuItem item = popupMenu.findItem(id);
             if (item != null) {
                 item.setVisible(visible);
             }
@@ -319,7 +293,7 @@ public class ItemFragment extends Fragment {
             Log.d(TAG, "updateAppearance item is null");
             return;
         }
-
+        getActivity().supportInvalidateOptionsMenu();
         txtvTitle.setText(item.getTitle());
 
         if (item.getPubDate() != null) {
@@ -347,54 +321,55 @@ public class ItemFragment extends Fragment {
         }
 
         FeedMedia media = item.getMedia();
+        String butAction1Icon = null;
+        int butAction1Text = 0;
+        String butAction2Icon = null;
+        int butAction2Text = 0;
         if (media == null) {
-            TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.navigation_accept,
-                    R.attr.location_web_site});
-
             if (!item.isPlayed()) {
-                butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(0), null, null, null);
-                butAction1.setText(getActivity().getString(R.string.mark_read_label));
-                butAction1.setVisibility(View.VISIBLE);
-            } else {
-                butAction1.setVisibility(View.INVISIBLE);
+                butAction1Icon = "{fa-check 24sp}";
+                butAction1Text = R.string.mark_read_label;
             }
-
             if (item.getLink() != null) {
-                butAction2.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(1), null, null, null);
-                butAction2.setText(getActivity().getString(R.string.visit_website_label));
-            } else {
-                butAction2.setEnabled(false);
+                butAction2Icon = "{ma-web 24sp}";
+                butAction2Text = R.string.visit_website_label;
             }
-
-            drawables.recycle();
-        } else {if(media.getDuration() > 0) {
+        } else {
+            if(media.getDuration() > 0) {
                 txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             }
-
             boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
-            TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.av_play,
-                    R.attr.av_download, R.attr.action_stream, R.attr.content_discard, R.attr.navigation_cancel});
-
             if (!media.isDownloaded()) {
-                butAction2.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(2), null, null, null);
-                butAction2.setText(getActivity().getString(R.string.stream_label));
+                butAction2Icon = "{md-settings-input-antenna 24sp}";
+                butAction2Text = R.string.stream_label;
             } else {
-                butAction2.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(3), null, null, null);
-                butAction2.setText(getActivity().getString(R.string.remove_episode_lable));
+                butAction2Icon = "{md-delete 24sp}";
+                butAction2Text = R.string.remove_label;
             }
-
             if (isDownloading) {
-                butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(4), null, null, null);
-                butAction1.setText(getActivity().getString(R.string.cancel_download_label));
+                butAction1Icon = "{md-cancel 24sp}";
+                butAction1Text = R.string.cancel_label;
             } else if (media.isDownloaded()) {
-                butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(0), null, null, null);
-                butAction1.setText(getActivity().getString(R.string.play_label));
+                butAction1Icon = "{md-play-arrow 24sp}";
+                butAction1Text = R.string.play_label;
             } else {
-                butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(1), null, null, null);
-                butAction1.setText(getActivity().getString(R.string.download_label));
+                butAction1Icon = "{md-file-download 24sp}";
+                butAction1Text = R.string.download_label;
             }
-
-            drawables.recycle();
+        }
+        if(butAction1Icon != null && butAction1Text != 0) {
+            butAction1.setText(butAction1Icon +"\u0020\u0020" + getActivity().getString(butAction1Text));
+            Iconify.addIcons(butAction1);
+            butAction1.setVisibility(View.VISIBLE);
+        } else {
+            butAction1.setVisibility(View.INVISIBLE);
+        }
+        if(butAction2Icon != null && butAction2Text != 0) {
+            butAction2.setText(butAction2Icon +"\u0020\u0020" + getActivity().getString(butAction2Text));
+            Iconify.addIcons(butAction2);
+            butAction2.setVisibility(View.VISIBLE);
+        } else {
+            butAction2.setVisibility(View.INVISIBLE);
         }
     }
 
