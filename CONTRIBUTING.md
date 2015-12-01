@@ -7,6 +7,7 @@ How to report a bug
 - If the bug only seems to occur with a certain podcast, make sure to include the URL of that podcast.
 - If possible, add instructions on how to reproduce the bug.
 - If possible, add a logfile to your post. This is especially useful if the bug makes the application crash. You can create logfiles with an app like `aLogcat`. Just launch `alogcat`, then start AntennaPod and reproduce the bug. aLogcat should now display information about the bug when you start it.
+- Usually, you can make a screenshot of your smartphone by pressing [Power] + [Volume down] for a few seconds
 - Please use the following **template**: 
 
 **Android version**: 5.x [Especially mention custom roms!]
