@@ -1,7 +1,6 @@
 package de.test.antennapod.ui;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.FlakyTest;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.robotium.solo.Solo;
@@ -21,15 +19,12 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
 /**
  * test cases for starting and ending playback from the MainActivity and AudioPlayerActivity
@@ -90,7 +85,7 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
     }
 
     private void openNavDrawer() {
-        solo.clickOnScreen(50, 50);
+        solo.clickOnImageButton(0);
         getInstrumentation().waitForIdleSync();
     }
 
