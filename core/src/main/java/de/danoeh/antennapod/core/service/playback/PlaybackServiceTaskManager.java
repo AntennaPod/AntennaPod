@@ -2,9 +2,8 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.util.Log;
-
-import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -15,8 +14,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.greenrobot.event.EventBus;
@@ -62,10 +61,8 @@ public class PlaybackServiceTaskManager {
      * @param context
      * @param callback A PSTMCallback object for notifying the user about updates. Must not be null.
      */
-    public PlaybackServiceTaskManager(Context context, PSTMCallback callback) {
-        Validate.notNull(context);
-        Validate.notNull(callback);
-
+    public PlaybackServiceTaskManager(@NonNull Context context,
+                                      @NonNull PSTMCallback callback) {
         this.context = context;
         this.callback = callback;
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE, new ThreadFactory() {
@@ -200,7 +197,9 @@ public class PlaybackServiceTaskManager {
      * @throws java.lang.IllegalArgumentException if waitingTime <= 0
      */
     public synchronized void setSleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
-        Validate.isTrue(waitingTime > 0, "Waiting time <= 0");
+        if(waitingTime <= 0) {
+            throw new IllegalArgumentException("Waiting time <= 0");
+        }
 
         Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime) + " milliseconds");
         if (isSleepTimerActive()) {
@@ -275,9 +274,7 @@ public class PlaybackServiceTaskManager {
      * it will be cancelled first.
      * On completion, the callback's onChapterLoaded method will be called.
      */
-    public synchronized void startChapterLoader(final Playable media) {
-        Validate.notNull(media);
-
+    public synchronized void startChapterLoader(@NonNull final Playable media) {
         if (isChapterLoaderActive()) {
             cancelChapterLoader();
         }

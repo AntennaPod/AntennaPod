@@ -177,7 +177,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         Cursor c = adapter.getFeedCursor(feed.getId());
         assertEquals(0, c.getCount());
         c.close();
-        c = adapter.getImageCursor(image.getId());
+        c = adapter.getImageCursor(String.valueOf(image.getId()));
         assertEquals(0, c.getCount());
         c.close();
         for (FeedItem item : feed.getItems()) {
@@ -280,7 +280,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         Cursor c = adapter.getFeedCursor(feed.getId());
         assertTrue(c.getCount() == 0);
         c.close();
-        c = adapter.getImageCursor(image.getId());
+        c = adapter.getImageCursor(String.valueOf(image.getId()));
         assertTrue(c.getCount() == 0);
         c.close();
     }
@@ -327,7 +327,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         Cursor c = adapter.getFeedCursor(feed.getId());
         assertTrue(c.getCount() == 0);
         c.close();
-        c = adapter.getImageCursor(image.getId());
+        c = adapter.getImageCursor(String.valueOf(image.getId()));
         assertTrue(c.getCount() == 0);
         c.close();
         for (FeedItem item : feed.getItems()) {
@@ -382,14 +382,14 @@ public class DBWriterTest extends InstrumentationTestCase {
         Cursor c = adapter.getFeedCursor(feed.getId());
         assertTrue(c.getCount() == 0);
         c.close();
-        c = adapter.getImageCursor(image.getId());
+        c = adapter.getImageCursor(String.valueOf(image.getId()));
         assertTrue(c.getCount() == 0);
         c.close();
         for (FeedItem item : feed.getItems()) {
             c = adapter.getFeedItemCursor(String.valueOf(item.getId()));
             assertTrue(c.getCount() == 0);
             c.close();
-            c = adapter.getImageCursor(item.getImage().getId());
+            c = adapter.getImageCursor(String.valueOf(item.getImage().getId()));
             assertEquals(0, c.getCount());
             c.close();
         }
@@ -450,7 +450,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         Cursor c = adapter.getFeedCursor(feed.getId());
         assertTrue(c.getCount() == 0);
         c.close();
-        c = adapter.getImageCursor(image.getId());
+        c = adapter.getImageCursor(String.valueOf(image.getId()));
         assertTrue(c.getCount() == 0);
         c.close();
         for (FeedItem item : feed.getItems()) {
@@ -512,7 +512,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         Cursor c = adapter.getFeedCursor(feed.getId());
         assertTrue(c.getCount() == 0);
         c.close();
-        c = adapter.getImageCursor(image.getId());
+        c = adapter.getImageCursor(String.valueOf(image.getId()));
         assertTrue(c.getCount() == 0);
         c.close();
         for (FeedItem item : feed.getItems()) {

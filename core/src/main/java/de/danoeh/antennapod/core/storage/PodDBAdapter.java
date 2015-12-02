@@ -14,9 +14,6 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -1018,15 +1015,42 @@ public class PodDBAdapter {
     /**
      * Returns a cursor for a DB query in the FeedImages table for given IDs.
      *
-     * @param ids IDs of the FeedImages
+     * @param imageIds IDs of the images
      * @return The cursor of the query
      */
-    public final Cursor getImageCursor(long... ids) {
-        String sql = "SELECT * FROM " + TABLE_NAME_FEED_IMAGES +
-                " WHERE " + KEY_ID + " IN (" + StringUtils.join(ids, ',') + ")";
-        Cursor c = db.rawQuery(sql, null);
+    public final Cursor getImageCursor(String... imageIds) {
+        int length = imageIds.length;
+        if (length > IN_OPERATOR_MAXIMUM) {
+            Log.w(TAG, "Length of id array is larger than "
+                    + IN_OPERATOR_MAXIMUM + ". Creating multiple cursors");
+            int numCursors = (int) (((double) length) / (IN_OPERATOR_MAXIMUM)) + 1;
+            Cursor[] cursors = new Cursor[numCursors];
+            for (int i = 0; i < numCursors; i++) {
+                int neededLength;
+                String[] parts;
+                final int elementsLeft = length - i * IN_OPERATOR_MAXIMUM;
 
-        return c;
+                if (elementsLeft >= IN_OPERATOR_MAXIMUM) {
+                    neededLength = IN_OPERATOR_MAXIMUM;
+                    parts = Arrays.copyOfRange(imageIds, i
+                            * IN_OPERATOR_MAXIMUM, (i + 1)
+                            * IN_OPERATOR_MAXIMUM);
+                } else {
+                    neededLength = elementsLeft;
+                    parts = Arrays.copyOfRange(imageIds, i
+                            * IN_OPERATOR_MAXIMUM, (i * IN_OPERATOR_MAXIMUM)
+                            + neededLength);
+                }
+
+                cursors[i] = db.rawQuery("SELECT * FROM "
+                        + TABLE_NAME_FEED_IMAGES + " WHERE " + KEY_ID + " IN "
+                        + buildInOperator(neededLength), parts);
+            }
+            return new MergeCursor(cursors);
+        } else {
+            return db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + " IN "
+                    + buildInOperator(length), imageIds, null, null, null);
+        }
     }
 
     public final Cursor getSimpleChaptersOfFeedItemCursor(final FeedItem item) {
@@ -1154,7 +1178,9 @@ public class PodDBAdapter {
      * @throws IllegalArgumentException if limit < 0
      */
     public final Cursor getCompletedMediaCursor(int limit) {
-        Validate.isTrue(limit >= 0, "Limit must be >= 0");
+        if(limit < 0) {
+            throw new IllegalArgumentException("Limit must be >= 0");
+        }
 
         Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null,
                 KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,

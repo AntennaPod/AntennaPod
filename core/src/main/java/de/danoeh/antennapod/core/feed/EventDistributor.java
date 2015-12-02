@@ -3,8 +3,6 @@ package de.danoeh.antennapod.core.feed;
 import android.os.Handler;
 import android.util.Log;
 
-import org.apache.commons.lang3.Validate;
-
 import java.util.AbstractQueue;
 import java.util.Observable;
 import java.util.Observer;
@@ -84,7 +82,6 @@ public class EventDistributor extends Observable {
 	@Override
 	public void addObserver(Observer observer) {
 		super.addObserver(observer);
-        Validate.isInstanceOf(EventListener.class, observer);
 	}
 
 	public void sendUnreadItemsUpdateBroadcast() {

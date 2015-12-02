@@ -3,8 +3,7 @@ package de.danoeh.antennapod.core.service.download;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import org.apache.commons.lang3.Validate;
+import android.support.annotation.NonNull;
 
 import de.danoeh.antennapod.core.feed.FeedFile;
 import de.danoeh.antennapod.core.util.URLChecker;
@@ -27,11 +26,15 @@ public class DownloadRequest implements Parcelable {
     protected long size;
     protected int statusMsg;
 
-    public DownloadRequest(String destination, String source, String title,
-                           long feedfileId, int feedfileType, String username, String password, boolean deleteOnFailure, Bundle arguments) {
-        Validate.notNull(destination);
-        Validate.notNull(source);
-        Validate.notNull(title);
+    public DownloadRequest(@NonNull String destination,
+                           @NonNull String source,
+                           @NonNull String title,
+                           long feedfileId,
+                           int feedfileType,
+                           String username,
+                           String password,
+                           boolean deleteOnFailure,
+                           Bundle arguments) {
 
         this.destination = destination;
         this.source = source;
@@ -260,7 +263,7 @@ public class DownloadRequest implements Parcelable {
         private int feedfileType;
         private Bundle arguments;
 
-        public Builder(String destination, FeedFile item) {
+        public Builder(@NonNull String destination, @NonNull FeedFile item) {
             this.destination = destination;
             this.source = URLChecker.prepareURL(item.getDownload_url());
             this.title = item.getHumanReadableIdentifier();
@@ -285,9 +288,6 @@ public class DownloadRequest implements Parcelable {
         }
 
         public DownloadRequest build() {
-            Validate.notNull(destination);
-            Validate.notNull(source);
-            Validate.notNull(title);
             return new DownloadRequest(this);
         }
 

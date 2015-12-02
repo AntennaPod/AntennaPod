@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -145,9 +146,9 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
         final String feedUrl;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
-        } else if (StringUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
-                || StringUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
-            feedUrl = (StringUtils.equals(getIntent().getAction(), Intent.ACTION_SEND))
+        } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
+                || TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
+            feedUrl = (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND))
                     ? getIntent().getStringExtra(Intent.EXTRA_TEXT) : getIntent().getDataString();
             getSupportActionBar().setTitle(R.string.add_new_feed_label);
         } else {
@@ -322,7 +323,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
                             subscriber.onNext(result);
                         } catch (UnsupportedFeedtypeException e) {
                             Log.d(TAG, "Unsupported feed type detected");
-                            if (StringUtils.equalsIgnoreCase("html", e.getRootElement())) {
+                            if (TextUtils.equals("html", e.getRootElement().toLowerCase())) {
                                 showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
                             } else {
                                 subscriber.onError(e);

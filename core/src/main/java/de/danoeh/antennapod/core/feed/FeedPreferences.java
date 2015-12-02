@@ -2,8 +2,7 @@ package de.danoeh.antennapod.core.feed;
 
 import android.content.Context;
 import android.database.Cursor;
-
-import org.apache.commons.lang3.StringUtils;
+import android.text.TextUtils;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -60,10 +59,10 @@ public class FeedPreferences {
     public boolean compareWithOther(FeedPreferences other) {
         if (other == null)
             return true;
-        if (!StringUtils.equals(username, other.username)) {
+        if (!TextUtils.equals(username, other.username)) {
             return true;
         }
-        if (!StringUtils.equals(password, other.password)) {
+        if (!TextUtils.equals(password, other.password)) {
             return true;
         }
         return false;

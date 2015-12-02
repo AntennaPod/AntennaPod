@@ -1,7 +1,8 @@
 package de.danoeh.antennapod.core.util.syndication;
 
 import android.net.Uri;
-import org.apache.commons.lang3.StringUtils;
+import android.text.TextUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -50,7 +51,7 @@ public class FeedDiscoverer {
         for (Element link : links) {
             String rel = link.attr("rel");
             String href = link.attr("href");
-            if (!StringUtils.isEmpty(href) &&
+            if (!TextUtils.isEmpty(href) &&
                     (rel.equals("alternate") || rel.equals("feed"))) {
                 String type = link.attr("type");
                 if (type.equals(MIME_RSS) || type.equals(MIME_ATOM)) {
@@ -58,7 +59,7 @@ public class FeedDiscoverer {
                     String processedUrl = processURL(baseUrl, href);
                     if (processedUrl != null) {
                         res.put(processedUrl,
-                                (StringUtils.isEmpty(title)) ? href : title);
+                                (TextUtils.isEmpty(title)) ? href : title);
                     }
                 }
             }

@@ -2,8 +2,7 @@ package de.danoeh.antennapod.core.gpoddernet.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import org.apache.commons.lang3.Validate;
+import android.support.annotation.NonNull;
 
 public class GpodnetTag implements Parcelable  {
 
@@ -11,10 +10,7 @@ public class GpodnetTag implements Parcelable  {
     private final String tag;
     private final int usage;
 
-    public GpodnetTag(String title, String tag, int usage) {
-        Validate.notNull(title);
-        Validate.notNull(tag);
-
+    public GpodnetTag(@NonNull String title, @NonNull String tag, int usage) {
         this.title = title;
         this.tag = tag;
         this.usage = usage;

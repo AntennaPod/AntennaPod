@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.gpoddernet.model;
 
-import org.apache.commons.lang3.Validate;
+import android.support.annotation.NonNull;
 
 public class GpodnetDevice {
 
@@ -9,10 +9,10 @@ public class GpodnetDevice {
     private DeviceType type;
     private int subscriptions;
 
-    public GpodnetDevice(String id, String caption, String type,
+    public GpodnetDevice(@NonNull String id,
+                         String caption,
+                         String type,
                          int subscriptions) {
-        Validate.notNull(id);
-
         this.id = id;
         this.caption = caption;
         this.type = DeviceType.fromString(type);

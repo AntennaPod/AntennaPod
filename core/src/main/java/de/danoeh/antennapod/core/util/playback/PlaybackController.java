@@ -13,6 +13,8 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
@@ -21,9 +23,6 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledFuture;
@@ -74,8 +73,7 @@ public abstract class PlaybackController {
      */
     private boolean reinitOnPause;
 
-    public PlaybackController(Activity activity, boolean reinitOnPause) {
-        Validate.notNull(activity);
+    public PlaybackController(@NonNull Activity activity, boolean reinitOnPause) {
 
         this.activity = activity;
         this.reinitOnPause = reinitOnPause;
@@ -360,7 +358,7 @@ public abstract class PlaybackController {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (isConnectedToPlaybackService()) {
-                if (StringUtils.equals(intent.getAction(),
+                if (TextUtils.equals(intent.getAction(),
                         PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
                     release();
                     onShutdownNotification();

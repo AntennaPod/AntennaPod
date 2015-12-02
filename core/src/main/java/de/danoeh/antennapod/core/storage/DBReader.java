@@ -225,12 +225,12 @@ public final class DBReader {
     private static Map<Long,FeedMedia> getFeedMedia(PodDBAdapter adapter,
                                                     long... itemIds) {
 
-        ArrayList<String> ids = new ArrayList<>(itemIds.length);
-        for(long itemId : itemIds) {
-            ids.add(String.valueOf(itemId));
+        String[] ids = new String[itemIds.length];
+        for(int i=0, len=itemIds.length; i < len; i++) {
+            ids[i] = String.valueOf(itemIds[i]);
         }
         Map<Long,FeedMedia> result = new HashMap<>(itemIds.length);
-        Cursor cursor = adapter.getFeedMediaCursor(ids.toArray(new String[0]));
+        Cursor cursor = adapter.getFeedMediaCursor(ids);
         try {
             if (cursor.moveToFirst()) {
                 do {
@@ -862,10 +862,14 @@ public final class DBReader {
     /**
      * Searches the DB for a FeedImage of the given id.
      *
-     * @param ids The id of the object
-     * @return The found object
+     * @param imageIds The ids of the images
+     * @return Map that associates the id of an image with the image itself
      */
-    private static Map<Long,FeedImage> getFeedImages(PodDBAdapter adapter, final long... ids) {
+    private static Map<Long,FeedImage> getFeedImages(PodDBAdapter adapter, final long... imageIds) {
+        String[] ids = new String[imageIds.length];
+        for(int i=0, len=imageIds.length; i < len; i++) {
+            ids[i] = String.valueOf(imageIds[i]);
+        }
         Cursor cursor = adapter.getImageCursor(ids);
         Map<Long, FeedImage> result = new HashMap<>(cursor.getCount());
         try {
