@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -388,7 +389,7 @@ public class UserPreferences {
 
     public static void setAutodownloadSelectedNetworks(String[] value) {
         prefs.edit()
-             .putString(PREF_AUTODL_SELECTED_NETWORKS, StringUtils.join(value, ','))
+             .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
              .apply();
     }
 
@@ -430,7 +431,7 @@ public class UserPreferences {
     }
 
     public static void setHiddenDrawerItems(List<String> items) {
-        String str = StringUtils.join(items, ',');
+        String str = TextUtils.join(",", items);
         prefs.edit()
              .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
              .apply();
