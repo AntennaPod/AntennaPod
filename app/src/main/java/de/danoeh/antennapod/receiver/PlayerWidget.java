@@ -5,11 +5,9 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
-import org.apache.commons.lang3.StringUtils;
-
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.service.PlayerWidgetService;
 
@@ -28,9 +26,9 @@ public class PlayerWidget extends AppWidgetProvider {
         }
 
         // these come from the PlaybackService when things should get updated
-        if (StringUtils.equals(intent.getAction(), PlaybackService.FORCE_WIDGET_UPDATE)) {
+        if (TextUtils.equals(intent.getAction(), PlaybackService.FORCE_WIDGET_UPDATE)) {
             startUpdate(context);
-        } else if (StringUtils.equals(intent.getAction(), PlaybackService.STOP_WIDGET_UPDATE)) {
+        } else if (TextUtils.equals(intent.getAction(), PlaybackService.STOP_WIDGET_UPDATE)) {
             stopUpdate(context);
         }
     }

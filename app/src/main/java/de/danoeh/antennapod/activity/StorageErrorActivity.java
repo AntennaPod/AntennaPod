@@ -6,9 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.util.Log;
-
-import org.apache.commons.lang3.StringUtils;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
@@ -57,7 +56,7 @@ public class StorageErrorActivity extends ActionBarActivity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (StringUtils.equals(intent.getAction(), Intent.ACTION_MEDIA_MOUNTED)) {
+			if (TextUtils.equals(intent.getAction(), Intent.ACTION_MEDIA_MOUNTED)) {
 				if (intent.getBooleanExtra("read-only", true)) {
 					if (BuildConfig.DEBUG)
 						Log.d(TAG, "Media was mounted; Finishing activity");

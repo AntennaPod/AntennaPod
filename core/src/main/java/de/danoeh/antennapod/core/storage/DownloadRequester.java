@@ -3,12 +3,12 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.URLUtil;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 
 import java.io.File;
 import java.util.Map;
@@ -71,10 +71,8 @@ public class DownloadRequester {
      *                call will return false.
      * @return True if the download request was accepted, false otherwise.
      */
-    public synchronized boolean download(Context context, DownloadRequest request) {
-        Validate.notNull(context);
-        Validate.notNull(request);
-
+    public synchronized boolean download(@NonNull Context context,
+                                         @NonNull DownloadRequest request) {
         if (downloads.containsKey(request.getSource())) {
             if (BuildConfig.DEBUG) Log.i(TAG, "DownloadRequest is already stored.");
             return false;
@@ -145,7 +143,7 @@ public class DownloadRequester {
     private boolean isFilenameAvailable(String path) {
         for (String key : downloads.keySet()) {
             DownloadRequest r = downloads.get(key);
-            if (StringUtils.equals(r.getDestination(), path)) {
+            if (TextUtils.equals(r.getDestination(), path)) {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, path
                             + " is already used by another requested download");

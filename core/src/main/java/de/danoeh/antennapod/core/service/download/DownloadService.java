@@ -14,14 +14,14 @@ import android.media.MediaMetadataRetriever;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.util.Pair;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.URLUtil;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 import org.apache.http.HttpStatus;
 import org.xml.sax.SAXException;
 
@@ -407,9 +407,11 @@ public class DownloadService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (StringUtils.equals(intent.getAction(), ACTION_CANCEL_DOWNLOAD)) {
+            if (TextUtils.equals(intent.getAction(), ACTION_CANCEL_DOWNLOAD)) {
                 String url = intent.getStringExtra(EXTRA_DOWNLOAD_URL);
-                Validate.notNull(url, "ACTION_CANCEL_DOWNLOAD intent needs download url extra");
+                if(url == null) {
+                    throw new IllegalArgumentException("ACTION_CANCEL_DOWNLOAD intent needs download url extra");
+                }
 
                 Log.d(TAG, "Cancelling download with url " + url);
                 Downloader d = getDownloader(url);
@@ -420,7 +422,7 @@ public class DownloadService extends Service {
                 }
                 postDownloaders();
 
-            } else if (StringUtils.equals(intent.getAction(), ACTION_CANCEL_ALL_DOWNLOADS)) {
+            } else if (TextUtils.equals(intent.getAction(), ACTION_CANCEL_ALL_DOWNLOADS)) {
                 for (Downloader d : downloads) {
                     d.cancel();
                     Log.d(TAG, "Cancelled all downloads");
@@ -909,7 +911,7 @@ public class DownloadService extends Service {
                     FeedItem item1 = feed.getItems().get(x);
                     FeedItem item2 = feed.getItems().get(y);
                     if (item1.hasItemImage() && item2.hasItemImage()) {
-                        if (StringUtils.equals(item1.getImage().getDownload_url(), item2.getImage().getDownload_url())) {
+                        if (TextUtils.equals(item1.getImage().getDownload_url(), item2.getImage().getDownload_url())) {
                             item2.setImage(null);
                         }
                     }
@@ -1017,10 +1019,8 @@ public class DownloadService extends Service {
         private DownloadRequest request;
         private DownloadStatus status;
 
-        public MediaHandlerThread(DownloadStatus status, DownloadRequest request) {
-            Validate.notNull(status);
-            Validate.notNull(request);
-
+        public MediaHandlerThread(@NonNull DownloadStatus status,
+                                  @NonNull DownloadRequest request) {
             this.status = status;
             this.request = request;
         }

@@ -3,8 +3,6 @@ package de.danoeh.antennapod.core.util;
 import android.net.Uri;
 import android.util.Log;
 
-import org.apache.commons.lang3.StringUtils;
-
 import de.danoeh.antennapod.core.BuildConfig;
 
 /**
@@ -32,19 +30,19 @@ public final class URLChecker {
      * @return The prepared url
      */
     public static String prepareURL(String url) {
-        url = StringUtils.trim(url);
+        url = url.trim();
         if (url.startsWith("feed://")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing feed:// with http://");
             return url.replaceFirst("feed://", "http://");
         } else if (url.startsWith("pcast://")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Removing pcast://");
-            return prepareURL(StringUtils.removeStart(url, "pcast://"));
+            return prepareURL(url.substring("pcast://".length()));
         } else if (url.startsWith("itpc")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing itpc:// with http://");
             return url.replaceFirst("itpc://", "http://");
         } else if (url.startsWith(AP_SUBSCRIBE)) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Removing antennapod-subscribe://");
-            return prepareURL(StringUtils.removeStart(url, AP_SUBSCRIBE));
+            return prepareURL(url.substring(AP_SUBSCRIBE.length()));
         } else if (!(url.startsWith("http://") || url.startsWith("https://"))) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Adding http:// at the beginning of the URL");
             return "http://" + url;
@@ -66,7 +64,7 @@ public final class URLChecker {
         if (base == null) {
             return prepareURL(url);
         }
-        url = StringUtils.trim(url);
+        url = url.trim();
         base = prepareURL(base);
         Uri urlUri = Uri.parse(url);
         Uri baseUri = Uri.parse(base);

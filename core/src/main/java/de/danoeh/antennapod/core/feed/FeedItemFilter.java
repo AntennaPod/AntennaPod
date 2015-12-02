@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.content.Context;
-
-import org.apache.commons.lang3.StringUtils;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,7 @@ public class FeedItemFilter {
     private boolean hideNotDownloaded = false;
 
     public FeedItemFilter(String properties) {
-        this(StringUtils.split(properties, ','));
+        this(TextUtils.split(",", properties));
     }
 
     public FeedItemFilter(String[] properties) {

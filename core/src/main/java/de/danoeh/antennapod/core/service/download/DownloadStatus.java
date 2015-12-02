@@ -1,8 +1,7 @@
 package de.danoeh.antennapod.core.service.download;
 
 import android.database.Cursor;
-
-import org.apache.commons.lang3.Validate;
+import android.support.annotation.NonNull;
 
 import java.util.Date;
 
@@ -62,10 +61,8 @@ public class DownloadStatus {
 		this.feedfileType = feedfileType;
 	}
 
-	public DownloadStatus(DownloadRequest request, DownloadError reason,
+	public DownloadStatus(@NonNull DownloadRequest request, DownloadError reason,
 			boolean successful, boolean cancelled, String reasonDetailed) {
-        Validate.notNull(request);
-
 		this.title = request.getTitle();
 		this.feedfileId = request.getFeedfileId();
 		this.feedfileType = request.getFeedfileType();
@@ -77,10 +74,8 @@ public class DownloadStatus {
 	}
 
 	/** Constructor for creating new completed downloads. */
-	public DownloadStatus(FeedFile feedfile, String title, DownloadError reason,
-			boolean successful, String reasonDetailed) {
-		Validate.notNull(feedfile);
-
+	public DownloadStatus(@NonNull FeedFile feedfile, String title, DownloadError reason,
+						  boolean successful, String reasonDetailed) {
 		this.title = title;
 		this.done = true;
 		this.feedfileId = feedfile.getId();

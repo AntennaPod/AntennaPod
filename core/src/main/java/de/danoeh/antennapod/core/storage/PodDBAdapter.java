@@ -14,8 +14,6 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.apache.commons.lang3.Validate;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -1180,7 +1178,9 @@ public class PodDBAdapter {
      * @throws IllegalArgumentException if limit < 0
      */
     public final Cursor getCompletedMediaCursor(int limit) {
-        Validate.isTrue(limit >= 0, "Limit must be >= 0");
+        if(limit < 0) {
+            throw new IllegalArgumentException("Limit must be >= 0");
+        }
 
         Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null,
                 KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,

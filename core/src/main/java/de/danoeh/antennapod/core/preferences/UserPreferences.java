@@ -7,12 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -122,9 +121,8 @@ public class UserPreferences {
      *
      * @throws IllegalArgumentException if context is null
      */
-    public static void init(Context context) {
+    public static void init(@NonNull Context context) {
         Log.d(TAG, "Creating new instance of UserPreferences");
-        Validate.notNull(context);
 
         UserPreferences.context = context.getApplicationContext();
         UserPreferences.prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -153,7 +151,7 @@ public class UserPreferences {
 
     public static List<String> getHiddenDrawerItems() {
         String hiddenItems = prefs.getString(PREF_HIDDEN_DRAWER_ITEMS, "");
-        return new ArrayList<String>(Arrays.asList(StringUtils.split(hiddenItems, ',')));
+        return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
     }
 
     public static int getFeedOrder() {
@@ -348,7 +346,7 @@ public class UserPreferences {
 
     public static String[] getAutodownloadSelectedNetworks() {
         String selectedNetWorks = prefs.getString(PREF_AUTODL_SELECTED_NETWORKS, "");
-        return StringUtils.split(selectedNetWorks, ',');
+        return TextUtils.split(selectedNetWorks, ",");
     }
 
     public static boolean shouldResumeAfterCall() {
@@ -423,7 +421,9 @@ public class UserPreferences {
      *                            flattrd. Must be a value between 0 and 1 (inclusive)
      * */
     public static void setAutoFlattrSettings( boolean enabled, float autoFlattrThreshold) {
-        Validate.inclusiveBetween(0.0, 1.0, autoFlattrThreshold);
+        if(autoFlattrThreshold < 0.0 || autoFlattrThreshold > 1.0) {
+            throw new IllegalArgumentException("Flattr threshold must be in range [0.0, 1.0]");
+        }
         prefs.edit()
              .putBoolean(PREF_AUTO_FLATTR, enabled)
              .putFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD, autoFlattrThreshold)

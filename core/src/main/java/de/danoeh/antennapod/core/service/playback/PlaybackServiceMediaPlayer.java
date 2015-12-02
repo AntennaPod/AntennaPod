@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -22,8 +23,6 @@ import android.view.SurfaceHolder;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
-
-import org.apache.commons.lang3.Validate;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -92,10 +91,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      */
     private WifiManager.WifiLock wifiLock;
 
-    public PlaybackServiceMediaPlayer(Context context, PSMPCallback callback) {
-        Validate.notNull(context);
-        Validate.notNull(callback);
-
+    public PlaybackServiceMediaPlayer(@NonNull Context context,
+                                      @NonNull PSMPCallback callback) {
         this.context = context;
         this.callback = callback;
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -175,9 +172,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      *                           for playback immediately (see 'prepareImmediately' parameter for more details)
      * @param prepareImmediately Set to true if the method should also prepare the episode for playback.
      */
-    public void playMediaObject(final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
-        Validate.notNull(playable);
-
+    public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject(...)");
         executor.submit(new Runnable() {
             @Override
@@ -203,8 +198,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      *
      * @see #playMediaObject(de.danoeh.antennapod.core.util.playback.Playable, boolean, boolean, boolean)
      */
-    private void playMediaObject(final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
-        Validate.notNull(playable);
+    private void playMediaObject(@NonNull final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (!playerLock.isHeldByCurrentThread()) {
             throw new IllegalStateException("method requires playerLock");
         }
@@ -573,9 +567,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     /**
      * Seek to the start of the specified chapter.
      */
-    public void seekToChapter(Chapter c) {
-        Validate.notNull(c);
-
+    public void seekToChapter(@NonNull Chapter c) {
         seekTo((int) c.getStart());
     }
 
@@ -840,9 +832,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * @param newStatus The new PlayerStatus. This must not be null.
      * @param newMedia  The new playable object of the PSMP object. This can be null.
      */
-    private synchronized void setPlayerStatus(PlayerStatus newStatus, Playable newMedia) {
-        Validate.notNull(newStatus);
-
+    private synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
         Log.d(TAG, "Setting player status to " + newStatus);
 
         this.playerStatus = newStatus;
