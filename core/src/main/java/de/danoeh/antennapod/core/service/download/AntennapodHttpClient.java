@@ -75,14 +75,14 @@ public class AntennapodHttpClient {
                 if(location.startsWith("/")) { // URL is not absolute, but relative
                     URL url = request.url();
                     location = url.getProtocol() + "://" + url.getHost() + location;
-                } else if(!location.startsWith("http://") && !location.startsWith("https://")) {
+                } else if(!location.toLowerCase().startsWith("http://") &&
+                        !location.toLowerCase().startsWith("https://")) {
                     // Reference is relative to current path
                     URL url = request.url();
                     String path = url.getPath();
                     String newPath = path.substring(0, path.lastIndexOf("/") + 1) + location;
                     location = url.getProtocol() + "://" + url.getHost() + newPath;
                 }
-                Log.d(TAG, "New location: " + location);
                 try {
                     DBWriter.updateFeedDownloadURL(request.urlString(), location).get();
                 } catch (Exception e) {
