@@ -20,7 +20,7 @@ public class FeedItemFilter {
     private boolean hideNotDownloaded = false;
 
     public FeedItemFilter(String properties) {
-        this(TextUtils.split(",", properties));
+        this(TextUtils.split(properties, ","));
     }
 
     public FeedItemFilter(String[] properties) {
