@@ -1009,7 +1009,7 @@ public class DBWriter {
      */
     public static Future<?> setFeedItemsFilter(final long feedId,
                                                final List<String> filterValues) {
-        Log.d(TAG, "setFeedFilter");
+        Log.d(TAG, "setFeedItemsFilter() called with: " + "feedId = [" + feedId + "], filterValues = [" + filterValues + "]");
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();

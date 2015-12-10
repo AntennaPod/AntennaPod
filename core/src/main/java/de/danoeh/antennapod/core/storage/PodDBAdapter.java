@@ -408,9 +408,10 @@ public class PodDBAdapter {
     }
 
     public void setFeedItemFilter(long feedId, List<String> filterValues) {
+        Log.d(TAG, "setFeedItemFilter() called with: " + "feedId = [" + feedId + "], " +
+                "filterValues = [" + TextUtils.join(",", filterValues) + "]");
         ContentValues values = new ContentValues();
         values.put(KEY_HIDE, TextUtils.join(",", filterValues));
-        Log.d(TAG, TextUtils.join(",", filterValues));
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
