@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -1008,7 +1009,7 @@ public class DBWriter {
      * @param filterValues Values that represent properties to filter by
      */
     public static Future<?> setFeedItemsFilter(final long feedId,
-                                               final List<String> filterValues) {
+                                               final Set<String> filterValues) {
         Log.d(TAG, "setFeedItemsFilter() called with: " + "feedId = [" + feedId + "], filterValues = [" + filterValues + "]");
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();

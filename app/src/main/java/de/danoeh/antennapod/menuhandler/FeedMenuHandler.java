@@ -12,10 +12,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -116,7 +116,7 @@ public class FeedMenuHandler {
         final String[] values = context.getResources().getStringArray(R.array.episode_hide_values);
         final boolean[] checkedItems = new boolean[items.length];
 
-        final List<String> hidden = new ArrayList<String>(Arrays.asList(feed.getItemFilter().getValues()));
+        final Set<String> hidden = new HashSet<String>(Arrays.asList(feed.getItemFilter().getValues()));
         Iterator<String> it = hidden.iterator();
         while(it.hasNext()) {
             // make sure we have no empty strings in the filter list
