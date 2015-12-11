@@ -1,6 +1,10 @@
 変更ログ
 ==========
 
+Version 1.4.0.12
+----------------
+* Fix for crash on Huawei devices (media buttons may not work)
+
 バージョン 1.4
 -----------
 * BLUETOOTH アクセス許可: お使いの携帯電話に Bluetooth デバイスが再接続する際、再生を再開するために必要です

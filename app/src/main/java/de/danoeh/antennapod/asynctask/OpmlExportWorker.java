@@ -49,7 +49,7 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
         OpmlWriter opmlWriter = new OpmlWriter();
         if (output == null) {
             output = new File(
-                    UserPreferences.getDataFolder(context, EXPORT_DIR),
+                    UserPreferences.getDataFolder(EXPORT_DIR),
                     DEFAULT_OUTPUT_NAME);
             if (output.exists()) {
                 Log.w(TAG, "Overwriting previously exported file.");

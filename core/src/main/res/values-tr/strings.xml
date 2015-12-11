@@ -483,4 +483,5 @@
   <string name="sort_date_old_new">Tarih (Eski \u2192 Yeni)</string>
   <string name="sort_duration_short_long">Süre (Kısa \u2192 Uzun)</string>
   <string name="sort_duration_long_short">Süre (Uzun \u2192 Kısa)</string>
+  <!--Rating dialog-->
 </resources>

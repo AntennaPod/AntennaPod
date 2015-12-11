@@ -3,9 +3,8 @@ package de.danoeh.antennapod.core.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
-
-import org.apache.commons.lang3.StringUtils;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -18,9 +17,9 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.d(TAG, "Received intent");
-		if (StringUtils.equals(intent.getAction(), Intent.ACTION_BOOT_COMPLETED)) {
+		if (TextUtils.equals(intent.getAction(), Intent.ACTION_BOOT_COMPLETED)) {
 			Log.d(TAG, "Resetting update alarm after reboot");
-		} else if (StringUtils.equals(intent.getAction(), Intent.ACTION_PACKAGE_REPLACED)) {
+		} else if (TextUtils.equals(intent.getAction(), Intent.ACTION_PACKAGE_REPLACED)) {
 			Log.d(TAG, "Resetting update alarm after app upgrade");
 		}
         PlaybackPreferences.init(context);

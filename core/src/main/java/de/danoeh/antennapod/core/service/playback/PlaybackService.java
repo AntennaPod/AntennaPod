@@ -20,6 +20,7 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -27,8 +28,6 @@ import android.view.SurfaceHolder;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -1019,7 +1018,7 @@ public class PlaybackService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (StringUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
+            if (TextUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);
                 if (state != -1) {
                     Log.d(TAG, "Headset plug event. State is " + state);
@@ -1041,7 +1040,7 @@ public class PlaybackService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                if (StringUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
+                if (TextUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
                     int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
                     if (state == BluetoothA2dp.STATE_CONNECTED) {
                         Log.d(TAG, "Received bluetooth connection intent");
@@ -1102,7 +1101,7 @@ public class PlaybackService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (StringUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
+            if (TextUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
                 stopSelf();
             }
         }
@@ -1112,7 +1111,7 @@ public class PlaybackService extends Service {
     private final BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (StringUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
+            if (TextUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
                 mediaPlayer.endPlayback(true);
             }
@@ -1122,7 +1121,7 @@ public class PlaybackService extends Service {
     private final BroadcastReceiver pauseResumeCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (StringUtils.equals(intent.getAction(), ACTION_RESUME_PLAY_CURRENT_EPISODE)) {
+            if (TextUtils.equals(intent.getAction(), ACTION_RESUME_PLAY_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received RESUME_PLAY_CURRENT_EPISODE intent");
                 mediaPlayer.resume();
             }
@@ -1132,7 +1131,7 @@ public class PlaybackService extends Service {
     private final BroadcastReceiver pausePlayCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (StringUtils.equals(intent.getAction(), ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
+            if (TextUtils.equals(intent.getAction(), ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received PAUSE_PLAY_CURRENT_EPISODE intent");
                 mediaPlayer.pause(false, false);
             }

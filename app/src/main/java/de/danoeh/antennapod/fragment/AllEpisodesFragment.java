@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,8 +29,10 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
-import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -43,8 +44,10 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -57,9 +60,7 @@ public class AllEpisodesFragment extends Fragment {
 
     public static final String TAG = "AllEpisodesFragment";
 
-    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
-            EventDistributor.FEED_LIST_UPDATE |
-            EventDistributor.DOWNLOAD_QUEUED |
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE |
             EventDistributor.UNREAD_ITEMS_UPDATE |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
@@ -80,8 +81,6 @@ public class AllEpisodesFragment extends Fragment {
 
     private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
 
-    private DownloadObserver downloadObserver = null;
-
     private boolean isUpdatingFeeds;
 
     protected Subscription subscription;
@@ -101,10 +100,6 @@ public class AllEpisodesFragment extends Fragment {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
         this.activity.set((MainActivity) getActivity());
-        if (downloadObserver != null) {
-            downloadObserver.setActivity(getActivity());
-            downloadObserver.onResume();
-        }
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
@@ -113,6 +108,7 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        EventBus.getDefault().registerSticky(this);
         loadItems();
         registerForContextMenu(recyclerView);
     }
@@ -120,6 +116,7 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        EventBus.getDefault().unregister(this);
         saveScrollPosition();
         unregisterForContextMenu(recyclerView);
     }
@@ -180,9 +177,6 @@ public class AllEpisodesFragment extends Fragment {
         listAdapter = null;
         activity.set(null);
         viewsCreated = false;
-        if (downloadObserver != null) {
-            downloadObserver.onPause();
-        }
     }
 
 
@@ -267,8 +261,12 @@ public class AllEpisodesFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
         if(!isVisible()) {
             return false;
+        }
+        if(item.getItemId() == R.id.share_item) {
+            return true; // avoids that the position is reset when we need it in the submenu
         }
         int pos = listAdapter.getPosition();
         if(pos < 0) {
@@ -327,11 +325,10 @@ public class AllEpisodesFragment extends Fragment {
 
     private void onFragmentLoaded() {
         if (listAdapter == null) {
-            listAdapter = new AllEpisodesRecycleAdapter(activity.get(), activity.get(), itemAccess,
-                    new DefaultActionButtonCallback(activity.get()), showOnlyNewEpisodes());
+            MainActivity mainActivity = activity.get();
+            listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess,
+                    new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
             recyclerView.setAdapter(listAdapter);
-            downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
-            downloadObserver.onResume();
         }
         listAdapter.notifyDataSetChanged();
         restoreScrollPosition();
@@ -339,21 +336,11 @@ public class AllEpisodesFragment extends Fragment {
         updateShowOnlyEpisodesListViewState();
     }
 
-    private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
-        @Override
-        public void onContentChanged(List<Downloader> downloaderList) {
-            AllEpisodesFragment.this.downloaderList = downloaderList;
-            if (listAdapter != null) {
-                listAdapter.notifyDataSetChanged();
-            }
-        }
-    };
-
     protected AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
 
         @Override
         public int getCount() {
-            if (itemsLoaded) {
+            if (episodes != null) {
                 return episodes.size();
             }
             return 0;
@@ -361,7 +348,7 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public FeedItem getItem(int position) {
-            if (itemsLoaded) {
+            if (episodes != null && position < episodes.size()) {
                 return episodes.get(position);
             }
             return null;
@@ -389,6 +376,39 @@ public class AllEpisodesFragment extends Fragment {
         }
     };
 
+    public void onEventMainThread(FeedItemEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if(episodes == null || listAdapter == null) {
+            return;
+        }
+        for(int i=0, size = event.items.size(); i < size; i++) {
+            FeedItem item = event.items.get(i);
+            int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
+            if(pos >= 0) {
+                episodes.remove(pos);
+                episodes.add(pos, item);
+                listAdapter.notifyItemChanged(pos);
+            }
+        }
+    }
+
+
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        DownloaderUpdate update = event.update;
+        downloaderList = update.downloaders;
+        if(update.feedIds.length > 0) {
+            if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+                getActivity().supportInvalidateOptionsMenu();
+            }
+        }
+        if(update.mediaIds.length > 0) {
+            if(listAdapter != null) {
+                listAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
@@ -412,7 +432,7 @@ public class AllEpisodesFragment extends Fragment {
             recyclerView.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
-        subscription = Observable.defer(() -> Observable.just(loadData()))
+        subscription = Observable.fromCallable(() -> loadData())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {

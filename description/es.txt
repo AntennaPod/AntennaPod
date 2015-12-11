@@ -30,13 +30,13 @@ CONTROLA EL SISTEMA<br>
 AntennaPod está en continuo desarrollo por voluntarios. ¡Tú también puedes contribuir, con tu código o con tus comentarios!
 
 GitHub es el sitio que debes visitar para solicitar características nuevas, reportar fallos y contribuir con código<br>
-www.github.com/AntennaPod/AntennaPod
+https://www.github.com/AntennaPod/AntennaPod
 
 Nuestro Grupo de Google es el sitio para compartir tus ideas, tus momentos favoritos de podcasting y tu gratitud a los voluntarios:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
 Transifex es el sitio para ayudar con las traducciones:<br>
-www.transifex.com/antennapod/antennapod
+https://www.transifex.com/antennapod/antennapod
 
 Echa un vistazo a nuestro programa de Beta Testing para ser el primero en usar las nuevas características:<br>
-www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

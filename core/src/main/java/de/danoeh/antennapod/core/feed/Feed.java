@@ -4,8 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-
-import org.apache.commons.lang3.StringUtils;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -292,7 +291,8 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     }
 
     public void updateFromOther(Feed other) {
-        super.updateFromOther(other);
+        // don't update feed's download_url, we do that manually if redirected
+        // see AntennapodHttpClient
         if (other.title != null) {
             title = other.title;
         }
@@ -366,7 +366,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         if (other.isPaged() && !this.isPaged()) {
             return true;
         }
-        if (!StringUtils.equals(other.getNextPageLink(), this.getNextPageLink())) {
+        if (!TextUtils.equals(other.getNextPageLink(), this.getNextPageLink())) {
             return true;
         }
         return false;

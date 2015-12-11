@@ -22,6 +22,7 @@
   <string name="playback_history_label">Journal des lectures</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Identifiants gpodder.net</string>
+  <string name="free_space_label">\"%1$s libre</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publié récemment</string>
   <string name="episode_filter_label">N\'afficher que les nouveaux épisodes</string>
@@ -183,7 +184,7 @@
   <string name="authentication_notification_msg">La ressource que vous avez demandé nécessite un nom d\'utilisateur et un mot de passe</string>
   <string name="confirm_mobile_download_dialog_title">Confirmer le téléchargement mobile</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d\'ajouter seulement l\'épisode à la liste ou vous pouvez autoriser temporairement le téléchargement.\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
-  <string name="confirm_mobile_download_dialog_message">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVoulez-vous autoriser temporairement le téléchargement?\n\n&lt;small&gt;Votre choix sera retenu pour les 10 prochaines minutes.&lt;small&gt;</string>
+  <string name="confirm_mobile_download_dialog_message">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVoulez-vous autoriser temporairement le téléchargement?\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Rajouter à la liste</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Autoriser temporairement</string>
   <!--Mediaplayer messages-->
@@ -259,7 +260,9 @@
   <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont ni dans la liste ni dans les favoris peuvent être supprimés si l\'espace disque devient faible</string>
   <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture lorsque le casque ou le bluetooth sont déconnectés</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le bluetooth se connecte</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le bluetooth se reconnecte</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Le bouton piste suivante saute l\'épisode</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Au lieu de faire un saut avant passer à l\'épisode suivant quand un bouton physique pour passer à la piste suivante est pressé</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
   <string name="pref_auto_delete_title">Suppression automatique</string>
@@ -344,6 +347,9 @@
   <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
   <string name="pref_image_cache_size_title">Taille du cache de l\'image</string>
   <string name="pref_image_cache_size_sum">Taille de l’espace de stockage temporaire des images.</string>
+  <string name="crash_report_title">Rapport de crash</string>
+  <string name="crash_report_sum">Envoyer le dernier rapport de crash par e-mail</string>
+  <string name="send_email">Envoyer e-mail</string>
   <string name="experimental_pref">Expérimental</string>
   <string name="pref_sonic_title">Lecteur multimédia Sonic</string>
   <string name="pref_sonic_message">Utiliser le lecteur multimédia interne Sonic au lieu de Prestissimo</string>
@@ -438,11 +444,15 @@
   <string name="selected_folder_label">Répertoire choisi :</string>
   <string name="create_folder_label">Créer répertoire</string>
   <string name="choose_data_directory">Choisir le répertoire</string>
+  <string name="choose_data_directory_message">Choisissez le répertoire où enregistrer les données. AntennaPod créera automatiquement les sous-répertoires nécessaires.</string>
   <string name="create_folder_msg">Créer un répertoire nommé \"%1$s\" ?</string>
   <string name="create_folder_success">Répertoire créé</string>
   <string name="create_folder_error_no_write_access">Impossible d\'écrire dans ce répertoire</string>
   <string name="create_folder_error_already_exists">Le répertoire existe déjà</string>
   <string name="create_folder_error">Impossible de créer le répertoire</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" n\'existe pas</string>
+  <string name="folder_not_readable_error">\"%1$s\" n\'est pas lisible</string>
+  <string name="folder_not_writable_error">\"%1$s\" est en lecture seul</string>
   <string name="folder_not_empty_dialog_title">Le répertoire n\'est pas vide</string>
   <string name="folder_not_empty_dialog_msg">Le répertoire que vous avez choisi n\'est pas vide. Les fichiers téléchargés seront ajoutés à ce répertoire. Continuer malgré tout ?</string>
   <string name="set_to_default_folder">Choisir le répertoire par défaut</string>
@@ -502,4 +512,10 @@
   <string name="sort_date_old_new">Date (Ancien \u2192 Nouveau)</string>
   <string name="sort_duration_short_long">Durée (Courte \u2192 Longue)</string>
   <string name="sort_duration_long_short">Durée (Longue \u2192 Courte)</string>
+  <!--Rating dialog-->
+  <string name="rating_title">Vous aimez AntennaPod ?</string>
+  <string name="rating_message">Nous vous serions reconnaissant de prendre un peu de temps pour noter AntennaPod.</string>
+  <string name="rating_never_label">Laissez moi tranquille</string>
+  <string name="rating_later_label">Rappelez le moi plus tard</string>
+  <string name="rating_now_label">Okay, faisons ça !</string>
 </resources>

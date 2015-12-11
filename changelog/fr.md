@@ -1,6 +1,10 @@
 Nouveautés
 ==========
 
+Version 1.4.0.12
+----------------
+* Correction d'un plantage sur les appareils Huawei (les boutons de lecture peuvent ne pas fonctionner)
+
 Version 1.4
 -----------
 * PERMISSION BLUETOOTH: Nécessaire afin de pouvoir reprendre la lecture quand la connexion Bluetooth est rétablie avec l'appareil

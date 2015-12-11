@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
@@ -10,7 +11,6 @@ import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.internal.http.HttpDate;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
 import java.io.BufferedInputStream;
@@ -86,7 +86,7 @@ public class HttpDownloader extends Downloader {
                     String credentials = encodeCredentials(parts[0], parts[1], "ISO-8859-1");
                     httpReq.header("Authorization", credentials);
                 }
-            } else if (!StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
+            } else if (!TextUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
                 String credentials = encodeCredentials(request.getUsername(), request.getPassword(),
                         "ISO-8859-1");
                 httpReq.header("Authorization", credentials);
@@ -114,7 +114,10 @@ public class HttpDownloader extends Downloader {
             }
             responseBody = response.body();
             String contentEncodingHeader = response.header("Content-Encoding");
-            boolean isGzip = StringUtils.equalsIgnoreCase(contentEncodingHeader, "gzip");
+            boolean isGzip = false;
+            if(!TextUtils.isEmpty(contentEncodingHeader)) {
+                isGzip = TextUtils.equals(contentEncodingHeader.toLowerCase(), "gzip");
+            }
 
             Log.d(TAG, "Response code is " + response.code());
 
@@ -126,7 +129,7 @@ public class HttpDownloader extends Downloader {
                         String credentials = encodeCredentials(parts[0], parts[1], "UTF-8");
                         httpReq.header("Authorization", credentials);
                     }
-                } else if (!StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
+                } else if (!TextUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
                     String credentials = encodeCredentials(request.getUsername(), request.getPassword(),
                             "UTF-8");
                     httpReq.header("Authorization", credentials);
@@ -134,7 +137,9 @@ public class HttpDownloader extends Downloader {
                 response = httpClient.newCall(httpReq.build()).execute();
                 responseBody = response.body();
                 contentEncodingHeader = response.header("Content-Encoding");
-                isGzip = StringUtils.equalsIgnoreCase(contentEncodingHeader, "gzip");
+                if(!TextUtils.isEmpty(contentEncodingHeader)) {
+                    isGzip = TextUtils.equals(contentEncodingHeader.toLowerCase(), "gzip");
+                }
             }
 
             if(!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_MODIFIED) {
@@ -167,7 +172,7 @@ public class HttpDownloader extends Downloader {
             String contentRangeHeader = (fileExists) ? response.header("Content-Range") : null;
 
             if (fileExists && response.code() == HttpStatus.SC_PARTIAL_CONTENT
-                    && !StringUtils.isEmpty(contentRangeHeader)) {
+                    && !TextUtils.isEmpty(contentRangeHeader)) {
                 String start = contentRangeHeader.substring("bytes ".length(),
                         contentRangeHeader.indexOf("-"));
                 request.setSoFar(Long.valueOf(start));

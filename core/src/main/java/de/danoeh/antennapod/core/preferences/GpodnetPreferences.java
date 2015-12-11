@@ -2,9 +2,8 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -293,7 +292,7 @@ public class GpodnetPreferences {
         String[] lines = s.split("\n");
         List<GpodnetEpisodeAction> result = new ArrayList<GpodnetEpisodeAction>(lines.length);
         for(String line : lines) {
-            if(StringUtils.isNotBlank(line)) {
+            if(TextUtils.isEmpty(line)) {
                 GpodnetEpisodeAction action = GpodnetEpisodeAction.readFromString(line);
                 if(action != null) {
                     result.add(GpodnetEpisodeAction.readFromString(line));

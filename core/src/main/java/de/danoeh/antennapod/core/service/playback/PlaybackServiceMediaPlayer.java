@@ -10,19 +10,19 @@ import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
-
-import org.apache.commons.lang3.Validate;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -91,10 +91,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      */
     private WifiManager.WifiLock wifiLock;
 
-    public PlaybackServiceMediaPlayer(Context context, PSMPCallback callback) {
-        Validate.notNull(context);
-        Validate.notNull(callback);
-
+    public PlaybackServiceMediaPlayer(@NonNull Context context,
+                                      @NonNull PSMPCallback callback) {
         this.context = context;
         this.callback = callback;
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -174,9 +172,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      *                           for playback immediately (see 'prepareImmediately' parameter for more details)
      * @param prepareImmediately Set to true if the method should also prepare the episode for playback.
      */
-    public void playMediaObject(final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
-        Validate.notNull(playable);
-
+    public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject(...)");
         executor.submit(new Runnable() {
             @Override
@@ -202,8 +198,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      *
      * @see #playMediaObject(de.danoeh.antennapod.core.util.playback.Playable, boolean, boolean, boolean)
      */
-    private void playMediaObject(final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
-        Validate.notNull(playable);
+    private void playMediaObject(@NonNull final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (!playerLock.isHeldByCurrentThread()) {
             throw new IllegalStateException("method requires playerLock");
         }
@@ -572,9 +567,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     /**
      * Seek to the start of the specified chapter.
      */
-    public void seekToChapter(Chapter c) {
-        Validate.notNull(c);
-
+    public void seekToChapter(@NonNull Chapter c) {
         seekTo((int) c.getStart());
     }
 
@@ -839,9 +832,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * @param newStatus The new PlayerStatus. This must not be null.
      * @param newMedia  The new playable object of the PSMP object. This can be null.
      */
-    private synchronized void setPlayerStatus(PlayerStatus newStatus, Playable newMedia) {
-        Validate.notNull(newStatus);
-
+    private synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
         Log.d(TAG, "Setting player status to " + newStatus);
 
         this.playerStatus = newStatus;
@@ -1182,129 +1173,100 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
 
-        @Override
-        public void onPlay() {
-            if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                resume();
-            } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                setStartWhenPrepared(true);
-                prepare();
-            }
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-            if (playerStatus == PlayerStatus.PLAYING) {
-                pause(false, true);
-            }
-            if (UserPreferences.isPersistNotify()) {
-                pause(false, true);
-            } else {
-                pause(true, true);
-            }
-        }
-
-        @Override
-        public void onSkipToNext() {
-            super.onSkipToNext();
-            endPlayback(true);
-        }
-
-        @Override
-        public void onFastForward() {
-            super.onFastForward();
-            seekDelta(UserPreferences.getFastFowardSecs() * 1000);
-        }
-
-        @Override
-        public void onRewind() {
-            super.onRewind();
-            seekDelta(-UserPreferences.getRewindSecs() * 1000);
-        }
-
-        @Override
-        public void onSeekTo(long pos) {
-            super.onSeekTo(pos);
-            seekTo((int) pos);
-        }
+        private static final String TAG = "MediaSessionCompat";
 
         @Override
         public boolean onMediaButtonEvent(final Intent mediaButton) {
-            Log.d(TAG, "GOT MediaButton EVENT");
+            Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
             if (mediaButton != null) {
                 KeyEvent keyEvent = (KeyEvent) mediaButton.getExtras().get(Intent.EXTRA_KEY_EVENT);
                 handleMediaKey(keyEvent);
             }
-            return super.onMediaButtonEvent(mediaButton);
+            return false;
         }
     };
 
-        public boolean handleMediaKey(KeyEvent event) {
-            if (event != null
-                    && event.getAction() == KeyEvent.ACTION_DOWN
-                    && event.getRepeatCount() == 0) {
-                switch (event.getKeyCode()) {
-                    case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                    case KeyEvent.KEYCODE_HEADSETHOOK:
-                    {
-                        Log.d(TAG, "Received Play/Pause event from RemoteControlClient");
-                        if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                            resume();
-                        } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                            setStartWhenPrepared(true);
-                            prepare();
-                        } else if (playerStatus == PlayerStatus.PLAYING) {
-                            pause(false, true);
-                            if (UserPreferences.isPersistNotify()) {
-                                pause(false, true);
-                            } else {
-                                pause(true, true);
-                            }
-                        }
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_MEDIA_PLAY:
-                    {
-                        Log.d(TAG, "Received Play event from RemoteControlClient");
-                        if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                            resume();
-                        } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                            setStartWhenPrepared(true);
-                            prepare();
-                        }
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_MEDIA_PAUSE:
-                    {
-                        Log.d(TAG, "Received Pause event from RemoteControlClient");
-                        if (playerStatus == PlayerStatus.PLAYING) {
-                            pause(false, true);
-                        }
+    public boolean handleMediaKey(KeyEvent event) {
+        Log.d(TAG, "handleMediaKey(" + event +")");
+        if (event != null
+                && event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getRepeatCount() == 0) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                case KeyEvent.KEYCODE_HEADSETHOOK: {
+                    Log.d(TAG, "Received Play/Pause event from RemoteControlClient");
+                    if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                        resume();
+                    } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                        setStartWhenPrepared(true);
+                        prepare();
+                    } else if (playerStatus == PlayerStatus.PLAYING) {
+                        pause(false, true);
                         if (UserPreferences.isPersistNotify()) {
                             pause(false, true);
                         } else {
                             pause(true, true);
                         }
-                        return true;
                     }
-                    case KeyEvent.KEYCODE_MEDIA_STOP:
-                    {
-                        Log.d(TAG, "Received Stop event from RemoteControlClient");
-                        stop();
-                        return true;
-                    }
-                    case KeyEvent.KEYCODE_MEDIA_NEXT:
-                    {
-                        Log.d(TAG, "Received next event from RemoteControlClient");
-                        endPlayback(true);
-                        return true;
-                    }
-                    default:
-                        Log.d(TAG, "Unhandled key code: " + event.getKeyCode());
-                        break;
+                    return true;
                 }
+                case KeyEvent.KEYCODE_MEDIA_PLAY: {
+                    Log.d(TAG, "Received Play event from RemoteControlClient");
+                    if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                        resume();
+                    } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                        setStartWhenPrepared(true);
+                        prepare();
+                    }
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_PAUSE: {
+                    Log.d(TAG, "Received Pause event from RemoteControlClient");
+                    if (playerStatus == PlayerStatus.PLAYING) {
+                        pause(false, true);
+                    }
+                    if (UserPreferences.isPersistNotify()) {
+                        pause(false, true);
+                    } else {
+                        pause(true, true);
+                    }
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_STOP: {
+                    Log.d(TAG, "Received Stop event from RemoteControlClient");
+                    stop();
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_PREVIOUS: {
+                    seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_REWIND: {
+                    seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD: {
+                    seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+                    return true;
+                }
+                case KeyEvent.KEYCODE_MEDIA_NEXT: {
+                    if(event.getSource() == InputDevice.SOURCE_CLASS_NONE ||
+                            UserPreferences.shouldHardwareButtonSkip()) {
+                        // assume the skip command comes from a notification or the lockscreen
+                        // a >| skip button should actually skip
+                        endPlayback(true);
+                    } else {
+                        // assume skip command comes from a (bluetooth) media button
+                        // user actually wants to fast-forward
+                        seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+                    }
+                    return true;
+                }
+                default:
+                    Log.d(TAG, "Unhandled key code: " + event.getKeyCode());
+                    break;
             }
-            return false;
         }
+        return false;
+    }
 }

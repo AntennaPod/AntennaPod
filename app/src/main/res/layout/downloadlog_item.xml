@@ -20,7 +20,7 @@
         tools:text="[Icon]"
         android:gravity="center" />
 
-    <Button
+    <com.joanzapata.iconify.widget.IconButton
         android:id="@+id/btnRetry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,6 +28,7 @@
         android:layout_alignLeft="@id/txtvIcon"
         android:layout_alignRight="@id/txtvIcon"
         android:layout_marginTop="8dp"
+        android:text="{fa-repeat}"
         tools:text="↻" />
 
     <TextView

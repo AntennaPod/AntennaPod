@@ -22,6 +22,7 @@
   <string name="playback_history_label">Zuletzt gespielt</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net Anmeldung</string>
+  <string name="free_space_label">%1$s frei</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Zuletzt veröffentlicht</string>
   <string name="episode_filter_label">Nur neue Episoden anzeigen</string>
@@ -260,6 +261,8 @@
   <string name="pref_pauseOnDisconnect_sum">Wiedergabe pausieren, wenn Kopfhörer ausgesteckt oder Bluetooth getrennt wird</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder eingesteckt werden</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wiedergabe fortsetzen, wenn Bluetooth wieder verbunden ist</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Nächster-Taste überspringt</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Springe zur nächsten Episode (statt Vorspulen), wenn die \"Nächster\"-Taste gedrückt wird</string>
   <string name="pref_followQueue_sum">Springe zur nächsten Episode, wenn die vorherige Episode endet</string>
   <string name="pref_auto_delete_sum">Episode löschen, wenn die Wiedergabe endet</string>
   <string name="pref_auto_delete_title">Automatisches Löschen</string>
@@ -344,6 +347,9 @@
   <string name="pref_smart_mark_as_played_disabled">Deaktiviert</string>
   <string name="pref_image_cache_size_title">Größe des Bilder-Zwischenspeichers</string>
   <string name="pref_image_cache_size_sum">Größe des Zwischenspeichers für Bilder</string>
+  <string name="crash_report_title">Absturzbericht</string>
+  <string name="crash_report_sum">Sende den aktuellen Absturzbericht per E-Mail</string>
+  <string name="send_email">E-Mail senden</string>
   <string name="experimental_pref">Experimentell</string>
   <string name="pref_sonic_title">Sonic Media Player</string>
   <string name="pref_sonic_message">Benutze den eingebauten Sonic Media Player als Ersatz für Prestissimo</string>
@@ -364,7 +370,7 @@
   <string name="opml_import_option">Option %1$d</string>
   <string name="opml_import_explanation_1">Wähle einen bestimmten Dateipfad aus dem lokalen Dateisystem.</string>
   <string name="opml_import_explanation_2">Verwende externe Anwendungen wie Dropbox, Google Drive oder deinen Lieblingsdateimanager, um eine OPML-Datei zu öffnen.</string>
-  <string name="opml_import_explanation_3">Viele Anwendungen wie Google Mail, Dropbox, Google Drive und die meisten Dateimanager können OPML-Dateien &lt;i&gt;mit&lt;/ i&gt; AntennaPod &lt;i&gt;öffnen&lt;/i&gt;.</string>
+  <string name="opml_import_explanation_3">Viele Anwendungen wie Google Mail, Dropbox, Google Drive und die meisten Dateimanager können OPML-Dateien <i>mit</i> AntennaPod <i>öffnen</i>.</string>
   <string name="start_import_label">Import starten</string>
   <string name="opml_import_label">OPML Import</string>
   <string name="opml_directory_error">FEHLER!</string>
@@ -438,11 +444,15 @@
   <string name="selected_folder_label">Ausgewählter Ordner</string>
   <string name="create_folder_label">Neuer Ordner</string>
   <string name="choose_data_directory">Datenordner auswählen</string>
+  <string name="choose_data_directory_message">Bitte wähle eine Basis für deinen Datenordner. AntennaPod erstellt automatisch die richtigen Unterverzeichnisse.</string>
   <string name="create_folder_msg">Neuen Ordner mit Namen \"%1$s\" erstellen?</string>
   <string name="create_folder_success">Neuer Ordner angelegt</string>
   <string name="create_folder_error_no_write_access">Kann in diesem Ordner nicht schreiben</string>
   <string name="create_folder_error_already_exists">Ordner existiert bereits</string>
   <string name="create_folder_error">Konnte Datenordner nicht erstellen</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" existiert nicht</string>
+  <string name="folder_not_readable_error">\"%1$s\" ist nicht lesbar</string>
+  <string name="folder_not_writable_error">\"%1$s\" ist nicht beschreibbar</string>
   <string name="folder_not_empty_dialog_title">Ordner ist nicht leer</string>
   <string name="folder_not_empty_dialog_msg">Der ausgewählte Ordner ist nicht leer. Medien-Downloads und andere Daten werden direkt in diesem Ordner gespeichert. Trotzdem fortfahren?</string>
   <string name="set_to_default_folder">Standardordner auswählen</string>
@@ -502,4 +512,10 @@
   <string name="sort_date_old_new">Datum (alt \u2192 neu)</string>
   <string name="sort_duration_short_long">Dauer (kurz \u2192 lang)</string>
   <string name="sort_duration_long_short">Dauer (lang \u2192 kurz)</string>
+  <!--Rating dialog-->
+  <string name="rating_title">Magst du AntennaPod?</string>
+  <string name="rating_message">Wir würden uns freuen, wenn du dir kurz die Zeit nimmst, AntennaPod zu bewerten.</string>
+  <string name="rating_never_label">Lass mich in Ruhe</string>
+  <string name="rating_later_label">Erinnere mich später</string>
+  <string name="rating_now_label">Sicher, los geht\'s!</string>
 </resources>

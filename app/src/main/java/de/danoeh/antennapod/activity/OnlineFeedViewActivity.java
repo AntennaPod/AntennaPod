@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -41,6 +42,7 @@ import java.util.Map;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -63,6 +65,7 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -86,7 +89,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
     // Optional argument: specify a title for the actionbar.
     public static final String ARG_TITLE = "title";
 
-    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.DOWNLOAD_QUEUED | EventDistributor.FEED_LIST_UPDATE;
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
 
     public static final int RESULT_ERROR = 2;
 
@@ -105,11 +108,16 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
     private Subscription parser;
     private Subscription updater;
 
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        setSubscribeButtonState(feed);
+    }
+
     private EventDistributor.EventListener listener = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EventDistributor.FEED_LIST_UPDATE) != 0) {
-                updater = Observable.defer(() -> Observable.just(DBReader.getFeedList()))
+                updater = Observable.fromCallable(() -> DBReader.getFeedList())
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(feeds -> {
@@ -138,9 +146,9 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
         final String feedUrl;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
-        } else if (StringUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
-                || StringUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
-            feedUrl = (StringUtils.equals(getIntent().getAction(), Intent.ACTION_SEND))
+        } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
+                || TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
+            feedUrl = (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND))
                     ? getIntent().getStringExtra(Intent.EXTRA_TEXT) : getIntent().getDataString();
             getSupportActionBar().setTitle(R.string.add_new_feed_label);
         } else {
@@ -180,7 +188,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
         super.onResume();
         isPaused = false;
         EventDistributor.getInstance().register(listener);
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -188,6 +196,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
         super.onPause();
         isPaused = true;
         EventDistributor.getInstance().unregister(listener);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -314,7 +323,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
                             subscriber.onNext(result);
                         } catch (UnsupportedFeedtypeException e) {
                             Log.d(TAG, "Unsupported feed type detected");
-                            if (StringUtils.equalsIgnoreCase("html", e.getRootElement())) {
+                            if (TextUtils.equals("html", e.getRootElement().toLowerCase())) {
                                 showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
                             } else {
                                 subscriber.onError(e);

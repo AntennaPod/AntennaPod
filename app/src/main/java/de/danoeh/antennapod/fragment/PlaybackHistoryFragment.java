@@ -3,7 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.app.Activity;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
@@ -21,7 +20,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
-import de.danoeh.antennapod.core.asynctask.DownloadObserver;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -52,71 +52,24 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private AtomicReference<Activity> activity = new AtomicReference<Activity>();
 
-    private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
 
     private Subscription subscription;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadItems();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
-        EventBus.getDefault().unregister(this);
-        if(subscription != null) {
-            subscription.unsubscribe();
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        if(subscription != null) {
-            subscription.unsubscribe();
-        }
-        activity.set(null);
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity.set(activity);
-        if (downloadObserver != null) {
-            downloadObserver.setActivity(activity);
-            downloadObserver.onResume();
-        }
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        adapter = null;
-        viewsCreated = false;
-        if (downloadObserver != null) {
-            downloadObserver.onPause();
-        }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -132,6 +85,60 @@ public class PlaybackHistoryFragment extends ListFragment {
         viewsCreated = true;
         if (itemsLoaded) {
             onFragmentLoaded();
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().registerSticky(this);
+        loadItems();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventDistributor.getInstance().register(contentUpdate);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventDistributor.getInstance().unregister(contentUpdate);
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+        activity.set(null);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        adapter = null;
+        viewsCreated = false;
+    }
+
+    public void onEvent(DownloadEvent event) {
+        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
+        DownloaderUpdate update = event.update;
+        downloaderList = update.downloaders;
+        if (adapter != null) {
+                adapter.notifyDataSetChanged();
         }
     }
 
@@ -205,23 +212,11 @@ public class PlaybackHistoryFragment extends ListFragment {
             // it harder to read.
             adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), true, false);
             setListAdapter(adapter);
-            downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
-            downloadObserver.onResume();
         }
         setListShown(true);
         adapter.notifyDataSetChanged();
         getActivity().supportInvalidateOptionsMenu();
     }
-
-    private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
-        @Override
-        public void onContentChanged(List<Downloader> downloaderList) {
-            PlaybackHistoryFragment.this.downloaderList = downloaderList;
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
-        }
-    };
 
     private FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
         @Override
@@ -257,7 +252,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.defer(() -> Observable.just(loadData()))
+        subscription = Observable.fromCallable(() -> loadData())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

@@ -25,7 +25,7 @@
     <string name="playback_history_label">Playback History</string>
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="gpodnet_auth_label">gpodder.net Login</string>
-    <string name="free_space_label">"%1$s free</string>
+    <string name="free_space_label">%1$s free</string>
 
     <!-- New episodes fragment -->
     <string name="recently_published_episodes_label">Recently published</string>
@@ -280,6 +280,8 @@
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
+    <string name="pref_hardwareForwardButtonSkips_title">Forward button skips</string>
+    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a hardware forward button skip to the next episode instead of fast-forwarding</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
@@ -364,6 +366,9 @@
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
     <string name="pref_image_cache_size_title">Image Cache Size</string>
     <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
+    <string name="crash_report_title">Crash Report</string>
+    <string name="crash_report_sum">Send the latest crash report via e-mail</string>
+    <string name="send_email">Send e-mail</string>
     <string name="experimental_pref">Experimental</string>
     <string name="pref_sonic_title">Sonic media player</string>
     <string name="pref_sonic_message">Use built-in sonic media player as a replacement for Prestissimo</string>
@@ -542,4 +547,12 @@
     <string name="sort_date_old_new">Date (Old \u2192 New)</string>
     <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
     <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
+
+    <!-- Rating dialog -->
+    <string name="rating_title">Like AntennaPod?</string>
+    <string name="rating_message">We would appreciate it if you take the time to rate AntennaPod.</string>
+    <string name="rating_never_label">Leave me alone</string>
+    <string name="rating_later_label">Remind me later</string>
+    <string name="rating_now_label">Sure, let\'s do this!</string>
+
 </resources>

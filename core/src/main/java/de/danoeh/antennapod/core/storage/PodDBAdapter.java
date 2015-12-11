@@ -10,14 +10,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.media.MediaMetadataRetriever;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.apache.commons.lang3.Validate;
-
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.ProgressEvent;
@@ -188,6 +186,15 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_IMAGE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_IMAGE + ")";
 
+    public static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX IF NOT EXISTS "
+            + TABLE_NAME_FEED_ITEMS + "_" + KEY_PUBDATE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
+            + KEY_PUBDATE + ")";
+
+    public static final String CREATE_INDEX_FEEDITEMS_READ = "CREATE INDEX IF NOT EXISTS "
+            + TABLE_NAME_FEED_ITEMS + "_" + KEY_READ + " ON " + TABLE_NAME_FEED_ITEMS + " ("
+            + KEY_READ + ")";
+
+
     public static final String CREATE_INDEX_QUEUE_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_QUEUE + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_QUEUE + " ("
             + KEY_FEEDITEM + ")";
@@ -254,6 +261,20 @@ public class PodDBAdapter {
     };
 
     /**
+     * All the tables in the database
+     */
+    private static final String[] ALL_TABLES = {
+            TABLE_NAME_FEEDS,
+            TABLE_NAME_FEED_ITEMS,
+            TABLE_NAME_FEED_IMAGES,
+            TABLE_NAME_FEED_MEDIA,
+            TABLE_NAME_DOWNLOAD_LOG,
+            TABLE_NAME_QUEUE,
+            TABLE_NAME_SIMPLECHAPTERS,
+            TABLE_NAME_FAVORITES
+    };
+
+    /**
      * Contains FEEDITEM_SEL_FI_SMALL as comma-separated list. Useful for raw queries.
      */
     private static final String SEL_FI_SMALL_STR;
@@ -270,10 +291,10 @@ public class PodDBAdapter {
             KEY_CONTENT_ENCODED, KEY_FEED};
 
 
-    private SQLiteDatabase db;
+    private static SQLiteDatabase db;
     private static Context context;
     private static PodDBHelper dbHelper;
-    private static AtomicInteger counter = new AtomicInteger(0);
+    private static int counter = 0;
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
@@ -288,12 +309,15 @@ public class PodDBAdapter {
 
     private PodDBAdapter() {}
 
-    public PodDBAdapter open() {
-        counter.incrementAndGet();
+    public synchronized PodDBAdapter open() {
+        counter++;
         if (db == null || !db.isOpen() || db.isReadOnly()) {
             Log.v(TAG, "Opening DB");
             try {
                 db = dbHelper.getWritableDatabase();
+                if(Build.VERSION.SDK_INT >= 11) {
+                    db.enableWriteAheadLogging();
+                }
             } catch (SQLException ex) {
                 Log.e(TAG, Log.getStackTraceString(ex));
                 db = dbHelper.getReadableDatabase();
@@ -302,24 +326,23 @@ public class PodDBAdapter {
         return this;
     }
 
-    public void close() {
-        if(counter.decrementAndGet() == 0) {
+    public synchronized void close() {
+        counter--;
+        if(counter == 0) {
             Log.v(TAG, "Closing DB");
             db.close();
+            db = null;
         }
-        db = null;
     }
 
     public static boolean deleteDatabase() {
-        if(dbHelper != null) {
-            dbHelper.close();
-            dbHelper = null;
+        PodDBAdapter adapter = getInstance();
+        adapter.open();
+        for (String tableName : ALL_TABLES) {
+            db.delete(tableName, "1", null);
         }
-        if(context != null) { // may not have been initialized
-            return context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
-        } else {
-            return false;
-        }
+        adapter.close();
+        return true;
     }
 
     /**
@@ -990,15 +1013,44 @@ public class PodDBAdapter {
     }
 
     /**
-     * Returns a cursor for a DB query in the FeedImages table for a given ID.
+     * Returns a cursor for a DB query in the FeedImages table for given IDs.
      *
-     * @param id ID of the FeedImage
+     * @param imageIds IDs of the images
      * @return The cursor of the query
      */
-    public final Cursor getImageCursor(final long id) {
-        Cursor c = db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null);
-        return c;
+    public final Cursor getImageCursor(String... imageIds) {
+        int length = imageIds.length;
+        if (length > IN_OPERATOR_MAXIMUM) {
+            Log.w(TAG, "Length of id array is larger than "
+                    + IN_OPERATOR_MAXIMUM + ". Creating multiple cursors");
+            int numCursors = (int) (((double) length) / (IN_OPERATOR_MAXIMUM)) + 1;
+            Cursor[] cursors = new Cursor[numCursors];
+            for (int i = 0; i < numCursors; i++) {
+                int neededLength;
+                String[] parts;
+                final int elementsLeft = length - i * IN_OPERATOR_MAXIMUM;
+
+                if (elementsLeft >= IN_OPERATOR_MAXIMUM) {
+                    neededLength = IN_OPERATOR_MAXIMUM;
+                    parts = Arrays.copyOfRange(imageIds, i
+                            * IN_OPERATOR_MAXIMUM, (i + 1)
+                            * IN_OPERATOR_MAXIMUM);
+                } else {
+                    neededLength = elementsLeft;
+                    parts = Arrays.copyOfRange(imageIds, i
+                            * IN_OPERATOR_MAXIMUM, (i * IN_OPERATOR_MAXIMUM)
+                            + neededLength);
+                }
+
+                cursors[i] = db.rawQuery("SELECT * FROM "
+                        + TABLE_NAME_FEED_IMAGES + " WHERE " + KEY_ID + " IN "
+                        + buildInOperator(neededLength), parts);
+            }
+            return new MergeCursor(cursors);
+        } else {
+            return db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + " IN "
+                    + buildInOperator(length), imageIds, null, null, null);
+        }
     }
 
     public final Cursor getSimpleChaptersOfFeedItemCursor(final FeedItem item) {
@@ -1126,7 +1178,9 @@ public class PodDBAdapter {
      * @throws IllegalArgumentException if limit < 0
      */
     public final Cursor getCompletedMediaCursor(int limit) {
-        Validate.isTrue(limit >= 0, "Limit must be >= 0");
+        if(limit < 0) {
+            throw new IllegalArgumentException("Limit must be >= 0");
+        }
 
         Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null,
                 KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
@@ -1138,26 +1192,26 @@ public class PodDBAdapter {
         return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
     }
 
-    public final Cursor getFeedMediaCursorByItemID(String... mediaIds) {
-        int length = mediaIds.length;
+    public final Cursor getFeedMediaCursor(String... itemIds) {
+        int length = itemIds.length;
         if (length > IN_OPERATOR_MAXIMUM) {
             Log.w(TAG, "Length of id array is larger than "
                     + IN_OPERATOR_MAXIMUM + ". Creating multiple cursors");
             int numCursors = (int) (((double) length) / (IN_OPERATOR_MAXIMUM)) + 1;
             Cursor[] cursors = new Cursor[numCursors];
             for (int i = 0; i < numCursors; i++) {
-                int neededLength = 0;
-                String[] parts = null;
+                int neededLength;
+                String[] parts;
                 final int elementsLeft = length - i * IN_OPERATOR_MAXIMUM;
 
                 if (elementsLeft >= IN_OPERATOR_MAXIMUM) {
                     neededLength = IN_OPERATOR_MAXIMUM;
-                    parts = Arrays.copyOfRange(mediaIds, i
+                    parts = Arrays.copyOfRange(itemIds, i
                             * IN_OPERATOR_MAXIMUM, (i + 1)
                             * IN_OPERATOR_MAXIMUM);
                 } else {
                     neededLength = elementsLeft;
-                    parts = Arrays.copyOfRange(mediaIds, i
+                    parts = Arrays.copyOfRange(itemIds, i
                             * IN_OPERATOR_MAXIMUM, (i * IN_OPERATOR_MAXIMUM)
                             + neededLength);
                 }
@@ -1169,7 +1223,7 @@ public class PodDBAdapter {
             return new MergeCursor(cursors);
         } else {
             return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_FEEDITEM + " IN "
-                    + buildInOperator(length), mediaIds, null, null, null);
+                    + buildInOperator(length), itemIds, null, null, null);
         }
     }
 
@@ -1442,7 +1496,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 1040002;
+        private final static int VERSION = 1040013;
 
         private Context context;
 
@@ -1472,6 +1526,8 @@ public class PodDBAdapter {
 
             db.execSQL(CREATE_INDEX_FEEDITEMS_FEED);
             db.execSQL(CREATE_INDEX_FEEDITEMS_IMAGE);
+            db.execSQL(CREATE_INDEX_FEEDITEMS_PUBDATE);
+            db.execSQL(CREATE_INDEX_FEEDITEMS_READ);
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
@@ -1680,6 +1736,11 @@ public class PodDBAdapter {
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
                         + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME + " INTEGER DEFAULT 0");
             }
+            if(oldVersion < 1040013) {
+                db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_PUBDATE);
+                db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_READ);
+            }
+
             EventBus.getDefault().post(ProgressEvent.end());
         }
     }

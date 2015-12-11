@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -30,6 +31,10 @@ public class FeedItemEvent {
 
     public static FeedItemEvent updated(List<FeedItem> items) {
         return new FeedItemEvent(Action.UPDATE, items);
+    }
+
+    public static FeedItemEvent updated(FeedItem... items) {
+        return new FeedItemEvent(Action.UPDATE, Arrays.asList(items));
     }
 
     @Override

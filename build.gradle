@@ -49,6 +49,8 @@ project.ext {
     glideVersion = "3.6.1"
     jsoupVersion = "1.7.3"
     rxAndroidVersion = "1.0.1"
+    rxJavaVersion = "1.0.16"
+    rxJavaRulesVersion = "1.0.16.1"
     okhttpVersion = "2.5.0"
     okioVersion = "1.6.0"
 }

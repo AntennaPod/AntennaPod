@@ -4,19 +4,18 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MotionEventCompat;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -37,7 +36,6 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.LongList;
@@ -62,6 +60,9 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     private FeedItem selectedItem;
 
+    private final int playingBackGroundColor;
+    private final int normalBackGroundColor;
+
     public QueueRecyclerAdapter(MainActivity mainActivity,
                                 ItemAccess itemAccess,
                                 ActionButtonCallback actionButtonCallback,
@@ -73,6 +74,13 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         this.actionButtonCallback = actionButtonCallback;
         this.itemTouchHelper = itemTouchHelper;
         locked = UserPreferences.isQueueLocked();
+
+        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
+            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_dark);
+        } else {
+            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_light);
+        }
+        normalBackGroundColor = mainActivity.getResources().getColor(android.R.color.transparent);
     }
 
     public void setLocked(boolean locked) {
@@ -108,6 +116,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                        View.OnCreateContextMenuListener,
                        ItemTouchHelperViewHolder {
 
+        private final FrameLayout container;
         private final ImageView dragHandle;
         private final TextView placeholder;
         private final ImageView cover;
@@ -122,6 +131,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
         public ViewHolder(View v) {
             super(v);
+            container = (FrameLayout) v.findViewById(R.id.container);
             dragHandle = (ImageView) v.findViewById(R.id.drag_handle);
             placeholder = (TextView) v.findViewById(R.id.txtvPlaceholder);
             cover = (ImageView) v.findViewById(R.id.imgvCover);
@@ -249,9 +259,15 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                     progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
                     progressBar.setVisibility(View.GONE);
                 }
+
+                if(media.isCurrentlyPlaying()) {
+                    container.setBackgroundColor(playingBackGroundColor);
+                } else {
+                    container.setBackgroundColor(normalBackGroundColor);
+                }
             }
 
-            actionButtonUtils.configureActionButton(butSecondary, item);
+            actionButtonUtils.configureActionButton(butSecondary, item, true);
             butSecondary.setFocusable(false);
             butSecondary.setTag(item);
             butSecondary.setOnClickListener(secondaryActionListener);
@@ -263,7 +279,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 .dontAnimate()
                 .into(new CoverTarget(item.getFeed().getImageUri(), placeholder, cover));
         }
-
 
     }
     

@@ -41,7 +41,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        solo = new Solo(getInstrumentation(), getActivity());
         uiTestUtils = new UITestUtils(getInstrumentation().getTargetContext());
         uiTestUtils.setup();
 
@@ -54,6 +53,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         // override first launch preference
         prefs = getInstrumentation().getTargetContext().getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(MainActivity.PREF_IS_FIRST_LAUNCH, false).commit();
+
+        solo = new Solo(getInstrumentation(), getActivity());
     }
 
     @Override

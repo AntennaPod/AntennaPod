@@ -19,12 +19,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
@@ -382,7 +380,7 @@ public class DBWriter {
                                     events.add(QueueEvent.added(item, 0 + i));
                                 } else {
                                     queue.add(item);
-                                    events.add(QueueEvent.added(item, queue.size()-1));
+                                    events.add(QueueEvent.added(item, queue.size() - 1));
                                 }
                                 queueModified = true;
                                 if (item.isNew()) {
@@ -393,7 +391,7 @@ public class DBWriter {
                     }
                     if (queueModified) {
                         adapter.setQueue(queue);
-                        for(QueueEvent event : events) {
+                        for (QueueEvent event : events) {
                             EventBus.getDefault().post(event);
                         }
                         if (markAsUnplayedIds.size() > 0) {
@@ -766,6 +764,7 @@ public class DBWriter {
             adapter.open();
             adapter.setSingleFeedItem(item);
             adapter.close();
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
         });
     }
 
@@ -785,19 +784,14 @@ public class DBWriter {
     }
 
     /**
-     * Updates download URLs of feeds from a given Map. The key of the Map is the original URL of the feed
-     * and the value is the updated URL
+     * Updates download URL of a feed
      */
-    public static Future<?> updateFeedDownloadURLs(final Map<String, String> urls) {
+    public static Future<?> updateFeedDownloadURL(final String original, final String updated) {
+        Log.d(TAG, "updateFeedDownloadURL(original: " + original + ", updated: " + updated +")");
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            for (String key : urls.keySet()) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Replacing URL " + key + " with url " + urls.get(key));
-
-                adapter.setFeedDownloadUrl(key, urls.get(key));
-            }
+            adapter.setFeedDownloadUrl(original, updated);
             adapter.close();
         });
     }

@@ -372,4 +372,5 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">מייבא רישום מאפליקציות יעודיות...</string>
   <string name="search_itunes_label">חפש בiTunes</string>
+  <!--Rating dialog-->
 </resources>

@@ -7,11 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -60,6 +60,7 @@ public class UserPreferences {
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
     public static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
+    public static final String PREF_HARDWARE_FOWARD_BUTTON_SKIPS = "prefHardwareForwardButtonSkips";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
@@ -120,9 +121,8 @@ public class UserPreferences {
      *
      * @throws IllegalArgumentException if context is null
      */
-    public static void init(Context context) {
+    public static void init(@NonNull Context context) {
         Log.d(TAG, "Creating new instance of UserPreferences");
-        Validate.notNull(context);
 
         UserPreferences.context = context.getApplicationContext();
         UserPreferences.prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -151,7 +151,7 @@ public class UserPreferences {
 
     public static List<String> getHiddenDrawerItems() {
         String hiddenItems = prefs.getString(PREF_HIDDEN_DRAWER_ITEMS, "");
-        return new ArrayList<String>(Arrays.asList(StringUtils.split(hiddenItems, ',')));
+        return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
     }
 
     public static int getFeedOrder() {
@@ -223,6 +223,10 @@ public class UserPreferences {
 
     public static boolean isUnpauseOnBluetoothReconnect() {
         return prefs.getBoolean(PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT, false);
+    }
+
+    public static boolean shouldHardwareButtonSkip() {
+        return prefs.getBoolean(PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
     }
 
 
@@ -342,7 +346,7 @@ public class UserPreferences {
 
     public static String[] getAutodownloadSelectedNetworks() {
         String selectedNetWorks = prefs.getString(PREF_AUTODL_SELECTED_NETWORKS, "");
-        return StringUtils.split(selectedNetWorks, ',');
+        return TextUtils.split(selectedNetWorks, ",");
     }
 
     public static boolean shouldResumeAfterCall() {
@@ -383,7 +387,7 @@ public class UserPreferences {
 
     public static void setAutodownloadSelectedNetworks(String[] value) {
         prefs.edit()
-             .putString(PREF_AUTODL_SELECTED_NETWORKS, StringUtils.join(value, ','))
+             .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
              .apply();
     }
 
@@ -417,7 +421,9 @@ public class UserPreferences {
      *                            flattrd. Must be a value between 0 and 1 (inclusive)
      * */
     public static void setAutoFlattrSettings( boolean enabled, float autoFlattrThreshold) {
-        Validate.inclusiveBetween(0.0, 1.0, autoFlattrThreshold);
+        if(autoFlattrThreshold < 0.0 || autoFlattrThreshold > 1.0) {
+            throw new IllegalArgumentException("Flattr threshold must be in range [0.0, 1.0]");
+        }
         prefs.edit()
              .putBoolean(PREF_AUTO_FLATTR, enabled)
              .putFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD, autoFlattrThreshold)
@@ -425,7 +431,7 @@ public class UserPreferences {
     }
 
     public static void setHiddenDrawerItems(List<String> items) {
-        String str = StringUtils.join(items, ',');
+        String str = TextUtils.join(",", items);
         prefs.edit()
              .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
              .apply();
@@ -520,7 +526,7 @@ public class UserPreferences {
      * @return The data folder that has been requested or null if the folder
      * could not be created.
      */
-    public static File getDataFolder(Context context, String type) {
+    public static File getDataFolder(String type) {
         String strDir = prefs.getString(PREF_DATA_FOLDER, null);
         if (strDir == null) {
             Log.d(TAG, "Using default data folder");
@@ -542,7 +548,7 @@ public class UserPreferences {
                 for (int i = 0; i < dirs.length; i++) {
                     if (dirs.length > 0) {
                         if (i < dirs.length - 1) {
-                            dataDir = getDataFolder(context, dirs[i]);
+                            dataDir = getDataFolder(dirs[i]);
                             if (dataDir == null) {
                                 return null;
                             }
@@ -593,7 +599,7 @@ public class UserPreferences {
      * available
      */
     private static void createImportDirectory() {
-        File importDir = getDataFolder(context, IMPORT_DIR);
+        File importDir = getDataFolder(IMPORT_DIR);
         if (importDir != null) {
             if (importDir.exists()) {
                 Log.d(TAG, "Import directory already exists");

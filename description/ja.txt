@@ -30,13 +30,13 @@ AntennaPodは、独自のポッドキャスターから、BBC、NPR、CNNなど�
 AntennaPod はボランティアによって活発に開発中です。コードやコメントで、あなたもも貢献することができます!
 
 GitHubは、機能のリクエスト、バグの報告、コードの貢献のための場所です:<br>
-www.github.com/AntennaPod/AntennaPod
+https://www.github.com/AntennaPod/AntennaPod
 
 私たちのGoogleグループは、あなたのアイデア、お気に入りのポッドキャスティングモーメント、感謝を、すべてのボランティアと共有するための場所で:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
 Transifexは翻訳を支援するための場所です:<br>
-www.transifex.com/antennapod/antennapod
+https://www.transifex.com/antennapod/antennapod
 
 私たちのベータテストプログラムをチェックして、最新機能を最初に入手してください:<br>
-www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

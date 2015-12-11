@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.util.Pair;
@@ -46,17 +45,19 @@ import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
-import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -66,6 +67,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
@@ -85,9 +87,7 @@ import rx.schedulers.Schedulers;
 public class ItemlistFragment extends ListFragment {
     private static final String TAG = "ItemlistFragment";
 
-    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
-            | EventDistributor.DOWNLOAD_QUEUED
-            | EventDistributor.UNREAD_ITEMS_UPDATE
+    private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE
             | EventDistributor.PLAYER_STATUS_UPDATE;
 
     public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
@@ -104,7 +104,6 @@ public class ItemlistFragment extends ListFragment {
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
 
-    private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
 
     private MoreContentListFooterUtil listFooter;
@@ -147,11 +146,7 @@ public class ItemlistFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().register(this);
-        if (downloadObserver != null) {
-            downloadObserver.setActivity(getActivity());
-            downloadObserver.onResume();
-        }
+        EventBus.getDefault().registerSticky(this);
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
@@ -193,9 +188,6 @@ public class ItemlistFragment extends ListFragment {
         adapter = null;
         viewsCreated = false;
         listFooter = null;
-        if (downloadObserver != null) {
-            downloadObserver.onPause();
-        }
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
@@ -265,7 +257,8 @@ public class ItemlistFragment extends ListFragment {
                 if (!FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed)) {
                     switch (item.getItemId()) {
                         case R.id.episode_actions:
-                            Fragment fragment = new EpisodesApplyActionFragment(feed.getItems());
+                            EpisodesApplyActionFragment fragment = new EpisodesApplyActionFragment();
+                            fragment.setEpisodes(feed.getItems());
                             ((MainActivity)getActivity()).loadChildFragment(fragment);
                             return true;
                         case R.id.remove_item:
@@ -394,14 +387,43 @@ public class ItemlistFragment extends ListFragment {
     }
 
     public void onEvent(QueueEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
+        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         loadItems();
     }
 
     public void onEvent(FeedEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
+        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         if(event.feedId == feedID) {
             loadItems();
+        }
+    }
+
+    public void onEventMainThread(FeedItemEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        boolean queueChanged = false;
+        if(feed == null || feed.getItems() == null || adapter == null) {
+            return;
+        }
+        for(FeedItem item : event.items) {
+            int pos = FeedItemUtil.indexOfItemWithId(feed.getItems(), item.getId());
+            if(pos >= 0) {
+                loadItems();
+                return;
+            }
+        }
+    }
+
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        DownloaderUpdate update = event.update;
+        downloaderList = update.downloaders;
+        if(update.feedIds.length > 0) {
+            updateProgressBarVisibility();
+        }
+        if(update.mediaIds.length > 0) {
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -411,12 +433,8 @@ public class ItemlistFragment extends ListFragment {
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
                 Log.d(TAG, "Received contentUpdate Intent. arg " + arg);
-                if ((EventDistributor.DOWNLOAD_QUEUED & arg) != 0) {
-                    updateProgressBarVisibility();
-                } else {
-                    loadItems();
-                    updateProgressBarVisibility();
-                }
+                loadItems();
+                updateProgressBarVisibility();
             }
         }
     };
@@ -444,8 +462,6 @@ public class ItemlistFragment extends ListFragment {
             setupFooterView();
             adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false, true);
             setListAdapter(adapter);
-            downloadObserver = new DownloadObserver(getActivity(), new Handler(), downloadObserverCallback);
-            downloadObserver.onResume();
         }
         refreshHeaderView();
         setListShown(true);
@@ -485,21 +501,9 @@ public class ItemlistFragment extends ListFragment {
                 txtvInformation.setVisibility(View.GONE);
             }
         } else {
-
             txtvInformation.setVisibility(View.GONE);
         }
     }
-
-
-    private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
-        @Override
-        public void onContentChanged(List<Downloader> downloaderList) {
-            ItemlistFragment.this.downloaderList = downloaderList;
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
-        }
-    };
 
     private void setupHeaderView() {
         if (getListView() == null || feed == null) {
@@ -624,7 +628,7 @@ public class ItemlistFragment extends ListFragment {
             subscription.unsubscribe();
         }
 
-        subscription = Observable.defer(() -> Observable.just(loadData()))
+        subscription = Observable.fromCallable(() -> loadData())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

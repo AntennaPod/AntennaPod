@@ -22,6 +22,7 @@
   <string name="playback_history_label">Historie přehrávání</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Login pro gpodder.net</string>
+  <string name="free_space_label">%1$s volných</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Nedávno zveřejněné</string>
   <string name="episode_filter_label">Zobrazit pouze nové epizody</string>
@@ -262,6 +263,8 @@
   <string name="pref_pauseOnDisconnect_sum">Při odpojení sluchátek nebo bluetooth připojení pozastavit přehrávání.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Pokračovat v přehrávání po připojení sluchátek</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Pokračovat v přehrávání po připojení bluetooth</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Přeskočit tlačítkem vpřed</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Po stlačení hardwarového tlačítka pro posun vpřed přeskočit na další skladbu</string>
   <string name="pref_followQueue_sum">Po přehrání položky z fronty přejít automaticky na další</string>
   <string name="pref_auto_delete_sum">Smazat díl po jeho přehrání</string>
   <string name="pref_auto_delete_title">Automatické mazání</string>
@@ -346,6 +349,9 @@
   <string name="pref_smart_mark_as_played_disabled">Vypnuto</string>
   <string name="pref_image_cache_size_title">Velikost odkládací paměti obrázků</string>
   <string name="pref_image_cache_size_sum">Velikost diskové paměti pro obrázky.</string>
+  <string name="crash_report_title">Hlášení pádů</string>
+  <string name="crash_report_sum">Odesílat hlášení o posledním pádu aplikace emailem</string>
+  <string name="send_email">Poslat email</string>
   <string name="experimental_pref">Experimentální</string>
   <string name="pref_sonic_title">Přehrávač médií Sonic</string>
   <string name="pref_sonic_message">Použít vestavěný přehrávač médií Sonic, jako náhradu za Prestissimo</string>
@@ -443,11 +449,15 @@
   <string name="selected_folder_label">Vybraný adresář:</string>
   <string name="create_folder_label">Vytvořit adresář</string>
   <string name="choose_data_directory">Vybrat umístění dat</string>
+  <string name="choose_data_directory_message">Vyberte prosím váš výchozí datový adresář. AntennaPod vytvoří všechny potřebné podadresáře.</string>
   <string name="create_folder_msg">Vytvořit adresář \"%1$s\"?</string>
   <string name="create_folder_success">Nový adresář vytvořen</string>
   <string name="create_folder_error_no_write_access">Nelze zapisovat do adresáře</string>
   <string name="create_folder_error_already_exists">Adresář již existuje</string>
   <string name="create_folder_error">Nelze vytvořit adresář</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" neexistuje</string>
+  <string name="folder_not_readable_error">\"%1$s\" nelze číst</string>
+  <string name="folder_not_writable_error">\"%1$s\" nelze zapisovat</string>
   <string name="folder_not_empty_dialog_title">Adresář není prázdný</string>
   <string name="folder_not_empty_dialog_msg">Vybraný adresář není prázdný. Stažená media a ostatní soubory budou umístěny přímo do tohoto adresáře. Přesto pokračovat?</string>
   <string name="set_to_default_folder">Vybrat hlavní adresář</string>
@@ -507,4 +517,10 @@
   <string name="sort_date_old_new">Data (Staré \u2192 Nové)</string>
   <string name="sort_duration_short_long">Délka (Krátké \u2192 Dlouhé)</string>
   <string name="sort_duration_long_short">Délka (Dlouhé \u2192 Krátké)</string>
+  <!--Rating dialog-->
+  <string name="rating_title">Líbí se vám AntennaPod?</string>
+  <string name="rating_message">Oceníme, pokud věnujete chvíli času ohodnocení AntennaPod.</string>
+  <string name="rating_never_label">Neobtěžuj mě</string>
+  <string name="rating_later_label">Upozornit později</string>
+  <string name="rating_now_label">Jasně, s radostí!</string>
 </resources>

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -31,8 +30,9 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
-import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -67,7 +67,6 @@ public class QueueFragment extends Fragment {
     public static final String TAG = "QueueFragment";
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
-            EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
     private TextView infoBar;
@@ -85,13 +84,6 @@ public class QueueFragment extends Fragment {
     private static final String PREF_SCROLL_POSITION = "scroll_position";
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
-    private DownloadObserver downloadObserver = null;
-
-    /**
-     * Download observer updates won't result in an upate of the list adapter if this is true.
-     */
-    private boolean blockDownloadObserverUpdate = false;
-
     private Subscription subscription;
     private LinearLayoutManager layoutManager;
     private ItemTouchHelper itemTouchHelper;
@@ -107,12 +99,8 @@ public class QueueFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (downloadObserver != null) {
-            downloadObserver.setActivity(getActivity());
-            downloadObserver.onResume();
-        }
         if (queue != null) {
-            onFragmentLoaded();
+            onFragmentLoaded(true);
         }
     }
 
@@ -120,9 +108,9 @@ public class QueueFragment extends Fragment {
     public void onResume() {
         super.onResume();
         recyclerView.setAdapter(recyclerAdapter);
-        loadItems();
+        loadItems(true);
         EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().register(this);
+        EventBus.getDefault().registerSticky(this);
     }
 
     @Override
@@ -137,7 +125,10 @@ public class QueueFragment extends Fragment {
     }
 
     public void onEventMainThread(QueueEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if(queue == null || recyclerAdapter == null) {
+            return;
+        }
         switch(event.action) {
             case ADDED:
                 queue.add(event.position, event.item);
@@ -162,21 +153,17 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter.notifyDataSetChanged();
                 break;
             case MOVED:
-                int from = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
-                int to = event.position;
-                if(from != to) {
-                    queue.add(to, queue.remove(from));
-                    recyclerAdapter.notifyItemMoved(from, to);
-                } else {
-                    // QueueFragment itself sent the event and already moved the item
-                }
-                break;
+                return;
         }
-        onFragmentLoaded();
+        saveScrollPosition();
+        onFragmentLoaded(false);
     }
 
     public void onEventMainThread(FeedItemEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if(queue == null || recyclerAdapter == null) {
+            return;
+        }
         for(int i=0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
             int pos = FeedItemUtil.indexOfItemWithId(queue, item.getId());
@@ -184,6 +171,21 @@ public class QueueFragment extends Fragment {
                 queue.remove(pos);
                 queue.add(pos, item);
                 recyclerAdapter.notifyItemChanged(pos);
+            }
+        }
+    }
+
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        DownloaderUpdate update = event.update;
+        downloaderList = update.downloaders;
+        if (update.feedIds.length > 0) {
+            if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+                getActivity().supportInvalidateOptionsMenu();
+            }
+        } else if (update.mediaIds.length > 0) {
+            if (recyclerAdapter != null) {
+                recyclerAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -211,20 +213,11 @@ public class QueueFragment extends Fragment {
         float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
         if (position > 0 || offset > 0) {
             layoutManager.scrollToPositionWithOffset(position, (int) offset);
-            // restore once, then forget
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(PREF_SCROLL_POSITION, 0);
-            editor.putFloat(PREF_SCROLL_OFFSET, 0.0f);
-            editor.commit();
         }
     }
 
     private void resetViewState() {
         recyclerAdapter = null;
-        blockDownloadObserverUpdate = false;
-        if (downloadObserver != null) {
-            downloadObserver.onPause();
-        }
     }
 
     @Override
@@ -327,6 +320,7 @@ public class QueueFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
         if(!isVisible()) {
             return false;
         }
@@ -336,12 +330,27 @@ public class QueueFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
 
-        try {
-            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            return true;
+        switch(item.getItemId()) {
+            case R.id.move_to_top_item:
+                int position = FeedItemUtil.indexOfItemWithId(queue, selectedItem.getId());
+                queue.add(0, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, 0);
+                DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
+                return true;
+            case R.id.move_to_bottom_item:
+                position = FeedItemUtil.indexOfItemWithId(queue, selectedItem.getId());
+                queue.add(queue.size()-1, queue.remove(position));
+                recyclerAdapter.notifyItemMoved(position, queue.size()-1);
+                DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
+                return true;
+            default:
+                try {
+                    return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    return true;
+                }
         }
     }
 
@@ -442,14 +451,12 @@ public class QueueFragment extends Fragment {
         return root;
     }
 
-    private void onFragmentLoaded() {
+    private void onFragmentLoaded(final boolean restoreScrollPosition) {
         if (recyclerAdapter == null) {
             MainActivity activity = (MainActivity) getActivity();
             recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
                 new DefaultActionButtonCallback(activity), itemTouchHelper);
             recyclerView.setAdapter(recyclerAdapter);
-            downloadObserver = new DownloadObserver(activity, new Handler(), downloadObserverCallback);
-            downloadObserver.onResume();
         }
         if(queue == null || queue.size() == 0) {
             recyclerView.setVisibility(View.GONE);
@@ -459,7 +466,9 @@ public class QueueFragment extends Fragment {
             recyclerView.setVisibility(View.VISIBLE);
         }
 
-        restoreScrollPosition();
+        if (restoreScrollPosition) {
+            restoreScrollPosition();
+        }
 
         // we need to refresh the options menu because it sometimes
         // needs data that may have just been loaded.
@@ -483,16 +492,6 @@ public class QueueFragment extends Fragment {
         infoBar.setText(info);
     }
 
-    private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
-        @Override
-        public void onContentChanged(List<Downloader> downloaderList) {
-            QueueFragment.this.downloaderList = downloaderList;
-            if (recyclerAdapter != null && !blockDownloadObserverUpdate) {
-                recyclerAdapter.notifyDataSetChanged();
-            }
-        }
-    };
-
     private QueueRecyclerAdapter.ItemAccess itemAccess = new QueueRecyclerAdapter.ItemAccess() {
         @Override
         public int getCount() {
@@ -501,7 +500,10 @@ public class QueueFragment extends Fragment {
 
         @Override
         public FeedItem getItem(int position) {
-            return queue != null ? queue.get(position) : null;
+            if(queue != null && position < queue.size()) {
+                return queue.get(position);
+            }
+            return null;
         }
 
         @Override
@@ -554,7 +556,8 @@ public class QueueFragment extends Fragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
-                loadItems();
+                Log.d(TAG, "arg: " + arg);
+                loadItems(false);
                 if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
                     getActivity().supportInvalidateOptionsMenu();
                 }
@@ -562,7 +565,8 @@ public class QueueFragment extends Fragment {
         }
     };
 
-    private void loadItems() {
+    private void loadItems(final boolean restoreScrollPosition) {
+        Log.d(TAG, "loadItems()");
         if(subscription != null) {
             subscription.unsubscribe();
         }
@@ -571,14 +575,14 @@ public class QueueFragment extends Fragment {
             txtvEmpty.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
-        subscription = Observable.defer(() -> Observable.just(DBReader.getQueue()))
+        subscription = Observable.fromCallable(() -> DBReader.getQueue())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
                     if(items != null) {
                         progLoading.setVisibility(View.GONE);
                         queue = items;
-                        onFragmentLoaded();
+                        onFragmentLoaded(restoreScrollPosition);
                         if(recyclerAdapter != null) {
                             recyclerAdapter.notifyDataSetChanged();
                         }

@@ -22,6 +22,7 @@
   <string name="playback_history_label">Afspeelgeschiedenis</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
+  <string name="free_space_label">%1$s beschikbaar</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Recent gepubliceerd</string>
   <string name="episode_filter_label">Alleen nieuwe afleveringen weergeven</string>
@@ -257,7 +258,9 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Automatisch opschonen</string>
   <string name="pref_episode_cleanup_summary">Afleveringen die niet in de wachtrij staan en niet zijn gemarkeerd zijn als favoriet, komen in aanmerking voor verwijdering bij automatisch opschonen.</string>
+  <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren wanneer de koptelefoon wordt losgekoppeld of de bluetooth verbinding wordt verbroken</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten wanneer de koptelefoon opnieuw wordt aangesloten</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten wanneer de bluetooth verbinding hervat wordt</string>
   <string name="pref_followQueue_sum">Volgende item in de wachtrij afspelen als de aflevering voltooid is</string>
   <string name="pref_auto_delete_sum">Afleveringen verwijderen als ze zijn afgespeeld</string>
   <string name="pref_auto_delete_title">Automatisch verwijderen</string>
@@ -278,6 +281,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi download van media</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Loskoppeling koptelefoon</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Aansluiten koptelefoon</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Verbinden met bluetooth</string>
   <string name="pref_mobileUpdate_title">Mobiele updates</string>
   <string name="pref_mobileUpdate_sum">Updates toestaan ​​via de mobiele dataverbinding</string>
   <string name="refreshing_label">Aan het verversen</string>
@@ -341,6 +345,7 @@
   <string name="pref_smart_mark_as_played_disabled">Uitgeschakeld</string>
   <string name="pref_image_cache_size_title">Grootte cachegeheugen</string>
   <string name="pref_image_cache_size_sum">De groote van het cachegeheugen voor afbeeldingen aanpassen.</string>
+  <string name="send_email">Verstuur email</string>
   <string name="experimental_pref">Experimentele functie</string>
   <string name="pref_sonic_title">Sonic mediaspeler</string>
   <string name="pref_sonic_message">Sonic, de standaard mediaspeler van Android, gebruiken als alternatief voor Prestissimo</string>
@@ -499,4 +504,10 @@
   <string name="sort_date_old_new">Datum (oud \u2192 nieuw)</string>
   <string name="sort_duration_short_long">Lengte (kort \u2192 lang)</string>
   <string name="sort_duration_long_short">Lengte (lang \u2192 kort)</string>
+  <!--Rating dialog-->
+  <string name="rating_title">Wat vind u van AntennaPod?</string>
+  <string name="rating_message">We zouden het op prijs stellen als u even de tijd kunt nemen om AntennaPod te beoordelen.</string>
+  <string name="rating_never_label">Nee, bedankt.</string>
+  <string name="rating_later_label">Herinner me later</string>
+  <string name="rating_now_label">Ja, doen we!</string>
 </resources>

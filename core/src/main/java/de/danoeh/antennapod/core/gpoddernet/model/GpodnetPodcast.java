@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.gpoddernet.model;
 
-import org.apache.commons.lang3.Validate;
+import android.support.annotation.NonNull;
 
 public class GpodnetPodcast {
     private String url;
@@ -11,12 +11,13 @@ public class GpodnetPodcast {
     private String website;
     private String mygpoLink;
 
-    public GpodnetPodcast(String url, String title, String description,
-                          int subscribers, String logoUrl, String website, String mygpoLink) {
-        Validate.notNull(url);
-        Validate.notNull(title);
-        Validate.notNull(description);
-
+    public GpodnetPodcast(@NonNull String url,
+                          @NonNull String title,
+                          @NonNull String description,
+                          int subscribers,
+                          String logoUrl,
+                          String website,
+                          String mygpoLink) {
         this.url = url;
         this.title = title;
         this.description = description;

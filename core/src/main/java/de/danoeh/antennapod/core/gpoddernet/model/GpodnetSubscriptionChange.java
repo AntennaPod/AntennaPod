@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.gpoddernet.model;
 
-import org.apache.commons.lang3.Validate;
+import android.support.annotation.NonNull;
 
 import java.util.List;
 
@@ -9,11 +9,9 @@ public class GpodnetSubscriptionChange {
     private List<String> removed;
     private long timestamp;
 
-    public GpodnetSubscriptionChange(List<String> added, List<String> removed,
+    public GpodnetSubscriptionChange(@NonNull List<String> added,
+                                     @NonNull List<String> removed,
                                      long timestamp) {
-        Validate.notNull(added);
-        Validate.notNull(removed);
-
         this.added = added;
         this.removed = removed;
         this.timestamp = timestamp;
