@@ -16,6 +16,7 @@ import android.util.Log;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.ProgressEvent;
@@ -407,10 +408,11 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
-    public void setFeedItemFilter(long feedId, List<String> filterValues) {
+    public void setFeedItemFilter(long feedId, Set<String> filterValues) {
+        Log.d(TAG, "setFeedItemFilter() called with: " + "feedId = [" + feedId + "], " +
+                "filterValues = [" + TextUtils.join(",", filterValues) + "]");
         ContentValues values = new ContentValues();
         values.put(KEY_HIDE, TextUtils.join(",", filterValues));
-        Log.d(TAG, TextUtils.join(",", filterValues));
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 

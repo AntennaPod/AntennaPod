@@ -5,15 +5,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -114,7 +116,14 @@ public class FeedMenuHandler {
         final String[] values = context.getResources().getStringArray(R.array.episode_hide_values);
         final boolean[] checkedItems = new boolean[items.length];
 
-        final List<String> hidden = new ArrayList<String>(Arrays.asList(feed.getItemFilter().getValues()));
+        final Set<String> hidden = new HashSet<String>(Arrays.asList(feed.getItemFilter().getValues()));
+        Iterator<String> it = hidden.iterator();
+        while(it.hasNext()) {
+            // make sure we have no empty strings in the filter list
+            if(TextUtils.isEmpty(it.next())) {
+                it.remove();
+            }
+        }
         for(int i=0; i < values.length; i++) {
             String value = values[i];
             if(hidden.contains(value)) {
@@ -124,22 +133,16 @@ public class FeedMenuHandler {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.hide_episodes_title);
-        builder.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if (isChecked) {
-                    hidden.add(values[which]);
-                } else {
-                    hidden.remove(values[which]);
-                }
+        builder.setMultiChoiceItems(items, checkedItems, (dialog, which, isChecked) -> {
+            if (isChecked) {
+                hidden.add(values[which]);
+            } else {
+                hidden.remove(values[which]);
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                feed.setHiddenItemProperties(hidden.toArray(new String[hidden.size()]));
-                DBWriter.setFeedItemsFilter(feed.getId(), hidden);
-            }
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            feed.setHiddenItemProperties(hidden.toArray(new String[hidden.size()]));
+            DBWriter.setFeedItemsFilter(feed.getId(), hidden);
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
