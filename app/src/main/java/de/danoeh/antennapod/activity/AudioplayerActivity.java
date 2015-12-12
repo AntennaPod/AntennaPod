@@ -768,6 +768,15 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if(isDrawerOpen()) {
+            drawerLayout.closeDrawer(navDrawer);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 
     private DBReader.NavDrawerData navDrawerData;
 

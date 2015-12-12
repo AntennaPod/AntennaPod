@@ -8,8 +8,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
 import android.media.AudioManager;
-import android.media.Rating;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -593,8 +591,16 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if(isDrawerOpen()) {
+            drawerLayout.closeDrawer(navDrawer);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private DBReader.NavDrawerData navDrawerData;
-    private AsyncTask<Void, Void, DBReader.NavDrawerData> loadTask;
     private int selectedNavListIndex = 0;
 
     private NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
