@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -53,7 +52,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     protected SeekBar sbPosition;
     protected ImageButton butPlay;
     protected ImageButton butRev;
-    protected Boolean timeLeft = false;
+    protected boolean timeLeft = false;
     protected TextView txtvRev;
     protected ImageButton butFF;
     protected TextView txtvFF;
