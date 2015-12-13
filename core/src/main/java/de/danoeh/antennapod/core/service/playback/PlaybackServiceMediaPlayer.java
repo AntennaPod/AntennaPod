@@ -306,8 +306,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                             .into(display.getWidth(), display.getHeight())
                             .get();
                     builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-                } catch (Exception e) {
-                    Log.e(TAG, Log.getStackTraceString(e));
+                } catch (Throwable tr) {
+                    Log.e(TAG, Log.getStackTraceString(tr));
                 }
             }
             mediaSession.setMetadata(builder.build());
