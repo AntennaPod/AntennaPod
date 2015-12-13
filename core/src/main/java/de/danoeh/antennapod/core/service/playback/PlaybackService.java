@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -808,14 +807,11 @@ public class PlaybackService extends Service {
                                     .load(info.playable.getImageUri())
                                     .asBitmap()
                                     .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                    .into(-1, -1) // this resizing would not be exact, so we have
-                                                  // scale the bitmap ourselves
+                                    .centerCrop()
+                                    .into(iconSize, iconSize)
                                     .get();
-                            icon = Bitmap.createScaledBitmap(icon, iconSize, iconSize, true);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
+                        } catch(Exception e) {
+                            Log.e(TAG, Log.getStackTraceString(e));
                         }
                     }
                 }
@@ -835,7 +831,7 @@ public class PlaybackService extends Service {
                     String contentTitle = info.playable.getFeedTitle();
                     Notification notification = null;
 
-                    NotificationCompat.Builder notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(
+                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
                             PlaybackService.this)
                             .setContentTitle(contentTitle)
                             .setContentText(contentText)
