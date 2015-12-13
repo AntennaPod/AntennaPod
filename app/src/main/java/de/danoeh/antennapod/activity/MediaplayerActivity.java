@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -412,15 +414,16 @@ public abstract class MediaplayerActivity extends ActionBarActivity
             if (currentPosition != PlaybackService.INVALID_TIME
                     && duration != PlaybackService.INVALID_TIME
                     && controller.getMedia() != null) {
+                txtvPosition.setText(Converter
+                        .getDurationStringLong(currentPosition));
                 if(timeLeft) {
-                    txtvPosition.setText("-"+Converter
+                    txtvLength.setText("-"+Converter
                             .getDurationStringLong(duration - currentPosition));
                 }
                 else {
-                    txtvPosition.setText(Converter
-                            .getDurationStringLong(currentPosition));
+                    txtvLength.setText(Converter
+                            .getDurationStringLong(duration));
                 }
-                txtvLength.setText(Converter.getDurationStringLong(duration));
                 updateProgressbarPosition(currentPosition, duration);
             } else {
                 Log.w(TAG, "Could not react to position observer update because of invalid time");
@@ -465,13 +468,14 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         sbPosition = (SeekBar) findViewById(R.id.sbPosition);
         txtvPosition = (TextView) findViewById(R.id.txtvPosition);
 
-        txtvPosition.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        timeLeft = !timeLeft;
-                    }
-        });
         txtvLength = (TextView) findViewById(R.id.txtvLength);
+        txtvLength.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeLeft = !timeLeft;
+            }
+        });
+
         butPlay = (ImageButton) findViewById(R.id.butPlay);
         butRev = (ImageButton) findViewById(R.id.butRev);
         txtvRev = (TextView) findViewById(R.id.txtvRev);
@@ -612,6 +616,11 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         if (controller != null) {
             prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser,
                     txtvPosition);
+            if(timeLeft) {
+                int duration = controller.getDuration();
+                txtvLength.setText("-"+Converter
+                        .getDurationStringLong(duration - (int) (prog * duration)));
+            }
         }
     }
 
