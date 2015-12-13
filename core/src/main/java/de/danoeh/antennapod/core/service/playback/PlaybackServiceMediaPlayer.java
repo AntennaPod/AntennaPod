@@ -17,12 +17,13 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Display;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
+import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -292,20 +293,21 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
             builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
-            if (p.getImageUri() != null) {
-                if (UserPreferences.setLockscreenBackground()) {
-                    builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageUri().toString());
-                    try {
-                        Bitmap art = Glide.with(context)
+            if (p.getImageUri() != null && UserPreferences.setLockscreenBackground()) {
+                builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageUri().toString());
+                try {
+                    WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                    Display display = wm.getDefaultDisplay();
+                    Bitmap art = Glide.with(context)
                             .load(p.getImageUri())
                             .asBitmap()
                             .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .centerCrop()
+                            .into(display.getWidth(), display.getHeight())
                             .get();
-                        builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-                    } catch (Exception e) {
-                        Log.e(TAG, Log.getStackTraceString(e));
-                    }
+                    builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
+                } catch (Throwable tr) {
+                    Log.e(TAG, Log.getStackTraceString(tr));
                 }
             }
             mediaSession.setMetadata(builder.build());

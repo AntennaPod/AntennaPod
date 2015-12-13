@@ -19,7 +19,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -808,14 +807,11 @@ public class PlaybackService extends Service {
                                     .load(info.playable.getImageUri())
                                     .asBitmap()
                                     .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                    .into(-1, -1) // this resizing would not be exact, so we have
-                                                  // scale the bitmap ourselves
+                                    .centerCrop()
+                                    .into(iconSize, iconSize)
                                     .get();
-                            icon = Bitmap.createScaledBitmap(icon, iconSize, iconSize, true);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
+                        } catch(Throwable tr) {
+                            Log.e(TAG, Log.getStackTraceString(tr));
                         }
                     }
                 }
@@ -835,7 +831,8 @@ public class PlaybackService extends Service {
                     String contentTitle = info.playable.getFeedTitle();
                     Notification notification = null;
 
-                    NotificationCompat.Builder notificationBuilder = new android.support.v7.app.NotificationCompat.Builder(
+                    // Builder is v7, even if some not overwritten methods return its parent's v4 interface
+                    NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(
                             PlaybackService.this)
                             .setContentTitle(contentTitle)
                             .setContentText(contentText)
