@@ -51,6 +51,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     protected SeekBar sbPosition;
     protected ImageButton butPlay;
     protected ImageButton butRev;
+    protected Boolean timeLeft = false;
     protected TextView txtvRev;
     protected ImageButton butFF;
     protected TextView txtvFF;
@@ -411,8 +412,14 @@ public abstract class MediaplayerActivity extends ActionBarActivity
             if (currentPosition != PlaybackService.INVALID_TIME
                     && duration != PlaybackService.INVALID_TIME
                     && controller.getMedia() != null) {
-                txtvPosition.setText(Converter
-                        .getDurationStringLong(currentPosition));
+                if(timeLeft) {
+                    txtvPosition.setText("-"+Converter
+                            .getDurationStringLong(duration - currentPosition));
+                }
+                else {
+                    txtvPosition.setText(Converter
+                            .getDurationStringLong(currentPosition));
+                }
                 txtvLength.setText(Converter.getDurationStringLong(duration));
                 updateProgressbarPosition(currentPosition, duration);
             } else {
@@ -457,6 +464,13 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         setContentView(getContentViewResourceId());
         sbPosition = (SeekBar) findViewById(R.id.sbPosition);
         txtvPosition = (TextView) findViewById(R.id.txtvPosition);
+
+        txtvPosition.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        timeLeft = !timeLeft;
+                    }
+        });
         txtvLength = (TextView) findViewById(R.id.txtvLength);
         butPlay = (ImageButton) findViewById(R.id.butPlay);
         butRev = (ImageButton) findViewById(R.id.butRev);
