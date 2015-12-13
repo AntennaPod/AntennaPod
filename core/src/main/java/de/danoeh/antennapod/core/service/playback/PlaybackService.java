@@ -810,8 +810,8 @@ public class PlaybackService extends Service {
                                     .centerCrop()
                                     .into(iconSize, iconSize)
                                     .get();
-                        } catch(Exception e) {
-                            Log.e(TAG, Log.getStackTraceString(e));
+                        } catch(Throwable tr) {
+                            Log.e(TAG, Log.getStackTraceString(tr));
                         }
                     }
                 }
