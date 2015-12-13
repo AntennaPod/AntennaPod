@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.activity;
 
+<<<<<<< HEAD
 import android.annotation.TargetApi;
+=======
+>>>>>>> remove yet to be used imports and change from Boolean to boolean
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
