@@ -19,7 +19,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -831,7 +831,8 @@ public class PlaybackService extends Service {
                     String contentTitle = info.playable.getFeedTitle();
                     Notification notification = null;
 
-                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
+                    // Builder is v7, even if some not overwritten methods return its parent's v4 interface
+                    NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(
                             PlaybackService.this)
                             .setContentTitle(contentTitle)
                             .setContentText(contentText)
