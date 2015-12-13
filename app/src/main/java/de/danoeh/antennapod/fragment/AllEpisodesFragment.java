@@ -303,6 +303,7 @@ public class AllEpisodesFragment extends Fragment {
         View root = inflater.inflate(fragmentResource, container, false);
 
         recyclerView = (RecyclerView) root.findViewById(android.R.id.list);
+        recyclerView.getItemAnimator().setSupportsChangeAnimations(false);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -397,14 +398,15 @@ public class AllEpisodesFragment extends Fragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if(update.feedIds.length > 0) {
-            if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+        if (isUpdatingFeeds != update.feedIds.length > 0) {
                 getActivity().supportInvalidateOptionsMenu();
-            }
         }
-        if(update.mediaIds.length > 0) {
-            if(listAdapter != null) {
-                listAdapter.notifyDataSetChanged();
+        if(listAdapter != null && update.mediaIds.length > 0) {
+            for(long mediaId : update.mediaIds) {
+                int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
+                if(pos >= 0) {
+                    listAdapter.notifyItemChanged(pos);
+                }
             }
         }
     }

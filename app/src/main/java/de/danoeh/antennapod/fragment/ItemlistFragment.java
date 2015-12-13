@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
@@ -417,13 +416,11 @@ public class ItemlistFragment extends ListFragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if(update.feedIds.length > 0) {
+        if (isUpdatingFeed != event.update.feedIds.length > 0) {
             updateProgressBarVisibility();
         }
-        if(update.mediaIds.length > 0) {
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
+        if(adapter != null && update.mediaIds.length > 0) {
+            adapter.notifyDataSetChanged();
         }
     }
 

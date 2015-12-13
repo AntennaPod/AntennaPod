@@ -179,13 +179,15 @@ public class QueueFragment extends Fragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if (update.feedIds.length > 0) {
-            if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-                getActivity().supportInvalidateOptionsMenu();
-            }
-        } else if (update.mediaIds.length > 0) {
-            if (recyclerAdapter != null) {
-                recyclerAdapter.notifyDataSetChanged();
+        if (isUpdatingFeeds != update.feedIds.length > 0) {
+            getActivity().supportInvalidateOptionsMenu();
+        }
+        if (recyclerAdapter != null && update.mediaIds.length > 0) {
+            for (long mediaId : update.mediaIds) {
+                int pos = FeedItemUtil.indexOfItemWithMediaId(queue, mediaId);
+                if (pos >= 0) {
+                    recyclerAdapter.notifyItemChanged(pos);
+                }
             }
         }
     }
@@ -363,6 +365,7 @@ public class QueueFragment extends Fragment {
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
         infoBar = (TextView) root.findViewById(R.id.info_bar);
         recyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
+        recyclerView.getItemAnimator().setSupportsChangeAnimations(false);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
