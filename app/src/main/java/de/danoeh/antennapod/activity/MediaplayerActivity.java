@@ -615,7 +615,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         if (controller != null) {
             prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser,
                     txtvPosition);
-            if(timeLeft) {
+            if(timeLeft && prog!=0) {
                 int duration = controller.getDuration();
                 txtvLength.setText("-"+Converter
                         .getDurationStringLong(duration - (int) (prog * duration)));
