@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -44,6 +45,8 @@ import de.danoeh.antennapod.dialog.SleepTimerDialog;
 public abstract class MediaplayerActivity extends ActionBarActivity
         implements OnSeekBarChangeListener {
     private static final String TAG = "MediaplayerActivity";
+    private static final String PREFS = "MediaPlayerActivityPreferences";
+    private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
 
     protected PlaybackController controller;
 
@@ -52,7 +55,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     protected SeekBar sbPosition;
     protected ImageButton butPlay;
     protected ImageButton butRev;
-    protected boolean timeLeft = false;
+    protected boolean showTimeLeft = false;
     protected TextView txtvRev;
     protected ImageButton butFF;
     protected TextView txtvFF;
@@ -415,7 +418,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                     && controller.getMedia() != null) {
                 txtvPosition.setText(Converter
                         .getDurationStringLong(currentPosition));
-                if(timeLeft) {
+                if(showTimeLeft) {
                     txtvLength.setText("-"+Converter
                             .getDurationStringLong(duration - currentPosition));
                 }
@@ -445,6 +448,8 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     protected boolean loadMediaInfo() {
         Log.d(TAG, "loadMediaInfo()");
         Playable media = controller.getMedia();
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT,false);
         if (media != null) {
             txtvPosition.setText(Converter.getDurationStringLong((media
                     .getPosition())));
@@ -455,6 +460,10 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                 float progress = ((float) media.getPosition())
                         / media.getDuration();
                 sbPosition.setProgress((int) (progress * sbPosition.getMax()));
+                if(showTimeLeft) {
+                    txtvLength.setText("-"+Converter.getDurationStringLong((media
+                                                .getDuration()-media.getPosition())));
+                }
             }
             return true;
         } else {
@@ -467,11 +476,18 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         sbPosition = (SeekBar) findViewById(R.id.sbPosition);
         txtvPosition = (TextView) findViewById(R.id.txtvPosition);
 
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT,false);
+        Log.w("timeleft",showTimeLeft? "true":"false");
         txtvLength = (TextView) findViewById(R.id.txtvLength);
         txtvLength.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timeLeft = !timeLeft;
+                showTimeLeft = !showTimeLeft;
+                editor.putBoolean(PREF_SHOW_TIME_LEFT,showTimeLeft);
+                editor.commit();
+                Log.w("timeleft on click",showTimeLeft? "true":"false");
             }
         });
 
@@ -615,7 +631,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         if (controller != null) {
             prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser,
                     txtvPosition);
-            if(timeLeft && prog!=0) {
+            if(showTimeLeft && prog!=0) {
                 int duration = controller.getDuration();
                 txtvLength.setText("-"+Converter
                         .getDurationStringLong(duration - (int) (prog * duration)));
