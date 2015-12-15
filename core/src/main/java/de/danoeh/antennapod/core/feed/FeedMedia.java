@@ -7,6 +7,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import java.util.Date;
 import java.util.List;
@@ -44,7 +45,7 @@ public class FeedMedia extends FeedFile implements Playable {
     private int played_duration; // How many ms of this file have been played (for autoflattring)
     private long size; // File size in Byte
     private String mime_type;
-    private volatile FeedItem item;
+    @Nullable private volatile FeedItem item;
     private Date playbackCompletionDate;
 
     // if null: unknown, will be checked
@@ -260,7 +261,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public void setPosition(int position) {
         this.position = position;
-        if(position > 0 && item.isNew()) {
+        if(position > 0 && item != null && item.isNew()) {
             this.item.setPlayed(false);
         }
     }
@@ -293,6 +294,7 @@ public class FeedMedia extends FeedFile implements Playable {
         this.mime_type = mime_type;
     }
 
+    @Nullable
     public FeedItem getItem() {
         return item;
     }
@@ -340,7 +342,7 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
-        dest.writeLong(item.getId());
+        dest.writeLong(item != null ? item.getId() : 0L);
 
         dest.writeInt(duration);
         dest.writeInt(position);
@@ -356,7 +358,11 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public void writeToPreferences(Editor prefEditor) {
-        prefEditor.putLong(PREF_FEED_ID, item.getFeed().getId());
+        if(item != null && item.getFeed() != null) {
+            prefEditor.putLong(PREF_FEED_ID, item.getFeed().getId());
+        } else {
+            prefEditor.putLong(PREF_FEED_ID, 0L);
+        }
         prefEditor.putLong(PREF_MEDIA_ID, id);
     }
 
@@ -455,7 +461,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timeStamp) {
-        if(item.isNew()) {
+        if(item != null && item.isNew()) {
             DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
         }
         setPosition(newPosition);
@@ -528,8 +534,10 @@ public class FeedMedia extends FeedFile implements Playable {
                 }
             }
             return builder.build();
-        } else {
+        } else if(item != null) {
             return item.getImageUri();
+        } else {
+            return null;
         }
     }
 
@@ -540,7 +548,7 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public void setDownloaded(boolean downloaded) {
         super.setDownloaded(downloaded);
-        if(downloaded) {
+        if(item != null && downloaded) {
             item.setPlayed(false);
         }
     }
