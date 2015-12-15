@@ -189,6 +189,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             c.close();
             c = adapter.getSimpleChaptersOfFeedItemCursor(item);
             assertEquals(0, c.getCount());
+            c.close();
         }
     }
 
