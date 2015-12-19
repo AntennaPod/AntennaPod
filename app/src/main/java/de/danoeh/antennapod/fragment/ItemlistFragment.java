@@ -592,7 +592,11 @@ public class ItemlistFragment extends ListFragment {
 
         @Override
         public FeedItem getItem(int position) {
-            return (feed != null) ? feed.getItemAtIndex(position) : null;
+            if (feed != null && 0 <= position && position < feed.getNumOfItems()) {
+                return feed.getItemAtIndex(position);
+            } else {
+                return null;
+            }
         }
 
         @Override

@@ -819,7 +819,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
         @Override
         public Feed getItem(int position) {
-            if (navDrawerData != null && position < navDrawerData.feeds.size()) {
+            if (navDrawerData != null && 0 <= position && position < navDrawerData.feeds.size()) {
                 return navDrawerData.feeds.get(position);
             } else {
                 return null;

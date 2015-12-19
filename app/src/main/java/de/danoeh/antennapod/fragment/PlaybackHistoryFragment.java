@@ -22,10 +22,10 @@ import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -244,7 +244,11 @@ public class PlaybackHistoryFragment extends ListFragment {
 
         @Override
         public FeedItem getItem(int position) {
-            return (playbackHistory != null) ? playbackHistory.get(position) : null;
+            if (playbackHistory != null && 0 <= position && position < playbackHistory.size()) {
+                return playbackHistory.get(position);
+            } else {
+                return null;
+            }
         }
     };
 
