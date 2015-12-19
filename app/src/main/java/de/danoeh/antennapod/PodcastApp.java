@@ -64,6 +64,8 @@ public class PodcastApp extends Application {
 		Iconify.with(new FontAwesomeModule());
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
+
+        throw new NullPointerException();
     }
 
 }
