@@ -477,17 +477,25 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         txtvPosition = (TextView) findViewById(R.id.txtvPosition);
 
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT,false);
-        Log.w("timeleft",showTimeLeft? "true":"false");
+        Log.d("timeleft",showTimeLeft? "true":"false");
         txtvLength = (TextView) findViewById(R.id.txtvLength);
         txtvLength.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimeLeft = !showTimeLeft;
+                Playable media = controller.getMedia();
+                if(showTimeLeft) {
+                    txtvLength.setText("-"+Converter.getDurationStringLong((media
+                            .getDuration()-media.getPosition())));
+                }else{
+                    txtvLength.setText("-"+Converter.getDurationStringLong((media.getDuration())));
+                }
+
+                SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(PREF_SHOW_TIME_LEFT,showTimeLeft);
                 editor.commit();
-                Log.w("timeleft on click",showTimeLeft? "true":"false");
+                Log.d("timeleft on click",showTimeLeft? "true":"false");
             }
         });
 
