@@ -349,7 +349,7 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public FeedItem getItem(int position) {
-            if (episodes != null && position < episodes.size()) {
+            if (episodes != null && 0 <= position && position < episodes.size()) {
                 return episodes.get(position);
             }
             return null;

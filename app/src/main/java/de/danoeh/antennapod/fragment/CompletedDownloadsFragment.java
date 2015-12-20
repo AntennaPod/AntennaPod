@@ -131,7 +131,11 @@ public class CompletedDownloadsFragment extends ListFragment {
 
         @Override
         public FeedItem getItem(int position) {
-            return (items != null) ? items.get(position) : null;
+            if (items != null && 0 <= position && position < items.size()) {
+                return items.get(position);
+            } else {
+                return null;
+            }
         }
 
         @Override

@@ -83,7 +83,11 @@ public class RunningDownloadsFragment extends ListFragment {
 
         @Override
         public Downloader getItem(int position) {
-            return (downloaderList != null) ? downloaderList.get(position) : null;
+            if (downloaderList != null && 0 <= position && position < downloaderList.size()) {
+                return downloaderList.get(position);
+            } else {
+                return null;
+            }
         }
 
         @Override

@@ -192,7 +192,11 @@ public class SearchFragment extends ListFragment {
 
         @Override
         public SearchResult getItem(int position) {
-            return (searchResults != null) ? searchResults.get(position) : null;
+            if (searchResults != null && 0 <= position && position < searchResults.size()) {
+                return searchResults.get(position);
+            } else {
+                return null;
+            }
         }
     };
 

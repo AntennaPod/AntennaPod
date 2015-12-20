@@ -91,7 +91,11 @@ public class DownloadLogFragment extends ListFragment {
 
         @Override
         public DownloadStatus getItem(int position) {
-            return (downloadLog != null) ? downloadLog.get(position) : null;
+            if (downloadLog != null && 0 <= position && position < downloadLog.size()) {
+                return downloadLog.get(position);
+            } else {
+                return null;
+            }
         }
     };
 

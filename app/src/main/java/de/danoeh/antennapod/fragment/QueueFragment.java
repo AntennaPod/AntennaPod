@@ -503,7 +503,7 @@ public class QueueFragment extends Fragment {
 
         @Override
         public FeedItem getItem(int position) {
-            if(queue != null && position < queue.size()) {
+            if (queue != null && 0 <= position && position < queue.size()) {
                 return queue.get(position);
             }
             return null;
