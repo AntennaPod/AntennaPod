@@ -34,8 +34,11 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
             out = new PrintWriter(new FileWriter(path));
             out.println("[ Environment ]");
             out.println("Android version: " + Build.VERSION.RELEASE);
+            out.println("OS version: " + System.getProperty("os.version"));
             out.println("AntennaPod version: " + BuildConfig.VERSION_NAME);
-            out.println("Phone model: " + Build.MODEL);
+            out.println("Model: " + Build.MODEL);
+            out.println("Device: " + Build.DEVICE);
+            out.println("Product: " + Build.PRODUCT);
             out.println();
             out.println("[ StackTrace ]");
             ex.printStackTrace(out);
