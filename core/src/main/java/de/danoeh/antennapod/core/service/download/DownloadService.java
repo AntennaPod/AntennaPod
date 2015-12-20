@@ -72,7 +72,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandlerResult;
 import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
-import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.InvalidFeedException;
 import de.greenrobot.event.EventBus;
@@ -1032,7 +1031,6 @@ public class DownloadService extends Service {
                 throw new IllegalStateException(
                         "Could not find downloaded media object in database");
             }
-            boolean chaptersRead = false;
             media.setDownloaded(true);
             media.setFile_url(request.getDestination());
             media.setHasEmbeddedPicture(null);
@@ -1055,23 +1053,18 @@ public class DownloadService extends Service {
                 }
             }
 
-            if (media.getItem().getChapters() == null) {
-                ChapterUtils.loadChaptersFromFileUrl(media);
-                if (media.getItem().getChapters() != null) {
-                    chaptersRead = true;
-                }
-            }
+            final FeedItem item = media.getItem();
 
             try {
                 // we've received the media, we don't want to autodownload it again
-                FeedItem item = media.getItem();
-                item.setAutoDownload(false);
-
-                // update the db
-                DBWriter.setFeedItem(item).get();
+                if(item != null) {
+                    item.setAutoDownload(false);
+                    DBWriter.setFeedItem(item).get();
+                }
 
                 DBWriter.setFeedMedia(media).get();
-                if (!DBTasks.isInQueue(DownloadService.this, item.getId())) {
+
+                if (item != null && !DBTasks.isInQueue(DownloadService.this, item.getId())) {
                     DBWriter.addQueueItem(DownloadService.this, item).get();
                 }
             } catch (ExecutionException e) {
@@ -1084,13 +1077,12 @@ public class DownloadService extends Service {
 
             saveDownloadStatus(status);
 
-            if(GpodnetPreferences.loggedIn()) {
-                FeedItem item = media.getItem();
-                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DOWNLOAD)
-                        .currentDeviceId()
-                        .currentTimestamp()
-                        .build();
-                GpodnetPreferences.enqueueEpisodeAction(action);
+            if(GpodnetPreferences.loggedIn() && item != null) {
+                    GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DOWNLOAD)
+                            .currentDeviceId()
+                            .currentTimestamp()
+                            .build();
+                    GpodnetPreferences.enqueueEpisodeAction(action);
             }
 
             numberOfDownloads.decrementAndGet();
