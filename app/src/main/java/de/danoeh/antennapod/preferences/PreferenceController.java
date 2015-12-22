@@ -18,6 +18,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -26,6 +27,7 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -89,7 +91,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals(UserPreferences.PREF_SONIC)) {
-            CheckBoxPreference prefSonic = (CheckBoxPreference) ui.findPreference(UserPreferences.PREF_SONIC);
+            SwitchPreference prefSonic = (SwitchPreference) ui.findPreference(UserPreferences.PREF_SONIC);
             if(prefSonic != null) {
                 prefSonic.setChecked(sharedPreferences.getBoolean(UserPreferences.PREF_SONIC, false));
             }
