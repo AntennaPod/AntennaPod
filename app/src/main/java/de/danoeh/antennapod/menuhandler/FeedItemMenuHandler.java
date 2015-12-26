@@ -178,7 +178,7 @@ public class FeedItemMenuHandler {
             case R.id.mark_unread_item:
                 selectedItem.setPlayed(false);
                 DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
-                if(GpodnetPreferences.loggedIn()) {
+                if(GpodnetPreferences.loggedIn() && selectedItem.getMedia() != null) {
                     GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(selectedItem, Action.NEW)
                             .currentDeviceId()
                             .currentTimestamp()
