@@ -261,6 +261,8 @@
   <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren wanneer de koptelefoon wordt losgekoppeld of de bluetooth verbinding wordt verbroken</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten wanneer de koptelefoon opnieuw wordt aangesloten</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten wanneer de bluetooth verbinding hervat wordt</string>
+  <string name="pref_hardwareForwardButtonSkips_title">\'Volgende\' knop voor overslaan</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Aflevering overslaan ipv vooruitspoelen wanneer op een fysieke \'volgende\' knop wordt gedrukt</string>
   <string name="pref_followQueue_sum">Volgende item in de wachtrij afspelen als de aflevering voltooid is</string>
   <string name="pref_auto_delete_sum">Afleveringen verwijderen als ze zijn afgespeeld</string>
   <string name="pref_auto_delete_title">Automatisch verwijderen</string>
@@ -279,7 +281,7 @@
   <string name="pref_downloadMediaOnWifiOnly_sum">Download mediabestanden alleen via WiFi</string>
   <string name="pref_followQueue_title">Continu afspelen</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi download van media</string>
-  <string name="pref_pauseOnHeadsetDisconnect_title">Loskoppeling koptelefoon</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Pauzeren bij loskoppeling</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Aansluiten koptelefoon</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Verbinden met bluetooth</string>
   <string name="pref_mobileUpdate_title">Mobiele updates</string>
@@ -295,7 +297,7 @@
   <string name="pref_auto_flattr_title">Automatische Flattr</string>
   <string name="pref_auto_flattr_sum">Automatisch flattr\'en instellen</string>
   <string name="user_interface_label">User Interface</string>
-  <string name="pref_set_theme_title">Kies theme</string>
+  <string name="pref_set_theme_title">Kies kleurschema</string>
   <string name="pref_nav_drawer_title">Menu aanpassen</string>
   <string name="pref_nav_drawer_sum">Het uiterlijk en andere instellingen van het menu aanpassen.</string>
   <string name="pref_nav_drawer_items_title">Menu-items instellen</string>
@@ -345,6 +347,8 @@
   <string name="pref_smart_mark_as_played_disabled">Uitgeschakeld</string>
   <string name="pref_image_cache_size_title">Grootte cachegeheugen</string>
   <string name="pref_image_cache_size_sum">De groote van het cachegeheugen voor afbeeldingen aanpassen.</string>
+  <string name="crash_report_title">Crashreport</string>
+  <string name="crash_report_sum">Verstuur laatste crashreport via email</string>
   <string name="send_email">Verstuur email</string>
   <string name="experimental_pref">Experimentele functie</string>
   <string name="pref_sonic_title">Sonic mediaspeler</string>
@@ -440,11 +444,15 @@
   <string name="selected_folder_label">Geselecteerde map:</string>
   <string name="create_folder_label">Map aanmaken</string>
   <string name="choose_data_directory">Kies data map</string>
+  <string name="choose_data_directory_message">Kies de hoofdmap voor uw data. AntennaPod zal de benodigde submappen creeëren.</string>
   <string name="create_folder_msg">Maak een nieuwe map aan met de naam \"%1$s\"?</string>
   <string name="create_folder_success">Nieuwe map aangemaakt</string>
   <string name="create_folder_error_no_write_access">Kan in deze map niet schrijven</string>
   <string name="create_folder_error_already_exists">Map bestaat al</string>
   <string name="create_folder_error">Kon map niet aanmaken</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" bestaat niet</string>
+  <string name="folder_not_readable_error">\"%1$s\" kan niet gelezen worden</string>
+  <string name="folder_not_writable_error">in \"%1$s\" kan geen data geschreven worden</string>
   <string name="folder_not_empty_dialog_title">Map is niet leeg</string>
   <string name="folder_not_empty_dialog_msg">De map die je hebt gekozen is niet leeg. Media downloads en andere bestanden zullen rechtstreeks in deze map geplaatst worden. Toch doorgaan?</string>
   <string name="set_to_default_folder">Kies default map</string>

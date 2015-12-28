@@ -1,5 +1,12 @@
 Ändringslogg
 ==========
+Version 1.4.1
+-------------
+Prestandaförbättringar
+* Hardware buttons now ff and rewind instead of skipping
+* Option to have forward button skip
+* Option to send crash reports directly to developers
+* Highlight currently playing episode
 
 Version 1.4.0.12
 ----------------
