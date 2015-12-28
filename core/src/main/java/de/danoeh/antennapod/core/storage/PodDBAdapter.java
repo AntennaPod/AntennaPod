@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.media.MediaMetadataRetriever;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -310,15 +309,11 @@ public class PodDBAdapter {
 
     private PodDBAdapter() {}
 
-    public synchronized PodDBAdapter open() {
-        counter++;
+    public PodDBAdapter open() {
         if (db == null || !db.isOpen() || db.isReadOnly()) {
             Log.v(TAG, "Opening DB");
             try {
                 db = dbHelper.getWritableDatabase();
-                if(Build.VERSION.SDK_INT >= 11) {
-                    db.enableWriteAheadLogging();
-                }
             } catch (SQLException ex) {
                 Log.e(TAG, Log.getStackTraceString(ex));
                 db = dbHelper.getReadableDatabase();
@@ -327,13 +322,8 @@ public class PodDBAdapter {
         return this;
     }
 
-    public synchronized void close() {
-        counter--;
-        if(counter == 0) {
-            Log.v(TAG, "Closing DB");
-            db.close();
-            db = null;
-        }
+    public void close() {
+        // do nothing
     }
 
     public static boolean deleteDatabase() {
