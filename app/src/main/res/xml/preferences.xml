@@ -32,25 +32,25 @@
                 android:summary="@string/pref_nav_drawer_feed_counter_sum"
                 android:defaultValue="0"/>
         </PreferenceScreen>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefExpandNotify"
             android:summary="@string/pref_expandNotify_sum"
             android:title="@string/pref_expandNotify_title"/>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefPersistNotify"
             android:summary="@string/pref_persistNotify_sum"
             android:title="@string/pref_persistNotify_title"/>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefLockscreenBackground"
             android:summary="@string/pref_lockscreen_background_sum"
             android:title="@string/pref_lockscreen_background_title"/>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefShowDownloadReport"
@@ -59,7 +59,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefQueueAddToFront"
@@ -69,45 +69,45 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_pref">
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefPauseOnHeadsetDisconnect"
             android:summary="@string/pref_pauseOnDisconnect_sum"
             android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
             android:dependency="prefPauseOnHeadsetDisconnect"
             android:key="prefUnpauseOnHeadsetReconnect"
             android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
             android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
             android:dependency="prefPauseOnHeadsetDisconnect"
             android:key="prefUnpauseOnBluetoothReconnect"
             android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
             android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefHardwareForwardButtonSkips"
             android:summary="@string/pref_hardwareForwardButtonSkips_sum"
             android:title="@string/pref_hardwareForwardButtonSkips_title"/>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefFollowQueue"
             android:summary="@string/pref_followQueue_sum"
             android:title="@string/pref_followQueue_title"/>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefSkipKeepsEpisode"
             android:summary="@string/pref_skip_keeps_episodes_sum"
             android:title="@string/pref_skip_keeps_episodes_title"/>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefAutoDelete"
@@ -125,13 +125,13 @@
             android:summary="@string/pref_playback_speed_sum"
             android:title="@string/pref_playback_speed_title" />
 
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefPauseForFocusLoss"
             android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
             android:title="@string/pref_pausePlaybackForFocusLoss_title" />
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefResumeAfterCall"
@@ -144,7 +144,7 @@
             android:key="prefAutoUpdateIntervall"
             android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
             android:title="@string/pref_autoUpdateIntervallOrTime_title"/>
-        <CheckBoxPreference
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefMobileUpdate"
@@ -174,16 +174,16 @@
             android:summary="@string/pref_automatic_download_sum"
             android:key="prefAutoDownloadSettings"
             android:title="@string/pref_automatic_download_title">
-            <CheckBoxPreference
+            <de.danoeh.antennapod.preferences.SwitchCompatPreference
                 android:key="prefEnableAutoDl"
                 android:title="@string/pref_automatic_download_title"
                 android:defaultValue="false"/>
-            <CheckBoxPreference
+            <de.danoeh.antennapod.preferences.SwitchCompatPreference
                 android:key="prefEnableAutoDownloadOnBattery"
                 android:title="@string/pref_automatic_download_on_battery_title"
                 android:summary="@string/pref_automatic_download_on_battery_sum"
                 android:defaultValue="true"/>
-            <CheckBoxPreference
+            <de.danoeh.antennapod.preferences.SwitchCompatPreference
                 android:key="prefEnableAutoDownloadWifiFilter"
                 android:title="@string/pref_autodl_wifi_filter_title"
                 android:summary="@string/pref_autodl_wifi_filter_sum"/>
@@ -258,7 +258,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/experimental_pref">
-    <CheckBoxPreference
+    <de.danoeh.antennapod.preferences.SwitchCompatPreference
         android:defaultValue="false"
         android:enabled="false"
         android:key="prefSonic"
