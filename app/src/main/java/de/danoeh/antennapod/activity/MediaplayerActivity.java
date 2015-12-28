@@ -485,16 +485,20 @@ public abstract class MediaplayerActivity extends ActionBarActivity
             public void onClick(View v) {
                 showTimeLeft = !showTimeLeft;
                 Playable media = controller.getMedia();
-                if(showTimeLeft) {
+                if (media == null) {
+                    return;
+                }
+
+                if (showTimeLeft) {
                     txtvLength.setText("-"+Converter.getDurationStringLong((media
                             .getDuration()-media.getPosition())));
-                }else{
-                    txtvLength.setText("-"+Converter.getDurationStringLong((media.getDuration())));
+                } else {
+                    txtvLength.setText(Converter.getDurationStringLong((media.getDuration())));
                 }
 
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(PREF_SHOW_TIME_LEFT,showTimeLeft);
-                editor.commit();
+                editor.apply();
                 Log.d("timeleft on click",showTimeLeft? "true":"false");
             }
         });
