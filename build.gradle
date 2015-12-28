@@ -51,15 +51,15 @@ project.ext {
     iconifyFontawesomeVersion = "2.1.1"
     materialDialogsVersion = "0.8.5.1@aar"
     recyclerviewFlexibledividerVersion = "1.2.6"
-    rxAndroidVersion = "1.0.1"
-    rxJavaVersion = "1.0.16"
-    rxJavaRulesVersion = "1.0.16.1"
-    okhttpVersion = "2.6.0"
+    rxAndroidVersion = "1.1.0"
+    rxJavaVersion = "1.1.0"
+    rxJavaRulesVersion = "1.1.0.0"
+    okhttpVersion = "2.7.0"
     okioVersion = "1.6.0"
 
     audioPlayerVersion = "v1.0.7"
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "2.9"
+    gradleVersion = "2.10"
 }
