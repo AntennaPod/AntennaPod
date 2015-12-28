@@ -49,7 +49,7 @@ project.ext {
     glideVersion = "3.6.1"
     jsoupVersion = "1.7.3"
     iconifyFontawesomeVersion = "2.1.1"
-    materialDialogsVersion = "0.8.5.1@aar"
+    materialDialogsVersion = "0.8.5.3@aar"
     recyclerviewFlexibledividerVersion = "1.2.6"
     rxAndroidVersion = "1.1.0"
     rxJavaVersion = "1.1.0"

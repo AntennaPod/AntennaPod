@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/user_interface_label">
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
@@ -8,7 +10,8 @@
             android:title="@string/pref_set_theme_title"
             android:key="prefTheme"
             android:summary="@string/pref_set_theme_sum"
-            android:defaultValue="0"/>
+            android:defaultValue="0"
+            app:useStockLayout="true"/>
         <PreferenceScreen
             android:key="prefDrawerSettings"
             android:summary="@string/pref_nav_drawer_sum"
@@ -23,14 +26,16 @@
                 android:title="@string/pref_nav_drawer_feed_order_title"
                 android:key="prefDrawerFeedOrder"
                 android:summary="@string/pref_nav_drawer_feed_order_sum"
-                android:defaultValue="0"/>
+                android:defaultValue="0"
+                app:useStockLayout="true"/>
             <com.afollestad.materialdialogs.prefs.MaterialListPreference
                 android:entryValues="@array/nav_drawer_feed_counter_values"
                 android:entries="@array/nav_drawer_feed_counter_options"
                 android:title="@string/pref_nav_drawer_feed_counter_title"
                 android:key="prefDrawerFeedIndicator"
                 android:summary="@string/pref_nav_drawer_feed_counter_sum"
-                android:defaultValue="0"/>
+                android:defaultValue="0"
+                app:useStockLayout="true"/>
         </PreferenceScreen>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
@@ -119,7 +124,8 @@
             android:entryValues="@array/smart_mark_as_played_values"
             android:key="prefSmartMarkAsPlayedSecs"
             android:summary="@string/pref_smart_mark_as_played_sum"
-            android:title="@string/pref_smart_mark_as_played_title"/>
+            android:title="@string/pref_smart_mark_as_played_title"
+            app:useStockLayout="true"/>
         <Preference
             android:key="prefPlaybackSpeedLauncher"
             android:summary="@string/pref_playback_speed_sum"
@@ -150,26 +156,27 @@
             android:key="prefMobileUpdate"
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title"/>
-
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:defaultValue="-1"
             android:entries="@array/episode_cleanup_entries"
             android:key="prefEpisodeCleanup"
             android:title="@string/pref_episode_cleanup_title"
             android:summary="@string/pref_episode_cleanup_summary"
-            android:entryValues="@array/episode_cleanup_values"/>
-
+            android:entryValues="@array/episode_cleanup_values"
+            app:useStockLayout="true"/>
         <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
             android:defaultValue="4"
             android:inputType="number"
             android:key="prefParallelDownloads"
-            android:title="@string/pref_parallel_downloads_title"/>
+            android:title="@string/pref_parallel_downloads_title"
+            app:useStockLayout="true"/>
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:defaultValue="20"
             android:entries="@array/episode_cache_size_entries"
             android:key="prefEpisodeCacheSize"
             android:title="@string/pref_episode_cache_title"
-            android:entryValues="@array/episode_cache_size_values"/>
+            android:entryValues="@array/episode_cache_size_values"
+            app:useStockLayout="true"/>
         <PreferenceScreen
             android:summary="@string/pref_automatic_download_sum"
             android:key="prefAutoDownloadSettings"
