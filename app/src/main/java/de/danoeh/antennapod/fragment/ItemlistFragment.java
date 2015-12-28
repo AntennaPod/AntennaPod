@@ -144,8 +144,6 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().registerSticky(this);
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
@@ -154,7 +152,8 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume()");
+        EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().registerSticky(this);
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
         updateProgressBarVisibility();
         loadItems();
