@@ -10,6 +10,8 @@ How to report a bug
 - Usually, you can make a screenshot of your smartphone by pressing [Power] + [Volume down] for a few seconds
 - Please use the following **template**: 
 
+**App version**: 1.[x] (from Google Play/F-Store/Custom build)
+
 **Android version**: 5.x [Especially mention custom roms!]
 
 **Devide model**: 
