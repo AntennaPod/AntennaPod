@@ -5,8 +5,11 @@
   <string name="feeds_label">피드</string>
   <string name="add_feed_label">팟캐스트 추가</string>
   <string name="podcasts_label">팟캐스트</string>
+  <string name="episodes_label">에피소드</string>
   <string name="new_episodes_label">새 에피소드</string>
   <string name="all_episodes_label">모든 에피소드</string>
+  <string name="all_episodes_short_label">모두</string>
+  <string name="favorite_episodes_label">즐겨찾기</string>
   <string name="new_label">신규</string>
   <string name="waiting_list_label">추가 대기 목록</string>
   <string name="settings_label">설정</string>
@@ -19,6 +22,7 @@
   <string name="playback_history_label">재생 기록</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net 로그인</string>
+  <string name="free_space_label">%1$s 남음</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">최근에 발표</string>
   <string name="episode_filter_label">새 에피소드만 표시</string>
@@ -28,6 +32,7 @@
   <string name="drawer_preferences">드로어 기본 설정</string>
   <string name="drawer_feed_order_unplayed_episodes">카운터로 정렬</string>
   <string name="drawer_feed_order_alphabetical">사전 순서로 정렬</string>
+  <string name="drawer_feed_order_last_update">배포 날짜 순서대로 정렬</string>
   <string name="drawer_feed_counter_new_unplayed">새로운 에피소드와 재생하지 않은 에피소드 수</string>
   <string name="drawer_feed_counter_new">새로운 에피소드 수</string>
   <string name="drawer_feed_counter_unplayed">재생하지 않은 에피소드 수</string>
@@ -68,11 +73,19 @@
   <string name="retry_label">다시 시도</string>
   <string name="auto_download_label">자동 다운로드에 포함</string>
   <string name="auto_download_apply_to_items_title">예전 에피소드에 적용</string>
+  <string name="auto_download_apply_to_items_message">새로운 \'자동 다운로드\' 설정은 새 에피소드에 자동적으로 적용됩니다. 기존에 배포된 에피소드에도 적용할까요?</string>
   <string name="auto_delete_label">에피소드 자동 삭제\n(전체 설정보다 우선)</string>
   <string name="parallel_downloads_suffix">\u0020동시 다운로드</string>
   <string name="feed_auto_download_global">전체 설정</string>
   <string name="feed_auto_download_always">항상</string>
   <string name="feed_auto_download_never">안 함</string>
+  <string name="send_label">보내기...</string>
+  <string name="episode_cleanup_never">안 함</string>
+  <string name="episode_cleanup_queue_removal">대기열에 없을 때</string>
+  <string name="episode_cleanup_after_listening">재생이 끝나고 나서</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="other">재생이 끝나고 나서 %d일 뒤</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">피드 URL</string>
   <string name="etxtFeedurlHint">피드의 URL 또는 홈페이지</string>
@@ -122,6 +135,8 @@
   <string name="add_to_queue_label">대기열에 추가</string>
   <string name="added_to_queue_label">대기열에 추가함</string>
   <string name="remove_from_queue_label">대기열에서 제거</string>
+  <string name="add_to_favorite_label">즐겨찾기에 추가</string>
+  <string name="remove_from_favorite_label">즐겨찾기에서 제거</string>
   <string name="visit_website_label">홈페이지 보기</string>
   <string name="support_label">Flattr하기</string>
   <string name="enqueue_all_new">모두 대기열에 추가</string>
@@ -130,6 +145,7 @@
   <string name="activate_auto_download">자동 다운로드 활성화</string>
   <string name="deactivate_auto_download">자동 다운로드 해제</string>
   <string name="reset_position">재생 위치 초기화</string>
+  <string name="removed_item">항목 제거됨</string>
   <!--Download messages and labels-->
   <string name="download_successful">성공</string>
   <string name="download_failed">실패</string>
@@ -227,7 +243,9 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">플러그인 다운로드</string>
   <string name="no_playback_plugin_title">플러그인을 설치하지 않았습니다</string>
+  <string name="no_playback_plugin_or_sonic_msg">가변 재생 속도를 사용하려면 제3자 라이브러리를 설치하거나 실험적인 \'소닉 플레이어[Android 4.1 이상]\'를 사용해야 합니다. \'플러그인 다운로드\'를 눌러 Play Store에서 무료 플러그인을 다운로드하십시오. 플러그인을 사용해서 발생하는 모든 문제는 AntennaPod의 책임이 아니며 플러그인 제작자에게 보고하십시오.</string>
   <string name="set_playback_speed_label">재생 속도</string>
+  <string name="enable_sonic">소닉 플레이어 사용</string>
   <!--Empty list labels-->
   <string name="no_items_label">이 목록에 항목이 없습니다.</string>
   <string name="no_feeds_label">아직 어떤 피드도 구독하지 않았습니다.</string>
@@ -237,12 +255,20 @@
   <string name="queue_label">대기열</string>
   <string name="services_label">서비스</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">에피소드 정리</string>
+  <string name="pref_episode_cleanup_summary">여유 공간이 필요할 때, 대기열에 있지 않고 즐겨찾기도 아닌 에피소드가 삭제 대상이 됩니다.</string>
+  <string name="pref_pauseOnDisconnect_sum">헤드폰이나 블루투스가 연결 해제되었을 경우 일시정지</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰 다시 연결할 때 재생 계속</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">블루투스가 다시 연결되면 재생 재개 </string>
+  <string name="pref_hardwareForwardButtonSkips_title">빨리감기 버튼을 넘김 버튼으로</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">빨리감기 하드웨어 버튼을 눌렀을 경우 빨리감기 대신 다음 에피소드로 넘깁니다</string>
   <string name="pref_followQueue_sum">재생을 마쳤을 때 다음 대기열로 이동</string>
   <string name="pref_auto_delete_sum">재생이 끝나면 에피소드 삭제</string>
   <string name="pref_auto_delete_title">자동 삭제</string>
   <string name="pref_smart_mark_as_played_sum">재생이 일정한 시간보다 (초 단위) 적게 남으면 에피소드를 재생한 것으로 표시</string>
   <string name="pref_smart_mark_as_played_title">똑똑하게 재생한 것으로 표시</string>
+  <string name="pref_skip_keeps_episodes_sum">에피소드를 넘겼을 경우에도 유지</string>
+  <string name="pref_skip_keeps_episodes_title">넘긴 에피소드를 유지 보관합니다</string>
   <string name="playback_pref">재생</string>
   <string name="network_pref">네트워크</string>
   <string name="pref_autoUpdateIntervallOrTime_title">업데이트 주기 또는 하루 중 시각</string>
@@ -256,6 +282,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">Wi-Fi 미디어 다운로드</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">헤드폰 연결 끊김</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">헤드폰 재연결</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">블루투스 다시 연결</string>
   <string name="pref_mobileUpdate_title">휴대전화망 업데이트</string>
   <string name="pref_mobileUpdate_sum">휴대전화 데이터 연결을 통해 업데이트 허용</string>
   <string name="refreshing_label">새로 고치는 중</string>
@@ -309,6 +336,8 @@
   <string name="pref_expandNotify_sum">항상 알림에서 재생 버튼이 표시되도록 확장</string>
   <string name="pref_persistNotify_title">재생 조작 고정</string>
   <string name="pref_persistNotify_sum">재생이 일시 중지했을 때에도 알림과 잠금 화면의 조작 기능 유지</string>
+  <string name="pref_lockscreen_background_title">잠금 화면 배경 설정</string>
+  <string name="pref_lockscreen_background_sum">현재 에피소드의 이미지를 잠금 화면의 배경으로 설정합니다. 대신 이는 제3자 앱의 이미지도 표시하게 됩니다.</string>
   <string name="pref_showDownloadReport_title">다운로드 보고서 보기</string>
   <string name="pref_showDownloadReport_sum">다운로드가 실패하면, 실패를 자세히 표시하는 보고서를 만듭니다.</string>
   <string name="pref_expand_notify_unsupport_toast">안드로이드 4.1 전 버전에서는 알림 확장을 지원하지 않습니다.</string>
@@ -317,6 +346,12 @@
   <string name="pref_smart_mark_as_played_disabled">사용 안 함</string>
   <string name="pref_image_cache_size_title">이미지 캐시 크기</string>
   <string name="pref_image_cache_size_sum">이미지에 사용할 디스크 캐시 크기</string>
+  <string name="crash_report_title">오류 보고</string>
+  <string name="crash_report_sum">최근의 오류 보고서를 전자메일로 보내기</string>
+  <string name="send_email">전자메일 보내기</string>
+  <string name="experimental_pref">실험적 기능</string>
+  <string name="pref_sonic_title">소닉 미디어 플레이어</string>
+  <string name="pref_sonic_message">Prestissimo 대신 내장 소닉 미디어 플레이어 사용</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">자동 flattr 사용</string>
   <string name="auto_flattr_after_percent">%d 퍼센트를 재생하면 에피소드에 flattr합니다</string>
@@ -331,6 +366,7 @@
   <string name="found_in_title_label">제목에서 발견</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML 파일을 이용하면 팟캐스트 목록을 한 팟캐스트 프로그램에서 다른 팟캐스트 프로그램으로 옮길 수 있습니다.</string>
+  <string name="opml_import_option">옵션 %1$d</string>
   <string name="opml_import_explanation_1">로컬 파일시스템의 특정 파일 경로를 선택하십시오.</string>
   <string name="opml_import_explanation_2">OPML 파일을 여는데 Dropbox, Google Drive, 또는 파일 관리자 와 같은 외부 앱을 사용합니다.</string>
   <string name="opml_import_explanation_3">Google Mail, Dropbox, Google Drive 및 대부분의 파일 관리자는 OPML 파일을 안테나팟<i>으로</i> <i>열 수</i> 있습니다.</string>
@@ -357,6 +393,9 @@
   <string name="sleep_timer_label">취침 타이머</string>
   <string name="time_left_label">남은 시간:\u0020</string>
   <string name="time_dialog_invalid_input">입력이 잘못되었습니다. 시간으로 숫자를 입력해야 합니다.</string>
+  <string name="timer_about_to_expire_label"><b>타이머가 만료될 때:</b></string>
+  <string name="shake_to_reset_label">흔들어서 타이머 초기화</string>
+  <string name="timer_vibration_label">진동</string>
   <string name="time_seconds">초</string>
   <string name="time_minutes">분</string>
   <string name="time_hours">시간</string>
@@ -401,11 +440,15 @@
   <string name="selected_folder_label">선택한 폴더:</string>
   <string name="create_folder_label">폴더 만들기</string>
   <string name="choose_data_directory">데이터 폴더 선택</string>
+  <string name="choose_data_directory_message">데이터 폴더를 선택하십시오. 안테나팟은 알아서 그 하위 디렉토리를 생성합니다.</string>
   <string name="create_folder_msg">이름이 \"%1$s\"인 폴더를 만드시겠습니까?</string>
   <string name="create_folder_success">새 폴더를 만들었습니다</string>
   <string name="create_folder_error_no_write_access">이 폴더에 쓸 수 없습니다</string>
   <string name="create_folder_error_already_exists">폴더가 이미 있습니다</string>
   <string name="create_folder_error">폴더를 만들 수 없습니다</string>
+  <string name="folder_does_not_exist_error">\"%1$s\"이(가) 없습니다.</string>
+  <string name="folder_not_readable_error">\"%1$s\"에서 읽을 수 없습니다</string>
+  <string name="folder_not_writable_error">\"%1$s\"에 쓸 수 없습니다</string>
   <string name="folder_not_empty_dialog_title">폴더가 비어 있지 않습니다</string>
   <string name="folder_not_empty_dialog_msg">선택한 폴더가 비어 있지 않습니다. 다운로드한 미디어 파일 및 기타 파일이 이 폴더에 저장됩니다. 그래도 계속 하시겠습니까?</string>
   <string name="set_to_default_folder">기본 폴더 선택</string>
@@ -466,4 +509,9 @@
   <string name="sort_duration_short_long">길이 (짧은 \u2192 긴)</string>
   <string name="sort_duration_long_short">길이 (긴 \u2192 짧은)</string>
   <!--Rating dialog-->
+  <string name="rating_title">안테나팟이 좋으신가요?</string>
+  <string name="rating_message">안테나팟을 평가하는데 시간을 잠깐 내주시면 감사하겠습니다.</string>
+  <string name="rating_never_label">안 할래요</string>
+  <string name="rating_later_label">나중에 알림</string>
+  <string name="rating_now_label">해봅시다!</string>
 </resources>

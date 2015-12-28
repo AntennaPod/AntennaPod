@@ -1,7 +1,7 @@
 Un lecteur et gestionnaire de podcast  facile à utiliser et flexible
 
 AntennaPod est un lecteur et gestionnaire de podcast permettant l'accès à des millions de podcast gratuits ou payants produit aussi bien par des podcasters indépendants que de gros éditeurs comme la BBC, NPR ou CNN. Ajoutez, importez et exportez leurs flux facilement à partir d'ITunes, de fichiers OPML ou simplement à partir de liens RSS. Économisez votre temps, votre batterie et votre consommation internet grâce à une automatisation puissante des téléchargements (quand, à quel rythme et à partir de quel réseau wifi) et de la suppression des épisodes (à partir d'un certains temps ou des favoris)<br>
-Encore plus important : téléchargez, streamez ou mettez dans votre liste de lecture vos épisodes et écoutez les à votre manière grâce à une vitesse de lecture réglable, au support des chapitres et une fonction de mise en veille automatique. Vous pouvez même montrer votre appréciation aux créateurs de contenu avec notre intégration de Flattr.
+Plus important : téléchargez, streamez ou ajoutez à la liste de lecture vos épisodes et écoutez les à votre manière grâce au réglage de la vitesse de lecture, au support des chapitres et au minuteur d'arrêt automatique. Vous pouvez même montrer votre appréciation aux créateurs de contenu avec notre intégration de Flattr.
 
 Programmé par des fans de podcast, AntennaPod est gratuit dans tous les sens du terme : open source, aucun cout et pas de publicité.
 

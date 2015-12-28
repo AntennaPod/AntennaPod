@@ -1,11 +1,18 @@
 Registro dei cambiamenti
 ==========
+Versione 1.4.1
+-------------
+* Performance improvements
+* Hardware buttons now ff and rewind instead of skipping
+* Option to have forward button skip
+* Option to send crash reports directly to developers
+* Highlight currently playing episode
 
 Version 1.4.0.12
 ----------------
 * Fix for crash on Huawei devices (media buttons may not work)
 
-Version 1.4
+Versione 1.4
 -----------
 * BLUETOOTH PERMISSION: Needed to be able to resume playback when a Bluetooth device reconnects with your phone
 * VIBRATE PERMISSION: Used optionally with the sleep timer
@@ -18,7 +25,7 @@ Version 1.4
 * Flexible episode cleanup
 * Rewind after pause
 * Miglioramenti dell'usabilità
-* Bug fixes
+* Correzioni di bug
 
 Versione 1.3
 -----------
@@ -49,7 +56,7 @@ Versione 1.1
 * Fixed date problems for some feeds
 * Display improvements
 * Miglioramenti dell'usabilità
-* Several other bugfixes
+* Diverse altre correzioni di bug
 
 Version 1.0
 -----------

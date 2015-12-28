@@ -5,8 +5,11 @@
   <string name="feeds_label">订阅</string>
   <string name="add_feed_label">添加播客</string>
   <string name="podcasts_label">播客</string>
+  <string name="episodes_label">曲目</string>
   <string name="new_episodes_label">新曲目</string>
   <string name="all_episodes_label">所有曲目</string>
+  <string name="all_episodes_short_label">全部</string>
+  <string name="favorite_episodes_label">收藏</string>
   <string name="new_label">最新</string>
   <string name="waiting_list_label">等待列表</string>
   <string name="settings_label">设置</string>
@@ -28,6 +31,7 @@
   <string name="drawer_preferences">侧边栏设置</string>
   <string name="drawer_feed_order_unplayed_episodes">按数量排序</string>
   <string name="drawer_feed_order_alphabetical">按名称排序</string>
+  <string name="drawer_feed_order_last_update">按出版日期排序</string>
   <string name="drawer_feed_counter_new_unplayed">新曲目和播放曲目数</string>
   <string name="drawer_feed_counter_new">新曲目数</string>
   <string name="drawer_feed_counter_unplayed">未播曲目数</string>
@@ -73,6 +77,13 @@
   <string name="feed_auto_download_global">全局</string>
   <string name="feed_auto_download_always"> 总是</string>
   <string name="feed_auto_download_never">从不</string>
+  <string name="send_label">发送……</string>
+  <string name="episode_cleanup_never">从不</string>
+  <string name="episode_cleanup_queue_removal">当不在队列中</string>
+  <string name="episode_cleanup_after_listening">结束后</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="other">结束后 %d 天</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">订阅 URL</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -85,6 +96,7 @@
   <string name="mark_all_read_msg">将所有曲目标记为已播放</string>
   <string name="mark_all_read_confirmation_msg">请确认您要将所有曲目标为已播放</string>
   <string name="mark_all_read_feed_confirmation_msg">请确认您要将该订阅下的所有曲目标为已播放</string>
+  <string name="mark_all_seen_label">所有可见</string>
   <string name="show_info_label">查看信息</string>
   <string name="remove_feed_label">删除播客</string>
   <string name="share_label">分享到...</string>
@@ -97,6 +109,7 @@
   <string name="feed_remover_msg">删除订阅</string>
   <string name="load_complete_feed">刷新全部订阅</string>
   <string name="hide_episodes_title">隐藏曲目</string>
+  <string name="episode_actions">启用</string>
   <string name="hide_unplayed_episodes_label">未播放</string>
   <string name="hide_paused_episodes_label">已暂停</string>
   <string name="hide_played_episodes_label">已播放</string>
@@ -120,6 +133,8 @@
   <string name="add_to_queue_label">添加到播放列表</string>
   <string name="added_to_queue_label">已添加到播放列表</string>
   <string name="remove_from_queue_label">从播放列表中删除</string>
+  <string name="add_to_favorite_label">加入收藏</string>
+  <string name="remove_from_favorite_label">从收藏删除</string>
   <string name="visit_website_label">访问网站</string>
   <string name="support_label">Flattr 他</string>
   <string name="enqueue_all_new">全部添加到播放列表</string>
@@ -128,6 +143,7 @@
   <string name="activate_auto_download">开启自动下载</string>
   <string name="deactivate_auto_download">关闭自动下载</string>
   <string name="reset_position">重置播放进度</string>
+  <string name="removed_item">已删除项</string>
   <!--Download messages and labels-->
   <string name="download_successful">成功</string>
   <string name="download_failed">失败</string>
@@ -163,6 +179,7 @@
   <string name="download_request_error_dialog_message_prefix">尝试下载文件:\u0020 时出错</string>
   <string name="authentication_notification_title">需要认证</string>
   <string name="authentication_notification_msg">您所请求的资源需要用户名和密码</string>
+  <string name="confirm_mobile_download_dialog_title">确认手机下载</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">错误!</string>
   <string name="player_stopped_msg">没有可播放媒体</string>
@@ -294,12 +311,14 @@
   <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
   <string name="pref_playback_speed_title">播放速度</string>
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
+  <string name="pref_rewind">时间倒回</string>
   <string name="pref_gpodnet_sethostname_title">设置主机名</string>
   <string name="pref_gpodnet_sethostname_use_default_host">使用默认主机</string>
   <string name="pref_expandNotify_title">扩展通知</string>
   <string name="pref_expandNotify_sum">总是扩展通知以显示播放按钮</string>
   <string name="pref_persistNotify_title">保持播放控制</string>
   <string name="pref_persistNotify_sum">在暂停时保持通知和锁屏界面的控制。</string>
+  <string name="pref_lockscreen_background_title">设置锁屏背景</string>
   <string name="pref_showDownloadReport_title">显示下载报告</string>
   <string name="pref_showDownloadReport_sum">如果下载失败，生成一份显示详细失败信息的报告。</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 之前不支持扩展通知。</string>
@@ -308,6 +327,9 @@
   <string name="pref_smart_mark_as_played_disabled">已禁用</string>
   <string name="pref_image_cache_size_title">图像缓存大小</string>
   <string name="pref_image_cache_size_sum">用于缓存图像的存储空间大小</string>
+  <string name="crash_report_title">崩溃报告</string>
+  <string name="crash_report_sum">通过 E-mail 发送最后崩溃报告</string>
+  <string name="send_email">发送 E-mail</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">启用自动 flattring</string>
   <string name="auto_flattr_after_percent">当播放到百分之%d时Flattr改曲目</string>
@@ -322,6 +344,7 @@
   <string name="found_in_title_label">标题中查找</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML 文件可以方便的从别的播客转移数据过来。</string>
+  <string name="opml_import_option">设置 %1$d</string>
   <string name="opml_import_explanation_1">从本地文件系统选择一个特定文件地址。</string>
   <string name="opml_import_explanation_2">使用外部应用程序，例如 Dropbox，Google Drive 或您喜爱的文件管理器打开 OPML 文件。</string>
   <string name="opml_import_explanation_3"><i>与</i> AntennaPod 一样，许多应用例如Google Mail，Dropbox，Google Drive和大多数文件管理器均可 <i>打开</i> OPML文件。</string>
@@ -333,6 +356,7 @@
   <string name="opml_import_error_dir_empty">导入目录为空.</string>
   <string name="select_all_label">全选</string>
   <string name="deselect_all_label">取消所有选择</string>
+  <string name="select_options_label">选择 ...</string>
   <string name="choose_file_from_filesystem">来自本地文件系统</string>
   <string name="choose_file_from_external_application">使用外部应用</string>
   <string name="opml_export_label">OPML 导出</string>
@@ -347,6 +371,8 @@
   <string name="sleep_timer_label">休眠计时器</string>
   <string name="time_left_label">计时剩余:\u0020</string>
   <string name="time_dialog_invalid_input">无效的输入, 时间是一个整数</string>
+  <string name="timer_about_to_expire_label"><b>当计时器过期时:</b></string>
+  <string name="timer_vibration_label">振动</string>
   <string name="time_seconds">秒</string>
   <string name="time_minutes">分</string>
   <string name="time_hours">小时</string>
@@ -396,6 +422,9 @@
   <string name="create_folder_error_no_write_access">本文件夹不能写入</string>
   <string name="create_folder_error_already_exists">文件夹已存在</string>
   <string name="create_folder_error">不能创建文件夹</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" 不存在</string>
+  <string name="folder_not_readable_error">\"%1$s\" 不可读</string>
+  <string name="folder_not_writable_error">\"%1$s\" 不可写</string>
   <string name="folder_not_empty_dialog_title">文件夹不能为空</string>
   <string name="folder_not_empty_dialog_msg">您所选择的文件夹不能为空. 媒体下载和其他文件将被直接放在本文件夹. 确认继续吗?</string>
   <string name="set_to_default_folder">选择默认文件夹</string>
@@ -456,4 +485,8 @@
   <string name="sort_duration_short_long">时长 (短 \u2192 长)</string>
   <string name="sort_duration_long_short">时长 (长 \u2192 短)</string>
   <!--Rating dialog-->
+  <string name="rating_title">喜欢 AntennaPod?</string>
+  <string name="rating_never_label">请勿打扰</string>
+  <string name="rating_later_label">稍后提醒</string>
+  <string name="rating_now_label">好的, 就这样！</string>
 </resources>
