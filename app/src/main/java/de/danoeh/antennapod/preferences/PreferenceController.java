@@ -695,34 +695,56 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     private void showChooseDataFolderDialog() {
         Context context = ui.getActivity();
-        String dataFolder = UserPreferences.getDataFolder(null).getAbsolutePath();
+        File dataFolder =  UserPreferences.getDataFolder(null);
+        if(dataFolder == null) {
+            new MaterialDialog.Builder(ui.getActivity())
+                    .title(R.string.error_label)
+                    .content(R.string.external_storage_error_msg)
+                    .neutralText(android.R.string.ok)
+                    .show();
+            return;
+        }
+        String dataFolderPath = dataFolder.getAbsolutePath();
         int selectedIndex = -1;
         File[] mediaDirs = ContextCompat.getExternalFilesDirs(context, null);
-        String[] folders = new String[mediaDirs.length];
-        CharSequence[] choices = new CharSequence[mediaDirs.length];
+        List<String> folders = new ArrayList<>(mediaDirs.length);
+        List<CharSequence> choices = new ArrayList<>(mediaDirs.length);
         for(int i=0; i < mediaDirs.length; i++) {
-            String path = folders[i] = mediaDirs[i].getAbsolutePath();
-            if(dataFolder.equals(path)) {
+            if(mediaDirs[i] == null) {
+                continue;
+            }
+            String path = mediaDirs[i].getAbsolutePath();
+            folders.add(path);
+            if(dataFolderPath.equals(path)) {
                 selectedIndex = i;
             }
             int index = path.indexOf("Android");
+            String choice;
             if(index >= 0) {
-                choices[i] = path.substring(0, index);
+                choice = path.substring(0, index);
             } else {
-                choices[i] = path;
+                choice = path;
             }
             long bytes = StorageUtils.getFreeSpaceAvailable(path);
             String freeSpace = String.format(context.getString(R.string.free_space_label),
                     Converter.byteToString(bytes));
-            choices[i] = Html.fromHtml("<html><small>" + choices[i]
-                    + " [" + freeSpace + "]" + "</small></html>");
+            choices.add(Html.fromHtml("<html><small>" + choice
+                    + " [" + freeSpace + "]" + "</small></html>"));
+        }
+        if(choices.size() == 0) {
+            new MaterialDialog.Builder(ui.getActivity())
+                    .title(R.string.error_label)
+                    .content(R.string.external_storage_error_msg)
+                    .neutralText(android.R.string.ok)
+                    .show();
+            return;
         }
         MaterialDialog dialog = new MaterialDialog.Builder(ui.getActivity())
                 .title(R.string.choose_data_directory)
                 .content(R.string.choose_data_directory_message)
-                .items(choices)
+                .items(choices.toArray(new CharSequence[choices.size()]))
                 .itemsCallbackSingleChoice(selectedIndex, (dialog1, itemView, which, text) -> {
-                    String folder = folders[which];
+                    String folder = folders.get(which);
                     Log.d(TAG, "data folder: " + folder);
                     UserPreferences.setDataFolder(folder);
                     setDataFolderText();
