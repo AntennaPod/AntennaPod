@@ -51,8 +51,19 @@ public class StorageUtils {
      * Get the number of free bytes that are available on the external storage.
      */
     public static long getFreeSpaceAvailable() {
-        StatFs stat = new StatFs(UserPreferences.getDataFolder(
-                null).getAbsolutePath());
+        File dataFolder = UserPreferences.getDataFolder(null);
+        if (dataFolder != null) {
+            return getFreeSpaceAvailable(dataFolder.getAbsolutePath());
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Get the number of free bytes that are available on the external storage.
+     */
+    public static long getFreeSpaceAvailable(String path) {
+        StatFs stat = new StatFs(path);
         long availableBlocks;
         long blockSize;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {

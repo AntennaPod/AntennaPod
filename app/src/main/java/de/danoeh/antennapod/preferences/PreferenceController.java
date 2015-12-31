@@ -711,7 +711,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             } else {
                 choices[i] = path;
             }
-            long bytes = StorageUtils.getFreeSpaceAvailable();
+            long bytes = StorageUtils.getFreeSpaceAvailable(path);
             String freeSpace = String.format(context.getString(R.string.free_space_label),
                     Converter.byteToString(bytes));
             choices[i] = Html.fromHtml("<html><small>" + choices[i]
