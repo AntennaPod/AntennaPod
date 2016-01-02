@@ -1258,25 +1258,31 @@ public class PodDBAdapter {
     }
 
     public final Cursor getFeedItemCursor(final String podcastUrl, final String episodeUrl) {
-        final String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " INNER JOIN " +
-                    TABLE_NAME_FEEDS + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" +
-                    TABLE_NAME_FEEDS + "." + KEY_ID + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER + "='" +
-                    episodeUrl + "' AND " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL + "='" + podcastUrl + "'";
+        String downloadUrl = DatabaseUtils.sqlEscapeString(podcastUrl);
+        String itemIdentifier = DatabaseUtils.sqlEscapeString(episodeUrl);
+        final String query = ""
+                + "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEEDS
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER + "='" + itemIdentifier + "'"
+                + " AND " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL + "='" + downloadUrl + "'";
         return db.rawQuery(query, null);
     }
 
     public Cursor getImageAuthenticationCursor(final String imageUrl) {
-        final String query = "SELECT " + KEY_USERNAME + "," + KEY_PASSWORD + " FROM "
-                + TABLE_NAME_FEED_IMAGES + " INNER JOIN " + TABLE_NAME_FEEDS + " ON " +
-                TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" + TABLE_NAME_FEEDS + "." + KEY_IMAGE + " WHERE "
-                + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "='" + imageUrl + "' UNION SELECT "
-                + KEY_USERNAME + "," + KEY_PASSWORD + " FROM " + TABLE_NAME_FEED_IMAGES + " INNER JOIN "
-                + TABLE_NAME_FEED_ITEMS + " ON " + TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" +
-                TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE + " INNER JOIN " + TABLE_NAME_FEEDS + " ON "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID + " WHERE "
-                + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "='" + imageUrl + "'";
-        Log.d(TAG, "Query: " + query);
+        String downloadUrl = DatabaseUtils.sqlEscapeString(imageUrl);
+        final String query = ""
+                + "SELECT " + KEY_USERNAME + "," + KEY_PASSWORD + " FROM " + TABLE_NAME_FEED_IMAGES
+                + " INNER JOIN " + TABLE_NAME_FEEDS
+                + " ON " + TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" + TABLE_NAME_FEEDS + "." + KEY_IMAGE
+                + " WHERE " + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "='" + downloadUrl + "'"
+                + " UNION SELECT " + KEY_USERNAME + "," + KEY_PASSWORD
+                + " FROM " + TABLE_NAME_FEED_IMAGES
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
+                + " ON " + TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE
+                + " INNER JOIN " + TABLE_NAME_FEEDS
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
+                + " WHERE " + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "='" + downloadUrl + "'";
         return db.rawQuery(query, null);
     }
 
