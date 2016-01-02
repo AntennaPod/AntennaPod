@@ -1127,9 +1127,13 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
     private final org.antennapod.audio.MediaPlayer.OnErrorListener audioErrorListener = new org.antennapod.audio.MediaPlayer.OnErrorListener() {
         @Override
-        public boolean onError(org.antennapod.audio.MediaPlayer mp, int what,
-                               int extra) {
-            return genericOnError(mp, what, extra);
+        public boolean onError(org.antennapod.audio.MediaPlayer mp, int what, int extra) {
+            if(mp.canFallback()) {
+                mp.fallback();
+                return true;
+            } else {
+                return genericOnError(mp, what, extra);
+            }
         }
     };
 
