@@ -21,6 +21,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 
@@ -57,7 +58,11 @@ public class FeedItemlistAdapter extends BaseAdapter {
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.makePlayedItemsTransparent = makePlayedItemsTransparent;
 
-        playingBackGroundColor = context.getResources().getColor(R.color.highlight_light);
+        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
+            playingBackGroundColor = context.getResources().getColor(R.color.highlight_dark);
+        } else {
+            playingBackGroundColor = context.getResources().getColor(R.color.highlight_light);
+        }
         normalBackGroundColor = context.getResources().getColor(android.R.color.transparent);
     }
 
