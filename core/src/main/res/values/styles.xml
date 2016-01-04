@@ -49,6 +49,10 @@
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_grey600_24dp</item>
         <item name="attr/ic_reorder">@drawable/ic_reorder_grey600_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
@@ -98,6 +102,10 @@
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_white_24dp</item>
         <item name="attr/ic_reorder">@drawable/ic_reorder_white_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_white_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -149,6 +157,10 @@
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_grey600_24dp</item>
         <item name="attr/ic_reorder">@drawable/ic_reorder_grey600_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -199,6 +211,10 @@
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_white_24dp</item>
         <item name="attr/ic_reorder">@drawable/ic_reorder_white_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_white_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">

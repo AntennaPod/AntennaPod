@@ -4,11 +4,10 @@
 
     <item
         android:id="@+id/sort"
+        android:icon="?attr/ic_sort"
         android:title="@string/sort"
         app:showAsAction="always">
         <menu>
-            <item android:id="@+id/sort_title"
-                  android:title="@string/sort_title"/>
             <item android:id="@+id/sort_title_a_z"
                   android:title="@string/sort_title_a_z"/>
             <item android:id="@+id/sort_title_z_a"
@@ -31,6 +30,7 @@
 
     <item
         android:id="@+id/select_options"
+        android:icon="?attr/ic_filter"
         android:title="@string/all_label"
         app:showAsAction="always">
 
