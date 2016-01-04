@@ -235,9 +235,6 @@ public class ItemlistFragment extends ListFragment {
             int textColor = ta.getColor(0, Color.GRAY);
             ta.recycle();
 
-            menu.findItem(R.id.episode_actions).setIcon(new IconDrawable(getActivity(),
-                    FontAwesomeIcons.fa_gears).color(textColor).actionBarSize());
-
             isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
     }

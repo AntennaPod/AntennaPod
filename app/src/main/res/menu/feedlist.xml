@@ -11,6 +11,7 @@
     </item>
     <item
         android:id="@+id/episode_actions"
+        android:icon="?attr/ic_reorder"
         android:menuCategory="container"
         android:title="@string/episode_actions"
         custom:showAsAction="always">
