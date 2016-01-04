@@ -53,7 +53,10 @@
         <item name="attr/ic_filter">@drawable/ic_filter_grey600_24dp</item>
         <item name="attr/ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
         <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
-
+        <item name="attr/ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
@@ -107,6 +110,10 @@
         <item name="attr/ic_filter">@drawable/ic_filter_white_24dp</item>
         <item name="attr/ic_sleep">@drawable/ic_sleep_white_24dp</item>
         <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_white_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -162,6 +169,10 @@
         <item name="attr/ic_filter">@drawable/ic_filter_grey600_24dp</item>
         <item name="attr/ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
         <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -216,6 +227,10 @@
         <item name="attr/ic_filter">@drawable/ic_filter_white_24dp</item>
         <item name="attr/ic_sleep">@drawable/ic_sleep_white_24dp</item>
         <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_white_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">

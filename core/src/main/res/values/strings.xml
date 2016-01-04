@@ -538,6 +538,7 @@
     <string name="search_itunes_label">Search iTunes</string>
 
     <string name="select_label"><b>Select&#8230;</b></string>
+    <string name="filter">Filter</string>
     <string name="all_label">All</string>
     <string name="selected_all_label">Selected all Episodes</string>
     <string name="none_label">None</string>

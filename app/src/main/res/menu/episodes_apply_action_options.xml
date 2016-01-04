@@ -4,11 +4,10 @@
 
     <item
         android:id="@+id/sort"
+        android:icon="?attr/ic_sort"
         android:title="@string/sort"
         app:showAsAction="always">
         <menu>
-            <item android:id="@+id/sort_title"
-                  android:title="@string/sort_title"/>
             <item android:id="@+id/sort_title_a_z"
                   android:title="@string/sort_title_a_z"/>
             <item android:id="@+id/sort_title_z_a"
@@ -25,18 +24,12 @@
     </item>
 
     <item
-        android:id="@+id/select_toggle"
-        android:title="@string/select_all_label"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/select_options"
-        android:title="@string/all_label"
+        android:icon="?attr/ic_filter"
+        android:title="@string/filter"
         app:showAsAction="always">
 
         <menu>
-            <item android:id="@+id/select_label"
-                  android:title="@string/select_label"/>
             <item android:id="@+id/check_all"
                 android:title="@string/all_label"/>
             <item android:id="@+id/check_none"
@@ -52,4 +45,8 @@
         </menu>
     </item>
 
+    <item
+        android:id="@+id/select_toggle"
+        android:title="@string/select_all_label"
+        app:showAsAction="always"/>
 </menu>

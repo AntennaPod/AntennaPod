@@ -12,17 +12,19 @@
     android:layout_height="@dimen/listitem_threeline_height"
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    android:paddingLeft="8dp"
     android:gravity="center_vertical"
+    android:layout_marginLeft="8dp"
+    android:layout_marginStart="8dp"
     tools:background="@android:color/darker_gray" >
 
     <ImageView
         android:id="@+id/drag_handle"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_width="104dp"
+        android:layout_height="64dp"
         android:layout_marginLeft="-16dp"
-        android:layout_marginRight="-20dp"
-        android:gravity="center"
+        android:layout_marginStart="-16dp"
+        android:layout_marginRight="-72dp"
+        android:layout_marginEnd="-72dp"
         android:contentDescription="@string/drag_handle_content_description"
         android:scaleType="fitXY"
         android:src="?attr/dragview_background"
@@ -32,26 +34,22 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp">
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp">
         <TextView
             android:id="@+id/txtvPlaceholder"
             android:layout_width="@dimen/thumbnail_length_queue_item"
             android:layout_height="@dimen/thumbnail_length_queue_item"
-            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:gravity="center"
             android:background="@color/light_gray"
             android:maxLines="3"
             android:ellipsize="end"/>
         <ImageView
             android:id="@+id/imgvCover"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_alignLeft="@id/txtvPlaceholder"
-            android:layout_alignTop="@id/txtvPlaceholder"
-            android:layout_alignRight="@id/txtvPlaceholder"
-            android:layout_alignBottom="@id/txtvPlaceholder"
+            android:layout_width="@dimen/thumbnail_length_queue_item"
+            android:layout_height="@dimen/thumbnail_length_queue_item"
+            android:layout_centerVertical="true"
             android:contentDescription="@string/cover_label"
             tools:src="@drawable/ic_stat_antenna_default"
             tools:background="@android:color/holo_green_dark"/>
