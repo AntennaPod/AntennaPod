@@ -134,12 +134,16 @@ public class DownloadLogAdapter extends BaseAdapter {
 				}
 			} else if(holder.typeId == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
 				FeedMedia media = DBReader.getFeedMedia(holder.id);
-				try {
-					DBTasks.downloadFeedItems(context, media.getItem());
-					Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
-				} catch (DownloadRequestException e) {
-					e.printStackTrace();
-					DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
+				if (media != null) {
+					try {
+						DBTasks.downloadFeedItems(context, media.getItem());
+						Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
+					} catch (DownloadRequestException e) {
+						e.printStackTrace();
+						DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
+					}
+				} else {
+					Log.wtf(TAG, "Could not find media for id: " + holder.id);
 				}
 			} else {
 				Log.wtf(TAG, "Unexpected type id: " + holder.typeId);
