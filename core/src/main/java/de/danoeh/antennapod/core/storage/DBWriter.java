@@ -223,6 +223,11 @@ public class DBWriter {
                 }
                 EventDistributor.getInstance().sendFeedUpdateBroadcast();
 
+                // we assume we also removed download log entries for the feed or its media files.
+                // especially important if download or refresh failed, as the user should not be able
+                // to retry these
+                EventDistributor.getInstance().sendDownloadLogUpdateBroadcast();
+
                 BackupManager backupManager = new BackupManager(context);
                 backupManager.dataChanged();
             }
