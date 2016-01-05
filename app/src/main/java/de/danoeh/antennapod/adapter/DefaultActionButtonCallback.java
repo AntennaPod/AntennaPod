@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.apache.commons.lang3.Validate;
 
 import de.danoeh.antennapod.R;
@@ -99,40 +101,33 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
     }
 
     private void confirmMobileDownload(final Context context, final FeedItem item) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
         builder
-                .setTitle(R.string.confirm_mobile_download_dialog_title)
-                .setMessage(context.getText(R.string.confirm_mobile_download_dialog_message))
-                .setPositiveButton(context.getText(R.string.confirm_mobile_download_dialog_enable_temporarily),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                allowMobileDownloadsTimestamp = System.currentTimeMillis();
-                                try {
-                                    DBTasks.downloadFeedItems(context, item);
-                                    Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
-                                } catch (DownloadRequestException e) {
-                                    e.printStackTrace();
-                                    DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
-                                }
-                            }
-                        });
+                .title(R.string.confirm_mobile_download_dialog_title)
+                .content(R.string.confirm_mobile_download_dialog_message)
+                .positiveText(context.getText(R.string.confirm_mobile_download_dialog_enable_temporarily))
+                .onPositive((dialog, which) -> {
+                    allowMobileDownloadsTimestamp = System.currentTimeMillis();
+                    try {
+                        DBTasks.downloadFeedItems(context, item);
+                        Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
+                    } catch (DownloadRequestException e) {
+                        e.printStackTrace();
+                        DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
+                    }
+                });
         LongList queueIds = DBReader.getQueueIDList();
         if(!queueIds.contains(item.getId())) {
-            builder.setNeutralButton(context.getText(R.string.confirm_mobile_download_dialog_only_add_to_queue),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            onlyAddToQueueTimeStamp = System.currentTimeMillis();
-                            DBWriter.addQueueItem(context, item);
-                            Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
-                        }
-                    })
-            .setMessage(context.getText(R.string.confirm_mobile_download_dialog_message_not_in_queue));
-        } else {
-            builder.setMessage(context.getText(R.string.confirm_mobile_download_dialog_message));
+            builder
+                    .content(R.string.confirm_mobile_download_dialog_message_not_in_queue)
+                    .neutralText(R.string.confirm_mobile_download_dialog_only_add_to_queue)
+                    .onNeutral((dialog, which) -> {
+                        onlyAddToQueueTimeStamp = System.currentTimeMillis();
+                        DBWriter.addQueueItem(context, item);
+                        Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
+                    });
         }
-        builder.create()
-                .show();
+        builder.show();
     }
+
 }
