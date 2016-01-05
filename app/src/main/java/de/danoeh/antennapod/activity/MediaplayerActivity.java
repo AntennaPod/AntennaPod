@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -269,18 +268,23 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+        if(controller == null) {
+            return false;
+        }
         Playable media = controller.getMedia();
 
         menu.findItem(R.id.support_item).setVisible(
                 media != null && media.getPaymentLink() != null &&
                         (media instanceof FeedMedia) &&
+                        ((FeedMedia) media).getItem() != null &&
                         ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
         );
 
         boolean hasWebsiteLink = media != null && media.getWebsiteLink() != null;
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
-        boolean isItemAndHasLink = media != null && (media instanceof FeedMedia) && ((FeedMedia) media).getItem().getLink() != null;
+        boolean isItemAndHasLink = media != null && (media instanceof FeedMedia) &&
+                ((FeedMedia) media).getItem() != null && ((FeedMedia) media).getItem().getLink() != null;
         menu.findItem(R.id.share_link_item).setVisible(isItemAndHasLink);
         menu.findItem(R.id.share_link_with_position_item).setVisible(isItemAndHasLink);
 
@@ -291,15 +295,20 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         menu.findItem(R.id.share_item).setVisible(hasWebsiteLink || isItemAndHasLink || isItemHasDownloadLink);
 
         menu.findItem(R.id.skip_episode_item).setVisible(media != null);
+
         boolean sleepTimerSet = controller.sleepTimerActive();
         boolean sleepTimerNotSet = controller.sleepTimerNotActive();
         menu.findItem(R.id.set_sleeptimer_item).setVisible(sleepTimerNotSet);
         menu.findItem(R.id.disable_sleeptimer_item).setVisible(sleepTimerSet);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(controller == null) {
+            return false;
+        }
         Playable media = controller.getMedia();
         if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(MediaplayerActivity.this,
