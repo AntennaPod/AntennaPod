@@ -886,6 +886,10 @@ public class PodDBAdapter {
     }
 
     public void removeFeedMedia(FeedMedia media) {
+        // delete download log entries for feed media
+        db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_FEEDFILE + "=? AND " + KEY_FEEDFILETYPE +"=?",
+                new String[] { String.valueOf(media.getId()), String.valueOf(FeedMedia.FEEDFILETYPE_FEEDMEDIA) });
+
         db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + "=?",
                 new String[]{String.valueOf(media.getId())});
     }
@@ -930,6 +934,9 @@ public class PodDBAdapter {
                 removeFeedItem(item);
             }
         }
+        // delete download log entries for feed
+        db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_FEEDFILE + "=? AND " + KEY_FEEDFILETYPE +"=?",
+                new String[] { String.valueOf(feed.getId()), String.valueOf(Feed.FEEDFILETYPE_FEED) });
 
         db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",
                 new String[]{String.valueOf(feed.getId())});
