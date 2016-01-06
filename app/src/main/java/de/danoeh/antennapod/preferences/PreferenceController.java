@@ -30,10 +30,15 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
@@ -411,6 +416,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     public void onResume() {
         checkItemVisibility();
+        setUpdateIntervalText();
         setParallelDownloadsText(UserPreferences.getParallelDownloads());
         setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
         setDataFolderText();
@@ -551,6 +557,32 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             Preference prefSonic = ui.findPreference(UserPreferences.PREF_SONIC);
             prefSonic.setSummary("[Android 4.1+]\n" + prefSonic.getSummary());
         }
+    }
+
+    private void setUpdateIntervalText() {
+        Context context = ui.getActivity().getApplicationContext();
+        String val;
+        long interval = UserPreferences.getUpdateInterval();
+        if(interval > 0) {
+            int hours = (int) TimeUnit.MILLISECONDS.toHours(interval);
+            String hoursStr = context.getResources().getQuantityString(R.plurals.time_hours_quantified, hours, hours);
+            val = String.format(context.getString(R.string.pref_autoUpdateIntervallOrTime_every), hoursStr);
+        } else {
+            int[] timeOfDay = UserPreferences.getUpdateTimeOfDay();
+            if(timeOfDay.length == 2) {
+                Calendar cal = new GregorianCalendar();
+                cal.set(Calendar.HOUR_OF_DAY, timeOfDay[0]);
+                cal.set(Calendar.MINUTE, timeOfDay[1]);
+                String timeOfDayStr = DateFormat.getTimeFormat(context).format(cal.getTime());
+                val = String.format(context.getString(R.string.pref_autoUpdateIntervallOrTime_at),
+                        timeOfDayStr);
+            } else {
+                val = context.getString(R.string.pref_smart_mark_as_played_disabled);
+            }
+        }
+        String summary = context.getString(R.string.pref_autoUpdateIntervallOrTime_sum) + "\n"
+                + String.format(context.getString(R.string.pref_current_value), val);
+        ui.findPreference(UserPreferences.PREF_UPDATE_INTERVAL).setSummary(summary);
     }
 
     private void setParallelDownloadsText(int downloads) {
@@ -772,10 +804,17 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 builder.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_Interval));
                 final String[] values = context.getResources().getStringArray(R.array.update_intervall_values);
                 final String[] entries = getUpdateIntervalEntries(values);
-                builder.setSingleChoiceItems(entries, -1, (dialog1, which) -> {
+                long currInterval = UserPreferences.getUpdateInterval();
+                int checkedItem = -1;
+                if(currInterval > 0) {
+                    String currIntervalStr = String.valueOf(TimeUnit.MILLISECONDS.toHours(currInterval));
+                    checkedItem = ArrayUtils.indexOf(values, currIntervalStr);
+                }
+                builder.setSingleChoiceItems(entries, checkedItem, (dialog1, which) -> {
                     int hours = Integer.valueOf(values[which]);
                     UserPreferences.setUpdateInterval(hours);
                     dialog1.dismiss();
+                    setUpdateIntervalText();
                 });
                 builder.setNegativeButton(context.getString(R.string.cancel_label), null);
                 builder.show();
@@ -794,6 +833,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                         if (view.getTag() == null) { // onTimeSet() may get called twice!
                             view.setTag("TAGGED");
                             UserPreferences.setUpdateTimeOfDay(selectedHourOfDay, selectedMinute);
+                            setUpdateIntervalText();
                         }
                     }, hourOfDay, minute, DateFormat.is24HourFormat(context));
                 timePickerDialog.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay));
@@ -803,6 +843,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             @Override
             public void onNeutral(MaterialDialog dialog) {
                 UserPreferences.setUpdateInterval(0);
+                setUpdateIntervalText();
             }
         });
         builder.forceStacking(true);
