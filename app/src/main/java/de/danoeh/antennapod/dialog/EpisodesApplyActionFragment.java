@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +23,6 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +58,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     public EpisodesApplyActionFragment() {
         this.episodes = new ArrayList<>();
-        this.idMap = new HashMap<>();
+        this.idMap = new ArrayMap<>();
     }
 
     public void setEpisodes(List<FeedItem> episodes) {

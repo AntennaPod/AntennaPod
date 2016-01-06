@@ -1,13 +1,13 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.database.Cursor;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -229,7 +229,7 @@ public final class DBReader {
         for(int i=0, len=itemIds.length; i < len; i++) {
             ids[i] = String.valueOf(itemIds[i]);
         }
-        Map<Long,FeedMedia> result = new HashMap<>(itemIds.length);
+        Map<Long,FeedMedia> result = new ArrayMap<>(itemIds.length);
         Cursor cursor = adapter.getFeedMediaCursor(ids);
         try {
             if (cursor.moveToFirst()) {
@@ -871,7 +871,7 @@ public final class DBReader {
             ids[i] = String.valueOf(imageIds[i]);
         }
         Cursor cursor = adapter.getImageCursor(ids);
-        Map<Long, FeedImage> result = new HashMap<>(cursor.getCount());
+        Map<Long, FeedImage> result = new ArrayMap<>(cursor.getCount());
         try {
             if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
                 return Collections.emptyMap();

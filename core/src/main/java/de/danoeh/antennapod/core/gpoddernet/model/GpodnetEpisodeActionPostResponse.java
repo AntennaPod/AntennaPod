@@ -1,12 +1,13 @@
 package de.danoeh.antennapod.core.gpoddernet.model;
 
+import android.support.v4.util.ArrayMap;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class GpodnetEpisodeActionPostResponse {
@@ -36,8 +37,8 @@ public class GpodnetEpisodeActionPostResponse {
     public static GpodnetEpisodeActionPostResponse fromJSONObject(String objectString) throws JSONException {
         final JSONObject object = new JSONObject(objectString);
         final long timestamp = object.getLong("timestamp");
-        Map<String, String> updatedUrls = new HashMap<String, String>();
         JSONArray urls = object.getJSONArray("update_urls");
+        Map<String, String> updatedUrls = new ArrayMap<String, String>(urls.length());
         for (int i = 0; i < urls.length(); i++) {
             JSONArray urlPair = urls.getJSONArray(i);
             updatedUrls.put(urlPair.getString(0), urlPair.getString(1));

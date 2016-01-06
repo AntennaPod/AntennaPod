@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.util.syndication;
 
 import android.net.Uri;
+import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 
 import org.jsoup.Jsoup;
@@ -10,7 +11,6 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -46,7 +46,7 @@ public class FeedDiscoverer {
     }
 
     private Map<String, String> findLinks(Document document, String baseUrl) {
-        Map<String, String> res = new LinkedHashMap<String, String>();
+        Map<String, String> res = new ArrayMap<>();
         Elements links = document.head().getElementsByTag("link");
         for (Element link : links) {
             String rel = link.attr("rel");
