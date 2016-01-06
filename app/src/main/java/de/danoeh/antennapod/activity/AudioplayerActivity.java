@@ -842,6 +842,11 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         }
 
         @Override
+        public int getNumberOfDownloadedItems() {
+            return (navDrawerData != null) ? navDrawerData.numDownloadedItems : 0;
+        }
+
+        @Override
         public int getFeedCounter(long feedId) {
             return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }

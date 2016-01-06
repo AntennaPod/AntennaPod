@@ -1015,6 +1015,8 @@ public final class DBReader {
         Collections.sort(feeds, comparator);
         int queueSize = adapter.getQueueSize();
         int numNewItems = adapter.getNumberOfNewItems();
+        int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
+
         NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, feedCounters);
         adapter.close();
         return result;
@@ -1024,6 +1026,7 @@ public final class DBReader {
         public List<Feed> feeds;
         public int queueSize;
         public int numNewItems;
+        public int numDownloadedItems;
         public LongIntMap feedCounters;
 
         public NavDrawerData(List<Feed> feeds,
