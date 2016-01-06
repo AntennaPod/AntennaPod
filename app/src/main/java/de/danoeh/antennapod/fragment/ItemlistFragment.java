@@ -87,6 +87,7 @@ public class ItemlistFragment extends ListFragment {
     private static final String TAG = "ItemlistFragment";
 
     private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE
+            | EventDistributor.FEED_LIST_UPDATE
             | EventDistributor.PLAYER_STATUS_UPDATE;
 
     public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
