@@ -57,5 +57,5 @@ dependencies {
     compile "de.greenrobot:eventbus:$eventbusVersion"
     compile "io.reactivex:rxandroid:$rxAndroidVersion"
 
-    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:v1.0.2"
+    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 }

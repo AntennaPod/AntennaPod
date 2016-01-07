@@ -35,7 +35,7 @@ dependencies {
     compile "com.afollestad:material-dialogs:0.7.8.1"
     compile "com.yqritc:recyclerview-flexibledivider:1.2.6"
 
-    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:v1.0.2"
+    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     compile project(":core")
 }
