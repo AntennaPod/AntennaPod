@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:1.5.0"
-        classpath "me.tatarka:gradle-retrolambda:3.2.3"
+        classpath "me.tatarka:gradle-retrolambda:3.2.4"
         classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
 
         // Exclude the version that the android plugin depends on.
@@ -36,27 +36,30 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 22
-    buildToolsVersion = "22.0.1"
+    compileSdkVersion = 23
+    buildToolsVersion = "23.0.2"
     minSdkVersion = 10
-    targetSdkVersion = 22
+    targetSdkVersion = 23
 
-    supportVersion = "22.2.1"
+    supportVersion = "23.1.1"
     commonsioVersion = "2.4"
     commonslangVersion = "3.4"
     eventbusVersion = "2.4.0"
     flattr4jVersion = "2.12"
     glideVersion = "3.6.1"
     jsoupVersion = "1.7.3"
-    rxAndroidVersion = "1.0.1"
-    rxJavaVersion = "1.0.16"
-    rxJavaRulesVersion = "1.0.16.1"
-    okhttpVersion = "2.5.0"
+    iconifyFontawesomeVersion = "2.1.1"
+    materialDialogsVersion = "0.8.5.3@aar"
+    recyclerviewFlexibledividerVersion = "1.2.6"
+    rxAndroidVersion = "1.1.0"
+    rxJavaVersion = "1.1.0"
+    rxJavaRulesVersion = "1.1.0.0"
+    okhttpVersion = "2.7.0"
     okioVersion = "1.6.0"
 
-    audioPlayerVersion = "v1.0.7"
+    audioPlayerVersion = "v1.0.8"
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "2.4"
+    gradleVersion = "2.10"
 }

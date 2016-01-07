@@ -8,12 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.util.Pair;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -226,7 +226,7 @@ public class GpodnetSyncService extends Service {
         if(remoteActions.size() == 0) {
             return;
         }
-        Map<Pair<String, String>, GpodnetEpisodeAction> localMostRecentPlayAction = new HashMap<Pair<String, String>, GpodnetEpisodeAction>();
+        Map<Pair<String, String>, GpodnetEpisodeAction> localMostRecentPlayAction = new ArrayMap<>();
         for(GpodnetEpisodeAction action : localActions) {
             Pair key = new Pair(action.getPodcast(), action.getEpisode());
             GpodnetEpisodeAction mostRecent = localMostRecentPlayAction.get(key);
@@ -238,7 +238,7 @@ public class GpodnetSyncService extends Service {
         }
 
         // make sure more recent local actions are not overwritten by older remote actions
-        Map<Pair<String, String>, GpodnetEpisodeAction> mostRecentPlayAction = new HashMap<Pair<String, String>, GpodnetEpisodeAction>();
+        Map<Pair<String, String>, GpodnetEpisodeAction> mostRecentPlayAction = new ArrayMap<>();
         for (GpodnetEpisodeAction action : remoteActions) {
             switch (action.getAction()) {
                 case NEW:

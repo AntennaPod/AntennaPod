@@ -5,7 +5,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.FloatMath;
 import android.util.Log;
 
 public class ShakeListener implements SensorEventListener
@@ -50,8 +49,8 @@ public class ShakeListener implements SensorEventListener
         float gY = event.values[1] / SensorManager.GRAVITY_EARTH;
         float gZ = event.values[2] / SensorManager.GRAVITY_EARTH;
 
-        float gForce = FloatMath.sqrt(gX*gX + gY*gY + gZ*gZ);
-        if (gForce > 2.25f) {
+        double gForce = Math.sqrt(gX*gX + gY*gY + gZ*gZ);
+        if (gForce > 2.25) {
             Log.d(TAG, "Detected shake " + gForce);
             mSleepTimer.onShake();
         }

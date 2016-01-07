@@ -79,9 +79,9 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
         super.tearDown();
     }
-
     private void openNavDrawer() {
-        solo.clickOnScreen(50, 50);
+        solo.clickOnImageButton(0);
+        getInstrumentation().waitForIdleSync();
     }
 
     private void setContinuousPlaybackPreference(boolean value) {

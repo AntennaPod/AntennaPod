@@ -39,7 +39,7 @@ public class StorageErrorActivity extends ActionBarActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (StorageUtils.storageAvailable(this)) {
+		if (StorageUtils.storageAvailable()) {
 			leaveErrorState();
 		} else {
 			registerReceiver(mediaUpdate, new IntentFilter(

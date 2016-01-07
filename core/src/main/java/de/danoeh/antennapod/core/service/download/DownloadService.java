@@ -22,7 +22,6 @@ import android.util.Log;
 import android.webkit.URLUtil;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.http.HttpStatus;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -187,7 +186,7 @@ public class DownloadService extends Service {
                             if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
                                 postAuthenticationNotification(downloader.getDownloadRequest());
                             } else if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                                    && Integer.valueOf(status.getReasonDetailed()) == HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE) {
+                                    && Integer.valueOf(status.getReasonDetailed()) == 416) {
 
                                 Log.d(TAG, "Requested invalid range, restarting download from the beginning");
                                 FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));

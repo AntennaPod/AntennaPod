@@ -45,7 +45,7 @@ public class AddFeedFragment extends Fragment {
         Button butSearchITunes = (Button) root.findViewById(R.id.butSearchItunes);
 
         final MainActivity activity = (MainActivity) getActivity();
-        activity.getMainActivtyActionBar().setTitle(R.string.add_feed_label);
+        activity.getSupportActionBar().setTitle(R.string.add_feed_label);
 
         butSearchITunes.setOnClickListener(new View.OnClickListener() {
             @Override

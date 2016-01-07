@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -145,34 +144,26 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().registerSticky(this);
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
-        EventBus.getDefault().unregister(this);
-        if(subscription != null) {
-            subscription.unsubscribe();
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume()");
+        EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().registerSticky(this);
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
         updateProgressBarVisibility();
         loadItems();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onPause() {
+        super.onPause();
+        EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         if(subscription != null) {
             subscription.unsubscribe();
         }
@@ -368,7 +359,6 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("");
 
         registerForContextMenu(getListView());
 
@@ -382,7 +372,9 @@ public class ItemlistFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         FeedItem selection = adapter.getItem(position - l.getHeaderViewsCount());
         if (selection != null) {
-            ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(selection.getId()));
+            MainActivity activity = (MainActivity) getActivity();
+            activity.loadChildFragment(ItemFragment.newInstance(selection.getId()));
+            activity.getSupportActionBar().setTitle(feed.getTitle());
         }
     }
 
@@ -547,15 +539,12 @@ public class ItemlistFragment extends ListFragment {
                 .dontAnimate()
                 .into(imgvCover);
 
-        butShowInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (viewsCreated && itemsLoaded) {
-                    Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
-                    startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
-                            feed.getId());
-                    startActivity(startIntent);
-                }
+        butShowInfo.setOnClickListener(v -> {
+            if (viewsCreated && itemsLoaded) {
+                Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
+                startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
+                        feed.getId());
+                startActivity(startIntent);
             }
         });
     }
@@ -573,16 +562,13 @@ public class ItemlistFragment extends ListFragment {
             View header = inflater.inflate(R.layout.more_content_list_footer, lv, false);
             lv.addFooterView(header);
             listFooter = new MoreContentListFooterUtil(header);
-            listFooter.setClickListener(new MoreContentListFooterUtil.Listener() {
-                @Override
-                public void onClick() {
-                    if (feed != null) {
-                        try {
-                            DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
-                        } catch (DownloadRequestException e) {
-                            e.printStackTrace();
-                            DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
-                        }
+            listFooter.setClickListener(() -> {
+                if (feed != null) {
+                    try {
+                        DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
+                    } catch (DownloadRequestException e) {
+                        e.printStackTrace();
+                        DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
                     }
                 }
             });
@@ -629,7 +615,6 @@ public class ItemlistFragment extends ListFragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-
         subscription = Observable.fromCallable(() -> loadData())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

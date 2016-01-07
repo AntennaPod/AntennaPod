@@ -6,6 +6,7 @@ import android.os.StrictMode;
 
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.joanzapata.iconify.fonts.MaterialModule;
 
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -62,6 +63,7 @@ public class PodcastApp extends Application {
 		NetworkUtils.init(this);
 		EventDistributor.getInstance();
 		Iconify.with(new FontAwesomeModule());
+		Iconify.with(new MaterialModule());
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
     }

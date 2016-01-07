@@ -1,14 +1,15 @@
 package de.danoeh.antennapod.core.util;
 
+import android.support.v4.util.ArrayMap;
+
 import java.nio.charset.Charset;
-import java.util.HashMap;
 
 public class LangUtils {
 	public static final Charset UTF_8 = Charset.forName("UTF-8");
 
-	private static HashMap<String, String> languages;
+	private static ArrayMap<String, String> languages;
 	static {
-		languages = new HashMap<String, String>();
+		languages = new ArrayMap<>();
 		languages.put("af", "Afrikaans");
 		languages.put("sq", "Albanian");
 		languages.put("sq", "Albanian");

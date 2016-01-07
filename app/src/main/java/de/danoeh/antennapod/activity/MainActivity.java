@@ -15,12 +15,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -71,7 +71,7 @@ import rx.schedulers.Schedulers;
 /**
  * The activity that is shown when the user launches the app.
  */
-public class MainActivity extends ActionBarActivity implements NavDrawerActivity {
+public class MainActivity extends AppCompatActivity implements NavDrawerActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -125,7 +125,13 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setElevation(3.0f);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            findViewById(R.id.shadow).setVisibility(View.GONE);
+            int elevation = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
+                    getResources().getDisplayMetrics());
+            getSupportActionBar().setElevation(elevation);
+        }
 
         currentTitle = getTitle();
 
@@ -252,10 +258,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         builder.create().show();
     }
 
-    public ActionBar getMainActivtyActionBar() {
-        return getSupportActionBar();
-    }
-
     public boolean isDrawerOpen() {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
@@ -361,10 +363,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     public void dismissChildFragment() {
         getSupportFragmentManager().popBackStack();
-    }
-
-    public Toolbar getToolbar() {
-        return toolbar;
     }
 
     private int getSelectedNavListIndex() {
