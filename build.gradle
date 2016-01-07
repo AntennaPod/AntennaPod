@@ -57,7 +57,7 @@ project.ext {
     okhttpVersion = "2.7.0"
     okioVersion = "1.6.0"
 
-    audioPlayerVersion = "v1.0.7"
+    audioPlayerVersion = "v1.0.8"
 }
 
 task wrapper(type: Wrapper) {
