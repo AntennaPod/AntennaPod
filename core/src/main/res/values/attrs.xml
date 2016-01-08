@@ -41,6 +41,7 @@
     <attr name="ic_lock_open" format="reference"/>
     <attr name="ic_lock_closed" format="reference"/>
     <attr name="ic_filter" format="reference"/>
+    <attr name="progressBarTheme" format="reference"/>
 
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference"/>

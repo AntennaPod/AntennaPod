@@ -29,7 +29,7 @@
         android:layout_toRightOf="@id/imgvCover"
         android:layout_toEndOf="@id/imgvCover"
         android:layout_alignParentTop="true"
-        style="@style/ProgressBarStyle"
+        style="?attr/progressBarTheme"
         android:indeterminate="false"
         tools:progress="100"/>
 

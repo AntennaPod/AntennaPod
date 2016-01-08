@@ -4,6 +4,7 @@
     <style name="Theme.AntennaPod.Light" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/primary_light</item>
         <item name="colorAccent">@color/holo_blue_light</item>
+        <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
         <item name="attr/action_bar_icon_color">@color/grey600</item>
@@ -53,6 +54,7 @@
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
         <item name="colorAccent">@color/holo_blue_dark</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
+        <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
         <item name="attr/action_bar_icon_color">@color/white</item>
         <item name="attr/action_about">@drawable/ic_info_white_24dp</item>g
@@ -101,6 +103,7 @@
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="colorPrimary">@color/primary_light</item>
         <item name="colorAccent">@color/holo_blue_light</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
@@ -151,6 +154,7 @@
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="colorAccent">@color/holo_blue_dark</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
@@ -253,9 +257,14 @@
 
     </style>
 
-    <style name="ProgressBarStyle">
+    <style name="ProgressBarLight">
         <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/progress_bar_horizontal</item>
+        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_light</item>
+    </style>
+
+    <style name="ProgressBarDark">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_dark</item>
     </style>
 
 </resources>
