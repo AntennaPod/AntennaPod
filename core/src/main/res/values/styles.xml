@@ -253,4 +253,9 @@
 
     </style>
 
+    <style name="ProgressBarStyle">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_bar_horizontal</item>
+    </style>
+
 </resources>

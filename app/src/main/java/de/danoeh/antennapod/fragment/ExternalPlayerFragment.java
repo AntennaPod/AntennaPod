@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -30,9 +31,10 @@ public class ExternalPlayerFragment extends Fragment {
 
     private ViewGroup fragmentLayout;
     private ImageView imgvCover;
-    private ViewGroup layoutInfo;
     private TextView txtvTitle;
     private ImageButton butPlay;
+    private TextView mFeedName;
+    private ProgressBar mProgressBar;
 
     private PlaybackController controller;
 
@@ -47,11 +49,12 @@ public class ExternalPlayerFragment extends Fragment {
                 container, false);
         fragmentLayout = (ViewGroup) root.findViewById(R.id.fragmentLayout);
         imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
-        layoutInfo = (ViewGroup) root.findViewById(R.id.layoutInfo);
         txtvTitle = (TextView) root.findViewById(R.id.txtvTitle);
         butPlay = (ImageButton) root.findViewById(R.id.butPlay);
+        mFeedName = (TextView) root.findViewById(R.id.txtvAuthor);
+        mProgressBar = (ProgressBar) root.findViewById(R.id.episodeProgress);
 
-        layoutInfo.setOnClickListener(new OnClickListener() {
+        fragmentLayout.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -82,6 +85,7 @@ public class ExternalPlayerFragment extends Fragment {
 
             @Override
             public void onPositionObserverUpdate() {
+                ExternalPlayerFragment.this.onPositionObserverUpdate();
             }
 
             @Override
@@ -159,6 +163,8 @@ public class ExternalPlayerFragment extends Fragment {
     public void onResume() {
         super.onResume();
         controller.init();
+        mProgressBar.setProgress((int)
+                ((double) controller.getPosition() / controller.getDuration() * 100));
     }
 
     @Override
@@ -199,6 +205,9 @@ public class ExternalPlayerFragment extends Fragment {
             Playable media = controller.getMedia();
             if (media != null) {
                 txtvTitle.setText(media.getEpisodeTitle());
+                mFeedName.setText(media.getFeedTitle());
+                mProgressBar.setProgress((int)
+                        ((double) controller.getPosition() / controller.getDuration() * 100));
 
                 Glide.with(getActivity())
                         .load(media.getImageUri())
@@ -233,5 +242,10 @@ public class ExternalPlayerFragment extends Fragment {
 
     public PlaybackController getPlaybackControllerTestingOnly() {
         return controller;
+    }
+
+    public void onPositionObserverUpdate() {
+        mProgressBar.setProgress((int)
+                ((double) controller.getPosition() / controller.getDuration() * 100));
     }
 }
