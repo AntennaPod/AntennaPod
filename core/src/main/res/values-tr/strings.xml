@@ -332,6 +332,12 @@
   <string name="pref_smart_mark_as_played_disabled">Devre dışı</string>
   <string name="pref_image_cache_size_title">Görüntü Önbelleği Boyutu</string>
   <string name="pref_image_cache_size_sum">Görüntüler için diskte tutulacak önbelleğin boyutu.</string>
+  <string name="crash_report_title">Çökme Raporu</string>
+  <string name="crash_report_sum">En son çökme raporunu e-posta ile gönder</string>
+  <string name="send_email">E-posta gönder</string>
+  <string name="experimental_pref">Deneysel</string>
+  <string name="pref_sonic_title">Sonic ortam yürütücüsü</string>
+  <string name="pref_sonic_message">Prestissimo yerine sonic ortam yürütücüsünü kullan</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Otomatik Flattr\'lamayı etkinleştir</string>
   <string name="auto_flattr_after_percent">Bölümün yüzde %d kısmı oynatıldığında Flattr\'la</string>
@@ -346,6 +352,7 @@
   <string name="found_in_title_label">Başlıkta bulundu</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML dosyaları cep yayınlarını bir cihazdan diğerine aktarmanıza yarar.</string>
+  <string name="opml_import_option">Seçenek %1$d</string>
   <string name="opml_import_explanation_1">Yerel dosya sisteminden belirli bir yol seçin.</string>
   <string name="opml_import_explanation_2">OPML dosyasını açmak için harici uygulamalardan Dropbox, Google Drive veya kendi favori dosya yöneticinizi kullanın.</string>
   <string name="opml_import_explanation_3">Google Mail, Dropbox, Google Drive gibi birçok uygulama ve çoğu dosya yöneticisi OPML dosyalarını AntennaPod <i>ile</i> <i>açabilir.</i></string>
@@ -372,6 +379,9 @@
   <string name="sleep_timer_label">Zamanlayıcı</string>
   <string name="time_left_label">Kalan süre:\u0020</string>
   <string name="time_dialog_invalid_input">Geçersiz giriş, zaman bir tam sayı olmalıdır</string>
+  <string name="timer_about_to_expire_label"><b>Zamanlayıcı süresi dolduğunda:</b></string>
+  <string name="shake_to_reset_label">Zamanyacıyı sıfırlamak için salla</string>
+  <string name="timer_vibration_label">Titret</string>
   <string name="time_seconds">saniye</string>
   <string name="time_minutes">dakika</string>
   <string name="time_hours">saat</string>
@@ -419,11 +429,15 @@
   <string name="selected_folder_label">Seçilen dizin:</string>
   <string name="create_folder_label">Dizin yarat</string>
   <string name="choose_data_directory">Veri dizinini seç</string>
+  <string name="choose_data_directory_message">Lütfen verileriniz için ana klasörü seçin. AntennaPod gerekli alt-klasörleri oluşturacaktır.</string>
   <string name="create_folder_msg">\"%1$s\" isminde yeni dizin oluştur?</string>
   <string name="create_folder_success">Yeni dizin yaratıldı</string>
   <string name="create_folder_error_no_write_access">Bu dizine yazılamadı</string>
   <string name="create_folder_error_already_exists">Dizin zaten var</string>
   <string name="create_folder_error">Dizin yaratılamadı</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" adlı klasör yok</string>
+  <string name="folder_not_readable_error">\"%1$s\" klasörü okunabilir değil</string>
+  <string name="folder_not_writable_error">\"%1$s\" klasörü yazılabilir değil</string>
   <string name="folder_not_empty_dialog_title">Dizin boş değil</string>
   <string name="folder_not_empty_dialog_msg">Seçtiğiniz dizin dolu. Medya indirmeleri ve diğer dosyalar doğrudan bu dizine yerleştirilecek. Devam edilsin mi?</string>
   <string name="set_to_default_folder">Vaysayılan dizini seç</string>
@@ -484,4 +498,9 @@
   <string name="sort_duration_short_long">Süre (Kısa \u2192 Uzun)</string>
   <string name="sort_duration_long_short">Süre (Uzun \u2192 Kısa)</string>
   <!--Rating dialog-->
+  <string name="rating_title">AntennaPod\'u beğendiniz mi?</string>
+  <string name="rating_message">Eğer AntennaPod\'a oy vermek için biraz zamanını ayırırsanız memnun oluruz.</string>
+  <string name="rating_never_label">Bir daha gösterme</string>
+  <string name="rating_later_label">Daha sonra hatırlat</string>
+  <string name="rating_now_label">Evet, şimdi yapalım!</string>
 </resources>

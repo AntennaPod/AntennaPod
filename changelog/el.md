@@ -1,36 +1,44 @@
 Καταγραφή Αλλαγών
 ==========
+Έκδοση 1.4.1
+-------------
+* Βελτιστοποίηση απόδοσης
+* Hardware buttons now ff and rewind instead of skipping
+* Option to have forward button skip
+* Option to send crash reports directly to developers
+* Highlight currently playing episode
+* Widget improvements
 
-Version 1.4.0.12
+Έκδοση 1.4.0.12
 ----------------
 * Fix for crash on Huawei devices (media buttons may not work)
 
-Version 1.4
+Έκδοση 1.4
 -----------
 * BLUETOOTH PERMISSION: Needed to be able to resume playback when a Bluetooth device reconnects with your phone
 * VIBRATE PERMISSION: Used optionally with the sleep timer
 * Native variable speed playback (experimental via options)
 * Βελτίωση χρονομετρητή ύπνου
-* Mark episodes as 'favorite'
+* Σήμανση επεισοδίων ως 'αγαπημένα' 
 * Notification can skip episodes
 * Keep episodes when skipping them
-* Episode art on lock screen
-* Flexible episode cleanup
-* Rewind after pause
+* Εξώφυλλο επεισοδίου στην οθόνη κλειδώματος
+* Ευέλικτη εκκαθάριση επεισοδίων
+* Επαναφορά μετά από παύση
 * Βελτιώσεις χρηστικότητας
-* Bug fixes
+* Διορθώσεις σφαλμάτων
 
-Version 1.3
+Έκδοση 1.3
 -----------
 * Bulk actions on feed episodes (download, queue, delete)
-* Reduced space used by images
-* Automatic refresh at a certain time of day
+* Ελαχιστοποίηση του αποθηκευτικού χώρου που δεσμεύουν οι εικόνες
+* Αυτόματη ανανέωση σε συγκεκριμένη ώρα της ημέρας
 * Customizable indicators and sorting for feeds
-* Ability to share feeds
-* Improved auto download
-* Many fixes and usability improvements
+* Δυνατότητα διαμοιρασμού ροών
+* Βελτίωση αυτόματης λήψης
+* Αρκετές διορθώσεις και βελτιώσεις χρηστικότητας
 
-Version 1.2
+Έκδοση 1.2
 -----------
 * Optionally disable swiping and dragging in the queue
 * Resume playback after phone call
@@ -38,7 +46,7 @@ Version 1.2
 * Hide items in the Nav drawer
 * Customize times for fast forward and rewind
 * Resolved issues with opening some OPML files
-* Various bug fixes and usability improvements
+* Διάφορες διορθώσεις σφαλμάτων και βελτιώσεις χρηστικότητας
 
 Έκδοση 1.1
 -----------

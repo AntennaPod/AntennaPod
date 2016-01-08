@@ -1,9 +1,17 @@
 Registro de cambios
 ==========
+Versión 1.4.1
+-------------
+* Mejoras de rendimiento
+* Los botones hardware avanzan y retroceden en lugar de saltar episodio
+* Opción para saltar capítulos con el botón de avanzar
+* Opción para enviar reportes de fallo a los desarrolladores
+* Resaltar el episodio actual
+* Mejoras del widget
 
-Version 1.4.0.12
+Versión 1.4.0.12
 ----------------
-* Fix for crash on Huawei devices (media buttons may not work)
+* Arreglado cierre en dispositivos Huawei (los botones multimedia podría no funcionar)
 
 Versión 1.4
 -----------
