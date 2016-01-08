@@ -54,7 +54,7 @@ project.ext {
     rxAndroidVersion = "1.1.0"
     rxJavaVersion = "1.1.0"
     rxJavaRulesVersion = "1.1.0.0"
-    okhttpVersion = "2.7.0"
+    okhttpVersion = "2.7.2"
     okioVersion = "1.6.0"
 
     audioPlayerVersion = "v1.0.8"
