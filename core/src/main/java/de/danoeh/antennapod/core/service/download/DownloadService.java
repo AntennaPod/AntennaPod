@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -196,11 +197,20 @@ public class DownloadService extends Service {
                                 saveDownloadStatus(status);
                                 handleFailedDownload(status, downloader.getDownloadRequest());
 
-                                // to make lists reload the failed item, we fake an item update
                                 if(type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                                     long id = status.getFeedfileId();
                                     FeedMedia media = DBReader.getFeedMedia(id);
-                                    EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
+                                    if(media == null || media.getItem() == null) {
+                                        return;
+                                    }
+                                    FeedItem item = media.getItem();
+                                    if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR &&
+                                            Integer.valueOf(status.getReasonDetailed()) == HttpURLConnection.HTTP_NOT_FOUND) {
+                                        item.setAutoDownload(false); // for event bus
+                                        DBWriter.setFeedItemAutoDownload(item, false);
+                                    }
+                                    // to make lists reload the failed item, we fake an item update
+                                    EventBus.getDefault().post(FeedItemEvent.updated(item));
                                 }
                             }
                         } else {
