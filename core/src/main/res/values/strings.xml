@@ -217,6 +217,8 @@
     <!-- Queue operations -->
     <string name="lock_queue">Lock Queue</string>
     <string name="unlock_queue">Unlock Queue</string>
+    <string name="queue_locked">Queue locked</string>
+    <string name="queue_unlocked">Queue unlocked</string>
     <string name="clear_queue_label">Clear Queue</string>
     <string name="undo">Undo</string>
     <string name="removed_from_queue">Item removed</string>

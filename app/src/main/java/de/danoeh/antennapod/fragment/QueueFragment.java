@@ -267,10 +267,17 @@ public class QueueFragment extends Fragment {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.queue_lock:
-                    boolean locked = !UserPreferences.isQueueLocked();
-                    UserPreferences.setQueueLocked(locked);
+                    boolean newLockState = !UserPreferences.isQueueLocked();
+                    UserPreferences.setQueueLocked(newLockState);
                     getActivity().supportInvalidateOptionsMenu();
-                    recyclerAdapter.setLocked(locked);
+                    recyclerAdapter.setLocked(newLockState);
+                    if (newLockState) {
+                        Snackbar.make(getActivity().findViewById(R.id.content), R.string
+                                .queue_locked, Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(getActivity().findViewById(R.id.content), R.string
+                                .queue_unlocked, Snackbar.LENGTH_SHORT).show();
+                    }
                     return true;
                 case R.id.refresh_item:
                     List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
