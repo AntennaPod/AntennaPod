@@ -22,6 +22,7 @@
   <string name="playback_history_label">再生履歴</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net ログイン</string>
+  <string name="free_space_label">%1$s 空き</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">最近公開された</string>
   <string name="episode_filter_label">新しいエピソードのみ表示</string>
@@ -259,6 +260,8 @@
   <string name="pref_pauseOnDisconnect_sum">ヘッドフォンまたはBluetoothの接続が切断された時、再生を一時停止します</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">ヘッドフォンが再接続された時に再生を再開します</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetoothが再接続された時に再生を再開します</string>
+  <string name="pref_hardwareForwardButtonSkips_title">早送りボタンでスキップ</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">ハードウェアの早送りボタンを押したときに、早送りの代わりに次のエピソードにスキップします</string>
   <string name="pref_followQueue_sum">再生が完了した時に次のキューのアイテムに移動します</string>
   <string name="pref_auto_delete_sum">再生が完了した時にエピソードを削除します</string>
   <string name="pref_auto_delete_title">自動削除</string>
@@ -343,6 +346,9 @@
   <string name="pref_smart_mark_as_played_disabled">無効</string>
   <string name="pref_image_cache_size_title">画像キャッシュサイズ</string>
   <string name="pref_image_cache_size_sum">画像のディスクキャッシュのサイズ。</string>
+  <string name="crash_report_title">クラッシュレポート</string>
+  <string name="crash_report_sum">メールで最新のクラッシュレポートを送信します</string>
+  <string name="send_email">メールを送信</string>
   <string name="experimental_pref">実験的</string>
   <string name="pref_sonic_title">Sonic メディアプレーヤー</string>
   <string name="pref_sonic_message">Prestissimo の代わりに、内蔵の Sonic メディアプレーヤーを使用します</string>
@@ -434,11 +440,15 @@
   <string name="selected_folder_label">選択したフォルダー:</string>
   <string name="create_folder_label">フォルダーを作成</string>
   <string name="choose_data_directory">データ フォルダーを選択</string>
+  <string name="choose_data_directory_message">基本のデータフォルダーを選択してください。 AntennaPodは、適切なサブディレクトリを作成します。</string>
   <string name="create_folder_msg">名前 \"%1$s\" で新しいフォルダーを作成しますか?</string>
   <string name="create_folder_success">新しいフォルダーを作成しました</string>
   <string name="create_folder_error_no_write_access">このフォルダーに書き込みできません</string>
   <string name="create_folder_error_already_exists">フォルダーは既に存在します</string>
   <string name="create_folder_error">フォルダーを作成できません</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" は存在しません</string>
+  <string name="folder_not_readable_error">\"%1$s\" は読み込みできません</string>
+  <string name="folder_not_writable_error">\"%1$s\" は書き込みできません</string>
   <string name="folder_not_empty_dialog_title">フォルダーが空ではありません</string>
   <string name="folder_not_empty_dialog_msg">選択したフォルダは空ではありません。メディアのダウンロードやその他のファイルはこのフォルダに直接配置されます。続けますか?</string>
   <string name="set_to_default_folder">デフォルトのフォルダーを選択</string>
@@ -499,4 +509,9 @@
   <string name="sort_duration_short_long">期間 (短 \u2192 長)</string>
   <string name="sort_duration_long_short">期間 (長 \u2192 短)</string>
   <!--Rating dialog-->
+  <string name="rating_title">AntennaPod は気に入りましたか?</string>
+  <string name="rating_message">AntennaPodを評価する時間をいただければ幸いです。</string>
+  <string name="rating_never_label">構わないで</string>
+  <string name="rating_later_label">後で確認する</string>
+  <string name="rating_now_label">もちろん、します!</string>
 </resources>

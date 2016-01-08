@@ -1,5 +1,13 @@
 Registo de alterações
 ==========
+Versão 1.4.1
+-------------
+* Melhorias de desempenho
+* Os botões do dispositivo avançam/recuam no episódio em vez de avançar para o episódio seguinte
+* Opção para utilizar o botão do dispositivo para avançar de episódio
+* Opção para enviar os relatórios de erro para os programadores
+* Destaque automático do episódio em reprodução
+* Melhorias ao widget
 
 Versão 1.4.0.12
 ----------------

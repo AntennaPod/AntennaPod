@@ -38,5 +38,5 @@ https://groups.google.com/forum/#!forum/antennapod
 Transifex è il posto dove puoi aiutare a tradurre AntennaPod:<br>
 https://www.transifex.com/antennapod/antennapod
 
-Check out our Beta Testing programme to get the latest features first:<br>
+Dai un'occhiata al nostro programma di Beta Testing per avere accesso in anticipo alle nuove features:<br>
 https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

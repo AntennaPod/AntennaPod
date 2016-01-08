@@ -22,7 +22,7 @@
   <string name="playback_history_label">Journal des lectures</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Identifiants gpodder.net</string>
-  <string name="free_space_label">\"%1$s libre</string>
+  <string name="free_space_label">%1$s libre</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publié récemment</string>
   <string name="episode_filter_label">N\'afficher que les nouveaux épisodes</string>
@@ -260,9 +260,9 @@
   <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont ni dans la liste ni dans les favoris peuvent être supprimés si l\'espace disque devient faible</string>
   <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture lorsque le casque ou le bluetooth sont déconnectés</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le bluetooth se reconnecte</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se reconnecte</string>
   <string name="pref_hardwareForwardButtonSkips_title">Le bouton piste suivante saute l\'épisode</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Au lieu de faire un saut avant passer à l\'épisode suivant quand un bouton physique pour passer à la piste suivante est pressé</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\'épisode suivant au lieu de faire un saut avant quand il est pressé un bouton physique pour avancer à la piste suivante</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
   <string name="pref_auto_delete_title">Suppression automatique</string>
@@ -283,7 +283,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">Téléchargement en Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Déconnexion du casque</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Reconnexion du casque</string>
-  <string name="pref_unpauseOnBluetoothReconnect_title">Connection bluetooth</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Reconnexion Bluetooth</string>
   <string name="pref_mobileUpdate_title">Mises à jour mobile</string>
   <string name="pref_mobileUpdate_sum">Autoriser les mises à jour à travers la connexion de données mobile</string>
   <string name="refreshing_label">Mise à jour en cours</string>
@@ -517,5 +517,5 @@
   <string name="rating_message">Nous vous serions reconnaissant de prendre un peu de temps pour noter AntennaPod.</string>
   <string name="rating_never_label">Laissez moi tranquille</string>
   <string name="rating_later_label">Rappelez le moi plus tard</string>
-  <string name="rating_now_label">Okay, faisons ça !</string>
+  <string name="rating_now_label">Okay, c\'est parti !</string>
 </resources>

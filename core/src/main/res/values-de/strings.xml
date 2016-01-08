@@ -16,7 +16,7 @@
   <string name="add_new_feed_label">Podcast hinzufügen</string>
   <string name="downloads_label">Downloads</string>
   <string name="downloads_running_label">Aktiv</string>
-  <string name="downloads_completed_label">Abgeschlossen</string>
+  <string name="downloads_completed_label">Beendet</string>
   <string name="downloads_log_label">Log</string>
   <string name="cancel_download_label">Download abbrechen</string>
   <string name="playback_history_label">Zuletzt gespielt</string>
@@ -513,7 +513,7 @@
   <string name="sort_duration_short_long">Dauer (kurz \u2192 lang)</string>
   <string name="sort_duration_long_short">Dauer (lang \u2192 kurz)</string>
   <!--Rating dialog-->
-  <string name="rating_title">Magst du AntennaPod?</string>
+  <string name="rating_title">Gefällt dir AntennaPod?</string>
   <string name="rating_message">Wir würden uns freuen, wenn du dir kurz die Zeit nimmst, AntennaPod zu bewerten.</string>
   <string name="rating_never_label">Lass mich in Ruhe</string>
   <string name="rating_later_label">Erinnere mich später</string>

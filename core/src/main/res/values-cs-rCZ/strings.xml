@@ -22,7 +22,7 @@
   <string name="playback_history_label">Historie přehrávání</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Login pro gpodder.net</string>
-  <string name="free_space_label">%1$s volných</string>
+  <string name="free_space_label">%1$s volné</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Nedávno zveřejněné</string>
   <string name="episode_filter_label">Zobrazit pouze nové epizody</string>
@@ -264,7 +264,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Pokračovat v přehrávání po připojení sluchátek</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Pokračovat v přehrávání po připojení bluetooth</string>
   <string name="pref_hardwareForwardButtonSkips_title">Přeskočit tlačítkem vpřed</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Po stlačení hardwarového tlačítka pro posun vpřed přeskočit na další skladbu</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Po stlačení hardwarového tlačítka pro posun vpřed místo přetočení vpřed přeskočit na další epizodu</string>
   <string name="pref_followQueue_sum">Po přehrání položky z fronty přejít automaticky na další</string>
   <string name="pref_auto_delete_sum">Smazat díl po jeho přehrání</string>
   <string name="pref_auto_delete_title">Automatické mazání</string>

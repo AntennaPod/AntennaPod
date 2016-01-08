@@ -1,5 +1,13 @@
 Nouveautés
 ==========
+Version 1.4.1
+-------------
+* Amélioration des performances
+* Les boutons physiques font des sauts avant et arrière au lieu de changer d'épisode
+* Option pour que le bouton piste suivante change d'épisode
+* Option pour envoyer directement un rapports de crash aux développeurs
+* Mise en surbrillance de l'épisode en cours de lecture
+*Améliorations du Widget
 
 Version 1.4.0.12
 ----------------
@@ -17,7 +25,7 @@ Vitesse de lecture native variable (option expérimentale)
 Image de l’épisode sur l’écran de verrouillage
 *Nettoyage flexible des épisodes
 *Rembobiner après une pause
-* Améliorations dans l'interface utilisateur
+* Améliorations de l'interface utilisateur
 Corrections de bugs
 
 Version 1.3
@@ -25,30 +33,30 @@ Version 1.3
 * Actions en masse sur les épisodes (téléchargement, mettre en liste, supprimer)
 * Réduction de l'espace disque utilisé par les images
 * Rafraîchissement automatique à un moment de la journée
-Les indicateurs et le tri des fils RSS sont personnalisables
+* Les indicateurs et le tri des fils RSS sont personnalisables
 * Possibilité de partager les flux
 * Amélioration du téléchargement automatique
 * Corrections de multiples bogues et améliorations de l'interface
 
 Version 1.2
 -----------
-Désactiver la capacité à déplacer les éléments dans la liste
+* Option pour désactiver la capacité à déplacer les éléments dans la liste
 * Reprendre la lecture après un appel téléphonique
-* Filtrer des épisodes dans les flux de podcasts
-Cacher des éléments dans le volet de navigation
-Personnaliser le délai pour l'avance rapide et retour arrière
-* Résolution de problèmes liés à l'ouverture de certains fichiers OPML
+* Filtrer les épisodes dans le flux
+* Cacher des éléments dans le volet de navigation
+* Personnaliser le délai pour l'avance rapide et retour arrière
+* Problèmes résolus lors de l'ouverture de certains fichiers OPML
 * Corrections de bogues divers et améliorations de l'interface
 
 Version 1.1
 -----------
-Intégration avec iTunes podcast
-Glisser pour retirer les éléments de la liste
-* Définition du nombre de téléchargements simultanés
+* Intégration des podcast avec iTunes 
+* Faire glisser pour retirer les éléments de la liste
+* Paramétrer le nombre de téléchargements simultanés
 Corrections concernant gpodder.net sur certains vieux appareils
-* Problèmes résolus avec la date de certains flux
-* Améliorations dans l'affichage
-* Améliorations dans l'interface utilisateur
+* Problèmes résolus concernant la date de certains flux
+* Améliorations de l'affichage
+* Améliorations de l'interface utilisateur
 * Autres corrections de bogues
 
 Version 1.0
@@ -61,7 +69,7 @@ Version 1.0
 
 Version 0.9.9.6
 ---------------
-* Résolution de problèmes liés aux plugins pour lecture à vitesse variable
+* Résolution de problèmes liés aux plugins pour la lecture à vitesse variable
 * Résolution de problèmes liés à la mise à jour automatique des flux
 * Correction de bogues et améliorations
 
@@ -87,7 +95,7 @@ Version 0.9.9.3
 
 Version 0.9.9.2
 ---------------
-* Intégration d'un système de découverte de flux à partir d'une url de site web
+* Intégration d'un système de découverte de flux à partir de l'URL d'un site web
 * Intégration du contrôle de lecture par les touches média "précédent"/"suivant"
 * Système d'arrêt automatique amélioré
 * Possibilité d'utiliser l'horodatage présent dans les notes d'épisode pour aller à une position spécifique dans la lecture
@@ -103,14 +111,14 @@ Version 0.9.9.0
 * Nouvelle interface utilisateur
 * Les téléchargements échoués reprennent désormais là où il s'étaient arrêtés
 * Intégration de Podlove Alternate Feeds
-* Intégration de "pcast"-protocol
-* Intégration de la fonctionnalité de sauvegarde et restauration. Cette fonctionnalité doit être activés dans les réglages de Android pour fonctionner
+* Intégration du protocole "pcast"
+* Intégration d'une fonction de sauvegarde et restauration. Cette fonctionnalité doit être activés dans les réglages d'Android pour fonctionner
 * Correction de bogues et améliorations
 
 Version 0.9.8.3
 ---------------
 * Intégration d'une fonctionnalité de protection par mot de passe pour les flux et les épisodes
-* Intégration de plus de types d'images d'épisodes
+* Possibilité d'avoir plus de types d'images d'épisodes
 * Ajout de l'Hébreu
 * Correction de bogues et améliorations
 
@@ -127,7 +135,7 @@ Version 0.9.8.1
 
 Version 0.9.8.0
 ---------------
-* Accès ajouté à la bibliothèque de gpodder.net
+* Intégration de la bibliothèque gpodder.net
 * Ajout de la synchronisation des podcasts via le service gpodder.net
 * Le téléchargement automatique peut-être maintenant activé ou désactivé pour chaque podcast
 * Ajout d'une option pour mettre en pause la lecture quand une autre application joue un son

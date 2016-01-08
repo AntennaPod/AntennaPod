@@ -22,6 +22,7 @@
   <string name="playback_history_label">Historial de reproducciones</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Iniciar sesión en gpodder.net</string>
+  <string name="free_space_label">%1$s libre</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publicados recientemente</string>
   <string name="episode_filter_label">Mostrar solo episodios nuevos</string>
@@ -260,6 +261,8 @@
   <string name="pref_pauseOnDisconnect_sum">Pausar la reproducción al desconectar los auriculares o el bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reanudar reproducción cuando se reconecten los auriculares</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reanudar reproducción cuando se reconecte el bluetooth</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Saltar episodio con botón</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Al pulsar el botón físico de avanzar se saltará al siguiente episodio en lugar de sólo avanzar</string>
   <string name="pref_followQueue_sum">Saltar al siguiente elemento de la cola al acabar la reproducción</string>
   <string name="pref_auto_delete_sum">Borrar episodio cuando finalice la reproducción</string>
   <string name="pref_auto_delete_title">Eliminar automáticamente</string>
@@ -344,6 +347,9 @@
   <string name="pref_smart_mark_as_played_disabled">Deshabilitado</string>
   <string name="pref_image_cache_size_title">Tamaño de la caché de imágenes</string>
   <string name="pref_image_cache_size_sum">Tamaño de la caché en disco para imágenes.</string>
+  <string name="crash_report_title">Informe de fallo</string>
+  <string name="crash_report_sum">Enviar el último informe de fallo por e-mail</string>
+  <string name="send_email">Enviar e-mail</string>
   <string name="experimental_pref">Experimental</string>
   <string name="pref_sonic_title">Sonic media player</string>
   <string name="pref_sonic_message">Usar sonic media player integrado como sustitución de Prestissimo</string>
@@ -438,11 +444,15 @@
   <string name="selected_folder_label">Carpeta seleccionada</string>
   <string name="create_folder_label">Crear carpeta</string>
   <string name="choose_data_directory">Elegir carpeta de datos</string>
+  <string name="choose_data_directory_message">Por favor elige la raíz de la carpeta de datos. AntennaPod creará los subdirectorios apropiados.</string>
   <string name="create_folder_msg">¿Crear carpeta con nombre «%1$s»?</string>
   <string name="create_folder_success">Carpeta creada</string>
   <string name="create_folder_error_no_write_access">No se puede escribir a esta carpeta</string>
   <string name="create_folder_error_already_exists">Ya existe la carpeta</string>
   <string name="create_folder_error">No se ha podido crear la carpeta</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" no existe</string>
+  <string name="folder_not_readable_error">\"%1$s\" no se puede leer</string>
+  <string name="folder_not_writable_error">\"%1$s\" no se puede modificar</string>
   <string name="folder_not_empty_dialog_title">La carpeta no está vacía</string>
   <string name="folder_not_empty_dialog_msg">La carpeta elegida no está vacía. Las descargas y otros archivos se copiarán directamente en esta carpeta. ¿Continuar igualmente?</string>
   <string name="set_to_default_folder">Elegir carpeta predeterminada</string>
@@ -503,4 +513,9 @@
   <string name="sort_duration_short_long">Duración (Corto \u2192 Largo)</string>
   <string name="sort_duration_long_short">Duración (Largo \u2192 Corto)</string>
   <!--Rating dialog-->
+  <string name="rating_title">¿Te gusta AntennaPod?</string>
+  <string name="rating_message">Estaríamos muy agradecidos si nos dedicas un tiempo para puntuar AntennaPod</string>
+  <string name="rating_never_label">Déjame en paz</string>
+  <string name="rating_later_label">Recuérdamelo después</string>
+  <string name="rating_now_label">¡Venga, hagámoslo!</string>
 </resources>

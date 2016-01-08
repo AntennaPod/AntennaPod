@@ -339,6 +339,7 @@
   <string name="pref_smart_mark_as_played_disabled">Отключено</string>
   <string name="pref_image_cache_size_title">Размер кэша для изображений</string>
   <string name="pref_image_cache_size_sum">Размер дискового кэша для изображений</string>
+  <string name="crash_report_title">Отчет о сбое</string>
   <string name="experimental_pref">Экспериментальные настройки</string>
   <string name="pref_sonic_title">Проигрыватель Sonic</string>
   <string name="pref_sonic_message">Использовать встроенный проигрыватель Sonic вместо Prestissimo.</string>
@@ -426,6 +427,9 @@
   <string name="create_folder_error_no_write_access">Запись в эту папку невозможна</string>
   <string name="create_folder_error_already_exists">Папка уже существует</string>
   <string name="create_folder_error">Невозможно создать папку</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" не существует</string>
+  <string name="folder_not_readable_error">\"%1$s\" недоступен для чтения</string>
+  <string name="folder_not_writable_error">\"%1$s\" недоступен для записи</string>
   <string name="folder_not_empty_dialog_title">Папка не пуста</string>
   <string name="folder_not_empty_dialog_msg">Выбранная папка не пуста. Загрузки и прочие файлы будут сохранены в эту папку. Продолжить?</string>
   <string name="set_to_default_folder">Выберите папку по умолчанию</string>
@@ -486,4 +490,9 @@
   <string name="sort_duration_short_long">Продолжительности (Короткие \u2192 Длинные)</string>
   <string name="sort_duration_long_short">Продолжительности (Длинные \u2192 Короткие)</string>
   <!--Rating dialog-->
+  <string name="rating_title">Нравится AntennaPod?</string>
+  <string name="rating_message">Мы будем благодарны, если вы оцените AntennaPod.</string>
+  <string name="rating_never_label">Отстань от меня</string>
+  <string name="rating_later_label">Напомни позже</string>
+  <string name="rating_now_label">Конечно, давай!</string>
 </resources>

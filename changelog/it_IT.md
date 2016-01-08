@@ -1,7 +1,15 @@
 Registro dei cambiamenti
 ==========
+Versione 1.4.1
+-------------
+* Miglioramento delle prestazioni
+* Hardware buttons now ff and rewind instead of skipping
+* Option to have forward button skip
+* Option to send crash reports directly to developers
+* Highlight currently playing episode
+* Widget improvements
 
-Version 1.4.0.12
+Versione 1.4.0.12
 ----------------
 * Fix for crash on Huawei devices (media buttons may not work)
 
