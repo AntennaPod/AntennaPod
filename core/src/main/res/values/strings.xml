@@ -26,6 +26,8 @@
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="gpodnet_auth_label">gpodder.net Login</string>
     <string name="free_space_label">%1$s free</string>
+    <string name="episode_cache_full_title">Episode cache full</string>
+    <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
 
     <!-- New episodes fragment -->
     <string name="recently_published_episodes_label">Recently published</string>

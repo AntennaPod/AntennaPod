@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -231,6 +232,13 @@ public class NavListAdapter extends BaseAdapter
                 holder.count.setText("{md-disc-full 150%}");
                 Iconify.addIcons(holder.count);
                 holder.count.setVisibility(View.VISIBLE);
+                holder.count.setOnClickListener(v -> {
+                    new AlertDialog.Builder(context)
+                            .setTitle(R.string.episode_cache_full_title)
+                            .setMessage(R.string.episode_cache_full_message)
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> {})
+                            .show();
+                });
             } else {
                 holder.count.setVisibility(View.GONE);
             }
