@@ -34,10 +34,10 @@ public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuIte
         TypedArray ta = context.obtainStyledAttributes(lockIcons);
         if (UserPreferences.isQueueLocked()) {
             queueLock.setTitle(de.danoeh.antennapod.R.string.unlock_queue);
-            queueLock.setIcon(ta.getDrawable(1));
+            queueLock.setIcon(ta.getDrawable(0));
         } else {
             queueLock.setTitle(de.danoeh.antennapod.R.string.lock_queue);
-            queueLock.setIcon(ta.getDrawable(0));
+            queueLock.setIcon(ta.getDrawable(1));
         }
     }
 
