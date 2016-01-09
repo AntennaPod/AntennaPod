@@ -11,8 +11,9 @@
         <item>0</item>
         <item>15</item>
         <item>30</item>
-        <item>45</item>
         <item>60</item>
+        <item>120</item>
+        <item>300</item>
     </string-array>
 
 
