@@ -79,6 +79,11 @@ public class ExternalPlayerFragment extends Fragment {
         return new PlaybackController(getActivity(), true) {
 
             @Override
+            public void onPositionObserverUpdate() {
+                ExternalPlayerFragment.this.onPositionObserverUpdate();
+            }
+
+            @Override
             public ImageButton getPlayButton() {
                 return butPlay;
             }
@@ -92,6 +97,16 @@ public class ExternalPlayerFragment extends Fragment {
                 } else {
                     return false;
                 }
+            }
+
+            @Override
+            public void onShutdownNotification() {
+                playbackDone();
+            }
+
+            @Override
+            public void onPlaybackEnd() {
+                playbackDone();
             }
         };
     }
