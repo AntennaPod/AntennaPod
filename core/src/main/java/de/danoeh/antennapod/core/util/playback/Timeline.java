@@ -88,7 +88,7 @@ public class Timeline {
         }
 
         // replace ASCII line breaks with HTML ones if shownotes don't contain HTML line breaks already
-        if(!LINE_BREAK_REGEX.matcher(shownotes).find()) {
+        if(!LINE_BREAK_REGEX.matcher(shownotes).find() && !shownotes.contains("<p>")) {
             shownotes = shownotes.replace("\n", "<br />");
         }
 

@@ -10,6 +10,8 @@ public interface IPlayer {
 
 	boolean canSetSpeed();
 
+	boolean canDownmix();
+
 	float getCurrentPitchStepsAdjustment();
 
 	int getCurrentPosition();
@@ -56,6 +58,8 @@ public interface IPlayer {
 	void setPlaybackPitch(float f);
 
 	void setPlaybackSpeed(float f);
+
+	void setDownmix(boolean enable);
 
 	void setVolume(float left, float right);
 

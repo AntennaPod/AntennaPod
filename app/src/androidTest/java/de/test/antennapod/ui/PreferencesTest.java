@@ -3,17 +3,10 @@ package de.test.antennapod.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.FlakyTest;
 
-import com.robotium.solo.Condition;
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
@@ -151,14 +144,6 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> autoDelete != UserPreferences.isAutoDelete(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_auto_delete_title));
         assertTrue(solo.waitForCondition(() -> autoDelete == UserPreferences.isAutoDelete(), Timeout.getLargeTimeout()));
-    }
-
-    public void testPlaybackSpeeds() {
-        solo.clickOnText(solo.getString(R.string.pref_playback_speed_title));
-        solo.waitForDialogToOpen(1000);
-        assertTrue(solo.searchText(solo.getString(R.string.no_playback_plugin_title)));
-        solo.clickOnText(solo.getString(R.string.close_label));
-        solo.waitForDialogToClose(1000);
     }
 
     public void testPauseForInterruptions() {

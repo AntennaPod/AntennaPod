@@ -17,6 +17,11 @@ public class VideoPlayer extends MediaPlayer implements IPlayer {
 	}
 
 	@Override
+	public boolean canDownmix() {
+		return false;
+	}
+
+	@Override
 	public float getCurrentPitchStepsAdjustment() {
 		return 1;
 	}
@@ -58,6 +63,12 @@ public class VideoPlayer extends MediaPlayer implements IPlayer {
 	public void setPlaybackSpeed(float f) {
 		Log.e(TAG, "Setting playback speed unsupported in video player");
 		throw new UnsupportedOperationException("Setting playback speed unsupported in video player");
+	}
+
+	@Override
+	public void setDownmix(boolean b) {
+		Log.e(TAG, "Setting downmix unsupported in video player");
+		throw new UnsupportedOperationException("Setting downmix unsupported in video player");
 	}
 
     @Override

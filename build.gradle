@@ -56,8 +56,7 @@ project.ext {
     rxJavaRulesVersion = "1.1.0.0"
     okhttpVersion = "2.7.2"
     okioVersion = "1.6.0"
-
-    audioPlayerVersion = "v1.0.8"
+    audioPlayerVersion = "v1.0.9"
 }
 
 task wrapper(type: Wrapper) {

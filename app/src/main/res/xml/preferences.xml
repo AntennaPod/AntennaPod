@@ -126,10 +126,6 @@
             android:summary="@string/pref_smart_mark_as_played_sum"
             android:title="@string/pref_smart_mark_as_played_title"
             app:useStockLayout="true"/>
-        <Preference
-            android:key="prefPlaybackSpeedLauncher"
-            android:summary="@string/pref_playback_speed_sum"
-            android:title="@string/pref_playback_speed_title" />
 
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
