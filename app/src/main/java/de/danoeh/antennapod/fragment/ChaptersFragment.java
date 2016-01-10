@@ -49,7 +49,7 @@ public class ChaptersFragment extends ListFragment implements AudioplayerContent
         adapter.setMedia(media);
         adapter.notifyDataSetChanged();
         if(media == null || media.getChapters() == null) {
-            setEmptyText(getString(R.string.no_items_label));
+            setEmptyText(getString(R.string.no_chapters_label));
         } else {
             setEmptyText(null);
         }
