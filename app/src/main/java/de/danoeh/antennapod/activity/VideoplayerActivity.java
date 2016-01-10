@@ -43,6 +43,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     private VideoControlsHider videoControlsHider = new VideoControlsHider(this);
 
+    private LinearLayout controls;
     private LinearLayout videoOverlay;
     private AspectRatioVideoView videoview;
     private ProgressBar progressIndicator;
@@ -116,6 +117,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     protected void setupGUI() {
         super.setupGUI();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        controls = (LinearLayout) findViewById(R.id.controls);
         videoOverlay = (LinearLayout) findViewById(R.id.overlay);
         videoview = (AspectRatioVideoView) findViewById(R.id.videoview);
         progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
@@ -259,12 +261,11 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @SuppressLint("NewApi")
     private void showVideoControls() {
         videoOverlay.setVisibility(View.VISIBLE);
-        butPlay.setVisibility(View.VISIBLE);
-        final Animation animation = AnimationUtils.loadAnimation(this,
-                R.anim.fade_in);
+        controls.setVisibility(View.VISIBLE);
+        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         if (animation != null) {
             videoOverlay.startAnimation(animation);
-            butPlay.startAnimation(animation);
+            controls.startAnimation(animation);
         }
         if (Build.VERSION.SDK_INT >= 14) {
             videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
@@ -273,11 +274,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @SuppressLint("NewApi")
     private void hideVideoControls() {
-        final Animation animation = AnimationUtils.loadAnimation(this,
-                R.anim.fade_out);
+        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         if (animation != null) {
             videoOverlay.startAnimation(animation);
-            butPlay.startAnimation(animation);
+            controls.startAnimation(animation);
         }
         if (Build.VERSION.SDK_INT >= 14) {
             int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
@@ -286,7 +286,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             videoOverlay.setFitsSystemWindows(true);
         }
         videoOverlay.setVisibility(View.GONE);
-        butPlay.setVisibility(View.GONE);
+        controls.setVisibility(View.GONE);
     }
 
     @Override

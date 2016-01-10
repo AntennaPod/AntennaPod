@@ -19,14 +19,41 @@
         android:indeterminateOnly="true"
         android:visibility="invisible" />
 
-    <ImageButton
-        android:id="@+id/butPlay"
+    <LinearLayout
+        android:id="@+id/controls"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/overlay_button_circle_background"
-        android:contentDescription="@string/pause_label"
-        android:src="@drawable/ic_av_pause_circle_outline_80dp" />
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/butRev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/overlay_button_circle_background"
+            android:contentDescription="@string/pause_label"
+            android:src="@drawable/ic_av_rewind_80dp" />
+
+        <ImageButton
+            android:id="@+id/butPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/overlay_button_circle_background"
+            android:contentDescription="@string/pause_label"
+            android:src="@drawable/ic_av_pause_circle_outline_80dp" />
+
+        <ImageButton
+            android:id="@+id/butFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/overlay_button_circle_background"
+            android:contentDescription="@string/pause_label"
+            android:src="@drawable/ic_av_fast_forward_80dp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/overlay"

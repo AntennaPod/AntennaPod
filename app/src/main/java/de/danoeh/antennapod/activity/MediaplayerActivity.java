@@ -639,17 +639,19 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                 }
             }
             checkFavorite();
-            if(controller == null) {
-                butPlaybackSpeed.setVisibility(View.GONE);
-            } else {
-                butPlaybackSpeed.setVisibility(View.VISIBLE);
-                if (controller.canSetPlaybackSpeed()) {
-                    ViewCompat.setAlpha(butPlaybackSpeed, 1.0f);
+            if(butPlaybackSpeed != null) {
+                if (controller == null) {
+                    butPlaybackSpeed.setVisibility(View.GONE);
                 } else {
-                    ViewCompat.setAlpha(butPlaybackSpeed, 0.5f);
+                    butPlaybackSpeed.setVisibility(View.VISIBLE);
+                    if (controller.canSetPlaybackSpeed()) {
+                        ViewCompat.setAlpha(butPlaybackSpeed, 1.0f);
+                    } else {
+                        ViewCompat.setAlpha(butPlaybackSpeed, 0.5f);
+                    }
                 }
+                updateButPlaybackSpeed();
             }
-            updateButPlaybackSpeed();
             return true;
         } else {
             return false;
@@ -865,7 +867,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     }
 
     private void updateButPlaybackSpeed() {
-        if (controller != null) {
+        if (controller != null && butPlaybackSpeed != null) {
             butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed() + "x");
         }
     }
