@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
@@ -30,10 +31,13 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -41,6 +45,9 @@ import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -64,6 +71,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     protected ImageButton butFF;
     protected TextView txtvFF;
     protected ImageButton butSkip;
+    protected ImageButton butFav;
 
     private PlaybackController newPlaybackController() {
         return new PlaybackController(this, false) {
@@ -574,6 +582,39 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         sbPosition.setProgress((int) (progress * sbPosition.getMax()));
     }
 
+    private void updateFavButton() {
+        Playable playable = controller.getMedia();
+        if(playable instanceof FeedMedia) {
+            butFav.setEnabled(true);
+            FeedItem feedItem = ((FeedMedia) playable).getItem();
+            if(feedItem != null) {
+                // if the item was added/removed from the favorites during playback,
+                // we can only read a deprecated state via controller
+                Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(item -> {
+                            boolean isFavorite = item.isTagged(FeedItem.TAG_FAVORITE);
+                            if(isFavorite) {
+                                butFav.setContentDescription(getString(R.string.remove_from_favorite_label));
+                                TypedArray res = obtainStyledAttributes(new int[]{R.attr.ic_unfav_big});
+                                int resId = res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_star_border_grey600_36dp);
+                                res.recycle();
+                                butFav.setImageResource(resId);
+                            } else {
+                                butFav.setContentDescription(getString(R.string.add_to_favorite_label));
+                                TypedArray res = obtainStyledAttributes(new int[]{R.attr.ic_fav_big});
+                                int resId = res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_star_grey600_36dp);
+                                res.recycle();
+                                butFav.setImageResource(resId);
+                            }
+                        });
+            }
+        } else {
+            butFav.setEnabled(false);
+        }
+    }
+
     /**
      * Load information about the media that is going to be played or currently
      * being played. This method will be called when the activity is connected
@@ -600,6 +641,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                             .getDuration() - media.getPosition())));
                 }
             }
+            updateFavButton();
             return true;
         } else {
             return false;
@@ -655,6 +697,37 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                 sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
             });
         }
+        butFav = (ImageButton) findViewById(R.id.butFav);
+        if (butFav != null) {
+            butFav.setOnClickListener(v -> {
+                Playable playable = controller.getMedia();
+                if(playable == null) {
+                    return;
+                }
+                if(playable instanceof FeedMedia) {
+                    FeedMedia media = (FeedMedia) playable;
+                    FeedItem item = media.getItem();
+                    if(item != null) {
+                        boolean isFavorite = item.isTagged(FeedItem.TAG_FAVORITE);
+                        if(isFavorite) {
+                            item.removeTag(FeedItem.TAG_FAVORITE);
+                            DBWriter.removeFavoriteItem(item);
+                            Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT)
+                                    .show();
+                        } else {
+                            item.addTag(FeedItem.TAG_FAVORITE);
+                            DBWriter.addFavoriteItem(item);
+                            Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
+                                    .show();
+
+                        }
+                    }
+                }
+                updateFavButton();
+            });
+        }
+        updateFavButton();
+
 
         // SEEKBAR SETUP
 

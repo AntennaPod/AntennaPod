@@ -45,6 +45,8 @@
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
         <item name="attr/av_skip_big">@drawable/ic_skip_grey600_36dp</item>
+        <item name="attr/ic_fav_big">@drawable/ic_star_grey600_36dp</item>
+        <item name="attr/ic_unfav_big">@drawable/ic_star_border_grey600_36dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_grey600_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_grey600_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
@@ -97,6 +99,8 @@
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
         <item name="attr/av_skip_big">@drawable/ic_skip_white_36dp</item>
+        <item name="attr/ic_fav_big">@drawable/ic_star_white_36dp</item>
+        <item name="attr/ic_unfav_big">@drawable/ic_star_border_white_36dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_white_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_white_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
@@ -150,6 +154,8 @@
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
         <item name="attr/av_skip_big">@drawable/ic_skip_grey600_36dp</item>
+        <item name="attr/ic_fav_big">@drawable/ic_star_grey600_36dp</item>
+        <item name="attr/ic_unfav_big">@drawable/ic_star_border_grey600_36dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_grey600_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_grey600_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
@@ -202,6 +208,8 @@
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
         <item name="attr/av_skip_big">@drawable/ic_skip_white_36dp</item>
+        <item name="attr/ic_fav_big">@drawable/ic_star_white_36dp</item>
+        <item name="attr/ic_unfav_big">@drawable/ic_star_border_white_36dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_white_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_white_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
