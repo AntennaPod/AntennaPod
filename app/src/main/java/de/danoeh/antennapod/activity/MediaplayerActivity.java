@@ -672,12 +672,13 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                 return;
             }
 
+            String length;
             if (showTimeLeft) {
-                txtvLength.setText("-" + Converter.getDurationStringLong((media
-                        .getDuration() - media.getPosition())));
+                length = "-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition());
             } else {
-                txtvLength.setText(Converter.getDurationStringLong((media.getDuration())));
+                length = Converter.getDurationStringLong(media.getDuration());
             }
+            txtvLength.setText(length);
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft);
@@ -765,8 +766,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         if (rewindSecs == values[i]) {
                             checked = i;
                         }
-                        choices[i] = String.valueOf(values[i]) + " "
-                                + getString(R.string.time_seconds);
+                        choices[i] = String.valueOf(values[i]) + " " + getString(R.string.time_seconds);
                     }
                     choice = values[checked];
                     AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
@@ -807,8 +807,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         if (rewindSecs == values[i]) {
                             checked = i;
                         }
-                        choices[i] = String.valueOf(values[i]) + " "
-                                + getString(R.string.time_seconds);
+                        choices[i] = String.valueOf(values[i]) + " " + getString(R.string.time_seconds);
                     }
                     choice = values[checked];
                     AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
@@ -854,15 +853,13 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     float prog;
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int progress,
-                                  boolean fromUser) {
+    public void onProgressChanged (SeekBar seekBar,int progress, boolean fromUser) {
         if (controller != null) {
-            prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser,
-                    txtvPosition);
+            prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
             if (showTimeLeft && prog != 0) {
                 int duration = controller.getDuration();
-                txtvLength.setText("-" + Converter
-                        .getDurationStringLong(duration - (int) (prog * duration)));
+                String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
+                txtvLength.setText(length);
             }
         }
     }

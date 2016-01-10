@@ -77,7 +77,9 @@
                 android:layout_toLeftOf="@+id/txtvLength"
                 android:layout_toRightOf="@+id/txtvPosition"
                 android:max="500" />
+
         </RelativeLayout>
+
     </LinearLayout>
 
 </FrameLayout>
