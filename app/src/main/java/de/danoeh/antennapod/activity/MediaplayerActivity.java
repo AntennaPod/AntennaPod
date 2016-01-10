@@ -384,13 +384,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                                 .title(R.string.audio_controls)
                                 .customView(R.layout.audio_controls, false)
                                 .neutralText(R.string.close_label)
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onNeutral(MaterialDialog dialog) {
-                                        final SeekBar left = (SeekBar) dialog.findViewById(R.id.volume_left);
-                                        final SeekBar right = (SeekBar) dialog.findViewById(R.id.volume_right);
-                                        UserPreferences.setVolume(left.getProgress(), right.getProgress());
-                                    }
+                                .onNeutral((dialog1, which) -> {
+                                    final SeekBar left = (SeekBar) dialog1.findViewById(R.id.volume_left);
+                                    final SeekBar right = (SeekBar) dialog1.findViewById(R.id.volume_right);
+                                    UserPreferences.setVolume(left.getProgress(), right.getProgress());
                                 })
                                 .show();
                         final SeekBar barPlaybackSpeed = (SeekBar) dialog.findViewById(R.id.playback_speed);
@@ -524,7 +521,6 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         break;
                     default:
                         return false;
-
                 }
                 return true;
             } else {
@@ -584,10 +580,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     private void updateFavButton() {
         Playable playable = controller.getMedia();
-        if(playable instanceof FeedMedia) {
+        if (playable instanceof FeedMedia) {
             butFav.setEnabled(true);
             FeedItem feedItem = ((FeedMedia) playable).getItem();
-            if(feedItem != null) {
+            if (feedItem != null) {
                 // if the item was added/removed from the favorites during playback,
                 // we can only read a deprecated state via controller
                 Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
@@ -595,7 +591,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(item -> {
                             boolean isFavorite = item.isTagged(FeedItem.TAG_FAVORITE);
-                            if(isFavorite) {
+                            if (isFavorite) {
                                 butFav.setContentDescription(getString(R.string.remove_from_favorite_label));
                                 TypedArray res = obtainStyledAttributes(new int[]{R.attr.ic_unfav_big});
                                 int resId = res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_star_border_grey600_36dp);
@@ -657,27 +653,24 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
         Log.d("timeleft", showTimeLeft ? "true" : "false");
         txtvLength = (TextView) findViewById(R.id.txtvLength);
-        txtvLength.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimeLeft = !showTimeLeft;
-                Playable media = controller.getMedia();
-                if (media == null) {
-                    return;
-                }
-
-                if (showTimeLeft) {
-                    txtvLength.setText("-" + Converter.getDurationStringLong((media
-                            .getDuration() - media.getPosition())));
-                } else {
-                    txtvLength.setText(Converter.getDurationStringLong((media.getDuration())));
-                }
-
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft);
-                editor.apply();
-                Log.d("timeleft on click", showTimeLeft ? "true" : "false");
+        txtvLength.setOnClickListener(v -> {
+            showTimeLeft = !showTimeLeft;
+            Playable media = controller.getMedia();
+            if (media == null) {
+                return;
             }
+
+            if (showTimeLeft) {
+                txtvLength.setText("-" + Converter.getDurationStringLong((media
+                        .getDuration() - media.getPosition())));
+            } else {
+                txtvLength.setText(Converter.getDurationStringLong((media.getDuration())));
+            }
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft);
+            editor.apply();
+            Log.d("timeleft on click", showTimeLeft ? "true" : "false");
         });
 
         butPlay = (ImageButton) findViewById(R.id.butPlay);
@@ -701,15 +694,15 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         if (butFav != null) {
             butFav.setOnClickListener(v -> {
                 Playable playable = controller.getMedia();
-                if(playable == null) {
+                if (playable == null) {
                     return;
                 }
-                if(playable instanceof FeedMedia) {
+                if (playable instanceof FeedMedia) {
                     FeedMedia media = (FeedMedia) playable;
                     FeedItem item = media.getItem();
-                    if(item != null) {
+                    if (item != null) {
                         boolean isFavorite = item.isTagged(FeedItem.TAG_FAVORITE);
-                        if(isFavorite) {
+                        if (isFavorite) {
                             item.removeTag(FeedItem.TAG_FAVORITE);
                             DBWriter.removeFavoriteItem(item);
                             Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT)
@@ -719,7 +712,6 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                             DBWriter.addFavoriteItem(item);
                             Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
                                     .show();
-
                         }
                     }
                 }
