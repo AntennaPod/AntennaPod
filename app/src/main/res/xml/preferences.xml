@@ -170,13 +170,6 @@
             android:key="prefParallelDownloads"
             android:title="@string/pref_parallel_downloads_title"
             app:useStockLayout="true"/>
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
-            android:defaultValue="20"
-            android:entries="@array/episode_cache_size_entries"
-            android:key="prefEpisodeCacheSize"
-            android:title="@string/pref_episode_cache_title"
-            android:entryValues="@array/episode_cache_size_values"
-            app:useStockLayout="true"/>
         <PreferenceScreen
             android:summary="@string/pref_automatic_download_sum"
             android:key="prefAutoDownloadSettings"
@@ -185,6 +178,13 @@
                 android:key="prefEnableAutoDl"
                 android:title="@string/pref_automatic_download_title"
                 android:defaultValue="false"/>
+            <com.afollestad.materialdialogs.prefs.MaterialListPreference
+                android:defaultValue="20"
+                android:entries="@array/episode_cache_size_entries"
+                android:key="prefEpisodeCacheSize"
+                android:title="@string/pref_episode_cache_title"
+                android:entryValues="@array/episode_cache_size_values"
+                app:useStockLayout="true"/>
             <de.danoeh.antennapod.preferences.SwitchCompatPreference
                 android:key="prefEnableAutoDownloadOnBattery"
                 android:title="@string/pref_automatic_download_on_battery_title"

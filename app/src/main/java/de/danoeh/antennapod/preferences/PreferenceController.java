@@ -216,17 +216,16 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     }
                 });
 
-        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL)
-                .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        if (newValue instanceof Boolean) {
-                            ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled((Boolean) newValue);
-                            setSelectedNetworksEnabled((Boolean) newValue && UserPreferences.isEnableAutodownloadWifiFilter());
-                            ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY).setEnabled((Boolean) newValue);
-                        }
-                        return true;
+        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL).setOnPreferenceChangeListener(
+                (preference, newValue) -> {
+                    if (newValue instanceof Boolean) {
+                        boolean enabled = (Boolean) newValue;
+                        ui.findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setEnabled(enabled);
+                        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY).setEnabled(enabled);
+                        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled(enabled);
+                        setSelectedNetworksEnabled(enabled && UserPreferences.isEnableAutodownloadWifiFilter());
                     }
+                    return true;
                 });
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER)
                 .setOnPreferenceChangeListener(
@@ -527,21 +526,17 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     @SuppressWarnings("deprecation")
     private void checkItemVisibility() {
-
         boolean hasFlattrToken = FlattrUtils.hasToken();
-
         ui.findPreference(PreferenceController.PREF_FLATTR_SETTINGS).setEnabled(FlattrUtils.hasAPICredentials());
         ui.findPreference(PreferenceController.PREF_FLATTR_AUTH).setEnabled(!hasFlattrToken);
         ui.findPreference(PreferenceController.PREF_FLATTR_REVOKE).setEnabled(hasFlattrToken);
         ui.findPreference(PreferenceController.PREF_AUTO_FLATTR_PREFS).setEnabled(hasFlattrToken);
 
-        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER)
-                .setEnabled(UserPreferences.isEnableAutodownload());
-        setSelectedNetworksEnabled(UserPreferences.isEnableAutodownload()
-                && UserPreferences.isEnableAutodownloadWifiFilter());
-
-        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY)
-                .setEnabled(UserPreferences.isEnableAutodownload());
+        boolean autoDownload = UserPreferences.isEnableAutodownload();
+        ui.findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setEnabled(autoDownload);
+        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY).setEnabled(autoDownload);
+        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled(autoDownload);
+        setSelectedNetworksEnabled(autoDownload && UserPreferences.isEnableAutodownloadWifiFilter());
 
         ui.findPreference("prefSendCrashReport").setEnabled(CrashReportWriter.getFile().exists());
 
