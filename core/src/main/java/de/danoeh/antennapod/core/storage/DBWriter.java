@@ -977,11 +977,33 @@ public class DBWriter {
      * Sets the 'auto_download'-attribute of specific FeedItem.
      *
      * @param feedItem  FeedItem.
+     * @param autoDownload true enables auto download, false disables it
      */
     public static Future<?> setFeedItemAutoDownload(final FeedItem feedItem,
                                                     final boolean autoDownload) {
-        Log.d(TAG, "FeedItem[id=" + feedItem.getId() + "] SET auto_download " + autoDownload);
         return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedItemAutoDownload(feedItem, autoDownload ? 1 : 0);
+            adapter.close();
+            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+        });
+    }
+
+    public static Future<?> saveFeedItemAutoDownloadFailed(final FeedItem feedItem) {
+        return dbExec.submit(() -> {
+            int failedAttempts = feedItem.getFailedAutoDownloadAttempts() + 1;
+            Log.d(TAG, "failedAttempts: " + failedAttempts);
+            long autoDownload;
+            if(!feedItem.getAutoDownload() || failedAttempts >= 10) {
+                autoDownload = 0; // giving up, disable auto download
+                feedItem.setAutoDownload(false);
+            } else {
+                long now = System.currentTimeMillis();
+                autoDownload = (now / 10) * 10 + failedAttempts;
+                Log.d(TAG, "now: " + now);
+                Log.d(TAG, "autoDownload: " + autoDownload);
+            }
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItemAutoDownload(feedItem, autoDownload);
@@ -992,7 +1014,8 @@ public class DBWriter {
 
     /**
      * Sets the 'auto_download'-attribute of specific FeedItem.
-     *  @param feed This feed's episodes will be processed.
+     *
+     * @param feed         This feed's episodes will be processed.
      * @param autoDownload If true, auto download will be enabled for the feed's episodes. Else,
      */
     public static Future<?> setFeedsItemsAutoDownload(final Feed feed,

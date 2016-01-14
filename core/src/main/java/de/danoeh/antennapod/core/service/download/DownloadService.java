@@ -206,8 +206,7 @@ public class DownloadService extends Service {
                                     FeedItem item = media.getItem();
                                     if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR &&
                                             Integer.valueOf(status.getReasonDetailed()) == HttpURLConnection.HTTP_NOT_FOUND) {
-                                        item.setAutoDownload(false); // for event bus
-                                        DBWriter.setFeedItemAutoDownload(item, false);
+                                        DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                                     }
                                     // to make lists reload the failed item, we fake an item update
                                     EventBus.getDefault().post(FeedItemEvent.updated(item));
