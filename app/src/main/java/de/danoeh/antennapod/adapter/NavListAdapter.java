@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -208,7 +209,8 @@ public class NavListAdapter extends BaseAdapter
 
         holder.title.setText(title);
 
-        if (tags.get(position).equals(QueueFragment.TAG)) {
+        String tag = tags.get(position);
+        if (tag.equals(QueueFragment.TAG)) {
             int queueSize = itemAccess.getQueueSize();
             if (queueSize > 0) {
                 holder.count.setVisibility(View.VISIBLE);
@@ -216,11 +218,27 @@ public class NavListAdapter extends BaseAdapter
             } else {
                 holder.count.setVisibility(View.GONE);
             }
-        } else if (tags.get(position).equals(EpisodesFragment.TAG)) {
+        } else if (tag.equals(EpisodesFragment.TAG)) {
             int unreadItems = itemAccess.getNumberOfNewItems();
             if (unreadItems > 0) {
                 holder.count.setVisibility(View.VISIBLE);
                 holder.count.setText(String.valueOf(unreadItems));
+            } else {
+                holder.count.setVisibility(View.GONE);
+            }
+        } else if(tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
+            int epCacheSize = UserPreferences.getEpisodeCacheSize();
+            if(itemAccess.getNumberOfDownloadedItems() >= epCacheSize) {
+                holder.count.setText("{md-disc-full 150%}");
+                Iconify.addIcons(holder.count);
+                holder.count.setVisibility(View.VISIBLE);
+                holder.count.setOnClickListener(v -> {
+                    new AlertDialog.Builder(context)
+                            .setTitle(R.string.episode_cache_full_title)
+                            .setMessage(R.string.episode_cache_full_message)
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> {})
+                            .show();
+                });
             } else {
                 holder.count.setVisibility(View.GONE);
             }
@@ -316,6 +334,7 @@ public class NavListAdapter extends BaseAdapter
         int getSelectedItemIndex();
         int getQueueSize();
         int getNumberOfNewItems();
+        int getNumberOfDownloadedItems();
         int getFeedCounter(long feedId);
     }
 

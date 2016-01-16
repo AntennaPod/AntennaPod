@@ -636,6 +636,11 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
         }
 
         @Override
+        public int getNumberOfDownloadedItems() {
+            return (navDrawerData != null) ? navDrawerData.numDownloadedItems : 0;
+        }
+
+        @Override
         public int getFeedCounter(long feedId) {
             return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }

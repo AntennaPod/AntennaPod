@@ -1015,7 +1015,9 @@ public final class DBReader {
         Collections.sort(feeds, comparator);
         int queueSize = adapter.getQueueSize();
         int numNewItems = adapter.getNumberOfNewItems();
-        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, feedCounters);
+        int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
+
+        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numDownloadedItems, feedCounters);
         adapter.close();
         return result;
     }
@@ -1024,15 +1026,18 @@ public final class DBReader {
         public List<Feed> feeds;
         public int queueSize;
         public int numNewItems;
+        public int numDownloadedItems;
         public LongIntMap feedCounters;
 
         public NavDrawerData(List<Feed> feeds,
                              int queueSize,
                              int numNewItems,
+                             int numDownloadedItems,
                              LongIntMap feedIndicatorValues) {
             this.feeds = feeds;
             this.queueSize = queueSize;
             this.numNewItems = numNewItems;
+            this.numDownloadedItems = numDownloadedItems;
             this.feedCounters = feedIndicatorValues;
         }
     }

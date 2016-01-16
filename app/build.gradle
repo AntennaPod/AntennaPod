@@ -31,8 +31,8 @@ dependencies {
     compile "io.reactivex:rxjava:$rxJavaVersion"
     // And ProGuard rules for RxJava!
     compile "com.artemzin.rxjava:proguard-rules:$rxJavaRulesVersion"
-    compile "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyFontawesomeVersion"
-    compile "com.joanzapata.iconify:android-iconify-material:$iconifyFontawesomeVersion"
+    compile "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
+    compile "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
     compile("com.github.afollestad.material-dialogs:commons:$materialDialogsVersion") {
         transitive = true
     }
