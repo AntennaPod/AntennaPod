@@ -1017,7 +1017,7 @@ public final class DBReader {
         int numNewItems = adapter.getNumberOfNewItems();
         int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
 
-        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, feedCounters);
+        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numDownloadedItems, feedCounters);
         adapter.close();
         return result;
     }
@@ -1032,10 +1032,12 @@ public final class DBReader {
         public NavDrawerData(List<Feed> feeds,
                              int queueSize,
                              int numNewItems,
+                             int numDownloadedItems,
                              LongIntMap feedIndicatorValues) {
             this.feeds = feeds;
             this.queueSize = queueSize;
             this.numNewItems = numNewItems;
+            this.numDownloadedItems = numDownloadedItems;
             this.feedCounters = feedIndicatorValues;
         }
     }
