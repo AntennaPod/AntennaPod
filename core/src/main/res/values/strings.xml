@@ -299,6 +299,8 @@
     <string name="pref_autoUpdateIntervallOrTime_Disable">Disable</string>
     <string name="pref_autoUpdateIntervallOrTime_Interval">Set Interval</string>
     <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Set Time of Day</string>
+    <string name="pref_autoUpdateIntervallOrTime_every">every %1$s</string>
+    <string name="pref_autoUpdateIntervallOrTime_at">at %1$s</string>
     <string name="pref_downloadMediaOnWifiOnly_sum">Download media files only over WiFi</string>
     <string name="pref_followQueue_title">Continuous Playback</string>
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
@@ -374,6 +376,7 @@
     <string name="experimental_pref">Experimental</string>
     <string name="pref_sonic_title">Sonic media player</string>
     <string name="pref_sonic_message">Use built-in sonic media player as a replacement for Prestissimo</string>
+    <string name="pref_current_value">Current value: %1$s</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
