@@ -77,7 +77,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="8dp"
-            android:gravity="right|bottom"
+            android:gravity="right|top"
             android:text="Feb\n12"
             tools:background="@android:color/holo_blue_light" />
 

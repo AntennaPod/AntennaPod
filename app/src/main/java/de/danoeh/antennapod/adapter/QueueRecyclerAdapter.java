@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -28,6 +27,8 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.joanzapata.iconify.Iconify;
 import com.nineoldandroids.view.ViewHelper;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.lang.ref.WeakReference;
 
 import de.danoeh.antennapod.R;
@@ -38,6 +39,7 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.fragment.ItemFragment;
@@ -209,9 +211,21 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             FeedMedia media = item.getMedia();
 
             title.setText(item.getTitle());
-            String pubDateStr = DateUtils.formatDateTime(mainActivity.get(),
-                item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL);
-            pubDate.setText(pubDateStr.replace(" ", "\n"));
+            String pubDateStr = DateUtils.formatAbbrev(mainActivity.get(), item.getPubDate());
+            int index = 0;
+            if(StringUtils.countMatches(pubDateStr, ' ') == 1 || StringUtils.countMatches(pubDateStr, ' ') == 2) {
+                index = pubDateStr.lastIndexOf(' ');
+            } else if(StringUtils.countMatches(pubDateStr, '.') == 2) {
+                index = pubDateStr.lastIndexOf('.');
+            } else if(StringUtils.countMatches(pubDateStr, '-') == 2) {
+                index = pubDateStr.lastIndexOf('-');
+            } else if(StringUtils.countMatches(pubDateStr, '/') == 2) {
+                index = pubDateStr.lastIndexOf('/');
+            }
+            if(index > 0) {
+                pubDateStr = pubDateStr.substring(0, index+1).trim() + "\n" + pubDateStr.substring(index+1);
+            }
+            pubDate.setText(pubDateStr);
 
             if (media != null) {
                 final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
