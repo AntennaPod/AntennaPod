@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
+import android.text.TextUtils;
+
 import org.xml.sax.Attributes;
 
 import java.util.concurrent.TimeUnit;
@@ -36,8 +38,10 @@ public class NSITunes extends Namespace {
             } else  {
                 // this is the feed image
                 // prefer to all other images
-                image.setOwner(state.getFeed());
-                state.getFeed().setImage(image);
+                if(!TextUtils.isEmpty(image.getDownload_url())) {
+                    image.setOwner(state.getFeed());
+                    state.getFeed().setImage(image);
+                }
             }
 
         }
