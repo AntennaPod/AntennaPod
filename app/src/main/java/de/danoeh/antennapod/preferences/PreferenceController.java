@@ -503,15 +503,19 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         final Resources res = ui.getActivity().getResources();
 
         ListPreference pref = (ListPreference) ui.findPreference(UserPreferences.PREF_SMART_MARK_AS_PLAYED_SECS);
-        String[] values = res.getStringArray(
-                R.array.smart_mark_as_played_values);
+        String[] values = res.getStringArray(R.array.smart_mark_as_played_values);
         String[] entries = new String[values.length];
         for (int x = 0; x < values.length; x++) {
             if(x == 0) {
                 entries[x] = res.getString(R.string.pref_smart_mark_as_played_disabled);
             } else {
                 Integer v = Integer.parseInt(values[x]);
-                entries[x] = res.getQuantityString(R.plurals.time_seconds_quantified, v, v);
+                if(v < 60) {
+                    entries[x] = res.getQuantityString(R.plurals.time_seconds_quantified, v, v);
+                } else {
+                    v /= 60;
+                    entries[x] = res.getQuantityString(R.plurals.time_minutes_quantified, v, v);
+                }
             }
         }
         pref.setEntries(entries);
