@@ -794,7 +794,7 @@ public class PodDBAdapter {
         return status.getId();
     }
 
-    public void setFeedItemAutoDownload(FeedItem feedItem, boolean autoDownload) {
+    public void setFeedItemAutoDownload(FeedItem feedItem, long autoDownload) {
         ContentValues values = new ContentValues();
         values.put(KEY_AUTO_DOWNLOAD, autoDownload);
         db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
