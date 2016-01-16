@@ -235,6 +235,9 @@ public class QueueFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(!isAdded()) {
+            return;
+        }
         super.onCreateOptionsMenu(menu, inflater);
         if (queue != null) {
             inflater.inflate(R.menu.queue, menu);

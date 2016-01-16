@@ -190,6 +190,9 @@ public class AllEpisodesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(!isAdded()) {
+            return;
+        }
         super.onCreateOptionsMenu(menu, inflater);
         if (itemsLoaded) {
             inflater.inflate(R.menu.new_episodes, menu);

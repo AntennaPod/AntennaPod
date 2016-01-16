@@ -243,7 +243,7 @@ public class ItemFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(item == null) {
+        if(!isAdded() || item == null) {
             return;
         }
         inflater.inflate(R.menu.feeditem_options, menu);
