@@ -3,17 +3,10 @@ package de.test.antennapod.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.FlakyTest;
 
-import com.robotium.solo.Condition;
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
@@ -230,6 +223,8 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String entry = entries[entries.length/2];
         final int value = Integer.valueOf(values[values.length/2]);
+        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
         solo.clickOnText(solo.getString(R.string.pref_episode_cache_title));
         solo.waitForDialogToOpen();
         solo.clickOnText(entry);
@@ -241,6 +236,11 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String minEntry = entries[0];
         final int minValue = Integer.valueOf(values[0]);
+        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
+        if(!UserPreferences.isEnableAutodownload()) {
+            solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        }
         solo.clickOnText(solo.getString(R.string.pref_episode_cache_title));
         solo.waitForDialogToOpen(1000);
         solo.scrollUp();
@@ -248,12 +248,16 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> UserPreferences.getEpisodeCacheSize() == minValue, Timeout.getLargeTimeout()));
     }
 
-
     public void testSetEpisodeCacheMax() {
         String[] entries = res.getStringArray(R.array.episode_cache_size_entries);
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String maxEntry = entries[entries.length-1];
         final int maxValue = Integer.valueOf(values[values.length-1]);
+        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
+        if(!UserPreferences.isEnableAutodownload()) {
+            solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        }
         solo.clickOnText(solo.getString(R.string.pref_episode_cache_title));
         solo.waitForDialogToOpen();
         solo.clickOnText(maxEntry);

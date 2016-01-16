@@ -49,9 +49,10 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
     public void setUp() throws Exception {
         super.setUp();
 
-        PodDBAdapter.deleteDatabase();
-
         context = getInstrumentation().getTargetContext();
+
+        PodDBAdapter.init(context);
+        PodDBAdapter.deleteDatabase();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit()
