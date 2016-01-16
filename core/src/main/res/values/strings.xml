@@ -75,7 +75,7 @@
     <string name="length_prefix">Length:\u0020</string>
     <string name="size_prefix">Size:\u0020</string>
     <string name="processing_label">Processing</string>
-    <string name="loading_label">Loading...</string>
+    <string name="loading_label">Loading&#8230;</string>
     <string name="save_username_password_label">Save username and password</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
@@ -87,7 +87,7 @@
     <string name="feed_auto_download_global">Global</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
-    <string name="send_label">Send...</string>
+    <string name="send_label">Send&#8230;</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_queue_removal">When not in queue</string>
     <string name="episode_cleanup_after_listening">After finishing</string>
@@ -112,7 +112,7 @@
     <string name="mark_all_seen_label">Mark all as seen</string>
     <string name="show_info_label">Show information</string>
     <string name="remove_feed_label">Remove Podcast</string>
-    <string name="share_label">Share...</string>
+    <string name="share_label">Share&#8230;</string>
     <string name="share_link_label">Share Link</string>
     <string name="share_link_with_position_label">Share Link with Position</string>
     <string name="share_feed_url_label">Share Feed URL</string>
@@ -405,11 +405,11 @@
     <string name="opml_import_error_dir_empty">The import directory is empty.</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
-    <string name="select_options_label">Select ...</string>
+    <string name="select_options_label">Select&#8230;</string>
     <string name="choose_file_from_filesystem">From local filesystem</string>
     <string name="choose_file_from_external_application">Use external application</string>
     <string name="opml_export_label">OPML export</string>
-    <string name="exporting_label">Exporting...</string>
+    <string name="exporting_label">Exporting&#8230;</string>
     <string name="export_error_label">Export error</string>
     <string name="opml_export_success_title">OPML Export successful.</string>
     <string name="opml_export_success_sum">The .opml file was written to:\u0020</string>
@@ -497,7 +497,7 @@
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
     <string name="subscribed_label">Subscribed</string>
-    <string name="downloading_label">Downloading...</string>
+    <string name="downloading_label">Downloading&#8230;</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="show_chapters_label">Show chapters</string>
@@ -532,7 +532,7 @@
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
     <string name="search_itunes_label">Search iTunes</string>
 
-    <string name="select_label"><b>Select ...</b></string>
+    <string name="select_label"><b>Select&#8230;</b></string>
     <string name="all_label">All</string>
     <string name="selected_all_label">Selected all Episodes</string>
     <string name="none_label">None</string>
@@ -545,7 +545,7 @@
     <string name="selected_downloaded_label">Selected downloaded Episodes</string>
     <string name="not_downloaded_label">Not downloaded</string>
     <string name="selected_not_downloaded_label">Selected not downloaded Episodes</string>
-    <string name="sort_title"><b>Sort by ...</b></string>
+    <string name="sort_title"><b>Sort by&#8230;</b></string>
     <string name="sort_title_a_z">Title (A \u2192 Z)</string>
     <string name="sort_title_z_a">Title (Z \u2192 A)</string>
     <string name="sort_date_new_old">Date (New \u2192 Old)</string>
