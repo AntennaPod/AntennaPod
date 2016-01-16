@@ -370,6 +370,9 @@ public class ItemlistFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        if(adapter == null) {
+            return;
+        }
         FeedItem selection = adapter.getItem(position - l.getHeaderViewsCount());
         if (selection != null) {
             MainActivity activity = (MainActivity) getActivity();
