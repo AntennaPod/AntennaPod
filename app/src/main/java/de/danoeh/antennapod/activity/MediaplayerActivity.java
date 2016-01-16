@@ -707,7 +707,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
         if(butPlaybackSpeed != null) {
             butPlaybackSpeed.setOnClickListener(v -> {
-                if (controller != null && controller.canSetPlaybackSpeed()) {
+                if (controller == null) {
+                    return;
+                }
+                if (controller.canSetPlaybackSpeed()) {
                     String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
                     String currentSpeed = UserPreferences.getPlaybackSpeed();
 
@@ -733,6 +736,8 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                     }
                     UserPreferences.setPlaybackSpeed(newSpeed);
                     controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
+                } else {
+                    VariableSpeedDialog.showDialog(this);
                 }
             });
             butPlaybackSpeed.setOnLongClickListener(v -> {
