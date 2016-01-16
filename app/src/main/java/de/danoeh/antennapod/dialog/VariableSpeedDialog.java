@@ -24,14 +24,15 @@ public class VariableSpeedDialog {
     private static final String TAG = VariableSpeedDialog.class.getSimpleName();
 
     private static final Intent playStoreIntent = new Intent(Intent.ACTION_VIEW,
-            Uri.parse("market://details?id=com.falconware.prestissimo"));
+        Uri.parse("market://details?id=com.falconware.prestissimo"));
 
     private VariableSpeedDialog() {
     }
 
     public static void showDialog(final Context context) {
         if (org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(context)
-                || UserPreferences.useSonic()) {
+                || UserPreferences.useSonic()
+                || Build.VERSION.SDK_INT >= 23) {
             showSpeedSelectorDialog(context);
         } else {
             showGetPluginDialog(context);
@@ -42,10 +43,16 @@ public class VariableSpeedDialog {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
         builder.title(R.string.no_playback_plugin_title);
         builder.content(R.string.no_playback_plugin_or_sonic_msg);
-        builder.positiveText(R.string.download_plugin_label);
-        builder.negativeText(R.string.enable_sonic);
+        builder.positiveText(R.string.enable_sonic);
+        builder.negativeText(R.string.download_plugin_label);
         builder.neutralText(R.string.close_label);
         builder.onPositive((dialog, which) -> {
+            if (Build.VERSION.SDK_INT >= 16) { // just to be safe
+                UserPreferences.enableSonic(true);
+                showSpeedSelectorDialog(context);
+            }
+        });
+        builder.onNegative((dialog, which) -> {
             try {
                 context.startActivity(playStoreIntent);
             } catch (ActivityNotFoundException e) {
@@ -53,18 +60,13 @@ public class VariableSpeedDialog {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
         });
-        builder.onNegative((dialog, which) -> {
-            if (Build.VERSION.SDK_INT >= 16) { // just to be safe
-                UserPreferences.enableSonic(true);
-                showSpeedSelectorDialog(context);
-            }
-        });
+        builder.forceStacking(true);
         MaterialDialog dialog = builder.show();
-        if(!IntentUtils.isCallable(context.getApplicationContext(), playStoreIntent)) {
+        if (Build.VERSION.SDK_INT < 16) {
             View pos = dialog.getActionButton(DialogAction.POSITIVE);
             pos.setEnabled(false);
         }
-        if (Build.VERSION.SDK_INT < 16) {
+        if(!IntentUtils.isCallable(context.getApplicationContext(), playStoreIntent)) {
             View pos = dialog.getActionButton(DialogAction.NEGATIVE);
             pos.setEnabled(false);
         }
@@ -87,29 +89,29 @@ public class VariableSpeedDialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.set_playback_speed_label);
         builder.setMultiChoiceItems(R.array.playback_speed_values,
-                speedChecked, (dialog, which, isChecked) -> {
-                    speedChecked[which] = isChecked;
-                });
+            speedChecked, (dialog, which, isChecked) -> {
+                speedChecked[which] = isChecked;
+            });
         builder.setNegativeButton(android.R.string.cancel, null);
         builder.setPositiveButton(android.R.string.ok,
-                (dialog, which) -> {
-                    int choiceCount = 0;
-                    for (int i = 0; i < speedChecked.length; i++) {
-                        if (speedChecked[i]) {
-                            choiceCount++;
-                        }
+            (dialog, which) -> {
+                int choiceCount = 0;
+                for (int i = 0; i < speedChecked.length; i++) {
+                    if (speedChecked[i]) {
+                        choiceCount++;
                     }
-                    String[] newSpeedValues = new String[choiceCount];
-                    int newSpeedIndex = 0;
-                    for (int i = 0; i < speedChecked.length; i++) {
-                        if (speedChecked[i]) {
-                            newSpeedValues[newSpeedIndex++] = speedValues[i];
-                        }
+                }
+                String[] newSpeedValues = new String[choiceCount];
+                int newSpeedIndex = 0;
+                for (int i = 0; i < speedChecked.length; i++) {
+                    if (speedChecked[i]) {
+                        newSpeedValues[newSpeedIndex++] = speedValues[i];
                     }
+                }
 
-                    UserPreferences.setPlaybackSpeedArray(newSpeedValues);
+                UserPreferences.setPlaybackSpeedArray(newSpeedValues);
 
-                });
+            });
         builder.create().show();
     }
 
