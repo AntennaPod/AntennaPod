@@ -224,6 +224,9 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
             new Handler().postDelayed(() -> drawerLayout.openDrawer(navDrawer), 1500);
 
+            // for backward compatibility, we only change defaults for fresh installs
+            UserPreferences.setUpdateInterval(12);
+
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
             edit.commit();
