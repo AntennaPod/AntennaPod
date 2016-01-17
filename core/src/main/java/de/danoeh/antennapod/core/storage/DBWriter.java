@@ -993,7 +993,6 @@ public class DBWriter {
     public static Future<?> saveFeedItemAutoDownloadFailed(final FeedItem feedItem) {
         return dbExec.submit(() -> {
             int failedAttempts = feedItem.getFailedAutoDownloadAttempts() + 1;
-            Log.d(TAG, "failedAttempts: " + failedAttempts);
             long autoDownload;
             if(!feedItem.getAutoDownload() || failedAttempts >= 10) {
                 autoDownload = 0; // giving up, disable auto download
@@ -1001,8 +1000,6 @@ public class DBWriter {
             } else {
                 long now = System.currentTimeMillis();
                 autoDownload = (now / 10) * 10 + failedAttempts;
-                Log.d(TAG, "now: " + now);
-                Log.d(TAG, "autoDownload: " + autoDownload);
             }
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
