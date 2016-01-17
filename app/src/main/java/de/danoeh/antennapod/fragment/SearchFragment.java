@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -116,7 +116,7 @@ public class SearchFragment extends ListFragment {
         final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_label);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_label);
         viewCreated = true;
         if (itemsLoaded) {
             onFragmentLoaded();
