@@ -91,11 +91,11 @@ public class NSAtom extends Namespace {
                     }
                     String type = attributes.getValue(LINK_TYPE);
                     if (SyndTypeUtils.enclosureTypeValid(type)
-                        state.getCurrentItem().setMedia(
-                                new FeedMedia(state.getCurrentItem(), href,
-                                        size, type)
-                        );
                             || (type = SyndTypeUtils.getValidMimeTypeFromUrl(href)) != null) {
+                        FeedItem currItem = state.getCurrentItem();
+                        if(!currItem.hasMedia()) {
+                            currItem.setMedia(new FeedMedia(currItem, href, size, type));
+                        }
                     }
                 } else if (rel.equals(LINK_REL_PAYMENT)) {
                     state.getCurrentItem().setPaymentLink(href);
