@@ -2,7 +2,6 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +22,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 
 /**
@@ -143,8 +143,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 ViewHelper.setAlpha(convertView, 1.0f);
             }
 
-            holder.published.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
-
+            String pubDateStr = DateUtils.formatAbbrev(context, item.getPubDate());
+            holder.published.setText(pubDateStr);
 
             FeedMedia media = item.getMedia();
             if (media == null) {

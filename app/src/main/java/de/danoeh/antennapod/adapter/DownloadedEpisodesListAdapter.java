@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.DateUtils;
 
 /**
  * Shows a list of downloaded episodes
@@ -75,7 +74,8 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         }
 
         holder.title.setText(item.getTitle());
-        holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
+        String pubDateStr = DateUtils.formatAbbrev(context, item.getPubDate());
+        holder.pubDate.setText(pubDateStr);
         holder.txtvSize.setText(Converter.byteToString(item.getMedia().getSize()));
         FeedItem.State state = item.getState();
 

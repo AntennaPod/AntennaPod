@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -7,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -140,5 +142,18 @@ public class DateUtils {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         format.setTimeZone(defaultTimezone);
         return format.format(date);
+    }
+
+    public static String formatAbbrev(final Context context, final Date date) {
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.add(GregorianCalendar.YEAR, -1);
+        // some padding, because no one really remembers what day of the month it is
+        cal.add(GregorianCalendar.DAY_OF_MONTH, 10);
+        boolean withinLastYear = date.after(cal.getTime());
+        int format = android.text.format.DateUtils.FORMAT_ABBREV_ALL;
+        if(withinLastYear) {
+            format |= android.text.format.DateUtils.FORMAT_NO_YEAR;
+        }
+        return android.text.format.DateUtils.formatDateTime(context, date.getTime(), format);
     }
 }

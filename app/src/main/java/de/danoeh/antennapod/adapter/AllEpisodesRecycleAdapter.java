@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -36,6 +34,7 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.fragment.ItemFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -118,8 +117,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.placeholder.setVisibility(View.VISIBLE);
         holder.placeholder.setText(item.getFeed().getTitle());
         holder.title.setText(item.getTitle());
-        holder.pubDate.setText(DateUtils.formatDateTime(mainActivityRef.get(),
-                item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
+        String pubDateStr = DateUtils.formatAbbrev(mainActivityRef.get(), item.getPubDate());
+        holder.pubDate.setText(pubDateStr);
         if (showOnlyNewEpisodes || false == item.isNew()) {
             holder.statusUnread.setVisibility(View.INVISIBLE);
         } else {
