@@ -1,38 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="@dimen/listitem_threeline_height"
-tools:background="@android:color/darker_gray">
-
-<ImageView
-    android:id="@+id/imgvCover"
-    android:layout_width="@dimen/thumbnail_length_itemlist"
-    android:layout_height="@dimen/thumbnail_length_itemlist"
-    android:layout_alignParentLeft="true"
-    android:layout_centerVertical="true"
-    android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-    android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-    android:adjustViewBounds="true"
-    android:contentDescription="@string/cover_label"
-    android:cropToPadding="true"
-    android:scaleType="fitXY"
-    tools:src="@drawable/ic_stat_antenna_default"
-    tools:background="@android:color/holo_green_dark" />
-
-<TextView
-    android:id="@+id/txtvTitle"
-    style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_centerVertical="true"
-    android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-    android:layout_marginRight="@dimen/listitem_threeline_horizontalpadding"
-    android:layout_toRightOf="@id/imgvCover"
-    android:maxLines="1"
-    tools:text="Podcast title"
-    tools:background="@android:color/holo_green_dark" />
+    android:paddingTop="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="8dp"
+    tools:background="@android:color/darker_gray">
+
+    <ImageView
+        android:id="@+id/imgvCover"
+        android:layout_width="@dimen/thumbnail_length_itemlist"
+        android:layout_height="@dimen/thumbnail_length_itemlist"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="8dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/cover_label"
+        android:cropToPadding="true"
+        android:scaleType="fitXY"
+        tools:background="@android:color/holo_green_dark"
+        tools:src="@drawable/ic_stat_antenna_default" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgvCover"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtvTitle"
+            style="@style/AntennaPod.TextView.ListItemPrimaryTitle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            tools:background="@android:color/holo_green_dark"
+            tools:text="Podcast title" />
+
+        <TextView
+            android:id="@+id/txtvUrl"
+            style="android:style/TextAppearance.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:ellipsize="middle"
+            android:maxLines="2"
+            tools:text="http://www.example.com/feed"
+            tools:background="@android:color/holo_green_dark"/>
+
+    </LinearLayout>
+
 </RelativeLayout>

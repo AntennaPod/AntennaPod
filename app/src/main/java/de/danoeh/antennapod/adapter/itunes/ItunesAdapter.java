@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,6 +66,12 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
 
         //Set the title
         viewHolder.titleView.setText(podcast.title);
+        if(!podcast.feedUrl.contains("itunes.apple.com")) {
+            viewHolder.urlView.setText(podcast.feedUrl);
+            viewHolder.urlView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.urlView.setVisibility(View.GONE);
+        }
 
         //Update the empty imageView with the image from the feed
         Glide.with(context)
@@ -94,6 +101,8 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
          */
         public final TextView titleView;
 
+        public final TextView urlView;
+
 
         /**
          * Constructor
@@ -102,6 +111,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         PodcastViewHolder(View view){
             coverView = (ImageView) view.findViewById(R.id.imgvCover);
             titleView = (TextView) view.findViewById(R.id.txtvTitle);
+            urlView = (TextView) view.findViewById(R.id.txtvUrl);
         }
     }
 
@@ -124,16 +134,47 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
          */
         public final String feedUrl;
 
+
+        private Podcast(String title, String imageUrl, String feedUrl) {
+            this.title = title;
+            this.imageUrl = imageUrl;
+            this.feedUrl = feedUrl;
+        }
+
         /**
-         * Constructor.
+         * Constructs a Podcast instance from a iTunes search result
          *
          * @param json object holding the podcast information
          * @throws JSONException
          */
-        public Podcast(JSONObject json) throws JSONException {
-            title = json.getString("collectionName");
-            imageUrl = json.getString("artworkUrl100");
-            feedUrl = json.getString("feedUrl");
+        public static Podcast fromSearch(JSONObject json) throws JSONException {
+            String title = json.getString("collectionName");
+            String imageUrl = json.getString("artworkUrl100");
+            String feedUrl = json.getString("feedUrl");
+            return new Podcast(title, imageUrl, feedUrl);
         }
+
+        /**
+         * Constructs a Podcast instance from iTunes toplist entry
+         *
+         * @param json object holding the podcast information
+         * @throws JSONException
+         */
+        public static Podcast fromToplist(JSONObject json) throws JSONException {
+            String title = json.getJSONObject("title").getString("label");
+            String imageUrl = null;
+            JSONArray images =  json.getJSONArray("im:image");
+            for(int i=0; imageUrl == null && i < images.length(); i++) {
+                JSONObject image = images.getJSONObject(i);
+                String height = image.getJSONObject("attributes").getString("height");
+                if(Integer.valueOf(height) >= 100) {
+                    imageUrl = image.getString("label");
+                }
+            }
+            String feedUrl = "https://itunes.apple.com/lookup?id=" +
+                    json.getJSONObject("id").getJSONObject("attributes").getString("im:id");
+            return new Podcast(title, imageUrl, feedUrl);
+        }
+
     }
 }

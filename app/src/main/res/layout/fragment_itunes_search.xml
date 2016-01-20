@@ -1,26 +1,64 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="de.danoeh.antennapod.activity.ITunesSearchActivity">
-<android.support.v7.widget.SearchView
-    android:id="@+id/itunes_search_view"
-    android:layout_height="wrap_content"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    />
-<GridView
-    android:id="@+id/gridView"
-    android:layout_below="@id/itunes_search_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:columnWidth="400dp"
-    android:gravity="center"
-    android:horizontalSpacing="8dp"
-    android:numColumns="auto_fit"
-    android:paddingBottom="@dimen/list_vertical_padding"
-    android:paddingTop="@dimen/list_vertical_padding"
-    android:stretchMode="columnWidth"
-    android:verticalSpacing="8dp"
-    tools:listitem="@layout/gpodnet_podcast_listitem" />
+    android:layout_height="match_parent">
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:columnWidth="400dp"
+        android:gravity="center"
+        android:horizontalSpacing="8dp"
+        android:numColumns="auto_fit"
+        android:paddingBottom="@dimen/list_vertical_padding"
+        android:paddingTop="@dimen/list_vertical_padding"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="8dp"
+        tools:listitem="@layout/gpodnet_podcast_listitem" />
+
+    <TextView
+        android:id="@id/android:empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/search_status_no_results" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateOnly="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/txtvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="16dp"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Error message"
+        tools:background="@android:color/holo_red_light" />
+
+    <Button
+        android:id="@+id/butRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvError"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:text="@string/retry_label"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:background="@android:color/holo_red_light" />
+
 </RelativeLayout>
