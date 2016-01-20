@@ -72,7 +72,10 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.skip_episode_item, false);
         }
 
-        boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
+        boolean isInQueue = false;
+        if(queueAccess != null) {
+            isInQueue = queueAccess.contains(selectedItem.getId());
+        }
         if(queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId()) {
             mi.setItemVisibility(R.id.move_to_top_item, false);
         }
