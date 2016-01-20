@@ -112,11 +112,10 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
                              Bundle savedInstanceState) {
         Log.d(TAG, "Creating view");
         webvDescription = new WebView(getActivity());
+        if (Build.VERSION.SDK_INT >= 11) {
+            webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            if (Build.VERSION.SDK_INT >= 11
-                    && Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            }
             webvDescription.setBackgroundColor(getResources().getColor(R.color.black));
         }
         webvDescription.getSettings().setUseWideViewPort(false);
