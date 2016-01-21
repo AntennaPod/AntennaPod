@@ -332,7 +332,7 @@ public class ItemFragment extends Fragment {
                 butAction1Text = R.string.mark_read_label;
             }
             if (item.getLink() != null) {
-                butAction2Icon = "{ma-web 24sp}";
+                butAction2Icon = "{md-web 24sp}";
                 butAction2Text = R.string.visit_website_label;
             }
         } else {
