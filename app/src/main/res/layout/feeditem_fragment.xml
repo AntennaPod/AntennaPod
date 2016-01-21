@@ -20,43 +20,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp">
 
             <ImageView
                 android:id="@+id/imgvCover"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
                 android:contentDescription="@string/cover_label"
                 android:gravity="center_vertical"
                 tools:src="@drawable/ic_stat_antenna_default"
                 tools:background="@android:color/holo_green_dark" />
 
             <TextView
-                android:id="@+id/txtvPublished"
-                style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="8dp"
-                tools:text="Jan\n23"
-                tools:background="@android:color/holo_green_dark"
-                android:layout_below="@+id/txtvTitle"/>
-
-            <TextView
                 android:id="@+id/txtvTitle"
-                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/imgvCover"
                 android:layout_marginLeft="16dp"
-                android:layout_toLeftOf="@id/txtvPublished"
+                android:layout_alignTop="@id/imgvCover"
                 android:layout_toRightOf="@id/imgvCover"
                 android:includeFontPadding="false"
+                android:textSize="16sp"
+                android:textColor="?android:attr/textColorPrimary"
+                android:ellipsize="end"
                 android:maxLines="5"
                 tools:text="Podcast title"
                 tools:background="@android:color/holo_green_dark" />
@@ -71,6 +61,17 @@
                 android:layout_marginLeft="16dp"
                 tools:text="00:42:23"
                 tools:background="@android:color/holo_green_dark"/>
+
+            <TextView
+                android:id="@+id/txtvPublished"
+                style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/txtvTitle"
+                android:layout_marginLeft="8dp"
+                tools:text="Jan\n23"
+                tools:background="@android:color/holo_green_dark" />
 
         </RelativeLayout>
 
@@ -89,7 +90,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
             android:orientation="horizontal"
             tools:background="@android:color/holo_blue_bright">
 

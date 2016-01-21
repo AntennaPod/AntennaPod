@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+            android:text="@string/playback_speed"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtvPlaybackSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="1.00x"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-12dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp">
+
+        <Button
+            android:id="@+id/butDecSpeed"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="-"
+            android:textStyle="bold"
+            android:textColor="@color/status_progress"
+            android:textSize="24sp"
+            android:background="@drawable/borderless_button_dark"/>
+
+        <Button
+            android:id="@+id/butIncSpeed"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:minWidth="0dp"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="+"
+            android:textStyle="bold"
+            android:textColor="@color/status_progress"
+            android:textSize="24sp"
+            android:background="@drawable/borderless_button_dark"/>
+
+        <SeekBar
+            android:id="@+id/playback_speed"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_toRightOf="@id/butDecSpeed"
+            android:layout_toLeftOf="@id/butIncSpeed"
+            android:layout_centerVertical="true"
+            android:max="40"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="24dp"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+        android:text="@string/volume"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-12dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/txtvLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/left_short" />
+
+        <SeekBar
+            android:id="@+id/volume_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/txtvRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/right_short" />
+
+        <SeekBar
+            android:id="@+id/volume_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="24dp"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+        android:text="@string/audio_effects"
+        android:textStyle="bold"/>
+
+    <CheckBox
+        android:id="@+id/stereo_to_mono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-12dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/stereo_to_mono" />
+
+</LinearLayout>

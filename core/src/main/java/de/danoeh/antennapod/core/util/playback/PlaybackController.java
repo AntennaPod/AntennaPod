@@ -27,7 +27,6 @@ import android.widget.TextView;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +47,7 @@ import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
  * control playback instead of communicating with the PlaybackService directly.
  */
 public abstract class PlaybackController {
+
     private static final String TAG = "PlaybackController";
 
     public static final int INVALID_TIME = -1;
@@ -78,23 +78,18 @@ public abstract class PlaybackController {
         this.activity = activity;
         this.reinitOnPause = reinitOnPause;
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOLSIZE,
-                new ThreadFactory() {
-
-                    @Override
-                    public Thread newThread(Runnable r) {
-                        Thread t = new Thread(r);
-                        t.setPriority(Thread.MIN_PRIORITY);
-                        return t;
-                    }
-                }, new RejectedExecutionHandler() {
-
-            @Override
-            public void rejectedExecution(Runnable r,
-                                          ThreadPoolExecutor executor) {
-                Log.w(TAG,
+            r -> {
+                Thread t = new Thread(r);
+                t.setPriority(Thread.MIN_PRIORITY);
+                return t;
+            }, new RejectedExecutionHandler() {
+                @Override
+                public void rejectedExecution(Runnable r,
+                                              ThreadPoolExecutor executor) {
+                    Log.w(TAG,
                         "Rejected execution of runnable in schedExecutor");
+                }
             }
-        }
         );
     }
 
@@ -104,10 +99,10 @@ public abstract class PlaybackController {
      */
     public void init() {
         activity.registerReceiver(statusUpdate, new IntentFilter(
-                PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
+            PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
 
         activity.registerReceiver(notificationReceiver, new IntentFilter(
-                PlaybackService.ACTION_PLAYER_NOTIFICATION));
+            PlaybackService.ACTION_PLAYER_NOTIFICATION));
 
         activity.registerReceiver(shutdownReceiver, new IntentFilter(
                 PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
@@ -239,7 +234,7 @@ public abstract class PlaybackController {
         return null;
     }
 
-    public abstract void setupGUI();
+
 
     private void setupPositionObserver() {
         if ((positionObserverFuture != null && positionObserverFuture
@@ -262,8 +257,6 @@ public abstract class PlaybackController {
             Log.d(TAG, "PositionObserver cancelled. Result: " + result);
         }
     }
-
-    public abstract void onPositionObserverUpdate();
 
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -367,26 +360,31 @@ public abstract class PlaybackController {
         }
     };
 
-    public abstract void onPlaybackSpeedChange();
+    public void setupGUI() {};
 
-    public abstract void onShutdownNotification();
+    public void onPositionObserverUpdate() {};
+
+
+    public void onPlaybackSpeedChange() {};
+
+    public void onShutdownNotification() {};
 
     /**
      * Called when the currently displayed information should be refreshed.
      */
-    public abstract void onReloadNotification(int code);
+    public void onReloadNotification(int code) {};
 
-    public abstract void onBufferStart();
+    public void onBufferStart() {};
 
-    public abstract void onBufferEnd();
+    public void onBufferEnd() {};
 
-    public abstract void onBufferUpdate(float progress);
+    public void onBufferUpdate(float progress) {};
 
-    public abstract void onSleepTimerUpdate();
+    public void onSleepTimerUpdate() {};
 
-    public abstract void handleError(int code);
+    public void handleError(int code) {};
 
-    public abstract void onPlaybackEnd();
+    public void onPlaybackEnd() {};
 
     public void repeatHandleStatus() {
         if (status != null && playbackService != null) {
@@ -484,15 +482,19 @@ public abstract class PlaybackController {
         }
     }
 
-    public abstract ImageButton getPlayButton();
+    public ImageButton getPlayButton() {
+        return null;
+    };
 
-    public abstract void postStatusMsg(int msg);
+    public void postStatusMsg(int msg) {};
 
-    public abstract void clearStatusMsg();
+    public void clearStatusMsg() {};
 
-    public abstract boolean loadMediaInfo();
+    public boolean loadMediaInfo() {
+        return false;
+    };
 
-    public abstract void onAwaitingVideoSurface();
+    public  void onAwaitingVideoSurface()  {};
 
     /**
      * Called when connection to playback service has been established or
@@ -526,7 +528,7 @@ public abstract class PlaybackController {
         }
     }
 
-    public abstract void onServiceQueried();
+    public void onServiceQueried()  {};
 
     /**
      * Should be used by classes which implement the OnSeekBarChanged interface.
@@ -691,11 +693,27 @@ public abstract class PlaybackController {
         }
     }
 
+    public void setVolume(float leftVolume, float rightVolume) {
+        if (playbackService != null) {
+            playbackService.setVolume(leftVolume, rightVolume);
+        }
+    }
+
     public float getCurrentPlaybackSpeedMultiplier() {
         if (canSetPlaybackSpeed()) {
             return playbackService.getCurrentPlaybackSpeed();
         } else {
             return -1;
+        }
+    }
+
+    public boolean canDownmix() {
+        return playbackService != null && playbackService.canDownmix();
+    }
+
+    public void setDownmix(boolean enable) {
+        if(playbackService != null) {
+            playbackService.setDownmix(enable);
         }
     }
 

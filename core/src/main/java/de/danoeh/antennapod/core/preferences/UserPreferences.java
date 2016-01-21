@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -95,9 +94,12 @@ public class UserPreferences {
     public static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
     public static final String IMAGE_CACHE_DEFAULT_VALUE = "100";
     public static final int IMAGE_CACHE_SIZE_MINIMUM = 20;
+    public static final String PREF_LEFT_VOLUME = "prefLeftVolume";
+    public static final String PREF_RIGHT_VOLUME = "prefRightVolume";
 
     // Experimental
     public static final String PREF_SONIC = "prefSonic";
+    public static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
     public static final String PREF_NORMALIZER = "prefNormalizer";
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
@@ -249,16 +251,36 @@ public class UserPreferences {
     }
 
     public static String getPlaybackSpeed() {
-        return prefs.getString(PREF_PLAYBACK_SPEED, "1.0");
+        return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
     }
 
     public static String[] getPlaybackSpeedArray() {
         return readPlaybackSpeedArray(prefs.getString(PREF_PLAYBACK_SPEED_ARRAY, null));
     }
 
+    public static float getLeftVolume() {
+        int volume = prefs.getInt(PREF_LEFT_VOLUME, 100);
+        if(volume == 100) {
+            return 1.0f;
+        } else {
+            return (float) (1 - (Math.log(100 - volume) / Math.log(100)));
+        }
+    }
+
+    public static float getRightVolume() {
+        int volume = prefs.getInt(PREF_RIGHT_VOLUME, 100);
+        if(volume == 100) {
+            return 1.0f;
+        } else {
+            return (float) (1 - (Math.log(100 - volume) / Math.log(100)));
+        }
+    }
+
     public static boolean shouldPauseForFocusLoss() {
         return prefs.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
     }
+
+
 
     public static long getUpdateInterval() {
         String updateInterval = prefs.getString(PREF_UPDATE_INTERVAL, "0");
@@ -385,6 +407,15 @@ public class UserPreferences {
              .apply();
     }
 
+    public static void setVolume(int leftVolume, int rightVolume) {
+        assert(0 <= leftVolume && leftVolume <= 100);
+        assert(0 <= rightVolume && rightVolume <= 100);
+        prefs.edit()
+             .putInt(PREF_LEFT_VOLUME, leftVolume)
+             .putInt(PREF_RIGHT_VOLUME, rightVolume)
+             .apply();
+    }
+
     public static void setAutodownloadSelectedNetworks(String[] value) {
         prefs.edit()
              .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
@@ -472,7 +503,7 @@ public class UserPreferences {
         // If this preference hasn't been set yet, return the default options
         if (valueFromPrefs == null) {
             String[] allSpeeds = context.getResources().getStringArray(R.array.playback_speed_values);
-            List<String> speedList = new LinkedList<String>();
+            List<String> speedList = new ArrayList<>();
             for (String speedStr : allSpeeds) {
                 float speed = Float.parseFloat(speedStr);
                 if (speed < 2.0001 && speed * 10 % 1 == 0) {
@@ -503,6 +534,16 @@ public class UserPreferences {
         prefs.edit()
             .putBoolean(PREF_SONIC, enable)
             .apply();
+    }
+
+    public static boolean stereoToMono() {
+        return prefs.getBoolean(PREF_STEREO_TO_MONO, false);
+    }
+
+    public static void stereoToMono(boolean enable) {
+        prefs.edit()
+                .putBoolean(PREF_STEREO_TO_MONO, enable)
+                .apply();
     }
 
 

@@ -150,7 +150,9 @@
     <string name="added_to_queue_label">Added to Queue</string>
     <string name="remove_from_queue_label">Remove from Queue</string>
     <string name="add_to_favorite_label">Add to Favorites</string>
+    <string name="added_to_favorites">Added to Favorites</string>
     <string name="remove_from_favorite_label">Remove from Favorites</string>
+    <string name="removed_from_favorites">Removed from Favorites</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="support_label">Flattr this</string>
     <string name="enqueue_all_new">Enqueue all</string>
@@ -272,6 +274,7 @@
     <!-- Empty list labels -->
     <string name="no_items_label">There are no items in this list.</string>
     <string name="no_feeds_label">You haven\'t subscribed to any feeds yet.</string>
+    <string name="no_chapters_label">This episode has no chapters.</string>
 
     <!-- Preferences -->
     <string name="other_pref">Other</string>
@@ -561,5 +564,15 @@
     <string name="rating_never_label">Leave me alone</string>
     <string name="rating_later_label">Remind me later</string>
     <string name="rating_now_label">Sure, let\'s do this!</string>
+
+    <!-- Audio controls -->
+    <string name="audio_controls">Audio controls</string>
+    <string name="playback_speed">Playback Speed</string>
+    <string name="volume">Volume</string>
+    <string name="left_short">L</string>
+    <string name="right_short">R</string>
+    <string name="audio_effects">Audio Effects</string>
+    <string name="stereo_to_mono">Downmix: Stereo to mono</string>
+    <string name="sonic_only">Sonic only</string>
 
 </resources>

@@ -310,7 +310,7 @@ public class ItemFragment extends Fragment {
                 .dontAnimate()
                 .into(imgvCover);
 
-        progbarDownload.setVisibility(View.INVISIBLE);
+        progbarDownload.setVisibility(View.GONE);
         if (item.hasMedia() && downloaderList != null) {
             for (Downloader downloader : downloaderList) {
                 if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
