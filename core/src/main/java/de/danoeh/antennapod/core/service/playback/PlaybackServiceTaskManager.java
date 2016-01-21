@@ -39,7 +39,7 @@ public class PlaybackServiceTaskManager {
     /**
      * Notification interval of widget updater in milliseconds.
      */
-    public static final int WIDGET_UPDATER_NOTIFICATION_INTERVAL = 1500;
+    public static final int WIDGET_UPDATER_NOTIFICATION_INTERVAL = 1000;
 
     private static final int SCHED_EX_POOL_SIZE = 2;
     private final ScheduledThreadPoolExecutor schedExecutor;
