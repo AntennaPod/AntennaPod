@@ -19,6 +19,8 @@ public class NSITunes extends Namespace {
 
     private static final String AUTHOR = "author";
     public static final String DURATION = "duration";
+    public static final String SUBTITLE = "subtitle";
+    public static final String SUMMARY = "summary";
 
 
     @Override
@@ -67,13 +69,28 @@ public class NSITunes extends Namespace {
                 } else {
                     return;
                 }
-
                 state.getTempObjects().put(DURATION, duration);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
+        } else if (localName.equals(SUBTITLE)) {
+            String subtitle = state.getContentBuf().toString();
+            if (state.getCurrentItem() != null) {
+                if (TextUtils.isEmpty(state.getCurrentItem().getDescription())) {
+                    state.getCurrentItem().setDescription(subtitle);
+                }
+            } else {
+                if (TextUtils.isEmpty(state.getFeed().getDescription())) {
+                    state.getFeed().setDescription(subtitle);
+                }
+            }
+        } else if (localName.equals(SUMMARY)) {
+            String summary = state.getContentBuf().toString();
+            if (state.getCurrentItem() != null) {
+                state.getCurrentItem().setDescription(summary);
+            } else {
+                state.getFeed().setDescription(summary);
+            }
         }
-
     }
-
 }
