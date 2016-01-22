@@ -76,6 +76,12 @@
     <PreferenceCategory android:title="@string/playback_pref">
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
+            android:enabled="false"
+            android:key="prefSonic"
+            android:summary="@string/pref_sonic_message"
+            android:title="@string/pref_sonic_title"/>
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="true"
             android:enabled="true"
             android:key="prefPauseOnHeadsetDisconnect"
             android:summary="@string/pref_pauseOnDisconnect_sum"
@@ -263,14 +269,5 @@
             android:title="@string/crash_report_title"
             android:summary="@string/crash_report_sum"/>
     </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/experimental_pref">
-    <de.danoeh.antennapod.preferences.SwitchCompatPreference
-        android:defaultValue="false"
-        android:enabled="false"
-        android:key="prefSonic"
-        android:summary="@string/pref_sonic_message"
-        android:title="@string/pref_sonic_title"/>
-    </PreferenceCategory>
-
+    
 </PreferenceScreen>
