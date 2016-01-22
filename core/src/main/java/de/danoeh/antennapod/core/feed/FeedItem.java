@@ -78,11 +78,11 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
 
     /*
      *   0: auto download disabled
-     *   1: auto download enabled
+     *   1: auto download enabled (default)
      * > 1: auto download enabled, (approx.) timestamp of the last failed attempt
      *      where last digit denotes the number of failed attempts
      */
-    private long autoDownload = 0;
+    private long autoDownload = 1;
 
     /**
      * Any tags assigned to this item
