@@ -361,7 +361,8 @@ public class DownloadService extends Service {
         int numDownloads = requester.getNumberOfDownloads();
         String downloadsLeft;
         if (numDownloads > 0) {
-            downloadsLeft = requester.getNumberOfDownloads() + getString(R.string.downloads_left);
+            downloadsLeft = getResources()
+                    .getQuantityString(R.plurals.downloads_left, numDownloads, numDownloads);
         } else {
             downloadsLeft = getString(R.string.downloads_processing);
         }
