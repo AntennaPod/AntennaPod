@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.feed;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -13,8 +14,11 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
  */
 public class FeedPreferences {
 
+    @NonNull
+    private FeedFilter filter;
     private long feedID;
     private boolean autoDownload;
+
     public enum AutoDeleteAction {
         GLOBAL,
         YES,
@@ -25,11 +29,16 @@ public class FeedPreferences {
     private String password;
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, String username, String password) {
+        this(feedID, autoDownload, auto_delete_action, username, password, new FeedFilter());
+    }
+
+    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, String username, String password, @NonNull FeedFilter filter) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.auto_delete_action = auto_delete_action;
         this.username = username;
         this.password = password;
+        this.filter = filter;
     }
 
     public static FeedPreferences fromCursor(Cursor cursor) {
@@ -38,6 +47,8 @@ public class FeedPreferences {
         int indexAutoDeleteAction = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DELETE_ACTION);
         int indexUsername = cursor.getColumnIndex(PodDBAdapter.KEY_USERNAME);
         int indexPassword = cursor.getColumnIndex(PodDBAdapter.KEY_PASSWORD);
+        int indexIncludeFilter = cursor.getColumnIndex(PodDBAdapter.KEY_INCLUDE_FILTER);
+        int indexExcludeFilter = cursor.getColumnIndex(PodDBAdapter.KEY_EXCLUDE_FILTER);
 
         long feedId = cursor.getLong(indexId);
         boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
@@ -45,10 +56,21 @@ public class FeedPreferences {
         AutoDeleteAction autoDeleteAction = AutoDeleteAction.values()[autoDeleteActionIndex];
         String username = cursor.getString(indexUsername);
         String password = cursor.getString(indexPassword);
-        return new FeedPreferences(feedId, autoDownload, autoDeleteAction, username, password);
+        String includeFilter = cursor.getString(indexIncludeFilter);
+        String excludeFilter = cursor.getString(indexExcludeFilter);
+        return new FeedPreferences(feedId, autoDownload, autoDeleteAction, username, password, new FeedFilter(includeFilter, excludeFilter));
     }
 
+    /**
+     * @return the filter for this feed
+     */
+    public FeedFilter getFilter() {
+        return filter;
+    }
 
+    public void setFilter(@NonNull FeedFilter filter) {
+        this.filter = filter;
+    }
 
     /**
      * Compare another FeedPreferences with this one. The feedID, autoDownload and AutoDeleteAction attribute are excluded from the

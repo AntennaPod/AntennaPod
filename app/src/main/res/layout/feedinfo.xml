@@ -265,6 +265,53 @@
 
             </android.support.v7.widget.GridLayout>
 
+
+            <TextView
+                android:id="@+id/txtvEpisodeFilters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/episode_filters_label"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="?android:attr/textColorPrimary"/>
+
+            <TextView
+                android:id="@+id/txtvEpisodeFiltersDescription"
+                android:text="@string/episode_filters_description"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                <RadioButton android:id="@+id/radio_filter_include"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="@string/episode_filters_include"
+                             android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_filter_exclude"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="@string/episode_filters_exclude"
+                             android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/etxtEpisodeFilterText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="@string/episode_filters_hint"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:cursorVisible="true"/>
+
             <TextView
                 style="@style/AntennaPod.TextView.Heading"
                 android:layout_width="match_parent"

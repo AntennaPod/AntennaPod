@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.PowerUtils;
@@ -54,7 +56,9 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     candidates = new ArrayList<FeedItem>(queue.size() + newItems.size());
                     candidates.addAll(queue);
                     for(FeedItem newItem : newItems) {
-                        if(candidates.contains(newItem) == false) {
+                        FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
+                        FeedFilter feedFilter = feedPrefs.getFilter();
+                        if(candidates.contains(newItem) == false && feedFilter.shouldAutoDownload(newItem)) {
                             candidates.add(newItem);
                         }
                     }

@@ -530,7 +530,11 @@
     <!-- Feed information screen -->
     <string name="authentication_label">Authentication</string>
     <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
-
+    <string name="episode_filters_label">Episode Filter</string>
+    <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded from being autodownloaded</string>
+    <string name="episode_filters_include">Include</string>
+    <string name="episode_filters_exclude">Exclude</string>
+    <string name="episode_filters_hint">Filter text</string>
 
     <!-- Progress information -->
     <string name="progress_upgrading_database">Upgrading the database</string>
