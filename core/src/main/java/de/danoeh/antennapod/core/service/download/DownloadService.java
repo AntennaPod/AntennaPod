@@ -204,8 +204,10 @@ public class DownloadService extends Service {
                                         return;
                                     }
                                     FeedItem item = media.getItem();
-                                    if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR &&
-                                            Integer.valueOf(status.getReasonDetailed()) == HttpURLConnection.HTTP_NOT_FOUND) {
+                                    boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
+                                            && String.valueOf(HttpURLConnection.HTTP_NOT_FOUND).equals(status.getReasonDetailed());
+                                    boolean notEnoughSpace = status.getReason() == DownloadError.ERROR_NOT_ENOUGH_SPACE;
+                                    if (httpNotFound || notEnoughSpace) {
                                         DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                                     }
                                     // to make lists reload the failed item, we fake an item update
