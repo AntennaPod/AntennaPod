@@ -639,17 +639,19 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                 }
             }
             checkFavorite();
-            if(controller == null) {
-                butPlaybackSpeed.setVisibility(View.GONE);
-            } else {
-                butPlaybackSpeed.setVisibility(View.VISIBLE);
-                if (controller.canSetPlaybackSpeed()) {
-                    ViewCompat.setAlpha(butPlaybackSpeed, 1.0f);
+            if(butPlaybackSpeed != null) {
+                if (controller == null) {
+                    butPlaybackSpeed.setVisibility(View.GONE);
                 } else {
-                    ViewCompat.setAlpha(butPlaybackSpeed, 0.5f);
+                    butPlaybackSpeed.setVisibility(View.VISIBLE);
+                    if (controller.canSetPlaybackSpeed()) {
+                        ViewCompat.setAlpha(butPlaybackSpeed, 1.0f);
+                    } else {
+                        ViewCompat.setAlpha(butPlaybackSpeed, 0.5f);
+                    }
                 }
+                updateButPlaybackSpeed();
             }
-            updateButPlaybackSpeed();
             return true;
         } else {
             return false;
@@ -672,12 +674,13 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                 return;
             }
 
+            String length;
             if (showTimeLeft) {
-                txtvLength.setText("-" + Converter.getDurationStringLong((media
-                        .getDuration() - media.getPosition())));
+                length = "-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition());
             } else {
-                txtvLength.setText(Converter.getDurationStringLong((media.getDuration())));
+                length = Converter.getDurationStringLong(media.getDuration());
             }
+            txtvLength.setText(length);
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft);
@@ -765,8 +768,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         if (rewindSecs == values[i]) {
                             checked = i;
                         }
-                        choices[i] = String.valueOf(values[i]) + " "
-                                + getString(R.string.time_seconds);
+                        choices[i] = String.valueOf(values[i]) + " " + getString(R.string.time_seconds);
                     }
                     choice = values[checked];
                     AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
@@ -807,8 +809,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         if (rewindSecs == values[i]) {
                             checked = i;
                         }
-                        choices[i] = String.valueOf(values[i]) + " "
-                                + getString(R.string.time_seconds);
+                        choices[i] = String.valueOf(values[i]) + " " + getString(R.string.time_seconds);
                     }
                     choice = values[checked];
                     AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
@@ -854,21 +855,19 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     float prog;
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int progress,
-                                  boolean fromUser) {
+    public void onProgressChanged (SeekBar seekBar,int progress, boolean fromUser) {
         if (controller != null) {
-            prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser,
-                    txtvPosition);
+            prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
             if (showTimeLeft && prog != 0) {
                 int duration = controller.getDuration();
-                txtvLength.setText("-" + Converter
-                        .getDurationStringLong(duration - (int) (prog * duration)));
+                String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
+                txtvLength.setText(length);
             }
         }
     }
 
     private void updateButPlaybackSpeed() {
-        if (controller != null) {
+        if (controller != null && butPlaybackSpeed != null) {
             butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed() + "x");
         }
     }

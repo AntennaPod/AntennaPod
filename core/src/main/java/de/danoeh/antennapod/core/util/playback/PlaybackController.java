@@ -18,7 +18,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
-import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -78,18 +77,18 @@ public abstract class PlaybackController {
         this.activity = activity;
         this.reinitOnPause = reinitOnPause;
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOLSIZE,
-            r -> {
-                Thread t = new Thread(r);
-                t.setPriority(Thread.MIN_PRIORITY);
-                return t;
-            }, new RejectedExecutionHandler() {
-                @Override
-                public void rejectedExecution(Runnable r,
-                                              ThreadPoolExecutor executor) {
-                    Log.w(TAG,
+                r -> {
+                    Thread t = new Thread(r);
+                    t.setPriority(Thread.MIN_PRIORITY);
+                    return t;
+                }, new RejectedExecutionHandler() {
+            @Override
+            public void rejectedExecution(Runnable r,
+                                          ThreadPoolExecutor executor) {
+                Log.w(TAG,
                         "Rejected execution of runnable in schedExecutor");
-                }
             }
+        }
         );
     }
 
@@ -415,7 +414,6 @@ public abstract class PlaybackController {
 
         Log.d(TAG, "status: " + status.toString());
         switch (status) {
-
             case ERROR:
                 postStatusMsg(R.string.player_error_msg);
                 handleError(MediaPlayer.MEDIA_ERROR_UNKNOWN);
@@ -575,37 +573,32 @@ public abstract class PlaybackController {
     }
 
     public OnClickListener newOnPlayButtonClickListener() {
-        return new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (playbackService != null) {
-                    switch (status) {
-                        case PLAYING:
-                            playbackService.pause(true, reinitOnPause);
-                            break;
-                        case PAUSED:
-                        case PREPARED:
-                            playbackService.resume();
-                            break;
-                        case PREPARING:
-                            playbackService.setStartWhenPrepared(!playbackService
-                                    .isStartWhenPrepared());
-                            if (reinitOnPause
-                                    && playbackService.isStartWhenPrepared() == false) {
-                                playbackService.reinit();
-                            }
-                            break;
-                        case INITIALIZED:
-                            playbackService.setStartWhenPrepared(true);
-                            playbackService.prepare();
-                            break;
-                    }
-                } else {
-                    Log.w(TAG,
-                            "Play/Pause button was pressed, but playbackservice was null!");
-                }
+        return v -> {
+            if (playbackService == null) {
+                Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
+                return;
             }
-
+            switch (status) {
+                case PLAYING:
+                    playbackService.pause(true, reinitOnPause);
+                    break;
+                case PAUSED:
+                case PREPARED:
+                    playbackService.resume();
+                    break;
+                case PREPARING:
+                    playbackService.setStartWhenPrepared(!playbackService
+                            .isStartWhenPrepared());
+                    if (reinitOnPause
+                            && playbackService.isStartWhenPrepared() == false) {
+                        playbackService.reinit();
+                    }
+                    break;
+                case INITIALIZED:
+                    playbackService.setStartWhenPrepared(true);
+                    playbackService.prepare();
+                    break;
+            }
         };
     }
 
