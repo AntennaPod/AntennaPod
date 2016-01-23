@@ -35,6 +35,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.fragment.ItemFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -328,8 +329,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                     item1.setVisible(visible);
                 }
             };
-            FeedItemMenuHandler.onPrepareMenu(mainActivityRef.get(), contextMenuInterface, item, true,
-                   null);
+            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true,
+                    itemAccess.getQueueIds(), itemAccess.getFavoritesIds());
         }
 
     }
@@ -343,6 +344,10 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         int getItemDownloadProgressPercent(FeedItem item);
 
         boolean isInQueue(FeedItem item);
+
+        LongList getQueueIds();
+
+        LongList getFavoritesIds();
 
     }
 

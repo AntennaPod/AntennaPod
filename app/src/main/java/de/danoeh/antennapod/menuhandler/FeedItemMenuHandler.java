@@ -57,16 +57,16 @@ public class FeedItemMenuHandler {
      * @param queueAccess      Used for testing if the queue contains the selected item
      * @return Returns true if selectedItem is not null.
      */
-    public static boolean onPrepareMenu(Context context, MenuInterface mi, FeedItem selectedItem,
-                                        boolean showExtendedMenu, LongList queueAccess) {
+    public static boolean onPrepareMenu(MenuInterface mi,
+                                        FeedItem selectedItem,
+                                        boolean showExtendedMenu,
+                                        LongList queueAccess,
+                                        LongList favorites) {
         if (selectedItem == null) {
             return false;
         }
         boolean hasMedia = selectedItem.getMedia() != null;
-        boolean isPlaying = hasMedia
-                && selectedItem.getState() == FeedItem.State.PLAYING;
-
-        FeedItem.State state = selectedItem.getState();
+        boolean isPlaying = hasMedia && selectedItem.getState() == FeedItem.State.PLAYING;
 
         if (!isPlaying) {
             mi.setItemVisibility(R.id.skip_episode_item, false);
@@ -126,7 +126,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.support_item, false);
         }
 
-        boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
+        boolean isFavorite = favorites != null && favorites.contains(selectedItem.getId());
         mi.setItemVisibility(R.id.add_to_favorites_item, !isFavorite);
         mi.setItemVisibility(R.id.remove_from_favorites_item, isFavorite);
 
@@ -140,9 +140,13 @@ public class FeedItemMenuHandler {
      * @param excludeIds Menu item that should be excluded
      * @return true if selectedItem is not null.
      */
-    public static boolean onPrepareMenu(Context context, MenuInterface mi, FeedItem selectedItem,
-                                        boolean showExtendedMenu, LongList queueAccess, int... excludeIds) {
-        boolean rc = onPrepareMenu(context, mi, selectedItem, showExtendedMenu, queueAccess);
+    public static boolean onPrepareMenu(MenuInterface mi,
+                                        FeedItem selectedItem,
+                                        boolean showExtendedMenu,
+                                        LongList queueAccess,
+                                        LongList favorites,
+                                        int... excludeIds) {
+        boolean rc = onPrepareMenu(mi, selectedItem, showExtendedMenu, queueAccess, favorites);
         if (rc && excludeIds != null) {
             for (int id : excludeIds) {
                 mi.setItemVisibility(id, false);

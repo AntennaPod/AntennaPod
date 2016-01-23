@@ -10,7 +10,6 @@ import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -48,6 +47,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -99,6 +99,7 @@ public class ItemlistFragment extends ListFragment {
     private long feedID;
     private Feed feed;
     private LongList queuedItemsIds;
+    private LongList favoritedItemsId;
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
@@ -324,7 +325,8 @@ public class ItemlistFragment extends ListFragment {
 
         contextMenu = menu;
         lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queuedItemsIds);
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds,
+                favoritedItemsId);
     }
 
     @Override
@@ -385,6 +387,11 @@ public class ItemlistFragment extends ListFragment {
     }
 
     public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
+        loadItems();
+    }
+
+    public void onEvent(FavoritesEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         loadItems();
     }
@@ -626,8 +633,9 @@ public class ItemlistFragment extends ListFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {
-                        feed = result.first;
-                        queuedItemsIds = result.second;
+                        feed = (Feed) result[0];
+                        queuedItemsIds = (LongList) result[1];
+                        favoritedItemsId = (LongList) result[2];
                         itemsLoaded = true;
                         if (viewsCreated) {
                             onFragmentLoaded();
@@ -638,14 +646,15 @@ public class ItemlistFragment extends ListFragment {
                 });
     }
 
-    private Pair<Feed, LongList> loadData() {
+    private Object[] loadData() {
         Feed feed = DBReader.getFeed(feedID);
         if(feed != null && feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             feed.setItems(filter.filter(feed.getItems()));
         }
         LongList queuedItemsIds = DBReader.getQueueIDList();
-        return Pair.create(feed, queuedItemsIds);
+        LongList favoritedItemsId = DBReader.getFavoriteIDList();
+        return new Object[] { feed, queuedItemsIds, favoritedItemsId };
     }
 
 }

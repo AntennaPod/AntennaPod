@@ -408,7 +408,7 @@ public final class DBReader {
         return items;
     }
 
-    static LongList getFavoriteIDList() {
+    public static LongList getFavoriteIDList() {
         Log.d(TAG, "getFavoriteIDList() called");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();

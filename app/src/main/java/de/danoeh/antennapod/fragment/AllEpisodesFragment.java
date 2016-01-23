@@ -46,6 +46,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
@@ -381,6 +382,34 @@ public class AllEpisodesFragment extends Fragment {
                 return item.isTagged(FeedItem.TAG_QUEUE);
             }
             return false;
+        }
+
+        @Override
+        public LongList getQueueIds() {
+            LongList queueIds = new LongList();
+            if(episodes == null) {
+                return queueIds;
+            }
+            for(FeedItem item : episodes) {
+                if(item.isTagged(FeedItem.TAG_QUEUE)) {
+                    queueIds.add(item.getId());
+                }
+            }
+            return queueIds;
+        }
+
+        @Override
+        public LongList getFavoritesIds() {
+            LongList favoritesIds = new LongList();
+            if(episodes == null) {
+                return favoritesIds;
+            }
+            for(FeedItem item : episodes) {
+                if(item.isTagged(FeedItem.TAG_FAVORITE)) {
+                    favoritesIds.add(item.getId());
+                }
+            }
+            return favoritesIds;
         }
     };
 
