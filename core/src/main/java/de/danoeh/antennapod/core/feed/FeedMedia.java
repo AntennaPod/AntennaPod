@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -167,6 +168,11 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public void updateFromOther(FeedMedia other) {
+        // we try to cover two cases: (1) feed did include file before (2) feed contained wrong URL
+        // if item.getAutoDownload() is false, the file has been downloaded before
+        if((TextUtils.isEmpty(download_url) || item.getAutoDownload()) && !TextUtils.isEmpty(other.download_url)) {
+            item.setNew();
+        }
         super.updateFromOther(other);
         if (other.size > 0) {
             size = other.size;
