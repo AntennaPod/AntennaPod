@@ -2,6 +2,7 @@ package de.danoeh.antennapod.dialog;
 
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -126,9 +127,6 @@ public class EpisodesApplyActionFragment extends Fragment {
         textColor = ta.getColor(0, Color.GRAY);
         ta.recycle();
 
-        menu.findItem(R.id.sort).setIcon(new IconDrawable(getActivity(),
-                FontAwesomeIcons.fa_sort).color(textColor).actionBarSize());
-
         mSelectToggle = menu.findItem(R.id.select_toggle);
         mSelectToggle.setOnMenuItemClickListener(item -> {
             if (checkedIds.size() == episodes.size()) {
@@ -138,23 +136,27 @@ public class EpisodesApplyActionFragment extends Fragment {
             }
             return true;
         });
-
-        menu.findItem(R.id.select_options).setIcon(new IconDrawable(getActivity(),
-                FontAwesomeIcons.fa_caret_down).color(textColor).actionBarSize());
     }
 
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
-        Icon icon;
-        if(checkedIds.size() == episodes.size()) {
-            icon = FontAwesomeIcons.fa_check_square_o;
-        } else if(checkedIds.size() == 0) {
-            icon = FontAwesomeIcons.fa_square_o;
-        } else {
-            icon = FontAwesomeIcons.fa_minus_square_o;
-        }
-        mSelectToggle.setIcon(new IconDrawable(getActivity(), icon).color(textColor).actionBarSize());
+        /*
+         * Prepare icon for select toggle button
+         */
 
+        // Find icon attribute
+        int[] icon = new int[1];
+        if(checkedIds.size() == episodes.size()) icon[0] = R.attr.ic_check_box;
+        else if(checkedIds.size() == 0) icon[0] = R.attr.ic_check_box_outline;
+        else icon[0] = R.attr.ic_indeterminate_check_box;
+
+        // Get Drawable from attribute
+        TypedArray a = getActivity().obtainStyledAttributes(icon);
+        Drawable iconDrawable = a.getDrawable(0);
+        a.recycle();
+
+        // Set icon
+        mSelectToggle.setIcon(iconDrawable);
     }
 
     @Override
