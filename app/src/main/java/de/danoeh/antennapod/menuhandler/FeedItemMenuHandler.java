@@ -140,9 +140,13 @@ public class FeedItemMenuHandler {
      * @param excludeIds Menu item that should be excluded
      * @return true if selectedItem is not null.
      */
-    public static boolean onPrepareMenu(Context context, MenuInterface mi, FeedItem selectedItem,
-                                        boolean showExtendedMenu, LongList queueAccess, int... excludeIds) {
-        boolean rc = onPrepareMenu(context, mi, selectedItem, showExtendedMenu, queueAccess);
+    public static boolean onPrepareMenu(MenuInterface mi,
+                                        FeedItem selectedItem,
+                                        boolean showExtendedMenu,
+                                        LongList queueAccess,
+                                        LongList favorites,
+                                        int... excludeIds) {
+        boolean rc = onPrepareMenu(mi, selectedItem, showExtendedMenu, queueAccess, favorites);
         if (rc && excludeIds != null) {
             for (int id : excludeIds) {
                 mi.setItemVisibility(id, false);

@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -40,6 +39,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -95,6 +95,7 @@ public class ItemFragment extends Fragment {
     private long itemID;
     private FeedItem item;
     private LongList queue;
+    private LongList favorites;
     private String webviewData;
     private List<Downloader> downloaderList;
 
@@ -249,10 +250,10 @@ public class ItemFragment extends Fragment {
         inflater.inflate(R.menu.feeditem_options, menu);
         popupMenu = menu;
         if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(getActivity(), popupMenuInterface, item, true, queue);
+            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, queue, favorites);
         } else {
             // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(getActivity(), popupMenuInterface, item, true, queue,
+            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, queue, favorites,
                     R.id.mark_read_item, R.id.visit_website_item);
         }
     }
@@ -457,6 +458,12 @@ public class ItemFragment extends Fragment {
         }
     }
 
+    public void onEventMainThread(FavoritesEvent event) {
+        if(event.item.getId() == itemID) {
+            load();
+        }
+    }
+
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         for(FeedItem item : event.items) {
@@ -500,8 +507,9 @@ public class ItemFragment extends Fragment {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
-                item = result.first;
-                queue = result.second;
+                item = (FeedItem) result[0];
+                queue = (LongList) result[1];
+                favorites = (LongList) result[2];
                 if (!itemsLoaded) {
                     itemsLoaded = true;
                     onFragmentLoaded();
@@ -513,14 +521,25 @@ public class ItemFragment extends Fragment {
             });
     }
 
-    private Pair<FeedItem,LongList> loadInBackground() {
-        FeedItem data1 = DBReader.getFeedItem(itemID);
-        if (data1 != null) {
-            Timeline t = new Timeline(getActivity(), data1);
+    private Object[] loadInBackground() {
+        FeedItem feedItem = DBReader.getFeedItem(itemID);
+        if (feedItem != null) {
+            Timeline t = new Timeline(getActivity(), feedItem);
             webviewData = t.processShownotes(false);
         }
-        LongList data2 = DBReader.getQueueIDList();
-        return Pair.create(data1, data2);
+        LongList queue;
+        if(feedItem.isTagged(FeedItem.TAG_QUEUE)) {
+            queue = LongList.of(feedItem.getId());
+        } else {
+            queue = new LongList(0);
+        }
+        LongList favorites;
+        if(feedItem.isTagged(FeedItem.TAG_FAVORITE)) {
+            favorites = LongList.of(feedItem.getId());
+        } else {
+            favorites = new LongList(0);
+        }
+        return new Object[] { feedItem, queue, favorites };
     }
 
 }
