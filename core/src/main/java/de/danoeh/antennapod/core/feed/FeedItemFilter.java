@@ -76,7 +76,7 @@ public class FeedItemFilter {
             if (showQueued && !queued) continue;
             if (showNotQueued && queued) continue;
 
-            boolean downloaded = item.getMedia() != null & item.getMedia().isDownloaded();
+            boolean downloaded = item.getMedia() != null && item.getMedia().isDownloaded();
             if (showDownloaded && !downloaded) continue;
             if (showNotDownloaded && downloaded) continue;
 
