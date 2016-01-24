@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -34,6 +35,7 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -677,6 +679,11 @@ public abstract class PlaybackController {
     }
 
     public boolean canSetPlaybackSpeed() {
+        if (org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
+                || UserPreferences.useSonic()
+                || Build.VERSION.SDK_INT >= 23) {
+            return true;
+        }
         return playbackService != null && playbackService.canSetSpeed();
     }
 

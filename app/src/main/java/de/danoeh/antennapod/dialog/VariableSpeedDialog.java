@@ -35,11 +35,15 @@ public class VariableSpeedDialog {
                 || Build.VERSION.SDK_INT >= 23) {
             showSpeedSelectorDialog(context);
         } else {
-            showGetPluginDialog(context);
+            showGetPluginDialog(context, true);
         }
     }
 
-    private static void showGetPluginDialog(final Context context) {
+    public static void showGetPluginDialog(final Context context) {
+        showGetPluginDialog(context, false);
+    }
+
+    private static void showGetPluginDialog(final Context context, boolean showSpeedSelector) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
         builder.title(R.string.no_playback_plugin_title);
         builder.content(R.string.no_playback_plugin_or_sonic_msg);
@@ -49,7 +53,9 @@ public class VariableSpeedDialog {
         builder.onPositive((dialog, which) -> {
             if (Build.VERSION.SDK_INT >= 16) { // just to be safe
                 UserPreferences.enableSonic(true);
-                showSpeedSelectorDialog(context);
+                if(showSpeedSelector) {
+                    showSpeedSelectorDialog(context);
+                }
             }
         });
         builder.onNegative((dialog, which) -> {
