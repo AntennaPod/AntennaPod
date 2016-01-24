@@ -7,6 +7,8 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -115,9 +117,12 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
         if (Build.VERSION.SDK_INT >= 11) {
             webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
-        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            webvDescription.setBackgroundColor(getResources().getColor(R.color.black));
-        }
+        TypedArray ta = getActivity().getTheme().obtainStyledAttributes(new int[]
+                {android.R.attr.colorBackground});
+        int backgroundColor = ta.getColor(0, UserPreferences.getTheme() ==
+                R.style.Theme_AntennaPod_Dark ? Color.BLACK : Color.WHITE);
+        ta.recycle();
+        webvDescription.setBackgroundColor(backgroundColor);
         webvDescription.getSettings().setUseWideViewPort(false);
         webvDescription.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
         webvDescription.getSettings().setLoadWithOverviewMode(true);
