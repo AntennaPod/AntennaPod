@@ -149,8 +149,8 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     public void testPlaybackSpeeds() {
         solo.clickOnText(solo.getString(R.string.pref_playback_speed_title));
         solo.waitForDialogToOpen(1000);
-        assertTrue(solo.searchText(solo.getString(R.string.no_playback_plugin_title)));
-        solo.clickOnText(solo.getString(R.string.close_label));
+        assertTrue(solo.searchText(res.getStringArray(R.array.playback_speed_values)[0]));
+        solo.clickOnText(solo.getString(R.string.cancel_label));
         solo.waitForDialogToClose(1000);
     }
 
