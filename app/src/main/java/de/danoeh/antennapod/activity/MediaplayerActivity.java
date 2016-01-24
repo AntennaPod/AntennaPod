@@ -427,15 +427,23 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                                 })
                                 .show();
                         final SeekBar barPlaybackSpeed = (SeekBar) dialog.findViewById(R.id.playback_speed);
-
                         final Button butDecSpeed = (Button) dialog.findViewById(R.id.butDecSpeed);
                         butDecSpeed.setOnClickListener(v -> {
-                            barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() - 2);
+                            if(controller != null && controller.canSetPlaybackSpeed()) {
+                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() - 2);
+                            } else {
+                                VariableSpeedDialog.showGetPluginDialog(this);
+                            }
                         });
                         final Button butIncSpeed = (Button) dialog.findViewById(R.id.butIncSpeed);
                         butIncSpeed.setOnClickListener(v -> {
-                            barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() + 2);
+                            if(controller != null && controller.canSetPlaybackSpeed()) {
+                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() + 2);
+                            } else {
+                                VariableSpeedDialog.showGetPluginDialog(this);
+                            }
                         });
+
                         final TextView txtvPlaybackSpeed = (TextView) dialog.findViewById(R.id.txtvPlaybackSpeed);
                         float currentSpeed = 1.0f;
                         try {
@@ -449,15 +457,25 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barPlaybackSpeed.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                float playbackSpeed = (progress + 10) / 20.0f;
-                                controller.setPlaybackSpeed(playbackSpeed);
-                                String speed = String.format("%.2f", playbackSpeed);
-                                UserPreferences.setPlaybackSpeed(speed);
-                                txtvPlaybackSpeed.setText(speed + "x");
+                                if(controller != null && controller.canSetPlaybackSpeed()) {
+                                    float playbackSpeed = (progress + 10) / 20.0f;
+                                    controller.setPlaybackSpeed(playbackSpeed);
+                                    String speed = String.format("%.2f", playbackSpeed);
+                                    UserPreferences.setPlaybackSpeed(speed);
+                                    txtvPlaybackSpeed.setText(speed + "x");
+                                } else if(fromUser) {
+                                    float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
+                                    barPlaybackSpeed.post(() -> {
+                                        barPlaybackSpeed.setProgress((int) (20 * speed) - 10);
+                                    });
+                                }
                             }
 
                             @Override
                             public void onStartTrackingTouch(SeekBar seekBar) {
+                                if(controller != null && !controller.canSetPlaybackSpeed()) {
+                                    VariableSpeedDialog.showGetPluginDialog(MediaplayerActivity.this);
+                                }
                             }
 
                             @Override
@@ -740,7 +758,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                     UserPreferences.setPlaybackSpeed(newSpeed);
                     controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
                 } else {
-                    VariableSpeedDialog.showDialog(this);
+                    VariableSpeedDialog.showGetPluginDialog(this);
                 }
             });
             butPlaybackSpeed.setOnLongClickListener(v -> {
