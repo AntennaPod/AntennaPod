@@ -3,10 +3,10 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/hide_items"
+        android:id="@+id/filter_items"
         android:icon="?attr/ic_filter"
         android:menuCategory="container"
-        android:title="@string/hide_episodes_title"
+        android:title="@string/filter"
         custom:showAsAction="always">
     </item>
     <item

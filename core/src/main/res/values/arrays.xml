@@ -175,7 +175,7 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="episode_hide_options">
+    <string-array name="episode_filter_options">
         <item>@string/hide_unplayed_episodes_label</item>
         <item>@string/hide_paused_episodes_label</item>
         <item>@string/hide_played_episodes_label</item>
@@ -185,7 +185,7 @@
         <item>@string/hide_not_downloaded_episodes_label</item>
     </string-array>
 
-    <string-array name="episode_hide_values">
+    <string-array name="episode_filter_values">
         <item>unplayed</item>
         <item>paused</item>
         <item>played</item>
