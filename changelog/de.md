@@ -2,7 +2,7 @@
 ==========
 Version 1.4.1
 -------------
-* Performance improvements
+Performance-Verbesserungen
 * Hardware buttons now ff and rewind instead of skipping
 * Option to have forward button skip
 * Option to send crash reports directly to developers

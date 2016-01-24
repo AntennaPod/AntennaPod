@@ -257,7 +257,7 @@
   <string name="services_label">Services</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Automatisch opschonen</string>
-  <string name="pref_episode_cleanup_summary">Afleveringen die niet in de wachtrij staan en niet zijn gemarkeerd zijn als favoriet, komen in aanmerking voor verwijdering bij automatisch opschonen.</string>
+  <string name="pref_episode_cleanup_summary">Afleveringen die niet in de wachtrij staan en niet zijn gemarkeerd als favoriet, komen in aanmerking voor verwijdering bij automatisch opschonen.</string>
   <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren wanneer de koptelefoon wordt losgekoppeld of de bluetooth verbinding wordt verbroken</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten wanneer de koptelefoon opnieuw wordt aangesloten</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten wanneer de bluetooth verbinding hervat wordt</string>

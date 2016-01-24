@@ -30,13 +30,13 @@ STEUER DAS SYSTEM<br>
 AntennaPod wird aktiv von Freiwilligen weiterentwickelt. Auch du kannst bei der Entwicklung mit Quellcode oder Kommentaren mitwirken!
 
 Wir verwenden GitHub für Funktionswünsche (Feature Requests), Fehlerberichte und zur Beteiligung an der Entwicklung.
-https://www.github.com/AntennaPod/AntennaPod (Englisch)
+https://www.github.com/AntennaPod/AntennaPod
 
 In unserer Google-Gruppe können Ideen und Lieblingspodcastmomente geteilt werden.
 https://groups.google.com/forum/#!forum/antennapod (Englisch)
 
 Mit Transifex kannst du uns beim Übersetzen helfen:<br>
-https://www.transifex.com/antennapod/antennapod (Englisch)
+https://www.transifex.com/antennapod/antennapod
 
 Probiere unser Beta-Testing-Programm aus, um die neusten Funktionen als Erster zu erhalten:<br>
-https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod (Englisch)
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

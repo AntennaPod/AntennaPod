@@ -14,15 +14,15 @@
   <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Definições</string>
   <string name="add_new_feed_label">Adicionar podcast</string>
-  <string name="downloads_label">Transferências</string>
+  <string name="downloads_label">Descargas</string>
   <string name="downloads_running_label">Em curso</string>
   <string name="downloads_completed_label">Terminada</string>
   <string name="downloads_log_label">Registo</string>
-  <string name="cancel_download_label">Cancelar\ntransferência</string>
+  <string name="cancel_download_label">Cancelar\ndescarga</string>
   <string name="playback_history_label">Histórico de reprodução</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Dados gpodder.net</string>
-  <string name="free_space_label">%1$s livre</string>
+  <string name="free_space_label">%1$s disponível</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publicados recentemente</string>
   <string name="episode_filter_label">Mostrar apenas novos episódios</string>
@@ -46,7 +46,7 @@
   <!--Playback history-->
   <string name="clear_history_label">Limpar histórico</string>
   <!--Other-->
-  <string name="confirm_label">Confirmar</string>
+  <string name="confirm_label">Confirmação</string>
   <string name="cancel_label">Cancelar</string>
   <string name="yes">Sim</string>
   <string name="no">Não</string>
@@ -71,11 +71,11 @@
   <string name="save_username_password_label">Guardar utilizador e palavra-passe</string>
   <string name="close_label">Fechar</string>
   <string name="retry_label">Tentar novamente</string>
-  <string name="auto_download_label">Incluir nas transferências automáticas</string>
+  <string name="auto_download_label">Incluir nas descargas automáticas</string>
   <string name="auto_download_apply_to_items_title">Aplicar aos episódios anteriores</string>
-  <string name="auto_download_apply_to_items_message">A definição <i>Transferência automática</i> será aplicada a todos os novos episódios.\nGostaria de também a aplicar aos episódios anteriores?</string>
+  <string name="auto_download_apply_to_items_message">A definição <i>Descarga automática</i> será aplicada a todos os novos episódios.\nGostaria de também a aplicar aos episódios anteriores?</string>
   <string name="auto_delete_label">Apagar episódio automaticamente\n(altera a definição global)</string>
-  <string name="parallel_downloads_suffix">\u0020transferências simultâneas</string>
+  <string name="parallel_downloads_suffix">\u0020descargas simultâneas</string>
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Nunca</string>
@@ -108,7 +108,7 @@
   <string name="share_feed_url_label">Partilhar URL da fonte</string>
   <string name="share_item_url_label">Partilhar URL do episódio</string>
   <string name="share_item_url_with_position_label">Partilhar URL do episódio com posição</string>
-  <string name="feed_delete_confirmation_msg">Por favor confirme que deseja apagar esta fonte e todos os episódios transferidos</string>
+  <string name="feed_delete_confirmation_msg">Confirma de que deseja apagar esta fonte e todos os episódios descarregados?</string>
   <string name="feed_remover_msg">Remover fonte</string>
   <string name="load_complete_feed">Atualizar todas as páginas da fonte</string>
   <string name="hide_episodes_title">Ocultar episódios</string>
@@ -118,12 +118,12 @@
   <string name="hide_played_episodes_label">Reproduzidos</string>
   <string name="hide_queued_episodes_label">Na fila</string>
   <string name="hide_not_queued_episodes_label">Não na fila</string>
-  <string name="hide_downloaded_episodes_label">Transferidos</string>
-  <string name="hide_not_downloaded_episodes_label">Não transferidos</string>
+  <string name="hide_downloaded_episodes_label">Descarregados</string>
+  <string name="hide_not_downloaded_episodes_label">Não descarregados</string>
   <string name="filtered_label">Filtrados</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Última atualização falhada</string>
   <!--actions on feeditems-->
-  <string name="download_label">Transferir</string>
+  <string name="download_label">Descarregar</string>
   <string name="play_label">Reproduzir</string>
   <string name="pause_label">Pausa</string>
   <string name="stop_label">Parar</string>
@@ -141,17 +141,17 @@
   <string name="visit_website_label">Aceder ao sítio web</string>
   <string name="support_label">Flattr</string>
   <string name="enqueue_all_new">Colocar tudo na fila</string>
-  <string name="download_all">Transferir tudo</string>
+  <string name="download_all">Descarregar tudo</string>
   <string name="skip_episode_label">Ignorar episódio</string>
-  <string name="activate_auto_download">Ativar transferência automática</string>
-  <string name="deactivate_auto_download">Desativar transferência automática</string>
+  <string name="activate_auto_download">Ativar descarga automática</string>
+  <string name="deactivate_auto_download">Desativar descarga automática</string>
   <string name="reset_position">Repor posição de reprodução</string>
   <string name="removed_item">Item removido</string>
   <!--Download messages and labels-->
   <string name="download_successful">sucesso</string>
   <string name="download_failed">falha</string>
-  <string name="download_pending">Transferência pendente</string>
-  <string name="download_running">Transferência atual</string>
+  <string name="download_pending">Descarga pendente</string>
+  <string name="download_running">Descarga atual</string>
   <string name="download_error_device_not_found">Cartão SD não encontrado</string>
   <string name="download_error_insufficient_space">Espaço insuficiente</string>
   <string name="download_error_file_error">Erro no ficheiro</string>
@@ -162,29 +162,29 @@
   <string name="download_error_connection_error">Erro de ligação</string>
   <string name="download_error_unknown_host">Servidor desconhecido</string>
   <string name="download_error_unauthorized">Erro de autenticação</string>
-  <string name="cancel_all_downloads_label">Cancelar transferências</string>
-  <string name="download_canceled_msg">Transferência cancelada</string>
-  <string name="download_canceled_autodownload_enabled_msg">Transferência cancelada\n<i>Transferência automática</i> desativada para este item</string>
-  <string name="download_report_title">Transferências terminadas com erros</string>
-  <string name="download_report_content_title">Relatório de transferências</string>
+  <string name="cancel_all_downloads_label">Cancelar descargas</string>
+  <string name="download_canceled_msg">Descarga cancelada</string>
+  <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\n<i>Descarga automática</i> desativada para este item</string>
+  <string name="download_report_title">Descargas terminadas com erros</string>
+  <string name="download_report_content_title">Relatório de descargas</string>
   <string name="download_error_malformed_url">URL inválido</string>
   <string name="download_error_io_error">Erro I/O</string>
   <string name="download_error_request_error">Erro de pedido</string>
   <string name="download_error_db_access">Erro de acesso à base de dados</string>
-  <string name="downloads_left">\u0020Transferências em falta</string>
-  <string name="downloads_processing">Processamento de transferências</string>
-  <string name="download_notification_title">A transferir dados do podcast</string>
-  <string name="download_report_content">%1$d transferências efetuadas, %2$d falhadas</string>
+  <string name="downloads_left">\u0020Descargas em falta</string>
+  <string name="downloads_processing">Processamento de descargas</string>
+  <string name="download_notification_title">A descarregar dados do podcast</string>
+  <string name="download_report_content">%1$d descargas efetuadas, %2$d falhadas</string>
   <string name="download_log_title_unknown">Título desconhecido</string>
   <string name="download_type_feed">Fonte</string>
   <string name="download_type_media">Ficheiro multimédia</string>
   <string name="download_type_image">Imagem</string>
-  <string name="download_request_error_dialog_message_prefix">Ocorreu um erro ao transferir o ficheiro:\u0020</string>
+  <string name="download_request_error_dialog_message_prefix">Ocorreu um erro ao tentar descarregar o ficheiro:\u0020</string>
   <string name="authentication_notification_title">Requer autenticação</string>
   <string name="authentication_notification_msg">O recurso solicitado requer um utilizador e uma palavra-passe</string>
-  <string name="confirm_mobile_download_dialog_title">Confirmação de transferência</string>
-  <string name="confirm_mobile_download_dialog_message_not_in_queue">A transferência através de dados móveis está desativada nas definições.\n\nAtivar temporariamente ou apenas adicionar à fila?\n\n<small>A sua decisão será memorizada durante 10 minutos.</small></string>
-  <string name="confirm_mobile_download_dialog_message">A transferência através de dados móveis está desativada nas definições.\n\nAtivar temporariamente?\n\n<small>A sua decisão será memorizada durante 10 minutos.</small></string>
+  <string name="confirm_mobile_download_dialog_title">Confirmação de descarga</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">A descarga através de dados móveis está desativada nas definições.\n\nAtivar temporariamente ou apenas adicionar à fila?\n\n<small>A sua decisão será memorizada durante 10 minutos.</small></string>
+  <string name="confirm_mobile_download_dialog_message">A descarga através de dados móveis está desativada nas definições.\n\nAtivar temporariamente?\n\n<small>A sua decisão será memorizada durante 10 minutos.</small></string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Apenas adicionados à fila</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Ativar temporariamente</string>
   <!--Mediaplayer messages-->
@@ -242,9 +242,9 @@
   <string name="flattrd_failed_label">O AntennaPod não fez o flattr</string>
   <string name="flattr_retrieving_status">A obter itens com flattr</string>
   <!--Variable Speed-->
-  <string name="download_plugin_label">Transferir extra</string>
+  <string name="download_plugin_label">Descarregar extra</string>
   <string name="no_playback_plugin_title">Extra não instalado</string>
-  <string name="no_playback_plugin_or_sonic_msg">Para que a velocidade variável de reprodução funcione, tem que instalar um biblioteca de terceiros ou ativar o reprodutor Sonic [Android 4.1+].\n\nClique em \'Transferir extra\' para a transferir no Google Play.\n\nQuaisquer erros que ocorram na utilização do extra não são da responsabilidade do AntennaPod e devem ser reportados diretamente ao seu programador.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Para que a velocidade variável de reprodução funcione, tem que instalar um biblioteca de terceiros ou ativar o reprodutor Sonic [Android 4.1+].\n\nClique em \'Descarregar extra\' para a descarregar no Google Play.\n\nQuaisquer erros que ocorram na utilização do extra não são da responsabilidade do AntennaPod e devem ser reportados diretamente ao seu programador.</string>
   <string name="set_playback_speed_label">Velocidades de reprodução</string>
   <string name="enable_sonic">Ativar Sonic</string>
   <!--Empty list labels-->
@@ -263,12 +263,12 @@
   <string name="pref_unpauseOnBluetoothReconnect_sum">Continuar reprodução ao estabelecer a ligação bluetooth</string>
   <string name="pref_hardwareForwardButtonSkips_title">Botão para avançar</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Ao premir o botão Avançar, ir para o episódio seguinte em vez de avançar a reprodução</string>
-  <string name="pref_followQueue_sum">Ir para a faixa seguinte ao terminar a reprodução</string>
+  <string name="pref_followQueue_sum">Ir para a episódio seguinte ao terminar a reprodução</string>
   <string name="pref_auto_delete_sum">Apagar episódio ao terminar a reprodução</string>
   <string name="pref_auto_delete_title">Eliminação automática</string>
-  <string name="pref_smart_mark_as_played_sum">Marcar episódios como reproduzidos mesmo que restem alguns segundos de reprodução</string>
+  <string name="pref_smart_mark_as_played_sum">Marcar episódio como reproduzido mesmo que restem alguns segundos de reprodução</string>
   <string name="pref_smart_mark_as_played_title">Marcar como reproduzido (inteligente)</string>
-  <string name="pref_skip_keeps_episodes_sum">Manter episódio mesmo que tenham sido ignorados</string>
+  <string name="pref_skip_keeps_episodes_sum">Manter episódios mesmo que tenham sido ignorados</string>
   <string name="pref_skip_keeps_episodes_title">Manter episódios ignorados</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
@@ -278,9 +278,9 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Desativar</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Definir intervalo</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Definir hora do dia</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Apenas transferir através de redes sem fios</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Apenas descarregar através de redes sem fios</string>
   <string name="pref_followQueue_title">Reprodução contínua</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">Transferir por Wi-Fi</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">Descarregar por Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Auscultadores removidos</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Auscultadores inseridos</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Ligação bluetooth</string>
@@ -307,13 +307,13 @@
   <string name="pref_nav_drawer_feed_counter_title">Definir contador de subscrições</string>
   <string name="pref_nav_drawer_feed_counter_sum">Alterar a informação mostrada no contador de subscrições</string>
   <string name="pref_set_theme_sum">Alterar a aparência do AntennaPod</string>
-  <string name="pref_automatic_download_title">Transferência automática</string>
-  <string name="pref_automatic_download_sum">Configure a transferência automática dos episódios</string>
+  <string name="pref_automatic_download_title">Descarga automática</string>
+  <string name="pref_automatic_download_sum">Configure a descarga automática dos episódios</string>
   <string name="pref_autodl_wifi_filter_title">Ativar filtro Wi-Fi</string>
-  <string name="pref_autodl_wifi_filter_sum">Apenas permitir transferências automáticas através de redes sem fios</string>
-  <string name="pref_automatic_download_on_battery_title">Transferir se não estiver a carregar</string>
-  <string name="pref_automatic_download_on_battery_sum">Permitir transferência automática se a bateria não estiver a ser carregada</string>
-  <string name="pref_parallel_downloads_title">Transferências simultâneas</string>
+  <string name="pref_autodl_wifi_filter_sum">Apenas permitir descargas automáticas através de redes sem fios</string>
+  <string name="pref_automatic_download_on_battery_title">Descarregar se não estiver a carregar</string>
+  <string name="pref_automatic_download_on_battery_sum">Permitir descarga automática se a bateria não estiver a ser carregada</string>
+  <string name="pref_parallel_downloads_title">Descargas simultâneas</string>
   <string name="pref_episode_cache_title">Cache de episódios</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Escuro</string>
@@ -340,7 +340,7 @@
   <string name="pref_lockscreen_background_title">Definir fundo do ecrã de bloqueio</string>
   <string name="pref_lockscreen_background_sum">Define a imagem do episódio como fundo do ecrã de bloqueio. Efeito colateral: também será mostrada em outras aplicações</string>
   <string name="pref_showDownloadReport_title">Mostrar relatório de erros</string>
-  <string name="pref_showDownloadReport_sum">Se a transferência falhar, gera um relatório que mostra os detalhes do erro</string>
+  <string name="pref_showDownloadReport_sum">Se a descarga falhar, gera um relatório que mostra os detalhes do erro</string>
   <string name="pref_expand_notify_unsupport_toast">As versões Android anteriores à 4.1 não possuem suporte à expansão de notificações</string>
   <string name="pref_queueAddToFront_sum">Colocar novos episódios no início da fila</string>
   <string name="pref_queueAddToFront_title">Novos episódios no início</string>
@@ -454,7 +454,7 @@
   <string name="folder_not_readable_error">\"%1$s\" não permite leitura</string>
   <string name="folder_not_writable_error">\"%1$s\" não permite escrita</string>
   <string name="folder_not_empty_dialog_title">A pasta não está vazia</string>
-  <string name="folder_not_empty_dialog_msg">A pasta escolhida não está vazia. As transferências multimédia e os ficheiros serão colocados nesta pasta. Continuar?</string>
+  <string name="folder_not_empty_dialog_msg">A pasta escolhida não está vazia. Os dados multimédia e os outros ficheiros serão colocados nesta pasta. Continuar?</string>
   <string name="set_to_default_folder">Escolha a pasta pré-definida</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausa na reprodução em vez de baixar o volume se outra aplicação quiser reproduzir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa nas interrupções</string>
@@ -464,7 +464,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Subscrever</string>
   <string name="subscribed_label">Subscrito</string>
-  <string name="downloading_label">A transferir...</string>
+  <string name="downloading_label">A descarregar...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Mostrar capítulos</string>
   <string name="show_shownotes_label">Mostrar notas</string>
@@ -476,8 +476,8 @@
   <string name="navigate_upwards_label">Navegar para cima</string>
   <string name="butAction_label">Mais ações</string>
   <string name="status_playing_label">Episódio em reprodução</string>
-  <string name="status_downloading_label">Episódio a ser transferido</string>
-  <string name="status_downloaded_label">Episódio transferido</string>
+  <string name="status_downloading_label">Episódio a ser descarregado</string>
+  <string name="status_downloaded_label">Episódio descarregado</string>
   <string name="status_unread_label">Novo item</string>
   <string name="in_queue_label">Episódio está na fila</string>
   <string name="new_episodes_count_label">Número de novos episódios</string>
@@ -501,10 +501,10 @@
   <string name="selected_played_label">Selecionar episódios reproduzidos</string>
   <string name="unplayed_label">Não reproduzidos</string>
   <string name="selected_unplayed_label">Selecionar episódios não reproduzidos</string>
-  <string name="downloaded_label">Transferidos</string>
-  <string name="selected_downloaded_label">Selecionar episódios transferidos</string>
-  <string name="not_downloaded_label">Não transferidos</string>
-  <string name="selected_not_downloaded_label">Selecionar episódios não transferidos</string>
+  <string name="downloaded_label">Descarregados</string>
+  <string name="selected_downloaded_label">Selecionar episódios descarregados</string>
+  <string name="not_downloaded_label">Não descarregados</string>
+  <string name="selected_not_downloaded_label">Selecionar episódios não descarregados</string>
   <string name="sort_title"><b>Ordenar por...</b></string>
   <string name="sort_title_a_z">Título (A \u2192 Z)</string>
   <string name="sort_title_z_a">Título (Z \u2192 A)</string>

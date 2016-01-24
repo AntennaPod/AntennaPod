@@ -3,10 +3,11 @@
 Version 1.4.1
 -------------
 Prestandaförbättringar
-* Hardware buttons now ff and rewind instead of skipping
-* Option to have forward button skip
-* Option to send crash reports directly to developers
-* Highlight currently playing episode
+* Hårdvaruknappar spolar nu fram och tillbaka istället för hoppar mellan episoder
+* Möjlighet att låta hårdvaruknapp hoppa till nästa episod
+* Möjlighet att sända krashrapporter direkt till utvecklarna
+* Den episod som spelas framhävs bättre
+* Widgetförbättringar
 
 Version 1.4.0.12
 ----------------

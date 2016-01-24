@@ -17,16 +17,16 @@ Version 1.4
 -----------
 * BLUETOOTH PERMISSION: Needed to be able to resume playback when a Bluetooth device reconnects with your phone
 * VIBRATE PERMISSION: Used optionally with the sleep timer
-* Native variable speed playback (experimental via options)
+* Doğal değişken çalma hızı (deneysel seçeneklerde)
 * Zamanlayıcı geliştirildi
-* Mark episodes as 'favorite'
+* Bölümleri 'favori' olarak işaretleme
 * Notification can skip episodes
 * Keep episodes when skipping them
-* Episode art on lock screen
-* Flexible episode cleanup
+* Kilitli ekranda bölüm resmi
+* Esnek bölüm temizliği
 * Rewind after pause
 * Kullanılabilirlik geliştirmeleri
-* Bug fixes
+* Hatalar düzeltildi
 
 Sürüm 1.3
 -----------
