@@ -6,11 +6,12 @@ Ytelsesforbedringer
 * Hardware-knapper bukes nå til hurtigfrem- og tilbakespoling istedenfor hopping
 * Valg for å la fremspolingsknappen hoppe
 * Valg for å sende kræsjrapporter direkte til utviklere
-* Highlight currently playing episode
+* Markering av avspillende episode
+* Widget-forbedringer
 
 Versjon 1.4.0.12
 ----------------
-* Fix for crash on Huawei devices (media buttons may not work)
+* Fiks for feil med Huawei-enheter (medieknappene kan hende ikke fungerer)
 
 Versjon 1.4
 -----------
@@ -134,7 +135,7 @@ Versjon 0.9.8.1
 
 Versjon 0.9.8.0
 ---------------
-* Added access to the gpodder.net directory
+* La til tilgang til gpodder.net-katalogen
 * Added ability to sync podcast subscriptions with the gpodder.net service
 * Automatic download can now be turned on or off for specific podcasts
 * Added option to pause playback when another app is playing sounds

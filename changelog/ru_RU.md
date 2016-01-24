@@ -1,15 +1,15 @@
 Список изменений
 ==========
-Version 1.4.1
+Версия 1.4.1
 -------------
-* Performance improvements
-* Hardware buttons now ff and rewind instead of skipping
-* Option to have forward button skip
-* Option to send crash reports directly to developers
-* Highlight currently playing episode
-* Widget improvements
+* Улучшение производительности
+* Физические кнопки теперь осуществляют перемотку вперед и назад вместо пропуска
+* Возможность настройки пропуска для кнопки перемотки вперед
+* Возможность отправки отчетов о сбоях напрямую разработчикам
+* Выделение проигрываемого выпуска
+* Улучшения виджета
 
-Version 1.4.0.12
+Версия 1.4.0.12
 ----------------
 * Fix for crash on Huawei devices (media buttons may not work)
 

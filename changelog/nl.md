@@ -1,8 +1,8 @@
 Changelog
 ==========
-Version 1.4.1
+Versie 1.4.1
 -------------
-* Performance improvements
+* Verbeterde prestaties
 * Hardware buttons now ff and rewind instead of skipping
 * Option to have forward button skip
 * Option to send crash reports directly to developers

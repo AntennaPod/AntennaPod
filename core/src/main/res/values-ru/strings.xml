@@ -340,6 +340,7 @@
   <string name="pref_image_cache_size_title">Размер кэша для изображений</string>
   <string name="pref_image_cache_size_sum">Размер дискового кэша для изображений</string>
   <string name="crash_report_title">Отчет о сбое</string>
+  <string name="send_email">Отправить Email</string>
   <string name="experimental_pref">Экспериментальные настройки</string>
   <string name="pref_sonic_title">Проигрыватель Sonic</string>
   <string name="pref_sonic_message">Использовать встроенный проигрыватель Sonic вместо Prestissimo.</string>
@@ -390,6 +391,24 @@
   <string name="time_seconds">с</string>
   <string name="time_minutes">м</string>
   <string name="time_hours">ч</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="one">1 секунда</item>
+    <item quantity="few">%d сек.</item>
+    <item quantity="many">%d секунд</item>
+    <item quantity="other">%d секунд</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="one">1 минута</item>
+    <item quantity="few">%d мин.</item>
+    <item quantity="many">%d минут</item>
+    <item quantity="other">%d минут</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="one">1 час</item>
+    <item quantity="few">%d ч.</item>
+    <item quantity="many">%d часов</item>
+    <item quantity="other">%d часов</item>
+  </plurals>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">Категории</string>
   <string name="gpodnet_toplist_header">Лучшее</string>
