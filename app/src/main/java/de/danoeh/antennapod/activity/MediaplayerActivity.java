@@ -257,12 +257,6 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy()");
-    }
-
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onTrimMemory(int level) {
