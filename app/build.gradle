@@ -13,7 +13,6 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
     compile "com.android.support:gridlayout-v7:$supportVersion"
-    compile "com.android.support:palette-v7:$supportVersion"
     compile "com.android.support:percent:$supportVersion"
     compile "com.android.support:recyclerview-v7:$supportVersion"
     compile "org.apache.commons:commons-lang3:$commonslangVersion"

@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
@@ -78,26 +74,10 @@ public class CoverFragment extends Fragment implements
             imgvCover.post(() -> {
                 Glide.with(this)
                         .load(media.getImageUri())
-                        .asBitmap()
-                        .placeholder(R.color.light_gray)
-                        .error(R.color.light_gray)
                         .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .dontAnimate()
-                        .into(new BitmapImageViewTarget(imgvCover) {
-                            @Override
-                            public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
-                                super.onResourceReady(bitmap, anim);
-                                Palette.Builder builder = new Palette.Builder(bitmap);
-                                builder.generate(palette -> {
-                                    Palette.Swatch swatch = palette.getMutedSwatch();
-                                    if(swatch != null) {
-                                        root.setBackgroundColor(swatch.getRgb());
-                                        txtvPodcastTitle.setTextColor(swatch.getTitleTextColor());
-                                        txtvEpisodeTitle.setTextColor(swatch.getBodyTextColor());
-                                    }
-                                });
-                            }
-                        });
+                        .fitCenter()
+                        .into(imgvCover);
             });
         } else {
             Log.w(TAG, "loadMediaInfo was called while media was null");
