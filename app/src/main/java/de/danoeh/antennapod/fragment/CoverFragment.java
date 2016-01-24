@@ -48,7 +48,6 @@ public class CoverFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
         Bundle args = getArguments();
         if (args != null) {
             media = args.getParcelable(ARG_PLAYABLE);
