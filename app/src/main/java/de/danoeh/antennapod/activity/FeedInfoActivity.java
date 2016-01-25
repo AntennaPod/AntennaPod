@@ -173,6 +173,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                         public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                             feed.getPreferences().setAutoDownload(checked);
                             feed.savePreferences(FeedInfoActivity.this);
+                            updateAutoDownloadSettings();
                             ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(FeedInfoActivity.this,
                                     feed, checked);
                             dialog.createNewDialog().show();
@@ -233,7 +234,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                     etxtFilterText.addTextChangedListener(filterTextWatcher);
 
                     supportInvalidateOptionsMenu();
-
+                    updateAutoDownloadSettings();
                 } else {
                     Log.e(TAG, "Activity was started with invalid arguments");
                 }
@@ -346,6 +347,15 @@ public class FeedInfoActivity extends ActionBarActivity {
                             e.getMessage());
                 }
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void updateAutoDownloadSettings() {
+        if (feed != null && feed.getPreferences() != null) {
+            boolean enabled = feed.getPreferences().getAutoDownload() && UserPreferences.isEnableAutodownload();
+            rdoFilterInclude.setEnabled(enabled);
+            rdoFilterExclude.setEnabled(enabled);
+            etxtFilterText.setEnabled(enabled);
         }
     }
 
