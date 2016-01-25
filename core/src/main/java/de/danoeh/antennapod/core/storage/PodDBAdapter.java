@@ -1501,7 +1501,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 1040013;
+        private final static int VERSION = 1050003;
 
         private Context context;
 
@@ -1744,6 +1744,42 @@ public class PodDBAdapter {
             if(oldVersion < 1040013) {
                 db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_PUBDATE);
                 db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_READ);
+            }
+            if (oldVersion < 1050003) {
+                // Migrates feed list filter data
+
+                db.beginTransaction();
+
+                // Change to intermediate values to avoid overwriting in the following find/replace
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'unplayed', 'noplay')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'not_queued', 'noqueue')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'not_downloaded', 'nodl')");
+
+                // Replace played, queued, and downloaded with their opposites
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'played', 'unplayed')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'queued', 'not_queued')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'downloaded', 'not_downloaded')");
+
+                // Now replace intermediates for unplayed, not queued, etc. with their opposites
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'noplay', 'played')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'noqueue', 'queued')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'nodl', 'downloaded')");
+
+                // Paused doesn't have an opposite, so unplayed is the next best option
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'paused', 'unplayed')");
+
+                db.setTransactionSuccessful();
+                db.endTransaction();
             }
 
             EventBus.getDefault().post(ProgressEvent.end());
