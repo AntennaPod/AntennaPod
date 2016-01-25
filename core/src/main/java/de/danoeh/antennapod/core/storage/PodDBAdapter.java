@@ -1131,13 +1131,6 @@ public class PodDBAdapter {
         return c;
     }
 
-    public final Cursor getNewItemIdsCursor() {
-        final String query = "SELECT " + KEY_ID
-                + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " WHERE " + KEY_READ + "=" + FeedItem.NEW;
-        return db.rawQuery(query, null);
-    }
-
     /**
      * Returns a cursor which contains all items of a feed that are considered new.
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
@@ -1157,10 +1150,15 @@ public class PodDBAdapter {
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getNewItemsCursor() {
-        final String query = "SELECT " + SEL_FI_SMALL_STR
-                + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " WHERE " + KEY_READ + "=" + FeedItem.NEW
-                + " ORDER BY " + KEY_PUBDATE + " DESC";
+        String[] args = new String[] {
+                SEL_FI_SMALL_STR,
+                TABLE_NAME_FEED_ITEMS,
+                TABLE_NAME_FEEDS,
+                TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID,
+                TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW + " AND " + TABLE_NAME_FEEDS + "." + KEY_GLOBAL_REFRESH + " > 0",
+                KEY_PUBDATE + " DESC"
+        };
+        final String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s WHERE %s ORDER BY %s", args);
         Cursor c = db.rawQuery(query, null);
         return c;
     }
