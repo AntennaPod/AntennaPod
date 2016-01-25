@@ -535,7 +535,7 @@
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
     <string name="episode_filters_include">Include</string>
     <string name="episode_filters_exclude">Exclude</string>
-    <string name="episode_filters_hint">Filter text</string>
+    <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
 
     <!-- Progress information -->
     <string name="progress_upgrading_database">Upgrading the database</string>

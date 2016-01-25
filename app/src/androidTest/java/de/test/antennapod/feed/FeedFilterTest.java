@@ -54,7 +54,7 @@ public class FeedFilterTest extends AndroidTestCase {
     }
 
     public void testComplexIncludeFilter() throws Exception {
-        String includeFilter = "Hello \"Two words\"";
+        String includeFilter = "Hello \n\"Two words\"";
         FeedFilter filter = new FeedFilter(includeFilter, "");
         FeedItem item = new FeedItem();
         item.setTitle("hello world");
