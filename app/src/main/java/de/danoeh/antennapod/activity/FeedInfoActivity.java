@@ -21,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -61,8 +63,12 @@ public class FeedInfoActivity extends ActionBarActivity {
     private TextView txtvUrl;
     private EditText etxtUsername;
     private EditText etxtPassword;
+    private EditText etxtFilterText;
+    private RadioButton rdoFilterInclude;
+    private RadioButton rdoFilterExclude;
     private CheckBox cbxAutoDownload;
     private Spinner spnAutoDelete;
+    private boolean filterInclude = true;
 
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
         @Override
@@ -103,6 +109,17 @@ public class FeedInfoActivity extends ActionBarActivity {
         spnAutoDelete = (Spinner) findViewById(R.id.spnAutoDelete);
         etxtUsername = (EditText) findViewById(R.id.etxtUsername);
         etxtPassword = (EditText) findViewById(R.id.etxtPassword);
+        etxtFilterText = (EditText) findViewById(R.id.etxtEpisodeFilterText);
+        rdoFilterInclude = (RadioButton) findViewById(R.id.radio_filter_include);
+        rdoFilterInclude.setOnClickListener(v -> {
+            filterInclude = true;
+            filterTextChanged = true;
+        });
+        rdoFilterExclude = (RadioButton) findViewById(R.id.radio_filter_exclude);
+        rdoFilterExclude.setOnClickListener(v -> {
+            filterInclude = false;
+            filterTextChanged = true;
+        });
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
@@ -156,6 +173,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                         public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                             feed.getPreferences().setAutoDownload(checked);
                             feed.savePreferences(FeedInfoActivity.this);
+                            updateAutoDownloadSettings();
                             ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(FeedInfoActivity.this,
                                     feed, checked);
                             dialog.createNewDialog().show();
@@ -184,6 +202,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                             feed.getPreferences().setAutoDeleteAction(auto_delete_action);// p
                             autoDeleteChanged = true;
                         }
+
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
                             // Another interface callback
@@ -197,8 +216,25 @@ public class FeedInfoActivity extends ActionBarActivity {
                     etxtUsername.addTextChangedListener(authTextWatcher);
                     etxtPassword.addTextChangedListener(authTextWatcher);
 
-                    supportInvalidateOptionsMenu();
+                    FeedFilter filter = prefs.getFilter();
+                    if (filter.includeOnly()) {
+                        etxtFilterText.setText(filter.getIncludeFilter());
+                        rdoFilterInclude.setChecked(true);
+                        rdoFilterExclude.setChecked(false);
+                    } else if (filter.excludeOnly()) {
+                        etxtFilterText.setText(filter.getExcludeFilter());
+                        rdoFilterInclude.setChecked(false);
+                        rdoFilterExclude.setChecked(true);
+                    } else {
+                        Log.d(TAG, "No filter set");
+                        rdoFilterInclude.setChecked(false);
+                        rdoFilterExclude.setChecked(false);
+                        etxtFilterText.setText("");
+                    }
+                    etxtFilterText.addTextChangedListener(filterTextWatcher);
 
+                    supportInvalidateOptionsMenu();
+                    updateAutoDownloadSettings();
                 } else {
                     Log.e(TAG, "Activity was started with invalid arguments");
                 }
@@ -227,6 +263,25 @@ public class FeedInfoActivity extends ActionBarActivity {
         }
     };
 
+    private boolean filterTextChanged = false;
+
+    private TextWatcher filterTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            filterTextChanged = true;
+        }
+    };
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -237,11 +292,24 @@ public class FeedInfoActivity extends ActionBarActivity {
                 prefs.setUsername(etxtUsername.getText().toString());
                 prefs.setPassword(etxtPassword.getText().toString());
             }
-            if (authInfoChanged || autoDeleteChanged) {
+            if (filterTextChanged) {
+                Log.d(TAG, "Filter info changed, saving...");
+                String filterText = etxtFilterText.getText().toString();
+                String includeString = "";
+                String excludeString = "";
+                if (filterInclude) {
+                    includeString = filterText;
+                } else {
+                    excludeString = filterText;
+                }
+                prefs.setFilter(new FeedFilter(includeString, excludeString));
+            }
+            if (authInfoChanged || autoDeleteChanged || filterTextChanged) {
                 DBWriter.setFeedPreferences(prefs);
             }
             authInfoChanged = false;
             autoDeleteChanged = false;
+            filterTextChanged = false;
         }
     }
 
@@ -279,6 +347,15 @@ public class FeedInfoActivity extends ActionBarActivity {
                             e.getMessage());
                 }
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void updateAutoDownloadSettings() {
+        if (feed != null && feed.getPreferences() != null) {
+            boolean enabled = feed.getPreferences().getAutoDownload() && UserPreferences.isEnableAutodownload();
+            rdoFilterInclude.setEnabled(enabled);
+            rdoFilterExclude.setEnabled(enabled);
+            etxtFilterText.setEnabled(enabled);
         }
     }
 

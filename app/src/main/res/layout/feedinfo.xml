@@ -150,17 +150,6 @@
                 android:text="@string/podcast_settings_label"
                 android:layout_marginTop="8dp"/>
 
-            <CheckBox
-                android:id="@+id/cbxAutoDownload"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/auto_download_label"
-                android:enabled="false"
-                android:textColor="?android:attr/textColorPrimary"
-                tools:background="@android:color/holo_red_light"
-                android:checked="false" />
-
             <android.support.v7.widget.GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -264,6 +253,77 @@
                     android:inputType="textPassword"/>
 
             </android.support.v7.widget.GridLayout>
+
+            <TextView
+                android:id="@+id/txtvAutoDownloadSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/auto_download_settings_label"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="?android:attr/textColorPrimary"/>
+
+            <CheckBox
+                android:id="@+id/cbxAutoDownload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/auto_download_label"
+                android:enabled="false"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:background="@android:color/holo_red_light"
+                android:checked="false" />
+
+            <TextView
+                android:id="@+id/txtvEpisodeFilters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/episode_filters_label"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="?android:attr/textColorPrimary"/>
+
+            <TextView
+                android:id="@+id/txtvEpisodeFiltersDescription"
+                android:text="@string/episode_filters_description"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/radio_filter_group"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                <RadioButton android:id="@+id/radio_filter_include"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="@string/episode_filters_include"
+                             android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_filter_exclude"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="@string/episode_filters_exclude"
+                             android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/etxtEpisodeFilterText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:lines="8"
+                android:minLines="1"
+                android:maxLines="20"
+                android:scrollbars="vertical"
+                android:hint="@string/episode_filters_hint"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:cursorVisible="true"/>
 
             <TextView
                 style="@style/AntennaPod.TextView.Heading"

@@ -102,6 +102,8 @@ public class PodDBAdapter {
     public static final String KEY_LAST_UPDATE_FAILED = "last_update_failed";
     public static final String KEY_HAS_EMBEDDED_PICTURE = "has_embedded_picture";
     public static final String KEY_LAST_PLAYED_TIME = "last_played_time";
+    public static final String KEY_INCLUDE_FILTER = "include_filter";
+    public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -128,6 +130,8 @@ public class PodDBAdapter {
             + KEY_FLATTR_STATUS + " INTEGER,"
             + KEY_USERNAME + " TEXT,"
             + KEY_PASSWORD + " TEXT,"
+            + KEY_INCLUDE_FILTER + " TEXT DEFAULT '',"
+            + KEY_EXCLUDE_FILTER + " TEXT DEFAULT '',"
             + KEY_IS_PAGED + " INTEGER DEFAULT 0,"
             + KEY_NEXT_PAGE_LINK + " TEXT,"
             + KEY_HIDE + " TEXT,"
@@ -238,6 +242,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_HIDE,
             TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION,
+            TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
+            TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER
     };
     
     /**
@@ -395,6 +401,8 @@ public class PodDBAdapter {
         values.put(KEY_AUTO_DELETE_ACTION,prefs.getAutoDeleteAction().ordinal());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
+        values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
+        values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilter());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
@@ -1745,6 +1753,7 @@ public class PodDBAdapter {
                 db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_PUBDATE);
                 db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_READ);
             }
+
             if (oldVersion < 1050003) {
                 // Migrates feed list filter data
 
@@ -1780,6 +1789,13 @@ public class PodDBAdapter {
 
                 db.setTransactionSuccessful();
                 db.endTransaction();
+
+                // and now get ready for autodownload filters
+                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + PodDBAdapter.KEY_INCLUDE_FILTER + " TEXT DEFAULT ''");
+
+                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + PodDBAdapter.KEY_EXCLUDE_FILTER + " TEXT DEFAULT ''");
             }
 
             EventBus.getDefault().post(ProgressEvent.end());
