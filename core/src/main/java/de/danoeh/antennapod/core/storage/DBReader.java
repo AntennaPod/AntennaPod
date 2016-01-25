@@ -371,7 +371,7 @@ public final class DBReader {
 
     /**
      * Loads a list of FeedItems that are considered new.
-     *
+     * Excludes items from feeds that do not have global refresh enabled.
      * @return A list of FeedItems that are considered new.
      */
     public static List<FeedItem> getNewItemsList() {

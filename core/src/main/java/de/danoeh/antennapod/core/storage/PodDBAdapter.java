@@ -1147,6 +1147,7 @@ public class PodDBAdapter {
 
     /**
      * Returns a cursor which contains all feed items that are considered new.
+     * Excludes those feeds that do not have 'global_refresh' enabled.
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getNewItemsCursor() {
