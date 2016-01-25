@@ -187,10 +187,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/global_refresh"
-                android:enabled="false"
+                android:enabled="true"
                 android:textColor="?android:attr/textColorPrimary"
                 tools:background="@android:color/holo_red_light"
-                android:checked="false" />
+                android:checked="true" />
 
             <TextView
                 android:id="@+id/txtvAuthentication"

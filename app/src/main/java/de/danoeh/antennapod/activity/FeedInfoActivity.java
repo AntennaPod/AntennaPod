@@ -177,7 +177,6 @@ public class FeedInfoActivity extends ActionBarActivity {
                                 feed, checked);
                         dialog.createNewDialog().show();
                     });
-                    cbxGlobalRefresh.setEnabled(true);
                     cbxGlobalRefresh.setChecked(prefs.getGlobalRefresh());
                     cbxGlobalRefresh.setOnCheckedChangeListener((compoundButton, checked) -> {
                         feed.getPreferences().setGlobalRefresh(checked);
