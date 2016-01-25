@@ -66,7 +66,7 @@ public class FeedInfoActivity extends ActionBarActivity {
     private RadioButton rdoFilterInclude;
     private RadioButton rdoFilterExclude;
     private CheckBox cbxAutoDownload;
-    private CheckBox cbxGlobalRefresh;
+    private CheckBox cbxKeepUpdated;
     private Spinner spnAutoDelete;
     private boolean filterInclude = true;
 
@@ -106,7 +106,7 @@ public class FeedInfoActivity extends ActionBarActivity {
         txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
         txtvUrl = (TextView) findViewById(R.id.txtvUrl);
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
-        cbxGlobalRefresh = (CheckBox) findViewById(R.id.cbxGlobalRefresh);
+        cbxKeepUpdated = (CheckBox) findViewById(R.id.cbxKeepUpdated);
         spnAutoDelete = (Spinner) findViewById(R.id.spnAutoDelete);
         etxtUsername = (EditText) findViewById(R.id.etxtUsername);
         etxtPassword = (EditText) findViewById(R.id.etxtPassword);
@@ -177,9 +177,9 @@ public class FeedInfoActivity extends ActionBarActivity {
                                 feed, checked);
                         dialog.createNewDialog().show();
                     });
-                    cbxGlobalRefresh.setChecked(prefs.getGlobalRefresh());
-                    cbxGlobalRefresh.setOnCheckedChangeListener((compoundButton, checked) -> {
-                        feed.getPreferences().setGlobalRefresh(checked);
+                    cbxKeepUpdated.setChecked(prefs.getKeepUpdated());
+                    cbxKeepUpdated.setOnCheckedChangeListener((compoundButton, checked) -> {
+                        feed.getPreferences().setKeepUpdated(checked);
                         feed.savePreferences(FeedInfoActivity.this);
                     });
                     spnAutoDelete.setOnItemSelectedListener(new OnItemSelectedListener() {

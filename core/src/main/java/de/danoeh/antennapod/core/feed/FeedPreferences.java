@@ -18,7 +18,7 @@ public class FeedPreferences {
     private FeedFilter filter;
     private long feedID;
     private boolean autoDownload;
-    private boolean globalRefresh;
+    private boolean keepUpdated;
 
     public enum AutoDeleteAction {
         GLOBAL,
@@ -33,10 +33,10 @@ public class FeedPreferences {
         this(feedID, autoDownload, true, auto_delete_action, username, password, new FeedFilter());
     }
 
-    public FeedPreferences(long feedID, boolean autoDownload, boolean globalRefresh, AutoDeleteAction auto_delete_action, String username, String password, @NonNull FeedFilter filter) {
+    public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, String username, String password, @NonNull FeedFilter filter) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
-        this.globalRefresh = globalRefresh;
+        this.keepUpdated = keepUpdated;
         this.auto_delete_action = auto_delete_action;
         this.username = username;
         this.password = password;
@@ -46,7 +46,7 @@ public class FeedPreferences {
     public static FeedPreferences fromCursor(Cursor cursor) {
         int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
         int indexAutoDownload = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD);
-        int indexAutoRefresh = cursor.getColumnIndex(PodDBAdapter.KEY_GLOBAL_REFRESH);
+        int indexAutoRefresh = cursor.getColumnIndex(PodDBAdapter.KEY_KEEP_UPDATED);
         int indexAutoDeleteAction = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DELETE_ACTION);
         int indexUsername = cursor.getColumnIndex(PodDBAdapter.KEY_USERNAME);
         int indexPassword = cursor.getColumnIndex(PodDBAdapter.KEY_PASSWORD);
@@ -80,12 +80,12 @@ public class FeedPreferences {
      * @return true if this feed should be refreshed when everything else is being refreshed
      *         if false the feed should only be refreshed if requested directly.
      */
-    public boolean getGlobalRefresh() {
-        return globalRefresh;
+    public boolean getKeepUpdated() {
+        return keepUpdated;
     }
 
-    public void setGlobalRefresh(boolean globalRefresh) {
-        this.globalRefresh = globalRefresh;
+    public void setKeepUpdated(boolean keepUpdated) {
+        this.keepUpdated = keepUpdated;
     }
 
     /**

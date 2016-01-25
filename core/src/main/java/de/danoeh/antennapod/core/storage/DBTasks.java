@@ -196,9 +196,9 @@ public final class DBTasks {
 
         for (Feed feed : feedList) {
             FeedPreferences prefs = feed.getPreferences();
-            // feeds with !getGlobalRefresh can only be refreshed
+            // feeds with !getKeepUpdated can only be refreshed
             // directly from the FeedActivity
-            if (prefs.getGlobalRefresh()) {
+            if (prefs.getKeepUpdated()) {
                 try {
                     refreshFeed(context, feed);
                 } catch (DownloadRequestException e) {

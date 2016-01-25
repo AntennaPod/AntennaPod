@@ -92,7 +92,7 @@ public class PodDBAdapter {
     public static final String KEY_CHAPTER_TYPE = "type";
     public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
     public static final String KEY_AUTO_DOWNLOAD = "auto_download";
-    public static final String KEY_GLOBAL_REFRESH = "global_refresh";
+    public static final String KEY_KEEP_UPDATED = "keep_updated";
     public static final String KEY_AUTO_DELETE_ACTION = "auto_delete_action";
     public static final String KEY_PLAYED_DURATION = "played_duration";
     public static final String KEY_USERNAME = "username";
@@ -133,7 +133,7 @@ public class PodDBAdapter {
             + KEY_PASSWORD + " TEXT,"
             + KEY_INCLUDE_FILTER + " TEXT DEFAULT '',"
             + KEY_EXCLUDE_FILTER + " TEXT DEFAULT '',"
-            + KEY_GLOBAL_REFRESH + " INTEGER DEFAULT 1,"
+            + KEY_KEEP_UPDATED + " INTEGER DEFAULT 1,"
             + KEY_IS_PAGED + " INTEGER DEFAULT 0,"
             + KEY_NEXT_PAGE_LINK + " TEXT,"
             + KEY_HIDE + " TEXT,"
@@ -236,7 +236,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_TYPE,
             TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD,
-            TABLE_NAME_FEEDS + "." + KEY_GLOBAL_REFRESH,
+            TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED,
             TABLE_NAME_FEEDS + "." + KEY_FLATTR_STATUS,
             TABLE_NAME_FEEDS + "." + KEY_IS_PAGED,
             TABLE_NAME_FEEDS + "." + KEY_NEXT_PAGE_LINK,
@@ -401,7 +401,7 @@ public class PodDBAdapter {
         }
         ContentValues values = new ContentValues();
         values.put(KEY_AUTO_DOWNLOAD, prefs.getAutoDownload());
-        values.put(KEY_GLOBAL_REFRESH, prefs.getGlobalRefresh());
+        values.put(KEY_KEEP_UPDATED, prefs.getKeepUpdated());
         values.put(KEY_AUTO_DELETE_ACTION,prefs.getAutoDeleteAction().ordinal());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
@@ -1147,7 +1147,7 @@ public class PodDBAdapter {
 
     /**
      * Returns a cursor which contains all feed items that are considered new.
-     * Excludes those feeds that do not have 'global_refresh' enabled.
+     * Excludes those feeds that do not have 'Keep Updated' enabled.
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getNewItemsCursor() {
@@ -1156,7 +1156,7 @@ public class PodDBAdapter {
                 TABLE_NAME_FEED_ITEMS,
                 TABLE_NAME_FEEDS,
                 TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID,
-                TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW + " AND " + TABLE_NAME_FEEDS + "." + KEY_GLOBAL_REFRESH + " > 0",
+                TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW + " AND " + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + " > 0",
                 KEY_PUBDATE + " DESC"
         };
         final String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s WHERE %s ORDER BY %s", args);
@@ -1802,7 +1802,7 @@ public class PodDBAdapter {
 
                 // and now auto refresh
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + PodDBAdapter.KEY_GLOBAL_REFRESH + " INTEGER DEFAULT 1");
+                        + " ADD COLUMN " + PodDBAdapter.KEY_KEEP_UPDATED + " INTEGER DEFAULT 1");
             }
 
             EventBus.getDefault().post(ProgressEvent.end());

@@ -536,7 +536,7 @@
     <string name="episode_filters_include">Include</string>
     <string name="episode_filters_exclude">Exclude</string>
     <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
-    <string name="global_refresh">Global Refresh</string>
+    <string name="keep_updated">Keep Updated</string>
 
     <!-- Progress information -->
     <string name="progress_upgrading_database">Upgrading the database</string>
