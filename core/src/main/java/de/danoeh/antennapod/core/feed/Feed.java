@@ -544,7 +544,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         return itemfilter;
     }
 
-    public void setHiddenItemProperties(String[] properties) {
+    public void setItemFilter(String[] properties) {
         if (properties != null) {
             this.itemfilter = new FeedItemFilter(properties);
         }
