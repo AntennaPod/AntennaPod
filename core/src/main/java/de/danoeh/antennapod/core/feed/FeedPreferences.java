@@ -18,6 +18,7 @@ public class FeedPreferences {
     private FeedFilter filter;
     private long feedID;
     private boolean autoDownload;
+    private boolean globalRefresh;
 
     public enum AutoDeleteAction {
         GLOBAL,
@@ -29,12 +30,13 @@ public class FeedPreferences {
     private String password;
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, String username, String password) {
-        this(feedID, autoDownload, auto_delete_action, username, password, new FeedFilter());
+        this(feedID, autoDownload, true, auto_delete_action, username, password, new FeedFilter());
     }
 
-    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, String username, String password, @NonNull FeedFilter filter) {
+    public FeedPreferences(long feedID, boolean autoDownload, boolean globalRefresh, AutoDeleteAction auto_delete_action, String username, String password, @NonNull FeedFilter filter) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
+        this.globalRefresh = globalRefresh;
         this.auto_delete_action = auto_delete_action;
         this.username = username;
         this.password = password;
@@ -44,6 +46,7 @@ public class FeedPreferences {
     public static FeedPreferences fromCursor(Cursor cursor) {
         int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
         int indexAutoDownload = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD);
+        int indexAutoRefresh = cursor.getColumnIndex(PodDBAdapter.KEY_GLOBAL_REFRESH);
         int indexAutoDeleteAction = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DELETE_ACTION);
         int indexUsername = cursor.getColumnIndex(PodDBAdapter.KEY_USERNAME);
         int indexPassword = cursor.getColumnIndex(PodDBAdapter.KEY_PASSWORD);
@@ -52,13 +55,14 @@ public class FeedPreferences {
 
         long feedId = cursor.getLong(indexId);
         boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
+        boolean autoRefresh = cursor.getInt(indexAutoRefresh) > 0;
         int autoDeleteActionIndex = cursor.getInt(indexAutoDeleteAction);
         AutoDeleteAction autoDeleteAction = AutoDeleteAction.values()[autoDeleteActionIndex];
         String username = cursor.getString(indexUsername);
         String password = cursor.getString(indexPassword);
         String includeFilter = cursor.getString(indexIncludeFilter);
         String excludeFilter = cursor.getString(indexExcludeFilter);
-        return new FeedPreferences(feedId, autoDownload, autoDeleteAction, username, password, new FeedFilter(includeFilter, excludeFilter));
+        return new FeedPreferences(feedId, autoDownload, autoRefresh, autoDeleteAction, username, password, new FeedFilter(includeFilter, excludeFilter));
     }
 
     /**
@@ -70,6 +74,18 @@ public class FeedPreferences {
 
     public void setFilter(@NonNull FeedFilter filter) {
         this.filter = filter;
+    }
+
+    /**
+     * @return true if this feed should be refreshed when everything else is being refreshed
+     *         if false the feed should only be refreshed if requested directly.
+     */
+    public boolean getGlobalRefresh() {
+        return globalRefresh;
+    }
+
+    public void setGlobalRefresh(boolean globalRefresh) {
+        this.globalRefresh = globalRefresh;
     }
 
     /**

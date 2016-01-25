@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -67,6 +66,7 @@ public class FeedInfoActivity extends ActionBarActivity {
     private RadioButton rdoFilterInclude;
     private RadioButton rdoFilterExclude;
     private CheckBox cbxAutoDownload;
+    private CheckBox cbxGlobalRefresh;
     private Spinner spnAutoDelete;
     private boolean filterInclude = true;
 
@@ -106,6 +106,7 @@ public class FeedInfoActivity extends ActionBarActivity {
         txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
         txtvUrl = (TextView) findViewById(R.id.txtvUrl);
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
+        cbxGlobalRefresh = (CheckBox) findViewById(R.id.cbxGlobalRefresh);
         spnAutoDelete = (Spinner) findViewById(R.id.spnAutoDelete);
         etxtUsername = (EditText) findViewById(R.id.etxtUsername);
         etxtPassword = (EditText) findViewById(R.id.etxtPassword);
@@ -168,16 +169,19 @@ public class FeedInfoActivity extends ActionBarActivity {
 
                     cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
                     cbxAutoDownload.setChecked(prefs.getAutoDownload());
-                    cbxAutoDownload.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                            feed.getPreferences().setAutoDownload(checked);
-                            feed.savePreferences(FeedInfoActivity.this);
-                            updateAutoDownloadSettings();
-                            ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(FeedInfoActivity.this,
-                                    feed, checked);
-                            dialog.createNewDialog().show();
-                        }
+                    cbxAutoDownload.setOnCheckedChangeListener((compoundButton, checked) -> {
+                        feed.getPreferences().setAutoDownload(checked);
+                        feed.savePreferences(FeedInfoActivity.this);
+                        updateAutoDownloadSettings();
+                        ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(FeedInfoActivity.this,
+                                feed, checked);
+                        dialog.createNewDialog().show();
+                    });
+                    cbxGlobalRefresh.setEnabled(true);
+                    cbxGlobalRefresh.setChecked(prefs.getGlobalRefresh());
+                    cbxGlobalRefresh.setOnCheckedChangeListener((compoundButton, checked) -> {
+                        feed.getPreferences().setGlobalRefresh(checked);
+                        feed.savePreferences(FeedInfoActivity.this);
                     });
                     spnAutoDelete.setOnItemSelectedListener(new OnItemSelectedListener() {
                         @Override

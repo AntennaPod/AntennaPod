@@ -92,6 +92,7 @@ public class PodDBAdapter {
     public static final String KEY_CHAPTER_TYPE = "type";
     public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
     public static final String KEY_AUTO_DOWNLOAD = "auto_download";
+    public static final String KEY_GLOBAL_REFRESH = "global_refresh";
     public static final String KEY_AUTO_DELETE_ACTION = "auto_delete_action";
     public static final String KEY_PLAYED_DURATION = "played_duration";
     public static final String KEY_USERNAME = "username";
@@ -132,6 +133,7 @@ public class PodDBAdapter {
             + KEY_PASSWORD + " TEXT,"
             + KEY_INCLUDE_FILTER + " TEXT DEFAULT '',"
             + KEY_EXCLUDE_FILTER + " TEXT DEFAULT '',"
+            + KEY_GLOBAL_REFRESH + " INTEGER DEFAULT 1,"
             + KEY_IS_PAGED + " INTEGER DEFAULT 0,"
             + KEY_NEXT_PAGE_LINK + " TEXT,"
             + KEY_HIDE + " TEXT,"
@@ -234,6 +236,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_TYPE,
             TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD,
+            TABLE_NAME_FEEDS + "." + KEY_GLOBAL_REFRESH,
             TABLE_NAME_FEEDS + "." + KEY_FLATTR_STATUS,
             TABLE_NAME_FEEDS + "." + KEY_IS_PAGED,
             TABLE_NAME_FEEDS + "." + KEY_NEXT_PAGE_LINK,
@@ -398,6 +401,7 @@ public class PodDBAdapter {
         }
         ContentValues values = new ContentValues();
         values.put(KEY_AUTO_DOWNLOAD, prefs.getAutoDownload());
+        values.put(KEY_GLOBAL_REFRESH, prefs.getGlobalRefresh());
         values.put(KEY_AUTO_DELETE_ACTION,prefs.getAutoDeleteAction().ordinal());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
@@ -1796,6 +1800,10 @@ public class PodDBAdapter {
 
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                         + " ADD COLUMN " + PodDBAdapter.KEY_EXCLUDE_FILTER + " TEXT DEFAULT ''");
+
+                // and now auto refresh
+                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + PodDBAdapter.KEY_GLOBAL_REFRESH + " INTEGER DEFAULT 1");
             }
 
             EventBus.getDefault().post(ProgressEvent.end());

@@ -26,6 +26,7 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -186,21 +187,30 @@ public final class DBTasks {
         }
     }
 
+    /**
+     * @param context
+     * @param feedList the list of feeds to refresh
+     */
     private static void refreshFeeds(final Context context,
                                      final List<Feed> feedList) {
 
         for (Feed feed : feedList) {
-            try {
-                refreshFeed(context, feed);
-            } catch (DownloadRequestException e) {
-                e.printStackTrace();
-                DBWriter.addDownloadStatus(
-                        new DownloadStatus(feed, feed
-                                .getHumanReadableIdentifier(),
-                                DownloadError.ERROR_REQUEST_ERROR, false, e
-                                .getMessage()
-                        )
-                );
+            FeedPreferences prefs = feed.getPreferences();
+            // feeds with !getGlobalRefresh can only be refreshed
+            // directly from the FeedActivity
+            if (prefs.getGlobalRefresh()) {
+                try {
+                    refreshFeed(context, feed);
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                    DBWriter.addDownloadStatus(
+                            new DownloadStatus(feed, feed
+                                    .getHumanReadableIdentifier(),
+                                    DownloadError.ERROR_REQUEST_ERROR, false, e
+                                    .getMessage()
+                            )
+                    );
+                }
             }
         }
 
