@@ -181,6 +181,17 @@
                     android:clickable="true" />
             </android.support.v7.widget.GridLayout>
 
+            <CheckBox
+                android:id="@+id/cbxKeepUpdated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/keep_updated"
+                android:enabled="true"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:background="@android:color/holo_red_light"
+                android:checked="true" />
+
             <TextView
                 android:id="@+id/txtvAuthentication"
                 android:layout_width="match_parent"
