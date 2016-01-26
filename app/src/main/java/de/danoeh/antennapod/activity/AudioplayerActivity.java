@@ -533,16 +533,46 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
             super(fm);
         }
 
+        private CoverFragment coverFragment;
+        private ItemDescriptionFragment itemDescriptionFragment;
+        private ChaptersFragment chaptersFragment;
+
+        public void onMediaChanged(Playable media) {
+            if(coverFragment != null) {
+                coverFragment.onMediaChanged(media);
+            }
+            if(itemDescriptionFragment != null) {
+                itemDescriptionFragment.onMediaChanged(media);
+            }
+            if(chaptersFragment != null) {
+                chaptersFragment.onMediaChanged(media);
+            }
+        }
+
+        @Nullable
+        public ChaptersFragment getChaptersFragment() {
+            return chaptersFragment;
+        }
+
         @Override
         public Fragment getItem(int position) {
             Log.d(TAG, "getItem(" + position + ")");
             switch (position) {
                 case POS_COVER:
-                    return CoverFragment.newInstance(media);
+                    if(coverFragment == null) {
+                        coverFragment = CoverFragment.newInstance(media);
+                    }
+                    return coverFragment;
                 case POS_DESCR:
-                    return ItemDescriptionFragment.newInstance(media, true, true);
+                    if(itemDescriptionFragment == null) {
+                        itemDescriptionFragment = ItemDescriptionFragment.newInstance(media, true, true);
+                    }
+                    return itemDescriptionFragment;
                 case POS_CHAPTERS:
-                    return ChaptersFragment.newInstance(media, controller);
+                    if(chaptersFragment == null) {
+                        chaptersFragment = ChaptersFragment.newInstance(media, controller);
+                    }
+                    return chaptersFragment;
                 default:
                     return null;
             }
