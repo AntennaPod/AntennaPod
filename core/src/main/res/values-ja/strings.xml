@@ -23,6 +23,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net ログイン</string>
   <string name="free_space_label">%1$s 空き</string>
+  <string name="episode_cache_full_title">エピソードキャッシュが一杯です</string>
+  <string name="episode_cache_full_message">エピソードキャッシュが制限に達しました。設定でキャッシュサイズを増やすことができます。</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">最近公開された</string>
   <string name="episode_filter_label">新しいエピソードのみ表示</string>
@@ -67,7 +69,7 @@
   <string name="length_prefix">長さ:\u0020</string>
   <string name="size_prefix">サイズ:\u0020</string>
   <string name="processing_label">処理中</string>
-  <string name="loading_label">読み込み中...</string>
+  <string name="loading_label">ロード中…</string>
   <string name="save_username_password_label">ユーザ名とパスワードを保存する</string>
   <string name="close_label">閉じる</string>
   <string name="retry_label">再試行</string>
@@ -79,7 +81,7 @@
   <string name="feed_auto_download_global">全般</string>
   <string name="feed_auto_download_always">常に</string>
   <string name="feed_auto_download_never">しない</string>
-  <string name="send_label">送信...</string>
+  <string name="send_label">送信…</string>
   <string name="episode_cleanup_never">しない</string>
   <string name="episode_cleanup_queue_removal">キューにない時</string>
   <string name="episode_cleanup_after_listening">完了後</string>
@@ -101,7 +103,7 @@
   <string name="mark_all_seen_label">参照済としてマーク</string>
   <string name="show_info_label">情報を表示</string>
   <string name="remove_feed_label">ポッドキャストを削除</string>
-  <string name="share_label">共有...</string>
+  <string name="share_label">共有…</string>
   <string name="share_link_label">Webサイトのリンクを共有</string>
   <string name="share_link_with_position_label">場所とリンクを共有</string>
   <string name="share_feed_url_label">フィード URLを共有</string>
@@ -136,7 +138,9 @@
   <string name="added_to_queue_label">キューに追加しました</string>
   <string name="remove_from_queue_label">キューから削除</string>
   <string name="add_to_favorite_label">お気に入りに追加</string>
+  <string name="added_to_favorites">お気に入りに追加</string>
   <string name="remove_from_favorite_label">お気に入りから削除</string>
+  <string name="removed_from_favorites">お気に入りから削除</string>
   <string name="visit_website_label">Webサイトを訪問</string>
   <string name="support_label">これをFlattr</string>
   <string name="enqueue_all_new">すべてキューに入れる</string>
@@ -170,7 +174,9 @@
   <string name="download_error_io_error">IOエラー</string>
   <string name="download_error_request_error">リクエストエラー</string>
   <string name="download_error_db_access">データベース アクセスエラー</string>
-  <string name="downloads_left">\u0020ダウンロード残</string>
+  <plurals name="downloads_left">
+    <item quantity="other">%d ダウンロード残</item>
+  </plurals>
   <string name="downloads_processing">ダウンロード処理中</string>
   <string name="download_notification_title">ポッドキャストデータをダウンロード中</string>
   <string name="download_report_content">%1$d ダウンロード成功, %2$d 失敗</string>
@@ -202,6 +208,8 @@
   <!--Queue operations-->
   <string name="lock_queue">キューをロック</string>
   <string name="unlock_queue">キューのロックを解除</string>
+  <string name="queue_locked">キューをロックしました</string>
+  <string name="queue_unlocked">キューのロックを解除しました</string>
   <string name="clear_queue_label">キューをクリア</string>
   <string name="undo">元に戻す</string>
   <string name="removed_from_queue">アイテムを削除しました</string>
@@ -243,12 +251,13 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">プラグインをダウンロード</string>
   <string name="no_playback_plugin_title">プラグイン はインストールされていません</string>
-  <string name="no_playback_plugin_or_sonic_msg">再生速度の変更が機能するには、サードパーティのライブラリをインストールするか、実験的に Sonic プレーヤー [Android 4.1+] を有効にする必要があります。\n\n\'プラグインをダウンロード\' をタップして、Google Playから無料のプラグインをダウンロードしてください\n\nこのプラグインを使用して見つかったすべての問題は AntennaPodの責任ではなく、プラグインのオーナーに報告すべきです。</string>
+  <string name="no_playback_plugin_or_sonic_msg">再生速度の変更を機能させるには、内蔵の Sonic メディアプレーヤーを有効にすることを推奨します [Android 4.1+]。代わりに、Google Play からサードパーティのプラグイン <i>Prestissimo</i> をダウンロードすることができます。\nPrestissimo での問題は AntennaPod の責任ではなく、プラグインのオーナーに報告すべきです。</string>
   <string name="set_playback_speed_label">再生速度</string>
   <string name="enable_sonic">Sonic を有効にする</string>
   <!--Empty list labels-->
   <string name="no_items_label">このリストにはアイテムがありません。</string>
   <string name="no_feeds_label">まだフィードを何も購読していません。</string>
+  <string name="no_chapters_label">このエピソードにチャプターはありません。</string>
   <!--Preferences-->
   <string name="other_pref">その他</string>
   <string name="about_pref">について</string>
@@ -256,7 +265,7 @@
   <string name="services_label">サービス</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">エピソード クリーンアップ</string>
-  <string name="pref_episode_cleanup_summary">空き容量が必要な場合、キューに含まれていおらず、お気に入りでもないエピソードは、削除の対象になります</string>
+  <string name="pref_episode_cleanup_summary">キューに含まれておらず、お気に入りではないエピソードは、自動ダウンロードで新しいエピソードのためにスペースが必要な場合、除去の対象になります</string>
   <string name="pref_pauseOnDisconnect_sum">ヘッドフォンまたはBluetoothの接続が切断された時、再生を一時停止します</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">ヘッドフォンが再接続された時に再生を再開します</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetoothが再接続された時に再生を再開します</string>
@@ -277,6 +286,8 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">無効</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">間隔をセット</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">時間をセット</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">%1$s ごと</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">%1$s に</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">WiFi接続時のみメディアファイルをダウンロードします</string>
   <string name="pref_followQueue_title">連続再生</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFiメディアダウンロード</string>
@@ -351,7 +362,8 @@
   <string name="send_email">メールを送信</string>
   <string name="experimental_pref">実験的</string>
   <string name="pref_sonic_title">Sonic メディアプレーヤー</string>
-  <string name="pref_sonic_message">Prestissimo の代わりに、内蔵の Sonic メディアプレーヤーを使用します</string>
+  <string name="pref_sonic_message">Android 標準のメディアプレーヤーと Prestissimo の代わりに、内蔵のソニックメディアプレーヤーを使用します</string>
+  <string name="pref_current_value">現在の値: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">自動Flattrを有効にする</string>
   <string name="auto_flattr_after_percent">%d ％再生したらエピソードをFlattr </string>
@@ -378,11 +390,11 @@
   <string name="opml_import_error_dir_empty">インポートディレクトリが空です。</string>
   <string name="select_all_label">すべてを選択</string>
   <string name="deselect_all_label">選択解除</string>
-  <string name="select_options_label">選択 ...</string>
+  <string name="select_options_label">選択…</string>
   <string name="choose_file_from_filesystem">ローカル ファイルシステムから</string>
   <string name="choose_file_from_external_application">外部アプリケーションを使用する</string>
   <string name="opml_export_label">OPMLエクスポート</string>
-  <string name="exporting_label">エクスポート中...</string>
+  <string name="exporting_label">エクスポート中…</string>
   <string name="export_error_label">エクスポートエラー</string>
   <string name="opml_export_success_title">OPMLをエクスポートしました。</string>
   <string name="opml_export_success_sum">.opml ファイルを書き込みました:\u0020</string>
@@ -460,7 +472,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
   <string name="subscribed_label">購読しました</string>
-  <string name="downloading_label">ダウンロード中...</string>
+  <string name="downloading_label">ダウンロード中…</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">チャプターを表示</string>
   <string name="show_shownotes_label">ショーノートを表示</string>
@@ -488,7 +500,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">単一目的のアプリから購読をインポート中…</string>
   <string name="search_itunes_label">iTunes を検索</string>
-  <string name="select_label"><b>選択 ...</b></string>
+  <string name="select_label"><b>選択…</b></string>
+  <string name="filter">フィルター</string>
   <string name="all_label">すべて</string>
   <string name="selected_all_label">すべてのエピソードを選択しました</string>
   <string name="none_label">なし</string>
@@ -501,7 +514,7 @@
   <string name="selected_downloaded_label">ダウンロード済のエピソードを選択しました</string>
   <string name="not_downloaded_label">ダウンロードしていません</string>
   <string name="selected_not_downloaded_label">ダウンロードしていないエピソードを選択しました</string>
-  <string name="sort_title"><b>並び替え順 ...</b></string>
+  <string name="sort_title"><b>並び替え…</b></string>
   <string name="sort_title_a_z">タイトル (A \u2192 Z)</string>
   <string name="sort_title_z_a">タイトル (Z \u2192 A)</string>
   <string name="sort_date_new_old">日付 (新 \u2192 旧)</string>
@@ -514,4 +527,13 @@
   <string name="rating_never_label">構わないで</string>
   <string name="rating_later_label">後で確認する</string>
   <string name="rating_now_label">もちろん、します!</string>
+  <!--Audio controls-->
+  <string name="audio_controls">自動コントロール</string>
+  <string name="playback_speed">再生速度</string>
+  <string name="volume">音量</string>
+  <string name="left_short">左</string>
+  <string name="right_short">右</string>
+  <string name="audio_effects">オーディオエフェクト</string>
+  <string name="stereo_to_mono">ダウンミックス: ステレオからモノラル</string>
+  <string name="sonic_only">Sonic のみ</string>
 </resources>

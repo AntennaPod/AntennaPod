@@ -66,7 +66,6 @@
   <string name="length_prefix">Продолжительность:\u0020</string>
   <string name="size_prefix">Размер:\u0020</string>
   <string name="processing_label">Обработка</string>
-  <string name="loading_label">Загрузка...</string>
   <string name="save_username_password_label">Сохранить имя пользователя и пароль</string>
   <string name="close_label">Закрыть</string>
   <string name="retry_label">Повторить</string>
@@ -78,7 +77,6 @@
   <string name="feed_auto_download_global">Общие</string>
   <string name="feed_auto_download_always">Всегда</string>
   <string name="feed_auto_download_never">Никогда</string>
-  <string name="send_label">Отправить...</string>
   <string name="episode_cleanup_never">Никогда</string>
   <string name="episode_cleanup_queue_removal">Когда не в очереди</string>
   <string name="episode_cleanup_after_listening">После прослушивания</string>
@@ -97,7 +95,6 @@
   <string name="mark_all_seen_label">Отметить все как про</string>
   <string name="show_info_label">Показать информацию</string>
   <string name="remove_feed_label">Удалить подкаст</string>
-  <string name="share_label">Поделиться...</string>
   <string name="share_link_label">Поделиться ссылкой</string>
   <string name="share_link_with_position_label">Поделиться ссылкой с отметкой времени</string>
   <string name="share_feed_url_label">Поделиться ссылкой на канал</string>
@@ -165,7 +162,6 @@
   <string name="download_error_io_error">Ошибка ввода-вывода</string>
   <string name="download_error_request_error">Ошибка запроса</string>
   <string name="download_error_db_access">Ошибка доступа к базе данных</string>
-  <string name="downloads_left">Осталось\u0020загрузок</string>
   <string name="downloads_processing">Производится загрузка</string>
   <string name="download_notification_title">Получение данных подкаста</string>
   <string name="download_report_content">%1$d загрузок завершено, %2$d не удалось</string>
@@ -238,7 +234,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Загрузить плагин</string>
   <string name="no_playback_plugin_title">Плагин не установлен</string>
-  <string name="no_playback_plugin_or_sonic_msg">Для изменения скорости воспроизведения нужно установить библиотеку стороннего разработчика или включить экспериментальный Sonic player [Android 4.1+].\n\nНажмите \"Загрузить плагин\", чтобы скачать бесплатный плагин из Play Store\n\nЛюбые вопросы по работе плагина находятся вне ответственности AntennaPod и должны быть направлены владельцу плагина.</string>
   <string name="set_playback_speed_label">Скорость воспроизведения</string>
   <string name="enable_sonic">Включить Sonic</string>
   <!--Empty list labels-->
@@ -251,7 +246,6 @@
   <string name="services_label">Сервисы</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Удаление выпусков</string>
-  <string name="pref_episode_cleanup_summary">Выпуски, которые не стоят в очереди и не отмечены как избранные могут быть удалены для освобождения места.</string>
   <string name="pref_pauseOnDisconnect_sum">Приостановить воспроизведение, когда наушники или bluetooth отключены</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Продолжать воспроизведение после подключения наушников</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Продолжать воспроизведение после подключения наушников или восстановления bluetooth-соединения</string>
@@ -343,7 +337,6 @@
   <string name="send_email">Отправить Email</string>
   <string name="experimental_pref">Экспериментальные настройки</string>
   <string name="pref_sonic_title">Проигрыватель Sonic</string>
-  <string name="pref_sonic_message">Использовать встроенный проигрыватель Sonic вместо Prestissimo.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включить автоматическую поддержку через Flattr</string>
   <string name="auto_flattr_after_percent">Поддерживать через Flattr эпизоды, прослушанные на %d процентов</string>
@@ -370,11 +363,9 @@
   <string name="opml_import_error_dir_empty">Каталог для импорта пуст.</string>
   <string name="select_all_label">Отметить все</string>
   <string name="deselect_all_label">Снять все отметки</string>
-  <string name="select_options_label">Выбрать...</string>
   <string name="choose_file_from_filesystem">Из файловой системы</string>
   <string name="choose_file_from_external_application">С помощью внешнего приложения</string>
   <string name="opml_export_label">Экспорт в OPML</string>
-  <string name="exporting_label">Экспортируется...</string>
   <string name="export_error_label">Ошибка экспорта</string>
   <string name="opml_export_success_title">OPML успешно экспортирован.</string>
   <string name="opml_export_success_sum">Файл OPML был записан в:\u0020</string>
@@ -460,7 +451,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">Подписаться</string>
   <string name="subscribed_label">Подписка оформлена</string>
-  <string name="downloading_label">Загрузка...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Показать главы</string>
   <string name="show_shownotes_label">Показать примечания к выпуску</string>
@@ -488,7 +478,6 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из одноцелевых приложений…</string>
   <string name="search_itunes_label">Поиск в iTunes</string>
-  <string name="select_label"><b>Выбрать ...</b></string>
   <string name="all_label">Все</string>
   <string name="selected_all_label">Отмечены все выпуски</string>
   <string name="none_label">Нет</string>
@@ -501,7 +490,6 @@
   <string name="selected_downloaded_label">Выбраны загруженные выпуски</string>
   <string name="not_downloaded_label">Не загружено</string>
   <string name="selected_not_downloaded_label">Выбраны незагруженные выпуски</string>
-  <string name="sort_title"><b>Сортировать по ...</b></string>
   <string name="sort_title_a_z">Заголовку (А \u2192 Я)</string>
   <string name="sort_title_z_a">Заголовку (Я \u2192 А)</string>
   <string name="sort_date_new_old">Дате (Новое \u2192 Старое)</string>
@@ -514,4 +502,5 @@
   <string name="rating_never_label">Отстань от меня</string>
   <string name="rating_later_label">Напомни позже</string>
   <string name="rating_now_label">Конечно, давай!</string>
+  <!--Audio controls-->
 </resources>

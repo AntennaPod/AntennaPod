@@ -23,6 +23,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
   <string name="free_space_label">%1$s beschikbaar</string>
+  <string name="episode_cache_full_title">Afleveringen cache is vol</string>
+  <string name="episode_cache_full_message">Het maximum aantal gecachte afleveringen is bereikt. U kunt het maximum verhogen in de instellingen.</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Recent gepubliceerd</string>
   <string name="episode_filter_label">Alleen nieuwe afleveringen weergeven</string>
@@ -67,7 +69,7 @@
   <string name="length_prefix">Lengte:\u0020</string>
   <string name="size_prefix">Grootte:\u0020</string>
   <string name="processing_label">Aan het verwerken</string>
-  <string name="loading_label">Laden...</string>
+  <string name="loading_label">Laden…</string>
   <string name="save_username_password_label">Gebruikersnaam en wachtwoord opslaan</string>
   <string name="close_label">Sluiten</string>
   <string name="retry_label">Opnieuw proberen</string>
@@ -79,7 +81,7 @@
   <string name="feed_auto_download_global">Standaardinstelling</string>
   <string name="feed_auto_download_always">Altijd</string>
   <string name="feed_auto_download_never">Nooit</string>
-  <string name="send_label">Versturen...</string>
+  <string name="send_label">Versturen…</string>
   <string name="episode_cleanup_never">Nooit</string>
   <string name="episode_cleanup_queue_removal">Wanneer niet in de wachtrij</string>
   <string name="episode_cleanup_after_listening">Wanneer aflevering volledig is afgespeeld</string>
@@ -102,7 +104,7 @@
   <string name="mark_all_seen_label">\'Nieuw\' label van alle afleveringen verwijderen.</string>
   <string name="show_info_label">Toon informatie</string>
   <string name="remove_feed_label">Podcast verwijderen</string>
-  <string name="share_label">Delen...</string>
+  <string name="share_label">Delen…</string>
   <string name="share_link_label">Link van de aflevering delen</string>
   <string name="share_link_with_position_label">Link van de aflevering met tijdstip delen</string>
   <string name="share_feed_url_label">URL van de feed delen</string>
@@ -137,7 +139,9 @@
   <string name="added_to_queue_label">Aan wachtrij toegevoegd</string>
   <string name="remove_from_queue_label">Verwijder van wachtrij</string>
   <string name="add_to_favorite_label">Toevoegen aan favorieten</string>
+  <string name="added_to_favorites">Aan favorieten toegevoegd</string>
   <string name="remove_from_favorite_label">Verwijderen uit favorieten</string>
+  <string name="removed_from_favorites">Verwijderd uit favorieten</string>
   <string name="visit_website_label">Website bezoeken</string>
   <string name="support_label">Flattr dit</string>
   <string name="enqueue_all_new">Alle aan wachtrij toevoegen</string>
@@ -171,7 +175,10 @@
   <string name="download_error_io_error">IO fout</string>
   <string name="download_error_request_error">Fout in de aanvraag</string>
   <string name="download_error_db_access">Databasetoegangsfout</string>
-  <string name="downloads_left">Nog \u0020 downloads</string>
+  <plurals name="downloads_left">
+    <item quantity="one">Nog %d download</item>
+    <item quantity="other">Nog %d downloads</item>
+  </plurals>
   <string name="downloads_processing">Downloads verwerken</string>
   <string name="download_notification_title">Podcast gegevens aan het downloaden</string>
   <string name="download_report_content">%1$d downloads geslaagd, %2$d mislukt</string>
@@ -203,6 +210,8 @@
   <!--Queue operations-->
   <string name="lock_queue">Wachtrij vastzetten</string>
   <string name="unlock_queue">Wachtrij ontgrendelen</string>
+  <string name="queue_locked">Wachtrij vergrendeld</string>
+  <string name="queue_unlocked">Wachtrij ontgrendeld</string>
   <string name="clear_queue_label">Wachtrij leeg maken</string>
   <string name="undo">Ongedaan maken</string>
   <string name="removed_from_queue">Item verwijderd</string>
@@ -244,12 +253,13 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Plugin downloaden</string>
   <string name="no_playback_plugin_title">Plugin niet geïnstalleerd</string>
-  <string name="no_playback_plugin_or_sonic_msg">Om variabele afspeelsnelheid te kunnen gebruiken, moet een bibliotheek van derden worden geïnstalleerd of de experimentele Sonic Player worden geactiveerd (beschikbaar voor Android 4.1 en hoger).\n\nKies \'Plugin Downloaden\' om de gratis plugin via de Play Store te installeren.\n\nProblemen bij het gebruik van deze plugin zijn niet de verantwoordelijkheid van AntennaPod en moeten gemeld worden bij de ontwikkelaar van de plugin.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Om variabele afspeelsnelheid te kunnen gebruiken, raden wij u aan om de ingebouwde Sonic mediaspeler te activeren [Android 4.1+]\n\nEventueel kunt u de externe plugin <i>Prestissimo</i> downloaden van de Play Store.\nProblemen bij het gebruik van deze plugin zijn niet de verantwoordelijkheid van AntennaPod en moeten gemeld worden bij de ontwikkelaar van de plugin.</string>
   <string name="set_playback_speed_label">Afspeelsnelheden</string>
   <string name="enable_sonic">Sonic instellen</string>
   <!--Empty list labels-->
   <string name="no_items_label">Er zijn geen items in deze lijst.</string>
   <string name="no_feeds_label">U bent nog tot geen enkele feed geabonneerd.</string>
+  <string name="no_chapters_label">Deze aflevering heeft geen hoofdstukken.</string>
   <!--Preferences-->
   <string name="other_pref">Overig</string>
   <string name="about_pref">Over AntennaPod</string>
@@ -257,7 +267,7 @@
   <string name="services_label">Services</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Automatisch opschonen</string>
-  <string name="pref_episode_cleanup_summary">Afleveringen die niet in de wachtrij staan en niet zijn gemarkeerd als favoriet, komen in aanmerking voor verwijdering bij automatisch opschonen.</string>
+  <string name="pref_episode_cleanup_summary">Afleveringen die niet in de wachtrij staan en die niet als favoriet zijn gemarkeerd, mogen verwijderd worden als Automatisch Downloaden ruimte nodig heeft voor nieuwe afleveringen.</string>
   <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren wanneer de koptelefoon wordt losgekoppeld of de bluetooth verbinding wordt verbroken</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten wanneer de koptelefoon opnieuw wordt aangesloten</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten wanneer de bluetooth verbinding hervat wordt</string>
@@ -278,6 +288,8 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Uitschakelen</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Interval instellen</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Tijdstip instellen</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">elke %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">op %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Download mediabestanden alleen via WiFi</string>
   <string name="pref_followQueue_title">Continu afspelen</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi download van media</string>
@@ -352,7 +364,8 @@
   <string name="send_email">Verstuur email</string>
   <string name="experimental_pref">Experimentele functie</string>
   <string name="pref_sonic_title">Sonic mediaspeler</string>
-  <string name="pref_sonic_message">Sonic, de standaard mediaspeler van Android, gebruiken als alternatief voor Prestissimo</string>
+  <string name="pref_sonic_message">Gebruik AntennaPod\'s ingebouwde Sonic mediaspeler als een alternatief voor Prestissimo en de mediaspeler van Android.</string>
+  <string name="pref_current_value">Huidige instelling: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisch flattr\'en aanzetten</string>
   <string name="auto_flattr_after_percent">Flattr een aflevering zodra %d procent is afgespeeld</string>
@@ -379,11 +392,11 @@
   <string name="opml_import_error_dir_empty">De import map is leeg.</string>
   <string name="select_all_label">Selecteer alles</string>
   <string name="deselect_all_label">Deselecteer alles</string>
-  <string name="select_options_label">Selecteren …</string>
+  <string name="select_options_label">Selecteren…</string>
   <string name="choose_file_from_filesystem">Via bestandsbeheer</string>
   <string name="choose_file_from_external_application">Via externe app</string>
   <string name="opml_export_label">OPML export</string>
-  <string name="exporting_label">Aan het exporteren...</string>
+  <string name="exporting_label">Exporteren…</string>
   <string name="export_error_label">Export fout</string>
   <string name="opml_export_success_title">OPML bestand succesvol geëxporteerd.</string>
   <string name="opml_export_success_sum"> Het OPML-bestand is in \u0020 geplaatst</string>
@@ -464,7 +477,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abonneren</string>
   <string name="subscribed_label">Geabonneerd</string>
-  <string name="downloading_label">Aan het downloaden</string>
+  <string name="downloading_label">Downloaden…</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Hoofdstukken tonen</string>
   <string name="show_shownotes_label">Shownotes tonen</string>
@@ -492,7 +505,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Abonnementen aan het importeren vanuit single-purpose apps...</string>
   <string name="search_itunes_label">Zoeken in iTunes</string>
-  <string name="select_label"><b>Selecteren …</b></string>
+  <string name="select_label"><b>Selecteren…</b></string>
+  <string name="filter">Filter</string>
   <string name="all_label">Alle</string>
   <string name="selected_all_label">Alle afleveringen selecteren</string>
   <string name="none_label">Geen</string>
@@ -505,7 +519,7 @@
   <string name="selected_downloaded_label">Gedownloadde afleveringen geselecteerd</string>
   <string name="not_downloaded_label">Niet gedownload</string>
   <string name="selected_not_downloaded_label">Niet gedownloadde afleveringen geselecteerd</string>
-  <string name="sort_title"><b>Sorteren op ...</b></string>
+  <string name="sort_title"><b>Sorteren op…</b></string>
   <string name="sort_title_a_z">Titel (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titel (A \u2192 A)</string>
   <string name="sort_date_new_old">Datum (nieuw \u2192 oud)</string>
@@ -518,4 +532,13 @@
   <string name="rating_never_label">Nee, bedankt.</string>
   <string name="rating_later_label">Herinner me later</string>
   <string name="rating_now_label">Ja, doen we!</string>
+  <!--Audio controls-->
+  <string name="audio_controls">Audio-instellingen</string>
+  <string name="playback_speed">Afspeelsnelheid</string>
+  <string name="volume">Volume</string>
+  <string name="left_short">L</string>
+  <string name="right_short">R</string>
+  <string name="audio_effects">Terugmixen</string>
+  <string name="stereo_to_mono">Stereo terugmixen tot monogeluid op beide kanalen</string>
+  <string name="sonic_only">Alleen Sonic</string>
 </resources>

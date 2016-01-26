@@ -22,6 +22,9 @@
   <string name="playback_history_label">재생 기록</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net 로그인</string>
+  <string name="free_space_label">%1$s 남음</string>
+  <string name="episode_cache_full_title">에피소드 캐시 꽉 참</string>
+  <string name="episode_cache_full_message">에피소드 캐시 한계값에 도달했습니다. 설정에서 캐시 크기를 늘릴 수 있습니다.</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">최근에 발표</string>
   <string name="episode_filter_label">새 에피소드만 표시</string>
@@ -66,7 +69,7 @@
   <string name="length_prefix">길이:\u0020</string>
   <string name="size_prefix">크기:\u0020</string>
   <string name="processing_label">처리 중</string>
-  <string name="loading_label">읽어들이는 중...</string>
+  <string name="loading_label">읽어들이는 중…</string>
   <string name="save_username_password_label">사용자 이름 및 암호 저장</string>
   <string name="close_label">닫기</string>
   <string name="retry_label">다시 시도</string>
@@ -78,7 +81,7 @@
   <string name="feed_auto_download_global">전체 설정</string>
   <string name="feed_auto_download_always">항상</string>
   <string name="feed_auto_download_never">안 함</string>
-  <string name="send_label">보내기...</string>
+  <string name="send_label">보내기…</string>
   <string name="episode_cleanup_never">안 함</string>
   <string name="episode_cleanup_queue_removal">대기열에 없을 때</string>
   <string name="episode_cleanup_after_listening">재생이 끝나고 나서</string>
@@ -100,7 +103,7 @@
   <string name="mark_all_seen_label">모두 봤다고 표시</string>
   <string name="show_info_label">정보 표시</string>
   <string name="remove_feed_label">팟캐스트 제거</string>
-  <string name="share_label">공유...</string>
+  <string name="share_label">공유…</string>
   <string name="share_link_label">홈페이지 링크 공유</string>
   <string name="share_link_with_position_label">위치와 같이 링크 공유</string>
   <string name="share_feed_url_label">피드 URL 공유</string>
@@ -135,7 +138,9 @@
   <string name="added_to_queue_label">대기열에 추가함</string>
   <string name="remove_from_queue_label">대기열에서 제거</string>
   <string name="add_to_favorite_label">즐겨찾기에 추가</string>
+  <string name="added_to_favorites">즐겨찾기에 추가함</string>
   <string name="remove_from_favorite_label">즐겨찾기에서 제거</string>
+  <string name="removed_from_favorites">즐겨찾기에서 제거함</string>
   <string name="visit_website_label">홈페이지 보기</string>
   <string name="support_label">Flattr하기</string>
   <string name="enqueue_all_new">모두 대기열에 추가</string>
@@ -169,7 +174,9 @@
   <string name="download_error_io_error">입출력 오류</string>
   <string name="download_error_request_error">요청 오류</string>
   <string name="download_error_db_access">데이터베이스 접근 오류</string>
-  <string name="downloads_left">개\u0020다운로드 남음</string>
+  <plurals name="downloads_left">
+    <item quantity="other">다운로드 %d개 남음</item>
+  </plurals>
   <string name="downloads_processing">다운로드 처리 중</string>
   <string name="download_notification_title">팟캐스트 데이터 다운로드 중</string>
   <string name="download_report_content">다운로드 %1$d개 성공, %2$d개 실패</string>
@@ -201,6 +208,8 @@
   <!--Queue operations-->
   <string name="lock_queue">대기열 잠그기</string>
   <string name="unlock_queue">대기열 잠금 해제</string>
+  <string name="queue_locked">대기열 잠겨짐</string>
+  <string name="queue_unlocked">대기열 잠금 풀림</string>
   <string name="clear_queue_label">대기열 지우기</string>
   <string name="undo">실행 취소</string>
   <string name="removed_from_queue">항목을 제거했습니다</string>
@@ -242,12 +251,13 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">플러그인 다운로드</string>
   <string name="no_playback_plugin_title">플러그인을 설치하지 않았습니다</string>
-  <string name="no_playback_plugin_or_sonic_msg">가변 재생 속도를 사용하려면 제3자 라이브러리를 설치하거나 실험적인 \'소닉 플레이어[Android 4.1 이상]\'를 사용해야 합니다. \'플러그인 다운로드\'를 눌러 Play Store에서 무료 플러그인을 다운로드하십시오. 플러그인을 사용해서 발생하는 모든 문제는 AntennaPod의 책임이 아니며 플러그인 제작자에게 보고하십시오.</string>
+  <string name="no_playback_plugin_or_sonic_msg">여러가지 속도로 재생이 동작하려면 내부의 소닉 미디어 플레이어를 활성화해야 합니다. [Android 4.1 이상]\n\n아니면, 서드파티 플러그인 <i>Prestissimo</i>를 플레이스토어에서 다운로드할 수도 있습니다.\nPrestissimo에서 발생하는 문제는 안테나팟의 책임이 아니므로 플러그인 개발자에게 문의하십시오.</string>
   <string name="set_playback_speed_label">재생 속도</string>
   <string name="enable_sonic">소닉 플레이어 사용</string>
   <!--Empty list labels-->
   <string name="no_items_label">이 목록에 항목이 없습니다.</string>
   <string name="no_feeds_label">아직 어떤 피드도 구독하지 않았습니다.</string>
+  <string name="no_chapters_label">에피소드에 챕터가 없습니다.</string>
   <!--Preferences-->
   <string name="other_pref">기타</string>
   <string name="about_pref">정보</string>
@@ -255,7 +265,7 @@
   <string name="services_label">서비스</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">에피소드 정리</string>
-  <string name="pref_episode_cleanup_summary">여유 공간이 필요할 때, 대기열에 있지 않고 즐겨찾기도 아닌 에피소드가 삭제 대상이 됩니다.</string>
+  <string name="pref_episode_cleanup_summary">대기열에 없고 즐겨찾기에 넣지 않은 에피소드는 자동 다운로드에서 새 에피소드에 공간이 필요할 경우 제거될 수 있습니다.</string>
   <string name="pref_pauseOnDisconnect_sum">헤드폰이나 블루투스가 연결 해제되었을 경우 일시정지</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰 다시 연결할 때 재생 계속</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">블루투스가 다시 연결되면 재생 재개 </string>
@@ -276,6 +286,8 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">사용 안 함</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">주기 지정</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">하루 중 시각 지정</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">매 %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">%1$s에서</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Wi-Fi를 통해서만 미디어 파일 다운로드</string>
   <string name="pref_followQueue_title">연속 재생</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Wi-Fi 미디어 다운로드</string>
@@ -350,7 +362,8 @@
   <string name="send_email">전자메일 보내기</string>
   <string name="experimental_pref">실험적 기능</string>
   <string name="pref_sonic_title">소닉 미디어 플레이어</string>
-  <string name="pref_sonic_message">Prestissimo 대신 내장 소닉 미디어 플레이어 사용</string>
+  <string name="pref_sonic_message">내장 소닉 미디어 플레이어를 안드로이드 고유 미디어 플레이어와 Prestissimo 대신 사용합니다.</string>
+  <string name="pref_current_value">현재 값: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">자동 flattr 사용</string>
   <string name="auto_flattr_after_percent">%d 퍼센트를 재생하면 에피소드에 flattr합니다</string>
@@ -377,11 +390,11 @@
   <string name="opml_import_error_dir_empty">가져오기 디렉터리가 비어 있습니다.</string>
   <string name="select_all_label">모두 선택</string>
   <string name="deselect_all_label">모두 선택 해제</string>
-  <string name="select_options_label">선택...</string>
+  <string name="select_options_label">선택…</string>
   <string name="choose_file_from_filesystem">로컬 파일시스템에서</string>
   <string name="choose_file_from_external_application">외부 앱 사용</string>
   <string name="opml_export_label">OPML 내보내기</string>
-  <string name="exporting_label">내보내는 중...</string>
+  <string name="exporting_label">내보내는 중…</string>
   <string name="export_error_label">내보내기 오류</string>
   <string name="opml_export_success_title">OPML 내보내기가 성공했습니다.</string>
   <string name="opml_export_success_sum">OPML 파일을 다음에 저장했습니다:\u0020</string>
@@ -459,7 +472,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">구독</string>
   <string name="subscribed_label">구독함</string>
-  <string name="downloading_label">다운로드하는 중...</string>
+  <string name="downloading_label">다운로드하는 중…</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">챕터 보이기</string>
   <string name="show_shownotes_label">프로그램 메모 표시</string>
@@ -487,7 +500,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
   <string name="search_itunes_label">iTunes 검색</string>
-  <string name="select_label"><b>선택 ...</b></string>
+  <string name="select_label"><b>선택…</b></string>
+  <string name="filter">필터</string>
   <string name="all_label">모두</string>
   <string name="selected_all_label">모든 에피소드 선택</string>
   <string name="none_label">없음</string>
@@ -500,7 +514,7 @@
   <string name="selected_downloaded_label">다운로드한 에피소드 선택</string>
   <string name="not_downloaded_label">다운로드 안 함</string>
   <string name="selected_not_downloaded_label">다운로드 안 한 에피소드 선택</string>
-  <string name="sort_title"><b>정렬 ...</b></string>
+  <string name="sort_title"><b>정렬…</b></string>
   <string name="sort_title_a_z">제목 (A \u2192 Z)</string>
   <string name="sort_title_z_a">제목 (Z \u2192 A)</string>
   <string name="sort_date_new_old">시각 (최근 \u2192 과거)</string>
@@ -513,4 +527,13 @@
   <string name="rating_never_label">안 할래요</string>
   <string name="rating_later_label">나중에 알림</string>
   <string name="rating_now_label">해봅시다!</string>
+  <!--Audio controls-->
+  <string name="audio_controls">오디오 조정</string>
+  <string name="playback_speed">재생 속도</string>
+  <string name="volume">볼륨</string>
+  <string name="left_short">좌</string>
+  <string name="right_short">우</string>
+  <string name="audio_effects">오디오 효과</string>
+  <string name="stereo_to_mono">다운믹스: 스테레오에서 모노로</string>
+  <string name="sonic_only">소닉 전용</string>
 </resources>

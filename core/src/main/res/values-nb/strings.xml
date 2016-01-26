@@ -67,7 +67,6 @@
   <string name="length_prefix">Lengde:\u0020</string>
   <string name="size_prefix">Størrelse:\u0020</string>
   <string name="processing_label">Behandler</string>
-  <string name="loading_label">Laster opp...</string>
   <string name="save_username_password_label">Lagre brukernavn og passord</string>
   <string name="close_label">Lukk</string>
   <string name="retry_label">Prøv igjen</string>
@@ -79,7 +78,6 @@
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Alltid</string>
   <string name="feed_auto_download_never">Aldri</string>
-  <string name="send_label">Send ...</string>
   <string name="episode_cleanup_never">AldriAldri</string>
   <string name="episode_cleanup_queue_removal">Når ikke i kø</string>
   <string name="episode_cleanup_after_listening">Etter den er ferdig</string>
@@ -102,7 +100,6 @@
   <string name="mark_all_seen_label">Marker alle som sett</string>
   <string name="show_info_label">Vis informasjon</string>
   <string name="remove_feed_label">Fjern podcast</string>
-  <string name="share_label">Del ...</string>
   <string name="share_link_label">Del lenke</string>
   <string name="share_link_with_position_label">Del lenke med plassering</string>
   <string name="share_feed_url_label">Del strømmens URL</string>
@@ -171,7 +168,6 @@
   <string name="download_error_io_error">IO feil</string>
   <string name="download_error_request_error">Forespørselfeil</string>
   <string name="download_error_db_access">Tilgangsfeil for database</string>
-  <string name="downloads_left">\u0020Nedlastninger igjen</string>
   <string name="downloads_processing">Behandler nedlastninger</string>
   <string name="download_notification_title">Laster ned data til podcast</string>
   <string name="download_report_content">%1$d nedlastninger lyktes, %2$d mislyktes</string>
@@ -244,7 +240,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Last ned programtillegg</string>
   <string name="no_playback_plugin_title">Programtillegg er ikke installert</string>
-  <string name="no_playback_plugin_or_sonic_msg">For at variabel avspillingshastighet skal fungere må du installere et tredjepartsbibliotek eller aktivere den eksperimentelle Sonic-avspilleren [Android 4.1+].\n\nTrykk på «Last ned programtillegg» for å laste ned en gratis tilleggsmodul fra Google Play.\n\nEventuelle problemer som måtte oppstå på grunn av denne modulen er ikke AntennaPods ansvar og skal rapporteres til eieren av modulen.</string>
   <string name="set_playback_speed_label">Avspillingshastigheter</string>
   <string name="enable_sonic">Skru på Sonic</string>
   <!--Empty list labels-->
@@ -257,7 +252,6 @@
   <string name="services_label">Tjenester</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Episodeopprydding</string>
-  <string name="pref_episode_cleanup_summary">Episoder som ikke er i køen og ikke er merket som favoritt vil være markert for sletting dersom lagringsplass trengs</string>
   <string name="pref_pauseOnDisconnect_sum">Sett playback på pause når hodetelefoner eller bluetooth er frakoblet</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Gjenoppta avspilling når hodetelefoner gjeninnkoples</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsett avspilling når bluetooth er tilkoblet igjen</string>
@@ -352,7 +346,6 @@
   <string name="send_email">Send e-post</string>
   <string name="experimental_pref">Eksperimentell</string>
   <string name="pref_sonic_title">Sonic medieavspiller</string>
-  <string name="pref_sonic_message">Bruk den innebygde Sonic medieavspilleren som en erstatning for Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktiver automatisk flattring</string>
   <string name="auto_flattr_after_percent">Flattre episode så snart %d prosent er avspilt</string>
@@ -379,11 +372,9 @@
   <string name="opml_import_error_dir_empty">Importkatalogen er tom.</string>
   <string name="select_all_label">Velg alle</string>
   <string name="deselect_all_label">Opphev alle markeringene</string>
-  <string name="select_options_label">Velg ...</string>
   <string name="choose_file_from_filesystem">Fra lokalt filsystem</string>
   <string name="choose_file_from_external_application">Bruk ekstern applikasjon</string>
   <string name="opml_export_label">OPML-eksportering</string>
-  <string name="exporting_label">Eksporterer...</string>
   <string name="export_error_label">Eksporteringserror</string>
   <string name="opml_export_success_title">OPML-import vellykket.</string>
   <string name="opml_export_success_sum">.opml-filen ble skrevet til:\u0020</string>
@@ -464,7 +455,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
   <string name="subscribed_label">Abonnert</string>
-  <string name="downloading_label">Laster ned...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Vis kapitler</string>
   <string name="show_shownotes_label">Vis notater</string>
@@ -492,7 +482,6 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abbonementer fra enkeltstående applikasjoner ...</string>
   <string name="search_itunes_label">Søk på iTunes</string>
-  <string name="select_label"><b>Velg ...</b></string>
   <string name="all_label">Alle</string>
   <string name="selected_all_label">Valgte alle episoder</string>
   <string name="none_label">Ingen</string>
@@ -505,7 +494,6 @@
   <string name="selected_downloaded_label">Valgte nedlastede episoder</string>
   <string name="not_downloaded_label">Ikke nedlastet</string>
   <string name="selected_not_downloaded_label">Valgte ikke-nedlastede episoder</string>
-  <string name="sort_title"><b>Sorter på ...</b></string>
   <string name="sort_title_a_z">Tittel (A \u2192 Z)</string>
   <string name="sort_title_z_a">Tittel (Z \u2192 A)</string>
   <string name="sort_date_new_old">Dato (Ny \u2192 Gammel)</string>
@@ -518,4 +506,5 @@
   <string name="rating_never_label">La meg være i fred</string>
   <string name="rating_later_label">Minn meg på dette senere</string>
   <string name="rating_now_label">Naturligvis, kom igjen!</string>
+  <!--Audio controls-->
 </resources>

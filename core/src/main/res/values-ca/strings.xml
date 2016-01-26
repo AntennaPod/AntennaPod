@@ -66,7 +66,6 @@
   <string name="length_prefix">Durada:\u0020</string>
   <string name="size_prefix">Mida:\u0020</string>
   <string name="processing_label">S\'està processant</string>
-  <string name="loading_label">S\'està carregant...</string>
   <string name="save_username_password_label">Desa nom d\'usuari i contrasenya</string>
   <string name="close_label">Tanca</string>
   <string name="retry_label">Reintenta</string>
@@ -78,7 +77,6 @@
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
-  <string name="send_label">Envia...</string>
   <string name="episode_cleanup_never">Mai</string>
   <string name="episode_cleanup_queue_removal">Quan no està a la cua</string>
   <string name="episode_cleanup_after_listening">Després d\'acabar</string>
@@ -101,7 +99,6 @@
   <string name="mark_all_seen_label">Marca tot com a llegit</string>
   <string name="show_info_label">Mostra informació</string>
   <string name="remove_feed_label">Esborra podcast</string>
-  <string name="share_label">Comparteix...</string>
   <string name="share_link_label">Comparteix l\'enllaç</string>
   <string name="share_link_with_position_label">Comparteix enllaç amb posició</string>
   <string name="share_feed_url_label">Comparteix adreça del canal</string>
@@ -170,7 +167,6 @@
   <string name="download_error_io_error">Error d\'E/S</string>
   <string name="download_error_request_error">Error de petició</string>
   <string name="download_error_db_access">Error d\'accés a la base de dades</string>
-  <string name="downloads_left">\u0020Baixades pendents</string>
   <string name="downloads_processing">S\'estan processant les baixades</string>
   <string name="download_notification_title">S\'estan baixant les dades del podcast</string>
   <string name="download_report_content">%1$d baixades finalitzades, %2$d fallides</string>
@@ -243,7 +239,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Baixa el connector</string>
   <string name="no_playback_plugin_title">Connector no instal·lat</string>
-  <string name="no_playback_plugin_or_sonic_msg">Perque la reproducció de velocitat variable funcioni, ha d\'instal lar el connector de tercers o activar el reproductor experimental Sonic [Android 4.1+].\n\nPrem \'Baixa el connector\' per baixar el connector gratuït de la Play Store.\n\nQualsevol problema que us trobeu amb l\'ús d\'aquest connector no són responsabilitat d\'AntennaPod i han de ser reportats al propietari del connector.</string>
   <string name="set_playback_speed_label">Velocitats de reproducció</string>
   <string name="enable_sonic">Activa Sonic</string>
   <!--Empty list labels-->
@@ -256,7 +251,6 @@
   <string name="services_label">Serveis</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Neteja l\'episodi</string>
-  <string name="pref_episode_cleanup_summary">Episodis que no estan a la cua i no són favorits haurien de ser escollits per eliminar-los si es requereix espai</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continua la reproducció en connectar novament els auriculars</string>
   <string name="pref_followQueue_sum">Salta al següent element de la cua en acabar la reproducció</string>
   <string name="pref_auto_delete_sum">Suprimeix l\'episodi quan s\'acabi de reproduir</string>
@@ -341,7 +335,6 @@
   <string name="pref_image_cache_size_sum">Mida de la memòria cau en el disc de les imatges.</string>
   <string name="experimental_pref">Experimental</string>
   <string name="pref_sonic_title">Reproductor multimèdia Sonic</string>
-  <string name="pref_sonic_message">Utilitzeu la funció incorporada del reproductor multimèdia Sonic com a reemplaçament per Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activa la compartició automàtica per Flattr</string>
   <string name="auto_flattr_after_percent">Comparteix per Flattr l\'episodi en haver-ne reproduït el %d per cent</string>
@@ -368,11 +361,9 @@
   <string name="opml_import_error_dir_empty">El directori d\'importacions és buit.</string>
   <string name="select_all_label">Selecciona-ho tot</string>
   <string name="deselect_all_label">Deselecciona-ho tot</string>
-  <string name="select_options_label">Sel·lecciona...</string>
   <string name="choose_file_from_filesystem">Des de sistema d\'arxius local</string>
   <string name="choose_file_from_external_application">Utilitza aplicació externa</string>
   <string name="opml_export_label">Exportació OPML</string>
-  <string name="exporting_label">S\'està exportant...</string>
   <string name="export_error_label">Error d\'exportació</string>
   <string name="opml_export_success_title">S\'ha exportat l\'OPML correctament.</string>
   <string name="opml_export_success_sum">El fitxer OPML s\'ha escrit a:\u0020</string>
@@ -449,7 +440,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">Subscriu</string>
   <string name="subscribed_label">Subscrit</string>
-  <string name="downloading_label">S\'està baixant...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Mostra els capítols</string>
   <string name="show_shownotes_label">Mostra les notes del programa</string>
@@ -477,7 +467,6 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
   <string name="search_itunes_label">Cerca a iTunes</string>
-  <string name="select_label"><b>Seleccionar...</b></string>
   <string name="all_label">Tot</string>
   <string name="selected_all_label">Selecciona tots els episodis</string>
   <string name="none_label">Cap</string>
@@ -490,7 +479,6 @@
   <string name="selected_downloaded_label">Selecciona episodis descarregats</string>
   <string name="not_downloaded_label">No baixat</string>
   <string name="selected_not_downloaded_label">Selecciona episodis sense descarregar</string>
-  <string name="sort_title"><b>Ordena per...</b></string>
   <string name="sort_title_a_z">Títol (A \u2192 Z)</string>
   <string name="sort_title_z_a">Títol (Z \u2192 A)</string>
   <string name="sort_date_new_old">Data (Nou \u2192 Antic)</string>
@@ -498,4 +486,5 @@
   <string name="sort_duration_short_long">Duració (Curt \u2192 Llarg)</string>
   <string name="sort_duration_long_short">Duration (Llarg \u2192 Curt)</string>
   <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

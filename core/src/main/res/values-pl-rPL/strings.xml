@@ -65,7 +65,6 @@
   <string name="length_prefix">Długość:\u0020</string>
   <string name="size_prefix">Rozmiar:\u0020</string>
   <string name="processing_label">Przetwarzanie</string>
-  <string name="loading_label">Ładowanie...</string>
   <string name="save_username_password_label">Zapisz nazwę użytkownika i hasło</string>
   <string name="close_label">Zamknij</string>
   <string name="retry_label">Spróbuj ponownie</string>
@@ -77,7 +76,6 @@
   <string name="feed_auto_download_global">Globalnie</string>
   <string name="feed_auto_download_always">Zawsze</string>
   <string name="feed_auto_download_never">Nigdy</string>
-  <string name="send_label">Wyślij...</string>
   <string name="episode_cleanup_never">Nigdy</string>
   <string name="episode_cleanup_queue_removal">Kiedy nie są w kolejce</string>
   <string name="episode_cleanup_after_listening">Po odtworzeniu</string>
@@ -99,7 +97,6 @@
   <string name="mark_all_seen_label">Oznacz wszystkie jako widziane</string>
   <string name="show_info_label">Pokaż informacje</string>
   <string name="remove_feed_label">Usuń podcast</string>
-  <string name="share_label">Udostępnij...</string>
   <string name="share_link_label">Udostępnij stronę</string>
   <string name="share_link_with_position_label">Udostępnij link z aktualną pozycją</string>
   <string name="share_feed_url_label">Udostępnij adres kanału</string>
@@ -163,7 +160,6 @@
   <string name="download_error_io_error">Błąd wejścia/wyjścia</string>
   <string name="download_error_request_error">Błąd żądania</string>
   <string name="download_error_db_access">Błąd dostępu do bazy danych</string>
-  <string name="downloads_left">:\u0020pobrań pozostało</string>
   <string name="downloads_processing">Przetwarzanie pobranych</string>
   <string name="download_notification_title">Pobieranie danych podcastu</string>
   <string name="download_report_content">%1$d pobierania poprawne, %2$d nieudane</string>
@@ -247,7 +243,6 @@
   <string name="services_label">Usługi</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Usuwanie odcinków</string>
-  <string name="pref_episode_cleanup_summary">Odcinki nie będące w Kolejce lub Ulubionych mogą zostać usunięte, gdy brakuje miejsca</string>
   <string name="pref_pauseOnDisconnect_sum">Wstrzymaj odtwarzanie po rozłączeniu słuchawek lub Bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wznów odtwarzanie kiedy słuchawki zostaną podłączone ponownie</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wznów odtwarzanie po przywróceniu połączenia Bluetooth</string>
@@ -333,7 +328,6 @@
   <string name="send_email">Wyślij e-mail</string>
   <string name="experimental_pref">Eksperymentalne</string>
   <string name="pref_sonic_title">Odtwarzacz mediów Sonic</string>
-  <string name="pref_sonic_message">Użyj wbudowanego odtwarzacza mediów Sonic jako zamiennika dla Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Włącz automatyczne wspieranie na flattr.</string>
   <string name="auto_flattr_after_percent">Z-flattr-uj odcinki odegrane %d procentach.</string>
@@ -357,10 +351,8 @@
   <string name="opml_import_error_dir_empty">Katalog importowania jest pusty.</string>
   <string name="select_all_label">Zaznacz wszystko</string>
   <string name="deselect_all_label">Odznacz wszystko</string>
-  <string name="select_options_label">Wybierz...</string>
   <string name="choose_file_from_external_application">Użyj zewnętrznej aplikacji</string>
   <string name="opml_export_label">Eksport OPML</string>
-  <string name="exporting_label">Eksportowanie...</string>
   <string name="export_error_label">Błąd eksportu</string>
   <string name="opml_export_success_title">Eksport OPML udany.</string>
   <string name="opml_export_success_sum">Plik .opml został zapisany do:\u0020</string>
@@ -445,7 +437,6 @@ https://gpodder.net/register/</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subskrybuj</string>
   <string name="subscribed_label">Subskrybowane</string>
-  <string name="downloading_label">Pobieranie...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Pokaż rozdziały</string>
   <string name="show_shownotes_label">Pokaż opis odcinka</string>
@@ -473,7 +464,6 @@ https://gpodder.net/register/</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
   <string name="search_itunes_label">Szukaj w iTunes</string>
-  <string name="select_label"><b>Zaznacz...</b></string>
   <string name="all_label">Wszystkie</string>
   <string name="selected_all_label">Zaznaczono wszystkie odcinki</string>
   <string name="none_label">Brak</string>
@@ -486,7 +476,6 @@ https://gpodder.net/register/</string>
   <string name="selected_downloaded_label">Zaznaczono pobrane odcinki</string>
   <string name="not_downloaded_label">Nie pobrane</string>
   <string name="selected_not_downloaded_label">Zaznaczono niepobrane odcinki</string>
-  <string name="sort_title"><b>Sortuj według...</b></string>
   <string name="sort_title_a_z">Tytuł (A \u2192 Z)</string>
   <string name="sort_title_z_a">Tytuł (Z \u2192 A)</string>
   <string name="sort_date_new_old">Data (Nowe \u2192 Stare)</string>
@@ -499,4 +488,5 @@ https://gpodder.net/register/</string>
   <string name="rating_never_label">Daj mi spokój</string>
   <string name="rating_later_label">Przypomnij później</string>
   <string name="rating_now_label">Pewnie, zróbmy to!</string>
+  <!--Audio controls-->
 </resources>

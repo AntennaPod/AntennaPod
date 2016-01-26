@@ -53,7 +53,6 @@
   <string name="length_prefix">Duração:\u0020</string>
   <string name="size_prefix">Tamanho:\u0020</string>
   <string name="processing_label">Processando</string>
-  <string name="loading_label">Carregando...</string>
   <string name="save_username_password_label">Salvar nome do usuário e senha</string>
   <string name="close_label">Fechar</string>
   <string name="retry_label">Tentar novamente</string>
@@ -69,7 +68,6 @@
   <string name="mark_all_seen_label">Marcar todos como lido</string>
   <string name="show_info_label">Mostrar informação</string>
   <string name="remove_feed_label">Remover Podcast</string>
-  <string name="share_label">Compartilhar...</string>
   <string name="share_link_label">Compartilhar link do site</string>
   <string name="share_link_with_position_label">Compartilhar link com posição</string>
   <string name="share_item_url_label">Compartilhar url do episódio</string>
@@ -124,7 +122,6 @@
   <string name="download_error_io_error">Erro de IO</string>
   <string name="download_error_request_error">Erro de requisição</string>
   <string name="download_error_db_access">Erro no acesso ao Banco de dados</string>
-  <string name="downloads_left">\u0020Downloads restantes</string>
   <string name="downloads_processing">Processando downloads</string>
   <string name="download_notification_title">Baixando dados do podcast</string>
   <string name="download_report_content">%1$d downloads com sucesso, %2$d falharam</string>
@@ -244,9 +241,7 @@
   <string name="opml_import_error_dir_empty">O diretório de importação está vazio.</string>
   <string name="select_all_label">Selecionar todos</string>
   <string name="deselect_all_label">Remover seleção</string>
-  <string name="select_options_label">Selecionar</string>
   <string name="opml_export_label">Exportar OPML</string>
-  <string name="exporting_label">Exportando...</string>
   <string name="export_error_label">Erro na exportação</string>
   <string name="opml_export_success_sum">O arquivo .opml foi gravado em:\u0020</string>
   <!--Sleep timer-->
@@ -304,7 +299,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">Assinar</string>
   <string name="subscribed_label">Assinado</string>
-  <string name="downloading_label">Baixando...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_cover_label">Mostrar imagem</string>
   <string name="butAction_label">Mais ações</string>
@@ -317,4 +311,5 @@
   <!--Progress information-->
   <!--AntennaPodSP-->
   <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

@@ -61,7 +61,6 @@
   <string name="length_prefix">Duración:\u0020</string>
   <string name="size_prefix">Tamaño:\u0020</string>
   <string name="processing_label">Procesando</string>
-  <string name="loading_label">Cargando...</string>
   <string name="save_username_password_label">Guardar nombre de usuario y contraseña</string>
   <string name="close_label">Cerrar</string>
   <string name="retry_label">Intentar de nuevo</string>
@@ -70,7 +69,6 @@
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Siempre</string>
   <string name="feed_auto_download_never">Nunca</string>
-  <string name="send_label">Enviar...</string>
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_queue_removal">Cuando no en la lista</string>
   <string name="episode_cleanup_after_listening">Despues de terminar</string>
@@ -89,7 +87,6 @@
   <string name="mark_all_seen_label">Marcar todos como visto</string>
   <string name="show_info_label">Información del programa</string>
   <string name="remove_feed_label">Eliminar podcast</string>
-  <string name="share_label">Compartir...</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
   <!--actions on feeditems-->
@@ -125,7 +122,6 @@
   <string name="download_error_malformed_url">URL malformada</string>
   <string name="download_error_io_error">Error de E/S</string>
   <string name="download_error_request_error">Error de petición</string>
-  <string name="downloads_left">\u0020descargas restantes</string>
   <string name="download_notification_title">Descargando datos del podcast</string>
   <string name="download_report_content">%1$d descargas exitosas, %2$d fallidas</string>
   <string name="download_log_title_unknown">Título desconocido</string>
@@ -212,7 +208,6 @@
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
   <string name="opml_export_label">Exportar a OPML</string>
-  <string name="exporting_label">Exportando...</string>
   <string name="export_error_label">Error en la exportación</string>
   <string name="opml_export_success_sum">El archivo OPML se ha escrito en:\u0020</string>
   <!--Sleep timer-->
@@ -244,4 +239,5 @@
   <string name="all_label">Todos</string>
   <string name="none_label">Ningun</string>
   <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

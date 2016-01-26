@@ -118,7 +118,7 @@ Version 0.9.9.0
 Version 0.9.8.3
 ---------------
 * Intégration d'une fonctionnalité de protection par mot de passe pour les flux et les épisodes
-* Possibilité d'avoir plus de types d'images d'épisodes
+* Support de plus de types d'images pour les épisodes
 * Ajout de l'Hébreu
 * Correction de bogues et améliorations
 

@@ -52,7 +52,6 @@
   <string name="length_prefix">Længde:\u0020</string>
   <string name="size_prefix">Størrelse:\u0020</string>
   <string name="processing_label">Behandler</string>
-  <string name="loading_label">Indlæser...</string>
   <string name="save_username_password_label">Gem brugernavn og kodeord</string>
   <string name="close_label">Luk</string>
   <string name="retry_label">Prøv igen</string>
@@ -112,7 +111,6 @@
   <string name="download_error_io_error">IO fejl</string>
   <string name="download_error_request_error">Anmode fejl</string>
   <string name="download_error_db_access">Adgangsfejl i database</string>
-  <string name="downloads_left">\u0020Downloads tilbage</string>
   <string name="downloads_processing">Bearbejder downloads</string>
   <string name="download_notification_title">Downloader podcast data</string>
   <string name="download_report_content">%1$d downloads lykkedes, %2$d fejlet</string>
@@ -264,7 +262,6 @@
   <string name="select_all_label">Vælg alt</string>
   <string name="deselect_all_label">Fravælg alt</string>
   <string name="opml_export_label">OPML eksport</string>
-  <string name="exporting_label">Eksporterer...</string>
   <string name="export_error_label">Eksport fejl</string>
   <string name="opml_export_success_title">Opml eksport lykkedes.</string>
   <string name="opml_export_success_sum">.opml filen var skrevet til:\u0020</string>
@@ -320,7 +317,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
   <string name="subscribed_label">Abonneret</string>
-  <string name="downloading_label">Downloader...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Vis kapitler</string>
   <string name="show_shownotes_label">Vis shownoter</string>
@@ -347,4 +343,5 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra single-purpose apps…</string>
   <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

@@ -39,7 +39,6 @@
   <string name="length_prefix">Durată:\u0020</string>
   <string name="size_prefix">Dimensiune:\u0020</string>
   <string name="processing_label">Procesează</string>
-  <string name="loading_label">Încărcare...</string>
   <string name="save_username_password_label">Salvează numele de utilizator și parola</string>
   <string name="close_label">închide</string>
   <string name="retry_label">Reîncearcă</string>
@@ -83,7 +82,6 @@
   <string name="download_error_malformed_url">URL malformat</string>
   <string name="download_error_io_error">Eroare IO</string>
   <string name="download_error_request_error">Eroare cerere</string>
-  <string name="downloads_left">\u0020descărcări rămase</string>
   <string name="download_notification_title">Descarcă date podcast</string>
   <string name="download_report_content">%1$d descărcari cu succes, %2$d eșuate</string>
   <string name="download_log_title_unknown">Titlu necunoscut</string>
@@ -186,7 +184,6 @@
   <string name="select_all_label">Selectează toate</string>
   <string name="deselect_all_label">Deselectează toate</string>
   <string name="opml_export_label">Exportă OPML</string>
-  <string name="exporting_label">Exportă...</string>
   <string name="export_error_label">Eroare exportare</string>
   <string name="opml_export_success_sum">Fișierul .opml a fost scris în:\u0020</string>
   <!--Sleep timer-->
@@ -229,10 +226,10 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abonează-te</string>
   <string name="subscribed_label">Abonat</string>
-  <string name="downloading_label">Se descarcă...</string>
   <!--Content descriptions for image buttons-->
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
   <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>
