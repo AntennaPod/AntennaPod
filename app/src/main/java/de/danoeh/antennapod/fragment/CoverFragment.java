@@ -19,8 +19,8 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 /**
  * Displays the cover and the title of a FeedItem.
  */
-public class CoverFragment extends Fragment implements
-        AudioplayerContentFragment {
+public class CoverFragment extends Fragment implements AudioplayerContentFragment {
+
     private static final String TAG = "CoverFragment";
     private static final String ARG_PLAYABLE = "arg.playable";
 
@@ -71,14 +71,12 @@ public class CoverFragment extends Fragment implements
             Log.d(TAG, "episode title: " + media.getEpisodeTitle());
             txtvPodcastTitle.setText(media.getFeedTitle());
             txtvEpisodeTitle.setText(media.getEpisodeTitle());
-            imgvCover.post(() -> {
-                Glide.with(this)
-                        .load(media.getImageUri())
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .dontAnimate()
-                        .fitCenter()
-                        .into(imgvCover);
-            });
+            Glide.with(this)
+                    .load(media.getImageUri())
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .dontAnimate()
+                    .fitCenter()
+                    .into(imgvCover);
         } else {
             Log.w(TAG, "loadMediaInfo was called while media was null");
         }
@@ -97,7 +95,17 @@ public class CoverFragment extends Fragment implements
     }
 
     @Override
-    public void onDataSetChanged(Playable media) {
+    public void onDestroy() {
+        super.onDestroy();
+        // prevent memory leaks
+        root = null;
+    }
+
+    @Override
+    public void onMediaChanged(Playable media) {
+        if(this.media == media) {
+            return;
+        }
         this.media = media;
         loadMediaInfo();
     }

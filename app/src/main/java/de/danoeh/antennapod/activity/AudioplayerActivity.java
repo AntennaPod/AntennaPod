@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,6 +28,7 @@ import android.widget.ListView;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
@@ -83,6 +84,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
             AddFeedFragment.TAG
     };
 
+    private AtomicBoolean isSetup = new AtomicBoolean(false);
+
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
     private ListView navList;
@@ -108,6 +111,16 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // don't risk creating memory leaks
+        navAdapter = null;
+        drawerToggle = null;
+        mPager = null;
+        mPagerAdapter = null;
+    }
+
+    @Override
     protected void chooseTheme() {
         setTheme(UserPreferences.getNoTitleTheme());
     }
@@ -116,7 +129,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         if(mPager == null) {
             return;
         }
-
         Log.d(TAG, "Saving preferences");
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         prefs.edit()
@@ -156,9 +168,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         }
         if(mPagerAdapter != null && controller != null && controller.getMedia() != media) {
             media = controller.getMedia();
-            mPagerAdapter.notifyDataSetChanged();
+            mPagerAdapter.onMediaChanged(media);
         }
-
 
         EventDistributor.getInstance().register(contentUpdate);
         loadData();
@@ -193,6 +204,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
 
     @Override
     protected void setupGUI() {
+        if(isSetup.getAndSet(true)) {
+            return;
+        }
         super.setupGUI();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -242,13 +256,11 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         });
 
         mPager = (ViewPager) findViewById(R.id.pager);
-        if(mPager.getAdapter() == null) {
-            mPagerAdapter = new AudioplayerPagerAdapter(getSupportFragmentManager());
-            mPager.setAdapter(mPagerAdapter);
-            CirclePageIndicator pageIndicator = (CirclePageIndicator) findViewById(R.id.page_indicator);
-            pageIndicator.setViewPager(mPager);
-            loadLastFragment();
-        }
+        mPagerAdapter = new AudioplayerPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+        CirclePageIndicator pageIndicator = (CirclePageIndicator) findViewById(R.id.page_indicator);
+        pageIndicator.setViewPager(mPager);
+        loadLastFragment();
         mPager.onSaveInstanceState();
     }
 
@@ -265,16 +277,18 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         }
         if(controller.getMedia() != media) {
             media = controller.getMedia();
-            mPagerAdapter.notifyDataSetChanged();
+            mPagerAdapter.onMediaChanged(media);
         }
         return true;
     }
 
     public void notifyMediaPositionChanged() {
-        ListFragment chapterFragment = (ListFragment) mPagerAdapter.getItem(POS_CHAPTERS);
-        ChaptersListAdapter adapter = (ChaptersListAdapter) chapterFragment.getListAdapter();
-        if(adapter != null) {
-            adapter.notifyDataSetChanged();
+        ChaptersFragment chaptersFragment = mPagerAdapter.getChaptersFragment();
+        if(chaptersFragment != null) {
+            ChaptersListAdapter adapter = (ChaptersListAdapter) chaptersFragment.getListAdapter();
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -510,7 +524,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     };
 
     public interface AudioplayerContentFragment {
-        void onDataSetChanged(Playable media);
+        void onMediaChanged(Playable media);
     }
 
     private class AudioplayerPagerAdapter extends FragmentStatePagerAdapter {
@@ -519,21 +533,50 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
             super(fm);
         }
 
+        private CoverFragment coverFragment;
+        private ItemDescriptionFragment itemDescriptionFragment;
+        private ChaptersFragment chaptersFragment;
+
+        public void onMediaChanged(Playable media) {
+            if(coverFragment != null) {
+                coverFragment.onMediaChanged(media);
+            }
+            if(itemDescriptionFragment != null) {
+                itemDescriptionFragment.onMediaChanged(media);
+            }
+            if(chaptersFragment != null) {
+                chaptersFragment.onMediaChanged(media);
+            }
+        }
+
+        @Nullable
+        public ChaptersFragment getChaptersFragment() {
+            return chaptersFragment;
+        }
+
         @Override
         public Fragment getItem(int position) {
             Log.d(TAG, "getItem(" + position + ")");
             switch (position) {
                 case POS_COVER:
-                    return CoverFragment.newInstance(media);
+                    if(coverFragment == null) {
+                        coverFragment = CoverFragment.newInstance(media);
+                    }
+                    return coverFragment;
                 case POS_DESCR:
-                    return ItemDescriptionFragment.newInstance(media, true, true);
+                    if(itemDescriptionFragment == null) {
+                        itemDescriptionFragment = ItemDescriptionFragment.newInstance(media, true, true);
+                    }
+                    return itemDescriptionFragment;
                 case POS_CHAPTERS:
-                    return ChaptersFragment.newInstance(media, controller);
+                    if(chaptersFragment == null) {
+                        chaptersFragment = ChaptersFragment.newInstance(media, controller);
+                    }
+                    return chaptersFragment;
                 default:
                     return null;
             }
         }
-
 
         @Override
         public int getCount() {

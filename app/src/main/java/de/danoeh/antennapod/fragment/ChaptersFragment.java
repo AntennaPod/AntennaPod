@@ -55,8 +55,17 @@ public class ChaptersFragment extends ListFragment implements AudioplayerContent
         }
     }
 
+    public void onDestroy() {
+        super.onDestroy();
+        adapter = null;
+    }
+
     @Override
-    public void onDataSetChanged(Playable media) {
+    public void onMediaChanged(Playable media) {
+        if(this.media == media || adapter == null) {
+            return;
+        }
+        this.media = media;
         adapter.setMedia(media);
         adapter.notifyDataSetChanged();
         if(media.getChapters() == null) {

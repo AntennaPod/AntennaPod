@@ -24,7 +24,6 @@ import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -982,6 +981,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             playerLock.lock();
             releaseWifiLockIfNecessary();
 
+            boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
+
             if (playerStatus != PlayerStatus.INDETERMINATE) {
                 setPlayerStatus(PlayerStatus.INDETERMINATE, media);
             }
@@ -990,7 +991,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
             }
             audioManager.abandonAudioFocus(audioFocusChangeListener);
-            callback.endPlayback(true, wasSkipped);
+            callback.endPlayback(isPlaying, wasSkipped);
 
             playerLock.unlock();
         });
