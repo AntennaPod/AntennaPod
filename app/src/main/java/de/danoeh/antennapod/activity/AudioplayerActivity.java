@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -129,7 +129,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         if(mPager == null) {
             return;
         }
-
         Log.d(TAG, "Saving preferences");
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         prefs.edit()
@@ -171,7 +170,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
             media = controller.getMedia();
             mPagerAdapter.onMediaChanged(media);
         }
-
 
         EventDistributor.getInstance().register(contentUpdate);
         loadData();
@@ -258,13 +256,11 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         });
 
         mPager = (ViewPager) findViewById(R.id.pager);
-        if(mPager.getAdapter() == null) {
-            mPagerAdapter = new AudioplayerPagerAdapter(getSupportFragmentManager());
-            mPager.setAdapter(mPagerAdapter);
-            CirclePageIndicator pageIndicator = (CirclePageIndicator) findViewById(R.id.page_indicator);
-            pageIndicator.setViewPager(mPager);
-            loadLastFragment();
-        }
+        mPagerAdapter = new AudioplayerPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+        CirclePageIndicator pageIndicator = (CirclePageIndicator) findViewById(R.id.page_indicator);
+        pageIndicator.setViewPager(mPager);
+        loadLastFragment();
         mPager.onSaveInstanceState();
     }
 
@@ -551,7 +547,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
                     return null;
             }
         }
-
 
         @Override
         public int getCount() {

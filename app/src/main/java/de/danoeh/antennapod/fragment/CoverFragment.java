@@ -71,14 +71,12 @@ public class CoverFragment extends Fragment implements AudioplayerContentFragmen
             Log.d(TAG, "episode title: " + media.getEpisodeTitle());
             txtvPodcastTitle.setText(media.getFeedTitle());
             txtvEpisodeTitle.setText(media.getEpisodeTitle());
-            imgvCover.post(() -> {
-                Glide.with(this)
-                        .load(media.getImageUri())
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .dontAnimate()
-                        .fitCenter()
-                        .into(imgvCover);
-            });
+            Glide.with(this)
+                    .load(media.getImageUri())
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .dontAnimate()
+                    .fitCenter()
+                    .into(imgvCover);
         } else {
             Log.w(TAG, "loadMediaInfo was called while media was null");
         }

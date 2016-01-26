@@ -21,7 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -66,7 +66,6 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
 
     private ShownotesProvider shownotesProvider;
     private Playable media;
-
 
     private Subscription webViewLoader;
 
@@ -124,7 +123,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
         ta.recycle();
         webvDescription.setBackgroundColor(backgroundColor);
         webvDescription.getSettings().setUseWideViewPort(false);
-        webvDescription.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+        webvDescription.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webvDescription.getSettings().setLoadWithOverviewMode(true);
         webvDescription.setOnLongClickListener(webViewLongClickListener);
         webvDescription.setWebViewClient(new WebViewClient() {
