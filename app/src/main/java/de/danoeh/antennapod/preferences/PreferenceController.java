@@ -397,12 +397,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference("prefSendCrashReport").setOnPreferenceClickListener(preference -> {
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setType("text/plain");
-            String to[] = { "Martin.Fietz@gmail.com" };
-            emailIntent .putExtra(Intent.EXTRA_EMAIL, to);
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Martin.Fietz@gmail.com"});
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "AntennaPod Crash Report");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Please describe what you were doing when the app crashed");
             // the attachment
-            emailIntent .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(CrashReportWriter.getFile()));
-            // the mail subject
-            emailIntent .putExtra(Intent.EXTRA_SUBJECT, "AntennaPod Crash Report");
+            emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(CrashReportWriter.getFile()));
             String intentTitle = ui.getActivity().getString(R.string.send_email);
             ui.getActivity().startActivity(Intent.createChooser(emailIntent, intentTitle));
             return true;
