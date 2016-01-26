@@ -61,6 +61,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.downloaded_episodeslist_item,
                     parent, false);
+            holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = (TextView) convertView
                     .findViewById(R.id.txtvPublished);
@@ -74,6 +75,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         }
 
         holder.title.setText(item.getTitle());
+        holder.queueStatus.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
         String pubDateStr = DateUtils.formatAbbrev(context, item.getPubDate());
         holder.pubDate.setText(pubDateStr);
         holder.txtvSize.setText(Converter.byteToString(item.getMedia().getSize()));
@@ -116,6 +118,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         TextView pubDate;
         ImageView imageView;
         TextView txtvSize;
+        ImageView queueStatus;
         ImageButton butSecondary;
     }
 

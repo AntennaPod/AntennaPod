@@ -22,7 +22,7 @@
 
     <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/thumbnail_length_downloaded_item"
         android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
         android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
         android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/txtvTitle"
+            android:layout_alignParentBottom="true"
             tools:text="23 MB"
             tools:background="@android:color/holo_green_dark" />
 
@@ -58,9 +58,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/txtvTitle"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="8dp"
             tools:text="Jan 23"
             tools:background="@android:color/holo_green_dark" />
+
+        <ImageView
+            android:id="@+id/imgvInPlaylist"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_toLeftOf="@id/txtvPublished"
+            android:layout_alignParentBottom="true"
+            android:contentDescription="@string/in_queue_label"
+            android:src="?attr/stat_playlist"
+            android:visibility="visible"
+            tools:src="@drawable/ic_list_white_24dp"
+            tools:background="@android:color/holo_red_light" />
 
     </RelativeLayout>
 
