@@ -62,7 +62,7 @@ public class ChaptersFragment extends ListFragment implements AudioplayerContent
 
     @Override
     public void onMediaChanged(Playable media) {
-        if(this.media == media) {
+        if(this.media == media || adapter == null) {
             return;
         }
         this.media = media;
