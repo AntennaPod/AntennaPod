@@ -52,6 +52,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         loadItems();
     }
 
@@ -128,6 +129,43 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
         setListShown(true);
         listAdapter.notifyDataSetChanged();
+        getActivity().supportInvalidateOptionsMenu();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(!isAdded()) {
+            return;
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+        if(items != null) {
+            inflater.inflate(R.menu.downloads_completed, menu);
+            MenuItem episodeActions = menu.findItem(R.id.episode_actions);
+            if(items.size() > 0) {
+                int[] attrs = {R.attr.action_bar_icon_color};
+                TypedArray ta = getActivity().obtainStyledAttributes(UserPreferences.getTheme(), attrs);
+                int textColor = ta.getColor(0, Color.GRAY);
+                ta.recycle();
+                episodeActions.setIcon(new IconDrawable(getActivity(),
+                        FontAwesomeIcons.fa_gears).color(textColor).actionBarSize());
+                episodeActions.setVisible(true);
+            } else {
+                episodeActions.setVisible(false);
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.episode_actions:
+                EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
+                        .newInstance(items, EpisodesApplyActionFragment.ACTION_REMOVE);
+                ((MainActivity) getActivity()).loadChildFragment(fragment);
+                return true;
+            default:
+                return false;
+        }
     }
 
     private DownloadedEpisodesListAdapter.ItemAccess itemAccess = new DownloadedEpisodesListAdapter.ItemAccess() {
