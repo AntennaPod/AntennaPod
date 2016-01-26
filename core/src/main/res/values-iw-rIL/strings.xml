@@ -56,7 +56,6 @@
   <string name="length_prefix">אורך:\u0020</string>
   <string name="size_prefix">גודל:\u0020</string>
   <string name="processing_label">מעבד</string>
-  <string name="loading_label">טוען...</string>
   <string name="save_username_password_label">שמור שם משתמש וססמה</string>
   <string name="close_label">סגור</string>
   <string name="retry_label">נסה שוב</string>
@@ -81,7 +80,6 @@
   <string name="mark_all_read_feed_confirmation_msg">אנא אשר שאתה רוצה לסמן את כל פרקים בהזנה זו כנקראים.</string>
   <string name="show_info_label">הצג מידע</string>
   <string name="remove_feed_label">הסר פודקאסט</string>
-  <string name="share_label">שתף...</string>
   <string name="share_link_label">שתף קישור אתר</string>
   <string name="feed_delete_confirmation_msg">אשר מחיקת הזנה זו ואת כל פרקי ההזנה שהורדת.</string>
   <string name="feed_remover_msg">הסר הזנה</string>
@@ -128,7 +126,6 @@
   <string name="download_error_io_error">שגיאת קלט פלט</string>
   <string name="download_error_request_error">שגיאת בקשה</string>
   <string name="download_error_db_access">שגיאת גישה למסד הנתונים</string>
-  <string name="downloads_left">הורדות נותרוu0020\</string>
   <string name="downloads_processing">מעבד הורדות</string>
   <string name="download_notification_title">מוריד פודקאסט</string>
   <string name="download_report_content">%1$d הורדות הצליחו, %2$d ניכשלו</string>
@@ -289,7 +286,6 @@
   <string name="choose_file_from_filesystem">ממערכת הקבצים המקומית</string>
   <string name="choose_file_from_external_application">השתמש באפליקציה חיצונית</string>
   <string name="opml_export_label">יצוא OPML</string>
-  <string name="exporting_label">מייצא...</string>
   <string name="export_error_label">שגיאת יצוא</string>
   <string name="opml_export_success_title">יצוא OPML הצליח.</string>
   <string name="opml_export_success_sum">קובץ OPML נכתב ל:\u0020</string>
@@ -345,7 +341,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">הרשם</string>
   <string name="subscribed_label">נרשם</string>
-  <string name="downloading_label">מוריד...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">הצג פרקים</string>
   <string name="show_shownotes_label">הצג הערות פרק</string>
@@ -373,4 +368,5 @@
   <string name="sp_apps_importing_feeds_msg">מייבא רישום מאפליקציות יעודיות...</string>
   <string name="search_itunes_label">חפש בiTunes</string>
   <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

@@ -23,6 +23,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net Anmeldung</string>
   <string name="free_space_label">%1$s frei</string>
+  <string name="episode_cache_full_title">Episodenspeicher voll</string>
+  <string name="episode_cache_full_message">Der Episodenspeicher ist voll. Du kannst die Größe des Episodenspeichers in den Einstellungen erhöhen.</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Zuletzt veröffentlicht</string>
   <string name="episode_filter_label">Nur neue Episoden anzeigen</string>
@@ -67,7 +69,7 @@
   <string name="length_prefix">Länge:\u0020</string>
   <string name="size_prefix">Größe:\u0020</string>
   <string name="processing_label">Verarbeite</string>
-  <string name="loading_label">Lade ...</string>
+  <string name="loading_label">Wird geladen…</string>
   <string name="save_username_password_label">Benutzername und Password merken</string>
   <string name="close_label">Schließen</string>
   <string name="retry_label">Erneut versuchen</string>
@@ -79,7 +81,7 @@
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Immer</string>
   <string name="feed_auto_download_never">Nie</string>
-  <string name="send_label">Senden...</string>
+  <string name="send_label">Senden…</string>
   <string name="episode_cleanup_never">Nie</string>
   <string name="episode_cleanup_queue_removal">Wenn nicht in der Abspielliste</string>
   <string name="episode_cleanup_after_listening">wenn fertig gespielt gespielt</string>
@@ -102,7 +104,7 @@
   <string name="mark_all_seen_label">Alle als gesehen markieren</string>
   <string name="show_info_label">Informationen anzeigen</string>
   <string name="remove_feed_label">Podcast entfernen</string>
-  <string name="share_label">Teile...</string>
+  <string name="share_label">Teilen…</string>
   <string name="share_link_label">Webseiten-Link teilen</string>
   <string name="share_link_with_position_label">Teile Link mit Zeitmarke</string>
   <string name="share_feed_url_label">Teile URL des Podcasts</string>
@@ -137,7 +139,9 @@
   <string name="added_to_queue_label">Zur Abspielliste hinzugefügt</string>
   <string name="remove_from_queue_label">Aus der Abspielliste entfernen</string>
   <string name="add_to_favorite_label">Zu Favoriten hinzufügen</string>
+  <string name="added_to_favorites">Zu Favoriten hinzugefügt</string>
   <string name="remove_from_favorite_label">Aus Favoriten entfernen</string>
+  <string name="removed_from_favorites">Aus Favoriten entfernt</string>
   <string name="visit_website_label">Webseite besuchen</string>
   <string name="support_label">Flattrn</string>
   <string name="enqueue_all_new">Alle zur Abspielliste hinzufügen</string>
@@ -171,7 +175,10 @@
   <string name="download_error_io_error">E/A Error</string>
   <string name="download_error_request_error">Anfragefehler</string>
   <string name="download_error_db_access">Datenbankzugriffsfehler</string>
-  <string name="downloads_left">\u0020Downloads übrig</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d Download übrig</item>
+    <item quantity="other">%d Downloads übrig</item>
+  </plurals>
   <string name="downloads_processing">Verarbeite Downloads</string>
   <string name="download_notification_title">Lade Podcast-Daten</string>
   <string name="download_report_content">%1$d Downloads erfolgreich, %2$d fehlgeschlagen</string>
@@ -203,6 +210,8 @@
   <!--Queue operations-->
   <string name="lock_queue">Abspielliste sperren</string>
   <string name="unlock_queue">Abspielliste entsperren</string>
+  <string name="queue_locked">Abspielliste gesperrt</string>
+  <string name="queue_unlocked">Abspielliste entsperrt</string>
   <string name="clear_queue_label">Abspielliste leeren</string>
   <string name="undo">Rückgängig</string>
   <string name="removed_from_queue">Element entfernt</string>
@@ -244,12 +253,13 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Plugin herunterladen</string>
   <string name="no_playback_plugin_title">Plugin nicht installiert</string>
-  <string name="no_playback_plugin_or_sonic_msg">Damit die variable Wiedergabegeschwindigkeit funktioniert, musst du eine Drittanbieterbibliothek oder den experimentellen Sonic Player [Android 4.1+] heruntegeladen.\n\n Drücke \"Plugin herunterladen\", um ein kostenloses Plugin aus dem Play Store zu installieren.\n\nProbleme, die bei der Benutzung des Plugins auftreten, liegen nicht im Verantwortungsbereich von AntennaPod, und sollten dem Entwickler des Plugins gemeldet werden.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Um variable Wiedergabegeschwindigkeit benutzen zu können, empfehlen wir, den integrierten Sonic Mediaplayer [Android 4.1+] zu aktivieren.\n\nAlternativ kannst du das kostenlose Plugin <i>Prestissimo</i> eines Drittanbieters aus dem Play Store herunterladen.\nProbleme mit Prestissimo liegen nicht im Verantwortungsbereich von AntennaPod und sollten dem Entwickler des Plugins gemeldet werden.</string>
   <string name="set_playback_speed_label">Wiedergabegeschwindigkeiten</string>
   <string name="enable_sonic">Sonic aktivieren</string>
   <!--Empty list labels-->
   <string name="no_items_label">Es sind keine Einträge in dieser Liste.</string>
   <string name="no_feeds_label">Du hast noch keine Feeds abonniert.</string>
+  <string name="no_chapters_label">Diese Episode hat keine Kapitel.</string>
   <!--Preferences-->
   <string name="other_pref">Anderes</string>
   <string name="about_pref">Über</string>
@@ -257,7 +267,7 @@
   <string name="services_label">Dienste</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Automatisches Löschen</string>
-  <string name="pref_episode_cleanup_summary">Episoden, die nicht in der Abspielliste und nicht favorisiert sind, werden zum Aufräumen freigegeben, wenn Speicherplatz benötigt wird</string>
+  <string name="pref_episode_cleanup_summary">Episoden, die weder in Abspielliste noch favorisiert sind, können gelöscht werden,  wenn beim automatischen Herunterladen Speicherplatz für neue Episoden gebraucht wird</string>
   <string name="pref_pauseOnDisconnect_sum">Wiedergabe pausieren, wenn Kopfhörer ausgesteckt oder Bluetooth getrennt wird</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder eingesteckt werden</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wiedergabe fortsetzen, wenn Bluetooth wieder verbunden ist</string>
@@ -278,6 +288,8 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Deaktivieren</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Intervall einstellen</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Tageszeit festlegen</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">jede %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">um %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Lade Mediendateien nur über WiFi</string>
   <string name="pref_followQueue_title">Durchgehendes Abspielen</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi Medien-Download</string>
@@ -351,8 +363,9 @@
   <string name="crash_report_sum">Sende den aktuellen Absturzbericht per E-Mail</string>
   <string name="send_email">E-Mail senden</string>
   <string name="experimental_pref">Experimentell</string>
-  <string name="pref_sonic_title">Sonic Media Player</string>
-  <string name="pref_sonic_message">Benutze den eingebauten Sonic Media Player als Ersatz für Prestissimo</string>
+  <string name="pref_sonic_title">Sonic Mediaplayer</string>
+  <string name="pref_sonic_message">Benutze den integrierten Sonic Mediaplayer als Ersatz für Androids eigenen Mediaplayer und Prestissimo</string>
+  <string name="pref_current_value">Aktueller Wert: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
   <string name="auto_flattr_after_percent">Flattr eine Episode, sobald %d Prozent gespielt worden sind</string>
@@ -379,11 +392,11 @@
   <string name="opml_import_error_dir_empty">Der Import-Ordner ist leer.</string>
   <string name="select_all_label">Alle auswählen</string>
   <string name="deselect_all_label">Auswahl zurücksetzen</string>
-  <string name="select_options_label">Wähle aus ...</string>
+  <string name="select_options_label">Auswählen…</string>
   <string name="choose_file_from_filesystem">Vom lokalen Dateisystem</string>
   <string name="choose_file_from_external_application">Verwende externe Anwendung</string>
   <string name="opml_export_label">OPML Export</string>
-  <string name="exporting_label">Exportiere...</string>
+  <string name="exporting_label">Exportiere…</string>
   <string name="export_error_label">Exportfehler</string>
   <string name="opml_export_success_title">OPML Export erfolgreich</string>
   <string name="opml_export_success_sum">Die OPML Datei wurde unter dem folgenden Pfad gespeichert:\u0020</string>
@@ -464,7 +477,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abonnieren</string>
   <string name="subscribed_label">Abonniert</string>
-  <string name="downloading_label">Lade herunter...</string>
+  <string name="downloading_label">Lade herunter…</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Kapitel anzeigen</string>
   <string name="show_shownotes_label">Sendungsnotizen anzeigen</string>
@@ -492,7 +505,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importiere Abonnements aus Single-Purpose Apps</string>
   <string name="search_itunes_label">iTunes durchsuchen</string>
-  <string name="select_label"><b>Wähle aus ...</b></string>
+  <string name="select_label"><b>Wähle aus…</b></string>
+  <string name="filter">Filtern</string>
   <string name="all_label">Alle</string>
   <string name="selected_all_label">Alle Episoden ausgewählt</string>
   <string name="none_label">Keine</string>
@@ -505,7 +519,7 @@
   <string name="selected_downloaded_label">Heruntergeladene Episoden ausgewählt</string>
   <string name="not_downloaded_label">Nicht heruntergeladen</string>
   <string name="selected_not_downloaded_label">Nicht heruntergeladene Episoden ausgewählt</string>
-  <string name="sort_title"><b>Sortieren nach ...</b></string>
+  <string name="sort_title"><b>Sortiere nach…</b></string>
   <string name="sort_title_a_z">Titel (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titel (Z \u2192 A)</string>
   <string name="sort_date_new_old">Datum (neu \u2192 alt)</string>
@@ -518,4 +532,13 @@
   <string name="rating_never_label">Lass mich in Ruhe</string>
   <string name="rating_later_label">Erinnere mich später</string>
   <string name="rating_now_label">Sicher, los geht\'s!</string>
+  <!--Audio controls-->
+  <string name="audio_controls">Audioregler</string>
+  <string name="playback_speed">Abspielgeschwindigkeit</string>
+  <string name="volume">Lautstärke</string>
+  <string name="left_short">L</string>
+  <string name="right_short">R</string>
+  <string name="audio_effects">Audioeffekte</string>
+  <string name="stereo_to_mono">Heruntermischen: Stereo zu Mono</string>
+  <string name="sonic_only">nur Sonic</string>
 </resources>

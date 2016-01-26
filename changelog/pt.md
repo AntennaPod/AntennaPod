@@ -30,12 +30,12 @@ Versão 1.4
 
 Versão 1.3
 -----------
-* Ações em lote nos episódios (transferir, colocar na fila, apagar)
+* Ações em lote nos episódios (descarga, colocar na fila, apagar)
 * Redução do tamanho utilizado pelas imagens
 * Atualização automática de fontes num dado período
 * Indicadores e ordenação personalizada de fontes
 * Possibilidade de partilhar fontes
-* Melhorias na transferência automática
+* Melhorias na descarga automática
 * Diversas melhorias de usabilidade e correções
 
 Versão 1.2
@@ -52,7 +52,7 @@ Versão 1.1
 -----------
 * Adicionada integração com o iTunes
 * Deslize para remover os episódios da fila de reprodução
-* Possibilidade de definir o número de transferências simultâneas
+* Possibilidade de definir o número de descargas simultâneas
 * Correções para gpodder.net em alguns dispositivos
 * Corrigidos problemas de datas em algumas fontes
 * Melhorias de exibição
@@ -109,7 +109,7 @@ Versão 0.9.9.1
 Versão 0.9.9.0
 ---------------
 * Nova interface
-* As transferências falhadas são retomadas ao reiniciar
+* As descargas falhadas são retomadas ao reiniciar
 * Adicionado o suporte às fontes alternativas Podlove
 * Adicionado o suporte ao protocolo pcast
 * Adicionadas funcionalidades de backup e restauro. Esta opção tem que ser ativada nas definições do Android para funcionar
@@ -137,12 +137,12 @@ Versão 0.9.8.0
 ---------------
 * Adição do acesso ao diretório gpodder.net
 * Adicionada a possibilidade de sincronizar as subscrições com o gpodder.net
-* Adicionada a possibilidade de ativar ou desativar a transferência automática de podcasts específicos
+* Adicionada a possibilidade de ativar ou desativar a descarga automática para podcasts específicos
 * Adicionada a possibilidade de colocar em pausa a reprodução se outra aplicação quiser reproduzir sons
 * Adição da tradução em holandês e hindi
 * Correção de erros com a transferência automática de podcasts
 * Corrigido um erro com a visualização de botões no ecrã dos episódios
-* Corrigido um erro em que os episódios eram novamente transferidos sem haver essa necessidade
+* Corrigido um erro em que os episódios eram novamente descarregados sem haver essa necessidade
 * Diversas correções e melhorias
 
 Versão 0.9.7.5
@@ -169,14 +169,14 @@ Versão 0.9.7.3
 
 Versão 0.9.7.2
 ---------------
-* Possibilidade de desativar as transferências automáticas
+* Possibilidade de desativar as descargas automáticas
 * Adição da tradução em italiano (Itália)
 * Diversas correções
 
 Versão 0.9.7.1
 ---------------
-* Adicionada a possibilidade de transferência automática de episódios
-* Adicionada uma opção para especificar o número de episódios transferidos a manter no dispositivo
+* Adicionada a possibilidade de descarregar automaticamente os episódios
+* Adicionada uma opção para especificar o número de episódios descarregados a manter no dispositivo
 * Adicionado o suporte à reprodução de ficheiros externos
 * Diversas correções e melhorias
 * Adição da tradução em catalão
@@ -205,7 +205,7 @@ Versão 0.9.6.3
 Versão 0.9.6.2
 ---------------
 * Corrigidos alguns erros de importação de ficheiros OPML
-* Corrigidos erros relacionados com transferências
+* Corrigidos erros nas descargas
 * O AntennaPod já reconhece as alterações às informações dos episódios
 * Diversas correções e melhorias
 
@@ -237,7 +237,7 @@ Versão 0.9.5.2
 Versão 0.9.5.1
 ---------------
 * Adicionado o histórico de reprodução
-* Melhorias nas notificações de transferências
+* Melhorias nas notificações de descargas
 * Melhorias nos controlo dos auriculares
 * Correção no processador de fontes
 * Botão "Importação OPML" movido para o ecrã "Adicionar fonte e botão "Exportação OPML" para o ecrã de definições
@@ -247,7 +247,7 @@ Versão 0.9.5
 *Adicionado suporte experimental a capítulos MP3
 * Novo menu de opções para a lista de novos ficheiros e para a fila
 * Adicionado a opção de eliminação automática
-* Melhoria nos relatórios de transferências
+* Melhoria nos relatórios de descargas
 * Diversas correções
 
 Versão 0.9.4.6
@@ -269,21 +269,21 @@ Versão 0.9.4.4
 Versão 0.9.4.3
 ---------------
 * Melhorias no processador de fontes
-* Melhorias nos relatórios de transferências
+* Melhorias nos relatórios de descargas
 
 Versão 0.9.4.2
 ---------------
 * Correção de erros no importador OPML
 * Melhoria na utilização de memória para imagens
-* Corrigidos erros de transferências em alguns dispositivos
+* Corrigidos erros de descargas em alguns dispositivos
 
 Versão 0.9.4.1
 ---------------
-* Melhorias nos relatórios de transferências
+* Melhorias nas notificações das descargas
 
 Versão 0.9.4
 -------------
-* Transferências mais rápidas e fiáveis
+* Descargas mais rápidas e mais fiáveis
 * Adição de controlos do reprodutor para dispositivos com o Android 4.x
 * Diversas correções
 
@@ -298,7 +298,7 @@ Versão 0.9.3
 -------------
 * Integração com o guia Miro
 * Correções no reprodutor multimédia
-* Os episódios são adicionados à fila assim que forem transferidos
+* Os episódios são adicionados à fila assim que forem descarregados
 
 Versão 0.9.2
 -------------

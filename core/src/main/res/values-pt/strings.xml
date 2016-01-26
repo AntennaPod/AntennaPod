@@ -23,6 +23,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Dados gpodder.net</string>
   <string name="free_space_label">%1$s disponível</string>
+  <string name="episode_cache_full_title">Cache de episódios cheia</string>
+  <string name="episode_cache_full_message">Atingido o limite máximo de itens em cache. Pode aumentar o tamanho de cache nas definições.</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publicados recentemente</string>
   <string name="episode_filter_label">Mostrar apenas novos episódios</string>
@@ -108,7 +110,7 @@
   <string name="share_feed_url_label">Partilhar URL da fonte</string>
   <string name="share_item_url_label">Partilhar URL do episódio</string>
   <string name="share_item_url_with_position_label">Partilhar URL do episódio com posição</string>
-  <string name="feed_delete_confirmation_msg">Confirma de que deseja apagar esta fonte e todos os episódios descarregados?</string>
+  <string name="feed_delete_confirmation_msg">Confirma a remoção desta fonte e de todos os episódios descarregados?</string>
   <string name="feed_remover_msg">Remover fonte</string>
   <string name="load_complete_feed">Atualizar todas as páginas da fonte</string>
   <string name="hide_episodes_title">Ocultar episódios</string>
@@ -137,7 +139,9 @@
   <string name="added_to_queue_label">Adicionado à fila</string>
   <string name="remove_from_queue_label">Remover da fila</string>
   <string name="add_to_favorite_label">Adicionar aos favoritos</string>
+  <string name="added_to_favorites">Adicionado aos favoritos</string>
   <string name="remove_from_favorite_label">Remover dos favoritos</string>
+  <string name="removed_from_favorites">Removido dos favoritos</string>
   <string name="visit_website_label">Aceder ao sítio web</string>
   <string name="support_label">Flattr</string>
   <string name="enqueue_all_new">Colocar tudo na fila</string>
@@ -171,7 +175,10 @@
   <string name="download_error_io_error">Erro I/O</string>
   <string name="download_error_request_error">Erro de pedido</string>
   <string name="download_error_db_access">Erro de acesso à base de dados</string>
-  <string name="downloads_left">\u0020Descargas em falta</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d descarga em curso</item>
+    <item quantity="other">%d descargas em curso</item>
+  </plurals>
   <string name="downloads_processing">Processamento de descargas</string>
   <string name="download_notification_title">A descarregar dados do podcast</string>
   <string name="download_report_content">%1$d descargas efetuadas, %2$d falhadas</string>
@@ -203,6 +210,8 @@
   <!--Queue operations-->
   <string name="lock_queue">Bloquear fila</string>
   <string name="unlock_queue">Desbloquear fila</string>
+  <string name="queue_locked">Fila bloqueada</string>
+  <string name="queue_unlocked">Fila desbloqueada</string>
   <string name="clear_queue_label">Limpar fila</string>
   <string name="undo">Anular</string>
   <string name="removed_from_queue">Item removido</string>
@@ -244,12 +253,13 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Descarregar extra</string>
   <string name="no_playback_plugin_title">Extra não instalado</string>
-  <string name="no_playback_plugin_or_sonic_msg">Para que a velocidade variável de reprodução funcione, tem que instalar um biblioteca de terceiros ou ativar o reprodutor Sonic [Android 4.1+].\n\nClique em \'Descarregar extra\' para a descarregar no Google Play.\n\nQuaisquer erros que ocorram na utilização do extra não são da responsabilidade do AntennaPod e devem ser reportados diretamente ao seu programador.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Para que a velocidade variável de reprodução funcione, recomendamos que ative o Sonic Media Player incorporado [Android 4.1+].\n\nEm alternativa, pode transferir o extra <i>Prestissimo</i>, disponível na Google Play.\nQuaisquer problemas que ocorram com o Prestissimo não são da responsabilidade dos programadores do AntennaPod e devem ser reportados ao dono do extra.</string>
   <string name="set_playback_speed_label">Velocidades de reprodução</string>
   <string name="enable_sonic">Ativar Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Não existem itens nesta lista</string>
   <string name="no_feeds_label">Ainda não possui quaisquer fontes</string>
+  <string name="no_chapters_label">Este episódio não tem capítulos.</string>
   <!--Preferences-->
   <string name="other_pref">Outras</string>
   <string name="about_pref">Sobre</string>
@@ -257,7 +267,7 @@
   <string name="services_label">Serviços</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Limpeza de episódios</string>
-  <string name="pref_episode_cleanup_summary">Os episódios que não estiverem na fila ou que não sejam favoritos são elegiveis para remoção se necessitar de espaço</string>
+  <string name="pref_episode_cleanup_summary">Os episódios que não estejam na fila e não sejam favoritos podem ser elegíveis para serem removidos se a Descarga automática necessitar de espaço para novos episódios.</string>
   <string name="pref_pauseOnDisconnect_sum">Pausa na reprodução ao desligar os auscultadores ou o bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continuar reprodução ao ligar os auscultadores</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Continuar reprodução ao estabelecer a ligação bluetooth</string>
@@ -278,6 +288,8 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Desativar</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Definir intervalo</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Definir hora do dia</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">a cada %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">às %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Apenas descarregar através de redes sem fios</string>
   <string name="pref_followQueue_title">Reprodução contínua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Descarregar por Wi-Fi</string>
@@ -352,7 +364,8 @@
   <string name="send_email">Enviar e-mail</string>
   <string name="experimental_pref">Experimental</string>
   <string name="pref_sonic_title">Reprodutor Sonic</string>
-  <string name="pref_sonic_message">Utilizar reprodutor multimédia Sonic como substituto de Prestissimo</string>
+  <string name="pref_sonic_message">Utilizar o Sonic Media Player como substituto do reprodutor nativo do Android e do Prestissimo</string>
+  <string name="pref_current_value">Valor atual: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>
   <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>
@@ -383,7 +396,7 @@
   <string name="choose_file_from_filesystem">Do sistema local de ficheiros</string>
   <string name="choose_file_from_external_application">Utilizar aplicação externa</string>
   <string name="opml_export_label">Exportação OPML</string>
-  <string name="exporting_label">Exportação...</string>
+  <string name="exporting_label">A exportar...</string>
   <string name="export_error_label">Erro de exportação</string>
   <string name="opml_export_success_title">Exportação efetuada</string>
   <string name="opml_export_success_sum">O ficheiro .opml foi guardado em:\u0020</string>
@@ -493,6 +506,7 @@
   <string name="sp_apps_importing_feeds_msg">Importar subscrições de aplicações single-purpose...</string>
   <string name="search_itunes_label">Procurar no iTunes</string>
   <string name="select_label"><b>Selecionar...</b></string>
+  <string name="filter">Filtro</string>
   <string name="all_label">Todos</string>
   <string name="selected_all_label">Marcar todos os episódios</string>
   <string name="none_label">Nenhum</string>
@@ -505,7 +519,7 @@
   <string name="selected_downloaded_label">Selecionar episódios descarregados</string>
   <string name="not_downloaded_label">Não descarregados</string>
   <string name="selected_not_downloaded_label">Selecionar episódios não descarregados</string>
-  <string name="sort_title"><b>Ordenar por...</b></string>
+  <string name="sort_title"><b>Ordenar por…</b></string>
   <string name="sort_title_a_z">Título (A \u2192 Z)</string>
   <string name="sort_title_z_a">Título (Z \u2192 A)</string>
   <string name="sort_date_new_old">Data (Recente \u2192 Antiga)</string>
@@ -518,4 +532,13 @@
   <string name="rating_never_label">Não avaliar</string>
   <string name="rating_later_label">Lembrar mais tarde</string>
   <string name="rating_now_label">Claro, vamos a isso!</string>
+  <!--Audio controls-->
+  <string name="audio_controls">Controlos de áudio</string>
+  <string name="playback_speed">Velocidade de reprodução</string>
+  <string name="volume">Volume</string>
+  <string name="left_short">E</string>
+  <string name="right_short">D</string>
+  <string name="audio_effects">Efeitos áudio</string>
+  <string name="stereo_to_mono">Mistura: estéreo para mono</string>
+  <string name="sonic_only">Apenas Sonic</string>
 </resources>

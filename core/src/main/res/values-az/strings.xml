@@ -37,7 +37,6 @@
   <string name="length_prefix">Müddət:\u0020</string>
   <string name="size_prefix">Ölçü:\u0020</string>
   <string name="processing_label">Hazırlaşma</string>
-  <string name="loading_label">Yükləmə...</string>
   <string name="close_label">Bağla</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Kanalın URLı</string>
@@ -79,7 +78,6 @@
   <string name="download_error_malformed_url">Yanlış URL</string>
   <string name="download_error_io_error">IO xətasi</string>
   <string name="download_error_request_error">Tələbin xətası</string>
-  <string name="downloads_left">\u0020yükləmə galdı</string>
   <string name="download_notification_title">Podkast məlumatların yüklənişi</string>
   <string name="download_report_content">%1$d yükləmə uğurludur, %2$d uğursuzdur</string>
   <string name="download_log_title_unknown">Naməlum başliğ</string>
@@ -177,7 +175,6 @@
   <string name="select_all_label">Hamısını seç</string>
   <string name="deselect_all_label">Seçimi ləğv et</string>
   <string name="opml_export_label">OPML ixraçı</string>
-  <string name="exporting_label">İxrac...</string>
   <string name="export_error_label">İxracın xətası</string>
   <string name="opml_export_success_sum">OPML fayl:\u0020 yazılıb</string>
   <!--Sleep timer-->
@@ -202,10 +199,10 @@
   <string name="folder_not_empty_dialog_msg">Seçilən qovluq boş deyil. Mediya yükləmələr və başka fayllar bu qovluqa yazılacaqlar. Necə olsa davam olsunmu?</string>
   <string name="set_to_default_folder">Başlanğıc qovluqu seç</string>
   <!--Online feed view-->
-  <string name="downloading_label">Yükləmə...</string>
   <!--Content descriptions for image buttons-->
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
   <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

@@ -66,7 +66,6 @@
   <string name="length_prefix">Довжина:\u0020</string>
   <string name="size_prefix">Розмір:\u0020</string>
   <string name="processing_label">Обробка</string>
-  <string name="loading_label">Завантаження категорій ...</string>
   <string name="save_username_password_label">Зберегти ім\'я користувача та пароль</string>
   <string name="close_label">Закрити</string>
   <string name="retry_label">Повторити знову</string>
@@ -78,7 +77,6 @@
   <string name="feed_auto_download_global">Для всіх</string>
   <string name="feed_auto_download_always">Завжди</string>
   <string name="feed_auto_download_never">Ніколи</string>
-  <string name="send_label">Надіслати...</string>
   <string name="episode_cleanup_never">Ніколи</string>
   <string name="episode_cleanup_queue_removal">Якщо не в черзі</string>
   <string name="episode_cleanup_after_listening">Після закінчення</string>
@@ -102,7 +100,6 @@
   <string name="mark_all_seen_label">Позначити всі як переглянуті</string>
   <string name="show_info_label">Інформація</string>
   <string name="remove_feed_label">Видалити подкаст</string>
-  <string name="share_label">Поділитись...</string>
   <string name="share_link_label">Поділитися URL сайту</string>
   <string name="share_link_with_position_label">Поділитись посиланням на позицію</string>
   <string name="share_feed_url_label">Поділитись посиланням на канал</string>
@@ -171,7 +168,6 @@
   <string name="download_error_io_error">Помилка IO</string>
   <string name="download_error_request_error">Помилка запиту</string>
   <string name="download_error_db_access">Помилка бази даних</string>
-  <string name="downloads_left">\0020 залишилось завантажити</string>
   <string name="downloads_processing">Обробка завантаженого</string>
   <string name="download_notification_title">Завантаження даних подкасту</string>
   <string name="download_report_content">Завантажилось %1$d успішно, %2$d з помилками</string>
@@ -244,7 +240,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Завантажити додаток</string>
   <string name="no_playback_plugin_title">Додаток не встановлено</string>
-  <string name="no_playback_plugin_or_sonic_msg">Для керування швидкістю програвання потрібно встановити додаток або включити експериментальний програвач Sonic [Android 4.1+].\n\nНатисніть \"Завантажити додаток\" для завантаження безкоштовного додатку з Play Store\n\nЯкщо при використанні plugin виникнуть будь які проблеми - це відповідальність автора додатка, а не автора AntennaPod.</string>
   <string name="set_playback_speed_label">Швидкість програвання</string>
   <string name="enable_sonic">Включити Sonic</string>
   <!--Empty list labels-->
@@ -257,7 +252,6 @@
   <string name="services_label">Сервіси</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Чищення епізодів</string>
-  <string name="pref_episode_cleanup_summary">У разі нестачі пам\'яті видалять епізоди які не знаходяться ні в списку улюблених ні в черзі.</string>
   <string name="pref_pauseOnDisconnect_sum">Зупинятись коли навушники або блютуз від’єднано</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Поновити відтворення коли навушники повторно під’єднано</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Поновити відтворення коли блютуз повторно під’єднано</string>
@@ -347,7 +341,6 @@
   <string name="pref_image_cache_size_sum">Розмір дискового кеша для зображень.</string>
   <string name="experimental_pref">Експериментальні</string>
   <string name="pref_sonic_title">Програвач Sonic</string>
-  <string name="pref_sonic_message">Використовивать вбудований програвач sonic media player замість Prestissimo</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -374,11 +367,9 @@
   <string name="opml_import_error_dir_empty">Директорія імпорту пуста</string>
   <string name="select_all_label">Обрати все</string>
   <string name="deselect_all_label">Убрати виділення</string>
-  <string name="select_options_label">Обрати ...</string>
   <string name="choose_file_from_filesystem">З локальної файлової системи</string>
   <string name="choose_file_from_external_application">За допомогою додатка</string>
   <string name="opml_export_label">OPML экспорт</string>
-  <string name="exporting_label">Експорт ...</string>
   <string name="export_error_label">Помилка експорту</string>
   <string name="opml_export_success_title">OPML експорт успішний</string>
   <string name="opml_export_success_sum">OPML файл записаний в:\u0020</string>
@@ -458,7 +449,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
   <string name="subscribed_label">Підписано</string>
-  <string name="downloading_label">Завантаження...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Показати глави</string>
   <string name="show_shownotes_label">Показати нотатки</string>
@@ -486,7 +476,6 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <string name="search_itunes_label">Пошук в iTunes</string>
-  <string name="select_label"><b>Обрати ...</b></string>
   <string name="all_label">Всі</string>
   <string name="selected_all_label">Обрано всі епізоди</string>
   <string name="none_label">Жодного</string>
@@ -499,7 +488,6 @@
   <string name="selected_downloaded_label">Обрано завантажені епізоди</string>
   <string name="not_downloaded_label">Незавантажені</string>
   <string name="selected_not_downloaded_label">Обрано незавантажені епізоди</string>
-  <string name="sort_title"><b>Сортувати за ...</b></string>
   <string name="sort_title_a_z">Назва (А \u2192 Я)</string>
   <string name="sort_title_z_a">Назва (Я \u2192 А)</string>
   <string name="sort_date_new_old">Дата (Нові \u2192 Старі)</string>
@@ -507,4 +495,5 @@
   <string name="sort_duration_short_long">Тривалість (Короткі \u2192 Довгі)</string>
   <string name="sort_duration_long_short">Тривалість (Довгі \u2192 Короткі)</string>
   <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

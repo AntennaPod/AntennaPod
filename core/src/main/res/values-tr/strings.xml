@@ -66,7 +66,6 @@
   <string name="length_prefix">Uzunluk:\u0020</string>
   <string name="size_prefix">Boyut:\u0020</string>
   <string name="processing_label">İşleniyor</string>
-  <string name="loading_label">Yükleniyor...</string>
   <string name="save_username_password_label">Kullanıcı adı ve şifreyi kaydet</string>
   <string name="close_label">Kapat</string>
   <string name="retry_label">Yeniden dene</string>
@@ -77,7 +76,6 @@
   <string name="feed_auto_download_global">Genel</string>
   <string name="feed_auto_download_always">Her zaman</string>
   <string name="feed_auto_download_never">Hiçbir zaman</string>
-  <string name="send_label">Gönder...</string>
   <string name="episode_cleanup_never">Hiçbir zaman</string>
   <string name="episode_cleanup_queue_removal">Sırada değilse</string>
   <string name="episode_cleanup_after_listening">Bittikten sonra</string>
@@ -100,7 +98,6 @@
   <string name="mark_all_seen_label">Hepsini görüldü olarak işaretle</string>
   <string name="show_info_label">Bilgiyi göster</string>
   <string name="remove_feed_label">Cep yayını kaldır</string>
-  <string name="share_label">Paylaş...</string>
   <string name="share_link_label">Link\'i paylaş</string>
   <string name="share_link_with_position_label">Link\'i Konumla birlikte paylaş</string>
   <string name="share_feed_url_label">Besleme Adresini Paylaş</string>
@@ -169,7 +166,6 @@
   <string name="download_error_io_error">G/Ç Hatası</string>
   <string name="download_error_request_error">İstek hatası</string>
   <string name="download_error_db_access">Veritabanı erişim hatası</string>
-  <string name="downloads_left">\u0020Kalan indirme</string>
   <string name="downloads_processing">İndirmeler işleniyor</string>
   <string name="download_notification_title">Cep yayını verileri indiriliyor</string>
   <string name="download_report_content">%1$d indirme başarılı, %2$d başarısız</string>
@@ -254,7 +250,6 @@
   <string name="services_label">Servisler</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Bölüm Temizliği</string>
-  <string name="pref_episode_cleanup_summary">Daha fazla yer gerektiğinde kuyrukta olmayan ve favorilere eklenmemiş bölümler kaldırılmak için uygundur</string>
   <string name="pref_pauseOnDisconnect_sum">Kulaklıklar çıkarıldığında veya bluetooth bağlantısı kesildiğinde çalmayı duraklat</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetooth yeniden bağlandığında çalmaya devam et</string>
@@ -337,7 +332,6 @@
   <string name="send_email">E-posta gönder</string>
   <string name="experimental_pref">Deneysel</string>
   <string name="pref_sonic_title">Sonic ortam yürütücüsü</string>
-  <string name="pref_sonic_message">Prestissimo yerine sonic ortam yürütücüsünü kullan</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Otomatik Flattr\'lamayı etkinleştir</string>
   <string name="auto_flattr_after_percent">Bölümün yüzde %d kısmı oynatıldığında Flattr\'la</string>
@@ -364,11 +358,9 @@
   <string name="opml_import_error_dir_empty">İça aktarma dizini boş</string>
   <string name="select_all_label">Hepsini seç</string>
   <string name="deselect_all_label">Tüm seçimleri geri al</string>
-  <string name="select_options_label">Seç ...</string>
   <string name="choose_file_from_filesystem">Yerel dosya sisteminden</string>
   <string name="choose_file_from_external_application">Harici uygulama kullan</string>
   <string name="opml_export_label">OPML dışa aktar</string>
-  <string name="exporting_label">Dışa aktarılıyor...</string>
   <string name="export_error_label">Dışa aktarma hatası</string>
   <string name="opml_export_success_title">Opml dışa aktarma başarılı.</string>
   <string name="opml_export_success_sum">.opml dosyasy yazıldı: \u0020</string>
@@ -449,7 +441,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">Üye ol</string>
   <string name="subscribed_label">Üye olundu</string>
-  <string name="downloading_label">İndiriliyor...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Kısımları göster</string>
   <string name="show_shownotes_label">Notları göster</string>
@@ -477,7 +468,6 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <string name="search_itunes_label">iTunes\'da Arama</string>
-  <string name="select_label"><b>Seç ...</b></string>
   <string name="all_label">Tümü</string>
   <string name="selected_all_label">Tüm Bölümler Seçildi</string>
   <string name="none_label">Hiçbiri</string>
@@ -490,7 +480,6 @@
   <string name="selected_downloaded_label">İndirilen Bölümler Seçildi</string>
   <string name="not_downloaded_label">İndirilmeyen</string>
   <string name="selected_not_downloaded_label">İndirilmeyen Bölümler Seçildi</string>
-  <string name="sort_title"><b>Sırala ...</b></string>
   <string name="sort_title_a_z">Başlık (A \u2192 Z)</string>
   <string name="sort_title_z_a">Başlık (Z \u2192 A)</string>
   <string name="sort_date_new_old">Tarih (Yeni \u2192 Eski)</string>
@@ -503,4 +492,5 @@
   <string name="rating_never_label">Bir daha gösterme</string>
   <string name="rating_later_label">Daha sonra hatırlat</string>
   <string name="rating_now_label">Evet, şimdi yapalım!</string>
+  <!--Audio controls-->
 </resources>

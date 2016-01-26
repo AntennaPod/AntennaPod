@@ -63,7 +63,6 @@
   <string name="length_prefix">Durata:\u0020</string>
   <string name="size_prefix">Dimensione:\u0020</string>
   <string name="processing_label">Elaborazione in corso</string>
-  <string name="loading_label">Caricamento in corso...</string>
   <string name="save_username_password_label">Salva nome utente e password</string>
   <string name="close_label">Chiudi</string>
   <string name="retry_label">Riprova</string>
@@ -73,7 +72,6 @@
   <string name="feed_auto_download_global">Globale</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
-  <string name="send_label">Invia...</string>
   <string name="episode_cleanup_never">Mai</string>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 giorno dopo il completamento</item>
@@ -92,7 +90,6 @@
   <string name="mark_all_seen_label">Segna tutti come visti</string>
   <string name="show_info_label">Informazioni</string>
   <string name="remove_feed_label">Rimuovi un podcast</string>
-  <string name="share_label">Condividi...</string>
   <string name="share_link_label">Condividi il link al sito</string>
   <string name="share_link_with_position_label">Condividi il Link con la Posizione</string>
   <string name="share_feed_url_label">Condividi URL del Feed</string>
@@ -159,7 +156,6 @@
   <string name="download_error_io_error">Errore IO</string>
   <string name="download_error_request_error">Errore della richiesta</string>
   <string name="download_error_db_access">Errore di accesso al database</string>
-  <string name="downloads_left">\u0020Download rimasti</string>
   <string name="downloads_processing">Elaborazione dei download in corso</string>
   <string name="download_notification_title">Download podcast in corso</string>
   <string name="download_report_content">%1$d download con successo, %2$d falliti</string>
@@ -323,7 +319,6 @@
   <string name="choose_file_from_filesystem">Dal filesystem locale</string>
   <string name="choose_file_from_external_application">Utilizza un\'applicazione esterna</string>
   <string name="opml_export_label">Esportazione su OPML</string>
-  <string name="exporting_label">Esportazione in corso...</string>
   <string name="export_error_label">Errore di esportazione</string>
   <string name="opml_export_success_title">Esportazione OPML avvenuta con successo.</string>
   <string name="opml_export_success_sum">Il file .opml è stato scritto su:\u0020</string>
@@ -395,7 +390,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abbonati</string>
   <string name="subscribed_label">Abbonato</string>
-  <string name="downloading_label">Download in corso...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Mostra i capitoli</string>
   <string name="show_shownotes_label">Mostra le note dell\'episodio</string>
@@ -422,7 +416,6 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importazione di sottoscrizioni da applicazioni monouso in corso...</string>
   <string name="search_itunes_label">Cerca su iTunes</string>
-  <string name="select_label"><b>Seleziona ...</b></string>
   <string name="all_label">Tutti</string>
   <string name="selected_all_label">Tutti gli Episodi Selezionati</string>
   <string name="none_label">Nessuno</string>
@@ -436,4 +429,5 @@
   <string name="sort_duration_short_long">Durata (Short \u2192 Long)</string>
   <string name="sort_duration_long_short">Durata (Long \u2192 Short)</string>
   <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

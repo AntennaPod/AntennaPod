@@ -66,7 +66,6 @@
   <string name="length_prefix">长度:\u0020</string>
   <string name="size_prefix">大小:\u0020</string>
   <string name="processing_label">处理中</string>
-  <string name="loading_label">加载中...</string>
   <string name="save_username_password_label">保存用户名密码</string>
   <string name="close_label">关闭</string>
   <string name="retry_label">重试</string>
@@ -77,7 +76,6 @@
   <string name="feed_auto_download_global">全局</string>
   <string name="feed_auto_download_always"> 总是</string>
   <string name="feed_auto_download_never">从不</string>
-  <string name="send_label">发送……</string>
   <string name="episode_cleanup_never">从不</string>
   <string name="episode_cleanup_queue_removal">当不在队列中</string>
   <string name="episode_cleanup_after_listening">结束后</string>
@@ -99,7 +97,6 @@
   <string name="mark_all_seen_label">所有可见</string>
   <string name="show_info_label">查看信息</string>
   <string name="remove_feed_label">删除播客</string>
-  <string name="share_label">分享到...</string>
   <string name="share_link_label">分享网站链接</string>
   <string name="share_link_with_position_label">分享网站链接与位置</string>
   <string name="share_feed_url_label">分享订阅地址</string>
@@ -168,7 +165,6 @@
   <string name="download_error_io_error">IO 错误</string>
   <string name="download_error_request_error">请求出错</string>
   <string name="download_error_db_access">数据库访问错误</string>
-  <string name="downloads_left">\u0020 下载剩余</string>
   <string name="downloads_processing">正在处理下载</string>
   <string name="download_notification_title">下载播客数据</string>
   <string name="download_report_content">%1$d 下载成功, %2$d 失败</string>
@@ -356,11 +352,9 @@
   <string name="opml_import_error_dir_empty">导入目录为空.</string>
   <string name="select_all_label">全选</string>
   <string name="deselect_all_label">取消所有选择</string>
-  <string name="select_options_label">选择 ...</string>
   <string name="choose_file_from_filesystem">来自本地文件系统</string>
   <string name="choose_file_from_external_application">使用外部应用</string>
   <string name="opml_export_label">OPML 导出</string>
-  <string name="exporting_label">导出中...</string>
   <string name="export_error_label">导出出错</string>
   <string name="opml_export_success_title">OPML 导出成功.</string>
   <string name="opml_export_success_sum">.opml 文件已保存到:\u0020</string>
@@ -436,7 +430,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">订阅</string>
   <string name="subscribed_label">已订阅</string>
-  <string name="downloading_label">下载中...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">显示章节</string>
   <string name="show_shownotes_label">显示笔记</string>
@@ -464,7 +457,6 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">正在从选定的应用中导入订阅...</string>
   <string name="search_itunes_label">搜索 iTunes</string>
-  <string name="select_label"><b>选择 ...</b></string>
   <string name="all_label">全部</string>
   <string name="selected_all_label">全选</string>
   <string name="none_label">无</string>
@@ -477,7 +469,6 @@
   <string name="selected_downloaded_label">选择已下载的曲目</string>
   <string name="not_downloaded_label">未下载</string>
   <string name="selected_not_downloaded_label">选择未下载的曲目</string>
-  <string name="sort_title"><b>排序 ...</b></string>
   <string name="sort_title_a_z">标题 (A \u2192 Z)</string>
   <string name="sort_title_z_a">标题 (Z \u2192 A)</string>
   <string name="sort_date_new_old">日期 (新 \u2192 旧)</string>
@@ -489,4 +480,5 @@
   <string name="rating_never_label">请勿打扰</string>
   <string name="rating_later_label">稍后提醒</string>
   <string name="rating_now_label">好的, 就这样！</string>
+  <!--Audio controls-->
 </resources>

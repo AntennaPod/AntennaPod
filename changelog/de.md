@@ -2,12 +2,12 @@
 ==========
 Version 1.4.1
 -------------
-Performance-Verbesserungen
-* Hardware buttons now ff and rewind instead of skipping
-* Option to have forward button skip
-* Option to send crash reports directly to developers
-* Highlight currently playing episode
-* Widget improvements
+* Performance-Verbesserungen
+* Tasten spulen nun vor oder zurück statt zur nächsten Episode zu springen
+* Einstellung, zur nächsten Episode zu springen statt vorzuspulen
+* Möglichkeit, Absturzberichte an Entwickler zu schicken
+* Hebe Episode hervor, die gerade abgespielt wird
+* Widget-Verbesserungen
 
 Version 1.4.0.12
 ----------------

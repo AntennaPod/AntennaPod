@@ -23,6 +23,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Inloggning till gpodder.net</string>
   <string name="free_space_label">%1$s kvar</string>
+  <string name="episode_cache_full_title">Episodcachen är full</string>
+  <string name="episode_cache_full_message">Episodcachens gräns har nåtts. Du kan öka cachens storlek i inställningarna.</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Nyligen publicerade</string>
   <string name="episode_filter_label">Visa bara nya Episoder</string>
@@ -67,7 +69,7 @@
   <string name="length_prefix">Längd:\u0020</string>
   <string name="size_prefix">Storlek:\u0020</string>
   <string name="processing_label">Bearbetar</string>
-  <string name="loading_label">Laddar...</string>
+  <string name="loading_label">Laddar…</string>
   <string name="save_username_password_label">Spara användarnamn och lösenord</string>
   <string name="close_label">Stäng</string>
   <string name="retry_label">Försök igen</string>
@@ -79,7 +81,7 @@
   <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Alltid</string>
   <string name="feed_auto_download_never">Aldrig</string>
-  <string name="send_label">Skicka...</string>
+  <string name="send_label">Skicka…</string>
   <string name="episode_cleanup_never">Aldrig</string>
   <string name="episode_cleanup_queue_removal">Om inte köad</string>
   <string name="episode_cleanup_after_listening">Efter färdigspelad</string>
@@ -102,7 +104,7 @@
   <string name="mark_all_seen_label">Markera alla som sedda</string>
   <string name="show_info_label">Visa information</string>
   <string name="remove_feed_label">Ta bort Podcast</string>
-  <string name="share_label">Dela...</string>
+  <string name="share_label">Dela…</string>
   <string name="share_link_label">Dela Länk</string>
   <string name="share_link_with_position_label">Dela Länk med Position</string>
   <string name="share_feed_url_label">Dela Flödets URL</string>
@@ -137,7 +139,9 @@
   <string name="added_to_queue_label">Lägg till i Kö</string>
   <string name="remove_from_queue_label">Ta bort från Kön</string>
   <string name="add_to_favorite_label">Lägg till i Favoriter</string>
+  <string name="added_to_favorites">Tillagd i Favoriter</string>
   <string name="remove_from_favorite_label">Ta bort från Favoriter</string>
+  <string name="removed_from_favorites">Borrtagen ur Favoriter</string>
   <string name="visit_website_label">Besök websidan</string>
   <string name="support_label">Flattra det här</string>
   <string name="enqueue_all_new">Lägg till alla i kön</string>
@@ -171,7 +175,10 @@
   <string name="download_error_io_error">IO fel</string>
   <string name="download_error_request_error">Förfrågningsfel</string>
   <string name="download_error_db_access">Åtkomstfel till databasen</string>
-  <string name="downloads_left">\u0020Nedladdningar kvar</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d nedladdning kvar</item>
+    <item quantity="other">%d nedladdningar kvar</item>
+  </plurals>
   <string name="downloads_processing">Bearbetar nedladdningar</string>
   <string name="download_notification_title">Laddar ner podcastdata</string>
   <string name="download_report_content">%1$d nedladdningar lyckades, %2$d misslyckades</string>
@@ -203,6 +210,8 @@
   <!--Queue operations-->
   <string name="lock_queue">Lås Kön</string>
   <string name="unlock_queue">Lås upp Kön</string>
+  <string name="queue_locked">Kön låst</string>
+  <string name="queue_unlocked">Kön upplåst</string>
   <string name="clear_queue_label">Rensa Kön</string>
   <string name="undo">Ångra</string>
   <string name="removed_from_queue">Föremålet avlägsnades</string>
@@ -244,12 +253,13 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Ladda ner tillägg</string>
   <string name="no_playback_plugin_title">Tillägg ej installerat</string>
-  <string name="no_playback_plugin_or_sonic_msg">För att variabel uppspelningshastighet ska funger måste du installera ett tredjepartsbibliotek eller aktivera den experimentella spelaren Sonic [Android 4.1+].\n\nTryck på \'Ladda ner Plugin\' för att ladda ner en gratis plugin från Play Store.\n\nAntennaPod ansvarar inte för eventualla problem som upptäcks vid användning av denna plugin och de bör rapporteras till pluginens ägare.</string>
+  <string name="no_playback_plugin_or_sonic_msg">För att variabel uppspelningshastighet ska fungera rekommenderas att aktivera den inbyggda Sonic mediaspelaren [Android 4.1+].\n\nAlternativt kan du ladda ner tredjepartstillägget <i>Prestissimo</i> från Google Play.\nProblem med Prestissimo är inte AntennaPods ansvar och bör rapporteras till tilläggets ägare.</string>
   <string name="set_playback_speed_label">Uppspelningshastigheter</string>
   <string name="enable_sonic">Aktivera Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Det finns inget i denna lista.</string>
   <string name="no_feeds_label">Du har inte prenumererat på något flöde ännu.</string>
+  <string name="no_chapters_label">Denna episod har inga kapitel.</string>
   <!--Preferences-->
   <string name="other_pref">Annat</string>
   <string name="about_pref">Om</string>
@@ -257,7 +267,7 @@
   <string name="services_label">Tjänster</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Episodupprensning</string>
-  <string name="pref_episode_cleanup_summary">Episoder som inte ligger i kön och inte är favoriter ska kunna tas bort om det behövs utrymme</string>
+  <string name="pref_episode_cleanup_summary">Episoder som inte är i kön och inte är favoriter kan tas bort om Automatisk Nedladdning behöver utrymme för nya episoder</string>
   <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller bluetooth kopplas ifrån.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Fortsätt uppspelningen när hörlurarna återansluts</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsätt uppspelningen när bluetooth återansluts</string>
@@ -278,6 +288,8 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Avaktivera</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Sätt intervall</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Sätt Tid på Dagen</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">var %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">vid %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Hämta mediefiler endast över WiFi</string>
   <string name="pref_followQueue_title">Kontinuerlig Uppspelning</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi nedladdning</string>
@@ -352,7 +364,8 @@
   <string name="send_email">Sänd e-post</string>
   <string name="experimental_pref">Experimentellt</string>
   <string name="pref_sonic_title">Sonic mediaspelare</string>
-  <string name="pref_sonic_message">Använd inbyggda mediaspelaren Sonic som en ersättning för Prestissimo</string>
+  <string name="pref_sonic_message">Använd den inbyggda Sonic mediaspelare som ersättning för Androids egna mediaspelare och Prestissimo</string>
+  <string name="pref_current_value">Nuvarande värde: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>
@@ -379,11 +392,11 @@
   <string name="opml_import_error_dir_empty">Katalogen är tom.</string>
   <string name="select_all_label">Välj alla</string>
   <string name="deselect_all_label">Avmarkera alla</string>
-  <string name="select_options_label">Välj ...</string>
+  <string name="select_options_label">Välj…</string>
   <string name="choose_file_from_filesystem">Från lokalt filsystem</string>
   <string name="choose_file_from_external_application">Använd extern applikation</string>
   <string name="opml_export_label">OPML export</string>
-  <string name="exporting_label">Exporterar...</string>
+  <string name="exporting_label">Exporterar…</string>
   <string name="export_error_label">Exporteringsfel</string>
   <string name="opml_export_success_title">OPML Exportering lyckades.</string>
   <string name="opml_export_success_sum">.opml filen skrevs till:\u0020</string>
@@ -464,7 +477,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Prenumerera</string>
   <string name="subscribed_label">Prenumererar</string>
-  <string name="downloading_label">Laddar ner...</string>
+  <string name="downloading_label">Laddar ner…</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Visa kapitel</string>
   <string name="show_shownotes_label">Visa shownotes</string>
@@ -490,9 +503,10 @@
   <!--Progress information-->
   <string name="progress_upgrading_database">Uppgraderar databasen</string>
   <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte...</string>
+  <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte…</string>
   <string name="search_itunes_label">Leta i iTunes</string>
-  <string name="select_label"><b>Välj ...</b></string>
+  <string name="select_label"><b>Välj…</b></string>
+  <string name="filter">Filtrera</string>
   <string name="all_label">Alla</string>
   <string name="selected_all_label">Välj alla Episoder</string>
   <string name="none_label">Inga</string>
@@ -505,7 +519,7 @@
   <string name="selected_downloaded_label">Valde nedladdade Episoder</string>
   <string name="not_downloaded_label">Ej nedladdade</string>
   <string name="selected_not_downloaded_label">Valde ej nedladdade Episoder</string>
-  <string name="sort_title"><b>Sortera efter ...</b></string>
+  <string name="sort_title"><b>Sortera efter…</b></string>
   <string name="sort_title_a_z">Titel (A \u2192 Ö)</string>
   <string name="sort_title_z_a">Titel (Ö \u2192 A)</string>
   <string name="sort_date_new_old">Datum (Ny \u2192 Gammal)</string>
@@ -518,4 +532,13 @@
   <string name="rating_never_label">Lämna mig ifred</string>
   <string name="rating_later_label">Påminn mig senare</string>
   <string name="rating_now_label">Okej, gör det nu!</string>
+  <!--Audio controls-->
+  <string name="audio_controls">Ljudkontroller</string>
+  <string name="playback_speed">Uppspelningshastighet</string>
+  <string name="volume">Volym</string>
+  <string name="left_short">V</string>
+  <string name="right_short">H</string>
+  <string name="audio_effects">Ljudeffekter</string>
+  <string name="stereo_to_mono">Nedmixning: Stereo till mono</string>
+  <string name="sonic_only">Bara Sonic</string>
 </resources>
