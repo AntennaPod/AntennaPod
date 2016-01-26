@@ -1,11 +1,19 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.util.List;
 
@@ -14,8 +22,10 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadedEpisodesListAdapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,16 +38,14 @@ public class CompletedDownloadsFragment extends ListFragment {
 
     private static final String TAG = CompletedDownloadsFragment.class.getSimpleName();
 
-    private static final int EVENTS =
-            EventDistributor.DOWNLOAD_HANDLED |
-                    EventDistributor.DOWNLOADLOG_UPDATE |
-                    EventDistributor.UNREAD_ITEMS_UPDATE;
+    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
+            EventDistributor.DOWNLOADLOG_UPDATE |
+            EventDistributor.UNREAD_ITEMS_UPDATE;
 
     private List<FeedItem> items;
     private DownloadedEpisodesListAdapter listAdapter;
 
     private boolean viewCreated = false;
-    private boolean itemsLoaded = false;
 
     private Subscription subscription;
 
@@ -81,9 +89,9 @@ public class CompletedDownloadsFragment extends ListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (viewCreated && itemsLoaded) {
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (viewCreated && items != null) {
             onFragmentLoaded();
         }
     }
@@ -99,7 +107,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
         viewCreated = true;
-        if (itemsLoaded && getActivity() != null) {
+        if (items != null && getActivity() != null) {
             onFragmentLoaded();
         }
     }
@@ -111,7 +119,6 @@ public class CompletedDownloadsFragment extends ListFragment {
         if (item != null) {
             ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
         }
-
     }
 
     private void onFragmentLoaded() {
@@ -157,7 +164,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        if (!itemsLoaded && viewCreated) {
+        if (items == null && viewCreated) {
             setListShown(false);
         }
         subscription = Observable.fromCallable(() -> DBReader.getDownloadedItems())
@@ -166,7 +173,6 @@ public class CompletedDownloadsFragment extends ListFragment {
                 .subscribe(result -> {
                     if (result != null) {
                         items = result;
-                        itemsLoaded = true;
                         if (viewCreated && getActivity() != null) {
                             onFragmentLoaded();
                         }

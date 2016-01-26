@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -17,10 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.joanzapata.iconify.Icon;
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -122,11 +117,6 @@ public class EpisodesApplyActionFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.episodes_apply_action_options, menu);
 
-        int[] attrs = { android.R.attr.textColor };
-        TypedArray ta = getActivity().obtainStyledAttributes(attrs);
-        textColor = ta.getColor(0, Color.GRAY);
-        ta.recycle();
-
         mSelectToggle = menu.findItem(R.id.select_toggle);
         mSelectToggle.setOnMenuItemClickListener(item -> {
             if (checkedIds.size() == episodes.size()) {
@@ -140,22 +130,21 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
-        /*
-         * Prepare icon for select toggle button
-         */
+        // Prepare icon for select toggle button
 
-        // Find icon attribute
         int[] icon = new int[1];
-        if(checkedIds.size() == episodes.size()) icon[0] = R.attr.ic_check_box;
-        else if(checkedIds.size() == 0) icon[0] = R.attr.ic_check_box_outline;
-        else icon[0] = R.attr.ic_indeterminate_check_box;
+        if (checkedIds.size() == episodes.size()) {
+            icon[0] = R.attr.ic_check_box;
+        } else if (checkedIds.size() == 0) {
+            icon[0] = R.attr.ic_check_box_outline;
+        } else {
+            icon[0] = R.attr.ic_indeterminate_check_box;
+        }
 
-        // Get Drawable from attribute
         TypedArray a = getActivity().obtainStyledAttributes(icon);
         Drawable iconDrawable = a.getDrawable(0);
         a.recycle();
 
-        // Set icon
         mSelectToggle.setIcon(iconDrawable);
     }
 
