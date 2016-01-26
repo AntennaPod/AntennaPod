@@ -19,8 +19,8 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 /**
  * Displays the cover and the title of a FeedItem.
  */
-public class CoverFragment extends Fragment implements
-        AudioplayerContentFragment {
+public class CoverFragment extends Fragment implements AudioplayerContentFragment {
+
     private static final String TAG = "CoverFragment";
     private static final String ARG_PLAYABLE = "arg.playable";
 
@@ -97,12 +97,17 @@ public class CoverFragment extends Fragment implements
     }
 
     @Override
-    public void onDataSetChanged(Playable media) {
     public void onDestroy() {
         super.onDestroy();
         // prevent memory leaks
         root = null;
     }
+
+    @Override
+    public void onMediaChanged(Playable media) {
+        if(this.media == media) {
+            return;
+        }
         this.media = media;
         loadMediaInfo();
     }

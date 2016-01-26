@@ -384,7 +384,10 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
     }
 
     @Override
-    public void onDataSetChanged(Playable media) {
+    public void onMediaChanged(Playable media) {
+        if(this.media == media) {
+            return;
+        }
         this.media = media;
         this.shownotesProvider = media;
         load();

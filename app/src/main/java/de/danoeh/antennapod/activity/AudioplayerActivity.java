@@ -169,7 +169,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         }
         if(mPagerAdapter != null && controller != null && controller.getMedia() != media) {
             media = controller.getMedia();
-            mPagerAdapter.notifyDataSetChanged();
+            mPagerAdapter.onMediaChanged(media);
         }
 
 
@@ -281,16 +281,18 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         }
         if(controller.getMedia() != media) {
             media = controller.getMedia();
-            mPagerAdapter.notifyDataSetChanged();
+            mPagerAdapter.onMediaChanged(media);
         }
         return true;
     }
 
     public void notifyMediaPositionChanged() {
-        ListFragment chapterFragment = (ListFragment) mPagerAdapter.getItem(POS_CHAPTERS);
-        ChaptersListAdapter adapter = (ChaptersListAdapter) chapterFragment.getListAdapter();
-        if(adapter != null) {
-            adapter.notifyDataSetChanged();
+        ChaptersFragment chaptersFragment = mPagerAdapter.getChaptersFragment();
+        if(chaptersFragment != null) {
+            ChaptersListAdapter adapter = (ChaptersListAdapter) chaptersFragment.getListAdapter();
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -526,7 +528,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     };
 
     public interface AudioplayerContentFragment {
-        void onDataSetChanged(Playable media);
+        void onMediaChanged(Playable media);
     }
 
     private class AudioplayerPagerAdapter extends FragmentStatePagerAdapter {
