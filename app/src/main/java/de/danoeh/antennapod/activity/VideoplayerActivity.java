@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -42,6 +43,8 @@ public class VideoplayerActivity extends MediaplayerActivity {
     private boolean videoSurfaceCreated = false;
 
     private VideoControlsHider videoControlsHider = new VideoControlsHider(this);
+
+    private AtomicBoolean isSetup = new AtomicBoolean(false);
 
     private LinearLayout controls;
     private LinearLayout videoOverlay;
@@ -115,6 +118,9 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void setupGUI() {
+        if(isSetup.getAndSet(true)) {
+            return;
+        }
         super.setupGUI();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         controls = (LinearLayout) findViewById(R.id.controls);

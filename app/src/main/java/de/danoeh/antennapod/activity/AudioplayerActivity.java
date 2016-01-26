@@ -28,6 +28,7 @@ import android.widget.ListView;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
@@ -82,6 +83,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG
     };
+
+    private AtomicBoolean isSetup = new AtomicBoolean(false);
 
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
@@ -193,6 +196,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
 
     @Override
     protected void setupGUI() {
+        if(isSetup.getAndSet(true)) {
+            return;
+        }
         super.setupGUI();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
