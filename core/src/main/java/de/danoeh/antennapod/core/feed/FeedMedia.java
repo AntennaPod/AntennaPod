@@ -168,9 +168,8 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public void updateFromOther(FeedMedia other) {
-        // we try to cover two cases: (1) feed did include file before (2) feed contained wrong URL
-        // if item.getAutoDownload() is false, the file has been downloaded before
-        if((TextUtils.isEmpty(download_url) || item.getAutoDownload()) && !TextUtils.isEmpty(other.download_url)) {
+        // reset to new if feed item did link to a file before
+        if(TextUtils.isEmpty(download_url) && !TextUtils.isEmpty(other.download_url)) {
             item.setNew();
         }
         super.updateFromOther(other);
