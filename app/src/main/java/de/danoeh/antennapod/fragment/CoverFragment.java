@@ -98,6 +98,11 @@ public class CoverFragment extends Fragment implements
 
     @Override
     public void onDataSetChanged(Playable media) {
+    public void onDestroy() {
+        super.onDestroy();
+        // prevent memory leaks
+        root = null;
+    }
         this.media = media;
         loadMediaInfo();
     }

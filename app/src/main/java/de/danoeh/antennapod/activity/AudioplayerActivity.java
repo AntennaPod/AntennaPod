@@ -111,6 +111,16 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // don't risk creating memory leaks
+        navAdapter = null;
+        drawerToggle = null;
+        mPager = null;
+        mPagerAdapter = null;
+    }
+
+    @Override
     protected void chooseTheme() {
         setTheme(UserPreferences.getNoTitleTheme());
     }

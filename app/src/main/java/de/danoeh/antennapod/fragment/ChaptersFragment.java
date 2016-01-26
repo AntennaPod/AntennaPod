@@ -55,6 +55,11 @@ public class ChaptersFragment extends ListFragment implements AudioplayerContent
         }
     }
 
+    public void onDestroy() {
+        super.onDestroy();
+        adapter = null;
+    }
+
     @Override
     public void onDataSetChanged(Playable media) {
         adapter.setMedia(media);
