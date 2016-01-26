@@ -178,6 +178,14 @@ public class EpisodesApplyActionFragment extends Fragment {
                 checkDownloaded(false);
                 resId = R.string.selected_not_downloaded_label;
                 break;
+            case R.id.check_queued:
+                checkQueued(true);
+                resId = R.string.selected_queued_label;
+                break;
+            case R.id.check_not_queued:
+                checkQueued(false);
+                resId = R.string.selected_not_queued_label;
+                break;
             case R.id.sort_title_a_z:
                 sortByTitle(false);
                 return true;
@@ -294,6 +302,17 @@ public class EpisodesApplyActionFragment extends Fragment {
                 if(checkedIds.contains(episode.getId())) {
                     checkedIds.remove(episode.getId());
                 }
+            }
+        }
+        refreshCheckboxes();
+    }
+
+    private void checkQueued(boolean isQueued) {
+        for (FeedItem episode : episodes) {
+            if(episode.isTagged(FeedItem.TAG_QUEUE) == isQueued) {
+                checkedIds.add(episode.getId());
+            } else {
+                checkedIds.remove(episode.getId());
             }
         }
         refreshCheckboxes();
