@@ -57,8 +57,8 @@ public class PodcastApp extends Application {
 		singleton = this;
 
 		PodDBAdapter.init(this);
-		UpdateManager.init(this);
 		UserPreferences.init(this);
+		UpdateManager.init(this);
 		PlaybackPreferences.init(this);
 		NetworkUtils.init(this);
 		EventDistributor.getInstance();

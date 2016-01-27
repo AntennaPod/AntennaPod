@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
+
+import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
@@ -82,6 +86,11 @@ public class UpdateManager {
                     }
                 }
             }.start();
+        }
+        if(oldVersionCode < 1050004) {
+            if(MediaPlayer.isPrestoLibraryInstalled(context) && Build.VERSION.SDK_INT >= 16) {
+                UserPreferences.enableSonic(true);
+            }
         }
     }
 
