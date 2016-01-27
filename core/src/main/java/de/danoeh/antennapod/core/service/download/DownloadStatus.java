@@ -1,11 +1,13 @@
 package de.danoeh.antennapod.core.service.download;
 
-import org.apache.commons.lang3.Validate;
-
-import de.danoeh.antennapod.core.feed.FeedFile;
-import de.danoeh.antennapod.core.util.DownloadError;
+import android.database.Cursor;
+import android.support.annotation.NonNull;
 
 import java.util.Date;
+
+import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.DownloadError;
 
 /** Contains status attributes for one download */
 public class DownloadStatus {
@@ -59,10 +61,8 @@ public class DownloadStatus {
 		this.feedfileType = feedfileType;
 	}
 
-	public DownloadStatus(DownloadRequest request, DownloadError reason,
+	public DownloadStatus(@NonNull DownloadRequest request, DownloadError reason,
 			boolean successful, boolean cancelled, String reasonDetailed) {
-        Validate.notNull(request);
-
 		this.title = request.getTitle();
 		this.feedfileId = request.getFeedfileId();
 		this.feedfileType = request.getFeedfileType();
@@ -74,10 +74,8 @@ public class DownloadStatus {
 	}
 
 	/** Constructor for creating new completed downloads. */
-	public DownloadStatus(FeedFile feedfile, String title, DownloadError reason,
-			boolean successful, String reasonDetailed) {
-		Validate.notNull(feedfile);
-
+	public DownloadStatus(@NonNull FeedFile feedfile, String title, DownloadError reason,
+						  boolean successful, String reasonDetailed) {
 		this.title = title;
 		this.done = true;
 		this.feedfileId = feedfile.getId();
@@ -99,6 +97,30 @@ public class DownloadStatus {
 		this.successful = successful;
 		this.completionDate = new Date();
 		this.reasonDetailed = reasonDetailed;
+	}
+
+	public static DownloadStatus fromCursor(Cursor cursor) {
+		int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
+		int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADSTATUS_TITLE);
+		int indexFeedFile = cursor.getColumnIndex(PodDBAdapter.KEY_FEEDFILE);
+		int indexFileFileType = cursor.getColumnIndex(PodDBAdapter.KEY_FEEDFILETYPE);
+		int indexSuccessful = cursor.getColumnIndex(PodDBAdapter.KEY_SUCCESSFUL);
+		int indexReason = cursor.getColumnIndex(PodDBAdapter.KEY_REASON);
+		int indexCompletionDate = cursor.getColumnIndex(PodDBAdapter.KEY_COMPLETION_DATE);
+		int indexReasonDetailed = cursor.getColumnIndex(PodDBAdapter.KEY_REASON_DETAILED);
+
+		long id = cursor.getLong(indexId);
+		String title = cursor.getString(indexTitle);
+		long feedfileId = cursor.getLong(indexFeedFile);
+		int feedfileType = cursor.getInt(indexFileFileType);
+		boolean successful = cursor.getInt(indexSuccessful) > 0;
+		int reason = cursor.getInt(indexReason);
+		Date completionDate = new Date(cursor.getLong(indexCompletionDate));
+		String reasonDetailed = cursor.getString(indexReasonDetailed);
+
+		return new DownloadStatus(id, title, feedfileId,
+				feedfileType, successful, DownloadError.fromCode(reason), completionDate,
+				reasonDetailed);
 	}
 
 	@Override

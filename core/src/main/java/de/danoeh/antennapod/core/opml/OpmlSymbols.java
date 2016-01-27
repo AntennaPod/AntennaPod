@@ -13,6 +13,7 @@ public final class OpmlSymbols {
 	public static final String VERSION = "version";
 	public static final String HEAD = "head";
 	public static final String TITLE = "title";
+	public static final String DATE_CREATED = "dateCreated";
 	
 	private OpmlSymbols() {
 		

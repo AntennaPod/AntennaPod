@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -25,10 +24,9 @@ import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.asynctask.FlattrStatusFetcher;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -70,7 +68,7 @@ public final class DBTasks {
      * @param downloadUrl URL of the feed.
      */
     public static void removeFeedWithDownloadUrl(Context context, String downloadUrl) {
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         Cursor cursor = adapter.getFeedCursorDownloadUrls();
         long feedID = 0;
@@ -165,7 +163,7 @@ public final class DBTasks {
                     if (feeds != null) {
                         refreshFeeds(context, feeds);
                     } else {
-                        refreshFeeds(context, DBReader.getFeedList(context));
+                        refreshFeeds(context, DBReader.getFeedList());
                     }
                     isRefreshing.set(false);
 
@@ -180,6 +178,7 @@ public final class DBTasks {
                     if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
                         GpodnetSyncService.sendSyncIntent(context);
                     }
+                    Log.d(TAG, "refreshAllFeeds autodownload");
                     autodownloadUndownloadedItems(context);
                 }
             }.start();
@@ -189,62 +188,29 @@ public final class DBTasks {
     }
 
     /**
-     * Used by refreshExpiredFeeds to determine which feeds should be refreshed.
-     * This method will use the value specified in the UserPreferences as the
-     * expiration time.
-     *
-     * @param context Used for DB access.
-     * @return A list of expired feeds. An empty list will be returned if there
-     * are no expired feeds.
+     * @param context
+     * @param feedList the list of feeds to refresh
      */
-    public static List<Feed> getExpiredFeeds(final Context context) {
-        long millis = UserPreferences.getUpdateInterval();
-
-        if (millis > 0) {
-
-            List<Feed> feedList = DBReader.getExpiredFeedsList(context,
-                    millis);
-            if (feedList.size() > 0) {
-                refreshFeeds(context, feedList);
-            }
-            return feedList;
-        } else {
-            return new ArrayList<Feed>();
-        }
-    }
-
-    /**
-     * Refreshes expired Feeds in the list returned by the getExpiredFeedsList(Context, long) method in DBReader.
-     * The expiration date parameter is determined by the update interval specified in {@link UserPreferences}.
-     *
-     * @param context Used for DB access.
-     */
-    public static void refreshExpiredFeeds(final Context context) {
-        Log.d(TAG, "Refreshing expired feeds");
-
-        new Thread() {
-            public void run() {
-                refreshFeeds(context, getExpiredFeeds(context));
-            }
-        }.start();
-    }
-
     private static void refreshFeeds(final Context context,
                                      final List<Feed> feedList) {
 
         for (Feed feed : feedList) {
-            try {
-                refreshFeed(context, feed);
-            } catch (DownloadRequestException e) {
-                e.printStackTrace();
-                DBWriter.addDownloadStatus(
-                        context,
-                        new DownloadStatus(feed, feed
-                                .getHumanReadableIdentifier(),
-                                DownloadError.ERROR_REQUEST_ERROR, false, e
-                                .getMessage()
-                        )
-                );
+            FeedPreferences prefs = feed.getPreferences();
+            // feeds with !getKeepUpdated can only be refreshed
+            // directly from the FeedActivity
+            if (prefs.getKeepUpdated()) {
+                try {
+                    refreshFeed(context, feed);
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                    DBWriter.addDownloadStatus(
+                            new DownloadStatus(feed, feed
+                                    .getHumanReadableIdentifier(),
+                                    DownloadError.ERROR_REQUEST_ERROR, false, e
+                                    .getMessage()
+                            )
+                    );
+                }
             }
         }
 
@@ -262,7 +228,6 @@ public final class DBTasks {
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DBWriter.addDownloadStatus(
-                    context,
                     new DownloadStatus(feed, feed
                             .getHumanReadableIdentifier(),
                             DownloadError.ERROR_REQUEST_ERROR, false, e
@@ -302,38 +267,21 @@ public final class DBTasks {
      */
     public static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
-        Log.d(TAG, "id " + feed.getId());
+        Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() +")");
         refreshFeed(context, feed, false);
     }
 
     private static void refreshFeed(Context context, Feed feed, boolean loadAllPages) throws DownloadRequestException {
         Feed f;
+        Date lastUpdate = feed.hasLastUpdateFailed() ? new Date(0) : feed.getLastUpdate();
         if (feed.getPreferences() == null) {
-            f = new Feed(feed.getDownload_url(), feed.getLastUpdate(), feed.getTitle());
+            f = new Feed(feed.getDownload_url(), lastUpdate, feed.getTitle());
         } else {
-            f = new Feed(feed.getDownload_url(), feed.getLastUpdate(), feed.getTitle(),
+            f = new Feed(feed.getDownload_url(), lastUpdate, feed.getTitle(),
                     feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
         }
         f.setId(feed.getId());
         DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages);
-    }
-
-    /**
-     * Notifies the database about a missing FeedImage file. This method will attempt to re-download the file.
-     *
-     * @param context Used for requesting the download.
-     * @param image   The FeedImage object.
-     */
-    public static void notifyInvalidImageFile(final Context context,
-                                              final FeedImage image) {
-        Log.i(TAG,
-                "The DB was notified about an invalid image download. It will now try to re-download the image file");
-        try {
-            DownloadRequester.getInstance().downloadImage(context, image);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Log.w(TAG, "Failed to download invalid feed image");
-        }
     }
 
     /**
@@ -346,7 +294,7 @@ public final class DBTasks {
                 "The feedmanager was notified about a missing episode. It will update its database now.");
         media.setDownloaded(false);
         media.setFile_url(null);
-        DBWriter.setFeedMedia(context, media);
+        DBWriter.setFeedMedia(media);
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
     }
 
@@ -358,7 +306,7 @@ public final class DBTasks {
     public static void downloadAllItemsInQueue(final Context context) {
         new Thread() {
             public void run() {
-                List<FeedItem> queue = DBReader.getQueue(context);
+                List<FeedItem> queue = DBReader.getQueue();
                 if (!queue.isEmpty()) {
                     try {
                         downloadFeedItems(context,
@@ -393,9 +341,7 @@ public final class DBTasks {
                 @Override
                 public void run() {
                     ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
-                            .performCleanup(context,
-                                    ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
-                                            .getPerformCleanupParameter(context, Arrays.asList(items)));
+                            .makeRoomForEpisodes(context, items.length);
                 }
 
             }.start();
@@ -409,7 +355,7 @@ public final class DBTasks {
                         requester.downloadMedia(context, item.getMedia());
                     } catch (DownloadRequestException e) {
                         e.printStackTrace();
-                        DBWriter.addDownloadStatus(context,
+                        DBWriter.addDownloadStatus(
                                 new DownloadStatus(item.getMedia(), item
                                         .getMedia()
                                         .getHumanReadableIdentifier(),
@@ -433,13 +379,12 @@ public final class DBTasks {
      * This method is executed on an internal single thread executor.
      *
      * @param context  Used for accessing the DB.
-     * @param mediaIds If this list is not empty, the method will only download a candidate for automatic downloading if
-     *                 its media ID is in the mediaIds list.
      * @return A Future that can be used for waiting for the methods completion.
      */
-    public static Future<?> autodownloadUndownloadedItems(final Context context, final long... mediaIds) {
+    public static Future<?> autodownloadUndownloadedItems(final Context context) {
+        Log.d(TAG, "autodownloadUndownloadedItems");
         return autodownloadExec.submit(ClientConfig.dbTasksCallbacks.getAutomaticDownloadAlgorithm()
-                .autoDownloadUndownloadedItems(context, mediaIds));
+                .autoDownloadUndownloadedItems(context));
 
     }
 
@@ -452,24 +397,21 @@ public final class DBTasks {
      * @param context Used for accessing the DB.
      */
     public static void performAutoCleanup(final Context context) {
-        ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().performCleanup(context,
-                ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().getDefaultCleanupParameter(context));
+        ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().performCleanup(context);
     }
 
     /**
      * Returns the successor of a FeedItem in the queue.
      *
-     * @param context Used for accessing the DB.
      * @param itemId  ID of the FeedItem
      * @param queue   Used for determining the successor of the item. If this parameter is null, the method will load
      *                the queue from the database in the same thread.
      * @return Successor of the FeedItem or null if the FeedItem is not in the queue or has no successor.
      */
-    public static FeedItem getQueueSuccessorOfItem(Context context,
-                                                   final long itemId, List<FeedItem> queue) {
+    public static FeedItem getQueueSuccessorOfItem(final long itemId, List<FeedItem> queue) {
         FeedItem result = null;
         if (queue == null) {
-            queue = DBReader.getQueue(context);
+            queue = DBReader.getQueue();
         }
         if (queue != null) {
             Iterator<FeedItem> iterator = queue.iterator();
@@ -494,19 +436,19 @@ public final class DBTasks {
      * @param feedItemId ID of the FeedItem
      */
     public static boolean isInQueue(Context context, final long feedItemId) {
-        LongList queue = DBReader.getQueueIDList(context);
+        LongList queue = DBReader.getQueueIDList();
         return queue.contains(feedItemId);
     }
 
-    private static Feed searchFeedByIdentifyingValueOrID(Context context, PodDBAdapter adapter,
+    private static Feed searchFeedByIdentifyingValueOrID(PodDBAdapter adapter,
                                                          Feed feed) {
         if (feed.getId() != 0) {
-            return DBReader.getFeed(context, feed.getId(), adapter);
+            return DBReader.getFeed(feed.getId(), adapter);
         } else {
-            List<Feed> feeds = DBReader.getFeedList(context);
+            List<Feed> feeds = DBReader.getFeedList();
             for (Feed f : feeds) {
                 if (f.getIdentifyingValue().equals(feed.getIdentifyingValue())) {
-                    f.setItems(DBReader.getFeedItemList(context, f));
+                    f.setItems(DBReader.getFeedItemList(f));
                     return f;
                 }
             }
@@ -545,7 +487,7 @@ public final class DBTasks {
         List<Feed> newFeedsList = new ArrayList<Feed>();
         List<Feed> updatedFeedsList = new ArrayList<Feed>();
         Feed[] resultFeeds = new Feed[newFeeds.length];
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
         for (int feedIdx = 0; feedIdx < newFeeds.length; feedIdx++) {
@@ -553,7 +495,7 @@ public final class DBTasks {
             final Feed newFeed = newFeeds[feedIdx];
 
             // Look up feed in the feedslist
-            final Feed savedFeed = searchFeedByIdentifyingValueOrID(context, adapter,
+            final Feed savedFeed = searchFeedByIdentifyingValueOrID(adapter,
                     newFeed);
             if (savedFeed == null) {
                 Log.d(TAG, "Found no existing Feed with title "
@@ -563,7 +505,7 @@ public final class DBTasks {
                 // all new feeds will have the most recent item marked as unplayed
                 FeedItem mostRecent = newFeed.getMostRecentItem();
                 if (mostRecent != null) {
-                    mostRecent.setRead(false);
+                    mostRecent.setNew();
                 }
 
                 newFeedsList.add(newFeed);
@@ -574,22 +516,27 @@ public final class DBTasks {
 
                 Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
 
-                final boolean markNewItemsAsUnread;
                 if (newFeed.getPageNr() == savedFeed.getPageNr()) {
                     if (savedFeed.compareWithOther(newFeed)) {
                         Log.d(TAG, "Feed has updated attribute values. Updating old feed's attributes");
                         savedFeed.updateFromOther(newFeed);
                     }
-                    markNewItemsAsUnread = true;
                 } else {
-                    Log.d(TAG, "New feed has a higher page number. Merging without marking as unread");
-                    markNewItemsAsUnread = false;
+                    Log.d(TAG, "New feed has a higher page number.");
                     savedFeed.setNextPageLink(newFeed.getNextPageLink());
                 }
                 if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
                     Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
                     savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
                 }
+
+                // get the most recent date now, before we start changing the list
+                FeedItem priorMostRecent = savedFeed.getMostRecentItem();
+                Date priorMostRecentDate = null;
+                if (priorMostRecent != null) {
+                    priorMostRecentDate = priorMostRecent.getPubDate();
+                }
+
                 // Look for new or updated Items
                 for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
                     final FeedItem item = newFeed.getItems().get(idx);
@@ -597,12 +544,19 @@ public final class DBTasks {
                             item.getIdentifyingValue());
                     if (oldItem == null) {
                         // item is new
-                        final int i = idx;
                         item.setFeed(savedFeed);
                         item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
-                        savedFeed.getItems().add(i, item);
-                        if (markNewItemsAsUnread) {
-                            item.setRead(false);
+                        savedFeed.getItems().add(idx, item);
+
+                        // only mark the item new if it actually occurs
+                        // before the most recent item (before we started adding things)
+                        // (if the most recent date is null then we can assume there are no items
+                        // and this is the first, hence 'new')
+                        if (priorMostRecentDate == null ||
+                                priorMostRecentDate.before(item.getPubDate())) {
+                            Log.d(TAG, "Marking item published on " + item.getPubDate() +
+                                    " new, prior most recent date = " + priorMostRecentDate);
+                            item.setNew();
                         }
                     } else {
                         oldItem.updateFromOther(item);
@@ -622,7 +576,7 @@ public final class DBTasks {
 
         try {
             DBWriter.addNewFeed(context, newFeedsList.toArray(new Feed[newFeedsList.size()])).get();
-            DBWriter.setCompleteFeed(context, updatedFeedsList.toArray(new Feed[updatedFeedsList.size()])).get();
+            DBWriter.setCompleteFeed(updatedFeedsList.toArray(new Feed[updatedFeedsList.size()])).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -650,8 +604,8 @@ public final class DBTasks {
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemTitles(feedID,
                         query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(context, searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(context, items);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadAdditionalFeedItemListData(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -674,8 +628,8 @@ public final class DBTasks {
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemDescriptions(feedID,
                         query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(context, searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(context, items);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadAdditionalFeedItemListData(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -698,8 +652,8 @@ public final class DBTasks {
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemContentEncoded(feedID,
                         query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(context, searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(context, items);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadAdditionalFeedItemListData(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -721,8 +675,8 @@ public final class DBTasks {
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemChapters(feedID,
                         query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(context, searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(context, items);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadAdditionalFeedItemListData(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -745,7 +699,7 @@ public final class DBTasks {
 
         @Override
         public T call() throws Exception {
-            PodDBAdapter adapter = new PodDBAdapter(context);
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             execute(adapter);
             adapter.close();

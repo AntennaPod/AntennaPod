@@ -3,8 +3,10 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
+  <string name="add_feed_label">Adicionar Podcast</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">EPISÓDIOS</string>
+  <string name="new_episodes_label">Novos Episódios</string>
+  <string name="all_episodes_label">Todos Episódios</string>
   <string name="new_label">Novo</string>
   <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Configurações</string>
@@ -15,19 +17,28 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
   <!--New episodes fragment-->
+  <string name="episode_filter_label">Mostrar apenas novos episódios</string>
   <!--Main activity-->
+  <string name="drawer_open">Abrir menu</string>
+  <string name="drawer_close">Fechar menu</string>
+  <string name="drawer_feed_counter_new">Numero de novos episódios</string>
+  <string name="drawer_feed_counter_none">Nenhum</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir no navegador</string>
   <string name="copy_url_label">Copiar URL</string>
   <string name="share_url_label">Compartilhar URL</string>
   <string name="copied_url_msg">URL copiada para área de transferência.</string>
+  <string name="go_to_position_label">Ir para esta posição</string>
   <!--Playback history-->
   <string name="clear_history_label">Apagar histórico</string>
   <!--Other-->
   <string name="confirm_label">Confirmar</string>
   <string name="cancel_label">Cancelar</string>
+  <string name="yes">Sim</string>
+  <string name="no">Não</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Idioma</string>
+  <string name="url_label">URL</string>
   <string name="podcast_settings_label">Configurações</string>
   <string name="cover_label">Capa</string>
   <string name="error_label">Erro</string>
@@ -42,37 +53,56 @@
   <string name="length_prefix">Duração:\u0020</string>
   <string name="size_prefix">Tamanho:\u0020</string>
   <string name="processing_label">Processando</string>
-  <string name="loading_label">Carregando...</string>
   <string name="save_username_password_label">Salvar nome do usuário e senha</string>
   <string name="close_label">Fechar</string>
   <string name="retry_label">Tentar novamente</string>
   <string name="auto_download_label">Incluir em downloads automáticos</string>
+  <string name="feed_auto_download_always">Sempre</string>
+  <string name="feed_auto_download_never">Nunca</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL do Feed</string>
+  <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Adicionar podcast por URL</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todos como lido</string>
+  <string name="mark_all_seen_label">Marcar todos como lido</string>
   <string name="show_info_label">Mostrar informação</string>
+  <string name="remove_feed_label">Remover Podcast</string>
   <string name="share_link_label">Compartilhar link do site</string>
-  <string name="share_source_label">Compartilhar link do feed</string>
+  <string name="share_link_with_position_label">Compartilhar link com posição</string>
+  <string name="share_item_url_label">Compartilhar url do episódio</string>
+  <string name="share_item_url_with_position_label">Compartilhar url do episódio com posição</string>
   <string name="feed_delete_confirmation_msg">Por favor confirme que você deseja apagar este feed e TODOS os episódios que você fez download deste feed.</string>
   <string name="feed_remover_msg">Removendo feed</string>
+  <string name="hide_episodes_title">Ocultar Episódios</string>
+  <string name="episode_actions">Aplicar ações</string>
+  <string name="hide_paused_episodes_label">Pausado</string>
+  <string name="hide_downloaded_episodes_label">Baixado</string>
+  <string name="hide_not_downloaded_episodes_label">Não baixado</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Última Atualização falhou</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <string name="play_label">Reproduzir</string>
   <string name="pause_label">Pausar</string>
+  <string name="stop_label">Parar</string>
   <string name="stream_label">Stream</string>
   <string name="remove_label">Remover</string>
+  <string name="remove_episode_lable">Remover Episódio</string>
   <string name="mark_read_label">Marcar como lido</string>
+  <string name="marked_as_read_label">Marcado como lido</string>
   <string name="mark_unread_label">Marcar como não lido</string>
   <string name="add_to_queue_label">Adicionar à fila</string>
+  <string name="added_to_queue_label">Adicionado à fila</string>
   <string name="remove_from_queue_label">Remover da fila</string>
   <string name="visit_website_label">Visitar Website</string>
   <string name="support_label">Adicionar ao Flattr</string>
   <string name="enqueue_all_new">Enfileirar todos</string>
   <string name="download_all">Baixar todos</string>
   <string name="skip_episode_label">Pular episódio</string>
+  <string name="activate_auto_download">Ativar download automático </string>
+  <string name="deactivate_auto_download">Desativar download automático</string>
   <!--Download messages and labels-->
+  <string name="download_successful">com sucesso</string>
   <string name="download_pending">Download pendente</string>
   <string name="download_running">Download em execução</string>
   <string name="download_error_device_not_found">Dispositivo de armazenamento não encontrado</string>
@@ -84,6 +114,7 @@
   <string name="download_error_unsupported_type">Tipo de feed não suportado</string>
   <string name="download_error_connection_error">Erro de conexão</string>
   <string name="download_error_unknown_host">Host desconhecido</string>
+  <string name="download_error_unauthorized">Erro de autenticação</string>
   <string name="cancel_all_downloads_label">Cancelar todos os downloads</string>
   <string name="download_canceled_msg">Download cancelado</string>
   <string name="download_report_title">Downloads finalizados</string>
@@ -91,7 +122,7 @@
   <string name="download_error_io_error">Erro de IO</string>
   <string name="download_error_request_error">Erro de requisição</string>
   <string name="download_error_db_access">Erro no acesso ao Banco de dados</string>
-  <string name="downloads_left">\u0020Downloads restantes</string>
+  <string name="downloads_processing">Processando downloads</string>
   <string name="download_notification_title">Baixando dados do podcast</string>
   <string name="download_report_content">%1$d downloads com sucesso, %2$d falharam</string>
   <string name="download_log_title_unknown">Título desconhecido</string>
@@ -99,6 +130,7 @@
   <string name="download_type_media">Arquivo de mídia</string>
   <string name="download_type_image">Imagem</string>
   <string name="download_request_error_dialog_message_prefix">Ocorreu um erro durante download do arquivo:\u0020</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Permitir temporariamente</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Erro!</string>
   <string name="player_stopped_msg">Nenhuma mídia tocando</string>
@@ -117,6 +149,12 @@
   <string name="removed_from_queue">Item removido</string>
   <string name="move_to_top_label">Mover para o topo</string>
   <string name="move_to_bottom_label">Mover para o fim</string>
+  <string name="sort">Ordenar</string>
+  <string name="alpha">Alfabeticamente</string>
+  <string name="date">Data</string>
+  <string name="duration">Duração</string>
+  <string name="ascending">Crescente</string>
+  <string name="descending">Decrescente</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Logar no Flattr</string>
   <string name="flattr_auth_explanation">Pressione o botão abaixo para iniciar o processo de autenticação. Você será direcionado para a tela de login do Flattr, que pedirá autorização para que o AntennaPod utilize o Flattr. Após conceder a permissão, você retornará a esta tela automaticamente.</string>
@@ -144,12 +182,9 @@
   <string name="queue_label">Fila</string>
   <string name="services_label">Serviços</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Interromper a reprodução quando o fone de ouvido for desconectado</string>
   <string name="pref_followQueue_sum">Pular para próximo item da fila quando a reprodução terminar</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
-  <string name="pref_autoUpdateIntervall_title">Intervalo de atualização</string>
-  <string name="pref_autoUpdateIntervall_sum">Especifica o intervalo com que os feeds serão atualizados automaticamente ou desabilita esta funcionalidade</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Fazer download dos arquivos apenas via rede WiFi</string>
   <string name="pref_followQueue_title">Reprodução contínua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Download de mídia via WiFi</string>
@@ -207,7 +242,6 @@
   <string name="select_all_label">Selecionar todos</string>
   <string name="deselect_all_label">Remover seleção</string>
   <string name="opml_export_label">Exportar OPML</string>
-  <string name="exporting_label">Exportando...</string>
   <string name="export_error_label">Erro na exportação</string>
   <string name="opml_export_success_sum">O arquivo .opml foi gravado em:\u0020</string>
   <!--Sleep timer-->
@@ -217,6 +251,9 @@
   <string name="sleep_timer_label">Desligamento automático</string>
   <string name="time_left_label">Tempo restante:\u0020</string>
   <string name="time_dialog_invalid_input">Entrada inválida, a duração precisa ser um número inteiro</string>
+  <string name="time_seconds">segundos</string>
+  <string name="time_minutes">minutos</string>
+  <string name="time_hours">horas</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIAS</string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
@@ -225,6 +262,7 @@
   <string name="gpodnetauth_login_title">Login</string>
   <string name="gpodnetauth_login_descr">Bem-vindo ao processo de login gpodder.net. Primeiramente, digite suas informações:</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
+  <string name="gpodnetauth_login_register">Se você ainda não possui uma conta, você pode criar uma aqui:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Nome do usuário</string>
   <string name="password_label">Senha</string>
   <string name="gpodnetauth_device_title">Seleção de dispositivo</string>
@@ -261,7 +299,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">Assinar</string>
   <string name="subscribed_label">Assinado</string>
-  <string name="downloading_label">Baixando...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_cover_label">Mostrar imagem</string>
   <string name="butAction_label">Mais ações</string>
@@ -271,5 +308,8 @@
   <string name="in_queue_label">Episódio está na fila</string>
   <string name="new_episodes_count_label">Numero de novos episódios</string>
   <!--Feed information screen-->
+  <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

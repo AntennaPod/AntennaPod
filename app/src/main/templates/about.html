@@ -4,16 +4,22 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <style type="text/css">
 
-        * {
-        font-family: Helvetica
+        @font-face {
+        font-family: 'Roboto-Light';
+        src: url('file:///android_asset/Roboto-Light.ttf');
         }
+
+        * {
+        color: %s;
+        font-family: roboto-Light;
+        font-size: 12pt;
+        }
+
         header {
         display: block;
         margin-left: auto;
         margin-right: auto;
         padding-bottom: 500px;
-
-
         }
 
         versiontag {
@@ -39,51 +45,63 @@
 </head>
 <body>
 <div id="header" align="center">
-    <img src="logo.png" alt="Logo" width="100px" height="100px"/>
+    <img src="file:///android_asset/logo.png" alt="Logo" width="100px" height="100px"/>
 
-    <p>AntennaPod, Version @versionname@, Build @versioncode@</p>
+    <p>AntennaPod, Version @versionname@</p>
+    <p>Commit: @commit@</p>
 
     <p>Created by Daniel Oeh</p>
 
-    <p>Copyright © 2015 AntennaPod Contributors <a href="https://github.com/AntennaPod/AntennaPod/blob/master/CONTRIBUTORS">(View)</a></p>
+    <p>Copyright &copy; 2015 AntennaPod Contributors <a href="CONTRIBUTORS.txt">(View)</a></p>
 
-    <p>Licensed under the MIT License <a href="LICENSE.html">(View)</a></p>
+    <p>Licensed under the MIT License <a href="LICENSE.txt">(View)</a></p>
 </div>
 <h1>Used libraries</h1>
 
 <h2>Apache Commons <a href="http://commons.apache.org/">(Link)</a></h2>
-by The Apache Software Foundation, licensed under the Apache 2.0 license <a
-        href="LICENSE_APACHE_COMMONS.txt">(View)</a>
+by The Apache Software Foundation, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+
+<h2>EventBus <a href="https://github.com/greenrobot/EventBus">(Link)</a></h2>
+by greenrobot, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
 
 <h2>flattr4j <a href="http://www.shredzone.org/projects/flattr4j/wiki">(Link)</a></h2>
-licensed under the Apache 2.0 license <a href="LICENSE_FLATTR4J.txt">(View)</a>
+licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
 
-<h2>drag-sort-listview <a href="https://github.com/bauerca/drag-sort-listview">(Link)</a></h2>
-licensed under the Apache 2.0 license <a href="LICENSE_DSLV.txt">(View)</a>
+<h2>Glide <a href="https://github.com/bumptech/glide/">(Link)</a></h2>
+licensed under the Simplified BSD license <a href="LICENSE_GLIDE.txt">(View)</a>
 
-<h2>Presto Client <a href="http://www.aocate.com/presto/">(Link)</a></h2>
-licensed under the Apache 2.0 license <a href="LICENSE_PRESTO.txt">(View)</a>
+<h2>Iconify <a href="https://github.com/JoanZapata/android-iconify">(Link)</a></h2>
+by Joan Zapata, licensed under the Apache 2.0 license <a href="LICENSE_ANDROID_ICONIFY.txt">(View)</a>
 
 <h2>jsoup <a href="http://jsoup.org/">(Link)</a></h2>
 licensed under the MIT license <a href="LICENSE_JSOUP.txt">(View)</a>
 
-<h2>Picasso <a href="https://github.com/square/picasso">(Link)</a></h2>
-licensed under the Apache 2.0 license <a href="LICENSE_PICASSO.txt">(View)</a>
-
-<h2>OkHttp <a href="https://github.com/square/okhttp">(Link)</a></h2>
-licensed under the Apache 2.0 license <a href="LICENSE_OKHTTP.txt">(View)</a>
-
-<h2>Okio <a href="https://github.com/square/okio">(Link)</a></h2>
-licensed under the Apache 2.0 license <a href="LICENSE_OKIO.txt">(View)</a>
-
 <h2>Material Design Icons <a href="https://github.com/google/material-design-icons">(Link)</a></h2>
 by Google, licensed under an Attribution-ShareAlike 4.0 International license <a href="LICENSE_MATERIAL_DESIGN_ICONS.txt">(View)</a>
 
-<h2>EventBus <a href="https://github.com/greenrobot/EventBus">(Link)</a></h2>
-by greenrobot, licensed under the Apache 2.0 license <a href="LICENSE_EVENTBUS.txt">(View)</a>
+<h2>Material Dialogs <a href="https://github.com/afollestad/material-dialogs">(Link)</a></h2>
+by Aidan Michael Follestad, licensed under the MIT License <a href="LICENSE_MATERIAL_DIALOGS.txt">(View)</a>
 
-<h2>Iconify <a href="https://github.com/JoanZapata/android-iconify">(Link)</a></h2>
-by Joan Zapata, licensed under the Apache 2.0 license <a href="LICENSE_ANDROID_ICONIFY.txt">(View)</a>
+<h2>OkHttp <a href="https://github.com/square/okhttp">(Link)</a></h2>
+by Square, licensed under the Apache 2.0 license <a href="LICENSE_OKHTTP.txt">(View)</a>
+
+<h2>Okio <a href="https://github.com/square/okio">(Link)</a></h2>
+by Square, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+
+<h2>Presto Client <a href="http://www.aocate.com/presto/">(Link)</a></h2>
+licensed under the Apache 2.0 license <a href="LICENSE_PRESTO.txt">(View)</a>
+
+<h2>RecyclerView-FlexibleDivider <a href="https://github.com/yqritc/RecyclerView-FlexibleDivider">(Link)</a></h2>
+licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+
+<h2>RxAndroid <a href="https://github.com/ReactiveX/RxAndroid">(Link)</a></h2>
+licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+
+<h2>StackBlur <a href="https://github.com/kikoso/android-stackblur">(Link)</a></h2>
+by Enrique L&oacute;pez Ma&ntilde;as, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+
+<h2>AntennaPod-AudioPlayer <a href="https://github.com/AntennaPod/AntennaPod-AudioPlayer/">(Link)</a></h2>
+by the AntennaPod team, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
 
 </body>
 </html>

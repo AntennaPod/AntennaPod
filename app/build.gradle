@@ -1,54 +1,71 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-apply plugin: 'com.android.application'
+apply plugin: "com.android.application"
+apply plugin: "me.tatarka.retrolambda"
 
 repositories {
+    maven { url "https://jitpack.io" }
     mavenCentral()
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:gridlayout-v7:21.0.3'
-    compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile('org.shredzone.flattr4j:flattr4j-core:2.12') {
-        exclude group: 'org.json', module: 'json'
+    compile "com.android.support:support-v4:$supportVersion"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+    compile "com.android.support:gridlayout-v7:$supportVersion"
+    compile "com.android.support:percent:$supportVersion"
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    compile "org.apache.commons:commons-lang3:$commonslangVersion"
+    compile("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
+        exclude group: "org.json", module: "json"
     }
-    compile 'commons-io:commons-io:2.4'
-    compile 'org.jsoup:jsoup:1.7.3'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.okhttp:okhttp:2.3.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
-    compile 'com.squareup.okio:okio:1.2.0'
-    compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'com.joanzapata.android:android-iconify:1.0.9'
-    compile 'io.reactivex:rxandroid:0.24.0'
-    
-    compile project(':core')
-    compile project(':library:drag-sort-listview')
+    compile "commons-io:commons-io:$commonsioVersion"
+    compile "org.jsoup:jsoup:$jsoupVersion"
+    compile "com.github.bumptech.glide:glide:$glideVersion"
+    compile "com.squareup.okhttp:okhttp:$okhttpVersion"
+    compile "com.squareup.okhttp:okhttp-urlconnection:$okhttpVersion"
+    compile "com.squareup.okio:okio:$okioVersion"
+    compile "de.greenrobot:eventbus:$eventbusVersion"
+    compile "io.reactivex:rxandroid:$rxAndroidVersion"
+    compile "io.reactivex:rxjava:$rxJavaVersion"
+    // And ProGuard rules for RxJava!
+    compile "com.artemzin.rxjava:proguard-rules:$rxJavaRulesVersion"
+    compile "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
+    compile "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
+    compile("com.github.afollestad.material-dialogs:commons:$materialDialogsVersion") {
+        transitive = true
+    }
+    compile "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
+    compile("com.githang:viewpagerindicator:2.5@aar") {
+        exclude module: "support-v4"
+    }
+
+    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
+
+    compile project(":core")
 }
 
 def getMyVersionName() {
     def parsedManifestXml = (new XmlSlurper())
-            .parse('app/src/main/AndroidManifest.xml')
-            .declareNamespace(android:"http://schemas.android.com/apk/res/android")
-    return parsedManifestXml.'@android:versionName'
+            .parse("${projectDir}/src/main/AndroidManifest.xml")
+            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
+    return parsedManifestXml."@android:versionName"
 }
 
 def getMyVersionCode() {
     def parsedManifestXml = (new XmlSlurper())
-            .parse('app/src/main/AndroidManifest.xml')
-            .declareNamespace(android:"http://schemas.android.com/apk/res/android")
-    return parsedManifestXml.'@android:versionCode'.toInteger()
+            .parse("${projectDir}/src/main/AndroidManifest.xml")
+            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
+    return parsedManifestXml."@android:versionCode".toInteger()
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 21
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode getMyVersionCode()
         versionName "${getMyVersionName()}"
         testApplicationId "de.test.antennapod"
@@ -57,22 +74,22 @@ android {
 
     signingConfigs {
         releaseConfig {
-            if (project.hasProperty('releaseStoreFile')) {
+            if (project.hasProperty("releaseStoreFile")) {
                 storeFile file(releaseStoreFile)
             } else {
-                storeFile file('keystore')
+                storeFile file("keystore")
             }
-            if (project.hasProperty('releaseStorePassword')) {
+            if (project.hasProperty("releaseStorePassword")) {
                 storePassword releaseStorePassword
             } else {
                 storePassword "password"
             }
-            if (project.hasProperty('releaseKeyAlias')) {
+            if (project.hasProperty("releaseKeyAlias")) {
                 keyAlias releaseKeyAlias
             } else {
                 keyAlias "alias"
             }
-            if (project.hasProperty('releaseKeyPassword')) {
+            if (project.hasProperty("releaseKeyPassword")) {
                 keyPassword releaseKeyPassword
             } else {
                 keyPassword "password"
@@ -84,8 +101,8 @@ android {
         def STRING = "String"
         def FLATTR_APP_KEY = "FLATTR_APP_KEY"
         def FLATTR_APP_SECRET = "FLATTR_APP_SECRET"
-        def mFlattrAppKey = (project.hasProperty('flattrAppKey')) ? flattrAppKey : "\"\""
-        def mFlattrAppSecret = (project.hasProperty('flattrAppSecret')) ? flattrAppSecret : "\"\""
+        def mFlattrAppKey = (project.hasProperty("flattrAppKey")) ? flattrAppKey : "\"\""
+        def mFlattrAppSecret = (project.hasProperty("flattrAppSecret")) ? flattrAppSecret : "\"\""
 
         debug {
             applicationIdSuffix ".debug"
@@ -94,7 +111,7 @@ android {
         }
         release {
             minifyEnabled true
-            proguardFile 'proguard.cfg'
+            proguardFile "proguard.cfg"
             signingConfig signingConfigs.releaseConfig
             buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
             buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
@@ -102,28 +119,42 @@ android {
     }
 
     packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
+        exclude "META-INF/LICENSE.txt"
+        exclude "META-INF/NOTICE.txt"
     }
 
     lintOptions {
         abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 // about.html is templatized so that we can automatically insert
 // our version string in to it at build time.
 task filterAbout {
-    inputs.files files(['src/main/templates/about.html',
-                        'src/main/AndroidManifest.xml'])
-    outputs.file 'src/main/assets/about.html'
+    inputs.files files(["src/main/templates/about.html",
+                        "src/main/AndroidManifest.xml"])
+    outputs.file "src/main/assets/about.html"
 } << {
     copy {
-        from 'src/main/templates/about.html'
-        into 'src/main/assets'
+        from "src/main/templates/about.html"
+        into "src/main/assets"
         filter(ReplaceTokens, tokens: [versionname: android.defaultConfig.versionName,
-                                       versioncode: android.defaultConfig.versionCode.toString()])
+                                       commit     : "git rev-parse --short HEAD".execute().text])
     }
 }
 
-preBuild.dependsOn filterAbout
+task copyTextFiles(type: Copy) {
+    from "../CONTRIBUTORS"
+    from "../LICENSE"
+    into "src/main/assets/"
+    rename { String fileName ->
+        fileName + ".txt"
+    }
+}
+
+preBuild.dependsOn filterAbout, copyTextFiles

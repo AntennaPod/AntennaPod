@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -56,24 +59,31 @@ public class SubscriptionViewItem extends RelativeLayout {
         mUnreadCountText = (TextView) view.findViewById(R.id.unread_count_text);
     }
 
-    public void setFeed(final Feed feed, int unreadCount) {
+    public void setFeed(Feed feed) {
         mFeedTitle.setVisibility(VISIBLE);
         mFeedTitle.setText(feed.getTitle());
+        Glide.with(mContext)
+                .load(feed.getImageUri())
+                .listener(new RequestListener<Uri, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
 
-        Picasso.with(mContext).load(feed.getImageUri()).centerCrop().fit().into(mImageView, new Callback() {
-            @Override
-            public void onSuccess() {
-                mFeedTitle.setVisibility(GONE);
-            }
-
-            @Override
-            public void onError() {
-            }
-        });
-        mUnreadCountText.setText(unreadCount + "");
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        mFeedTitle.setVisibility(INVISIBLE);
+                        return false;
+                    }
+                })
+                .centerCrop()
+                .into(mImageView);
         // Removing the updated time. It could be the latest podcast updated time in the future.
         //mTextTime.setText(TimeUtils.getTimeAgo(feed.getLastUpdate().getTime(), mContext));
         mTextTime.setVisibility(GONE);
+
+        // Could be the count of unread/ not played feed items
+        //mUnreadCountText.setText(String.valueOf(feed.getNumOfItems()));
     }
 
 }

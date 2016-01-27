@@ -1,14 +1,12 @@
 package de.danoeh.antennapod.core.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
 import android.os.StatFs;
 import android.util.Log;
 
 import java.io.File;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
@@ -18,13 +16,12 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 public class StorageUtils {
     private static final String TAG = "StorageUtils";
 
-    public static boolean storageAvailable(Context context) {
-        File dir = UserPreferences.getDataFolder(context, null);
+    public static boolean storageAvailable() {
+        File dir = UserPreferences.getDataFolder(null);
         if (dir != null) {
             return dir.exists() && dir.canRead() && dir.canWrite();
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Storage not available: data folder is null");
+            Log.d(TAG, "Storage not available: data folder is null");
             return false;
         }
     }
@@ -39,7 +36,7 @@ public class StorageUtils {
      * @return true if external storage is available
      */
     public static boolean checkStorageAvailability(Activity activity) {
-        boolean storageAvailable = storageAvailable(activity);
+        boolean storageAvailable = storageAvailable();
         if (!storageAvailable) {
             activity.finish();
             activity.startActivity(ClientConfig.applicationCallbacks.getStorageErrorActivity(activity));
@@ -51,8 +48,19 @@ public class StorageUtils {
      * Get the number of free bytes that are available on the external storage.
      */
     public static long getFreeSpaceAvailable() {
-        StatFs stat = new StatFs(UserPreferences.getDataFolder(
-                ClientConfig.applicationCallbacks.getApplicationInstance(), null).getAbsolutePath());
+        File dataFolder = UserPreferences.getDataFolder(null);
+        if (dataFolder != null) {
+            return getFreeSpaceAvailable(dataFolder.getAbsolutePath());
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Get the number of free bytes that are available on the external storage.
+     */
+    public static long getFreeSpaceAvailable(String path) {
+        StatFs stat = new StatFs(path);
         long availableBlocks;
         long blockSize;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {

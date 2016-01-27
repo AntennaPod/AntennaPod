@@ -1,16 +1,16 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Protocol;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 import com.squareup.okhttp.internal.http.HttpDate;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -22,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Date;
 
 import de.danoeh.antennapod.core.ClientConfig;
@@ -84,7 +85,7 @@ public class HttpDownloader extends Downloader {
                     String credentials = encodeCredentials(parts[0], parts[1], "ISO-8859-1");
                     httpReq.header("Authorization", credentials);
                 }
-            } else if (!StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
+            } else if (!TextUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
                 String credentials = encodeCredentials(request.getUsername(), request.getPassword(),
                         "ISO-8859-1");
                 httpReq.header("Authorization", credentials);
@@ -93,15 +94,29 @@ public class HttpDownloader extends Downloader {
             // add range header if necessary
             if (fileExists) {
                 request.setSoFar(destination.length());
-                httpReq.addHeader("Range",
-                        "bytes=" + request.getSoFar() + "-");
+                httpReq.addHeader("Range", "bytes=" + request.getSoFar() + "-");
                 Log.d(TAG, "Adding range header: " + request.getSoFar());
             }
 
-            Response response = httpClient.newCall(httpReq.build()).execute();
+            Response response = null;
+            try {
+                response = httpClient.newCall(httpReq.build()).execute();
+            } catch(IOException e) {
+                Log.e(TAG, e.toString());
+                if(e.getMessage().contains("PROTOCOL_ERROR")) {
+                    httpClient.setProtocols(Arrays.asList(Protocol.HTTP_1_1));
+                    response = httpClient.newCall(httpReq.build()).execute();
+                }
+                else {
+                    throw e;
+                }
+            }
             responseBody = response.body();
             String contentEncodingHeader = response.header("Content-Encoding");
-            boolean isGzip = StringUtils.equalsIgnoreCase(contentEncodingHeader, "gzip");
+            boolean isGzip = false;
+            if(!TextUtils.isEmpty(contentEncodingHeader)) {
+                isGzip = TextUtils.equals(contentEncodingHeader.toLowerCase(), "gzip");
+            }
 
             Log.d(TAG, "Response code is " + response.code());
 
@@ -113,7 +128,7 @@ public class HttpDownloader extends Downloader {
                         String credentials = encodeCredentials(parts[0], parts[1], "UTF-8");
                         httpReq.header("Authorization", credentials);
                     }
-                } else if (!StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
+                } else if (!TextUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
                     String credentials = encodeCredentials(request.getUsername(), request.getPassword(),
                             "UTF-8");
                     httpReq.header("Authorization", credentials);
@@ -121,7 +136,9 @@ public class HttpDownloader extends Downloader {
                 response = httpClient.newCall(httpReq.build()).execute();
                 responseBody = response.body();
                 contentEncodingHeader = response.header("Content-Encoding");
-                isGzip = StringUtils.equalsIgnoreCase(contentEncodingHeader, "gzip");
+                if(!TextUtils.isEmpty(contentEncodingHeader)) {
+                    isGzip = TextUtils.equals(contentEncodingHeader.toLowerCase(), "gzip");
+                }
             }
 
             if(!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_MODIFIED) {
@@ -144,7 +161,7 @@ public class HttpDownloader extends Downloader {
                 return;
             }
 
-            if (!StorageUtils.storageAvailable(ClientConfig.applicationCallbacks.getApplicationInstance())) {
+            if (!StorageUtils.storageAvailable()) {
                 onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
                 return;
             }
@@ -153,8 +170,8 @@ public class HttpDownloader extends Downloader {
 
             String contentRangeHeader = (fileExists) ? response.header("Content-Range") : null;
 
-            if (fileExists && response.code() == HttpStatus.SC_PARTIAL_CONTENT
-                    && !StringUtils.isEmpty(contentRangeHeader)) {
+            if (fileExists && response.code() == HttpURLConnection.HTTP_PARTIAL
+                    && !TextUtils.isEmpty(contentRangeHeader)) {
                 String start = contentRangeHeader.substring("bytes ".length(),
                         contentRangeHeader.indexOf("-"));
                 request.setSoFar(Long.valueOf(start));
@@ -188,13 +205,17 @@ public class HttpDownloader extends Downloader {
             }
 
             Log.d(TAG, "Starting download");
-            while (!cancelled
-                    && (count = connection.read(buffer)) != -1) {
-                out.write(buffer, 0, count);
-                request.setSoFar(request.getSoFar() + count);
-                request.setProgressPercent((int) (((double) request
-                        .getSoFar() / (double) request
-                        .getSize()) * 100));
+            try {
+                while (!cancelled
+                        && (count = connection.read(buffer)) != -1) {
+                    out.write(buffer, 0, count);
+                    request.setSoFar(request.getSoFar() + count);
+                    request.setProgressPercent((int) (((double) request
+                            .getSoFar() / (double) request
+                            .getSize()) * 100));
+                }
+            } catch(IOException e) {
+                Log.e(TAG, Log.getStackTraceString(e));
             }
             if (cancelled) {
                 onCancelled();
@@ -209,6 +230,9 @@ public class HttpDownloader extends Downloader {
                                     " does not equal expected size " +
                                     request.getSize()
                     );
+                    return;
+                } else if(request.getSize() > 0 && request.getSoFar() == 0){
+                    onFail(DownloadError.ERROR_IO_ERROR, "Download completed, but nothing was read");
                     return;
                 }
                 onSuccess();

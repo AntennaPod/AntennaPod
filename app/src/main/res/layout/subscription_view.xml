@@ -23,9 +23,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_margin="@dimen/minimum_text_margin"
+            android:layout_margin="@dimen/widget_margin"
             android:ellipsize="end"
-            android:textColor="@color/overlay_dark"
+            android:padding="@dimen/widget_margin"
+            style="@style/AntennaPod.TextView.Heading"
             android:textSize="15sp"
             android:textStyle="bold"
             tools:text="@string/app_name" />
@@ -39,7 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/minimum_text_margin"
+        android:layout_margin="@dimen/widget_margin"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/white"
@@ -51,6 +52,7 @@
         android:layout_height="18dp"
         android:layout_alignParentBottom="true"
         android:layout_margin="5dp"
+        android:visibility="gone"
         android:background="@drawable/unread_circle">
 
         <TextView

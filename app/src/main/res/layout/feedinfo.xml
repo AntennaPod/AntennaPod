@@ -20,8 +20,8 @@
         <ImageView
             android:id="@+id/imgvCover"
             android:contentDescription="@string/cover_label"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             tools:src="@drawable/ic_stat_antenna_default"
@@ -33,7 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
+            android:layout_alignTop="@id/imgvCover"
             android:layout_toRightOf="@id/imgvCover"
+            android:layout_alignBottom="@id/imgvCover"
             style="@style/AntennaPod.TextView.Heading"
             tools:text="Feed title"
             tools:background="@android:color/holo_green_dark"/>
@@ -44,7 +46,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/imgvCover"
             android:layout_marginTop="8dp"
-            android:background="@color/bright_blue"/>
+            android:background="@color/holo_blue_light"/>
     </RelativeLayout>
 
     <ScrollView
@@ -52,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:scrollbarStyle="outsideInset"
+        android:scrollbarStyle="outsideOverlay"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingBottom="8dp">
@@ -119,7 +121,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:layout_marginBottom="8dp"
                     app:layout_row="2"
                     app:layout_column="0"
                     android:lines="1"
@@ -129,10 +130,13 @@
 
                 <TextView
                     android:id="@+id/txtvUrl"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
                     app:layout_row="2"
                     app:layout_column="1"
+                    app:layout_gravity="fill"
+                    android:maxLines="4"
                     tools:text="http://www.example.com/feed"
                     tools:background="@android:color/holo_green_dark"/>
 
@@ -146,16 +150,47 @@
                 android:text="@string/podcast_settings_label"
                 android:layout_marginTop="8dp"/>
 
+            <android.support.v7.widget.GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:columnCount="2"
+                app:rowCount="1">
+
+                <TextView
+                    android:id="@+id/txtvFeedAutoDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auto_delete_label"
+                    app:layout_row="0"
+                    app:layout_column="0"
+                    app:layout_gravity="center_vertical"
+                    android:layout_marginRight="10dp" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/spnAutoDelete"
+                    android:entries="@array/spnAutoDeleteItems"
+                    android:layout_marginTop="8dp"
+                    app:layout_row="0"
+                    app:layout_column="1"
+                    android:spinnerMode="dropdown"
+                    app:layout_gravity="center"
+                    android:dropDownWidth="wrap_content"
+                    android:clickable="true" />
+            </android.support.v7.widget.GridLayout>
+
             <CheckBox
-                android:id="@+id/cbxAutoDownload"
+                android:id="@+id/cbxKeepUpdated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/auto_download_label"
-                android:enabled="false"
+                android:text="@string/keep_updated"
+                android:enabled="true"
                 android:textColor="?android:attr/textColorPrimary"
                 tools:background="@android:color/holo_red_light"
-                android:checked="false"/>
+                android:checked="true" />
 
             <TextView
                 android:id="@+id/txtvAuthentication"
@@ -200,7 +235,10 @@
                     android:layout_height="wrap_content"
                     app:layout_row="0"
                     app:layout_column="1"
-                    android:hint="@string/username_label"/>
+                    android:hint="@string/username_label"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:cursorVisible="true"/>
 
                 <TextView
                     android:id="@+id/txtvPassword"
@@ -211,7 +249,10 @@
                     app:layout_row="1"
                     app:layout_column="0"
                     android:text="@string/password_label"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:cursorVisible="true"/>
 
                 <EditText
                     android:id="@+id/etxtPassword"
@@ -223,6 +264,77 @@
                     android:inputType="textPassword"/>
 
             </android.support.v7.widget.GridLayout>
+
+            <TextView
+                android:id="@+id/txtvAutoDownloadSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/auto_download_settings_label"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="?android:attr/textColorPrimary"/>
+
+            <CheckBox
+                android:id="@+id/cbxAutoDownload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/auto_download_label"
+                android:enabled="false"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:background="@android:color/holo_red_light"
+                android:checked="false" />
+
+            <TextView
+                android:id="@+id/txtvEpisodeFilters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/episode_filters_label"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="?android:attr/textColorPrimary"/>
+
+            <TextView
+                android:id="@+id/txtvEpisodeFiltersDescription"
+                android:text="@string/episode_filters_description"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/radio_filter_group"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                <RadioButton android:id="@+id/radio_filter_include"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="@string/episode_filters_include"
+                             android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_filter_exclude"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="@string/episode_filters_exclude"
+                             android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/etxtEpisodeFilterText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:lines="8"
+                android:minLines="1"
+                android:maxLines="20"
+                android:scrollbars="vertical"
+                android:hint="@string/episode_filters_hint"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:cursorVisible="true"/>
 
             <TextView
                 style="@style/AntennaPod.TextView.Heading"

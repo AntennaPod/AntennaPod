@@ -2,20 +2,23 @@ package de.danoeh.antennapod.core.feed;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -28,14 +31,26 @@ public class FeedMedia extends FeedFile implements Playable {
     public static final String PREF_MEDIA_ID = "FeedMedia.PrefMediaId";
     public static final String PREF_FEED_ID = "FeedMedia.PrefFeedId";
 
+    /**
+     * Indicates we've checked on the size of the item via the network
+     * and got an invalid response. Using Integer.MIN_VALUE because
+     * 1) we'll still check on it in case it gets downloaded (it's <= 0)
+     * 2) By default all FeedMedia have a size of 0 if we don't know it,
+     *    so this won't conflict with existing practice.
+     */
+    private static final int CHECKED_ON_SIZE_BUT_UNKNOWN = Integer.MIN_VALUE;
+
     private int duration;
     private int position; // Current position in file
+    private long lastPlayedTime; // Last time this media was played (in ms)
     private int played_duration; // How many ms of this file have been played (for autoflattring)
     private long size; // File size in Byte
     private String mime_type;
-    private volatile FeedItem item;
+    @Nullable private volatile FeedItem item;
     private Date playbackCompletionDate;
-    private boolean hasEmbeddedPicture;
+
+    // if null: unknown, will be checked
+    private Boolean hasEmbeddedPicture;
 
     /* Used for loading item when restoring from parcel. */
     private long itemID;
@@ -50,9 +65,9 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mime_type, String file_url, String download_url,
-                     boolean downloaded, Date playbackCompletionDate, int played_duration) {
+                     boolean downloaded, Date playbackCompletionDate, int played_duration,
+                     long lastPlayedTime) {
         super(file_url, download_url, downloaded);
-        checkEmbeddedPicture();
         this.id = id;
         this.item = item;
         this.duration = duration;
@@ -62,7 +77,68 @@ public class FeedMedia extends FeedFile implements Playable {
         this.mime_type = mime_type;
         this.playbackCompletionDate = playbackCompletionDate == null
                 ? null : (Date) playbackCompletionDate.clone();
+        this.lastPlayedTime = lastPlayedTime;
     }
+
+    public FeedMedia(long id, FeedItem item, int duration, int position,
+                     long size, String mime_type, String file_url, String download_url,
+                     boolean downloaded, Date playbackCompletionDate, int played_duration,
+                     Boolean hasEmbeddedPicture, long lastPlayedTime) {
+        this(id, item, duration, position, size, mime_type, file_url, download_url, downloaded,
+                playbackCompletionDate, played_duration, lastPlayedTime);
+        this.hasEmbeddedPicture = hasEmbeddedPicture;
+    }
+
+    public static FeedMedia fromCursor(Cursor cursor) {
+        int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
+        int indexPlaybackCompletionDate = cursor.getColumnIndex(PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE);
+        int indexDuration = cursor.getColumnIndex(PodDBAdapter.KEY_DURATION);
+        int indexPosition = cursor.getColumnIndex(PodDBAdapter.KEY_POSITION);
+        int indexSize = cursor.getColumnIndex(PodDBAdapter.KEY_SIZE);
+        int indexMimeType = cursor.getColumnIndex(PodDBAdapter.KEY_MIME_TYPE);
+        int indexFileUrl = cursor.getColumnIndex(PodDBAdapter.KEY_FILE_URL);
+        int indexDownloadUrl = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL);
+        int indexDownloaded = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED);
+        int indexPlayedDuration = cursor.getColumnIndex(PodDBAdapter.KEY_PLAYED_DURATION);
+        int indexLastPlayedTime = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_PLAYED_TIME);
+
+        long mediaId = cursor.getLong(indexId);
+        Date playbackCompletionDate = null;
+        long playbackCompletionTime = cursor.getLong(indexPlaybackCompletionDate);
+        if (playbackCompletionTime > 0) {
+            playbackCompletionDate = new Date(playbackCompletionTime);
+        }
+
+        Boolean hasEmbeddedPicture;
+        switch(cursor.getInt(cursor.getColumnIndex(PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE))) {
+            case 1:
+                hasEmbeddedPicture = Boolean.TRUE;
+                break;
+            case 0:
+                hasEmbeddedPicture = Boolean.FALSE;
+                break;
+            default:
+                hasEmbeddedPicture = null;
+                break;
+        }
+
+        return new FeedMedia(
+                mediaId,
+                null,
+                cursor.getInt(indexDuration),
+                cursor.getInt(indexPosition),
+                cursor.getLong(indexSize),
+                cursor.getString(indexMimeType),
+                cursor.getString(indexFileUrl),
+                cursor.getString(indexDownloadUrl),
+                cursor.getInt(indexDownloaded) > 0,
+                playbackCompletionDate,
+                cursor.getInt(indexPlayedDuration),
+                hasEmbeddedPicture,
+                cursor.getLong(indexLastPlayedTime)
+        );
+    }
+
 
     @Override
     public String getHumanReadableIdentifier() {
@@ -92,6 +168,10 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public void updateFromOther(FeedMedia other) {
+        // reset to new if feed item did link to a file before
+        if(TextUtils.isEmpty(download_url) && !TextUtils.isEmpty(other.download_url)) {
+            item.setNew();
+        }
         super.updateFromOther(other);
         if (other.size > 0) {
             size = other.size;
@@ -162,6 +242,11 @@ public class FeedMedia extends FeedFile implements Playable {
         this.duration = duration;
     }
 
+    @Override
+    public void setLastPlayedTime(long lastPlayedTime) {
+        this.lastPlayedTime = lastPlayedTime;
+    }
+
     public int getPlayedDuration() {
         return played_duration;
     }
@@ -174,8 +259,16 @@ public class FeedMedia extends FeedFile implements Playable {
         return position;
     }
 
+    @Override
+    public long getLastPlayedTime() {
+        return lastPlayedTime;
+    }
+
     public void setPosition(int position) {
         this.position = position;
+        if(position > 0 && item != null && item.isNew()) {
+            this.item.setPlayed(false);
+        }
     }
 
     public long getSize() {
@@ -186,6 +279,18 @@ public class FeedMedia extends FeedFile implements Playable {
         this.size = size;
     }
 
+    /**
+     * Indicates we asked the service what the size was, but didn't
+     * get a valid answer and we shoudln't check using the network again.
+     */
+    public void setCheckedOnSizeButUnknown() {
+        this.size = CHECKED_ON_SIZE_BUT_UNKNOWN;
+    }
+
+    public boolean checkedOnSizeButUnknown() {
+        return (CHECKED_ON_SIZE_BUT_UNKNOWN == this.size);
+    }
+
     public String getMime_type() {
         return mime_type;
     }
@@ -194,6 +299,7 @@ public class FeedMedia extends FeedFile implements Playable {
         this.mime_type = mime_type;
     }
 
+    @Nullable
     public FeedItem getItem() {
         return item;
     }
@@ -230,13 +336,18 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public boolean hasEmbeddedPicture() {
-        return this.hasEmbeddedPicture;
+        return false;
+        // TODO: reenable!
+        //if(hasEmbeddedPicture == null) {
+        //    checkEmbeddedPicture();
+        //}
+        //return hasEmbeddedPicture;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(id);
-        dest.writeLong(item.getId());
+        dest.writeLong(item != null ? item.getId() : 0L);
 
         dest.writeInt(duration);
         dest.writeInt(position);
@@ -247,33 +358,38 @@ public class FeedMedia extends FeedFile implements Playable {
         dest.writeByte((byte) ((downloaded) ? 1 : 0));
         dest.writeLong((playbackCompletionDate != null) ? playbackCompletionDate.getTime() : 0);
         dest.writeInt(played_duration);
+        dest.writeLong(lastPlayedTime);
     }
 
     @Override
     public void writeToPreferences(Editor prefEditor) {
-        prefEditor.putLong(PREF_FEED_ID, item.getFeed().getId());
+        if(item != null && item.getFeed() != null) {
+            prefEditor.putLong(PREF_FEED_ID, item.getFeed().getId());
+        } else {
+            prefEditor.putLong(PREF_FEED_ID, 0L);
+        }
         prefEditor.putLong(PREF_MEDIA_ID, id);
     }
 
     @Override
     public void loadMetadata() throws PlayableException {
         if (item == null && itemID != 0) {
-            item = DBReader.getFeedItem(ClientConfig.applicationCallbacks.getApplicationInstance(), itemID);
+            item = DBReader.getFeedItem(itemID);
         }
     }
 
     @Override
     public void loadChapterMarks() {
         if (item == null && itemID != 0) {
-            item = DBReader.getFeedItem(ClientConfig.applicationCallbacks.getApplicationInstance(), itemID);
+            item = DBReader.getFeedItem(itemID);
         }
         // check if chapters are stored in db and not loaded yet.
         if (item != null && item.hasChapters() && item.getChapters() == null) {
-            DBReader.loadChaptersOfFeedItem(ClientConfig.applicationCallbacks.getApplicationInstance(), item);
+            DBReader.loadChaptersOfFeedItem(item);
         } else if (item != null && item.getChapters() == null && !localFileAvailable()) {
             ChapterUtils.loadChaptersFromStreamUrl(this);
             if (getChapters() != null && item != null) {
-                DBWriter.setFeedItem(ClientConfig.applicationCallbacks.getApplicationInstance(),
+                DBWriter.setFeedItem(
                         item);
             }
         }
@@ -349,15 +465,18 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void saveCurrentPosition(SharedPreferences pref, int newPosition) {
+    public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timeStamp) {
+        if(item != null && item.isNew()) {
+            DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+        }
         setPosition(newPosition);
-        DBWriter.setFeedMediaPlaybackInformation(ClientConfig.applicationCallbacks.getApplicationInstance(), this);
+        setLastPlayedTime(timeStamp);
+        DBWriter.setFeedMediaPlaybackInformation(this);
     }
 
     @Override
     public void onPlaybackStart() {
     }
-
     @Override
     public void onPlaybackCompleted() {
 
@@ -380,11 +499,11 @@ public class FeedMedia extends FeedFile implements Playable {
             public String call() throws Exception {
                 if (item == null) {
                     item = DBReader.getFeedItem(
-                            ClientConfig.applicationCallbacks.getApplicationInstance(), itemID);
+                            itemID);
                 }
                 if (item.getContentEncoded() == null || item.getDescription() == null) {
                     DBReader.loadExtraInformationOfFeedItem(
-                            ClientConfig.applicationCallbacks.getApplicationInstance(), item);
+                            item);
 
                 }
                 return (item.getContentEncoded() != null) ? item.getContentEncoded() : item.getDescription();
@@ -397,7 +516,7 @@ public class FeedMedia extends FeedFile implements Playable {
             final long id = in.readLong();
             final long itemID = in.readLong();
             FeedMedia result = new FeedMedia(id, null, in.readInt(), in.readInt(), in.readLong(), in.readString(), in.readString(),
-                    in.readString(), in.readByte() != 0, new Date(in.readLong()), in.readInt());
+                    in.readString(), in.readByte() != 0, new Date(in.readLong()), in.readInt(), in.readLong());
             result.itemID = itemID;
             return result;
         }
@@ -409,30 +528,44 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public Uri getImageUri() {
-        if (hasEmbeddedPicture) {
+        if (hasEmbeddedPicture()) {
             Uri.Builder builder = new Uri.Builder();
             builder.scheme(SCHEME_MEDIA).encodedPath(getLocalMediaUrl());
+
+            if (item != null && item.getFeed() != null) {
+                final Uri feedImgUri = item.getFeed().getImageUri();
+                if (feedImgUri != null) {
+                    builder.appendQueryParameter(PARAM_FALLBACK, feedImgUri.toString());
+                }
+            }
             return builder.build();
-        } else {
+        } else if(item != null) {
             return item.getImageUri();
+        } else {
+            return null;
         }
+    }
+
+    public void setHasEmbeddedPicture(Boolean hasEmbeddedPicture) {
+        this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
 
     @Override
     public void setDownloaded(boolean downloaded) {
         super.setDownloaded(downloaded);
-        checkEmbeddedPicture();
+        if(item != null && downloaded) {
+            item.setPlayed(false);
+        }
     }
 
     @Override
     public void setFile_url(String file_url) {
         super.setFile_url(file_url);
-        checkEmbeddedPicture();
     }
 
     private void checkEmbeddedPicture() {
         if (!localFileAvailable()) {
-            hasEmbeddedPicture = false;
+            hasEmbeddedPicture = Boolean.FALSE;
             return;
         }
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
@@ -440,14 +573,13 @@ public class FeedMedia extends FeedFile implements Playable {
             mmr.setDataSource(getLocalMediaUrl());
             byte[] image = mmr.getEmbeddedPicture();
             if(image != null) {
-                hasEmbeddedPicture = true;
-            }
-            else {
-                hasEmbeddedPicture = false;
+                hasEmbeddedPicture = Boolean.TRUE;
+            } else {
+                hasEmbeddedPicture = Boolean.FALSE;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            hasEmbeddedPicture = false;
+            hasEmbeddedPicture = Boolean.FALSE;
         }
     }
 }

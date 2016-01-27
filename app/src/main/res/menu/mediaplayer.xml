@@ -3,21 +3,37 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/add_to_favorites_item"
+        android:icon="?attr/ic_fav"
+        android:title="@string/add_to_favorite_label"
+        custom:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/remove_from_favorites_item"
+        android:icon="?attr/ic_unfav"
+        android:title="@string/remove_from_favorite_label"
+        custom:showAsAction="always">
+    </item>
+
+    <item
         android:id="@+id/disable_sleeptimer_item"
-        android:icon="?attr/device_access_time"
+        android:icon="?attr/ic_sleep_off"
         custom:showAsAction="always"
         android:title="@string/sleep_timer_label">
     </item>
     <item
         android:id="@+id/set_sleeptimer_item"
-        custom:showAsAction="collapseActionView"
+        android:icon="?attr/ic_sleep"
+        custom:showAsAction="always"
         android:title="@string/set_sleeptimer_label">
     </item>
+
     <item
-        android:id="@+id/share_link_item"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/share_link_label">
+        android:id="@+id/audio_controls"
+        android:title="@string/audio_controls"
+        custom:showAsAction="always">
     </item>
+
     <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
@@ -26,15 +42,35 @@
         android:visible="false">
     </item>
     <item
+        android:id="@+id/share_item"
+        android:icon="?attr/social_share"
+        android:menuCategory="container"
+        custom:showAsAction="ifRoom"
+        android:title="@string/share_label">
+        <menu>
+            <item
+                android:id="@+id/share_link_item"
+                android:menuCategory="container"
+                android:title="@string/share_link_label" />
+            <item
+                android:id="@+id/share_link_with_position_item"
+                android:menuCategory="container"
+                android:title="@string/share_link_with_position_label" />
+            <item
+                android:id="@+id/share_download_url_item"
+                android:menuCategory="container"
+                android:title="@string/share_item_url_label" />
+            <item
+                android:id="@+id/share_download_url_with_position_item"
+                android:menuCategory="container"
+                android:title="@string/share_item_url_with_position_label" />
+        </menu>
+    </item>
+    <item
         android:id="@+id/support_item"
         custom:showAsAction="collapseActionView"
         android:title="@string/support_label"
         android:visible="false">
     </item>
-    <item
-        android:id="@id/skip_episode_item"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/skip_episode_label"
-        android:visible="true"/>
 
 </menu>

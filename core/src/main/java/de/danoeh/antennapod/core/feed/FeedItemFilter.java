@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.content.Context;
-
-import org.apache.commons.lang3.StringUtils;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,73 +8,87 @@ import java.util.List;
 import de.danoeh.antennapod.core.storage.DBReader;
 
 public class FeedItemFilter {
+    private final String[] mProperties;
 
-    private final String[] properties;
-
-    private boolean hideUnplayed = false;
-    private boolean hidePaused = false;
-    private boolean hidePlayed = false;
-    private boolean hideQueued = false;
-    private boolean hideNotQueued = false;
-    private boolean hideDownloaded = false;
-    private boolean hideNotDownloaded = false;
+    private boolean showPlayed = false;
+    private boolean showUnplayed = false;
+    private boolean showPaused = false;
+    private boolean showQueued = false;
+    private boolean showNotQueued = false;
+    private boolean showDownloaded = false;
+    private boolean showNotDownloaded = false;
 
     public FeedItemFilter(String properties) {
-        this(StringUtils.split(properties, ','));
+        this(TextUtils.split(properties, ","));
     }
 
     public FeedItemFilter(String[] properties) {
-        this.properties = properties;
+        this.mProperties = properties;
         for(String property : properties) {
             // see R.arrays.feed_filter_values
             switch(property) {
                 case "unplayed":
-                    hideUnplayed = true;
+                    showUnplayed = true;
                     break;
                 case "paused":
-                    hidePaused = true;
+                    showPaused = true;
                     break;
                 case "played":
-                    hidePlayed = true;
+                    showPlayed = true;
                     break;
                 case "queued":
-                    hideQueued = true;
+                    showQueued = true;
                     break;
                 case "not_queued":
-                    hideNotQueued = true;
+                    showNotQueued = true;
                     break;
                 case "downloaded":
-                    hideDownloaded = true;
+                    showDownloaded = true;
                     break;
                 case "not_downloaded":
-                    hideNotDownloaded = true;
+                    showNotDownloaded = true;
                     break;
             }
         }
     }
 
-    public List<FeedItem> filter(Context context, List<FeedItem> items) {
-        if(properties.length == 0) {
-            return items;
-        }
-        List<FeedItem> result = new ArrayList<FeedItem>();
+    /**
+     * Run a list of feed items through the filter.
+     */
+    public List<FeedItem> filter(List<FeedItem> items) {
+        if(mProperties.length == 0) return items;
+
+        List<FeedItem> result = new ArrayList<>();
+
+        // Check for filter combinations that will always return an empty list
+        // (e.g. requiring played and unplayed at the same time)
+        if (showPlayed && showUnplayed) return result;
+        if (showQueued && showNotQueued) return result;
+        if (showDownloaded && showNotDownloaded) return result;
+
         for(FeedItem item : items) {
-            if(hideUnplayed && false == item.isRead()) continue;
-            if(hidePaused && item.getState() == FeedItem.State.IN_PROGRESS) continue;
-            if(hidePlayed && item.isRead()) continue;
-            boolean isQueued = DBReader.getQueueIDList(context).contains(item.getId());
-            if(hideQueued && isQueued) continue;
-            if(hideNotQueued && false == isQueued) continue;
-            boolean isDownloaded = item.getMedia() != null && item.getMedia().isDownloaded();
-            if(hideDownloaded && isDownloaded) continue;
-            if(hideNotDownloaded && false == isDownloaded) continue;
+            // If the item does not meet a requirement, skip it.
+            if (showPlayed && !item.isPlayed()) continue;
+            if (showUnplayed && item.isPlayed()) continue;
+            if (showPaused && item.getState() != FeedItem.State.IN_PROGRESS) continue;
+
+            boolean queued = DBReader.getQueueIDList().contains(item.getId());
+            if (showQueued && !queued) continue;
+            if (showNotQueued && queued) continue;
+
+            boolean downloaded = item.getMedia() != null && item.getMedia().isDownloaded();
+            if (showDownloaded && !downloaded) continue;
+            if (showNotDownloaded && downloaded) continue;
+
+            // If the item reaches here, it meets all criteria
             result.add(item);
         }
+
         return result;
     }
 
     public String[] getValues() {
-        return properties.clone();
+        return mProperties.clone();
     }
 
 }

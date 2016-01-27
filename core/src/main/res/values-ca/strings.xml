@@ -5,9 +5,11 @@
   <string name="feeds_label">Canals</string>
   <string name="add_feed_label">Afegeix podcast</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">EPISODIS</string>
+  <string name="episodes_label">Episodis</string>
   <string name="new_episodes_label">Episodis nous</string>
   <string name="all_episodes_label">Tots els episodis</string>
+  <string name="all_episodes_short_label">Tot</string>
+  <string name="favorite_episodes_label">Favorits</string>
   <string name="new_label">Nous</string>
   <string name="waiting_list_label">Llista d\'espera</string>
   <string name="settings_label">Configuració</string>
@@ -26,6 +28,14 @@
   <!--Main activity-->
   <string name="drawer_open">Obre menú</string>
   <string name="drawer_close">Tanca menú</string>
+  <string name="drawer_preferences">Calaix de preferències</string>
+  <string name="drawer_feed_order_unplayed_episodes">Ordre per durada</string>
+  <string name="drawer_feed_order_alphabetical">Ordre alfabètic</string>
+  <string name="drawer_feed_order_last_update">Ordre per data de publicació</string>
+  <string name="drawer_feed_counter_new_unplayed">Número d\'episodis nous i per reproduir</string>
+  <string name="drawer_feed_counter_new">Número de episodis nous</string>
+  <string name="drawer_feed_counter_unplayed">Número de episodis per reproduir</string>
+  <string name="drawer_feed_counter_none">Cap</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Obre en un navegador</string>
   <string name="copy_url_label">Copia l\'enllaç</string>
@@ -37,8 +47,11 @@
   <!--Other-->
   <string name="confirm_label">D\'acord</string>
   <string name="cancel_label">Cancel·la</string>
+  <string name="yes">Sí</string>
+  <string name="no">No</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Llengua</string>
+  <string name="url_label">Adreça web</string>
   <string name="podcast_settings_label">Configuració</string>
   <string name="cover_label">Imatge</string>
   <string name="error_label">Error</string>
@@ -53,11 +66,24 @@
   <string name="length_prefix">Durada:\u0020</string>
   <string name="size_prefix">Mida:\u0020</string>
   <string name="processing_label">S\'està processant</string>
-  <string name="loading_label">S\'està carregant...</string>
   <string name="save_username_password_label">Desa nom d\'usuari i contrasenya</string>
   <string name="close_label">Tanca</string>
   <string name="retry_label">Reintenta</string>
   <string name="auto_download_label">Inclou a baixades automàtiques</string>
+  <string name="auto_download_apply_to_items_title">Aplica als episodis previs</string>
+  <string name="auto_download_apply_to_items_message">El nou ajustament de <i>baixada automàtica</i> s\'aplicarà als nous episodis.\nVols que també sigui aplicat als episodis publicats prèviament?</string>
+  <string name="auto_delete_label">Esborra episodis automàticament\n(anula la preferència global)</string>
+  <string name="parallel_downloads_suffix">\u0020baixades paral·leles</string>
+  <string name="feed_auto_download_global">Global</string>
+  <string name="feed_auto_download_always">Sempre</string>
+  <string name="feed_auto_download_never">Mai</string>
+  <string name="episode_cleanup_never">Mai</string>
+  <string name="episode_cleanup_queue_removal">Quan no està a la cua</string>
+  <string name="episode_cleanup_after_listening">Després d\'acabar</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 dia després d\'acabar</item>
+    <item quantity="other">%d dies després d\'acabar</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Enllaç del canal</string>
   <string name="etxtFeedurlHint">URL, canal o lloc web</string>
@@ -68,13 +94,30 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marca-ho tot com a llegit</string>
   <string name="mark_all_read_msg">S\'han marcat tots els episodis com a llegits</string>
+  <string name="mark_all_read_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com reproduits.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Si us plau confirma que vols marcar tots els episodis d\'aquest canal com reproduits.</string>
+  <string name="mark_all_seen_label">Marca tot com a llegit</string>
   <string name="show_info_label">Mostra informació</string>
   <string name="remove_feed_label">Esborra podcast</string>
-  <string name="share_link_label">Comparteix l\'enllaç de la plana</string>
-  <string name="share_source_label">Comparteix l\'enllaç del canal</string>
+  <string name="share_link_label">Comparteix l\'enllaç</string>
+  <string name="share_link_with_position_label">Comparteix enllaç amb posició</string>
+  <string name="share_feed_url_label">Comparteix adreça del canal</string>
+  <string name="share_item_url_label">Comparteix adreça d\'Episodi</string>
+  <string name="share_item_url_with_position_label">Comparteix adreça d\'Episodi amb posició</string>
   <string name="feed_delete_confirmation_msg">Confirmeu que, efectivament, voleu suprimir aquest canal i tots els episodis que us n\'heu baixat.</string>
   <string name="feed_remover_msg">S\'està esborrant el canal</string>
   <string name="load_complete_feed">S\'ha actualitzat el canal</string>
+  <string name="hide_episodes_title">Amaga Episodis</string>
+  <string name="episode_actions">Aplica accions</string>
+  <string name="hide_unplayed_episodes_label">Per reproduir</string>
+  <string name="hide_paused_episodes_label">Pausat</string>
+  <string name="hide_played_episodes_label">Reproduit</string>
+  <string name="hide_queued_episodes_label">En cua</string>
+  <string name="hide_not_queued_episodes_label">No en cua</string>
+  <string name="hide_downloaded_episodes_label">Baixat</string>
+  <string name="hide_not_downloaded_episodes_label">No baixat</string>
+  <string name="filtered_label">Filtrat</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Darrera actualització fallida</string>
   <!--actions on feeditems-->
   <string name="download_label">Baixa</string>
   <string name="play_label">Reprodueix</string>
@@ -84,14 +127,22 @@
   <string name="remove_label">Suprimeix</string>
   <string name="remove_episode_lable">Esborra episodi</string>
   <string name="mark_read_label">Marca com a llegit</string>
+  <string name="marked_as_read_label">Marcats com llegits</string>
   <string name="mark_unread_label">Marca com a pendent</string>
   <string name="add_to_queue_label">Afegeix a la cua</string>
+  <string name="added_to_queue_label">Afegit a la cua</string>
   <string name="remove_from_queue_label">Suprimeix de la cua</string>
+  <string name="add_to_favorite_label">Afegit a Favorits</string>
+  <string name="remove_from_favorite_label">Suprimeix de Favorits</string>
   <string name="visit_website_label">Visita el lloc web</string>
   <string name="support_label">Comparteix amb Flattr</string>
   <string name="enqueue_all_new">Posa-ho tot a la cua</string>
   <string name="download_all">Baixa-ho tot</string>
   <string name="skip_episode_label">Omet l\'episodi</string>
+  <string name="activate_auto_download">Activa baixades automàtiques</string>
+  <string name="deactivate_auto_download">Desactiva les baixades automàtiques</string>
+  <string name="reset_position">Restablir posició de reproducció</string>
+  <string name="removed_item">Element eliminat</string>
   <!--Download messages and labels-->
   <string name="download_successful">ha funcionat</string>
   <string name="download_failed">ha fallat</string>
@@ -109,12 +160,13 @@
   <string name="download_error_unauthorized">Error d\'autenticació</string>
   <string name="cancel_all_downloads_label">Cancel·la totes les baixades</string>
   <string name="download_canceled_msg">S\'ha cancel·lat la baixada</string>
-  <string name="download_report_title">Baixades completades</string>
+  <string name="download_canceled_autodownload_enabled_msg">Baixada cancel·lada\nDesactivada les <i>baixades automàtiques</i> per aquest element</string>
+  <string name="download_report_title">Baixades completades amb error(s)</string>
+  <string name="download_report_content_title">Registre de baixades</string>
   <string name="download_error_malformed_url">URL mal formatada</string>
   <string name="download_error_io_error">Error d\'E/S</string>
   <string name="download_error_request_error">Error de petició</string>
   <string name="download_error_db_access">Error d\'accés a la base de dades</string>
-  <string name="downloads_left">\u0020Baixades pendents</string>
   <string name="downloads_processing">S\'estan processant les baixades</string>
   <string name="download_notification_title">S\'estan baixant les dades del podcast</string>
   <string name="download_report_content">%1$d baixades finalitzades, %2$d fallides</string>
@@ -125,6 +177,11 @@
   <string name="download_request_error_dialog_message_prefix">S\'ha produït un error en intentar baixar el fitxer:\u0020</string>
   <string name="authentication_notification_title">Cal autenticar-se</string>
   <string name="authentication_notification_msg">Es necessita un usuari i una contrasenya per accedir al recurs</string>
+  <string name="confirm_mobile_download_dialog_title">Confirma baixada mòvil</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">La baixada amb conexió de dades mòvils està desactivada.\n\nPots escollir ja sigui només afegir l\'episodi a la cua o pot permetre la descàrrega de forma temporal.\n\n<small>La seva elecció serà recordada durant 10 minuts.</small></string>
+  <string name="confirm_mobile_download_dialog_message">La baixada amb conexió de dades mòvils està desactivada.\n\nVols permetre la descàrrega de forma temporal?\n\n<small>La seva elecció serà recordada durant 10 minuts.</small></string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">En cua</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Permetre temporalment</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Error</string>
   <string name="player_stopped_msg">No s\'està reproduint res</string>
@@ -139,6 +196,8 @@
   <string name="playbackservice_notification_title">Podcast en reproducció</string>
   <string name="unknown_media_key">AntennaPod - Control desconegut: %1$d</string>
   <!--Queue operations-->
+  <string name="lock_queue">Bloqueja la cua</string>
+  <string name="unlock_queue">Desbloqueja la cua</string>
   <string name="clear_queue_label">Buida la cua</string>
   <string name="undo">Desfés</string>
   <string name="removed_from_queue">Ítem esborrat</string>
@@ -150,6 +209,7 @@
   <string name="duration">Durada</string>
   <string name="ascending">Ascendent</string>
   <string name="descending">Descendent</string>
+  <string name="clear_queue_confirmation_msg">Si us plau confirma que vols suprimir tots els episodis de la cua</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Inici de sessió a Flattr</string>
   <string name="flattr_auth_explanation">Premeu el botó per iniciar el procés d\'autenticació. Quan s\'obri la pantalla d\'inici de sessió de Flattr al vostre navegador, introduïu les vostres credencials i concediu a AntennaPod els permisos de compartir mitjançant Flattr. En finalitzar el procés, tornareu automàticament a aquesta pantalla.</string>
@@ -179,8 +239,8 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Baixa el connector</string>
   <string name="no_playback_plugin_title">Connector no instal·lat</string>
-  <string name="no_playback_plugin_msg">Per a què funcioni la velocitat de reproducció variable, cal instal·lar una biblioteca addicional.\n\nFeu un toc a «Baixa el connector» per baixar-vos el connector gratuït des de la Play Store.\n\nQualsevol problema que sorgeixi en utilitzar aquest connector no és culpa de l\'AntennaPod. Cal informar-ne, doncs, al propietari del connector.</string>
   <string name="set_playback_speed_label">Velocitats de reproducció</string>
+  <string name="enable_sonic">Activa Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">No hi ha elements a la llista.</string>
   <string name="no_feeds_label">No us heu subscrit a cap canal.</string>
@@ -190,15 +250,21 @@
   <string name="queue_label">Cua</string>
   <string name="services_label">Serveis</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausa la reproducció en desconnectar els auriculars.</string>
+  <string name="pref_episode_cleanup_title">Neteja l\'episodi</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continua la reproducció en connectar novament els auriculars</string>
   <string name="pref_followQueue_sum">Salta al següent element de la cua en acabar la reproducció</string>
   <string name="pref_auto_delete_sum">Suprimeix l\'episodi quan s\'acabi de reproduir</string>
   <string name="pref_auto_delete_title">Esborrat automàtic</string>
+  <string name="pref_smart_mark_as_played_sum">Marca episodis com com reproduits, encara que quedi menys d\'una certa quantitat de segons de temps</string>
+  <string name="pref_smart_mark_as_played_title">Marcació intel·ligent com a reproduit</string>
   <string name="playback_pref">Reproducció</string>
   <string name="network_pref">Xarxa</string>
-  <string name="pref_autoUpdateIntervall_title">Interval d\'actualització</string>
-  <string name="pref_autoUpdateIntervall_sum">Especifiqueu l\'interval en què els canals s\'actualitzen de forma automàtica, o deshabiliteu la funcionalitat.</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">Actualitza interval o horari del dia</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Especifica un interval o una hora específica del dia per refrescar els canals de forma automàtica</string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Pots establir un <i>interval</i> com \"cada 2 hores\", establir una <i>hora del dia</i> com \"7:00 AM\" o <i>disactiva</i> l\'actualització automàtica del conjunt.\n\n<small>Pren nota: Les actualitzacions de vegades són inexactes. Es pot trobar una breu demora.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_Disable">Desactivar</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Establir interval</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Establir hora del dia</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Només baixa fitxers a través d\'una xarxa sense fils</string>
   <string name="pref_followQueue_title">Reproducció continuada</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Baixa a través de xarxes sense fils</string>
@@ -218,6 +284,14 @@
   <string name="pref_auto_flattr_sum">Configura la compartició automàtica per Flattr</string>
   <string name="user_interface_label">Interfície d\'usuari</string>
   <string name="pref_set_theme_title">Selecció de tema</string>
+  <string name="pref_nav_drawer_title">Personalitzar navegació del calaix</string>
+  <string name="pref_nav_drawer_sum">Personalitza l\'aparença del calaix de navegació.</string>
+  <string name="pref_nav_drawer_items_title">Establir els elements del calaix de navegació</string>
+  <string name="pref_nav_drawer_items_sum">Canviar els elements que apareixen al calaix de navegació.</string>
+  <string name="pref_nav_drawer_feed_order_title">Establir ordre de subscripció</string>
+  <string name="pref_nav_drawer_feed_order_sum">Canviar l\'ordre de les subscripcions</string>
+  <string name="pref_nav_drawer_feed_counter_title">Establir contador de subscripció</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Canviar la informació mostrada pel comptador de subscripció</string>
   <string name="pref_set_theme_sum">Canvieu l\'aparença d\'AntennaPod.</string>
   <string name="pref_automatic_download_title">Baixada automàtica</string>
   <string name="pref_automatic_download_sum">Configureu la baixada automàtica d\'episodis.</string>
@@ -225,6 +299,7 @@
   <string name="pref_autodl_wifi_filter_sum">Permet les baixades automàtiques només per a les xarxes sense fils seleccionades.</string>
   <string name="pref_automatic_download_on_battery_title">Baixa mentre no es carrega</string>
   <string name="pref_automatic_download_on_battery_sum">Permet les baixades automàtiques mentre la bateria no es carrega</string>
+  <string name="pref_parallel_downloads_title">Baixades paral·leles</string>
   <string name="pref_episode_cache_title">Memòria d\'episodis</string>
   <string name="pref_theme_title_light">Clar</string>
   <string name="pref_theme_title_dark">Fosc</string>
@@ -240,15 +315,26 @@
   <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
   <string name="pref_playback_speed_title">Velocitats de reproducció</string>
   <string name="pref_playback_speed_sum">Personalitzeu les velocitats disponibles per a una velocitat de reproducció d\'àudio variable</string>
-  <string name="pref_seek_delta_title">Salta a l\'instant</string>
-  <string name="pref_seek_delta_sum">Salta aquesta quantitat de segons en rebobinar o en avançar ràpidament</string>
+  <string name="pref_fast_forward">Temps d\'avançada ràpida</string>
+  <string name="pref_rewind">Temps de rebobinat</string>
   <string name="pref_gpodnet_sethostname_title">Definex nom del servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilitza el servidor per defecte</string>
   <string name="pref_expandNotify_title">Amplia la notificació</string>
   <string name="pref_expandNotify_sum">Amplia sempre les notificacions per mostrar els botons de reproducció.</string>
   <string name="pref_persistNotify_title">Botons de reproducció persistents</string>
   <string name="pref_persistNotify_sum">Mantén els controls a l\'àrea de notificacions i pantalla de bloqueig quan la reproducció estigui aturada</string>
+  <string name="pref_lockscreen_background_title">Establir fons de la pantalla de bloqueig</string>
+  <string name="pref_lockscreen_background_sum">Establir el fons de pantalla de bloqueig a la imatge de l\'episodi actual. Com efecte secundari, això també mostrarà la imatge en aplicacions de tercers.</string>
+  <string name="pref_showDownloadReport_title">Mostra informació de baixades</string>
+  <string name="pref_showDownloadReport_sum">Si les descàrregues fallen, genera un informe que mostra els detalls de la falla.</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android anteriors a la 4.1 no suporten les notificacions ampliades.</string>
+  <string name="pref_queueAddToFront_sum">Afegir nous episodis a la part davantera de la cua.</string>
+  <string name="pref_queueAddToFront_title">Cua al davant</string>
+  <string name="pref_smart_mark_as_played_disabled">Desactivar</string>
+  <string name="pref_image_cache_size_title">Mida de la memòria cau de les imatges</string>
+  <string name="pref_image_cache_size_sum">Mida de la memòria cau en el disc de les imatges.</string>
+  <string name="experimental_pref">Experimental</string>
+  <string name="pref_sonic_title">Reproductor multimèdia Sonic</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activa la compartició automàtica per Flattr</string>
   <string name="auto_flattr_after_percent">Comparteix per Flattr l\'episodi en haver-ne reproduït el %d per cent</string>
@@ -263,6 +349,10 @@
   <string name="found_in_title_label">Trobat al títol</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Els fitxers OPML us permeten moure els podcasts d\'un gestor de podcasts a un altre.</string>
+  <string name="opml_import_option">Opció %1$d</string>
+  <string name="opml_import_explanation_1">Trieu una ruta de fitxer específic del sistema de fitxers local.</string>
+  <string name="opml_import_explanation_2">Utilitzeu una aplicació externa com Dropbox, Google Drive o el seu gestor de fitxers preferit per obrir un fitxer OPML.</string>
+  <string name="opml_import_explanation_3">Algunes aplicacions com Google Mail, Dropbox, Google Drive i la majoria dels administradors d\'arxius pot <i>obrir</i> arxius OPML <i>amb</i> AntennaPod.</string>
   <string name="start_import_label">Inicia la importació</string>
   <string name="opml_import_label">Importació OPML</string>
   <string name="opml_directory_error">Error!</string>
@@ -271,8 +361,9 @@
   <string name="opml_import_error_dir_empty">El directori d\'importacions és buit.</string>
   <string name="select_all_label">Selecciona-ho tot</string>
   <string name="deselect_all_label">Deselecciona-ho tot</string>
+  <string name="choose_file_from_filesystem">Des de sistema d\'arxius local</string>
+  <string name="choose_file_from_external_application">Utilitza aplicació externa</string>
   <string name="opml_export_label">Exportació OPML</string>
-  <string name="exporting_label">S\'està exportant...</string>
   <string name="export_error_label">Error d\'exportació</string>
   <string name="opml_export_success_title">S\'ha exportat l\'OPML correctament.</string>
   <string name="opml_export_success_sum">El fitxer OPML s\'ha escrit a:\u0020</string>
@@ -283,9 +374,24 @@
   <string name="sleep_timer_label">Temporitzador</string>
   <string name="time_left_label">Temps restant:\u0020</string>
   <string name="time_dialog_invalid_input">L\'entrada no és vàlida, ja que el temps ha de ser un nombre i no ho és</string>
-  <string name="time_unit_seconds">segons</string>
-  <string name="time_unit_minutes">minuts</string>
-  <string name="time_unit_hours">hores</string>
+  <string name="timer_about_to_expire_label"><b>Quan el temporitzador està a punt d\'expirar:</b></string>
+  <string name="shake_to_reset_label">Agitar per reiniciar el temporitzador</string>
+  <string name="timer_vibration_label">Vibrar</string>
+  <string name="time_seconds">segons</string>
+  <string name="time_minutes">minuts</string>
+  <string name="time_hours">hores</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="one">1 segon</item>
+    <item quantity="other">%d segons</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="one">1 minut</item>
+    <item quantity="other">%d minuts</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="one">1 hora</item>
+    <item quantity="other">%d hores</item>
+  </plurals>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIES</string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
@@ -328,10 +434,12 @@
   <string name="set_to_default_folder">Selecciona la carpeta per defecte</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausa la reproducció en lloc de baixar el volum quan una altra app necessiti reproduir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa en interrompre</string>
+  <string name="pref_resumeAfterCall_sum">Reprendre la reproducció després d\'una trucada telefònica</string>
+  <string name="pref_resumeAfterCall_title">Reprendre després d\'una trucada</string>
+  <string name="pref_restart_required">AntennaPod s\'ha de reiniciar perquè aquest canvi tingui efecte.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscriu</string>
   <string name="subscribed_label">Subscrit</string>
-  <string name="downloading_label">S\'està baixant...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Mostra els capítols</string>
   <string name="show_shownotes_label">Mostra les notes del programa</string>
@@ -354,6 +462,29 @@
   <!--Feed information screen-->
   <string name="authentication_label">Autenticació</string>
   <string name="authentication_descr">Canvieu el nom d\'usuari i contrasenya per a aquest podcast i els seus episodis.</string>
+  <!--Progress information-->
+  <string name="progress_upgrading_database">Actualització de la base de dades</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
+  <string name="search_itunes_label">Cerca a iTunes</string>
+  <string name="all_label">Tot</string>
+  <string name="selected_all_label">Selecciona tots els episodis</string>
+  <string name="none_label">Cap</string>
+  <string name="deselected_all_label">Deselecciona tots els episodis</string>
+  <string name="played_label">Reproduit</string>
+  <string name="selected_played_label">Selecciona episodis reproduits</string>
+  <string name="unplayed_label">Per reproduir</string>
+  <string name="selected_unplayed_label">Selecciona episodis sense reproduir</string>
+  <string name="downloaded_label">Baixat</string>
+  <string name="selected_downloaded_label">Selecciona episodis descarregats</string>
+  <string name="not_downloaded_label">No baixat</string>
+  <string name="selected_not_downloaded_label">Selecciona episodis sense descarregar</string>
+  <string name="sort_title_a_z">Títol (A \u2192 Z)</string>
+  <string name="sort_title_z_a">Títol (Z \u2192 A)</string>
+  <string name="sort_date_new_old">Data (Nou \u2192 Antic)</string>
+  <string name="sort_date_old_new">Data (Antic \u2192 Nou)</string>
+  <string name="sort_duration_short_long">Duració (Curt \u2192 Llarg)</string>
+  <string name="sort_duration_long_short">Duration (Llarg \u2192 Curt)</string>
+  <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

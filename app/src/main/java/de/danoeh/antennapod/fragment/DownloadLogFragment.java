@@ -1,11 +1,10 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +19,10 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Shows the download log
@@ -34,19 +37,23 @@ public class DownloadLogFragment extends ListFragment {
     private boolean viewsCreated = false;
     private boolean itemsLoaded = false;
 
+    private Subscription subscription;
+
     @Override
     public void onStart() {
         super.onStart();
         setHasOptionsMenu(true);
         EventDistributor.getInstance().register(contentUpdate);
-        startItemLoader();
+        loadItems();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-        stopItemLoader();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
@@ -84,7 +91,11 @@ public class DownloadLogFragment extends ListFragment {
 
         @Override
         public DownloadStatus getItem(int position) {
-            return (downloadLog != null) ? downloadLog.get(position) : null;
+            if (downloadLog != null && 0 <= position && position < downloadLog.size()) {
+                return downloadLog.get(position);
+            } else {
+                return null;
+            }
         }
     };
 
@@ -93,29 +104,16 @@ public class DownloadLogFragment extends ListFragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EventDistributor.DOWNLOADLOG_UPDATE) != 0) {
-                startItemLoader();
+                loadItems();
             }
         }
     };
 
-    private ItemLoader itemLoader;
-
-    private void startItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
-        }
-        itemLoader = new ItemLoader();
-        itemLoader.execute();
-    }
-
-    private void stopItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
-        }
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(!isAdded()) {
+            return;
+        }
         super.onCreateOptionsMenu(menu, inflater);
         if (itemsLoaded) {
             MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
@@ -142,7 +140,7 @@ public class DownloadLogFragment extends ListFragment {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.clear_history_item:
-                    DBWriter.clearDownloadLog(getActivity());
+                    DBWriter.clearDownloadLog();
                     return true;
                 default:
                     return false;
@@ -152,27 +150,24 @@ public class DownloadLogFragment extends ListFragment {
         }
     }
 
-    private class ItemLoader extends AsyncTask<Void, Void, List<DownloadStatus>> {
-
-        @Override
-        protected void onPostExecute(List<DownloadStatus> downloadStatuses) {
-            super.onPostExecute(downloadStatuses);
-            if (downloadStatuses != null) {
-                downloadLog = downloadStatuses;
-                itemsLoaded = true;
-                if (viewsCreated) {
-                    onFragmentLoaded();
-                }
-            }
+    private void loadItems() {
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
-
-        @Override
-        protected List<DownloadStatus> doInBackground(Void... params) {
-            Context context = getActivity();
-            if (context != null) {
-                return DBReader.getDownloadLog(context);
-            }
-            return null;
-        }
+        subscription = Observable.fromCallable(() -> DBReader.getDownloadLog())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result != null) {
+                        downloadLog = result;
+                        itemsLoaded = true;
+                        if (viewsCreated) {
+                            onFragmentLoaded();
+                        }
+                    }
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
+
 }

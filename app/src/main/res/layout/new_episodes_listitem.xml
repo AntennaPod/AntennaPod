@@ -1,24 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    android:id="@+id/container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="@dimen/listitem_threeline_height"
+    android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
     tools:background="@android:color/darker_gray">
 
-    <ImageView
-        android:id="@+id/imgvImage"
-        android:layout_width="@dimen/thumbnail_length_itemlist"
-        android:layout_height="@dimen/thumbnail_length_itemlist"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-        android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
-        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-        android:contentDescription="@string/cover_label"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/ic_stat_antenna_default"
-        tools:background="@android:color/holo_green_dark" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtvPlaceholder"
+            android:layout_width="@dimen/thumbnail_length_itemlist"
+            android:layout_height="@dimen/thumbnail_length_itemlist"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+            android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+            android:background="@color/light_gray"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/imgvCover"
+            android:layout_height="64dp"
+            android:layout_width="64dp"
+            android:layout_alignLeft="@id/txtvPlaceholder"
+            android:layout_alignTop="@id/txtvPlaceholder"
+            android:layout_alignRight="@id/txtvPlaceholder"
+            android:layout_alignBottom="@id/txtvPlaceholder"
+            android:contentDescription="@string/cover_label"
+            tools:src="@drawable/ic_stat_antenna_default"
+            tools:background="@android:color/holo_green_dark" />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -43,7 +68,7 @@
         <TextView
             android:id="@+id/txtvTitle"
             style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
@@ -55,10 +80,10 @@
             android:id="@+id/bottom_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_below="@id/txtvTitle"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="16dp"
             tools:background="@android:color/holo_red_light" >
 
             <TextView
@@ -93,14 +118,12 @@
                 tools:background="@android:color/holo_green_dark" />
 
             <ProgressBar
-                android:id="@+id/pbar_download_progress"
+                android:id="@+id/pbar_progress"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toLeftOf="@id/txtvPublished"
-                android:layout_toRightOf="@id/txtvDuration"
+                android:layout_below="@id/txtvDuration"
+                android:layout_marginTop="-2dp"
                 android:max="100" />
 
         </RelativeLayout>
@@ -111,3 +134,5 @@
     <include layout="@layout/secondary_action" />
 
 </LinearLayout>
+
+</FrameLayout>

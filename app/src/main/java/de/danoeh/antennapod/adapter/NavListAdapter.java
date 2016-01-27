@@ -6,15 +6,18 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.IconTextView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.widget.IconTextView;
 
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import org.apache.commons.lang3.ArrayUtils;
@@ -27,10 +30,12 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -91,6 +96,9 @@ public class NavListAdapter extends BaseAdapter
                 break;
             case NewEpisodesFragment.TAG:
                 icon = R.attr.ic_new;
+                break;
+            case EpisodesFragment.TAG:
+                icon = R.attr.feed;
                 break;
             case AllEpisodesFragment.TAG:
                 icon = R.attr.feed;
@@ -205,7 +213,8 @@ public class NavListAdapter extends BaseAdapter
 
         holder.title.setText(title);
 
-        if (tags.get(position).equals(QueueFragment.TAG)) {
+        String tag = tags.get(position);
+        if (tag.equals(QueueFragment.TAG)) {
             int queueSize = itemAccess.getQueueSize();
             if (queueSize > 0) {
                 holder.count.setVisibility(View.VISIBLE);
@@ -213,11 +222,27 @@ public class NavListAdapter extends BaseAdapter
             } else {
                 holder.count.setVisibility(View.GONE);
             }
-        } else if (tags.get(position).equals(NewEpisodesFragment.TAG)) {
+        } else if (tag.equals(EpisodesFragment.TAG)) {
             int unreadItems = itemAccess.getNumberOfNewItems();
             if (unreadItems > 0) {
                 holder.count.setVisibility(View.VISIBLE);
                 holder.count.setText(String.valueOf(unreadItems));
+            } else {
+                holder.count.setVisibility(View.GONE);
+            }
+        } else if(tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
+            int epCacheSize = UserPreferences.getEpisodeCacheSize();
+            if(itemAccess.getNumberOfDownloadedItems() >= epCacheSize) {
+                holder.count.setText("{md-disc-full 150%}");
+                Iconify.addIcons(holder.count);
+                holder.count.setVisibility(View.VISIBLE);
+                holder.count.setOnClickListener(v -> {
+                    new AlertDialog.Builder(context)
+                            .setTitle(R.string.episode_cache_full_title)
+                            .setMessage(R.string.episode_cache_full_message)
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> {})
+                            .show();
+                });
             } else {
                 holder.count.setVisibility(View.GONE);
             }
@@ -262,26 +287,34 @@ public class NavListAdapter extends BaseAdapter
             holder = (FeedHolder) convertView.getTag();
         }
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(feed.getImageUri())
-                .fit()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate()
                 .into(holder.image);
 
         holder.title.setText(feed.getTitle());
 
 
         if(feed.hasLastUpdateFailed()) {
+            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
+            p.addRule(RelativeLayout.LEFT_OF, R.id.itxtvFailure);
             holder.failure.setVisibility(View.VISIBLE);
         } else {
+            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
+            p.addRule(RelativeLayout.LEFT_OF, R.id.txtvCount);
             holder.failure.setVisibility(View.GONE);
         }
-        int feedUnreadItems = itemAccess.getNumberOfUnreadFeedItems(feed.getId());
-        if(feedUnreadItems > 0) {
+        int counter = itemAccess.getFeedCounter(feed.getId());
+        if(counter > 0) {
             holder.count.setVisibility(View.VISIBLE);
-            holder.count.setText(String.valueOf(feedUnreadItems));
+            holder.count.setText(String.valueOf(counter));
             holder.count.setTypeface(holder.title.getTypeface());
         } else {
-            holder.count.setVisibility(View.INVISIBLE);
+            holder.count.setVisibility(View.GONE);
         }
         return convertView;
     }
@@ -305,7 +338,8 @@ public class NavListAdapter extends BaseAdapter
         int getSelectedItemIndex();
         int getQueueSize();
         int getNumberOfNewItems();
-        int getNumberOfUnreadFeedItems(long feedId);
+        int getNumberOfDownloadedItems();
+        int getFeedCounter(long feedId);
     }
 
 }

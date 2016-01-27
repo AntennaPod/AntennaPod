@@ -1,19 +1,18 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -25,6 +24,10 @@ import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
@@ -40,6 +43,8 @@ public class SearchFragment extends ListFragment {
 
     private boolean viewCreated = false;
     private boolean itemsLoaded = false;
+
+    private Subscription subscription;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -68,7 +73,7 @@ public class SearchFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        startSearchTask();
+        search();
     }
 
     @Override
@@ -80,14 +85,18 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onStop() {
         super.onStop();
-        stopSearchTask();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
         EventDistributor.getInstance().unregister(contentUpdate);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        stopSearchTask();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
@@ -107,7 +116,7 @@ public class SearchFragment extends ListFragment {
         final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_label);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_label);
         viewCreated = true;
         if (itemsLoaded) {
             onFragmentLoaded();
@@ -120,7 +129,7 @@ public class SearchFragment extends ListFragment {
         SearchResult result = (SearchResult) l.getAdapter().getItem(position);
         FeedComponent comp = result.getComponent();
         if (comp.getClass() == Feed.class) {
-            ((MainActivity) getActivity()).loadFeedFragmentById(comp.getId());
+            ((MainActivity) getActivity()).loadFeedFragmentById(comp.getId(), null);
         } else {
             if (comp.getClass() == FeedItem.class) {
                 FeedItem item = (FeedItem) comp;
@@ -143,7 +152,7 @@ public class SearchFragment extends ListFragment {
                 public boolean onQueryTextSubmit(String s) {
                     getArguments().putString(ARG_QUERY, s);
                     itemsLoaded = false;
-                    startSearchTask();
+                    search();
                     return true;
                 }
 
@@ -161,7 +170,7 @@ public class SearchFragment extends ListFragment {
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & (EventDistributor.UNREAD_ITEMS_UPDATE
                     | EventDistributor.DOWNLOAD_HANDLED)) != 0) {
-                startSearchTask();
+                search();
             }
         }
     };
@@ -183,57 +192,44 @@ public class SearchFragment extends ListFragment {
 
         @Override
         public SearchResult getItem(int position) {
-            return (searchResults != null) ? searchResults.get(position) : null;
+            if (searchResults != null && 0 <= position && position < searchResults.size()) {
+                return searchResults.get(position);
+            } else {
+                return null;
+            }
         }
     };
 
-    private SearchTask searchTask;
 
-    private void startSearchTask() {
-        if (searchTask != null) {
-            searchTask.cancel(true);
+    private void search() {
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
-        searchTask = new SearchTask();
-        searchTask.execute(getArguments());
+        if (viewCreated && !itemsLoaded) {
+            setListShown(false);
+        }
+        subscription = Observable.fromCallable(() -> performSearch())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result != null) {
+                        itemsLoaded = true;
+                        searchResults = result;
+                        if (viewCreated) {
+                            onFragmentLoaded();
+                        }
+                    }
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
-    private void stopSearchTask() {
-        if (searchTask != null) {
-            searchTask.cancel(true);
-        }
+    private List<SearchResult> performSearch() {
+        Bundle args = getArguments();
+        String query = args.getString(ARG_QUERY);
+        long feed = args.getLong(ARG_FEED);
+        Context context = getActivity();
+        return FeedSearcher.performSearch(context, query, feed);
     }
 
-    private class SearchTask extends AsyncTask<Bundle, Void, List<SearchResult>> {
-        @Override
-        protected List<SearchResult> doInBackground(Bundle... params) {
-            String query = params[0].getString(ARG_QUERY);
-            long feed = params[0].getLong(ARG_FEED);
-            Context context = getActivity();
-            if (context != null) {
-                return FeedSearcher.performSearch(context, query, feed);
-            } else {
-                return Collections.emptyList();
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (viewCreated && !itemsLoaded) {
-                setListShown(false);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<SearchResult> results) {
-            super.onPostExecute(results);
-            if (results != null) {
-                itemsLoaded = true;
-                searchResults = results;
-                if (viewCreated) {
-                    onFragmentLoaded();
-                }
-            }
-        }
-    }
 }

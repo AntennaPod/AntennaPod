@@ -1,2 +1,2 @@
-include ':app', ':core'
-include ':library:drag-sort-listview'
+include ':app'
+include ':core'

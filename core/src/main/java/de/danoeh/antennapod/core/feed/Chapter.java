@@ -1,5 +1,9 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.database.Cursor;
+
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+
 public abstract class Chapter extends FeedComponent {
 
 	/** Defines starting point in milliseconds. */
@@ -21,6 +25,33 @@ public abstract class Chapter extends FeedComponent {
 		this.title = title;
 		this.link = link;
 	}
+
+	public static Chapter fromCursor(Cursor cursor, FeedItem item) {
+		int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
+		int indexStart = cursor.getColumnIndex(PodDBAdapter.KEY_START);
+		int indexLink = cursor.getColumnIndex(PodDBAdapter.KEY_LINK);
+		int indexChapterType = cursor.getColumnIndex(PodDBAdapter.KEY_CHAPTER_TYPE);
+
+		String title = cursor.getString(indexTitle);
+		long start = cursor.getLong(indexStart);
+		String link = cursor.getString(indexLink);
+		int chapterType = cursor.getInt(indexChapterType);
+
+		Chapter chapter = null;
+		switch (chapterType) {
+			case SimpleChapter.CHAPTERTYPE_SIMPLECHAPTER:
+				chapter = new SimpleChapter(start, title, item, link);
+				break;
+			case ID3Chapter.CHAPTERTYPE_ID3CHAPTER:
+				chapter = new ID3Chapter(start, title, item, link);
+				break;
+			case VorbisCommentChapter.CHAPTERTYPE_VORBISCOMMENT_CHAPTER:
+				chapter = new VorbisCommentChapter(start, title, item, link);
+				break;
+		}
+		return chapter;
+	}
+
 
 	public abstract int getChapterType();
 

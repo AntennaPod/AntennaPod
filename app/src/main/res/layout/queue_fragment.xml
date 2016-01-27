@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:dslv="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.mobeta.android.dslv.DragSortListView
-        android:id="@android:id/list"
+    <TextView
+        android:id="@+id/info_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/list_vertical_padding"
-        android:paddingTop="@dimen/list_vertical_padding"
-        android:scrollbarStyle="outsideOverlay"
-        dslv:collapsed_height="2dp"
-        dslv:drag_enabled="true"
-        dslv:drag_handle_id="@id/drag_handle"
-        dslv:drag_scroll_start="0.33"
-        dslv:float_alpha="0.6"
-        dslv:float_background_color="?attr/dragview_float_background"
-        dslv:max_drag_scroll_speed="0.5"
-        dslv:remove_enabled="true"
-        dslv:remove_mode="flingRemove"
-        dslv:slide_shuffle_speed="0.3"
-        dslv:sort_enabled="true"
-        dslv:track_drag_sort="true"
-        dslv:use_default_controller="true" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:text=""/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/info_bar"
+        android:background="?android:attr/listDivider"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider"
+        android:scrollbars="vertical"/>
 
     <TextView
         android:id="@id/android:empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:gravity="center"
         android:text="@string/no_items_label" />
 
@@ -39,22 +39,8 @@
         android:id="@+id/progLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:indeterminateOnly="true"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/undobar"
-        style="@style/UndoBar">
-
-        <TextView
-            android:id="@+id/undobar_message"
-            style="@style/UndoBarMessage"/>
-
-        <Button
-            android:id="@+id/undobar_button"
-            style="@style/UndoBarButton"/>
-
-    </LinearLayout>
-
-</FrameLayout>
+</RelativeLayout>

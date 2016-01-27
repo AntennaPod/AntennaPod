@@ -5,7 +5,6 @@
   <string name="feeds_label">Feeds</string>
   <string name="add_feed_label">Tilføj podcast</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">EPISODER</string>
   <string name="new_episodes_label">Nye episoder</string>
   <string name="all_episodes_label">Alle episoder</string>
   <string name="new_label">Nye</string>
@@ -53,7 +52,6 @@
   <string name="length_prefix">Længde:\u0020</string>
   <string name="size_prefix">Størrelse:\u0020</string>
   <string name="processing_label">Behandler</string>
-  <string name="loading_label">Indlæser...</string>
   <string name="save_username_password_label">Gem brugernavn og kodeord</string>
   <string name="close_label">Luk</string>
   <string name="retry_label">Prøv igen</string>
@@ -71,7 +69,6 @@
   <string name="show_info_label">Vis information</string>
   <string name="remove_feed_label">Fjern podcast</string>
   <string name="share_link_label">Del webside link</string>
-  <string name="share_source_label">Del feed link</string>
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du vil fjerne dette feed og ALLE episoder du har downloadet fra dette feed.</string>
   <string name="feed_remover_msg">Fjerner feed</string>
   <string name="load_complete_feed">Opdater hele feed\'et</string>
@@ -114,7 +111,6 @@
   <string name="download_error_io_error">IO fejl</string>
   <string name="download_error_request_error">Anmode fejl</string>
   <string name="download_error_db_access">Adgangsfejl i database</string>
-  <string name="downloads_left">\u0020Downloads tilbage</string>
   <string name="downloads_processing">Bearbejder downloads</string>
   <string name="download_notification_title">Downloader podcast data</string>
   <string name="download_report_content">%1$d downloads lykkedes, %2$d fejlet</string>
@@ -179,7 +175,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent Plugin</string>
   <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
-  <string name="no_playback_plugin_msg">For at variabel afspilningshastighed virker skal der installeres et 3. part bibliotek.\n\nTap \'Download Plugin\' for at downloade et gratis plugin fra Play Store\n\nHvis der findes nogen problemer med dette plugin, så er det ikke AntennaPods ansvar, og problemet bør reporteres til ejeren af pluginet. </string>
   <string name="set_playback_speed_label">Afspilningshastigheder</string>
   <!--Empty list labels-->
   <string name="no_items_label">Der er ingen emner i denne liste.</string>
@@ -190,15 +185,12 @@
   <string name="queue_label">Kø</string>
   <string name="services_label">Tjenester</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Sæt afspilning på pause når hovedtelefoner afbrydes</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Genoptag afspilning når hovedtelefoner tilsluttes igen</string>
   <string name="pref_followQueue_sum">Hop til næste medie i køen når afspilning er færdig</string>
   <string name="pref_auto_delete_sum">Slet episode når afspilningen er færdig</string>
   <string name="pref_auto_delete_title">Slet Automatisk</string>
   <string name="playback_pref">Afspilning</string>
   <string name="network_pref">Netværk</string>
-  <string name="pref_autoUpdateIntervall_title">Opdaterings interval</string>
-  <string name="pref_autoUpdateIntervall_sum">Specificer et interval indenfor hvilket feeds opdaterer automatisk eller deaktiver det</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Download kun medie filer over WiFi</string>
   <string name="pref_followQueue_title">Kontinuerlig afspilning</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi medie download</string>
@@ -240,8 +232,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Skift din gpodder.net kontos login information.</string>
   <string name="pref_playback_speed_title">Afspilningshastigheder</string>
   <string name="pref_playback_speed_sum">Tilpas tilgængelige hastigheder for variabelt afspilningshastigheds plugin</string>
-  <string name="pref_seek_delta_title">Søg tid</string>
-  <string name="pref_seek_delta_sum">Søg så mange sekunder når der spoles tilbage eller frem</string>
   <string name="pref_gpodnet_sethostname_title">Indstil værtsnavn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Brug standard vært</string>
   <string name="pref_expandNotify_title">Udvid notifikation</string>
@@ -272,7 +262,6 @@
   <string name="select_all_label">Vælg alt</string>
   <string name="deselect_all_label">Fravælg alt</string>
   <string name="opml_export_label">OPML eksport</string>
-  <string name="exporting_label">Eksporterer...</string>
   <string name="export_error_label">Eksport fejl</string>
   <string name="opml_export_success_title">Opml eksport lykkedes.</string>
   <string name="opml_export_success_sum">.opml filen var skrevet til:\u0020</string>
@@ -283,9 +272,6 @@
   <string name="sleep_timer_label">Søvn timer</string>
   <string name="time_left_label">Tid tilbage:\u0020</string>
   <string name="time_dialog_invalid_input">Ugyldig indtastning, tid skal være et heltal</string>
-  <string name="time_unit_seconds">sekunder</string>
-  <string name="time_unit_minutes">minutter</string>
-  <string name="time_unit_hours">timer</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIER </string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
@@ -331,7 +317,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
   <string name="subscribed_label">Abonneret</string>
-  <string name="downloading_label">Downloader...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Vis kapitler</string>
   <string name="show_shownotes_label">Vis shownoter</string>
@@ -354,6 +339,9 @@
   <!--Feed information screen-->
   <string name="authentication_label">Godkendelse</string>
   <string name="authentication_descr">Skift dit brugernavn og kodeord for denne podcast og dets episoder.</string>
+  <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra single-purpose apps…</string>
+  <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

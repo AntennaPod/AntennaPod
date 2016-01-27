@@ -1,17 +1,10 @@
 package de.test.antennapod.service.playback;
 
 import android.content.Context;
-import android.media.RemoteControlClient;
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.test.antennapod.util.service.download.HTTPBin;
+
 import junit.framework.AssertionFailedError;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -22,6 +15,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.playback.Playable;
+import de.test.antennapod.util.service.download.HTTPBin;
 
 /**
  * Test class for PlaybackServiceMediaPlayer
@@ -41,7 +44,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        PodDBAdapter.deleteDatabase(getInstrumentation().getTargetContext());
+        PodDBAdapter.deleteDatabase();
         httpServer.stop();
     }
 
@@ -50,16 +53,16 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         super.setUp();
         assertionError = null;
 
-        final Context context = getInstrumentation().getTargetContext();
-        context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
-        // make sure database is created
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        // create new database
+        PodDBAdapter.deleteDatabase();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
 
         httpServer = new HTTPBin();
         httpServer.start();
 
+        final Context context = getInstrumentation().getTargetContext();
         File cacheDir = context.getExternalFilesDir("testFiles");
         if (cacheDir == null)
             cacheDir = context.getExternalFilesDir("testFiles");
@@ -113,12 +116,14 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     private Playable writeTestPlayable(String downloadUrl, String fileUrl) {
         final Context c = getInstrumentation().getTargetContext();
         Feed f = new Feed(0, new Date(), "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
-        f.setItems(new ArrayList<FeedItem>());
-        FeedItem i = new FeedItem(0, "t", "i", "l", new Date(), false, f);
+        FeedPreferences prefs = new FeedPreferences(f.getId(), false, FeedPreferences.AutoDeleteAction.NO, null, null);
+        f.setPreferences(prefs);
+        f.setItems(new ArrayList<>());
+        FeedItem i = new FeedItem(0, "t", "i", "l", new Date(), FeedItem.UNPLAYED, f);
         f.getItems().add(i);
-        FeedMedia media = new FeedMedia(0, i, 0, 0, 0, "audio/wav", fileUrl, downloadUrl, fileUrl != null, null, 0);
+        FeedMedia media = new FeedMedia(0, i, 0, 0, 0, "audio/wav", fileUrl, downloadUrl, fileUrl != null, null, 0, 0);
         i.setMedia(media);
-        PodDBAdapter adapter = new PodDBAdapter(c);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.setCompleteFeed(f);
         assertTrue(media.getId() != 0);
@@ -178,14 +183,10 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
             }
 
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
@@ -251,13 +252,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -328,13 +324,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -406,14 +397,10 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
             }
 
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
@@ -477,14 +464,10 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
             }
 
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
@@ -549,13 +532,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -624,13 +602,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -702,13 +675,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -745,9 +713,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         }
 
         @Override
-        public boolean onMediaPlayerInfo(int code) {
-            return false;
-        }
+        public boolean onMediaPlayerInfo(int code) { return false; }
 
         @Override
         public boolean onMediaPlayerError(Object inObj, int what, int extra) {
@@ -755,13 +721,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         }
 
         @Override
-        public boolean endPlayback(boolean playNextEpisode) {
+        public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
             return false;
-        }
-
-        @Override
-        public RemoteControlClient getRemoteControlClient() {
-            return null;
         }
     };
 
@@ -832,13 +793,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -943,13 +899,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -1029,13 +980,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -1128,13 +1074,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);

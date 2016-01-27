@@ -60,7 +60,7 @@ public class SubscriptionsAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
 
-        holder.itemView.setFeed(item, mItemAccess.getNumberOfUnreadFeedItems(item.getId()));
+        holder.itemView.setFeed(item);
         return convertView;
     }
 

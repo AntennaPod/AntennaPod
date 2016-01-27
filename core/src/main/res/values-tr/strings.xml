@@ -5,9 +5,11 @@
   <string name="feeds_label">Beslemeler</string>
   <string name="add_feed_label">Cep yayını ekle</string>
   <string name="podcasts_label">CEP YAYINLARI</string>
-  <string name="episodes_label">BÖLÜMLER</string>
+  <string name="episodes_label">Bölümler</string>
   <string name="new_episodes_label">Yeni bölümler</string>
   <string name="all_episodes_label">Tüm bölümler</string>
+  <string name="all_episodes_short_label">Tümü</string>
+  <string name="favorite_episodes_label">Favoriler</string>
   <string name="new_label">Yeni</string>
   <string name="waiting_list_label">Bekleme listesi</string>
   <string name="settings_label">Ayarlar</string>
@@ -26,6 +28,14 @@
   <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
   <string name="drawer_close">Menüyü kapat</string>
+  <string name="drawer_preferences">Çekmece Seçenekleri</string>
+  <string name="drawer_feed_order_unplayed_episodes">Sayaca göre sırala</string>
+  <string name="drawer_feed_order_alphabetical">Alfabetik olarak sırala</string>
+  <string name="drawer_feed_order_last_update">Yayınlanma tarihine göre sırala</string>
+  <string name="drawer_feed_counter_new_unplayed">Yeni ve çalınmamış bölümlerin sayısı</string>
+  <string name="drawer_feed_counter_new">Yeni bölümlerin sayısı</string>
+  <string name="drawer_feed_counter_unplayed">Çalınmamış bölümlerin sayısı</string>
+  <string name="drawer_feed_counter_none">Hiçbiri</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Tarayıcıda aç</string>
   <string name="copy_url_label">URL\'yi kopyala</string>
@@ -37,8 +47,11 @@
   <!--Other-->
   <string name="confirm_label">Onayla</string>
   <string name="cancel_label">İptal</string>
+  <string name="yes">Evet</string>
+  <string name="no">Hayır</string>
   <string name="author_label">Yayıncı</string>
   <string name="language_label">Dil</string>
+  <string name="url_label">URL</string>
   <string name="podcast_settings_label">Ayarlar</string>
   <string name="cover_label">Resim</string>
   <string name="error_label">Hata</string>
@@ -53,12 +66,23 @@
   <string name="length_prefix">Uzunluk:\u0020</string>
   <string name="size_prefix">Boyut:\u0020</string>
   <string name="processing_label">İşleniyor</string>
-  <string name="loading_label">Yükleniyor...</string>
   <string name="save_username_password_label">Kullanıcı adı ve şifreyi kaydet</string>
   <string name="close_label">Kapat</string>
   <string name="retry_label">Yeniden dene</string>
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
+  <string name="auto_download_apply_to_items_title">Önceki Bölümlere Uygula</string>
+  <string name="auto_delete_label">Bölümü Otomatik Olarak Sil\n(genel varsayılanı yoksayar)</string>
   <string name="parallel_downloads_suffix">\u0020paralel indirmeler</string>
+  <string name="feed_auto_download_global">Genel</string>
+  <string name="feed_auto_download_always">Her zaman</string>
+  <string name="feed_auto_download_never">Hiçbir zaman</string>
+  <string name="episode_cleanup_never">Hiçbir zaman</string>
+  <string name="episode_cleanup_queue_removal">Sırada değilse</string>
+  <string name="episode_cleanup_after_listening">Bittikten sonra</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">Bittikten 1 gün sonra</item>
+    <item quantity="other">Bittikten %d gün sonra</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Besleme Adresi</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -67,17 +91,32 @@
   <string name="podcastdirectories_descr">gdpodder.net dizininde yeni cep yayınlarını isme, kategoriye veya popülerliğe göre arayabilirsiniz veya iTunes mağazasında arama yapabilirsiniz.</string>
   <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Hepsini okundu olarak işaretle</string>
-  <string name="mark_all_read_msg">Tüm bölümler okundu olarak işaretlendi</string>
-  <string name="mark_all_read_confirmation_msg">Lütfen tüm bölümleri okundu olarak işaretlemek istediğinizi onaylayın.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Lütfen bu besleme içindeki tüm bölümleri okundu olarak işaretlemek istediğinizi onaylayın.</string>
+  <string name="mark_all_read_label">Hepsini oynatıldı olarak işaretle</string>
+  <string name="mark_all_read_msg">Tüm bölümleri oynatıldı olarak işaretle</string>
+  <string name="mark_all_read_confirmation_msg">Lütfen tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Lütfen bu besleme içindeki tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
+  <string name="mark_all_seen_label">Hepsini görüldü olarak işaretle</string>
   <string name="show_info_label">Bilgiyi göster</string>
   <string name="remove_feed_label">Cep yayını kaldır</string>
-  <string name="share_link_label">Web sayfası bağlantısı paylaş</string>
-  <string name="share_source_label">Besleme bağlantısını paylaş</string>
+  <string name="share_link_label">Link\'i paylaş</string>
+  <string name="share_link_with_position_label">Link\'i Konumla birlikte paylaş</string>
+  <string name="share_feed_url_label">Besleme Adresini Paylaş</string>
+  <string name="share_item_url_label">Bölüm Adresini Paylaş</string>
+  <string name="share_item_url_with_position_label">Bölüm Adresini Konumla birlikte paylaş</string>
   <string name="feed_delete_confirmation_msg">Lütfen bu beslemeyi ve bu beslemeye ait indirilmiş BÜTÜN bölümleri silme isteğinizi onaylayın.</string>
   <string name="feed_remover_msg">Besleme kaldırılıyor</string>
   <string name="load_complete_feed">Tüm beslemeyi yenile</string>
+  <string name="hide_episodes_title">Bölümleri gizle</string>
+  <string name="episode_actions">Eylemleri uygula</string>
+  <string name="hide_unplayed_episodes_label">Oynatılmadı</string>
+  <string name="hide_paused_episodes_label">Duraklatıldı</string>
+  <string name="hide_played_episodes_label">Oynatıldı</string>
+  <string name="hide_queued_episodes_label">Kuyrukta</string>
+  <string name="hide_not_queued_episodes_label">Kuyrukta değil</string>
+  <string name="hide_downloaded_episodes_label">İndirildi</string>
+  <string name="hide_not_downloaded_episodes_label">İndirilmedi</string>
+  <string name="filtered_label">Filtrelendi</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Son yenileme başarısız oldu</string>
   <!--actions on feeditems-->
   <string name="download_label">İndir</string>
   <string name="play_label">Oynat</string>
@@ -86,16 +125,23 @@
   <string name="stream_label">Akış</string>
   <string name="remove_label">Kaldır</string>
   <string name="remove_episode_lable">Bölümü kaldır</string>
-  <string name="mark_read_label">Okundu olarak işaretle</string>
-  <string name="mark_unread_label">Okunmadı olarak işaretle</string>
-  <string name="marked_as_read_label">Okundu olarak işaretlendi</string>
+  <string name="mark_read_label">Oynatıldı olarak işaretle</string>
+  <string name="marked_as_read_label">Oynatıldı olarak işaretlendi</string>
+  <string name="mark_unread_label">Oynatılmadı olarak işaretle</string>
   <string name="add_to_queue_label">Kuyruğa Ekle</string>
+  <string name="added_to_queue_label">Kuyruğa Eklendi</string>
   <string name="remove_from_queue_label">Kuyruktan Kaldır</string>
+  <string name="add_to_favorite_label">Favorilere Ekle</string>
+  <string name="remove_from_favorite_label">Favorilerden Kaldır</string>
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
   <string name="support_label">Flattr ile destekle</string>
   <string name="enqueue_all_new">Hepsini kuyruğa ekle</string>
   <string name="download_all">Hepsini indir</string>
   <string name="skip_episode_label">Bölümü atla</string>
+  <string name="activate_auto_download">Otomatik indirmeyi etkinleştir</string>
+  <string name="deactivate_auto_download">Otomatik indirmeyi devre dışı bırak</string>
+  <string name="reset_position">Çalme konumunu sıfırla</string>
+  <string name="removed_item">Öge kaldırıldı</string>
   <!--Download messages and labels-->
   <string name="download_successful">başarılı</string>
   <string name="download_failed">başarısız</string>
@@ -113,12 +159,13 @@
   <string name="download_error_unauthorized">Yetkilendirme hatası</string>
   <string name="cancel_all_downloads_label">Bütün indirmeleri iptal et</string>
   <string name="download_canceled_msg">İndirme iptal edildi</string>
-  <string name="download_report_title">İndirme tamamlandı</string>
+  <string name="download_canceled_autodownload_enabled_msg">İndirme iptal edildi\nBu öğe için <i>Otomatik İndirme</i> devre dışı</string>
+  <string name="download_report_title">İndirme hata(lar) ile tamamlandı</string>
+  <string name="download_report_content_title">İndirme raporu</string>
   <string name="download_error_malformed_url">Bozuk URL</string>
   <string name="download_error_io_error">G/Ç Hatası</string>
   <string name="download_error_request_error">İstek hatası</string>
   <string name="download_error_db_access">Veritabanı erişim hatası</string>
-  <string name="downloads_left">\u0020Kalan indirme</string>
   <string name="downloads_processing">İndirmeler işleniyor</string>
   <string name="download_notification_title">Cep yayını verileri indiriliyor</string>
   <string name="download_report_content">%1$d indirme başarılı, %2$d başarısız</string>
@@ -129,6 +176,11 @@
   <string name="download_request_error_dialog_message_prefix">Dosyayı indirmeye çalışırken bir hata oluştu:\u0020</string>
   <string name="authentication_notification_title">Yetkilendirme gerekiyor</string>
   <string name="authentication_notification_msg">İstediğiniz kaynak kullanıcı adı ve şifre istiyor</string>
+  <string name="confirm_mobile_download_dialog_title">Mobil İndirmeyi Onaylayın</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Mobil veri ile indirme ayarlarda devre dışıdır.\n\nGeçici olarak açılsın mı yoksa sadece kuyruğa mı eklensin?\n\n<small>Bu tercihiniz 10 dakika boyunca hatırlanacak.</small></string>
+  <string name="confirm_mobile_download_dialog_message">Mobil veri ile indirme ayarlarda devre dışıdır.\n\nGeçici olarak açılsın mı?\n\n<small>Bu tercihiniz 10 dakika boyunca hatırlanacak.</small></string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">Sadece Kuyruğa ekle</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Geçici olarak aç</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Hata!</string>
   <string name="player_stopped_msg">Çalınan medya yok</string>
@@ -143,6 +195,8 @@
   <string name="playbackservice_notification_title">Cep yayını çalınıyor</string>
   <string name="unknown_media_key">AntennaPod - Bilinmeyen medya anahtarı: %1$d</string>
   <!--Queue operations-->
+  <string name="lock_queue">Kuyruğu kilitle</string>
+  <string name="unlock_queue">Kuyruğun kilidini aç</string>
   <string name="clear_queue_label">Kuyruğu temizle</string>
   <string name="undo">Geri al</string>
   <string name="removed_from_queue">Öge kaldırıldı</string>
@@ -184,8 +238,8 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Eklentiyi İndir</string>
   <string name="no_playback_plugin_title">Eklenti Yüklenmedi</string>
-  <string name="no_playback_plugin_msg">Değişken hızlı yürütmenin çalışabilmesi için üçüncü parti bir kütüphane yüklemelisiniz.\n\nEklentiyi Play Store\'dan indirmek için \'Eklentiyi İndir\' butonuna tıklayın\n\nBu eklentiden doğacak hatalar AntennaPod\'un sorumluluğunda değildir ve bu durum eklenti sahibine bildirilmelidir.</string>
   <string name="set_playback_speed_label">Çalma hızları</string>
+  <string name="enable_sonic">Sonic\'i Etkinleştir</string>
   <!--Empty list labels-->
   <string name="no_items_label">Bu listede hiç öge yok.</string>
   <string name="no_feeds_label">Henüz hiçbir beslemeye abone değilsiniz.</string>
@@ -195,15 +249,22 @@
   <string name="queue_label">Kuyruk</string>
   <string name="services_label">Servisler</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Kulaklıklar çıkarıldığında çalmayı duraklat</string>
+  <string name="pref_episode_cleanup_title">Bölüm Temizliği</string>
+  <string name="pref_pauseOnDisconnect_sum">Kulaklıklar çıkarıldığında veya bluetooth bağlantısı kesildiğinde çalmayı duraklat</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetooth yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_followQueue_sum">Çalma tamamlandığında kuyruktaki diğer öğeye geç</string>
   <string name="pref_auto_delete_sum">Çalma bittiğinde bölümü sil</string>
   <string name="pref_auto_delete_title">Otomatik Silme</string>
+  <string name="pref_smart_mark_as_played_sum">Bitmesine birkaç saniye kalmış olsa da bölümleri oynatıldı olarak işaretle</string>
   <string name="playback_pref">Çalma</string>
   <string name="network_pref">Ağ</string>
-  <string name="pref_autoUpdateIntervall_title">Güncelleme aralığı</string>
-  <string name="pref_autoUpdateIntervall_sum">Beslemeleri yenilemek için bir aralık belirtin veya devre dışı bırakın.</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">Güncelleme Aralığı veya Belirli Zamanı</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Beslemelerin otomatik olarak güncellenmesi için bir zaman aralığı veya belirli bir saat ayarlayın</string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Otomatik güncelleştirmelerin yapılması için \"her 2 saatte bir\" gibi <i>aralık</i>, \"07:00\" gibi \"belirli saat\" ayarlayabilirsiniz veya <i>devre dışı</i> bırakabilirsiniz.\n\n<small>Not: Güncelleme zamanları kesin değildir, kısa gecikmeler yaşanabilir.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_Disable">Devre dışı</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Aralık ayarla</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Belirli saat ayarla</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Medya dosyalarını sadece kablosuz bağlantı üzerinden indir</string>
   <string name="pref_followQueue_title">Devamlı çalma</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Kablosuz medya indirmesi</string>
@@ -223,6 +284,10 @@
   <string name="pref_auto_flattr_sum">Otomatik Flattr\'lamayı Yapılandır</string>
   <string name="user_interface_label">Kullanıcı Arayüzü</string>
   <string name="pref_set_theme_title">Temayı seç</string>
+  <string name="pref_nav_drawer_title">Uygulama Çekmecesini Özelleştir</string>
+  <string name="pref_nav_drawer_sum">Uygulama çekmecesinin görüntüsünü özelleştir.</string>
+  <string name="pref_nav_drawer_items_title">Uygulama Çekmecesi öğelerini ayarla</string>
+  <string name="pref_nav_drawer_items_sum">Hangi öğelerin uygulama çekmecesinde görüneceğini değiştir.</string>
   <string name="pref_set_theme_sum">AntennaPod\'un görüntüsünü değiştir.</string>
   <string name="pref_automatic_download_title">Otomatk indirme</string>
   <string name="pref_automatic_download_sum">Bölümlerin otomatik indirilmesini yapılandır.</string>
@@ -246,17 +311,27 @@
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net hesabınız için giriş bilgisini değiştirin.</string>
   <string name="pref_playback_speed_title">Çalma hızları</string>
   <string name="pref_playback_speed_sum">Değişken hızlı ses yürütmesi için kullanılabilir hızları özelleştirin</string>
-  <string name="pref_seek_delta_title">Arama zamanı</string>
-  <string name="pref_seek_delta_sum">Geri veya ileri sararken bu kadar saniye atla</string>
+  <string name="pref_fast_forward">İleri sarma süresi</string>
+  <string name="pref_rewind">Geri sarma süresi</string>
   <string name="pref_gpodnet_sethostname_title">Sunucu ismini ayarla</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Varsayılan sunucuyu kullan</string>
   <string name="pref_expandNotify_title">Bildirimi Genişlet</string>
   <string name="pref_expandNotify_sum">Çalma tuşlarını göstermek için bildirimi her zaman genişlet.</string>
   <string name="pref_persistNotify_title">Kalıcı oynatma kontrolleri</string>
   <string name="pref_persistNotify_sum">Çalma duraklatıldığında bildirim ve ekran kilidi ayarlarını sakla.</string>
+  <string name="pref_showDownloadReport_title">İndirme Raporunu Göster</string>
+  <string name="pref_showDownloadReport_sum">Eğer indirme başarısız olursa, hatanın ayrıntılarını gösteren bir rapor oluştur.</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 öncesi sürümler genişletilmiş bildirimleri desteklememektedir.</string>
   <string name="pref_queueAddToFront_sum">Yeni bölümleri kuyruğun önüne ekle.</string>
   <string name="pref_queueAddToFront_title">Kuyruğun önüne ekle.</string>
+  <string name="pref_smart_mark_as_played_disabled">Devre dışı</string>
+  <string name="pref_image_cache_size_title">Görüntü Önbelleği Boyutu</string>
+  <string name="pref_image_cache_size_sum">Görüntüler için diskte tutulacak önbelleğin boyutu.</string>
+  <string name="crash_report_title">Çökme Raporu</string>
+  <string name="crash_report_sum">En son çökme raporunu e-posta ile gönder</string>
+  <string name="send_email">E-posta gönder</string>
+  <string name="experimental_pref">Deneysel</string>
+  <string name="pref_sonic_title">Sonic ortam yürütücüsü</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Otomatik Flattr\'lamayı etkinleştir</string>
   <string name="auto_flattr_after_percent">Bölümün yüzde %d kısmı oynatıldığında Flattr\'la</string>
@@ -271,6 +346,7 @@
   <string name="found_in_title_label">Başlıkta bulundu</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML dosyaları cep yayınlarını bir cihazdan diğerine aktarmanıza yarar.</string>
+  <string name="opml_import_option">Seçenek %1$d</string>
   <string name="opml_import_explanation_1">Yerel dosya sisteminden belirli bir yol seçin.</string>
   <string name="opml_import_explanation_2">OPML dosyasını açmak için harici uygulamalardan Dropbox, Google Drive veya kendi favori dosya yöneticinizi kullanın.</string>
   <string name="opml_import_explanation_3">Google Mail, Dropbox, Google Drive gibi birçok uygulama ve çoğu dosya yöneticisi OPML dosyalarını AntennaPod <i>ile</i> <i>açabilir.</i></string>
@@ -285,7 +361,6 @@
   <string name="choose_file_from_filesystem">Yerel dosya sisteminden</string>
   <string name="choose_file_from_external_application">Harici uygulama kullan</string>
   <string name="opml_export_label">OPML dışa aktar</string>
-  <string name="exporting_label">Dışa aktarılıyor...</string>
   <string name="export_error_label">Dışa aktarma hatası</string>
   <string name="opml_export_success_title">Opml dışa aktarma başarılı.</string>
   <string name="opml_export_success_sum">.opml dosyasy yazıldı: \u0020</string>
@@ -296,9 +371,24 @@
   <string name="sleep_timer_label">Zamanlayıcı</string>
   <string name="time_left_label">Kalan süre:\u0020</string>
   <string name="time_dialog_invalid_input">Geçersiz giriş, zaman bir tam sayı olmalıdır</string>
-  <string name="time_unit_seconds">saniye</string>
-  <string name="time_unit_minutes">dakika</string>
-  <string name="time_unit_hours">saat</string>
+  <string name="timer_about_to_expire_label"><b>Zamanlayıcı süresi dolduğunda:</b></string>
+  <string name="shake_to_reset_label">Zamanyacıyı sıfırlamak için salla</string>
+  <string name="timer_vibration_label">Titret</string>
+  <string name="time_seconds">saniye</string>
+  <string name="time_minutes">dakika</string>
+  <string name="time_hours">saat</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="one">1 saniye</item>
+    <item quantity="other">%d saniye</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="one">1 dakika</item>
+    <item quantity="other">%d dakika</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="one">1 saat</item>
+    <item quantity="other">%d saat</item>
+  </plurals>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORİLER</string>
   <string name="gpodnet_toplist_header">POPÜLER CEP YAYINLARI</string>
@@ -331,20 +421,26 @@
   <string name="selected_folder_label">Seçilen dizin:</string>
   <string name="create_folder_label">Dizin yarat</string>
   <string name="choose_data_directory">Veri dizinini seç</string>
+  <string name="choose_data_directory_message">Lütfen verileriniz için ana klasörü seçin. AntennaPod gerekli alt-klasörleri oluşturacaktır.</string>
   <string name="create_folder_msg">\"%1$s\" isminde yeni dizin oluştur?</string>
   <string name="create_folder_success">Yeni dizin yaratıldı</string>
   <string name="create_folder_error_no_write_access">Bu dizine yazılamadı</string>
   <string name="create_folder_error_already_exists">Dizin zaten var</string>
   <string name="create_folder_error">Dizin yaratılamadı</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" adlı klasör yok</string>
+  <string name="folder_not_readable_error">\"%1$s\" klasörü okunabilir değil</string>
+  <string name="folder_not_writable_error">\"%1$s\" klasörü yazılabilir değil</string>
   <string name="folder_not_empty_dialog_title">Dizin boş değil</string>
   <string name="folder_not_empty_dialog_msg">Seçtiğiniz dizin dolu. Medya indirmeleri ve diğer dosyalar doğrudan bu dizine yerleştirilecek. Devam edilsin mi?</string>
   <string name="set_to_default_folder">Vaysayılan dizini seç</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Başka bir uygulama ses çalmak istediğinde sesi kısmak yerine yürütmeyi duraklat</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Kesintiler için duraklat</string>
+  <string name="pref_resumeAfterCall_sum">Bir telefon konuşması tamamlandıktan sonra çalmaya kaldığı yerden devam et</string>
+  <string name="pref_resumeAfterCall_title">Konuşmadan sonra devam et</string>
+  <string name="pref_restart_required">Bu değişikliğin geçerli olması için AntennaPod yeniden başlatılmalıdır.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Üye ol</string>
   <string name="subscribed_label">Üye olundu</string>
-  <string name="downloading_label">İndiriliyor...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Kısımları göster</string>
   <string name="show_shownotes_label">Notları göster</string>
@@ -367,7 +463,34 @@
   <!--Feed information screen-->
   <string name="authentication_label">Yetkilendirme</string>
   <string name="authentication_descr">Bu cep yayını ve içerdiği bölümler için kullanıcı adı şifreyi değiştir.</string>
+  <!--Progress information-->
+  <string name="progress_upgrading_database">Veritabanı yükseltiliyor</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <string name="search_itunes_label">iTunes\'da Arama</string>
+  <string name="all_label">Tümü</string>
+  <string name="selected_all_label">Tüm Bölümler Seçildi</string>
+  <string name="none_label">Hiçbiri</string>
+  <string name="deselected_all_label">Tüm Bölümlerin Seçimi Kaldırıldı</string>
+  <string name="played_label">Çalınan</string>
+  <string name="selected_played_label">Çalınan Bölümler Seçildi</string>
+  <string name="unplayed_label">Çalınmayan</string>
+  <string name="selected_unplayed_label">Çalınmayan Bölümler Seçildi</string>
+  <string name="downloaded_label">İndirilen</string>
+  <string name="selected_downloaded_label">İndirilen Bölümler Seçildi</string>
+  <string name="not_downloaded_label">İndirilmeyen</string>
+  <string name="selected_not_downloaded_label">İndirilmeyen Bölümler Seçildi</string>
+  <string name="sort_title_a_z">Başlık (A \u2192 Z)</string>
+  <string name="sort_title_z_a">Başlık (Z \u2192 A)</string>
+  <string name="sort_date_new_old">Tarih (Yeni \u2192 Eski)</string>
+  <string name="sort_date_old_new">Tarih (Eski \u2192 Yeni)</string>
+  <string name="sort_duration_short_long">Süre (Kısa \u2192 Uzun)</string>
+  <string name="sort_duration_long_short">Süre (Uzun \u2192 Kısa)</string>
+  <!--Rating dialog-->
+  <string name="rating_title">AntennaPod\'u beğendiniz mi?</string>
+  <string name="rating_message">Eğer AntennaPod\'a oy vermek için biraz zamanını ayırırsanız memnun oluruz.</string>
+  <string name="rating_never_label">Bir daha gösterme</string>
+  <string name="rating_later_label">Daha sonra hatırlat</string>
+  <string name="rating_now_label">Evet, şimdi yapalım!</string>
+  <!--Audio controls-->
 </resources>

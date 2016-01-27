@@ -11,24 +11,22 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
-import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +35,7 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -49,6 +48,7 @@ import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
  * control playback instead of communicating with the PlaybackService directly.
  */
 public abstract class PlaybackController {
+
     private static final String TAG = "PlaybackController";
 
     public static final int INVALID_TIME = -1;
@@ -56,7 +56,7 @@ public abstract class PlaybackController {
     private final Activity activity;
 
     private PlaybackService playbackService;
-    private Playable media;
+    protected Playable media;
     private PlayerStatus status;
 
     private ScheduledThreadPoolExecutor schedExecutor;
@@ -74,22 +74,16 @@ public abstract class PlaybackController {
      */
     private boolean reinitOnPause;
 
-    public PlaybackController(Activity activity, boolean reinitOnPause) {
-        Validate.notNull(activity);
+    public PlaybackController(@NonNull Activity activity, boolean reinitOnPause) {
 
         this.activity = activity;
         this.reinitOnPause = reinitOnPause;
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOLSIZE,
-                new ThreadFactory() {
-
-                    @Override
-                    public Thread newThread(Runnable r) {
-                        Thread t = new Thread(r);
-                        t.setPriority(Thread.MIN_PRIORITY);
-                        return t;
-                    }
+                r -> {
+                    Thread t = new Thread(r);
+                    t.setPriority(Thread.MIN_PRIORITY);
+                    return t;
                 }, new RejectedExecutionHandler() {
-
             @Override
             public void rejectedExecution(Runnable r,
                                           ThreadPoolExecutor executor) {
@@ -106,10 +100,10 @@ public abstract class PlaybackController {
      */
     public void init() {
         activity.registerReceiver(statusUpdate, new IntentFilter(
-                PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
+            PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
 
         activity.registerReceiver(notificationReceiver, new IntentFilter(
-                PlaybackService.ACTION_PLAYER_NOTIFICATION));
+            PlaybackService.ACTION_PLAYER_NOTIFICATION));
 
         activity.registerReceiver(shutdownReceiver, new IntentFilter(
                 PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
@@ -120,6 +114,7 @@ public abstract class PlaybackController {
             throw new IllegalStateException(
                     "Can't call init() after release() has been called");
         }
+        checkMediaInfoLoaded();
     }
 
     /**
@@ -240,7 +235,7 @@ public abstract class PlaybackController {
         return null;
     }
 
-    public abstract void setupGUI();
+
 
     private void setupPositionObserver() {
         if ((positionObserverFuture != null && positionObserverFuture
@@ -263,8 +258,6 @@ public abstract class PlaybackController {
             Log.d(TAG, "PositionObserver cancelled. Result: " + result);
         }
     }
-
-    public abstract void onPositionObserverUpdate();
 
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -359,7 +352,7 @@ public abstract class PlaybackController {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (isConnectedToPlaybackService()) {
-                if (StringUtils.equals(intent.getAction(),
+                if (TextUtils.equals(intent.getAction(),
                         PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
                     release();
                     onShutdownNotification();
@@ -368,26 +361,31 @@ public abstract class PlaybackController {
         }
     };
 
-    public abstract void onPlaybackSpeedChange();
+    public void setupGUI() {};
 
-    public abstract void onShutdownNotification();
+    public void onPositionObserverUpdate() {};
+
+
+    public void onPlaybackSpeedChange() {};
+
+    public void onShutdownNotification() {};
 
     /**
      * Called when the currently displayed information should be refreshed.
      */
-    public abstract void onReloadNotification(int code);
+    public void onReloadNotification(int code) {};
 
-    public abstract void onBufferStart();
+    public void onBufferStart() {};
 
-    public abstract void onBufferEnd();
+    public void onBufferEnd() {};
 
-    public abstract void onBufferUpdate(float progress);
+    public void onBufferUpdate(float progress) {};
 
-    public abstract void onSleepTimerUpdate();
+    public void onSleepTimerUpdate() {};
 
-    public abstract void handleError(int code);
+    public void handleError(int code) {};
 
-    public abstract void onPlaybackEnd();
+    public void onPlaybackEnd() {};
 
     public void repeatHandleStatus() {
         if (status != null && playbackService != null) {
@@ -418,7 +416,6 @@ public abstract class PlaybackController {
 
         Log.d(TAG, "status: " + status.toString());
         switch (status) {
-
             case ERROR:
                 postStatusMsg(R.string.player_error_msg);
                 handleError(MediaPlayer.MEDIA_ERROR_UNKNOWN);
@@ -479,19 +476,25 @@ public abstract class PlaybackController {
 
     private void updatePlayButtonAppearance(int resource, CharSequence contentDescription) {
         ImageButton butPlay = getPlayButton();
-        butPlay.setImageResource(resource);
-        butPlay.setContentDescription(contentDescription);
+        if(butPlay != null) {
+            butPlay.setImageResource(resource);
+            butPlay.setContentDescription(contentDescription);
+        }
     }
 
-    public abstract ImageButton getPlayButton();
+    public ImageButton getPlayButton() {
+        return null;
+    };
 
-    public abstract void postStatusMsg(int msg);
+    public void postStatusMsg(int msg) {};
 
-    public abstract void clearStatusMsg();
+    public void clearStatusMsg() {};
 
-    public abstract boolean loadMediaInfo();
+    public boolean loadMediaInfo() {
+        return false;
+    };
 
-    public abstract void onAwaitingVideoSurface();
+    public  void onAwaitingVideoSurface()  {};
 
     /**
      * Called when connection to playback service has been established or
@@ -525,7 +528,7 @@ public abstract class PlaybackController {
         }
     }
 
-    public abstract void onServiceQueried();
+    public void onServiceQueried()  {};
 
     /**
      * Should be used by classes which implement the OnSeekBarChanged interface.
@@ -555,7 +558,7 @@ public abstract class PlaybackController {
      * Should be used by classes which implement the OnSeekBarChanged interface.
      */
     public void onSeekBarStopTrackingTouch(SeekBar seekBar, float prog) {
-        if (playbackService != null) {
+        if (playbackService != null && media != null) {
             playbackService.seekTo((int) (prog * media.getDuration()));
             setupPositionObserver();
         }
@@ -572,37 +575,32 @@ public abstract class PlaybackController {
     }
 
     public OnClickListener newOnPlayButtonClickListener() {
-        return new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (playbackService != null) {
-                    switch (status) {
-                        case PLAYING:
-                            playbackService.pause(true, reinitOnPause);
-                            break;
-                        case PAUSED:
-                        case PREPARED:
-                            playbackService.resume();
-                            break;
-                        case PREPARING:
-                            playbackService.setStartWhenPrepared(!playbackService
-                                    .isStartWhenPrepared());
-                            if (reinitOnPause
-                                    && playbackService.isStartWhenPrepared() == false) {
-                                playbackService.reinit();
-                            }
-                            break;
-                        case INITIALIZED:
-                            playbackService.setStartWhenPrepared(true);
-                            playbackService.prepare();
-                            break;
-                    }
-                } else {
-                    Log.w(TAG,
-                            "Play/Pause button was pressed, but playbackservice was null!");
-                }
+        return v -> {
+            if (playbackService == null) {
+                Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
+                return;
             }
-
+            switch (status) {
+                case PLAYING:
+                    playbackService.pause(true, reinitOnPause);
+                    break;
+                case PAUSED:
+                case PREPARED:
+                    playbackService.resume();
+                    break;
+                case PREPARING:
+                    playbackService.setStartWhenPrepared(!playbackService
+                            .isStartWhenPrepared());
+                    if (reinitOnPause
+                            && playbackService.isStartWhenPrepared() == false) {
+                        playbackService.reinit();
+                    }
+                    break;
+                case INITIALIZED:
+                    playbackService.setStartWhenPrepared(true);
+                    playbackService.prepare();
+                    break;
+            }
         };
     }
 
@@ -652,9 +650,9 @@ public abstract class PlaybackController {
         }
     }
 
-    public void setSleepTimer(long time) {
+    public void setSleepTimer(long time, boolean shakeToReset, boolean vibrate) {
         if (playbackService != null) {
-            playbackService.setSleepTimer(time);
+            playbackService.setSleepTimer(time, shakeToReset, vibrate);
         }
     }
 
@@ -681,6 +679,11 @@ public abstract class PlaybackController {
     }
 
     public boolean canSetPlaybackSpeed() {
+        if (org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
+                || UserPreferences.useSonic()
+                || Build.VERSION.SDK_INT >= 23) {
+            return true;
+        }
         return playbackService != null && playbackService.canSetSpeed();
     }
 
@@ -690,11 +693,27 @@ public abstract class PlaybackController {
         }
     }
 
+    public void setVolume(float leftVolume, float rightVolume) {
+        if (playbackService != null) {
+            playbackService.setVolume(leftVolume, rightVolume);
+        }
+    }
+
     public float getCurrentPlaybackSpeedMultiplier() {
         if (canSetPlaybackSpeed()) {
             return playbackService.getCurrentPlaybackSpeed();
         } else {
             return -1;
+        }
+    }
+
+    public boolean canDownmix() {
+        return playbackService != null && playbackService.canDownmix();
+    }
+
+    public void setDownmix(boolean enable) {
+        if(playbackService != null) {
+            playbackService.setDownmix(enable);
         }
     }
 

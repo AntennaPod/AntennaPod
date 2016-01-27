@@ -4,7 +4,6 @@ import android.util.Log;
 
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -88,16 +87,15 @@ public class NSAtom extends Namespace {
                             size = Long.parseLong(strSize);
                         }
                     } catch (NumberFormatException e) {
-                        if (BuildConfig.DEBUG) Log.d(TAG, "Length attribute could not be parsed.");
+                        Log.d(TAG, "Length attribute could not be parsed.");
                     }
                     String type = attributes.getValue(LINK_TYPE);
                     if (SyndTypeUtils.enclosureTypeValid(type)
-                            || (type = SyndTypeUtils
-                            .getValidMimeTypeFromUrl(href)) != null) {
-                        state.getCurrentItem().setMedia(
-                                new FeedMedia(state.getCurrentItem(), href,
-                                        size, type)
-                        );
+                            || (type = SyndTypeUtils.getValidMimeTypeFromUrl(href)) != null) {
+                        FeedItem currItem = state.getCurrentItem();
+                        if(!currItem.hasMedia()) {
+                            currItem.setMedia(new FeedMedia(currItem, href, size, type));
+                        }
                     }
                 } else if (rel.equals(LINK_REL_PAYMENT)) {
                     state.getCurrentItem().setPaymentLink(href);
@@ -111,9 +109,11 @@ public class NSAtom extends Namespace {
 					 * LINK_TYPE_HTML or LINK_TYPE_XHTML
 					 */
                     if ((type == null && state.getFeed().getLink() == null)
-                            || (type != null && (type.equals(LINK_TYPE_HTML) || type.equals(LINK_TYPE_XHTML)))) {
+                            || (type != null && (type.equals(LINK_TYPE_HTML)
+                            || type.equals(LINK_TYPE_XHTML)))) {
                         state.getFeed().setLink(href);
-                    } else if (type != null && (type.equals(LINK_TYPE_ATOM) || type.equals(LINK_TYPE_RSS))) {
+                    } else if (type != null && (type.equals(LINK_TYPE_ATOM)
+                            || type.equals(LINK_TYPE_RSS))) {
                         // treat as podlove alternate feed
                         String title = attributes.getValue(LINK_TITLE);
                         if (title == null) {
@@ -199,7 +199,9 @@ public class NSAtom extends Namespace {
                             DateUtils.parse(content));
                 }
             } else if (top.equals(IMAGE)) {
-                state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
+                if(state.getFeed().getImage() == null) {
+                    state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
+                }
             }
 
         }

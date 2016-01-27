@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,12 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.adapter.SubscriptionsAdapter;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
-import rx.functions.Action1;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Fragment for displaying feed subscriptions
@@ -65,7 +66,20 @@ public class SubscriptionFragment extends Fragment {
         mSubscriptionAdapter = new SubscriptionsAdapter(getActivity(), mItemAccess);
 
         mSubscriptionGridLayout.setAdapter(mSubscriptionAdapter);
-        refreshSubscriptionList();
+
+        Observable.fromCallable(() -> loadData())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    mDrawerData = result;
+                    mSubscriptionList = mDrawerData.feeds;
+                    mSubscriptionAdapter.setItemAccess(mItemAccess);
+                    mSubscriptionAdapter.notifyDataSetChanged();
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
+
+
         mSubscriptionGridLayout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -79,38 +93,9 @@ public class SubscriptionFragment extends Fragment {
 
     }
 
-    private void refreshSubscriptionList() {
-        Observable.just(loadData()).subscribe(new Action1<DBReader.NavDrawerData>() {
-            @Override
-            public void call(DBReader.NavDrawerData navDrawerData) {
-                mDrawerData = navDrawerData;
-                mSubscriptionList = mDrawerData.feeds;
-                mSubscriptionAdapter.setItemAccess(mItemAccess);
-                mSubscriptionAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-    EventDistributor.EventListener updateListener = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EventDistributor.FEED_LIST_UPDATE) != 0) {
-                refreshSubscriptionList();
-            }
-        }
-    };
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventDistributor.getInstance().unregister(updateListener);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        EventDistributor.getInstance().register(updateListener);
     }
 
     public class SubscriptionEvent {
@@ -123,6 +108,6 @@ public class SubscriptionFragment extends Fragment {
 
 
     private DBReader.NavDrawerData loadData() {
-        return DBReader.getNavDrawerData(getActivity());
+        return DBReader.getNavDrawerData();
     }
 }

@@ -4,7 +4,6 @@
   <string name="app_name">	ऐन्टेनापॉड</string>
   <string name="feeds_label">फिड्स</string>
   <string name="podcasts_label">पॉडकास्ट</string>
-  <string name="episodes_label">एपिसोड</string>
   <string name="new_label">नया</string>
   <string name="waiting_list_label">वेटिंग लिस्ट</string>
   <string name="settings_label">सेटिंग्स</string>
@@ -42,7 +41,6 @@
   <string name="length_prefix">लंबाई:\u0020</string>
   <string name="size_prefix">साइज:\u0020</string>
   <string name="processing_label">प्रसंस्करण</string>
-  <string name="loading_label">लोड हो रहा है ...</string>
   <string name="save_username_password_label">यूज़रनेम और पासवर्ड सहेजें</string>
   <string name="close_label">बंद करें</string>
   <string name="retry_label">पुन: प्रयास</string>
@@ -57,7 +55,6 @@
   <string name="remove_feed_label">पॉडकास्ट हटाएँ
 </string>
   <string name="share_link_label">शेयर वेबसाइट लिंक</string>
-  <string name="share_source_label">शेयर फ़ीड लिंक</string>
   <string name="feed_delete_confirmation_msg">इसकी पुष्टि करें कि आप इस फ़ीड और इस फ़ीड के सभी प्रकरणों को हटाना चाहते हैं जिन्हें आपने डाउनलोड किया है.</string>
   <string name="feed_remover_msg">फ़ीड निकाल रहा है</string>
   <!--actions on feeditems-->
@@ -97,7 +94,6 @@
   <string name="download_error_io_error">आईओ त्रुटि</string>
   <string name="download_error_request_error">अनुरोध त्रुटि</string>
   <string name="download_error_db_access">डेटाबेस का उपयोग त्रुटि</string>
-  <string name="downloads_left">\u0020Downloads छोड़ा</string>
   <string name="download_notification_title">पॉडकास्ट डेटा डाउनलोड करें</string>
   <string name="download_report_content">%1$d डाउनलोड सफल रहा, %2$d में विफल रहा है</string>
   <string name="download_log_title_unknown">अज्ञात शीर्षक</string>
@@ -154,12 +150,9 @@
   <string name="queue_label">पंक्ति</string>
   <string name="services_label">सेवाएं</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum"> प्लेबैक रोकें जब हेडफोन काट रहे हैं</string>
   <string name="pref_followQueue_sum">प्लेबैक के पूरा होने पर अगली पंक्ति आइटम के लिए जाएँ</string>
   <string name="playback_pref">प्लेबैक</string>
   <string name="network_pref">संजाल</string>
-  <string name="pref_autoUpdateIntervall_title">अंतराल अद्यतन</string>
-  <string name="pref_autoUpdateIntervall_sum">फ़ीड स्वचालित रूप से ताजा कर रहे हैं जिसमें एक अंतराल निर्दिष्ट करें या उसे निष्क्रिय करें </string>
   <string name="pref_downloadMediaOnWifiOnly_sum">केवल वाईफ़ाई पर मीडिया फ़ाइलें डाउनलोड करें</string>
   <string name="pref_followQueue_title">सतत प्लेबैक</string>
   <string name="pref_downloadMediaOnWifiOnly_title">वाईफाई मीडिया डाउनलोड करें</string>
@@ -217,7 +210,6 @@
   <string name="select_all_label">सभी का चयन करें</string>
   <string name="deselect_all_label">सभी का चयन रद्द करें</string>
   <string name="opml_export_label">OPML निर्यात</string>
-  <string name="exporting_label">निर्यात ...</string>
   <string name="export_error_label">निर्यात त्रुटि</string>
   <string name="opml_export_success_sum">.ompl फ़ाइल लिखा गया था:\u0020</string>
   <!--Sleep timer-->
@@ -271,8 +263,10 @@
   <!--Online feed view-->
   <string name="subscribe_label">सदस्यता लें</string>
   <string name="subscribed_label">सदस्यता ली गई</string>
-  <string name="downloading_label">डाउनलोड कर रहा है ...</string>
   <!--Content descriptions for image buttons-->
   <!--Feed information screen-->
+  <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

@@ -1,53 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation"
-    >
+    tools:ignore="MissingTranslation">
 
     <!-- Activitiy and fragment titles -->
     <string name="app_name">AntennaPod</string>
     <string name="feeds_label">Feeds</string>
-    <string name="add_feed_label">Add podcast</string>
+    <string name="add_feed_label">Add Podcast</string>
     <string name="podcasts_label">PODCASTS</string>
-    <string name="episodes_label">EPISODES</string>
-    <string name="new_episodes_label">New episodes</string>
-    <string name="all_episodes_label">All episodes</string>
+    <string name="episodes_label">Episodes</string>
+    <string name="new_episodes_label">New Episodes</string>
+    <string name="all_episodes_label">All Episodes</string>
+    <string name="all_episodes_short_label">All</string>
+    <string name="favorite_episodes_label">Favorites</string>
     <string name="new_label">New</string>
-    <string name="waiting_list_label">Waiting list</string>
+    <string name="waiting_list_label">Waiting List</string>
     <string name="settings_label">Settings</string>
-    <string name="add_new_feed_label">Add podcast</string>
+    <string name="add_new_feed_label">Add Podcast</string>
     <string name="downloads_label">Downloads</string>
     <string name="downloads_running_label">Running</string>
     <string name="downloads_completed_label">Completed</string>
     <string name="downloads_log_label">Log</string>
-    <string name="cancel_download_label">Cancel Download</string>
-    <string name="playback_history_label">Playback history</string>
     <string name="my_subscriptions">Subscriptions</string>
+    <string name="cancel_download_label">Cancel\nDownload</string>
+    <string name="playback_history_label">Playback History</string>
     <string name="gpodnet_main_label">gpodder.net</string>
-    <string name="gpodnet_auth_label">gpodder.net login</string>
+    <string name="gpodnet_auth_label">gpodder.net Login</string>
+    <string name="free_space_label">%1$s free</string>
+    <string name="episode_cache_full_title">Episode cache full</string>
+    <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
 
     <!-- New episodes fragment -->
     <string name="recently_published_episodes_label">Recently published</string>
-    <string name="episode_filter_label">Show only new episodes</string>
+    <string name="episode_filter_label">Show only new Episodes</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
     <string name="drawer_close">Close menu</string>
     <string name="drawer_preferences">Drawer Preferences</string>
+    <string name="drawer_feed_order_unplayed_episodes">Sort by counter</string>
+    <string name="drawer_feed_order_alphabetical">Sort alphabetically</string>
+    <string name="drawer_feed_order_last_update">Sort by publication date</string>
+    <string name="drawer_feed_counter_new_unplayed">Number of new and unplayed episodes</string>
+    <string name="drawer_feed_counter_new">Number of new episodes</string>
+    <string name="drawer_feed_counter_unplayed">Number of unplayed episodes</string>
+    <string name="drawer_feed_counter_none">None</string>
 
     <!-- Webview actions -->
-    <string name="open_in_browser_label">Open in browser</string>
+    <string name="open_in_browser_label">Open in Browser</string>
     <string name="copy_url_label">Copy URL</string>
     <string name="share_url_label">Share URL</string>
-    <string name="copied_url_msg">Copied URL to clipboard.</string>
-    <string name="go_to_position_label">Go to this position</string>
+    <string name="copied_url_msg">Copied URL to Clipboard</string>
+    <string name="go_to_position_label">Go to this Position</string>
 
     <!-- Playback history -->
-    <string name="clear_history_label">Clear history</string>
+    <string name="clear_history_label">Clear History</string>
 
     <!-- Other -->
     <string name="confirm_label">Confirm</string>
     <string name="cancel_label">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="author_label">Author</string>
     <string name="language_label">Language</string>
     <string name="url_label">URL</string>
@@ -60,39 +73,59 @@
     <string name="chapters_label">Chapters</string>
     <string name="shownotes_label">Shownotes</string>
     <string name="description_label">Description</string>
-    <string name="most_recent_prefix">Most Recent Episode:\u0020</string>
+    <string name="most_recent_prefix">Most recent episode:\u0020</string>
     <string name="episodes_suffix">\u0020episodes</string>
     <string name="length_prefix">Length:\u0020</string>
     <string name="size_prefix">Size:\u0020</string>
     <string name="processing_label">Processing</string>
-    <string name="loading_label">Loading...</string>
+    <string name="loading_label">Loading&#8230;</string>
     <string name="save_username_password_label">Save username and password</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
+    <string name="auto_download_apply_to_items_title">Apply to Previous Episodes</string>
+    <string name="auto_download_apply_to_items_message">The new <i>Auto Download</i> setting will automatically be applied to new episodes.\nDo you also want to apply it to previously published episodes?</string>
+    <string name="auto_delete_label">Auto Delete Episode\n(override global default)</string>
     <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
+    <string name="feed_auto_download_global">Global</string>
+    <string name="feed_auto_download_always">Always</string>
+    <string name="feed_auto_download_never">Never</string>
+    <string name="send_label">Send&#8230;</string>
+    <string name="episode_cleanup_never">Never</string>
+    <string name="episode_cleanup_queue_removal">When not in queue</string>
+    <string name="episode_cleanup_after_listening">After finishing</string>
+    <plurals name="episode_cleanup_days_after_listening">
+        <item quantity="one">1 day after finishing</item>
+        <item quantity="other">%d days after finishing</item>
+    </plurals>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
     <string name="etxtFeedurlHint">www.example.com/feed</string>
     <string name="txtvfeedurl_label">Add Podcast by URL</string>
-    <string name="podcastdirectories_label">Find podcast in directory</string>
+    <string name="podcastdirectories_label">Find Podcast in Directory</string>
     <string name="podcastdirectories_descr">You can search for new podcasts by name, category or popularity in the gpodder.net directory, or search the iTunes store.</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
-    <string name="mark_all_read_msg">Marked all episodes as played</string>
+    <string name="mark_all_read_msg">Marked all Episodes as played</string>
     <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
     <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being played.</string>
+    <string name="mark_all_seen_label">Mark all as seen</string>
     <string name="show_info_label">Show information</string>
-    <string name="remove_feed_label">Remove podcast</string>
-    <string name="share_link_label">Share website link</string>
-    <string name="share_source_label">Share feed link</string>
+    <string name="remove_feed_label">Remove Podcast</string>
+    <string name="share_label">Share&#8230;</string>
+    <string name="share_link_label">Share Link</string>
+    <string name="share_link_with_position_label">Share Link with Position</string>
+    <string name="share_feed_url_label">Share Feed URL</string>
+    <string name="share_item_url_label">Share Episode URL</string>
+    <string name="share_item_url_with_position_label">Share Episode URL with Position</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete this feed and ALL episodes of this feed that you have downloaded.</string>
-    <string name="feed_remover_msg">Removing feed</string>
-    <string name="load_complete_feed">Refresh complete feed</string>
-    <string name="hide_episodes_title">Hide episodes</string>
+    <string name="feed_remover_msg">Removing Feed</string>
+    <string name="load_complete_feed">Refresh complete Feed</string>
+    <string name="hide_episodes_title">Hide Episodes</string>
+    <string name="episode_actions">Apply actions</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
     <string name="hide_paused_episodes_label">Paused</string>
     <string name="hide_played_episodes_label">Played</string>
@@ -101,7 +134,7 @@
     <string name="hide_downloaded_episodes_label">Downloaded</string>
     <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
     <string name="filtered_label">Filtered</string>
-    <string name="refresh_failed_msg">{fa-exclamation-circle} Last refresh failed</string>
+    <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
@@ -110,51 +143,59 @@
     <string name="stop_label">Stop</string>
     <string name="stream_label">Stream</string>
     <string name="remove_label">Remove</string>
-    <string name="remove_episode_lable">Remove episode</string>
+    <string name="remove_episode_lable">Remove Episode</string>
     <string name="mark_read_label">Mark as played</string>
-    <string name="mark_unread_label">Mark as unplayed</string>
     <string name="marked_as_read_label">Marked as played</string>
+    <string name="mark_unread_label">Mark as unplayed</string>
     <string name="add_to_queue_label">Add to Queue</string>
     <string name="added_to_queue_label">Added to Queue</string>
     <string name="remove_from_queue_label">Remove from Queue</string>
+    <string name="add_to_favorite_label">Add to Favorites</string>
+    <string name="added_to_favorites">Added to Favorites</string>
+    <string name="remove_from_favorite_label">Remove from Favorites</string>
+    <string name="removed_from_favorites">Removed from Favorites</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="support_label">Flattr this</string>
     <string name="enqueue_all_new">Enqueue all</string>
     <string name="download_all">Download all</string>
     <string name="skip_episode_label">Skip episode</string>
-    <string name="activate_auto_download">Activate auto download</string>
-    <string name="deactivate_auto_download">Deactivate auto download</string>
-    <string name="reset_position">Reset playback position</string>
+    <string name="activate_auto_download">Activate Auto Download</string>
+    <string name="deactivate_auto_download">Deactivate Auto Download</string>
+    <string name="reset_position">Reset Playback Position</string>
+    <string name="removed_item">Item removed</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>
     <string name="download_failed">failed</string>
     <string name="download_pending">Download pending</string>
     <string name="download_running">Download running</string>
-    <string name="download_error_device_not_found">Storage device not found</string>
-    <string name="download_error_insufficient_space">Insufficient space</string>
-    <string name="download_error_file_error">File error</string>
+    <string name="download_error_device_not_found">Storage Device not found</string>
+    <string name="download_error_insufficient_space">Insufficient Space</string>
+    <string name="download_error_file_error">File Error</string>
     <string name="download_error_http_data_error">HTTP Data Error</string>
     <string name="download_error_error_unknown">Unknown Error</string>
     <string name="download_error_parser_exception">Parser Exception</string>
-    <string name="download_error_unsupported_type">Unsupported Feed type</string>
-    <string name="download_error_connection_error">Connection error</string>
-    <string name="download_error_unknown_host">Unknown host</string>
-    <string name="download_error_unauthorized">Authentication error</string>
+    <string name="download_error_unsupported_type">Unsupported Feed Type</string>
+    <string name="download_error_connection_error">Connection Error</string>
+    <string name="download_error_unknown_host">Unknown Host</string>
+    <string name="download_error_unauthorized">Authentication Error</string>
     <string name="cancel_all_downloads_label">Cancel all downloads</string>
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
-    <string name="download_report_content_title">Download report</string>
+    <string name="download_report_content_title">Download Report</string>
     <string name="download_error_malformed_url">Malformed URL</string>
     <string name="download_error_io_error">IO Error</string>
-    <string name="download_error_request_error">Request error</string>
-    <string name="download_error_db_access">Database access error</string>
-    <string name="downloads_left">\u0020Downloads left</string>
+    <string name="download_error_request_error">Request Error</string>
+    <string name="download_error_db_access">Database Access Error</string>
+    <plurals name="downloads_left">
+        <item quantity="one">%d download left</item>
+        <item quantity="other">%d downloads left</item>
+    </plurals>
     <string name="downloads_processing">Processing downloads</string>
     <string name="download_notification_title">Downloading podcast data</string>
     <string name="download_report_content">%1$d downloads succeeded, %2$d failed</string>
-    <string name="download_log_title_unknown">Unknown title</string>
+    <string name="download_log_title_unknown">Unknown Title</string>
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>
     <string name="download_type_image">Image</string>
@@ -162,10 +203,10 @@
     <string name="authentication_notification_title">Authentication required</string>
     <string name="authentication_notification_msg">The resource you requested requires a username and a password</string>
     <string name="confirm_mobile_download_dialog_title">Confirm Mobile Download</string>
-    <string name="confirm_mobile_download_dialog_message_not_in_queue">Downloading over mobile data connection is disabled in the settings.\n\nEnable temporarily or just add to queue?\n\n<small>Your choice will be remember for 10 minutes.</small></string>
-    <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nEnable temporarily?\n\n<small>Your choice will be remember for 10 minutes.</small></string>
-    <string name="confirm_mobile_download_dialog_only_add_to_queue">Only add to Queue</string>
-    <string name="confirm_mobile_download_dialog_enable_temporarily">Enable temporarily</string>
+    <string name="confirm_mobile_download_dialog_message_not_in_queue">Downloading over mobile data connection is disabled in the settings.\n\nYou can choose to either only add the episode to the queue or you can allow downloading temporarily.\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
+    <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nDo you want to allow downloading temporarily?\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
+    <string name="confirm_mobile_download_dialog_only_add_to_queue">Enqueue</string>
+    <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
     <!-- Mediaplayer messages -->
     <string name="player_error_msg">Error!</string>
@@ -182,9 +223,11 @@
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
 
     <!-- Queue operations -->
-    <string name="lock_queue">Lock queue</string>
-    <string name="unlock_queue">Unlock queue</string>
-    <string name="clear_queue_label">Clear queue</string>
+    <string name="lock_queue">Lock Queue</string>
+    <string name="unlock_queue">Unlock Queue</string>
+    <string name="queue_locked">Queue locked</string>
+    <string name="queue_unlocked">Queue unlocked</string>
+    <string name="clear_queue_label">Clear Queue</string>
     <string name="undo">Undo</string>
     <string name="removed_from_queue">Item removed</string>
     <string name="move_to_top_label">Move to top</string>
@@ -228,12 +271,14 @@
     <!--  Variable Speed -->
     <string name="download_plugin_label">Download Plugin</string>
     <string name="no_playback_plugin_title">Plugin Not Installed</string>
-    <string name="no_playback_plugin_msg">For variable speed playback to work, a third party library must be installed.\n\nTap \'Download Plugin\' to download a free plugin from the Play Store\n\nAny problems found using this plugin are not the responsibility of AntennaPod and should be reported to the plugin owner.</string>
+    <string name="no_playback_plugin_or_sonic_msg">For variable speed playback to work, we recommend to enable the built-in Sonic mediaplayer [Android 4.1+].\n\nAlternatively, you can download the third party plugin <i>Prestissimo</i> from the Play Store.\nAny problems with Prestissimo are not the responsibility of AntennaPod and should be reported to the plugin owner.</string>
     <string name="set_playback_speed_label">Playback Speeds</string>
+    <string name="enable_sonic">Enable Sonic</string>
 
     <!-- Empty list labels -->
     <string name="no_items_label">There are no items in this list.</string>
     <string name="no_feeds_label">You haven\'t subscribed to any feeds yet.</string>
+    <string name="no_chapters_label">This episode has no chapters.</string>
 
     <!-- Preferences -->
     <string name="other_pref">Other</string>
@@ -241,47 +286,67 @@
     <string name="queue_label">Queue</string>
     <string name="services_label">Services</string>
     <string name="flattr_label">Flattr</string>
-    <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
+    <string name="pref_episode_cleanup_title">Episode Cleanup</string>
+    <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>
+    <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
+    <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
+    <string name="pref_hardwareForwardButtonSkips_title">Forward button skips</string>
+    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a hardware forward button skip to the next episode instead of fast-forwarding</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
     <string name="pref_smart_mark_as_played_sum">Mark episodes as played even if less than a certain amount of seconds of playing time is still left</string>
     <string name="pref_smart_mark_as_played_title">Smart mark as played</string>
+    <string name="pref_skip_keeps_episodes_sum">Keep episodes when they are skipped</string>
+    <string name="pref_skip_keeps_episodes_title">Keep Skipped Episodes</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
-    <string name="pref_autoUpdateIntervall_title">Update interval</string>
-    <string name="pref_autoUpdateIntervall_sum">Specify an interval in which the feeds are refreshed automatically or disable it</string>
+    <string name="pref_autoUpdateIntervallOrTime_title">Update Interval or Time of Day</string>
+    <string name="pref_autoUpdateIntervallOrTime_sum">Specify an interval or a specific time of day to refresh the feeds automatically</string>
+    <string name="pref_autoUpdateIntervallOrTime_message">You can set an <i>interval</i> like \"every 2 hours\", set a specific <i>time of day</i> like \"7:00 AM\" or <i>disable</i> automatic updates altogether.\n\n<small>Please note: Update times are inexact. You may encounter a short delay.</small></string>
+    <string name="pref_autoUpdateIntervallOrTime_Disable">Disable</string>
+    <string name="pref_autoUpdateIntervallOrTime_Interval">Set Interval</string>
+    <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Set Time of Day</string>
+    <string name="pref_autoUpdateIntervallOrTime_every">every %1$s</string>
+    <string name="pref_autoUpdateIntervallOrTime_at">at %1$s</string>
     <string name="pref_downloadMediaOnWifiOnly_sum">Download media files only over WiFi</string>
-    <string name="pref_followQueue_title">Continuous playback</string>
+    <string name="pref_followQueue_title">Continuous Playback</string>
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
-    <string name="pref_pauseOnHeadsetDisconnect_title">Headphones disconnect</string>
-    <string name="pref_unpauseOnHeadsetReconnect_title">Headphones reconnect</string>
-    <string name="pref_mobileUpdate_title">Mobile updates</string>
+    <string name="pref_pauseOnHeadsetDisconnect_title">Headphones Disconnect</string>
+    <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
+    <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
+    <string name="pref_mobileUpdate_title">Mobile Updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
     <string name="refreshing_label">Refreshing</string>
     <string name="flattr_settings_label">Flattr settings</string>
     <string name="pref_flattr_auth_title">Flattr sign-in</string>
     <string name="pref_flattr_auth_sum">Sign in to your flattr account to flattr things directly from the app.</string>
-    <string name="pref_flattr_this_app_title">Flattr this app</string>
+    <string name="pref_flattr_this_app_title">Flattr this App</string>
     <string name="pref_flattr_this_app_sum">Support the development of AntennaPod by flattring it. Thanks!</string>
     <string name="pref_revokeAccess_title">Revoke access</string>
     <string name="pref_revokeAccess_sum">Revoke the access permission to your flattr account for this app.</string>
 	<string name="pref_auto_flattr_title">Automatic Flattr</string>
     <string name="pref_auto_flattr_sum">Configure automatic flattring</string>
     <string name="user_interface_label">User Interface</string>
-    <string name="pref_set_theme_title">Select theme</string>
-    <string name="pref_nav_drawer_items_title">Change navigation drawer</string>
+    <string name="pref_set_theme_title">Select Theme</string>
+    <string name="pref_nav_drawer_title">Customize Navigation Drawer</string>
+    <string name="pref_nav_drawer_sum">Customize the appearance of the navigation drawer.</string>
+    <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
+    <string name="pref_nav_drawer_feed_order_title">Set Subscription Order</string>
+    <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
+    <string name="pref_nav_drawer_feed_counter_title">Set Subscription Counter</string>
+    <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter</string>
     <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
-    <string name="pref_automatic_download_title">Automatic download</string>
+    <string name="pref_automatic_download_title">Automatic Download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
-    <string name="pref_parallel_downloads_title">Parallel downloads</string>
-    <string name="pref_episode_cache_title">Episode cache</string>
+    <string name="pref_parallel_downloads_title">Parallel Downloads</string>
+    <string name="pref_episode_cache_title">Episode Cache</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
@@ -302,13 +367,25 @@
     <string name="pref_gpodnet_sethostname_use_default_host">Use default host</string>
     <string name="pref_expandNotify_title">Expand Notification</string>
     <string name="pref_expandNotify_sum">Always expand the notification to show playback buttons.</string>
-    <string name="pref_persistNotify_title">Persistent playback controls</string>
+    <string name="pref_persistNotify_title">Persistent Playback Controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
+    <string name="pref_lockscreen_background_title">Set Lockscreen Background</string>
+    <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
+    <string name="pref_showDownloadReport_title">Show Download Report</string>
+    <string name="pref_showDownloadReport_sum">If downloads fail, generate a report that shows the details of the failure.</string>
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
     <string name="pref_queueAddToFront_sum">Add new episodes to the front of the queue.</string>
-    <string name="pref_queueAddToFront_title">Enqueue at front.</string>
+    <string name="pref_queueAddToFront_title">Enqueue at Front</string>
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
-
+    <string name="pref_image_cache_size_title">Image Cache Size</string>
+    <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
+    <string name="crash_report_title">Crash Report</string>
+    <string name="crash_report_sum">Send the latest crash report via e-mail</string>
+    <string name="send_email">Send e-mail</string>
+    <string name="experimental_pref">Experimental</string>
+    <string name="pref_sonic_title">Sonic media player</string>
+    <string name="pref_sonic_message">Use built-in sonic media player as a replacement for Android\'s native mediaplayer and Prestissimo</string>
+    <string name="pref_current_value">Current value: %1$s</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -326,22 +403,24 @@
 
     <!-- OPML import and export -->
     <string name="opml_import_txtv_button_lable">OPML files allow you to move your podcasts from one podcatcher to another.</string>
+    <string name="opml_import_option">Option %1$d</string>
     <string name="opml_import_explanation_1">Choose a specific file path from the local filesystem.</string>
     <string name="opml_import_explanation_2">Use an external applications like Dropbox, Google Drive or your favourite file manager to open an OPML file.</string>
     <string name="opml_import_explanation_3">Many applications like Google Mail, Dropbox, Google Drive and most file managers can <i>open</i> OPML files <i>with</i> AntennaPod.</string>    <string name="start_import_label">Start import</string>
-    <string name="opml_import_label">OPML import</string>
+    <string name="opml_import_label">OPML Import</string>
     <string name="opml_directory_error">ERROR!</string>
     <string name="reading_opml_label">Reading OPML file</string>
     <string name="opml_reader_error">An error has occurred while reading the opml document:</string>
     <string name="opml_import_error_dir_empty">The import directory is empty.</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
+    <string name="select_options_label">Select&#8230;</string>
     <string name="choose_file_from_filesystem">From local filesystem</string>
     <string name="choose_file_from_external_application">Use external application</string>
     <string name="opml_export_label">OPML export</string>
-    <string name="exporting_label">Exporting...</string>
+    <string name="exporting_label">Exporting&#8230;</string>
     <string name="export_error_label">Export error</string>
-    <string name="opml_export_success_title">OPML export successful.</string>
+    <string name="opml_export_success_title">OPML Export successful.</string>
     <string name="opml_export_success_sum">The .opml file was written to:\u0020</string>
 
     <!-- Sleep timer -->
@@ -351,9 +430,24 @@
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_left_label">Time left:\u0020</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
-    <string name="time_unit_seconds">seconds</string>
-    <string name="time_unit_minutes">minutes</string>
-    <string name="time_unit_hours">hours</string>
+    <string name="timer_about_to_expire_label"><b>When timer is about to expire:</b></string>
+    <string name="shake_to_reset_label">Shake to reset timer</string>
+    <string name="timer_vibration_label">Vibrate</string>
+    <string name="time_seconds">seconds</string>
+    <string name="time_minutes">minutes</string>
+    <string name="time_hours">hours</string>
+    <plurals name="time_seconds_quantified">
+        <item quantity="one">1 second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+    <plurals name="time_minutes_quantified">
+        <item quantity="one">1 minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="time_hours_quantified">
+        <item quantity="one">1 hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
 
     <!-- gpodder.net -->
     <string name="gpodnet_taglist_header">CATEGORIES</string>
@@ -389,24 +483,30 @@
     <!-- Directory chooser -->
     <string name="selected_folder_label">Selected folder:</string>
     <string name="create_folder_label">Create folder</string>
-    <string name="choose_data_directory">Choose data folder</string>
+    <string name="choose_data_directory">Choose Data Folder</string>
+    <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate sub-directories.</string>
     <string name="create_folder_msg">Create new folder with name "%1$s"?</string>
     <string name="create_folder_success">Created new folder</string>
     <string name="create_folder_error_no_write_access">Cannot write to this folder</string>
     <string name="create_folder_error_already_exists">Folder already exists</string>
     <string name="create_folder_error">Could not create folder</string>
+    <string name="folder_does_not_exist_error">"%1$s" does not exist</string>
+    <string name="folder_not_readable_error">"%1$s" is not readable</string>
+    <string name="folder_not_writable_error">"%1$s" is not writable</string>
     <string name="folder_not_empty_dialog_title">Folder is not empty</string>
     <string name="folder_not_empty_dialog_msg">The folder you have selected is not empty. Media downloads and other files will be placed directly in this folder. Continue anyway?</string>
     <string name="set_to_default_folder">Choose default folder</string>
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Pause for interruptions</string>
+    <string name="pref_pausePlaybackForFocusLoss_title">Pause for Interruptions</string>
     <string name="pref_resumeAfterCall_sum">Resume playback after a phone call completes</string>
-    <string name="pref_resumeAfterCall_title">Resume after call</string>
+    <string name="pref_resumeAfterCall_title">Resume after Call</string>
+    <string name="pref_restart_required">AntennaPod has to be restarted for this change to take effect.</string>
+
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
     <string name="subscribed_label">Subscribed</string>
-    <string name="downloading_label">Downloading...</string>
+    <string name="downloading_label">Downloading&#8230;</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="show_chapters_label">Show chapters</string>
@@ -431,9 +531,59 @@
     <!-- Feed information screen -->
     <string name="authentication_label">Authentication</string>
     <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
+    <string name="auto_download_settings_label">Auto Download Settings</string>
+    <string name="episode_filters_label">Episode Filter</string>
+    <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
+    <string name="episode_filters_include">Include</string>
+    <string name="episode_filters_exclude">Exclude</string>
+    <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
+    <string name="keep_updated">Keep Updated</string>
+
+    <!-- Progress information -->
+    <string name="progress_upgrading_database">Upgrading the database</string>
 
     <!-- AntennaPodSP -->
 
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
     <string name="search_itunes_label">Search iTunes</string>
+
+    <string name="select_label"><b>Select&#8230;</b></string>
+    <string name="filter">Filter</string>
+    <string name="all_label">All</string>
+    <string name="selected_all_label">Selected all Episodes</string>
+    <string name="none_label">None</string>
+    <string name="deselected_all_label">Deselected all Episodes</string>
+    <string name="played_label">Played</string>
+    <string name="selected_played_label">Selected played Episodes</string>
+    <string name="unplayed_label">Unplayed</string>
+    <string name="selected_unplayed_label">Selected unplayed Episodes</string>
+    <string name="downloaded_label">Downloaded</string>
+    <string name="selected_downloaded_label">Selected downloaded Episodes</string>
+    <string name="not_downloaded_label">Not downloaded</string>
+    <string name="selected_not_downloaded_label">Selected not downloaded Episodes</string>
+    <string name="sort_title"><b>Sort by&#8230;</b></string>
+    <string name="sort_title_a_z">Title (A \u2192 Z)</string>
+    <string name="sort_title_z_a">Title (Z \u2192 A)</string>
+    <string name="sort_date_new_old">Date (New \u2192 Old)</string>
+    <string name="sort_date_old_new">Date (Old \u2192 New)</string>
+    <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
+    <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
+
+    <!-- Rating dialog -->
+    <string name="rating_title">Like AntennaPod?</string>
+    <string name="rating_message">We would appreciate it if you take the time to rate AntennaPod.</string>
+    <string name="rating_never_label">Leave me alone</string>
+    <string name="rating_later_label">Remind me later</string>
+    <string name="rating_now_label">Sure, let\'s do this!</string>
+
+    <!-- Audio controls -->
+    <string name="audio_controls">Audio controls</string>
+    <string name="playback_speed">Playback Speed</string>
+    <string name="volume">Volume</string>
+    <string name="left_short">L</string>
+    <string name="right_short">R</string>
+    <string name="audio_effects">Audio Effects</string>
+    <string name="stereo_to_mono">Downmix: Stereo to mono</string>
+    <string name="sonic_only">Sonic only</string>
+
 </resources>

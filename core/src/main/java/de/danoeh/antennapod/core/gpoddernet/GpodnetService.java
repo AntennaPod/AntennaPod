@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.gpoddernet;
 
-import android.os.Build;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.MediaType;
@@ -11,9 +10,6 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 
-import org.apache.commons.lang3.Validate;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,27 +17,15 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.KeyStore;
-import java.security.Principal;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
-import javax.security.auth.x500.X500Principal;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetDevice;
@@ -117,10 +101,9 @@ public class GpodnetService {
      *
      * @throws IllegalArgumentException if tag is null
      */
-    public List<GpodnetPodcast> getPodcastsForTag(GpodnetTag tag, int count)
+    public List<GpodnetPodcast> getPodcastsForTag(@NonNull GpodnetTag tag,
+                                                  int count)
             throws GpodnetServiceException {
-        Validate.notNull(tag);
-
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
                     "/api/2/tag/%s/%d.json", tag.getTag(), count), null).toURL();
@@ -144,7 +127,9 @@ public class GpodnetService {
      */
     public List<GpodnetPodcast> getPodcastToplist(int count)
             throws GpodnetServiceException {
-        Validate.isTrue(count >= 1 && count <= 100, "Count must be in range 1..100");
+        if(count < 1 || count > 100) {
+            throw new IllegalArgumentException("Count must be in range 1..100");
+        }
 
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
@@ -174,7 +159,9 @@ public class GpodnetService {
      * @throws GpodnetServiceAuthenticationException If there is an authentication error.
      */
     public List<GpodnetPodcast> getSuggestions(int count) throws GpodnetServiceException {
-        Validate.isTrue(count >= 1 && count <= 100, "Count must be in range 1..100");
+        if(count < 1 || count > 100) {
+            throw new IllegalArgumentException("Count must be in range 1..100");
+        }
 
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
@@ -231,10 +218,8 @@ public class GpodnetService {
      * @throws IllegalArgumentException              If username is null.
      * @throws GpodnetServiceAuthenticationException If there is an authentication error.
      */
-    public List<GpodnetDevice> getDevices(String username)
+    public List<GpodnetDevice> getDevices(@NonNull String username)
             throws GpodnetServiceException {
-        Validate.notNull(username);
-
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
                     "/api/2/devices/%s.json", username), null).toURL();
@@ -259,12 +244,11 @@ public class GpodnetService {
      * @throws IllegalArgumentException              If username or deviceId is null.
      * @throws GpodnetServiceAuthenticationException If there is an authentication error.
      */
-    public void configureDevice(String username, String deviceId,
-                                String caption, GpodnetDevice.DeviceType type)
+    public void configureDevice(@NonNull String username,
+                                @NonNull String deviceId,
+                                String caption,
+                                GpodnetDevice.DeviceType type)
             throws GpodnetServiceException {
-        Validate.notNull(username);
-        Validate.notNull(deviceId);
-
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
                     "/api/2/devices/%s/%s.json", username, deviceId), null).toURL();
@@ -302,11 +286,9 @@ public class GpodnetService {
      * @throws IllegalArgumentException              If username or deviceId is null.
      * @throws GpodnetServiceAuthenticationException If there is an authentication error.
      */
-    public String getSubscriptionsOfDevice(String username, String deviceId)
+    public String getSubscriptionsOfDevice(@NonNull String username,
+                                           @NonNull String deviceId)
             throws GpodnetServiceException {
-        Validate.notNull(username);
-        Validate.notNull(deviceId);
-
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
                     "/subscriptions/%s/%s.opml", username, deviceId), null).toURL();
@@ -329,9 +311,8 @@ public class GpodnetService {
      * @throws IllegalArgumentException              If username is null.
      * @throws GpodnetServiceAuthenticationException If there is an authentication error.
      */
-    public String getSubscriptionsOfUser(String username)
+    public String getSubscriptionsOfUser(@NonNull String username)
             throws GpodnetServiceException {
-        Validate.notNull(username);
 
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
@@ -358,12 +339,11 @@ public class GpodnetService {
      * @throws IllegalArgumentException              If username, deviceId or subscriptions is null.
      * @throws GpodnetServiceAuthenticationException If there is an authentication error.
      */
-    public void uploadSubscriptions(String username, String deviceId,
-                                    List<String> subscriptions) throws GpodnetServiceException {
-        if (username == null || deviceId == null || subscriptions == null) {
-            throw new IllegalArgumentException(
-                    "Username, device ID and subscriptions must not be null");
-        }
+    public void uploadSubscriptions(@NonNull String username,
+                                    @NonNull String deviceId,
+                                    @NonNull List<String> subscriptions)
+            throws GpodnetServiceException {
+
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
                     "/subscriptions/%s/%s.txt", username, deviceId), null).toURL();
@@ -379,6 +359,7 @@ public class GpodnetService {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
+
     }
 
     /**
@@ -397,12 +378,11 @@ public class GpodnetService {
      * @throws de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException if added or removed contain duplicates or if there
      *                                                                      is an authentication error.
      */
-    public GpodnetUploadChangesResponse uploadChanges(String username, String deviceId, Collection<String> added,
-                                                      Collection<String> removed) throws GpodnetServiceException {
-        Validate.notNull(username);
-        Validate.notNull(deviceId);
-        Validate.notNull(added);
-        Validate.notNull(removed);
+    public GpodnetUploadChangesResponse uploadChanges(@NonNull String username,
+                                                      @NonNull String deviceId,
+                                                      @NonNull Collection<String> added,
+                                                      @NonNull Collection<String> removed)
+            throws GpodnetServiceException {
 
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
@@ -438,10 +418,9 @@ public class GpodnetService {
      * @throws IllegalArgumentException              If username or deviceId is null.
      * @throws GpodnetServiceAuthenticationException If there is an authentication error.
      */
-    public GpodnetSubscriptionChange getSubscriptionChanges(String username,
-                                                            String deviceId, long timestamp) throws GpodnetServiceException {
-        Validate.notNull(username);
-        Validate.notNull(deviceId);
+    public GpodnetSubscriptionChange getSubscriptionChanges(@NonNull String username,
+                                                            @NonNull String deviceId,
+                                                            long timestamp) throws GpodnetServiceException {
 
         String params = String.format("since=%d", timestamp);
         String path = String.format("/api/2/subscriptions/%s/%s.json",
@@ -476,10 +455,8 @@ public class GpodnetService {
      * @throws de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException if added or removed contain duplicates or if there
      *                                                                      is an authentication error.
      */
-    public GpodnetEpisodeActionPostResponse uploadEpisodeActions(Collection<GpodnetEpisodeAction> episodeActions)
+    public GpodnetEpisodeActionPostResponse uploadEpisodeActions(@NonNull Collection<GpodnetEpisodeAction> episodeActions)
             throws GpodnetServiceException {
-
-        Validate.notNull(episodeActions);
 
         String username = GpodnetPreferences.getUsername();
 
@@ -549,11 +526,9 @@ public class GpodnetService {
      *
      * @throws IllegalArgumentException If username or password is null.
      */
-    public void authenticate(String username, String password)
+    public void authenticate(@NonNull String username,
+                             @NonNull String password)
             throws GpodnetServiceException {
-        Validate.notNull(username);
-        Validate.notNull(password);
-
         URL url;
         try {
             url = new URI(BASE_SCHEME, BASE_HOST, String.format(
@@ -562,7 +537,8 @@ public class GpodnetService {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
-        Request.Builder request = new Request.Builder().url(url).post(null);
+        RequestBody body = RequestBody.create(TEXT, "");
+        Request.Builder request = new Request.Builder().url(url).post(body);
         executeRequestWithAuthentication(request, username, password);
     }
 
@@ -579,10 +555,8 @@ public class GpodnetService {
         }.start();
     }
 
-    private String executeRequest(Request.Builder requestB)
+    private String executeRequest(@NonNull Request.Builder requestB)
             throws GpodnetServiceException {
-        Validate.notNull(requestB);
-
         Request request = requestB.header("User-Agent", ClientConfig.USER_AGENT).build();
         String responseString = null;
         Response response = null;
@@ -627,10 +601,7 @@ public class GpodnetService {
             checkStatusCode(response);
             body = response.body();
             result = getStringFromResponseBody(body);
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         } finally {
@@ -646,10 +617,8 @@ public class GpodnetService {
         return result;
     }
 
-    private String getStringFromResponseBody(ResponseBody body)
+    private String getStringFromResponseBody(@NonNull ResponseBody body)
             throws GpodnetServiceException {
-        Validate.notNull(body);
-
         ByteArrayOutputStream outputStream;
         int contentLength = 0;
         try {
@@ -676,31 +645,27 @@ public class GpodnetService {
         return outputStream.toString();
     }
 
-    private void checkStatusCode(Response response)
+    private void checkStatusCode(@NonNull Response response)
             throws GpodnetServiceException {
-        Validate.notNull(response);
         int responseCode = response.code();
-        if (responseCode != HttpStatus.SC_OK) {
-            if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
+        if (responseCode != HttpURLConnection.HTTP_OK) {
+            if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                 throw new GpodnetServiceAuthenticationException("Wrong username or password");
             } else {
-                throw new GpodnetServiceBadStatusCodeException(
-                        "Bad response code: " + responseCode, responseCode);
+                throw new GpodnetServiceBadStatusCodeException("Bad response code: "
+                        + responseCode, responseCode);
             }
         }
     }
 
-    private List<GpodnetPodcast> readPodcastListFromJSONArray(JSONArray array)
+    private List<GpodnetPodcast> readPodcastListFromJSONArray(@NonNull JSONArray array)
             throws JSONException {
-        Validate.notNull(array);
-
         List<GpodnetPodcast> result = new ArrayList<GpodnetPodcast>(
                 array.length());
         for (int i = 0; i < array.length(); i++) {
             result.add(readPodcastFromJSONObject(array.getJSONObject(i)));
         }
         return result;
-
     }
 
     private GpodnetPodcast readPodcastFromJSONObject(JSONObject object)
@@ -745,10 +710,8 @@ public class GpodnetService {
                 logoUrl, website, mygpoLink);
     }
 
-    private List<GpodnetDevice> readDeviceListFromJSONArray(JSONArray array)
+    private List<GpodnetDevice> readDeviceListFromJSONArray(@NonNull JSONArray array)
             throws JSONException {
-        Validate.notNull(array);
-
         List<GpodnetDevice> result = new ArrayList<GpodnetDevice>(
                 array.length());
         for (int i = 0; i < array.length(); i++) {
@@ -767,8 +730,7 @@ public class GpodnetService {
     }
 
     private GpodnetSubscriptionChange readSubscriptionChangesFromJSONObject(
-            JSONObject object) throws JSONException {
-        Validate.notNull(object);
+            @NonNull JSONObject object) throws JSONException {
 
         List<String> added = new LinkedList<String>();
         JSONArray jsonAdded = object.getJSONArray("add");
@@ -787,8 +749,7 @@ public class GpodnetService {
     }
 
     private GpodnetEpisodeActionGetResponse readEpisodeActionsFromJSONObject(
-            JSONObject object) throws JSONException {
-        Validate.notNull(object);
+            @NonNull JSONObject object) throws JSONException {
 
         List<GpodnetEpisodeAction> episodeActions = new ArrayList<GpodnetEpisodeAction>();
 
@@ -803,6 +764,5 @@ public class GpodnetService {
         }
         return new GpodnetEpisodeActionGetResponse(episodeActions, timestamp);
     }
-
 
 }

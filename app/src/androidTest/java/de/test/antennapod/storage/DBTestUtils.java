@@ -1,7 +1,5 @@
 package de.test.antennapod.storage;
 
-import android.content.Context;
-
 import junit.framework.Assert;
 
 import java.util.ArrayList;
@@ -26,14 +24,14 @@ public class DBTestUtils {
     /**
      * Use this method when tests don't involve chapters.
      */
-    public static List<Feed> saveFeedlist(Context context, int numFeeds, int numItems, boolean withMedia) {
-        return saveFeedlist(context, numFeeds, numItems, withMedia, false, 0);
+    public static List<Feed> saveFeedlist(int numFeeds, int numItems, boolean withMedia) {
+        return saveFeedlist(numFeeds, numItems, withMedia, false, 0);
     }
 
     /**
      * Use this method when tests involve chapters.
      */
-    public static List<Feed> saveFeedlist(Context context, int numFeeds, int numItems, boolean withMedia,
+    public static List<Feed> saveFeedlist(int numFeeds, int numItems, boolean withMedia,
                                           boolean withChapters, int numChapters) {
         if (numFeeds <= 0) {
             throw new IllegalArgumentException("numFeeds<=0");
@@ -42,16 +40,16 @@ public class DBTestUtils {
             throw new IllegalArgumentException("numItems<0");
         }
 
-        List<Feed> feeds = new ArrayList<Feed>();
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        List<Feed> feeds = new ArrayList<>();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         for (int i = 0; i < numFeeds; i++) {
             Feed f = new Feed(0, new Date(), "feed " + i, "link" + i, "descr", null, null,
                     null, null, "id" + i, null, null, "url" + i, false, new FlattrStatus(), false, null, null, false);
-            f.setItems(new ArrayList<FeedItem>());
+            f.setItems(new ArrayList<>());
             for (int j = 0; j < numItems; j++) {
                 FeedItem item = new FeedItem(0, "item " + j, "id" + j, "link" + j, new Date(),
-                        true, f, withChapters);
+                        FeedItem.PLAYED, f, withChapters);
                 if (withMedia) {
                     FeedMedia media = new FeedMedia(item, "url" + j, 1, "audio/mp3");
                     item.setMedia(media);

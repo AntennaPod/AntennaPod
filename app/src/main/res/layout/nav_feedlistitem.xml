@@ -5,6 +5,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listitem_iconwithtext_height"
+                android:paddingRight="@dimen/listitem_threeline_verticalpadding"
                 tools:background="@android:color/darker_gray">
 
     <ImageView
@@ -24,6 +25,34 @@
         tools:background="@android:color/holo_green_dark"/>
 
     <TextView
+        android:id="@+id/txtvCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/list_vertical_padding"
+        android:lines="1"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size_navdrawer"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        tools:text="23"
+        tools:background="@android:color/holo_green_dark"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/itxtvFailure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/txtvCount"
+        android:layout_marginLeft="@dimen/list_vertical_padding"
+        android:layout_alignWithParentIfMissing="true"
+        android:lines="1"
+        android:text="{fa-exclamation-circle}"
+        android:textColor="@color/download_failed_red"
+        android:textSize="@dimen/text_size_navdrawer"
+        android:layout_centerVertical="true"
+        tools:text="!"
+        tools:background="@android:color/holo_green_dark"/>
+
+    <TextView
         android:id="@+id/txtvTitle"
         android:lines="1"
         android:ellipsize="end"
@@ -34,37 +63,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/listitem_iconwithtext_textleftpadding"
-        android:layout_marginRight="@dimen/listitem_icon_rightpadding"
         android:layout_toRightOf="@id/imgvCover"
+        android:layout_toLeftOf="@id/itxtvFailure"
+        android:layout_alignWithParentIfMissing="true"
         tools:text="Navigation feed item title"
         tools:background="@android:color/holo_green_dark"/>
 
-    <TextView
-        android:id="@+id/txtvCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:lines="1"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size_navdrawer"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="@dimen/listitem_icon_rightpadding"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        tools:text="23"
-        tools:background="@android:color/holo_green_dark"/>
-
-    <IconTextView
-        android:id="@+id/itxtvFailure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/txtvCount"
-        android:lines="1"
-        android:text="{fa-exclamation-circle}"
-        android:textColor="@color/download_failed_red"
-        android:textSize="@dimen/text_size_navdrawer"
-        android:layout_marginLeft="8dp"
-        android:layout_centerVertical="true"
-        tools:text="!"
-        tools:background="@android:color/holo_green_dark"/>
 
 </RelativeLayout>

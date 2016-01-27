@@ -3,21 +3,19 @@ package de.test.antennapod.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.FlakyTest;
 
-import com.robotium.solo.Condition;
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 
 public class PreferencesTest extends ActivityInstrumentationTestCase2<PreferenceActivity>  {
 
@@ -39,7 +37,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         Timeout.setLargeTimeout(1000);
         context = getInstrumentation().getTargetContext();
         res = getActivity().getResources();
-        UserPreferences.createInstance(context);
+        UserPreferences.init(context);
     }
 
     @Override
@@ -59,12 +57,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         solo.clickOnText(solo.getString(R.string.pref_set_theme_title));
         solo.waitForDialogToOpen();
         solo.clickOnText(solo.getString(otherTheme));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return UserPreferences.getTheme() != theme;
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getTheme() != theme, Timeout.getLargeTimeout()));
     }
 
     public void testSwitchThemeBack() {
@@ -78,210 +71,122 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         solo.clickOnText(solo.getString(R.string.pref_set_theme_title));
         solo.waitForDialogToOpen(1000);
         solo.clickOnText(solo.getString(otherTheme));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return UserPreferences.getTheme() != theme;
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getTheme() != theme, Timeout.getLargeTimeout()));
     }
 
     public void testExpandNotification() {
         final int priority = UserPreferences.getNotifyPriority();
         solo.clickOnText(solo.getString(R.string.pref_expandNotify_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return priority != UserPreferences.getNotifyPriority();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> priority != UserPreferences.getNotifyPriority(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_expandNotify_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return priority == UserPreferences.getNotifyPriority();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> priority == UserPreferences.getNotifyPriority(), Timeout.getLargeTimeout()));
     }
 
     public void testEnablePersistentPlaybackControls() {
         final boolean persistNotify = UserPreferences.isPersistNotify();
         solo.clickOnText(solo.getString(R.string.pref_persistNotify_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return persistNotify != UserPreferences.isPersistNotify();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> persistNotify != UserPreferences.isPersistNotify(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_persistNotify_title));
-        solo.waitForCondition(new Condition() {
-            @Override public boolean isSatisfied() {
-                return persistNotify == UserPreferences.isPersistNotify();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> persistNotify == UserPreferences.isPersistNotify(), Timeout.getLargeTimeout()));
     }
 
     public void testEnqueueAtFront() {
         final boolean enqueueAtFront = UserPreferences.enqueueAtFront();
         solo.clickOnText(solo.getString(R.string.pref_queueAddToFront_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return enqueueAtFront != UserPreferences.enqueueAtFront();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> enqueueAtFront != UserPreferences.enqueueAtFront(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_queueAddToFront_title));
-        solo.waitForCondition(new Condition() {
-            @Override public boolean isSatisfied() {
-                return enqueueAtFront == UserPreferences.enqueueAtFront();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> enqueueAtFront == UserPreferences.enqueueAtFront(), Timeout.getLargeTimeout()));
     }
 
     public void testHeadPhonesDisconnect() {
         final boolean pauseOnHeadsetDisconnect = UserPreferences.isPauseOnHeadsetDisconnect();
         solo.clickOnText(solo.getString(R.string.pref_pauseOnHeadsetDisconnect_title));
-        solo.waitForCondition(new Condition() {
-            @Override public boolean isSatisfied() {
-                return pauseOnHeadsetDisconnect != UserPreferences.isPauseOnHeadsetDisconnect();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> pauseOnHeadsetDisconnect != UserPreferences.isPauseOnHeadsetDisconnect(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_pauseOnHeadsetDisconnect_title));
-        solo.waitForCondition(new Condition() {
-            @Override public boolean isSatisfied() {
-                return pauseOnHeadsetDisconnect == UserPreferences.isPauseOnHeadsetDisconnect();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> pauseOnHeadsetDisconnect == UserPreferences.isPauseOnHeadsetDisconnect(), Timeout.getLargeTimeout()));
     }
 
     public void testHeadPhonesReconnect() {
         if(UserPreferences.isPauseOnHeadsetDisconnect() == false) {
             solo.clickOnText(solo.getString(R.string.pref_pauseOnHeadsetDisconnect_title));
-            solo.waitForCondition(new Condition() {
-                @Override
-                public boolean isSatisfied() {
-                    return UserPreferences.isPauseOnHeadsetDisconnect();
-                }
-            }, Timeout.getLargeTimeout());
+            assertTrue(solo.waitForCondition(() -> UserPreferences.isPauseOnHeadsetDisconnect(), Timeout.getLargeTimeout()));
         }
         final boolean unpauseOnHeadsetReconnect = UserPreferences.isUnpauseOnHeadsetReconnect();
         solo.clickOnText(solo.getString(R.string.pref_unpauseOnHeadsetReconnect_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return unpauseOnHeadsetReconnect != UserPreferences.isUnpauseOnHeadsetReconnect();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> unpauseOnHeadsetReconnect != UserPreferences.isUnpauseOnHeadsetReconnect(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_unpauseOnHeadsetReconnect_title));
-        solo.waitForCondition(new Condition() {
-            @Override public boolean isSatisfied() {
-                return unpauseOnHeadsetReconnect == UserPreferences.isUnpauseOnHeadsetReconnect();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> unpauseOnHeadsetReconnect == UserPreferences.isUnpauseOnHeadsetReconnect(), Timeout.getLargeTimeout()));
+    }
+
+    public void testBluetoothReconnect() {
+        if(UserPreferences.isPauseOnHeadsetDisconnect() == false) {
+            solo.clickOnText(solo.getString(R.string.pref_pauseOnHeadsetDisconnect_title));
+            assertTrue(solo.waitForCondition(() -> UserPreferences.isPauseOnHeadsetDisconnect(), Timeout.getLargeTimeout()));
+        }
+        final boolean unpauseOnBluetoothReconnect = UserPreferences.isUnpauseOnBluetoothReconnect();
+        solo.clickOnText(solo.getString(R.string.pref_unpauseOnBluetoothReconnect_title));
+        assertTrue(solo.waitForCondition(() -> unpauseOnBluetoothReconnect != UserPreferences.isUnpauseOnBluetoothReconnect(), Timeout.getLargeTimeout()));
+        solo.clickOnText(solo.getString(R.string.pref_unpauseOnBluetoothReconnect_title));
+        assertTrue(solo.waitForCondition(() -> unpauseOnBluetoothReconnect == UserPreferences.isUnpauseOnBluetoothReconnect(), Timeout.getLargeTimeout()));
     }
 
     public void testContinuousPlayback() {
         final boolean continuousPlayback = UserPreferences.isFollowQueue();
         solo.clickOnText(solo.getString(R.string.pref_followQueue_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return continuousPlayback != UserPreferences.isFollowQueue();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> continuousPlayback != UserPreferences.isFollowQueue(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_followQueue_title));
-        solo.waitForCondition(new Condition() {
-            @Override public boolean isSatisfied() {
-                return continuousPlayback == UserPreferences.isFollowQueue();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> continuousPlayback == UserPreferences.isFollowQueue(), Timeout.getLargeTimeout()));
     }
 
     public void testAutoDelete() {
         final boolean autoDelete = UserPreferences.isAutoDelete();
         solo.clickOnText(solo.getString(R.string.pref_auto_delete_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return autoDelete != UserPreferences.isAutoDelete();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> autoDelete != UserPreferences.isAutoDelete(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_auto_delete_title));
-        solo.waitForCondition(new Condition() {
-            @Override public boolean isSatisfied() {
-                return autoDelete == UserPreferences.isAutoDelete();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> autoDelete == UserPreferences.isAutoDelete(), Timeout.getLargeTimeout()));
     }
 
     public void testPlaybackSpeeds() {
         solo.clickOnText(solo.getString(R.string.pref_playback_speed_title));
         solo.waitForDialogToOpen(1000);
-        assertTrue(solo.searchText(solo.getString(R.string.no_playback_plugin_title)));
-        solo.clickOnText(solo.getString(R.string.close_label));
+        assertTrue(solo.searchText(res.getStringArray(R.array.playback_speed_values)[0]));
+        solo.clickOnText(solo.getString(R.string.cancel_label));
         solo.waitForDialogToClose(1000);
     }
 
     public void testPauseForInterruptions() {
         final boolean pauseForFocusLoss = UserPreferences.shouldPauseForFocusLoss();
         solo.clickOnText(solo.getString(R.string.pref_pausePlaybackForFocusLoss_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return pauseForFocusLoss != UserPreferences.shouldPauseForFocusLoss();
-            }
-        }, Timeout.getLargeTimeout());
-        solo.clickOnText(solo.getString(R.string.pref_auto_delete_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return pauseForFocusLoss == UserPreferences.shouldPauseForFocusLoss();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> pauseForFocusLoss != UserPreferences.shouldPauseForFocusLoss(), Timeout.getLargeTimeout()));
+        solo.clickOnText(solo.getString(R.string.pref_pausePlaybackForFocusLoss_title));
+        assertTrue(solo.waitForCondition(() -> pauseForFocusLoss == UserPreferences.shouldPauseForFocusLoss(), Timeout.getLargeTimeout()));
     }
 
     public void testDisableUpdateInterval() {
-        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervall_title));
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_sum));
         solo.waitForDialogToOpen();
-        solo.clickOnText(solo.getString(R.string.pref_update_interval_hours_manual));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return UserPreferences.getUpdateInterval() == 0;
-            }
-        }, 1000);
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_Disable));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getUpdateInterval() == 0, 1000));
     }
 
     public void testSetUpdateInterval() {
-        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervall_title));
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_title));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_Interval));
         solo.waitForDialogToOpen();
         String search = "12 " + solo.getString(R.string.pref_update_interval_hours_plural);
         solo.clickOnText(search);
         solo.waitForDialogToClose();
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return UserPreferences.getUpdateInterval() == 12;
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getUpdateInterval() ==
+                TimeUnit.HOURS.toMillis(12), Timeout.getLargeTimeout()));
     }
 
     public void testMobileUpdates() {
         final boolean mobileUpdates = UserPreferences.isAllowMobileUpdate();
         solo.clickOnText(solo.getString(R.string.pref_mobileUpdate_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return mobileUpdates != UserPreferences.isAllowMobileUpdate();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> mobileUpdates != UserPreferences.isAllowMobileUpdate(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_mobileUpdate_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return mobileUpdates == UserPreferences.isAllowMobileUpdate();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> mobileUpdates == UserPreferences.isAllowMobileUpdate(), Timeout.getLargeTimeout()));
     }
 
     public void testSetSequentialDownload() {
@@ -290,12 +195,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         solo.clearEditText(0);
         solo.enterText(0, "1");
         solo.clickOnText(solo.getString(android.R.string.ok));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return UserPreferences.getParallelDownloads() == 1;
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getParallelDownloads() == 1, Timeout.getLargeTimeout()));
     }
 
     public void testSetParallelDownloads() {
@@ -304,12 +204,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         solo.clearEditText(0);
         solo.enterText(0, "10");
         solo.clickOnText(solo.getString(android.R.string.ok));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return UserPreferences.getParallelDownloads() == 10;
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getParallelDownloads() == 10, Timeout.getLargeTimeout()));
     }
 
     public void testSetParallelDownloadsInvalidInput() {
@@ -328,15 +223,12 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String entry = entries[entries.length/2];
         final int value = Integer.valueOf(values[values.length/2]);
+        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
         solo.clickOnText(solo.getString(R.string.pref_episode_cache_title));
         solo.waitForDialogToOpen();
         solo.clickOnText(entry);
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return UserPreferences.getEpisodeCacheSize() == value;
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getEpisodeCacheSize() == value, Timeout.getLargeTimeout()));
     }
 
     public void testSetEpisodeCacheMin() {
@@ -344,33 +236,32 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String minEntry = entries[0];
         final int minValue = Integer.valueOf(values[0]);
+        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
+        if(!UserPreferences.isEnableAutodownload()) {
+            solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        }
         solo.clickOnText(solo.getString(R.string.pref_episode_cache_title));
         solo.waitForDialogToOpen(1000);
         solo.scrollUp();
         solo.clickOnText(minEntry);
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return UserPreferences.getEpisodeCacheSize() == minValue;
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getEpisodeCacheSize() == minValue, Timeout.getLargeTimeout()));
     }
-
 
     public void testSetEpisodeCacheMax() {
         String[] entries = res.getStringArray(R.array.episode_cache_size_entries);
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String maxEntry = entries[entries.length-1];
         final int maxValue = Integer.valueOf(values[values.length-1]);
+        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
+        if(!UserPreferences.isEnableAutodownload()) {
+            solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        }
         solo.clickOnText(solo.getString(R.string.pref_episode_cache_title));
         solo.waitForDialogToOpen();
         solo.clickOnText(maxEntry);
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return UserPreferences.getEpisodeCacheSize() == maxValue;
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getEpisodeCacheSize() == maxValue, Timeout.getLargeTimeout()));
     }
 
     public void testAutomaticDownload() {
@@ -378,76 +269,73 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
         solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
         solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return automaticDownload != UserPreferences.isEnableAutodownload();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> automaticDownload != UserPreferences.isEnableAutodownload(), Timeout.getLargeTimeout()));
         if(UserPreferences.isEnableAutodownload() == false) {
             solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
         }
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return UserPreferences.isEnableAutodownload() == true;
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> UserPreferences.isEnableAutodownload() == true, Timeout.getLargeTimeout()));
         final boolean enableAutodownloadOnBattery = UserPreferences.isEnableAutodownloadOnBattery();
         solo.clickOnText(solo.getString(R.string.pref_automatic_download_on_battery_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return enableAutodownloadOnBattery != UserPreferences.isEnableAutodownloadOnBattery();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> enableAutodownloadOnBattery != UserPreferences.isEnableAutodownloadOnBattery(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_automatic_download_on_battery_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return enableAutodownloadOnBattery == UserPreferences.isEnableAutodownloadOnBattery();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> enableAutodownloadOnBattery == UserPreferences.isEnableAutodownloadOnBattery(), Timeout.getLargeTimeout()));
         final boolean enableWifiFilter = UserPreferences.isEnableAutodownloadWifiFilter();
         solo.clickOnText(solo.getString(R.string.pref_autodl_wifi_filter_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return enableWifiFilter != UserPreferences.isEnableAutodownloadWifiFilter();
-            }
-        }, Timeout.getLargeTimeout());
-        solo.clickOnText(solo.getString(R.string.pref_automatic_download_on_battery_title));
-        solo.waitForCondition(new Condition() {
-            @Override
-            public boolean isSatisfied() {
-                return enableWifiFilter == UserPreferences.isEnableAutodownloadWifiFilter();
-            }
-        }, Timeout.getLargeTimeout());
+        assertTrue(solo.waitForCondition(() -> enableWifiFilter != UserPreferences.isEnableAutodownloadWifiFilter(), Timeout.getLargeTimeout()));
+        solo.clickOnText(solo.getString(R.string.pref_autodl_wifi_filter_title));
+        assertTrue(solo.waitForCondition(() -> enableWifiFilter == UserPreferences.isEnableAutodownloadWifiFilter(), Timeout.getLargeTimeout()));
     }
 
-    @FlakyTest(tolerance = 3)
-    public void testAbout() throws IOException {
-        int numViews = 0, numLinks = 0;
-        InputStream input = getActivity().getResources().getAssets().open("about.html");
-        List<String> lines = IOUtils.readLines(input);
-        input.close();
-        for(String line : lines) {
-            if(line.contains("(View)")) {
-                numViews++;
-            } else if(line.contains("(Link)")) {
-                numLinks++;
-            }
-        }
-        for(int i=0; i < numViews; i++) {
-            solo.clickOnText(solo.getString(R.string.about_pref));
-            solo.clickOnText("(View)", i);
-            solo.goBack();
-        }
-        for(int i=0; i < numLinks; i++) {
-            solo.clickOnText(solo.getString(R.string.about_pref));
-            solo.clickOnText("(Link)", i);
-            solo.goBack();
-        }
+    public void testEpisodeCleanupQueueOnly() {
+        solo.clickOnText(solo.getString(R.string.pref_episode_cleanup_title));
+        solo.waitForText(solo.getString(R.string.episode_cleanup_queue_removal));
+        solo.clickOnText(solo.getString(R.string.episode_cleanup_queue_removal));
+        assertTrue(solo.waitForCondition(() -> {
+                    EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
+                    return alg instanceof APQueueCleanupAlgorithm;
+                },
+                Timeout.getLargeTimeout()));
+    }
+
+    public void testEpisodeCleanupNeverAlg() {
+        solo.clickOnText(solo.getString(R.string.pref_episode_cleanup_title));
+        solo.waitForText(solo.getString(R.string.episode_cleanup_never));
+        solo.clickOnText(solo.getString(R.string.episode_cleanup_never));
+        assertTrue(solo.waitForCondition(() -> {
+                    EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
+                    return alg instanceof APNullCleanupAlgorithm;
+                },
+                Timeout.getLargeTimeout()));
+    }
+
+    public void testEpisodeCleanupClassic() {
+        solo.clickOnText(solo.getString(R.string.pref_episode_cleanup_title));
+        solo.waitForText(solo.getString(R.string.episode_cleanup_after_listening));
+        solo.clickOnText(solo.getString(R.string.episode_cleanup_after_listening));
+        assertTrue(solo.waitForCondition(() -> {
+                    EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
+                    if (alg instanceof APCleanupAlgorithm) {
+                        APCleanupAlgorithm cleanupAlg = (APCleanupAlgorithm)alg;
+                        return cleanupAlg.getNumberOfDaysAfterPlayback() == 0;
+                    }
+                    return false;
+                },
+                Timeout.getLargeTimeout()));
+    }
+
+    public void testEpisodeCleanupNumDays() {
+        solo.clickOnText(solo.getString(R.string.pref_episode_cleanup_title));
+        solo.waitForText(solo.getString(R.string.episode_cleanup_after_listening));
+        solo.clickOnText("5");
+        assertTrue(solo.waitForCondition(() -> {
+                    EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
+                    if (alg instanceof APCleanupAlgorithm) {
+                        APCleanupAlgorithm cleanupAlg = (APCleanupAlgorithm)alg;
+                        return cleanupAlg.getNumberOfDaysAfterPlayback() == 5;
+                    }
+                    return false;
+                },
+                Timeout.getLargeTimeout()));
     }
 
 }

@@ -1,13 +1,15 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.database.Cursor;
 import android.net.Uri;
 
 import java.io.File;
 
-import de.danoeh.antennapod.core.asynctask.PicassoImageResource;
+import de.danoeh.antennapod.core.asynctask.ImageResource;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 
-public class FeedImage extends FeedFile implements PicassoImageResource {
+public class FeedImage extends FeedFile implements ImageResource {
 	public static final int FEEDFILETYPE_FEEDIMAGE = 1;
 
 	protected String title;
@@ -30,6 +32,23 @@ public class FeedImage extends FeedFile implements PicassoImageResource {
     public FeedImage() {
         super();
     }
+
+	public static FeedImage fromCursor(Cursor cursor) {
+		int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
+		int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
+		int indexFileUrl = cursor.getColumnIndex(PodDBAdapter.KEY_FILE_URL);
+		int indexDownloadUrl = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL);
+		int indexDownloaded = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED);
+
+		return new FeedImage(
+				cursor.getLong(indexId),
+				cursor.getString(indexTitle),
+				cursor.getString(indexFileUrl),
+				cursor.getString(indexDownloadUrl),
+				cursor.getInt(indexDownloaded) > 0
+		);
+	}
+
 
 	@Override
 	public String getHumanReadableIdentifier() {

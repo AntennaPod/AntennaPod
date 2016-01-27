@@ -1,11 +1,13 @@
 package de.danoeh.antennapod.asynctask;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import java.io.File;
@@ -47,7 +49,7 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
         OpmlWriter opmlWriter = new OpmlWriter();
         if (output == null) {
             output = new File(
-                    UserPreferences.getDataFolder(context, EXPORT_DIR),
+                    UserPreferences.getDataFolder(EXPORT_DIR),
                     DEFAULT_OUTPUT_NAME);
             if (output.exists()) {
                 Log.w(TAG, "Overwriting previously exported file.");
@@ -57,7 +59,7 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
         OutputStreamWriter writer = null;
         try {
             writer = new OutputStreamWriter(new FileOutputStream(output), LangUtils.UTF_8);
-            opmlWriter.writeDocument(DBReader.getFeedList(context), writer);
+            opmlWriter.writeDocument(DBReader.getFeedList(), writer);
         } catch (IOException e) {
             e.printStackTrace();
             exception = e;
@@ -93,7 +95,17 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
             alert.setTitle(R.string.opml_export_success_title);
             alert.setMessage(context
                     .getString(R.string.opml_export_success_sum)
-                    + output.toString());
+                    + output.toString())
+                    .setPositiveButton(R.string.send_label, (dialog, which) -> {
+                        Uri outputUri = Uri.fromFile(output);
+                        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_SUBJECT,
+                                context.getResources().getText(R.string.opml_export_label));
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
+                        sendIntent.setType("text/plain");
+                        context.startActivity(Intent.createChooser(sendIntent,
+                                context.getResources().getText(R.string.send_label)));
+                    });
         }
         alert.create().show();
     }

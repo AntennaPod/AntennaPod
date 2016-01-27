@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.PowerUtils;
@@ -19,28 +21,24 @@ import de.danoeh.antennapod.core.util.PowerUtils;
 public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     private static final String TAG = "APDownloadAlgorithm";
 
-    private final APCleanupAlgorithm cleanupAlgorithm = new APCleanupAlgorithm();
-
     /**
-     * Looks for undownloaded episodes in the queue or list of unread items and request a download if
+     * Looks for undownloaded episodes in the queue or list of new items and request a download if
      * 1. Network is available
      * 2. The device is charging or the user allows auto download on battery
      * 3. There is free space in the episode cache
      * This method is executed on an internal single thread executor.
      *
      * @param context  Used for accessing the DB.
-     * @param mediaIds If this list is not empty, the method will only download a candidate for automatic downloading if
-     *                 its media ID is in the mediaIds list.
      * @return A Runnable that will be submitted to an ExecutorService.
      */
     @Override
-    public Runnable autoDownloadUndownloadedItems(final Context context, final long... mediaIds) {
+    public Runnable autoDownloadUndownloadedItems(final Context context) {
         return new Runnable() {
             @Override
             public void run() {
 
                 // true if we should auto download based on network status
-                boolean networkShouldAutoDl = NetworkUtils.autodownloadNetworkAvailable(context)
+                boolean networkShouldAutoDl = NetworkUtils.autodownloadNetworkAvailable()
                         && UserPreferences.isEnableAutodownload();
 
                 // true if we should auto download based on power status
@@ -53,17 +51,15 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     Log.d(TAG, "Performing auto-dl of undownloaded episodes");
 
                     List<FeedItem> candidates;
-                    if(mediaIds.length > 0) {
-                        candidates = DBReader.getFeedItems(context, mediaIds);
-                    } else {
-                        final List<FeedItem> queue = DBReader.getQueue(context);
-                        final List<FeedItem> unreadItems = DBReader.getUnreadItemsList(context);
-                        candidates = new ArrayList<FeedItem>(queue.size() + unreadItems.size());
-                        candidates.addAll(queue);
-                        for(FeedItem unreadItem : unreadItems) {
-                            if(candidates.contains(unreadItem) == false) {
-                                candidates.add(unreadItem);
-                            }
+                    final List<FeedItem> queue = DBReader.getQueue();
+                    final List<FeedItem> newItems = DBReader.getNewItemsList();
+                    candidates = new ArrayList<FeedItem>(queue.size() + newItems.size());
+                    candidates.addAll(queue);
+                    for(FeedItem newItem : newItems) {
+                        FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
+                        FeedFilter feedFilter = feedPrefs.getFilter();
+                        if(candidates.contains(newItem) == false && feedFilter.shouldAutoDownload(newItem)) {
+                            candidates.add(newItem);
                         }
                     }
 
@@ -77,9 +73,9 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     }
 
                     int autoDownloadableEpisodes = candidates.size();
-                    int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes(context);
-                    int deletedEpisodes = cleanupAlgorithm.performCleanup(context,
-                            APCleanupAlgorithm.getPerformAutoCleanupArgs(context, autoDownloadableEpisodes));
+                    int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
+                    int deletedEpisodes = UserPreferences.getEpisodeCleanupAlgorithm()
+                            .makeRoomForEpisodes(context, autoDownloadableEpisodes);
                     boolean cacheIsUnlimited = UserPreferences.getEpisodeCacheSize() == UserPreferences
                             .getEpisodeCacheSizeUnlimited();
                     int episodeCacheSize = UserPreferences.getEpisodeCacheSize();
@@ -107,5 +103,4 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
             }
         };
     }
-
 }

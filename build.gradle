@@ -5,10 +5,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath "com.android.tools.build:gradle:1.5.0"
+        classpath "me.tatarka:gradle-retrolambda:3.2.4"
+        classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        // Exclude the version that the android plugin depends on.
+        configurations.classpath.exclude group: "com.android.tools.external.lombok"
     }
 }
 
@@ -18,6 +20,46 @@ allprojects {
     }
 }
 
+// Disable predex if requested (we can"t predex in Circle CI
+// See http://tools.android.com/tech-docs/new-build-system/tips#TOC-Improving-Build-Server-performance
+// and https://circleci.com/docs/android
+project.ext.preDexLibs = !project.hasProperty("disablePreDex")
+
+subprojects {
+    project.plugins.whenPluginAdded { plugin ->
+        if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+        } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+        }
+    }
+}
+
+project.ext {
+    compileSdkVersion = 23
+    buildToolsVersion = "23.0.2"
+    minSdkVersion = 10
+    targetSdkVersion = 23
+
+    supportVersion = "23.1.1"
+    commonsioVersion = "2.4"
+    commonslangVersion = "3.4"
+    eventbusVersion = "2.4.0"
+    flattr4jVersion = "2.12"
+    glideVersion = "3.6.1"
+    iconifyVersion = "2.1.1"
+    jsoupVersion = "1.7.3"
+    materialDialogsVersion = "0.8.5.3@aar"
+    okhttpVersion = "2.7.2"
+    okioVersion = "1.6.0"
+    recyclerviewFlexibledividerVersion = "1.2.6"
+    rxAndroidVersion = "1.1.0"
+    rxJavaVersion = "1.1.0"
+    rxJavaRulesVersion = "1.1.0.0"
+
+    audioPlayerVersion = "v1.0.10"
+}
+
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = "2.10"
 }

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.AntennaPod.Light" parent="@style/Theme.AppCompat.Light">
+    <style name="Theme.AntennaPod.Light" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/primary_light</item>
-        <item name="colorAccent">@color/color_accent</item>
+        <item name="colorAccent">@color/holo_blue_light</item>
+        <item name="progressBarTheme">@style/ProgressBarLight</item>
+        <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
+        <item name="attr/action_bar_icon_color">@color/grey600</item>
         <item name="attr/action_about">@drawable/ic_info_grey600_24dp</item>
         <item name="attr/action_search">@drawable/ic_search_grey600_24dp</item>
         <item name="attr/action_stream">@drawable/ic_settings_input_antenna_grey600_24dp</item>
@@ -14,7 +18,6 @@
         <item name="attr/av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
         <item name="attr/content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_grey600_24dp</item>
-        <item name="attr/device_access_time">@drawable/ic_timer_grey600_24dp</item>
         <item name="attr/feed">@drawable/ic_feed_grey600_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_grey600_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_grey600_24dp</item>
@@ -31,7 +34,7 @@
         <item name="attr/non_transparent_background">@color/white</item>
         <item name="attr/overlay_background">@color/overlay_light</item>
         <item name="attr/overlay_drawable">@drawable/overlay_drawable</item>
-        <item name="attr/dragview_background">@drawable/ic_drag_handle</item>
+        <item name="attr/dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
         <item name="attr/dragview_float_background">@color/white</item>
         <item name="attr/nav_drawer_background">@color/white</item>
         <item name="attr/ic_action_overflow">@drawable/ic_more_vert_grey600_24dp</item>
@@ -42,15 +45,28 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_grey600_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
+        <item name="attr/av_skip_big">@drawable/ic_skip_grey600_36dp</item>
+        <item name="attr/ic_fav">@drawable/ic_star_border_grey600_24dp</item>
+        <item name="attr/ic_unfav">@drawable/ic_star_grey600_24dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_grey600_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_grey600_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_grey600_24dp</item>
+        <item name="attr/ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
+        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
     </style>
 
-    <style name="Theme.AntennaPod.Dark" parent="@style/Theme.AppCompat">
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="attr/action_about">@drawable/ic_info_white_24dp</item>
+    <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
+        <item name="progressBarTheme">@style/ProgressBarDark</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
+        <item name="attr/action_bar_icon_color">@color/white</item>
+        <item name="attr/action_about">@drawable/ic_info_white_24dp</item>g
         <item name="attr/action_search">@drawable/ic_search_white_24dp</item>
         <item name="attr/action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
         <item name="attr/av_download">@drawable/ic_file_download_white_24dp</item>
@@ -60,7 +76,6 @@
         <item name="attr/av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
         <item name="attr/content_discard">@drawable/ic_delete_white_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_white_24dp</item>
-        <item name="attr/device_access_time">@drawable/ic_timer_white_24dp</item>
         <item name="attr/feed">@drawable/ic_feed_white_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_white_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_white_24dp</item>
@@ -77,7 +92,7 @@
         <item name="attr/non_transparent_background">@color/black</item>
         <item name="attr/overlay_background">@color/overlay_dark</item>
         <item name="attr/overlay_drawable">@drawable/overlay_drawable_dark</item>
-        <item name="attr/dragview_background">@drawable/ic_drag_handle_dark</item>
+        <item name="attr/dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item name="attr/dragview_float_background">@color/black</item>
         <item name="attr/nav_drawer_background">#3B3B3B</item>
         <item name="attr/ic_action_overflow">@drawable/ic_more_vert_white_24dp</item>
@@ -88,17 +103,29 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_white_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
+        <item name="attr/av_skip_big">@drawable/ic_skip_white_36dp</item>
+        <item name="attr/ic_fav">@drawable/ic_star_border_white_24dp</item>
+        <item name="attr/ic_unfav">@drawable/ic_star_white_24dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_white_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_white_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_white_24dp</item>
+        <item name="attr/ic_sleep">@drawable/ic_sleep_white_24dp</item>
+        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_white_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
     </style>
 
-    <style name="Theme.AntennaPod.Light.NoTitle" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="colorPrimary">@color/primary_light</item>
-        <item name="colorAccent">@color/color_accent</item>
+        <item name="colorAccent">@color/holo_blue_light</item>
+        <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
         <item name="attr/action_about">@drawable/ic_info_grey600_24dp</item>
         <item name="attr/action_search">@drawable/ic_search_grey600_24dp</item>
         <item name="attr/action_stream">@drawable/ic_settings_input_antenna_grey600_24dp</item>
@@ -109,7 +136,6 @@
         <item name="attr/av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
         <item name="attr/content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_grey600_24dp</item>
-        <item name="attr/device_access_time">@drawable/ic_timer_grey600_24dp</item>
         <item name="attr/feed">@drawable/ic_feed_grey600_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_grey600_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_grey600_24dp</item>
@@ -126,7 +152,7 @@
         <item name="attr/non_transparent_background">@color/white</item>
         <item name="attr/overlay_background">@color/overlay_light</item>
         <item name="attr/overlay_drawable">@drawable/overlay_drawable</item>
-        <item name="attr/dragview_background">@drawable/ic_drag_handle</item>
+        <item name="attr/dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
         <item name="attr/dragview_float_background">@color/white</item>
         <item name="attr/nav_drawer_background">@color/white</item>
         <item name="attr/ic_action_overflow">@drawable/ic_more_vert_grey600_24dp</item>
@@ -137,16 +163,28 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_grey600_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
+        <item name="attr/av_skip_big">@drawable/ic_skip_grey600_36dp</item>
+        <item name="attr/ic_fav">@drawable/ic_star_border_grey600_24dp</item>
+        <item name="attr/ic_unfav">@drawable/ic_star_grey600_24dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_grey600_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_grey600_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_grey600_24dp</item>
+        <item name="attr/ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
+        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
     </style>
 
-    <style name="Theme.AntennaPod.Dark.NoTitle" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="colorAccent">@color/color_accent</item>
+        <item name="progressBarTheme">@style/ProgressBarDark</item>
+        <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
         <item name="attr/action_about">@drawable/ic_info_white_24dp</item>
         <item name="attr/action_search">@drawable/ic_search_white_24dp</item>
         <item name="attr/action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
@@ -157,7 +195,6 @@
         <item name="attr/av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
         <item name="attr/content_discard">@drawable/ic_delete_white_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_white_24dp</item>
-        <item name="attr/device_access_time">@drawable/ic_timer_white_24dp</item>
         <item name="attr/feed">@drawable/ic_feed_white_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_white_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_white_24dp</item>
@@ -174,7 +211,7 @@
         <item name="attr/non_transparent_background">@color/black</item>
         <item name="attr/overlay_background">@color/overlay_dark</item>
         <item name="attr/overlay_drawable">@drawable/overlay_drawable_dark</item>
-        <item name="attr/dragview_background">@drawable/ic_drag_handle_dark</item>
+        <item name="attr/dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item name="attr/dragview_float_background">@color/black</item>
         <item name="attr/nav_drawer_background">#3B3B3B</item>
         <item name="attr/ic_action_overflow">@drawable/ic_more_vert_white_24dp</item>
@@ -185,52 +222,23 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_white_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
+        <item name="attr/av_skip_big">@drawable/ic_skip_white_36dp</item>
+        <item name="attr/ic_fav">@drawable/ic_star_border_white_24dp</item>
+        <item name="attr/ic_unfav">@drawable/ic_star_white_24dp</item>
         <item name="attr/ic_settings">@drawable/ic_settings_white_24dp</item>
         <item name="attr/ic_lock_open">@drawable/ic_lock_open_white_24dp</item>
         <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
         <item name="attr/ic_filter">@drawable/ic_filter_white_24dp</item>
+        <item name="attr/ic_sleep">@drawable/ic_sleep_white_24dp</item>
+        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
+        <item name="attr/ic_check_box">@drawable/ic_check_box_white_24dp</item>
+        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
+        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
+        <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
         <item name="windowActionBarOverlay">true</item>
-    </style>
-
-    <style name="UndoBar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:layout_gravity">bottom</item>
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <item name="android:layout_marginBottom">16dp</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:background">@drawable/undobar</item>
-        <item name="android:clickable">true</item>
-        <item name="android:divider">@drawable/undobar_divider</item>
-    </style>
-
-    <style name="UndoBarMessage">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:textAppearance">?android:textAppearanceMedium</item>
-        <item name="android:textColor">#fff</item>
-    </style>
-
-    <style name="UndoBarButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:background">@drawable/undobar_button</item>
-        <item name="android:drawableLeft">@drawable/ic_undobar_undo</item>
-        <item name="android:drawablePadding">12dp</item>
-        <item name="android:textAppearance">?android:textAppearanceSmall</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#fff</item>
-        <item name="android:text">@string/undo</item>
     </style>
 
     <style name="AntennaPod.TextView.Heading" parent="@android:style/TextAppearance.Medium">
@@ -242,6 +250,12 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:lines">2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AntennaPod.TextView.ListItemPrimaryTitle2" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -265,10 +279,34 @@
         <item name="android:text">@string/new_label</item>
     </style>
 
+    <style name="Widget.AntennaPod.Button" parent="Widget.AppCompat.Button">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="AntennaPod.Dialog.Light" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/holo_blue_light</item>
+    </style>
+
+    <style name="AntennaPod.Dialog.Dark" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/holo_blue_dark</item>
+    </style>
+
     <style name="BigBlurryBackground">
         <item name="android:scaleType">centerCrop</item>
-        <item name="android:tint">@color/image_readability_tint</item>
+        <!-- <item name="android:tint">@color/image_readability_tint</item> -->
+        <!-- Reactivate when Glide's tinting has been fixed for Android 5.x
+             Remove color filter from ItemlistFragment -->
 
+    </style>
+
+    <style name="ProgressBarLight">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_light</item>
+    </style>
+
+    <style name="ProgressBarDark">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_dark</item>
     </style>
 
 </resources>

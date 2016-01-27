@@ -21,7 +21,5 @@ public class ClientConfig {
 
     public static FlattrCallbacks flattrCallbacks;
 
-    public static StorageCallbacks storageCallbacks;
-
     public static DBTasksCallbacks dbTasksCallbacks;
 }

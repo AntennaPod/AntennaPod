@@ -1,12 +1,13 @@
-apply plugin: 'com.android.library'
+apply plugin: "com.android.library"
+apply plugin: "me.tatarka.retrolambda"
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 21
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testApplicationId "de.danoeh.antennapod.core.tests"
@@ -15,37 +16,45 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
 
     packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
+        exclude "META-INF/LICENSE.txt"
+        exclude "META-INF/NOTICE.txt"
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+    mavenCentral()
+}
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile ('org.shredzone.flattr4j:flattr4j-core:2.12') {
-        exclude group: 'org.json', module: 'json'
+    compile "com.android.support:support-v4:$supportVersion"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "org.apache.commons:commons-lang3:$commonslangVersion"
+    compile ("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
+        exclude group: "org.json", module: "json"
     }
-    compile 'commons-io:commons-io:2.4'
-    compile 'com.jayway.android.robotium:robotium-solo:5.2.1'
-    compile 'org.jsoup:jsoup:1.7.3'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.okhttp:okhttp:2.3.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
-    compile 'com.squareup.okio:okio:1.2.0'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'de.greenrobot:eventbus:2.4.0'
+    compile "commons-io:commons-io:$commonsioVersion"
+    compile "com.jayway.android.robotium:robotium-solo:5.5.3"
+    compile "org.jsoup:jsoup:$jsoupVersion"
+    compile "com.github.bumptech.glide:glide:$glideVersion"
+    compile "com.github.bumptech.glide:okhttp-integration:1.3.1"
+    compile "com.squareup.okhttp:okhttp:$okhttpVersion"
+    compile "com.squareup.okhttp:okhttp-urlconnection:$okhttpVersion"
+    compile "com.squareup.okio:okio:$okioVersion"
+    compile "com.nineoldandroids:library:2.4.0"
+    compile "de.greenrobot:eventbus:$eventbusVersion"
+    compile "io.reactivex:rxandroid:$rxAndroidVersion"
+
+    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 }

@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import java.lang.ref.WeakReference;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.preferences.PreferenceController;
@@ -26,7 +28,7 @@ public class PreferenceActivity extends ActionBarActivity {
 
     private PreferenceController preferenceController;
     private MainFragment prefFragment;
-    private static PreferenceActivity instance;
+    private static WeakReference<PreferenceActivity> instance;
 
 
     private final PreferenceController.PreferenceUI preferenceUI = new PreferenceController.PreferenceUI() {
@@ -45,9 +47,12 @@ public class PreferenceActivity extends ActionBarActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // This must be the FIRST thing we do, otherwise other code may not have the
+        // reference it needs
+        instance = new WeakReference<PreferenceActivity>(this);
+
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
-        instance = this;
 
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -60,10 +65,13 @@ public class PreferenceActivity extends ActionBarActivity {
         root.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         setContentView(root);
+
+        // we need to create the PreferenceController before the MainFragment
+        // since the MainFragment depends on the preferenceController already being created
+        preferenceController = new PreferenceController(preferenceUI);
+
         prefFragment = new MainFragment();
         getFragmentManager().beginTransaction().replace(R.id.content, prefFragment).commit();
-
-        preferenceController = new PreferenceController(preferenceUI);
     }
 
     @Override
@@ -96,13 +104,19 @@ public class PreferenceActivity extends ActionBarActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
-            instance.preferenceController.onCreate();
+            PreferenceActivity activity = instance.get();
+            if(activity != null && activity.preferenceController != null) {
+                activity.preferenceController.onCreate();
+            }
         }
 
         @Override
         public void onResume() {
             super.onResume();
-            instance.preferenceController.onResume();
+            PreferenceActivity activity = instance.get();
+            if(activity != null && activity.preferenceController != null) {
+                activity.preferenceController.onResume();
+            }
         }
     }
 }

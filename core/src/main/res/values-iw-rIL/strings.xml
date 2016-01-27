@@ -8,6 +8,7 @@
   <string name="episodes_label">פרקים</string>
   <string name="new_episodes_label">פרקים חדשים</string>
   <string name="all_episodes_label">כל הפרקים</string>
+  <string name="favorite_episodes_label">מועדפים</string>
   <string name="new_label">חדש</string>
   <string name="waiting_list_label">רשימת המתנה</string>
   <string name="settings_label">הגדרות</string>
@@ -37,6 +38,8 @@
   <!--Other-->
   <string name="confirm_label">אישור</string>
   <string name="cancel_label">בטל</string>
+  <string name="yes">כן</string>
+  <string name="no">לא</string>
   <string name="author_label">מחבר</string>
   <string name="language_label">שפה</string>
   <string name="podcast_settings_label">הגדרות</string>
@@ -53,12 +56,16 @@
   <string name="length_prefix">אורך:\u0020</string>
   <string name="size_prefix">גודל:\u0020</string>
   <string name="processing_label">מעבד</string>
-  <string name="loading_label">טוען...</string>
   <string name="save_username_password_label">שמור שם משתמש וססמה</string>
   <string name="close_label">סגור</string>
   <string name="retry_label">נסה שוב</string>
   <string name="auto_download_label">כלול בהורדות אוטומטיות</string>
+  <string name="auto_delete_label">מחק לאחר ההשמעה\n(גובר על ההגדרה הגלובלית)</string>
   <string name="parallel_downloads_suffix">\u0020הורדות במקביל</string>
+  <string name="feed_auto_download_global">לפי הגדרה גלובלית</string>
+  <string name="feed_auto_download_always">תמיד</string>
+  <string name="feed_auto_download_never">אף פעם</string>
+  <string name="episode_cleanup_never">אף פעם</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">כתובת הזנה</string>
   <string name="etxtFeedurlHint">כתובת של הזנה או אתר אינטרנט</string>
@@ -74,7 +81,6 @@
   <string name="show_info_label">הצג מידע</string>
   <string name="remove_feed_label">הסר פודקאסט</string>
   <string name="share_link_label">שתף קישור אתר</string>
-  <string name="share_source_label">שתף קישור הזנה</string>
   <string name="feed_delete_confirmation_msg">אשר מחיקת הזנה זו ואת כל פרקי ההזנה שהורדת.</string>
   <string name="feed_remover_msg">הסר הזנה</string>
   <string name="load_complete_feed">רענן את כל ההזנה</string>
@@ -87,10 +93,12 @@
   <string name="remove_label">הסר</string>
   <string name="remove_episode_lable">הסר פרק</string>
   <string name="mark_read_label">סמן כנקרא</string>
-  <string name="mark_unread_label">סמן כלא נקרא</string>
   <string name="marked_as_read_label">סומן כנקרא</string>
+  <string name="mark_unread_label">סמן כלא נקרא</string>
   <string name="add_to_queue_label">הוסף לתור</string>
+  <string name="added_to_queue_label">התווסף לתור</string>
   <string name="remove_from_queue_label">הסר מהתור</string>
+  <string name="add_to_favorite_label">התווסף למועדפים</string>
   <string name="visit_website_label">בקר באתר</string>
   <string name="support_label">תרום באמצעות Flattr</string>
   <string name="enqueue_all_new">הכנס לתור הכל</string>
@@ -118,7 +126,6 @@
   <string name="download_error_io_error">שגיאת קלט פלט</string>
   <string name="download_error_request_error">שגיאת בקשה</string>
   <string name="download_error_db_access">שגיאת גישה למסד הנתונים</string>
-  <string name="downloads_left">הורדות נותרוu0020\</string>
   <string name="downloads_processing">מעבד הורדות</string>
   <string name="download_notification_title">מוריד פודקאסט</string>
   <string name="download_report_content">%1$d הורדות הצליחו, %2$d ניכשלו</string>
@@ -184,8 +191,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">הורד תוסף</string>
   <string name="no_playback_plugin_title">תוסף לא מותקן</string>
-  <string name="no_playback_plugin_msg">לאפשר השמעה במהירות משתנה, יש להתקין ספריית צד שלישית.\n\nלחץ על \'הורד תוסף\' להוריד תוסף חינמי מחנות Play.\n\n כל בעיה שתמצא בשימוש עם תוסף זה אינה באחריות של אנטנה-פוד ויש לדווחה לבעל התוסף.
- </string>
   <string name="set_playback_speed_label">מהירויות ניגון</string>
   <!--Empty list labels-->
   <string name="no_items_label">אין פריטים ברשימה זו.</string>
@@ -196,15 +201,12 @@
   <string name="queue_label">תור</string>
   <string name="services_label">שירותים</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">השהה השמעה בניתוק האוזניות </string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">המשך את הניגון כשהאוזניות מחוברות מחדש</string>
   <string name="pref_followQueue_sum">עבור לפריט הבא בתור כאשר הניגון מסתיים</string>
   <string name="pref_auto_delete_sum">מחק פרק כהניגון מסתיים</string>
   <string name="pref_auto_delete_title">מחיקה אוטומטית</string>
   <string name="playback_pref">ניגון</string>
   <string name="network_pref">רשת</string>
-  <string name="pref_autoUpdateIntervall_title">זמן בין עידכונים</string>
-  <string name="pref_autoUpdateIntervall_sum">ציין פרק זמן שבו ההזנות עוברות רענון באופן אוטומטי או לבטל ריענון</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">הורד קבצי מדיה רק דרך חיבור אינטרנט אלחוטי</string>
   <string name="pref_followQueue_title">ניגון מתמשך</string>
   <string name="pref_downloadMediaOnWifiOnly_title">הורדת מדיה דרך אינטרנט אלחוטי</string>
@@ -247,8 +249,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">שנה פרטי התחברות של חשבון gpodder.net.</string>
   <string name="pref_playback_speed_title">מהירויות ניגון</string>
   <string name="pref_playback_speed_sum">התאמת המהיריות הזמינות לניגון במהירות משתנה</string>
-  <string name="pref_seek_delta_title">זמן דילוג</string>
-  <string name="pref_seek_delta_sum">דלג מספר שניות זה בדילוג לאחור או קדימה</string>
   <string name="pref_gpodnet_sethostname_title">הגדר שם שרת</string>
   <string name="pref_gpodnet_sethostname_use_default_host">השתמש בשרת ברירת מידל</string>
   <string name="pref_expandNotify_title">הרחב הודעה</string>
@@ -286,7 +286,6 @@
   <string name="choose_file_from_filesystem">ממערכת הקבצים המקומית</string>
   <string name="choose_file_from_external_application">השתמש באפליקציה חיצונית</string>
   <string name="opml_export_label">יצוא OPML</string>
-  <string name="exporting_label">מייצא...</string>
   <string name="export_error_label">שגיאת יצוא</string>
   <string name="opml_export_success_title">יצוא OPML הצליח.</string>
   <string name="opml_export_success_sum">קובץ OPML נכתב ל:\u0020</string>
@@ -297,9 +296,6 @@
   <string name="sleep_timer_label">טיימר שינה</string>
   <string name="time_left_label">זמן נותר:\u0020</string>
   <string name="time_dialog_invalid_input">קלט לא חוקי, זמן חייב להיות מספר שלם</string>
-  <string name="time_unit_seconds">שניות</string>
-  <string name="time_unit_minutes">דקות</string>
-  <string name="time_unit_hours">שעות</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">קטגוריות</string>
   <string name="gpodnet_toplist_header">פודקאסטים בכירים</string>
@@ -345,7 +341,6 @@
   <!--Online feed view-->
   <string name="subscribe_label">הרשם</string>
   <string name="subscribed_label">נרשם</string>
-  <string name="downloading_label">מוריד...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">הצג פרקים</string>
   <string name="show_shownotes_label">הצג הערות פרק</string>
@@ -368,7 +363,10 @@
   <!--Feed information screen-->
   <string name="authentication_label">אימות</string>
   <string name="authentication_descr">שנה את שם המשתמש והסיסמה שלך לפודקאסט ופרקים שלו.</string>
+  <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">מייבא רישום מאפליקציות יעודיות...</string>
   <string name="search_itunes_label">חפש בiTunes</string>
+  <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

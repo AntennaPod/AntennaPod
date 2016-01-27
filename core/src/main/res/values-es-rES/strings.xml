@@ -3,46 +3,91 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Canales</string>
+  <string name="add_feed_label">Añadir podcast</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">EPISODIOS</string>
+  <string name="episodes_label">Episodios</string>
+  <string name="new_episodes_label">Nuevos episodios</string>
+  <string name="all_episodes_label">Todos los episodios</string>
+  <string name="all_episodes_short_label">Todos</string>
+  <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Nuevos</string>
   <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Ajustes</string>
+  <string name="add_new_feed_label">Añadir podcast</string>
   <string name="downloads_label">Descargas</string>
   <string name="cancel_download_label">Cancelar descarga</string>
   <string name="playback_history_label">Historial de reproducción</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net Login</string>
+  <string name="free_space_label">%1$s disponible</string>
   <!--New episodes fragment-->
+  <string name="recently_published_episodes_label">Publicado recientemente</string>
+  <string name="episode_filter_label">Mostrar solo episodios nuevos</string>
   <!--Main activity-->
+  <string name="drawer_open">Abrir menu</string>
+  <string name="drawer_close">Cerrar menu</string>
+  <string name="drawer_feed_order_unplayed_episodes">Ordenar por contador</string>
+  <string name="drawer_feed_order_alphabetical">Ordenar alfabéticamente</string>
+  <string name="drawer_feed_order_last_update">Ordenar por fecha de publicación</string>
+  <string name="drawer_feed_counter_new_unplayed">Numero de episodios nuevos y no escuchados</string>
+  <string name="drawer_feed_counter_new">Numero de nuevos episodios</string>
+  <string name="drawer_feed_counter_unplayed">Numero de episodios no escuchados</string>
+  <string name="drawer_feed_counter_none">Ningun</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir en el navegador</string>
   <string name="copy_url_label">Copiar URL</string>
   <string name="share_url_label">Compartir URL</string>
   <string name="copied_url_msg">URL copiada al portapapeles.</string>
+  <string name="go_to_position_label">Ir a esta posición</string>
   <!--Playback history-->
   <string name="clear_history_label">Limpiar el historial</string>
   <!--Other-->
   <string name="confirm_label">Confirmar</string>
   <string name="cancel_label">Cancelar</string>
+  <string name="yes">Si</string>
+  <string name="no">No</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Idioma</string>
+  <string name="url_label">URL</string>
   <string name="error_label">Error</string>
   <string name="error_msg_prefix">Ha ocurrido un error:</string>
   <string name="refresh_label">Actualizar</string>
   <string name="external_storage_error_msg">No se encuentra un almacenamiento externo. Asegúrese de que su almacenamiento externo esté montado para que la aplicación funcione correctamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="shownotes_label">Notas del programa</string>
+  <string name="description_label">Descripción</string>
+  <string name="most_recent_prefix">Episodio mas recién:\u0020</string>
   <string name="episodes_suffix">\u0020episodios</string>
   <string name="length_prefix">Duración:\u0020</string>
   <string name="size_prefix">Tamaño:\u0020</string>
   <string name="processing_label">Procesando</string>
-  <string name="loading_label">Cargando...</string>
+  <string name="save_username_password_label">Guardar nombre de usuario y contraseña</string>
+  <string name="close_label">Cerrar</string>
+  <string name="retry_label">Intentar de nuevo</string>
+  <string name="auto_download_label">Incluir en descargas automaticas</string>
+  <string name="auto_download_apply_to_items_title">Aplicar a los previos episodios</string>
+  <string name="feed_auto_download_global">Global</string>
+  <string name="feed_auto_download_always">Siempre</string>
+  <string name="feed_auto_download_never">Nunca</string>
+  <string name="episode_cleanup_never">Nunca</string>
+  <string name="episode_cleanup_queue_removal">Cuando no en la lista</string>
+  <string name="episode_cleanup_after_listening">Despues de terminar</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 día después de terminar</item>
+    <item quantity="other">%d días después de terminar</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
+  <string name="etxtFeedurlHint">www.example.com/feed</string>
+  <string name="txtvfeedurl_label">Añadir podcast por URL</string>
+  <string name="podcastdirectories_label">Buscar podcast en directorio</string>
+  <string name="browse_gpoddernet_label">Navegar gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todo como leído</string>
+  <string name="mark_all_seen_label">Marcar todos como visto</string>
   <string name="show_info_label">Información del programa</string>
+  <string name="remove_feed_label">Eliminar podcast</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
-  <string name="share_source_label">Compartir el enlace del canal</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
@@ -77,7 +122,6 @@
   <string name="download_error_malformed_url">URL malformada</string>
   <string name="download_error_io_error">Error de E/S</string>
   <string name="download_error_request_error">Error de petición</string>
-  <string name="downloads_left">\u0020descargas restantes</string>
   <string name="download_notification_title">Descargando datos del podcast</string>
   <string name="download_report_content">%1$d descargas exitosas, %2$d fallidas</string>
   <string name="download_log_title_unknown">Título desconocido</string>
@@ -121,12 +165,9 @@
   <string name="other_pref">Otros</string>
   <string name="about_pref">Acerca de</string>
   <string name="queue_label">Cola</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausar la reproducción al desconectar los auriculares</string>
   <string name="pref_followQueue_sum">Saltar al siguiente elemento de la cola al acabar la reproducción</string>
   <string name="playback_pref">Reproducción</string>
   <string name="network_pref">Red</string>
-  <string name="pref_autoUpdateIntervall_title">Intervalo de actualización</string>
-  <string name="pref_autoUpdateIntervall_sum">Especificar el intervalo en que se actualizarán automáticamente los canales, o desactivarlo</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Solo descargar los contenidos por WiFi</string>
   <string name="pref_followQueue_title">Reproducción continua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Descarga de contenidos por WiFi</string>
@@ -167,7 +208,6 @@
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
   <string name="opml_export_label">Exportar a OPML</string>
-  <string name="exporting_label">Exportando...</string>
   <string name="export_error_label">Error en la exportación</string>
   <string name="opml_export_success_sum">El archivo OPML se ha escrito en:\u0020</string>
   <!--Sleep timer-->
@@ -192,6 +232,12 @@
   <string name="set_to_default_folder">Elegir carpeta predeterminada</string>
   <!--Online feed view-->
   <!--Content descriptions for image buttons-->
+  <string name="new_episodes_count_label">Numero de nuevos episodios</string>
   <!--Feed information screen-->
+  <!--Progress information-->
   <!--AntennaPodSP-->
+  <string name="all_label">Todos</string>
+  <string name="none_label">Ningun</string>
+  <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

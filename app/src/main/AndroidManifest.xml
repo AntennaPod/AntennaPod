@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
-    android:versionCode="51"
-    android:versionName="1.2">
-
+    android:versionCode="1050003"
+    android:versionName="1.5.0.3">
+    <!--
+      Version code schema:
+      "1.2.3-SNAPSHOT" -> 1020300
+      "1.2.3-RC4"      -> 1020304
+    -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -32,8 +36,7 @@
         android:label="@string/app_name"
         android:backupAgent=".core.backup.OpmlBackupAgent"
         android:restoreAnyVersion="true"
-        android:logo="@drawable/ic_launcher"
-        android:theme="@style/Theme.AntennaPod.Light">
+        android:logo="@drawable/ic_launcher">
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
@@ -137,6 +140,9 @@
         <activity
             android:name=".activity.AboutActivity"
             android:label="@string/about_pref">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
         <activity
             android:name=".activity.OpmlImportFromPathActivity"
@@ -155,21 +161,14 @@
 
                 <data
                     android:host="*"
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.opml"
-                    android:scheme="file"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
+                    android:scheme="file"
+                    android:mimeType="*/*"/>
                 <data
                     android:host="*"
                     android:pathPattern=".*\\.opml"
-                    android:scheme="file"
-                    android:mimeType="text/x-opml"/>
+                    android:scheme="content"
+                    android:mimeType="*/*"/>
             </intent-filter>
         </activity>
         <activity
@@ -207,8 +206,9 @@
             android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
 
         <activity
-            android:name=".activity.DefaultOnlineFeedViewActivity"
-            android:configChanges="orientation">
+            android:name=".activity.OnlineFeedViewActivity"
+            android:configChanges="orientation"
+            android:label="@string/add_feed_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
@@ -328,6 +328,15 @@
                     android:scheme="package"/>
             </intent-filter>
         </receiver>
+        <receiver android:name="de.danoeh.antennapod.core.service.playback.MediaButtonIntentReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="de.danoeh.antennapod.core.glide.ApGlideModule"
+            android:value="GlideModule" />
     </application>
 
 </manifest>

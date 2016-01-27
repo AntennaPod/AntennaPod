@@ -6,11 +6,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.apache.commons.lang3.Validate;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 import java.util.LinkedList;
@@ -63,8 +63,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
      *
      * @param context A context for accessing the database and posting notifications. Must not be null.
      */
-    public FlattrClickWorker(Context context) {
-        Validate.notNull(context);
+    public FlattrClickWorker(@NonNull Context context) {
         this.context = context.getApplicationContext();
     }
 
@@ -90,11 +89,11 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
             return ExitCode.NO_TOKEN;
         }
 
-        if (!NetworkUtils.networkAvailable(context)) {
+        if (!NetworkUtils.networkAvailable()) {
             return ExitCode.NO_NETWORK;
         }
 
-        final List<FlattrThing> flattrQueue = DBReader.getFlattrQueue(context);
+        final List<FlattrThing> flattrQueue = DBReader.getFlattrQueue();
         if (extraFlattrThing != null) {
             flattrQueue.add(extraFlattrThing);
         } else if (flattrQueue.size() == 1) {

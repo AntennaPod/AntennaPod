@@ -1,11 +1,8 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
@@ -17,22 +14,26 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
-import de.danoeh.antennapod.core.asynctask.DownloadObserver;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
 import de.greenrobot.event.EventBus;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class PlaybackHistoryFragment extends ListFragment {
 
@@ -48,67 +49,23 @@ public class PlaybackHistoryFragment extends ListFragment {
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
 
-    private AtomicReference<Activity> activity = new AtomicReference<Activity>();
-
-    private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        setHasOptionsMenu(true);
-    }
+    private Subscription subscription;
 
     @Override
-    public void onResume() {
-        super.onResume();
-        startItemLoader();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
-        EventBus.getDefault().unregister(this);
-        stopItemLoader();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        stopItemLoader();
-        activity.set(null);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity.set(activity);
-        if (downloadObserver != null) {
-            downloadObserver.setActivity(activity);
-            downloadObserver.onResume();
-        }
+    public void onAttach(Context context) {
+        super.onAttach(context);
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        adapter = null;
-        viewsCreated = false;
-        if (downloadObserver != null) {
-            downloadObserver.onPause();
-        }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -127,6 +84,59 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().registerSticky(this);
+        loadItems();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventDistributor.getInstance().register(contentUpdate);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventDistributor.getInstance().unregister(contentUpdate);
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        adapter = null;
+        viewsCreated = false;
+    }
+
+    public void onEvent(DownloadEvent event) {
+        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
+        DownloaderUpdate update = event.update;
+        downloaderList = update.downloaders;
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
@@ -138,6 +148,9 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(!isAdded()) {
+            return;
+        }
         super.onCreateOptionsMenu(menu, inflater);
         if (itemsLoaded) {
             MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
@@ -164,7 +177,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.clear_history_item:
-                    DBWriter.clearPlaybackHistory(getActivity());
+                    DBWriter.clearPlaybackHistory();
                     return true;
                 default:
                     return false;
@@ -176,7 +189,7 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        startItemLoader();
+        loadItems();
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -184,7 +197,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
-                startItemLoader();
+                loadItems();
                 getActivity().supportInvalidateOptionsMenu();
             }
         }
@@ -192,42 +205,22 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private void onFragmentLoaded() {
         if (adapter == null) {
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), true);
+            // played items shoudln't be transparent for this fragment since, *all* items
+            // in this fragment will, by definition, be played. So it serves no purpose and can make
+            // it harder to read.
+            adapter = new FeedItemlistAdapter(getActivity(), itemAccess,
+                    new DefaultActionButtonCallback(getActivity()), true, false);
             setListAdapter(adapter);
-            downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
-            downloadObserver.onResume();
         }
         setListShown(true);
         adapter.notifyDataSetChanged();
         getActivity().supportInvalidateOptionsMenu();
     }
 
-    private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
-        @Override
-        public void onContentChanged() {
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
-            PlaybackHistoryFragment.this.downloaderList = downloaderList;
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
-        }
-    };
-
     private FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
         @Override
         public boolean isInQueue(FeedItem item) {
             return (queue != null) ? queue.contains(item.getId()) : false;
-        }
-
-        @Override
-        public boolean isNew(FeedItem item) {
-            return false;
         }
 
         @Override
@@ -250,52 +243,40 @@ public class PlaybackHistoryFragment extends ListFragment {
 
         @Override
         public FeedItem getItem(int position) {
-            return (playbackHistory != null) ? playbackHistory.get(position) : null;
-        }
-    };
-
-    private ItemLoader itemLoader;
-
-    private void startItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
-        }
-        itemLoader = new ItemLoader();
-        itemLoader.execute();
-    }
-
-    private void stopItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
-        }
-    }
-
-    private class ItemLoader extends AsyncTask<Void, Void, Pair<List<FeedItem>,LongList>> {
-
-        @Override
-        protected Pair<List<FeedItem>,LongList> doInBackground(Void... params) {
-            Context context = activity.get();
-            if (context != null) {
-                List<FeedItem> history = DBReader.getPlaybackHistory(context);
-                LongList queue = DBReader.getQueueIDList(context);
-                DBReader.loadFeedDataOfFeedItemlist(context, history);
-                return Pair.create(history, queue);
+            if (playbackHistory != null && 0 <= position && position < playbackHistory.size()) {
+                return playbackHistory.get(position);
             } else {
                 return null;
             }
         }
+    };
 
-        @Override
-        protected void onPostExecute(Pair<List<FeedItem>,LongList> res) {
-            super.onPostExecute(res);
-            if (res != null) {
-                playbackHistory = res.first;
-                queue = res.second;
-                itemsLoaded = true;
-                if (viewsCreated) {
-                    onFragmentLoaded();
-                }
-            }
+    private void loadItems() {
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
+        subscription = Observable.fromCallable(() -> loadData())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result != null) {
+                        playbackHistory = result.first;
+                        queue = result.second;
+                        itemsLoaded = true;
+                        if (viewsCreated) {
+                            onFragmentLoaded();
+                        }
+                    }
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
+
+    private Pair<List<FeedItem>, LongList> loadData() {
+        List<FeedItem> history = DBReader.getPlaybackHistory();
+        LongList queue = DBReader.getQueueIDList();
+        DBReader.loadAdditionalFeedItemListData(history);
+        return Pair.create(history, queue);
+    }
+
 }

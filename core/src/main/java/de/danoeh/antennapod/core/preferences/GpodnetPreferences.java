@@ -2,13 +2,11 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -217,26 +215,36 @@ public class GpodnetPreferences {
 
     public static void removeRemovedFeeds(Collection<String> removed) {
         ensurePreferencesLoaded();
+        feedListLock.lock();
         removedFeeds.removeAll(removed);
         writePreference(PREF_SYNC_REMOVED, removedFeeds);
+        feedListLock.unlock();
     }
 
-    public static synchronized void enqueueEpisodeAction(GpodnetEpisodeAction action) {
+    public static void enqueueEpisodeAction(GpodnetEpisodeAction action) {
         ensurePreferencesLoaded();
+        feedListLock.lock();
         queuedEpisodeActions.add(action);
         writePreference(PREF_SYNC_EPISODE_ACTIONS, writeEpisodeActionsToString(queuedEpisodeActions));
+        feedListLock.unlock();
         GpodnetSyncService.sendSyncActionsIntent(ClientConfig.applicationCallbacks.getApplicationInstance());
     }
 
     public static List<GpodnetEpisodeAction> getQueuedEpisodeActions() {
         ensurePreferencesLoaded();
-        return Collections.unmodifiableList(queuedEpisodeActions);
+        List<GpodnetEpisodeAction> copy = new ArrayList();
+        feedListLock.lock();
+        copy.addAll(queuedEpisodeActions);
+        feedListLock.unlock();
+        return copy;
     }
 
-    public static synchronized void removeQueuedEpisodeActions(Collection<GpodnetEpisodeAction> queued) {
+    public static void removeQueuedEpisodeActions(Collection<GpodnetEpisodeAction> queued) {
         ensurePreferencesLoaded();
+        feedListLock.lock();
         queuedEpisodeActions.removeAll(queued);
         writePreference(PREF_SYNC_EPISODE_ACTIONS, writeEpisodeActionsToString(queuedEpisodeActions));
+        feedListLock.unlock();
     }
 
     /**
@@ -252,12 +260,14 @@ public class GpodnetPreferences {
         setUsername(null);
         setPassword(null);
         setDeviceID(null);
+        feedListLock.lock();
         addedFeeds.clear();
         writePreference(PREF_SYNC_ADDED, addedFeeds);
         removedFeeds.clear();
         writePreference(PREF_SYNC_REMOVED, removedFeeds);
         queuedEpisodeActions.clear();
         writePreference(PREF_SYNC_EPISODE_ACTIONS, writeEpisodeActionsToString(queuedEpisodeActions));
+        feedListLock.unlock();
         setLastSubscriptionSyncTimestamp(0);
     }
 
@@ -282,7 +292,7 @@ public class GpodnetPreferences {
         String[] lines = s.split("\n");
         List<GpodnetEpisodeAction> result = new ArrayList<GpodnetEpisodeAction>(lines.length);
         for(String line : lines) {
-            if(StringUtils.isNotBlank(line)) {
+            if(TextUtils.isEmpty(line)) {
                 GpodnetEpisodeAction action = GpodnetEpisodeAction.readFromString(line);
                 if(action != null) {
                     result.add(GpodnetEpisodeAction.readFromString(line));

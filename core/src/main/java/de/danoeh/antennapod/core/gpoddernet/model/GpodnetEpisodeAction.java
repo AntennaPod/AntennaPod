@@ -1,13 +1,9 @@
 package de.danoeh.antennapod.core.gpoddernet.model;
 
 
+import android.text.TextUtils;
 import android.util.Log;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -90,15 +86,20 @@ public class GpodnetEpisodeAction {
         String podcast = object.optString("podcast", null);
         String episode = object.optString("episode", null);
         String actionString = object.optString("action", null);
-        if(StringUtils.isEmpty(podcast) || StringUtils.isEmpty(episode) || StringUtils.isEmpty(actionString)) {
+        if(TextUtils.isEmpty(podcast) || TextUtils.isEmpty(episode) || TextUtils.isEmpty(actionString)) {
             return null;
         }
-        GpodnetEpisodeAction.Action action = GpodnetEpisodeAction.Action.valueOf(actionString.toUpperCase());
+        GpodnetEpisodeAction.Action action;
+        try {
+            action = GpodnetEpisodeAction.Action.valueOf(actionString.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
         String deviceId = object.optString("device", "");
         GpodnetEpisodeAction.Builder builder = new GpodnetEpisodeAction.Builder(podcast, episode, action)
                 .deviceId(deviceId);
         String utcTimestamp = object.optString("timestamp", null);
-        if(StringUtils.isNotEmpty(utcTimestamp)) {
+        if(!TextUtils.isEmpty(utcTimestamp)) {
             builder.timestamp(DateUtils.parse(utcTimestamp));
         }
         if(action == GpodnetEpisodeAction.Action.PLAY) {
@@ -168,34 +169,34 @@ public class GpodnetEpisodeAction {
 
     @Override
     public boolean equals(Object o) {
-        if(o == null) return false;
-        if(this == o) return true;
-        if(this.getClass() != o.getClass()) return false;
-        GpodnetEpisodeAction that = (GpodnetEpisodeAction)o;
-        return new EqualsBuilder()
-                .append(this.podcast, that.podcast)
-                .append(this.episode, that.episode)
-                .append(this.deviceId, that.deviceId)
-                .append(this.action, that.action)
-                .append(this.timestamp, that.timestamp)
-                .append(this.started, that.started)
-                .append(this.position, that.position)
-                .append(this.total, that.total)
-                .isEquals();
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GpodnetEpisodeAction that = (GpodnetEpisodeAction) o;
+
+        if (started != that.started) return false;
+        if (position != that.position) return false;
+        if (total != that.total) return false;
+        if (podcast != null ? !podcast.equals(that.podcast) : that.podcast != null) return false;
+        if (episode != null ? !episode.equals(that.episode) : that.episode != null) return false;
+        if (deviceId != null ? !deviceId.equals(that.deviceId) : that.deviceId != null)
+            return false;
+        if (action != that.action) return false;
+        return !(timestamp != null ? !timestamp.equals(that.timestamp) : that.timestamp != null);
+
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(this.podcast)
-                .append(this.episode)
-                .append(this.deviceId)
-                .append(this.action)
-                .append(this.timestamp)
-                .append(this.started)
-                .append(this.position)
-                .append(this.total)
-                .toHashCode();
+        int result = podcast != null ? podcast.hashCode() : 0;
+        result = 31 * result + (episode != null ? episode.hashCode() : 0);
+        result = 31 * result + (deviceId != null ? deviceId.hashCode() : 0);
+        result = 31 * result + (action != null ? action.hashCode() : 0);
+        result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
+        result = 31 * result + started;
+        result = 31 * result + position;
+        result = 31 * result + total;
+        return result;
     }
 
     public String writeToString() {
@@ -240,7 +241,16 @@ public class GpodnetEpisodeAction {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return "GpodnetEpisodeAction{" +
+                "podcast='" + podcast + '\'' +
+                ", episode='" + episode + '\'' +
+                ", deviceId='" + deviceId + '\'' +
+                ", action=" + action +
+                ", timestamp=" + timestamp +
+                ", started=" + started +
+                ", position=" + position +
+                ", total=" + total +
+                '}';
     }
 
     public static class Builder {

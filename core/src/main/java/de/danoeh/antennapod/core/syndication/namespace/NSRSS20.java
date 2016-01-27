@@ -5,6 +5,7 @@ import android.util.Log;
 import org.xml.sax.Attributes;
 
 import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -57,6 +58,10 @@ public class NSRSS20 extends Namespace {
 				long size = 0;
 				try {
 					size = Long.parseLong(attributes.getValue(ENC_LEN));
+					if(size < 16384) {
+						// less than 16kb is suspicious, check manually
+						size = 0;
+					}
 				} catch (NumberFormatException e) {
 					if (BuildConfig.DEBUG)
 						Log.d(TAG, "Length attribute could not be parsed.");
@@ -69,8 +74,11 @@ public class NSRSS20 extends Namespace {
 			if (state.getTagstack().size() >= 1) {
 				String parent = state.getTagstack().peek().getName();
 				if (parent.equals(CHANNEL)) {
-					state.getFeed().setImage(new FeedImage());
-                    state.getFeed().getImage().setOwner(state.getFeed());
+					Feed feed = state.getFeed();
+					if(feed.getImage() == null) {
+						feed.setImage(new FeedImage());
+						feed.getImage().setOwner(state.getFeed());
+					}
 				}
 			}
 		}
@@ -115,13 +123,16 @@ public class NSRSS20 extends Namespace {
 				    state.getCurrentItem().setItemIdentifier(content);
                 }
 			} else if (top.equals(TITLE)) {
+				String title = content.trim();
 				if (second.equals(ITEM)) {
-					state.getCurrentItem().setTitle(content);
+					state.getCurrentItem().setTitle(title);
 				} else if (second.equals(CHANNEL)) {
-					state.getFeed().setTitle(content);
+					state.getFeed().setTitle(title);
 				} else if (second.equals(IMAGE) && third != null
 						&& third.equals(CHANNEL)) {
-					state.getFeed().getImage().setTitle(content);
+					if(state.getFeed().getImage().getTitle() == null) {
+						state.getFeed().getImage().setTitle(title);
+					}
 				}
 			} else if (top.equals(LINK)) {
 				if (second.equals(CHANNEL)) {
@@ -134,7 +145,9 @@ public class NSRSS20 extends Namespace {
 						DateUtils.parse(content));
 			} else if (top.equals(URL) && second.equals(IMAGE) && third != null
 					&& third.equals(CHANNEL)) {
-				state.getFeed().getImage().setDownload_url(content);
+				if(state.getFeed().getImage().getDownload_url() == null) { // prefer itunes:image
+					state.getFeed().getImage().setDownload_url(content);
+				}
 			} else if (localName.equals(DESCR)) {
 				if (second.equals(CHANNEL)) {
 					state.getFeed().setDescription(content);

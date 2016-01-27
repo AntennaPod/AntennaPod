@@ -7,7 +7,7 @@ import android.util.Log;
 
 import java.util.List;
 
-import de.danoeh.antennapod.core.asynctask.PicassoImageResource;
+import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -18,7 +18,7 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
  * Interface for objects that can be played by the PlaybackService.
  */
 public interface Playable extends Parcelable,
-        ShownotesProvider, PicassoImageResource {
+        ShownotesProvider, ImageResource {
 
     /**
      * Save information about the playable in a preference so that it can be
@@ -82,6 +82,12 @@ public interface Playable extends Parcelable,
     public int getPosition();
 
     /**
+     * Returns last time (in ms) when this playable was played or 0
+     * if last played time is unknown.
+     */
+    public long getLastPlayedTime();
+
+    /**
      * Returns the type of media. This method should return the correct value
      * BEFORE loadMetadata() is called.
      */
@@ -115,12 +121,21 @@ public interface Playable extends Parcelable,
      * Saves the current position of this object. Implementations can use the
      * provided SharedPreference to save this information and retrieve it later
      * via PlayableUtils.createInstanceFromPreferences.
+     *
+     * @param pref  shared prefs that might be used to store this object
+     * @param newPosition  new playback position in ms
+     * @param timestamp  current time in ms
      */
-    public void saveCurrentPosition(SharedPreferences pref, int newPosition);
+    public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timestamp);
 
     public void setPosition(int newPosition);
 
     public void setDuration(int newDuration);
+
+    /**
+     * @param lastPlayedTimestamp  timestamp in ms
+     */
+    public void setLastPlayedTime(long lastPlayedTimestamp);
 
     /**
      * Is called by the PlaybackService when playback starts.
@@ -159,28 +174,42 @@ public interface Playable extends Parcelable,
          */
         public static Playable createInstanceFromPreferences(Context context, int type,
                                                              SharedPreferences pref) {
+            Playable result = null;
             // ADD new Playable types here:
             switch (type) {
                 case FeedMedia.PLAYABLE_TYPE_FEEDMEDIA:
-                    long mediaId = pref.getLong(FeedMedia.PREF_MEDIA_ID, -1);
-                    if (mediaId != -1) {
-                        return DBReader.getFeedMedia(context, mediaId);
-                    }
+                    result = createFeedMediaInstance(pref);
                     break;
                 case ExternalMedia.PLAYABLE_TYPE_EXTERNAL_MEDIA:
-                    String source = pref.getString(ExternalMedia.PREF_SOURCE_URL,
-                            null);
-                    String mediaType = pref.getString(
-                            ExternalMedia.PREF_MEDIA_TYPE, null);
-                    if (source != null && mediaType != null) {
-                        int position = pref.getInt(ExternalMedia.PREF_POSITION, 0);
-                        return new ExternalMedia(source,
-                                MediaType.valueOf(mediaType), position);
-                    }
+                    result = createExternalMediaInstance(pref);
                     break;
             }
-            Log.e(TAG, "Could not restore Playable object from preferences");
-            return null;
+            if (result == null) {
+                Log.e(TAG, "Could not restore Playable object from preferences");
+            }
+            return result;
+        }
+
+        private static Playable createFeedMediaInstance(SharedPreferences pref) {
+            Playable result = null;
+            long mediaId = pref.getLong(FeedMedia.PREF_MEDIA_ID, -1);
+            if (mediaId != -1) {
+                result =  DBReader.getFeedMedia(mediaId);
+            }
+            return result;
+        }
+
+        private static Playable createExternalMediaInstance(SharedPreferences pref) {
+            Playable result = null;
+            String source = pref.getString(ExternalMedia.PREF_SOURCE_URL, null);
+            String mediaType = pref.getString(ExternalMedia.PREF_MEDIA_TYPE, null);
+            if (source != null && mediaType != null) {
+                int position = pref.getInt(ExternalMedia.PREF_POSITION, 0);
+                long lastPlayedTime = pref.getLong(ExternalMedia.PREF_LAST_PLAYED_TIME, 0);
+                result = new ExternalMedia(source, MediaType.valueOf(mediaType),
+                        position, lastPlayedTime);
+            }
+            return result;
         }
     }
 

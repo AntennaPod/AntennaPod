@@ -1,14 +1,12 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
-import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -18,11 +16,18 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Displays all running downloads and provides a button to delete them
  */
 public class CompletedDownloadsFragment extends ListFragment {
+
+    private static final String TAG = CompletedDownloadsFragment.class.getSimpleName();
+
     private static final int EVENTS =
             EventDistributor.DOWNLOAD_HANDLED |
                     EventDistributor.DOWNLOADLOG_UPDATE |
@@ -34,11 +39,12 @@ public class CompletedDownloadsFragment extends ListFragment {
     private boolean viewCreated = false;
     private boolean itemsLoaded = false;
 
+    private Subscription subscription;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        startItemLoader();
+        loadItems();
     }
 
     @Override
@@ -51,13 +57,17 @@ public class CompletedDownloadsFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-        stopItemLoader();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        stopItemLoader();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
@@ -65,7 +75,9 @@ public class CompletedDownloadsFragment extends ListFragment {
         super.onDestroyView();
         listAdapter = null;
         viewCreated = false;
-        stopItemLoader();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
@@ -119,7 +131,11 @@ public class CompletedDownloadsFragment extends ListFragment {
 
         @Override
         public FeedItem getItem(int position) {
-            return (items != null) ? items.get(position) : null;
+            if (items != null && 0 <= position && position < items.size()) {
+                return items.get(position);
+            } else {
+                return null;
+            }
         }
 
         @Override
@@ -132,56 +148,32 @@ public class CompletedDownloadsFragment extends ListFragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
-                startItemLoader();
+                loadItems();
             }
         }
     };
 
-    private ItemLoader itemLoader;
-
-    private void startItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
+    private void loadItems() {
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
-        itemLoader = new ItemLoader();
-        itemLoader.execute();
+        if (!itemsLoaded && viewCreated) {
+            setListShown(false);
+        }
+        subscription = Observable.fromCallable(() -> DBReader.getDownloadedItems())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result != null) {
+                        items = result;
+                        itemsLoaded = true;
+                        if (viewCreated && getActivity() != null) {
+                            onFragmentLoaded();
+                        }
+                    }
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
-    private void stopItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
-        }
-    }
-
-    private class ItemLoader extends AsyncTask<Void, Void, List<FeedItem>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (!itemsLoaded && viewCreated) {
-                setListShown(false);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<FeedItem> results) {
-            super.onPostExecute(results);
-            if (results != null) {
-                items = results;
-                itemsLoaded = true;
-                if (viewCreated && getActivity() != null) {
-                    onFragmentLoaded();
-                }
-            }
-        }
-
-        @Override
-        protected List<FeedItem> doInBackground(Void... params) {
-            Context context = getActivity();
-            if (context != null) {
-                return DBReader.getDownloadedItems(context);
-            }
-            return Collections.emptyList();
-        }
-    }
 }

@@ -4,7 +4,6 @@
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Kanallar</string>
   <string name="podcasts_label">PODKASTLAR</string>
-  <string name="episodes_label">EPIZODLAR</string>
   <string name="new_label">Yeni</string>
   <string name="waiting_list_label">Gözləmədə</string>
   <string name="settings_label">Parametrlər</string>
@@ -38,7 +37,6 @@
   <string name="length_prefix">Müddət:\u0020</string>
   <string name="size_prefix">Ölçü:\u0020</string>
   <string name="processing_label">Hazırlaşma</string>
-  <string name="loading_label">Yükləmə...</string>
   <string name="close_label">Bağla</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Kanalın URLı</string>
@@ -46,7 +44,6 @@
   <string name="mark_all_read_label">Hamısını oxunmuş kimi işarələ</string>
   <string name="show_info_label">Məlumatı göstər</string>
   <string name="share_link_label">Web-səhifəyi paylaş</string>
-  <string name="share_source_label">Kanalı paylaş</string>
   <string name="feed_delete_confirmation_msg">Bütün kanallar və epizodlar silinəçək.</string>
   <!--actions on feeditems-->
   <string name="download_label">Yüklə</string>
@@ -81,7 +78,6 @@
   <string name="download_error_malformed_url">Yanlış URL</string>
   <string name="download_error_io_error">IO xətasi</string>
   <string name="download_error_request_error">Tələbin xətası</string>
-  <string name="downloads_left">\u0020yükləmə galdı</string>
   <string name="download_notification_title">Podkast məlumatların yüklənişi</string>
   <string name="download_report_content">%1$d yükləmə uğurludur, %2$d uğursuzdur</string>
   <string name="download_log_title_unknown">Naməlum başliğ</string>
@@ -130,12 +126,9 @@
   <string name="about_pref">Proqram haqqinda</string>
   <string name="queue_label">Növbə</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Qulaqliqı ayiranda oynatma dayanacağ</string>
   <string name="pref_followQueue_sum">Oynatma başa çatanda növbədə irəlidəki epizodu oynat</string>
   <string name="playback_pref">Oynatma</string>
   <string name="network_pref">Şəbəkə</string>
-  <string name="pref_autoUpdateIntervall_title">Təzələmə intervalı</string>
-  <string name="pref_autoUpdateIntervall_sum">Kanalın avtomatik təzələməsinin intervalını seç ya da keçir onu</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Təkçə Wi-Fi vasitəsiilə yüklə</string>
   <string name="pref_followQueue_title">Fasiləsiz oynatma</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Wi-Fi vasitəsiilə yükləmə</string>
@@ -182,7 +175,6 @@
   <string name="select_all_label">Hamısını seç</string>
   <string name="deselect_all_label">Seçimi ləğv et</string>
   <string name="opml_export_label">OPML ixraçı</string>
-  <string name="exporting_label">İxrac...</string>
   <string name="export_error_label">İxracın xətası</string>
   <string name="opml_export_success_sum">OPML fayl:\u0020 yazılıb</string>
   <!--Sleep timer-->
@@ -207,8 +199,10 @@
   <string name="folder_not_empty_dialog_msg">Seçilən qovluq boş deyil. Mediya yükləmələr və başka fayllar bu qovluqa yazılacaqlar. Necə olsa davam olsunmu?</string>
   <string name="set_to_default_folder">Başlanğıc qovluqu seç</string>
   <!--Online feed view-->
-  <string name="downloading_label">Yükləmə...</string>
   <!--Content descriptions for image buttons-->
   <!--Feed information screen-->
+  <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Rating dialog-->
+  <!--Audio controls-->
 </resources>

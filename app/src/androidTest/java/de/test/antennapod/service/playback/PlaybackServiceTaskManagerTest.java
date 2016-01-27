@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -26,16 +26,16 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        assertTrue(PodDBAdapter.deleteDatabase(getInstrumentation().getTargetContext()));
+        PodDBAdapter.deleteDatabase();
     }
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        final Context context = getInstrumentation().getTargetContext();
-        context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
-        // make sure database is created
-        PodDBAdapter adapter = new PodDBAdapter(context);
+
+        // create new database
+        PodDBAdapter.deleteDatabase();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
     }
@@ -49,11 +49,11 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         final Context c = getInstrumentation().getTargetContext();
         final int NUM_ITEMS = 10;
         Feed f = new Feed(0, new Date(), "title", "link", "d", null, null, null, null, "id", null, "null", "url", false);
-        f.setItems(new ArrayList<FeedItem>());
+        f.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
-            f.getItems().add(new FeedItem(0, pref + i, pref + i, "link", new Date(), true, f));
+            f.getItems().add(new FeedItem(0, pref + i, pref + i, "link", new Date(), FeedItem.PLAYED, f));
         }
-        PodDBAdapter adapter = new PodDBAdapter(c);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.setCompleteFeed(f);
         adapter.setQueue(f.getItems());
@@ -97,7 +97,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         };
         EventDistributor.getInstance().register(queueListener);
         List<FeedItem> queue = writeTestQueue("a");
-        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
+        EventBus.getDefault().post(QueueEvent.setQueue(queue));
         countDownLatch.await(5000, TimeUnit.MILLISECONDS);
 
         assertNotNull(queue);
@@ -122,7 +122,17 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void onSleepTimerAlmostExpired() {
+
+            }
+
+            @Override
             public void onSleepTimerExpired() {
+
+            }
+
+            @Override
+            public void onSleepTimerReset() {
 
             }
 
@@ -170,7 +180,17 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void onSleepTimerAlmostExpired() {
+
+            }
+
+            @Override
             public void onSleepTimerExpired() {
+
+            }
+
+            @Override
+            public void onSleepTimerReset() {
 
             }
 
@@ -221,7 +241,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
         pstm.startWidgetUpdater();
         pstm.startPositionSaver();
-        pstm.setSleepTimer(100000);
+        pstm.setSleepTimer(100000, false, false);
         pstm.cancelAllTasks();
         assertFalse(pstm.isPositionSaverActive());
         assertFalse(pstm.isWidgetUpdaterActive());
@@ -241,11 +261,21 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void onSleepTimerAlmostExpired() {
+
+            }
+
+            @Override
             public void onSleepTimerExpired() {
                 if (countDownLatch.getCount() == 0) {
                     fail();
                 }
                 countDownLatch.countDown();
+            }
+
+            @Override
+            public void onSleepTimerReset() {
+
             }
 
             @Override
@@ -258,7 +288,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
 
             }
         });
-        pstm.setSleepTimer(TIME);
+        pstm.setSleepTimer(TIME, false, false);
         countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS);
         pstm.shutdown();
     }
@@ -275,8 +305,18 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void onSleepTimerAlmostExpired() {
+
+            }
+
+            @Override
             public void onSleepTimerExpired() {
                 fail("Sleeptimer expired");
+            }
+
+            @Override
+            public void onSleepTimerReset() {
+
             }
 
             @Override
@@ -289,7 +329,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
 
             }
         });
-        pstm.setSleepTimer(TIME);
+        pstm.setSleepTimer(TIME, false, false);
         pstm.disableSleepTimer();
         assertFalse(countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS));
         pstm.shutdown();
@@ -298,7 +338,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
     public void testIsSleepTimerActivePositive() {
         final Context c = getInstrumentation().getTargetContext();
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.setSleepTimer(10000);
+        pstm.setSleepTimer(10000, false, false);
         assertTrue(pstm.isSleepTimerActive());
         pstm.shutdown();
     }
@@ -306,7 +346,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
     public void testIsSleepTimerActiveNegative() {
         final Context c = getInstrumentation().getTargetContext();
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.setSleepTimer(10000);
+        pstm.setSleepTimer(10000, false, false);
         pstm.disableSleepTimer();
         assertFalse(pstm.isSleepTimerActive());
         pstm.shutdown();
@@ -319,7 +359,17 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         }
 
         @Override
+        public void onSleepTimerAlmostExpired() {
+
+        }
+
+        @Override
         public void onSleepTimerExpired() {
+
+        }
+
+        @Override
+        public void onSleepTimerReset() {
 
         }
 

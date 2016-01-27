@@ -3,22 +3,20 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.URLUtil;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFile;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
@@ -73,10 +71,8 @@ public class DownloadRequester {
      *                call will return false.
      * @return True if the download request was accepted, false otherwise.
      */
-    public synchronized boolean download(Context context, DownloadRequest request) {
-        Validate.notNull(context);
-        Validate.notNull(request);
-
+    public synchronized boolean download(@NonNull Context context,
+                                         @NonNull DownloadRequest request) {
         if (downloads.containsKey(request.getSource())) {
             if (BuildConfig.DEBUG) Log.i(TAG, "DownloadRequest is already stored.");
             return false;
@@ -86,7 +82,7 @@ public class DownloadRequester {
         Intent launchIntent = new Intent(context, DownloadService.class);
         launchIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
         context.startService(launchIntent);
-        EventDistributor.getInstance().sendDownloadQueuedBroadcast();
+
         return true;
     }
 
@@ -147,7 +143,7 @@ public class DownloadRequester {
     private boolean isFilenameAvailable(String path) {
         for (String key : downloads.keySet()) {
             DownloadRequest r = downloads.get(key);
-            if (StringUtils.equals(r.getDestination(), path)) {
+            if (TextUtils.equals(r.getDestination(), path)) {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, path
                             + " is already used by another requested download");
@@ -171,7 +167,7 @@ public class DownloadRequester {
         if (feedFileValid(feed)) {
             String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
             String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
-            long ifModifiedSince = feed.getLastUpdate().getTime();
+            long ifModifiedSince = feed.isPaged() ? 0 : feed.getLastUpdate().getTime();
 
             Bundle args = new Bundle();
             args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
@@ -184,15 +180,6 @@ public class DownloadRequester {
 
     public synchronized void downloadFeed(Context context, Feed feed) throws DownloadRequestException {
         downloadFeed(context, feed, false);
-    }
-
-    public synchronized void downloadImage(Context context, FeedImage image)
-            throws DownloadRequestException {
-        if (feedFileValid(image)) {
-            FeedFile container = (image.getOwner() instanceof FeedFile) ? (FeedFile) image.getOwner() : null;
-            download(context, image, container, new File(getImagefilePath(context),
-                    getImagefileName(image)), false, null, null, 0, false, null);
-        }
     }
 
     public synchronized void downloadMedia(Context context, FeedMedia feedmedia)
@@ -332,20 +319,6 @@ public class DownloadRequester {
         return "feed-" + FileNameGenerator.generateFileName(filename);
     }
 
-    public synchronized String getImagefilePath(Context context)
-            throws DownloadRequestException {
-        return getExternalFilesDirOrThrowException(context, IMAGE_DOWNLOADPATH)
-                .toString() + "/";
-    }
-
-    public synchronized String getImagefileName(FeedImage image) {
-        String filename = image.getDownload_url();
-        if (image.getOwner() != null && image.getOwner().getHumanReadableIdentifier() != null) {
-            filename = image.getOwner().getHumanReadableIdentifier();
-        }
-        return "image-" + FileNameGenerator.generateFileName(filename);
-    }
-
     public synchronized String getMediafilePath(Context context, FeedMedia media)
             throws DownloadRequestException {
         File externalStorage = getExternalFilesDirOrThrowException(
@@ -359,7 +332,7 @@ public class DownloadRequester {
 
     private File getExternalFilesDirOrThrowException(Context context,
                                                      String type) throws DownloadRequestException {
-        File result = UserPreferences.getDataFolder(context, type);
+        File result = UserPreferences.getDataFolder(type);
         if (result == null) {
             throw new DownloadRequestException(
                     "Failed to access external storage");
@@ -375,7 +348,7 @@ public class DownloadRequester {
         if (media.getItem() != null && media.getItem().getTitle() != null) {
             String title = media.getItem().getTitle();
             // Delete reserved characters
-            titleBaseFilename = title.replaceAll("[\\\\/%\\?\\*:|<>\"\\p{Cntrl}]", "");
+            titleBaseFilename = title.replaceAll("[^a-zA-Z0-9 ._()-]", "");
             titleBaseFilename = titleBaseFilename.trim();
         }
 
