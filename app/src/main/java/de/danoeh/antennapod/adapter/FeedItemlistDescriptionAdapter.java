@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
 
 import java.util.List;
+
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.util.DateUtils;
 
 /**
  * List adapter for showing a list of FeedItems with their title and description.
@@ -33,6 +35,7 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.itemdescription_listitem, parent, false);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.pubDate = (TextView) convertView.findViewById(R.id.txtvPubDate);
             holder.description = (TextView) convertView.findViewById(R.id.txtvDescription);
 
             convertView.setTag(holder);
@@ -41,15 +44,20 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
         }
 
         holder.title.setText(item.getTitle());
+        holder.pubDate.setText(DateUtils.formatAbbrev(getContext(), item.getPubDate()));
         if (item.getDescription() != null) {
-            holder.description.setText(item.getDescription());
+            String description = item.getDescription()
+                    .replaceAll("\n", " ")
+                    .replaceAll("\\s+", " ")
+                    .trim();
+            holder.description.setText(description);
         }
-
         return convertView;
     }
 
     static class Holder {
         TextView title;
+        TextView pubDate;
         TextView description;
     }
 }
