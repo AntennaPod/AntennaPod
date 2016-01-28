@@ -32,7 +32,7 @@ AntennaPod is under active development by volunteers. You can contribute too, wi
 Ask your question or give feedback via Twitter:
 https://twitter.com/@AntennaPod
 
-Share your ideas, favorite podcasting moments and gratitude to all the volunteers in our Google group:<br>
+Share your ideas, favorite podcasting moments and gratitude to all the volunteers in our Google group:
 https://groups.google.com/forum/#!forum/antennapod
 
 Help translate the app to your mother tongue on Transifex:
