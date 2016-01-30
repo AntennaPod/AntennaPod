@@ -224,7 +224,28 @@ public final class DBTasks {
      */
     public static void refreshCompleteFeed(final Context context, final Feed feed) {
         try {
-            refreshFeed(context, feed, true);
+            refreshFeed(context, feed, true, false);
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            DBWriter.addDownloadStatus(
+                    new DownloadStatus(feed, feed
+                            .getHumanReadableIdentifier(),
+                            DownloadError.ERROR_REQUEST_ERROR, false, e
+                            .getMessage()
+                    )
+            );
+        }
+    }
+
+    /**
+     * Downloads all pages of the given feed even if feed has not been modified since last refresh
+     *
+     * @param context Used for requesting the download.
+     * @param feed    The Feed object.
+     */
+    public static void forceRefreshCompleteFeed(final Context context, final Feed feed) {
+        try {
+            refreshFeed(context, feed, true, true);
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DBWriter.addDownloadStatus(
@@ -268,10 +289,23 @@ public final class DBTasks {
     public static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
         Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() +")");
-        refreshFeed(context, feed, false);
+        refreshFeed(context, feed, false, false);
     }
 
-    private static void refreshFeed(Context context, Feed feed, boolean loadAllPages) throws DownloadRequestException {
+    /**
+     * Refresh a specific feed even if feed has not been modified since last refresh
+     *
+     * @param context Used for requesting the download.
+     * @param feed    The Feed object.
+     */
+    public static void forceRefreshFeed(Context context, Feed feed)
+            throws DownloadRequestException {
+        Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() +")");
+        refreshFeed(context, feed, false, true);
+    }
+
+    private static void refreshFeed(Context context, Feed feed, boolean loadAllPages, boolean force)
+            throws DownloadRequestException {
         Feed f;
         String lastUpdate = feed.hasLastUpdateFailed() ? null : feed.getLastUpdate();
         if (feed.getPreferences() == null) {
@@ -281,7 +315,7 @@ public final class DBTasks {
                     feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
         }
         f.setId(feed.getId());
-        DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages);
+        DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force);
     }
 
     /**

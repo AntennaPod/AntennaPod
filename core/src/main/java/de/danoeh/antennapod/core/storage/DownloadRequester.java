@@ -162,7 +162,8 @@ public class DownloadRequester {
      * @param feed Feed to download
      * @param loadAllPages Set to true to download all pages
      */
-    public synchronized void downloadFeed(Context context, Feed feed, boolean loadAllPages)
+    public synchronized void downloadFeed(Context context, Feed feed, boolean loadAllPages,
+                                          boolean force)
             throws DownloadRequestException {
         if (feedFileValid(feed)) {
             String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
@@ -179,7 +180,7 @@ public class DownloadRequester {
     }
 
     public synchronized void downloadFeed(Context context, Feed feed) throws DownloadRequestException {
-        downloadFeed(context, feed, false);
+        downloadFeed(context, feed, false, false);
     }
 
     public synchronized void downloadMedia(Context context, FeedMedia feedmedia)

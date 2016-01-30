@@ -121,9 +121,8 @@ public class DownloadLogAdapter extends BaseAdapter {
 			if(holder.typeId == Feed.FEEDFILETYPE_FEED) {
 				Feed feed = DBReader.getFeed(holder.id);
 				if (feed != null) {
-					feed.setLastUpdate(null); // force refresh
 					try {
-						DBTasks.refreshFeed(context, feed);
+						DBTasks.forceRefreshFeed(context, feed);
 					} catch (DownloadRequestException e) {
 						e.printStackTrace();
 					}
