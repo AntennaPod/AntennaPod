@@ -1151,7 +1151,7 @@ public class PodDBAdapter {
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getNewItemsCursor() {
-        String[] args = new String[] {
+        Object[] args = new String[] {
                 SEL_FI_SMALL_STR,
                 TABLE_NAME_FEED_ITEMS,
                 TABLE_NAME_FEEDS,
