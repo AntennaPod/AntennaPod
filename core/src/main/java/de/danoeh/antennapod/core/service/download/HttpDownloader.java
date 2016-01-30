@@ -235,6 +235,12 @@ public class HttpDownloader extends Downloader {
                     onFail(DownloadError.ERROR_IO_ERROR, "Download completed, but nothing was read");
                     return;
                 }
+                String lastModified = response.header("Last-Modified");
+                if(lastModified != null) {
+                    request.setLastModified(lastModified);
+                } else {
+                    request.setLastModified(response.header("ETag"));
+                }
                 onSuccess();
             }
 
