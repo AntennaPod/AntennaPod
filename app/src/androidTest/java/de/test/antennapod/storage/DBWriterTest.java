@@ -59,7 +59,8 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
-    public void testSetFeedMediaPlaybackInformation() throws IOException, ExecutionException, InterruptedException {
+    public void testSetFeedMediaPlaybackInformation()
+            throws IOException, ExecutionException, InterruptedException, TimeoutException {
         final int POSITION = 50;
         final long LAST_PLAYED_TIME = 1000;
         final int PLAYED_DURATION = 60;
@@ -73,13 +74,13 @@ public class DBWriterTest extends InstrumentationTestCase {
         FeedMedia media = new FeedMedia(0, item, DURATION, 1, 1, "mime_type", "dummy path", "download_url", true, null, 0, 0);
         item.setMedia(media);
 
-        DBWriter.setFeedItem(item).get();
+        DBWriter.setFeedItem(item).get(TIMEOUT, TimeUnit.SECONDS);
 
         media.setPosition(POSITION);
         media.setLastPlayedTime(LAST_PLAYED_TIME);
         media.setPlayedDuration(PLAYED_DURATION);
 
-        DBWriter.setFeedMediaPlaybackInformation(item.getMedia()).get();
+        DBWriter.setFeedMediaPlaybackInformation(item.getMedia()).get(TIMEOUT, TimeUnit.SECONDS);
 
         FeedItem itemFromDb = DBReader.getFeedItem(item.getId());
         FeedMedia mediaFromDb = itemFromDb.getMedia();
@@ -90,7 +91,8 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertEquals(DURATION, mediaFromDb.getDuration());
     }
 
-    public void testDeleteFeedMediaOfItemFileExists() throws IOException, ExecutionException, InterruptedException {
+    public void testDeleteFeedMediaOfItemFileExists()
+            throws IOException, ExecutionException, InterruptedException, TimeoutException {
         File dest = new File(getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER), "testFile");
 
         assertTrue(dest.createNewFile());
@@ -112,7 +114,8 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertTrue(media.getId() != 0);
         assertTrue(item.getId() != 0);
 
-        DBWriter.deleteFeedMediaOfItem(getInstrumentation().getTargetContext(), media.getId()).get();
+        DBWriter.deleteFeedMediaOfItem(getInstrumentation().getTargetContext(), media.getId())
+                .get(TIMEOUT, TimeUnit.SECONDS);
         media = DBReader.getFeedMedia(media.getId());
         assertNotNull(media);
         assertFalse(dest.exists());
@@ -542,9 +545,10 @@ public class DBWriterTest extends InstrumentationTestCase {
         return media;
     }
 
-    public void testAddItemToPlaybackHistoryNotPlayedYet() throws ExecutionException, InterruptedException {
+    public void testAddItemToPlaybackHistoryNotPlayedYet()
+            throws ExecutionException, InterruptedException, TimeoutException {
         FeedMedia media = playbackHistorySetup(null);
-        DBWriter.addItemToPlaybackHistory(media).get();
+        DBWriter.addItemToPlaybackHistory(media).get(TIMEOUT, TimeUnit.SECONDS);
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         media = DBReader.getFeedMedia(media.getId());
@@ -554,11 +558,12 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertNotNull(media.getPlaybackCompletionDate());
     }
 
-    public void testAddItemToPlaybackHistoryAlreadyPlayed() throws ExecutionException, InterruptedException {
+    public void testAddItemToPlaybackHistoryAlreadyPlayed()
+            throws ExecutionException, InterruptedException, TimeoutException {
         final long OLD_DATE = 0;
 
         FeedMedia media = playbackHistorySetup(new Date(OLD_DATE));
-        DBWriter.addItemToPlaybackHistory(media).get();
+        DBWriter.addItemToPlaybackHistory(media).get(TIMEOUT, TimeUnit.SECONDS);
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         media = DBReader.getFeedMedia(media.getId());
