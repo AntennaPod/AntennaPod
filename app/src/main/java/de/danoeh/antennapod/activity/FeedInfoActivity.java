@@ -224,10 +224,12 @@ public class FeedInfoActivity extends ActionBarActivity {
                         etxtFilterText.setText(filter.getIncludeFilter());
                         rdoFilterInclude.setChecked(true);
                         rdoFilterExclude.setChecked(false);
+                        filterInclude = true;
                     } else if (filter.excludeOnly()) {
                         etxtFilterText.setText(filter.getExcludeFilter());
                         rdoFilterInclude.setChecked(false);
                         rdoFilterExclude.setChecked(true);
+                        filterInclude = false;
                     } else {
                         Log.d(TAG, "No filter set");
                         rdoFilterInclude.setChecked(false);
