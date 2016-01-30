@@ -67,7 +67,7 @@ public class HttpDownloader extends Downloader {
             final URI uri = URIUtil.getURIFromRequestUrl(request.getSource());
             Request.Builder httpReq = new Request.Builder().url(uri.toURL())
                     .header("User-Agent", ClientConfig.USER_AGENT);
-            if(request.getLastModified() != null) {
+            if(!TextUtils.isEmpty(request.getLastModified())) {
                 String lastModified = request.getLastModified();
                 Date lastModifiedDate = DateUtils.parse(lastModified);
                 if(lastModifiedDate != null) {

@@ -1512,7 +1512,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 1050003;
+        private final static int VERSION = 1050004;
 
         private Context context;
 
@@ -1756,7 +1756,6 @@ public class PodDBAdapter {
                 db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_PUBDATE);
                 db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_READ);
             }
-
             if (oldVersion < 1050003) {
                 // Migrates feed list filter data
 
@@ -1803,6 +1802,11 @@ public class PodDBAdapter {
                 // and now auto refresh
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                         + " ADD COLUMN " + PodDBAdapter.KEY_KEEP_UPDATED + " INTEGER DEFAULT 1");
+            }
+            if (oldVersion < 1050004) {
+                // prevent old timestamps to be misinterpreted as ETags
+                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        +" SET " + PodDBAdapter.KEY_LASTUPDATE + "=NULL");
             }
 
             EventBus.getDefault().post(ProgressEvent.end());
