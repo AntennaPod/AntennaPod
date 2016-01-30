@@ -248,11 +248,11 @@ public final class DBTasks {
     public static void loadNextPageOfFeed(final Context context, Feed feed, boolean loadAllPages) throws DownloadRequestException {
         if (feed.isPaged() && feed.getNextPageLink() != null) {
             int pageNr = feed.getPageNr() + 1;
-            Feed nextFeed = new Feed(feed.getNextPageLink(), new Date(), feed.getTitle() + "(" + pageNr + ")");
+            Feed nextFeed = new Feed(feed.getNextPageLink(), null, feed.getTitle() + "(" + pageNr + ")");
             nextFeed.setPageNr(pageNr);
             nextFeed.setPaged(true);
             nextFeed.setId(feed.getId());
-            DownloadRequester.getInstance().downloadFeed(context, nextFeed, loadAllPages);
+            DownloadRequester.getInstance().downloadFeed(context, nextFeed, loadAllPages, false);
         } else {
             Log.e(TAG, "loadNextPageOfFeed: Feed was either not paged or contained no nextPageLink");
         }
@@ -273,7 +273,7 @@ public final class DBTasks {
 
     private static void refreshFeed(Context context, Feed feed, boolean loadAllPages) throws DownloadRequestException {
         Feed f;
-        Date lastUpdate = feed.hasLastUpdateFailed() ? new Date(0) : feed.getLastUpdate();
+        String lastUpdate = feed.hasLastUpdateFailed() ? null : feed.getLastUpdate();
         if (feed.getPreferences() == null) {
             f = new Feed(feed.getDownload_url(), lastUpdate, feed.getTitle());
         } else {

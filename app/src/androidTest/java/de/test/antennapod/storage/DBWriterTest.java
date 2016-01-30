@@ -65,7 +65,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         final int PLAYED_DURATION = 60;
         final int DURATION = 100;
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         FeedItem item = new FeedItem(0, "Item", "Item", "url", new Date(), FeedItem.PLAYED, feed);
@@ -95,7 +95,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
         assertTrue(dest.createNewFile());
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         FeedItem item = new FeedItem(0, "Item", "Item", "url", new Date(), FeedItem.PLAYED, feed);
@@ -124,7 +124,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
 
         // create Feed image
@@ -197,7 +197,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
 
         feed.setImage(null);
@@ -253,7 +253,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(null);
 
         // create Feed image
@@ -290,7 +290,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
 
         // create Feed image
@@ -342,7 +342,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
 
         // create Feed image
@@ -400,7 +400,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
 
         // create Feed image
@@ -472,7 +472,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<FeedItem>());
 
         // create Feed image
@@ -528,7 +528,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
     private FeedMedia playbackHistorySetup(Date playbackCompletionDate) {
         final Context context = getInstrumentation().getTargetContext();
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<FeedItem>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
         FeedMedia media = new FeedMedia(0, item, 10, 0, 1, "mime", null, "url", false, playbackCompletionDate, 0, 0);
@@ -571,7 +571,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
     private Feed queueTestSetupMultipleItems(final int NUM_ITEMS) throws InterruptedException, ExecutionException, TimeoutException {
         final Context context = getInstrumentation().getTargetContext();
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.PLAYED, feed);
@@ -598,7 +598,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
     public void testAddQueueItemSingleItem() throws InterruptedException, ExecutionException, TimeoutException {
         final Context context = getInstrumentation().getTargetContext();
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
         feed.getItems().add(item);
@@ -622,7 +622,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
     public void testAddQueueItemSingleItemAlreadyInQueue() throws InterruptedException, ExecutionException, TimeoutException {
         final Context context = getInstrumentation().getTargetContext();
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
         feed.getItems().add(item);
@@ -688,7 +688,7 @@ public class DBWriterTest extends InstrumentationTestCase {
     public void testRemoveQueueItem() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
         final Context context = getInstrumentation().getTargetContext();
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.PLAYED, feed);
@@ -733,7 +733,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
     public void testMoveQueueItem() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.PLAYED, feed);
@@ -779,7 +779,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
     public void testMarkFeedRead() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<FeedItem>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.UNPLAYED, feed);
@@ -805,7 +805,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
     public void testMarkAllItemsReadSameFeed() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.UNPLAYED, feed);

@@ -156,10 +156,9 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                 ArrayList<OpmlElement> opmlElements = new OpmlReader().readDocument(reader);
                 mChecksum = digester == null ? null : digester.digest();
                 DownloadRequester downloader = DownloadRequester.getInstance();
-                Date lastUpdated = new Date();
 
                 for (OpmlElement opmlElem : opmlElements) {
-                    Feed feed = new Feed(opmlElem.getXmlUrl(), lastUpdated, opmlElem.getText());
+                    Feed feed = new Feed(opmlElem.getXmlUrl(), null, opmlElem.getText());
 
                     try {
                         downloader.downloadFeed(mContext, feed);

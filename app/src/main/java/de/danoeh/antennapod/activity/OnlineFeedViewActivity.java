@@ -35,7 +35,6 @@ import org.jsoup.nodes.Document;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -258,7 +257,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
     private void startFeedDownload(String url, String username, String password) {
         Log.d(TAG, "Starting feed download");
         url = URLChecker.prepareURL(url);
-        feed = new Feed(url, new Date(0));
+        feed = new Feed(url, null);
         if (username != null && password != null) {
             feed.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL, username, password));
         }
@@ -410,7 +409,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
 
         subscribeButton.setOnClickListener(v -> {
             try {
-                Feed f = new Feed(selectedDownloadUrl, new Date(0), feed.getTitle());
+                Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());
                 f.setPreferences(feed.getPreferences());
                 this.feed = f;
 

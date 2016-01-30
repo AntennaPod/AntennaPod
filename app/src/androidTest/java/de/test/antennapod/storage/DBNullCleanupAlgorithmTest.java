@@ -82,7 +82,7 @@ public class DBNullCleanupAlgorithmTest extends InstrumentationTestCase {
     public void testPerformAutoCleanupShouldNotDelete() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();

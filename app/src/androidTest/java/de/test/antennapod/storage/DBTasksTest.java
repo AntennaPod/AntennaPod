@@ -1,13 +1,9 @@
 package de.test.antennapod.storage;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.test.FlakyTest;
 import android.test.InstrumentationTestCase;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -15,13 +11,10 @@ import java.util.List;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-
-import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
 
 /**
  * Test class for DBTasks
@@ -57,7 +50,7 @@ public class DBTasksTest extends InstrumentationTestCase {
     public void testUpdateFeedNewFeed() {
         final int NUM_ITEMS = 10;
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(), FeedItem.UNPLAYED, feed));
@@ -75,8 +68,8 @@ public class DBTasksTest extends InstrumentationTestCase {
     /** Two feeds with the same title, but different download URLs should be treated as different feeds. */
     public void testUpdateFeedSameTitle() {
 
-        Feed feed1 = new Feed("url1", new Date(), "title");
-        Feed feed2 = new Feed("url2", new Date(), "title");
+        Feed feed1 = new Feed("url1", null, "title");
+        Feed feed2 = new Feed("url2", null, "title");
 
         feed1.setItems(new ArrayList<>());
         feed2.setItems(new ArrayList<>());
@@ -91,7 +84,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         final int NUM_ITEMS_OLD = 10;
         final int NUM_ITEMS_NEW = 10;
 
-        final Feed feed = new Feed("url", new Date(), "title");
+        final Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS_OLD; i++) {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));

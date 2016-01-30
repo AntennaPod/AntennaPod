@@ -54,10 +54,10 @@ public class DBReaderTest extends InstrumentationTestCase {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        Feed feed1 = new Feed(0, new Date(), "A", "link", "d", null, null, null, "rss", "A", null, "", "", true);
-        Feed feed2 = new Feed(0, new Date(), "b", "link", "d", null, null, null, "rss", "b", null, "", "", true);
-        Feed feed3 = new Feed(0, new Date(), "C", "link", "d", null, null, null, "rss", "C", null, "", "", true);
-        Feed feed4 = new Feed(0, new Date(), "d", "link", "d", null, null, null, "rss", "d", null, "", "", true);
+        Feed feed1 = new Feed(0, null, "A", "link", "d", null, null, null, "rss", "A", null, "", "", true);
+        Feed feed2 = new Feed(0, null, "b", "link", "d", null, null, null, "rss", "b", null, "", "", true);
+        Feed feed3 = new Feed(0, null, "C", "link", "d", null, null, null, "rss", "C", null, "", "", true);
+        Feed feed4 = new Feed(0, null, "d", "link", "d", null, null, null, "rss", "d", null, "", "", true);
         adapter.setCompleteFeed(feed1);
         adapter.setCompleteFeed(feed2);
         adapter.setCompleteFeed(feed3);

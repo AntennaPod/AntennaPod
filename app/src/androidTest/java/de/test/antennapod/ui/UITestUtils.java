@@ -143,7 +143,7 @@ public class UITestUtils {
         for (int i = 0; i < NUM_FEEDS; i++) {
             File bitmapFile = newBitmapFile("image" + i);
             FeedImage image = new FeedImage(0, "image " + i, null, hostFile(bitmapFile), false);
-            Feed feed = new Feed(0, new Date(), "Title " + i, "http://example.com/" + i, "Description of feed " + i,
+            Feed feed = new Feed(0, null, "Title " + i, "http://example.com/" + i, "Description of feed " + i,
                     "http://example.com/pay/feed" + i, "author " + i, "en", Feed.TYPE_RSS2, "feed" + i, image, null,
                     "http://example.com/feed/src/" + i, false);
             image.setOwner(feed);

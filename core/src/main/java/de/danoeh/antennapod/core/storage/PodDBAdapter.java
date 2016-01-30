@@ -368,7 +368,7 @@ public class PodDBAdapter {
         values.put(KEY_FILE_URL, feed.getFile_url());
         values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
         values.put(KEY_DOWNLOADED, feed.isDownloaded());
-        values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
+        values.put(KEY_LASTUPDATE, feed.getLastUpdate());
         values.put(KEY_TYPE, feed.getType());
         values.put(KEY_FEED_IDENTIFIER, feed.getFeedIdentifier());
 

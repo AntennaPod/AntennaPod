@@ -48,7 +48,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
     private List<FeedItem> writeTestQueue(String pref) {
         final Context c = getInstrumentation().getTargetContext();
         final int NUM_ITEMS = 10;
-        Feed f = new Feed(0, new Date(), "title", "link", "d", null, null, null, null, "id", null, "null", "url", false);
+        Feed f = new Feed(0, null, "title", "link", "d", null, null, null, null, "id", null, "null", "url", false);
         f.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             f.getItems().add(new FeedItem(0, pref + i, pref + i, "link", new Date(), FeedItem.PLAYED, f));

@@ -162,7 +162,7 @@ public class FeedHandlerTest extends InstrumentationTestCase {
         if (withImage) {
             image = new FeedImage(0, "image", null, "http://example.com/picture", false);
         }
-        Feed feed = new Feed(0, new Date(), "title", "http://example.com", "This is the description",
+        Feed feed = new Feed(0, null, "title", "http://example.com", "This is the description",
                 "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed", image, file.getAbsolutePath(),
                 "http://example.com/feed", true);
         feed.setItems(new ArrayList<FeedItem>());
