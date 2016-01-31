@@ -42,6 +42,10 @@
                   android:title="@string/downloaded_label"/>
             <item android:id="@+id/check_not_downloaded"
                   android:title="@string/not_downloaded_label"/>
+            <item android:id="@+id/check_queued"
+                android:title="@string/queued_label"/>
+            <item android:id="@+id/check_not_queued"
+                android:title="@string/not_queued_label"/>
         </menu>
     </item>
 

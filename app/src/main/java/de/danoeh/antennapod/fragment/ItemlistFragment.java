@@ -252,8 +252,8 @@ public class ItemlistFragment extends ListFragment {
                 if (!FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed)) {
                     switch (item.getItemId()) {
                         case R.id.episode_actions:
-                            EpisodesApplyActionFragment fragment = new EpisodesApplyActionFragment();
-                            fragment.setEpisodes(feed.getItems());
+                            EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
+                                    .newInstance(feed.getItems());
                             ((MainActivity)getActivity()).loadChildFragment(fragment);
                             return true;
                         case R.id.remove_item:

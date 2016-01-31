@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -17,10 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.joanzapata.iconify.Icon;
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +34,14 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     public String TAG = "EpisodeActionFragment";
 
+    public static final int ACTION_QUEUE = 0;
+    public static final int ACTION_MARK_PLAYED = 1;
+    public static final int ACTION_MARK_UNPLAYED = 2;
+    public static final int ACTION_DOWNLOAD = 4;
+    public static final int ACTION_REMOVE = 8;
+    public static final int ACTION_ALL = ACTION_QUEUE | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED
+            | ACTION_DOWNLOAD | ACTION_REMOVE;
+
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
 
@@ -48,27 +51,26 @@ public class EpisodesApplyActionFragment extends Fragment {
     private Button btnDownload;
     private Button btnDelete;
 
-    private final Map<Long,FeedItem> idMap;
-    private final List<FeedItem> episodes;
+    private final Map<Long,FeedItem> idMap = new ArrayMap<>();
+    private final List<FeedItem> episodes = new ArrayList<>();
+    private int actions;
     private final List<String> titles = new ArrayList();
     private final LongList checkedIds = new LongList();
 
     private MenuItem mSelectToggle;
 
-    private int textColor;
-
-    public EpisodesApplyActionFragment() {
-        this.episodes = new ArrayList<>();
-        this.idMap = new ArrayMap<>();
+    public static EpisodesApplyActionFragment newInstance(List<FeedItem> items) {
+        return newInstance(items, ACTION_ALL);
     }
 
-    public void setEpisodes(List<FeedItem> episodes) {
-        this.episodes.clear();
-        this.episodes.addAll(episodes);
-        this.idMap.clear();
-        for(FeedItem episode : episodes) {
-            this.idMap.put(episode.getId(), episode);
+    public static EpisodesApplyActionFragment newInstance(List<FeedItem> items, int actions) {
+        EpisodesApplyActionFragment f = new EpisodesApplyActionFragment();
+        f.episodes.addAll(items);
+        for(FeedItem episode : items) {
+            f.idMap.put(episode.getId(), episode);
         }
+        f.actions = actions;
+        return f;
     }
 
     @Override
@@ -103,16 +105,48 @@ public class EpisodesApplyActionFragment extends Fragment {
         mListView.setAdapter(mAdapter);
         checkAll();
 
+        int lastVisibleDiv = 0;
         btnAddToQueue = (Button) view.findViewById(R.id.btnAddToQueue);
-        btnAddToQueue.setOnClickListener(v -> queueChecked());
+        if((actions & ACTION_QUEUE) != 0) {
+            btnAddToQueue.setOnClickListener(v -> queueChecked());
+            lastVisibleDiv = R.id.divider1;
+        } else {
+            btnAddToQueue.setVisibility(View.GONE);
+            view.findViewById(R.id.divider1).setVisibility(View.GONE);
+        }
         btnMarkAsPlayed = (Button) view.findViewById(R.id.btnMarkAsPlayed);
-        btnMarkAsPlayed.setOnClickListener(v -> markedCheckedPlayed());
+        if((actions & ACTION_MARK_PLAYED) != 0) {
+            btnMarkAsPlayed.setOnClickListener(v -> markedCheckedPlayed());
+            lastVisibleDiv = R.id.divider2;
+        } else {
+            btnMarkAsPlayed.setVisibility(View.GONE);
+            view.findViewById(R.id.divider2).setVisibility(View.GONE);
+        }
         btnMarkAsUnplayed = (Button) view.findViewById(R.id.btnMarkAsUnplayed);
-        btnMarkAsUnplayed.setOnClickListener(v -> markedCheckedUnplayed());
+        if((actions & ACTION_MARK_UNPLAYED) != 0) {
+            btnMarkAsUnplayed.setOnClickListener(v -> markedCheckedUnplayed());
+            lastVisibleDiv = R.id.divider3;
+        } else {
+            btnMarkAsUnplayed.setVisibility(View.GONE);
+            view.findViewById(R.id.divider3).setVisibility(View.GONE);
+        }
         btnDownload = (Button) view.findViewById(R.id.btnDownload);
-        btnDownload.setOnClickListener(v -> downloadChecked());
+        if((actions & ACTION_DOWNLOAD) != 0) {
+            btnDownload.setOnClickListener(v -> downloadChecked());
+            lastVisibleDiv = R.id.divider4;
+        } else {
+            btnDownload.setVisibility(View.GONE);
+            view.findViewById(R.id.divider4).setVisibility(View.GONE);
+        }
         btnDelete = (Button) view.findViewById(R.id.btnDelete);
-        btnDelete.setOnClickListener(v -> deleteChecked());
+        if((actions & ACTION_REMOVE) != 0) {
+            btnDelete.setOnClickListener(v -> deleteChecked());
+        } else {
+            btnDelete.setVisibility(View.GONE);
+            if(lastVisibleDiv > 0) {
+                view.findViewById(lastVisibleDiv).setVisibility(View.GONE);
+            }
+        }
 
         return view;
     }
@@ -121,11 +155,6 @@ public class EpisodesApplyActionFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.episodes_apply_action_options, menu);
-
-        int[] attrs = { android.R.attr.textColor };
-        TypedArray ta = getActivity().obtainStyledAttributes(attrs);
-        textColor = ta.getColor(0, Color.GRAY);
-        ta.recycle();
 
         mSelectToggle = menu.findItem(R.id.select_toggle);
         mSelectToggle.setOnMenuItemClickListener(item -> {
@@ -140,22 +169,21 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
-        /*
-         * Prepare icon for select toggle button
-         */
+        // Prepare icon for select toggle button
 
-        // Find icon attribute
         int[] icon = new int[1];
-        if(checkedIds.size() == episodes.size()) icon[0] = R.attr.ic_check_box;
-        else if(checkedIds.size() == 0) icon[0] = R.attr.ic_check_box_outline;
-        else icon[0] = R.attr.ic_indeterminate_check_box;
+        if (checkedIds.size() == episodes.size()) {
+            icon[0] = R.attr.ic_check_box;
+        } else if (checkedIds.size() == 0) {
+            icon[0] = R.attr.ic_check_box_outline;
+        } else {
+            icon[0] = R.attr.ic_indeterminate_check_box;
+        }
 
-        // Get Drawable from attribute
         TypedArray a = getActivity().obtainStyledAttributes(icon);
         Drawable iconDrawable = a.getDrawable(0);
         a.recycle();
 
-        // Set icon
         mSelectToggle.setIcon(iconDrawable);
     }
 
@@ -188,6 +216,14 @@ public class EpisodesApplyActionFragment extends Fragment {
             case R.id.check_not_downloaded:
                 checkDownloaded(false);
                 resId = R.string.selected_not_downloaded_label;
+                break;
+            case R.id.check_queued:
+                checkQueued(true);
+                resId = R.string.selected_queued_label;
+                break;
+            case R.id.check_not_queued:
+                checkQueued(false);
+                resId = R.string.selected_not_queued_label;
                 break;
             case R.id.sort_title_a_z:
                 sortByTitle(false);
@@ -305,6 +341,17 @@ public class EpisodesApplyActionFragment extends Fragment {
                 if(checkedIds.contains(episode.getId())) {
                     checkedIds.remove(episode.getId());
                 }
+            }
+        }
+        refreshCheckboxes();
+    }
+
+    private void checkQueued(boolean isQueued) {
+        for (FeedItem episode : episodes) {
+            if(episode.isTagged(FeedItem.TAG_QUEUE) == isQueued) {
+                checkedIds.add(episode.getId());
+            } else {
+                checkedIds.remove(episode.getId());
             }
         }
         refreshCheckboxes();
