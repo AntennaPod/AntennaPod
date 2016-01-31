@@ -22,6 +22,8 @@
   <string name="playback_history_label">Що грало</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net логін</string>
+  <string name="free_space_label">%1$s вільно</string>
+  <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Щойно опубліковано</string>
   <string name="episode_filter_label">Показати тількі нові епізоди</string>
@@ -100,6 +102,7 @@
   <string name="mark_all_seen_label">Позначити всі як переглянуті</string>
   <string name="show_info_label">Інформація</string>
   <string name="remove_feed_label">Видалити подкаст</string>
+  <string name="share_label">Поділитися…</string>
   <string name="share_link_label">Поділитися URL сайту</string>
   <string name="share_link_with_position_label">Поділитись посиланням на позицію</string>
   <string name="share_feed_url_label">Поділитись посиланням на канал</string>
@@ -134,7 +137,9 @@
   <string name="added_to_queue_label">Додано до черги</string>
   <string name="remove_from_queue_label">Видалити з черги</string>
   <string name="add_to_favorite_label">Додати до улюблених</string>
+  <string name="added_to_favorites">Додано до улюблених</string>
   <string name="remove_from_favorite_label">Видалити з улюблених</string>
+  <string name="removed_from_favorites">Видалено з улюблених</string>
   <string name="visit_website_label">Відкрити сайт</string>
   <string name="support_label">Підтримати за допомогою Flattr</string>
   <string name="enqueue_all_new">Додати до черги</string>
@@ -168,6 +173,11 @@
   <string name="download_error_io_error">Помилка IO</string>
   <string name="download_error_request_error">Помилка запиту</string>
   <string name="download_error_db_access">Помилка бази даних</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d завантаження залишилось</item>
+    <item quantity="few">%d завантаження залишилось</item>
+    <item quantity="other">%d завантажень залишилось</item>
+  </plurals>
   <string name="downloads_processing">Обробка завантаженого</string>
   <string name="download_notification_title">Завантаження даних подкасту</string>
   <string name="download_report_content">Завантажилось %1$d успішно, %2$d з помилками</string>
@@ -199,6 +209,8 @@
   <!--Queue operations-->
   <string name="lock_queue">Заблокувати чергу</string>
   <string name="unlock_queue">Розблокувати чергу</string>
+  <string name="queue_locked">Чергу заблоковано</string>
+  <string name="queue_unlocked">Чергу разблоковано</string>
   <string name="clear_queue_label">Очистити чергу</string>
   <string name="undo">Скасувати</string>
   <string name="removed_from_queue">Видалено</string>
@@ -270,6 +282,8 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Вимкнути</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Інтервал</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Встановити час щодня</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">кожні %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">на %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Завантажувати тільки через Wifi</string>
   <string name="pref_followQueue_title">Грати безперервно</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Завантаження через Wifi</string>
@@ -339,8 +353,12 @@
   <string name="pref_smart_mark_as_played_disabled">Вимкнено</string>
   <string name="pref_image_cache_size_title">Розмір кеша зображень</string>
   <string name="pref_image_cache_size_sum">Розмір дискового кеша для зображень.</string>
+  <string name="crash_report_title">Звіт про збій</string>
+  <string name="crash_report_sum">Надіслати е-пошту зі звітом про останній збій</string>
+  <string name="send_email">Надіслати е-пошту</string>
   <string name="experimental_pref">Експериментальні</string>
   <string name="pref_sonic_title">Програвач Sonic</string>
+  <string name="pref_current_value">Поточне значення: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -367,6 +385,7 @@
   <string name="opml_import_error_dir_empty">Директорія імпорту пуста</string>
   <string name="select_all_label">Обрати все</string>
   <string name="deselect_all_label">Убрати виділення</string>
+  <string name="select_options_label">Обрати…</string>
   <string name="choose_file_from_filesystem">З локальної файлової системи</string>
   <string name="choose_file_from_external_application">За допомогою додатка</string>
   <string name="opml_export_label">OPML экспорт</string>
@@ -438,6 +457,7 @@
   <string name="create_folder_error_no_write_access">Не можу записати в цю папку</string>
   <string name="create_folder_error_already_exists">Папка вже існує</string>
   <string name="create_folder_error">Не можу создати папку</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" не існує</string>
   <string name="folder_not_empty_dialog_title">Папка не є пустою</string>
   <string name="folder_not_empty_dialog_msg">В папці щось є. Всі завантаження зберігаються в цю папку. Все рівно продовжувати?</string>
   <string name="set_to_default_folder">Обрати папку по замовчанню</string>
@@ -449,6 +469,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
   <string name="subscribed_label">Підписано</string>
+  <string name="downloading_label">Завантажується…</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Показати глави</string>
   <string name="show_shownotes_label">Показати нотатки</string>
@@ -471,11 +492,14 @@
   <!--Feed information screen-->
   <string name="authentication_label">Автентикація</string>
   <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>
+  <string name="auto_download_settings_label">Налаштування автозавантаження</string>
+  <string name="episode_filters_label">Фільтр епізодів</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Оновлення бази даних</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <string name="search_itunes_label">Пошук в iTunes</string>
+  <string name="filter">Фільтр</string>
   <string name="all_label">Всі</string>
   <string name="selected_all_label">Обрано всі епізоди</string>
   <string name="none_label">Жодного</string>
@@ -495,5 +519,12 @@
   <string name="sort_duration_short_long">Тривалість (Короткі \u2192 Довгі)</string>
   <string name="sort_duration_long_short">Тривалість (Довгі \u2192 Короткі)</string>
   <!--Rating dialog-->
+  <string name="rating_later_label">Нагадати згодом</string>
   <!--Audio controls-->
+  <string name="playback_speed">Швидкість програвання</string>
+  <string name="volume">Гучність</string>
+  <string name="left_short">Л</string>
+  <string name="right_short">П</string>
+  <string name="audio_effects">Аудіоефекти</string>
+  <string name="stereo_to_mono">Зробити моно із стерео</string>
 </resources>
