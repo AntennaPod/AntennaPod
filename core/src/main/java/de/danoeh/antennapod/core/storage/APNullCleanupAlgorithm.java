@@ -21,4 +21,9 @@ public class APNullCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     public int getDefaultCleanupParameter() {
         return 0;
     }
+
+    @Override
+    public int getAvailableSpace() {
+        return 0;
+    }
 }

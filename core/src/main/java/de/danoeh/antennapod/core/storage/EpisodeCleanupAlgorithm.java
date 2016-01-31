@@ -40,6 +40,11 @@ public abstract class EpisodeCleanupAlgorithm {
     }
 
     /**
+     * @return the number of episodes that *could* be cleaned up, if needed
+     */
+    public abstract int getAvailableSpace();
+
+    /**
      * @param amountOfRoomNeeded the number of episodes we want to download
      * @return the number of episodes to delete in order to make room
      */

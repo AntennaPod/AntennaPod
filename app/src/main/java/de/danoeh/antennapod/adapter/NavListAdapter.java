@@ -228,7 +228,10 @@ public class NavListAdapter extends BaseAdapter
             }
         } else if(tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
             int epCacheSize = UserPreferences.getEpisodeCacheSize();
-            if(itemAccess.getNumberOfDownloadedItems() >= epCacheSize) {
+            // don't count episodes that we could delete when autodownloading
+            int spaceUsed = itemAccess.getNumberOfDownloadedItems() -
+                    UserPreferences.getEpisodeCleanupAlgorithm().getAvailableSpace();
+            if (spaceUsed >= epCacheSize) {
                 holder.count.setText("{md-disc-full 150%}");
                 Iconify.addIcons(holder.count);
                 holder.count.setVisibility(View.VISIBLE);
