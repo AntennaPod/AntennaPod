@@ -8,7 +8,6 @@ import com.squareup.okhttp.Protocol;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
-import com.squareup.okhttp.internal.http.HttpDate;
 
 import org.apache.commons.io.IOUtils;
 
@@ -28,6 +27,7 @@ import java.util.Date;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URIUtil;
@@ -67,13 +67,19 @@ public class HttpDownloader extends Downloader {
             final URI uri = URIUtil.getURIFromRequestUrl(request.getSource());
             Request.Builder httpReq = new Request.Builder().url(uri.toURL())
                     .header("User-Agent", ClientConfig.USER_AGENT);
-            if(request.getIfModifiedSince() > 0) {
-                long threeDaysAgo = System.currentTimeMillis() - 1000*60*60*24*3;
-                if(request.getIfModifiedSince() > threeDaysAgo) {
-                    Date date = new Date(request.getIfModifiedSince());
-                    String httpDate = HttpDate.format(date);
-                    Log.d(TAG, "addHeader(\"If-Modified-Since\", \"" + httpDate + "\")");
-                    httpReq.addHeader("If-Modified-Since", httpDate);
+            if(!TextUtils.isEmpty(request.getLastModified())) {
+                String lastModified = request.getLastModified();
+                Date lastModifiedDate = DateUtils.parse(lastModified);
+                if(lastModifiedDate != null) {
+                    long threeDaysAgo = System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 3;
+                    if (lastModifiedDate.getTime() > threeDaysAgo) {
+                        Log.d(TAG, "addHeader(\"If-Modified-Since\", \"" + lastModified + "\")");
+                        httpReq.addHeader("If-Modified-Since", lastModified);
+                    }
+                } else {
+                    String eTag = lastModified;
+                    Log.d(TAG, "addHeader(\"If-None-Match\", \"" + eTag + "\")");
+                    httpReq.addHeader("If-None-Match", eTag);
                 }
             }
 
@@ -234,6 +240,12 @@ public class HttpDownloader extends Downloader {
                 } else if(request.getSize() > 0 && request.getSoFar() == 0){
                     onFail(DownloadError.ERROR_IO_ERROR, "Download completed, but nothing was read");
                     return;
+                }
+                String lastModified = response.header("Last-Modified");
+                if(lastModified != null) {
+                    request.setLastModified(lastModified);
+                } else {
+                    request.setLastModified(response.header("ETag"));
                 }
                 onSuccess();
             }

@@ -368,7 +368,7 @@ public class PodDBAdapter {
         values.put(KEY_FILE_URL, feed.getFile_url());
         values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
         values.put(KEY_DOWNLOADED, feed.isDownloaded());
-        values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
+        values.put(KEY_LASTUPDATE, feed.getLastUpdate());
         values.put(KEY_TYPE, feed.getType());
         values.put(KEY_FEED_IDENTIFIER, feed.getFeedIdentifier());
 
@@ -1151,7 +1151,7 @@ public class PodDBAdapter {
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getNewItemsCursor() {
-        String[] args = new String[] {
+        Object[] args = new String[] {
                 SEL_FI_SMALL_STR,
                 TABLE_NAME_FEED_ITEMS,
                 TABLE_NAME_FEEDS,
@@ -1512,7 +1512,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 1050003;
+        private final static int VERSION = 1050004;
 
         private Context context;
 
@@ -1756,7 +1756,6 @@ public class PodDBAdapter {
                 db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_PUBDATE);
                 db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_READ);
             }
-
             if (oldVersion < 1050003) {
                 // Migrates feed list filter data
 
@@ -1803,6 +1802,11 @@ public class PodDBAdapter {
                 // and now auto refresh
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                         + " ADD COLUMN " + PodDBAdapter.KEY_KEEP_UPDATED + " INTEGER DEFAULT 1");
+            }
+            if (oldVersion < 1050004) {
+                // prevent old timestamps to be misinterpreted as ETags
+                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        +" SET " + PodDBAdapter.KEY_LASTUPDATE + "=NULL");
             }
 
             EventBus.getDefault().post(ProgressEvent.end());

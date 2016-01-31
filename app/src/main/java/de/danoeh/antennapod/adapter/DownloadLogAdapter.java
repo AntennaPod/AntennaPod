@@ -13,8 +13,6 @@ import android.widget.Toast;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
 
-import java.util.Date;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -123,9 +121,8 @@ public class DownloadLogAdapter extends BaseAdapter {
 			if(holder.typeId == Feed.FEEDFILETYPE_FEED) {
 				Feed feed = DBReader.getFeed(holder.id);
 				if (feed != null) {
-					feed.setLastUpdate(new Date(0)); // force refresh
 					try {
-						DBTasks.refreshFeed(context, feed);
+						DBTasks.forceRefreshFeed(context, feed);
 					} catch (DownloadRequestException e) {
 						e.printStackTrace();
 					}

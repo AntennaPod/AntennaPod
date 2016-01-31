@@ -115,7 +115,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
     private Playable writeTestPlayable(String downloadUrl, String fileUrl) {
         final Context c = getInstrumentation().getTargetContext();
-        Feed f = new Feed(0, new Date(), "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
+        Feed f = new Feed(0, null, "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
         FeedPreferences prefs = new FeedPreferences(f.getId(), false, FeedPreferences.AutoDeleteAction.NO, null, null);
         f.setPreferences(prefs);
         f.setItems(new ArrayList<>());

@@ -824,7 +824,7 @@ public class DownloadService extends Service {
         }
 
         private Pair<DownloadRequest, FeedHandlerResult> parseFeed(DownloadRequest request) {
-            Feed feed = new Feed(request.getSource(), new Date());
+            Feed feed = new Feed(request.getSource(), request.getLastModified());
             feed.setFile_url(request.getDestination());
             feed.setId(request.getFeedfileId());
             feed.setDownloaded(true);

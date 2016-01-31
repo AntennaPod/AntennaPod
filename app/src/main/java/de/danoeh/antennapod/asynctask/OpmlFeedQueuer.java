@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import de.danoeh.antennapod.activity.OpmlImportHolder;
 import de.danoeh.antennapod.core.R;
@@ -47,7 +46,7 @@ public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {
 		for (int idx = 0; idx < selection.length; idx++) {
 			OpmlElement element = OpmlImportHolder.getReadElements().get(
 					selection[idx]);
-			Feed feed = new Feed(element.getXmlUrl(), new Date(0),
+			Feed feed = new Feed(element.getXmlUrl(), null,
 					element.getText());
 			try {
 				requester.downloadFeed(context.getApplicationContext(), feed);

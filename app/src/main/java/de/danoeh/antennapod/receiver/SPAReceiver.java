@@ -8,7 +8,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
@@ -35,7 +34,7 @@ public class SPAReceiver extends BroadcastReceiver{
                 if (feedUrls != null) {
                     if (BuildConfig.DEBUG) Log.d(TAG, "Received feeds list: " + Arrays.toString(feedUrls));
                     for (String url : feedUrls) {
-                        Feed f  = new Feed(url, new Date(0));
+                        Feed f  = new Feed(url, null);
                         try {
                             DownloadRequester.getInstance().downloadFeed(context, f);
                         } catch (DownloadRequestException e) {

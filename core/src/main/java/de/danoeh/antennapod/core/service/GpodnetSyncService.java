@@ -175,7 +175,7 @@ public class GpodnetSyncService extends Service {
         for (String downloadUrl : changes.getAdded()) {
             if (false == localSubscriptions.contains(downloadUrl) &&
                     false == localRemoved.contains(downloadUrl)) {
-                Feed feed = new Feed(downloadUrl, new Date(0));
+                Feed feed = new Feed(downloadUrl, null);
                 DownloadRequester.getInstance().downloadFeed(this, feed);
             }
         }
