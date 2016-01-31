@@ -142,6 +142,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         return ((MainActivity) solo.getCurrentActivity()).getSupportActionBar().getTitle().toString();
     }
 
+    @SuppressWarnings("unchecked")
     @FlakyTest(tolerance = 3)
     public void testGoToPreferences() {
         openNavDrawer();
