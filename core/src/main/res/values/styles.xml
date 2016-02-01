@@ -57,6 +57,7 @@
         <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
         <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
         <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
+        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
@@ -114,6 +115,8 @@
         <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
         <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
         <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
+        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
+
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -173,6 +176,7 @@
         <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
         <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
         <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
+        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -231,6 +235,7 @@
         <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
         <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
         <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
+        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
