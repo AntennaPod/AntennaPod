@@ -161,7 +161,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
         ui.findPreference(PreferenceController.PREF_OPML_EXPORT).setOnPreferenceClickListener(
                 new Preference.OnPreferenceClickListener() {
-
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         new OpmlExportWorker(activity)
@@ -169,6 +168,26 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
                         return true;
                     }
+                }
+        );
+        ui.findPreference(PreferenceController.PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(
+                preference -> {
+                    if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT &&
+                            Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                        showChooseDataFolderDialog();
+                    } else {
+                        int readPermission = ActivityCompat.checkSelfPermission(
+                                activity, Manifest.permission.READ_EXTERNAL_STORAGE);
+                        int writePermission = ActivityCompat.checkSelfPermission(
+                                activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        if (readPermission == PackageManager.PERMISSION_GRANTED &&
+                                writePermission == PackageManager.PERMISSION_GRANTED) {
+                            openDirectoryChooser();
+                        } else {
+                            requestPermission();
+                        }
+                    }
+                    return true;
                 }
         );
         ui.findPreference(PreferenceController.PREF_CHOOSE_DATA_DIR)
