@@ -1017,7 +1017,8 @@ public final class DBReader {
         int numNewItems = adapter.getNumberOfNewItems();
         int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
 
-        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numDownloadedItems, feedCounters);
+        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numDownloadedItems,
+                feedCounters, UserPreferences.getEpisodeCleanupAlgorithm().getReclaimableItems());
         adapter.close();
         return result;
     }
@@ -1028,17 +1029,20 @@ public final class DBReader {
         public int numNewItems;
         public int numDownloadedItems;
         public LongIntMap feedCounters;
+        public int reclaimableSpace;
 
         public NavDrawerData(List<Feed> feeds,
                              int queueSize,
                              int numNewItems,
                              int numDownloadedItems,
-                             LongIntMap feedIndicatorValues) {
+                             LongIntMap feedIndicatorValues,
+                             int reclaimableSpace) {
             this.feeds = feeds;
             this.queueSize = queueSize;
             this.numNewItems = numNewItems;
             this.numDownloadedItems = numDownloadedItems;
             this.feedCounters = feedIndicatorValues;
+            this.reclaimableSpace = reclaimableSpace;
         }
     }
 }

@@ -23,7 +23,7 @@ public class APNullCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     }
 
     @Override
-    public int getAvailableSpace() {
+    public int getReclaimableItems() {
         return 0;
     }
 }

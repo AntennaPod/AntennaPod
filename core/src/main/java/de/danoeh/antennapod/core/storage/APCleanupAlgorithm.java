@@ -32,7 +32,7 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     /**
      * @return the number of episodes that *could* be cleaned up, if needed
      */
-    public int getAvailableSpace()
+    public int getReclaimableItems()
     {
         return getCandidates().size();
     }
