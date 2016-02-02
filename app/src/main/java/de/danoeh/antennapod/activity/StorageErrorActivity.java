@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -32,6 +33,11 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 public class StorageErrorActivity extends AppCompatActivity {
 
 	private static final String TAG = "StorageErrorActivity";
+
+    private static final String[] EXTERNAL_STORAGE_PERMISSIONS = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE };
+    private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 42;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -174,10 +180,15 @@ public class StorageErrorActivity extends AppCompatActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK &&
 				requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
-			String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
+            String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
 
-			File path = new File(dir);
-			String message = null;
+            File path;
+            if (dir != null) {
+                path = new File(dir);
+            } else {
+                path = getExternalFilesDir(null);
+            }
+            String message = null;
 			if(!path.exists()) {
 				message = String.format(getString(R.string.folder_does_not_exist_error), dir);
 			} else if(!path.canRead()) {

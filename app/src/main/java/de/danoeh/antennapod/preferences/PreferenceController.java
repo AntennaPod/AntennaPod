@@ -1,11 +1,13 @@
 package de.danoeh.antennapod.preferences;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.net.wifi.WifiConfiguration;
@@ -84,6 +86,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private final PreferenceUI ui;
 
     private CheckBoxPreference[] selectedNetworks;
+
+    private static final String[] EXTERNAL_STORAGE_PERMISSIONS = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE };
+    private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 41;
 
     public PreferenceController(PreferenceUI ui) {
         this.ui = ui;
@@ -182,8 +189,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                                 }
                                 return true;
                             }
-                        }
-                );
+                }
+        );
         ui.findPreference(UserPreferences.PREF_THEME)
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
@@ -668,6 +675,19 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
+    }
+
+    // CHOOSE DATA FOLDER
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(ui.getActivity(), EXTERNAL_STORAGE_PERMISSIONS,
+                PERMISSION_REQUEST_EXTERNAL_STORAGE);
+    }
+
+    private void openDirectoryChooser() {
+        Activity activity = ui.getActivity();
+        Intent intent = new Intent(activity, DirectoryChooserActivity.class);
+        activity.startActivityForResult(intent, DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED);
     }
 
     private void showChooseDataFolderDialog() {
