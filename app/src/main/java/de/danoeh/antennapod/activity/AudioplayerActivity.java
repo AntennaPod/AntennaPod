@@ -518,6 +518,11 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         }
 
         @Override
+        public int getReclaimableItems() {
+            return (navDrawerData != null) ? navDrawerData.reclaimableSpace : 0;
+        }
+
+        @Override
         public int getFeedCounter(long feedId) {
             return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
