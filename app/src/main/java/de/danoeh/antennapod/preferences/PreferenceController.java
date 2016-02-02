@@ -389,7 +389,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
             String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
 
-            File path = new File(dir);
+            File path;
+            if(dir != null) {
+                path = new File(dir);
+            } else {
+                path = ui.getActivity().getExternalFilesDir(null);
+            }
             String message = null;
             final Context context= ui.getActivity().getApplicationContext();
             if(!path.exists()) {
