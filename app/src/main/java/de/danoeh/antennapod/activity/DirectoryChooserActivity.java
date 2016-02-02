@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileObserver;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +34,8 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
  * Let's the user choose a directory on the storage device. The selected folder
  * will be sent back to the starting activity as an activity result.
  */
-public class DirectoryChooserActivity extends ActionBarActivity {
+public class DirectoryChooserActivity extends AppCompatActivity {
+
     private static final String TAG = "DirectoryChooserActivit";
 
     private static final String CREATE_DIRECTORY_NAME = "AntennaPod";
@@ -250,8 +251,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.new_folder_item)
-                .setVisible(isValidFile(selectedDir));
+        menu.findItem(R.id.new_folder_item).setVisible(isValidFile(selectedDir));
         return true;
     }
 
@@ -333,4 +333,5 @@ public class DirectoryChooserActivity extends ActionBarActivity {
     private boolean isValidFile(File file) {
         return file != null && file.isDirectory() && file.canRead() && file.canWrite();
     }
+
 }

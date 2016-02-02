@@ -51,6 +51,7 @@
     <attr name="ic_indeterminate_check_box" format="reference"/>
     <attr name="ic_sort" format="reference"/>
     <attr name="ic_sd_storage" format="reference"/>
+    <attr name="ic_create_new_folder" format="reference"/>
 
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference"/>
