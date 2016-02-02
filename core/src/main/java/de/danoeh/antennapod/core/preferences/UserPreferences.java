@@ -67,6 +67,7 @@ public class UserPreferences {
     public static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
     public static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
+    public static final String PREF_ALWAYS_PLAY_TOP_OF_QUEUE ="prefAlwaysPlayAtTopOfQueue";
 
     // Network
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
@@ -716,5 +717,9 @@ public class UserPreferences {
      */
     public static int readEpisodeCacheSize(String valueFromPrefs) {
         return readEpisodeCacheSizeInternal(valueFromPrefs);
+    }
+
+    public static boolean alwaysPlayTopOfQueue() {
+        return prefs.getBoolean(PREF_ALWAYS_PLAY_TOP_OF_QUEUE, false);
     }
 }

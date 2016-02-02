@@ -385,6 +385,8 @@
     <string name="pref_sonic_title">Sonic media player</string>
     <string name="pref_sonic_message">Use built-in sonic media player as a replacement for Android\'s native mediaplayer and Prestissimo</string>
     <string name="pref_current_value">Current value: %1$s</string>
+    <string name="pref_AlwaysPlayAtTopOfQueue_title">Play at top of queue</string>
+    <string name="pref_AlwaysPlayAtTopOfQueue_sum">Always play episode at top of queue</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>

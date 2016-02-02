@@ -576,7 +576,14 @@ public class PlaybackService extends Service {
             try {
                 final List<FeedItem> queue = taskManager.getQueue();
                 isInQueue = QueueAccess.ItemListAccess(queue).contains(item.getId());
-                nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
+                if( UserPreferences.alwaysPlayTopOfQueue() ) {
+                    Log.d(TAG, "Playing from top of queue");
+                    nextItem = DBTasks.getQueueTop(item.getId(), queue);
+                }else {
+                    Log.d(TAG, "Playing next in queue");
+                    nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
+                }
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 // isInQueue remains false
