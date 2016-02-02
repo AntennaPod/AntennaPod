@@ -34,11 +34,11 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     public String TAG = "EpisodeActionFragment";
 
-    public static final int ACTION_QUEUE = 0;
-    public static final int ACTION_MARK_PLAYED = 1;
-    public static final int ACTION_MARK_UNPLAYED = 2;
-    public static final int ACTION_DOWNLOAD = 4;
-    public static final int ACTION_REMOVE = 8;
+    public static final int ACTION_QUEUE = 1;
+    public static final int ACTION_MARK_PLAYED = 2;
+    public static final int ACTION_MARK_UNPLAYED = 4;
+    public static final int ACTION_DOWNLOAD = 8;
+    public static final int ACTION_REMOVE = 16;
     public static final int ACTION_ALL = ACTION_QUEUE | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED
             | ACTION_DOWNLOAD | ACTION_REMOVE;
 
