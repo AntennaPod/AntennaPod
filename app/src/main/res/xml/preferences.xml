@@ -150,13 +150,6 @@
             android:summary="@string/pref_resumeAfterCall_sum"
             android:title="@string/pref_resumeAfterCall_title"/>
 
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefAlwaysPlayAtTopOfQueue"
-            android:summary="@string/pref_AlwaysPlayAtTopOfQueue_sum"
-            android:title="@string/pref_AlwaysPlayAtTopOfQueue_title"/>
-
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref">
         <Preference

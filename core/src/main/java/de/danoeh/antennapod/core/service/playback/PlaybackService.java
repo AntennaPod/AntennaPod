@@ -576,7 +576,7 @@ public class PlaybackService extends Service {
             try {
                 final List<FeedItem> queue = taskManager.getQueue();
                 isInQueue = QueueAccess.ItemListAccess(queue).contains(item.getId());
-                if( UserPreferences.alwaysPlayTopOfQueue() ) {
+                if( UserPreferences.enqueueAtFront() ) {
                     Log.d(TAG, "Playing from top of queue");
                     nextItem = DBTasks.getQueueTop(item.getId(), queue);
                 }else {
