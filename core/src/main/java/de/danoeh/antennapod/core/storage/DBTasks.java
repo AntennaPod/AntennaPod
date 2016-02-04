@@ -465,30 +465,18 @@ public final class DBTasks {
     /**
      * Returns the top of a queue
      *
-     * @param itemId ID of FeedItem
      * @param queue  If this parameter is null, the method will load the queue from the database in the same thread
-     * @return The top of the queue or null
+     * @return The top of the queue or null if the queue is empty
      */
-    public static FeedItem getQueueTop(final long itemId, List<FeedItem> queue) {
+    public static FeedItem getQueueTop(List<FeedItem> queue) {
         FeedItem result = null;
         if (queue == null ){
             queue = DBReader.getQueue();
         }
         if (queue != null) {
             Iterator<FeedItem> iterator = queue.iterator();
-            FeedItem topOfQueue = null;
-            if(iterator.hasNext())
-                topOfQueue = iterator.next();
-            // If item in the queue then return top of this queue
-            // else return null
-            while (iterator.hasNext()) {
-                FeedItem item = iterator.next();
-                if (item.getId() == itemId) {
-                    if (iterator.hasNext()) {
-                        result = topOfQueue;
-                    }
-                    break;
-                }
+            if(iterator.hasNext()) {
+                result = iterator.next();
             }
         }
         return result;

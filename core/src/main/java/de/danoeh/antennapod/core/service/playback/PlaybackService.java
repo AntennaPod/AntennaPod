@@ -576,12 +576,14 @@ public class PlaybackService extends Service {
             try {
                 final List<FeedItem> queue = taskManager.getQueue();
                 isInQueue = QueueAccess.ItemListAccess(queue).contains(item.getId());
-                if( UserPreferences.enqueueAtFront() ) {
-                    Log.d(TAG, "Playing from top of queue");
-                    nextItem = DBTasks.getQueueTop(item.getId(), queue);
-                }else {
-                    Log.d(TAG, "Playing next in queue");
-                    nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
+                if (isInQueue) {
+                    if (UserPreferences.enqueueAtFront()) {
+                        Log.d(TAG, "Playing from the top of the queue");
+                        nextItem = DBTasks.getQueueTop(queue);
+                    } else {
+                        Log.d(TAG, "Playing next in the queue");
+                        nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
+                    }
                 }
 
             } catch (InterruptedException e) {
