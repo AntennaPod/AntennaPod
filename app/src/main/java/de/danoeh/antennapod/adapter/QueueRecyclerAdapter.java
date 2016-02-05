@@ -3,6 +3,7 @@ package de.danoeh.antennapod.adapter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -78,11 +79,11 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         locked = UserPreferences.isQueueLocked();
 
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_dark);
+            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_dark);
         } else {
-            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_light);
+            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_light);
         }
-        normalBackGroundColor = mainActivity.getResources().getColor(android.R.color.transparent);
+        normalBackGroundColor = ContextCompat.getColor(mainActivity, android.R.color.transparent);
     }
 
     public void setLocked(boolean locked) {
