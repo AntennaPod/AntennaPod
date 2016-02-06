@@ -403,6 +403,7 @@
   <string name="export_error_label">Chyba exportu</string>
   <string name="opml_export_success_title">OPML export byl úspěšný.</string>
   <string name="opml_export_success_sum">OPML soubor byl zapsán do:\u0020</string>
+  <string name="opml_import_ask_read_permission">Pro přečtení OPML souboru je vyžadován  přístup k externímu úložišti</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Nastavit časovač vypnutí</string>
   <string name="disable_sleeptimer_label">Deaktivovat časovač vypnutí</string>
@@ -506,6 +507,13 @@
   <!--Feed information screen-->
   <string name="authentication_label">Ověření</string>
   <string name="authentication_descr">Změnit uživatelské jméno a heslo pro tento podcast a jeho epizody.</string>
+  <string name="auto_download_settings_label">Nastavení automatického stahování</string>
+  <string name="episode_filters_label">Filtr epizod</string>
+  <string name="episode_filters_description">Seznam pravidel použitých při rozhodování, jestli má být epizoda zahrnuta nebo vyřazena při automatickém stahování</string>
+  <string name="episode_filters_include">Zahrnout</string>
+  <string name="episode_filters_exclude">Vyřadit</string>
+  <string name="episode_filters_hint">Jednoslovné \n\"Víceslovné\"</string>
+  <string name="keep_updated">Udržovat aktuální</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Probíhá aktualizace databáze</string>
   <!--AntennaPodSP-->
@@ -525,6 +533,10 @@
   <string name="selected_downloaded_label">Vybrány stažené epizody</string>
   <string name="not_downloaded_label">Nestažené</string>
   <string name="selected_not_downloaded_label">Vybrány nestažené epizody</string>
+  <string name="queued_label">Ve frontě</string>
+  <string name="selected_queued_label">Vybrané epizody ve frontě</string>
+  <string name="not_queued_label">Mimo frontu</string>
+  <string name="selected_not_queued_label">Vybrané epizody mimo frontu</string>
   <string name="sort_title"><b>Řadit dle</b></string>
   <string name="sort_title_a_z">Názvu (A \u2192 Z)</string>
   <string name="sort_title_z_a">Názvu (Z \u2192 A)</string>

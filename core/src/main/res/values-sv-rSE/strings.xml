@@ -400,6 +400,7 @@
   <string name="export_error_label">Exporteringsfel</string>
   <string name="opml_export_success_title">OPML Exportering lyckades.</string>
   <string name="opml_export_success_sum">.opml filen skrevs till:\u0020</string>
+  <string name="opml_import_ask_read_permission">Tillgång till extern lagring krävs för att läsa OPML-filen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Ställ in sömntimer</string>
   <string name="disable_sleeptimer_label">Stäng av sömntimer</string>
@@ -500,6 +501,13 @@
   <!--Feed information screen-->
   <string name="authentication_label">Autentisering</string>
   <string name="authentication_descr">Byt ditt användarnamn och lösenord för den här podcasten och dess episoder.</string>
+  <string name="auto_download_settings_label">Automatisk nedladdningsinställningar</string>
+  <string name="episode_filters_label">Episodfilter</string>
+  <string name="episode_filters_description">Lista av termer som används för att avgöra om en episod ska inkluderas eller exkluderas vid automatisk nedladdning</string>
+  <string name="episode_filters_include">Inkludera</string>
+  <string name="episode_filters_exclude">Exkludera</string>
+  <string name="episode_filters_hint">Enstaka ord \n\"Flera ord\"</string>
+  <string name="keep_updated">Håll uppdaterad</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Uppgraderar databasen</string>
   <!--AntennaPodSP-->
@@ -519,6 +527,10 @@
   <string name="selected_downloaded_label">Valde nedladdade Episoder</string>
   <string name="not_downloaded_label">Ej nedladdade</string>
   <string name="selected_not_downloaded_label">Valde ej nedladdade Episoder</string>
+  <string name="queued_label">Köad</string>
+  <string name="selected_queued_label">Valde köade Episoder</string>
+  <string name="not_queued_label">Ej köad</string>
+  <string name="selected_not_queued_label">Välj ej köade Episoder</string>
   <string name="sort_title"><b>Sortera efter…</b></string>
   <string name="sort_title_a_z">Titel (A \u2192 Ö)</string>
   <string name="sort_title_z_a">Titel (Ö \u2192 A)</string>

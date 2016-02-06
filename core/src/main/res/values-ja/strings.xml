@@ -398,6 +398,7 @@
   <string name="export_error_label">エクスポートエラー</string>
   <string name="opml_export_success_title">OPMLをエクスポートしました。</string>
   <string name="opml_export_success_sum">.opml ファイルを書き込みました:\u0020</string>
+  <string name="opml_import_ask_read_permission">OPML ファイルを読み込むために、外部ストレージへのアクセスが必要です</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">スリープタイマーをセット</string>
   <string name="disable_sleeptimer_label">スリープタイマーを無効にする</string>
@@ -495,6 +496,13 @@
   <!--Feed information screen-->
   <string name="authentication_label">認証</string>
   <string name="authentication_descr">このポッドキャストとそのエピソード用のあなたのユーザー名とパスワードを変更します。</string>
+  <string name="auto_download_settings_label">自動ダウンロード設定</string>
+  <string name="episode_filters_label">エピソード フィルター</string>
+  <string name="episode_filters_description">自動ダウンロードのときに、エピソードを含めるか除外する必要があるかを決定するために使用される条件のリスト</string>
+  <string name="episode_filters_include">含む</string>
+  <string name="episode_filters_exclude">含まない</string>
+  <string name="episode_filters_hint">単一の単語 \n\"複数の 単語\"</string>
+  <string name="keep_updated">更新済を保持</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">データベースをアップグレードしています</string>
   <!--AntennaPodSP-->
@@ -514,6 +522,10 @@
   <string name="selected_downloaded_label">ダウンロード済のエピソードを選択しました</string>
   <string name="not_downloaded_label">ダウンロードしていません</string>
   <string name="selected_not_downloaded_label">ダウンロードしていないエピソードを選択しました</string>
+  <string name="queued_label">キューに入れました</string>
+  <string name="selected_queued_label">キューに入ったエピソードを選択しました</string>
+  <string name="not_queued_label">キューに入っていません</string>
+  <string name="selected_not_queued_label">キューに入っていないエピソードを選択しました</string>
   <string name="sort_title"><b>並び替え…</b></string>
   <string name="sort_title_a_z">タイトル (A \u2192 Z)</string>
   <string name="sort_title_z_a">タイトル (Z \u2192 A)</string>
