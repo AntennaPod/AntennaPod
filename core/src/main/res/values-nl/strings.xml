@@ -400,6 +400,7 @@
   <string name="export_error_label">Export fout</string>
   <string name="opml_export_success_title">OPML bestand succesvol geëxporteerd.</string>
   <string name="opml_export_success_sum"> Het OPML-bestand is in \u0020 geplaatst</string>
+  <string name="opml_import_ask_read_permission">Toegang tot externe locaties is nodig om het OPML-bestand te kunnen lezen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Slaap timer instellen</string>
   <string name="disable_sleeptimer_label">Slaap timer uitschakelen</string>
@@ -500,6 +501,12 @@
   <!--Feed information screen-->
   <string name="authentication_label">Authenticatie</string>
   <string name="authentication_descr">Gebruikersnaam en wachtwoord aanpassen voor deze podcast</string>
+  <string name="auto_download_settings_label">Instellingen voor Automatisch downloaden</string>
+  <string name="episode_filters_label">Afleveringenfilter</string>
+  <string name="episode_filters_description">Lijst van zoektermen die bepalen of een aflevering meegenomen of uitgesloten wordt bij automatisch downloaden</string>
+  <string name="episode_filters_include">Meenemen</string>
+  <string name="episode_filters_exclude">Uitsluiten</string>
+  <string name="keep_updated">Up to date houden</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Database upgraden</string>
   <!--AntennaPodSP-->
@@ -519,6 +526,10 @@
   <string name="selected_downloaded_label">Gedownloadde afleveringen geselecteerd</string>
   <string name="not_downloaded_label">Niet gedownload</string>
   <string name="selected_not_downloaded_label">Niet gedownloadde afleveringen geselecteerd</string>
+  <string name="queued_label">In de wachtrij</string>
+  <string name="selected_queued_label">Afleveringen in de wachtrij selecteren</string>
+  <string name="not_queued_label">Niet in de wachtrij</string>
+  <string name="selected_not_queued_label">Afleveringen geselecteerd die niet in de wachtrij staan</string>
   <string name="sort_title"><b>Sorteren op…</b></string>
   <string name="sort_title_a_z">Titel (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titel (A \u2192 A)</string>

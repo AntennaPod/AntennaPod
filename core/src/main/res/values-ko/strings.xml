@@ -495,6 +495,13 @@
   <!--Feed information screen-->
   <string name="authentication_label">인증</string>
   <string name="authentication_descr">이 팟캐스트와 에피소드에 대한 사용자 이름과 비밀번호를 바꿉니다.</string>
+  <string name="auto_download_settings_label">자동 다운로드 설정</string>
+  <string name="episode_filters_label">에피소드 필터</string>
+  <string name="episode_filters_description">자동 다운로드를 할 때 에피소드가 포함되어야할지 제외되어야할지 결정하는 규칙의 목록</string>
+  <string name="episode_filters_include">포함</string>
+  <string name="episode_filters_exclude">제외</string>
+  <string name="episode_filters_hint">단수 단어 \n\"복수 단어\"</string>
+  <string name="keep_updated">최신 업데이트 유지</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">데이터베이스 업그레이드 중</string>
   <!--AntennaPodSP-->

@@ -400,6 +400,7 @@
   <string name="export_error_label">Erreur d\'exportation</string>
   <string name="opml_export_success_title">Exportation OPML réussie.</string>
   <string name="opml_export_success_sum">Le fichier .opml a été écrit ici :\u0020</string>
+  <string name="opml_import_ask_read_permission">L\'accès aux stockages externes est requis pour lire le fichier OPML</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Définir le minuteur d\'arrêt automatique</string>
   <string name="disable_sleeptimer_label">Désactiver le minuteur d\'arrêt automatique</string>
@@ -500,6 +501,13 @@
   <!--Feed information screen-->
   <string name="authentication_label">Authentification</string>
   <string name="authentication_descr">Modifier votre identifiant et mot de passe pour ce podcast et tous ses épisodes</string>
+  <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
+  <string name="episode_filters_label">Filtre d\'épisode</string>
+  <string name="episode_filters_description">Liste de mots décidant si un épisode est à inclure ou exclure des téléchargements automatiques</string>
+  <string name="episode_filters_include">Inclure</string>
+  <string name="episode_filters_exclude">Exclure</string>
+  <string name="episode_filters_hint">Mots uniques \n\"Liste de mots\"</string>
+  <string name="keep_updated">Mettre à jour</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Mise à jour de la base de données</string>
   <!--AntennaPodSP-->
@@ -519,6 +527,10 @@
   <string name="selected_downloaded_label">Episodes téléchargés sélectionnés</string>
   <string name="not_downloaded_label">Non téléchargés</string>
   <string name="selected_not_downloaded_label">Épisodes non téléchargés sélectionnés</string>
+  <string name="queued_label">Dans liste de lecture</string>
+  <string name="selected_queued_label">Episodes présents dans la liste de lecture sélectionnés</string>
+  <string name="not_queued_label">Hors liste de lecture</string>
+  <string name="selected_not_queued_label">Episodes absents de la liste de lecture sélectionnés</string>
   <string name="sort_title"><b>Trier par...</b></string>
   <string name="sort_title_a_z">Titre (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titre (Z \u2192 A)</string>
