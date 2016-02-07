@@ -412,7 +412,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                     case R.id.audio_controls:
                         MaterialDialog dialog = new MaterialDialog.Builder(this)
                                 .title(R.string.audio_controls)
-                                .customView(R.layout.audio_controls, false)
+                                .customView(R.layout.audio_controls, true)
                                 .neutralText(R.string.close_label)
                                 .onNeutral((dialog1, which) -> {
                                     final SeekBar left = (SeekBar) dialog1.findViewById(R.id.volume_left);
