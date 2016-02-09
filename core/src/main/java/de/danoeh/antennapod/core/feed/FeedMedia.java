@@ -425,10 +425,10 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public String getFeedTitle() {
-        if (item == null) {
+        if (item == null || item.getFeed() == null) {
             return null;
         }
-        return getItem().getFeed().getTitle();
+        return item.getFeed().getTitle();
     }
 
     @Override
