@@ -33,6 +33,9 @@ public class OpmlFeedChooserActivity extends ActionBarActivity {
     private ListView feedlist;
     private ArrayAdapter<String> listAdapter;
 
+    private MenuItem selectAll;
+    private MenuItem deselectAll;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
@@ -55,6 +58,20 @@ public class OpmlFeedChooserActivity extends ActionBarActivity {
             public void onClick(View v) {
                 setResult(RESULT_CANCELED);
                 finish();
+        feedlist.setOnItemClickListener((parent, view, position, id) -> {
+            SparseBooleanArray checked = feedlist.getCheckedItemPositions();
+            int checkedCount = 0;
+            for (int i = 0; i < checked.size(); i++) {
+                if (checked.valueAt(i)) {
+                    checkedCount++;
+                }
+            }
+            if(checkedCount == listAdapter.getCount()) {
+                selectAll.setVisible(false);
+                deselectAll.setVisible(true);
+            } else {
+                deselectAll.setVisible(false);
+                selectAll.setVisible(true);
             }
         });
 
@@ -101,13 +118,11 @@ public class OpmlFeedChooserActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, R.id.select_all_item, Menu.NONE,
-                R.string.select_all_label),
-                MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-
-        MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, R.id.deselect_all_item, Menu.NONE,
-                R.string.deselect_all_label),
-                MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.opml_selection_options, menu);
+        selectAll = menu.findItem(R.id.select_all_item);
+        deselectAll = menu.findItem(R.id.deselect_all_item);
+        deselectAll.setVisible(false);
         return true;
     }
 
@@ -115,10 +130,14 @@ public class OpmlFeedChooserActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.select_all_item:
+                selectAll.setVisible(false);
                 selectAllItems(true);
+                deselectAll.setVisible(true);
                 return true;
             case R.id.deselect_all_item:
+                deselectAll.setVisible(false);
                 selectAllItems(false);
+                selectAll.setVisible(true);
                 return true;
             default:
                 return false;
