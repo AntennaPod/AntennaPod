@@ -2,22 +2,21 @@ package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.opml.OpmlElement;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.opml.OpmlElement;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
  * Displays the feeds that the OPML-Importer has read and lets the user choose
@@ -47,17 +46,11 @@ public class OpmlFeedChooserActivity extends ActionBarActivity {
         feedlist = (ListView) findViewById(R.id.feedlist);
 
         feedlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listAdapter = new ArrayAdapter<String>(this,
+        listAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_multiple_choice,
                 getTitleList());
 
         feedlist.setAdapter(listAdapter);
-
-        butCancel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
         feedlist.setOnItemClickListener((parent, view, position, id) -> {
             SparseBooleanArray checked = feedlist.getCheckedItemPositions();
             int checkedCount = 0;
@@ -75,31 +68,32 @@ public class OpmlFeedChooserActivity extends ActionBarActivity {
             }
         });
 
-        butConfirm.setOnClickListener(new OnClickListener() {
+        butCancel.setOnClickListener(v -> {
+            setResult(RESULT_CANCELED);
+            finish();
+        });
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                SparseBooleanArray checked = feedlist.getCheckedItemPositions();
+        butConfirm.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            SparseBooleanArray checked = feedlist.getCheckedItemPositions();
 
-                int checkedCount = 0;
-                // Get number of checked items
-                for (int i = 0; i < checked.size(); i++) {
-                    if (checked.valueAt(i)) {
-                        checkedCount++;
-                    }
+            int checkedCount = 0;
+            // Get number of checked items
+            for (int i = 0; i < checked.size(); i++) {
+                if (checked.valueAt(i)) {
+                    checkedCount++;
                 }
-                int[] selection = new int[checkedCount];
-                for (int i = 0, collected = 0; collected < checkedCount; i++) {
-                    if (checked.valueAt(i)) {
-                        selection[collected] = checked.keyAt(i);
-                        collected++;
-                    }
-                }
-                intent.putExtra(EXTRA_SELECTED_ITEMS, selection);
-                setResult(RESULT_OK, intent);
-                finish();
             }
+            int[] selection = new int[checkedCount];
+            for (int i = 0, collected = 0; collected < checkedCount; i++) {
+                if (checked.valueAt(i)) {
+                    selection[collected] = checked.keyAt(i);
+                    collected++;
+                }
+            }
+            intent.putExtra(EXTRA_SELECTED_ITEMS, selection);
+            setResult(RESULT_OK, intent);
+            finish();
         });
 
     }
@@ -110,7 +104,6 @@ public class OpmlFeedChooserActivity extends ActionBarActivity {
             for (OpmlElement element : OpmlImportHolder.getReadElements()) {
                 result.add(element.getText());
             }
-
         }
         return result;
     }
