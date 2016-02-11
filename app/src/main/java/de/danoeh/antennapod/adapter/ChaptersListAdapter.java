@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
@@ -132,13 +133,13 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
             if (current == sc) {
                 int playingBackGroundColor;
                 if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-                    playingBackGroundColor = getContext().getResources().getColor(R.color.highlight_dark);
+                    playingBackGroundColor = ContextCompat.getColor(getContext(), R.color.highlight_dark);
                 } else {
-                    playingBackGroundColor = getContext().getResources().getColor(R.color.highlight_light);
+                    playingBackGroundColor = ContextCompat.getColor(getContext(), R.color.highlight_light);
                 }
                 holder.view.setBackgroundColor(playingBackGroundColor);
             } else {
-                holder.view.setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
+                holder.view.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
                 holder.title.setTextColor(defaultTextColor);
                 holder.start.setTextColor(defaultTextColor);
             }

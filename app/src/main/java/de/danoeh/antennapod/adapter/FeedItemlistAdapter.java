@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,11 +60,11 @@ public class FeedItemlistAdapter extends BaseAdapter {
         this.makePlayedItemsTransparent = makePlayedItemsTransparent;
 
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            playingBackGroundColor = context.getResources().getColor(R.color.highlight_dark);
+            playingBackGroundColor = ContextCompat.getColor(context, R.color.highlight_dark);
         } else {
-            playingBackGroundColor = context.getResources().getColor(R.color.highlight_light);
+            playingBackGroundColor = ContextCompat.getColor(context, R.color.highlight_light);
         }
-        normalBackGroundColor = context.getResources().getColor(android.R.color.transparent);
+        normalBackGroundColor = ContextCompat.getColor(context, android.R.color.transparent);
     }
 
     @Override
@@ -118,8 +119,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
         if (!(getItemViewType(position) == Adapter.IGNORE_ITEM_VIEW_TYPE)) {
             convertView.setVisibility(View.VISIBLE);
             if (position == selectedItemIndex) {
-                convertView.setBackgroundColor(convertView.getResources()
-                        .getColor(ThemeUtils.getSelectionBackgroundColor()));
+                convertView.setBackgroundColor(ContextCompat.getColor(convertView.getContext(),
+                        ThemeUtils.getSelectionBackgroundColor()));
             } else {
                 convertView.setBackgroundResource(0);
             }

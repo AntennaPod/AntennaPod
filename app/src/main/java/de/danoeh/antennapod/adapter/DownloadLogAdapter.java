@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,14 +75,14 @@ public class DownloadLogAdapter extends BaseAdapter {
 				status.getCompletionDate().getTime(),
 				System.currentTimeMillis(), 0, 0));
 		if (status.isSuccessful()) {
-			holder.icon.setTextColor(convertView.getResources().getColor(
+			holder.icon.setTextColor(ContextCompat.getColor(convertView.getContext(),
 					R.color.download_success_green));
 			holder.icon.setText("{fa-check-circle}");
 			Iconify.addIcons(holder.icon);
 			holder.retry.setVisibility(View.GONE);
 			holder.reason.setVisibility(View.GONE);
 		} else {
-			holder.icon.setTextColor(convertView.getResources().getColor(
+			holder.icon.setTextColor(ContextCompat.getColor(convertView.getContext(),
 					R.color.download_failed_red));
 			holder.icon.setText("{fa-times-circle}");
 			Iconify.addIcons(holder.icon);

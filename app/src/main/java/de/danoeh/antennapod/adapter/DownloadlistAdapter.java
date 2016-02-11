@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,7 @@ public class DownloadlistAdapter extends BaseAdapter {
         }
 
         if (position == selectedItemIndex) {
-            convertView.setBackgroundColor(convertView.getResources().getColor(
+            convertView.setBackgroundColor(ContextCompat.getColor(convertView.getContext(),
                     ThemeUtils.getSelectionBackgroundColor()));
         } else {
             convertView.setBackgroundResource(0);
