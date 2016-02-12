@@ -400,10 +400,10 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item == null) {
             return null;
         }
-        if (getItem().getTitle() != null) {
-            return getItem().getTitle();
+        if (item.getTitle() != null) {
+            return item.getTitle();
         } else {
-            return getItem().getIdentifyingValue();
+            return item.getIdentifyingValue();
         }
     }
 
@@ -412,7 +412,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item == null) {
             return null;
         }
-        return getItem().getChapters();
+        return item.getChapters();
     }
 
     @Override
@@ -420,15 +420,15 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item == null) {
             return null;
         }
-        return getItem().getLink();
+        return item.getLink();
     }
 
     @Override
     public String getFeedTitle() {
-        if (item == null) {
+        if (item == null || item.getFeed() == null) {
             return null;
         }
-        return getItem().getFeed().getTitle();
+        return item.getFeed().getTitle();
     }
 
     @Override
@@ -451,7 +451,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item == null) {
             return null;
         }
-        return getItem().getPaymentLink();
+        return item.getPaymentLink();
     }
 
     @Override
@@ -489,7 +489,9 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public void setChapters(List<Chapter> chapters) {
-        getItem().setChapters(chapters);
+        if(item != null) {
+            item.setChapters(chapters);
+        }
     }
 
     @Override
