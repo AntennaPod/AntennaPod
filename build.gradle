@@ -57,7 +57,7 @@ project.ext {
     rxJavaVersion = "1.1.0"
     rxJavaRulesVersion = "1.1.0.0"
 
-    audioPlayerVersion = "v1.0.11"
+    audioPlayerVersion = "v1.0.12"
 }
 
 task wrapper(type: Wrapper) {
