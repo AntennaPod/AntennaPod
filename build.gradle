@@ -50,7 +50,7 @@ project.ext {
     iconifyVersion = "2.1.1"
     jsoupVersion = "1.7.3"
     materialDialogsVersion = "0.8.5.3@aar"
-    okhttpVersion = "2.7.2"
+    okhttpVersion = "2.7.4"
     okioVersion = "1.6.0"
     recyclerviewFlexibledividerVersion = "1.2.6"
     rxAndroidVersion = "1.1.0"
