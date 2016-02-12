@@ -741,26 +741,6 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     /**
-     * Sets the audio ducking mode.
-     * This method is executed on an internal executor service.
-     */
-    public void setDucking(boolean duck) {
-        executor.submit(() -> setDuckingSync(duck));
-    }
-
-    /**
-     * Sets the audio ducking mode.
-     * This method is executed on the caller's thread.
-     */
-    private void setDuckingSync(boolean duck) {
-        playerLock.lock();
-        this.ducked = duck;
-        updateVolume();
-        Log.d(TAG, "Ducking set to " + duck);
-        playerLock.unlock();
-    }
-
-    /**
      * Returns true if the mediaplayer can mix stereo down to mono
      */
     public boolean canDownmix() {
@@ -993,13 +973,15 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                         if (pausedBecauseOfTransientAudiofocusLoss) { // we paused => play now
                             resume();
                         } else { // we ducked => raise audio level back
-                            setDucking(false);
+                            ducked = false;
+                            updateVolume();
                         }
                     } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
                         if (playerStatus == PlayerStatus.PLAYING) {
                             if (!UserPreferences.shouldPauseForFocusLoss()) {
                                 Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-                                setDucking(true);
+                                ducked = true;
+                                updateVolume();
                                 pausedBecauseOfTransientAudiofocusLoss = false;
                             } else {
                                 Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
