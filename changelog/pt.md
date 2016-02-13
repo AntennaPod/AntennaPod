@@ -1,5 +1,13 @@
 Registo de alterações
 ==========
+Versão 1.5.0
+-------------
+* Exclusão de episódios da descarga automática usando palavras-chave
+* Configurar fontes para que não se atualizem atomaticamente
+* Melhorias no reprodutor áudio
+* Melhorias à interface
+* Diversas correções
+
 Versão 1.4.1
 -------------
 * Melhorias de desempenho

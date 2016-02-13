@@ -1,5 +1,13 @@
 Καταγραφή Αλλαγών
 ==========
+Version 1.5.0
+-------------
+* Exclude episodes from auto download by keyword
+* Configure feeds to prevent them from refreshing automatically
+* Improved audio player
+* Improved UI
+* Διορθώσεις σφαλμάτων
+
 Έκδοση 1.4.1
 -------------
 * Βελτιστοποίηση απόδοσης

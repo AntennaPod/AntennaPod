@@ -454,6 +454,7 @@
   <string name="create_folder_label">フォルダーを作成</string>
   <string name="choose_data_directory">データ フォルダーを選択</string>
   <string name="choose_data_directory_message">基本のデータフォルダーを選択してください。 AntennaPodは、適切なサブディレクトリを作成します。</string>
+  <string name="choose_data_directory_permission_rationale">データフォルダーを変更するために外部ストレージのアクセスが必要です</string>
   <string name="create_folder_msg">名前 \"%1$s\" で新しいフォルダーを作成しますか?</string>
   <string name="create_folder_success">新しいフォルダーを作成しました</string>
   <string name="create_folder_error_no_write_access">このフォルダーに書き込みできません</string>

@@ -1,5 +1,13 @@
 प्रवेश बदलें
 ==========
+Version 1.5.0
+-------------
+* Exclude episodes from auto download by keyword
+* Configure feeds to prevent them from refreshing automatically
+* Improved audio player
+* Improved UI
+* Bug fixes
+
 Version 1.4.1
 -------------
 * Performance improvements

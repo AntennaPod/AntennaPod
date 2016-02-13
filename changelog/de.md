@@ -1,5 +1,13 @@
 Änderungen
 ==========
+Version 1.5.0
+-------------
+* Schließe Episoden mit Hilfe von Schlüsselwörtern beim Automatischen Herunterladen aus
+* Schließe einzelne Feeds vom automatischen Aktualisieren aus
+* Verbesserter Audio-Player
+* Verbesserungen an der Benutzeroberfläche
+* Fehlerkorrekturen
+
 Version 1.4.1
 -------------
 * Performance-Verbesserungen

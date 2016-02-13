@@ -366,7 +366,7 @@
   <string name="send_email">Надіслати е-пошту</string>
   <string name="experimental_pref">Експериментальні</string>
   <string name="pref_sonic_title">Програвач Sonic</string>
-  <string name="pref_sonic_message">Використовувати вбудований програвач sonic замість програвача Android та Prestissimo</string>
+  <string name="pref_sonic_message">Застосувати вбудований програвач sonic замість програвача Android та Prestissimo</string>
   <string name="pref_current_value">Поточне значення: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
@@ -464,6 +464,7 @@
   <string name="create_folder_label">Нова папка</string>
   <string name="choose_data_directory">Обрати папку</string>
   <string name="choose_data_directory_message">Оберіть, будь ласка, базовий каталог для даних. AntennaPod створить відповідні підрозділи. </string>
+  <string name="choose_data_directory_permission_rationale">Для зміни папки зберігання даних потрібен доступ до зовнішнього носія</string>
   <string name="create_folder_msg">Створити папку з ім\'ям \"%1$s\"?</string>
   <string name="create_folder_success">Створена нова папка</string>
   <string name="create_folder_error_no_write_access">Не можу записати в цю папку</string>

@@ -459,6 +459,7 @@
   <string name="create_folder_label">Criar pasta</string>
   <string name="choose_data_directory">Escolha a pasta de dados</string>
   <string name="choose_data_directory_message">Escolha a base da pasta de dados. O AntennaPod irá criar as subpastas apropriadas.</string>
+  <string name="choose_data_directory_permission_rationale">Para alterar a pasta de dados, tem que ter acesso ao armazenamento externo</string>
   <string name="create_folder_msg">Criar uma pasta com o nome \"%1$s\"?</string>
   <string name="create_folder_success">Nova pasta criada</string>
   <string name="create_folder_error_no_write_access">Não é possível guardar nesta pasta</string>
