@@ -459,6 +459,7 @@
   <string name="create_folder_label">Crear carpeta</string>
   <string name="choose_data_directory">Elegir carpeta de datos</string>
   <string name="choose_data_directory_message">Por favor elige la raíz de la carpeta de datos. AntennaPod creará los subdirectorios apropiados.</string>
+  <string name="choose_data_directory_permission_rationale">Se necesita acceso a almacenamiento externo para cambiar la carpeta de datos</string>
   <string name="create_folder_msg">¿Crear carpeta con nombre «%1$s»?</string>
   <string name="create_folder_success">Carpeta creada</string>
   <string name="create_folder_error_no_write_access">No se puede escribir a esta carpeta</string>

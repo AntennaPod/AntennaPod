@@ -97,7 +97,7 @@
   <string name="podcastdirectories_descr">U kunt nieuwe podcasts zoeken op naam, categorie of populariteit in de gpodder.net database, of de iTunes winkel doorzoeken.</string>
   <string name="browse_gpoddernet_label">gpodder.net doorbladeren</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Alles als beluisterd markeren</string>
+  <string name="mark_all_read_label">Alles als afgespeeld markeren</string>
   <string name="mark_all_read_msg">Alle afleveringen als afgespeeld markeren</string>
   <string name="mark_all_read_confirmation_msg">Bevestig aub dat u alle afleveringen als afgespeeld wilt markeren.</string>
   <string name="mark_all_read_feed_confirmation_msg">Bevestig aub dat u alle afleveringen van deze feed als afgespeeld wilt markeren.</string>
@@ -267,7 +267,7 @@
   <string name="services_label">Services</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Automatisch opschonen</string>
-  <string name="pref_episode_cleanup_summary">Afleveringen die niet in de wachtrij staan en die niet als favoriet zijn gemarkeerd, mogen verwijderd worden als Automatisch Downloaden ruimte nodig heeft voor nieuwe afleveringen.</string>
+  <string name="pref_episode_cleanup_summary">Afleveringen die niet in de wachtrij staan én niet als favoriet gemarkeerd zijn, mogen verwijderd worden als Automatisch Downloaden ruimte nodig heeft voor nieuwe afleveringen</string>
   <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren wanneer de koptelefoon wordt losgekoppeld of de bluetooth verbinding wordt verbroken</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten wanneer de koptelefoon opnieuw wordt aangesloten</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten wanneer de bluetooth verbinding hervat wordt</string>
@@ -276,7 +276,7 @@
   <string name="pref_followQueue_sum">Volgende item in de wachtrij afspelen als de aflevering voltooid is</string>
   <string name="pref_auto_delete_sum">Afleveringen verwijderen als ze zijn afgespeeld</string>
   <string name="pref_auto_delete_title">Automatisch verwijderen</string>
-  <string name="pref_smart_mark_as_played_sum">Als afgespeeld markeren wanneer minder dan een bepaald aantal seconden van de afspeeltijd over is</string>
+  <string name="pref_smart_mark_as_played_sum">Afleveringen als afgespeeld markeren wanneer deze nog maar een bepaald aantal seconden duurt</string>
   <string name="pref_smart_mark_as_played_title">Slimme afgespeeld markering</string>
   <string name="pref_skip_keeps_episodes_sum">Afleveringen bewaren en in de wachtrij houden als u op \'overslaan\' klikt</string>
   <string name="pref_skip_keeps_episodes_title">Overgeslagen afleveringen bewaren</string>
@@ -390,8 +390,8 @@
   <string name="reading_opml_label">OPML-bestand aan het lezen</string>
   <string name="opml_reader_error">Er is een fout opgetreden bij het lezen van het OPML-bestand:</string>
   <string name="opml_import_error_dir_empty">De import map is leeg.</string>
-  <string name="select_all_label">Selecteer alles</string>
-  <string name="deselect_all_label">Deselecteer alles</string>
+  <string name="select_all_label">Alles selecteren</string>
+  <string name="deselect_all_label">Alles deselecteren</string>
   <string name="select_options_label">Selecteren…</string>
   <string name="choose_file_from_filesystem">Via bestandsbeheer</string>
   <string name="choose_file_from_external_application">Via externe app</string>
@@ -459,6 +459,7 @@
   <string name="create_folder_label">Map aanmaken</string>
   <string name="choose_data_directory">Kies data map</string>
   <string name="choose_data_directory_message">Kies de hoofdmap voor uw data. AntennaPod zal de benodigde submappen creeëren.</string>
+  <string name="choose_data_directory_permission_rationale">Toegang tot de externe opslag is nodig om de data-map aan te passen</string>
   <string name="create_folder_msg">Maak een nieuwe map aan met de naam \"%1$s\"?</string>
   <string name="create_folder_success">Nieuwe map aangemaakt</string>
   <string name="create_folder_error_no_write_access">Kan in deze map niet schrijven</string>
@@ -470,8 +471,8 @@
   <string name="folder_not_empty_dialog_title">Map is niet leeg</string>
   <string name="folder_not_empty_dialog_msg">De map die je hebt gekozen is niet leeg. Media downloads en andere bestanden zullen rechtstreeks in deze map geplaatst worden. Toch doorgaan?</string>
   <string name="set_to_default_folder">Kies default map</string>
-  <string name="pref_pausePlaybackForFocusLoss_sum">Het afspelen onderbreken in plaats van het volume te verlagen wanneer er een andere app geluiden af wilt spelen</string>
-  <string name="pref_pausePlaybackForFocusLoss_title">Pauze voor onderbrekingen</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Het afspelen onderbreken in plaats van het volume te verlagen wanneer er een andere app geluiden af wil spelen</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Pauzeren bij onderbrekingen</string>
   <string name="pref_resumeAfterCall_sum">Afspelen hervatten na beëindigen telefoongesprek</string>
   <string name="pref_resumeAfterCall_title">Hervatten na gesprek</string>
   <string name="pref_restart_required">AntennaPod moet opnieuw worden opgestart om deze wijziging door te voeren.</string>

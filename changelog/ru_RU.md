@@ -1,5 +1,13 @@
 Список изменений
 ==========
+Version 1.5.0
+-------------
+* Exclude episodes from auto download by keyword
+* Configure feeds to prevent them from refreshing automatically
+* Improved audio player
+* Improved UI
+* Bug fixes
+
 Версия 1.4.1
 -------------
 * Улучшение производительности

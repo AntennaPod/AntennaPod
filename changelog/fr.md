@@ -1,5 +1,13 @@
 Nouveautés
 ==========
+Version 1.5.0
+-------------
+* Exclure du téléchargement automatique certains épisodes à partir de mots clés
+* Paramétrer les flux afin d'empêcher leur mise à jour automatique
+* Amélioration du lecteur audio
+* Amélioration de l'interface
+Corrections de bugs
+
 Version 1.4.1
 -------------
 * Amélioration des performances

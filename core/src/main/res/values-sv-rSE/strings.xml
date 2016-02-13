@@ -459,6 +459,7 @@
   <string name="create_folder_label">Skapa mapp</string>
   <string name="choose_data_directory">Välj Datakatalog</string>
   <string name="choose_data_directory_message">Välj rotkatalogen för din data. AntennaPod skapar de underkataloger som behövs.</string>
+  <string name="choose_data_directory_permission_rationale">Tillgång till extern lagring krävs för att byta datakatalogen</string>
   <string name="create_folder_msg">Skapa ny mapp med namnet \"%1$s\"?</string>
   <string name="create_folder_success">Skapade ny mapp</string>
   <string name="create_folder_error_no_write_access">Kan inte skriva till den här mappen</string>
