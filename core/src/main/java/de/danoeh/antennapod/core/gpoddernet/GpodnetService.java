@@ -735,13 +735,19 @@ public class GpodnetService {
         List<String> added = new LinkedList<String>();
         JSONArray jsonAdded = object.getJSONArray("add");
         for (int i = 0; i < jsonAdded.length(); i++) {
-            added.add(jsonAdded.getString(i));
+            String addedUrl = jsonAdded.getString(i);
+            // gpodder escapes colons unnecessarily
+            addedUrl = addedUrl.replace("%3A", ":");
+            added.add(addedUrl);
         }
 
         List<String> removed = new LinkedList<String>();
         JSONArray jsonRemoved = object.getJSONArray("remove");
         for (int i = 0; i < jsonRemoved.length(); i++) {
-            removed.add(jsonRemoved.getString(i));
+            String removedUrl = jsonRemoved.getString(i);
+            // gpodder escapes colons unnecessarily
+            removedUrl = removedUrl.replace("%3A", ":");
+            removed.add(removedUrl);
         }
 
         long timestamp = object.getLong("timestamp");
