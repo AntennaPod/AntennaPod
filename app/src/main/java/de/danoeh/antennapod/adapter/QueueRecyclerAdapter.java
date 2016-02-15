@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -27,8 +28,6 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.joanzapata.iconify.Iconify;
 import com.nineoldandroids.view.ViewHelper;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -214,13 +213,13 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             title.setText(item.getTitle());
             String pubDateStr = DateUtils.formatAbbrev(mainActivity.get(), item.getPubDate());
             int index = 0;
-            if(StringUtils.countMatches(pubDateStr, ' ') == 1 || StringUtils.countMatches(pubDateStr, ' ') == 2) {
+            if(countMatches(pubDateStr, ' ') == 1 || countMatches(pubDateStr, ' ') == 2) {
                 index = pubDateStr.lastIndexOf(' ');
-            } else if(StringUtils.countMatches(pubDateStr, '.') == 2) {
+            } else if(countMatches(pubDateStr, '.') == 2) {
                 index = pubDateStr.lastIndexOf('.');
-            } else if(StringUtils.countMatches(pubDateStr, '-') == 2) {
+            } else if(countMatches(pubDateStr, '-') == 2) {
                 index = pubDateStr.lastIndexOf('-');
-            } else if(StringUtils.countMatches(pubDateStr, '/') == 2) {
+            } else if(countMatches(pubDateStr, '/') == 2) {
                 index = pubDateStr.lastIndexOf('/');
             }
             if(index > 0) {
@@ -375,5 +374,19 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
          * move or swipe, and the active item state should be cleared.
          */
         void onItemClear();
+    }
+
+    // Oh Xiaomi, I hate you so much. How did you manage to fuck this up?
+    private static int countMatches(final CharSequence str, final char ch) {
+        if (TextUtils.isEmpty(str)) {
+            return 0;
+        }
+        int count = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (ch == str.charAt(i)) {
+                count++;
+            }
+        }
+        return count;
     }
 }
