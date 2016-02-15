@@ -386,11 +386,14 @@ public class FeedMedia extends FeedFile implements Playable {
         // check if chapters are stored in db and not loaded yet.
         if (item != null && item.hasChapters() && item.getChapters() == null) {
             DBReader.loadChaptersOfFeedItem(item);
-        } else if (item != null && item.getChapters() == null && !localFileAvailable()) {
-            ChapterUtils.loadChaptersFromStreamUrl(this);
+        } else if (item != null && item.getChapters() == null) {
+            if(localFileAvailable()) {
+                ChapterUtils.loadChaptersFromFileUrl(this);
+            } else {
+                ChapterUtils.loadChaptersFromStreamUrl(this);
+            }
             if (getChapters() != null && item != null) {
-                DBWriter.setFeedItem(
-                        item);
+                DBWriter.setFeedItem(item);
             }
         }
     }

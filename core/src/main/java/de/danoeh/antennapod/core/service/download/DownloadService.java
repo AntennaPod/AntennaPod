@@ -72,6 +72,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandlerResult;
 import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
+import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.InvalidFeedException;
 import de.greenrobot.event.EventBus;
@@ -1045,6 +1046,9 @@ public class DownloadService extends Service {
             media.setDownloaded(true);
             media.setFile_url(request.getDestination());
             media.setHasEmbeddedPicture(null);
+
+            // check if file has chapters
+            ChapterUtils.loadChaptersFromFileUrl(media);
 
             // Get duration
             MediaMetadataRetriever mmr = null;
