@@ -792,7 +792,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                     builder.setNegativeButton(R.string.cancel_label, null);
                     builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                         UserPreferences.setPrefRewindSecs(choice);
-                        txtvRev.setText(String.valueOf(choice));
+                        if(txtvRev != null){
+                            txtvRev.setText(String.valueOf(choice));
+                        }
                     });
                     builder.create().show();
                     return true;
@@ -833,7 +835,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                     builder.setNegativeButton(R.string.cancel_label, null);
                     builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                         UserPreferences.setPrefFastForwardSecs(choice);
-                        txtvFF.setText(String.valueOf(choice));
+                        if(txtvFF != null) {
+                            txtvFF.setText(String.valueOf(choice));
+                        }
                     });
                     builder.create().show();
                     return true;
