@@ -604,7 +604,11 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * Returns the position of the current media object or INVALID_TIME if the position could not be retrieved.
      */
     public int getPosition() {
-        if (!playerLock.tryLock()) {
+        try {
+            if (!playerLock.tryLock(50, TimeUnit.MILLISECONDS)) {
+                return INVALID_TIME;
+            }
+        } catch (InterruptedException e) {
             return INVALID_TIME;
         }
 
