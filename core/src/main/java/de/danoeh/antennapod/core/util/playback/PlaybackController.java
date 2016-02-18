@@ -19,7 +19,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
-import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -424,6 +423,7 @@ public abstract class PlaybackController {
                 clearStatusMsg();
                 checkMediaInfoLoaded();
                 cancelPositionObserver();
+                onPositionObserverUpdate();
                 updatePlayButtonAppearance(playResource, playText);
                 if (PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     setScreenOn(false);
