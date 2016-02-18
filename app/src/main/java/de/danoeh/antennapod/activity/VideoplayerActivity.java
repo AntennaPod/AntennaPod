@@ -202,6 +202,24 @@ public class VideoplayerActivity extends MediaplayerActivity {
         videoControlsShowing = !videoControlsShowing;
     }
 
+    @Override
+    protected void onRewind() {
+        super.onRewind();
+        setupVideoControlsToggler();
+    }
+
+    @Override
+    protected void onPlayPause() {
+        super.onPlayPause();
+        setupVideoControlsToggler();
+    }
+
+    @Override
+    protected void onFastForward() {
+        super.onFastForward();
+        setupVideoControlsToggler();
+    }
+
 
     private final SurfaceHolder.Callback surfaceHolderCallback = new SurfaceHolder.Callback() {
         @Override

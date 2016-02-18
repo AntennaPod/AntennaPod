@@ -763,8 +763,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
         if (butRev != null) {
             butRev.setOnClickListener(v -> {
-                int curr = controller.getPosition();
-                controller.seekTo(curr - UserPreferences.getRewindSecs() * 1000);
+                onRewind();
             });
             butRev.setOnLongClickListener(new View.OnLongClickListener() {
 
@@ -800,12 +799,13 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             });
         }
 
-        butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
+        butPlay.setOnClickListener(v -> {
+            onPlayPause();
+        });
 
         if (butFF != null) {
             butFF.setOnClickListener(v -> {
-                int curr = controller.getPosition();
-                controller.seekTo(curr + UserPreferences.getFastFowardSecs() * 1000);
+                onFastForward();
             });
             butFF.setOnLongClickListener(new View.OnLongClickListener() {
 
@@ -846,6 +846,29 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                 sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
             });
         }
+    }
+
+    protected void onRewind() {
+        if (controller == null) {
+            return;
+        }
+        int curr = controller.getPosition();
+        controller.seekTo(curr - UserPreferences.getRewindSecs() * 1000);
+    }
+
+    protected void onPlayPause() {
+        if(controller == null) {
+            return;
+        }
+        controller.playPause();
+    }
+
+    protected void onFastForward() {
+        if (controller == null) {
+            return;
+        }
+        int curr = controller.getPosition();
+        controller.seekTo(curr + UserPreferences.getFastFowardSecs() * 1000);
     }
 
     protected abstract int getContentViewResourceId();
