@@ -330,7 +330,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     private static class VideoControlsHider extends Handler {
 
-        private static final int DELAY = 5000;
+        private static final int DELAY = 2500;
 
         private WeakReference<VideoplayerActivity> activity;
 
