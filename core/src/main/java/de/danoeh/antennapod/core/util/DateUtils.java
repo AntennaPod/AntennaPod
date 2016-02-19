@@ -145,6 +145,9 @@ public class DateUtils {
     }
 
     public static String formatAbbrev(final Context context, final Date date) {
+        if(date == null) {
+            return "";
+        }
         GregorianCalendar cal = new GregorianCalendar();
         cal.add(GregorianCalendar.YEAR, -1);
         // some padding, because no one really remembers what day of the month it is
