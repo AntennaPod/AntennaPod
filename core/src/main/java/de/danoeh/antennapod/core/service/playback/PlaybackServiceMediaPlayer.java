@@ -75,6 +75,11 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     private volatile boolean pausedBecauseOfTransientAudiofocusLoss;
     private volatile Pair<Integer, Integer> videoSize;
 
+    private volatile boolean ducked;
+    private volatile float mVolumeLeft;
+    private volatile float mVolumeRight;
+    private static final float DUCK_FACTOR = 0.25f;
+
     /**
      * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
      * have to wait until these operations have finished.
@@ -135,6 +140,10 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         mediaType = MediaType.UNKNOWN;
         playerStatus = PlayerStatus.STOPPED;
         videoSize = null;
+
+        mVolumeLeft = 1f;
+        mVolumeRight = 1f;
+        ducked = false;
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.registerOnSharedPreferenceChangeListener(this);
@@ -693,7 +702,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     /**
-     * Sets the playback speed.
+     * Sets the playback volume.
      * This method is executed on an internal executor service.
      */
     public void setVolume(final float volumeLeft, float volumeRight) {
@@ -701,16 +710,34 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     /**
-     * Sets the playback speed.
+     * Sets the playback volume.
      * This method is executed on the caller's thread.
      */
     private void setVolumeSync(float volumeLeft, float volumeRight) {
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            mediaPlayer.setVolume(volumeLeft, volumeRight);
-            Log.d(TAG, "Media player volume was set to " + volumeLeft + " " + volumeRight);
+            mVolumeLeft = volumeLeft;
+            mVolumeRight = volumeRight;
+            updateVolume();
         }
         playerLock.unlock();
+    }
+
+    /**
+     * Helper method to set the playback volume.
+     * This method requires the playerLock and is executed on the caller's thread.
+     */
+    private void updateVolume(){
+        if (!playerLock.isHeldByCurrentThread()) {
+            throw new IllegalStateException("method requires playerLock");
+        }
+        if(ducked){
+            mediaPlayer.setVolume(DUCK_FACTOR*mVolumeLeft, DUCK_FACTOR*mVolumeRight);
+            Log.d(TAG, "Media player volume was set to " + DUCK_FACTOR*mVolumeLeft + " " + DUCK_FACTOR*mVolumeRight);
+        } else {
+            mediaPlayer.setVolume(mVolumeLeft, mVolumeRight);
+            Log.d(TAG, "Media player volume was set to " + mVolumeLeft + " " + mVolumeRight);
+        }
     }
 
     /**
@@ -946,15 +973,15 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                         if (pausedBecauseOfTransientAudiofocusLoss) { // we paused => play now
                             resume();
                         } else { // we ducked => raise audio level back
-                            audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                    AudioManager.ADJUST_RAISE, 0);
+                            ducked = false;
+                            updateVolume();
                         }
                     } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
                         if (playerStatus == PlayerStatus.PLAYING) {
                             if (!UserPreferences.shouldPauseForFocusLoss()) {
                                 Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-                                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                        AudioManager.ADJUST_LOWER, 0);
+                                ducked = true;
+                                updateVolume();
                                 pausedBecauseOfTransientAudiofocusLoss = false;
                             } else {
                                 Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
