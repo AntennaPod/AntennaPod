@@ -19,7 +19,7 @@
             android:layout_height="@dimen/external_player_height"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             tools:src="@drawable/ic_drag_vertical_white_48dp"
             tools:background="@android:color/holo_green_dark"
             android:layout_alignParentTop="true"

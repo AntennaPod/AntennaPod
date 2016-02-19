@@ -17,7 +17,7 @@
         android:layout_centerVertical="true"
         android:adjustViewBounds="true"
         android:cropToPadding="true"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="@dimen/listitem_icon_leftpadding"
