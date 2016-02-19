@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -20,7 +21,8 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
 		if (TextUtils.equals(intent.getAction(), ConnectivityManager.CONNECTIVITY_ACTION)) {
 			Log.d(TAG, "Received intent");
 
-			if (NetworkUtils.autodownloadNetworkAvailable()) {
+            ClientConfig.initialize(context);
+            if (NetworkUtils.autodownloadNetworkAvailable()) {
 				Log.d(TAG, "auto-dl network available, starting auto-download");
 					DBTasks.autodownloadUndownloadedItems(context);
 			} else { // if new network is Wi-Fi, finish ongoing downloads,

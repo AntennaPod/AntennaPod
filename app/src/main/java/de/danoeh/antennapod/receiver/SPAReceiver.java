@@ -49,6 +49,7 @@ public class SPAReceiver extends BroadcastReceiver{
                 }
             } else {
                 Log.e(TAG, "Received invalid SP_APPS_QUERY_RESPONSE: Contains no extra");
+        ClientConfig.initialize(context);
             }
         }
     }
