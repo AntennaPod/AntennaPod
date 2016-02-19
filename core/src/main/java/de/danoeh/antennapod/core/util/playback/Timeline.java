@@ -49,9 +49,8 @@ public class Timeline {
                 0xFFFFFF & colorResource);
         res.recycle();
 
-        pageMargin = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 8, context.getResources()
-                        .getDisplayMetrics()
+        pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
+                context.getResources().getDisplayMetrics()
         );
     }
 
@@ -125,8 +124,7 @@ public class Timeline {
                 element.html(buffer.toString());
             }
         }
-
-        Log.i(TAG, "Out: " + document.toString());
+        
         return document.toString();
     }
 
