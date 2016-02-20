@@ -350,7 +350,9 @@ public class DownloadService extends Service {
                     .setOngoing(true)
                     .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
                     .setLargeIcon(icon)
-                    .setSmallIcon(R.drawable.stat_notify_sync);
+                    .setSmallIcon(R.drawable.stat_notify_sync)
+                    .setVisibility(Notification.VISIBILITY_PUBLIC);
+
 
         Log.d(TAG, "Notification set up");
     }
@@ -556,7 +558,9 @@ public class DownloadService extends Service {
                     .setContentIntent(
                             ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(this)
                     )
-                    .setAutoCancel(true).build();
+                    .setAutoCancel(true)
+                    .setVisibility(Notification.VISIBILITY_PUBLIC)
+                    .build();
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(REPORT_ID, notification);
         } else {
@@ -609,7 +613,8 @@ public class DownloadService extends Service {
                         .setSmallIcon(R.drawable.ic_stat_authentication)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_authentication))
                         .setAutoCancel(true)
-                        .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(DownloadService.this, downloadRequest));
+                        .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(DownloadService.this, downloadRequest))
+                        .setVisibility(Notification.VISIBILITY_PUBLIC);
                 Notification n = builder.build();
                 NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 nm.notify(downloadRequest.getSource().hashCode(), n);
