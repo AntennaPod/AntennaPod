@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
-    android:versionCode="1050007"
-    android:versionName="1.5.0.7">
+    android:versionCode="1050008"
+    android:versionName="1.5.0.8">
     <!--
       Version code schema:
       "1.2.3-SNAPSHOT" -> 1020300
