@@ -479,9 +479,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barPlaybackSpeed.setProgress((int) (20 * currentSpeed) - 10);
 
                         final SeekBar barLeftVolume = (SeekBar) dialog.findViewById(R.id.volume_left);
-                        barLeftVolume.setProgress(100);
+                        barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
                         final SeekBar barRightVolume = (SeekBar) dialog.findViewById(R.id.volume_right);
-                        barRightVolume.setProgress(100);
+                        barRightVolume.setProgress(UserPreferences.getRightVolumePercentage());
                         final CheckBox stereoToMono = (CheckBox) dialog.findViewById(R.id.stereo_to_mono);
                         stereoToMono.setChecked(UserPreferences.stereoToMono());
                         if (controller != null && !controller.canDownmix()) {

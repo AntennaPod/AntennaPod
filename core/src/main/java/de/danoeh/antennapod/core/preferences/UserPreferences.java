@@ -269,6 +269,14 @@ public class UserPreferences {
         return Converter.getVolumeFromPercentage(volume);
     }
 
+    public static int getLeftVolumePercentage() {
+        return prefs.getInt(PREF_LEFT_VOLUME, 100);
+    }
+
+    public static int getRightVolumePercentage() {
+        return prefs.getInt(PREF_RIGHT_VOLUME, 100);
+    }
+
     public static boolean shouldPauseForFocusLoss() {
         return prefs.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
     }
