@@ -178,6 +178,7 @@
     <string name="download_error_connection_error">Connection Error</string>
     <string name="download_error_unknown_host">Unknown Host</string>
     <string name="download_error_unauthorized">Authentication Error</string>
+    <string name="download_error_file_type_type">File Type Error</string>
     <string name="cancel_all_downloads_label">Cancel all downloads</string>
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>

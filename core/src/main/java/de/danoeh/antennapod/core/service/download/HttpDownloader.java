@@ -27,6 +27,7 @@ import java.util.Date;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -117,6 +118,15 @@ public class HttpDownloader extends Downloader {
                     throw e;
                 }
             }
+
+            if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                String contentType = response.header("Content-Type");
+                if(!contentType.startsWith("audio/") && !contentType.startsWith("video/")) {
+                    onFail(DownloadError.ERROR_FILE_TYPE, null);
+                    return;
+                }
+            }
+
             responseBody = response.body();
             String contentEncodingHeader = response.header("Content-Encoding");
             boolean isGzip = false;
