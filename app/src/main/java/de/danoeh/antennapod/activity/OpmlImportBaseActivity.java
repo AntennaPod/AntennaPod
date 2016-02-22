@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -31,7 +32,7 @@ public class OpmlImportBaseActivity extends ActionBarActivity {
     private OpmlImportWorker importWorker;
 
 	private static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 5;
-	private Uri uri;
+	@Nullable private Uri uri;
 
 	/**
 	 * Handles the choices made by the user in the OpmlFeedChooserActivity and
@@ -67,7 +68,14 @@ public class OpmlImportBaseActivity extends ActionBarActivity {
 		}
 	}
 
-	protected void importUri(Uri uri) {
+	protected void importUri(@Nullable Uri uri) {
+        if(uri == null) {
+            new MaterialDialog.Builder(this)
+                    .content(R.string.opml_import_error_no_file)
+                    .positiveText(android.R.string.ok)
+                    .show();
+            return;
+        }
 		this.uri = uri;
         if(uri.toString().contains(Environment.getExternalStorageDirectory().toString())) {
             int permission = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -127,8 +135,9 @@ public class OpmlImportBaseActivity extends ActionBarActivity {
             importWorker.executeAsync();
         } catch (Exception e) {
             Log.d(TAG, Log.getStackTraceString(e));
+			String message = getString(R.string.opml_reader_error);
             new MaterialDialog.Builder(this)
-                    .content("Cannot open OPML file: " + e.getMessage())
+                    .content(message + " " + e.getMessage())
                     .positiveText(android.R.string.ok)
                     .show();
         }
