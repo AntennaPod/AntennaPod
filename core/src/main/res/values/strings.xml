@@ -358,6 +358,9 @@
     <string name="pref_gpodnet_logout_toast">Logout was successful</string>
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
+    <string name="pref_gpodnet_sync_title">Sync now</string>
+    <string name="pref_gpodnet_sync_sum">Sync subscriptions and episode states with gpodder.net</string>
+    <string name="pref_gpodnet_sync_started">Sync started</string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
     <string name="pref_fast_forward">Fast forward time</string>

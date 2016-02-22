@@ -52,6 +52,7 @@ import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
@@ -79,6 +80,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
     public static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
     public static final String PREF_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
+    public static final String PREF_GPODNET_SYNC = "pref_gpodnet_sync";
     public static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
     public static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
@@ -309,6 +311,14 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     dialog.show();
                     return true;
                 });
+        ui.findPreference(PreferenceController.PREF_GPODNET_SYNC).
+                setOnPreferenceClickListener(preference -> {
+                    GpodnetSyncService.sendSyncIntent(ui.getActivity().getApplicationContext());
+                    Toast toast = Toast.makeText(ui.getActivity(), R.string.pref_gpodnet_sync_started,
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    return true;
+            });
         ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(
                 preference -> {
                     GpodnetPreferences.logout();
@@ -423,6 +433,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         final boolean loggedIn = GpodnetPreferences.loggedIn();
         ui.findPreference(PreferenceController.PREF_GPODNET_LOGIN).setEnabled(!loggedIn);
         ui.findPreference(PreferenceController.PREF_GPODNET_SETLOGIN_INFORMATION).setEnabled(loggedIn);
+        ui.findPreference(PreferenceController.PREF_GPODNET_SYNC).setEnabled(loggedIn);
         ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
         ui.findPreference(PreferenceController.PREF_GPODNET_HOSTNAME).setSummary(GpodnetPreferences.getHostname());
     }
