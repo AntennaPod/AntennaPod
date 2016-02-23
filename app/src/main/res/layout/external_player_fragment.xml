@@ -79,10 +79,10 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_below="@id/episodeProgress"
-        android:layout_centerVertical="true"
-        android:contentDescription="@string/pause_label"
-        android:background="?attr/selectableItemBackground"
-        tools:src="@drawable/ic_play_arrow_white_36dp"/>
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/pause_label"
+            android:background="?attr/selectableItemBackground"
+            tools:src="@drawable/ic_play_arrow_white_36dp"/>
 
     </RelativeLayout>
 
