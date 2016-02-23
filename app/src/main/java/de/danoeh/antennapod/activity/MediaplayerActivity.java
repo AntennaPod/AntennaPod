@@ -229,8 +229,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     protected void onBufferUpdate(float progress) {
         if (sbPosition != null) {
-            sbPosition.setSecondaryProgress((int) progress
-                    * sbPosition.getMax());
+            sbPosition.setSecondaryProgress((int) progress * sbPosition.getMax());
         }
     }
 
@@ -597,28 +596,24 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     protected abstract void clearStatusMsg();
 
     protected void onPositionObserverUpdate() {
-        if (controller != null) {
-            int currentPosition = controller.getPosition();
-            int duration = controller.getDuration();
-            Log.d(TAG, "currentPosition " + Converter
-                    .getDurationStringLong(currentPosition));
-            if (currentPosition != PlaybackService.INVALID_TIME
-                    && duration != PlaybackService.INVALID_TIME
-                    && controller.getMedia() != null) {
-                txtvPosition.setText(Converter
-                        .getDurationStringLong(currentPosition));
-                if (showTimeLeft) {
-                    txtvLength.setText("-" + Converter
-                            .getDurationStringLong(duration - currentPosition));
-                } else {
-                    txtvLength.setText(Converter
-                            .getDurationStringLong(duration));
-                }
-                updateProgressbarPosition(currentPosition, duration);
-            } else {
-                Log.w(TAG, "Could not react to position observer update because of invalid time");
-            }
+        if (controller == null || txtvPosition == null || txtvLength == null) {
+            return;
         }
+        int currentPosition = controller.getPosition();
+        int duration = controller.getDuration();
+        Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
+        if (currentPosition == PlaybackService.INVALID_TIME ||
+                duration == PlaybackService.INVALID_TIME) {
+            Log.w(TAG, "Could not react to position observer update because of invalid time");
+            return;
+        }
+        txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+        if (showTimeLeft) {
+            txtvLength.setText("-" + Converter.getDurationStringLong(duration - currentPosition));
+        } else {
+            txtvLength.setText(Converter.getDurationStringLong(duration));
+        }
+        updateProgressbarPosition(currentPosition, duration);
     }
 
     private void updateProgressbarPosition(int position, int duration) {
@@ -639,17 +634,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
         if (media != null) {
-            txtvPosition.setText(Converter.getDurationStringLong((media.getPosition())));
-
-            if (media.getDuration() != 0) {
-                txtvLength.setText(Converter.getDurationStringLong(media.getDuration()));
-                float progress = ((float) media.getPosition()) / media.getDuration();
-                sbPosition.setProgress((int) (progress * sbPosition.getMax()));
-                if (showTimeLeft) {
-                    int timeLeft = media.getDuration() - media.getPosition();
-                    txtvLength.setText("-" + Converter.getDurationStringLong(timeLeft));
-                }
-            }
+            onPositionObserverUpdate();
             checkFavorite();
             if(butPlaybackSpeed != null) {
                 if (controller == null) {
@@ -857,8 +842,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     void handleError(int errorCode) {
         final AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
         errorDialog.setTitle(R.string.error_label);
-        errorDialog
-                .setMessage(MediaPlayerError.getErrorString(this, errorCode));
+        errorDialog.setMessage(MediaPlayerError.getErrorString(this, errorCode));
         errorDialog.setNeutralButton("OK",
                 (dialog, which) -> {
                     dialog.dismiss();
@@ -872,13 +856,14 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     @Override
     public void onProgressChanged (SeekBar seekBar,int progress, boolean fromUser) {
-        if (controller != null) {
-            prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
-            if (showTimeLeft && prog != 0) {
-                int duration = controller.getDuration();
-                String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
-                txtvLength.setText(length);
-            }
+        if (controller == null || txtvLength == null) {
+            return;
+        }
+        prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
+        if (showTimeLeft && prog != 0) {
+            int duration = controller.getDuration();
+            String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
+            txtvLength.setText(length);
         }
     }
 
