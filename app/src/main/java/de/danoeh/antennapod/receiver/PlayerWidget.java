@@ -51,7 +51,7 @@ public class PlayerWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
-        Log.d(TAG, "Widet disabled");
+        Log.d(TAG, "Widget disabled");
         setEnabled(context, false);
         stopUpdate(context);
     }
