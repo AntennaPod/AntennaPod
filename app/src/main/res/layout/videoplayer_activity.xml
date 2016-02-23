@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/overlay_button_circle_background"
-            android:contentDescription="@string/pause_label"
+            android:contentDescription="@string/rewind_label"
             android:src="@drawable/ic_av_rewind_80dp" />
 
         <ImageButton
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/overlay_button_circle_background"
-            android:contentDescription="@string/pause_label"
+            android:contentDescription="@string/fast_forward_label"
             android:src="@drawable/ic_av_fast_forward_80dp" />
 
     </LinearLayout>
