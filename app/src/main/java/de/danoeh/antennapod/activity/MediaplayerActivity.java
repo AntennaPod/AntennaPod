@@ -206,8 +206,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     @Override
     protected void onPause() {
         super.onPause();
-        controller.reinitServiceIfPaused();
-        controller.pause();
+        if(controller != null) {
+            controller.reinitServiceIfPaused();
+            controller.pause();
+        }
     }
 
     /**
@@ -582,7 +584,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         super.onResume();
         Log.d(TAG, "onResume()");
         StorageUtils.checkStorageAvailability(this);
-        controller.init();
+        if(controller != null) {
+            controller.init();
+        }
     }
 
     /**
@@ -618,6 +622,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     private void updateProgressbarPosition(int position, int duration) {
         Log.d(TAG, "updateProgressbarPosition(" + position + ", " + duration + ")");
+        if(sbPosition == null) {
+            return;
+        }
         float progress = ((float) position) / duration;
         sbPosition.setProgress((int) (progress * sbPosition.getMax()));
     }

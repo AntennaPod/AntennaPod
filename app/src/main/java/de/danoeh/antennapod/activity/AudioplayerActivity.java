@@ -139,7 +139,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        if(drawerToggle != null) {
+            drawerToggle.onConfigurationChanged(newConfig);
+        }
     }
 
     private void loadLastFragment() {
@@ -283,7 +285,10 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     }
 
     public void notifyMediaPositionChanged() {
-        ChaptersFragment chaptersFragment = mPagerAdapter.getChaptersFragment();
+        if(pagerAdapter == null) {
+            return;
+        }
+        ChaptersFragment chaptersFragment = pagerAdapter.getChaptersFragment();
         if(chaptersFragment != null) {
             ChaptersListAdapter adapter = (ChaptersListAdapter) chaptersFragment.getListAdapter();
             if (adapter != null) {
