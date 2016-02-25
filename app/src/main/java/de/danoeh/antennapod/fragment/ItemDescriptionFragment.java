@@ -62,7 +62,6 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
     private static final String ARG_HIGHLIGHT_TIMECODES = "arg.highlightTimecodes";
 
     private WebView webvDescription;
-    private String webvData;
 
     private ShownotesProvider shownotesProvider;
     private Playable media;
@@ -309,7 +308,6 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                    webvData = data;
                     webvDescription.loadDataWithBaseURL(null, data, "text/html",
                             "utf-8", "about:blank");
                     Log.d(TAG, "Webview loaded");
@@ -384,7 +382,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
 
     @Override
     public void onMediaChanged(Playable media) {
-        if(this.media == media) {
+        if(this.media == media || webvDescription == null) {
             return;
         }
         this.media = media;
