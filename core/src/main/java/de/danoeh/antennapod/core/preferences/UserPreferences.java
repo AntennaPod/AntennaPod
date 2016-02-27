@@ -17,6 +17,7 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
+import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
@@ -78,6 +80,11 @@ public class UserPreferences {
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
     public static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
+    public static final String PREF_PROXY_TYPE = "prefProxyType";
+    public static final String PREF_PROXY_HOST = "prefProxyHost";
+    public static final String PREF_PROXY_PORT = "prefProxyPort";
+    public static final String PREF_PROXY_USER = "prefProxyUser";
+    public static final String PREF_PROXY_PASSWORD = "prefProxyPassword";
 
     // Services
     public static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
@@ -369,6 +376,42 @@ public class UserPreferences {
     public static String[] getAutodownloadSelectedNetworks() {
         String selectedNetWorks = prefs.getString(PREF_AUTODL_SELECTED_NETWORKS, "");
         return TextUtils.split(selectedNetWorks, ",");
+    }
+
+    public static void setProxyConfig(ProxyConfig config) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(PREF_PROXY_TYPE, config.type.name());
+        if(TextUtils.isEmpty(config.host)) {
+            editor.remove(PREF_PROXY_HOST);
+        } else {
+            editor.putString(PREF_PROXY_HOST, config.host);
+        }
+        if(config.port <= 0 || config.port > 65535) {
+            editor.remove(PREF_PROXY_PORT);
+        } else {
+            editor.putInt(PREF_PROXY_PORT, config.port);
+        }
+        if(TextUtils.isEmpty(config.username)) {
+            editor.remove(PREF_PROXY_USER);
+        } else {
+            editor.putString(PREF_PROXY_USER, config.username);
+        }
+        if(TextUtils.isEmpty(config.password)) {
+            editor.remove(PREF_PROXY_PASSWORD);
+        } else {
+            editor.putString(PREF_PROXY_PASSWORD, config.password);
+        }
+        editor.apply();
+    }
+
+    public static ProxyConfig getProxyConfig() {
+        Proxy.Type type = Proxy.Type.valueOf(prefs.getString(PREF_PROXY_TYPE, Proxy.Type.DIRECT.name()));
+        String host = prefs.getString(PREF_PROXY_HOST, null);
+        int port = prefs.getInt(PREF_PROXY_PORT, 0);
+        String username = prefs.getString(PREF_PROXY_USER, null);
+        String password = prefs.getString(PREF_PROXY_PASSWORD, null);
+        ProxyConfig config = new ProxyConfig(type, host, port, username, password);
+        return config;
     }
 
     public static boolean shouldResumeAfterCall() {

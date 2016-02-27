@@ -2,8 +2,10 @@ package de.danoeh.antennapod.core.service.download;
 
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -14,7 +16,10 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +28,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
 /**
@@ -44,10 +50,13 @@ public class AntennapodHttpClient {
      */
     public static synchronized OkHttpClient getHttpClient() {
         if (httpClient == null) {
-
             httpClient = newHttpClient();
         }
         return httpClient;
+    }
+
+    public static synchronized void reinit() {
+        httpClient = newHttpClient();
     }
 
     /**
@@ -69,13 +78,13 @@ public class AntennapodHttpClient {
         client.networkInterceptors().add(chain -> {
             Request request = chain.request();
             Response response = chain.proceed(request);
-            if(response.code() == HttpURLConnection.HTTP_MOVED_PERM ||
+            if (response.code() == HttpURLConnection.HTTP_MOVED_PERM ||
                     response.code() == StatusLine.HTTP_PERM_REDIRECT) {
                 String location = response.header("Location");
-                if(location.startsWith("/")) { // URL is not absolute, but relative
+                if (location.startsWith("/")) { // URL is not absolute, but relative
                     URL url = request.url();
                     location = url.getProtocol() + "://" + url.getHost() + location;
-                } else if(!location.toLowerCase().startsWith("http://") &&
+                } else if (!location.toLowerCase().startsWith("http://") &&
                         !location.toLowerCase().startsWith("https://")) {
                     // Reference is relative to current path
                     URL url = request.url();
@@ -106,6 +115,21 @@ public class AntennapodHttpClient {
         client.setFollowRedirects(true);
         client.setFollowSslRedirects(true);
 
+        ProxyConfig config = UserPreferences.getProxyConfig();
+        if (config.type != Proxy.Type.DIRECT) {
+            int port = config.port > 0 ? config.port : ProxyConfig.DEFAULT_PORT;
+            SocketAddress address = InetSocketAddress.createUnresolved(config.host, port);
+            Proxy proxy = new Proxy(config.type, address);
+            client.setProxy(proxy);
+            if (!TextUtils.isEmpty(config.username)) {
+                String credentials = Credentials.basic(config.username, config.password);
+                client.interceptors().add(chain -> {
+                    Request request = chain.request().newBuilder()
+                            .header("Proxy-Authorization", credentials).build();
+                    return chain.proceed(request);
+                });
+            }
+        }
         if(16 <= Build.VERSION.SDK_INT && Build.VERSION.SDK_INT < 21) {
             client.setSslSocketFactory(new CustomSslSocketFactory());
         }

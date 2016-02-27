@@ -387,6 +387,8 @@
     <string name="pref_sonic_title">Sonic media player</string>
     <string name="pref_sonic_message">Use built-in sonic media player as a replacement for Android\'s native mediaplayer and Prestissimo</string>
     <string name="pref_current_value">Current value: %1$s</string>
+    <string name="pref_proxy_title">Proxy</string>
+    <string name="pref_proxy_sum">Set a network proxy</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -592,5 +594,18 @@
     <string name="audio_effects">Audio Effects</string>
     <string name="stereo_to_mono">Downmix: Stereo to mono</string>
     <string name="sonic_only">Sonic only</string>
+
+    <!-- proxy settings -->
+    <string name="proxy_type_label">Type</string>
+    <string name="host_label">Host</string>
+    <string name="port_label">Port</string>
+    <string name="optional_hint">(Optional)</string>
+    <string name="proxy_test_label">Test</string>
+    <string name="proxy_checking">Checking&#8230;</string>
+    <string name="proxy_test_successful">Test successful</string>
+    <string name="proxy_test_failed">Test failed</string>
+    <string name="proxy_host_empty_error">Host must not be empty</string>
+    <string name="proxy_host_invalid_error">Host not valid UP or domain</string>
+    <string name="proxy_port_invalid_error">Port not valid</string>
 
 </resources>
