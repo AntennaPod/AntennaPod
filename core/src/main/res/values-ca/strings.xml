@@ -271,8 +271,6 @@
   <string name="pref_pauseOnDisconnect_sum">Pausa la reproducció en desconnectar els auriculars o el bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continua la reproducció en connectar novament els auriculars</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Continua la reproducció en connectar novament el bluetooth</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Botó \'Endavant\' passa al següent</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Al prémer el botó de hardware \'Endavant\' passar al següent episodi en comptes d\'avançar a la reproducció</string>
   <string name="pref_followQueue_sum">Salta al següent element de la cua en acabar la reproducció</string>
   <string name="pref_auto_delete_sum">Suprimeix l\'episodi quan s\'acabi de reproduir</string>
   <string name="pref_auto_delete_title">Esborrat automàtic</string>
