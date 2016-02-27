@@ -101,7 +101,7 @@
             android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
             android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:enabled="true"
             android:key="prefForwardButtonSkips"
             android:summary="@string/pref_forwardButtonSkips_sum"
