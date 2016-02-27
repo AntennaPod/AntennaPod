@@ -1279,8 +1279,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_NEXT: {
-                    if(event.getSource() == InputDevice.SOURCE_CLASS_NONE ||
-                            UserPreferences.shouldHardwareButtonSkip()) {
+                    if(UserPreferences.shouldForwardButtonSkip()) {
                         // assume the skip command comes from a notification or the lockscreen
                         // a >| skip button should actually skip
                         endPlayback(true);
