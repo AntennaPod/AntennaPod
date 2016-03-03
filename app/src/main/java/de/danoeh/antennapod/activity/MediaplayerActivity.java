@@ -879,7 +879,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     private void updateButPlaybackSpeed() {
         if (controller != null && butPlaybackSpeed != null) {
-            butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed() + "x");
+            float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
+            String speedStr = String.format("%.2fx", speed);
+            butPlaybackSpeed.setText(speedStr);
         }
     }
 
