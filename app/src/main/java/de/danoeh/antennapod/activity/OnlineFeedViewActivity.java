@@ -408,18 +408,25 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
         description.setText(feed.getDescription());
 
         subscribeButton.setOnClickListener(v -> {
-            try {
+            if(feed != null && feedInFeedlist(feed)) {
+                Intent intent = new Intent(OnlineFeedViewActivity.this, MainActivity.class);
+                // feed.getId() is always 0, we have to retrieve the id from the feed list from
+                // the database
+                intent.putExtra(MainActivity.EXTRA_FEED_ID, getFeedId(feed));
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            } else {
                 Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());
                 f.setPreferences(feed.getPreferences());
                 this.feed = f;
-
-                DownloadRequester.getInstance().downloadFeed(this, f);
-            } catch (DownloadRequestException e) {
-                e.printStackTrace();
-                DownloadRequestErrorDialogCreator.newRequestErrorDialog(OnlineFeedViewActivity.this,
-                        e.getMessage());
+                try {
+                    DownloadRequester.getInstance().downloadFeed(this, f);
+                } catch (DownloadRequestException e) {
+                    Log.e(TAG, Log.getStackTraceString(e));
+                    DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
+                }
+                setSubscribeButtonState(feed);
             }
-            setSubscribeButtonState(feed);
         });
 
         if (alternateFeedUrls.isEmpty()) {
@@ -462,8 +469,8 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
                 subscribeButton.setEnabled(false);
                 subscribeButton.setText(R.string.downloading_label);
             } else if (feedInFeedlist(feed)) {
-                subscribeButton.setEnabled(false);
-                subscribeButton.setText(R.string.subscribed_label);
+                subscribeButton.setEnabled(true);
+                subscribeButton.setText(R.string.open_podcast);
             } else {
                 subscribeButton.setEnabled(true);
                 subscribeButton.setText(R.string.subscribe_label);
@@ -481,6 +488,18 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
             }
         }
         return false;
+    }
+
+    private long getFeedId(Feed feed) {
+        if (feeds == null || feed == null) {
+            return 0;
+        }
+        for (Feed f : feeds) {
+            if (f.getIdentifyingValue().equals(feed.getIdentifyingValue())) {
+                return f.getId();
+            }
+        }
+        return 0;
     }
 
     private void showErrorDialog(String errorMsg) {

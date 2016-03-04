@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     public static final String EXTRA_NAV_INDEX = "nav_index";
     public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
+    public static final String EXTRA_FEED_ID = "fragment_feed_id";
 
     public static final String SAVE_BACKSTACK_COUNT = "backstackCount";
     public static final String SAVE_TITLE = "title";
@@ -464,8 +465,9 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
         StorageUtils.checkStorageAvailability(this);
 
         Intent intent = getIntent();
-        if (navDrawerData != null && intent.hasExtra(EXTRA_NAV_TYPE) &&
-                (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG))) {
+        if (intent.hasExtra(EXTRA_FEED_ID) ||
+                (navDrawerData != null && intent.hasExtra(EXTRA_NAV_TYPE) &&
+                        (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG)))) {
             handleNavIntent();
         }
         loadData();
@@ -709,15 +711,19 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     private void handleNavIntent() {
         Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_NAV_TYPE) &&
-                intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG)) {
+        if (intent.hasExtra(EXTRA_FEED_ID) ||
+                (intent.hasExtra(EXTRA_NAV_TYPE) &&
+                        (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG)))) {
             int index = intent.getIntExtra(EXTRA_NAV_INDEX, -1);
             String tag = intent.getStringExtra(EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
+            long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
             if (index >= 0) {
                 loadFragment(index, args);
             } else if (tag != null) {
                 loadFragment(tag, args);
+            } else if(feedId > 0) {
+                loadFeedFragmentById(feedId, args);
             }
         }
         setIntent(new Intent(MainActivity.this, MainActivity.class)); // to avoid handling the intent twice when the configuration changes
