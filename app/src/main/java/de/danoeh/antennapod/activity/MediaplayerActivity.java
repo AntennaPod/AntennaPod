@@ -31,6 +31,8 @@ import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
+import java.util.Locale;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -458,9 +460,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                                 if(controller != null && controller.canSetPlaybackSpeed()) {
                                     float playbackSpeed = (progress + 10) / 20.0f;
                                     controller.setPlaybackSpeed(playbackSpeed);
-                                    String speed = String.format("%.2f", playbackSpeed);
-                                    UserPreferences.setPlaybackSpeed(speed);
-                                    txtvPlaybackSpeed.setText(speed + "x");
+                                    String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
+                                    UserPreferences.setPlaybackSpeed(speedPref);
+                                    String speedStr = String.format("%.2fx", playbackSpeed);
+                                    txtvPlaybackSpeed.setText(speedStr);
                                 } else if(fromUser) {
                                     float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
                                     barPlaybackSpeed.post(() -> {
@@ -879,7 +882,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     private void updateButPlaybackSpeed() {
         if (controller != null && butPlaybackSpeed != null) {
-            butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed() + "x");
+            float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
+            String speedStr = String.format("%.2fx", speed);
+            butPlaybackSpeed.setText(speedStr);
         }
     }
 
