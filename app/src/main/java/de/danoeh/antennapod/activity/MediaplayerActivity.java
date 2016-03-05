@@ -904,21 +904,25 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     private void checkFavorite() {
         Playable playable = controller.getMedia();
-            if (playable != null && playable instanceof FeedMedia) {
-                FeedItem feedItem = ((FeedMedia) playable).getItem();
-                if (feedItem != null) {
-                    Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(item -> {
-                                boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
-                                if(isFavorite != isFav) {
-                                    isFavorite = isFav;
-                                    invalidateOptionsMenu();
-                                }
-                            });
-                }
+        if (playable != null && playable instanceof FeedMedia) {
+            FeedItem feedItem = ((FeedMedia) playable).getItem();
+            if (feedItem != null) {
+                Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        item -> {
+                            boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
+                            if (isFavorite != isFav) {
+                                isFavorite = isFav;
+                                invalidateOptionsMenu();
+                            }
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                        }
+                    );
             }
+        }
     }
 
 }
