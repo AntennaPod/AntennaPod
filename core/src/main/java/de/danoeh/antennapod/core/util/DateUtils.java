@@ -19,13 +19,7 @@ public class DateUtils {
     
 	private static final String TAG = "DateUtils";
 
-    private static final SimpleDateFormat parser = new SimpleDateFormat("", Locale.US);
     private static final TimeZone defaultTimezone = TimeZone.getTimeZone("GMT");
-
-    static {
-        parser.setLenient(false);
-        parser.setTimeZone(defaultTimezone);
-    }
 
     public static Date parse(final String input) {
         if(input == null) {
@@ -85,6 +79,10 @@ public class DateUtils {
                 "yyyy-MM-ddZ",
                 "yyyy-MM-dd"
         };
+
+        SimpleDateFormat parser = new SimpleDateFormat("", Locale.US);
+        parser.setLenient(false);
+        parser.setTimeZone(defaultTimezone);
 
         ParsePosition pos = new ParsePosition(0);
         for(String pattern : patterns) {
