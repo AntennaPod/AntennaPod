@@ -221,6 +221,7 @@ public class ItemFragment extends Fragment {
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().registerSticky(this);
         if(itemsLoaded) {
+            progbarLoading.setVisibility(View.GONE);
             updateAppearance();
         }
     }
