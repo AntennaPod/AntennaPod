@@ -52,18 +52,15 @@ public class NSITunes extends Namespace {
 
     @Override
     public void handleElementEnd(String localName, HandlerState state) {
+        if(state.getContentBuf() == null) {
+            return;
+        }
         if (AUTHOR.equals(localName)) {
-            if (state.getContentBuf() != null && state.getFeed() != null) {
+            if (state.getFeed() != null) {
                 String author = state.getContentBuf().toString();
-                if(TextUtils.isEmpty(author)) {
-                    return;
-                }
                 state.getFeed().setAuthor(author);
             }
         } else if (DURATION.equals(localName)) {
-            if (state.getContentBuf() == null) {
-                return;
-            }
             String duration = state.getContentBuf().toString();
             if(TextUtils.isEmpty(duration)) {
                 return;
@@ -86,9 +83,6 @@ public class NSITunes extends Namespace {
                 Log.e(NSTAG, Log.getStackTraceString(e));
             }
         } else if (SUBTITLE.equals(localName)) {
-            if (state.getContentBuf() == null) {
-                return;
-            }
             String subtitle = state.getContentBuf().toString();
             if (TextUtils.isEmpty(subtitle)) {
                 return;
@@ -103,9 +97,6 @@ public class NSITunes extends Namespace {
                 }
             }
         } else if (SUMMARY.equals(localName)) {
-            if (state.getContentBuf() == null) {
-                return;
-            }
             String summary = state.getContentBuf().toString();
             if (TextUtils.isEmpty(summary)) {
                 return;

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.xml.sax.Attributes;
@@ -29,11 +30,15 @@ public class NSMedia extends Namespace {
 		if (CONTENT.equals(localName)) {
 			String url = attributes.getValue(DOWNLOAD_URL);
 			String type = attributes.getValue(MIME_TYPE);
-			if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null
-					&& url != null
-					&& (SyndTypeUtils.enclosureTypeValid(type) || ((type = SyndTypeUtils
-							.getValidMimeTypeFromUrl(url)) != null))) {
-
+            boolean validType;
+            if(SyndTypeUtils.enclosureTypeValid(type)) {
+                validType = true;
+            } else {
+                type = SyndTypeUtils.getValidMimeTypeFromUrl(url);
+                validType = type != null;
+            }
+            if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null &&
+                url != null && validType) {
 				long size = 0;
 				try {
 					size = Long.parseLong(attributes.getValue(SIZE));
@@ -41,19 +46,19 @@ public class NSMedia extends Namespace {
 					Log.e(TAG, "Length attribute could not be parsed.");
 				}
 
-				int duration = 0;
+				int durationMs = 0;
 				String durationStr = attributes.getValue(DURATION);
-				if (durationStr != null) {
+				if (!TextUtils.isEmpty(durationStr)) {
 					try {
-						duration = (int) TimeUnit.MILLISECONDS.convert(
-							Long.parseLong(durationStr), TimeUnit.SECONDS);
+                        long duration = Long.parseLong(durationStr);
+						durationMs = (int) TimeUnit.MILLISECONDS.convert(duration, TimeUnit.SECONDS);
 					} catch (NumberFormatException e) {
 						Log.e(TAG, "Duration attribute could not be parsed");
 					}
 				}
 				FeedMedia media = new FeedMedia(state.getCurrentItem(), url, size, type);
-				if(duration > 0) {
-					media.setDuration(duration);
+				if(durationMs > 0) {
+					media.setDuration(durationMs);
 				}
 				state.getCurrentItem().setMedia(media);
 			}

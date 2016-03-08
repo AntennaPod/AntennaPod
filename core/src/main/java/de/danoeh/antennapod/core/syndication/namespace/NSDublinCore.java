@@ -2,8 +2,6 @@ package de.danoeh.antennapod.core.syndication.namespace;
 
 import org.xml.sax.Attributes;
 
-import java.util.Stack;
-
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import de.danoeh.antennapod.core.util.DateUtils;
@@ -24,14 +22,10 @@ public class NSDublinCore extends Namespace {
 
     @Override
     public void handleElementEnd(String localName, HandlerState state) {
-        if (state.getCurrentItem() != null && state.getTagstack().size() >= 2 &&
-            state.getContentBuf() != null) {
+        if (state.getCurrentItem() != null && state.getContentBuf() != null &&
+            state.getTagstack() != null && state.getTagstack().size() >= 2) {
             FeedItem currentItem = state.getCurrentItem();
-            Stack<SyndElement> tagStack = state.getTagstack();
-            if(tagStack.size() < 2) {
-                return;
-            }
-            String top = tagStack.peek().getName();
+            String top = state.getTagstack().peek().getName();
             String second = state.getSecondTag().getName();
             if (DATE.equals(top) && ITEM.equals(second)) {
                 String content = state.getContentBuf().toString();
@@ -39,4 +33,5 @@ public class NSDublinCore extends Namespace {
             }
         }
     }
+
 }

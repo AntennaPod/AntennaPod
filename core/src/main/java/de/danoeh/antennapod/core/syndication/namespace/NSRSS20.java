@@ -51,10 +51,15 @@ public class NSRSS20 extends Namespace {
 		} else if (ENCLOSURE.equals(localName)) {
 			String type = attributes.getValue(ENC_TYPE);
 			String url = attributes.getValue(ENC_URL);
+			boolean validType;
+			if(SyndTypeUtils.enclosureTypeValid(type)) {
+				validType = true;
+			} else {
+				type = type = SyndTypeUtils.getValidMimeTypeFromUrl(url);
+				validType = type != null;
+			}
 			if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null &&
-				(SyndTypeUtils.enclosureTypeValid(type) || ((type = SyndTypeUtils
-							.getValidMimeTypeFromUrl(url)) != null))) {
-
+				validType) {
 				long size = 0;
 				try {
 					size = Long.parseLong(attributes.getValue(ENC_LEN));
@@ -115,7 +120,6 @@ public class NSRSS20 extends Namespace {
 			if (state.getTagstack().size() >= 3) {
 				third = state.getThirdTag().getName();
 			}
-
 			if (GUID.equals(top) && ITEM.equals(second)) {
                 // some feed creators include an empty or non-standard guid-element in their feed, which should be ignored
                 if (!TextUtils.isEmpty(content) && state.getCurrentItem() != null) {
@@ -127,7 +131,7 @@ public class NSRSS20 extends Namespace {
 					state.getCurrentItem().setTitle(title);
 				} else if (CHANNEL.equals(second) && state.getFeed() != null) {
 					state.getFeed().setTitle(title);
-				} else if (IMAGE.equals(second) && third != null && CHANNEL.equals(third)) {
+				} else if (IMAGE.equals(second) && CHANNEL.equals(third)) {
 					if(state.getFeed() != null && state.getFeed().getImage() != null &&
 						state.getFeed().getImage().getTitle() == null) {
 						state.getFeed().getImage().setTitle(title);
@@ -141,8 +145,7 @@ public class NSRSS20 extends Namespace {
 				}
 			} else if (PUBDATE.equals(top) && ITEM.equals(second) && state.getCurrentItem() != null) {
 				state.getCurrentItem().setPubDate(DateUtils.parse(content));
-			} else if (URL.equals(top) && IMAGE.equals(second) && third != null
-					&& CHANNEL.equals(third)) {
+			} else if (URL.equals(top) && IMAGE.equals(second) && CHANNEL.equals(third)) {
 				// prefer itunes:image
 				if(state.getFeed() != null && state.getFeed().getImage() != null &&
 					state.getFeed().getImage().getDownload_url() == null) {
