@@ -1,10 +1,10 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -43,16 +43,16 @@ public class NSRSS20 extends Namespace {
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
-		if (localName.equals(ITEM)) {
+		if (ITEM.equals(localName)) {
 			state.setCurrentItem(new FeedItem());
 			state.getItems().add(state.getCurrentItem());
 			state.getCurrentItem().setFeed(state.getFeed());
 
-		} else if (localName.equals(ENCLOSURE)) {
+		} else if (ENCLOSURE.equals(localName)) {
 			String type = attributes.getValue(ENC_TYPE);
 			String url = attributes.getValue(ENC_URL);
-			if (state.getCurrentItem().getMedia() == null
-					&& (SyndTypeUtils.enclosureTypeValid(type) || ((type = SyndTypeUtils
+			if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null &&
+				(SyndTypeUtils.enclosureTypeValid(type) || ((type = SyndTypeUtils
 							.getValidMimeTypeFromUrl(url)) != null))) {
 
 				long size = 0;
@@ -63,19 +63,18 @@ public class NSRSS20 extends Namespace {
 						size = 0;
 					}
 				} catch (NumberFormatException e) {
-					if (BuildConfig.DEBUG)
-						Log.d(TAG, "Length attribute could not be parsed.");
+					Log.d(TAG, "Length attribute could not be parsed.");
 				}
 				state.getCurrentItem().setMedia(
 						new FeedMedia(state.getCurrentItem(), url, size, type));
 			}
 
-		} else if (localName.equals(IMAGE)) {
+		} else if (IMAGE.equals(localName)) {
 			if (state.getTagstack().size() >= 1) {
 				String parent = state.getTagstack().peek().getName();
-				if (parent.equals(CHANNEL)) {
+				if (CHANNEL.equals(parent)) {
 					Feed feed = state.getFeed();
-					if(feed.getImage() == null) {
+					if(feed != null && feed.getImage() == null) {
 						feed.setImage(new FeedImage());
 						feed.getImage().setOwner(state.getFeed());
 					}
@@ -87,26 +86,26 @@ public class NSRSS20 extends Namespace {
 
 	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
-		if (localName.equals(ITEM)) {
+		if (ITEM.equals(localName)) {
 			if (state.getCurrentItem() != null) {
+				FeedItem currentItem = state.getCurrentItem();
 				// the title tag is optional in RSS 2.0. The description is used
 				// as a
 				// title if the item has no title-tag.
-				if (state.getCurrentItem().getTitle() == null) {
-					state.getCurrentItem().setTitle(
-							state.getCurrentItem().getDescription());
+				if (currentItem.getTitle() == null) {
+					currentItem.setTitle(currentItem.getDescription());
 				}
 
                 if (state.getTempObjects().containsKey(NSITunes.DURATION)) {
-                    if (state.getCurrentItem().hasMedia()) {
-                        state.getCurrentItem().getMedia().setDuration((Integer) state.getTempObjects().get(NSITunes.DURATION));
+                    if (currentItem.hasMedia()) {
+						Integer duration = (Integer) state.getTempObjects().get(NSITunes.DURATION);
+						currentItem.getMedia().setDuration(duration);
                     }
                     state.getTempObjects().remove(NSITunes.DURATION);
                 }
 			}
 			state.setCurrentItem(null);
-		} else if (state.getTagstack().size() >= 2
-				&& state.getContentBuf() != null) {
+		} else if (state.getTagstack().size() >= 2 && state.getContentBuf() != null) {
 			String content = state.getContentBuf().toString();
 			SyndElement topElement = state.getTagstack().peek();
 			String top = topElement.getName();
@@ -117,45 +116,45 @@ public class NSRSS20 extends Namespace {
 				third = state.getThirdTag().getName();
 			}
 
-			if (top.equals(GUID) && second.equals(ITEM)) {
+			if (GUID.equals(top) && ITEM.equals(second)) {
                 // some feed creators include an empty or non-standard guid-element in their feed, which should be ignored
-                if (!content.isEmpty()) {
+                if (!TextUtils.isEmpty(content) && state.getCurrentItem() != null) {
 				    state.getCurrentItem().setItemIdentifier(content);
                 }
-			} else if (top.equals(TITLE)) {
+			} else if (TITLE.equals(top)) {
 				String title = content.trim();
-				if (second.equals(ITEM)) {
+				if (ITEM.equals(second) && state.getCurrentItem() != null) {
 					state.getCurrentItem().setTitle(title);
-				} else if (second.equals(CHANNEL)) {
+				} else if (CHANNEL.equals(second) && state.getFeed() != null) {
 					state.getFeed().setTitle(title);
-				} else if (second.equals(IMAGE) && third != null
-						&& third.equals(CHANNEL)) {
-					if(state.getFeed().getImage().getTitle() == null) {
+				} else if (IMAGE.equals(second) && third != null && CHANNEL.equals(third)) {
+					if(state.getFeed() != null && state.getFeed().getImage() != null &&
+						state.getFeed().getImage().getTitle() == null) {
 						state.getFeed().getImage().setTitle(title);
 					}
 				}
-			} else if (top.equals(LINK)) {
-				if (second.equals(CHANNEL)) {
+			} else if (LINK.equals(top)) {
+				if (CHANNEL.equals(second) && state.getFeed() != null) {
 					state.getFeed().setLink(content);
-				} else if (second.equals(ITEM)) {
+				} else if (ITEM.equals(second) && state.getCurrentItem() != null) {
 					state.getCurrentItem().setLink(content);
 				}
-			} else if (top.equals(PUBDATE) && second.equals(ITEM)) {
-				state.getCurrentItem().setPubDate(
-						DateUtils.parse(content));
-			} else if (top.equals(URL) && second.equals(IMAGE) && third != null
-					&& third.equals(CHANNEL)) {
-				if(state.getFeed().getImage().getDownload_url() == null) { // prefer itunes:image
+			} else if (PUBDATE.equals(top) && ITEM.equals(second) && state.getCurrentItem() != null) {
+				state.getCurrentItem().setPubDate(DateUtils.parse(content));
+			} else if (URL.equals(top) && IMAGE.equals(second) && third != null
+					&& CHANNEL.equals(third)) {
+				// prefer itunes:image
+				if(state.getFeed() != null && state.getFeed().getImage() != null &&
+					state.getFeed().getImage().getDownload_url() == null) {
 					state.getFeed().getImage().setDownload_url(content);
 				}
-			} else if (localName.equals(DESCR)) {
-				if (second.equals(CHANNEL)) {
+			} else if (DESCR.equals(localName)) {
+				if (CHANNEL.equals(second) && state.getFeed() != null) {
 					state.getFeed().setDescription(content);
-				} else if (second.equals(ITEM)) {
+				} else if (ITEM.equals(second) && state.getCurrentItem() != null) {
 					state.getCurrentItem().setDescription(content);
 				}
-
-			} else if (localName.equals(LANGUAGE)) {
+			} else if (LANGUAGE.equals(localName) && state.getFeed() != null) {
 				state.getFeed().setLanguage(content.toLowerCase());
 			}
 		}
