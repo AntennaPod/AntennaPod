@@ -124,7 +124,7 @@ public class ItunesSearchFragment extends Fragment {
             } else {
                 gridView.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
-                rx.Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+                subscription = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
                             OkHttpClient client = AntennapodHttpClient.getHttpClient();
                             Request.Builder httpReq = new Request.Builder()
                                     .url(podcast.feedUrl)
@@ -233,7 +233,7 @@ public class ItunesSearchFragment extends Fragment {
         butRetry.setVisibility(View.GONE);
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        subscription = rx.Observable.create((Observable.OnSubscribe<List<Podcast>>) subscriber -> {
+        subscription = Observable.create((Observable.OnSubscribe<List<Podcast>>) subscriber -> {
                     String lang = Locale.getDefault().getLanguage();
                     String url = "https://itunes.apple.com/" + lang + "/rss/toppodcasts/limit=25/explicit=true/json";
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
