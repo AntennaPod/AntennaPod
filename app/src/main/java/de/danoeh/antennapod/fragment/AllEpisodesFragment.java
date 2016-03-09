@@ -337,6 +337,7 @@ public class AllEpisodesFragment extends Fragment {
             MainActivity mainActivity = activity.get();
             listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess,
                     new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
+            listAdapter.setHasStableIds(true);
             recyclerView.setAdapter(listAdapter);
         }
         listAdapter.notifyDataSetChanged();
