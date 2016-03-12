@@ -41,7 +41,7 @@ project.ext {
     minSdkVersion = 10
     targetSdkVersion = 23
 
-    supportVersion = "23.1.1"
+    supportVersion = "23.2.0"
     commonsioVersion = "2.4"
     commonslangVersion = "3.4"
     eventbusVersion = "2.4.0"
@@ -49,7 +49,7 @@ project.ext {
     glideVersion = "3.6.1"
     iconifyVersion = "2.1.1"
     jsoupVersion = "1.7.3"
-    materialDialogsVersion = "0.8.5.3@aar"
+    materialDialogsVersion = "0.8.5.6@aar"
     okhttpVersion = "2.7.4"
     okioVersion = "1.6.0"
     recyclerviewFlexibledividerVersion = "1.2.6"
@@ -57,7 +57,7 @@ project.ext {
     rxJavaVersion = "1.1.0"
     rxJavaRulesVersion = "1.1.0.0"
 
-    audioPlayerVersion = "v1.0.12"
+    audioPlayerVersion = "v1.0.14"
 }
 
 task wrapper(type: Wrapper) {

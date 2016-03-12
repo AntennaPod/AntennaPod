@@ -109,6 +109,12 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         return selectedItem;
     }
 
+    @Override
+    public long getItemId(int position) {
+        FeedItem item = itemAccess.getItem(position);
+        return item != null ? item.getId() : RecyclerView.NO_POSITION;
+    }
+
     public int getItemCount() {
         return itemAccess.getCount();
     }

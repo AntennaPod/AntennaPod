@@ -63,12 +63,7 @@ public class CoverFragment extends Fragment implements AudioplayerContentFragmen
     }
 
     private void loadMediaInfo() {
-        if(imgvCover == null) {
-            return;
-        }
         if (media != null) {
-            Log.d(TAG, "feed title: " + media.getFeedTitle());
-            Log.d(TAG, "episode title: " + media.getEpisodeTitle());
             txtvPodcastTitle.setText(media.getFeedTitle());
             txtvEpisodeTitle.setText(media.getEpisodeTitle());
             Glide.with(this)
@@ -103,7 +98,7 @@ public class CoverFragment extends Fragment implements AudioplayerContentFragmen
 
     @Override
     public void onMediaChanged(Playable media) {
-        if(this.media == media) {
+        if(!isAdded() || this.media == media) {
             return;
         }
         this.media = media;

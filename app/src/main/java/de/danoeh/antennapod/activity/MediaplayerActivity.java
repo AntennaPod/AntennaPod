@@ -31,6 +31,8 @@ import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
+import java.util.Locale;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -206,8 +208,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     @Override
     protected void onPause() {
         super.onPause();
-        controller.reinitServiceIfPaused();
-        controller.pause();
+        if(controller != null) {
+            controller.reinitServiceIfPaused();
+            controller.pause();
+        }
     }
 
     /**
@@ -229,8 +233,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     protected void onBufferUpdate(float progress) {
         if (sbPosition != null) {
-            sbPosition.setSecondaryProgress((int) progress
-                    * sbPosition.getMax());
+            sbPosition.setSecondaryProgress((int) progress * sbPosition.getMax());
         }
     }
 
@@ -246,6 +249,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             controller.release();
         }
         controller = newPlaybackController();
+        if(butPlay != null) {
+            butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
+        }
     }
 
     @Override
@@ -454,9 +460,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                                 if(controller != null && controller.canSetPlaybackSpeed()) {
                                     float playbackSpeed = (progress + 10) / 20.0f;
                                     controller.setPlaybackSpeed(playbackSpeed);
-                                    String speed = String.format("%.2f", playbackSpeed);
-                                    UserPreferences.setPlaybackSpeed(speed);
-                                    txtvPlaybackSpeed.setText(speed + "x");
+                                    String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
+                                    UserPreferences.setPlaybackSpeed(speedPref);
+                                    String speedStr = String.format("%.2fx", playbackSpeed);
+                                    txtvPlaybackSpeed.setText(speedStr);
                                 } else if(fromUser) {
                                     float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
                                     barPlaybackSpeed.post(() -> {
@@ -583,7 +590,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         super.onResume();
         Log.d(TAG, "onResume()");
         StorageUtils.checkStorageAvailability(this);
-        controller.init();
+        if(controller != null) {
+            controller.init();
+        }
     }
 
     /**
@@ -597,32 +606,31 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     protected abstract void clearStatusMsg();
 
     protected void onPositionObserverUpdate() {
-        if (controller != null) {
-            int currentPosition = controller.getPosition();
-            int duration = controller.getDuration();
-            Log.d(TAG, "currentPosition " + Converter
-                    .getDurationStringLong(currentPosition));
-            if (currentPosition != PlaybackService.INVALID_TIME
-                    && duration != PlaybackService.INVALID_TIME
-                    && controller.getMedia() != null) {
-                txtvPosition.setText(Converter
-                        .getDurationStringLong(currentPosition));
-                if (showTimeLeft) {
-                    txtvLength.setText("-" + Converter
-                            .getDurationStringLong(duration - currentPosition));
-                } else {
-                    txtvLength.setText(Converter
-                            .getDurationStringLong(duration));
-                }
-                updateProgressbarPosition(currentPosition, duration);
-            } else {
-                Log.w(TAG, "Could not react to position observer update because of invalid time");
-            }
+        if (controller == null || txtvPosition == null || txtvLength == null) {
+            return;
         }
+        int currentPosition = controller.getPosition();
+        int duration = controller.getDuration();
+        Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
+        if (currentPosition == PlaybackService.INVALID_TIME ||
+                duration == PlaybackService.INVALID_TIME) {
+            Log.w(TAG, "Could not react to position observer update because of invalid time");
+            return;
+        }
+        txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+        if (showTimeLeft) {
+            txtvLength.setText("-" + Converter.getDurationStringLong(duration - currentPosition));
+        } else {
+            txtvLength.setText(Converter.getDurationStringLong(duration));
+        }
+        updateProgressbarPosition(currentPosition, duration);
     }
 
     private void updateProgressbarPosition(int position, int duration) {
         Log.d(TAG, "updateProgressbarPosition(" + position + ", " + duration + ")");
+        if(sbPosition == null) {
+            return;
+        }
         float progress = ((float) position) / duration;
         sbPosition.setProgress((int) (progress * sbPosition.getMax()));
     }
@@ -639,17 +647,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
         if (media != null) {
-            txtvPosition.setText(Converter.getDurationStringLong((media.getPosition())));
-
-            if (media.getDuration() != 0) {
-                txtvLength.setText(Converter.getDurationStringLong(media.getDuration()));
-                float progress = ((float) media.getPosition()) / media.getDuration();
-                sbPosition.setProgress((int) (progress * sbPosition.getMax()));
-                if (showTimeLeft) {
-                    int timeLeft = media.getDuration() - media.getPosition();
-                    txtvLength.setText("-" + Converter.getDurationStringLong(timeLeft));
-                }
-            }
+            onPositionObserverUpdate();
             checkFavorite();
             if(butPlaybackSpeed != null) {
                 if (controller == null) {
@@ -857,8 +855,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     void handleError(int errorCode) {
         final AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
         errorDialog.setTitle(R.string.error_label);
-        errorDialog
-                .setMessage(MediaPlayerError.getErrorString(this, errorCode));
+        errorDialog.setMessage(MediaPlayerError.getErrorString(this, errorCode));
         errorDialog.setNeutralButton("OK",
                 (dialog, which) -> {
                     dialog.dismiss();
@@ -872,19 +869,22 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     @Override
     public void onProgressChanged (SeekBar seekBar,int progress, boolean fromUser) {
-        if (controller != null) {
-            prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
-            if (showTimeLeft && prog != 0) {
-                int duration = controller.getDuration();
-                String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
-                txtvLength.setText(length);
-            }
+        if (controller == null || txtvLength == null) {
+            return;
+        }
+        prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
+        if (showTimeLeft && prog != 0) {
+            int duration = controller.getDuration();
+            String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
+            txtvLength.setText(length);
         }
     }
 
     private void updateButPlaybackSpeed() {
         if (controller != null && butPlaybackSpeed != null) {
-            butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed() + "x");
+            float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
+            String speedStr = String.format("%.2fx", speed);
+            butPlaybackSpeed.setText(speedStr);
         }
     }
 
@@ -904,21 +904,25 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     private void checkFavorite() {
         Playable playable = controller.getMedia();
-            if (playable != null && playable instanceof FeedMedia) {
-                FeedItem feedItem = ((FeedMedia) playable).getItem();
-                if (feedItem != null) {
-                    Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(item -> {
-                                boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
-                                if(isFavorite != isFav) {
-                                    isFavorite = isFav;
-                                    invalidateOptionsMenu();
-                                }
-                            });
-                }
+        if (playable != null && playable instanceof FeedMedia) {
+            FeedItem feedItem = ((FeedMedia) playable).getItem();
+            if (feedItem != null) {
+                Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        item -> {
+                            boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
+                            if (isFavorite != isFav) {
+                                isFavorite = isFav;
+                                invalidateOptionsMenu();
+                            }
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                        }
+                    );
             }
+        }
     }
 
 }

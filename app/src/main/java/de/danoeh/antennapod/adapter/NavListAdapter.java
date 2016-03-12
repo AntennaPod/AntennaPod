@@ -232,7 +232,7 @@ public class NavListAdapter extends BaseAdapter
             int spaceUsed = itemAccess.getNumberOfDownloadedItems() -
                     itemAccess.getReclaimableItems();
 
-            if (spaceUsed >= epCacheSize) {
+            if (epCacheSize > 0 && spaceUsed >= epCacheSize) {
                 holder.count.setText("{md-disc-full 150%}");
                 Iconify.addIcons(holder.count);
                 holder.count.setVisibility(View.VISIBLE);
