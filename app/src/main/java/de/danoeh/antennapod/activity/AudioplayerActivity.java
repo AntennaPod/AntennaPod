@@ -103,6 +103,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
+        pagerAdapter.setController(null);
         if(subscription != null) {
             subscription.unsubscribe();
         }
@@ -112,9 +113,13 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy()");
         super.onDestroy();
         // don't risk creating memory leaks
+        drawerLayout = null;
         navAdapter = null;
+        navList = null;
+        navDrawer = null;
         drawerToggle = null;
         pager = null;
         pagerAdapter = null;
@@ -171,6 +176,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         if(pagerAdapter != null && controller != null && controller.getMedia() != media) {
             media = controller.getMedia();
             pagerAdapter.onMediaChanged(media);
+            pagerAdapter.setController(controller);
         }
 
         EventDistributor.getInstance().register(contentUpdate);
@@ -258,7 +264,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         });
 
         pager = (ViewPager) findViewById(R.id.pager);
-        pagerAdapter = new AudioplayerPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new AudioplayerPagerAdapter(getSupportFragmentManager(), media);
+        pagerAdapter.setController(controller);
         pager.setAdapter(pagerAdapter);
         CirclePageIndicator pageIndicator = (CirclePageIndicator) findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
@@ -537,10 +544,16 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         void onMediaChanged(Playable media);
     }
 
-    private class AudioplayerPagerAdapter extends FragmentStatePagerAdapter {
+    private static class AudioplayerPagerAdapter extends FragmentStatePagerAdapter {
 
-        public AudioplayerPagerAdapter(FragmentManager fm) {
+        private static final String TAG = "AudioplayerPagerAdapter";
+        
+        private Playable media;
+        private PlaybackController controller;
+
+        public AudioplayerPagerAdapter(FragmentManager fm, Playable media) {
             super(fm);
+            this.media = media;
         }
 
         private CoverFragment coverFragment;
@@ -548,6 +561,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         private ChaptersFragment chaptersFragment;
 
         public void onMediaChanged(Playable media) {
+            this.media = media;
             if(coverFragment != null) {
                 coverFragment.onMediaChanged(media);
             }
@@ -556,6 +570,13 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
             }
             if(chaptersFragment != null) {
                 chaptersFragment.onMediaChanged(media);
+            }
+        }
+
+        public void setController(PlaybackController controller) {
+            this.controller = controller;
+            if(chaptersFragment != null) {
+                chaptersFragment.setController(controller);
             }
         }
 
@@ -580,7 +601,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
                     return itemDescriptionFragment;
                 case POS_CHAPTERS:
                     if(chaptersFragment == null) {
-                        chaptersFragment = ChaptersFragment.newInstance(media, controller);
+                        chaptersFragment = ChaptersFragment.newInstance(media);
+                        chaptersFragment.setController(controller);
                     }
                     return chaptersFragment;
                 default:
