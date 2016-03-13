@@ -45,10 +45,10 @@ dependencies {
         exclude group: "org.json", module: "json"
     }
     compile "commons-io:commons-io:$commonsioVersion"
-    compile "com.jayway.android.robotium:robotium-solo:5.5.3"
+    compile "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     compile "org.jsoup:jsoup:$jsoupVersion"
     compile "com.github.bumptech.glide:glide:$glideVersion"
-    compile "com.github.bumptech.glide:okhttp-integration:1.3.1"
+    compile "com.github.bumptech.glide:okhttp-integration:$glideOkhttpIntegrationVersion"
     compile "com.squareup.okhttp:okhttp:$okhttpVersion"
     compile "com.squareup.okhttp:okhttp-urlconnection:$okhttpVersion"
     compile "com.squareup.okio:okio:$okioVersion"
