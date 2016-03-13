@@ -202,7 +202,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
     @Override
     public long getItemId(int position) {
-        return position;
+        FeedItem item = itemAccess.getItem(position);
+        return item != null ? item.getId() : RecyclerView.NO_POSITION;
     }
 
     @Override

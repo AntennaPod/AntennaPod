@@ -71,6 +71,7 @@ android {
         versionName "${getMyVersionName()}"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "de.test.antennapod.AntennaPodTestRunner"
+        generatedDensities = []
     }
 
     signingConfigs {
@@ -131,6 +132,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    aaptOptions {
+        additionalParameters "--no-version-vectors"
     }
 }
 

@@ -63,6 +63,7 @@
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
         <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
@@ -186,6 +187,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
         <item name="attr/action_about">@drawable/ic_info_white_24dp</item>
