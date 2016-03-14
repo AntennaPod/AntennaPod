@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -676,7 +677,7 @@ public final class DBReader {
      * as well as chapter marks of the FeedItems will also be loaded from the database.
      */
     public static List<FeedItem> getFeedItems(final long... itemIds) {
-        Log.d(TAG, "getFeedItems() called with: " + "itemIds = [" + itemIds + "]");
+        Log.d(TAG, "getFeedItems() called with: " + "itemIds = [" + Arrays.toString(itemIds) + "]");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         List<FeedItem> items = getFeedItems(adapter, itemIds);

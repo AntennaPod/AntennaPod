@@ -35,7 +35,7 @@ public final class IntList {
         int hashCode = 1;
         for (int i = 0; i < size; i++) {
             int value = values[i];
-            hashCode = 31 * hashCode + (int)(value ^ (value >>> 32));
+            hashCode = 31 * hashCode + value;
         }
         return hashCode;
     }
