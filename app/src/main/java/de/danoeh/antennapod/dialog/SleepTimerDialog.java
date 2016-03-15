@@ -138,7 +138,7 @@ public abstract class SleepTimerDialog {
 
     private long readTimeMillis() {
         TimeUnit selectedUnit = units[spTimeUnit.getSelectedItemPosition()];
-        long value = Long.valueOf(etxtTime.getText().toString());
+        long value = Long.parseLong(etxtTime.getText().toString());
         return selectedUnit.toMillis(value);
     }
 

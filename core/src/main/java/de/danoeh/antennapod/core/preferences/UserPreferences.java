@@ -158,12 +158,12 @@ public class UserPreferences {
 
     public static int getFeedOrder() {
         String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "0");
-        return Integer.valueOf(value);
+        return Integer.parseInt(value);
     }
 
     public static int getFeedCounterSetting() {
         String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "0");
-        return Integer.valueOf(value);
+        return Integer.parseInt(value);
     }
 
     /**
@@ -243,7 +243,7 @@ public class UserPreferences {
     }
 
     public static int getSmartMarkAsPlayedSecs() {
-        return Integer.valueOf(prefs.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
+        return Integer.parseInt(prefs.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
     }
 
     public static boolean isAutoFlattr() {
@@ -295,8 +295,8 @@ public class UserPreferences {
         String datetime = prefs.getString(PREF_UPDATE_INTERVAL, "");
         if(datetime.length() >= 3 && datetime.contains(":")) {
             String[] parts = datetime.split(":");
-            int hourOfDay = Integer.valueOf(parts[0]);
-            int minute = Integer.valueOf(parts[1]);
+            int hourOfDay = Integer.parseInt(parts[0]);
+            int minute = Integer.parseInt(parts[1]);
             return new int[] { hourOfDay, minute };
         } else {
             return new int[0];
@@ -308,7 +308,7 @@ public class UserPreferences {
     }
 
     public static int getParallelDownloads() {
-        return Integer.valueOf(prefs.getString(PREF_PARALLEL_DOWNLOADS, "4"));
+        return Integer.parseInt(prefs.getString(PREF_PARALLEL_DOWNLOADS, "4"));
     }
 
     public static int getEpisodeCacheSizeUnlimited() {
@@ -338,12 +338,12 @@ public class UserPreferences {
 
     public static int getImageCacheSize() {
         String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE);
-        int cacheSizeInt = Integer.valueOf(cacheSizeString);
+        int cacheSizeInt = Integer.parseInt(cacheSizeString);
         // if the cache size is too small the user won't get any images at all
         // that's bad, force it back to the default.
         if (cacheSizeInt < IMAGE_CACHE_SIZE_MINIMUM) {
             prefs.edit().putString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE).apply();
-            cacheSizeInt = Integer.valueOf(IMAGE_CACHE_DEFAULT_VALUE);
+            cacheSizeInt = Integer.parseInt(IMAGE_CACHE_DEFAULT_VALUE);
         }
         int cacheSizeMB = cacheSizeInt * 1024 * 1024;
         return cacheSizeMB;
@@ -494,7 +494,7 @@ public class UserPreferences {
         if (valueFromPrefs.equals(context.getString(R.string.pref_episode_cache_unlimited))) {
             return EPISODE_CACHE_SIZE_UNLIMITED;
         } else {
-            return Integer.valueOf(valueFromPrefs);
+            return Integer.parseInt(valueFromPrefs);
         }
     }
 
@@ -548,7 +548,7 @@ public class UserPreferences {
 
 
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
-        int cleanupValue = Integer.valueOf(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+        int cleanupValue = Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
         if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
             return new APQueueCleanupAlgorithm();
         } else if (cleanupValue == EPISODE_CLEANUP_NULL) {

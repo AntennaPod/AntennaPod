@@ -188,7 +188,7 @@ public class DownloadService extends Service {
                             if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
                                 postAuthenticationNotification(downloader.getDownloadRequest());
                             } else if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                                    && Integer.valueOf(status.getReasonDetailed()) == 416) {
+                                    && Integer.parseInt(status.getReasonDetailed()) == 416) {
 
                                 Log.d(TAG, "Requested invalid range, restarting download from the beginning");
                                 FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));

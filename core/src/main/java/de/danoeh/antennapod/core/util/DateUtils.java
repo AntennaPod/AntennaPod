@@ -117,13 +117,13 @@ public class DateUtils {
         int idx = 0;
         if (parts.length == 3) {
             // string has hours
-            result += Integer.valueOf(parts[idx]) * 3600000L;
+            result += Integer.parseInt(parts[idx]) * 3600000L;
             idx++;
         }
         if (parts.length >= 2) {
-            result += Integer.valueOf(parts[idx]) * 60000L;
+            result += Integer.parseInt(parts[idx]) * 60000L;
             idx++;
-            result += (Float.valueOf(parts[idx])) * 1000L;
+            result += (Float.parseFloat(parts[idx])) * 1000L;
         }
         return result;
     }

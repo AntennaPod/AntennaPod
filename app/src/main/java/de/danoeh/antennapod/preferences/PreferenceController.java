@@ -241,7 +241,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                         (preference, o) -> {
                             if (o instanceof String) {
                                 try {
-                                    int value = Integer.valueOf((String) o);
+                                    int value = Integer.parseInt((String) o);
                                     if (1 <= value && value <= 50) {
                                         setParallelDownloadsText(value);
                                         return true;
@@ -268,7 +268,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             public void afterTextChanged(Editable s) {
                 if (s.length() > 0) {
                     try {
-                        int value = Integer.valueOf(s.toString());
+                        int value = Integer.parseInt(s.toString());
                         if (value <= 0) {
                             ev.setText("1");
                         } else if (value > 50) {
@@ -343,7 +343,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(UserPreferences.PREF_IMAGE_CACHE_SIZE).setOnPreferenceChangeListener(
                 (preference, o) -> {
                     if (o instanceof String) {
-                        int newValue = Integer.valueOf((String) o) * 1024 * 1024;
+                        int newValue = Integer.parseInt((String) o) * 1024 * 1024;
                         if (newValue != UserPreferences.getImageCacheSize()) {
                             AlertDialog.Builder dialog = new AlertDialog.Builder(ui.getActivity());
                             dialog.setTitle(android.R.string.dialog_alert_title);
@@ -781,7 +781,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 checkedItem = ArrayUtils.indexOf(values, currIntervalStr);
             }
             builder1.setSingleChoiceItems(entries, checkedItem, (dialog1, which1) -> {
-                int hours = Integer.valueOf(values[which1]);
+                int hours = Integer.parseInt(values[which1]);
                 UserPreferences.setUpdateInterval(hours);
                 dialog1.dismiss();
                 setUpdateIntervalText();
