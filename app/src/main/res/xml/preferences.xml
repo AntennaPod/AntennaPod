@@ -272,6 +272,9 @@
             android:key="prefAbout"
             android:title="@string/about_pref"/>
         <Preference
+            android:key="prefKnownIssues"
+            android:title="@string/pref_known_issues"/>
+        <Preference
             android:key="prefSendCrashReport"
             android:title="@string/crash_report_title"
             android:summary="@string/crash_report_sum"/>

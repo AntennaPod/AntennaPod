@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.TimePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -86,6 +87,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PROXY = "prefProxy";
+    public static final String PREF_KNOWN_ISSUES = "prefKnownIssues";
+    public static final String PREF_SEND_CRASH_REPORT = "prefSendCrashReport";
 
     private final PreferenceUI ui;
 
@@ -373,7 +376,18 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             dialog.createDialog().show();
             return true;
         });
-        ui.findPreference("prefSendCrashReport").setOnPreferenceClickListener(preference -> {
+        ui.findPreference(PREF_KNOWN_ISSUES).setOnPreferenceClickListener(preference -> {
+            String url = "https://github.com/AntennaPod/AntennaPod/labels/bug";
+            try {
+                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                ui.getActivity().startActivity(myIntent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(ui.getActivity(), R.string.pref_no_browser_found, Toast.LENGTH_LONG).show();
+                Log.e(TAG, Log.getStackTraceString(e));
+            }
+            return true;
+        });
+        ui.findPreference(PREF_SEND_CRASH_REPORT).setOnPreferenceClickListener(preference -> {
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setType("text/plain");
             emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Martin.Fietz@gmail.com"});
@@ -532,7 +546,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled(autoDownload);
         setSelectedNetworksEnabled(autoDownload && UserPreferences.isEnableAutodownloadWifiFilter());
 
-        ui.findPreference("prefSendCrashReport").setEnabled(CrashReportWriter.getFile().exists());
+        ui.findPreference(PREF_SEND_CRASH_REPORT).setEnabled(CrashReportWriter.getFile().exists());
 
         if (Build.VERSION.SDK_INT >= 16) {
             ui.findPreference(UserPreferences.PREF_SONIC).setEnabled(true);
