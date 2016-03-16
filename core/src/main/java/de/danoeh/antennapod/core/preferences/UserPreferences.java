@@ -31,6 +31,7 @@ import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.core.util.Converter;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -267,20 +268,20 @@ public class UserPreferences {
 
     public static float getLeftVolume() {
         int volume = prefs.getInt(PREF_LEFT_VOLUME, 100);
-        if(volume == 100) {
-            return 1.0f;
-        } else {
-            return (float) (1 - (Math.log(100 - volume) / Math.log(100)));
-        }
+        return Converter.getVolumeFromPercentage(volume);
     }
 
     public static float getRightVolume() {
         int volume = prefs.getInt(PREF_RIGHT_VOLUME, 100);
-        if(volume == 100) {
-            return 1.0f;
-        } else {
-            return (float) (1 - (Math.log(100 - volume) / Math.log(100)));
-        }
+        return Converter.getVolumeFromPercentage(volume);
+    }
+
+    public static int getLeftVolumePercentage() {
+        return prefs.getInt(PREF_LEFT_VOLUME, 100);
+    }
+
+    public static int getRightVolumePercentage() {
+        return prefs.getInt(PREF_RIGHT_VOLUME, 100);
     }
 
     public static boolean shouldPauseForFocusLoss() {

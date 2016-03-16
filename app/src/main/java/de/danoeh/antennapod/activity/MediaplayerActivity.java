@@ -486,9 +486,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barPlaybackSpeed.setProgress((int) (20 * currentSpeed) - 10);
 
                         final SeekBar barLeftVolume = (SeekBar) dialog.findViewById(R.id.volume_left);
-                        barLeftVolume.setProgress(100);
+                        barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
                         final SeekBar barRightVolume = (SeekBar) dialog.findViewById(R.id.volume_right);
-                        barRightVolume.setProgress(100);
+                        barRightVolume.setProgress(UserPreferences.getRightVolumePercentage());
                         final CheckBox stereoToMono = (CheckBox) dialog.findViewById(R.id.stereo_to_mono);
                         stereoToMono.setChecked(UserPreferences.stereoToMono());
                         if (controller != null && !controller.canDownmix()) {
@@ -500,14 +500,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barLeftVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                float leftVolume = 1.0f, rightVolume = 1.0f;
-                                if (progress < 100) {
-                                    leftVolume = progress / 100.0f;
-                                }
-                                if (barRightVolume.getProgress() < 100) {
-                                    rightVolume = barRightVolume.getProgress() / 100.0f;
-                                }
-                                controller.setVolume(leftVolume, rightVolume);
+                                controller.setVolume(
+                                        Converter.getVolumeFromPercentage(progress),
+                                        Converter.getVolumeFromPercentage(barRightVolume.getProgress()));
                             }
 
                             @Override
@@ -521,14 +516,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barRightVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                float leftVolume = 1.0f, rightVolume = 1.0f;
-                                if (progress < 100) {
-                                    rightVolume = progress / 100.0f;
-                                }
-                                if (barLeftVolume.getProgress() < 100) {
-                                    leftVolume = barLeftVolume.getProgress() / 100.0f;
-                                }
-                                controller.setVolume(leftVolume, rightVolume);
+                                controller.setVolume(
+                                        Converter.getVolumeFromPercentage(barLeftVolume.getProgress()),
+                                        Converter.getVolumeFromPercentage(progress));
                             }
 
                             @Override
