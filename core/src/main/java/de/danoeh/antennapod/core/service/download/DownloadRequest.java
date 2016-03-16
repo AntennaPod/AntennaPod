@@ -128,7 +128,8 @@ public class DownloadRequest implements Parcelable {
 
         DownloadRequest that = (DownloadRequest) o;
 
-        if (lastModified != that.lastModified) return false;
+        if (lastModified != null ? !lastModified.equals(that.lastModified) : that.lastModified != null)
+            return false;
         if (deleteOnFailure != that.deleteOnFailure) return false;
         if (feedfileId != that.feedfileId) return false;
         if (feedfileType != that.feedfileType) return false;
