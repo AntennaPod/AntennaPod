@@ -124,6 +124,15 @@ public class HttpDownloader extends Downloader {
                     throw e;
                 }
             }
+
+            if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                String contentType = response.header("Content-Type");
+                if(!contentType.startsWith("audio/") && !contentType.startsWith("video/")) {
+                    onFail(DownloadError.ERROR_FILE_TYPE, null);
+                    return;
+                }
+            }
+
             responseBody = response.body();
             String contentEncodingHeader = response.header("Content-Encoding");
             boolean isGzip = false;
