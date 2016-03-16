@@ -27,6 +27,7 @@ import java.util.Date;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -67,6 +68,12 @@ public class HttpDownloader extends Downloader {
             final URI uri = URIUtil.getURIFromRequestUrl(request.getSource());
             Request.Builder httpReq = new Request.Builder().url(uri.toURL())
                     .header("User-Agent", ClientConfig.USER_AGENT);
+            if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                // set header explicitly so that okhttp doesn't do transparent gzip
+                Log.d(TAG, "addHeader(\"Accept-Encoding\", \"identity\")");
+                httpReq.addHeader("Accept-Encoding", "identity");
+            }
+
             if(!TextUtils.isEmpty(request.getLastModified())) {
                 String lastModified = request.getLastModified();
                 Date lastModifiedDate = DateUtils.parse(lastModified);
