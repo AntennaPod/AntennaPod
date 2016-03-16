@@ -278,6 +278,8 @@
     <string name="no_items_label">There are no items in this list.</string>
     <string name="no_feeds_label">You haven\'t subscribed to any feeds yet.</string>
     <string name="no_chapters_label">This episode has no chapters.</string>
+    <string name="no_shownotes_label">This episode has no shownotes.</string>
+
 
     <!-- Preferences -->
     <string name="other_pref">Other</string>
