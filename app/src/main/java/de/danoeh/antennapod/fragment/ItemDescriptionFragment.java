@@ -111,7 +111,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "Creating view");
-        webvDescription = new WebView(getActivity());
+        webvDescription = new WebView(getActivity().getApplicationContext());
         if (Build.VERSION.SDK_INT >= 11) {
             webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }

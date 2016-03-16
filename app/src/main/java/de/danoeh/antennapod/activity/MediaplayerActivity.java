@@ -260,6 +260,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         Log.d(TAG, "onStop()");
         if (controller != null) {
             controller.release();
+            controller = null; // prevent leak
         }
     }
 
