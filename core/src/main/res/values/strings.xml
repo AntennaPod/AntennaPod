@@ -413,8 +413,8 @@
     <string name="opml_import_label">OPML Import</string>
     <string name="opml_directory_error">ERROR!</string>
     <string name="reading_opml_label">Reading OPML file</string>
-    <string name="opml_reader_error">An error has occurred while reading the opml document:</string>
-    <string name="opml_import_error_dir_empty">The import directory is empty.</string>
+    <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
+    <string name="opml_import_error_no_file">No file selected!</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
     <string name="select_options_label">Select&#8230;</string>
