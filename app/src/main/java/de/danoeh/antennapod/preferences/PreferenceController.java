@@ -58,6 +58,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
+import de.danoeh.antennapod.dialog.ProxyDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 
 /**
@@ -82,6 +83,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
     public static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
+    public static final String PREF_PROXY = "prefProxy";
 
     private final PreferenceUI ui;
 
@@ -356,6 +358,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     return false;
                 }
         );
+        ui.findPreference(PREF_PROXY).setOnPreferenceClickListener(preference -> {
+            ProxyDialog dialog = new ProxyDialog(ui.getActivity());
+            dialog.createDialog().show();
+            return true;
+        });
         ui.findPreference("prefSendCrashReport").setOnPreferenceClickListener(preference -> {
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setType("text/plain");

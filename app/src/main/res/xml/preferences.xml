@@ -200,8 +200,11 @@
                 android:key="prefEnableAutoDownloadWifiFilter"
                 android:title="@string/pref_autodl_wifi_filter_title"
                 android:summary="@string/pref_autodl_wifi_filter_sum"/>
-
         </PreferenceScreen>
+        <Preference
+            android:key="prefProxy"
+            android:summary="@string/pref_proxy_sum"
+            android:title="@string/pref_proxy_title" />
 
     </PreferenceCategory>
 
