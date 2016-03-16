@@ -8,11 +8,8 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.joanzapata.iconify.fonts.MaterialModule;
 
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.EventDistributor;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.spa.SPAUtil;
 
 /** Main application class. */
@@ -56,11 +53,8 @@ public class PodcastApp extends Application {
 
 		singleton = this;
 
-		PodDBAdapter.init(this);
-		UserPreferences.init(this);
-		UpdateManager.init(this);
-		PlaybackPreferences.init(this);
-		NetworkUtils.init(this);
+		ClientConfig.initialize(this);
+
 		EventDistributor.getInstance();
 		Iconify.with(new FontAwesomeModule());
 		Iconify.with(new MaterialModule());
