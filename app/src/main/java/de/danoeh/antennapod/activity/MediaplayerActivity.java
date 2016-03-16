@@ -249,9 +249,6 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             controller.release();
         }
         controller = newPlaybackController();
-        if(butPlay != null) {
-            butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
-        }
     }
 
     @Override
