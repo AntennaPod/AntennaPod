@@ -180,7 +180,7 @@ public class HttpDownloader extends Downloader {
                     && !TextUtils.isEmpty(contentRangeHeader)) {
                 String start = contentRangeHeader.substring("bytes ".length(),
                         contentRangeHeader.indexOf("-"));
-                request.setSoFar(Long.valueOf(start));
+                request.setSoFar(Long.parseLong(start));
                 Log.d(TAG, "Starting download at position " + request.getSoFar());
 
                 out = new RandomAccessFile(destination, "rw");

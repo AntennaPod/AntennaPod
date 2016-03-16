@@ -172,7 +172,7 @@ public class Timeline {
 
             try {
                 if (m.find()) {
-                    return Integer.valueOf(m.group(1));
+                    return Integer.parseInt(m.group(1));
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();

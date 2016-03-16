@@ -88,9 +88,9 @@ public final class Converter {
         if (parts.length != 3) {
             return 0;
         }
-        return Integer.valueOf(parts[0]) * 3600 * 1000 +
-                Integer.valueOf(parts[1]) * 60 * 1000 +
-                Integer.valueOf(parts[2]) * 1000;
+        return Integer.parseInt(parts[0]) * 3600 * 1000 +
+                Integer.parseInt(parts[1]) * 60 * 1000 +
+                Integer.parseInt(parts[2]) * 1000;
     }
 
     /** Converts short duration string (HH:MM) to milliseconds. */
@@ -99,8 +99,8 @@ public final class Converter {
         if (parts.length != 2) {
             return 0;
         }
-        return Integer.valueOf(parts[0]) * 3600 * 1000 +
-                Integer.valueOf(parts[1]) * 1000 * 60;
+        return Integer.parseInt(parts[0]) * 3600 * 1000 +
+                Integer.parseInt(parts[1]) * 1000 * 60;
     }
 
     /** Converts milliseconds to a localized string containing hours and minutes */

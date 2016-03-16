@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
                 loadFragment(lastFragment, null);
             } else {
                 try {
-                    loadFeedFragmentById(Integer.valueOf(lastFragment), null);
+                    loadFeedFragmentById(Integer.parseInt(lastFragment), null);
                 } catch (NumberFormatException e) {
                     // it's not a number, this happens if we removed
                     // a label from the NAV_DRAWER_TAGS
