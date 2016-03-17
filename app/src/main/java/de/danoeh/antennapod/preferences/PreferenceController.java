@@ -442,6 +442,14 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(PreferenceController.PREF_GPODNET_SETLOGIN_INFORMATION).setEnabled(loggedIn);
         ui.findPreference(PreferenceController.PREF_GPODNET_SYNC).setEnabled(loggedIn);
         ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
+        if(loggedIn) {
+            String format = ui.getActivity().getString(R.string.pref_gpodnet_login_status);
+            String summary = String.format(format, GpodnetPreferences.getUsername(),
+                    GpodnetPreferences.getDeviceID());
+            ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setSummary(Html.fromHtml(summary));
+        } else {
+            ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setSummary(null);
+        }
         ui.findPreference(PreferenceController.PREF_GPODNET_HOSTNAME).setSummary(GpodnetPreferences.getHostname());
     }
 

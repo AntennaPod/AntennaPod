@@ -364,6 +364,7 @@
     <string name="pref_gpodnet_sync_title">Sync now</string>
     <string name="pref_gpodnet_sync_sum">Sync subscriptions and episode states with gpodder.net</string>
     <string name="pref_gpodnet_sync_started">Sync started</string>
+    <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
     <string name="pref_fast_forward">Fast forward time</string>
