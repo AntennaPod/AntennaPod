@@ -102,6 +102,7 @@ public class ItemFragment extends Fragment {
 
     private ViewGroup root;
     private WebView webvDescription;
+    private TextView txtvPodcast;
     private TextView txtvTitle;
     private TextView txtvDuration;
     private TextView txtvPublished;
@@ -135,6 +136,7 @@ public class ItemFragment extends Fragment {
         View layout = inflater.inflate(R.layout.feeditem_fragment, container, false);
 
         root = (ViewGroup) layout.findViewById(R.id.content_root);
+        txtvPodcast = (TextView) layout.findViewById(R.id.txtvPodcast);
         txtvTitle = (TextView) layout.findViewById(R.id.txtvTitle);
         txtvDuration = (TextView) layout.findViewById(R.id.txtvDuration);
         txtvPublished = (TextView) layout.findViewById(R.id.txtvPublished);
@@ -219,6 +221,7 @@ public class ItemFragment extends Fragment {
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().registerSticky(this);
         if(itemsLoaded) {
+            progbarLoading.setVisibility(View.GONE);
             updateAppearance();
         }
     }
@@ -295,6 +298,7 @@ public class ItemFragment extends Fragment {
             return;
         }
         getActivity().supportInvalidateOptionsMenu();
+        txtvPodcast.setText(item.getFeed().getTitle());
         txtvTitle.setText(item.getTitle());
 
         if (item.getPubDate() != null) {
