@@ -546,15 +546,7 @@ public class UserPreferences {
         String[] selectedSpeeds = null;
         // If this preference hasn't been set yet, return the default options
         if (valueFromPrefs == null) {
-            String[] allSpeeds = context.getResources().getStringArray(R.array.playback_speed_values);
-            List<String> speedList = new ArrayList<>();
-            for (String speedStr : allSpeeds) {
-                float speed = Float.parseFloat(speedStr);
-                if (speed < 2.0001 && speed * 10 % 1 == 0) {
-                    speedList.add(speedStr);
-                }
-            }
-            selectedSpeeds = speedList.toArray(new String[speedList.size()]);
+            selectedSpeeds = new String[] { "1.00", "1.25", "1.50", "1.75", "2.00" };
         } else {
             try {
                 JSONArray jsonArray = new JSONArray(valueFromPrefs);
