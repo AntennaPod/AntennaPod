@@ -269,8 +269,6 @@
   <string name="pref_pauseOnDisconnect_sum">헤드폰이나 블루투스가 연결 해제되었을 경우 일시정지</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰 다시 연결할 때 재생 계속</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">블루투스가 다시 연결되면 재생 재개 </string>
-  <string name="pref_hardwareForwardButtonSkips_title">빨리감기 버튼을 넘김 버튼으로</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">빨리감기 하드웨어 버튼을 눌렀을 경우 빨리감기 대신 다음 에피소드로 넘깁니다</string>
   <string name="pref_followQueue_sum">재생을 마쳤을 때 다음 대기열로 이동</string>
   <string name="pref_auto_delete_sum">재생이 끝나면 에피소드 삭제</string>
   <string name="pref_auto_delete_title">자동 삭제</string>
