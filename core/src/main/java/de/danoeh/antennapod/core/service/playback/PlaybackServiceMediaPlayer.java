@@ -1210,6 +1210,71 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         private static final String TAG = "MediaSessionCompat";
 
         @Override
+        public void onPlay() {
+            Log.d(TAG, "onPlay()");
+            if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                resume();
+            } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                setStartWhenPrepared(true);
+                prepare();
+            }
+        }
+
+        @Override
+        public void onPause() {
+            Log.d(TAG, "onPause()");
+            if (playerStatus == PlayerStatus.PLAYING) {
+                pause(false, true);
+            }
+            if (UserPreferences.isPersistNotify()) {
+                pause(false, true);
+            } else {
+                pause(true, true);
+            }
+        }
+
+        @Override
+        public void onStop() {
+            Log.d(TAG, "onStop()");
+            stop();
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            Log.d(TAG, "onSkipToPrevious()");
+            seekDelta(-UserPreferences.getRewindSecs() * 1000);
+        }
+
+        @Override
+        public void onRewind() {
+            Log.d(TAG, "onRewind()");
+            seekDelta(-UserPreferences.getRewindSecs() * 1000);
+        }
+
+        @Override
+        public void onFastForward() {
+            Log.d(TAG, "onFastForward()");
+            seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+        }
+
+        @Override
+        public void onSkipToNext() {
+            Log.d(TAG, "onSkipToNext()");
+            if(UserPreferences.shouldHardwareButtonSkip()) {
+                endPlayback(true);
+            } else {
+                seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+            }
+        }
+
+
+        @Override
+        public void onSeekTo(long pos) {
+            Log.d(TAG, "onSeekTo()");
+            seekTo((int) pos);
+        }
+
+        @Override
         public boolean onMediaButtonEvent(final Intent mediaButton) {
             Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
             if (mediaButton != null) {
@@ -1245,42 +1310,27 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_PLAY: {
-                    Log.d(TAG, "Received Play event from RemoteControlClient");
-                    if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                        resume();
-                    } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                        setStartWhenPrepared(true);
-                        prepare();
-                    }
+                    sessionCallback.onPlay();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_PAUSE: {
-                    Log.d(TAG, "Received Pause event from RemoteControlClient");
-                    if (playerStatus == PlayerStatus.PLAYING) {
-                        pause(false, true);
-                    }
-                    if (UserPreferences.isPersistNotify()) {
-                        pause(false, true);
-                    } else {
-                        pause(true, true);
-                    }
+                    sessionCallback.onPause();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_STOP: {
-                    Log.d(TAG, "Received Stop event from RemoteControlClient");
-                    stop();
+                    sessionCallback.onStop();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_PREVIOUS: {
-                    seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    sessionCallback.onSkipToPrevious();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_REWIND: {
-                    seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    sessionCallback.onRewind();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD: {
-                    seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+                    sessionCallback.onFastForward();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_NEXT: {
