@@ -616,4 +616,7 @@
     <string name="proxy_host_invalid_error">Host is not a valid IP address or domain</string>
     <string name="proxy_port_invalid_error">Port not valid</string>
 
+    <!-- Casting -->
+    <string name="media_route_menu_title">Play on&#8230;</string>
+
 </resources>

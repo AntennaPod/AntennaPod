@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -70,7 +69,7 @@ import rx.schedulers.Schedulers;
 /**
  * The activity that is shown when the user launches the app.
  */
-public class MainActivity extends AppCompatActivity implements NavDrawerActivity {
+public class MainActivity extends CastEnabledActivity implements NavDrawerActivity {
 
     private static final String TAG = "MainActivity";
 

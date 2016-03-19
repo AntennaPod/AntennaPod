@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,7 +57,7 @@ import rx.schedulers.Schedulers;
  * Provides general features which are both needed for playing audio and video
  * files.
  */
-public abstract class MediaplayerActivity extends AppCompatActivity implements OnSeekBarChangeListener {
+public abstract class MediaplayerActivity extends CastEnabledActivity implements OnSeekBarChangeListener {
     private static final String TAG = "MediaplayerActivity";
     private static final String PREFS = "MediaPlayerActivityPreferences";
     private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
