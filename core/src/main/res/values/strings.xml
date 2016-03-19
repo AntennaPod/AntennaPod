@@ -403,6 +403,8 @@
     <string name="pref_faq">FAQ</string>
     <string name="pref_known_issues">Known issues</string>
     <string name="pref_no_browser_found">No web browser found.</string>
+    <string name="pref_cast_title">Cast support</string>
+    <string name="pref_cast_message">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
