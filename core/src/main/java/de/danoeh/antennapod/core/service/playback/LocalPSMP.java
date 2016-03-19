@@ -36,7 +36,7 @@ import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 /**
  * Manages the MediaPlayer object of the PlaybackService.
  */
-public class PlaybackServiceMediaPlayer {
+public class LocalPSMP implements IPlaybackServiceMediaPlayer {
     public static final String TAG = "PlaybackSvcMediaPlayer";
 
     /**
@@ -74,8 +74,8 @@ public class PlaybackServiceMediaPlayer {
      */
     private WifiManager.WifiLock wifiLock;
 
-    public PlaybackServiceMediaPlayer(@NonNull Context context,
-                                      @NonNull PSMPCallback callback) {
+    public LocalPSMP(@NonNull Context context,
+                     @NonNull PSMPCallback callback) {
         this.context = context;
         this.callback = callback;
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -124,6 +124,7 @@ public class PlaybackServiceMediaPlayer {
      *                           for playback immediately (see 'prepareImmediately' parameter for more details)
      * @param prepareImmediately Set to true if the method should also prepare the episode for playback.
      */
+    @Override
     public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject(...)");
         executor.submit(() -> {
@@ -194,7 +195,7 @@ public class PlaybackServiceMediaPlayer {
         this.mediaType = media.getMediaType();
         this.videoSize = null;
         createMediaPlayer();
-        PlaybackServiceMediaPlayer.this.startWhenPrepared.set(startWhenPrepared);
+        LocalPSMP.this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
             media.loadMetadata();
@@ -224,6 +225,7 @@ public class PlaybackServiceMediaPlayer {
      * <p/>
      * This method is executed on an internal executor service.
      */
+    @Override
     public void resume() {
         executor.submit(() -> {
             playerLock.lock();
@@ -280,6 +282,7 @@ public class PlaybackServiceMediaPlayer {
      * @param reinit       is true if service should reinit after pausing if the media
      *                     file is being streamed
      */
+    @Override
     public void pause(final boolean abandonFocus, final boolean reinit) {
         executor.submit(() -> {
             playerLock.lock();
@@ -310,6 +313,7 @@ public class PlaybackServiceMediaPlayer {
      * <p/>
      * This method is executed on an internal executor service.
      */
+    @Override
     public void prepare() {
         executor.submit(() -> {
             playerLock.lock();
@@ -370,6 +374,7 @@ public class PlaybackServiceMediaPlayer {
      * <p/>
      * This method is executed on an internal executor service.
      */
+    @Override
     public void reinit() {
         executor.submit(() -> {
             playerLock.lock();
@@ -434,6 +439,7 @@ public class PlaybackServiceMediaPlayer {
      * <p/>
      * This method is executed on an internal executor service.
      */
+    @Override
     public void seekTo(final int t) {
         executor.submit(() -> seekToSync(t));
     }
@@ -443,6 +449,7 @@ public class PlaybackServiceMediaPlayer {
      *
      * @param d offset from current position (positive or negative)
      */
+    @Override
     public void seekDelta(final int d) {
         executor.submit(() -> {
             playerLock.lock();
@@ -460,6 +467,7 @@ public class PlaybackServiceMediaPlayer {
     /**
      * Seek to the start of the specified chapter.
      */
+    @Override
     public void seekToChapter(@NonNull Chapter c) {
         seekTo((int) c.getStart());
     }
@@ -467,6 +475,7 @@ public class PlaybackServiceMediaPlayer {
     /**
      * Returns the duration of the current media object or INVALID_TIME if the duration could not be retrieved.
      */
+    @Override
     public int getDuration() {
         if (!playerLock.tryLock()) {
             return INVALID_TIME;
@@ -488,6 +497,7 @@ public class PlaybackServiceMediaPlayer {
     /**
      * Returns the position of the current media object or INVALID_TIME if the position could not be retrieved.
      */
+    @Override
     public int getPosition() {
         try {
             if (!playerLock.tryLock(50, TimeUnit.MILLISECONDS)) {
@@ -513,10 +523,12 @@ public class PlaybackServiceMediaPlayer {
         return retVal;
     }
 
+    @Override
     public boolean isStartWhenPrepared() {
         return startWhenPrepared.get();
     }
 
+    @Override
     public void setStartWhenPrepared(boolean startWhenPrepared) {
         this.startWhenPrepared.set(startWhenPrepared);
     }
@@ -524,6 +536,7 @@ public class PlaybackServiceMediaPlayer {
     /**
      * Returns true if the playback speed can be adjusted.
      */
+    @Override
     public boolean canSetSpeed() {
         boolean retVal = false;
         if (mediaPlayer != null && media != null && media.getMediaType() == MediaType.AUDIO) {
@@ -552,6 +565,7 @@ public class PlaybackServiceMediaPlayer {
      * Sets the playback speed.
      * This method is executed on an internal executor service.
      */
+    @Override
     public void setSpeed(final float speed) {
         executor.submit(() -> setSpeedSync(speed));
     }
@@ -559,6 +573,7 @@ public class PlaybackServiceMediaPlayer {
     /**
      * Returns the current playback speed. If the playback speed could not be retrieved, 1 is returned.
      */
+    @Override
     public float getPlaybackSpeed() {
         if (!playerLock.tryLock()) {
             return 1;
@@ -578,6 +593,7 @@ public class PlaybackServiceMediaPlayer {
      * Sets the playback volume.
      * This method is executed on an internal executor service.
      */
+    @Override
     public void setVolume(final float volumeLeft, float volumeRight) {
         executor.submit(() -> setVolumeSync(volumeLeft, volumeRight));
     }
@@ -598,6 +614,7 @@ public class PlaybackServiceMediaPlayer {
     /**
      * Returns true if the mediaplayer can mix stereo down to mono
      */
+    @Override
     public boolean canDownmix() {
         boolean retVal = false;
         if (mediaPlayer != null && media != null && media.getMediaType() == MediaType.AUDIO) {
@@ -606,6 +623,7 @@ public class PlaybackServiceMediaPlayer {
         return retVal;
     }
 
+    @Override
     public void setDownmix(boolean enable) {
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
@@ -615,10 +633,12 @@ public class PlaybackServiceMediaPlayer {
         playerLock.unlock();
     }
 
+    @Override
     public MediaType getCurrentMediaType() {
         return mediaType;
     }
 
+    @Override
     public boolean isStreaming() {
         return stream;
     }
@@ -627,6 +647,7 @@ public class PlaybackServiceMediaPlayer {
     /**
      * Releases internally used resources. This method should only be called when the object is not used anymore.
      */
+    @Override
     public void shutdown() {
         executor.shutdown();
         if (mediaPlayer != null) {
@@ -635,6 +656,7 @@ public class PlaybackServiceMediaPlayer {
         releaseWifiLockIfNecessary();
     }
 
+    @Override
     public void setVideoSurface(final SurfaceHolder surface) {
         executor.submit(() -> {
             playerLock.lock();
@@ -645,6 +667,7 @@ public class PlaybackServiceMediaPlayer {
         });
     }
 
+    @Override
     public void resetVideoSurface() {
         executor.submit(() -> {
             playerLock.lock();
@@ -662,6 +685,7 @@ public class PlaybackServiceMediaPlayer {
      * return an invalid non-null value if the getVideoWidth() and getVideoHeight() methods of the media player return
      * invalid values.
      */
+    @Override
     public Pair<Integer, Integer> getVideoSize() {
         if (!playerLock.tryLock()) {
             // use cached value if lock can't be aquired
@@ -684,6 +708,7 @@ public class PlaybackServiceMediaPlayer {
      *
      * @return The PSMPInfo object.
      */
+    @Override
     public synchronized PSMPInfo getPSMPInfo() {
         return new PSMPInfo(playerStatus, media);
     }
@@ -694,6 +719,7 @@ public class PlaybackServiceMediaPlayer {
      * could result in nonsensical results (like a status of PLAYING, but a null playable)
      * @return the current player status
      */
+    @Override
     public PlayerStatus getPlayerStatus() {
         return playerStatus;
     }
@@ -704,6 +730,7 @@ public class PlaybackServiceMediaPlayer {
      * could result in nonsensical results (like a status of PLAYING, but a null playable)
      * @return the current media. May be null
      */
+    @Override
     public Playable getPlayable() {
         return media;
     }
@@ -799,6 +826,7 @@ public class PlaybackServiceMediaPlayer {
     };
 
 
+    @Override
     public void endPlayback(final boolean wasSkipped) {
         executor.submit(() -> {
             playerLock.lock();
@@ -821,11 +849,12 @@ public class PlaybackServiceMediaPlayer {
     }
 
     /**
-     * Moves the PlaybackServiceMediaPlayer into STOPPED state. This call is only valid if the player is currently in
+     * Moves the LocalPSMP into STOPPED state. This call is only valid if the player is currently in
      * INDETERMINATE state, for example after a call to endPlayback.
      * This method will only take care of changing the PlayerStatus of this object! Other tasks like
      * abandoning audio focus have to be done with other methods.
      */
+    @Override
     public void stop() {
         executor.submit(() -> {
             playerLock.lock();
@@ -856,39 +885,6 @@ public class PlaybackServiceMediaPlayer {
         if (wifiLock != null && wifiLock.isHeld()) {
             wifiLock.release();
         }
-    }
-
-    /**
-     * Holds information about a PSMP object.
-     */
-    public class PSMPInfo {
-        public PlayerStatus playerStatus;
-        public Playable playable;
-
-        public PSMPInfo(PlayerStatus playerStatus, Playable playable) {
-            this.playerStatus = playerStatus;
-            this.playable = playable;
-        }
-    }
-
-    public interface PSMPCallback {
-        void statusChanged(PSMPInfo newInfo);
-
-        void shouldStop();
-
-        void playbackSpeedChanged(float s);
-
-        void setSpeedAbilityChanged();
-
-        void onBufferingUpdate(int percent);
-
-        void updateMediaSessionMetadata(Playable p);
-
-        boolean onMediaPlayerInfo(int code);
-
-        boolean onMediaPlayerError(Object inObj, int what, int extra);
-
-        boolean endPlayback(boolean playNextEpisode, boolean wasSkipped);
     }
 
     private IPlayer setMediaPlayerListeners(IPlayer mp) {

@@ -34,8 +34,8 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.playback.LocalPSMP;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
@@ -281,7 +281,7 @@ public abstract class PlaybackController {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "Received statusUpdate Intent.");
             if (isConnectedToPlaybackService()) {
-                PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
+                LocalPSMP.PSMPInfo info = playbackService.getPSMPInfo();
                 status = info.playerStatus;
                 media = info.playable;
                 handleStatus();

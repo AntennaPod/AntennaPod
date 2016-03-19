@@ -174,7 +174,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
 
     private static final int NOTIFICATION_ID = 1;
 
-    private PlaybackServiceMediaPlayer mediaPlayer;
+    private IPlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
     /**
      * Only used for Lollipop notifications.
@@ -248,7 +248,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(
                 ACTION_RESUME_PLAY_CURRENT_EPISODE));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
-        mediaPlayer = new PlaybackServiceMediaPlayer(this, mediaPlayerCallback);
+        mediaPlayer = new LocalPSMP(this, mediaPlayerCallback);
 
         ComponentName eventReceiver = new ComponentName(getApplicationContext(),
                 MediaButtonReceiver.class);
@@ -353,7 +353,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
      */
     private void handleKeycode(int keycode, int source) {
         Log.d(TAG, "Handling keycode: " + keycode);
-        final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
+        final IPlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         final PlayerStatus status = info.playerStatus;
         switch (keycode) {
             case KeyEvent.KEYCODE_HEADSETHOOK:
@@ -491,9 +491,9 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         }
     };
 
-    private final PlaybackServiceMediaPlayer.PSMPCallback mediaPlayerCallback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+    private final IPlaybackServiceMediaPlayer.PSMPCallback mediaPlayerCallback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
         @Override
-        public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+        public void statusChanged(IPlaybackServiceMediaPlayer.PSMPInfo newInfo) {
             currentMediaType = mediaPlayer.getCurrentMediaType();
             updateMediaSession(newInfo.playerStatus);
             switch (newInfo.playerStatus) {
@@ -779,7 +779,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
 
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext()).edit();
-        PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
+        IPlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         MediaType mediaType = mediaPlayer.getCurrentMediaType();
         boolean stream = mediaPlayer.isStreaming();
         int playerStatus = getCurrentPlayerStatusAsInt(info.playerStatus);
@@ -940,7 +940,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
     /**
      * Prepares notification and starts the service in the foreground.
      */
-    private void setupNotification(final PlaybackServiceMediaPlayer.PSMPInfo info) {
+    private void setupNotification(final IPlaybackServiceMediaPlayer.PSMPInfo info) {
         final PendingIntent pIntent = PendingIntent.getActivity(this, 0,
                 PlaybackService.getPlayerActivityIntent(this),
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -1144,7 +1144,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         return taskManager.getSleepTimerTimeLeft();
     }
 
-    private void bluetoothNotifyChange(PlaybackServiceMediaPlayer.PSMPInfo info, String whatChanged) {
+    private void bluetoothNotifyChange(IPlaybackServiceMediaPlayer.PSMPInfo info, String whatChanged) {
         boolean isPlaying = false;
 
         if (info.playerStatus == PlayerStatus.PLAYING) {
@@ -1319,7 +1319,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         mediaPlayer.reinit();
     }
 
-    public PlaybackServiceMediaPlayer.PSMPInfo getPSMPInfo() {
+    public IPlaybackServiceMediaPlayer.PSMPInfo getPSMPInfo() {
         return mediaPlayer.getPSMPInfo();
     }
 
@@ -1391,7 +1391,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
     }
 
     /**
-     * @see de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer#seekToChapter(de.danoeh.antennapod.core.feed.Chapter)
+     * @see LocalPSMP#seekToChapter(de.danoeh.antennapod.core.feed.Chapter)
      */
     public void seekToChapter(Chapter c) {
         mediaPlayer.seekToChapter(c);

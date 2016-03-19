@@ -20,14 +20,15 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.core.service.playback.IPlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.core.service.playback.LocalPSMP;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.test.antennapod.util.service.download.HTTPBin;
 
 /**
- * Test class for PlaybackServiceMediaPlayer
+ * Test class for LocalPSMP
  */
 public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     private static final String TAG = "PlaybackServiceMediaPlayerTest";
@@ -85,7 +86,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         assertEquals(0, httpServer.serveFile(dest));
     }
 
-    private void checkPSMPInfo(PlaybackServiceMediaPlayer.PSMPInfo info) {
+    private void checkPSMPInfo(LocalPSMP.PSMPInfo info) {
         try {
             switch (info.playerStatus) {
                 case PLAYING:
@@ -111,7 +112,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
     public void testInit() {
         final Context c = getInstrumentation().getTargetContext();
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, defaultCallback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, defaultCallback);
         psmp.shutdown();
     }
 
@@ -137,9 +138,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectStreamNoStartNoPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -200,7 +201,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
         psmp.playMediaObject(p, true, false, false);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -216,9 +217,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectStreamStartNoPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -278,7 +279,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
         psmp.playMediaObject(p, true, true, false);
 
@@ -295,9 +296,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectStreamNoStartPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(4);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -360,7 +361,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
         psmp.playMediaObject(p, true, false, true);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -375,9 +376,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectStreamStartPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(5);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -444,7 +445,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
         psmp.playMediaObject(p, true, true, true);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -458,9 +459,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectLocalNoStartNoPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -521,7 +522,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
         psmp.playMediaObject(p, false, false, false);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -536,9 +537,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectLocalStartNoPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -598,7 +599,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
         psmp.playMediaObject(p, false, true, false);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -613,9 +614,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectLocalNoStartPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(4);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -678,7 +679,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
         psmp.playMediaObject(p, false, false, true);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -692,9 +693,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectLocalStartPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(5);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -761,7 +762,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
         psmp.playMediaObject(p, false, true, true);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -773,9 +774,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     }
 
 
-    private final PlaybackServiceMediaPlayer.PSMPCallback defaultCallback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+    private final IPlaybackServiceMediaPlayer.PSMPCallback defaultCallback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
         @Override
-        public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+        public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
             checkPSMPInfo(newInfo);
         }
 
@@ -823,9 +824,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final int latchCount = (stream && reinit) ? 2 : 1;
         final CountDownLatch countDownLatch = new CountDownLatch(latchCount);
 
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
                 if (newInfo.playerStatus == PlayerStatus.ERROR) {
                     if (assertionError == null)
@@ -899,7 +900,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
         if (initialState == PlayerStatus.PLAYING) {
             psmp.playMediaObject(p, stream, true, true);
@@ -954,9 +955,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 (initialState == PlayerStatus.PREPARED) ? 1 : 0;
         final CountDownLatch countDownLatch = new CountDownLatch(latchCount);
 
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
                 if (newInfo.playerStatus == PlayerStatus.ERROR) {
                     if (assertionError == null)
@@ -1015,7 +1016,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         if (initialState == PlayerStatus.PREPARED || initialState == PlayerStatus.PLAYING || initialState == PlayerStatus.PAUSED) {
             boolean startWhenPrepared = (initialState != PlayerStatus.PREPARED);
             psmp.playMediaObject(writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL), false, startWhenPrepared, true);
@@ -1047,9 +1048,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final Context c = getInstrumentation().getTargetContext();
         final int latchCount = 1;
         final CountDownLatch countDownLatch = new CountDownLatch(latchCount);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
                 if (newInfo.playerStatus == PlayerStatus.ERROR) {
                     if (assertionError == null)
@@ -1106,7 +1107,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
         if (initialState == PlayerStatus.INITIALIZED
                 || initialState == PlayerStatus.PLAYING
@@ -1152,9 +1153,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final Context c = getInstrumentation().getTargetContext();
         final int latchCount = 2;
         final CountDownLatch countDownLatch = new CountDownLatch(latchCount);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        IPlaybackServiceMediaPlayer.PSMPCallback callback = new IPlaybackServiceMediaPlayer.PSMPCallback() {
             @Override
-            public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
                 if (newInfo.playerStatus == PlayerStatus.ERROR) {
                     if (assertionError == null)
@@ -1210,7 +1211,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
         };
-        PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
+        IPlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
         boolean prepareImmediately = initialState != PlayerStatus.INITIALIZED;
         boolean startImmediately = initialState != PlayerStatus.PREPARED;
