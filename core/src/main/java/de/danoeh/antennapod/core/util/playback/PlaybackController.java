@@ -19,7 +19,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
-import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -424,6 +423,7 @@ public abstract class PlaybackController {
                 clearStatusMsg();
                 checkMediaInfoLoaded();
                 cancelPositionObserver();
+                onPositionObserverUpdate();
                 updatePlayButtonAppearance(playResource, playText);
                 if (PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     setScreenOn(false);
@@ -574,34 +574,32 @@ public abstract class PlaybackController {
 
     }
 
-    public OnClickListener newOnPlayButtonClickListener() {
-        return v -> {
-            if (playbackService == null) {
-                Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
-                return;
-            }
-            switch (status) {
-                case PLAYING:
-                    playbackService.pause(true, reinitOnPause);
-                    break;
-                case PAUSED:
-                case PREPARED:
-                    playbackService.resume();
-                    break;
-                case PREPARING:
-                    playbackService.setStartWhenPrepared(!playbackService
-                            .isStartWhenPrepared());
-                    if (reinitOnPause
-                            && playbackService.isStartWhenPrepared() == false) {
-                        playbackService.reinit();
-                    }
-                    break;
-                case INITIALIZED:
-                    playbackService.setStartWhenPrepared(true);
-                    playbackService.prepare();
-                    break;
-            }
-        };
+    public void playPause() {
+        if (playbackService == null) {
+            Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
+            return;
+        }
+        switch (status) {
+            case PLAYING:
+                playbackService.pause(true, reinitOnPause);
+                break;
+            case PAUSED:
+            case PREPARED:
+                playbackService.resume();
+                break;
+            case PREPARING:
+                playbackService.setStartWhenPrepared(!playbackService
+                        .isStartWhenPrepared());
+                if (reinitOnPause
+                        && playbackService.isStartWhenPrepared() == false) {
+                    playbackService.reinit();
+                }
+                break;
+            case INITIALIZED:
+                playbackService.setStartWhenPrepared(true);
+                playbackService.prepare();
+                break;
+        }
     }
 
     public boolean serviceAvailable() {

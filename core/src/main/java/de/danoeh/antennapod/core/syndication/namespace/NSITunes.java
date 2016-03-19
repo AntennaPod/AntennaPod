@@ -60,12 +60,12 @@ public class NSITunes extends Namespace {
             try {
                 int duration = 0;
                 if (parts.length == 2) {
-                    duration += TimeUnit.MINUTES.toMillis(Long.valueOf(parts[0])) +
-                            TimeUnit.SECONDS.toMillis(Long.valueOf(parts[1]));
+                    duration += TimeUnit.MINUTES.toMillis(Long.parseLong(parts[0])) +
+                            TimeUnit.SECONDS.toMillis(Long.parseLong(parts[1]));
                 } else if (parts.length >= 3) {
-                    duration += TimeUnit.HOURS.toMillis(Long.valueOf(parts[0])) +
-                            TimeUnit.MINUTES.toMillis(Long.valueOf(parts[1])) +
-                            TimeUnit.SECONDS.toMillis(Long.valueOf(parts[2]));
+                    duration += TimeUnit.HOURS.toMillis(Long.parseLong(parts[0])) +
+                            TimeUnit.MINUTES.toMillis(Long.parseLong(parts[1])) +
+                            TimeUnit.SECONDS.toMillis(Long.parseLong(parts[2]));
                 } else {
                     return;
                 }

@@ -63,10 +63,10 @@ public class GpodnetEpisodeAction {
             Action action = Action.valueOf(fields[3]);
             GpodnetEpisodeAction result = new Builder(podcast, episode, action)
                     .deviceId(deviceId)
-                    .timestamp(new Date(Long.valueOf(fields[4])))
-                    .started(Integer.valueOf(fields[5]))
-                    .position(Integer.valueOf(fields[6]))
-                    .total(Integer.valueOf(fields[7]))
+                    .timestamp(new Date(Long.parseLong(fields[4])))
+                    .started(Integer.parseInt(fields[5]))
+                    .position(Integer.parseInt(fields[6]))
+                    .total(Integer.parseInt(fields[7]))
                     .build();
             return result;
         } catch(IllegalArgumentException e) {

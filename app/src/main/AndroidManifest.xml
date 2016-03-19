@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
-    android:versionCode="1050104"
-    android:versionName="1.5.1.4">
+    android:versionCode="1050200"
+    android:versionName="1.5.2.0">
     <!--
       Version code schema:
       "1.2.3-SNAPSHOT" -> 1020300
@@ -179,7 +179,7 @@
         <activity
             android:name=".activity.VideoplayerActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="landscape">
+            android:screenOrientation="sensorLandscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>

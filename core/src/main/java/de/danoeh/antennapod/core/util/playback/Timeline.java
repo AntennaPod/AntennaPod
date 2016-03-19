@@ -2,7 +2,10 @@ package de.danoeh.antennapod.core.util.playback;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 
@@ -14,6 +17,7 @@ import org.jsoup.select.Elements;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 
@@ -32,26 +36,32 @@ public class Timeline {
 
     private ShownotesProvider shownotesProvider;
 
-
-    private final String colorString;
+    private final String noShownotesLabel;
+    private final String colorPrimaryString;
+    private final String colorSecondaryString;
     private final int pageMargin;
 
     public Timeline(Context context, ShownotesProvider shownotesProvider) {
         if (shownotesProvider == null) throw new IllegalArgumentException("shownotesProvider = null");
         this.shownotesProvider = shownotesProvider;
 
-        TypedArray res = context
-                .getTheme()
-                .obtainStyledAttributes(
-                        new int[]{android.R.attr.textColorPrimary});
-        int colorResource = res.getColor(0, 0);
-        colorString = String.format("#%06X",
-                0xFFFFFF & colorResource);
+        noShownotesLabel = context.getString(R.string.no_shownotes_label);
+
+        TypedArray res = context.getTheme().obtainStyledAttributes(
+                new int[]{ android.R.attr.textColorPrimary});
+        @ColorInt int col = res.getColor(0, 0);
+        colorPrimaryString = "rgba(" + Color.red(col) + "," + Color.green(col) + "," +
+                Color.blue(col) + "," + (Color.alpha(col)/256.0) + ")";
+        res.recycle();
+        res = context.getTheme().obtainStyledAttributes(
+                new int[]{android.R.attr.textColorSecondary});
+        col = res.getColor(0, 0);
+        colorSecondaryString = "rgba(" + Color.red(col) + "," + Color.green(col) + "," +
+                Color.blue(col) + "," + (Color.alpha(col)/256.0) + ")";
         res.recycle();
 
-        pageMargin = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 8, context.getResources()
-                        .getDisplayMetrics()
+        pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
+                context.getResources().getDisplayMetrics()
         );
     }
 
@@ -82,9 +92,24 @@ public class Timeline {
             e.printStackTrace();
             return null;
         }
-        if (shownotes == null) {
-            Log.d(TAG, "shownotesProvider contained no shownotes. Returning empty string");
-            return "";
+
+        if(TextUtils.isEmpty(shownotes)) {
+            Log.d(TAG, "shownotesProvider contained no shownotes. Returning 'no shownotes' message");
+            shownotes ="<html>" +
+                    "<head>" +
+                    "<style type='text/css'>" +
+                    "html, body { margin: 0; padding: 0; width: 100%; height: 100%; } " +
+                    "html { display: table; }" +
+                    "body { display: table-cell; vertical-align: middle; text-align:center;" +
+                    "-webkit-text-size-adjust: none; font-size: 87%; color: " + colorSecondaryString + ";} " +
+                    "</style>" +
+                    "</head>" +
+                    "<body>" +
+                    "<p>" + noShownotesLabel + "</p>" +
+                    "</body>" +
+                    "</html>";
+            Log.d(TAG, "shownotes: " + shownotes);
+            return shownotes;
         }
 
         // replace ASCII line breaks with HTML ones if shownotes don't contain HTML line breaks already
@@ -95,7 +120,7 @@ public class Timeline {
         Document document = Jsoup.parse(shownotes);
 
         // apply style
-        String styleStr = String.format(WEBVIEW_STYLE, colorString, "100%", pageMargin,
+        String styleStr = String.format(WEBVIEW_STYLE, colorPrimaryString, "100%", pageMargin,
                 pageMargin, pageMargin, pageMargin);
         document.head().appendElement("style").attr("type", "text/css").text(styleStr);
 
@@ -125,8 +150,7 @@ public class Timeline {
                 element.html(buffer.toString());
             }
         }
-
-        Log.i(TAG, "Out: " + document.toString());
+        
         return document.toString();
     }
 
@@ -148,7 +172,7 @@ public class Timeline {
 
             try {
                 if (m.find()) {
-                    return Integer.valueOf(m.group(1));
+                    return Integer.parseInt(m.group(1));
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();

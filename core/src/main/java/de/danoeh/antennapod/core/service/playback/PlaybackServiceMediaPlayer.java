@@ -604,7 +604,11 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * Returns the position of the current media object or INVALID_TIME if the position could not be retrieved.
      */
     public int getPosition() {
-        if (!playerLock.tryLock()) {
+        try {
+            if (!playerLock.tryLock(50, TimeUnit.MILLISECONDS)) {
+                return INVALID_TIME;
+            }
+        } catch (InterruptedException e) {
             return INVALID_TIME;
         }
 
@@ -693,7 +697,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     /**
-     * Sets the playback speed.
+     * Sets the playback volume.
      * This method is executed on an internal executor service.
      */
     public void setVolume(final float volumeLeft, float volumeRight) {
@@ -701,7 +705,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     /**
-     * Sets the playback speed.
+     * Sets the playback volume.
      * This method is executed on the caller's thread.
      */
     private void setVolumeSync(float volumeLeft, float volumeRight) {
@@ -946,15 +950,16 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                         if (pausedBecauseOfTransientAudiofocusLoss) { // we paused => play now
                             resume();
                         } else { // we ducked => raise audio level back
-                            audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                    AudioManager.ADJUST_RAISE, 0);
+                            setVolumeSync(UserPreferences.getLeftVolume(),
+                                    UserPreferences.getRightVolume());
                         }
                     } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
                         if (playerStatus == PlayerStatus.PLAYING) {
                             if (!UserPreferences.shouldPauseForFocusLoss()) {
                                 Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-                                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                        AudioManager.ADJUST_LOWER, 0);
+                                final float DUCK_FACTOR = 0.25f;
+                                setVolumeSync(DUCK_FACTOR * UserPreferences.getLeftVolume(),
+                                        DUCK_FACTOR * UserPreferences.getRightVolume());
                                 pausedBecauseOfTransientAudiofocusLoss = false;
                             } else {
                                 Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
@@ -1205,6 +1210,71 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         private static final String TAG = "MediaSessionCompat";
 
         @Override
+        public void onPlay() {
+            Log.d(TAG, "onPlay()");
+            if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                resume();
+            } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                setStartWhenPrepared(true);
+                prepare();
+            }
+        }
+
+        @Override
+        public void onPause() {
+            Log.d(TAG, "onPause()");
+            if (playerStatus == PlayerStatus.PLAYING) {
+                pause(false, true);
+            }
+            if (UserPreferences.isPersistNotify()) {
+                pause(false, true);
+            } else {
+                pause(true, true);
+            }
+        }
+
+        @Override
+        public void onStop() {
+            Log.d(TAG, "onStop()");
+            stop();
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            Log.d(TAG, "onSkipToPrevious()");
+            seekDelta(-UserPreferences.getRewindSecs() * 1000);
+        }
+
+        @Override
+        public void onRewind() {
+            Log.d(TAG, "onRewind()");
+            seekDelta(-UserPreferences.getRewindSecs() * 1000);
+        }
+
+        @Override
+        public void onFastForward() {
+            Log.d(TAG, "onFastForward()");
+            seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+        }
+
+        @Override
+        public void onSkipToNext() {
+            Log.d(TAG, "onSkipToNext()");
+            if(UserPreferences.shouldHardwareButtonSkip()) {
+                endPlayback(true);
+            } else {
+                seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+            }
+        }
+
+
+        @Override
+        public void onSeekTo(long pos) {
+            Log.d(TAG, "onSeekTo()");
+            seekTo((int) pos);
+        }
+
+        @Override
         public boolean onMediaButtonEvent(final Intent mediaButton) {
             Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
             if (mediaButton != null) {
@@ -1240,42 +1310,27 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_PLAY: {
-                    Log.d(TAG, "Received Play event from RemoteControlClient");
-                    if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                        resume();
-                    } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                        setStartWhenPrepared(true);
-                        prepare();
-                    }
+                    sessionCallback.onPlay();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_PAUSE: {
-                    Log.d(TAG, "Received Pause event from RemoteControlClient");
-                    if (playerStatus == PlayerStatus.PLAYING) {
-                        pause(false, true);
-                    }
-                    if (UserPreferences.isPersistNotify()) {
-                        pause(false, true);
-                    } else {
-                        pause(true, true);
-                    }
+                    sessionCallback.onPause();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_STOP: {
-                    Log.d(TAG, "Received Stop event from RemoteControlClient");
-                    stop();
+                    sessionCallback.onStop();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_PREVIOUS: {
-                    seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    sessionCallback.onSkipToPrevious();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_REWIND: {
-                    seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    sessionCallback.onRewind();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD: {
-                    seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+                    sessionCallback.onFastForward();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_NEXT: {

@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -590,17 +591,18 @@ public final class DBReader {
         FeedItem item = null;
 
         Cursor itemCursor = adapter.getFeedItemCursor(Long.toString(itemId));
-        if (itemCursor.moveToFirst()) {
-            List<FeedItem> list = extractItemlistFromCursor(adapter, itemCursor);
-            if (list.size() > 0) {
-                item = list.get(0);
-                loadAdditionalFeedItemListData(list);
-                if (item.hasChapters()) {
-                    loadChaptersOfFeedItem(adapter, item);
-                }
+        if (!itemCursor.moveToFirst()) {
+            return null;
+        }
+        List<FeedItem> list = extractItemlistFromCursor(adapter, itemCursor);
+        itemCursor.close();
+        if (list.size() > 0) {
+            item = list.get(0);
+            loadAdditionalFeedItemListData(list);
+            if (item.hasChapters()) {
+                loadChaptersOfFeedItem(adapter, item);
             }
         }
-        itemCursor.close();
         return item;
     }
 
@@ -676,7 +678,7 @@ public final class DBReader {
      * as well as chapter marks of the FeedItems will also be loaded from the database.
      */
     public static List<FeedItem> getFeedItems(final long... itemIds) {
-        Log.d(TAG, "getFeedItems() called with: " + "itemIds = [" + itemIds + "]");
+        Log.d(TAG, "getFeedItems() called with: " + "itemIds = [" + Arrays.toString(itemIds) + "]");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         List<FeedItem> items = getFeedItems(adapter, itemIds);
@@ -898,19 +900,23 @@ public final class DBReader {
         adapter.open();
         Cursor mediaCursor = adapter.getSingleFeedMediaCursor(mediaId);
 
-        FeedMedia media = null;
-        if (mediaCursor.moveToFirst()) {
-            int indexFeedItem = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
-            final long itemId = mediaCursor.getLong(indexFeedItem);
-            media = FeedMedia.fromCursor(mediaCursor);
+        if (!mediaCursor.moveToFirst()) {
+            return null;
+        }
+
+        int indexFeedItem = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
+        long itemId = mediaCursor.getLong(indexFeedItem);
+        FeedMedia media = FeedMedia.fromCursor(mediaCursor);
+        mediaCursor.close();
+
+        if(media != null) {
             FeedItem item = getFeedItem(itemId);
-            if (media != null && item != null) {
+            if (item != null) {
                 media.setItem(item);
                 item.setMedia(media);
             }
         }
 
-        mediaCursor.close();
         adapter.close();
 
         return media;

@@ -72,7 +72,11 @@ public class ExternalPlayerFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         controller = setupPlaybackController();
-        butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
+        butPlay.setOnClickListener(v -> {
+            if(controller != null) {
+                controller.playPause();
+            }
+        });
     }
 
     private PlaybackController setupPlaybackController() {
@@ -87,7 +91,6 @@ public class ExternalPlayerFragment extends Fragment {
             public ImageButton getPlayButton() {
                 return butPlay;
             }
-
 
             @Override
             public boolean loadMediaInfo() {
@@ -145,8 +148,11 @@ public class ExternalPlayerFragment extends Fragment {
         }
         controller = setupPlaybackController();
         if (butPlay != null) {
-            butPlay.setOnClickListener(controller
-                    .newOnPlayButtonClickListener());
+            butPlay.setOnClickListener(v -> {
+                if(controller != null) {
+                    controller.playPause();
+                }
+            });
         }
         controller.init();
     }

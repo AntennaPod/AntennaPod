@@ -10,14 +10,13 @@
     android:paddingBottom="8dp"
     tools:background="@android:color/darker_gray">
 
-    <TextView
+    <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/txtvIcon"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:textSize="48sp"
-        tools:text="[Icon]"
         android:gravity="center" />
 
     <com.joanzapata.iconify.widget.IconButton
