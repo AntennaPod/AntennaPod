@@ -36,13 +36,8 @@ import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 /**
  * Manages the MediaPlayer object of the PlaybackService.
  */
-public class LocalPSMP implements IPlaybackServiceMediaPlayer {
-    public static final String TAG = "PlaybackSvcMediaPlayer";
-
-    /**
-     * Return value of some PSMP methods if the method call failed.
-     */
-    public static final int INVALID_TIME = -1;
+public class LocalPSMP extends PlaybackServiceMediaPlayer {
+    public static final String TAG = "LclPlaybackSvcMPlayer";
 
     private final AudioManager audioManager;
 
@@ -64,9 +59,6 @@ public class LocalPSMP implements IPlaybackServiceMediaPlayer {
     private final ReentrantLock playerLock;
     private CountDownLatch seekLatch;
 
-    private final PSMPCallback callback;
-    private final Context context;
-
     private final ThreadPoolExecutor executor;
 
     /**
@@ -76,8 +68,8 @@ public class LocalPSMP implements IPlaybackServiceMediaPlayer {
 
     public LocalPSMP(@NonNull Context context,
                      @NonNull PSMPCallback callback) {
-        this.context = context;
-        this.callback = callback;
+        super(context, callback);
+
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new ReentrantLock();
         this.startWhenPrepared = new AtomicBoolean(false);
@@ -94,7 +86,6 @@ public class LocalPSMP implements IPlaybackServiceMediaPlayer {
         statusBeforeSeeking = null;
         pausedBecauseOfTransientAudiofocusLoss = false;
         mediaType = MediaType.UNKNOWN;
-        playerStatus = PlayerStatus.STOPPED;
         videoSize = null;
     }
 
@@ -704,27 +695,6 @@ public class LocalPSMP implements IPlaybackServiceMediaPlayer {
     }
 
     /**
-     * Returns a PSMInfo object that contains information about the current state of the PSMP object.
-     *
-     * @return The PSMPInfo object.
-     */
-    @Override
-    public synchronized PSMPInfo getPSMPInfo() {
-        return new PSMPInfo(playerStatus, media);
-    }
-
-    /**
-     * Returns the current status, if you need the media and the player status together, you should
-     * use getPSMPInfo() to make sure they're properly synchronized. Otherwise a race condition
-     * could result in nonsensical results (like a status of PLAYING, but a null playable)
-     * @return the current player status
-     */
-    @Override
-    public PlayerStatus getPlayerStatus() {
-        return playerStatus;
-    }
-
-    /**
      * Returns the current media, if you need the media and the player status together, you should
      * use getPSMPInfo() to make sure they're properly synchronized. Otherwise a race condition
      * could result in nonsensical results (like a status of PLAYING, but a null playable)
@@ -735,26 +705,9 @@ public class LocalPSMP implements IPlaybackServiceMediaPlayer {
         return media;
     }
 
-    /**
-     * Sets the player status of the PSMP object. PlayerStatus and media attributes have to be set at the same time
-     * so that getPSMPInfo can't return an invalid state (e.g. status is PLAYING, but media is null).
-     * <p/>
-     * This method will notify the callback about the change of the player status (even if the new status is the same
-     * as the old one).
-     *
-     * @param newStatus The new PlayerStatus. This must not be null.
-     * @param newMedia  The new playable object of the PSMP object. This can be null.
-     */
-    private synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
-        Log.d(TAG, "Setting player status to " + newStatus);
-
-        this.playerStatus = newStatus;
-        this.media = newMedia;
-        if (playerStatus != null) {
-            Log.d(TAG, "playerStatus: " + playerStatus.toString());
-        }
-
-        callback.statusChanged(new PSMPInfo(playerStatus, media));
+    @Override
+    protected void setPlayable(Playable playable) {
+        media = playable;
     }
 
     private IPlayer createMediaPlayer() {

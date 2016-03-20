@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.support.v7.media.MediaRouter;
 import android.util.Log;
 
@@ -23,7 +21,6 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -38,7 +35,6 @@ public class CastUtils {
     public static final String KEY_MEDIA_ID = "CastUtils.Id";
 
     public static void initializeCastManager(Context context){
-        // TODO check for cast support enabled
         VideoCastManager.initialize(context, new CastConfiguration.Builder(CastUtils.CAST_APP_ID)
                 .enableDebug()
                 .enableLockScreen()
@@ -48,8 +44,6 @@ public class CastUtils {
                 .setTargetActivity(ClientConfig.castCallbacks.getCastActivity())
                 .build());
         VideoCastManager.getInstance().addVideoCastConsumer(castConsumer);
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .registerOnSharedPreferenceChangeListener(changeListener);
     }
 
     public static boolean isCastable(Playable media){
@@ -120,18 +114,6 @@ public class CastUtils {
                 .setMetadata(metadata)
                 .build();
     }
-
-
-    private static SharedPreferences.OnSharedPreferenceChangeListener changeListener =
-            (preference, key) -> {
-                if (UserPreferences.PREF_CAST_ENABLED.equals(key)){
-                    if (UserPreferences.isCastEnabled()){
-                        // TODO enable all cast-related features
-                    } else {
-                        // TODO disable all cast-related features
-                    }
-                }
-            };
 
     // Ideally, all these fields and methods should be part of the CastManager implementation
     private static boolean videoCapable = true;
