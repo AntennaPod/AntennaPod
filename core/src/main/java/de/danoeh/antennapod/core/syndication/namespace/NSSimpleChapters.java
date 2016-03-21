@@ -6,8 +6,7 @@ import org.xml.sax.Attributes;
 
 import java.util.ArrayList;
 
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import de.danoeh.antennapod.core.util.DateUtils;
@@ -27,21 +26,22 @@ public class NSSimpleChapters extends Namespace {
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
                                           Attributes attributes) {
-        if (localName.equals(CHAPTERS)) {
-            state.getCurrentItem().setChapters(new ArrayList<Chapter>());
-        } else if (localName.equals(CHAPTER)) {
-            try {
-                state.getCurrentItem()
-                        .getChapters()
-                        .add(new SimpleChapter(DateUtils
-                                .parseTimeString(attributes.getValue(START)),
-                                attributes.getValue(TITLE), state.getCurrentItem(),
-                                attributes.getValue(HREF)));
-            } catch (NumberFormatException e) {
-                if (BuildConfig.DEBUG) Log.w(TAG, "Unable to read chapter", e);
+        FeedItem currentItem = state.getCurrentItem();
+        if(currentItem != null) {
+            if (localName.equals(CHAPTERS)) {
+                currentItem.setChapters(new ArrayList<>());
+            } else if (localName.equals(CHAPTER)) {
+                try {
+                    long start = DateUtils.parseTimeString(attributes.getValue(START));
+                    String title = attributes.getValue(TITLE);
+                    String link = attributes.getValue(HREF);
+                    SimpleChapter chapter = new SimpleChapter(start, title, currentItem, link);
+                    currentItem.getChapters().add(chapter);
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "Unable to read chapter", e);
+                }
             }
         }
-
         return new SyndElement(localName, this);
     }
 
