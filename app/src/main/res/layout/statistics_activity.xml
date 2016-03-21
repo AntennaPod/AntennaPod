@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/total_time_listened_to_podcasts"
+        android:gravity="center_horizontal"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_gravity="center_horizontal"
+        style="?android:attr/progressBarStyleLarge"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/total_time"
+        android:gravity="center_horizontal"
+        android:textSize="45sp"/>
+
+    <ListView
+        android:id="@+id/statistics_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:paddingBottom="@dimen/list_vertical_padding"
+        android:paddingTop="@dimen/list_vertical_padding"
+        android:scrollbarStyle="outsideOverlay" />
+
+</LinearLayout>

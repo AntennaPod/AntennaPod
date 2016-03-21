@@ -49,6 +49,7 @@ import de.danoeh.antennapod.activity.DirectoryChooserActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
+import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -75,6 +76,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
     public static final String PREF_AUTO_FLATTR_PREFS = "prefAutoFlattrPrefs";
     public static final String PREF_OPML_EXPORT = "prefOpmlExport";
+    public static final String STATISTICS = "statistics";
     public static final String PREF_ABOUT = "prefAbout";
     public static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     public static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
@@ -150,6 +152,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(PreferenceController.PREF_ABOUT).setOnPreferenceClickListener(
                 preference -> {
                     activity.startActivity(new Intent(activity, AboutActivity.class));
+                    return true;
+                }
+        );
+        ui.findPreference(PreferenceController.STATISTICS).setOnPreferenceClickListener(
+                preference -> {
+                    activity.startActivity(new Intent(activity, StatisticsActivity.class));
                     return true;
                 }
         );

@@ -6,6 +6,7 @@
     <!-- Activitiy and fragment titles -->
     <string name="app_name">AntennaPod</string>
     <string name="feeds_label">Feeds</string>
+    <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
     <string name="podcasts_label">PODCASTS</string>
     <string name="episodes_label">Episodes</string>
@@ -32,6 +33,10 @@
     <!-- New episodes fragment -->
     <string name="recently_published_episodes_label">Recently published</string>
     <string name="episode_filter_label">Show only new Episodes</string>
+
+    <!-- Statistics fragment -->
+    <string name="total_time_listened_to_podcasts">Total time of podcasts played:</string>
+    <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
