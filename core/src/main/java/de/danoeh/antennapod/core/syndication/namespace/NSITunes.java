@@ -70,16 +70,17 @@ public class NSITunes extends Namespace {
                 int durationMs = 0;
                 if (parts.length == 2) {
                     durationMs += TimeUnit.MINUTES.toMillis(Long.parseLong(parts[0])) +
-                            TimeUnit.SECONDS.toMillis(Long.parseLong(parts[1]));
+                            TimeUnit.SECONDS.toMillis((long)Float.parseFloat(parts[1]));
                 } else if (parts.length >= 3) {
                     durationMs += TimeUnit.HOURS.toMillis(Long.parseLong(parts[0])) +
                             TimeUnit.MINUTES.toMillis(Long.parseLong(parts[1])) +
-                            TimeUnit.SECONDS.toMillis(Long.parseLong(parts[2]));
+                            TimeUnit.SECONDS.toMillis((long)Float.parseFloat(parts[2]));
                 } else {
                     return;
                 }
                 state.getTempObjects().put(DURATION, durationMs);
             } catch (NumberFormatException e) {
+                Log.e(NSTAG, "duration: " + duration);
                 Log.e(NSTAG, Log.getStackTraceString(e));
             }
         } else if (SUBTITLE.equals(localName)) {
