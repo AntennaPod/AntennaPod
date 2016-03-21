@@ -901,6 +901,7 @@ public final class DBReader {
         Cursor mediaCursor = adapter.getSingleFeedMediaCursor(mediaId);
 
         if (!mediaCursor.moveToFirst()) {
+            mediaCursor.close();
             return null;
         }
 
