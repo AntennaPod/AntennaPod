@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.text.TextUtils;
+
 import java.io.File;
 
 /**
@@ -54,7 +56,7 @@ public abstract class FeedFile extends FeedComponent {
         if (super.compareWithOther(other)) {
             return true;
         }
-        if (!download_url.equals(other.download_url)) {
+        if (!TextUtils.equals(download_url, other.download_url)) {
             return true;
         }
         return false;
