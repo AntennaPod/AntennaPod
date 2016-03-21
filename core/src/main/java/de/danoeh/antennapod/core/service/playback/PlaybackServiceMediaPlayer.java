@@ -618,10 +618,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 || playerStatus == PlayerStatus.PREPARED
                 || playerStatus == PlayerStatus.SEEKING) {
             retVal = mediaPlayer.getCurrentPosition();
-            if(retVal <= 0 && media != null && media.getPosition() > 0) {
-                retVal = media.getPosition();
-            }
-        } else if (media != null && media.getPosition() > 0) {
+        }
+        if (retVal <= 0 && media != null && media.getPosition() >= 0) {
             retVal = media.getPosition();
         }
 
