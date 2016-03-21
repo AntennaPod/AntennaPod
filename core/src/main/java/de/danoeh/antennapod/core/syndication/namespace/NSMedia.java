@@ -40,10 +40,11 @@ public class NSMedia extends Namespace {
             if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null &&
                 url != null && validType) {
 				long size = 0;
+				String sizeStr = attributes.getValue(SIZE);
 				try {
-					size = Long.parseLong(attributes.getValue(SIZE));
+					size = Long.parseLong(sizeStr);
 				} catch (NumberFormatException e) {
-					Log.e(TAG, "Length attribute could not be parsed.");
+					Log.e(TAG, "Size \"" + sizeStr + "\" could not be parsed.");
 				}
 
 				int durationMs = 0;
@@ -53,7 +54,7 @@ public class NSMedia extends Namespace {
                         long duration = Long.parseLong(durationStr);
 						durationMs = (int) TimeUnit.MILLISECONDS.convert(duration, TimeUnit.SECONDS);
 					} catch (NumberFormatException e) {
-						Log.e(TAG, "Duration attribute could not be parsed");
+						Log.e(TAG, "Duration \"" + durationStr + "\" could not be parsed");
 					}
 				}
 				FeedMedia media = new FeedMedia(state.getCurrentItem(), url, size, type);
