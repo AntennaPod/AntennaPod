@@ -185,7 +185,7 @@
                 android:title="@string/pref_automatic_download_title"
                 android:defaultValue="false"/>
             <com.afollestad.materialdialogs.prefs.MaterialListPreference
-                android:defaultValue="20"
+                android:defaultValue="25"
                 android:entries="@array/episode_cache_size_entries"
                 android:key="prefEpisodeCacheSize"
                 android:title="@string/pref_episode_cache_title"
