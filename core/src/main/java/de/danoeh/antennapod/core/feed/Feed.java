@@ -324,12 +324,11 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         if (super.compareWithOther(other)) {
             return true;
         }
-        if (!title.equals(other.title)) {
+        if (!TextUtils.equals(title, other.title)) {
             return true;
         }
         if (other.feedIdentifier != null) {
-            if (feedIdentifier == null
-                    || !feedIdentifier.equals(other.feedIdentifier)) {
+            if (feedIdentifier == null || !feedIdentifier.equals(other.feedIdentifier)) {
                 return true;
             }
         }

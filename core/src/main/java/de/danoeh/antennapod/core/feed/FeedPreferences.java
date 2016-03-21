@@ -95,8 +95,9 @@ public class FeedPreferences {
      * @return True if the two objects are different.
      */
     public boolean compareWithOther(FeedPreferences other) {
-        if (other == null)
+        if (other == null) {
             return true;
+        }
         if (!TextUtils.equals(username, other.username)) {
             return true;
         }
