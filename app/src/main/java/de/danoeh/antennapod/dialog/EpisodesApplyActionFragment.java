@@ -54,7 +54,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     private final Map<Long,FeedItem> idMap = new ArrayMap<>();
     private final List<FeedItem> episodes = new ArrayList<>();
     private int actions;
-    private final List<String> titles = new ArrayList();
+    private final List<String> titles = new ArrayList<>();
     private final LongList checkedIds = new LongList();
 
     private MenuItem mSelectToggle;
@@ -285,9 +285,9 @@ public class EpisodesApplyActionFragment extends Fragment {
     private void sortByDuration(final boolean reverse) {
         Collections.sort(episodes, (lhs, rhs) -> {
             int ordering;
-            if (false == lhs.hasMedia()) {
+            if (!lhs.hasMedia()) {
                 ordering = 1;
-            } else if (false == rhs.hasMedia()) {
+            } else if (!rhs.hasMedia()) {
                 ordering = -1;
             } else {
                 ordering = lhs.getMedia().getDuration() - rhs.getMedia().getDuration();
@@ -304,7 +304,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void checkAll() {
         for (FeedItem episode : episodes) {
-            if(false == checkedIds.contains(episode.getId())) {
+            if(!checkedIds.contains(episode.getId())) {
                 checkedIds.add(episode.getId());
             }
         }
@@ -391,14 +391,14 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void downloadChecked() {
         // download the check episodes in the same order as they are currently displayed
-        List<FeedItem> toDownload = new ArrayList<FeedItem>(checkedIds.size());
+        List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
         for(FeedItem episode : episodes) {
             if(checkedIds.contains(episode.getId())) {
                 toDownload.add(episode);
             }
         }
         try {
-            DBTasks.downloadFeedItems(getActivity(), toDownload.toArray(new FeedItem[0]));
+            DBTasks.downloadFeedItems(getActivity(), toDownload.toArray(new FeedItem[toDownload.size()]));
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());

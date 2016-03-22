@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -112,7 +111,7 @@ public class SearchlistAdapter extends BaseAdapter {
         TextView subtitle;
     }
 
-    public static interface ItemAccess {
+    public interface ItemAccess {
         int getCount();
 
         SearchResult getItem(int position);

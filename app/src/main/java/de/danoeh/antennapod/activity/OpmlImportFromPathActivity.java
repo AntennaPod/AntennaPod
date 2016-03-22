@@ -53,7 +53,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         intentPickAction = new Intent(Intent.ACTION_PICK);
         intentPickAction.setData(Uri.parse("file://"));
 
-        if(false == IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
+        if(!IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
             intentPickAction.setData(null);
             if(false == IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
                 txtvHeaderExplanation1.setVisibility(View.GONE);
@@ -70,7 +70,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
         intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
         intentGetContentAction.setType("*/*");
-        if(false == IntentUtils.isCallable(getApplicationContext(), intentGetContentAction)) {
+        if(!IntentUtils.isCallable(getApplicationContext(), intentGetContentAction)) {
             txtvHeaderExplanation2.setVisibility(View.GONE);
             txtvExplanation2.setVisibility(View.GONE);
             findViewById(R.id.divider2).setVisibility(View.GONE);

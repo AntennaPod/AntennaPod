@@ -1,17 +1,13 @@
 package de.danoeh.antennapod.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -58,14 +54,8 @@ public abstract class SleepTimerDialog {
         builder.customView(R.layout.time_dialog, false);
         builder.positiveText(R.string.set_sleeptimer_label);
         builder.negativeText(R.string.cancel_label);
-        builder.callback(new MaterialDialog.ButtonCallback() {
-            @Override
-            public void onNegative(MaterialDialog dialog) {
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onPositive(MaterialDialog dialog) {
+        builder.onNegative((dialog, which) -> dialog.dismiss());
+        builder.onPositive((dialog, which) -> {
                 try {
                     savePreferences();
                     long input = readTimeMillis();
@@ -77,8 +67,7 @@ public abstract class SleepTimerDialog {
                             Toast.LENGTH_LONG);
                     toast.show();
                 }
-            }
-        });
+            });
         dialog = builder.build();
         
         View view = dialog.getView();

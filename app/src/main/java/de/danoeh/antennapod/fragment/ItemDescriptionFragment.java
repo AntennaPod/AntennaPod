@@ -148,7 +148,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
                 super.onPageFinished(view, url);
                 Log.d(TAG, "Page finished");
                 // Restoring the scroll position might not always work
-                view.postDelayed(() -> restoreFromPreference(), 50);
+                view.postDelayed(ItemDescriptionFragment.this::restoreFromPreference, 50);
             }
 
         });
@@ -318,8 +318,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
 
     private String loadData() {
         Timeline timeline = new Timeline(getActivity(), shownotesProvider);
-        String data = timeline.processShownotes(highlightTimecodes);
-        return data;
+        return timeline.processShownotes(highlightTimecodes);
     }
 
     @Override

@@ -387,18 +387,11 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                                     .getSleepTimerTimeLeft()));
                             stDialog.positiveText(R.string.disable_sleeptimer_label);
                             stDialog.negativeText(R.string.cancel_label);
-                            stDialog.callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    dialog.dismiss();
-                                    controller.disableSleepTimer();
-                                }
-
-                                @Override
-                                public void onNegative(MaterialDialog dialog) {
-                                    dialog.dismiss();
-                                }
+                            stDialog.onPositive((dialog, which) -> {
+                                dialog.dismiss();
+                                controller.disableSleepTimer();
                             });
+                            stDialog.onNegative((dialog, which) -> dialog.dismiss());
                             stDialog.build().show();
                         }
                         break;
@@ -464,9 +457,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                                     txtvPlaybackSpeed.setText(speedStr);
                                 } else if(fromUser) {
                                     float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
-                                    barPlaybackSpeed.post(() -> {
-                                        barPlaybackSpeed.setProgress((int) (20 * speed) - 10);
-                                    });
+                                    barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress((int) (20 * speed) - 10));
                                 }
                             }
 
@@ -748,9 +739,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         }
 
         if (butRev != null) {
-            butRev.setOnClickListener(v -> {
-                onRewind();
-            });
+            butRev.setOnClickListener(v -> onRewind());
             butRev.setOnLongClickListener(new View.OnLongClickListener() {
 
                 int choice;
@@ -787,14 +776,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             });
         }
 
-        butPlay.setOnClickListener(v -> {
-            onPlayPause();
-        });
+        butPlay.setOnClickListener(v -> onPlayPause());
 
         if (butFF != null) {
-            butFF.setOnClickListener(v -> {
-                onFastForward();
-            });
+            butFF.setOnClickListener(v -> onFastForward());
             butFF.setOnLongClickListener(new View.OnLongClickListener() {
 
                 int choice;
@@ -832,9 +817,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         }
 
         if (butSkip != null) {
-            butSkip.setOnClickListener(v -> {
-                sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
-            });
+            butSkip.setOnClickListener(v -> sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE)));
         }
     }
 

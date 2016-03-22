@@ -5,5 +5,5 @@ package de.danoeh.antennapod.menuhandler;
  */
 public interface NavDrawerActivity {
 
-    public boolean isDrawerOpen();
+    boolean isDrawerOpen();
 }

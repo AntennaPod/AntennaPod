@@ -11,10 +11,10 @@ public interface DBTasksCallbacks {
     /**
      * Returns the client's implementation of the AutomaticDownloadAlgorithm interface.
      */
-    public AutomaticDownloadAlgorithm getAutomaticDownloadAlgorithm();
+    AutomaticDownloadAlgorithm getAutomaticDownloadAlgorithm();
 
     /**
      * Returns the client's implementation of the EpisodeCacheCleanupAlgorithm interface.
      */
-    public EpisodeCleanupAlgorithm getEpisodeCacheCleanupAlgorithm();
+    EpisodeCleanupAlgorithm getEpisodeCacheCleanupAlgorithm();
 }

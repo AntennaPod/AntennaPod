@@ -180,13 +180,13 @@ public abstract class VorbisCommentReader {
 
 	private String readContentVectorKey(InputStream input, long vectorLength)
 			throws IOException {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < vectorLength; i++) {
 			char c = (char) input.read();
 			if (c == '=') {
-				return buffer.toString();
+				return builder.toString();
 			} else {
-				buffer.append(c);
+				builder.append(c);
 			}
 		}
 		return null; // no key found

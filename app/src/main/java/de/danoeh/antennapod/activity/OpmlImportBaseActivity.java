@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -26,7 +26,7 @@ import de.danoeh.antennapod.core.util.LangUtils;
 /**
  * Base activity for Opml Import - e.g. with code what to do afterwards
  * */
-public class OpmlImportBaseActivity extends ActionBarActivity {
+public class OpmlImportBaseActivity extends AppCompatActivity {
 
     private static final String TAG = "OpmlImportBaseActivity";
     private OpmlImportWorker importWorker;

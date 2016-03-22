@@ -21,7 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
 import de.danoeh.antennapod.core.ClientConfig;
@@ -84,9 +84,8 @@ public class HttpDownloader extends Downloader {
                         httpReq.addHeader("If-Modified-Since", lastModified);
                     }
                 } else {
-                    String eTag = lastModified;
-                    Log.d(TAG, "addHeader(\"If-None-Match\", \"" + eTag + "\")");
-                    httpReq.addHeader("If-None-Match", eTag);
+                    Log.d(TAG, "addHeader(\"If-None-Match\", \"" + lastModified + "\")");
+                    httpReq.addHeader("If-None-Match", lastModified);
                 }
             }
 
@@ -111,13 +110,13 @@ public class HttpDownloader extends Downloader {
                 Log.d(TAG, "Adding range header: " + request.getSoFar());
             }
 
-            Response response = null;
+            Response response;
             try {
                 response = httpClient.newCall(httpReq.build()).execute();
             } catch(IOException e) {
                 Log.e(TAG, e.toString());
                 if(e.getMessage().contains("PROTOCOL_ERROR")) {
-                    httpClient.setProtocols(Arrays.asList(Protocol.HTTP_1_1));
+                    httpClient.setProtocols(Collections.singletonList(Protocol.HTTP_1_1));
                     response = httpClient.newCall(httpReq.build()).execute();
                 }
                 else {

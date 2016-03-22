@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -53,16 +52,12 @@ public class ExternalPlayerFragment extends Fragment {
         mFeedName = (TextView) root.findViewById(R.id.txtvAuthor);
         mProgressBar = (ProgressBar) root.findViewById(R.id.episodeProgress);
 
-        fragmentLayout.setOnClickListener(new OnClickListener() {
+        fragmentLayout.setOnClickListener(v -> {
+            Log.d(TAG, "layoutInfo was clicked");
 
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "layoutInfo was clicked");
-
-                if (controller != null && controller.getMedia() != null) {
-                    startActivity(PlaybackService.getPlayerActivityIntent(
-                            getActivity(), controller.getMedia()));
-                }
+            if (controller != null && controller.getMedia() != null) {
+                startActivity(PlaybackService.getPlayerActivityIntent(
+                        getActivity(), controller.getMedia()));
             }
         });
         return root;

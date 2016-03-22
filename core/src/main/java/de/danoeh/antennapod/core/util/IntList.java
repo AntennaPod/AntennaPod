@@ -62,7 +62,7 @@ public final class IntList {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer(size * 5 + 10);
+        StringBuilder sb = new StringBuilder(size * 5 + 10);
         sb.append("IntList{");
         for (int i = 0; i < size; i++) {
             if (i != 0) {

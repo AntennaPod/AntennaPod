@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,7 +79,7 @@ import rx.schedulers.Schedulers;
  * If the feed cannot be downloaded or parsed, an error dialog will be displayed
  * and the activity will finish as soon as the error dialog is closed.
  */
-public class OnlineFeedViewActivity extends ActionBarActivity {
+public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private static final String TAG = "OnlineFeedViewActivity";
 

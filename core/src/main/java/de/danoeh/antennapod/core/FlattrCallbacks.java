@@ -15,7 +15,7 @@ public interface FlattrCallbacks {
      * Returns if true if the flattr integration should be activated,
      * false otherwise.
      */
-    public boolean flattrEnabled();
+    boolean flattrEnabled();
 
     /**
      * Returns an intent that starts the activity that is responsible for
@@ -24,13 +24,13 @@ public interface FlattrCallbacks {
      * @return The intent that starts the authentication activity or null
      * if flattr integration is disabled (i.e. flattrEnabled() == false).
      */
-    public Intent getFlattrAuthenticationActivityIntent(Context context);
+    Intent getFlattrAuthenticationActivityIntent(Context context);
 
-    public PendingIntent getFlattrFailedNotificationContentIntent(Context context);
+    PendingIntent getFlattrFailedNotificationContentIntent(Context context);
 
-    public String getFlattrAppKey();
+    String getFlattrAppKey();
 
-    public String getFlattrAppSecret();
+    String getFlattrAppSecret();
 
-    public void handleFlattrAuthenticationSuccess(AccessToken token);
+    void handleFlattrAuthenticationSuccess(AccessToken token);
 }

@@ -19,12 +19,9 @@ public class MoreContentListFooterUtil {
 
     public MoreContentListFooterUtil(View root) {
         this.root = root;
-        root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null && !loading) {
-                    listener.onClick();
-                }
+        root.setOnClickListener(v -> {
+            if (listener != null && !loading) {
+                listener.onClick();
             }
         });
     }
@@ -46,8 +43,8 @@ public class MoreContentListFooterUtil {
         listener = l;
     }
 
-    public static interface Listener {
-        public void onClick();
+    public interface Listener {
+        void onClick();
     }
 
     public View getRoot() {

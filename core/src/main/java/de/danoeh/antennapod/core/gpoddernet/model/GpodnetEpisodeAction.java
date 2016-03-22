@@ -61,14 +61,13 @@ public class GpodnetEpisodeAction {
         String deviceId = fields[2];
         try {
             Action action = Action.valueOf(fields[3]);
-            GpodnetEpisodeAction result = new Builder(podcast, episode, action)
+            return new Builder(podcast, episode, action)
                     .deviceId(deviceId)
                     .timestamp(new Date(Long.parseLong(fields[4])))
                     .started(Integer.parseInt(fields[5]))
                     .position(Integer.parseInt(fields[6]))
                     .total(Integer.parseInt(fields[7]))
                     .build();
-            return result;
         } catch(IllegalArgumentException e) {
             Log.e(TAG, "readFromString(" + s + "): " + e.getMessage());
             return null;

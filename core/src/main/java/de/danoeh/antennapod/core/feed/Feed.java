@@ -112,7 +112,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         this.flattrStatus = status;
         this.paged = paged;
         this.nextPageLink = nextPageLink;
-        this.items = new ArrayList<FeedItem>();
+        this.items = new ArrayList<>();
         if(filter != null) {
             this.itemfilter = new FeedItemFilter(filter);
         } else {
@@ -235,7 +235,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      */
     public boolean hasUnplayedItems() {
         for (FeedItem item : items) {
-            if (false == item.isNew() && false == item.isPlayed()) {
+            if (!item.isNew() && !item.isPlayed()) {
                 return true;
             }
         }

@@ -81,7 +81,7 @@ public class AllEpisodesFragment extends Fragment {
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
 
-    private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
+    private AtomicReference<MainActivity> activity = new AtomicReference<>();
 
     private boolean isUpdatingFeeds;
 
@@ -379,10 +379,7 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public boolean isInQueue(FeedItem item) {
-            if (item != null) {
-                return item.isTagged(FeedItem.TAG_QUEUE);
-            }
-            return false;
+            return item != null && item.isTagged(FeedItem.TAG_QUEUE);
         }
 
         @Override
@@ -471,7 +468,7 @@ public class AllEpisodesFragment extends Fragment {
             recyclerView.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
-        subscription = Observable.fromCallable(() -> loadData())
+        subscription = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {

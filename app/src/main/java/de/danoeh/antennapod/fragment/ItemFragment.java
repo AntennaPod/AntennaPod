@@ -507,7 +507,7 @@ public class ItemFragment extends Fragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.fromCallable(() -> loadInBackground())
+        subscription = Observable.fromCallable(this::loadInBackground)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {

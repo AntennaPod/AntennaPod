@@ -243,7 +243,7 @@ public class DirectoryChooserActivity extends AppCompatActivity {
             @Override
             public void onEvent(int event, String path) {
                 Log.d(TAG, "FileObserver received event " + event);
-                runOnUiThread(() -> refreshDirectory());
+                runOnUiThread(DirectoryChooserActivity.this::refreshDirectory);
             }
         };
     }

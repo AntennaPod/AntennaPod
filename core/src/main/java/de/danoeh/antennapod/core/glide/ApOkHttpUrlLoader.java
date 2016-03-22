@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -107,7 +106,7 @@ public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
         public Response intercept(Chain chain) throws IOException {
             com.squareup.okhttp.Request request = chain.request();
             String url = request.urlString();
-            Context context = ClientConfig.applicationCallbacks.getApplicationInstance();
+            // Context context = ClientConfig.applicationCallbacks.getApplicationInstance();
             String authentication = DBReader.getImageAuthentication(url);
 
             if(TextUtils.isEmpty(authentication)) {

@@ -8,7 +8,7 @@ public class ProxyConfig {
 
     public final Proxy.Type type;
     @Nullable public final String host;
-    @Nullable public final int port;
+    public final int port;
     @Nullable public final String username;
     @Nullable public final String password;
 

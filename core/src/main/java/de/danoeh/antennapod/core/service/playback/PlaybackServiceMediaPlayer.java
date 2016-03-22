@@ -99,7 +99,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new ReentrantLock();
         this.startWhenPrepared = new AtomicBoolean(false);
-        executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>(),
+        executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
                 new RejectedExecutionHandler() {
                     @Override
                     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
@@ -175,18 +175,15 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      */
     public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject(...)");
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                try {
-                    playMediaObject(playable, false, stream, startWhenPrepared, prepareImmediately);
-                } catch (RuntimeException e) {
-                    e.printStackTrace();
-                    throw e;
-                } finally {
-                    playerLock.unlock();
-                }
+        executor.submit(() -> {
+            playerLock.lock();
+            try {
+                playMediaObject(playable, false, stream, startWhenPrepared, prepareImmediately);
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                throw e;
+            } finally {
+                playerLock.unlock();
             }
         });
     }
@@ -258,10 +255,10 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             }
             setPlayerStatus(PlayerStatus.INITIALIZED, media);
 
-            if (mediaType == MediaType.VIDEO) {
-                VideoPlayer vp = (VideoPlayer) mediaPlayer;
-                //  vp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
-            }
+//            if (mediaType == MediaType.VIDEO) {
+//                VideoPlayer vp = (VideoPlayer) mediaPlayer;
+//                //  vp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
+//            }
 
             if (prepareImmediately) {
                 setPlayerStatus(PlayerStatus.PREPARING, media);
@@ -269,13 +266,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 onPrepared(startWhenPrepared);
             }
 
-        } catch (Playable.PlayableException e) {
-            e.printStackTrace();
-            setPlayerStatus(PlayerStatus.ERROR, null);
-        } catch (IOException e) {
-            e.printStackTrace();
-            setPlayerStatus(PlayerStatus.ERROR, null);
-        } catch (IllegalStateException e) {
+        } catch (Playable.PlayableException | IOException | IllegalStateException e) {
             e.printStackTrace();
             setPlayerStatus(PlayerStatus.ERROR, null);
         }
@@ -379,29 +370,26 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      *                     file is being streamed
      */
     public void pause(final boolean abandonFocus, final boolean reinit) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                releaseWifiLockIfNecessary();
-                if (playerStatus == PlayerStatus.PLAYING) {
-                    Log.d(TAG, "Pausing playback.");
-                    mediaPlayer.pause();
-                    setPlayerStatus(PlayerStatus.PAUSED, media);
+        executor.submit(() -> {
+            playerLock.lock();
+            releaseWifiLockIfNecessary();
+            if (playerStatus == PlayerStatus.PLAYING) {
+                Log.d(TAG, "Pausing playback.");
+                mediaPlayer.pause();
+                setPlayerStatus(PlayerStatus.PAUSED, media);
 
-                    if (abandonFocus) {
-                        audioManager.abandonAudioFocus(audioFocusChangeListener);
-                        pausedBecauseOfTransientAudiofocusLoss = false;
-                    }
-                    if (stream && reinit) {
-                        reinit();
-                    }
-                } else {
-                    Log.d(TAG, "Ignoring call to pause: Player is in " + playerStatus + " state");
+                if (abandonFocus) {
+                    audioManager.abandonAudioFocus(audioFocusChangeListener);
+                    pausedBecauseOfTransientAudiofocusLoss = false;
                 }
-
-                playerLock.unlock();
+                if (stream && reinit) {
+                    reinit();
+                }
+            } else {
+                Log.d(TAG, "Ignoring call to pause: Player is in " + playerStatus + " state");
             }
+
+            playerLock.unlock();
         });
     }
 
@@ -412,25 +400,22 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * This method is executed on an internal executor service.
      */
     public void prepare() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
+        executor.submit(() -> {
+            playerLock.lock();
 
-                if (playerStatus == PlayerStatus.INITIALIZED) {
-                    Log.d(TAG, "Preparing media player");
-                    setPlayerStatus(PlayerStatus.PREPARING, media);
-                    try {
-                        mediaPlayer.prepare();
-                        onPrepared(startWhenPrepared.get());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        setPlayerStatus(PlayerStatus.ERROR, null);
-                    }
+            if (playerStatus == PlayerStatus.INITIALIZED) {
+                Log.d(TAG, "Preparing media player");
+                setPlayerStatus(PlayerStatus.PREPARING, media);
+                try {
+                    mediaPlayer.prepare();
+                    onPrepared(startWhenPrepared.get());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    setPlayerStatus(PlayerStatus.ERROR, null);
                 }
-                playerLock.unlock();
-
             }
+            playerLock.unlock();
+
         });
     }
 
@@ -449,7 +434,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
         if (mediaType == MediaType.VIDEO) {
             VideoPlayer vp = (VideoPlayer) mediaPlayer;
-            videoSize = new Pair<Integer, Integer>(vp.getVideoWidth(), vp.getVideoHeight());
+            videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
         }
 
         if (media.getPosition() > 0) {
@@ -475,20 +460,17 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * This method is executed on an internal executor service.
      */
     public void reinit() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                releaseWifiLockIfNecessary();
-                if (media != null) {
-                    playMediaObject(media, true, stream, startWhenPrepared.get(), false);
-                } else if (mediaPlayer != null) {
-                    mediaPlayer.reset();
-                } else {
-                    Log.d(TAG, "Call to reinit was ignored: media and mediaPlayer were null");
-                }
-                playerLock.unlock();
+        executor.submit(() -> {
+            playerLock.lock();
+            releaseWifiLockIfNecessary();
+            if (media != null) {
+                playMediaObject(media, true, stream, startWhenPrepared.get(), false);
+            } else if (mediaPlayer != null) {
+                mediaPlayer.reset();
+            } else {
+                Log.d(TAG, "Call to reinit was ignored: media and mediaPlayer were null");
             }
+            playerLock.unlock();
         });
     }
 
@@ -542,12 +524,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * This method is executed on an internal executor service.
      */
     public void seekTo(final int t) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                seekToSync(t);
-            }
-        });
+        executor.submit(() -> seekToSync(t));
     }
 
     /**
@@ -556,19 +533,16 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * @param d offset from current position (positive or negative)
      */
     public void seekDelta(final int d) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                int currentPosition = getPosition();
-                if (currentPosition != INVALID_TIME) {
-                    seekToSync(currentPosition + d);
-                } else {
-                    Log.e(TAG, "getPosition() returned INVALID_TIME in seekDelta");
-                }
-
-                playerLock.unlock();
+        executor.submit(() -> {
+            playerLock.lock();
+            int currentPosition = getPosition();
+            if (currentPosition != INVALID_TIME) {
+                seekToSync(currentPosition + d);
+            } else {
+                Log.e(TAG, "getPosition() returned INVALID_TIME in seekDelta");
             }
+
+            playerLock.unlock();
         });
     }
 
@@ -657,7 +631,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
             if (mediaPlayer.canSetSpeed()) {
-                mediaPlayer.setPlaybackSpeed((float) speed);
+                mediaPlayer.setPlaybackSpeed(speed);
                 Log.d(TAG, "Playback speed was set to " + speed);
                 callback.playbackSpeedChanged(speed);
             }
@@ -670,12 +644,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * This method is executed on an internal executor service.
      */
     public void setSpeed(final float speed) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                setSpeedSync(speed);
-            }
-        });
+        executor.submit(() -> setSpeedSync(speed));
     }
 
     /**
@@ -761,28 +730,22 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     public void setVideoSurface(final SurfaceHolder surface) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                if (mediaPlayer != null) {
-                    mediaPlayer.setDisplay(surface);
-                }
-                playerLock.unlock();
+        executor.submit(() -> {
+            playerLock.lock();
+            if (mediaPlayer != null) {
+                mediaPlayer.setDisplay(surface);
             }
+            playerLock.unlock();
         });
     }
 
     public void resetVideoSurface() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                Log.d(TAG, "Resetting video surface");
-                mediaPlayer.setDisplay(null);
-                reinit();
-                playerLock.unlock();
-            }
+        executor.submit(() -> {
+            playerLock.lock();
+            Log.d(TAG, "Resetting video surface");
+            mediaPlayer.setDisplay(null);
+            reinit();
+            playerLock.unlock();
         });
     }
 
@@ -803,7 +766,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             res = null;
         } else {
             VideoPlayer vp = (VideoPlayer) mediaPlayer;
-            videoSize = new Pair<Integer, Integer>(vp.getVideoWidth(), vp.getVideoHeight());
+            videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
             res = videoSize;
         }
         playerLock.unlock();
@@ -1009,20 +972,17 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * abandoning audio focus have to be done with other methods.
      */
     public void stop() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                releaseWifiLockIfNecessary();
+        executor.submit(() -> {
+            playerLock.lock();
+            releaseWifiLockIfNecessary();
 
-                if (playerStatus == PlayerStatus.INDETERMINATE) {
-                    setPlayerStatus(PlayerStatus.STOPPED, null);
-                } else {
-                    Log.d(TAG, "Ignored call to stop: Current player state is: " + playerStatus);
-                }
-                playerLock.unlock();
-
+            if (playerStatus == PlayerStatus.INDETERMINATE) {
+                setPlayerStatus(PlayerStatus.STOPPED, null);
+            } else {
+                Log.d(TAG, "Ignored call to stop: Current player state is: " + playerStatus);
             }
+            playerLock.unlock();
+
         });
     }
 
@@ -1097,100 +1057,59 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         return mp;
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnCompletionListener audioCompletionListener = new org.antennapod.audio.MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(org.antennapod.audio.MediaPlayer mp) {
-            genericOnCompletion();
-        }
-    };
+    private final org.antennapod.audio.MediaPlayer.OnCompletionListener audioCompletionListener =
+            mp -> genericOnCompletion();
 
-    private final android.media.MediaPlayer.OnCompletionListener videoCompletionListener = new android.media.MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(android.media.MediaPlayer mp) {
-            genericOnCompletion();
-        }
-    };
+    private final android.media.MediaPlayer.OnCompletionListener videoCompletionListener =
+            mp -> genericOnCompletion();
 
     private void genericOnCompletion() {
         endPlayback(false);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener = new org.antennapod.audio.MediaPlayer.OnBufferingUpdateListener() {
-        @Override
-        public void onBufferingUpdate(org.antennapod.audio.MediaPlayer mp,
-                                      int percent) {
-            genericOnBufferingUpdate(percent);
-        }
-    };
+    private final org.antennapod.audio.MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =
+            (mp, percent) -> genericOnBufferingUpdate(percent);
 
-    private final android.media.MediaPlayer.OnBufferingUpdateListener videoBufferingUpdateListener = new android.media.MediaPlayer.OnBufferingUpdateListener() {
-        @Override
-        public void onBufferingUpdate(android.media.MediaPlayer mp, int percent) {
-            genericOnBufferingUpdate(percent);
-        }
-    };
+    private final android.media.MediaPlayer.OnBufferingUpdateListener videoBufferingUpdateListener =
+            (mp, percent) -> genericOnBufferingUpdate(percent);
 
     private void genericOnBufferingUpdate(int percent) {
         callback.onBufferingUpdate(percent);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnInfoListener audioInfoListener = new org.antennapod.audio.MediaPlayer.OnInfoListener() {
-        @Override
-        public boolean onInfo(org.antennapod.audio.MediaPlayer mp, int what,
-                              int extra) {
-            return genericInfoListener(what);
-        }
-    };
+    private final org.antennapod.audio.MediaPlayer.OnInfoListener audioInfoListener =
+            (mp, what, extra) -> genericInfoListener(what);
 
-    private final android.media.MediaPlayer.OnInfoListener videoInfoListener = new android.media.MediaPlayer.OnInfoListener() {
-        @Override
-        public boolean onInfo(android.media.MediaPlayer mp, int what, int extra) {
-            return genericInfoListener(what);
-        }
-    };
+    private final android.media.MediaPlayer.OnInfoListener videoInfoListener =
+            (mp, what, extra) -> genericInfoListener(what);
 
     private boolean genericInfoListener(int what) {
         return callback.onMediaPlayerInfo(what);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnErrorListener audioErrorListener = new org.antennapod.audio.MediaPlayer.OnErrorListener() {
-        @Override
-        public boolean onError(org.antennapod.audio.MediaPlayer mp, int what, int extra) {
-            if(mp.canFallback()) {
-                mp.fallback();
-                return true;
-            } else {
-                return genericOnError(mp, what, extra);
-            }
-        }
-    };
+    private final org.antennapod.audio.MediaPlayer.OnErrorListener audioErrorListener =
+            (mp, what, extra) -> {
+                if(mp.canFallback()) {
+                    mp.fallback();
+                    return true;
+                } else {
+                    return genericOnError(mp, what, extra);
+                }
+            };
 
-    private final android.media.MediaPlayer.OnErrorListener videoErrorListener = new android.media.MediaPlayer.OnErrorListener() {
-        @Override
-        public boolean onError(android.media.MediaPlayer mp, int what, int extra) {
-            return genericOnError(mp, what, extra);
-        }
-    };
+    private final android.media.MediaPlayer.OnErrorListener videoErrorListener = this::genericOnError;
 
     private boolean genericOnError(Object inObj, int what, int extra) {
         return callback.onMediaPlayerError(inObj, what, extra);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener = new org.antennapod.audio.MediaPlayer.OnSeekCompleteListener() {
-        @Override
-        public void onSeekComplete(org.antennapod.audio.MediaPlayer mp) {
-            genericSeekCompleteListener();
-        }
-    };
+    private final org.antennapod.audio.MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener =
+            mp -> genericSeekCompleteListener();
 
-    private final android.media.MediaPlayer.OnSeekCompleteListener videoSeekCompleteListener = new android.media.MediaPlayer.OnSeekCompleteListener() {
-        @Override
-        public void onSeekComplete(android.media.MediaPlayer mp) {
-            genericSeekCompleteListener();
-        }
-    };
+    private final android.media.MediaPlayer.OnSeekCompleteListener videoSeekCompleteListener =
+            mp -> genericSeekCompleteListener();
 
-    private final void genericSeekCompleteListener() {
+    private void genericSeekCompleteListener() {
         Thread t = new Thread(() -> {
             Log.d(TAG, "genericSeekCompleteListener");
             if(seekLatch != null) {

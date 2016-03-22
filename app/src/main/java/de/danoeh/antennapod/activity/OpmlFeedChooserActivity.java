@@ -2,7 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +22,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
  * Displays the feeds that the OPML-Importer has read and lets the user choose
  * which feeds he wants to import.
  */
-public class OpmlFeedChooserActivity extends ActionBarActivity {
+public class OpmlFeedChooserActivity extends AppCompatActivity {
     private static final String TAG = "OpmlFeedChooserActivity";
 
     public static final String EXTRA_SELECTED_ITEMS = "de.danoeh.antennapod.selectedItems";

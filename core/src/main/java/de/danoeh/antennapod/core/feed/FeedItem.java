@@ -171,9 +171,8 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         String itemIdentifier = cursor.getString(indexItemIdentifier);
         long autoDownload = cursor.getLong(indexAutoDownload);
 
-        FeedItem item = new FeedItem(id, title, link, pubDate, paymentLink, feedId, flattrStatus,
+        return new FeedItem(id, title, link, pubDate, paymentLink, feedId, flattrStatus,
                 hasChapters, null, state, itemIdentifier, autoDownload);
-        return item;
     }
 
     public void updateFromOther(FeedItem other) {
@@ -359,24 +358,16 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     }
 
     private boolean isPlaying() {
-        if (media != null) {
-            return media.isPlaying();
-        }
-        return false;
+        return media != null && media.isPlaying();
     }
 
     @Override
     public Callable<String> loadShownotes() {
-        return new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-
-                if (contentEncoded == null || description == null) {
-                    DBReader.loadExtraInformationOfFeedItem(FeedItem.this);
-
-                }
-                return (contentEncoded != null) ? contentEncoded : description;
+        return () -> {
+            if (contentEncoded == null || description == null) {
+                DBReader.loadExtraInformationOfFeedItem(FeedItem.this);
             }
+            return (contentEncoded != null) ? contentEncoded : description;
         };
     }
 

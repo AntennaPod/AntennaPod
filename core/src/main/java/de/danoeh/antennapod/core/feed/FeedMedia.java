@@ -499,20 +499,17 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public Callable<String> loadShownotes() {
-        return new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                if (item == null) {
-                    item = DBReader.getFeedItem(
-                            itemID);
-                }
-                if (item.getContentEncoded() == null || item.getDescription() == null) {
-                    DBReader.loadExtraInformationOfFeedItem(
-                            item);
-
-                }
-                return (item.getContentEncoded() != null) ? item.getContentEncoded() : item.getDescription();
+        return () -> {
+            if (item == null) {
+                item = DBReader.getFeedItem(
+                        itemID);
             }
+            if (item.getContentEncoded() == null || item.getDescription() == null) {
+                DBReader.loadExtraInformationOfFeedItem(
+                        item);
+
+            }
+            return (item.getContentEncoded() != null) ? item.getContentEncoded() : item.getDescription();
         };
     }
 

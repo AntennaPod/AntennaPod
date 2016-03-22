@@ -13,7 +13,7 @@ public interface GpodnetCallbacks {
      * Returns if true if the gpodder.net integration should be activated,
      * false otherwise.
      */
-    public boolean gpodnetEnabled();
+    boolean gpodnetEnabled();
 
     /**
      * Returns a PendingIntent for the error notification of the GpodnetSyncService.
@@ -23,5 +23,5 @@ public interface GpodnetCallbacks {
      * @return A PendingIntent for the notification or null if gpodder.net integration
      * has been disabled (i.e. gpodnetEnabled() == false).
      */
-    public PendingIntent getGpodnetSyncServiceErrorNotificationPendingIntent(Context context);
+    PendingIntent getGpodnetSyncServiceErrorNotificationPendingIntent(Context context);
 }

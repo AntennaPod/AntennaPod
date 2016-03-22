@@ -131,11 +131,11 @@ public class DownloadlistAdapter extends BaseAdapter {
     }
 
     public interface ItemAccess {
-        public int getCount();
+        int getCount();
 
-        public Downloader getItem(int position);
+        Downloader getItem(int position);
 
-        public void onSecondaryActionClick(Downloader downloader);
+        void onSecondaryActionClick(Downloader downloader);
     }
 
 }

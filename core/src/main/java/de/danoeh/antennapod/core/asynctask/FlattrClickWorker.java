@@ -45,7 +45,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
 
     private final Context context;
 
-    public static enum ExitCode {EXIT_NORMAL, NO_TOKEN, NO_NETWORK, NO_THINGS}
+    public enum ExitCode {EXIT_NORMAL, NO_TOKEN, NO_NETWORK, NO_THINGS}
 
     private final AtomicInteger countFailed = new AtomicInteger();
     private final AtomicInteger countSuccess = new AtomicInteger();
@@ -106,7 +106,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
             return ExitCode.NO_THINGS;
         }
 
-        List<Future> dbFutures = new LinkedList<Future>();
+        List<Future> dbFutures = new LinkedList<>();
         for (FlattrThing thing : flattrQueue) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Processing " + thing.getTitle());
 
@@ -134,9 +134,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
         for (Future f : dbFutures) {
             try {
                 f.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }

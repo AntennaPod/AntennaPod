@@ -51,7 +51,7 @@ public class DownloadRequester {
     private Map<String, DownloadRequest> downloads;
 
     private DownloadRequester() {
-        downloads = new ConcurrentHashMap<String, DownloadRequest>();
+        downloads = new ConcurrentHashMap<>();
     }
 
     public static synchronized DownloadRequester getInstance() {
@@ -268,10 +268,7 @@ public class DownloadRequester {
      * Checks if feedfile is in the downloads list
      */
     public synchronized boolean isDownloadingFile(FeedFile item) {
-        if (item.getDownload_url() != null) {
-            return downloads.containsKey(item.getDownload_url());
-        }
-        return false;
+        return item.getDownload_url() != null && downloads.containsKey(item.getDownload_url());
     }
 
     public synchronized DownloadRequest getDownload(String downloadUrl) {

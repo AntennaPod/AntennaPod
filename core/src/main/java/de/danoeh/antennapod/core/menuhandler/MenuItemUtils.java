@@ -32,7 +32,7 @@ public class MenuItemUtils {
         }
     }
 
-    public static interface UpdateRefreshMenuItemChecker {
-        public boolean isRefreshing();
+    public interface UpdateRefreshMenuItemChecker {
+        boolean isRefreshing();
     }
 }
