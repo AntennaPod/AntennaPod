@@ -191,11 +191,9 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 }
 
                 if(media.isCurrentlyPlaying()) {
-                    if(media.isCurrentlyPlaying()) {
-                        holder.container.setBackgroundColor(playingBackGroundColor);
-                    } else {
-                        holder.container.setBackgroundColor(normalBackGroundColor);
-                    }
+                    holder.container.setBackgroundColor(playingBackGroundColor);
+                } else {
+                    holder.container.setBackgroundColor(normalBackGroundColor);
                 }
             }
 
