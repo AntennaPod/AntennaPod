@@ -394,7 +394,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     /**
-     * Prepared media player for playback if the service is in the INITALIZED
+     * Prepares media player for playback if the service is in the INITALIZED
      * state.
      * <p/>
      * This method is executed on an internal executor service.
