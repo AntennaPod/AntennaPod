@@ -189,6 +189,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
                     holder.type.setImageBitmap(null);
                     holder.type.setVisibility(View.GONE);
                 }
+                typeDrawables.recycle();
 
                 if(media.isCurrentlyPlaying()) {
                     holder.container.setBackgroundColor(playingBackGroundColor);
