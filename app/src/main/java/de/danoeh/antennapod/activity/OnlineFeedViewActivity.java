@@ -328,6 +328,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
                                 subscriber.onError(e);
                             }
                         } catch (Exception e) {
+                            Log.e(TAG, Log.getStackTraceString(e));
                             subscriber.onError(e);
                         } finally {
                             boolean rc = new File(feed.getFile_url()).delete();

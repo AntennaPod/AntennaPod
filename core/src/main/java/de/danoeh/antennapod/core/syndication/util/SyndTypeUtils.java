@@ -30,8 +30,7 @@ public class SyndTypeUtils {
 		if (url != null) {
 			String extension = FilenameUtils.getExtension(url);
 			if (extension != null) {
-				String type = MimeTypeMap.getSingleton()
-						.getMimeTypeFromExtension(extension);
+				String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
 				if (type != null && enclosureTypeValid(type)) {
 					return type;
 				}
