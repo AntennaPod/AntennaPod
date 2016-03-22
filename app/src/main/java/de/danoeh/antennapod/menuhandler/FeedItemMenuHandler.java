@@ -224,7 +224,7 @@ public class FeedItemMenuHandler {
                     context.startActivity(intent);
                 } else {
                     Toast.makeText(context, context.getString(R.string.download_error_malformed_url),
-                            Toast.LENGTH_SHORT);
+                            Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.support_item:
