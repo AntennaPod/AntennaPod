@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
@@ -20,7 +20,7 @@ public class SuggestionListFragment extends PodcastListFragment {
             service.authenticate(GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
             return service.getSuggestions(SUGGESTIONS_COUNT);
         } else {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
     }
 }

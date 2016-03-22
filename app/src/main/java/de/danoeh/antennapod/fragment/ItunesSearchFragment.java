@@ -81,8 +81,9 @@ public class ItunesSearchFragment extends Fragment {
         if (result != null && result.size() > 0) {
             gridView.setVisibility(View.VISIBLE);
             txtvEmpty.setVisibility(View.GONE);
-
-            adapter.addAll(result);
+            for (Podcast p : result) {
+                adapter.add(p);
+            }
             adapter.notifyDataSetInvalidated();
         } else {
             gridView.setVisibility(View.GONE);

@@ -401,7 +401,6 @@ public class ItemlistFragment extends ListFragment {
 
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-//        boolean queueChanged = false;
         if(feed == null || feed.getItems() == null || adapter == null) {
             return;
         }

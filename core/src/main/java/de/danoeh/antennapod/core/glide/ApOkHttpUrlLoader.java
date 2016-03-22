@@ -106,7 +106,6 @@ public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
         public Response intercept(Chain chain) throws IOException {
             com.squareup.okhttp.Request request = chain.request();
             String url = request.urlString();
-            // Context context = ClientConfig.applicationCallbacks.getApplicationInstance();
             String authentication = DBReader.getImageAuthentication(url);
 
             if(TextUtils.isEmpty(authentication)) {

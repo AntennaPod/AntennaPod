@@ -255,11 +255,6 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             }
             setPlayerStatus(PlayerStatus.INITIALIZED, media);
 
-//            if (mediaType == MediaType.VIDEO) {
-//                VideoPlayer vp = (VideoPlayer) mediaPlayer;
-//                //  vp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
-//            }
-
             if (prepareImmediately) {
                 setPlayerStatus(PlayerStatus.PREPARING, media);
                 mediaPlayer.prepare();

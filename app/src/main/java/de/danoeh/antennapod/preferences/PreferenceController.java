@@ -627,7 +627,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             Preference.OnPreferenceClickListener clickListener = preference -> {
                 if (preference instanceof CheckBoxPreference) {
                     String key = preference.getKey();
-                    ArrayList<String> prefValuesList = new ArrayList<>(
+                    List<String> prefValuesList = new ArrayList<>(
                             Arrays.asList(UserPreferences
                                     .getAutodownloadSelectedNetworks())
                     );
