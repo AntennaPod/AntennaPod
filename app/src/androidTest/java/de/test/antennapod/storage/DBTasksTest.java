@@ -28,7 +28,6 @@ public class DBTasksTest extends InstrumentationTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-
         assertTrue(PodDBAdapter.deleteDatabase());
     }
 
@@ -38,6 +37,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         context = getInstrumentation().getTargetContext();
 
         // create new database
+        PodDBAdapter.init(getInstrumentation().getTargetContext());
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
