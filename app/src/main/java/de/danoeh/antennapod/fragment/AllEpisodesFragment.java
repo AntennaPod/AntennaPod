@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -24,7 +23,6 @@ import android.widget.Toast;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -81,8 +79,6 @@ public class AllEpisodesFragment extends Fragment {
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
 
-    private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
-
     private boolean isUpdatingFeeds;
 
     protected Subscription subscription;
@@ -101,7 +97,6 @@ public class AllEpisodesFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
-        this.activity.set((MainActivity) getActivity());
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
@@ -130,12 +125,6 @@ public class AllEpisodesFragment extends Fragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity.set((MainActivity) getActivity());
     }
 
     @Override
@@ -176,18 +165,13 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     protected void resetViewState() {
-        listAdapter = null;
-        activity.set(null);
         viewsCreated = false;
+        listAdapter = null;
     }
 
 
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
-        @Override
-        public boolean isRefreshing() {
-            return DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
-        }
-    };
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
+            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -325,7 +309,7 @@ public class AllEpisodesFragment extends Fragment {
 
         viewsCreated = true;
 
-        if (itemsLoaded && activity.get() != null) {
+        if (itemsLoaded) {
             onFragmentLoaded();
         }
 
@@ -334,7 +318,7 @@ public class AllEpisodesFragment extends Fragment {
 
     private void onFragmentLoaded() {
         if (listAdapter == null) {
-            MainActivity mainActivity = activity.get();
+            MainActivity mainActivity = (MainActivity) getActivity();
             listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess,
                     new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
             listAdapter.setHasStableIds(true);
@@ -379,10 +363,7 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public boolean isInQueue(FeedItem item) {
-            if (item != null) {
-                return item.isTagged(FeedItem.TAG_QUEUE);
-            }
-            return false;
+            return item != null && item.isTagged(FeedItem.TAG_QUEUE);
         }
 
         @Override
@@ -471,7 +452,7 @@ public class AllEpisodesFragment extends Fragment {
             recyclerView.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
-        subscription = Observable.fromCallable(() -> loadData())
+        subscription = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
@@ -480,7 +461,7 @@ public class AllEpisodesFragment extends Fragment {
                     if (data != null) {
                         episodes = data;
                         itemsLoaded = true;
-                        if (viewsCreated && activity.get() != null) {
+                        if (viewsCreated) {
                             onFragmentLoaded();
                         }
                     }

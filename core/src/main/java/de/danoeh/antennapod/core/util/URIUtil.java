@@ -1,12 +1,13 @@
 package de.danoeh.antennapod.core.util;
 
 import android.util.Log;
-import de.danoeh.antennapod.core.BuildConfig;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+
+import de.danoeh.antennapod.core.BuildConfig;
 
 /**
  * Utility methods for dealing with URL encoding.
@@ -26,9 +27,7 @@ public class URIUtil {
         try {
             URL url = new URL(source);
             return new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
-        } catch (URISyntaxException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             throw new IllegalArgumentException(e);
         }
     }

@@ -48,13 +48,10 @@ public final class DBTasks {
     private static ExecutorService autodownloadExec;
 
     static {
-        autodownloadExec = Executors.newSingleThreadExecutor(new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread t = new Thread(r);
-                t.setPriority(Thread.MIN_PRIORITY);
-                return t;
-            }
+        autodownloadExec = Executors.newSingleThreadExecutor(r -> {
+            Thread t = new Thread(r);
+            t.setPriority(Thread.MIN_PRIORITY);
+            return t;
         });
     }
 
@@ -85,9 +82,7 @@ public final class DBTasks {
         if (feedID != 0) {
             try {
                 DBWriter.deleteFeed(context, feedID).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         } else {
@@ -114,7 +109,7 @@ public final class DBTasks {
                                  boolean showPlayer, boolean startWhenPrepared, boolean shouldStream) {
         try {
             if (!shouldStream) {
-                if (media.fileExists() == false) {
+                if (!media.fileExists()) {
                     throw new MediaFileNotFoundException(
                             "No episode was found at " + media.getFile_url(),
                             media);
@@ -518,8 +513,8 @@ public final class DBTasks {
      */
     public static synchronized Feed[] updateFeed(final Context context,
                                                  final Feed... newFeeds) {
-        List<Feed> newFeedsList = new ArrayList<Feed>();
-        List<Feed> updatedFeedsList = new ArrayList<Feed>();
+        List<Feed> newFeedsList = new ArrayList<>();
+        List<Feed> updatedFeedsList = new ArrayList<>();
         Feed[] resultFeeds = new Feed[newFeeds.length];
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -611,9 +606,7 @@ public final class DBTasks {
         try {
             DBWriter.addNewFeed(context, newFeedsList.toArray(new Feed[newFeedsList.size()])).get();
             DBWriter.setCompleteFeed(updatedFeedsList.toArray(new Feed[updatedFeedsList.size()])).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -633,7 +626,7 @@ public final class DBTasks {
      */
     public static FutureTask<List<FeedItem>> searchFeedItemTitle(final Context context,
                                                                  final long feedID, final String query) {
-        return new FutureTask<List<FeedItem>>(new QueryTask<List<FeedItem>>(context) {
+        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemTitles(feedID,
@@ -657,7 +650,7 @@ public final class DBTasks {
      */
     public static FutureTask<List<FeedItem>> searchFeedItemDescription(final Context context,
                                                                        final long feedID, final String query) {
-        return new FutureTask<List<FeedItem>>(new QueryTask<List<FeedItem>>(context) {
+        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemDescriptions(feedID,
@@ -681,7 +674,7 @@ public final class DBTasks {
      */
     public static FutureTask<List<FeedItem>> searchFeedItemContentEncoded(final Context context,
                                                                           final long feedID, final String query) {
-        return new FutureTask<List<FeedItem>>(new QueryTask<List<FeedItem>>(context) {
+        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemContentEncoded(feedID,
@@ -704,7 +697,7 @@ public final class DBTasks {
      */
     public static FutureTask<List<FeedItem>> searchFeedItemChapters(final Context context,
                                                                     final long feedID, final String query) {
-        return new FutureTask<List<FeedItem>>(new QueryTask<List<FeedItem>>(context) {
+        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemChapters(feedID,

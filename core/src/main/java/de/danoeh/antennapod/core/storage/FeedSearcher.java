@@ -1,16 +1,17 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.SearchResult;
-import de.danoeh.antennapod.core.util.comparator.SearchResultValueComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.SearchResult;
+import de.danoeh.antennapod.core.util.comparator.SearchResultValueComparator;
 
 /**
  * Performs search on Feeds and FeedItems
@@ -30,7 +31,7 @@ public class FeedSearcher {
                 context.getString(R.string.found_in_chapters_label),
                 context.getString(R.string.found_in_title_label)};
 
-        List<SearchResult> result = new ArrayList<SearchResult>();
+        List<SearchResult> result = new ArrayList<>();
 
         FutureTask<List<FeedItem>>[] tasks = new FutureTask[4];
         (tasks[0] = DBTasks.searchFeedItemContentEncoded(context, selectedFeed, query)).run();
@@ -46,9 +47,7 @@ public class FeedSearcher {
                 }
 
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         Collections.sort(result, new SearchResultValueComparator());

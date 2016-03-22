@@ -98,9 +98,7 @@ public class ProxyDialog {
                     AntennapodHttpClient.reinit();
                     dialog.dismiss();
                 })
-                .onNegative((dialog1, which) -> {
-                    dialog1.dismiss();
-                })
+                .onNegative((dialog1, which) -> dialog1.dismiss())
                 .autoDismiss(false)
                 .build();
         View view = dialog.getCustomView();
@@ -208,8 +206,7 @@ public class ProxyDialog {
         String port = etPort.getText().toString();
         if(port.length() > 0) {
             try {
-                int portValue = Integer.parseInt(port);
-                return portValue;
+                return Integer.parseInt(port);
             } catch(NumberFormatException e) {
                 // ignore
             }

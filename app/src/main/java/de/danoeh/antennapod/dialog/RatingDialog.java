@@ -94,11 +94,7 @@ public class RatingDialog {
         long firstDate = mPreferences.getLong(KEY_FIRST_START_DATE, now);
         long diff = now - firstDate;
         long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-        if (diffDays >= AFTER_DAYS) {
-            return true;
-        } else {
-            return false;
-        }
+        return diffDays >= AFTER_DAYS;
     }
 
     @Nullable
@@ -107,30 +103,16 @@ public class RatingDialog {
         if(context == null) {
             return null;
         }
-        MaterialDialog dialog = new MaterialDialog.Builder(context)
+        return new MaterialDialog.Builder(context)
                 .title(R.string.rating_title)
                 .content(R.string.rating_message)
                 .positiveText(R.string.rating_now_label)
                 .negativeText(R.string.rating_never_label)
                 .neutralText(R.string.rating_later_label)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        rateNow();
-                    }
-
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        saveRated();
-                    }
-
-                    @Override
-                    public void onNeutral(MaterialDialog dialog) {
-                        resetStartDate();
-                    }
-                })
+                .onPositive((dialog, which) -> rateNow())
+                .onNegative((dialog, which) -> saveRated())
+                .onNeutral((dialog, which) -> resetStartDate())
                 .cancelListener(dialog1 -> resetStartDate())
                 .build();
-        return dialog;
     }
 }

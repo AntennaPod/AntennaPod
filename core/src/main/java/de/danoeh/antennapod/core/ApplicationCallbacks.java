@@ -12,12 +12,12 @@ public interface ApplicationCallbacks {
     /**
      * Returns a non-null instance of the application class
      */
-    public Application getApplicationInstance();
+    Application getApplicationInstance();
 
     /**
      * Returns a non-null intent that starts the storage error
      * activity.
      */
-    public Intent getStorageErrorActivity(Context context);
+    Intent getStorageErrorActivity(Context context);
 
 }

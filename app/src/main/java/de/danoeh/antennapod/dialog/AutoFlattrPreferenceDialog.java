@@ -3,7 +3,6 @@ package de.danoeh.antennapod.dialog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.CheckBox;
@@ -42,12 +41,9 @@ public class AutoFlattrPreferenceDialog {
         setStatusMsgText(activity, txtvStatus, initialValue);
         skbPercent.setProgress(initialValue);
 
-        chkAutoFlattr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                skbPercent.setEnabled(chkAutoFlattr.isChecked());
-                txtvStatus.setEnabled(chkAutoFlattr.isChecked());
-            }
+        chkAutoFlattr.setOnClickListener(v -> {
+            skbPercent.setEnabled(chkAutoFlattr.isChecked());
+            txtvStatus.setEnabled(chkAutoFlattr.isChecked());
         });
 
         skbPercent.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -69,20 +65,14 @@ public class AutoFlattrPreferenceDialog {
 
         builder.setTitle(R.string.pref_auto_flattr_title)
                 .setView(view)
-                .setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        float progDouble = ((float) skbPercent.getProgress()) / 100.0f;
-                        callback.onConfirmed(chkAutoFlattr.isChecked(), progDouble);
-                        dialog.dismiss();
-                    }
+                .setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+                    float progDouble = ((float) skbPercent.getProgress()) / 100.0f;
+                    callback.onConfirmed(chkAutoFlattr.isChecked(), progDouble);
+                    dialog.dismiss();
                 })
-                .setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        callback.onCancelled();
-                        dialog.dismiss();
-                    }
+                .setNegativeButton(R.string.cancel_label, (dialog, which) -> {
+                    callback.onCancelled();
+                    dialog.dismiss();
                 })
                 .setCancelable(false).show();
     }
@@ -97,10 +87,10 @@ public class AutoFlattrPreferenceDialog {
         }
     }
 
-    public static interface AutoFlattrPreferenceDialogInterface {
-        public void onCancelled();
+    public interface AutoFlattrPreferenceDialogInterface {
+        void onCancelled();
 
-        public void onConfirmed(boolean autoFlattrEnabled, float autoFlattrValue);
+        void onConfirmed(boolean autoFlattrEnabled, float autoFlattrValue);
     }
 
 

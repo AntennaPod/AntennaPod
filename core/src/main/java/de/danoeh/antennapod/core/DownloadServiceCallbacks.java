@@ -19,7 +19,7 @@ public interface DownloadServiceCallbacks {
      *
      * @return A non-null PendingIntent for the notification.
      */
-    public PendingIntent getNotificationContentIntent(Context context);
+    PendingIntent getNotificationContentIntent(Context context);
 
     /**
      * Returns a PendingIntent for a notification that tells the user to enter a username
@@ -30,7 +30,7 @@ public interface DownloadServiceCallbacks {
      *
      * @return A non-null PendingIntent for the notification.
      */
-    public PendingIntent getAuthentificationNotificationContentIntent(Context context, DownloadRequest request);
+    PendingIntent getAuthentificationNotificationContentIntent(Context context, DownloadRequest request);
 
     /**
      * Returns a PendingIntent for notification that notifies the user about the completion of downloads
@@ -40,19 +40,19 @@ public interface DownloadServiceCallbacks {
      *
      * @return A non-null PendingIntent for the notification or null if shouldCreateReport()==false
      */
-    public PendingIntent getReportNotificationContentIntent(Context context);
+    PendingIntent getReportNotificationContentIntent(Context context);
 
     /**
      * Called by the FeedSyncThread after a feed has been downloaded and parsed.
      *
      * @param feed The non-null feed that has been parsed.
      */
-    public void onFeedParsed(Context context, Feed feed);
+    void onFeedParsed(Context context, Feed feed);
 
     /**
      * Returns true if the DownloadService should create a report that shows the number of failed
      * downloads when the service shuts down.
      * */
-    public boolean shouldCreateReport();
+    boolean shouldCreateReport();
 }
 

@@ -3,7 +3,6 @@ package de.danoeh.antennapod.asynctask;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -80,14 +79,7 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
         progDialog.dismiss();
         AlertDialog.Builder alert = new AlertDialog.Builder(context)
                 .setNeutralButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                dialog.dismiss();
-                            }
-                        });
+                        (dialog, which) -> dialog.dismiss());
         if (exception != null) {
             alert.setTitle(R.string.export_error_label);
             alert.setMessage(exception.getMessage());

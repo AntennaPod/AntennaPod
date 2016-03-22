@@ -201,10 +201,6 @@
                 android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
 
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
-
         <activity
             android:name=".activity.OnlineFeedViewActivity"
             android:configChanges="orientation"

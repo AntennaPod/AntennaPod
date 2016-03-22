@@ -73,7 +73,7 @@ public class NavListAdapter extends BaseAdapter
     }
 
     private void loadItems() {
-        List<String> newTags = new ArrayList<String>(Arrays.asList(MainActivity.NAV_DRAWER_TAGS));
+        List<String> newTags = new ArrayList<>(Arrays.asList(MainActivity.NAV_DRAWER_TAGS));
         List<String> hiddenFragments = UserPreferences.getHiddenDrawerItems();
         for(String hidden : hiddenFragments) {
             newTags.remove(hidden);
@@ -236,13 +236,13 @@ public class NavListAdapter extends BaseAdapter
                 holder.count.setText("{md-disc-full 150%}");
                 Iconify.addIcons(holder.count);
                 holder.count.setVisibility(View.VISIBLE);
-                holder.count.setOnClickListener(v -> {
+                holder.count.setOnClickListener(v ->
                     new AlertDialog.Builder(context)
                             .setTitle(R.string.episode_cache_full_title)
                             .setMessage(R.string.episode_cache_full_message)
                             .setPositiveButton(android.R.string.ok, (dialog, which) -> {})
-                            .show();
-                });
+                            .show()
+                );
             } else {
                 holder.count.setVisibility(View.GONE);
             }

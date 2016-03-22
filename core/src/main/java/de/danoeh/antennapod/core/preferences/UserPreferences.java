@@ -292,7 +292,7 @@ public class UserPreferences {
 
     public static long getUpdateInterval() {
         String updateInterval = prefs.getString(PREF_UPDATE_INTERVAL, "0");
-        if(false == updateInterval.contains(":")) {
+        if(!updateInterval.contains(":")) {
             return readUpdateInterval(updateInterval);
         } else {
             return 0;
@@ -411,8 +411,7 @@ public class UserPreferences {
         int port = prefs.getInt(PREF_PROXY_PORT, 0);
         String username = prefs.getString(PREF_PROXY_USER, null);
         String password = prefs.getString(PREF_PROXY_PASSWORD, null);
-        ProxyConfig config = new ProxyConfig(type, host, port, username, password);
-        return config;
+        return new ProxyConfig(type, host, port, username, password);
     }
 
     public static boolean shouldResumeAfterCall() {

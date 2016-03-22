@@ -68,7 +68,7 @@ public class FeedPreferences {
     /**
      * @return the filter for this feed
      */
-    public FeedFilter getFilter() {
+    public @NonNull FeedFilter getFilter() {
         return filter;
     }
 

@@ -258,7 +258,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 } else {
                     if(media.getSize() > 0) {
                         progressLeft.setText(Converter.byteToString(media.getSize()));
-                    } else if(NetworkUtils.isDownloadAllowed() && false == media.checkedOnSizeButUnknown()) {
+                    } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
                         progressLeft.setText("{fa-spinner}");
                         Iconify.addIcons(progressLeft);
                         NetworkUtils.getFeedMediaSizeObservable(media)

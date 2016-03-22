@@ -835,7 +835,7 @@ public class PlaybackService extends Service {
                 if (!Thread.currentThread().isInterrupted() && started && info.playable != null) {
                     String contentText = info.playable.getEpisodeTitle();
                     String contentTitle = info.playable.getFeedTitle();
-                    Notification notification = null;
+                    Notification notification;
 
                     // Builder is v7, even if some not overwritten methods return its parent's v4 interface
                     NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(

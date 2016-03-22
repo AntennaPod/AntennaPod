@@ -50,7 +50,7 @@ public class AdapterUtils {
             Log.d(TAG, "size: " + media.getSize());
             if (media.getSize() > 0) {
                 txtvPos.setText(Converter.byteToString(media.getSize()));
-            } else if(NetworkUtils.isDownloadAllowed() && false == media.checkedOnSizeButUnknown()) {
+            } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
                 txtvPos.setText("{fa-spinner}");
                 Iconify.addIcons(txtvPos);
                 NetworkUtils.getFeedMediaSizeObservable(media)

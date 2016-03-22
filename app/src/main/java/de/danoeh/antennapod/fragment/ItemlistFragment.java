@@ -185,11 +185,7 @@ public class ItemlistFragment extends ListFragment {
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
         @Override
         public boolean isRefreshing() {
-            if (feed != null && DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFile(feed)) {
-                return true;
-            } else {
-                return false;
-            }
+            return feed != null && DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFile(feed);
         }
     };
 
@@ -405,7 +401,6 @@ public class ItemlistFragment extends ListFragment {
 
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        boolean queueChanged = false;
         if(feed == null || feed.getItems() == null || adapter == null) {
             return;
         }
@@ -628,7 +623,7 @@ public class ItemlistFragment extends ListFragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.fromCallable(() -> loadData())
+        subscription = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

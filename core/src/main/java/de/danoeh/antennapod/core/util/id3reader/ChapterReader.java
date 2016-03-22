@@ -1,17 +1,18 @@
 package de.danoeh.antennapod.core.util.id3reader;
 
 import android.util.Log;
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.ID3Chapter;
-import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
-import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.ID3Chapter;
+import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
+import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
 
 public class ChapterReader extends ID3Reader {
     private static final String TAG = "ID3ChapterReader";
@@ -25,7 +26,7 @@ public class ChapterReader extends ID3Reader {
 
 	@Override
 	public int onStartTagHeader(TagHeader header) {
-		chapters = new ArrayList<Chapter>();
+		chapters = new ArrayList<>();
 		System.out.println(header.toString());
 		return ID3Reader.ACTION_DONT_SKIP;
 	}
@@ -34,49 +35,53 @@ public class ChapterReader extends ID3Reader {
 	public int onStartFrameHeader(FrameHeader header, InputStream input)
 			throws IOException, ID3ReaderException {
 		System.out.println(header.toString());
-		if (header.getId().equals(FRAME_ID_CHAPTER)) {
-			if (currentChapter != null) {
-				if (!hasId3Chapter(currentChapter)) {
-					chapters.add(currentChapter);
-                    if (BuildConfig.DEBUG) Log.d(TAG, "Found chapter: " + currentChapter);
-					currentChapter = null;
+		switch (header.getId()) {
+			case FRAME_ID_CHAPTER:
+				if (currentChapter != null) {
+					if (!hasId3Chapter(currentChapter)) {
+						chapters.add(currentChapter);
+						if (BuildConfig.DEBUG) Log.d(TAG, "Found chapter: " + currentChapter);
+						currentChapter = null;
+					}
 				}
-			}
-            StringBuffer elementId = new StringBuffer();
-			readISOString(elementId, input, Integer.MAX_VALUE);
-			char[] startTimeSource = readBytes(input, 4);
-			long startTime = ((int) startTimeSource[0] << 24)
-					| ((int) startTimeSource[1] << 16)
-					| ((int) startTimeSource[2] << 8) | startTimeSource[3];
-			currentChapter = new ID3Chapter(elementId.toString(), startTime);
-			skipBytes(input, 12);
-			return ID3Reader.ACTION_DONT_SKIP;
-		} else if (header.getId().equals(FRAME_ID_TITLE)) {
-			if (currentChapter != null && currentChapter.getTitle() == null) {
-                StringBuffer title = new StringBuffer();
-                readString(title, input, header.getSize());
-				currentChapter
-						.setTitle(title.toString());
-				if (BuildConfig.DEBUG) Log.d(TAG, "Found title: " + currentChapter.getTitle());
-
+				StringBuffer elementId = new StringBuffer();
+				readISOString(elementId, input, Integer.MAX_VALUE);
+				char[] startTimeSource = readBytes(input, 4);
+				long startTime = ((int) startTimeSource[0] << 24)
+						| ((int) startTimeSource[1] << 16)
+						| ((int) startTimeSource[2] << 8) | startTimeSource[3];
+				currentChapter = new ID3Chapter(elementId.toString(), startTime);
+				skipBytes(input, 12);
 				return ID3Reader.ACTION_DONT_SKIP;
-			}
-		} else if (header.getId().equals(FRAME_ID_LINK)) {
-            if (currentChapter != null) {
-                // skip description
-                int descriptionLength = readString(null, input, header.getSize());
-                StringBuffer link = new StringBuffer();
-                readISOString(link, input, header.getSize() - descriptionLength);
-                String decodedLink = URLDecoder.decode(link.toString(), "UTF-8");
+			case FRAME_ID_TITLE:
+				if (currentChapter != null && currentChapter.getTitle() == null) {
+					StringBuffer title = new StringBuffer();
+					readString(title, input, header.getSize());
+					currentChapter
+							.setTitle(title.toString());
+					if (BuildConfig.DEBUG) Log.d(TAG, "Found title: " + currentChapter.getTitle());
 
-                currentChapter.setLink(decodedLink);
+					return ID3Reader.ACTION_DONT_SKIP;
+				}
+				break;
+			case FRAME_ID_LINK:
+				if (currentChapter != null) {
+					// skip description
+					int descriptionLength = readString(null, input, header.getSize());
+					StringBuffer link = new StringBuffer();
+					readISOString(link, input, header.getSize() - descriptionLength);
+					String decodedLink = URLDecoder.decode(link.toString(), "UTF-8");
 
-                if (BuildConfig.DEBUG) Log.d(TAG, "Found link: " + currentChapter.getLink());
-                return ID3Reader.ACTION_DONT_SKIP;
-            }
-        } else if (header.getId().equals("APIC")) {
-            Log.d(TAG, header.toString());
-        }
+					currentChapter.setLink(decodedLink);
+
+					if (BuildConfig.DEBUG) Log.d(TAG, "Found link: " + currentChapter.getLink());
+					return ID3Reader.ACTION_DONT_SKIP;
+				}
+				break;
+			case "APIC":
+				Log.d(TAG, header.toString());
+				break;
+		}
 
 		return super.onStartFrameHeader(header, input);
 	}

@@ -2,13 +2,13 @@ package de.danoeh.antennapod.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
 import de.danoeh.antennapod.R;
 
 /**
@@ -58,26 +58,13 @@ public abstract class AuthenticationDialog extends Dialog {
         if (passwordInitialValue != null) {
             etxtPassword.setText(passwordInitialValue);
         }
-        setOnCancelListener(new OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                onCancelled();
-            }
-        });
-        butCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancel();
-            }
-        });
-        butConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onConfirmed(etxtUsername.getText().toString(),
-                        etxtPassword.getText().toString(),
-                        showSaveCredentialsCheckbox && saveUsernamePassword.isChecked());
-                dismiss();
-            }
+        setOnCancelListener(dialog -> onCancelled());
+        butCancel.setOnClickListener(v -> cancel());
+        butConfirm.setOnClickListener(v -> {
+            onConfirmed(etxtUsername.getText().toString(),
+                    etxtPassword.getText().toString(),
+                    showSaveCredentialsCheckbox && saveUsernamePassword.isChecked());
+            dismiss();
         });
     }
 

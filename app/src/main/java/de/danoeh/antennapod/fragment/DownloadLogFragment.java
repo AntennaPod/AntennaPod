@@ -154,7 +154,7 @@ public class DownloadLogFragment extends ListFragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.fromCallable(() -> DBReader.getDownloadLog())
+        subscription = Observable.fromCallable(DBReader::getDownloadLog)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

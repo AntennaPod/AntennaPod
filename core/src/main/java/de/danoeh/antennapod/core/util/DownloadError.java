@@ -25,7 +25,7 @@ public enum DownloadError {
 	private final int code;
 	private final int resId;
 
-	private DownloadError(int code, int resId) {
+	DownloadError(int code, int resId) {
 		this.code = code;
 		this.resId = resId;
 	}

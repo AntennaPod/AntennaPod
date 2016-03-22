@@ -341,11 +341,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle != null && drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+        return drawerToggle != null && drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -464,7 +460,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     private DBReader.NavDrawerData navDrawerData;
 
     private void loadData() {
-        subscription = Observable.fromCallable(() -> DBReader.getNavDrawerData())
+        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

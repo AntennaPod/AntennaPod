@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -132,7 +131,7 @@ public class DBWriter {
                     }
                 }
                 Log.d(TAG, "Deleting File. Result: " + result);
-                EventBus.getDefault().post(FeedItemEvent.deletedMedia(Arrays.asList(media.getItem())));
+                EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
         });
@@ -372,7 +371,7 @@ public class DBWriter {
                 if (queue != null) {
                     boolean queueModified = false;
                     LongList markAsUnplayedIds = new LongList();
-                    List<QueueEvent> events = new ArrayList<QueueEvent>();
+                    List<QueueEvent> events = new ArrayList<>();
                     for (int i = 0; i < itemIds.length; i++) {
                         if (!itemListContains(queue, itemIds[i])) {
                             final FeedItem item = DBReader.getFeedItem(itemIds[i]);
@@ -545,9 +544,7 @@ public class DBWriter {
      */
     public static Future<?> moveQueueItem(final int from,
                                           final int to, final boolean broadcastUpdate) {
-        return dbExec.submit(() -> {
-            moveQueueItemHelper(from, to, broadcastUpdate);
-        });
+        return dbExec.submit(() -> moveQueueItemHelper(from, to, broadcastUpdate));
     }
 
     /**

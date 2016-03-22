@@ -121,7 +121,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.title.setText(item.getTitle());
         String pubDateStr = DateUtils.formatAbbrev(mainActivityRef.get(), item.getPubDate());
         holder.pubDate.setText(pubDateStr);
-        if (showOnlyNewEpisodes || false == item.isNew()) {
+        if (showOnlyNewEpisodes || !item.isNew()) {
             holder.statusUnread.setVisibility(View.INVISIBLE);
         } else {
             holder.statusUnread.setVisibility(View.VISIBLE);
@@ -135,7 +135,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 holder.txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             } else if (media.getSize() > 0) {
                 holder.txtvDuration.setText(Converter.byteToString(media.getSize()));
-            } else if(NetworkUtils.isDownloadAllowed() && false == media.checkedOnSizeButUnknown()) {
+            } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
                 holder.txtvDuration.setText("{fa-spinner}");
                 Iconify.addIcons(holder.txtvDuration);
                 NetworkUtils.getFeedMediaSizeObservable(media)

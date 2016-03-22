@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VorbisCommentChapterReader extends VorbisCommentReader {
-	private static final String TAG = "VorbisCommentChapterReader";
+	private static final String TAG = "VorbisCommentChptrReadr";
 
 	private static final String CHAPTER_KEY = "chapter\\d\\d\\d.*";
 	private static final String CHAPTER_ATTRIBUTE_TITLE = "name";
@@ -27,7 +27,7 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 
 	@Override
 	public void onVorbisCommentHeaderFound(VorbisCommentHeader header) {
-		chapters = new ArrayList<Chapter>();
+		chapters = new ArrayList<>();
 		System.out.println(header.toString());
 	}
 

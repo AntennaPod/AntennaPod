@@ -14,5 +14,5 @@ public interface AutomaticDownloadAlgorithm {
      * @param context  Used for accessing the DB.
      * @return A Runnable that will be submitted to an ExecutorService.
      */
-    public Runnable autoDownloadUndownloadedItems(Context context);
+    Runnable autoDownloadUndownloadedItems(Context context);
 }

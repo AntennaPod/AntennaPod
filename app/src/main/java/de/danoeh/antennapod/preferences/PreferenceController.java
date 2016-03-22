@@ -184,20 +184,17 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         );
         ui.findPreference(PreferenceController.PREF_CHOOSE_DATA_DIR)
                 .setOnPreferenceClickListener(
-                        new Preference.OnPreferenceClickListener() {
-                            @Override
-                            public boolean onPreferenceClick(Preference preference) {
-                                if (Build.VERSION.SDK_INT >= 19) {
-                                    showChooseDataFolderDialog();
-                                } else {
-                                    Intent intent = new Intent(activity, DirectoryChooserActivity.class);
-                                    activity.startActivityForResult(intent,
-                                            DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED);
-                                }
-                                return true;
+                        preference -> {
+                            if (Build.VERSION.SDK_INT >= 19) {
+                                showChooseDataFolderDialog();
+                            } else {
+                                Intent intent = new Intent(activity, DirectoryChooserActivity.class);
+                                activity.startActivityForResult(intent,
+                                        DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED);
                             }
-                }
-        );
+                            return true;
+                        }
+                );
         ui.findPreference(UserPreferences.PREF_THEME)
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
@@ -630,7 +627,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             Preference.OnPreferenceClickListener clickListener = preference -> {
                 if (preference instanceof CheckBoxPreference) {
                     String key = preference.getKey();
-                    ArrayList<String> prefValuesList = new ArrayList<String>(
+                    List<String> prefValuesList = new ArrayList<>(
                             Arrays.asList(UserPreferences
                                     .getAutodownloadSelectedNetworks())
                     );
@@ -639,10 +636,10 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     Log.d(TAG, "Selected network " + key + ". New state: " + newValue);
 
                     int index = prefValuesList.indexOf(key);
-                    if (index >= 0 && newValue == false) {
+                    if (index >= 0 && !newValue) {
                         // remove network
                         prefValuesList.remove(index);
-                    } else if (index < 0 && newValue == true) {
+                    } else if (index < 0 && newValue) {
                         prefValuesList.add(key);
                     }
 
@@ -678,9 +675,9 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         if (selectedNetworks != null) {
             PreferenceScreen prefScreen = (PreferenceScreen) ui.findPreference(PreferenceController.AUTO_DL_PREF_SCREEN);
 
-            for (int i = 0; i < selectedNetworks.length; i++) {
-                if (selectedNetworks[i] != null) {
-                    prefScreen.removePreference(selectedNetworks[i]);
+            for (CheckBoxPreference network : selectedNetworks) {
+                if (network != null) {
+                    prefScreen.removePreference(network);
                 }
             }
         }

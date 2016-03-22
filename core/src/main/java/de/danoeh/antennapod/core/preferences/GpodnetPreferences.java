@@ -189,7 +189,7 @@ public class GpodnetPreferences {
 
     public static Set<String> getAddedFeedsCopy() {
         ensurePreferencesLoaded();
-        Set<String> copy = new HashSet<String>();
+        Set<String> copy = new HashSet<>();
         feedListLock.lock();
         copy.addAll(addedFeeds);
         feedListLock.unlock();
@@ -206,7 +206,7 @@ public class GpodnetPreferences {
 
     public static Set<String> getRemovedFeedsCopy() {
         ensurePreferencesLoaded();
-        Set<String> copy = new HashSet<String>();
+        Set<String> copy = new HashSet<>();
         feedListLock.lock();
         copy.addAll(removedFeeds);
         feedListLock.unlock();
@@ -232,7 +232,7 @@ public class GpodnetPreferences {
 
     public static List<GpodnetEpisodeAction> getQueuedEpisodeActions() {
         ensurePreferencesLoaded();
-        List<GpodnetEpisodeAction> copy = new ArrayList();
+        List<GpodnetEpisodeAction> copy = new ArrayList<>();
         feedListLock.lock();
         copy.addAll(queuedEpisodeActions);
         feedListLock.unlock();
@@ -272,7 +272,7 @@ public class GpodnetPreferences {
     }
 
     private static Set<String> readListFromString(String s) {
-        Set<String> result = new HashSet<String>();
+        Set<String> result = new HashSet<>();
         for (String item : s.split(" ")) {
             result.add(item);
         }
@@ -290,7 +290,7 @@ public class GpodnetPreferences {
 
     private static List<GpodnetEpisodeAction> readEpisodeActionsFromString(String s) {
         String[] lines = s.split("\n");
-        List<GpodnetEpisodeAction> result = new ArrayList<GpodnetEpisodeAction>(lines.length);
+        List<GpodnetEpisodeAction> result = new ArrayList<>(lines.length);
         for(String line : lines) {
             if(TextUtils.isEmpty(line)) {
                 GpodnetEpisodeAction action = GpodnetEpisodeAction.readFromString(line);

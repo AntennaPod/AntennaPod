@@ -657,7 +657,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     };
 
     private void loadData() {
-        subscription = Observable.fromCallable(() -> DBReader.getNavDrawerData())
+        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

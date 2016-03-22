@@ -237,10 +237,9 @@ public abstract class PlaybackController {
 
 
     private void setupPositionObserver() {
-        if ((positionObserverFuture != null && positionObserverFuture
-                .isCancelled())
-                || (positionObserverFuture != null && positionObserverFuture
-                .isDone()) || positionObserverFuture == null) {
+        if (positionObserverFuture == null ||
+                positionObserverFuture.isCancelled() ||
+                positionObserverFuture.isDone()) {
 
             Log.d(TAG, "Setting up position observer");
             positionObserver = new MediaPositionObserver();
@@ -360,31 +359,31 @@ public abstract class PlaybackController {
         }
     };
 
-    public void setupGUI() {};
+    public void setupGUI() {}
 
-    public void onPositionObserverUpdate() {};
+    public void onPositionObserverUpdate() {}
 
 
-    public void onPlaybackSpeedChange() {};
+    public void onPlaybackSpeedChange() {}
 
-    public void onShutdownNotification() {};
+    public void onShutdownNotification() {}
 
     /**
      * Called when the currently displayed information should be refreshed.
      */
-    public void onReloadNotification(int code) {};
+    public void onReloadNotification(int code) {}
 
-    public void onBufferStart() {};
+    public void onBufferStart() {}
 
-    public void onBufferEnd() {};
+    public void onBufferEnd() {}
 
-    public void onBufferUpdate(float progress) {};
+    public void onBufferUpdate(float progress) {}
 
-    public void onSleepTimerUpdate() {};
+    public void onSleepTimerUpdate() {}
 
-    public void handleError(int code) {};
+    public void handleError(int code) {}
 
-    public void onPlaybackEnd() {};
+    public void onPlaybackEnd() {}
 
     public void repeatHandleStatus() {
         if (status != null && playbackService != null) {
@@ -484,17 +483,17 @@ public abstract class PlaybackController {
 
     public ImageButton getPlayButton() {
         return null;
-    };
+    }
 
-    public void postStatusMsg(int msg) {};
+    public void postStatusMsg(int msg) {}
 
-    public void clearStatusMsg() {};
+    public void clearStatusMsg() {}
 
     public boolean loadMediaInfo() {
         return false;
-    };
+    }
 
-    public  void onAwaitingVideoSurface()  {};
+    public  void onAwaitingVideoSurface()  {}
 
     /**
      * Called when connection to playback service has been established or
@@ -528,7 +527,7 @@ public abstract class PlaybackController {
         }
     }
 
-    public void onServiceQueried()  {};
+    public void onServiceQueried()  {}
 
     /**
      * Should be used by classes which implement the OnSeekBarChanged interface.
@@ -591,7 +590,7 @@ public abstract class PlaybackController {
                 playbackService.setStartWhenPrepared(!playbackService
                         .isStartWhenPrepared());
                 if (reinitOnPause
-                        && playbackService.isStartWhenPrepared() == false) {
+                        && !playbackService.isStartWhenPrepared()) {
                     playbackService.reinit();
                 }
                 break;
@@ -677,12 +676,10 @@ public abstract class PlaybackController {
     }
 
     public boolean canSetPlaybackSpeed() {
-        if (org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
+        return org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
                 || UserPreferences.useSonic()
-                || Build.VERSION.SDK_INT >= 23) {
-            return true;
-        }
-        return playbackService != null && playbackService.canSetSpeed();
+                || Build.VERSION.SDK_INT >= 23
+                || playbackService != null && playbackService.canSetSpeed();
     }
 
     public void setPlaybackSpeed(float speed) {
@@ -716,10 +713,7 @@ public abstract class PlaybackController {
     }
 
     public boolean isPlayingVideo() {
-        if (playbackService != null) {
-            return PlaybackService.getCurrentMediaType() == MediaType.VIDEO;
-        }
-        return false;
+        return playbackService != null && PlaybackService.getCurrentMediaType() == MediaType.VIDEO;
     }
 
     public Pair<Integer, Integer> getVideoSize() {
@@ -751,9 +745,9 @@ public abstract class PlaybackController {
     public void reinitServiceIfPaused() {
         if (playbackService != null
                 && playbackService.isStreaming()
-                && (playbackService.getStatus() == PlayerStatus.PAUSED || (playbackService
-                .getStatus() == PlayerStatus.PREPARING && playbackService
-                .isStartWhenPrepared() == false))) {
+                && (playbackService.getStatus() == PlayerStatus.PAUSED ||
+                (playbackService.getStatus() == PlayerStatus.PREPARING &&
+                        !playbackService.isStartWhenPrepared()))) {
             playbackService.reinit();
         }
     }
@@ -768,13 +762,7 @@ public abstract class PlaybackController {
         @Override
         public void run() {
             if (playbackService != null && playbackService.getStatus() == PlayerStatus.PLAYING) {
-                activity.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        onPositionObserverUpdate();
-                    }
-                });
+                activity.runOnUiThread(PlaybackController.this::onPositionObserverUpdate);
             }
         }
     }

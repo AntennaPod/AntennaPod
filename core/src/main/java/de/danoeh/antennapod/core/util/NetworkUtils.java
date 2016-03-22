@@ -96,7 +96,7 @@ public class NetworkUtils {
         return Observable.create(new Observable.OnSubscribe<Long>() {
             @Override
             public void call(Subscriber<? super Long> subscriber) {
-                if (false == NetworkUtils.isDownloadAllowed()) {
+                if (!NetworkUtils.isDownloadAllowed()) {
                     subscriber.onNext(0L);
                     subscriber.onCompleted();
                     return;
@@ -107,7 +107,7 @@ public class NetworkUtils {
                     if (mediaFile.exists()) {
                         size = mediaFile.length();
                     }
-                } else if (false == media.checkedOnSizeButUnknown()) {
+                } else if (!media.checkedOnSizeButUnknown()) {
                     // only query the network if we haven't already checked
 
                     String url = media.getDownload_url();

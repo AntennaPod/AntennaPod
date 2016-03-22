@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
