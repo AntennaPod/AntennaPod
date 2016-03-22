@@ -17,6 +17,7 @@ import android.util.Log;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.ProgressEvent;
@@ -304,7 +305,7 @@ public class PodDBAdapter {
     private static SQLiteDatabase db;
     private static Context context;
     private static PodDBHelper dbHelper;
-    private static int counter = 0;
+    private static AtomicInteger counter = new AtomicInteger(0);
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
@@ -319,12 +320,13 @@ public class PodDBAdapter {
 
     private PodDBAdapter() {}
 
-    public PodDBAdapter open() {
+    public synchronized PodDBAdapter open() {
+        int adapters = counter.incrementAndGet();
+        Log.v(TAG, "Opening DB #" + adapters);
         if (db == null || !db.isOpen() || db.isReadOnly()) {
-            Log.v(TAG, "Opening DB");
             try {
                 db = dbHelper.getWritableDatabase();
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     db.enableWriteAheadLogging();
                 }
             } catch (SQLException ex) {
@@ -335,8 +337,13 @@ public class PodDBAdapter {
         return this;
     }
 
-    public void close() {
-        // do nothing
+    public synchronized void close() {
+        int adapters = counter.decrementAndGet();
+        Log.v(TAG, "Closing DB #" + adapters);
+        if(adapters == 0) {
+            Log.v(TAG, "Closing DB, really");
+            db.close();
+        }
     }
 
     public static boolean deleteDatabase() {
