@@ -41,7 +41,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
     private final AudioManager audioManager;
 
-    private volatile PlayerStatus playerStatus;
     private volatile PlayerStatus statusBeforeSeeking;
     private volatile IPlayer mediaPlayer;
     private volatile Playable media;
@@ -647,6 +646,15 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         releaseWifiLockIfNecessary();
     }
 
+    /**
+     * Releases internally used resources. This method should only be called when the object is not used anymore.
+     * This method is executed on an internal executor service.
+     */
+    @Override
+    public void shutdownAsync() {
+        executor.submit(this::shutdown);
+    }
+
     @Override
     public void setVideoSurface(final SurfaceHolder surface) {
         executor.submit(() -> {
@@ -780,7 +788,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
 
     @Override
-    public void endPlayback(final boolean wasSkipped) {
+    public void endPlayback(final boolean wasSkipped, boolean switchingPlayers) {
         executor.submit(() -> {
             playerLock.lock();
             releaseWifiLockIfNecessary();
@@ -795,7 +803,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
             }
             audioManager.abandonAudioFocus(audioFocusChangeListener);
-            callback.endPlayback(isPlaying, wasSkipped);
+            callback.endPlayback(isPlaying, wasSkipped, switchingPlayers);
 
             playerLock.unlock();
         });
@@ -873,7 +881,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mp -> genericOnCompletion();
 
     private void genericOnCompletion() {
-        endPlayback(false);
+        endPlayback(false, false);
     }
 
     private final MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =

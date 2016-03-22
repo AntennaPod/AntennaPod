@@ -124,14 +124,18 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     @Override
     public boolean isStreaming() {
-        //TODO
-        return false;
+        return true;
     }
 
     @Override
     public void shutdown() {
         //TODO
-        super.shutdown();
+    }
+
+    @Override
+    public void shutdownAsync() {
+        //TODO
+        this.shutdown();
     }
 
     @Override
@@ -162,7 +166,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public void endPlayback(boolean wasSkipped) {
+    public void endPlayback(boolean wasSkipped, boolean switchingPlayers) {
         //TODO
     }
 

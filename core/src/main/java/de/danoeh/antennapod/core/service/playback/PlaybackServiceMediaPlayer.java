@@ -176,6 +176,12 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     public abstract void shutdown();
 
+    /**
+     * Releases internally used resources. This method should only be called when the object is not used anymore.
+     * This method is executed on an internal executor service.
+     */
+    public abstract void shutdownAsync();
+
     public abstract void setVideoSurface(SurfaceHolder surface);
 
     public abstract void resetVideoSurface();
@@ -218,10 +224,10 @@ public abstract class PlaybackServiceMediaPlayer {
 
     protected abstract void setPlayable(Playable playable);
 
-    public abstract void endPlayback(boolean wasSkipped);
+    public abstract void endPlayback(boolean wasSkipped, boolean switchingPlayers);
 
     /**
-     * Moves the LocalPSMP into STOPPED state. This call is only valid if the player is currently in
+     * Moves the PSMP into STOPPED state. This call is only valid if the player is currently in
      * INDETERMINATE state, for example after a call to endPlayback.
      * This method will only take care of changing the PlayerStatus of this object! Other tasks like
      * abandoning audio focus have to be done with other methods.
@@ -238,7 +244,7 @@ public abstract class PlaybackServiceMediaPlayer {
      * @param newStatus The new PlayerStatus. This must not be null.
      * @param newMedia  The new playable object of the PSMP object. This can be null.
      */
-    protected synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
+    protected synchronized final void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
         Log.d(TAG, "Setting player status to " + newStatus);
 
         this.playerStatus = newStatus;
@@ -268,13 +274,13 @@ public abstract class PlaybackServiceMediaPlayer {
 
         boolean onMediaPlayerError(Object inObj, int what, int extra);
 
-        boolean endPlayback(boolean playNextEpisode, boolean wasSkipped);
+        boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers);
     }
 
     /**
      * Holds information about a PSMP object.
      */
-    public class PSMPInfo {
+    public static class PSMPInfo {
         public PlayerStatus playerStatus;
         public Playable playable;
 

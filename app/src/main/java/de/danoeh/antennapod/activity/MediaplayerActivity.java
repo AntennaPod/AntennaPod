@@ -207,6 +207,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
         Log.d(TAG, "onCreate()");
         StorageUtils.checkStorageAvailability(this);
+        //TODO we should most likely change this if casting
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         orientation = getResources().getConfiguration().orientation;
