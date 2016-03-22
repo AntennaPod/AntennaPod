@@ -195,6 +195,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertEquals(0, c.getCount());
             c.close();
         }
+        adapter.close();
     }
 
     public void testDeleteFeedNoImage() throws ExecutionException, InterruptedException, IOException, TimeoutException {
@@ -251,6 +252,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(c.getCount() == 0);
             c.close();
         }
+        adapter.close();
     }
 
     public void testDeleteFeedNoItems() throws IOException, ExecutionException, InterruptedException, TimeoutException {
@@ -288,6 +290,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         c = adapter.getImageCursor(String.valueOf(image.getId()));
         assertTrue(c.getCount() == 0);
         c.close();
+        adapter.close();
     }
 
     public void testDeleteFeedNoFeedMedia() throws IOException, ExecutionException, InterruptedException, TimeoutException {
@@ -340,6 +343,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(c.getCount() == 0);
             c.close();
         }
+        adapter.close();
     }
 
     public void testDeleteFeedWithItemImages() throws InterruptedException, ExecutionException, TimeoutException, IOException {
@@ -398,6 +402,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertEquals(0, c.getCount());
             c.close();
         }
+        adapter.close();
     }
 
     public void testDeleteFeedWithQueueItems() throws ExecutionException, InterruptedException, TimeoutException {
@@ -528,6 +533,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(c.getCount() == 0);
             c.close();
         }
+        adapter.close();
     }
 
     private FeedMedia playbackHistorySetup(Date playbackCompletionDate) {
@@ -731,7 +737,6 @@ public class DBWriterTest extends InstrumentationTestCase {
                 }
                 assertTrue(idFound);
             }
-
             queue.close();
             adapter.close();
         }
