@@ -37,6 +37,7 @@
         <item name="attr/nav_drawer_background">@color/white</item>
         <item name="attr/ic_new">@drawable/ic_new_releases_grey600_24dp</item>
         <item name="attr/ic_history">@drawable/ic_history_grey600_24dp</item>
+        <item name="attr/ic_folder">@drawable/ic_folder_grey600_24dp</item>
         <item name="attr/av_play_big">@drawable/ic_play_arrow_grey600_36dp</item>
         <item name="attr/av_pause_big">@drawable/ic_pause_grey600_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
@@ -94,6 +95,7 @@
         <item name="attr/nav_drawer_background">#3B3B3B</item>
         <item name="attr/ic_new">@drawable/ic_new_releases_white_24dp</item>
         <item name="attr/ic_history">@drawable/ic_history_white_24dp</item>
+        <item name="attr/ic_folder">@drawable/ic_folder_white_24dp</item>
         <item name="attr/av_play_big">@drawable/ic_play_arrow_white_36dp</item>
         <item name="attr/av_pause_big">@drawable/ic_pause_white_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
@@ -152,6 +154,7 @@
         <item name="attr/nav_drawer_background">@color/white</item>
         <item name="attr/ic_new">@drawable/ic_new_releases_grey600_24dp</item>
         <item name="attr/ic_history">@drawable/ic_history_grey600_24dp</item>
+        <item name="attr/ic_folder">@drawable/ic_folder_grey600_24dp</item>
         <item name="attr/av_play_big">@drawable/ic_play_arrow_grey600_36dp</item>
         <item name="attr/av_pause_big">@drawable/ic_pause_grey600_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
@@ -210,6 +213,7 @@
         <item name="attr/nav_drawer_background">#3B3B3B</item>
         <item name="attr/ic_new">@drawable/ic_new_releases_white_24dp</item>
         <item name="attr/ic_history">@drawable/ic_history_white_24dp</item>
+        <item name="attr/ic_folder">@drawable/ic_folder_white_24dp</item>
         <item name="attr/av_play_big">@drawable/ic_play_arrow_white_36dp</item>
         <item name="attr/av_pause_big">@drawable/ic_pause_white_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
