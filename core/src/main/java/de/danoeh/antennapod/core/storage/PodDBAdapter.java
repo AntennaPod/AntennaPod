@@ -10,12 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.media.MediaMetadataRetriever;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.ProgressEvent;
@@ -303,7 +305,7 @@ public class PodDBAdapter {
     private static SQLiteDatabase db;
     private static Context context;
     private static PodDBHelper dbHelper;
-    private static int counter = 0;
+    private static AtomicInteger counter = new AtomicInteger(0);
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
@@ -318,11 +320,15 @@ public class PodDBAdapter {
 
     private PodDBAdapter() {}
 
-    public PodDBAdapter open() {
+    public synchronized PodDBAdapter open() {
+        int adapters = counter.incrementAndGet();
+        Log.v(TAG, "Opening DB #" + adapters);
         if (db == null || !db.isOpen() || db.isReadOnly()) {
-            Log.v(TAG, "Opening DB");
             try {
                 db = dbHelper.getWritableDatabase();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    db.enableWriteAheadLogging();
+                }
             } catch (SQLException ex) {
                 Log.e(TAG, Log.getStackTraceString(ex));
                 db = dbHelper.getReadableDatabase();
@@ -331,8 +337,13 @@ public class PodDBAdapter {
         return this;
     }
 
-    public void close() {
-        // do nothing
+    public synchronized void close() {
+        int adapters = counter.decrementAndGet();
+        Log.v(TAG, "Closing DB #" + adapters);
+        if(adapters == 0) {
+            Log.v(TAG, "Closing DB, really");
+            db.close();
+        }
     }
 
     public static boolean deleteDatabase() {
@@ -425,34 +436,46 @@ public class PodDBAdapter {
      */
     public long setImage(FeedImage image) {
         boolean startedTransaction = false;
-        if(!db.inTransaction()) {
-            db.beginTransaction();
-            startedTransaction = true;
-        }
 
-        ContentValues values = new ContentValues();
-        values.put(KEY_TITLE, image.getTitle());
-        values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
-        values.put(KEY_DOWNLOADED, image.isDownloaded());
-        values.put(KEY_FILE_URL, image.getFile_url());
-        if (image.getId() == 0) {
-            image.setId(db.insert(TABLE_NAME_FEED_IMAGES, null, values));
-        } else {
-            db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID + "=?",
-                    new String[]{String.valueOf(image.getId())});
-        }
-
-        final FeedComponent owner = image.getOwner();
-        if (owner != null && owner.getId() != 0) {
-            values.clear();
-            values.put(KEY_IMAGE, image.getId());
-            if (owner instanceof Feed) {
-                db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(image.getOwner().getId())});
+        try {
+            if (!db.inTransaction()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    db.beginTransactionNonExclusive();
+                } else {
+                    db.beginTransaction();
+                }
+                startedTransaction = true;
             }
-        }
-        if(startedTransaction) {
-            db.setTransactionSuccessful();
-            db.endTransaction();
+
+            ContentValues values = new ContentValues();
+            values.put(KEY_TITLE, image.getTitle());
+            values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
+            values.put(KEY_DOWNLOADED, image.isDownloaded());
+            values.put(KEY_FILE_URL, image.getFile_url());
+            if (image.getId() == 0) {
+                image.setId(db.insert(TABLE_NAME_FEED_IMAGES, null, values));
+            } else {
+                db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID + "=?",
+                    new String[]{String.valueOf(image.getId())});
+            }
+
+            final FeedComponent owner = image.getOwner();
+            if (owner != null && owner.getId() != 0) {
+                values.clear();
+                values.put(KEY_IMAGE, image.getId());
+                if (owner instanceof Feed) {
+                    db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(image.getOwner().getId())});
+                }
+            }
+            if (startedTransaction) {
+                db.setTransactionSuccessful();
+            }
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            if (startedTransaction) {
+                db.endTransaction();
+            }
         }
         return image.getId();
     }
@@ -522,20 +545,29 @@ public class PodDBAdapter {
      * transaction
      */
     public void setCompleteFeed(Feed... feeds) {
-        db.beginTransaction();
-        for (Feed feed : feeds) {
-            setFeed(feed);
-            if (feed.getItems() != null) {
-                for (FeedItem item : feed.getItems()) {
-                    setFeedItem(item, false);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                db.beginTransactionNonExclusive();
+            } else {
+                db.beginTransaction();
+            }
+            for (Feed feed : feeds) {
+                setFeed(feed);
+                if (feed.getItems() != null) {
+                    for (FeedItem item : feed.getItems()) {
+                        setFeedItem(item, false);
+                    }
+                }
+                if (feed.getPreferences() != null) {
+                    setFeedPreferences(feed.getPreferences());
                 }
             }
-            if (feed.getPreferences() != null) {
-                setFeedPreferences(feed.getPreferences());
-            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
         }
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
     /**
@@ -598,19 +630,38 @@ public class PodDBAdapter {
     }
 
     public void setFeedItemlist(List<FeedItem> items) {
-        db.beginTransaction();
-        for (FeedItem item : items) {
-            setFeedItem(item, true);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                db.beginTransactionNonExclusive();
+            } else {
+                db.beginTransaction();
+            }
+            for (FeedItem item : items) {
+                setFeedItem(item, true);
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
         }
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
     public long setSingleFeedItem(FeedItem item) {
-        db.beginTransaction();
-        long result = setFeedItem(item, true);
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        long result = 0;
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                db.beginTransactionNonExclusive();
+            } else {
+                db.beginTransaction();
+            }
+            result = setFeedItem(item, true);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
         return result;
     }
 
@@ -728,20 +779,29 @@ public class PodDBAdapter {
 
     public void setFeedItemRead(int played, long itemId, long mediaId,
                                 boolean resetMediaPosition) {
-        db.beginTransaction();
-        ContentValues values = new ContentValues();
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                db.beginTransactionNonExclusive();
+            } else {
+                db.beginTransaction();
+            }
+            ContentValues values = new ContentValues();
 
-        values.put(KEY_READ, played);
-        db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(itemId)});
+            values.put(KEY_READ, played);
+            db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(itemId)});
 
-        if (resetMediaPosition) {
-            values.clear();
-            values.put(KEY_POSITION, 0);
-            db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(mediaId)});
+            if (resetMediaPosition) {
+                values.clear();
+                values.put(KEY_POSITION, 0);
+                db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(mediaId)});
+            }
+
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
         }
-
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
     /**
@@ -750,15 +810,24 @@ public class PodDBAdapter {
      * @param itemIds items to change the value of
      */
     public void setFeedItemRead(int read, long... itemIds) {
-        db.beginTransaction();
-        ContentValues values = new ContentValues();
-        for (long id : itemIds) {
-            values.clear();
-            values.put(KEY_READ, read);
-            db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(id)});
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                db.beginTransactionNonExclusive();
+            } else {
+                db.beginTransaction();
+            }
+            ContentValues values = new ContentValues();
+            for (long id : itemIds) {
+                values.clear();
+                values.put(KEY_READ, read);
+                db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(id)});
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
         }
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
     public void setChapters(FeedItem item) {
@@ -822,17 +891,26 @@ public class PodDBAdapter {
 
     public void setFavorites(List<FeedItem> favorites) {
         ContentValues values = new ContentValues();
-        db.beginTransaction();
-        db.delete(TABLE_NAME_FAVORITES, null, null);
-        for (int i = 0; i < favorites.size(); i++) {
-            FeedItem item = favorites.get(i);
-            values.put(KEY_ID, i);
-            values.put(KEY_FEEDITEM, item.getId());
-            values.put(KEY_FEED, item.getFeed().getId());
-            db.insertWithOnConflict(TABLE_NAME_FAVORITES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                db.beginTransactionNonExclusive();
+            } else {
+                db.beginTransaction();
+            }
+            db.delete(TABLE_NAME_FAVORITES, null, null);
+            for (int i = 0; i < favorites.size(); i++) {
+                FeedItem item = favorites.get(i);
+                values.put(KEY_ID, i);
+                values.put(KEY_FEEDITEM, item.getId());
+                values.put(KEY_FEED, item.getFeed().getId());
+                db.insertWithOnConflict(TABLE_NAME_FAVORITES, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
         }
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
     /**
@@ -880,17 +958,26 @@ public class PodDBAdapter {
 
     public void setQueue(List<FeedItem> queue) {
         ContentValues values = new ContentValues();
-        db.beginTransaction();
-        db.delete(TABLE_NAME_QUEUE, null, null);
-        for (int i = 0; i < queue.size(); i++) {
-            FeedItem item = queue.get(i);
-            values.put(KEY_ID, i);
-            values.put(KEY_FEEDITEM, item.getId());
-            values.put(KEY_FEED, item.getFeed().getId());
-            db.insertWithOnConflict(TABLE_NAME_QUEUE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                db.beginTransactionNonExclusive();
+            } else {
+                db.beginTransaction();
+            }
+            db.delete(TABLE_NAME_QUEUE, null, null);
+            for (int i = 0; i < queue.size(); i++) {
+                FeedItem item = queue.get(i);
+                values.put(KEY_ID, i);
+                values.put(KEY_FEEDITEM, item.getId());
+                values.put(KEY_FEED, item.getFeed().getId());
+                db.insertWithOnConflict(TABLE_NAME_QUEUE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
         }
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
     public void clearQueue() {
@@ -937,23 +1024,32 @@ public class PodDBAdapter {
      * Remove a feed with all its FeedItems and Media entries.
      */
     public void removeFeed(Feed feed) {
-        db.beginTransaction();
-        if (feed.getImage() != null) {
-            removeFeedImage(feed.getImage());
-        }
-        if (feed.getItems() != null) {
-            for (FeedItem item : feed.getItems()) {
-                removeFeedItem(item);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                db.beginTransactionNonExclusive();
+            } else {
+                db.beginTransaction();
             }
-        }
-        // delete download log entries for feed
-        db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_FEEDFILE + "=? AND " + KEY_FEEDFILETYPE +"=?",
-                new String[] { String.valueOf(feed.getId()), String.valueOf(Feed.FEEDFILETYPE_FEED) });
+            if (feed.getImage() != null) {
+                removeFeedImage(feed.getImage());
+            }
+            if (feed.getItems() != null) {
+                for (FeedItem item : feed.getItems()) {
+                    removeFeedItem(item);
+                }
+            }
+            // delete download log entries for feed
+            db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_FEEDFILE + "=? AND " + KEY_FEEDFILETYPE + "=?",
+                new String[]{String.valueOf(feed.getId()), String.valueOf(Feed.FEEDFILETYPE_FEED)});
 
-        db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",
+            db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",
                 new String[]{String.valueOf(feed.getId())});
-        db.setTransactionSuccessful();
-        db.endTransaction();
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
     }
 
     public void clearPlaybackHistory() {

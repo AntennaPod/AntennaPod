@@ -70,6 +70,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
         assertTrue(destFolder.canWrite());
 
         // create new database
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
