@@ -10,7 +10,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -41,6 +40,10 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Communicates with the playback service. GUI classes should use this class to
@@ -66,6 +69,8 @@ public abstract class PlaybackController {
 
     private boolean mediaInfoLoaded = false;
     private boolean released = false;
+
+    private Subscription serviceBinder;
 
     /**
      * True if controller should reinit playback service if 'pause' button is
@@ -133,6 +138,9 @@ public abstract class PlaybackController {
             // ignore
         }
 
+        if(serviceBinder != null) {
+            serviceBinder.unsubscribe();
+        }
         try {
             activity.unbindService(mConnection);
         } catch (IllegalArgumentException e) {
@@ -165,34 +173,33 @@ public abstract class PlaybackController {
      */
     private void bindToService() {
         Log.d(TAG, "Trying to connect to service");
-        AsyncTask<Void, Void, Intent> intentLoader = new AsyncTask<Void, Void, Intent>() {
-            @Override
-            protected Intent doInBackground(Void... voids) {
-                return getPlayLastPlayedMediaIntent();
-            }
-
-            @Override
-            protected void onPostExecute(Intent serviceIntent) {
-                boolean bound = false;
-                if (!PlaybackService.started) {
-                    if (serviceIntent != null) {
-                        Log.d(TAG, "Calling start service");
-                        activity.startService(serviceIntent);
-                        bound = activity.bindService(serviceIntent, mConnection, 0);
+        if(serviceBinder != null) {
+            serviceBinder.unsubscribe();
+        }
+        serviceBinder = Observable.fromCallable(() -> getPlayLastPlayedMediaIntent())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(intent -> {
+                    boolean bound = false;
+                    if (!PlaybackService.started) {
+                        if (intent != null) {
+                            Log.d(TAG, "Calling start service");
+                            activity.startService(intent);
+                            bound = activity.bindService(intent, mConnection, 0);
+                        } else {
+                            status = PlayerStatus.STOPPED;
+                            setupGUI();
+                            handleStatus();
+                        }
                     } else {
-                        status = PlayerStatus.STOPPED;
-                        setupGUI();
-                        handleStatus();
+                        Log.d(TAG, "PlaybackService is running, trying to connect without start command.");
+                        bound = activity.bindService(new Intent(activity, PlaybackService.class),
+                                mConnection, 0);
                     }
-                } else {
-                    Log.d(TAG, "PlaybackService is running, trying to connect without start command.");
-                    bound = activity.bindService(new Intent(activity,
-                            PlaybackService.class), mConnection, 0);
-                }
-                Log.d(TAG, "Result for service binding: " + bound);
-            }
-        };
-        intentLoader.execute();
+                    Log.d(TAG, "Result for service binding: " + bound);
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
     /**
