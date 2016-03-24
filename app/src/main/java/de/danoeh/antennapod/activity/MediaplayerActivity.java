@@ -645,33 +645,39 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     }
 
     private void updatePlaybackSpeedButton() {
-        if(butPlaybackSpeed != null) {
-            if (controller == null) {
-                butPlaybackSpeed.setVisibility(View.GONE);
-            } else {
-                butPlaybackSpeed.setVisibility(View.VISIBLE);
-                if (controller.canSetPlaybackSpeed()) {
-                    ViewCompat.setAlpha(butPlaybackSpeed, 1.0f);
-                } else {
-                    ViewCompat.setAlpha(butPlaybackSpeed, 0.5f);
-                }
-            }
-            updatePlaybackSpeedButtonText();
+        if(butPlaybackSpeed == null) {
+            return;
         }
+        if (controller == null) {
+            butPlaybackSpeed.setVisibility(View.GONE);
+            return;
+        }
+        updatePlaybackSpeedButtonText();
+        ViewCompat.setAlpha(butPlaybackSpeed, controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
+        butPlaybackSpeed.setVisibility(View.VISIBLE);
     }
 
     private void updatePlaybackSpeedButtonText() {
-        if (controller != null && butPlaybackSpeed != null) {
-            float speed = 1.0f;
+        if(butPlaybackSpeed == null) {
+            return;
+        }
+        if (controller == null) {
+            butPlaybackSpeed.setVisibility(View.GONE);
+            return;
+        }
+        float speed = 1.0f;
+        if(controller.canSetPlaybackSpeed()) {
             try {
+                // we can only retrieve the playback speed from the controller/playback service
+                // once mediaplayer has been initialized
                 speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
-            } catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 Log.e(TAG, Log.getStackTraceString(e));
                 UserPreferences.setPlaybackSpeed(String.valueOf(speed));
             }
-            String speedStr = String.format("%.2fx", speed);
-            butPlaybackSpeed.setText(speedStr);
         }
+        String speedStr = String.format("%.2fx", speed);
+        butPlaybackSpeed.setText(speedStr);
     }
 
 
