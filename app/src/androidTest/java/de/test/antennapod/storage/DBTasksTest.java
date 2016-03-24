@@ -5,12 +5,14 @@ import android.test.FlakyTest;
 import android.test.InstrumentationTestCase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -118,6 +120,32 @@ public class DBTasksTest extends InstrumentationTestCase {
         assertNotNull(feedFromDB);
         assertTrue(feedFromDB.getId() == newFeed.getId());
         updatedFeedTest(feedFromDB, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
+    }
+
+    public void testUpdateFeedMediaUrlResetState() {
+        final Feed feed = new Feed("url", null, "title");
+        FeedItem item = new FeedItem(0, "item", "id", "link", new Date(), FeedItem.PLAYED, feed);
+        feed.setItems(Arrays.asList(item));
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        // ensure that objects have been saved in db, then reset
+        assertTrue(feed.getId() != 0);
+        assertTrue(item.getId() != 0);
+
+        FeedMedia media = new FeedMedia(item, "url", 1024, "mime/type");
+        item.setMedia(media);
+        feed.setItems(Arrays.asList(item));
+
+        final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
+        assertTrue(feed != newFeed);
+
+        final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
+        final FeedItem feedItemFromDB = feedFromDB.getItems().get(0);
+        assertTrue("state: " + feedItemFromDB.getState(), feedItemFromDB.isNew());
     }
 
     private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {
