@@ -15,18 +15,14 @@ import org.antennapod.audio.MediaPlayer;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
@@ -73,13 +69,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         this.playerLock = new ReentrantLock();
         this.startWhenPrepared = new AtomicBoolean(false);
         executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
-                new RejectedExecutionHandler() {
-                    @Override
-                    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                        Log.d(TAG, "Rejected execution of runnable");
-                    }
-                }
-        );
+                (r, executor) -> Log.d(TAG, "Rejected execution of runnable"));
 
         mediaPlayer = null;
         statusBeforeSeeking = null;
@@ -160,21 +150,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     setPlayerStatus(PlayerStatus.PAUSED, media);
                 }
 
-                // smart mark as played
-                if(media != null && media instanceof FeedMedia) {
-                    FeedMedia oldMedia = (FeedMedia) media;
-                    if(oldMedia.hasAlmostEnded()) {
-                        Log.d(TAG, "smart mark as read");
-                        FeedItem item = oldMedia.getItem();
-                        DBWriter.markItemPlayed(item, FeedItem.PLAYED, false);
-                        DBWriter.removeQueueItem(context, item, false);
-                        DBWriter.addItemToPlaybackHistory(oldMedia);
-                        if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                            Log.d(TAG, "Delete " + oldMedia.toString());
-                            DBWriter.deleteFeedMediaOfItem(context, oldMedia.getId());
-                        }
-                    }
-                }
+                smartMarkAsPlayed(media);
 
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             }
@@ -498,10 +474,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         }
 
         int retVal = INVALID_TIME;
-        if (playerStatus == PlayerStatus.PLAYING
-                || playerStatus == PlayerStatus.PAUSED
-                || playerStatus == PlayerStatus.PREPARED
-                || playerStatus == PlayerStatus.SEEKING) {
+        if (playerStatus.isAtLeast(PlayerStatus.PREPARED)) {
             retVal = mediaPlayer.getCurrentPosition();
         }
         if (retVal <= 0 && media != null && media.getPosition() >= 0) {
@@ -653,6 +626,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void shutdownAsync() {
         executor.submit(this::shutdown);
+        executor.shutdown();
     }
 
     @Override

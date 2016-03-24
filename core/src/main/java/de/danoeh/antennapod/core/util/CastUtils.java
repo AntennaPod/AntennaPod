@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.util;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v7.media.MediaRouter;
 import android.util.Log;
 
 import com.google.android.gms.cast.CastDevice;
@@ -11,13 +10,10 @@ import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
 import com.google.android.libraries.cast.companionlibrary.cast.CastConfiguration;
-import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
-import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCastConsumer;
-import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCastConsumerImpl;
 
 import java.util.Calendar;
 
-import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -35,15 +31,11 @@ public class CastUtils {
     public static final String KEY_MEDIA_ID = "CastUtils.Id";
 
     public static void initializeCastManager(Context context){
-        VideoCastManager.initialize(context, new CastConfiguration.Builder(CastUtils.CAST_APP_ID)
+        CastManager.initialize(context, new CastConfiguration.Builder(CastUtils.CAST_APP_ID)
                 .enableDebug()
-                .enableLockScreen()
-                .enableNotification()
                 .enableWifiReconnection()
                 .enableAutoReconnect()
-                .setTargetActivity(ClientConfig.castCallbacks.getCastActivity())
                 .build());
-        VideoCastManager.getInstance().addVideoCastConsumer(castConsumer);
     }
 
     public static boolean isCastable(Playable media){
@@ -59,9 +51,9 @@ public class CastUtils {
                 case UNKNOWN:
                     return false;
                 case AUDIO:
-                    return audioCapable;
+                    return CastManager.getInstance().hasCapability(CastDevice.CAPABILITY_AUDIO_OUT, true);
                 case VIDEO:
-                    return videoCapable;
+                    return CastManager.getInstance().hasCapability(CastDevice.CAPABILITY_VIDEO_OUT, true);
             }
         }
         return false;
@@ -114,33 +106,6 @@ public class CastUtils {
                 .setMetadata(metadata)
                 .build();
     }
-
-    // Ideally, all these fields and methods should be part of the CastManager implementation
-    private static boolean videoCapable = true;
-    private static boolean audioCapable = true;
-
-    public static boolean isVideoCapable(CastDevice device, boolean defaultValue){
-        if (device == null) {
-            return defaultValue;
-        }
-        return device.hasCapability(CastDevice.CAPABILITY_VIDEO_OUT);
-    }
-
-    public static boolean isAudioCapable(CastDevice device, boolean defaultValue){
-        if (device == null) {
-            return defaultValue;
-        }
-        return device.hasCapability(CastDevice.CAPABILITY_AUDIO_OUT);
-    }
-
-    private static VideoCastConsumer castConsumer = new VideoCastConsumerImpl() {
-        @Override
-        public void onDeviceSelected(CastDevice device, MediaRouter.RouteInfo routeInfo) {
-            // If no device is selected, we assume both audio and video are castable
-            videoCapable = isVideoCapable(device, true);
-            audioCapable = isAudioCapable(device, true);
-        }
-    };
 
     //TODO Queue handling perhaps
 }

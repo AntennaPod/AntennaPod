@@ -38,14 +38,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.libraries.cast.companionlibrary.cast.BaseCastManager;
-import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
-import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCastConsumer;
-import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCastConsumerImpl;
 
 import java.util.List;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.cast.CastConsumer;
+import de.danoeh.antennapod.core.cast.CastConsumerImpl;
+import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -248,8 +248,8 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         Log.d(TAG, "Service created.");
         isRunning = true;
 
-        VideoCastManager castMgr = VideoCastManager.getInstance();
-        castMgr.addVideoCastConsumer(castConsumer);
+        CastManager castMgr = CastManager.getInstance();
+        castMgr.addCastConsumer(castConsumer);
         isCasting = castMgr.isConnected();
 
         registerReceiver(headsetDisconnected, new IntentFilter(
@@ -317,7 +317,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
         unregisterReceiver(pauseResumeCurrentEpisodeReceiver);
-        VideoCastManager.getInstance().removeVideoCastConsumer(castConsumer);
+        CastManager.getInstance().removeCastConsumer(castConsumer);
         mediaPlayer.shutdown();
         taskManager.shutdown();
     }
@@ -366,7 +366,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
                 //If the user asks to play External Media, the casting session, if on, should end.
                 if (playable instanceof ExternalMedia) {
-                    VideoCastManager.getInstance().disconnect();
+                    CastManager.getInstance().disconnect();
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
@@ -1545,7 +1545,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         }
     };
 
-    private VideoCastConsumer castConsumer = new VideoCastConsumerImpl() {
+    private CastConsumer castConsumer = new CastConsumerImpl() {
         @Override
         public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
             Log.d(TAG, "A cast device application was connected");

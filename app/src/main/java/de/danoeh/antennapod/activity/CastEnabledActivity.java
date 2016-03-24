@@ -7,9 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
-
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
@@ -19,7 +18,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 public abstract class CastEnabledActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    protected VideoCastManager mCastManager;
+    protected CastManager mCastManager;
     private int castUICounter;
     protected MenuItem mMediaRouteMenuItem;
     protected boolean isCastEnabled;
@@ -32,7 +31,7 @@ public abstract class CastEnabledActivity extends AppCompatActivity
                 registerOnSharedPreferenceChangeListener(this);
 
         castUICounter = 0;
-        mCastManager = VideoCastManager.getInstance();
+        mCastManager = CastManager.getInstance();
         isCastEnabled = UserPreferences.isCastEnabled();
     }
 
