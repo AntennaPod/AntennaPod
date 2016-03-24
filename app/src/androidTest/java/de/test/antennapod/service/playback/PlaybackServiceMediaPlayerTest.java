@@ -168,6 +168,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void playbackSpeedAvailableChanged() {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -233,6 +238,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void playbackSpeedAvailableChanged() {
 
             }
 
@@ -305,6 +315,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void playbackSpeedAvailableChanged() {
 
             }
 
@@ -382,6 +397,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void playbackSpeedAvailableChanged() {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -445,6 +465,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void playbackSpeedAvailableChanged() {
 
             }
 
@@ -517,6 +542,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void playbackSpeedAvailableChanged() {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -583,6 +613,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void playbackSpeedAvailableChanged() {
 
             }
 
@@ -660,6 +695,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void playbackSpeedAvailableChanged() {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -704,6 +744,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
         @Override
         public void playbackSpeedChanged(float s) {
+
+        }
+
+        @Override
+        public void playbackSpeedAvailableChanged() {
 
         }
 
@@ -772,6 +817,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void playbackSpeedAvailableChanged() {
 
             }
 
@@ -881,6 +931,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void playbackSpeedAvailableChanged() {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -959,6 +1014,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void playbackSpeedAvailableChanged() {
 
             }
 
@@ -1053,6 +1113,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void playbackSpeedAvailableChanged() {
 
             }
 
