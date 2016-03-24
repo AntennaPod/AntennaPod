@@ -1018,6 +1018,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
         void playbackSpeedChanged(float s);
 
+        void playbackSpeedAvailableChanged();
+
         void onBufferingUpdate(int percent);
 
         boolean onMediaPlayerInfo(int code);
@@ -1038,6 +1040,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 ((AudioPlayer) mp)
                         .setOnBufferingUpdateListener(audioBufferingUpdateListener);
                 ((AudioPlayer) mp).setOnInfoListener(audioInfoListener);
+                ((AudioPlayer) mp).setOnSpeedAdjustmentAvailableChangedListener(audioSpeedAvailableChangedListener);
             } else {
                 ((VideoPlayer) mp)
                         .setOnCompletionListener(videoCompletionListener);
@@ -1081,6 +1084,15 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     private boolean genericInfoListener(int what) {
         return callback.onMediaPlayerInfo(what);
     }
+
+    private final MediaPlayer.OnSpeedAdjustmentAvailableChangedListener
+            audioSpeedAvailableChangedListener = new MediaPlayer.OnSpeedAdjustmentAvailableChangedListener() {
+        @Override
+        public void onSpeedAdjustmentAvailableChanged(MediaPlayer arg0, boolean speedAdjustmentAvailable) {
+            callback.playbackSpeedAvailableChanged();
+        }
+    };
+
 
     private final MediaPlayer.OnErrorListener audioErrorListener =
             (mp, what, extra) -> {

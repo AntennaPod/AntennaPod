@@ -142,6 +142,11 @@ public class PlaybackService extends Service {
     public static final int NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE = 8;
 
     /**
+     * Playback speed has changed
+     */
+    public static final int NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE_AVAILABLE_CHANGED = 9;
+
+    /**
      * Returned by getPositionSafe() or getDurationSafe() if the playbackService
      * is in an invalid state.
      */
@@ -513,6 +518,10 @@ public class PlaybackService extends Service {
         @Override
         public void playbackSpeedChanged(float s) {
             sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
+        }
+
+        public void playbackSpeedAvailableChanged() {
+            sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE_AVAILABLE_CHANGED, 0);
         }
 
         @Override

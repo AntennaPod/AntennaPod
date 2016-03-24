@@ -336,6 +336,8 @@ public abstract class PlaybackController {
                 case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE:
                     onPlaybackSpeedChange();
                     break;
+                case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE_AVAILABLE_CHANGED:
+                    onPlaybackSpeedAvailableChanged();
             }
         }
 
@@ -361,6 +363,8 @@ public abstract class PlaybackController {
 
 
     public void onPlaybackSpeedChange() {}
+
+    public void onPlaybackSpeedAvailableChanged() {}
 
     public void onShutdownNotification() {}
 

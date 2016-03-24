@@ -173,8 +173,17 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                 super.setScreenOn(enable);
                 MediaplayerActivity.this.setScreenOn(enable);
             }
-        };
 
+            @Override
+            public void onPlaybackSpeedAvailableChanged() {
+                MediaplayerActivity.this.onPlaybackSpeedAvailableChanged();
+            }
+        };
+    }
+
+    protected void onPlaybackSpeedAvailableChanged() {
+        Log.d(TAG, "onPlaybackSpeedAvailableChanged()");
+        updatePlaybackSpeedButton();
     }
 
     protected void onPlaybackSpeedChange() {
@@ -628,25 +637,28 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         if (media != null) {
             onPositionObserverUpdate();
             checkFavorite();
-            if(butPlaybackSpeed != null) {
-                if (controller == null) {
-                    butPlaybackSpeed.setVisibility(View.GONE);
-                } else {
-                    butPlaybackSpeed.setVisibility(View.VISIBLE);
-                    if (controller.canSetPlaybackSpeed()) {
-                        ViewCompat.setAlpha(butPlaybackSpeed, 1.0f);
-                    } else {
-                        ViewCompat.setAlpha(butPlaybackSpeed, 0.5f);
-                    }
-                }
-                updateButPlaybackSpeed();
-            }
+            updatePlaybackSpeedButton();
             return true;
         } else {
             return false;
         }
     }
 
+    private void updatePlaybackSpeedButton() {
+        if(butPlaybackSpeed != null) {
+            if (controller == null) {
+                butPlaybackSpeed.setVisibility(View.GONE);
+            } else {
+                butPlaybackSpeed.setVisibility(View.VISIBLE);
+                if (controller.canSetPlaybackSpeed()) {
+                    ViewCompat.setAlpha(butPlaybackSpeed, 1.0f);
+                } else {
+                    ViewCompat.setAlpha(butPlaybackSpeed, 0.5f);
+                }
+            }
+            updatePlaybackSpeedButtonText();
+        }
+    }
 
     private void updatePlaybackSpeedButtonText() {
         if (controller != null && butPlaybackSpeed != null) {
