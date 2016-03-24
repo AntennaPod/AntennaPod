@@ -43,15 +43,13 @@ import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
@@ -567,21 +565,15 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
                     public void onConfirmButtonPressed(
                             DialogInterface dialog) {
                         dialog.dismiss();
-                        if (externalPlayerFragment != null) {
-                            PlaybackController controller = externalPlayerFragment.getPlaybackControllerTestingOnly();
-                            if (controller != null) {
-                                Playable playable = controller.getMedia();
-                                if (playable != null && playable instanceof FeedMedia) {
-                                    FeedMedia media = (FeedMedia) playable;
-                                    if (media.getItem().getFeed().getId() == feed.getId()) {
-                                        Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
-                                        remover.skipOnCompletion = true;
-                                        if(controller.getStatus() == PlayerStatus.PLAYING) {
-                                            sendBroadcast(new Intent(
-                                                    PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
-                                        }
-                                    }
-                                }
+                        long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+                        if (mediaId > 0 &&
+                                FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId) >= 0) {
+                            Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
+                            remover.skipOnCompletion = true;
+                            int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
+                            if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
+                                sendBroadcast(new Intent(
+                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
                             }
                         }
                         remover.executeAsync();
