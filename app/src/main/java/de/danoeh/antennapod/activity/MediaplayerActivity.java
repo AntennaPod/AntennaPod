@@ -178,7 +178,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     }
 
     protected void onPlaybackSpeedChange() {
-        updateButPlaybackSpeed();
+        updatePlaybackSpeedButtonText();
     }
 
     protected void onServiceQueried() {
@@ -647,6 +647,22 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         }
     }
 
+
+    private void updatePlaybackSpeedButtonText() {
+        if (controller != null && butPlaybackSpeed != null) {
+            float speed = 1.0f;
+            try {
+                speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
+            } catch(NumberFormatException e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+                UserPreferences.setPlaybackSpeed(String.valueOf(speed));
+            }
+            String speedStr = String.format("%.2fx", speed);
+            butPlaybackSpeed.setText(speedStr);
+        }
+    }
+
+
     protected void setupGUI() {
         setContentView(getContentViewResourceId());
         sbPosition = (SeekBar) findViewById(R.id.sbPosition);
@@ -871,20 +887,6 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             int duration = controller.getDuration();
             String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
             txtvLength.setText(length);
-        }
-    }
-
-    private void updateButPlaybackSpeed() {
-        if (controller != null && butPlaybackSpeed != null) {
-            float speed = 1.0f;
-            try {
-                speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
-            } catch(NumberFormatException e) {
-                Log.e(TAG, Log.getStackTraceString(e));
-                UserPreferences.setPlaybackSpeed(String.valueOf(speed));
-            }
-            String speedStr = String.format("%.2fx", speed);
-            butPlaybackSpeed.setText(speedStr);
         }
     }
 

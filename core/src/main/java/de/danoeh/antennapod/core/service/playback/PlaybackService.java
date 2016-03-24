@@ -512,8 +512,7 @@ public class PlaybackService extends Service {
 
         @Override
         public void playbackSpeedChanged(float s) {
-            sendNotificationBroadcast(
-                    NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
+            sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
         }
 
         @Override
