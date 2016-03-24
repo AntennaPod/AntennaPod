@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -168,10 +167,6 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public void updateFromOther(FeedMedia other) {
-        // reset to new if feed item did link to a file before
-        if(TextUtils.isEmpty(download_url) && !TextUtils.isEmpty(other.download_url)) {
-            item.setNew();
-        }
         super.updateFromOther(other);
         if (other.size > 0) {
             size = other.size;

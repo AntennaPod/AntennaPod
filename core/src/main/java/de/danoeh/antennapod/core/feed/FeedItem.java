@@ -195,6 +195,8 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         if (other.media != null) {
             if (media == null) {
                 setMedia(other.media);
+                // reset to new if feed item did link to a file before
+                setNew();
             } else if (media.compareWithOther(other.media)) {
                 media.updateFromOther(other.media);
             }
