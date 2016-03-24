@@ -41,10 +41,12 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        uiTestUtils = new UITestUtils(getInstrumentation().getTargetContext());
+        Context context = getInstrumentation().getTargetContext();
+        uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
 
         // create new database
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();

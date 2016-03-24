@@ -53,7 +53,10 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         super.setUp();
         assertionError = null;
 
+        final Context context = getInstrumentation().getTargetContext();
+
         // create new database
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -62,7 +65,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         httpServer = new HTTPBin();
         httpServer.start();
 
-        final Context context = getInstrumentation().getTargetContext();
         File cacheDir = context.getExternalFilesDir("testFiles");
         if (cacheDir == null)
             cacheDir = context.getExternalFilesDir("testFiles");

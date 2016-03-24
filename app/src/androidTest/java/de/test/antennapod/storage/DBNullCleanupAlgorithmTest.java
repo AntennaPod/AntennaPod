@@ -58,7 +58,7 @@ public class DBNullCleanupAlgorithmTest extends InstrumentationTestCase {
         assertTrue(destFolder.canWrite());
 
         // create new database
-        PodDBAdapter.init(getInstrumentation().getTargetContext());
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
