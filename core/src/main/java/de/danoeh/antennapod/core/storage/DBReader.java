@@ -592,6 +592,7 @@ public final class DBReader {
 
         Cursor itemCursor = adapter.getFeedItemCursor(Long.toString(itemId));
         if (!itemCursor.moveToFirst()) {
+            itemCursor.close();
             return null;
         }
         List<FeedItem> list = extractItemlistFromCursor(adapter, itemCursor);
