@@ -924,6 +924,88 @@ public final class DBReader {
     }
 
     /**
+     * Searches the DB for statistics
+     *
+     * @return The StatisticsInfo object
+     */
+    public static StatisticsData getStatistics() {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+
+        long totalTime = 0;
+        List<StatisticsItem> feedTime = new ArrayList<>();
+
+        List<Feed> feeds = getFeedList();
+        for (Feed feed : feeds) {
+            long feedPlayedTime = 0;
+            long feedTotalTime = 0;
+            long episodes = 0;
+            long episodesStarted = 0;
+            List<FeedItem> items = getFeed(feed.getId()).getItems();
+            for(FeedItem item : items) {
+                FeedMedia media = item.getMedia();
+                if(media == null) {
+                    continue;
+                }
+
+                if(item.isPlayed()) {
+                    feedPlayedTime += media.getDuration() / 1000;
+                } else {
+                    feedPlayedTime += media.getPosition() / 1000;
+                }
+                if(item.isPlayed() || media.getPosition() != 0) {
+                    episodesStarted++;
+                }
+                feedTotalTime += media.getDuration() / 1000;
+                episodes++;
+            }
+            feedTime.add(new StatisticsItem(
+                    feed, feedTotalTime, feedPlayedTime, episodes, episodesStarted));
+            totalTime += feedPlayedTime;
+        }
+
+        Collections.sort(feedTime, (item1, item2) -> {
+            if(item1.timePlayed > item2.timePlayed) {
+                return -1;
+            } else if(item1.timePlayed < item2.timePlayed) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        adapter.close();
+        return new StatisticsData(totalTime, feedTime);
+    }
+
+    public static class StatisticsData {
+        public long totalTime;
+        public List<StatisticsItem> feedTime;
+
+        public StatisticsData(long totalTime, List<StatisticsItem> feedTime) {
+            this.totalTime = totalTime;
+            this.feedTime = feedTime;
+        }
+    }
+
+    public static class StatisticsItem {
+        public Feed feed;
+        public long time;
+        public long timePlayed;
+        public long episodes;
+        public long episodesStarted;
+
+        public StatisticsItem(Feed feed, long time, long timePlayed,
+                              long episodes, long episodesStarted) {
+            this.feed = feed;
+            this.time = time;
+            this.timePlayed = timePlayed;
+            this.episodes = episodes;
+            this.episodesStarted = episodesStarted;
+        }
+    }
+
+    /**
      * Returns the flattr queue as a List of FlattrThings. The list consists of Feeds and FeedItems.
      *
      * @return The flattr queue as a List.

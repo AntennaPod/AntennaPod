@@ -3,6 +3,8 @@ package de.danoeh.antennapod.core.util;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.Locale;
+
 import de.danoeh.antennapod.core.R;
 
 /** Provides methods for converting various units. */
@@ -117,6 +119,16 @@ public final class Converter {
         String minutes = context.getResources().getQuantityString(R.plurals.time_minutes_quantified, m, m);
         result += minutes;
         return result;
+    }
+
+    /**
+     * Converts seconds to a localized representation
+     * @param time The time in seconds
+     * @return "HH:MM hours"
+     */
+    public static String shortLocalizedDuration(Context context, long time) {
+        float hours = (float) time / 3600f;
+        return String.format(Locale.getDefault(), "%.1f ", hours) + context.getString(R.string.time_hours);
     }
 
     /**
