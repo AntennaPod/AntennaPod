@@ -401,7 +401,7 @@
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Set a network proxy</string>
     <string name="pref_known_issues">Known issues</string>
-    <string name="pref_no_browser_found">No web browser found."</string>
+    <string name="pref_no_browser_found">No web browser found.</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -618,7 +618,7 @@
     <string name="proxy_test_successful">Test successful</string>
     <string name="proxy_test_failed">Test failed</string>
     <string name="proxy_host_empty_error">Host must not be empty</string>
-    <string name="proxy_host_invalid_error">Host not valid IP or domain</string>
+    <string name="proxy_host_invalid_error">Host not valid IP address or domain</string>
     <string name="proxy_port_invalid_error">Port not valid</string>
 
 </resources>
