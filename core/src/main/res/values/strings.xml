@@ -289,6 +289,8 @@
 
 
     <!-- Preferences -->
+    <string name="storage_pref">Storage</string>
+    <string name="project_pref">Project</string>
     <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
