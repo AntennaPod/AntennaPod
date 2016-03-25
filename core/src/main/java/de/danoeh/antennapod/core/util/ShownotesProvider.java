@@ -11,6 +11,6 @@ public interface ShownotesProvider {
      * database, it should be done in a separate thread. After the shownotes
      * have been loaded, callback.onShownotesLoaded should be called.
      */
-    public Callable<String> loadShownotes();
+    Callable<String> loadShownotes();
 
 }

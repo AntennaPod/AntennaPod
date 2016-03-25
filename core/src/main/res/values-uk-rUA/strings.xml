@@ -22,6 +22,9 @@
   <string name="playback_history_label">Що грало</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net логін</string>
+  <string name="free_space_label">%1$s вільно</string>
+  <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
+  <string name="episode_cache_full_message">Досягнута межа розміра кеша епізодів. Розмір кеша можна збільшити в налаштуваннях.</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Щойно опубліковано</string>
   <string name="episode_filter_label">Показати тількі нові епізоди</string>
@@ -66,6 +69,7 @@
   <string name="length_prefix">Довжина:\u0020</string>
   <string name="size_prefix">Розмір:\u0020</string>
   <string name="processing_label">Обробка</string>
+  <string name="loading_label">Завантажується…</string>
   <string name="save_username_password_label">Зберегти ім\'я користувача та пароль</string>
   <string name="close_label">Закрити</string>
   <string name="retry_label">Повторити знову</string>
@@ -77,6 +81,7 @@
   <string name="feed_auto_download_global">Для всіх</string>
   <string name="feed_auto_download_always">Завжди</string>
   <string name="feed_auto_download_never">Ніколи</string>
+  <string name="send_label">Відправити…</string>
   <string name="episode_cleanup_never">Ніколи</string>
   <string name="episode_cleanup_queue_removal">Якщо не в черзі</string>
   <string name="episode_cleanup_after_listening">Після закінчення</string>
@@ -100,6 +105,7 @@
   <string name="mark_all_seen_label">Позначити всі як переглянуті</string>
   <string name="show_info_label">Інформація</string>
   <string name="remove_feed_label">Видалити подкаст</string>
+  <string name="share_label">Поділитися…</string>
   <string name="share_link_label">Поділитися URL сайту</string>
   <string name="share_link_with_position_label">Поділитись посиланням на позицію</string>
   <string name="share_feed_url_label">Поділитись посиланням на канал</string>
@@ -134,7 +140,9 @@
   <string name="added_to_queue_label">Додано до черги</string>
   <string name="remove_from_queue_label">Видалити з черги</string>
   <string name="add_to_favorite_label">Додати до улюблених</string>
+  <string name="added_to_favorites">Додано до улюблених</string>
   <string name="remove_from_favorite_label">Видалити з улюблених</string>
+  <string name="removed_from_favorites">Видалено з улюблених</string>
   <string name="visit_website_label">Відкрити сайт</string>
   <string name="support_label">Підтримати за допомогою Flattr</string>
   <string name="enqueue_all_new">Додати до черги</string>
@@ -168,6 +176,11 @@
   <string name="download_error_io_error">Помилка IO</string>
   <string name="download_error_request_error">Помилка запиту</string>
   <string name="download_error_db_access">Помилка бази даних</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d завантаження залишилось</item>
+    <item quantity="few">%d завантаження залишилось</item>
+    <item quantity="other">%d завантажень залишилось</item>
+  </plurals>
   <string name="downloads_processing">Обробка завантаженого</string>
   <string name="download_notification_title">Завантаження даних подкасту</string>
   <string name="download_report_content">Завантажилось %1$d успішно, %2$d з помилками</string>
@@ -199,6 +212,8 @@
   <!--Queue operations-->
   <string name="lock_queue">Заблокувати чергу</string>
   <string name="unlock_queue">Розблокувати чергу</string>
+  <string name="queue_locked">Чергу заблоковано</string>
+  <string name="queue_unlocked">Чергу разблоковано</string>
   <string name="clear_queue_label">Очистити чергу</string>
   <string name="undo">Скасувати</string>
   <string name="removed_from_queue">Видалено</string>
@@ -240,11 +255,13 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Завантажити додаток</string>
   <string name="no_playback_plugin_title">Додаток не встановлено</string>
+  <string name="no_playback_plugin_or_sonic_msg">Для програвання зі змінною швидкістю, ми радимо включити вбудований програвач Sonic [Android 4.1+].\n\nАбо ви можете завантажити додаток <i>Prestissimo</i> із Play Store.\nБудь які проблеми з Prestissimo не є відповідальністю розробників AntennaPod та мають вирішуватись авторами додатка.</string>
   <string name="set_playback_speed_label">Швидкість програвання</string>
   <string name="enable_sonic">Включити Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Нічого в цьому списку</string>
   <string name="no_feeds_label">Немає підписаних каналів </string>
+  <string name="no_chapters_label">В цьому епізоді немає розділів.</string>
   <!--Preferences-->
   <string name="other_pref">Інше</string>
   <string name="about_pref">Про програму</string>
@@ -252,9 +269,12 @@
   <string name="services_label">Сервіси</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Чищення епізодів</string>
+  <string name="pref_episode_cleanup_summary">Епізоди що не знаходяться в черзі та не помічені як улюблені можуть бути видалені якщо Автозавантажувач потребуватиме місце для нових епізодів.</string>
   <string name="pref_pauseOnDisconnect_sum">Зупинятись коли навушники або блютуз від’єднано</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Поновити відтворення коли навушники повторно під’єднано</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Поновити відтворення коли блютуз повторно під’єднано</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Пропуск кнопкой перемотки</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">При натисканні апаратної кнопки перемотки перейти до наступного епізода замість перемотки.</string>
   <string name="pref_followQueue_sum">Перейти до наступного епізода в черзі коли поточний закінчено</string>
   <string name="pref_auto_delete_sum">Видалити епізод після повного відтворення</string>
   <string name="pref_auto_delete_title">Автовидалення</string>
@@ -270,6 +290,8 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Вимкнути</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Інтервал</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Встановити час щодня</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">кожні %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">на %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Завантажувати тільки через Wifi</string>
   <string name="pref_followQueue_title">Грати безперервно</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Завантаження через Wifi</string>
@@ -339,8 +361,13 @@
   <string name="pref_smart_mark_as_played_disabled">Вимкнено</string>
   <string name="pref_image_cache_size_title">Розмір кеша зображень</string>
   <string name="pref_image_cache_size_sum">Розмір дискового кеша для зображень.</string>
+  <string name="crash_report_title">Звіт про збій</string>
+  <string name="crash_report_sum">Надіслати е-пошту зі звітом про останній збій</string>
+  <string name="send_email">Надіслати е-пошту</string>
   <string name="experimental_pref">Експериментальні</string>
   <string name="pref_sonic_title">Програвач Sonic</string>
+  <string name="pref_sonic_message">Застосувати вбудований програвач sonic замість програвача Android та Prestissimo</string>
+  <string name="pref_current_value">Поточне значення: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -367,12 +394,15 @@
   <string name="opml_import_error_dir_empty">Директорія імпорту пуста</string>
   <string name="select_all_label">Обрати все</string>
   <string name="deselect_all_label">Убрати виділення</string>
+  <string name="select_options_label">Обрати…</string>
   <string name="choose_file_from_filesystem">З локальної файлової системи</string>
   <string name="choose_file_from_external_application">За допомогою додатка</string>
   <string name="opml_export_label">OPML экспорт</string>
+  <string name="exporting_label">Експортується…</string>
   <string name="export_error_label">Помилка експорту</string>
   <string name="opml_export_success_title">OPML експорт успішний</string>
   <string name="opml_export_success_sum">OPML файл записаний в:\u0020</string>
+  <string name="opml_import_ask_read_permission">Щоб прочитати файл OPML потрібен доступ до зовнішньої пам’яти</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Таймер сну</string>
   <string name="disable_sleeptimer_label">Вимкнути засинання</string>
@@ -433,11 +463,16 @@
   <string name="selected_folder_label">Обрати папку:</string>
   <string name="create_folder_label">Нова папка</string>
   <string name="choose_data_directory">Обрати папку</string>
+  <string name="choose_data_directory_message">Оберіть, будь ласка, базовий каталог для даних. AntennaPod створить відповідні підрозділи. </string>
+  <string name="choose_data_directory_permission_rationale">Для зміни папки зберігання даних потрібен доступ до зовнішнього носія</string>
   <string name="create_folder_msg">Створити папку з ім\'ям \"%1$s\"?</string>
   <string name="create_folder_success">Створена нова папка</string>
   <string name="create_folder_error_no_write_access">Не можу записати в цю папку</string>
   <string name="create_folder_error_already_exists">Папка вже існує</string>
   <string name="create_folder_error">Не можу создати папку</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" не існує</string>
+  <string name="folder_not_readable_error">\"%1$s\" недоступний до читання</string>
+  <string name="folder_not_writable_error">\"%1$s\" недоступний для запису</string>
   <string name="folder_not_empty_dialog_title">Папка не є пустою</string>
   <string name="folder_not_empty_dialog_msg">В папці щось є. Всі завантаження зберігаються в цю папку. Все рівно продовжувати?</string>
   <string name="set_to_default_folder">Обрати папку по замовчанню</string>
@@ -449,6 +484,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
   <string name="subscribed_label">Підписано</string>
+  <string name="downloading_label">Завантажується…</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Показати глави</string>
   <string name="show_shownotes_label">Показати нотатки</string>
@@ -471,11 +507,20 @@
   <!--Feed information screen-->
   <string name="authentication_label">Автентикація</string>
   <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>
+  <string name="auto_download_settings_label">Налаштування автозавантаження</string>
+  <string name="episode_filters_label">Фільтр епізодів</string>
+  <string name="episode_filters_description">Перелік термінів що використовуються для вирішення чи завантажувати епізод автоматично</string>
+  <string name="episode_filters_include">Включити</string>
+  <string name="episode_filters_exclude">Вилучити</string>
+  <string name="episode_filters_hint">Окремі слова \n\"Слова Разом\"</string>
+  <string name="keep_updated">Підтримувати оновленим</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Оновлення бази даних</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <string name="search_itunes_label">Пошук в iTunes</string>
+  <string name="select_label"><b>Обрати…</b></string>
+  <string name="filter">Фільтр</string>
   <string name="all_label">Всі</string>
   <string name="selected_all_label">Обрано всі епізоди</string>
   <string name="none_label">Жодного</string>
@@ -488,6 +533,11 @@
   <string name="selected_downloaded_label">Обрано завантажені епізоди</string>
   <string name="not_downloaded_label">Незавантажені</string>
   <string name="selected_not_downloaded_label">Обрано незавантажені епізоди</string>
+  <string name="queued_label">В черзі</string>
+  <string name="selected_queued_label">Обрано епізоди що в черзі</string>
+  <string name="not_queued_label">Не в черзі</string>
+  <string name="selected_not_queued_label">Обрано епізоди що не в черзі</string>
+  <string name="sort_title"><b>Сортувати за…</b></string>
   <string name="sort_title_a_z">Назва (А \u2192 Я)</string>
   <string name="sort_title_z_a">Назва (Я \u2192 А)</string>
   <string name="sort_date_new_old">Дата (Нові \u2192 Старі)</string>
@@ -495,5 +545,18 @@
   <string name="sort_duration_short_long">Тривалість (Короткі \u2192 Довгі)</string>
   <string name="sort_duration_long_short">Тривалість (Довгі \u2192 Короткі)</string>
   <!--Rating dialog-->
+  <string name="rating_title">Оцінити AntennaPod?</string>
+  <string name="rating_message">Ми будемо вдячні якщо ви поставите свою оцінку AntennaPod.</string>
+  <string name="rating_never_label">Не зараз</string>
+  <string name="rating_later_label">Нагадати згодом</string>
+  <string name="rating_now_label">Звичайно, з задоволенням!</string>
   <!--Audio controls-->
+  <string name="audio_controls">Керування звуком</string>
+  <string name="playback_speed">Швидкість програвання</string>
+  <string name="volume">Гучність</string>
+  <string name="left_short">Л</string>
+  <string name="right_short">П</string>
+  <string name="audio_effects">Аудіоефекти</string>
+  <string name="stereo_to_mono">Зробити моно із стерео</string>
+  <string name="sonic_only">Тільки Sonic</string>
 </resources>

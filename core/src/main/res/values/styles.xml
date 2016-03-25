@@ -25,8 +25,6 @@
         <item name="attr/navigation_expand">@drawable/ic_expand_more_grey600_36dp</item>
         <item name="attr/navigation_refresh">@drawable/ic_refresh_grey600_24dp</item>
         <item name="attr/navigation_up">@drawable/navigation_up</item>
-        <item name="attr/navigation_shownotes">@drawable/ic_description_grey600_36dp</item>
-        <item name="attr/navigation_chapters">@drawable/ic_toc_grey600_36dp</item>
         <item name="attr/social_share">@drawable/ic_share_grey600_24dp</item>
         <item name="attr/stat_playlist">@drawable/ic_list_grey600_24dp</item>
         <item name="attr/type_audio">@drawable/ic_hearing_grey600_18dp</item>
@@ -37,7 +35,6 @@
         <item name="attr/dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
         <item name="attr/dragview_float_background">@color/white</item>
         <item name="attr/nav_drawer_background">@color/white</item>
-        <item name="attr/ic_action_overflow">@drawable/ic_more_vert_grey600_24dp</item>
         <item name="attr/ic_new">@drawable/ic_new_releases_grey600_24dp</item>
         <item name="attr/ic_history">@drawable/ic_history_grey600_24dp</item>
         <item name="attr/ic_folder">@drawable/ic_folder_grey600_24dp</item>
@@ -58,10 +55,13 @@
         <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
         <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
         <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
+        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
+        <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
         <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
@@ -83,8 +83,6 @@
         <item name="attr/navigation_expand">@drawable/ic_expand_more_white_36dp</item>
         <item name="attr/navigation_refresh">@drawable/ic_refresh_white_24dp</item>
         <item name="attr/navigation_up">@drawable/navigation_up_dark</item>
-        <item name="attr/navigation_shownotes">@drawable/ic_description_white_36dp</item>
-        <item name="attr/navigation_chapters">@drawable/ic_toc_white_36dp</item>
         <item name="attr/social_share">@drawable/ic_share_white_24dp</item>
         <item name="attr/stat_playlist">@drawable/ic_list_white_24dp</item>
         <item name="attr/type_audio">@drawable/ic_hearing_white_18dp</item>
@@ -95,7 +93,6 @@
         <item name="attr/dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item name="attr/dragview_float_background">@color/black</item>
         <item name="attr/nav_drawer_background">#3B3B3B</item>
-        <item name="attr/ic_action_overflow">@drawable/ic_more_vert_white_24dp</item>
         <item name="attr/ic_new">@drawable/ic_new_releases_white_24dp</item>
         <item name="attr/ic_history">@drawable/ic_history_white_24dp</item>
         <item name="attr/ic_folder">@drawable/ic_folder_white_24dp</item>
@@ -116,6 +113,8 @@
         <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
         <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
         <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
+        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
+        <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -143,8 +142,6 @@
         <item name="attr/navigation_expand">@drawable/ic_expand_more_grey600_36dp</item>
         <item name="attr/navigation_refresh">@drawable/ic_refresh_grey600_24dp</item>
         <item name="attr/navigation_up">@drawable/navigation_up</item>
-        <item name="attr/navigation_shownotes">@drawable/ic_description_grey600_36dp</item>
-        <item name="attr/navigation_chapters">@drawable/ic_toc_grey600_36dp</item>
         <item name="attr/social_share">@drawable/ic_share_grey600_24dp</item>
         <item name="attr/stat_playlist">@drawable/ic_list_grey600_24dp</item>
         <item name="attr/type_audio">@drawable/ic_hearing_grey600_18dp</item>
@@ -155,7 +152,6 @@
         <item name="attr/dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
         <item name="attr/dragview_float_background">@color/white</item>
         <item name="attr/nav_drawer_background">@color/white</item>
-        <item name="attr/ic_action_overflow">@drawable/ic_more_vert_grey600_24dp</item>
         <item name="attr/ic_new">@drawable/ic_new_releases_grey600_24dp</item>
         <item name="attr/ic_history">@drawable/ic_history_grey600_24dp</item>
         <item name="attr/ic_folder">@drawable/ic_folder_grey600_24dp</item>
@@ -176,6 +172,8 @@
         <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
         <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
         <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
+        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
+        <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
@@ -183,6 +181,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
         <item name="attr/action_about">@drawable/ic_info_white_24dp</item>
@@ -202,8 +201,6 @@
         <item name="attr/navigation_expand">@drawable/ic_expand_more_white_36dp</item>
         <item name="attr/navigation_refresh">@drawable/ic_refresh_white_24dp</item>
         <item name="attr/navigation_up">@drawable/navigation_up_dark</item>
-        <item name="attr/navigation_shownotes">@drawable/ic_description_white_36dp</item>
-        <item name="attr/navigation_chapters">@drawable/ic_toc_white_36dp</item>
         <item name="attr/social_share">@drawable/ic_share_white_24dp</item>
         <item name="attr/stat_playlist">@drawable/ic_list_white_24dp</item>
         <item name="attr/type_audio">@drawable/ic_hearing_white_18dp</item>
@@ -214,7 +211,6 @@
         <item name="attr/dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item name="attr/dragview_float_background">@color/black</item>
         <item name="attr/nav_drawer_background">#3B3B3B</item>
-        <item name="attr/ic_action_overflow">@drawable/ic_more_vert_white_24dp</item>
         <item name="attr/ic_new">@drawable/ic_new_releases_white_24dp</item>
         <item name="attr/ic_history">@drawable/ic_history_white_24dp</item>
         <item name="attr/ic_folder">@drawable/ic_folder_white_24dp</item>
@@ -235,6 +231,8 @@
         <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
         <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
         <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
+        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
+        <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">

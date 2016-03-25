@@ -25,6 +25,8 @@ import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
 
+import org.antennapod.audio.MediaPlayer;
+
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -99,7 +101,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new ReentrantLock();
         this.startWhenPrepared = new AtomicBoolean(false);
-        executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>(),
+        executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
                 new RejectedExecutionHandler() {
                     @Override
                     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
@@ -175,18 +177,15 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      */
     public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject(...)");
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                try {
-                    playMediaObject(playable, false, stream, startWhenPrepared, prepareImmediately);
-                } catch (RuntimeException e) {
-                    e.printStackTrace();
-                    throw e;
-                } finally {
-                    playerLock.unlock();
-                }
+        executor.submit(() -> {
+            playerLock.lock();
+            try {
+                playMediaObject(playable, false, stream, startWhenPrepared, prepareImmediately);
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                throw e;
+            } finally {
+                playerLock.unlock();
             }
         });
     }
@@ -258,24 +257,13 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             }
             setPlayerStatus(PlayerStatus.INITIALIZED, media);
 
-            if (mediaType == MediaType.VIDEO) {
-                VideoPlayer vp = (VideoPlayer) mediaPlayer;
-                //  vp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
-            }
-
             if (prepareImmediately) {
                 setPlayerStatus(PlayerStatus.PREPARING, media);
                 mediaPlayer.prepare();
                 onPrepared(startWhenPrepared);
             }
 
-        } catch (Playable.PlayableException e) {
-            e.printStackTrace();
-            setPlayerStatus(PlayerStatus.ERROR, null);
-        } catch (IOException e) {
-            e.printStackTrace();
-            setPlayerStatus(PlayerStatus.ERROR, null);
-        } catch (IllegalStateException e) {
+        } catch (Playable.PlayableException | IOException | IllegalStateException e) {
             e.printStackTrace();
             setPlayerStatus(PlayerStatus.ERROR, null);
         }
@@ -379,58 +367,52 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      *                     file is being streamed
      */
     public void pause(final boolean abandonFocus, final boolean reinit) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                releaseWifiLockIfNecessary();
-                if (playerStatus == PlayerStatus.PLAYING) {
-                    Log.d(TAG, "Pausing playback.");
-                    mediaPlayer.pause();
-                    setPlayerStatus(PlayerStatus.PAUSED, media);
+        executor.submit(() -> {
+            playerLock.lock();
+            releaseWifiLockIfNecessary();
+            if (playerStatus == PlayerStatus.PLAYING) {
+                Log.d(TAG, "Pausing playback.");
+                mediaPlayer.pause();
+                setPlayerStatus(PlayerStatus.PAUSED, media);
 
-                    if (abandonFocus) {
-                        audioManager.abandonAudioFocus(audioFocusChangeListener);
-                        pausedBecauseOfTransientAudiofocusLoss = false;
-                    }
-                    if (stream && reinit) {
-                        reinit();
-                    }
-                } else {
-                    Log.d(TAG, "Ignoring call to pause: Player is in " + playerStatus + " state");
+                if (abandonFocus) {
+                    audioManager.abandonAudioFocus(audioFocusChangeListener);
+                    pausedBecauseOfTransientAudiofocusLoss = false;
                 }
-
-                playerLock.unlock();
+                if (stream && reinit) {
+                    reinit();
+                }
+            } else {
+                Log.d(TAG, "Ignoring call to pause: Player is in " + playerStatus + " state");
             }
+
+            playerLock.unlock();
         });
     }
 
     /**
-     * Prepared media player for playback if the service is in the INITALIZED
+     * Prepares media player for playback if the service is in the INITALIZED
      * state.
      * <p/>
      * This method is executed on an internal executor service.
      */
     public void prepare() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
+        executor.submit(() -> {
+            playerLock.lock();
 
-                if (playerStatus == PlayerStatus.INITIALIZED) {
-                    Log.d(TAG, "Preparing media player");
-                    setPlayerStatus(PlayerStatus.PREPARING, media);
-                    try {
-                        mediaPlayer.prepare();
-                        onPrepared(startWhenPrepared.get());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        setPlayerStatus(PlayerStatus.ERROR, null);
-                    }
+            if (playerStatus == PlayerStatus.INITIALIZED) {
+                Log.d(TAG, "Preparing media player");
+                setPlayerStatus(PlayerStatus.PREPARING, media);
+                try {
+                    mediaPlayer.prepare();
+                    onPrepared(startWhenPrepared.get());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    setPlayerStatus(PlayerStatus.ERROR, null);
                 }
-                playerLock.unlock();
-
             }
+            playerLock.unlock();
+
         });
     }
 
@@ -449,7 +431,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
         if (mediaType == MediaType.VIDEO) {
             VideoPlayer vp = (VideoPlayer) mediaPlayer;
-            videoSize = new Pair<Integer, Integer>(vp.getVideoWidth(), vp.getVideoHeight());
+            videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
         }
 
         if (media.getPosition() > 0) {
@@ -475,20 +457,17 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * This method is executed on an internal executor service.
      */
     public void reinit() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                releaseWifiLockIfNecessary();
-                if (media != null) {
-                    playMediaObject(media, true, stream, startWhenPrepared.get(), false);
-                } else if (mediaPlayer != null) {
-                    mediaPlayer.reset();
-                } else {
-                    Log.d(TAG, "Call to reinit was ignored: media and mediaPlayer were null");
-                }
-                playerLock.unlock();
+        executor.submit(() -> {
+            playerLock.lock();
+            releaseWifiLockIfNecessary();
+            if (media != null) {
+                playMediaObject(media, true, stream, startWhenPrepared.get(), false);
+            } else if (mediaPlayer != null) {
+                mediaPlayer.reset();
+            } else {
+                Log.d(TAG, "Call to reinit was ignored: media and mediaPlayer were null");
             }
+            playerLock.unlock();
         });
     }
 
@@ -542,12 +521,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * This method is executed on an internal executor service.
      */
     public void seekTo(final int t) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                seekToSync(t);
-            }
-        });
+        executor.submit(() -> seekToSync(t));
     }
 
     /**
@@ -556,19 +530,16 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * @param d offset from current position (positive or negative)
      */
     public void seekDelta(final int d) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                int currentPosition = getPosition();
-                if (currentPosition != INVALID_TIME) {
-                    seekToSync(currentPosition + d);
-                } else {
-                    Log.e(TAG, "getPosition() returned INVALID_TIME in seekDelta");
-                }
-
-                playerLock.unlock();
+        executor.submit(() -> {
+            playerLock.lock();
+            int currentPosition = getPosition();
+            if (currentPosition != INVALID_TIME) {
+                seekToSync(currentPosition + d);
+            } else {
+                Log.e(TAG, "getPosition() returned INVALID_TIME in seekDelta");
             }
+
+            playerLock.unlock();
         });
     }
 
@@ -604,7 +575,11 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * Returns the position of the current media object or INVALID_TIME if the position could not be retrieved.
      */
     public int getPosition() {
-        if (!playerLock.tryLock()) {
+        try {
+            if (!playerLock.tryLock(50, TimeUnit.MILLISECONDS)) {
+                return INVALID_TIME;
+            }
+        } catch (InterruptedException e) {
             return INVALID_TIME;
         }
 
@@ -614,10 +589,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 || playerStatus == PlayerStatus.PREPARED
                 || playerStatus == PlayerStatus.SEEKING) {
             retVal = mediaPlayer.getCurrentPosition();
-            if(retVal <= 0 && media != null && media.getPosition() > 0) {
-                retVal = media.getPosition();
-            }
-        } else if (media != null && media.getPosition() > 0) {
+        }
+        if (retVal <= 0 && media != null && media.getPosition() >= 0) {
             retVal = media.getPosition();
         }
 
@@ -653,7 +626,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
             if (mediaPlayer.canSetSpeed()) {
-                mediaPlayer.setPlaybackSpeed((float) speed);
+                mediaPlayer.setPlaybackSpeed(speed);
                 Log.d(TAG, "Playback speed was set to " + speed);
                 callback.playbackSpeedChanged(speed);
             }
@@ -666,12 +639,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * This method is executed on an internal executor service.
      */
     public void setSpeed(final float speed) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                setSpeedSync(speed);
-            }
-        });
+        executor.submit(() -> setSpeedSync(speed));
     }
 
     /**
@@ -693,7 +661,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     /**
-     * Sets the playback speed.
+     * Sets the playback volume.
      * This method is executed on an internal executor service.
      */
     public void setVolume(final float volumeLeft, float volumeRight) {
@@ -701,7 +669,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     /**
-     * Sets the playback speed.
+     * Sets the playback volume.
      * This method is executed on the caller's thread.
      */
     private void setVolumeSync(float volumeLeft, float volumeRight) {
@@ -757,28 +725,22 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     public void setVideoSurface(final SurfaceHolder surface) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                if (mediaPlayer != null) {
-                    mediaPlayer.setDisplay(surface);
-                }
-                playerLock.unlock();
+        executor.submit(() -> {
+            playerLock.lock();
+            if (mediaPlayer != null) {
+                mediaPlayer.setDisplay(surface);
             }
+            playerLock.unlock();
         });
     }
 
     public void resetVideoSurface() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                Log.d(TAG, "Resetting video surface");
-                mediaPlayer.setDisplay(null);
-                reinit();
-                playerLock.unlock();
-            }
+        executor.submit(() -> {
+            playerLock.lock();
+            Log.d(TAG, "Resetting video surface");
+            mediaPlayer.setDisplay(null);
+            reinit();
+            playerLock.unlock();
         });
     }
 
@@ -799,7 +761,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             res = null;
         } else {
             VideoPlayer vp = (VideoPlayer) mediaPlayer;
-            videoSize = new Pair<Integer, Integer>(vp.getVideoWidth(), vp.getVideoHeight());
+            videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
             res = videoSize;
         }
         playerLock.unlock();
@@ -946,15 +908,16 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                         if (pausedBecauseOfTransientAudiofocusLoss) { // we paused => play now
                             resume();
                         } else { // we ducked => raise audio level back
-                            audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                    AudioManager.ADJUST_RAISE, 0);
+                            setVolumeSync(UserPreferences.getLeftVolume(),
+                                    UserPreferences.getRightVolume());
                         }
                     } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
                         if (playerStatus == PlayerStatus.PLAYING) {
                             if (!UserPreferences.shouldPauseForFocusLoss()) {
                                 Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-                                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                        AudioManager.ADJUST_LOWER, 0);
+                                final float DUCK_FACTOR = 0.25f;
+                                setVolumeSync(DUCK_FACTOR * UserPreferences.getLeftVolume(),
+                                        DUCK_FACTOR * UserPreferences.getRightVolume());
                                 pausedBecauseOfTransientAudiofocusLoss = false;
                             } else {
                                 Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
@@ -1004,20 +967,17 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
      * abandoning audio focus have to be done with other methods.
      */
     public void stop() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                playerLock.lock();
-                releaseWifiLockIfNecessary();
+        executor.submit(() -> {
+            playerLock.lock();
+            releaseWifiLockIfNecessary();
 
-                if (playerStatus == PlayerStatus.INDETERMINATE) {
-                    setPlayerStatus(PlayerStatus.STOPPED, null);
-                } else {
-                    Log.d(TAG, "Ignored call to stop: Current player state is: " + playerStatus);
-                }
-                playerLock.unlock();
-
+            if (playerStatus == PlayerStatus.INDETERMINATE) {
+                setPlayerStatus(PlayerStatus.STOPPED, null);
+            } else {
+                Log.d(TAG, "Ignored call to stop: Current player state is: " + playerStatus);
             }
+            playerLock.unlock();
+
         });
     }
 
@@ -1058,6 +1018,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
         void playbackSpeedChanged(float s);
 
+        void setSpeedAbilityChanged();
+
         void onBufferingUpdate(int percent);
 
         boolean onMediaPlayerInfo(int code);
@@ -1078,6 +1040,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 ((AudioPlayer) mp)
                         .setOnBufferingUpdateListener(audioBufferingUpdateListener);
                 ((AudioPlayer) mp).setOnInfoListener(audioInfoListener);
+                ((AudioPlayer) mp).setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
             } else {
                 ((VideoPlayer) mp)
                         .setOnCompletionListener(videoCompletionListener);
@@ -1092,100 +1055,68 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         return mp;
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnCompletionListener audioCompletionListener = new org.antennapod.audio.MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(org.antennapod.audio.MediaPlayer mp) {
-            genericOnCompletion();
-        }
-    };
+    private final MediaPlayer.OnCompletionListener audioCompletionListener =
+            mp -> genericOnCompletion();
 
-    private final android.media.MediaPlayer.OnCompletionListener videoCompletionListener = new android.media.MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(android.media.MediaPlayer mp) {
-            genericOnCompletion();
-        }
-    };
+    private final android.media.MediaPlayer.OnCompletionListener videoCompletionListener =
+            mp -> genericOnCompletion();
 
     private void genericOnCompletion() {
         endPlayback(false);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener = new org.antennapod.audio.MediaPlayer.OnBufferingUpdateListener() {
-        @Override
-        public void onBufferingUpdate(org.antennapod.audio.MediaPlayer mp,
-                                      int percent) {
-            genericOnBufferingUpdate(percent);
-        }
-    };
+    private final MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =
+            (mp, percent) -> genericOnBufferingUpdate(percent);
 
-    private final android.media.MediaPlayer.OnBufferingUpdateListener videoBufferingUpdateListener = new android.media.MediaPlayer.OnBufferingUpdateListener() {
-        @Override
-        public void onBufferingUpdate(android.media.MediaPlayer mp, int percent) {
-            genericOnBufferingUpdate(percent);
-        }
-    };
+    private final android.media.MediaPlayer.OnBufferingUpdateListener videoBufferingUpdateListener =
+            (mp, percent) -> genericOnBufferingUpdate(percent);
 
     private void genericOnBufferingUpdate(int percent) {
         callback.onBufferingUpdate(percent);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnInfoListener audioInfoListener = new org.antennapod.audio.MediaPlayer.OnInfoListener() {
-        @Override
-        public boolean onInfo(org.antennapod.audio.MediaPlayer mp, int what,
-                              int extra) {
-            return genericInfoListener(what);
-        }
-    };
+    private final MediaPlayer.OnInfoListener audioInfoListener =
+            (mp, what, extra) -> genericInfoListener(what);
 
-    private final android.media.MediaPlayer.OnInfoListener videoInfoListener = new android.media.MediaPlayer.OnInfoListener() {
-        @Override
-        public boolean onInfo(android.media.MediaPlayer mp, int what, int extra) {
-            return genericInfoListener(what);
-        }
-    };
+    private final android.media.MediaPlayer.OnInfoListener videoInfoListener =
+            (mp, what, extra) -> genericInfoListener(what);
 
     private boolean genericInfoListener(int what) {
         return callback.onMediaPlayerInfo(what);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnErrorListener audioErrorListener = new org.antennapod.audio.MediaPlayer.OnErrorListener() {
+    private final MediaPlayer.OnSpeedAdjustmentAvailableChangedListener
+            audioSetSpeedAbilityListener = new MediaPlayer.OnSpeedAdjustmentAvailableChangedListener() {
         @Override
-        public boolean onError(org.antennapod.audio.MediaPlayer mp, int what, int extra) {
-            if(mp.canFallback()) {
-                mp.fallback();
-                return true;
-            } else {
-                return genericOnError(mp, what, extra);
-            }
+        public void onSpeedAdjustmentAvailableChanged(MediaPlayer arg0, boolean speedAdjustmentAvailable) {
+            callback.setSpeedAbilityChanged();
         }
     };
 
-    private final android.media.MediaPlayer.OnErrorListener videoErrorListener = new android.media.MediaPlayer.OnErrorListener() {
-        @Override
-        public boolean onError(android.media.MediaPlayer mp, int what, int extra) {
-            return genericOnError(mp, what, extra);
-        }
-    };
+
+    private final MediaPlayer.OnErrorListener audioErrorListener =
+            (mp, what, extra) -> {
+                if(mp.canFallback()) {
+                    mp.fallback();
+                    return true;
+                } else {
+                    return genericOnError(mp, what, extra);
+                }
+            };
+
+    private final android.media.MediaPlayer.OnErrorListener videoErrorListener = this::genericOnError;
 
     private boolean genericOnError(Object inObj, int what, int extra) {
         return callback.onMediaPlayerError(inObj, what, extra);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener = new org.antennapod.audio.MediaPlayer.OnSeekCompleteListener() {
-        @Override
-        public void onSeekComplete(org.antennapod.audio.MediaPlayer mp) {
-            genericSeekCompleteListener();
-        }
-    };
+    private final MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener =
+            mp -> genericSeekCompleteListener();
 
-    private final android.media.MediaPlayer.OnSeekCompleteListener videoSeekCompleteListener = new android.media.MediaPlayer.OnSeekCompleteListener() {
-        @Override
-        public void onSeekComplete(android.media.MediaPlayer mp) {
-            genericSeekCompleteListener();
-        }
-    };
+    private final android.media.MediaPlayer.OnSeekCompleteListener videoSeekCompleteListener =
+            mp -> genericSeekCompleteListener();
 
-    private final void genericSeekCompleteListener() {
+    private void genericSeekCompleteListener() {
         Thread t = new Thread(() -> {
             Log.d(TAG, "genericSeekCompleteListener");
             if(seekLatch != null) {
@@ -1203,6 +1134,71 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
 
         private static final String TAG = "MediaSessionCompat";
+
+        @Override
+        public void onPlay() {
+            Log.d(TAG, "onPlay()");
+            if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                resume();
+            } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                setStartWhenPrepared(true);
+                prepare();
+            }
+        }
+
+        @Override
+        public void onPause() {
+            Log.d(TAG, "onPause()");
+            if (playerStatus == PlayerStatus.PLAYING) {
+                pause(false, true);
+            }
+            if (UserPreferences.isPersistNotify()) {
+                pause(false, true);
+            } else {
+                pause(true, true);
+            }
+        }
+
+        @Override
+        public void onStop() {
+            Log.d(TAG, "onStop()");
+            stop();
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            Log.d(TAG, "onSkipToPrevious()");
+            seekDelta(-UserPreferences.getRewindSecs() * 1000);
+        }
+
+        @Override
+        public void onRewind() {
+            Log.d(TAG, "onRewind()");
+            seekDelta(-UserPreferences.getRewindSecs() * 1000);
+        }
+
+        @Override
+        public void onFastForward() {
+            Log.d(TAG, "onFastForward()");
+            seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+        }
+
+        @Override
+        public void onSkipToNext() {
+            Log.d(TAG, "onSkipToNext()");
+            if(UserPreferences.shouldHardwareButtonSkip()) {
+                endPlayback(true);
+            } else {
+                seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+            }
+        }
+
+
+        @Override
+        public void onSeekTo(long pos) {
+            Log.d(TAG, "onSeekTo()");
+            seekTo((int) pos);
+        }
 
         @Override
         public boolean onMediaButtonEvent(final Intent mediaButton) {
@@ -1240,42 +1236,27 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_PLAY: {
-                    Log.d(TAG, "Received Play event from RemoteControlClient");
-                    if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                        resume();
-                    } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                        setStartWhenPrepared(true);
-                        prepare();
-                    }
+                    sessionCallback.onPlay();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_PAUSE: {
-                    Log.d(TAG, "Received Pause event from RemoteControlClient");
-                    if (playerStatus == PlayerStatus.PLAYING) {
-                        pause(false, true);
-                    }
-                    if (UserPreferences.isPersistNotify()) {
-                        pause(false, true);
-                    } else {
-                        pause(true, true);
-                    }
+                    sessionCallback.onPause();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_STOP: {
-                    Log.d(TAG, "Received Stop event from RemoteControlClient");
-                    stop();
+                    sessionCallback.onStop();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_PREVIOUS: {
-                    seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    sessionCallback.onSkipToPrevious();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_REWIND: {
-                    seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    sessionCallback.onRewind();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD: {
-                    seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+                    sessionCallback.onFastForward();
                     return true;
                 }
                 case KeyEvent.KEYCODE_MEDIA_NEXT: {

@@ -1,5 +1,13 @@
 Registro de cambios
 ==========
+Versión 1.5.0
+-------------
+* Excluir episodios de la auto descarga usando palabras clave
+* Configurar que algunos feeds no se refresquen automáticamente
+* Reproductor mejorado
+* Interfaz de usuario mejorada
+* Corrección de fallos
+
 Versión 1.4.1
 -------------
 * Mejoras de rendimiento

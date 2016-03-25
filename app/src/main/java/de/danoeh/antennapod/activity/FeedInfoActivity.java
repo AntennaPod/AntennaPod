@@ -139,20 +139,14 @@ public class FeedInfoActivity extends ActionBarActivity {
                     Log.d(TAG, "Author is " + feed.getAuthor());
                     Log.d(TAG, "URL is " + feed.getDownload_url());
                     FeedPreferences prefs = feed.getPreferences();
-                    imgvCover.post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Glide.with(FeedInfoActivity.this)
-                                    .load(feed.getImageUri())
-                                    .placeholder(R.color.light_gray)
-                                    .error(R.color.light_gray)
-                                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                    .fitCenter()
-                                    .dontAnimate()
-                                    .into(imgvCover);
-                        }
-                    });
+                    imgvCover.post(() -> Glide.with(FeedInfoActivity.this)
+                            .load(feed.getImageUri())
+                            .placeholder(R.color.light_gray)
+                            .error(R.color.light_gray)
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .fitCenter()
+                            .dontAnimate()
+                            .into(imgvCover));
 
                     txtvTitle.setText(feed.getTitle());
                     String description = feed.getDescription();
@@ -224,10 +218,12 @@ public class FeedInfoActivity extends ActionBarActivity {
                         etxtFilterText.setText(filter.getIncludeFilter());
                         rdoFilterInclude.setChecked(true);
                         rdoFilterExclude.setChecked(false);
+                        filterInclude = true;
                     } else if (filter.excludeOnly()) {
                         etxtFilterText.setText(filter.getExcludeFilter());
                         rdoFilterInclude.setChecked(false);
                         rdoFilterExclude.setChecked(true);
+                        filterInclude = false;
                     } else {
                         Log.d(TAG, "No filter set");
                         rdoFilterInclude.setChecked(false);

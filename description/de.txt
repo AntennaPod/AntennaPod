@@ -20,23 +20,26 @@ ORDNE, TEILE & GENIEßE
 &#8226; Unterstütze die Autoren von Inhalten mit Flattr (inklusive automatischem Flattren)
 
 STEUER DAS SYSTEM<br>
-&#8226; Kontrolliere automatisches Herunterladen: Wähle Feeds aus, schließe mobile Netze aus, suche bestimmte WiFi-Netze aus, setze voraus, dass das Smartphone geladen wird und lege Zeitpunkt oder Intervalle fest<br>
+&#8226; Kontrolliere automatisches Herunterladen: Wähle Feeds aus, filtere Episodes durch Schlüsselwörter, schließe mobile Netze aus, suche bestimmte WiFi-Netze aus, setze voraus, dass das Smartphone geladen wird und lege Zeitpunkt oder Intervalle fest<br>
 &#8226; Verwalte deinen Speicherplatz durch das Festlegen der Anzahl gespeicherter Episoden, schlaues Löschen und durch Auswahl des Speicherortes<br>
 &#8226; Benutze AntennaPod in deiner Sprache (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
 &#8226; Passe das Aussehen mit dem hellen oder dunklen Theme an<br>
 &#8226; Sichere deine Abonnements mit gPodder.net oder über den OPML-Export
 
-<b>Trete der AntennaPod-Gemeinschaft bei!</b><br>
+<b>Trete der AntennaPod-Community bei!</b>
 AntennaPod wird aktiv von Freiwilligen weiterentwickelt. Auch du kannst bei der Entwicklung mit Quellcode oder Kommentaren mitwirken!
+
+Stelle uns über Twitter Fragen oder gebe uns Feedback:
+https://twitter.com/@AntennaPod
+
+Teile deine Idee und Lieblingspodcastmomente und äußere deine Dankbarkeit gegenüber allen Freiwilligen in unserer Google Group:
+https://groups.google.com/forum/#!forum/antennapod (Englisch)
+
+Helfe auf Transifex, die App in deine Muttersprache zu übersetzen:
+https://www.transifex.com/antennapod/antennapod
+
+Probiere unser Beta-Testing-Programm aus, um die neusten Funktionen als Erster zu erhalten:
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
 
 Wir verwenden GitHub für Funktionswünsche (Feature Requests), Fehlerberichte und zur Beteiligung an der Entwicklung.
 https://www.github.com/AntennaPod/AntennaPod
-
-In unserer Google-Gruppe können Ideen und Lieblingspodcastmomente geteilt werden.
-https://groups.google.com/forum/#!forum/antennapod (Englisch)
-
-Mit Transifex kannst du uns beim Übersetzen helfen:<br>
-https://www.transifex.com/antennapod/antennapod
-
-Probiere unser Beta-Testing-Programm aus, um die neusten Funktionen als Erster zu erhalten:<br>
-https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

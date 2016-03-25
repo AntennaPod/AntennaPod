@@ -41,7 +41,7 @@ public class FeedItemMenuHandler {
          * menu-object and call setVisibility(visibility) on the returned
          * MenuItem object.
          */
-        abstract void setItemVisibility(int id, boolean visible);
+        void setItemVisibility(int id, boolean visible);
     }
 
     /**
@@ -98,7 +98,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_download_url_item, false);
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
-        if(false == hasMedia || selectedItem.getMedia().getPosition() <= 0) {
+        if(!hasMedia || selectedItem.getMedia().getPosition() <= 0) {
             mi.setItemVisibility(R.id.share_link_with_position_item, false);
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
@@ -113,7 +113,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.reset_position, false);
         }
 
-        if(false == UserPreferences.isEnableAutodownload()) {
+        if(!UserPreferences.isEnableAutodownload()) {
             mi.setItemVisibility(R.id.activate_auto_download, false);
             mi.setItemVisibility(R.id.deactivate_auto_download, false);
         } else if(selectedItem.getAutoDownload()) {
@@ -224,7 +224,7 @@ public class FeedItemMenuHandler {
                     context.startActivity(intent);
                 } else {
                     Toast.makeText(context, context.getString(R.string.download_error_malformed_url),
-                            Toast.LENGTH_SHORT);
+                            Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.support_item:

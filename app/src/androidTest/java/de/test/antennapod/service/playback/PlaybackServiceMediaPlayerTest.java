@@ -53,7 +53,10 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         super.setUp();
         assertionError = null;
 
+        final Context context = getInstrumentation().getTargetContext();
+
         // create new database
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -62,7 +65,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         httpServer = new HTTPBin();
         httpServer.start();
 
-        final Context context = getInstrumentation().getTargetContext();
         File cacheDir = context.getExternalFilesDir("testFiles");
         if (cacheDir == null)
             cacheDir = context.getExternalFilesDir("testFiles");
@@ -115,7 +117,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
     private Playable writeTestPlayable(String downloadUrl, String fileUrl) {
         final Context c = getInstrumentation().getTargetContext();
-        Feed f = new Feed(0, new Date(), "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
+        Feed f = new Feed(0, null, "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
         FeedPreferences prefs = new FeedPreferences(f.getId(), false, FeedPreferences.AutoDeleteAction.NO, null, null);
         f.setPreferences(prefs);
         f.setItems(new ArrayList<>());
@@ -164,6 +166,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -237,6 +244,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -305,6 +317,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -382,6 +399,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -445,6 +467,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -517,6 +544,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -583,6 +615,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -660,6 +697,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -704,6 +746,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
         @Override
         public void playbackSpeedChanged(float s) {
+
+        }
+
+        @Override
+        public void setSpeedAbilityChanged() {
 
         }
 
@@ -772,6 +819,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -881,6 +933,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -959,6 +1016,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -1053,6 +1115,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void playbackSpeedChanged(float s) {
+
+            }
+
+            @Override
+            public void setSpeedAbilityChanged() {
 
             }
 

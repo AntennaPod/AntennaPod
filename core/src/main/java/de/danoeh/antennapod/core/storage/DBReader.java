@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -590,17 +591,19 @@ public final class DBReader {
         FeedItem item = null;
 
         Cursor itemCursor = adapter.getFeedItemCursor(Long.toString(itemId));
-        if (itemCursor.moveToFirst()) {
-            List<FeedItem> list = extractItemlistFromCursor(adapter, itemCursor);
-            if (list.size() > 0) {
-                item = list.get(0);
-                loadAdditionalFeedItemListData(list);
-                if (item.hasChapters()) {
-                    loadChaptersOfFeedItem(adapter, item);
-                }
+        if (!itemCursor.moveToFirst()) {
+            itemCursor.close();
+            return null;
+        }
+        List<FeedItem> list = extractItemlistFromCursor(adapter, itemCursor);
+        itemCursor.close();
+        if (list.size() > 0) {
+            item = list.get(0);
+            loadAdditionalFeedItemListData(list);
+            if (item.hasChapters()) {
+                loadChaptersOfFeedItem(adapter, item);
             }
         }
-        itemCursor.close();
         return item;
     }
 
@@ -676,7 +679,7 @@ public final class DBReader {
      * as well as chapter marks of the FeedItems will also be loaded from the database.
      */
     public static List<FeedItem> getFeedItems(final long... itemIds) {
-        Log.d(TAG, "getFeedItems() called with: " + "itemIds = [" + itemIds + "]");
+        Log.d(TAG, "getFeedItems() called with: " + "itemIds = [" + Arrays.toString(itemIds) + "]");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         List<FeedItem> items = getFeedItems(adapter, itemIds);
@@ -898,22 +901,109 @@ public final class DBReader {
         adapter.open();
         Cursor mediaCursor = adapter.getSingleFeedMediaCursor(mediaId);
 
-        FeedMedia media = null;
-        if (mediaCursor.moveToFirst()) {
-            int indexFeedItem = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
-            final long itemId = mediaCursor.getLong(indexFeedItem);
-            media = FeedMedia.fromCursor(mediaCursor);
+        if (!mediaCursor.moveToFirst()) {
+            mediaCursor.close();
+            return null;
+        }
+
+        int indexFeedItem = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
+        long itemId = mediaCursor.getLong(indexFeedItem);
+        FeedMedia media = FeedMedia.fromCursor(mediaCursor);
+        mediaCursor.close();
+
+        if(media != null) {
             FeedItem item = getFeedItem(itemId);
-            if (media != null && item != null) {
+            if (item != null) {
                 media.setItem(item);
                 item.setMedia(media);
             }
         }
 
-        mediaCursor.close();
         adapter.close();
 
         return media;
+    }
+
+    /**
+     * Searches the DB for statistics
+     *
+     * @return The StatisticsInfo object
+     */
+    public static StatisticsData getStatistics() {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+
+        long totalTime = 0;
+        List<StatisticsItem> feedTime = new ArrayList<>();
+
+        List<Feed> feeds = getFeedList();
+        for (Feed feed : feeds) {
+            long feedPlayedTime = 0;
+            long feedTotalTime = 0;
+            long episodes = 0;
+            long episodesStarted = 0;
+            List<FeedItem> items = getFeed(feed.getId()).getItems();
+            for(FeedItem item : items) {
+                FeedMedia media = item.getMedia();
+                if(media == null) {
+                    continue;
+                }
+
+                if(item.isPlayed()) {
+                    feedPlayedTime += media.getDuration() / 1000;
+                } else {
+                    feedPlayedTime += media.getPosition() / 1000;
+                }
+                if(item.isPlayed() || media.getPosition() != 0) {
+                    episodesStarted++;
+                }
+                feedTotalTime += media.getDuration() / 1000;
+                episodes++;
+            }
+            feedTime.add(new StatisticsItem(
+                    feed, feedTotalTime, feedPlayedTime, episodes, episodesStarted));
+            totalTime += feedPlayedTime;
+        }
+
+        Collections.sort(feedTime, (item1, item2) -> {
+            if(item1.timePlayed > item2.timePlayed) {
+                return -1;
+            } else if(item1.timePlayed < item2.timePlayed) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        adapter.close();
+        return new StatisticsData(totalTime, feedTime);
+    }
+
+    public static class StatisticsData {
+        public long totalTime;
+        public List<StatisticsItem> feedTime;
+
+        public StatisticsData(long totalTime, List<StatisticsItem> feedTime) {
+            this.totalTime = totalTime;
+            this.feedTime = feedTime;
+        }
+    }
+
+    public static class StatisticsItem {
+        public Feed feed;
+        public long time;
+        public long timePlayed;
+        public long episodes;
+        public long episodesStarted;
+
+        public StatisticsItem(Feed feed, long time, long timePlayed,
+                              long episodes, long episodesStarted) {
+            this.feed = feed;
+            this.time = time;
+            this.timePlayed = timePlayed;
+            this.episodes = episodes;
+            this.episodesStarted = episodesStarted;
+        }
     }
 
     /**
@@ -1017,7 +1107,8 @@ public final class DBReader {
         int numNewItems = adapter.getNumberOfNewItems();
         int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
 
-        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numDownloadedItems, feedCounters);
+        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numDownloadedItems,
+                feedCounters, UserPreferences.getEpisodeCleanupAlgorithm().getReclaimableItems());
         adapter.close();
         return result;
     }
@@ -1028,17 +1119,20 @@ public final class DBReader {
         public int numNewItems;
         public int numDownloadedItems;
         public LongIntMap feedCounters;
+        public int reclaimableSpace;
 
         public NavDrawerData(List<Feed> feeds,
                              int queueSize,
                              int numNewItems,
                              int numDownloadedItems,
-                             LongIntMap feedIndicatorValues) {
+                             LongIntMap feedIndicatorValues,
+                             int reclaimableSpace) {
             this.feeds = feeds;
             this.queueSize = queueSize;
             this.numNewItems = numNewItems;
             this.numDownloadedItems = numDownloadedItems;
             this.feedCounters = feedIndicatorValues;
+            this.reclaimableSpace = reclaimableSpace;
         }
     }
 }

@@ -1,17 +1,25 @@
 Changelog
 ==========
+Versie 1.5.0
+-------------
+* Afleveringen uitsluiten bij automatisch downloaden op basis van zoekwoorden
+* Sluit specifieke feeds uit van automatische updates
+* Verbeterde mediaspeler
+*  Verbeterde interface
+* Bugfixes
+
 Versie 1.4.1
 -------------
 * Verbeterde prestaties
-* Hardware buttons now ff and rewind instead of skipping
-* Option to have forward button skip
-* Option to send crash reports directly to developers
-* Highlight currently playing episode
-* Widget improvements
+* Fysieke knoppen voor vooruit- en terugspeoelen ipv de aflevering overslaan
+* Optie 'Volgende' knop voor overslaan
+* Optie om crashrapport direct naar de ontwikkelaars te sturen
+* Duidelijke markering van huidige aflevering
+* Verbeterde widget
 
-Version 1.4.0.12
+Versie 1.4.0.12
 ----------------
-* Fix for crash on Huawei devices (media buttons may not work)
+* Oplossing voor crashes op Huawei toestellen (afspeelbediening werkt mogelijk niet)
 
 Versie 1.4
 -----------

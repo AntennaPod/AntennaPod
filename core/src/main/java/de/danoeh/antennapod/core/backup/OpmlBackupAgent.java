@@ -8,7 +8,6 @@ import android.content.Context;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.ByteArrayOutputStream;
@@ -26,8 +25,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
+import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.opml.OpmlElement;
 import de.danoeh.antennapod.core.opml.OpmlReader;
@@ -45,13 +44,13 @@ public class OpmlBackupAgent extends BackupAgentHelper {
         addHelper(OPML_BACKUP_KEY, new OpmlBackupHelper(this));
     }
 
-    private static final void LOGD(String tag, String msg) {
+    private static void LOGD(String tag, String msg) {
         if (BuildConfig.DEBUG && Log.isLoggable(tag, Log.DEBUG)) {
             Log.d(tag, msg);
         }
     }
 
-    private static final void LOGD(String tag, String msg, Throwable tr) {
+    private static void LOGD(String tag, String msg, Throwable tr) {
         if (BuildConfig.DEBUG && Log.isLoggable(tag, Log.DEBUG)) {
             Log.d(tag, msg, tr);
         }
@@ -156,10 +155,9 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                 ArrayList<OpmlElement> opmlElements = new OpmlReader().readDocument(reader);
                 mChecksum = digester == null ? null : digester.digest();
                 DownloadRequester downloader = DownloadRequester.getInstance();
-                Date lastUpdated = new Date();
 
                 for (OpmlElement opmlElem : opmlElements) {
-                    Feed feed = new Feed(opmlElem.getXmlUrl(), lastUpdated, opmlElem.getText());
+                    Feed feed = new Feed(opmlElem.getXmlUrl(), null, opmlElem.getText());
 
                     try {
                         downloader.downloadFeed(mContext, feed);

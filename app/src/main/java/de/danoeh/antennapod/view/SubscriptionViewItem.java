@@ -24,7 +24,6 @@ public class SubscriptionViewItem extends RelativeLayout {
 
     private ImageView mImageView;
     private TextView mTextTime;
-    private TextView mUnreadCountText;
     private TextView mFeedTitle;
     private Context mContext;
 
@@ -56,7 +55,6 @@ public class SubscriptionViewItem extends RelativeLayout {
         mTextTime = (TextView) view.findViewById(R.id.txtvTime);
         mFeedTitle = (TextView) view.findViewById(R.id.txtvTitle);
         mImageView = (ImageView) view.findViewById(R.id.imgvCover);
-        mUnreadCountText = (TextView) view.findViewById(R.id.unread_count_text);
     }
 
     public void setFeed(Feed feed) {
@@ -78,12 +76,8 @@ public class SubscriptionViewItem extends RelativeLayout {
                 })
                 .centerCrop()
                 .into(mImageView);
-        // Removing the updated time. It could be the latest podcast updated time in the future.
-        //mTextTime.setText(TimeUtils.getTimeAgo(feed.getLastUpdate().getTime(), mContext));
-        mTextTime.setVisibility(GONE);
 
-        // Could be the count of unread/ not played feed items
-        //mUnreadCountText.setText(String.valueOf(feed.getNumOfItems()));
+        mTextTime.setVisibility(GONE);
     }
 
 }

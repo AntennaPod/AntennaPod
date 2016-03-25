@@ -220,7 +220,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     private FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
         @Override
         public boolean isInQueue(FeedItem item) {
-            return (queue != null) ? queue.contains(item.getId()) : false;
+            return (queue != null) && queue.contains(item.getId());
         }
 
         @Override
@@ -255,7 +255,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.fromCallable(() -> loadData())
+        subscription = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

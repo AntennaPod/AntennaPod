@@ -23,6 +23,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Iniciar sesión en gpodder.net</string>
   <string name="free_space_label">%1$s libre</string>
+  <string name="episode_cache_full_title">Caché de episodios completa</string>
+  <string name="episode_cache_full_message">Se ha alcanzado el límite de caché de episodios. Puedes aumentar el tamaño de la caché en las Opciones.</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publicados recientemente</string>
   <string name="episode_filter_label">Mostrar solo episodios nuevos</string>
@@ -251,6 +253,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Descargar complemento</string>
   <string name="no_playback_plugin_title">Complemento no instalado</string>
+  <string name="no_playback_plugin_or_sonic_msg">Para que funciona la velocidad de reproducción variable, recomendamos habilitar el reproductor Sonic Media [Android 4.1+].\n\nPor otro lado, puedes descargar el plugin de terceros <i>Prestissimo</i> de la Play Store.\nCualquier problema con Prestissimo no es reponsabilidad de AntennaPod y no debería ser reportado al propietario del plugin.</string>
   <string name="set_playback_speed_label">Velocidades de reproducción</string>
   <string name="enable_sonic">Activar Sonic</string>
   <!--Empty list labels-->
@@ -361,6 +364,7 @@
   <string name="send_email">Enviar e-mail</string>
   <string name="experimental_pref">Experimental</string>
   <string name="pref_sonic_title">Sonic media player</string>
+  <string name="pref_sonic_message">Usar el reproductor Sonic Media incorporado en lugar del reproductor multimedia de Android y Prestissimo</string>
   <string name="pref_current_value">Valor actual: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
@@ -396,6 +400,7 @@
   <string name="export_error_label">Error en la exportación</string>
   <string name="opml_export_success_title">Exportación a OPML exitosa</string>
   <string name="opml_export_success_sum">El archivo OPML se ha escrito en:\u0020</string>
+  <string name="opml_import_ask_read_permission">Es necesario el acceso al almacenamiento externo para leer archivos OPML</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Establecer un temporizador</string>
   <string name="disable_sleeptimer_label">Desactivar el temporizador</string>
@@ -454,6 +459,7 @@
   <string name="create_folder_label">Crear carpeta</string>
   <string name="choose_data_directory">Elegir carpeta de datos</string>
   <string name="choose_data_directory_message">Por favor elige la raíz de la carpeta de datos. AntennaPod creará los subdirectorios apropiados.</string>
+  <string name="choose_data_directory_permission_rationale">Se necesita acceso a almacenamiento externo para cambiar la carpeta de datos</string>
   <string name="create_folder_msg">¿Crear carpeta con nombre «%1$s»?</string>
   <string name="create_folder_success">Carpeta creada</string>
   <string name="create_folder_error_no_write_access">No se puede escribir a esta carpeta</string>
@@ -496,6 +502,13 @@
   <!--Feed information screen-->
   <string name="authentication_label">Autenticación</string>
   <string name="authentication_descr">Cambiar nombre y contraseña de este podcast y sus episodios</string>
+  <string name="auto_download_settings_label">Opciones de Auto Descarga</string>
+  <string name="episode_filters_label">Filtro de Episodios</string>
+  <string name="episode_filters_description">Listado de términos para decidir si un episodio debe ser incluído o excluído al auto descargar</string>
+  <string name="episode_filters_include">Incluir</string>
+  <string name="episode_filters_exclude">Excluir</string>
+  <string name="episode_filters_hint">Palabras sueltas \n\"Múltiples palabras\"</string>
+  <string name="keep_updated">Mantener actualizado</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Actualizando la base de datos</string>
   <!--AntennaPodSP-->
@@ -515,6 +528,10 @@
   <string name="selected_downloaded_label">Seleccionados episodios descargados</string>
   <string name="not_downloaded_label">No descargado</string>
   <string name="selected_not_downloaded_label">Seleccionados episodios no descargados</string>
+  <string name="queued_label">En cola</string>
+  <string name="selected_queued_label">Seleccionados episodios en cola</string>
+  <string name="not_queued_label">No en cola</string>
+  <string name="selected_not_queued_label">Seleccionados episodios no en cola</string>
   <string name="sort_title"><b>Ordenar por…</b></string>
   <string name="sort_title_a_z">Título (A \u2192 Z)</string>
   <string name="sort_title_z_a">Título (Z \u2192 A)</string>
@@ -535,4 +552,6 @@
   <string name="left_short">I</string>
   <string name="right_short">D</string>
   <string name="audio_effects">Efectos de audio</string>
+  <string name="stereo_to_mono">Downmix: De estereo a mono</string>
+  <string name="sonic_only">Sólo Sonic</string>
 </resources>

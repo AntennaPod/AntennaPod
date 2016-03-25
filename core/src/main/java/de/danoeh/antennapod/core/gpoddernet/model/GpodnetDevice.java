@@ -25,7 +25,7 @@ public class GpodnetDevice {
                 + type + ", subscriptions=" + subscriptions + "]";
     }
 
-    public static enum DeviceType {
+    public enum DeviceType {
         DESKTOP, LAPTOP, MOBILE, SERVER, OTHER;
 
         static DeviceType fromString(String s) {
@@ -33,16 +33,17 @@ public class GpodnetDevice {
                 return OTHER;
             }
 
-            if (s.equals("desktop")) {
-                return DESKTOP;
-            } else if (s.equals("laptop")) {
-                return LAPTOP;
-            } else if (s.equals("mobile")) {
-                return MOBILE;
-            } else if (s.equals("server")) {
-                return SERVER;
-            } else {
-                return OTHER;
+            switch (s) {
+                case "desktop":
+                    return DESKTOP;
+                case "laptop":
+                    return LAPTOP;
+                case "mobile":
+                    return MOBILE;
+                case "server":
+                    return SERVER;
+                default:
+                    return OTHER;
             }
         }
 

@@ -13,25 +13,18 @@
         android:layout_centerVertical="true"
         tools:src="@drawable/ic_launcher" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/cover_image_bg">
-
-        <TextView
-            android:id="@+id/txtvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_margin="@dimen/widget_margin"
-            android:ellipsize="end"
-            android:padding="@dimen/widget_margin"
-            style="@style/AntennaPod.TextView.Heading"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            tools:text="@string/app_name" />
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/txtvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/widget_margin"
+        android:ellipsize="end"
+        android:padding="@dimen/widget_margin"
+        style="@style/AntennaPod.TextView.Heading"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:text="@string/app_name" />
 
     <TextView
         android:id="@+id/txtvTime"
@@ -46,28 +39,5 @@
         android:textColor="@color/white"
         android:textSize="12sp"
         tools:text="@string/app_name" />
-
-    <RelativeLayout
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
-        android:visibility="gone"
-        android:background="@drawable/unread_circle">
-
-        <TextView
-            android:id="@+id/unread_count_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="0"
-            android:textColor="@color/white"
-            android:textSize="11sp" />
-
-    </RelativeLayout>
-
 
 </RelativeLayout>

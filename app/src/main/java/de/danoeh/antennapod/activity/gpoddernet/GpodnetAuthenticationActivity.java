@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +41,7 @@ import de.danoeh.antennapod.core.service.GpodnetSyncService;
  * Step 3: Choose from a list of actions
  */
 public class GpodnetAuthenticationActivity extends ActionBarActivity {
-    private static final String TAG = "GpodnetAuthenticationActivity";
+    private static final String TAG = "GpodnetAuthActivity";
 
     private static final String CURRENT_STEP = "current_step";
 
@@ -177,7 +176,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
 
 
         // load device list
-        final AtomicReference<List<GpodnetDevice>> devices = new AtomicReference<List<GpodnetDevice>>();
+        final AtomicReference<List<GpodnetDevice>> devices = new AtomicReference<>();
         new AsyncTask<GpodnetService, Void, List<GpodnetDevice>>() {
 
             private volatile Exception exception;
@@ -194,11 +193,11 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
             protected void onPostExecute(List<GpodnetDevice> gpodnetDevices) {
                 super.onPostExecute(gpodnetDevices);
                 if (gpodnetDevices != null) {
-                    List<String> deviceNames = new ArrayList<String>();
+                    List<String> deviceNames = new ArrayList<>();
                     for (GpodnetDevice device : gpodnetDevices) {
                         deviceNames.add(device.getCaption());
                     }
-                    spinnerDevices.setAdapter(new ArrayAdapter<String>(GpodnetAuthenticationActivity.this,
+                    spinnerDevices.setAdapter(new ArrayAdapter<>(GpodnetAuthenticationActivity.this,
                             android.R.layout.simple_spinner_dropdown_item, deviceNames));
                     spinnerDevices.setEnabled(true);
                     if (!deviceNames.isEmpty()) {
@@ -274,14 +273,11 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         });
 
         deviceID.setText(generateDeviceID());
-        chooseDevice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final int position = spinnerDevices.getSelectedItemPosition();
-                if (position != AdapterView.INVALID_POSITION) {
-                    selectedDevice = devices.get().get(position);
-                    advance();
-                }
+        chooseDevice.setOnClickListener(v -> {
+            final int position = spinnerDevices.getSelectedItemPosition();
+            if (position != AdapterView.INVALID_POSITION) {
+                selectedDevice = devices.get().get(position);
+                advance();
             }
         });
     }
@@ -325,20 +321,14 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         final Button sync = (Button) view.findViewById(R.id.butSyncNow);
         final Button back = (Button) view.findViewById(R.id.butGoMainscreen);
 
-        sync.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GpodnetSyncService.sendSyncIntent(GpodnetAuthenticationActivity.this);
-                finish();
-            }
+        sync.setOnClickListener(v -> {
+            GpodnetSyncService.sendSyncIntent(GpodnetAuthenticationActivity.this);
+            finish();
         });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GpodnetAuthenticationActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
+        back.setOnClickListener(v -> {
+            Intent intent = new Intent(GpodnetAuthenticationActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         });
     }
 

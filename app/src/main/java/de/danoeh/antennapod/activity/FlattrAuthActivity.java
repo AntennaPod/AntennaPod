@@ -9,16 +9,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+
+import org.shredzone.flattr4j.exception.FlattrException;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.preferences.PreferenceController;
-
-import org.shredzone.flattr4j.exception.FlattrException;
 
 /** Guides the user through the authentication process */
 
@@ -46,25 +46,19 @@ public class FlattrAuthActivity extends ActionBarActivity {
 		butAuthenticate = (Button) findViewById(R.id.but_authenticate);
 		butReturn = (Button) findViewById(R.id.but_return_home);
 
-		butReturn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(FlattrAuthActivity.this, MainActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-			}
-		});
+		butReturn.setOnClickListener(v -> {
+            Intent intent = new Intent(FlattrAuthActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        });
 		
-		butAuthenticate.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				try {
-					FlattrUtils.startAuthProcess(FlattrAuthActivity.this);
-				} catch (FlattrException e) {
-					e.printStackTrace();
-				}
-			}	
-		});
+		butAuthenticate.setOnClickListener(v -> {
+            try {
+                FlattrUtils.startAuthProcess(FlattrAuthActivity.this);
+            } catch (FlattrException e) {
+                e.printStackTrace();
+            }
+        });
 	}
 	
 	public static FlattrAuthActivity getInstance() {

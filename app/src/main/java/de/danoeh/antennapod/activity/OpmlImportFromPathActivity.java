@@ -11,16 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.LangUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 
 /**
@@ -60,7 +53,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         intentPickAction = new Intent(Intent.ACTION_PICK);
         intentPickAction.setData(Uri.parse("file://"));
 
-        if(false == IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
+        if(!IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
             intentPickAction.setData(null);
             if(false == IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
                 txtvHeaderExplanation1.setVisibility(View.GONE);
@@ -77,7 +70,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
         intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
         intentGetContentAction.setType("*/*");
-        if(false == IntentUtils.isCallable(getApplicationContext(), intentGetContentAction)) {
+        if(!IntentUtils.isCallable(getApplicationContext(), intentGetContentAction)) {
             txtvHeaderExplanation2.setVisibility(View.GONE);
             txtvExplanation2.setVisibility(View.GONE);
             findViewById(R.id.divider2).setVisibility(View.GONE);
@@ -114,19 +107,6 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         }
     }
 
-    private void startImport(File file) {
-        Reader mReader = null;
-        try {
-            mReader = new InputStreamReader(new FileInputStream(file),
-                LangUtils.UTF_8);
-            Log.d(TAG, "Parsing " + file.toString());
-            startImport(mReader);
-        } catch (FileNotFoundException e) {
-            Log.d(TAG, "File not found which really should be there");
-            // this should never happen as it is a file we have just chosen
-        }
-    }
-
     /*
      * Creates an implicit intent to launch a file manager which lets
      * the user choose a specific OPML-file to import from.
@@ -155,13 +135,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == CHOOSE_OPML_FILE) {
             Uri uri = data.getData();
-
-            try {
-                Reader mReader = new InputStreamReader(getContentResolver().openInputStream(uri), LangUtils.UTF_8);
-                startImport(mReader);
-            } catch (FileNotFoundException e) {
-                Log.d(TAG, "File not found");
-            }
+            importUri(uri);
         }
     }
 

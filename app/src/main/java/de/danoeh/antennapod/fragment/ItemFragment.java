@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -101,6 +102,7 @@ public class ItemFragment extends Fragment {
 
     private ViewGroup root;
     private WebView webvDescription;
+    private TextView txtvPodcast;
     private TextView txtvTitle;
     private TextView txtvDuration;
     private TextView txtvPublished;
@@ -134,6 +136,7 @@ public class ItemFragment extends Fragment {
         View layout = inflater.inflate(R.layout.feeditem_fragment, container, false);
 
         root = (ViewGroup) layout.findViewById(R.id.content_root);
+        txtvPodcast = (TextView) layout.findViewById(R.id.txtvPodcast);
         txtvTitle = (TextView) layout.findViewById(R.id.txtvTitle);
         txtvDuration = (TextView) layout.findViewById(R.id.txtvDuration);
         txtvPublished = (TextView) layout.findViewById(R.id.txtvPublished);
@@ -146,8 +149,7 @@ public class ItemFragment extends Fragment {
                 && Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
-            webvDescription.setBackgroundColor(getResources().getColor(
-                R.color.black));
+            webvDescription.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
         }
         webvDescription.getSettings().setUseWideViewPort(false);
         webvDescription.getSettings().setLayoutAlgorithm(
@@ -219,6 +221,7 @@ public class ItemFragment extends Fragment {
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().registerSticky(this);
         if(itemsLoaded) {
+            progbarLoading.setVisibility(View.GONE);
             updateAppearance();
         }
     }
@@ -295,6 +298,7 @@ public class ItemFragment extends Fragment {
             return;
         }
         getActivity().supportInvalidateOptionsMenu();
+        txtvPodcast.setText(item.getFeed().getTitle());
         txtvTitle.setText(item.getTitle());
 
         if (item.getPubDate() != null) {
@@ -503,7 +507,7 @@ public class ItemFragment extends Fragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.fromCallable(() -> loadInBackground())
+        subscription = Observable.fromCallable(this::loadInBackground)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {

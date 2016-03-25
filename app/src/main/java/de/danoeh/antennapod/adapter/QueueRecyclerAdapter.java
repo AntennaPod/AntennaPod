@@ -3,9 +3,11 @@ package de.danoeh.antennapod.adapter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -26,8 +28,6 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.joanzapata.iconify.Iconify;
 import com.nineoldandroids.view.ViewHelper;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -78,11 +78,11 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         locked = UserPreferences.isQueueLocked();
 
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_dark);
+            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_dark);
         } else {
-            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_light);
+            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_light);
         }
-        normalBackGroundColor = mainActivity.getResources().getColor(android.R.color.transparent);
+        normalBackGroundColor = ContextCompat.getColor(mainActivity, android.R.color.transparent);
     }
 
     public void setLocked(boolean locked) {
@@ -107,6 +107,12 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
     @Nullable
     public FeedItem getSelectedItem() {
         return selectedItem;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        FeedItem item = itemAccess.getItem(position);
+        return item != null ? item.getId() : RecyclerView.NO_POSITION;
     }
 
     public int getItemCount() {
@@ -213,13 +219,13 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             title.setText(item.getTitle());
             String pubDateStr = DateUtils.formatAbbrev(mainActivity.get(), item.getPubDate());
             int index = 0;
-            if(StringUtils.countMatches(pubDateStr, ' ') == 1 || StringUtils.countMatches(pubDateStr, ' ') == 2) {
+            if(countMatches(pubDateStr, ' ') == 1 || countMatches(pubDateStr, ' ') == 2) {
                 index = pubDateStr.lastIndexOf(' ');
-            } else if(StringUtils.countMatches(pubDateStr, '.') == 2) {
+            } else if(countMatches(pubDateStr, '.') == 2) {
                 index = pubDateStr.lastIndexOf('.');
-            } else if(StringUtils.countMatches(pubDateStr, '-') == 2) {
+            } else if(countMatches(pubDateStr, '-') == 2) {
                 index = pubDateStr.lastIndexOf('-');
-            } else if(StringUtils.countMatches(pubDateStr, '/') == 2) {
+            } else if(countMatches(pubDateStr, '/') == 2) {
                 index = pubDateStr.lastIndexOf('/');
             }
             if(index > 0) {
@@ -252,7 +258,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 } else {
                     if(media.getSize() > 0) {
                         progressLeft.setText(Converter.byteToString(media.getSize()));
-                    } else if(false == media.checkedOnSizeButUnknown()) {
+                    } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
                         progressLeft.setText("{fa-spinner}");
                         Iconify.addIcons(progressLeft);
                         NetworkUtils.getFeedMediaSizeObservable(media)
@@ -374,5 +380,19 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
          * move or swipe, and the active item state should be cleared.
          */
         void onItemClear();
+    }
+
+    // Oh Xiaomi, I hate you so much. How did you manage to fuck this up?
+    private static int countMatches(final CharSequence str, final char ch) {
+        if (TextUtils.isEmpty(str)) {
+            return 0;
+        }
+        int count = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (ch == str.charAt(i)) {
+                count++;
+            }
+        }
+        return count;
     }
 }

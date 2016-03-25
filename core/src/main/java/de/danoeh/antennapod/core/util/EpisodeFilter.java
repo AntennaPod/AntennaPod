@@ -13,7 +13,7 @@ public class EpisodeFilter {
 
 	/** Return a copy of the itemlist without items which have no media. */
 	public static ArrayList<FeedItem> getEpisodeList(List<FeedItem> items) {
-		ArrayList<FeedItem> episodes = new ArrayList<FeedItem>(items);
+		ArrayList<FeedItem> episodes = new ArrayList<>(items);
 		for (FeedItem item : items) {
 			if (item.getMedia() == null) {
 				episodes.remove(item);

@@ -62,7 +62,6 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
     private static final String ARG_HIGHLIGHT_TIMECODES = "arg.highlightTimecodes";
 
     private WebView webvDescription;
-    private String webvData;
 
     private ShownotesProvider shownotesProvider;
     private Playable media;
@@ -112,7 +111,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "Creating view");
-        webvDescription = new WebView(getActivity());
+        webvDescription = new WebView(getActivity().getApplicationContext());
         if (Build.VERSION.SDK_INT >= 11) {
             webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
@@ -149,7 +148,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
                 super.onPageFinished(view, url);
                 Log.d(TAG, "Page finished");
                 // Restoring the scroll position might not always work
-                view.postDelayed(() -> restoreFromPreference(), 50);
+                view.postDelayed(ItemDescriptionFragment.this::restoreFromPreference, 50);
             }
 
         });
@@ -309,7 +308,6 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                    webvData = data;
                     webvDescription.loadDataWithBaseURL(null, data, "text/html",
                             "utf-8", "about:blank");
                     Log.d(TAG, "Webview loaded");
@@ -320,8 +318,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
 
     private String loadData() {
         Timeline timeline = new Timeline(getActivity(), shownotesProvider);
-        String data = timeline.processShownotes(highlightTimecodes);
-        return data;
+        return timeline.processShownotes(highlightTimecodes);
     }
 
     @Override
@@ -384,7 +381,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
 
     @Override
     public void onMediaChanged(Playable media) {
-        if(this.media == media) {
+        if(this.media == media || webvDescription == null) {
             return;
         }
         this.media = media;

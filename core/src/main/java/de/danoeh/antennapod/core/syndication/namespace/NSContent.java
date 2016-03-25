@@ -1,7 +1,8 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
-import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import org.xml.sax.Attributes;
+
+import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 
 public class NSContent extends Namespace {
 	public static final String NSTAG = "content";
@@ -17,7 +18,8 @@ public class NSContent extends Namespace {
 
 	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
-		if (localName.equals(ENCODED)) {
+		if (ENCODED.equals(localName) && state.getCurrentItem() != null &&
+			state.getContentBuf() != null) {
 			state.getCurrentItem().setContentEncoded(state.getContentBuf().toString());
 		}
 	}

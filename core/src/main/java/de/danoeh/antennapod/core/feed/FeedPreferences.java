@@ -68,7 +68,7 @@ public class FeedPreferences {
     /**
      * @return the filter for this feed
      */
-    public FeedFilter getFilter() {
+    public @NonNull FeedFilter getFilter() {
         return filter;
     }
 
@@ -95,8 +95,9 @@ public class FeedPreferences {
      * @return True if the two objects are different.
      */
     public boolean compareWithOther(FeedPreferences other) {
-        if (other == null)
+        if (other == null) {
             return true;
+        }
         if (!TextUtils.equals(username, other.username)) {
             return true;
         }

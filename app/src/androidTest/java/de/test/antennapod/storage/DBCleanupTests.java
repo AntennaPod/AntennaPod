@@ -70,6 +70,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
         assertTrue(destFolder.canWrite());
 
         // create new database
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -87,7 +88,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
     public void testPerformAutoCleanupShouldDelete() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();
@@ -143,7 +144,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
     public void testPerformAutoCleanupHandleUnplayed() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<FeedItem>();
         feed.setItems(items);
         List<File> files = new ArrayList<File>();
@@ -159,7 +160,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
     public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();
@@ -198,7 +199,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
     public void testPerformAutoCleanupShouldNotDeleteBecauseFavorite() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();

@@ -13,7 +13,6 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -175,7 +174,7 @@ public class GpodnetSyncService extends Service {
         for (String downloadUrl : changes.getAdded()) {
             if (false == localSubscriptions.contains(downloadUrl) &&
                     false == localRemoved.contains(downloadUrl)) {
-                Feed feed = new Feed(downloadUrl, new Date(0));
+                Feed feed = new Feed(downloadUrl, null);
                 DownloadRequester.getInstance().downloadFeed(this, feed);
             }
         }
@@ -315,6 +314,7 @@ public class GpodnetSyncService extends Service {
                 .setContentIntent(activityIntent)
                 .setSmallIcon(R.drawable.stat_notify_sync_error)
                 .setAutoCancel(true)
+                .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .build();
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(id, notification);

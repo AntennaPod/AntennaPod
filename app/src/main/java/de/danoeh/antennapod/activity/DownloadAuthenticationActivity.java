@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -73,31 +72,25 @@ public class DownloadAuthenticationActivity extends ActionBarActivity {
 
         txtvDescription.setText(txtvDescription.getText() + ":\n\n" + request.getTitle());
 
-        butCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(Activity.RESULT_CANCELED);
-                finish();
-            }
+        butCancel.setOnClickListener(v -> {
+            setResult(Activity.RESULT_CANCELED);
+            finish();
         });
 
-        butConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = etxtUsername.getText().toString();
-                String password = etxtPassword.getText().toString();
-                request.setUsername(username);
-                request.setPassword(password);
-                Intent result = new Intent();
-                result.putExtra(RESULT_REQUEST, request);
-                setResult(Activity.RESULT_OK, result);
+        butConfirm.setOnClickListener(v -> {
+            String username = etxtUsername.getText().toString();
+            String password = etxtPassword.getText().toString();
+            request.setUsername(username);
+            request.setPassword(password);
+            Intent result = new Intent();
+            result.putExtra(RESULT_REQUEST, request);
+            setResult(Activity.RESULT_OK, result);
 
-                if (sendToDownloadRequester) {
-                   if (BuildConfig.DEBUG) Log.d(TAG, "Sending request to DownloadRequester");
-                    DownloadRequester.getInstance().download(DownloadAuthenticationActivity.this, request);
-                }
-                finish();
+            if (sendToDownloadRequester) {
+               if (BuildConfig.DEBUG) Log.d(TAG, "Sending request to DownloadRequester");
+                DownloadRequester.getInstance().download(DownloadAuthenticationActivity.this, request);
             }
+            finish();
         });
     }
 

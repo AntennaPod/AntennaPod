@@ -19,8 +19,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
-import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
-
 /**
  * Tests that the APNullCleanupAlgorithm is working correctly.
  */
@@ -60,6 +58,7 @@ public class DBNullCleanupAlgorithmTest extends InstrumentationTestCase {
         assertTrue(destFolder.canWrite());
 
         // create new database
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -82,7 +81,7 @@ public class DBNullCleanupAlgorithmTest extends InstrumentationTestCase {
     public void testPerformAutoCleanupShouldNotDelete() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();

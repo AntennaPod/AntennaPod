@@ -3,20 +3,19 @@ package de.danoeh.antennapod.asynctask;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.opml.OpmlElement;
-import de.danoeh.antennapod.core.opml.OpmlReader;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.opml.OpmlElement;
+import de.danoeh.antennapod.core.opml.OpmlReader;
 
 public class OpmlImportWorker extends
 		AsyncTask<Void, Void, ArrayList<OpmlElement>> {

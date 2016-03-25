@@ -1,14 +1,11 @@
 package de.test.antennapod.storage;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.test.FlakyTest;
 import android.test.InstrumentationTestCase;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +17,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-
-import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
 
 /**
  * Test class for DBTasks
@@ -35,7 +30,6 @@ public class DBTasksTest extends InstrumentationTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-
         assertTrue(PodDBAdapter.deleteDatabase());
     }
 
@@ -45,6 +39,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         context = getInstrumentation().getTargetContext();
 
         // create new database
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -57,7 +52,7 @@ public class DBTasksTest extends InstrumentationTestCase {
     public void testUpdateFeedNewFeed() {
         final int NUM_ITEMS = 10;
 
-        Feed feed = new Feed("url", new Date(), "title");
+        Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(), FeedItem.UNPLAYED, feed));
@@ -75,8 +70,8 @@ public class DBTasksTest extends InstrumentationTestCase {
     /** Two feeds with the same title, but different download URLs should be treated as different feeds. */
     public void testUpdateFeedSameTitle() {
 
-        Feed feed1 = new Feed("url1", new Date(), "title");
-        Feed feed2 = new Feed("url2", new Date(), "title");
+        Feed feed1 = new Feed("url1", null, "title");
+        Feed feed2 = new Feed("url2", null, "title");
 
         feed1.setItems(new ArrayList<>());
         feed2.setItems(new ArrayList<>());
@@ -91,7 +86,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         final int NUM_ITEMS_OLD = 10;
         final int NUM_ITEMS_NEW = 10;
 
-        final Feed feed = new Feed("url", new Date(), "title");
+        final Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS_OLD; i++) {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
@@ -125,6 +120,32 @@ public class DBTasksTest extends InstrumentationTestCase {
         assertNotNull(feedFromDB);
         assertTrue(feedFromDB.getId() == newFeed.getId());
         updatedFeedTest(feedFromDB, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
+    }
+
+    public void testUpdateFeedMediaUrlResetState() {
+        final Feed feed = new Feed("url", null, "title");
+        FeedItem item = new FeedItem(0, "item", "id", "link", new Date(), FeedItem.PLAYED, feed);
+        feed.setItems(Arrays.asList(item));
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        // ensure that objects have been saved in db, then reset
+        assertTrue(feed.getId() != 0);
+        assertTrue(item.getId() != 0);
+
+        FeedMedia media = new FeedMedia(item, "url", 1024, "mime/type");
+        item.setMedia(media);
+        feed.setItems(Arrays.asList(item));
+
+        final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
+        assertTrue(feed != newFeed);
+
+        final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
+        final FeedItem feedItemFromDB = feedFromDB.getItems().get(0);
+        assertTrue("state: " + feedItemFromDB.getState(), feedItemFromDB.isNew());
     }
 
     private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {

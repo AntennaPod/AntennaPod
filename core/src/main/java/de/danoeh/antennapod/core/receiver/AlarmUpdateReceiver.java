@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /** Listens for events that make it necessary to reset the update alarm. */
@@ -22,8 +22,7 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
 		} else if (TextUtils.equals(intent.getAction(), Intent.ACTION_PACKAGE_REPLACED)) {
 			Log.d(TAG, "Resetting update alarm after app upgrade");
 		}
-        PlaybackPreferences.init(context);
-        UserPreferences.init(context);
+		ClientConfig.initialize(context);
         UserPreferences.restartUpdateAlarm(false);
 	}
 

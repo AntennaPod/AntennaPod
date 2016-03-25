@@ -400,6 +400,7 @@
   <string name="export_error_label">Exportfehler</string>
   <string name="opml_export_success_title">OPML Export erfolgreich</string>
   <string name="opml_export_success_sum">Die OPML Datei wurde unter dem folgenden Pfad gespeichert:\u0020</string>
+  <string name="opml_import_ask_read_permission">Zugriff auf externen Speicher wird benötigt, um die OPML Datei zu lesen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Schlummerfunktion</string>
   <string name="disable_sleeptimer_label">Schlummerfunktion deaktivieren</string>
@@ -458,6 +459,7 @@
   <string name="create_folder_label">Neuer Ordner</string>
   <string name="choose_data_directory">Datenordner auswählen</string>
   <string name="choose_data_directory_message">Bitte wähle eine Basis für deinen Datenordner. AntennaPod erstellt automatisch die richtigen Unterverzeichnisse.</string>
+  <string name="choose_data_directory_permission_rationale">Zugriff auf den externen Speicher wird benötigt, um den Datenordner zu ändern</string>
   <string name="create_folder_msg">Neuen Ordner mit Namen \"%1$s\" erstellen?</string>
   <string name="create_folder_success">Neuer Ordner angelegt</string>
   <string name="create_folder_error_no_write_access">Kann in diesem Ordner nicht schreiben</string>
@@ -500,6 +502,13 @@
   <!--Feed information screen-->
   <string name="authentication_label">Authentifizierung</string>
   <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden.</string>
+  <string name="auto_download_settings_label">Einstellungen für Automatischen Download</string>
+  <string name="episode_filters_label">Episoden-Filter</string>
+  <string name="episode_filters_description">Liste von Wörtern, die dazu verwendet wird, Episoden beim automatischen Download einzubeziehen oder auszuschließen</string>
+  <string name="episode_filters_include">Einbeziehen</string>
+  <string name="episode_filters_exclude">Ausschließen</string>
+  <string name="episode_filters_hint">Einzelne Wörter\n\"Mehrere Wörter\"</string>
+  <string name="keep_updated">Aktuell halten</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Datenbank wird aktualisiert</string>
   <!--AntennaPodSP-->
@@ -519,6 +528,10 @@
   <string name="selected_downloaded_label">Heruntergeladene Episoden ausgewählt</string>
   <string name="not_downloaded_label">Nicht heruntergeladen</string>
   <string name="selected_not_downloaded_label">Nicht heruntergeladene Episoden ausgewählt</string>
+  <string name="queued_label">In Abspielliste</string>
+  <string name="selected_queued_label">Episoden in Abspielliste ausgewählt</string>
+  <string name="not_queued_label">Nicht in Abspielliste</string>
+  <string name="selected_not_queued_label">Episoden nicht in Abspielliste ausgewählt</string>
   <string name="sort_title"><b>Sortiere nach…</b></string>
   <string name="sort_title_a_z">Titel (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titel (Z \u2192 A)</string>

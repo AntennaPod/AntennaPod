@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.opml;
 
 import android.util.Log;
-import de.danoeh.antennapod.core.BuildConfig;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -9,6 +9,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+
+import de.danoeh.antennapod.core.BuildConfig;
 
 /** Reads OPML documents. */
 public class OpmlReader {
@@ -27,7 +29,7 @@ public class OpmlReader {
 	 */
 	public ArrayList<OpmlElement> readDocument(Reader reader)
 			throws XmlPullParserException, IOException {
-		elementList = new ArrayList<OpmlElement>();
+		elementList = new ArrayList<>();
 		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 		factory.setNamespaceAware(true);
 		XmlPullParser xpp = factory.newPullParser();

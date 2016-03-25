@@ -6,12 +6,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.event.QueueEvent;
@@ -65,13 +63,10 @@ public class PlaybackServiceTaskManager {
                                       @NonNull PSTMCallback callback) {
         this.context = context;
         this.callback = callback;
-        schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE, new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread t = new Thread(r);
-                t.setPriority(Thread.MIN_PRIORITY);
-                return t;
-            }
+        schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE, r -> {
+            Thread t = new Thread(r);
+            t.setPriority(Thread.MIN_PRIORITY);
+            return t;
         });
         loadQueue();
         EventBus.getDefault().register(this);
@@ -95,12 +90,7 @@ public class PlaybackServiceTaskManager {
 
     private synchronized void loadQueue() {
         if (!isQueueLoaderActive()) {
-            queueFuture = schedExecutor.submit(new Callable<List<FeedItem>>() {
-                @Override
-                public List<FeedItem> call() throws Exception {
-                    return DBReader.getQueue();
-                }
-            });
+            queueFuture = schedExecutor.submit(DBReader::getQueue);
         }
     }
 
@@ -112,9 +102,7 @@ public class PlaybackServiceTaskManager {
         if (queueFuture.isDone()) {
             try {
                 return queueFuture.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }
@@ -137,12 +125,7 @@ public class PlaybackServiceTaskManager {
      */
     public synchronized void startPositionSaver() {
         if (!isPositionSaverActive()) {
-            Runnable positionSaver = new Runnable() {
-                @Override
-                public void run() {
-                    callback.positionSaverTick();
-                }
-            };
+            Runnable positionSaver = callback::positionSaverTick;
             positionSaverFuture = schedExecutor.scheduleWithFixedDelay(positionSaver, POSITION_SAVER_WAITING_INTERVAL,
                     POSITION_SAVER_WAITING_INTERVAL, TimeUnit.MILLISECONDS);
 
@@ -174,12 +157,7 @@ public class PlaybackServiceTaskManager {
      */
     public synchronized void startWidgetUpdater() {
         if (!isWidgetUpdaterActive()) {
-            Runnable widgetUpdater = new Runnable() {
-                @Override
-                public void run() {
-                    callback.onWidgetUpdaterTick();
-                }
-            };
+            Runnable widgetUpdater = callback::onWidgetUpdaterTick;
             widgetUpdaterFuture = schedExecutor.scheduleWithFixedDelay(widgetUpdater, WIDGET_UPDATER_NOTIFICATION_INTERVAL,
                     WIDGET_UPDATER_NOTIFICATION_INTERVAL, TimeUnit.MILLISECONDS);
 
@@ -279,18 +257,15 @@ public class PlaybackServiceTaskManager {
             cancelChapterLoader();
         }
 
-        Runnable chapterLoader = new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Chapter loader started");
-                if (media.getChapters() == null) {
-                    media.loadChapterMarks();
-                    if (!Thread.currentThread().isInterrupted() && media.getChapters() != null) {
-                        callback.onChapterLoaded(media);
-                    }
+        Runnable chapterLoader = () -> {
+            Log.d(TAG, "Chapter loader started");
+            if (media.getChapters() == null) {
+                media.loadChapterMarks();
+                if (!Thread.currentThread().isInterrupted() && media.getChapters() != null) {
+                    callback.onChapterLoaded(media);
                 }
-                Log.d(TAG, "Chapter loader stopped");
             }
+            Log.d(TAG, "Chapter loader stopped");
         };
         chapterLoaderFuture = schedExecutor.submit(chapterLoader);
     }

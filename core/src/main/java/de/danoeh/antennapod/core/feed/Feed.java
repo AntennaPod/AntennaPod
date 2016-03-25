@@ -44,10 +44,12 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     private String author;
     private FeedImage image;
     private List<FeedItem> items;
+
     /**
-     * Date of last refresh.
+     * String that identifies the last update (adopted from Last-Modified or ETag header)
      */
-    private Date lastUpdate;
+    private String lastUpdate;
+
     private FlattrStatus flattrStatus;
     private String paymentLink;
     /**
@@ -91,18 +93,14 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     /**
      * This constructor is used for restoring a feed from the database.
      */
-    public Feed(long id, Date lastUpdate, String title, String link, String description, String paymentLink,
+    public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
                 String downloadUrl, boolean downloaded, FlattrStatus status, boolean paged, String nextPageLink,
                 String filter, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
         this.id = id;
         this.title = title;
-        if (lastUpdate != null) {
-            this.lastUpdate = (Date) lastUpdate.clone();
-        } else {
-            this.lastUpdate = null;
-        }
+        this.lastUpdate = lastUpdate;
         this.link = link;
         this.description = description;
         this.paymentLink = paymentLink;
@@ -114,7 +112,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         this.flattrStatus = status;
         this.paged = paged;
         this.nextPageLink = nextPageLink;
-        this.items = new ArrayList<FeedItem>();
+        this.items = new ArrayList<>();
         if(filter != null) {
             this.itemfilter = new FeedItemFilter(filter);
         } else {
@@ -126,7 +124,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     /**
      * This constructor is used for test purposes and uses a default flattr status object.
      */
-    public Feed(long id, Date lastUpdate, String title, String link, String description, String paymentLink,
+    public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
                 String downloadUrl, boolean downloaded) {
         this(id, lastUpdate, title, link, description, paymentLink, author, language, type, feedIdentifier, image,
@@ -138,7 +136,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      */
     public Feed() {
         super();
-        lastUpdate = new Date();
         this.flattrStatus = new FlattrStatus();
     }
 
@@ -146,9 +143,9 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      * This constructor is used for requesting a feed download (it must not be used for anything else!). It should NOT be
      * used if the title of the feed is already known.
      */
-    public Feed(String url, Date lastUpdate) {
+    public Feed(String url, String lastUpdate) {
         super(null, url, false);
-        this.lastUpdate = (lastUpdate != null) ? (Date) lastUpdate.clone() : null;
+        this.lastUpdate = lastUpdate;
         this.flattrStatus = new FlattrStatus();
     }
 
@@ -156,7 +153,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      * This constructor is used for requesting a feed download (it must not be used for anything else!). It should be
      * used if the title of the feed is already known.
      */
-    public Feed(String url, Date lastUpdate, String title) {
+    public Feed(String url, String lastUpdate, String title) {
         this(url, lastUpdate);
         this.title = title;
         this.flattrStatus = new FlattrStatus();
@@ -166,7 +163,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      * This constructor is used for requesting a feed download (it must not be used for anything else!). It should be
      * used if the title of the feed is already known.
      */
-    public Feed(String url, Date lastUpdate, String title, String username, String password) {
+    public Feed(String url, String lastUpdate, String title, String username, String password) {
         this(url, lastUpdate, title);
         preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, username, password);
     }
@@ -191,11 +188,9 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         int indexHide = cursor.getColumnIndex(PodDBAdapter.KEY_HIDE);
         int indexLastUpdateFailed = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_UPDATE_FAILED);
 
-        Date lastUpdate = new Date(cursor.getLong(indexLastUpdate));
-
         Feed feed = new Feed(
                 cursor.getLong(indexId),
-                lastUpdate,
+                cursor.getString(indexLastUpdate),
                 cursor.getString(indexTitle),
                 cursor.getString(indexLink),
                 cursor.getString(indexDescription),
@@ -240,7 +235,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      */
     public boolean hasUnplayedItems() {
         for (FeedItem item : items) {
-            if (false == item.isNew() && false == item.isPlayed()) {
+            if (!item.isNew() && !item.isPlayed()) {
                 return true;
             }
         }
@@ -329,12 +324,11 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         if (super.compareWithOther(other)) {
             return true;
         }
-        if (!title.equals(other.title)) {
+        if (!TextUtils.equals(title, other.title)) {
             return true;
         }
         if (other.feedIdentifier != null) {
-            if (feedIdentifier == null
-                    || !feedIdentifier.equals(other.feedIdentifier)) {
+            if (feedIdentifier == null || !feedIdentifier.equals(other.feedIdentifier)) {
                 return true;
             }
         }
@@ -430,12 +424,12 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         this.items = list;
     }
 
-    public Date getLastUpdate() {
-        return (lastUpdate != null) ? (Date) lastUpdate.clone() : null;
+    public String getLastUpdate() {
+        return lastUpdate;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
-        this.lastUpdate = (lastUpdate != null) ? (Date) lastUpdate.clone() : null;
+    public void setLastUpdate(String lastModified) {
+        this.lastUpdate = lastModified;
     }
 
     public String getFeedIdentifier() {

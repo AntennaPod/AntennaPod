@@ -6,6 +6,7 @@
     <!-- Activitiy and fragment titles -->
     <string name="app_name">AntennaPod</string>
     <string name="feeds_label">Feeds</string>
+    <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
     <string name="podcasts_label">PODCASTS</string>
     <string name="episodes_label">Episodes</string>
@@ -33,6 +34,10 @@
     <!-- New episodes fragment -->
     <string name="recently_published_episodes_label">Recently published</string>
     <string name="episode_filter_label">Show only new Episodes</string>
+
+    <!-- Statistics fragment -->
+    <string name="total_time_listened_to_podcasts">Total time of podcasts played:</string>
+    <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
@@ -135,6 +140,7 @@
     <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
+    <string name="open_podcast">Open Podcast</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
@@ -179,6 +185,7 @@
     <string name="download_error_connection_error">Connection Error</string>
     <string name="download_error_unknown_host">Unknown Host</string>
     <string name="download_error_unauthorized">Authentication Error</string>
+    <string name="download_error_file_type_type">File Type Error</string>
     <string name="cancel_all_downloads_label">Cancel all downloads</string>
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
@@ -279,8 +286,12 @@
     <string name="no_items_label">There are no items in this list.</string>
     <string name="no_feeds_label">You haven\'t subscribed to any feeds yet.</string>
     <string name="no_chapters_label">This episode has no chapters.</string>
+    <string name="no_shownotes_label">This episode has no shownotes.</string>
+
 
     <!-- Preferences -->
+    <string name="storage_pref">Storage</string>
+    <string name="project_pref">Project</string>
     <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
@@ -359,6 +370,10 @@
     <string name="pref_gpodnet_logout_toast">Logout was successful</string>
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
+    <string name="pref_gpodnet_sync_title">Sync now</string>
+    <string name="pref_gpodnet_sync_sum">Sync subscriptions and episode states with gpodder.net</string>
+    <string name="pref_gpodnet_sync_started">Sync started</string>
+    <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
     <string name="pref_fast_forward">Fast forward time</string>
@@ -369,6 +384,8 @@
     <string name="pref_expandNotify_sum">Always expand the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
+    <string name="pref_show_subscriptions_in_drawer_title">Show subscriptions</string>
+    <string name="pref_show_subscriptions_in_drawer_sum">Show subscription list directly in navigation drawer</string>
     <string name="pref_lockscreen_background_title">Set Lockscreen Background</string>
     <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
     <string name="pref_showDownloadReport_title">Show Download Report</string>
@@ -386,6 +403,11 @@
     <string name="pref_sonic_title">Sonic media player</string>
     <string name="pref_sonic_message">Use built-in sonic media player as a replacement for Android\'s native mediaplayer and Prestissimo</string>
     <string name="pref_current_value">Current value: %1$s</string>
+    <string name="pref_proxy_title">Proxy</string>
+    <string name="pref_proxy_sum">Set a network proxy</string>
+    <string name="pref_faq">FAQ</string>
+    <string name="pref_known_issues">Known issues</string>
+    <string name="pref_no_browser_found">No web browser found.</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -410,8 +432,8 @@
     <string name="opml_import_label">OPML Import</string>
     <string name="opml_directory_error">ERROR!</string>
     <string name="reading_opml_label">Reading OPML file</string>
-    <string name="opml_reader_error">An error has occurred while reading the opml document:</string>
-    <string name="opml_import_error_dir_empty">The import directory is empty.</string>
+    <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
+    <string name="opml_import_error_no_file">No file selected!</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
     <string name="select_options_label">Select&#8230;</string>
@@ -422,6 +444,7 @@
     <string name="export_error_label">Export error</string>
     <string name="opml_export_success_title">OPML Export successful.</string>
     <string name="opml_export_success_sum">The .opml file was written to:\u0020</string>
+    <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
 
     <!-- Sleep timer -->
     <string name="set_sleeptimer_label">Set sleep timer</string>
@@ -485,6 +508,7 @@
     <string name="create_folder_label">Create folder</string>
     <string name="choose_data_directory">Choose Data Folder</string>
     <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate sub-directories.</string>
+    <string name="choose_data_directory_permission_rationale">Access to external storage is required to change the data folder</string>
     <string name="create_folder_msg">Create new folder with name "%1$s"?</string>
     <string name="create_folder_success">Created new folder</string>
     <string name="create_folder_error_no_write_access">Cannot write to this folder</string>
@@ -561,6 +585,10 @@
     <string name="selected_downloaded_label">Selected downloaded Episodes</string>
     <string name="not_downloaded_label">Not downloaded</string>
     <string name="selected_not_downloaded_label">Selected not downloaded Episodes</string>
+    <string name="queued_label">Queued</string>
+    <string name="selected_queued_label">Selected queued Episodes</string>
+    <string name="not_queued_label">Not queued</string>
+    <string name="selected_not_queued_label">Selected not queued Episodes</string>
     <string name="sort_title"><b>Sort by&#8230;</b></string>
     <string name="sort_title_a_z">Title (A \u2192 Z)</string>
     <string name="sort_title_z_a">Title (Z \u2192 A)</string>
@@ -585,5 +613,18 @@
     <string name="audio_effects">Audio Effects</string>
     <string name="stereo_to_mono">Downmix: Stereo to mono</string>
     <string name="sonic_only">Sonic only</string>
+
+    <!-- proxy settings -->
+    <string name="proxy_type_label">Type</string>
+    <string name="host_label">Host</string>
+    <string name="port_label">Port</string>
+    <string name="optional_hint">(Optional)</string>
+    <string name="proxy_test_label">Test</string>
+    <string name="proxy_checking">Checking&#8230;</string>
+    <string name="proxy_test_successful">Test successful</string>
+    <string name="proxy_test_failed">Test failed</string>
+    <string name="proxy_host_empty_error">Host must not be empty</string>
+    <string name="proxy_host_invalid_error">Host not valid IP address or domain</string>
+    <string name="proxy_port_invalid_error">Port not valid</string>
 
 </resources>

@@ -102,8 +102,8 @@ public class VariableSpeedDialog {
         builder.setPositiveButton(android.R.string.ok,
             (dialog, which) -> {
                 int choiceCount = 0;
-                for (int i = 0; i < speedChecked.length; i++) {
-                    if (speedChecked[i]) {
+                for (boolean checked : speedChecked) {
+                    if (checked) {
                         choiceCount++;
                     }
                 }

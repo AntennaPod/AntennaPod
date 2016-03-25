@@ -1,18 +1,16 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.util.LongList;
 
 /**
  * A cleanup algorithm that removes any item that isn't in the queue and isn't a favorite
@@ -22,19 +20,18 @@ public class APQueueCleanupAlgorithm extends EpisodeCleanupAlgorithm {
 
     private static final String TAG = "APQueueCleanupAlgorithm";
 
+    /**
+     * @return the number of episodes that *could* be cleaned up, if needed
+     */
+    public int getReclaimableItems()
+    {
+        return getCandidates().size();
+    }
+
     @Override
     public int performCleanup(Context context, int numberOfEpisodesToDelete) {
-        List<FeedItem> candidates = new ArrayList<>();
-        List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+        List<FeedItem> candidates = getCandidates();
         List<FeedItem> delete;
-        for (FeedItem item : downloadedItems) {
-            if (item.hasMedia()
-                    && item.getMedia().isDownloaded()
-                    && !item.isTagged(FeedItem.TAG_QUEUE)
-                    && !item.isTagged(FeedItem.TAG_FAVORITE)) {
-                candidates.add(item);
-            }
-        }
 
         // in the absence of better data, we'll sort by item publication date
         Collections.sort(candidates, (lhs, rhs) -> {
@@ -72,6 +69,21 @@ public class APQueueCleanupAlgorithm extends EpisodeCleanupAlgorithm {
                 numberOfEpisodesToDelete));
 
         return counter;
+    }
+
+    @NonNull
+    private List<FeedItem> getCandidates() {
+        List<FeedItem> candidates = new ArrayList<>();
+        List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+        for (FeedItem item : downloadedItems) {
+            if (item.hasMedia()
+                    && item.getMedia().isDownloaded()
+                    && !item.isTagged(FeedItem.TAG_QUEUE)
+                    && !item.isTagged(FeedItem.TAG_FAVORITE)) {
+                candidates.add(item);
+            }
+        }
+        return candidates;
     }
 
     @Override

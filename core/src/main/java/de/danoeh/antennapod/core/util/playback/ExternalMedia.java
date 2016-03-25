@@ -6,12 +6,13 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.util.ChapterUtils;
 
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.util.ChapterUtils;
 
 /** Represents a media file that is stored on the local storage device. */
 public class ExternalMedia implements Playable {
@@ -106,12 +107,7 @@ public class ExternalMedia implements Playable {
 
 	@Override
 	public Callable<String> loadShownotes() {
-		return new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return "";
-            }
-        };
+		return () -> "";
 	}
 
 	@Override

@@ -19,8 +19,6 @@
     <attr name="navigation_expand" format="reference"/>
     <attr name="navigation_refresh" format="reference"/>
     <attr name="navigation_up" format="reference"/>
-    <attr name="navigation_shownotes" format="reference"/>
-    <attr name="navigation_chapters" format="reference"/>
     <attr name="social_share" format="reference"/>
     <attr name="stat_playlist" format="reference"/>
     <attr name="ic_folder" format="reference"/>
@@ -30,7 +28,6 @@
     <attr name="overlay_drawable" format="reference"/>
     <attr name="dragview_background" format="reference"/>
     <attr name="dragview_float_background" format="reference"/>
-    <attr name="ic_action_overflow" format="reference"/>
     <attr name="ic_new" format="reference"/>
     <attr name="ic_history" format="reference"/>
     <attr name="av_play_big" format="reference"/>
@@ -51,6 +48,8 @@
     <attr name="ic_check_box_outline" format="reference"/>
     <attr name="ic_indeterminate_check_box" format="reference"/>
     <attr name="ic_sort" format="reference"/>
+    <attr name="ic_sd_storage" format="reference"/>
+    <attr name="ic_create_new_folder" format="reference"/>
 
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference"/>

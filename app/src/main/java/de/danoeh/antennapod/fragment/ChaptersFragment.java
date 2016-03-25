@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -15,15 +16,16 @@ import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
 public class ChaptersFragment extends ListFragment implements AudioplayerContentFragment {
 
+    private static final String TAG = "ChaptersFragment";
+
     private Playable media;
     private PlaybackController controller;
 
     private ChaptersListAdapter adapter;
 
-    public static ChaptersFragment newInstance(Playable media, PlaybackController controller) {
+    public static ChaptersFragment newInstance(Playable media) {
         ChaptersFragment f = new ChaptersFragment();
         f.media = media;
-        f.controller = controller;
         return f;
     }
 
@@ -37,6 +39,10 @@ public class ChaptersFragment extends ListFragment implements AudioplayerContent
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
         adapter = new ChaptersListAdapter(getActivity(), 0, pos -> {
+            if(controller == null) {
+                Log.d(TAG, "controller is null");
+                return;
+            }
             Chapter chapter = (Chapter) getListAdapter().getItem(pos);
             controller.seekToChapter(chapter);
         });
@@ -58,6 +64,7 @@ public class ChaptersFragment extends ListFragment implements AudioplayerContent
     public void onDestroy() {
         super.onDestroy();
         adapter = null;
+        controller = null;
     }
 
     @Override
@@ -68,10 +75,15 @@ public class ChaptersFragment extends ListFragment implements AudioplayerContent
         this.media = media;
         adapter.setMedia(media);
         adapter.notifyDataSetChanged();
-        if(media.getChapters() == null) {
+        if(media == null || media.getChapters() == null || media.getChapters().size() == 0) {
             setEmptyText(getString(R.string.no_items_label));
         } else {
             setEmptyText(null);
         }
     }
+
+    public void setController(PlaybackController controller) {
+        this.controller = controller;
+    }
+
 }

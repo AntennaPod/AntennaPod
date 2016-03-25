@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -24,7 +24,7 @@ import de.danoeh.antennapod.preferences.PreferenceController;
  * PreferenceActivity for API 11+. In order to change the behavior of the preference UI, see
  * PreferenceController.
  */
-public class PreferenceActivity extends ActionBarActivity {
+public class PreferenceActivity extends AppCompatActivity {
 
     private PreferenceController preferenceController;
     private MainFragment prefFragment;
@@ -49,7 +49,7 @@ public class PreferenceActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // This must be the FIRST thing we do, otherwise other code may not have the
         // reference it needs
-        instance = new WeakReference<PreferenceActivity>(this);
+        instance = new WeakReference<>(this);
 
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);

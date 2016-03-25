@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -84,18 +83,9 @@ public abstract class PodcastListFragment extends Fragment {
         txtvError = (TextView) root.findViewById(R.id.txtvError);
         butRetry = (Button) root.findViewById(R.id.butRetry);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                onPodcastSelected((GpodnetPodcast) gridView.getAdapter().getItem(position));
-            }
-        });
-        butRetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadData();
-            }
-        });
+        gridView.setOnItemClickListener((parent, view, position, id) ->
+                onPodcastSelected((GpodnetPodcast) gridView.getAdapter().getItem(position)));
+        butRetry.setOnClickListener(v -> loadData());
 
         loadData();
         return root;

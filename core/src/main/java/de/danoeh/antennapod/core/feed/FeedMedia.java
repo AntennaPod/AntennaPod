@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -168,10 +167,6 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public void updateFromOther(FeedMedia other) {
-        // reset to new if feed item did link to a file before
-        if(TextUtils.isEmpty(download_url) && !TextUtils.isEmpty(other.download_url)) {
-            item.setNew();
-        }
         super.updateFromOther(other);
         if (other.size > 0) {
             size = other.size;
@@ -386,11 +381,14 @@ public class FeedMedia extends FeedFile implements Playable {
         // check if chapters are stored in db and not loaded yet.
         if (item != null && item.hasChapters() && item.getChapters() == null) {
             DBReader.loadChaptersOfFeedItem(item);
-        } else if (item != null && item.getChapters() == null && !localFileAvailable()) {
-            ChapterUtils.loadChaptersFromStreamUrl(this);
+        } else if (item != null && item.getChapters() == null) {
+            if(localFileAvailable()) {
+                ChapterUtils.loadChaptersFromFileUrl(this);
+            } else {
+                ChapterUtils.loadChaptersFromStreamUrl(this);
+            }
             if (getChapters() != null && item != null) {
-                DBWriter.setFeedItem(
-                        item);
+                DBWriter.setFeedItem(item);
             }
         }
     }
@@ -400,10 +398,10 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item == null) {
             return null;
         }
-        if (getItem().getTitle() != null) {
-            return getItem().getTitle();
+        if (item.getTitle() != null) {
+            return item.getTitle();
         } else {
-            return getItem().getIdentifyingValue();
+            return item.getIdentifyingValue();
         }
     }
 
@@ -412,7 +410,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item == null) {
             return null;
         }
-        return getItem().getChapters();
+        return item.getChapters();
     }
 
     @Override
@@ -420,15 +418,15 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item == null) {
             return null;
         }
-        return getItem().getLink();
+        return item.getLink();
     }
 
     @Override
     public String getFeedTitle() {
-        if (item == null) {
+        if (item == null || item.getFeed() == null) {
             return null;
         }
-        return getItem().getFeed().getTitle();
+        return item.getFeed().getTitle();
     }
 
     @Override
@@ -451,7 +449,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item == null) {
             return null;
         }
-        return getItem().getPaymentLink();
+        return item.getPaymentLink();
     }
 
     @Override
@@ -489,25 +487,24 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public void setChapters(List<Chapter> chapters) {
-        getItem().setChapters(chapters);
+        if(item != null) {
+            item.setChapters(chapters);
+        }
     }
 
     @Override
     public Callable<String> loadShownotes() {
-        return new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                if (item == null) {
-                    item = DBReader.getFeedItem(
-                            itemID);
-                }
-                if (item.getContentEncoded() == null || item.getDescription() == null) {
-                    DBReader.loadExtraInformationOfFeedItem(
-                            item);
-
-                }
-                return (item.getContentEncoded() != null) ? item.getContentEncoded() : item.getDescription();
+        return () -> {
+            if (item == null) {
+                item = DBReader.getFeedItem(
+                        itemID);
             }
+            if (item.getContentEncoded() == null || item.getDescription() == null) {
+                DBReader.loadExtraInformationOfFeedItem(
+                        item);
+
+            }
+            return (item.getContentEncoded() != null) ? item.getContentEncoded() : item.getDescription();
         };
     }
 

@@ -63,10 +63,10 @@ public class FeedMenuHandler {
                                                final Feed selectedFeed) throws DownloadRequestException {
         switch (item.getItemId()) {
             case R.id.refresh_item:
-                DBTasks.refreshFeed(context, selectedFeed);
+                DBTasks.forceRefreshFeed(context, selectedFeed);
                 break;
             case R.id.refresh_complete_item:
-                DBTasks.refreshCompleteFeed(context, selectedFeed);
+                DBTasks.forceRefreshCompleteFeed(context, selectedFeed);
                 break;
             case R.id.filter_items:
                 showFilterDialog(context, selectedFeed);
@@ -92,7 +92,7 @@ public class FeedMenuHandler {
                     context.startActivity(intent);
                 } else {
                     Toast.makeText(context, context.getString(R.string.download_error_malformed_url),
-                            Toast.LENGTH_SHORT);
+                            Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.support_item:

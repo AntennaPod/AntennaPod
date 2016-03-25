@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
@@ -70,11 +71,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         this.showOnlyNewEpisodes = showOnlyNewEpisodes;
 
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_dark);
+            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_dark);
         } else {
-            playingBackGroundColor = mainActivity.getResources().getColor(R.color.highlight_light);
+            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_light);
         }
-        normalBackGroundColor = mainActivity.getResources().getColor(android.R.color.transparent);
+        normalBackGroundColor = ContextCompat.getColor(mainActivity, android.R.color.transparent);
     }
 
     @Override
@@ -120,7 +121,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.title.setText(item.getTitle());
         String pubDateStr = DateUtils.formatAbbrev(mainActivityRef.get(), item.getPubDate());
         holder.pubDate.setText(pubDateStr);
-        if (showOnlyNewEpisodes || false == item.isNew()) {
+        if (showOnlyNewEpisodes || !item.isNew()) {
             holder.statusUnread.setVisibility(View.INVISIBLE);
         } else {
             holder.statusUnread.setVisibility(View.VISIBLE);
@@ -134,7 +135,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 holder.txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             } else if (media.getSize() > 0) {
                 holder.txtvDuration.setText(Converter.byteToString(media.getSize()));
-            } else if(false == media.checkedOnSizeButUnknown()) {
+            } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
                 holder.txtvDuration.setText("{fa-spinner}");
                 Iconify.addIcons(holder.txtvDuration);
                 NetworkUtils.getFeedMediaSizeObservable(media)
@@ -201,7 +202,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
     @Override
     public long getItemId(int position) {
-        return position;
+        FeedItem item = itemAccess.getItem(position);
+        return item != null ? item.getId() : RecyclerView.NO_POSITION;
     }
 
     @Override

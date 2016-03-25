@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,10 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
-
-import java.util.Date;
+import com.joanzapata.iconify.widget.IconTextView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -49,7 +48,7 @@ public class DownloadLogAdapter extends BaseAdapter {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.downloadlog_item, parent, false);
-			holder.icon = (TextView) convertView.findViewById(R.id.txtvIcon);
+			holder.icon = (IconTextView) convertView.findViewById(R.id.txtvIcon);
 			holder.retry = (IconButton) convertView.findViewById(R.id.btnRetry);
 			holder.date = (TextView) convertView.findViewById(R.id.txtvDate);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
@@ -76,17 +75,15 @@ public class DownloadLogAdapter extends BaseAdapter {
 				status.getCompletionDate().getTime(),
 				System.currentTimeMillis(), 0, 0));
 		if (status.isSuccessful()) {
-			holder.icon.setTextColor(convertView.getResources().getColor(
+			holder.icon.setTextColor(ContextCompat.getColor(convertView.getContext(),
 					R.color.download_success_green));
 			holder.icon.setText("{fa-check-circle}");
-			Iconify.addIcons(holder.icon);
 			holder.retry.setVisibility(View.GONE);
 			holder.reason.setVisibility(View.GONE);
 		} else {
-			holder.icon.setTextColor(convertView.getResources().getColor(
+			holder.icon.setTextColor(ContextCompat.getColor(convertView.getContext(),
 					R.color.download_failed_red));
 			holder.icon.setText("{fa-times-circle}");
-			Iconify.addIcons(holder.icon);
 			String reasonText = status.getReason().getErrorString(context);
 			if (status.getReasonDetailed() != null) {
 				reasonText += ": " + status.getReasonDetailed();
@@ -123,9 +120,8 @@ public class DownloadLogAdapter extends BaseAdapter {
 			if(holder.typeId == Feed.FEEDFILETYPE_FEED) {
 				Feed feed = DBReader.getFeed(holder.id);
 				if (feed != null) {
-					feed.setLastUpdate(new Date(0)); // force refresh
 					try {
-						DBTasks.refreshFeed(context, feed);
+						DBTasks.forceRefreshFeed(context, feed);
 					} catch (DownloadRequestException e) {
 						e.printStackTrace();
 					}
@@ -162,7 +158,7 @@ public class DownloadLogAdapter extends BaseAdapter {
 	}
 
 	static class Holder {
-		TextView icon;
+		IconTextView icon;
 		IconButton retry;
 		TextView title;
 		TextView type;

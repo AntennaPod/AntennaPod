@@ -31,6 +31,8 @@ import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
+import java.util.Locale;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -171,12 +173,21 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                 super.setScreenOn(enable);
                 MediaplayerActivity.this.setScreenOn(enable);
             }
-        };
 
+            @Override
+            public void onSetSpeedAbilityChanged() {
+                MediaplayerActivity.this.onSetSpeedAbilityChanged();
+            }
+        };
+    }
+
+    protected void onSetSpeedAbilityChanged() {
+        Log.d(TAG, "onSetSpeedAbilityChanged()");
+        updatePlaybackSpeedButton();
     }
 
     protected void onPlaybackSpeedChange() {
-        updateButPlaybackSpeed();
+        updatePlaybackSpeedButtonText();
     }
 
     protected void onServiceQueried() {
@@ -206,8 +217,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     @Override
     protected void onPause() {
         super.onPause();
-        controller.reinitServiceIfPaused();
-        controller.pause();
+        if(controller != null) {
+            controller.reinitServiceIfPaused();
+            controller.pause();
+        }
     }
 
     /**
@@ -229,8 +242,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     protected void onBufferUpdate(float progress) {
         if (sbPosition != null) {
-            sbPosition.setSecondaryProgress((int) progress
-                    * sbPosition.getMax());
+            sbPosition.setSecondaryProgress((int) progress * sbPosition.getMax());
         }
     }
 
@@ -254,6 +266,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         Log.d(TAG, "onStop()");
         if (controller != null) {
             controller.release();
+            controller = null; // prevent leak
         }
     }
 
@@ -383,18 +396,11 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                                     .getSleepTimerTimeLeft()));
                             stDialog.positiveText(R.string.disable_sleeptimer_label);
                             stDialog.negativeText(R.string.cancel_label);
-                            stDialog.callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    dialog.dismiss();
-                                    controller.disableSleepTimer();
-                                }
-
-                                @Override
-                                public void onNegative(MaterialDialog dialog) {
-                                    dialog.dismiss();
-                                }
+                            stDialog.onPositive((dialog, which) -> {
+                                dialog.dismiss();
+                                controller.disableSleepTimer();
                             });
+                            stDialog.onNegative((dialog, which) -> dialog.dismiss());
                             stDialog.build().show();
                         }
                         break;
@@ -412,7 +418,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                     case R.id.audio_controls:
                         MaterialDialog dialog = new MaterialDialog.Builder(this)
                                 .title(R.string.audio_controls)
-                                .customView(R.layout.audio_controls, false)
+                                .customView(R.layout.audio_controls, true)
                                 .neutralText(R.string.close_label)
                                 .onNeutral((dialog1, which) -> {
                                     final SeekBar left = (SeekBar) dialog1.findViewById(R.id.volume_left);
@@ -454,14 +460,13 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                                 if(controller != null && controller.canSetPlaybackSpeed()) {
                                     float playbackSpeed = (progress + 10) / 20.0f;
                                     controller.setPlaybackSpeed(playbackSpeed);
-                                    String speed = String.format("%.2f", playbackSpeed);
-                                    UserPreferences.setPlaybackSpeed(speed);
-                                    txtvPlaybackSpeed.setText(speed + "x");
+                                    String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
+                                    UserPreferences.setPlaybackSpeed(speedPref);
+                                    String speedStr = String.format("%.2fx", playbackSpeed);
+                                    txtvPlaybackSpeed.setText(speedStr);
                                 } else if(fromUser) {
                                     float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
-                                    barPlaybackSpeed.post(() -> {
-                                        barPlaybackSpeed.setProgress((int) (20 * speed) - 10);
-                                    });
+                                    barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress((int) (20 * speed) - 10));
                                 }
                             }
 
@@ -479,9 +484,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barPlaybackSpeed.setProgress((int) (20 * currentSpeed) - 10);
 
                         final SeekBar barLeftVolume = (SeekBar) dialog.findViewById(R.id.volume_left);
-                        barLeftVolume.setProgress(100);
+                        barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
                         final SeekBar barRightVolume = (SeekBar) dialog.findViewById(R.id.volume_right);
-                        barRightVolume.setProgress(100);
+                        barRightVolume.setProgress(UserPreferences.getRightVolumePercentage());
                         final CheckBox stereoToMono = (CheckBox) dialog.findViewById(R.id.stereo_to_mono);
                         stereoToMono.setChecked(UserPreferences.stereoToMono());
                         if (controller != null && !controller.canDownmix()) {
@@ -493,14 +498,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barLeftVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                float leftVolume = 1.0f, rightVolume = 1.0f;
-                                if (progress < 100) {
-                                    leftVolume = progress / 100.0f;
-                                }
-                                if (barRightVolume.getProgress() < 100) {
-                                    rightVolume = barRightVolume.getProgress() / 100.0f;
-                                }
-                                controller.setVolume(leftVolume, rightVolume);
+                                controller.setVolume(
+                                        Converter.getVolumeFromPercentage(progress),
+                                        Converter.getVolumeFromPercentage(barRightVolume.getProgress()));
                             }
 
                             @Override
@@ -514,14 +514,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barRightVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                float leftVolume = 1.0f, rightVolume = 1.0f;
-                                if (progress < 100) {
-                                    rightVolume = progress / 100.0f;
-                                }
-                                if (barLeftVolume.getProgress() < 100) {
-                                    leftVolume = barLeftVolume.getProgress() / 100.0f;
-                                }
-                                controller.setVolume(leftVolume, rightVolume);
+                                controller.setVolume(
+                                        Converter.getVolumeFromPercentage(barLeftVolume.getProgress()),
+                                        Converter.getVolumeFromPercentage(progress));
                             }
 
                             @Override
@@ -583,7 +578,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         super.onResume();
         Log.d(TAG, "onResume()");
         StorageUtils.checkStorageAvailability(this);
-        controller.init();
+        if(controller != null) {
+            controller.init();
+        }
     }
 
     /**
@@ -597,32 +594,31 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     protected abstract void clearStatusMsg();
 
     protected void onPositionObserverUpdate() {
-        if (controller != null) {
-            int currentPosition = controller.getPosition();
-            int duration = controller.getDuration();
-            Log.d(TAG, "currentPosition " + Converter
-                    .getDurationStringLong(currentPosition));
-            if (currentPosition != PlaybackService.INVALID_TIME
-                    && duration != PlaybackService.INVALID_TIME
-                    && controller.getMedia() != null) {
-                txtvPosition.setText(Converter
-                        .getDurationStringLong(currentPosition));
-                if (showTimeLeft) {
-                    txtvLength.setText("-" + Converter
-                            .getDurationStringLong(duration - currentPosition));
-                } else {
-                    txtvLength.setText(Converter
-                            .getDurationStringLong(duration));
-                }
-                updateProgressbarPosition(currentPosition, duration);
-            } else {
-                Log.w(TAG, "Could not react to position observer update because of invalid time");
-            }
+        if (controller == null || txtvPosition == null || txtvLength == null) {
+            return;
         }
+        int currentPosition = controller.getPosition();
+        int duration = controller.getDuration();
+        Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
+        if (currentPosition == PlaybackService.INVALID_TIME ||
+                duration == PlaybackService.INVALID_TIME) {
+            Log.w(TAG, "Could not react to position observer update because of invalid time");
+            return;
+        }
+        txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+        if (showTimeLeft) {
+            txtvLength.setText("-" + Converter.getDurationStringLong(duration - currentPosition));
+        } else {
+            txtvLength.setText(Converter.getDurationStringLong(duration));
+        }
+        updateProgressbarPosition(currentPosition, duration);
     }
 
     private void updateProgressbarPosition(int position, int duration) {
         Log.d(TAG, "updateProgressbarPosition(" + position + ", " + duration + ")");
+        if(sbPosition == null) {
+            return;
+        }
         float progress = ((float) position) / duration;
         sbPosition.setProgress((int) (progress * sbPosition.getMax()));
     }
@@ -639,36 +635,51 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
         if (media != null) {
-            txtvPosition.setText(Converter.getDurationStringLong((media.getPosition())));
-
-            if (media.getDuration() != 0) {
-                txtvLength.setText(Converter.getDurationStringLong(media.getDuration()));
-                float progress = ((float) media.getPosition()) / media.getDuration();
-                sbPosition.setProgress((int) (progress * sbPosition.getMax()));
-                if (showTimeLeft) {
-                    int timeLeft = media.getDuration() - media.getPosition();
-                    txtvLength.setText("-" + Converter.getDurationStringLong(timeLeft));
-                }
-            }
+            onPositionObserverUpdate();
             checkFavorite();
-            if(butPlaybackSpeed != null) {
-                if (controller == null) {
-                    butPlaybackSpeed.setVisibility(View.GONE);
-                } else {
-                    butPlaybackSpeed.setVisibility(View.VISIBLE);
-                    if (controller.canSetPlaybackSpeed()) {
-                        ViewCompat.setAlpha(butPlaybackSpeed, 1.0f);
-                    } else {
-                        ViewCompat.setAlpha(butPlaybackSpeed, 0.5f);
-                    }
-                }
-                updateButPlaybackSpeed();
-            }
+            updatePlaybackSpeedButton();
             return true;
         } else {
             return false;
         }
     }
+
+    private void updatePlaybackSpeedButton() {
+        if(butPlaybackSpeed == null) {
+            return;
+        }
+        if (controller == null) {
+            butPlaybackSpeed.setVisibility(View.GONE);
+            return;
+        }
+        updatePlaybackSpeedButtonText();
+        ViewCompat.setAlpha(butPlaybackSpeed, controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
+        butPlaybackSpeed.setVisibility(View.VISIBLE);
+    }
+
+    private void updatePlaybackSpeedButtonText() {
+        if(butPlaybackSpeed == null) {
+            return;
+        }
+        if (controller == null) {
+            butPlaybackSpeed.setVisibility(View.GONE);
+            return;
+        }
+        float speed = 1.0f;
+        if(controller.canSetPlaybackSpeed()) {
+            try {
+                // we can only retrieve the playback speed from the controller/playback service
+                // once mediaplayer has been initialized
+                speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
+            } catch (NumberFormatException e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+                UserPreferences.setPlaybackSpeed(String.valueOf(speed));
+            }
+        }
+        String speedStr = String.format("%.2fx", speed);
+        butPlaybackSpeed.setText(speedStr);
+    }
+
 
     protected void setupGUI() {
         setContentView(getContentViewResourceId());
@@ -762,10 +773,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         }
 
         if (butRev != null) {
-            butRev.setOnClickListener(v -> {
-                int curr = controller.getPosition();
-                controller.seekTo(curr - UserPreferences.getRewindSecs() * 1000);
-            });
+            butRev.setOnClickListener(v -> onRewind());
             butRev.setOnLongClickListener(new View.OnLongClickListener() {
 
                 int choice;
@@ -792,7 +800,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                     builder.setNegativeButton(R.string.cancel_label, null);
                     builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                         UserPreferences.setPrefRewindSecs(choice);
-                        txtvRev.setText(String.valueOf(choice));
+                        if(txtvRev != null){
+                            txtvRev.setText(String.valueOf(choice));
+                        }
                     });
                     builder.create().show();
                     return true;
@@ -800,13 +810,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             });
         }
 
-        butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
+        butPlay.setOnClickListener(v -> onPlayPause());
 
         if (butFF != null) {
-            butFF.setOnClickListener(v -> {
-                int curr = controller.getPosition();
-                controller.seekTo(curr + UserPreferences.getFastFowardSecs() * 1000);
-            });
+            butFF.setOnClickListener(v -> onFastForward());
             butFF.setOnLongClickListener(new View.OnLongClickListener() {
 
                 int choice;
@@ -833,7 +840,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                     builder.setNegativeButton(R.string.cancel_label, null);
                     builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                         UserPreferences.setPrefFastForwardSecs(choice);
-                        txtvFF.setText(String.valueOf(choice));
+                        if(txtvFF != null) {
+                            txtvFF.setText(String.valueOf(choice));
+                        }
                     });
                     builder.create().show();
                     return true;
@@ -842,10 +851,31 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         }
 
         if (butSkip != null) {
-            butSkip.setOnClickListener(v -> {
-                sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
-            });
+            butSkip.setOnClickListener(v -> sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE)));
         }
+    }
+
+    protected void onRewind() {
+        if (controller == null) {
+            return;
+        }
+        int curr = controller.getPosition();
+        controller.seekTo(curr - UserPreferences.getRewindSecs() * 1000);
+    }
+
+    protected void onPlayPause() {
+        if(controller == null) {
+            return;
+        }
+        controller.playPause();
+    }
+
+    protected void onFastForward() {
+        if (controller == null) {
+            return;
+        }
+        int curr = controller.getPosition();
+        controller.seekTo(curr + UserPreferences.getFastFowardSecs() * 1000);
     }
 
     protected abstract int getContentViewResourceId();
@@ -853,8 +883,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     void handleError(int errorCode) {
         final AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
         errorDialog.setTitle(R.string.error_label);
-        errorDialog
-                .setMessage(MediaPlayerError.getErrorString(this, errorCode));
+        errorDialog.setMessage(MediaPlayerError.getErrorString(this, errorCode));
         errorDialog.setNeutralButton("OK",
                 (dialog, which) -> {
                     dialog.dismiss();
@@ -868,19 +897,14 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     @Override
     public void onProgressChanged (SeekBar seekBar,int progress, boolean fromUser) {
-        if (controller != null) {
-            prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
-            if (showTimeLeft && prog != 0) {
-                int duration = controller.getDuration();
-                String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
-                txtvLength.setText(length);
-            }
+        if (controller == null || txtvLength == null) {
+            return;
         }
-    }
-
-    private void updateButPlaybackSpeed() {
-        if (controller != null && butPlaybackSpeed != null) {
-            butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed() + "x");
+        prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
+        if (showTimeLeft && prog != 0) {
+            int duration = controller.getDuration();
+            String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
+            txtvLength.setText(length);
         }
     }
 
@@ -900,21 +924,25 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     private void checkFavorite() {
         Playable playable = controller.getMedia();
-            if (playable != null && playable instanceof FeedMedia) {
-                FeedItem feedItem = ((FeedMedia) playable).getItem();
-                if (feedItem != null) {
-                    Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
-                            .subscribeOn(Schedulers.newThread())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(item -> {
-                                boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
-                                if(isFavorite != isFav) {
-                                    isFavorite = isFav;
-                                    invalidateOptionsMenu();
-                                }
-                            });
-                }
+        if (playable != null && playable instanceof FeedMedia) {
+            FeedItem feedItem = ((FeedMedia) playable).getItem();
+            if (feedItem != null) {
+                Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        item -> {
+                            boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
+                            if (isFavorite != isFav) {
+                                isFavorite = isFav;
+                                invalidateOptionsMenu();
+                            }
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                        }
+                    );
             }
+        }
     }
 
 }

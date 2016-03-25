@@ -94,8 +94,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     private int mPosition = -1;
 
     private Playable media;
-    private ViewPager mPager;
-    private AudioplayerPagerAdapter mPagerAdapter;
+    private ViewPager pager;
+    private AudioplayerPagerAdapter pagerAdapter;
 
     private Subscription subscription;
 
@@ -103,6 +103,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
+        pagerAdapter.setController(null);
         if(subscription != null) {
             subscription.unsubscribe();
         }
@@ -112,12 +113,16 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy()");
         super.onDestroy();
         // don't risk creating memory leaks
+        drawerLayout = null;
         navAdapter = null;
+        navList = null;
+        navDrawer = null;
         drawerToggle = null;
-        mPager = null;
-        mPagerAdapter = null;
+        pager = null;
+        pagerAdapter = null;
     }
 
     @Override
@@ -126,27 +131,29 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     }
 
     private void saveCurrentFragment() {
-        if(mPager == null) {
+        if(pager == null) {
             return;
         }
         Log.d(TAG, "Saving preferences");
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         prefs.edit()
-                .putInt(PREF_KEY_SELECTED_FRAGMENT_POSITION, mPager.getCurrentItem())
+                .putInt(PREF_KEY_SELECTED_FRAGMENT_POSITION, pager.getCurrentItem())
                 .commit();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        if(drawerToggle != null) {
+            drawerToggle.onConfigurationChanged(newConfig);
+        }
     }
 
     private void loadLastFragment() {
         Log.d(TAG, "Restoring instance state");
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         int lastPosition = prefs.getInt(PREF_KEY_SELECTED_FRAGMENT_POSITION, -1);
-        mPager.setCurrentItem(lastPosition);
+        pager.setCurrentItem(lastPosition);
     }
 
     @Override
@@ -166,9 +173,10 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
                     true);
             startService(launchIntent);
         }
-        if(mPagerAdapter != null && controller != null && controller.getMedia() != media) {
+        if(pagerAdapter != null && controller != null && controller.getMedia() != media) {
             media = controller.getMedia();
-            mPagerAdapter.onMediaChanged(media);
+            pagerAdapter.onMediaChanged(media);
+            pagerAdapter.setController(controller);
         }
 
         EventDistributor.getInstance().register(contentUpdate);
@@ -255,13 +263,14 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
             startActivity(new Intent(AudioplayerActivity.this, PreferenceController.getPreferenceActivity()));
         });
 
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new AudioplayerPagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
+        pager = (ViewPager) findViewById(R.id.pager);
+        pagerAdapter = new AudioplayerPagerAdapter(getSupportFragmentManager(), media);
+        pagerAdapter.setController(controller);
+        pager.setAdapter(pagerAdapter);
         CirclePageIndicator pageIndicator = (CirclePageIndicator) findViewById(R.id.page_indicator);
-        pageIndicator.setViewPager(mPager);
+        pageIndicator.setViewPager(pager);
         loadLastFragment();
-        mPager.onSaveInstanceState();
+        pager.onSaveInstanceState();
     }
 
     @Override
@@ -277,13 +286,16 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         }
         if(controller.getMedia() != media) {
             media = controller.getMedia();
-            mPagerAdapter.onMediaChanged(media);
+            pagerAdapter.onMediaChanged(media);
         }
         return true;
     }
 
     public void notifyMediaPositionChanged() {
-        ChaptersFragment chaptersFragment = mPagerAdapter.getChaptersFragment();
+        if(pagerAdapter == null) {
+            return;
+        }
+        ChaptersFragment chaptersFragment = pagerAdapter.getChaptersFragment();
         if(chaptersFragment != null) {
             ChaptersListAdapter adapter = (ChaptersListAdapter) chaptersFragment.getListAdapter();
             if (adapter != null) {
@@ -329,11 +341,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle != null && drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+        return drawerToggle != null && drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -411,13 +419,13 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     public void onBackPressed() {
         if(isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
-        } else if (mPager.getCurrentItem() == 0) {
+        } else if (pager == null || pager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
             // Back button. This calls finish() on this activity and pops the back stack.
             super.onBackPressed();
         } else {
             // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+            pager.setCurrentItem(pager.getCurrentItem() - 1);
         }
     }
 
@@ -452,7 +460,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     private DBReader.NavDrawerData navDrawerData;
 
     private void loadData() {
-        subscription = Observable.fromCallable(() -> DBReader.getNavDrawerData())
+        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
@@ -518,6 +526,11 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         }
 
         @Override
+        public int getReclaimableItems() {
+            return (navDrawerData != null) ? navDrawerData.reclaimableSpace : 0;
+        }
+
+        @Override
         public int getFeedCounter(long feedId) {
             return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
@@ -527,10 +540,16 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         void onMediaChanged(Playable media);
     }
 
-    private class AudioplayerPagerAdapter extends FragmentStatePagerAdapter {
+    private static class AudioplayerPagerAdapter extends FragmentStatePagerAdapter {
 
-        public AudioplayerPagerAdapter(FragmentManager fm) {
+        private static final String TAG = "AudioplayerPagerAdapter";
+        
+        private Playable media;
+        private PlaybackController controller;
+
+        public AudioplayerPagerAdapter(FragmentManager fm, Playable media) {
             super(fm);
+            this.media = media;
         }
 
         private CoverFragment coverFragment;
@@ -538,6 +557,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
         private ChaptersFragment chaptersFragment;
 
         public void onMediaChanged(Playable media) {
+            this.media = media;
             if(coverFragment != null) {
                 coverFragment.onMediaChanged(media);
             }
@@ -546,6 +566,13 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
             }
             if(chaptersFragment != null) {
                 chaptersFragment.onMediaChanged(media);
+            }
+        }
+
+        public void setController(PlaybackController controller) {
+            this.controller = controller;
+            if(chaptersFragment != null) {
+                chaptersFragment.setController(controller);
             }
         }
 
@@ -570,7 +597,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
                     return itemDescriptionFragment;
                 case POS_CHAPTERS:
                     if(chaptersFragment == null) {
-                        chaptersFragment = ChaptersFragment.newInstance(media, controller);
+                        chaptersFragment = ChaptersFragment.newInstance(media);
+                        chaptersFragment.setController(controller);
                     }
                     return chaptersFragment;
                 default:

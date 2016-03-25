@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import de.danoeh.antennapod.core.feed.FeedFile;
 import de.danoeh.antennapod.core.util.URLChecker;
@@ -15,7 +16,7 @@ public class DownloadRequest implements Parcelable {
     private final String title;
     private String username;
     private String password;
-    private long ifModifiedSince;
+    private String lastModified;
     private boolean deleteOnFailure;
     private final long feedfileId;
     private final int feedfileType;
@@ -60,7 +61,7 @@ public class DownloadRequest implements Parcelable {
         this.feedfileType = builder.feedfileType;
         this.username = builder.username;
         this.password = builder.password;
-        this.ifModifiedSince = builder.ifModifiedSince;
+        this.lastModified = builder.lastModified;
         this.deleteOnFailure = builder.deleteOnFailure;
         this.arguments = (builder.arguments != null) ? builder.arguments : new Bundle();
     }
@@ -71,7 +72,7 @@ public class DownloadRequest implements Parcelable {
         title = in.readString();
         feedfileId = in.readLong();
         feedfileType = in.readInt();
-        ifModifiedSince = in.readLong();
+        lastModified = in.readString();
         deleteOnFailure = (in.readByte() > 0);
         arguments = in.readBundle();
         if (in.dataAvail() > 0) {
@@ -98,7 +99,7 @@ public class DownloadRequest implements Parcelable {
         dest.writeString(title);
         dest.writeLong(feedfileId);
         dest.writeInt(feedfileType);
-        dest.writeLong(ifModifiedSince);
+        dest.writeString(lastModified);
         dest.writeByte((deleteOnFailure) ? (byte) 1 : 0);
         dest.writeBundle(arguments);
         if (username != null) {
@@ -127,7 +128,8 @@ public class DownloadRequest implements Parcelable {
 
         DownloadRequest that = (DownloadRequest) o;
 
-        if (ifModifiedSince != that.ifModifiedSince) return false;
+        if (lastModified != null ? !lastModified.equals(that.lastModified) : that.lastModified != null)
+            return false;
         if (deleteOnFailure != that.deleteOnFailure) return false;
         if (feedfileId != that.feedfileId) return false;
         if (feedfileType != that.feedfileType) return false;
@@ -143,7 +145,6 @@ public class DownloadRequest implements Parcelable {
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (username != null ? !username.equals(that.username) : that.username != null)
             return false;
-
         return true;
     }
 
@@ -154,7 +155,7 @@ public class DownloadRequest implements Parcelable {
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (int)ifModifiedSince;
+        result = 31 * result + (lastModified != null ? lastModified.hashCode() : 0);
         result = 31 * result + (deleteOnFailure ? 1 : 0);
         result = 31 * result + (int) (feedfileId ^ (feedfileId >>> 32));
         result = 31 * result + feedfileType;
@@ -234,13 +235,14 @@ public class DownloadRequest implements Parcelable {
         this.password = password;
     }
 
-    public DownloadRequest setIfModifiedSince(long time) {
-        this.ifModifiedSince = time;
+    public DownloadRequest setLastModified(@Nullable String lastModified) {
+        this.lastModified = lastModified;
         return this;
     }
 
-    public long getIfModifiedSince() {
-        return this.ifModifiedSince;
+    @Nullable
+    public String getLastModified() {
+        return lastModified;
     }
 
     public boolean isDeleteOnFailure() {
@@ -257,7 +259,7 @@ public class DownloadRequest implements Parcelable {
         private String title;
         private String username;
         private String password;
-        private long ifModifiedSince;
+        private String lastModified;
         private boolean deleteOnFailure = false;
         private long feedfileId;
         private int feedfileType;
@@ -276,8 +278,8 @@ public class DownloadRequest implements Parcelable {
             return this;
         }
 
-        public Builder ifModifiedSince(long time) {
-            this.ifModifiedSince = time;
+        public Builder lastModified(String lastModified) {
+            this.lastModified = lastModified;
             return this;
         }
 

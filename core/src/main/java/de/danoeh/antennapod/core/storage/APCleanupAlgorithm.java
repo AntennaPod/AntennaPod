@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -12,8 +13,6 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.LongList;
 
 /**
  * Implementation of the EpisodeCleanupAlgorithm interface used by AntennaPod.
@@ -28,30 +27,18 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         this.numberOfDaysAfterPlayback = numberOfDaysAfterPlayback;
     }
 
+    /**
+     * @return the number of episodes that *could* be cleaned up, if needed
+     */
+    public int getReclaimableItems()
+    {
+        return getCandidates().size();
+    }
+
     @Override
     public int performCleanup(Context context, int numberOfEpisodesToDelete) {
-        List<FeedItem> candidates = new ArrayList<>();
-        List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+        List<FeedItem> candidates = getCandidates();
         List<FeedItem> delete;
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -1 * numberOfDaysAfterPlayback);
-        Date mostRecentDateForDeletion = cal.getTime();
-        for (FeedItem item : downloadedItems) {
-            if (item.hasMedia()
-                    && item.getMedia().isDownloaded()
-                    && !item.isTagged(FeedItem.TAG_QUEUE)
-                    && item.isPlayed()
-                    && !item.isTagged(FeedItem.TAG_FAVORITE)) {
-                FeedMedia media = item.getMedia();
-                // make sure this candidate was played at least the proper amount of days prior
-                // to now
-                if (media != null
-                        && media.getPlaybackCompletionDate() != null
-                        && media.getPlaybackCompletionDate().before(mostRecentDateForDeletion)) {
-                    candidates.add(item);
-                }
-            }
-        }
 
         Collections.sort(candidates, (lhs, rhs) -> {
             Date l = lhs.getMedia().getPlaybackCompletionDate();
@@ -88,6 +75,32 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
                 numberOfEpisodesToDelete));
 
         return counter;
+    }
+
+    @NonNull
+    private List<FeedItem> getCandidates() {
+        List<FeedItem> candidates = new ArrayList<>();
+        List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, -1 * numberOfDaysAfterPlayback);
+        Date mostRecentDateForDeletion = cal.getTime();
+        for (FeedItem item : downloadedItems) {
+            if (item.hasMedia()
+                    && item.getMedia().isDownloaded()
+                    && !item.isTagged(FeedItem.TAG_QUEUE)
+                    && item.isPlayed()
+                    && !item.isTagged(FeedItem.TAG_FAVORITE)) {
+                FeedMedia media = item.getMedia();
+                // make sure this candidate was played at least the proper amount of days prior
+                // to now
+                if (media != null
+                        && media.getPlaybackCompletionDate() != null
+                        && media.getPlaybackCompletionDate().before(mostRecentDateForDeletion)) {
+                    candidates.add(item);
+                }
+            }
+        }
+        return candidates;
     }
 
     @Override

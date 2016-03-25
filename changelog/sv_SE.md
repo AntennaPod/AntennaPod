@@ -1,5 +1,13 @@
 Ändringslogg
 ==========
+Version 1.5.0
+-------------
+* Exkludera episoder från automatisk nedladdning baserat på nyckelord
+* Flöden kan ställas in att inte uppdateras automatiskt
+* Förbättrad ljudspelare
+* Förbättrat gränssnitt
+* Buggfixar
+
 Version 1.4.1
 -------------
 Prestandaförbättringar
