@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Activitiy and fragment titles-->
+  <string name="feeds_label">Các feed</string>
+  <string name="new_label">Tạo mới</string>
+  <string name="settings_label">Thiết lập</string>
+  <string name="downloads_label">Tải về</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
+  <!--Webview actions-->
+  <!--Playback history-->
+  <!--Other-->
+  <string name="confirm_label">Xác nhận</string>
+  <string name="cancel_label">Hủy bỏ</string>
+  <string name="author_label">Tác giả</string>
+  <string name="language_label">Ngôn ngữ</string>
+  <string name="error_label">Lỗi</string>
+  <string name="refresh_label">Cập nhật lại</string>
+  <string name="external_storage_error_msg">Hiện không có thiết bị lưu trữ gắn ngoài nào. Hãy chắc rằng bạn đã kết nối máy của mình với thiết bị lưu trữ gắn ngoài để ứng dụng có thể được hoạt động trơn tru.</string>
+  <string name="chapters_label">Chương</string>
+  <string name="shownotes_label">Hiển thị ghi chú</string>
+  <string name="episodes_suffix">\u0020tập</string>
+  <string name="length_prefix">Độ dài:\u0020</string>
+  <string name="size_prefix">Kích thước:\u0020</string>
+  <string name="processing_label">Đang xử lý</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">Đường dẫn liên kết feed</string>
+  <!--Actions on feeds-->
+  <string name="show_info_label">Hiển thị thông ti</string>
+  <string name="feed_delete_confirmation_msg">Xin vui lòng xác nhận rằng bạn muốn xóa feed này và toàn bộ các phần khác của feed này mà bạn đã tải về.</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Tải về</string>
+  <string name="play_label">Phát</string>
+  <string name="stream_label">Phân luồng</string>
+  <string name="remove_label">Loại bỏ</string>
+  <string name="add_to_queue_label">Thêm vào hàng đợi</string>
+  <string name="remove_from_queue_label">Loại bỏ khỏi hàng đợi</string>
+  <string name="visit_website_label">Truy cập website</string>
+  <!--Download messages and labels-->
+  <!--Mediaplayer messages-->
+  <!--Queue operations-->
+  <!--Flattr-->
+  <!--Flattr-->
+  <!--Variable Speed-->
+  <!--Empty list labels-->
+  <!--Preferences-->
+  <!--Auto-Flattr dialog-->
+  <!--Search-->
+  <!--OPML import and export-->
+  <!--Sleep timer-->
+  <!--gpodder.net-->
+  <!--Directory chooser-->
+  <!--Online feed view-->
+  <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
+  <!--Progress information-->
+  <!--AntennaPodSP-->
+  <!--Rating dialog-->
+  <!--Audio controls-->
+</resources>
