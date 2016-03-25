@@ -25,6 +25,8 @@ import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
 
+import org.antennapod.audio.MediaPlayer;
+
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -1016,6 +1018,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
         void playbackSpeedChanged(float s);
 
+        void setSpeedAbilityChanged();
+
         void onBufferingUpdate(int percent);
 
         boolean onMediaPlayerInfo(int code);
@@ -1036,6 +1040,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 ((AudioPlayer) mp)
                         .setOnBufferingUpdateListener(audioBufferingUpdateListener);
                 ((AudioPlayer) mp).setOnInfoListener(audioInfoListener);
+                ((AudioPlayer) mp).setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
             } else {
                 ((VideoPlayer) mp)
                         .setOnCompletionListener(videoCompletionListener);
@@ -1050,7 +1055,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         return mp;
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnCompletionListener audioCompletionListener =
+    private final MediaPlayer.OnCompletionListener audioCompletionListener =
             mp -> genericOnCompletion();
 
     private final android.media.MediaPlayer.OnCompletionListener videoCompletionListener =
@@ -1060,7 +1065,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         endPlayback(false);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =
+    private final MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =
             (mp, percent) -> genericOnBufferingUpdate(percent);
 
     private final android.media.MediaPlayer.OnBufferingUpdateListener videoBufferingUpdateListener =
@@ -1070,7 +1075,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         callback.onBufferingUpdate(percent);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnInfoListener audioInfoListener =
+    private final MediaPlayer.OnInfoListener audioInfoListener =
             (mp, what, extra) -> genericInfoListener(what);
 
     private final android.media.MediaPlayer.OnInfoListener videoInfoListener =
@@ -1080,7 +1085,16 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         return callback.onMediaPlayerInfo(what);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnErrorListener audioErrorListener =
+    private final MediaPlayer.OnSpeedAdjustmentAvailableChangedListener
+            audioSetSpeedAbilityListener = new MediaPlayer.OnSpeedAdjustmentAvailableChangedListener() {
+        @Override
+        public void onSpeedAdjustmentAvailableChanged(MediaPlayer arg0, boolean speedAdjustmentAvailable) {
+            callback.setSpeedAbilityChanged();
+        }
+    };
+
+
+    private final MediaPlayer.OnErrorListener audioErrorListener =
             (mp, what, extra) -> {
                 if(mp.canFallback()) {
                     mp.fallback();
@@ -1096,7 +1110,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         return callback.onMediaPlayerError(inObj, what, extra);
     }
 
-    private final org.antennapod.audio.MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener =
+    private final MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener =
             mp -> genericSeekCompleteListener();
 
     private final android.media.MediaPlayer.OnSeekCompleteListener videoSeekCompleteListener =

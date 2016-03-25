@@ -34,6 +34,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         super.setUp();
 
         // create new database
+        PodDBAdapter.init(getInstrumentation().getTargetContext());
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();

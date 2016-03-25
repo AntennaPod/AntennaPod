@@ -39,7 +39,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         context = getInstrumentation().getTargetContext();
 
         // create new database
-        PodDBAdapter.init(getInstrumentation().getTargetContext());
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();

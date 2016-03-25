@@ -173,12 +173,21 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                 super.setScreenOn(enable);
                 MediaplayerActivity.this.setScreenOn(enable);
             }
-        };
 
+            @Override
+            public void onSetSpeedAbilityChanged() {
+                MediaplayerActivity.this.onSetSpeedAbilityChanged();
+            }
+        };
+    }
+
+    protected void onSetSpeedAbilityChanged() {
+        Log.d(TAG, "onSetSpeedAbilityChanged()");
+        updatePlaybackSpeedButton();
     }
 
     protected void onPlaybackSpeedChange() {
-        updateButPlaybackSpeed();
+        updatePlaybackSpeedButtonText();
     }
 
     protected void onServiceQueried() {
@@ -628,24 +637,49 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         if (media != null) {
             onPositionObserverUpdate();
             checkFavorite();
-            if(butPlaybackSpeed != null) {
-                if (controller == null) {
-                    butPlaybackSpeed.setVisibility(View.GONE);
-                } else {
-                    butPlaybackSpeed.setVisibility(View.VISIBLE);
-                    if (controller.canSetPlaybackSpeed()) {
-                        ViewCompat.setAlpha(butPlaybackSpeed, 1.0f);
-                    } else {
-                        ViewCompat.setAlpha(butPlaybackSpeed, 0.5f);
-                    }
-                }
-                updateButPlaybackSpeed();
-            }
+            updatePlaybackSpeedButton();
             return true;
         } else {
             return false;
         }
     }
+
+    private void updatePlaybackSpeedButton() {
+        if(butPlaybackSpeed == null) {
+            return;
+        }
+        if (controller == null) {
+            butPlaybackSpeed.setVisibility(View.GONE);
+            return;
+        }
+        updatePlaybackSpeedButtonText();
+        ViewCompat.setAlpha(butPlaybackSpeed, controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
+        butPlaybackSpeed.setVisibility(View.VISIBLE);
+    }
+
+    private void updatePlaybackSpeedButtonText() {
+        if(butPlaybackSpeed == null) {
+            return;
+        }
+        if (controller == null) {
+            butPlaybackSpeed.setVisibility(View.GONE);
+            return;
+        }
+        float speed = 1.0f;
+        if(controller.canSetPlaybackSpeed()) {
+            try {
+                // we can only retrieve the playback speed from the controller/playback service
+                // once mediaplayer has been initialized
+                speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
+            } catch (NumberFormatException e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+                UserPreferences.setPlaybackSpeed(String.valueOf(speed));
+            }
+        }
+        String speedStr = String.format("%.2fx", speed);
+        butPlaybackSpeed.setText(speedStr);
+    }
+
 
     protected void setupGUI() {
         setContentView(getContentViewResourceId());
@@ -871,20 +905,6 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             int duration = controller.getDuration();
             String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
             txtvLength.setText(length);
-        }
-    }
-
-    private void updateButPlaybackSpeed() {
-        if (controller != null && butPlaybackSpeed != null) {
-            float speed = 1.0f;
-            try {
-                speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
-            } catch(NumberFormatException e) {
-                Log.e(TAG, Log.getStackTraceString(e));
-                UserPreferences.setPlaybackSpeed(String.valueOf(speed));
-            }
-            String speedStr = String.format("%.2fx", speed);
-            butPlaybackSpeed.setText(speedStr);
         }
     }
 
