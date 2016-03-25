@@ -88,7 +88,7 @@ public class SubscriptionFragment extends Fragment {
         });
 
         if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.my_subscriptions);
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscriptions_label);
         }
 
     }

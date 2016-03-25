@@ -54,6 +54,8 @@ public class UserPreferences {
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
+    public static final String PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER = "prefShowSubscriptionsInDrawer";
+
 
     // Queue
     public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
@@ -112,7 +114,6 @@ public class UserPreferences {
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
-    private static final String PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER = "prefShowSubscriptionsInDrawer";
 
     // Constants
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
