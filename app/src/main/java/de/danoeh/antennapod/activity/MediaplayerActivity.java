@@ -175,14 +175,14 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             }
 
             @Override
-            public void onPlaybackSpeedAvailableChanged() {
-                MediaplayerActivity.this.onPlaybackSpeedAvailableChanged();
+            public void onSetSpeedAbilityChanged() {
+                MediaplayerActivity.this.onSetSpeedAbilityChanged();
             }
         };
     }
 
-    protected void onPlaybackSpeedAvailableChanged() {
-        Log.d(TAG, "onPlaybackSpeedAvailableChanged()");
+    protected void onSetSpeedAbilityChanged() {
+        Log.d(TAG, "onSetSpeedAbilityChanged()");
         updatePlaybackSpeedButton();
     }
 

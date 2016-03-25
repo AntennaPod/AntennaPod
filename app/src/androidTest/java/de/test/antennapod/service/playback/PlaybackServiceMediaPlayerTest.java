@@ -170,7 +170,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -244,7 +244,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -321,7 +321,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -399,7 +399,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -471,7 +471,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -544,7 +544,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -619,7 +619,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -697,7 +697,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -750,7 +750,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         }
 
         @Override
-        public void playbackSpeedAvailableChanged() {
+        public void setSpeedAbilityChanged() {
 
         }
 
@@ -823,7 +823,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -933,7 +933,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -1020,7 +1020,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
@@ -1119,7 +1119,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedAvailableChanged() {
+            public void setSpeedAbilityChanged() {
 
             }
 
