@@ -289,6 +289,8 @@
 
 
     <!-- Preferences -->
+    <string name="storage_pref">Storage</string>
+    <string name="project_pref">Project</string>
     <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
@@ -400,6 +402,7 @@
     <string name="pref_current_value">Current value: %1$s</string>
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Set a network proxy</string>
+    <string name="pref_faq">FAQ</string>
     <string name="pref_known_issues">Known issues</string>
     <string name="pref_no_browser_found">No web browser found.</string>
 

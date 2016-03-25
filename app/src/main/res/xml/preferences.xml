@@ -254,7 +254,7 @@
                 android:title="@string/pref_gpodnet_sethostname_title"/>
         </PreferenceScreen>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/other_pref">
+    <PreferenceCategory android:title="@string/storage_pref">
         <Preference
             android:title="@string/choose_data_directory"
             android:key="prefChooseDataDir"/>
@@ -265,15 +265,19 @@
             android:key="prefImageCacheSize"
             android:summary="@string/pref_image_cache_size_sum"
             android:defaultValue="100"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/other_pref">
         <Preference
             android:key="prefOpmlExport"
             android:title="@string/opml_export_label"/>
         <Preference
             android:key="statistics"
             android:title="@string/statistics_label"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/project_pref">
         <Preference
-            android:key="prefAbout"
-            android:title="@string/about_pref"/>
+            android:key="prefFaq"
+            android:title="@string/pref_faq"/>
         <Preference
             android:key="prefKnownIssues"
             android:title="@string/pref_known_issues"/>
@@ -281,6 +285,9 @@
             android:key="prefSendCrashReport"
             android:title="@string/crash_report_title"
             android:summary="@string/crash_report_sum"/>
+        <Preference
+            android:key="prefAbout"
+            android:title="@string/about_pref"/>
     </PreferenceCategory>
     
 </PreferenceScreen>
