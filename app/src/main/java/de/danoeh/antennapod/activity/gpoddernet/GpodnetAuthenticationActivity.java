@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -19,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -204,6 +204,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                         chooseDevice.setEnabled(true);
                     }
                     devices.set(gpodnetDevices);
+                    deviceID.setText(generateDeviceID(gpodnetDevices));
                     createNewDevice.setEnabled(true);
                 }
             }
@@ -224,7 +225,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         createNewDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkDeviceIDText(deviceID, txtvError, devices.get())) {
+                if (checkDeviceIDText(deviceID, caption, txtvError, devices.get())) {
                     final String deviceStr = deviceID.getText().toString();
                     final String captionStr = caption.getText().toString();
 
@@ -272,7 +273,6 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
             }
         });
 
-        deviceID.setText(generateDeviceID());
         chooseDevice.setOnClickListener(v -> {
             final int position = spinnerDevices.getSelectedItemPosition();
             if (position != AdapterView.INVALID_POSITION) {
@@ -283,31 +283,50 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
     }
 
 
-    private String generateDeviceID() {
-        final int DEVICE_ID_LENGTH = 10;
-        StringBuilder buffer = new StringBuilder(DEVICE_ID_LENGTH);
-        SecureRandom random = new SecureRandom();
-        for (int i = 0; i < DEVICE_ID_LENGTH; i++) {
-            buffer.append(random.nextInt(10));
+    private String generateDeviceID(List<GpodnetDevice> gpodnetDevices) {
+        // devices names must be of a certain form:
+        // https://gpoddernet.readthedocs.org/en/latest/api/reference/general.html#devices
+        // This is more restrictive than needed, but I think it makes for more readable names.
+        String baseId = Build.MODEL.replaceAll("\\W", "");
+        String id = baseId;
+        int num = 0;
 
+        while (isDeviceWithIdInList(id, gpodnetDevices)) {
+            id = baseId + "_" + num;
+            num++;
         }
-        return buffer.toString();
+
+        return id;
     }
 
-    private boolean checkDeviceIDText(EditText deviceID, TextView txtvError, List<GpodnetDevice> devices) {
+    private boolean isDeviceWithIdInList(String id, List<GpodnetDevice> gpodnetDevices) {
+        if (gpodnetDevices == null) {
+            return false;
+        }
+        for (GpodnetDevice device : gpodnetDevices) {
+            if (device.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkDeviceIDText(EditText deviceID, EditText caption, TextView txtvError, List<GpodnetDevice> devices) {
         String text = deviceID.getText().toString();
         if (text.length() == 0) {
             txtvError.setText(R.string.gpodnetauth_device_errorEmpty);
             txtvError.setVisibility(View.VISIBLE);
             return false;
+        } else if (caption.length() == 0) {
+            txtvError.setText(R.string.gpodnetauth_device_caption_errorEmpty);
+            txtvError.setVisibility(View.VISIBLE);
+            return false;
         } else {
             if (devices != null) {
-                for (GpodnetDevice device : devices) {
-                    if (device.getId().equals(text)) {
-                        txtvError.setText(R.string.gpodnetauth_device_errorAlreadyUsed);
-                        txtvError.setVisibility(View.VISIBLE);
-                        return false;
-                    }
+                if (isDeviceWithIdInList(text, devices)) {
+                    txtvError.setText(R.string.gpodnetauth_device_errorAlreadyUsed);
+                    txtvError.setVisibility(View.VISIBLE);
+                    return false;
                 }
                 txtvError.setVisibility(View.GONE);
                 return true;

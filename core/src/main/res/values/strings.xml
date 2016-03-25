@@ -488,6 +488,7 @@
     <string name="gpodnetauth_device_chooseExistingDevice">Choose existing device:</string>
     <string name="gpodnetauth_device_errorEmpty">Device ID must not be empty</string>
     <string name="gpodnetauth_device_errorAlreadyUsed">Device ID already in use</string>
+    <string name="gpodnetauth_device_caption_errorEmpty">Caption must not be empty</string>
 
     <string name="gpodnetauth_device_butChoose">Choose</string>
     <string name="gpodnetauth_finish_title">Login successful!</string>
