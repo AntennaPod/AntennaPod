@@ -225,7 +225,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         createNewDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkDeviceIDText(deviceID, txtvError, devices.get())) {
+                if (checkDeviceIDText(deviceID, caption, txtvError, devices.get())) {
                     final String deviceStr = deviceID.getText().toString();
                     final String captionStr = caption.getText().toString();
 
@@ -311,20 +311,22 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         return false;
     }
 
-    private boolean checkDeviceIDText(EditText deviceID, TextView txtvError, List<GpodnetDevice> devices) {
+    private boolean checkDeviceIDText(EditText deviceID, EditText caption, TextView txtvError, List<GpodnetDevice> devices) {
         String text = deviceID.getText().toString();
         if (text.length() == 0) {
             txtvError.setText(R.string.gpodnetauth_device_errorEmpty);
             txtvError.setVisibility(View.VISIBLE);
             return false;
+        } else if (caption.length() == 0) {
+            txtvError.setText(R.string.gpodnetauth_device_caption_errorEmpty);
+            txtvError.setVisibility(View.VISIBLE);
+            return false;
         } else {
             if (devices != null) {
-                for (GpodnetDevice device : devices) {
-                    if (device.getId().equals(text)) {
-                        txtvError.setText(R.string.gpodnetauth_device_errorAlreadyUsed);
-                        txtvError.setVisibility(View.VISIBLE);
-                        return false;
-                    }
+                if (isDeviceWithIdInList(text, devices)) {
+                    txtvError.setText(R.string.gpodnetauth_device_errorAlreadyUsed);
+                    txtvError.setVisibility(View.VISIBLE);
+                    return false;
                 }
                 txtvError.setVisibility(View.GONE);
                 return true;
