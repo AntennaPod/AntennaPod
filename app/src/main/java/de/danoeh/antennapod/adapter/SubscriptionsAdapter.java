@@ -1,70 +1,106 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.view.SubscriptionViewItem;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
 /**
  * Adapter for subscriptions
  */
 public class SubscriptionsAdapter extends BaseAdapter {
 
-    private NavListAdapter.ItemAccess mItemAccess;
+    private NavListAdapter.ItemAccess itemAccess;
 
-    private Context mContext;
+    private final Context context;
 
     public SubscriptionsAdapter(Context context, NavListAdapter.ItemAccess itemAccess) {
-        mItemAccess = itemAccess;
-        mContext = context;
+        this.itemAccess = itemAccess;
+        this.context = context;
     }
 
     public void setItemAccess(NavListAdapter.ItemAccess itemAccess) {
-        mItemAccess = itemAccess;
+        this.itemAccess = itemAccess;
     }
 
     @Override
     public int getCount() {
-        return mItemAccess.getCount();
+        return itemAccess.getCount();
     }
 
     @Override
     public Object getItem(int position) {
-        return mItemAccess.getItem(position);
+        return itemAccess.getItem(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return mItemAccess.getItem(position).getId();
+        return itemAccess.getItem(position).getId();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
-        final Feed item = (Feed) getItem(position);
-        if (item == null) return null;
+        final Feed feed = (Feed) getItem(position);
+        if (feed == null) return null;
 
         if (convertView == null) {
             holder = new Holder();
-            LayoutInflater inflater =
-                    (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.subscription_item, parent, false);
-            holder.itemView = (SubscriptionViewItem) convertView.findViewById(R.id.subscription_item);
+
+            LayoutInflater layoutInflater =
+                    (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = layoutInflater.inflate(R.layout.subscription_item, parent, false);
+            holder.feedTitle = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.imageView = (ImageView) convertView.findViewById(R.id.imgvCover);
+
+
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
 
-        holder.itemView.setFeed(item);
+        holder.feedTitle.setVisibility(View.VISIBLE);
+        holder.feedTitle.setText(feed.getTitle());
+        Glide.with(context)
+                .load(feed.getImageUri())
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate()
+                .listener(new RequestListener<Uri, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        holder.feedTitle.setVisibility(View.GONE);
+                        holder.imageView.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
+                .into(holder.imageView);
+
         return convertView;
     }
 
     static class Holder {
-        SubscriptionViewItem itemView;
+        public TextView feedTitle;
+        public ImageView imageView;
     }
 }
