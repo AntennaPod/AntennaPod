@@ -583,18 +583,33 @@ public class DBWriter {
     /*
      * Sets the 'read'-attribute of all specified FeedItems
      *
-     * @param context A context that is used for opening a database connection.
      * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW,
      *                FeedItem.UNPLAYED
      * @param itemIds IDs of the FeedItems.
      */
     public static Future<?> markItemPlayed(final int played, final long... itemIds) {
+        return markItemPlayed(played, true, itemIds);
+    }
+
+    /*
+     * Sets the 'read'-attribute of all specified FeedItems
+     *
+     * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW,
+     *                FeedItem.UNPLAYED
+     * @param broadcastUpdate true if this operation should trigger a UnreadItemsUpdate broadcast.
+     *        This option is usually set to true
+     * @param itemIds IDs of the FeedItems.
+     */
+    public static Future<?> markItemPlayed(final int played, final boolean broadcastUpdate,
+                                           final long... itemIds) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItemRead(played, itemIds);
             adapter.close();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            if(broadcastUpdate) {
+                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            }
         });
     }
 
