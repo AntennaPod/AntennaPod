@@ -43,13 +43,17 @@ import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
@@ -58,6 +62,7 @@ import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
@@ -94,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
             EpisodesFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
+            SubscriptionFragment.TAG,
             AddFeedFragment.TAG
     };
 
@@ -269,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     }
 
     public void loadFragment(int index, Bundle args) {
-        Log.d(TAG, "loadFragment(index: " + index + ", args: " + args +")");
+        Log.d(TAG, "loadFragment(index: " + index + ", args: " + args + ")");
         if (index < navAdapter.getSubscriptionOffset()) {
             String tag = navAdapter.getTags().get(index);
             loadFragment(tag, args);
@@ -297,6 +303,11 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
                 break;
             case AddFeedFragment.TAG:
                 fragment = new AddFeedFragment();
+                break;
+            case SubscriptionFragment.TAG:
+                SubscriptionFragment subscriptionFragment = new SubscriptionFragment();
+                subscriptionFragment.setItemAccess(itemAccess);
+                fragment = subscriptionFragment;
                 break;
             default:
                 // default to the queue
@@ -646,6 +657,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
         public int getFeedCounter(long feedId) {
             return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
+
     };
 
     private void loadData() {
@@ -669,6 +681,10 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         loadData();
+    }
+
+    public void onEvent(SubscriptionFragment.SubscriptionEvent event) {
+        loadFeedFragmentById(event.feed.getId(), null);
     }
 
     public void onEventMainThread(ProgressEvent event) {

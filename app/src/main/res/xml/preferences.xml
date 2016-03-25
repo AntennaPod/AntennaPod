@@ -36,6 +36,12 @@
                 android:summary="@string/pref_nav_drawer_feed_counter_sum"
                 android:defaultValue="0"
                 app:useStockLayout="true"/>
+            <de.danoeh.antennapod.preferences.SwitchCompatPreference
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefShowSubscriptionsInDrawer"
+                android:summary="@string/pref_show_subscriptions_in_drawer_sum"
+                android:title="@string/pref_show_subscriptions_in_drawer_title"/>
         </PreferenceScreen>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"

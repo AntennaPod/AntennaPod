@@ -112,6 +112,7 @@ public class UserPreferences {
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
+    private static final String PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER = "prefShowSubscriptionsInDrawer";
 
     // Constants
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
@@ -172,6 +173,10 @@ public class UserPreferences {
     public static int getFeedCounterSetting() {
         String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "0");
         return Integer.parseInt(value);
+    }
+
+    public static boolean showSubscriptionsInDrawer() {
+        return prefs.getBoolean(PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER, true);
     }
 
     /**
