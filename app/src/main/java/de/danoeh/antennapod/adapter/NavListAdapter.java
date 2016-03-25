@@ -177,7 +177,7 @@ public class NavListAdapter extends BaseAdapter
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
             v = getSectionDividerView(convertView, parent);
         } else {
-            v = getFeedView(position - getSubscriptionOffset(), convertView, parent);
+            v = getFeedView(position, convertView, parent);
         }
         if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
             TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
@@ -267,10 +267,11 @@ public class NavListAdapter extends BaseAdapter
         return convertView;
     }
 
-    private View getFeedView(int feedPos, View convertView, ViewGroup parent) {
-        FeedHolder holder;
+    private View getFeedView(int position, View convertView, ViewGroup parent) {
+        int feedPos = position - getSubscriptionOffset();
         Feed feed = itemAccess.getItem(feedPos);
 
+        FeedHolder holder;
         if (convertView == null) {
             holder = new FeedHolder();
             LayoutInflater inflater = (LayoutInflater) context
@@ -298,7 +299,6 @@ public class NavListAdapter extends BaseAdapter
 
         holder.title.setText(feed.getTitle());
 
-
         if(feed.hasLastUpdateFailed()) {
             RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
             p.addRule(RelativeLayout.LEFT_OF, R.id.itxtvFailure);
@@ -312,7 +312,11 @@ public class NavListAdapter extends BaseAdapter
         if(counter > 0) {
             holder.count.setVisibility(View.VISIBLE);
             holder.count.setText(String.valueOf(counter));
-            holder.count.setTypeface(holder.title.getTypeface());
+            if (itemAccess.getSelectedItemIndex() == position) {
+                holder.count.setTypeface(null, Typeface.BOLD);
+            } else {
+                holder.count.setTypeface(null, Typeface.NORMAL);
+            }
         } else {
             holder.count.setVisibility(View.GONE);
         }
