@@ -90,6 +90,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PROXY = "prefProxy";
     public static final String PREF_KNOWN_ISSUES = "prefKnownIssues";
+    public static final String PREF_FAQ = "prefFaq";
     public static final String PREF_SEND_CRASH_REPORT = "prefSendCrashReport";
 
     private final PreferenceUI ui;
@@ -328,7 +329,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                             Toast.LENGTH_SHORT);
                     toast.show();
                     return true;
-            });
+                });
         ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(
                 preference -> {
                     GpodnetPreferences.logout();
@@ -382,14 +383,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             return true;
         });
         ui.findPreference(PREF_KNOWN_ISSUES).setOnPreferenceClickListener(preference -> {
-            String url = "https://github.com/AntennaPod/AntennaPod/labels/bug";
-            try {
-                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                ui.getActivity().startActivity(myIntent);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(ui.getActivity(), R.string.pref_no_browser_found, Toast.LENGTH_LONG).show();
-                Log.e(TAG, Log.getStackTraceString(e));
-            }
+            openInBrowser("https://github.com/AntennaPod/AntennaPod/labels/bug");
+            return true;
+        });
+        ui.findPreference(PREF_FAQ).setOnPreferenceClickListener(preference -> {
+            openInBrowser("http://antennapod.org/faq.html");
             return true;
         });
         ui.findPreference(PREF_SEND_CRASH_REPORT).setOnPreferenceClickListener(preference -> {
@@ -408,6 +406,16 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
+    }
+
+    private void openInBrowser(String url) {
+        try {
+            Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            ui.getActivity().startActivity(myIntent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(ui.getActivity(), R.string.pref_no_browser_found, Toast.LENGTH_LONG).show();
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
     }
 
     public void onResume() {

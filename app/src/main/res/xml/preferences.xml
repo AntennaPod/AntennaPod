@@ -276,6 +276,9 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/project_pref">
         <Preference
+            android:key="prefFaq"
+            android:title="@string/pref_faq"/>
+        <Preference
             android:key="prefKnownIssues"
             android:title="@string/pref_known_issues"/>
         <Preference
