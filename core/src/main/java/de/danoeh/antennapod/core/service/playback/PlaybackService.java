@@ -260,10 +260,6 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         Log.d(TAG, "Service created.");
         isRunning = true;
 
-        CastManager castMgr = CastManager.getInstance();
-        castMgr.addCastConsumer(castConsumer);
-        isCasting = castMgr.isConnected();
-
         registerReceiver(headsetDisconnected, new IntentFilter(
                 Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(
@@ -281,7 +277,14 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(
                 ACTION_RESUME_PLAY_CURRENT_EPISODE));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
-        mediaPlayer = new LocalPSMP(this, mediaPlayerCallback);
+        CastManager castMgr = CastManager.getInstance();
+        castMgr.addCastConsumer(castConsumer);
+        isCasting = castMgr.isConnected();
+        if (isCasting) {
+            onCastAppConnected(true);
+        } else {
+            mediaPlayer = new LocalPSMP(this, mediaPlayerCallback);
+        }
 
         ComponentName eventReceiver = new ComponentName(getApplicationContext(),
                 MediaButtonReceiver.class);
@@ -1561,20 +1564,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
     private CastConsumer castConsumer = new CastConsumerImpl() {
         @Override
         public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
-            Log.d(TAG, "A cast device application was connected");
-            isCasting = true;
-            if (mediaPlayer != null) {
-                PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
-                if (info.playerStatus == PlayerStatus.PLAYING) {
-                    // could be pause, but this way we make sure the new player will get the correct position, since pause runs asynchronously
-                    saveCurrentPosition(false, 0);
-                }
-            }
-            switchMediaPlayer(new RemotePSMP(PlaybackService.this, mediaPlayerCallback),
-                    (mediaPlayer != null) ? mediaPlayer.getPSMPInfo() :
-                            new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null));
-            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, EXTRA_CODE_CAST);
-            registerWifiBroadcastReceiver();
+            PlaybackService.this.onCastAppConnected(wasLaunched);
         }
 
         @Override
@@ -1619,6 +1609,23 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
             unregisterWifiBroadcastReceiver();
         }
     };
+
+    private void onCastAppConnected(boolean wasLaunched) {
+        Log.d(TAG, "A cast device application was connected");
+        isCasting = true;
+        if (mediaPlayer != null) {
+            PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
+            if (info.playerStatus == PlayerStatus.PLAYING) {
+                // could be pause, but this way we make sure the new player will get the correct position, since pause runs asynchronously
+                saveCurrentPosition(false, 0);
+            }
+        }
+        switchMediaPlayer(new RemotePSMP(PlaybackService.this, mediaPlayerCallback),
+                (mediaPlayer != null) ? mediaPlayer.getPSMPInfo() :
+                        new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null));
+        sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, EXTRA_CODE_CAST);
+        registerWifiBroadcastReceiver();
+    }
 
     private void switchMediaPlayer(@NonNull PlaybackServiceMediaPlayer newPlayer,
                                    @NonNull PlaybackServiceMediaPlayer.PSMPInfo info) {
