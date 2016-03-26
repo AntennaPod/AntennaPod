@@ -71,8 +71,7 @@ public class SubscriptionsAdapter extends BaseAdapter {
         } else {
             holder = (Holder) convertView.getTag();
         }
-
-        holder.feedTitle.setVisibility(View.VISIBLE);
+        
         holder.feedTitle.setText(feed.getTitle());
         Glide.with(context)
                 .load(feed.getImageUri())
@@ -89,8 +88,6 @@ public class SubscriptionsAdapter extends BaseAdapter {
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.feedTitle.setVisibility(View.GONE);
-                        holder.imageView.setVisibility(View.VISIBLE);
                         return false;
                     }
                 })
