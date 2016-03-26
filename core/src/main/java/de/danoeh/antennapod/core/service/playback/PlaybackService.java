@@ -281,7 +281,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         castMgr.addCastConsumer(castConsumer);
         isCasting = castMgr.isConnected();
         if (isCasting) {
-            onCastAppConnected(true);
+            onCastAppConnected(false);
         } else {
             mediaPlayer = new LocalPSMP(this, mediaPlayerCallback);
         }
@@ -1611,6 +1611,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
     };
 
     private void onCastAppConnected(boolean wasLaunched) {
+        //TODO deal with wasLaunched == false
         Log.d(TAG, "A cast device application was connected");
         isCasting = true;
         if (mediaPlayer != null) {
