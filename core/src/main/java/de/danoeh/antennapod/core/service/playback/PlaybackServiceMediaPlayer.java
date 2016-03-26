@@ -131,7 +131,9 @@ public abstract class PlaybackServiceMediaPlayer {
     /**
      * Seek to the start of the specified chapter.
      */
-    public abstract void seekToChapter(@NonNull Chapter c);
+    public void seekToChapter(@NonNull Chapter c) {
+        seekTo((int) c.getStart());
+    }
 
     /**
      * Returns the duration of the current media object or INVALID_TIME if the duration could not be retrieved.

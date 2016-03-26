@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
@@ -422,14 +421,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
             playerLock.unlock();
         });
-    }
-
-    /**
-     * Seek to the start of the specified chapter.
-     */
-    @Override
-    public void seekToChapter(@NonNull Chapter c) {
-        seekTo((int) c.getStart());
     }
 
     /**
