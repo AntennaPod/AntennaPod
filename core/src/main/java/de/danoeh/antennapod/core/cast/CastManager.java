@@ -31,6 +31,7 @@ import android.view.KeyEvent;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
+import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastStatusCodes;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaQueueItem;
@@ -67,9 +68,8 @@ import static com.google.android.gms.cast.RemoteMediaPlayer.RESUME_STATE_UNCHANG
  * needed).
  * <p>
  * Clients need to initialize this class by calling
- * {@link #initialize(android.content.Context, CastConfiguration)} in the Application's
- * {@code onCreate()} method. All configurable parameters are encapsulates in the
- * {@link CastConfiguration} parameter. To access the (singleton) instance of this class, clients
+ * {@link #init(android.content.Context)} in the Application's
+ * {@code onCreate()} method. To access the (singleton) instance of this class, clients
  * need to call {@link #getInstance()}.
  * <p>This
  * class manages various states of the remote cast device. Client applications, however, can
@@ -88,6 +88,8 @@ import static com.google.android.gms.cast.RemoteMediaPlayer.RESUME_STATE_UNCHANG
  */
 public class CastManager extends BaseCastManager implements OnFailedListener {
     public static final String TAG = "CastManager";
+
+    public static final String CAST_APP_ID = CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID;
 
     public static final double DEFAULT_VOLUME_STEP = 0.05;
     public static final long DEFAULT_LIVE_STREAM_DURATION_MS = TimeUnit.HOURS.toMillis(2);
@@ -129,9 +131,12 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         }
     }
 
-    public static synchronized CastManager initialize(Context context,
-                                                           CastConfiguration castConfiguration) {
+    public static synchronized CastManager init(Context context) {
         if (INSTANCE == null) {
+            CastConfiguration castConfiguration = new CastConfiguration.Builder(CAST_APP_ID)
+                    .enableDebug()
+                    .enableAutoReconnect()
+                    .build();
             Log.d(TAG, "New instance of CastManager is created");
             if (ConnectionResult.SUCCESS != GoogleApiAvailability.getInstance()
                     .isGooglePlayServicesAvailable(context)) {

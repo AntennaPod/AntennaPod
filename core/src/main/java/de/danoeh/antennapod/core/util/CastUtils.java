@@ -1,15 +1,12 @@
 package de.danoeh.antennapod.core.util;
 
-import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.gms.cast.CastDevice;
-import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
-import com.google.android.libraries.cast.companionlibrary.cast.CastConfiguration;
 
 import java.util.Calendar;
 
@@ -26,17 +23,7 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 public class CastUtils {
     private static final String TAG = "CastUtils";
 
-    public static final String CAST_APP_ID = CastMediaControlIntent.DEFAULT_MEDIA_RECEIVER_APPLICATION_ID;
-
     public static final String KEY_MEDIA_ID = "CastUtils.Id";
-
-    public static void initializeCastManager(Context context){
-        CastManager.initialize(context, new CastConfiguration.Builder(CastUtils.CAST_APP_ID)
-                .enableDebug()
-                .enableWifiReconnection()
-                .enableAutoReconnect()
-                .build());
-    }
 
     public static boolean isCastable(Playable media){
         if (media == null || media instanceof ExternalMedia) {

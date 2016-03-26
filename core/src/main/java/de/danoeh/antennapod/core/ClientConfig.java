@@ -2,10 +2,10 @@ package de.danoeh.antennapod.core;
 
 import android.content.Context;
 
+import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.CastUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
 /**
@@ -44,7 +44,7 @@ public class ClientConfig {
         UpdateManager.init(context);
         PlaybackPreferences.init(context);
         NetworkUtils.init(context);
-        CastUtils.initializeCastManager(context);
+        CastManager.init(context);
         initialized = true;
     }
 
