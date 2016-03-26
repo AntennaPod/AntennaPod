@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/media_route_menu_item"
-        android:title="@string/media_route_menu_title"
+        android:title="@string/cast_media_route_menu_title"
         android:enabled="false"
         custom:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
         custom:showAsAction="always"/>

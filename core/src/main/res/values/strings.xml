@@ -617,6 +617,16 @@
     <string name="proxy_port_invalid_error">Port not valid</string>
 
     <!-- Casting -->
-    <string name="media_route_menu_title">Play on&#8230;</string>
-
+    <string name="cast_media_route_menu_title">Play on&#8230;</string>
+    <string name="cast_failed_to_play">Failed to start the playback of media</string>
+    <string name="cast_failed_to_stop">Failed to stop the playback of media</string>
+    <string name="cast_failed_to_pause">Failed to pause the playback of media</string>
+    <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+    <string name="cast_failed_setting_volume">Failed to set the volume</string>
+    <string name="cast_failed_no_connection">No connection to the cast device is present</string>
+    <string name="cast_failed_no_connection_trans">Connection to the cast device has been lost. Application is trying to re-establish the connection, if possible. Please wait for a few seconds and try again.</string>
+    <string name="cast_failed_perform_action">Failed to perform the action</string>
+    <string name="cast_failed_status_request">Failed to sync up with the cast device</string>
+    <string name="cast_failed_seek">Failed to seek to the new position on the cast device</string>
+    <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>
 </resources>

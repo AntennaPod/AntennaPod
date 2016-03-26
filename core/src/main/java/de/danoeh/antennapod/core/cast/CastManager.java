@@ -20,11 +20,8 @@
 package de.danoeh.antennapod.core.cast;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
-import android.os.SystemClock;
 import android.support.v7.media.MediaRouter;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -46,7 +43,6 @@ import com.google.android.libraries.cast.companionlibrary.cast.exceptions.CastEx
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.NoConnectionException;
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.OnFailedListener;
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.TransientNetworkDisconnectionException;
-import com.google.android.libraries.cast.companionlibrary.cast.reconnection.ReconnectionService;
 
 import org.json.JSONObject;
 
@@ -101,8 +97,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     private RemoteMediaPlayer mRemoteMediaPlayer;
     private int mState = MediaStatus.PLAYER_STATE_IDLE;
     private int mIdleReason;
-    private String mDataNamespace;
-    private Cast.MessageReceivedCallback mDataChannel;
     private final Set<CastConsumer> mCastConsumers = new CopyOnWriteArraySet<>();
     private long mLiveStreamDuration = DEFAULT_LIVE_STREAM_DURATION_MS;
     private MediaQueueItem mPreLoadingItem;
@@ -123,12 +117,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     private CastManager(Context context, CastConfiguration castConfiguration) {
         super(context, castConfiguration);
         Log.d(TAG, "CastManager is instantiated");
-        mDataNamespace = castConfiguration.getNamespaces() == null ? null
-                : castConfiguration.getNamespaces().get(0);
-        if (!TextUtils.isEmpty(mDataNamespace)) {
-            mPreferenceAccessor.saveStringToPreference(PREFS_KEY_CAST_CUSTOM_DATA_NAMESPACE,
-                    mDataNamespace);
-        }
     }
 
     public static synchronized CastManager init(Context context) {
@@ -302,7 +290,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         mediaPlayer.setStreamVolume(mApiClient, volume).setResultCallback(
                 (result) -> {
                     if (!result.getStatus().isSuccess()) {
-                        onFailed(R.string.ccl_failed_setting_volume,
+                        onFailed(R.string.cast_failed_setting_volume,
                                 result.getStatus().getStatusCode());
                     } else {
                         CastManager.this.onStreamVolumeChanged();
@@ -475,14 +463,14 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             }
         }
         try {
-            attachDataChannel();
+            //attachDataChannel();
             attachMediaChannel();
             mSessionId = sessionId;
             // saving device for future retrieval; we only save the last session info
             mPreferenceAccessor.saveStringToPreference(PREFS_KEY_SESSION_ID, mSessionId);
             mRemoteMediaPlayer.requestStatus(mApiClient).setResultCallback(result -> {
                 if (!result.getStatus().isSuccess()) {
-                    onFailed(R.string.ccl_failed_status_request,
+                    onFailed(R.string.cast_failed_status_request,
                             result.getStatus().getStatusCode());
                 }
             });
@@ -491,10 +479,10 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             }
         } catch (TransientNetworkDisconnectionException e) {
             Log.e(TAG, "Failed to attach media/data channel due to network issues", e);
-            onFailed(R.string.ccl_failed_no_connection_trans, NO_STATUS_CODE);
+            onFailed(R.string.cast_failed_no_connection_trans, NO_STATUS_CODE);
         } catch (NoConnectionException e) {
             Log.e(TAG, "Failed to attach media/data channel due to network issues", e);
-            onFailed(R.string.ccl_failed_no_connection, NO_STATUS_CODE);
+            onFailed(R.string.cast_failed_no_connection, NO_STATUS_CODE);
         }
     }
 
@@ -506,7 +494,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     @Override
     public void onConnectivityRecovered() {
         reattachMediaChannel();
-        reattachDataChannel();
+        //reattachDataChannel();
         super.onConnectivityRecovered();
     }
 
@@ -1122,7 +1110,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         mRemoteMediaPlayer.play(mApiClient, customData)
                 .setResultCallback(result -> {
                     if (!result.getStatus().isSuccess()) {
-                        onFailed(R.string.ccl_failed_to_play,
+                        onFailed(R.string.cast_failed_to_play,
                                 result.getStatus().getStatusCode());
                     }
                 });
@@ -1158,7 +1146,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         mRemoteMediaPlayer.stop(mApiClient, customData).setResultCallback(
                 result -> {
                     if (!result.getStatus().isSuccess()) {
-                        onFailed(R.string.ccl_failed_to_stop,
+                        onFailed(R.string.cast_failed_to_stop,
                                 result.getStatus().getStatusCode());
                     }
                 }
@@ -1207,7 +1195,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         mRemoteMediaPlayer.pause(mApiClient, customData)
                 .setResultCallback(result -> {
                     if (!result.getStatus().isSuccess()) {
-                        onFailed(R.string.ccl_failed_to_pause,
+                        onFailed(R.string.cast_failed_to_pause,
                                 result.getStatus().getStatusCode());
                     }
                 });
@@ -1234,7 +1222,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
                 RESUME_STATE_UNCHANGED).
                 setResultCallback(result -> {
                     if (!result.getStatus().isSuccess()) {
-                        onFailed(R.string.ccl_failed_seek, result.getStatus().getStatusCode());
+                        onFailed(R.string.cast_failed_seek, result.getStatus().getStatusCode());
                     }
                 });
     }
@@ -1277,7 +1265,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         mRemoteMediaPlayer.seek(mApiClient, position, RESUME_STATE_PLAY)
                 .setResultCallback(result -> {
                     if (!result.getStatus().isSuccess()) {
-                        onFailed(R.string.ccl_failed_seek, result.getStatus().getStatusCode());
+                        onFailed(R.string.cast_failed_seek, result.getStatus().getStatusCode());
                     }
                 });
     }
@@ -1433,96 +1421,10 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         return mIdleReason;
     }
 
-    /*
-     * If a data namespace was provided when initializing this class, we set things up for a data
-     * channel
-     *
-     * @throws NoConnectionException
-     * @throws TransientNetworkDisconnectionException
-     */
-    private void attachDataChannel() throws TransientNetworkDisconnectionException,
-            NoConnectionException {
-        if (TextUtils.isEmpty(mDataNamespace)) {
-            return;
-        }
-        if (mDataChannel != null) {
-            return;
-        }
-        checkConnectivity();
-        mDataChannel = (castDevice, namespace, message) -> {
-            for (CastConsumer consumer : mCastConsumers) {
-                consumer.onDataMessageReceived(message);
-            }
-        };
-        try {
-            Cast.CastApi.setMessageReceivedCallbacks(mApiClient, mDataNamespace, mDataChannel);
-        } catch (IOException | IllegalStateException e) {
-            Log.e(TAG, "attachDataChannel()", e);
-        }
-    }
-
-    private void reattachDataChannel() {
-        if (!TextUtils.isEmpty(mDataNamespace) && mDataChannel != null) {
-            try {
-                Cast.CastApi.setMessageReceivedCallbacks(mApiClient, mDataNamespace, mDataChannel);
-            } catch (IOException | IllegalStateException e) {
-                Log.e(TAG, "reattachDataChannel()", e);
-            }
-        }
-    }
-
     private void onMessageSendFailed(int errorCode) {
         for (CastConsumer consumer : mCastConsumers) {
             consumer.onDataMessageSendFailed(errorCode);
         }
-    }
-
-    /**
-     * Sends the <code>message</code> on the data channel for the namespace that was provided
-     * during the initialization of this class. If <code>messageId &gt; 0</code>, then it has to be
-     * a unique identifier for the message; this id will be returned if an error occurs. If
-     * <code>messageId == 0</code>, then an auto-generated unique identifier will be created and
-     * returned for the message.
-     *
-     * @throws IllegalStateException If the namespace is empty or null
-     * @throws NoConnectionException If no connectivity to the device exists
-     * @throws TransientNetworkDisconnectionException If framework is still trying to recover from
-     * a possibly transient loss of network
-     */
-    public void sendDataMessage(String message) throws TransientNetworkDisconnectionException,
-            NoConnectionException {
-        if (TextUtils.isEmpty(mDataNamespace)) {
-            throw new IllegalStateException("No Data Namespace is configured");
-        }
-        checkConnectivity();
-        Cast.CastApi.sendMessage(mApiClient, mDataNamespace, message)
-                .setResultCallback(result -> {
-                    if (!result.isSuccess()) {
-                        CastManager.this.onMessageSendFailed(result.getStatusCode());
-                    }
-                });
-    }
-
-    /**
-     * Remove the custom data channel, if any. It returns <code>true</code> if it succeeds
-     * otherwise if it encounters an error or if no connection exists or if no custom data channel
-     * exists, then it returns <code>false</code>
-     */
-    public boolean removeDataChannel() {
-        if (TextUtils.isEmpty(mDataNamespace)) {
-            return false;
-        }
-        try {
-            if (mApiClient != null) {
-                Cast.CastApi.removeMessageReceivedCallbacks(mApiClient, mDataNamespace);
-            }
-            mDataChannel = null;
-            mPreferenceAccessor.saveStringToPreference(PREFS_KEY_CAST_CUSTOM_DATA_NAMESPACE, null);
-            return true;
-        } catch (IOException | IllegalStateException e) {
-            Log.e(TAG, "removeDataChannel() failed to remove namespace " + mDataNamespace, e);
-        }
-        return false;
     }
 
     /*
@@ -1554,7 +1456,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             if (mState == MediaStatus.PLAYER_STATE_PLAYING) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = playing");
                 long mediaDurationLeft = getMediaTimeRemaining();
-                startReconnectionService(mediaDurationLeft);
+                //startReconnectionService(mediaDurationLeft);
             } else if (mState == MediaStatus.PLAYER_STATE_PAUSED) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = paused");
             } else if (mState == MediaStatus.PLAYER_STATE_IDLE) {
@@ -1563,9 +1465,9 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
                 if (mIdleReason == MediaStatus.IDLE_REASON_ERROR) {
                     // something bad happened on the cast device
                     Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): IDLE reason = ERROR");
-                    onFailed(R.string.ccl_failed_receiver_player_error, NO_STATUS_CODE);
+                    onFailed(R.string.cast_failed_receiver_player_error, NO_STATUS_CODE);
                 }
-                stopReconnectionService();
+                //stopReconnectionService();
             } else if (mState == MediaStatus.PLAYER_STATE_BUFFERING) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = buffering");
             } else {
@@ -1656,7 +1558,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     @Override
     protected void onDeviceUnselected() {
         detachMediaChannel();
-        removeDataChannel();
+        //removeDataChannel();
         mState = MediaStatus.PLAYER_STATE_IDLE;
         mMediaStatus = null;
     }
@@ -1790,50 +1692,24 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     }
 
     /**
-     * Returns the namespace for an additional data namespace that this library can manage for an
-     * application to have an out-of-band communication channel with the receiver. Note that this
-     * only prepares the sender and your own receiver needs to be able to receive and manage the
-     * channel as well. The default implementation is not to set up any additional channel.
+     * Checks whether the selected Cast Device has the specified audio or video capabilities.
      *
-     * @return The namespace that the library can manage for the application. If {@code null}, no
-     * namespace will be set up.
+     * @param capability capability from:
+     * <ul>
+     *     <li>{@link CastDevice#CAPABILITY_AUDIO_IN}</li>
+     *     <li>{@link CastDevice#CAPABILITY_AUDIO_OUT}</li>
+     *     <li>{@link CastDevice#CAPABILITY_VIDEO_IN}</li>
+     *     <li>{@link CastDevice#CAPABILITY_VIDEO_OUT}</li>
+     * </ul>
+     * @param defaultVal value to return whenever there's no device selected.
+     * @return {@code true} if the selected device has the specified capability,
+     * {@code false} otherwise.
      */
-    protected String getDataNamespace() {
-        return mDataNamespace;
-    }
-
     public boolean hasCapability(final int capability, final boolean defaultVal) {
         if (mSelectedCastDevice != null) {
             return mSelectedCastDevice.hasCapability(capability);
         } else {
             return defaultVal;
         }
-    }
-
-    //TODO perhaps include the logic behind ReconnectionService into the PlaybackService
-    @Override
-    protected void startReconnectionService(long mediaDurationLeft) {
-        if (!isFeatureEnabled(CastConfiguration.FEATURE_WIFI_RECONNECT)) {
-            return;
-        }
-        Log.d(TAG, "startReconnectionService() for media length lef = " + mediaDurationLeft);
-        long endTime = SystemClock.elapsedRealtime() + mediaDurationLeft;
-        mPreferenceAccessor.saveLongToPreference(PREFS_KEY_MEDIA_END, endTime);
-        Context applicationContext = mContext.getApplicationContext();
-        Intent service = new Intent(applicationContext, ReconnectionService.class);
-        service.setPackage(applicationContext.getPackageName());
-        //applicationContext.startService(service);
-    }
-
-    @Override
-    protected void stopReconnectionService() {
-        if (!isFeatureEnabled(CastConfiguration.FEATURE_WIFI_RECONNECT)) {
-            return;
-        }
-        Log.d(TAG, "stopReconnectionService()");
-        Context applicationContext = mContext.getApplicationContext();
-        Intent service = new Intent(applicationContext, ReconnectionService.class);
-        service.setPackage(applicationContext.getPackageName());
-        //applicationContext.stopService(service);
     }
 }
