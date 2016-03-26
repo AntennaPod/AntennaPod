@@ -384,7 +384,7 @@
     <string name="pref_expandNotify_sum">Always expand the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
-    <string name="pref_show_subscriptions_in_drawer_title">Show subscriptions</string>
+    <string name="pref_show_subscriptions_in_drawer_title">Show Subscriptions</string>
     <string name="pref_show_subscriptions_in_drawer_sum">Show subscription list directly in navigation drawer</string>
     <string name="pref_lockscreen_background_title">Set Lockscreen Background</string>
     <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
