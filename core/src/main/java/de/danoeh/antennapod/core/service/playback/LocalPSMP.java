@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
@@ -55,11 +54,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private CountDownLatch seekLatch;
 
     private final ThreadPoolExecutor executor;
-
-    /**
-     * A wifi-lock that is acquired if the media file is being streamed.
-     */
-    private WifiManager.WifiLock wifiLock;
 
     public LocalPSMP(@NonNull Context context,
                      @NonNull PSMPCallback callback) {
@@ -805,21 +799,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         });
     }
 
-    private synchronized void acquireWifiLockIfNecessary() {
-        if (stream) {
-            if (wifiLock == null) {
-                wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
-                        .createWifiLock(WifiManager.WIFI_MODE_FULL, TAG);
-                wifiLock.setReferenceCounted(false);
-            }
-            wifiLock.acquire();
-        }
-    }
-
-    private synchronized void releaseWifiLockIfNecessary() {
-        if (wifiLock != null && wifiLock.isHeld()) {
-            wifiLock.release();
-        }
+    @Override
+    protected boolean shouldLockWifi(){
+        return stream;
     }
 
     private IPlayer setMediaPlayerListeners(IPlayer mp) {
@@ -878,13 +860,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         return callback.onMediaPlayerInfo(what);
     }
 
-    private final MediaPlayer.OnSpeedAdjustmentAvailableChangedListener
-            audioSetSpeedAbilityListener = new MediaPlayer.OnSpeedAdjustmentAvailableChangedListener() {
-        @Override
-        public void onSpeedAdjustmentAvailableChanged(MediaPlayer arg0, boolean speedAdjustmentAvailable) {
-            callback.setSpeedAbilityChanged();
-        }
-    };
+    private final MediaPlayer.OnSpeedAdjustmentAvailableChangedListener audioSetSpeedAbilityListener =
+            (arg0, speedAdjustmentAvailable) -> callback.setSpeedAbilityChanged();
 
 
     private final MediaPlayer.OnErrorListener audioErrorListener =

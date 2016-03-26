@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.Pair;
@@ -32,6 +33,11 @@ public abstract class PlaybackServiceMediaPlayer {
     public static final int INVALID_TIME = -1;
 
     protected volatile PlayerStatus playerStatus;
+
+    /**
+     * A wifi-lock that is acquired if the media file is being streamed.
+     */
+    private WifiManager.WifiLock wifiLock;
 
     protected final PSMPCallback callback;
     protected final Context context;
@@ -236,6 +242,28 @@ public abstract class PlaybackServiceMediaPlayer {
      * abandoning audio focus have to be done with other methods.
      */
     public abstract void stop();
+
+    /**
+     * @return {@code true} if the WifiLock feature should be used, {@code false} otherwise.
+     */
+    protected abstract boolean shouldLockWifi();
+
+    protected final synchronized void acquireWifiLockIfNecessary() {
+        if (shouldLockWifi()) {
+            if (wifiLock == null) {
+                wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
+                        .createWifiLock(WifiManager.WIFI_MODE_FULL, TAG);
+                wifiLock.setReferenceCounted(false);
+            }
+            wifiLock.acquire();
+        }
+    }
+
+    protected final synchronized void releaseWifiLockIfNecessary() {
+        if (wifiLock != null && wifiLock.isHeld()) {
+            wifiLock.release();
+        }
+    }
 
     /**
      * Sets the player status of the PSMP object. PlayerStatus and media attributes have to be set at the same time

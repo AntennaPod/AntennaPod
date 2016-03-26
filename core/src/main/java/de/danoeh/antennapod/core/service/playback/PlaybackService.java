@@ -15,6 +15,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -60,6 +62,7 @@ import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntList;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
@@ -168,6 +171,12 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
     public static final int INVALID_TIME = -1;
 
     /**
+     * Time in seconds during which the CastManager will try to reconnect to the Cast Device after
+     * the Wifi Connection is regained.
+     */
+    private static final int RECONNECTION_ATTEMPT_PERIOD_S = 15;
+
+    /**
      * Is true if service is running.
      */
     public static boolean isRunning = false;
@@ -187,6 +196,9 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
      * Stores the state of the cast playback just before it disconnects.
      */
     private volatile PlaybackServiceMediaPlayer.PSMPInfo infoBeforeCastDisconnection;
+
+    private boolean mWifiConnectivity = true;
+    private BroadcastReceiver mWifiBroadcastReceiver;
 
     private static final int NOTIFICATION_ID = 1;
 
@@ -318,6 +330,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
         unregisterReceiver(pauseResumeCurrentEpisodeReceiver);
         CastManager.getInstance().removeCastConsumer(castConsumer);
+        unregisterWifiBroadcastReceiver();
         mediaPlayer.shutdown();
         taskManager.shutdown();
     }
@@ -1561,6 +1574,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
                     (mediaPlayer != null) ? mediaPlayer.getPSMPInfo() :
                             new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null));
             sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, EXTRA_CODE_CAST);
+            registerWifiBroadcastReceiver();
         }
 
         @Override
@@ -1602,6 +1616,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
                 Log.d(TAG, "Cast session disconnected, but no current media");
                 sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
             }
+            unregisterWifiBroadcastReceiver();
         }
     };
 
@@ -1618,6 +1633,39 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
                     !info.playable.localFileAvailable(),
                     info.playerStatus == PlayerStatus.PLAYING,
                     info.playerStatus.isAtLeast(PlayerStatus.PREPARING));
+        }
+    }
+
+    private void registerWifiBroadcastReceiver() {
+        if (mWifiBroadcastReceiver != null) {
+            return;
+        }
+        mWifiBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
+                    NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+                    boolean isConnected = info.isConnected();
+                    //apparently this method gets called twice when a change happens, but one run is enough.
+                    if (isConnected && !mWifiConnectivity) {
+                        mWifiConnectivity = true;
+                        CastManager castMgr = CastManager.getInstance();
+                        castMgr.startCastDiscovery();
+                        castMgr.reconnectSessionIfPossible(RECONNECTION_ATTEMPT_PERIOD_S, NetworkUtils.getWifiSsid());
+                    } else {
+                        mWifiConnectivity = isConnected;
+                    }
+                }
+            }
+        };
+        registerReceiver(mWifiBroadcastReceiver,
+                new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION));
+    }
+
+    private void unregisterWifiBroadcastReceiver() {
+        if (mWifiBroadcastReceiver != null) {
+            unregisterReceiver(mWifiBroadcastReceiver);
+            mWifiBroadcastReceiver = null;
         }
     }
 }

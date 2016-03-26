@@ -92,6 +92,18 @@ public class NetworkUtils {
 		return mWifi.isConnected();
 	}
 
+    /**
+     * Returns the SSID of the wifi connection, or <code>null</code> if there is no wifi.
+     */
+    public static String getWifiSsid() {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        if (wifiInfo != null) {
+            return wifiInfo.getSSID();
+        }
+        return null;
+    }
+
 	public static Observable<Long> getFeedMediaSizeObservable(FeedMedia media) {
         return Observable.create(new Observable.OnSubscribe<Long>() {
             @Override

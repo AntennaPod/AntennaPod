@@ -450,4 +450,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     public void stop() {
         //TODO
     }
+
+    @Override
+    protected boolean shouldLockWifi() {
+        return false;
+    }
 }

@@ -136,6 +136,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             if (ConnectionResult.SUCCESS != GoogleApiAvailability.getInstance()
                     .isGooglePlayServicesAvailable(context)) {
                 Log.e(TAG, "Couldn't find the appropriate version of Google Play Services");
+                //TODO check whether creating an instance without google play services installed actually gives an exception
             }
             INSTANCE = new CastManager(context, castConfiguration);
         }
