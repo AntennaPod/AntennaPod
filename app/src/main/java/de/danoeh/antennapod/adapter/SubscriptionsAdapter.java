@@ -71,7 +71,7 @@ public class SubscriptionsAdapter extends BaseAdapter {
         } else {
             holder = (Holder) convertView.getTag();
         }
-        
+
         holder.feedTitle.setText(feed.getTitle());
         Glide.with(context)
                 .load(feed.getImageUri())
