@@ -17,6 +17,7 @@ import com.bumptech.glide.request.target.Target;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import jp.shts.android.library.TriangleLabelView;
 
 /**
  * Adapter for subscriptions
@@ -65,6 +66,7 @@ public class SubscriptionsAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.subscription_item, parent, false);
             holder.feedTitle = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imgvCover);
+            holder.count = (TriangleLabelView) convertView.findViewById(R.id.triangleCountView);
 
 
             convertView.setTag(holder);
@@ -73,6 +75,7 @@ public class SubscriptionsAdapter extends BaseAdapter {
         }
 
         holder.feedTitle.setText(feed.getTitle());
+        holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
         Glide.with(context)
                 .load(feed.getImageUri())
                 .placeholder(R.color.light_gray)
@@ -88,6 +91,7 @@ public class SubscriptionsAdapter extends BaseAdapter {
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        holder.feedTitle.setVisibility(View.INVISIBLE);
                         return false;
                     }
                 })
@@ -99,5 +103,6 @@ public class SubscriptionsAdapter extends BaseAdapter {
     static class Holder {
         public TextView feedTitle;
         public ImageView imageView;
+        public TriangleLabelView count;
     }
 }

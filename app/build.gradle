@@ -40,6 +40,8 @@ dependencies {
         exclude module: "support-v4"
     }
 
+    compile 'com.github.shts:TriangleLabelView:1.0.0'
+
     compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     compile project(":core")
