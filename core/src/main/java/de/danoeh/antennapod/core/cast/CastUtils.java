@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.core.cast;
 
 import android.net.Uri;
 import android.text.TextUtils;
@@ -12,8 +12,6 @@ import com.google.android.gms.common.images.WebImage;
 import java.util.Calendar;
 import java.util.List;
 
-import de.danoeh.antennapod.core.cast.CastManager;
-import de.danoeh.antennapod.core.cast.RemoteMedia;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -166,9 +164,16 @@ public class CastUtils {
      * on the GUI thread.
      *
      * @param media The {@link MediaInfo} object to be converted.
+     * @param searchFeedMedia If set to <code>true</code>, the database will be queried to find a
+     *              {@link FeedMedia} instance that matches {@param media}.
      * @return {@link Playable} object in a format proper for casting.
      */
     public static Playable getPlayable(MediaInfo media, boolean searchFeedMedia) {
+        Log.d(TAG, "getPlayable called with searchFeedMedia=" + searchFeedMedia);
+        if (media == null) {
+            Log.d(TAG, "MediaInfo object provided is null, not converting to any Playable instance");
+            return null;
+        }
         MediaMetadata metadata = media.getMetadata();
         int version = metadata.getInt(KEY_FORMAT_VERSION);
         if (version <= 0 || version > MAX_VERSION_FORWARD_COMPATIBILITY) {
@@ -179,10 +184,32 @@ public class CastUtils {
         }
         Playable result = null;
         if (searchFeedMedia) {
-            FeedItem feedItem = DBReader.getFeedItem(metadata.getString(KEY_FEED_URL),
-                    metadata.getString(KEY_EPISODE_IDENTIFIER));
-            if (feedItem != null) {
-                result = feedItem.getMedia();
+            long mediaId = metadata.getInt(KEY_MEDIA_ID);
+            if (mediaId > 0) {
+                FeedMedia fMedia = DBReader.getFeedMedia(mediaId);
+                if (fMedia != null) {
+                    try {
+                        fMedia.loadMetadata();
+                        if (matches(media, fMedia)) {
+                            result = fMedia;
+                            Log.d(TAG, "FeedMedia object obtained matches the MediaInfo provided. id=" + mediaId);
+                        } else {
+                            Log.d(TAG, "FeedMedia object obtained does NOT match the MediaInfo provided. id=" + mediaId);
+                        }
+                    } catch (Playable.PlayableException e) {
+                        Log.e(TAG, "Unable to load FeedMedia metadata to compare with MediaInfo", e);
+                    }
+                } else {
+                    Log.d(TAG, "Unable to find in database a FeedMedia with id=" + mediaId);
+                }
+            }
+            if (result == null) {
+                FeedItem feedItem = DBReader.getFeedItem(metadata.getString(KEY_FEED_URL),
+                        metadata.getString(KEY_EPISODE_IDENTIFIER));
+                if (feedItem != null) {
+                    result = feedItem.getMedia();
+                    Log.d(TAG, "Found episode that matches the MediaInfo provided. Using its media, if existing.");
+                }
             }
         }
         if (result == null) {
@@ -206,11 +233,39 @@ public class CastUtils {
             if (!TextUtils.isEmpty(notes)) {
                 ((RemoteMedia) result).setNotes(notes);
             }
+            Log.d(TAG, "Converted MediaInfo into RemoteMedia");
         }
         if (result.getDuration() == 0 && media.getStreamDuration() > 0) {
             result.setDuration((int) media.getStreamDuration());
         }
         return result;
+    }
+
+    /**
+     * Compares a {@link MediaInfo} instance with a {@link FeedMedia} one and evaluates whether they
+     * represent the same podcast episode.
+     *
+     * @param info      the {@link MediaInfo} object to be compared.
+     * @param media     the {@link FeedMedia} object to be compared.
+     * @return <true>true</true> if there's a match, <code>false</code> otherwise.
+     *
+     * @see RemoteMedia#equals(Object)
+     */
+    public static boolean matches(MediaInfo info, FeedMedia media) {
+        if (info == null || media == null) {
+            return false;
+        }
+        if (!TextUtils.equals(info.getContentId(), media.getStreamUrl())) {
+            return false;
+        }
+        MediaMetadata metadata = info.getMetadata();
+        FeedItem fi = media.getItem();
+        if (fi == null || metadata == null ||
+                !TextUtils.equals(metadata.getString(KEY_EPISODE_IDENTIFIER), fi.getItemIdentifier())) {
+            return false;
+        }
+        Feed feed = fi.getFeed();
+        return feed != null && TextUtils.equals(metadata.getString(KEY_FEED_URL), feed.getDownload_url());
     }
 
 

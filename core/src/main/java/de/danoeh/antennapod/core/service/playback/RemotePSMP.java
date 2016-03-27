@@ -24,7 +24,7 @@ import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.CastUtils;
+import de.danoeh.antennapod.core.cast.CastUtils;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
