@@ -93,9 +93,9 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
             EpisodesFragment.TAG,
+            SubscriptionFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
-            SubscriptionFragment.TAG,
             AddFeedFragment.TAG
     };
 

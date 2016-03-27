@@ -55,6 +55,7 @@ import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 import rx.Observable;
@@ -79,6 +80,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
             EpisodesFragment.TAG,
+            SubscriptionFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG
