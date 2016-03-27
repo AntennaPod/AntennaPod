@@ -10,12 +10,15 @@ import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
 
 import java.util.Calendar;
+import java.util.List;
 
 import de.danoeh.antennapod.core.cast.CastManager;
+import de.danoeh.antennapod.core.cast.RemoteMedia;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -25,13 +28,13 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 public class CastUtils {
     private static final String TAG = "CastUtils";
 
-    public static final String KEY_MEDIA_ID = "AntennaPod.MediaId";
+    public static final String KEY_MEDIA_ID = "de.danoeh.antennapod.core.cast.MediaId";
 
-    public static final String KEY_EPISODE_IDENTIFIER = "AntennaPod.EpisodeId";
-    public static final String KEY_EPISODE_LINK = "AntennaPod.EpisodeLink";
-    public static final String KEY_FEED_URL = "AntennaPod.FeedUrl";
-    public static final String KEY_FEED_WEBSITE = "AntennaPod.FeedWebsite";
-    public static final String KEY_EPISODE_NOTES = "AntennaPod.EpisodeNotes";
+    public static final String KEY_EPISODE_IDENTIFIER = "de.danoeh.antennapod.core.cast.EpisodeId";
+    public static final String KEY_EPISODE_LINK = "de.danoeh.antennapod.core.cast.EpisodeLink";
+    public static final String KEY_FEED_URL = "de.danoeh.antennapod.core.cast.FeedUrl";
+    public static final String KEY_FEED_WEBSITE = "de.danoeh.antennapod.core.cast.FeedWebsite";
+    public static final String KEY_EPISODE_NOTES = "de.danoeh.antennapod.core.cast.EpisodeNotes";
     public static final int EPISODE_NOTES_MAX_LENGTH = Integer.MAX_VALUE;
 
     /**
@@ -43,7 +46,7 @@ public class CastUtils {
      * <code>MAX_VERSION_FORWARD_COMPATIBILITY</code> value set on the earlier one, so that it
      * doesn't try to parse the object.
      */
-    public static final String KEY_FORMAT_VERSION = "AntennaPod.FormatVersion";
+    public static final String KEY_FORMAT_VERSION = "de.danoeh.antennapod.core.cast.FormatVersion";
     public static final int FORMAT_VERSION_VALUE = 1;
     public static final int MAX_VERSION_FORWARD_COMPATIBILITY = 9999;
 
@@ -51,7 +54,7 @@ public class CastUtils {
         if (media == null || media instanceof ExternalMedia) {
             return false;
         }
-        if (media instanceof FeedMedia){
+        if (media instanceof FeedMedia || media instanceof RemoteMedia){
             String url = media.getStreamUrl();
             if(url == null || url.isEmpty()){
                 return false;
@@ -145,13 +148,70 @@ public class CastUtils {
         // senders with different versions share a casting device.
         metadata.putInt(KEY_FORMAT_VERSION, FORMAT_VERSION_VALUE);
 
-        return new MediaInfo.Builder(media.getStreamUrl())
+        MediaInfo.Builder builder = new MediaInfo.Builder(media.getStreamUrl())
                 .setContentType(media.getMime_type())
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
-                .setMetadata(metadata)
-                .build();
+                .setMetadata(metadata);
+        if (media.getDuration() > 0) {
+            builder.setStreamDuration(media.getDuration());
+        }
+        return builder.build();
     }
 
+    //TODO make unit tests for all the conversion methods
+    /**
+     * Converts {@link MediaInfo} objects into the appropriate implementation of {@link Playable}.
+     *
+     * Unless <code>searchFeedMedia</code> is set to <code>false</code>, this method should not run
+     * on the GUI thread.
+     *
+     * @param media The {@link MediaInfo} object to be converted.
+     * @return {@link Playable} object in a format proper for casting.
+     */
+    public static Playable getPlayable(MediaInfo media, boolean searchFeedMedia) {
+        MediaMetadata metadata = media.getMetadata();
+        int version = metadata.getInt(KEY_FORMAT_VERSION);
+        if (version <= 0 || version > MAX_VERSION_FORWARD_COMPATIBILITY) {
+            Log.w(TAG, "MediaInfo object obtained from the cast device is not compatible with this" +
+                    "version of AntennaPod CastUtils, curVer=" + FORMAT_VERSION_VALUE +
+                    ", object version=" + version);
+            return null;
+        }
+        Playable result = null;
+        if (searchFeedMedia) {
+            FeedItem feedItem = DBReader.getFeedItem(metadata.getString(KEY_FEED_URL),
+                    metadata.getString(KEY_EPISODE_IDENTIFIER));
+            if (feedItem != null) {
+                result = feedItem.getMedia();
+            }
+        }
+        if (result == null) {
+            List<WebImage> imageList = metadata.getImages();
+            String imageUrl = null;
+            if (!imageList.isEmpty()) {
+                imageUrl = imageList.get(0).getUrl().toString();
+            }
+            result = new RemoteMedia(media.getContentId(),
+                    metadata.getString(KEY_EPISODE_IDENTIFIER),
+                    metadata.getString(KEY_FEED_URL),
+                    metadata.getString(MediaMetadata.KEY_SUBTITLE),
+                    metadata.getString(MediaMetadata.KEY_TITLE),
+                    metadata.getString(KEY_EPISODE_LINK),
+                    metadata.getString(MediaMetadata.KEY_ARTIST),
+                    imageUrl,
+                    metadata.getString(KEY_FEED_WEBSITE),
+                    media.getContentType(),
+                    metadata.getDate(MediaMetadata.KEY_RELEASE_DATE).getTime());
+            String notes = metadata.getString(KEY_EPISODE_NOTES);
+            if (!TextUtils.isEmpty(notes)) {
+                ((RemoteMedia) result).setNotes(notes);
+            }
+        }
+        if (result.getDuration() == 0 && media.getStreamDuration() > 0) {
+            result.setDuration((int) media.getStreamDuration());
+        }
+        return result;
+    }
 
 
     //TODO Queue handling perhaps
