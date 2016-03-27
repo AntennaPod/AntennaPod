@@ -16,7 +16,11 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.CastUtils;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -114,6 +118,10 @@ public class RemoteMedia implements Playable {
             builder.setStreamDuration(duration);
         }
         return builder.build();
+    }
+
+    public FeedMedia lookForFeedMedia() {
+        return DBReader.getFeedItem(feedUrl, itemIdentifier).getMedia();
     }
 
     @Override
@@ -313,4 +321,27 @@ public class RemoteMedia implements Playable {
             return new RemoteMedia[size];
         }
     };
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof RemoteMedia) {
+            RemoteMedia rm = (RemoteMedia) other;
+            return TextUtils.equals(downloadUrl, rm.downloadUrl) &&
+                    TextUtils.equals(feedUrl, rm.feedUrl) &&
+                    TextUtils.equals(itemIdentifier, rm.itemIdentifier);
+        }
+        if (other instanceof FeedMedia) {
+            FeedMedia fm = (FeedMedia) other;
+            if (!TextUtils.equals(downloadUrl, fm.getStreamUrl())) {
+                return false;
+            }
+            FeedItem fi = fm.getItem();
+            if (fi == null || !TextUtils.equals(itemIdentifier, fi.getItemIdentifier())) {
+                return false;
+            }
+            Feed feed = fi.getFeed();
+            return feed != null && TextUtils.equals(feedUrl, feed.getDownload_url());
+        }
+        return false;
+    }
 }
