@@ -29,7 +29,6 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -76,18 +75,13 @@ public class SubscriptionFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mSubscriptionAdapter = new SubscriptionsAdapter(getActivity(), mItemAccess);
+        mSubscriptionAdapter = new SubscriptionsAdapter((MainActivity)getActivity(), mItemAccess);
 
         mSubscriptionGridLayout.setAdapter(mSubscriptionAdapter);
 
         loadSubscriptions();
 
-        mSubscriptionGridLayout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventBus.getDefault().post(new SubscriptionEvent(mSubscriptionList.get(position)));
-            }
-        });
+        mSubscriptionGridLayout.setOnItemClickListener(mSubscriptionAdapter);
 
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscriptions_label);
@@ -115,9 +109,17 @@ public class SubscriptionFragment extends Fragment {
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         int position = adapterInfo.position;
 
+        Object selectedObject = mSubscriptionAdapter.getItem(position);
+        if (selectedObject.equals(SubscriptionsAdapter.ADD_ITEM_OBJ)) {
+            mPosition = position;
+            return;
+        }
+
+        Feed feed = (Feed)selectedObject;
+
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.nav_feed_context, menu);
-        Feed feed = (Feed)mSubscriptionAdapter.getItem(position);
+
         menu.setHeaderTitle(feed.getTitle());
 
         mPosition = position;
@@ -131,13 +133,34 @@ public class SubscriptionFragment extends Fragment {
         if(position < 0) {
             return false;
         }
-        Feed feed = mDrawerData.feeds.get(position);
+
+        Object selectedObject = mSubscriptionAdapter.getItem(position);
+        if (selectedObject.equals(SubscriptionsAdapter.ADD_ITEM_OBJ)) {
+            // this is the add object, do nothing
+            return false;
+        }
+
+        Feed feed = (Feed)selectedObject;
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
-                DBWriter.markFeedSeen(feed.getId());
+                Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> {
+                            loadSubscriptions();
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                        });
                 return true;
             case R.id.mark_all_read_item:
-                DBWriter.markFeedRead(feed.getId());
+                Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> {
+                            loadSubscriptions();
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                        });
                 return true;
             case R.id.remove_item:
                 final FeedRemover remover = new FeedRemover(getContext(), feed) {
@@ -178,13 +201,5 @@ public class SubscriptionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    public class SubscriptionEvent {
-        public final Feed feed;
-
-        SubscriptionEvent(Feed f) {
-            feed = f;
-        }
     }
 }

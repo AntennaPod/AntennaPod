@@ -679,10 +679,6 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
         loadData();
     }
 
-    public void onEvent(SubscriptionFragment.SubscriptionEvent event) {
-        loadFeedFragmentById(event.feed.getId(), null);
-    }
-
     public void onEventMainThread(ProgressEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         switch(event.action) {
