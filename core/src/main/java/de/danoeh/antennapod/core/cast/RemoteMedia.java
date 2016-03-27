@@ -6,20 +6,27 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.common.images.WebImage;
+
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.util.CastUtils;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
  * Playable implementation for media on a Cast Device for which a local version of
- * {@link de.danoeh.antennapod.core.feed.FeedMedia} could not be found.
+ * {@link de.danoeh.antennapod.core.feed.FeedMedia} hasn't been found.
  */
 public class RemoteMedia implements Playable {
+    public static final String TAG = "RemoteMedia";
 
     public static final int PLAYABLE_TYPE_REMOTE_MEDIA = 3;
 
@@ -31,6 +38,7 @@ public class RemoteMedia implements Playable {
     private String episodeLink;
     private String feedAuthor;
     private String imageUrl;
+    private String feedLink;
     private String mime_type;
     private Date pubDate;
     private String notes;
@@ -41,7 +49,7 @@ public class RemoteMedia implements Playable {
 
     public RemoteMedia(String downloadUrl, String itemId, String feedUrl, String feedTitle,
                        String episodeTitle, String episodeLink, String feedAuthor,
-                       String imageUrl, String mime_type, Date pubDate) {
+                       String imageUrl, String feedLink, String mime_type, Date pubDate) {
         this.downloadUrl = downloadUrl;
         this.itemIdentifier = itemId;
         this.feedUrl = feedUrl;
@@ -50,12 +58,62 @@ public class RemoteMedia implements Playable {
         this.episodeLink = episodeLink;
         this.feedAuthor = feedAuthor;
         this.imageUrl = imageUrl;
+        this.feedLink = feedLink;
         this.mime_type = mime_type;
         this.pubDate = pubDate;
     }
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public MediaInfo extractMediaInfo() {
+        MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
+
+        metadata.putString(MediaMetadata.KEY_TITLE, episodeTitle);
+        metadata.putString(MediaMetadata.KEY_SUBTITLE, feedTitle);
+        if (!TextUtils.isEmpty(imageUrl)) {
+            metadata.addImage(new WebImage(Uri.parse(imageUrl)));
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(pubDate);
+        metadata.putDate(MediaMetadata.KEY_RELEASE_DATE, calendar);
+        if (!TextUtils.isEmpty(feedAuthor)) {
+            metadata.putString(MediaMetadata.KEY_ARTIST, feedAuthor);
+        }
+        if (!TextUtils.isEmpty(feedUrl)) {
+            metadata.putString(CastUtils.KEY_FEED_URL, feedUrl);
+        }
+        if (!TextUtils.isEmpty(feedLink)) {
+            metadata.putString(CastUtils.KEY_FEED_WEBSITE, feedLink);
+        }
+        if (!TextUtils.isEmpty(itemIdentifier)) {
+            metadata.putString(CastUtils.KEY_EPISODE_IDENTIFIER, itemIdentifier);
+        } else {
+            metadata.putString(CastUtils.KEY_EPISODE_IDENTIFIER, downloadUrl);
+        }
+        if (!TextUtils.isEmpty(episodeLink)) {
+            metadata.putString(CastUtils.KEY_EPISODE_LINK, episodeLink);
+        }
+        String notes = this.notes;
+        if (notes != null) {
+            if (notes.length() > CastUtils.EPISODE_NOTES_MAX_LENGTH) {
+                notes = notes.substring(0, CastUtils.EPISODE_NOTES_MAX_LENGTH);
+            }
+            metadata.putString(CastUtils.KEY_EPISODE_NOTES, notes);
+        }
+        // Default id value
+        metadata.putInt(CastUtils.KEY_MEDIA_ID, 0);
+        metadata.putInt(CastUtils.KEY_FORMAT_VERSION, CastUtils.FORMAT_VERSION_VALUE);
+
+        MediaInfo.Builder builder = new MediaInfo.Builder(downloadUrl)
+                .setContentType(mime_type)
+                .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
+                .setMetadata(metadata);
+        if (duration > 0) {
+            builder.setStreamDuration(duration);
+        }
+        return builder.build();
     }
 
     @Override
@@ -228,6 +286,7 @@ public class RemoteMedia implements Playable {
         dest.writeString(episodeLink);
         dest.writeString(feedAuthor);
         dest.writeString(imageUrl);
+        dest.writeString(feedLink);
         dest.writeString(mime_type);
         dest.writeLong(pubDate.getTime());
         dest.writeString(notes);
@@ -241,7 +300,7 @@ public class RemoteMedia implements Playable {
         public RemoteMedia createFromParcel(Parcel in) {
             RemoteMedia result = new RemoteMedia(in.readString(), in.readString(), in.readString(),
                     in.readString(), in.readString(), in.readString(), in.readString(), in.readString(),
-                    in.readString(), new Date(in.readLong()));
+                    in.readString(), in.readString(), new Date(in.readLong()));
             result.setNotes(in.readString());
             result.setDuration(in.readInt());
             result.setPosition(in.readInt());
