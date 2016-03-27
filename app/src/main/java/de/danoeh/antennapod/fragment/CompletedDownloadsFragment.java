@@ -25,6 +25,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import rx.Observable;
 import rx.Subscription;
@@ -116,10 +117,9 @@ public class CompletedDownloadsFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        FeedItem item = listAdapter.getItem(position - l.getHeaderViewsCount());
-        if (item != null) {
-            ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
-        }
+        position -= l.getHeaderViewsCount();
+        long[] ids = FeedItemUtil.getIds(items);
+        ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(ids, position));
     }
 
     private void onFragmentLoaded() {

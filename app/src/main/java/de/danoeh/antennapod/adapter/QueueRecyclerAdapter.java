@@ -29,6 +29,8 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.joanzapata.iconify.Iconify;
 import com.nineoldandroids.view.ViewHelper;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.lang.ref.WeakReference;
 
 import de.danoeh.antennapod.R;
@@ -165,7 +167,9 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         public void onClick(View v) {
             MainActivity activity = mainActivity.get();
             if (activity != null) {
-                activity.loadChildFragment(ItemFragment.newInstance(item.getId()));
+                long[] ids = itemAccess.getQueueIds().toArray();
+                int position = ArrayUtils.indexOf(ids, item.getId());
+                activity.loadChildFragment(ItemFragment.newInstance(ids, position));
             }
         }
 
