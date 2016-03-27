@@ -110,6 +110,12 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForView(android.R.id.list);
         assertEquals(solo.getString(R.string.episodes_label), getActionbarTitle());
 
+        // Subscriptions
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.subscriptions_label));
+        solo.waitForView(R.id.subscriptions_grid);
+        assertEquals(solo.getString(R.string.subscriptions_label), getActionbarTitle());
+
         // downloads
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.downloads_label));
