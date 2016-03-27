@@ -268,6 +268,49 @@ public class CastUtils {
         return feed != null && TextUtils.equals(metadata.getString(KEY_FEED_URL), feed.getDownload_url());
     }
 
+    /**
+     * Compares a {@link MediaInfo} instance with a {@link RemoteMedia} one and evaluates whether they
+     * represent the same podcast episode.
+     *
+     * @param info      the {@link MediaInfo} object to be compared.
+     * @param media     the {@link RemoteMedia} object to be compared.
+     * @return <true>true</true> if there's a match, <code>false</code> otherwise.
+     *
+     * @see RemoteMedia#equals(Object)
+     */
+    public static boolean matches(MediaInfo info, RemoteMedia media) {
+        if (info == null || media == null) {
+            return false;
+        }
+        if (!TextUtils.equals(info.getContentId(), media.getStreamUrl())) {
+            return false;
+        }
+        MediaMetadata metadata = info.getMetadata();
+        return metadata != null &&
+                TextUtils.equals(metadata.getString(KEY_EPISODE_IDENTIFIER), media.getEpisodeIdentifier()) &&
+                TextUtils.equals(metadata.getString(KEY_FEED_URL), media.getFeedUrl());
+    }
+
+    /**
+     * Compares a {@link MediaInfo} instance with a {@link Playable} and evaluates whether they
+     * represent the same podcast episode.
+     *
+     * @param info      the {@link MediaInfo} object to be compared.
+     * @param media     the {@link Playable} object to be compared.
+     * @return <true>true</true> if there's a match, <code>false</code> otherwise.
+     *
+     * @see RemoteMedia#equals(Object)
+     */
+    public static boolean matches(MediaInfo info, Playable media) {
+        if (info == null || media == null) {
+            return false;
+        }
+        if (media instanceof RemoteMedia) {
+            return matches(info, (RemoteMedia) media);
+        }
+        return media instanceof FeedMedia && matches(info, (FeedMedia) media);
+    }
+
 
     //TODO Queue handling perhaps
 }

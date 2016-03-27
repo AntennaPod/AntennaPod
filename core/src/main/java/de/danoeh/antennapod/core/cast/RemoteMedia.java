@@ -119,6 +119,14 @@ public class RemoteMedia implements Playable {
         return builder.build();
     }
 
+    public String getEpisodeIdentifier() {
+        return itemIdentifier;
+    }
+
+    public String getFeedUrl() {
+        return feedUrl;
+    }
+
     public FeedMedia lookForFeedMedia() {
         FeedItem feedItem = DBReader.getFeedItem(feedUrl, itemIdentifier);
         if (feedItem == null) {
