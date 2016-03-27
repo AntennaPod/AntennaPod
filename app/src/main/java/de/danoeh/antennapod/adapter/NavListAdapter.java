@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
@@ -108,6 +109,9 @@ public class NavListAdapter extends BaseAdapter
             case PlaybackHistoryFragment.TAG:
                 icon = R.attr.ic_history;
                 break;
+            case SubscriptionFragment.TAG:
+                icon = R.attr.ic_folder;
+                break;
             case AddFeedFragment.TAG:
                 icon = R.attr.content_new;
                 break;
@@ -127,7 +131,11 @@ public class NavListAdapter extends BaseAdapter
 
     @Override
     public int getCount() {
-        return getSubscriptionOffset() + itemAccess.getCount();
+        int baseCount = getSubscriptionOffset();
+        if (UserPreferences.showSubscriptionsInDrawer()) {
+            baseCount += itemAccess.getCount();
+        }
+        return baseCount;
     }
 
     @Override

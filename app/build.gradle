@@ -9,6 +9,7 @@ repositories {
 }
 
 dependencies {
+    compile project(":core")
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
@@ -19,7 +20,6 @@ dependencies {
     compile("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
         exclude group: "org.json", module: "json"
     }
-
     compile "commons-io:commons-io:$commonsioVersion"
     compile "org.jsoup:jsoup:$jsoupVersion"
     compile "com.github.bumptech.glide:glide:$glideVersion"
@@ -41,22 +41,22 @@ dependencies {
         exclude module: "support-v4"
     }
 
-    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
+    compile 'com.github.shts:TriangleLabelView:1.0.0'
 
-    compile project(":core")
+    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 }
 
 def getMyVersionName() {
     def parsedManifestXml = (new XmlSlurper())
             .parse("${projectDir}/src/main/AndroidManifest.xml")
-            .declareNamespace(android:"http://schemas.android.com/apk/res/android")
+            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
     return parsedManifestXml."@android:versionName"
 }
 
 def getMyVersionCode() {
     def parsedManifestXml = (new XmlSlurper())
             .parse("${projectDir}/src/main/AndroidManifest.xml")
-            .declareNamespace(android:"http://schemas.android.com/apk/res/android")
+            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
     return parsedManifestXml."@android:versionCode".toInteger()
 }
 
@@ -150,7 +150,7 @@ task filterAbout {
         from "src/main/templates/about.html"
         into "src/main/assets"
         filter(ReplaceTokens, tokens: [versionname: android.defaultConfig.versionName,
-                                       commit: "git rev-parse --short HEAD".execute().text])
+                                       commit     : "git rev-parse --short HEAD".execute().text])
     }
 }
 

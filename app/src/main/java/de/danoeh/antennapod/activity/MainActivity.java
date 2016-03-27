@@ -58,6 +58,7 @@ import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
             EpisodesFragment.TAG,
+            SubscriptionFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG
@@ -269,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     }
 
     public void loadFragment(int index, Bundle args) {
-        Log.d(TAG, "loadFragment(index: " + index + ", args: " + args +")");
+        Log.d(TAG, "loadFragment(index: " + index + ", args: " + args + ")");
         if (index < navAdapter.getSubscriptionOffset()) {
             String tag = navAdapter.getTags().get(index);
             loadFragment(tag, args);
@@ -297,6 +299,11 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
                 break;
             case AddFeedFragment.TAG:
                 fragment = new AddFeedFragment();
+                break;
+            case SubscriptionFragment.TAG:
+                SubscriptionFragment subscriptionFragment = new SubscriptionFragment();
+                subscriptionFragment.setItemAccess(itemAccess);
+                fragment = subscriptionFragment;
                 break;
             default:
                 // default to the queue
@@ -646,6 +653,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
         public int getFeedCounter(long feedId) {
             return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
+
     };
 
     private void loadData() {
