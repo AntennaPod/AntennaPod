@@ -121,6 +121,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
 
     public static synchronized CastManager init(Context context) {
         if (INSTANCE == null) {
+            //TODO also setup dialog factory if necessary
             CastConfiguration castConfiguration = new CastConfiguration.Builder(CAST_APP_ID)
                     .enableDebug()
                     .enableAutoReconnect()

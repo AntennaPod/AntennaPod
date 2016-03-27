@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.Pair;
@@ -21,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import de.danoeh.antennapod.core.cast.CastConsumer;
 import de.danoeh.antennapod.core.cast.CastConsumerImpl;
 import de.danoeh.antennapod.core.cast.CastManager;
+import de.danoeh.antennapod.core.cast.RemoteMedia;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -41,9 +43,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     private volatile MediaInfo remoteMedia;
     private volatile MediaType mediaType;
 
-    private volatile PlayerStatus statusBeforeSeeking;
+    private final AtomicBoolean isBuffering;
 
-    private volatile AtomicBoolean startWhenPrepared;
+    private final AtomicBoolean startWhenPrepared;
 
     /**
      * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
@@ -56,10 +58,10 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         super(context, callback);
 
         castMgr = CastManager.getInstance();
-        statusBeforeSeeking = null;
         media = null;
         mediaType = null;
-        this.startWhenPrepared = new AtomicBoolean(false);
+        startWhenPrepared = new AtomicBoolean(false);
+        isBuffering = new AtomicBoolean(false);
 
         //playerLock = new ReentrantLock();
         executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
@@ -80,7 +82,13 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         public void onRemoteMediaPlayerStatusUpdated() {
             MediaStatus status = castMgr.getMediaStatus();
             Playable currentMedia = localVersion(status.getMediaInfo());
-            switch (status.getPlayerState()) {
+            long position = status.getStreamPosition();
+            if (position > 0 && currentMedia.getPosition()==0) {
+                currentMedia.setPosition((int) position);
+            }
+            int state = status.getPlayerState();
+            setBuffering(state == MediaStatus.PLAYER_STATE_BUFFERING);
+            switch (state) {
                 case MediaStatus.PLAYER_STATE_PLAYING:
                     setPlayerStatus(PlayerStatus.PLAYING, currentMedia);
                     break;
@@ -88,7 +96,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                     setPlayerStatus(PlayerStatus.PAUSED, currentMedia);
                     break;
                 case MediaStatus.PLAYER_STATE_BUFFERING:
-                    //TODO
+                    setPlayerStatus(playerStatus, currentMedia);
                     break;
                 case MediaStatus.PLAYER_STATE_IDLE:
                     int reason = status.getIdleReason();
@@ -103,21 +111,20 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                             setPlayerStatus(PlayerStatus.INITIALIZED, currentMedia);
                             break;
                         case MediaStatus.IDLE_REASON_FINISHED:
-                            //TODO endPlayback and start a new one
+                            boolean playing = playerStatus == PlayerStatus.PLAYING;
+                            setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
+                            callback.endPlayback(playing, false, false);
                             break;
                         case MediaStatus.IDLE_REASON_ERROR:
-                            //TODO what do they mean by error? Can we easily recover by sending a new command?
+                            //Let's assume it's a media format error. Skipping...
+                            setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
+                            callback.endPlayback(startWhenPrepared.get(), true, false);
                     }
                     break;
                 case MediaStatus.PLAYER_STATE_UNKNOWN:
-                    //TODO
-
+                    //is this right?
+                    setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
             }
-        }
-
-        @Override
-        public void onStreamVolumeChanged(double value, boolean isMute) {
-            //TODO
         }
 
         @Override
@@ -143,10 +150,38 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         }
     };
 
+    private void setBuffering(boolean buffering) {
+        if (buffering && isBuffering.compareAndSet(false, true)) {
+            callback.onMediaPlayerInfo(MediaPlayer.MEDIA_INFO_BUFFERING_START);
+        } else if (!buffering && isBuffering.compareAndSet(true, false)) {
+            callback.onMediaPlayerInfo(MediaPlayer.MEDIA_INFO_BUFFERING_END);
+        }
+    }
+
     private Playable localVersion(MediaInfo info){
-        // TODO compare with current media. If it doesn't match, then either find a local version for it
-        // or create an appropriate one.
-        return media;
+        if (info == null) {
+            return null;
+        }
+        if (CastUtils.matches(info, media)) {
+            return media;
+        }
+        return CastUtils.getPlayable(info, true);
+    }
+
+    private MediaInfo remoteVersion(Playable playable) {
+        if (playable == null) {
+            return null;
+        }
+        if (CastUtils.matches(remoteMedia, playable)) {
+            return remoteMedia;
+        }
+        if (playable instanceof FeedMedia) {
+            return CastUtils.convertFromFeedMedia((FeedMedia) playable);
+        }
+        if (playable instanceof RemoteMedia) {
+            return ((RemoteMedia) playable).extractMediaInfo();
+        }
+        return null;
     }
 
     @Override
@@ -194,7 +229,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         }
 
         this.media = playable;
-        remoteMedia = CastUtils.convertFromFeedMedia((FeedMedia) media);
+        remoteMedia = remoteVersion(playable);
         //this.stream = stream;
         this.mediaType = media.getMediaType();
         this.startWhenPrepared.set(startWhenPrepared);
@@ -448,10 +483,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     @Override
     protected void setPlayable(Playable playable) {
-        //TODO this looks very wrong
         if (playable != media) {
             media = playable;
-            remoteMedia = !(media instanceof FeedMedia) ? null : CastUtils.convertFromFeedMedia((FeedMedia) media);
+            remoteMedia = remoteVersion(playable);
         }
     }
 

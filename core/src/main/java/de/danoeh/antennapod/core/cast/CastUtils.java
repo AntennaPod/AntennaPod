@@ -293,7 +293,8 @@ public class CastUtils {
 
     /**
      * Compares a {@link MediaInfo} instance with a {@link Playable} and evaluates whether they
-     * represent the same podcast episode.
+     * represent the same podcast episode. Useful every time we get a MediaInfo from the Cast Device
+     * and want to avoid unnecessary conversions.
      *
      * @param info      the {@link MediaInfo} object to be compared.
      * @param media     the {@link Playable} object to be compared.
