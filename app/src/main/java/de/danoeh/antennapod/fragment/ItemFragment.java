@@ -465,7 +465,8 @@ public class ItemFragment extends Fragment {
     }
 
     private void openPodcast() {
-        ((MainActivity)getActivity()).loadFeedFragmentById(item.getFeedId(), null);
+        Fragment fragment = ItemlistFragment.newInstance(item.getFeedId());
+        ((MainActivity)getActivity()).loadChildFragment(fragment);
     }
 
     public void onEventMainThread(QueueEvent event) {
