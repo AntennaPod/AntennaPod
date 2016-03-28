@@ -378,33 +378,6 @@ public class AllEpisodesFragment extends Fragment {
             return item != null && item.isTagged(FeedItem.TAG_QUEUE);
         }
 
-        @Override
-        public LongList getQueueIds() {
-            LongList queueIds = new LongList();
-            if(episodes == null) {
-                return queueIds;
-            }
-            for(FeedItem item : episodes) {
-                if(item.isTagged(FeedItem.TAG_QUEUE)) {
-                    queueIds.add(item.getId());
-                }
-            }
-            return queueIds;
-        }
-
-        @Override
-        public LongList getFavoritesIds() {
-            LongList favoritesIds = new LongList();
-            if(episodes == null) {
-                return favoritesIds;
-            }
-            for(FeedItem item : episodes) {
-                if(item.isTagged(FeedItem.TAG_FAVORITE)) {
-                    favoritesIds.add(item.getId());
-                }
-            }
-            return favoritesIds;
-        }
     };
 
     public void onEventMainThread(FeedItemEvent event) {

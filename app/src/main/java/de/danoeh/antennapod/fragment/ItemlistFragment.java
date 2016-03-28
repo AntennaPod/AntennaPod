@@ -66,7 +66,6 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -98,8 +97,6 @@ public class ItemlistFragment extends ListFragment {
 
     private long feedID;
     private Feed feed;
-    private LongList queuedItemsIds;
-    private LongList favoritedItemsId;
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
@@ -321,8 +318,7 @@ public class ItemlistFragment extends ListFragment {
 
         contextMenu = menu;
         lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds,
-                favoritedItemsId);
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
     }
 
     @Override
@@ -599,11 +595,6 @@ public class ItemlistFragment extends ListFragment {
         }
 
         @Override
-        public boolean isInQueue(FeedItem item) {
-            return (queuedItemsIds != null) && queuedItemsIds.contains(item.getId());
-        }
-
-        @Override
         public int getItemDownloadProgressPercent(FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
@@ -627,9 +618,7 @@ public class ItemlistFragment extends ListFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {
-                        feed = (Feed) result[0];
-                        queuedItemsIds = (LongList) result[1];
-                        favoritedItemsId = (LongList) result[2];
+                        feed = result;
                         itemsLoaded = true;
                         if (viewsCreated) {
                             onFragmentLoaded();
@@ -640,15 +629,14 @@ public class ItemlistFragment extends ListFragment {
                 });
     }
 
-    private Object[] loadData() {
+    private Feed loadData() {
         Feed feed = DBReader.getFeed(feedID);
+        DBReader.loadAdditionalFeedItemListData(feed.getItems());
         if(feed != null && feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             feed.setItems(filter.filter(feed.getItems()));
         }
-        LongList queuedItemsIds = DBReader.getQueueIDList();
-        LongList favoritedItemsId = DBReader.getFavoriteIDList();
-        return new Object[] { feed, queuedItemsIds, favoritedItemsId };
+        return feed;
     }
 
 }

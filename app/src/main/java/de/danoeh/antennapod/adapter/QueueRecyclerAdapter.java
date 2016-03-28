@@ -188,8 +188,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                     item1.setVisible(visible);
                 }
             };
-            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true,
-                    itemAccess.getQueueIds(), itemAccess.getFavoritesIds());
+            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, itemAccess.getQueueIds());
         }
 
         @Override
@@ -317,7 +316,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         long getItemDownloadSize(FeedItem item);
         int getItemDownloadProgressPercent(FeedItem item);
         LongList getQueueIds();
-        LongList getFavoritesIds();
     }
 
     /**
