@@ -81,6 +81,11 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         @Override
         public void onRemoteMediaPlayerStatusUpdated() {
             MediaStatus status = castMgr.getMediaStatus();
+            if (status == null) {
+                setBuffering(false);
+                setPlayerStatus(PlayerStatus.INDETERMINATE, null);
+                return;
+            }
             Playable currentMedia = localVersion(status.getMediaInfo());
             long position = status.getStreamPosition();
             if (position > 0 && currentMedia.getPosition()==0) {
