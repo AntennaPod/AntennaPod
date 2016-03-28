@@ -326,6 +326,7 @@ public class DBWriter {
                         adapter.setQueue(queue);
                         item.addTag(FeedItem.TAG_QUEUE);
                         EventBus.getDefault().post(QueueEvent.added(item, index));
+                        EventBus.getDefault().post(FeedItemEvent.updated(item));
                         if (item.isNew()) {
                             DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
                         }
@@ -349,6 +350,7 @@ public class DBWriter {
             itemIds.add(item.getId());
             item.addTag(FeedItem.TAG_QUEUE);
         }
+        EventBus.getDefault().post(FeedItemEvent.updated(items));
         return addQueueItem(context, false, itemIds.toArray());
     }
 
@@ -448,6 +450,7 @@ public class DBWriter {
                     adapter.setQueue(queue);
                     item.removeTag(FeedItem.TAG_QUEUE);
                     EventBus.getDefault().post(QueueEvent.removed(item));
+                    EventBus.getDefault().post(FeedItemEvent.updated(item));
                 } else {
                     Log.w(TAG, "Queue was not modified by call to removeQueueItem");
                 }
@@ -469,6 +472,7 @@ public class DBWriter {
             adapter.close();
             item.addTag(FeedItem.TAG_FAVORITE);
             EventBus.getDefault().post(FavoritesEvent.added(item));
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
         });
     }
 
@@ -484,6 +488,7 @@ public class DBWriter {
             adapter.close();
             item.addTag(FeedItem.TAG_FAVORITE);
             EventBus.getDefault().post(FavoritesEvent.added(item));
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
         });
     }
 
@@ -494,6 +499,7 @@ public class DBWriter {
             adapter.close();
             item.removeTag(FeedItem.TAG_FAVORITE);
             EventBus.getDefault().post(FavoritesEvent.removed(item));
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
         });
     }
 

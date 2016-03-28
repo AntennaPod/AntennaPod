@@ -523,18 +523,6 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         ((MainActivity)getActivity()).loadChildFragment(fragment);
     }
 
-    public void onEventMainThread(QueueEvent event) {
-        if(event.contains(feedItems[feedItemPos])) {
-            load();
-        }
-    }
-
-    public void onEventMainThread(FavoritesEvent event) {
-        if(event.item.getId() == feedItems[feedItemPos]) {
-            load();
-        }
-    }
-
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         for(FeedItem item : event.items) {

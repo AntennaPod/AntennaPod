@@ -20,7 +20,7 @@ import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -28,7 +28,6 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -185,9 +184,18 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
-    public void onEvent(QueueEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        loadItems();
+    public void onEventMainThread(FeedItemEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if(playbackHistory == null) {
+            return;
+        }
+        for(FeedItem item : event.items) {
+            int pos = FeedItemUtil.indexOfItemWithId(playbackHistory, item.getId());
+            if(pos >= 0) {
+                loadItems();
+                return;
+            }
+        }
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

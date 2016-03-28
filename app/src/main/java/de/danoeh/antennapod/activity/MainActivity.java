@@ -688,7 +688,15 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
 
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        loadData();
+        switch(event.action) {
+            case ADDED:
+            case ADDED_ITEMS:
+            case SET_QUEUE:
+            case REMOVED:
+            case IRREVERSIBLE_REMOVED:
+            case CLEARED:
+                loadData();
+        }
     }
 
     public void onEventMainThread(ProgressEvent event) {

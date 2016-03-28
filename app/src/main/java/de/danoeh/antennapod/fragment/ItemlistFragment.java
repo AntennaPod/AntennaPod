@@ -49,7 +49,6 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
@@ -375,16 +374,6 @@ public class ItemlistFragment extends ListFragment {
         long[] ids = FeedItemUtil.getIds(feed.getItems());
         activity.loadChildFragment(ItemFragment.newInstance(ids, position));
         activity.getSupportActionBar().setTitle(feed.getTitle());
-    }
-
-    public void onEvent(QueueEvent event) {
-        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
-        loadItems();
-    }
-
-    public void onEvent(FavoritesEvent event) {
-        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
-        loadItems();
     }
 
     public void onEvent(FeedEvent event) {

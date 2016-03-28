@@ -70,10 +70,10 @@ public class AllEpisodesFragment extends Fragment {
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
     protected RecyclerView recyclerView;
-    private AllEpisodesRecycleAdapter listAdapter;
+    protected AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
 
-    private List<FeedItem> episodes;
+    protected List<FeedItem> episodes;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
