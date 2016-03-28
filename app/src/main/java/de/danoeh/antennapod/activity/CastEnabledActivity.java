@@ -4,11 +4,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.cast.CastManager;
+import de.danoeh.antennapod.core.cast.SwitchableMediaRouteActionProvider;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
@@ -17,22 +18,30 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
  */
 public abstract class CastEnabledActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public static final String TAG = "CastEnabledActivity";
 
     protected CastManager mCastManager;
-    private int castUICounter;
-    protected MenuItem mMediaRouteMenuItem;
-    protected boolean isCastEnabled;
+    private volatile int castUICounter;
+    protected SwitchableMediaRouteActionProvider mMediaRouteActionProvider;
+    protected volatile boolean isCastEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        PreferenceManager.getDefaultSharedPreferences(this).
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).
                 registerOnSharedPreferenceChangeListener(this);
 
         castUICounter = 0;
         mCastManager = CastManager.getInstance();
         isCastEnabled = UserPreferences.isCastEnabled();
+    }
+
+    @Override
+    protected void onDestroy() {
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                .unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
     }
 
     @Override
@@ -45,9 +54,9 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        mMediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
-        mMediaRouteMenuItem.setEnabled(isCastEnabled);
-        mMediaRouteMenuItem = mCastManager.addMediaRouterButton(menu, R.id.media_route_menu_item);
+        mMediaRouteActionProvider = mCastManager
+                .addMediaRouterButton(menu.findItem(R.id.media_route_menu_item));
+        mMediaRouteActionProvider.setEnabled(isCastEnabled);
         return true;
     }
 
@@ -71,13 +80,12 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         }
     }
 
-    //This whole method might just be useless because it's assumed that the cast button
-    //won't show where the user actually has the power to change the preference.
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(UserPreferences.PREF_CAST_ENABLED)) {
             isCastEnabled = UserPreferences.isCastEnabled();
-            mMediaRouteMenuItem.setEnabled(isCastEnabled);
+            Log.d(TAG, "onSharedPreferenceChanged(), isCastEnabled set to " + isCastEnabled);
+            mMediaRouteActionProvider.setEnabled(isCastEnabled);
             if (isCastEnabled) {
                 //Test if activity is resumed but without UI counter incremented
                 if (castUICounter==1) {

@@ -21,9 +21,11 @@ package de.danoeh.antennapod.core.cast;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.media.MediaRouter;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
@@ -1712,5 +1714,24 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         } else {
             return defaultVal;
         }
+    }
+
+    /**
+     * Adds and wires up the Switchable Media Router cast button. It returns a reference to the
+     * {@link SwitchableMediaRouteActionProvider} associated with the button if the caller needs
+     * such reference. It is assumed that the enclosing
+     * {@link android.app.Activity} inherits (directly or indirectly) from
+     * {@link android.support.v7.app.AppCompatActivity}.
+     *
+     * @param menuItem MenuItem of the Media Router cast button.
+     */
+    public final SwitchableMediaRouteActionProvider addMediaRouterButton(MenuItem menuItem) {
+        SwitchableMediaRouteActionProvider mediaRouteActionProvider = (SwitchableMediaRouteActionProvider)
+                MenuItemCompat.getActionProvider(menuItem);
+        mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
+        if (mCastConfiguration.getMediaRouteDialogFactory() != null) {
+            mediaRouteActionProvider.setDialogFactory(mCastConfiguration.getMediaRouteDialogFactory());
+        }
+        return mediaRouteActionProvider;
     }
 }
