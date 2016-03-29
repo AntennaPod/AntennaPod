@@ -16,9 +16,6 @@ import java.lang.ref.WeakReference;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
-/**
- * Created by Tom on 3/29/16.
- */
 class CoverTarget extends GlideDrawableImageViewTarget {
 
     private final WeakReference<Uri> fallback;

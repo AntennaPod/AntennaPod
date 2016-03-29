@@ -93,6 +93,10 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
         if (position == ADD_POSITION) {
             holder.feedTitle.setText(R.string.add_feed_label);
+            holder.feedTitle.setVisibility(View.VISIBLE);
+            // prevent any accidental re-use of old values (not sure how that would happen...)
+            holder.count.setPrimaryText("");
+            // make it go away, we don't need it for add feed
             holder.count.setVisibility(View.INVISIBLE);
             Glide.with(mainActivityRef.get())
                     .load(R.drawable.ic_add_grey_600_48dp)
@@ -105,8 +109,9 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         if (feed == null) return null;
 
         holder.feedTitle.setText(feed.getTitle());
-        holder.count.setVisibility(View.VISIBLE);
+        holder.feedTitle.setVisibility(View.VISIBLE);
         holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
+        holder.count.setVisibility(View.VISIBLE);
         Glide.with(mainActivityRef.get())
                 .load(feed.getImageUri())
                 .error(R.color.light_gray)
