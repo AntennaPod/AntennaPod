@@ -82,7 +82,7 @@ public abstract class CastEnabledActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(UserPreferences.PREF_CAST_ENABLED)) {
+        if (UserPreferences.PREF_CAST_ENABLED.equals(key)) {
             isCastEnabled = UserPreferences.isCastEnabled();
             Log.d(TAG, "onSharedPreferenceChanged(), isCastEnabled set to " + isCastEnabled);
             mMediaRouteActionProvider.setEnabled(isCastEnabled);

@@ -71,7 +71,7 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
  */
-public class PlaybackService extends Service implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class PlaybackService extends Service {
     public static final String FORCE_WIDGET_UPDATE = "de.danoeh.antennapod.FORCE_WIDGET_UPDATE";
     public static final String STOP_WIDGET_UPDATE = "de.danoeh.antennapod.STOP_WIDGET_UPDATE";
     /**
@@ -277,11 +277,17 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(
                 ACTION_RESUME_PLAY_CURRENT_EPISODE));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(prefListener);
         CastManager castMgr = CastManager.getInstance();
         castMgr.addCastConsumer(castConsumer);
         isCasting = castMgr.isConnected();
         if (isCasting) {
-            onCastAppConnected(false);
+            if (UserPreferences.isCastEnabled()) {
+                onCastAppConnected(false);
+            } else {
+                castMgr.disconnect();
+            }
         } else {
             mediaPlayer = new LocalPSMP(this, mediaPlayerCallback);
         }
@@ -306,8 +312,6 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
             Log.e(TAG, "NullPointerException while setting up MediaSession");
             npe.printStackTrace();
         }
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -319,7 +323,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         currentMediaType = MediaType.UNKNOWN;
 
         PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(this);
+                .unregisterOnSharedPreferenceChangeListener(prefListener);
         if (mediaSession != null) {
             mediaSession.release();
         }
@@ -342,13 +346,6 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "Received onBind event");
         return mBinder;
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(UserPreferences.PREF_LOCKSCREEN_BACKGROUND)) {
-            updateMediaSessionMetadata(getPlayable());
-        }
     }
 
     @Override
@@ -1598,7 +1595,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
                 info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null);
             }
             switchMediaPlayer(new LocalPSMP(PlaybackService.this, mediaPlayerCallback),
-                    info);
+                    info, false);
             if (info.playable != null) {
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
                         info.playable.getMediaType() == MediaType.AUDIO ? EXTRA_CODE_AUDIO : EXTRA_CODE_VIDEO);
@@ -1611,31 +1608,42 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
     };
 
     private void onCastAppConnected(boolean wasLaunched) {
-        //TODO deal with wasLaunched == false
-        Log.d(TAG, "A cast device application was connected");
+        Log.d(TAG, "A cast device application was " + (wasLaunched ? "launched" : "joined"));
         isCasting = true;
         if (mediaPlayer != null) {
             PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
             if (info.playerStatus == PlayerStatus.PLAYING) {
-                // could be pause, but this way we make sure the new player will get the correct position, since pause runs asynchronously
+                // could be pause, but this way we make sure the new player will get the correct position,
+                // since pause runs asynchronously and we could be directing the new player to play even before
+                // the old player gives us back the position.
                 saveCurrentPosition(false, 0);
             }
         }
         switchMediaPlayer(new RemotePSMP(PlaybackService.this, mediaPlayerCallback),
                 (mediaPlayer != null) ? mediaPlayer.getPSMPInfo() :
-                        new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null));
+                        new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null),
+                wasLaunched);
         sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, EXTRA_CODE_CAST);
         registerWifiBroadcastReceiver();
     }
 
     private void switchMediaPlayer(@NonNull PlaybackServiceMediaPlayer newPlayer,
-                                   @NonNull PlaybackServiceMediaPlayer.PSMPInfo info) {
+                                   @NonNull PlaybackServiceMediaPlayer.PSMPInfo info,
+                                   boolean wasLaunched) {
         if (mediaPlayer != null) {
             mediaPlayer.endPlayback(true, true);
-            mediaPlayer.shutdownAsync();
+            mediaPlayer.shutdownQuietly();
         }
         mediaPlayer = newPlayer;
         Log.d(TAG, "switched to " + mediaPlayer.getClass().getSimpleName());
+        if (!wasLaunched) {
+            PlaybackServiceMediaPlayer.PSMPInfo candidate = mediaPlayer.getPSMPInfo();
+            if (candidate.playable != null &&
+                    candidate.playerStatus.isAtLeast(PlayerStatus.PREPARING)) {
+                // do not automatically send new media to cast device
+                info.playable = null;
+            }
+        }
         if (info.playable != null) {
             mediaPlayer.playMediaObject(info.playable,
                     !info.playable.localFileAvailable(),
@@ -1676,4 +1684,18 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
             mWifiBroadcastReceiver = null;
         }
     }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener =
+            (sharedPreferences, key) -> {
+                if (UserPreferences.PREF_CAST_ENABLED.equals(key)) {
+                    if (!UserPreferences.isCastEnabled()) {
+                        CastManager castManager = CastManager.getInstance();
+                        if (castManager.isConnecting() || castManager.isConnected()) {
+                            castManager.disconnect();
+                        }
+                    }
+                } else if(key.equals(UserPreferences.PREF_LOCKSCREEN_BACKGROUND)) {
+                    updateMediaSessionMetadata(getPlayable());
+                }
+    };
 }

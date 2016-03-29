@@ -67,6 +67,17 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
                 (r, executor) -> Log.d(TAG, "Rejected execution of runnable"));
 
+        try {
+            if (castMgr.isConnected() && castMgr.isRemoteMediaLoaded()) {
+                // updates the state, but does not start playing new media if it was going to
+                onRemoteMediaPlayerStatusUpdated(
+                        ((playNextEpisode, wasSkipped, switchingPlayers) ->
+                        this.callback.endPlayback(false, wasSkipped, switchingPlayers)));
+            }
+        } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
+            Log.e(TAG, "Unable to do initial check for loaded media", e);
+        }
+
         castMgr.addCastConsumer(castConsumer);
         //TODO
     }
@@ -74,62 +85,12 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     private CastConsumer castConsumer = new CastConsumerImpl() {
         @Override
         public void onRemoteMediaPlayerMetadataUpdated() {
-            //TODO check this is indeed a correct behavior
-            onRemoteMediaPlayerStatusUpdated();
+            RemotePSMP.this.onRemoteMediaPlayerStatusUpdated(callback::endPlayback);
         }
 
         @Override
         public void onRemoteMediaPlayerStatusUpdated() {
-            MediaStatus status = castMgr.getMediaStatus();
-            if (status == null) {
-                setBuffering(false);
-                setPlayerStatus(PlayerStatus.INDETERMINATE, null);
-                return;
-            }
-            Playable currentMedia = localVersion(status.getMediaInfo());
-            long position = status.getStreamPosition();
-            if (position > 0 && currentMedia.getPosition()==0) {
-                currentMedia.setPosition((int) position);
-            }
-            int state = status.getPlayerState();
-            setBuffering(state == MediaStatus.PLAYER_STATE_BUFFERING);
-            switch (state) {
-                case MediaStatus.PLAYER_STATE_PLAYING:
-                    setPlayerStatus(PlayerStatus.PLAYING, currentMedia);
-                    break;
-                case MediaStatus.PLAYER_STATE_PAUSED:
-                    setPlayerStatus(PlayerStatus.PAUSED, currentMedia);
-                    break;
-                case MediaStatus.PLAYER_STATE_BUFFERING:
-                    setPlayerStatus(playerStatus, currentMedia);
-                    break;
-                case MediaStatus.PLAYER_STATE_IDLE:
-                    int reason = status.getIdleReason();
-                    switch (reason) {
-                        case MediaStatus.IDLE_REASON_CANCELED:
-                            setPlayerStatus(PlayerStatus.STOPPED, currentMedia);
-                            break;
-                        case MediaStatus.IDLE_REASON_INTERRUPTED:
-                            setPlayerStatus(PlayerStatus.PREPARING, currentMedia);
-                            break;
-                        case MediaStatus.IDLE_REASON_NONE:
-                            setPlayerStatus(PlayerStatus.INITIALIZED, currentMedia);
-                            break;
-                        case MediaStatus.IDLE_REASON_FINISHED:
-                            boolean playing = playerStatus == PlayerStatus.PLAYING;
-                            setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
-                            callback.endPlayback(playing, false, false);
-                            break;
-                        case MediaStatus.IDLE_REASON_ERROR:
-                            //Let's assume it's a media format error. Skipping...
-                            setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
-                            callback.endPlayback(startWhenPrepared.get(), true, false);
-                    }
-                    break;
-                case MediaStatus.PLAYER_STATE_UNKNOWN:
-                    //is this right?
-                    setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
-            }
+            RemotePSMP.this.onRemoteMediaPlayerStatusUpdated(callback::endPlayback);
         }
 
         @Override
@@ -187,6 +148,61 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             return ((RemoteMedia) playable).extractMediaInfo();
         }
         return null;
+    }
+
+    private void onRemoteMediaPlayerStatusUpdated(@NonNull EndPlaybackCall endPlaybackCall) {
+        MediaStatus status = castMgr.getMediaStatus();
+        if (status == null) {
+            setBuffering(false);
+            setPlayerStatus(PlayerStatus.INDETERMINATE, null);
+            return;
+        }
+        Playable currentMedia = localVersion(status.getMediaInfo());
+        if (currentMedia != null) {
+            long position = status.getStreamPosition();
+            if (position > 0 && currentMedia.getPosition() == 0) {
+                currentMedia.setPosition((int) position);
+            }
+        }
+        int state = status.getPlayerState();
+        setBuffering(state == MediaStatus.PLAYER_STATE_BUFFERING);
+        switch (state) {
+            case MediaStatus.PLAYER_STATE_PLAYING:
+                setPlayerStatus(PlayerStatus.PLAYING, currentMedia);
+                break;
+            case MediaStatus.PLAYER_STATE_PAUSED:
+                setPlayerStatus(PlayerStatus.PAUSED, currentMedia);
+                break;
+            case MediaStatus.PLAYER_STATE_BUFFERING:
+                setPlayerStatus(playerStatus, currentMedia);
+                break;
+            case MediaStatus.PLAYER_STATE_IDLE:
+                int reason = status.getIdleReason();
+                switch (reason) {
+                    case MediaStatus.IDLE_REASON_CANCELED:
+                        setPlayerStatus(PlayerStatus.STOPPED, currentMedia);
+                        break;
+                    case MediaStatus.IDLE_REASON_INTERRUPTED:
+                        setPlayerStatus(PlayerStatus.PREPARING, currentMedia);
+                        break;
+                    case MediaStatus.IDLE_REASON_NONE:
+                        setPlayerStatus(PlayerStatus.INITIALIZED, currentMedia);
+                        break;
+                    case MediaStatus.IDLE_REASON_FINISHED:
+                        boolean playing = playerStatus == PlayerStatus.PLAYING;
+                        setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
+                        endPlaybackCall.endPlayback(playing, false, false);
+                        break;
+                    case MediaStatus.IDLE_REASON_ERROR:
+                        //Let's assume it's a media format error. Skipping...
+                        setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
+                        endPlaybackCall.endPlayback(startWhenPrepared.get(), true, false);
+                }
+                break;
+            case MediaStatus.PLAYER_STATE_UNKNOWN:
+                //is this right?
+                setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
+        }
     }
 
     @Override
@@ -461,7 +477,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public void shutdownAsync() {
+    public void shutdownQuietly() {
         executor.execute(this::shutdown);
         executor.shutdown();
     }
@@ -515,5 +531,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     @Override
     protected boolean shouldLockWifi() {
         return false;
+    }
+
+    private interface EndPlaybackCall {
+        boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers);
     }
 }

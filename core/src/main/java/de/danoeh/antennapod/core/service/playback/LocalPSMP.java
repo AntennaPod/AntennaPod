@@ -609,7 +609,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * This method is executed on an internal executor service.
      */
     @Override
-    public void shutdownAsync() {
+    public void shutdownQuietly() {
         executor.submit(this::shutdown);
         executor.shutdown();
     }
