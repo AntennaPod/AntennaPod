@@ -137,6 +137,7 @@ public class ItemFragment extends Fragment {
 
         root = (ViewGroup) layout.findViewById(R.id.content_root);
         txtvPodcast = (TextView) layout.findViewById(R.id.txtvPodcast);
+        txtvPodcast.setOnClickListener(v -> openPodcast());
         txtvTitle = (TextView) layout.findViewById(R.id.txtvTitle);
         txtvDuration = (TextView) layout.findViewById(R.id.txtvDuration);
         txtvPublished = (TextView) layout.findViewById(R.id.txtvPublished);
@@ -169,6 +170,7 @@ public class ItemFragment extends Fragment {
         registerForContextMenu(webvDescription);
 
         imgvCover = (ImageView) layout.findViewById(R.id.imgvCover);
+        imgvCover.setOnClickListener(v -> openPodcast());
         progbarDownload = (ProgressBar) layout.findViewById(R.id.progbarDownload);
         progbarLoading = (ProgressBar) layout.findViewById(R.id.progbarLoading);
         butAction1 = (IconButton) layout.findViewById(R.id.butAction1);
@@ -263,12 +265,18 @@ public class ItemFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        try {
-            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            return true;
+        switch(menuItem.getItemId()) {
+            case R.id.open_podcast:
+                openPodcast();
+                return true;
+            default:
+                try {
+                    return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    return true;
+                }
         }
     }
 
@@ -454,6 +462,11 @@ public class ItemFragment extends Fragment {
                         R.string.share_url_label);
                 menu.setHeaderTitle(selectedURL);
         }
+    }
+
+    private void openPodcast() {
+        Fragment fragment = ItemlistFragment.newInstance(item.getFeedId());
+        ((MainActivity)getActivity()).loadChildFragment(fragment);
     }
 
     public void onEventMainThread(QueueEvent event) {
