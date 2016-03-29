@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
@@ -23,9 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.joanzapata.iconify.Iconify;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -297,48 +292,9 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate()
-                .into(new CoverTarget(item.getFeed().getImageUri(), placeholder, cover));
+                .into(new CoverTarget(item.getFeed().getImageUri(), placeholder, cover, mainActivity.get()));
         }
 
-    }
-    
-
-    private class CoverTarget extends GlideDrawableImageViewTarget {
-
-        private final WeakReference<Uri> fallback;
-        private final WeakReference<TextView> placeholder;
-        private final WeakReference<ImageView> cover;
-
-        public CoverTarget(Uri fallbackUri, TextView txtvPlaceholder, ImageView imgvCover) {
-            super(imgvCover);
-            fallback = new WeakReference<>(fallbackUri);
-            placeholder = new WeakReference<>(txtvPlaceholder);
-            cover = new WeakReference<>(imgvCover);
-        }
-
-        @Override
-        public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            Uri fallbackUri = fallback.get();
-            TextView txtvPlaceholder = placeholder.get();
-            ImageView imgvCover = cover.get();
-            if(fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
-                Glide.with(mainActivity.get())
-                        .load(fallbackUri)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
-                        .dontAnimate()
-                        .into(new CoverTarget(null, txtvPlaceholder, imgvCover));
-            }
-        }
-
-        @Override
-        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
-            super.onResourceReady(drawable, anim);
-            TextView txtvPlaceholder = placeholder.get();
-            if(txtvPlaceholder != null) {
-                txtvPlaceholder.setVisibility(View.INVISIBLE);
-            }
-        }
     }
 
     private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
