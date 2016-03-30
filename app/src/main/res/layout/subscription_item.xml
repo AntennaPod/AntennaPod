@@ -15,15 +15,13 @@
         android:scaleType="centerCrop"
         tools:src="@drawable/ic_launcher" />
 
-    <TextView
+    <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/txtvTitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:ellipsize="end"
-        style="@style/AntennaPod.TextView.Heading"
-        android:textStyle="bold"
-        android:gravity="center_horizontal|bottom"
-        android:background="#55000000"
+        android:gravity="center"
+        android:background="@color/light_gray"
         tools:text="@string/app_name" />
 
     <jp.shts.android.library.TriangleLabelView

@@ -92,16 +92,12 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         }
 
         if (position == ADD_POSITION) {
-            holder.feedTitle.setText(R.string.add_feed_label);
-            holder.feedTitle.setVisibility(View.VISIBLE);
+            holder.feedTitle.setText("{md-add 500%}\n\n" + mainActivityRef.get().getString(R.string.add_feed_label));
+                    holder.feedTitle.setVisibility(View.VISIBLE);
             // prevent any accidental re-use of old values (not sure how that would happen...)
             holder.count.setPrimaryText("");
             // make it go away, we don't need it for add feed
             holder.count.setVisibility(View.INVISIBLE);
-            Glide.with(mainActivityRef.get())
-                    .load(R.drawable.ic_add_grey_600_48dp)
-                    .dontAnimate()
-                    .into(holder.imageView);
             return convertView;
         }
 
