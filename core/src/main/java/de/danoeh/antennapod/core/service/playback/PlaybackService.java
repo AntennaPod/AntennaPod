@@ -620,7 +620,7 @@ public class PlaybackService extends Service {
                         .currentDeviceId()
                         .currentTimestamp()
                         .started(startPosition / 1000)
-                        .position(getDuration() / 1000)
+                        .position((wasSkipped ? getCurrentPosition() : getDuration()) / 1000)
                         .total(getDuration() / 1000)
                         .build();
                 GpodnetPreferences.enqueueEpisodeAction(action);
