@@ -1691,6 +1691,7 @@ public class PlaybackService extends Service {
                     if (!UserPreferences.isCastEnabled()) {
                         CastManager castManager = CastManager.getInstance();
                         if (castManager.isConnecting() || castManager.isConnected()) {
+                            Log.d(TAG, "Disconnecting cast device due to a change in user preferences");
                             castManager.disconnect();
                         }
                     }
