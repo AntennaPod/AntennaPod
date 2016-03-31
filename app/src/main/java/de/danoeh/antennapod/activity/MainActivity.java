@@ -302,7 +302,6 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
                 break;
             case SubscriptionFragment.TAG:
                 SubscriptionFragment subscriptionFragment = new SubscriptionFragment();
-                subscriptionFragment.setItemAccess(itemAccess);
                 fragment = subscriptionFragment;
                 break;
             default:

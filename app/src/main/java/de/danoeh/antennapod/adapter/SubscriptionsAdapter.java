@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,17 +34,13 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     /** the position in the view that holds the add item */
     private static final int ADD_POSITION = 0;
-
-    private NavListAdapter.ItemAccess itemAccess;
+    private static final String TAG = "SubscriptionsAdapter";
 
     private final WeakReference<MainActivity> mainActivityRef;
+    private final ItemAccess itemAccess;
 
-    public SubscriptionsAdapter(MainActivity mainActivity, NavListAdapter.ItemAccess itemAccess) {
-        this.itemAccess = itemAccess;
+    public SubscriptionsAdapter(MainActivity mainActivity, ItemAccess itemAccess) {
         this.mainActivityRef = new WeakReference<>(mainActivity);
-    }
-
-    public void setItemAccess(NavListAdapter.ItemAccess itemAccess) {
         this.itemAccess = itemAccess;
     }
 
@@ -104,17 +102,22 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         final Feed feed = (Feed) getItem(position);
         if (feed == null) return null;
 
-        holder.feedTitle.setText(feed.getTitle());
+        String title = feed.getTitle();
+        long feedId = feed.getId();
+        int counter = itemAccess.getFeedCounter(feedId);
+        Uri imageUri = feed.getImageUri();
+        Log.i(TAG, String.format("Title: %s id: %d counter: %d uri: %s", title, feedId, counter, imageUri.toString()));
+        holder.feedTitle.setText(title);
         holder.feedTitle.setVisibility(View.VISIBLE);
-        holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
+        holder.count.setPrimaryText(String.valueOf(counter));
         holder.count.setVisibility(View.VISIBLE);
         Glide.with(mainActivityRef.get())
-                .load(feed.getImageUri())
+                .load(imageUri)
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate()
-                .into(new CoverTarget(feed.getImageUri(), holder.feedTitle, holder.imageView, mainActivityRef.get()));
+                .into(new CoverTarget(null, holder.feedTitle, holder.imageView, mainActivityRef.get()));
 
         return convertView;
     }
@@ -133,5 +136,11 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         public TextView feedTitle;
         public ImageView imageView;
         public TriangleLabelView count;
+    }
+
+    public interface ItemAccess {
+        int getCount();
+        Feed getItem(int position);
+        int getFeedCounter(long feedId);
     }
 }
