@@ -203,9 +203,9 @@ public class UserPreferences {
     }
 
     /**
-     * Returns true if notifications are persistent
+     * Returns true if the lockscreen background should be set to the current episode's image
      *
-     * @return {@code true} if notifications are persistent, {@code false}  otherwise
+     * @return {@code true} if the lockscreen background should be set, {@code false}  otherwise
      */
     public static boolean setLockscreenBackground() {
         return prefs.getBoolean(PREF_LOCKSCREEN_BACKGROUND, true);
