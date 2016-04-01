@@ -949,12 +949,8 @@ public final class DBReader {
                     continue;
                 }
 
-                if(item.isPlayed()) {
-                    feedPlayedTime += media.getDuration() / 1000;
-                } else {
-                    feedPlayedTime += media.getPosition() / 1000;
-                }
-                if(item.isPlayed() || media.getPosition() != 0) {
+                feedPlayedTime += media.getPlayedDuration() / 1000;
+                if(media.getPlayedDuration() > 0) {
                     episodesStarted++;
                 }
                 feedTotalTime += media.getDuration() / 1000;
