@@ -3,6 +3,7 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import java.lang.ref.WeakReference;
 
@@ -36,17 +34,13 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     /** the position in the view that holds the add item */
     private static final int ADD_POSITION = 0;
-
-    private NavListAdapter.ItemAccess itemAccess;
+    private static final String TAG = "SubscriptionsAdapter";
 
     private final WeakReference<MainActivity> mainActivityRef;
+    private final ItemAccess itemAccess;
 
-    public SubscriptionsAdapter(MainActivity mainActivity, NavListAdapter.ItemAccess itemAccess) {
-        this.itemAccess = itemAccess;
+    public SubscriptionsAdapter(MainActivity mainActivity, ItemAccess itemAccess) {
         this.mainActivityRef = new WeakReference<>(mainActivity);
-    }
-
-    public void setItemAccess(NavListAdapter.ItemAccess itemAccess) {
         this.itemAccess = itemAccess;
     }
 
@@ -96,41 +90,34 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         }
 
         if (position == ADD_POSITION) {
-            holder.feedTitle.setText(R.string.add_feed_label);
+            holder.feedTitle.setText("{md-add 500%}\n\n" + mainActivityRef.get().getString(R.string.add_feed_label));
+                    holder.feedTitle.setVisibility(View.VISIBLE);
+            // prevent any accidental re-use of old values (not sure how that would happen...)
+            holder.count.setPrimaryText("");
+            // make it go away, we don't need it for add feed
             holder.count.setVisibility(View.INVISIBLE);
-            Glide.with(mainActivityRef.get())
-                    .load(R.drawable.ic_add_grey_600_48dp)
-                    .dontAnimate()
-                    .into(holder.imageView);
             return convertView;
         }
 
         final Feed feed = (Feed) getItem(position);
         if (feed == null) return null;
 
-        holder.feedTitle.setText(feed.getTitle());
+        String title = feed.getTitle();
+        long feedId = feed.getId();
+        int counter = itemAccess.getFeedCounter(feedId);
+        Uri imageUri = feed.getImageUri();
+        Log.i(TAG, String.format("Title: %s id: %d counter: %d uri: %s", title, feedId, counter, imageUri.toString()));
+        holder.feedTitle.setText(title);
+        holder.feedTitle.setVisibility(View.VISIBLE);
+        holder.count.setPrimaryText(String.valueOf(counter));
         holder.count.setVisibility(View.VISIBLE);
-        holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
         Glide.with(mainActivityRef.get())
-                .load(feed.getImageUri())
-                .placeholder(R.color.light_gray)
+                .load(imageUri)
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate()
-                .listener(new RequestListener<Uri, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, Uri model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.feedTitle.setVisibility(View.INVISIBLE);
-                        return false;
-                    }
-                })
-                .into(holder.imageView);
+                .into(new CoverTarget(null, holder.feedTitle, holder.imageView, mainActivityRef.get()));
 
         return convertView;
     }
@@ -149,5 +136,11 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         public TextView feedTitle;
         public ImageView imageView;
         public TriangleLabelView count;
+    }
+
+    public interface ItemAccess {
+        int getCount();
+        Feed getItem(int position);
+        int getFeedCounter(long feedId);
     }
 }

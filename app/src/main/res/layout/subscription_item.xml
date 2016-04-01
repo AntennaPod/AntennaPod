@@ -15,20 +15,13 @@
         android:scaleType="centerCrop"
         tools:src="@drawable/ic_launcher" />
 
-    <TextView
+    <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/txtvTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/widget_margin"
+        android:layout_height="match_parent"
         android:ellipsize="end"
-        android:padding="@dimen/widget_margin"
-        style="@style/AntennaPod.TextView.Heading"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:layout_gravity="bottom"
-        android:textColor="@android:color/white"
-        android:background="#55000000"
+        android:gravity="center"
+        android:background="@color/light_gray"
         tools:text="@string/app_name" />
 
     <jp.shts.android.library.TriangleLabelView
@@ -37,10 +30,10 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        app:backgroundColor="#bbbfbfbf"
+        app:backgroundColor="@color/antennapod_blue"
         app:corner="rightTop"
         app:primaryText="Test"
-        app:primaryTextColor="@color/grey600"
+        app:primaryTextColor="@color/white"
         app:primaryTextSize="12sp"
         android:layout_gravity="right|top"/>
 

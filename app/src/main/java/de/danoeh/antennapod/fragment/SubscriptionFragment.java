@@ -14,15 +14,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.adapter.SubscriptionsAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -40,21 +37,17 @@ public class SubscriptionFragment extends Fragment {
 
     public static final String TAG = "SubscriptionFragment";
 
-    private GridView mSubscriptionGridLayout;
-    private DBReader.NavDrawerData mDrawerData;
-    private SubscriptionsAdapter mSubscriptionAdapter;
-    private NavListAdapter.ItemAccess mItemAccess;
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE
+            | EventDistributor.UNREAD_ITEMS_UPDATE;
 
-    private List<Feed> mSubscriptionList = new ArrayList<>();
+    private GridView subscriptionGridLayout;
+    private DBReader.NavDrawerData navDrawerData;
+    private SubscriptionsAdapter subscriptionAdapter;
+
     private int mPosition = -1;
 
 
     public SubscriptionFragment() {
-    }
-
-
-    public void setItemAccess(NavListAdapter.ItemAccess itemAccess) {
-        mItemAccess = itemAccess;
     }
 
     @Override
@@ -67,26 +60,27 @@ public class SubscriptionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_subscriptions, container, false);
-        mSubscriptionGridLayout = (GridView) root.findViewById(R.id.subscriptions_grid);
-        registerForContextMenu(mSubscriptionGridLayout);
+        subscriptionGridLayout = (GridView) root.findViewById(R.id.subscriptions_grid);
+        registerForContextMenu(subscriptionGridLayout);
         return root;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mSubscriptionAdapter = new SubscriptionsAdapter((MainActivity)getActivity(), mItemAccess);
+        subscriptionAdapter = new SubscriptionsAdapter((MainActivity)getActivity(), itemAccess);
 
-        mSubscriptionGridLayout.setAdapter(mSubscriptionAdapter);
+        subscriptionGridLayout.setAdapter(subscriptionAdapter);
 
         loadSubscriptions();
 
-        mSubscriptionGridLayout.setOnItemClickListener(mSubscriptionAdapter);
+        subscriptionGridLayout.setOnItemClickListener(subscriptionAdapter);
 
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscriptions_label);
         }
 
+        EventDistributor.getInstance().register(contentUpdate);
     }
 
     private void loadSubscriptions() {
@@ -94,10 +88,8 @@ public class SubscriptionFragment extends Fragment {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    mDrawerData = result;
-                    mSubscriptionList = mDrawerData.feeds;
-                    mSubscriptionAdapter.setItemAccess(mItemAccess);
-                    mSubscriptionAdapter.notifyDataSetChanged();
+                    navDrawerData = result;
+                    subscriptionAdapter.notifyDataSetChanged();
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
                 });
@@ -109,7 +101,7 @@ public class SubscriptionFragment extends Fragment {
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         int position = adapterInfo.position;
 
-        Object selectedObject = mSubscriptionAdapter.getItem(position);
+        Object selectedObject = subscriptionAdapter.getItem(position);
         if (selectedObject.equals(SubscriptionsAdapter.ADD_ITEM_OBJ)) {
             mPosition = position;
             return;
@@ -134,7 +126,7 @@ public class SubscriptionFragment extends Fragment {
             return false;
         }
 
-        Object selectedObject = mSubscriptionAdapter.getItem(position);
+        Object selectedObject = subscriptionAdapter.getItem(position);
         if (selectedObject.equals(SubscriptionsAdapter.ADD_ITEM_OBJ)) {
             // this is the add object, do nothing
             return false;
@@ -201,5 +193,41 @@ public class SubscriptionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        loadSubscriptions();
     }
+
+    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+        @Override
+        public void update(EventDistributor eventDistributor, Integer arg) {
+            if ((EVENTS & arg) != 0) {
+                Log.d(TAG, "Received contentUpdate Intent.");
+                loadSubscriptions();
+            }
+        }
+    };
+
+    private SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
+        @Override
+        public int getCount() {
+            if (navDrawerData != null) {
+                return navDrawerData.feeds.size();
+            } else {
+                return 0;
+            }
+        }
+
+        @Override
+        public Feed getItem(int position) {
+            if (navDrawerData != null && 0 <= position && position < navDrawerData.feeds.size()) {
+                return navDrawerData.feeds.get(position);
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public int getFeedCounter(long feedId) {
+            return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
+        }
+    };
 }
