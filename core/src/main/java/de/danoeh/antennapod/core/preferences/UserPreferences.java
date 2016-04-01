@@ -194,6 +194,16 @@ public class UserPreferences {
     }
 
     /**
+     * Returns true if additional playback buttons should be shown in the notification even when
+     * on the lockscreen
+     *
+     * @return {@code true} if additional playback buttons should be shown, {@code false}  otherwise
+     */
+    public static boolean showAdditionalNotificationButtons() {
+        return prefs.getBoolean(PREF_EXPANDED_NOTIFICATION, false);
+    }
+
+    /**
      * Returns true if notifications are persistent
      *
      * @return {@code true} if notifications are persistent, {@code false}  otherwise

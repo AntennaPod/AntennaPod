@@ -867,7 +867,13 @@ public class PlaybackService extends Service {
                     notificationBuilder.addAction(android.R.drawable.ic_media_rew,
                             getString(R.string.rewind_label),
                             rewindButtonPendingIntent);
-                    numActions++;
+                    if(UserPreferences.showAdditionalNotificationButtons()) {
+                        // always show the rewind button (even on the lockscreen)
+                        compactActionList.add(numActions++);
+                    } else {
+                        numActions++;
+                    }
+
 
                     if (playerStatus == PlayerStatus.PLAYING) {
                         PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
@@ -891,7 +897,12 @@ public class PlaybackService extends Service {
                     notificationBuilder.addAction(android.R.drawable.ic_media_ff,
                             getString(R.string.fast_forward_label),
                             ffButtonPendingIntent);
-                    numActions++;
+                    if(UserPreferences.showAdditionalNotificationButtons()) {
+                        // always show the ff button (even on the lockscreen)
+                        compactActionList.add(numActions++);
+                    } else {
+                        numActions++;
+                    }
 
                     if (UserPreferences.isFollowQueue()) {
                         PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
