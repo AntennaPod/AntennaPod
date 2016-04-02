@@ -212,4 +212,18 @@
         <item>500</item>
     </string-array>
 
+    <string-array name="prioritised_notification_buttons_options">
+        <item>@string/rewind_label</item>
+        <item>@string/fast_forward_label</item>
+        <item>@string/skip_episode_label</item>
+    </string-array>
+    <string-array name="prioritised_notification_buttons_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="prioritised_notification_buttons_default_values">
+        <item>2</item>
+    </string-array>
+
 </resources>

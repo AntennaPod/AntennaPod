@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
@@ -52,6 +53,7 @@ public class UserPreferences {
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
+    public static final String PREF_PRIORITISED_NOTIFICATION_BUTTONS = "prefPrioritisedNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
     public static final String PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER = "prefShowSubscriptionsInDrawer";
@@ -178,6 +180,10 @@ public class UserPreferences {
 
     public static boolean showSubscriptionsInDrawer() {
         return prefs.getBoolean(PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER, true);
+    }
+
+    public static Set<String> getPrioritisedNotificationButtons() {
+        return prefs.getStringSet(PREF_PRIORITISED_NOTIFICATION_BUTTONS, null);
     }
 
     /**
