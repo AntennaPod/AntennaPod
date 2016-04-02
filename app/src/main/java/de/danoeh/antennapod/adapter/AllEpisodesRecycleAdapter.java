@@ -252,7 +252,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         public void onClick(View v) {
             MainActivity mainActivity = mainActivityRef.get();
             if (mainActivity != null) {
-                mainActivity.loadChildFragment(ItemFragment.newInstance(item.getId()));
+                long[] ids = itemAccess.getItemsIds().toArray();
+                mainActivity.loadChildFragment(ItemFragment.newInstance(ids, position));
             }
         }
 
@@ -299,6 +300,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         int getCount();
 
         FeedItem getItem(int position);
+
+        LongList getItemsIds();
 
         int getItemDownloadProgressPercent(FeedItem item);
 

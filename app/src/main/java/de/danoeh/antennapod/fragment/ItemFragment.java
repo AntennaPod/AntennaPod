@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GestureDetectorCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -17,12 +17,14 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +63,8 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.view.OnSwipeGesture;
+import de.danoeh.antennapod.view.SwipeGestureDetector;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -70,13 +74,17 @@ import rx.schedulers.Schedulers;
 /**
  * Displays information about a FeedItem and actions.
  */
-public class ItemFragment extends Fragment {
+public class ItemFragment extends Fragment implements OnSwipeGesture {
 
     private static final String TAG = "ItemFragment";
 
     private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE;
 
-    private static final String ARG_FEEDITEM = "feeditem";
+    private static final String ARG_FEEDITEMS = "feeditems";
+    private static final String ARG_FEEDITEM_POS = "feeditem_pos";
+
+    private GestureDetectorCompat headerGestureDetector;
+    private GestureDetectorCompat webviewGestureDetector;
 
     /**
      * Creates a new instance of an ItemFragment
@@ -85,15 +93,28 @@ public class ItemFragment extends Fragment {
      * @return The ItemFragment instance
      */
     public static ItemFragment newInstance(long feeditem) {
+        return newInstance(new long[] { feeditem }, 0);
+    }
+
+    /**
+     * Creates a new instance of an ItemFragment
+     *
+     * @param feeditems The IDs of the FeedItems that belong to the same list
+     * @param feedItemPos The position of the FeedItem that is currently shown
+     * @return The ItemFragment instance
+     */
+    public static ItemFragment newInstance(long[] feeditems, int feedItemPos) {
         ItemFragment fragment = new ItemFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_FEEDITEM, feeditem);
+        args.putLongArray(ARG_FEEDITEMS, feeditems);
+        args.putInt(ARG_FEEDITEM_POS, feedItemPos);
         fragment.setArguments(args);
         return fragment;
     }
 
     private boolean itemsLoaded = false;
-    private long itemID;
+    private long[] feedItems;
+    private int feedItemPos;
     private FeedItem item;
     private LongList queue;
     private LongList favorites;
@@ -126,16 +147,31 @@ public class ItemFragment extends Fragment {
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
-        itemID = getArguments().getLong(ARG_FEEDITEM, -1);
+        feedItems = getArguments().getLongArray(ARG_FEEDITEMS);
+        feedItemPos = getArguments().getInt(ARG_FEEDITEM_POS);
+
+        headerGestureDetector = new GestureDetectorCompat(getActivity(), new SwipeGestureDetector(this));
+        webviewGestureDetector = new GestureDetectorCompat(getActivity(), new SwipeGestureDetector(this) {
+            // necessary for the longclick context menu to work properly
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
+        });
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.feeditem_fragment, container, false);
 
         root = (ViewGroup) layout.findViewById(R.id.content_root);
+
+        LinearLayout header = (LinearLayout) root.findViewById(R.id.header);
+        if(feedItems.length > 0) {
+            header.setOnTouchListener((v, event) -> headerGestureDetector.onTouchEvent(event));
+        }
+
         txtvPodcast = (TextView) layout.findViewById(R.id.txtvPodcast);
         txtvPodcast.setOnClickListener(v -> openPodcast());
         txtvTitle = (TextView) layout.findViewById(R.id.txtvTitle);
@@ -156,7 +192,10 @@ public class ItemFragment extends Fragment {
         webvDescription.getSettings().setLayoutAlgorithm(
             WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webvDescription.getSettings().setLoadWithOverviewMode(true);
-        webvDescription.setOnLongClickListener(webViewLongClickListener);
+        if(feedItems.length > 0) {
+            webvDescription.setOnLongClickListener(webViewLongClickListener);
+        }
+        webvDescription.setOnTouchListener((v, event) -> webviewGestureDetector.onTouchEvent(event));
         webvDescription.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -248,6 +287,25 @@ public class ItemFragment extends Fragment {
     }
 
     @Override
+    public boolean onSwipeLeftToRight() {
+        Log.d(TAG, "onSwipeLeftToRight()");
+        feedItemPos = feedItemPos - 1;
+        if(feedItemPos < 0) {
+            feedItemPos = feedItems.length - 1;
+        }
+        load();
+        return true;
+    }
+
+    @Override
+    public boolean onSwipeRightToLeft() {
+        Log.d(TAG, "onSwipeRightToLeft()");
+        feedItemPos = (feedItemPos + 1) % feedItems.length;
+        load();
+        return true;
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if(!isAdded() || item == null) {
             return;
@@ -292,7 +350,6 @@ public class ItemFragment extends Fragment {
 
 
     private void onFragmentLoaded() {
-        progbarLoading.setVisibility(View.INVISIBLE);
         if (webviewData != null) {
             webvDescription.loadDataWithBaseURL(null, webviewData, "text/html",
                     "utf-8", "about:blank");
@@ -470,13 +527,13 @@ public class ItemFragment extends Fragment {
     }
 
     public void onEventMainThread(QueueEvent event) {
-        if(event.contains(itemID)) {
+        if(event.contains(feedItems[feedItemPos])) {
             load();
         }
     }
 
     public void onEventMainThread(FavoritesEvent event) {
-        if(event.item.getId() == itemID) {
+        if(event.item.getId() == feedItems[feedItemPos]) {
             load();
         }
     }
@@ -484,7 +541,7 @@ public class ItemFragment extends Fragment {
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         for(FeedItem item : event.items) {
-            if(itemID == item.getId()) {
+            if(feedItems[feedItemPos] == item.getId()) {
                 load();
                 return;
             }
@@ -520,6 +577,7 @@ public class ItemFragment extends Fragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
+        progbarLoading.setVisibility(View.VISIBLE);
         subscription = Observable.fromCallable(this::loadInBackground)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -527,6 +585,7 @@ public class ItemFragment extends Fragment {
                 item = (FeedItem) result[0];
                 queue = (LongList) result[1];
                 favorites = (LongList) result[2];
+                progbarLoading.setVisibility(View.GONE);
                 if (!itemsLoaded) {
                     itemsLoaded = true;
                     onFragmentLoaded();
@@ -539,7 +598,7 @@ public class ItemFragment extends Fragment {
     }
 
     private Object[] loadInBackground() {
-        FeedItem feedItem = DBReader.getFeedItem(itemID);
+        FeedItem feedItem = DBReader.getFeedItem(feedItems[feedItemPos]);
         if (feedItem != null) {
             Timeline t = new Timeline(getActivity(), feedItem);
             webviewData = t.processShownotes(false);

@@ -349,6 +349,18 @@ public class AllEpisodesFragment extends Fragment {
         }
 
         @Override
+        public LongList getItemsIds() {
+            if(episodes == null) {
+                return new LongList(0);
+            }
+            LongList ids = new LongList(episodes.size());
+            for(FeedItem episode : episodes) {
+                ids.add(episode.getId());
+            }
+            return ids;
+        }
+
+        @Override
         public int getItemDownloadProgressPercent(FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {

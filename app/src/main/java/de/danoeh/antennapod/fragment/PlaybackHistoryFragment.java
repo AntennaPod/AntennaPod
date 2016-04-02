@@ -28,6 +28,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
@@ -140,10 +141,9 @@ public class PlaybackHistoryFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        FeedItem item = adapter.getItem(position - l.getHeaderViewsCount());
-        if (item != null) {
-            ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
-        }
+        position -= l.getHeaderViewsCount();
+        long[] ids = FeedItemUtil.getIds(playbackHistory);
+        ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(ids, position));
     }
 
     @Override

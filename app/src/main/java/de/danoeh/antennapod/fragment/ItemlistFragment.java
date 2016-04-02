@@ -374,12 +374,11 @@ public class ItemlistFragment extends ListFragment {
         if(adapter == null) {
             return;
         }
-        FeedItem selection = adapter.getItem(position - l.getHeaderViewsCount());
-        if (selection != null) {
-            MainActivity activity = (MainActivity) getActivity();
-            activity.loadChildFragment(ItemFragment.newInstance(selection.getId()));
-            activity.getSupportActionBar().setTitle(feed.getTitle());
-        }
+        position -= l.getHeaderViewsCount();
+        MainActivity activity = (MainActivity) getActivity();
+        long[] ids = FeedItemUtil.getIds(feed.getItems());
+        activity.loadChildFragment(ItemFragment.newInstance(ids, position));
+        activity.getSupportActionBar().setTitle(feed.getTitle());
     }
 
     public void onEvent(QueueEvent event) {
