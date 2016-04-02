@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
-import java.util.Set;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -859,7 +858,7 @@ public class PlaybackService extends Service {
                             .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
                     IntList compactActionList = new IntList();
 
-                    Set<String> prioritisedButtons = UserPreferences.getPrioritisedNotificationButtons();
+                    final List<String> notificationButtons = UserPreferences.getNotificationButtons();
                     int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
 
                     // always let them rewind
@@ -868,7 +867,7 @@ public class PlaybackService extends Service {
                     notificationBuilder.addAction(android.R.drawable.ic_media_rew,
                             getString(R.string.rewind_label),
                             rewindButtonPendingIntent);
-                    if(prioritisedButtons.contains("0")) {
+                    if(notificationButtons.contains("rewind")) {
                         // show the rewind button even on the lock screen
                         compactActionList.add(numActions++);
                     } else {
@@ -898,7 +897,7 @@ public class PlaybackService extends Service {
                     notificationBuilder.addAction(android.R.drawable.ic_media_ff,
                             getString(R.string.fast_forward_label),
                             ffButtonPendingIntent);
-                    if(prioritisedButtons.contains("1")) {
+                    if(notificationButtons.contains("fastforward")) {
                         // show the fast forward button even on the lock screen
                         compactActionList.add(numActions++);
                     } else {
@@ -911,7 +910,7 @@ public class PlaybackService extends Service {
                         notificationBuilder.addAction(android.R.drawable.ic_media_next,
                                 getString(R.string.skip_episode_label),
                                 skipButtonPendingIntent);
-                        if(prioritisedButtons.contains("2")) {
+                        if(notificationButtons.contains("skip")) {
                             // show the skip button even on the lock screen
                             compactActionList.add(numActions++);
                         } else {

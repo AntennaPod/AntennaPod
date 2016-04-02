@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -218,6 +219,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)
                 .setOnPreferenceClickListener(preference -> {
                     showDrawerPreferencesDialog();
+                    return true;
+                });
+
+        ui.findPreference(UserPreferences.PREF_NOTIFICATION_BUTTONS)
+                .setOnPreferenceClickListener(preference -> {
+                    showNotificationButtonsDialog();
                     return true;
                 });
 
@@ -730,6 +737,59 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         });
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.create().show();
+    }
+
+    private void showNotificationButtonsDialog() {
+        final Context context = ui.getActivity();
+        final List<String> preferredButtons = UserPreferences.getNotificationButtons();
+        final String[] allButtonNames = context.getResources().getStringArray(
+                R.array.notification_buttons_options);
+        final String[] allButtonIDs = context.getResources().getStringArray(
+                R.array.notification_buttons_values);
+        boolean[] checked = new boolean[allButtonIDs.length]; // booleans default to false in java
+
+        for(int i=0; i < allButtonIDs.length; i++) {
+            String id = allButtonIDs[i];
+            if(preferredButtons.contains(id)) {
+                checked[i] = true;
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(String.format(context.getResources().getString(
+                R.string.pref_notification_buttons_dialog_title), 2));
+        builder.setMultiChoiceItems(allButtonNames, checked,new DialogInterface.OnMultiChoiceClickListener() {
+            int count = preferredButtons.size();
+
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                checked[which] = isChecked;
+                if (isChecked) {
+                    if (count < 2) {
+                        preferredButtons.add(allButtonIDs[which]);
+                        count++;
+                    } else {
+                        // Only allow a maximum of two selections. This is because the notification
+                        // on the lock screen can only display 3 buttons, and the play/pause button
+                        // is always included.
+                        checked[which] = false;
+                        ((AlertDialog) dialog).getListView().setItemChecked(which, false);
+                        Toast.makeText(
+                                context,
+                                String.format(context.getResources().getString(
+                                        R.string.pref_notification_buttons_dialog_error), 2),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    preferredButtons.remove(allButtonIDs[which]);
+                    count--;
+                }
+            }
+        });
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            UserPreferences.setNotificationButtons(preferredButtons);
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
@@ -53,7 +52,7 @@ public class UserPreferences {
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
-    public static final String PREF_PRIORITISED_NOTIFICATION_BUTTONS = "prefPrioritisedNotificationButtons";
+    public static final String PREF_NOTIFICATION_BUTTONS = "prefNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
     public static final String PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER = "prefShowSubscriptionsInDrawer";
@@ -168,6 +167,11 @@ public class UserPreferences {
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
     }
 
+    public static List<String> getNotificationButtons() {
+        String hiddenItems = prefs.getString(PREF_NOTIFICATION_BUTTONS, "skip");
+        return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
+    }
+
     public static int getFeedOrder() {
         String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "0");
         return Integer.parseInt(value);
@@ -180,10 +184,6 @@ public class UserPreferences {
 
     public static boolean showSubscriptionsInDrawer() {
         return prefs.getBoolean(PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER, true);
-    }
-
-    public static Set<String> getPrioritisedNotificationButtons() {
-        return prefs.getStringSet(PREF_PRIORITISED_NOTIFICATION_BUTTONS, null);
     }
 
     /**
@@ -530,6 +530,13 @@ public class UserPreferences {
         String str = TextUtils.join(",", items);
         prefs.edit()
              .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
+             .apply();
+    }
+
+    public static void setNotificationButtons(List<String> items) {
+        String str = TextUtils.join(",", items);
+        prefs.edit()
+             .putString(PREF_NOTIFICATION_BUTTONS, str)
              .apply();
     }
 

@@ -55,14 +55,10 @@
             android:key="prefPersistNotify"
             android:summary="@string/pref_persistNotify_sum"
             android:title="@string/pref_persistNotify_title"/>
-        <com.afollestad.materialdialogs.prefs.MaterialMultiSelectListPreference
-            android:entries="@array/prioritised_notification_buttons_options"
-            android:entryValues="@array/prioritised_notification_buttons_values"
-            android:defaultValue="@array/prioritised_notification_buttons_default_values"
-            android:title="@string/pref_prioritised_notification_buttons_title"
-            android:key="prefPrioritisedNotificationButtons"
-            android:summary="@string/pref_prioritised_notification_buttons_sum"
-            app:useStockLayout="true"/>
+        <Preference
+            android:key="prefNotificationButtons"
+            android:summary="@string/pref_notification_buttons_sum"
+            android:title="@string/pref_notification_buttons_title"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
