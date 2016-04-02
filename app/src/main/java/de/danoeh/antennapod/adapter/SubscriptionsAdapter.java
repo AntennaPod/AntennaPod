@@ -102,17 +102,12 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         final Feed feed = (Feed) getItem(position);
         if (feed == null) return null;
 
-        String title = feed.getTitle();
-        long feedId = feed.getId();
-        int counter = itemAccess.getFeedCounter(feedId);
-        Uri imageUri = feed.getImageUri();
-        Log.i(TAG, String.format("Title: %s id: %d counter: %d uri: %s", title, feedId, counter, imageUri.toString()));
-        holder.feedTitle.setText(title);
+        holder.feedTitle.setText(feed.getTitle());
         holder.feedTitle.setVisibility(View.VISIBLE);
-        holder.count.setPrimaryText(String.valueOf(counter));
+        holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
         holder.count.setVisibility(View.VISIBLE);
         Glide.with(mainActivityRef.get())
-                .load(imageUri)
+                .load(feed.getImageUri())
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
