@@ -83,7 +83,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
             SubscriptionFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
-            AddFeedFragment.TAG
+            AddFeedFragment.TAG,
+            NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
     private AtomicBoolean isSetup = new AtomicBoolean(false);

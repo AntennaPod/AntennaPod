@@ -54,7 +54,6 @@ public class UserPreferences {
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
-    public static final String PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER = "prefShowSubscriptionsInDrawer";
 
 
     // Queue
@@ -174,10 +173,6 @@ public class UserPreferences {
     public static int getFeedCounterSetting() {
         String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "0");
         return Integer.parseInt(value);
-    }
-
-    public static boolean showSubscriptionsInDrawer() {
-        return prefs.getBoolean(PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER, true);
     }
 
     /**

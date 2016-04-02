@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
             SubscriptionFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
-            AddFeedFragment.TAG
+            AddFeedFragment.TAG,
+            NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
     private Toolbar toolbar;
