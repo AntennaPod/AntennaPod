@@ -50,11 +50,18 @@ public class NavListAdapter extends BaseAdapter
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
     public static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
+    /**
+     * a tag used as a placeholder to indicate if the subscription list should be displayed or not
+     * This tag doesn't correspond to any specific activity.
+     */
+    public static final String SUBSCRIPTION_LIST_TAG = "SubscriptionList";
+
     private static List<String> tags;
     private static String[] titles;
 
     private ItemAccess itemAccess;
     private Context context;
+    private boolean showSubscriptionList = true;
 
     public NavListAdapter(ItemAccess itemAccess, Context context) {
         this.itemAccess = itemAccess;
@@ -79,6 +86,18 @@ public class NavListAdapter extends BaseAdapter
         for(String hidden : hiddenFragments) {
             newTags.remove(hidden);
         }
+
+        if (newTags.contains(SUBSCRIPTION_LIST_TAG)) {
+            // we never want SUBSCRIPTION_LIST_TAG to be in 'tags'
+            // since it doesn't actually correspond to a position in the list, but is
+            // a placeholder that indicates if we should show the subscription list in the
+            // nav drawer at all.
+            showSubscriptionList = true;
+            newTags.remove(SUBSCRIPTION_LIST_TAG);
+        } else {
+            showSubscriptionList = false;
+        }
+
         tags = newTags;
         notifyDataSetChanged();
     }
@@ -132,7 +151,7 @@ public class NavListAdapter extends BaseAdapter
     @Override
     public int getCount() {
         int baseCount = getSubscriptionOffset();
-        if (UserPreferences.showSubscriptionsInDrawer()) {
+        if (showSubscriptionList) {
             baseCount += itemAccess.getCount();
         }
         return baseCount;
