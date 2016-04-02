@@ -385,7 +385,7 @@
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
     <string name="pref_notification_buttons_title">Select Notification Buttons</string>
-    <string name="pref_notification_buttons_sum">Change the playback buttons on the lock screen notification.</string>
+    <string name="pref_notification_buttons_sum">Change the playback buttons on the lock screen notification. The play/pause button is always included.</string>
     <string name="pref_notification_buttons_dialog_title">Select a maximum of %1$d items</string>
     <string name="pref_notification_buttons_dialog_error">You can only select a maximum of %1$d items.</string>
     <string name="pref_show_subscriptions_in_drawer_title">Show Subscriptions</string>
