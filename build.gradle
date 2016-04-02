@@ -58,6 +58,7 @@ project.ext {
     rxAndroidVersion = "1.1.0"
     rxJavaVersion = "1.1.0"
     rxJavaRulesVersion = "1.1.0.0"
+    triangleLabelViewVersion = "1.1.0"
 
     audioPlayerVersion = "v1.0.16"
 }
