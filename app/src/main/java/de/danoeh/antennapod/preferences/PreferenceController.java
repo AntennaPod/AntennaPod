@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -21,6 +20,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +31,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -222,7 +223,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     return true;
                 });
 
-        ui.findPreference(UserPreferences.PREF_NOTIFICATION_BUTTONS)
+        ui.findPreference(UserPreferences.PREF_COMPACT_NOTIFICATION_BUTTONS)
                 .setOnPreferenceClickListener(preference -> {
                     showNotificationButtonsDialog();
                     return true;
@@ -744,52 +745,45 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     private void showNotificationButtonsDialog() {
         final Context context = ui.getActivity();
-        final List<String> preferredButtons = UserPreferences.getNotificationButtons();
+        final List<Integer> preferredButtons = UserPreferences.getCompactNotificationButtons();
         final String[] allButtonNames = context.getResources().getStringArray(
-                R.array.notification_buttons_options);
-        final String[] allButtonIDs = context.getResources().getStringArray(
-                R.array.notification_buttons_values);
-        boolean[] checked = new boolean[allButtonIDs.length]; // booleans default to false in java
+                R.array.compact_notification_buttons_options);
+        boolean[] checked = new boolean[allButtonNames.length]; // booleans default to false in java
 
-        for(int i=0; i < allButtonIDs.length; i++) {
-            String id = allButtonIDs[i];
-            if(preferredButtons.contains(id)) {
+        for(int i=0; i < checked.length; i++) {
+            if(preferredButtons.contains(i)) {
                 checked[i] = true;
             }
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(String.format(context.getResources().getString(
-                R.string.pref_notification_buttons_dialog_title), 2));
-        builder.setMultiChoiceItems(allButtonNames, checked,new DialogInterface.OnMultiChoiceClickListener() {
-            int count = preferredButtons.size();
+                R.string.pref_compact_notification_buttons_dialog_title), 2));
+        builder.setMultiChoiceItems(allButtonNames, checked, (dialog, which, isChecked) -> {
+            checked[which] = isChecked;
 
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                checked[which] = isChecked;
-                if (isChecked) {
-                    if (count < 2) {
-                        preferredButtons.add(allButtonIDs[which]);
-                        count++;
-                    } else {
-                        // Only allow a maximum of two selections. This is because the notification
-                        // on the lock screen can only display 3 buttons, and the play/pause button
-                        // is always included.
-                        checked[which] = false;
-                        ((AlertDialog) dialog).getListView().setItemChecked(which, false);
-                        Toast.makeText(
-                                context,
-                                String.format(context.getResources().getString(
-                                        R.string.pref_notification_buttons_dialog_error), 2),
-                                Toast.LENGTH_SHORT).show();
-                    }
+            if (isChecked) {
+                if (preferredButtons.size() < 2) {
+                    preferredButtons.add(which);
                 } else {
-                    preferredButtons.remove(allButtonIDs[which]);
-                    count--;
+                    // Only allow a maximum of two selections. This is because the notification
+                    // on the lock screen can only display 3 buttons, and the play/pause button
+                    // is always included.
+                    checked[which] = false;
+                    ListView selectionView = ((AlertDialog) dialog).getListView();
+                    selectionView.setItemChecked(which, false);
+                    Snackbar.make(
+                            selectionView,
+                            String.format(context.getResources().getString(
+                                    R.string.pref_compact_notification_buttons_dialog_error), 2),
+                            Snackbar.LENGTH_SHORT).show();
                 }
+            } else {
+                preferredButtons.remove((Integer) which);
             }
         });
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            UserPreferences.setNotificationButtons(preferredButtons);
+            UserPreferences.setCompactNotificationButtons(preferredButtons);
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();

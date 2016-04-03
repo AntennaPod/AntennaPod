@@ -52,7 +52,7 @@ public class UserPreferences {
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
-    public static final String PREF_NOTIFICATION_BUTTONS = "prefNotificationButtons";
+    public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
     public static final String PREF_SHOW_SUBSCRIPTIONS_IN_DRAWER = "prefShowSubscriptionsInDrawer";
@@ -117,6 +117,9 @@ public class UserPreferences {
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
 
     // Constants
+    private static final int NOTIFICATION_BUTTON_REWIND = 0;
+    private static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
+    private static final int NOTIFICATION_BUTTON_SKIP = 2;
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static int FEED_ORDER_COUNTER = 0;
     public static int FEED_ORDER_ALPHABETICAL = 1;
@@ -167,9 +170,40 @@ public class UserPreferences {
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
     }
 
-    public static List<String> getNotificationButtons() {
-        String hiddenItems = prefs.getString(PREF_NOTIFICATION_BUTTONS, "skip");
-        return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
+    public static List<Integer> getCompactNotificationButtons() {
+        String[] buttons = TextUtils.split(
+                prefs.getString(PREF_COMPACT_NOTIFICATION_BUTTONS,
+                        String.valueOf(NOTIFICATION_BUTTON_SKIP)),
+                ",");
+        List<Integer> notificationButtons = new ArrayList<>();
+        for (int i=0; i<buttons.length; i++) {
+            notificationButtons.add(Integer.parseInt(buttons[i]));
+        }
+        return notificationButtons;
+    }
+
+    /**
+     * Helper function to return whether the specified button should be shown on compact
+     * notifications.
+     *
+     * @param buttonId Either NOTIFICATION_BUTTON_REWIND, NOTIFICATION_BUTTON_FAST_FORWARD or
+     *                 NOTIFICATION_BUTTON_SKIP.
+     * @return {@code true} if button should be shown, {@code false}  otherwise
+     */
+    private static boolean showButtonOnCompactNotification(int buttonId) {
+        return getCompactNotificationButtons().contains(buttonId);
+    }
+
+    public static boolean showRewindOnCompactNotification() {
+        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_REWIND);
+    }
+
+    public static boolean showFastForwardOnCompactNotification() {
+        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_FAST_FORWARD);
+    }
+
+    public static boolean showSkipOnCompactNotification() {
+        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_SKIP);
     }
 
     public static int getFeedOrder() {
@@ -197,16 +231,6 @@ public class UserPreferences {
         } else {
             return NotificationCompat.PRIORITY_DEFAULT;
         }
-    }
-
-    /**
-     * Returns true if additional playback buttons should be shown in the notification even when
-     * on the lockscreen
-     *
-     * @return {@code true} if additional playback buttons should be shown, {@code false}  otherwise
-     */
-    public static boolean showAdditionalNotificationButtons() {
-        return prefs.getBoolean(PREF_EXPANDED_NOTIFICATION, false);
     }
 
     /**
@@ -533,10 +557,10 @@ public class UserPreferences {
              .apply();
     }
 
-    public static void setNotificationButtons(List<String> items) {
+    public static void setCompactNotificationButtons(List<Integer> items) {
         String str = TextUtils.join(",", items);
         prefs.edit()
-             .putString(PREF_NOTIFICATION_BUTTONS, str)
+             .putString(PREF_COMPACT_NOTIFICATION_BUTTONS, str)
              .apply();
     }
 

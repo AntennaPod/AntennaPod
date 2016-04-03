@@ -858,7 +858,6 @@ public class PlaybackService extends Service {
                             .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
                     IntList compactActionList = new IntList();
 
-                    final List<String> notificationButtons = UserPreferences.getNotificationButtons();
                     int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
 
                     // always let them rewind
@@ -867,13 +866,10 @@ public class PlaybackService extends Service {
                     notificationBuilder.addAction(android.R.drawable.ic_media_rew,
                             getString(R.string.rewind_label),
                             rewindButtonPendingIntent);
-                    if(notificationButtons.contains("rewind")) {
-                        // show the rewind button even on the lock screen
-                        compactActionList.add(numActions++);
-                    } else {
-                        numActions++;
+                    if(UserPreferences.showRewindOnCompactNotification()) {
+                        compactActionList.add(numActions);
                     }
-
+                    numActions++;
 
                     if (playerStatus == PlayerStatus.PLAYING) {
                         PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
@@ -897,12 +893,10 @@ public class PlaybackService extends Service {
                     notificationBuilder.addAction(android.R.drawable.ic_media_ff,
                             getString(R.string.fast_forward_label),
                             ffButtonPendingIntent);
-                    if(notificationButtons.contains("fastforward")) {
-                        // show the fast forward button even on the lock screen
-                        compactActionList.add(numActions++);
-                    } else {
-                        numActions++;
+                    if(UserPreferences.showFastForwardOnCompactNotification()) {
+                        compactActionList.add(numActions);
                     }
+                    numActions++;
 
                     if (UserPreferences.isFollowQueue()) {
                         PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
@@ -910,12 +904,10 @@ public class PlaybackService extends Service {
                         notificationBuilder.addAction(android.R.drawable.ic_media_next,
                                 getString(R.string.skip_episode_label),
                                 skipButtonPendingIntent);
-                        if(notificationButtons.contains("skip")) {
-                            // show the skip button even on the lock screen
-                            compactActionList.add(numActions++);
-                        } else {
-                            numActions++;
+                        if(UserPreferences.showSkipOnCompactNotification()) {
+                            compactActionList.add(numActions);
                         }
+                        numActions++;
                     }
 
                     PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(

@@ -90,6 +90,30 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> persistNotify == UserPreferences.isPersistNotify(), Timeout.getLargeTimeout()));
     }
 
+    public void testSetLockscreenButtons() {
+        String[] buttons = res.getStringArray(R.array.compact_notification_buttons_options);
+        solo.clickOnText(solo.getString(R.string.pref_compact_notification_buttons_title));
+        solo.waitForDialogToOpen(1000);
+        // First uncheck every checkbox
+        for (int i=0; i<buttons.length; i++) {
+            assertTrue(solo.searchText(buttons[i]));
+            if (solo.isTextChecked(buttons[i])) {
+                solo.clickOnText(buttons[i]);
+            }
+        }
+        // Now try to check all checkboxes
+        solo.clickOnText(buttons[0]);
+        solo.clickOnText(buttons[1]);
+        solo.clickOnText(buttons[2]);
+        // Make sure that the third checkbox is unchecked
+        assertTrue(!solo.isTextChecked(buttons[2]));
+        solo.clickOnText(solo.getString(R.string.confirm_label));
+        solo.waitForDialogToClose(1000);
+        assertTrue(solo.waitForCondition(() -> UserPreferences.showRewindOnCompactNotification(), Timeout.getLargeTimeout()));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.showFastForwardOnCompactNotification(), Timeout.getLargeTimeout()));
+        assertTrue(solo.waitForCondition(() -> !UserPreferences.showSkipOnCompactNotification(), Timeout.getLargeTimeout()));
+    }
+
     public void testEnqueueAtFront() {
         final boolean enqueueAtFront = UserPreferences.enqueueAtFront();
         solo.clickOnText(solo.getString(R.string.pref_queueAddToFront_title));

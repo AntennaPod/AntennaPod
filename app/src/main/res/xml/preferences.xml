@@ -56,9 +56,9 @@
             android:summary="@string/pref_persistNotify_sum"
             android:title="@string/pref_persistNotify_title"/>
         <Preference
-            android:key="prefNotificationButtons"
-            android:summary="@string/pref_notification_buttons_sum"
-            android:title="@string/pref_notification_buttons_title"/>
+            android:key="prefCompactNotificationButtons"
+            android:summary="@string/pref_compact_notification_buttons_sum"
+            android:title="@string/pref_compact_notification_buttons_title"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
