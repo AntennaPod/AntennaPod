@@ -858,7 +858,6 @@ public class PlaybackService extends Service {
                             .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
                     IntList compactActionList = new IntList();
 
-
                     int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
 
                     // always let them rewind
@@ -867,6 +866,9 @@ public class PlaybackService extends Service {
                     notificationBuilder.addAction(android.R.drawable.ic_media_rew,
                             getString(R.string.rewind_label),
                             rewindButtonPendingIntent);
+                    if(UserPreferences.showRewindOnCompactNotification()) {
+                        compactActionList.add(numActions);
+                    }
                     numActions++;
 
                     if (playerStatus == PlayerStatus.PLAYING) {
@@ -891,6 +893,9 @@ public class PlaybackService extends Service {
                     notificationBuilder.addAction(android.R.drawable.ic_media_ff,
                             getString(R.string.fast_forward_label),
                             ffButtonPendingIntent);
+                    if(UserPreferences.showFastForwardOnCompactNotification()) {
+                        compactActionList.add(numActions);
+                    }
                     numActions++;
 
                     if (UserPreferences.isFollowQueue()) {
@@ -899,7 +904,10 @@ public class PlaybackService extends Service {
                         notificationBuilder.addAction(android.R.drawable.ic_media_next,
                                 getString(R.string.skip_episode_label),
                                 skipButtonPendingIntent);
-                        compactActionList.add(numActions++);
+                        if(UserPreferences.showSkipOnCompactNotification()) {
+                            compactActionList.add(numActions);
+                        }
+                        numActions++;
                     }
 
                     PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(

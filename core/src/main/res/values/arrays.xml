@@ -213,4 +213,9 @@
         <item>500</item>
     </string-array>
 
+    <string-array name="compact_notification_buttons_options">
+        <item>@string/rewind_label</item>
+        <item>@string/fast_forward_label</item>
+        <item>@string/skip_episode_label</item>
+    </string-array>
 </resources>

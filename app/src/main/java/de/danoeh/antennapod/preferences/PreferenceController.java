@@ -20,6 +20,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -218,6 +220,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)
                 .setOnPreferenceClickListener(preference -> {
                     showDrawerPreferencesDialog();
+                    return true;
+                });
+
+        ui.findPreference(UserPreferences.PREF_COMPACT_NOTIFICATION_BUTTONS)
+                .setOnPreferenceClickListener(preference -> {
+                    showNotificationButtonsDialog();
                     return true;
                 });
 
@@ -730,6 +738,52 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         });
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.create().show();
+    }
+
+    private void showNotificationButtonsDialog() {
+        final Context context = ui.getActivity();
+        final List<Integer> preferredButtons = UserPreferences.getCompactNotificationButtons();
+        final String[] allButtonNames = context.getResources().getStringArray(
+                R.array.compact_notification_buttons_options);
+        boolean[] checked = new boolean[allButtonNames.length]; // booleans default to false in java
+
+        for(int i=0; i < checked.length; i++) {
+            if(preferredButtons.contains(i)) {
+                checked[i] = true;
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(String.format(context.getResources().getString(
+                R.string.pref_compact_notification_buttons_dialog_title), 2));
+        builder.setMultiChoiceItems(allButtonNames, checked, (dialog, which, isChecked) -> {
+            checked[which] = isChecked;
+
+            if (isChecked) {
+                if (preferredButtons.size() < 2) {
+                    preferredButtons.add(which);
+                } else {
+                    // Only allow a maximum of two selections. This is because the notification
+                    // on the lock screen can only display 3 buttons, and the play/pause button
+                    // is always included.
+                    checked[which] = false;
+                    ListView selectionView = ((AlertDialog) dialog).getListView();
+                    selectionView.setItemChecked(which, false);
+                    Snackbar.make(
+                            selectionView,
+                            String.format(context.getResources().getString(
+                                    R.string.pref_compact_notification_buttons_dialog_error), 2),
+                            Snackbar.LENGTH_SHORT).show();
+                }
+            } else {
+                preferredButtons.remove((Integer) which);
+            }
+        });
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            UserPreferences.setCompactNotificationButtons(preferredButtons);
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();

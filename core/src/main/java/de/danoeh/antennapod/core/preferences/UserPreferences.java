@@ -52,6 +52,7 @@ public class UserPreferences {
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
+    public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
 
@@ -115,6 +116,9 @@ public class UserPreferences {
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
 
     // Constants
+    private static final int NOTIFICATION_BUTTON_REWIND = 0;
+    private static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
+    private static final int NOTIFICATION_BUTTON_SKIP = 2;
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static int FEED_ORDER_COUNTER = 0;
     public static int FEED_ORDER_ALPHABETICAL = 1;
@@ -165,6 +169,42 @@ public class UserPreferences {
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
     }
 
+    public static List<Integer> getCompactNotificationButtons() {
+        String[] buttons = TextUtils.split(
+                prefs.getString(PREF_COMPACT_NOTIFICATION_BUTTONS,
+                        String.valueOf(NOTIFICATION_BUTTON_SKIP)),
+                ",");
+        List<Integer> notificationButtons = new ArrayList<>();
+        for (int i=0; i<buttons.length; i++) {
+            notificationButtons.add(Integer.parseInt(buttons[i]));
+        }
+        return notificationButtons;
+    }
+
+    /**
+     * Helper function to return whether the specified button should be shown on compact
+     * notifications.
+     *
+     * @param buttonId Either NOTIFICATION_BUTTON_REWIND, NOTIFICATION_BUTTON_FAST_FORWARD or
+     *                 NOTIFICATION_BUTTON_SKIP.
+     * @return {@code true} if button should be shown, {@code false}  otherwise
+     */
+    private static boolean showButtonOnCompactNotification(int buttonId) {
+        return getCompactNotificationButtons().contains(buttonId);
+    }
+
+    public static boolean showRewindOnCompactNotification() {
+        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_REWIND);
+    }
+
+    public static boolean showFastForwardOnCompactNotification() {
+        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_FAST_FORWARD);
+    }
+
+    public static boolean showSkipOnCompactNotification() {
+        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_SKIP);
+    }
+
     public static int getFeedOrder() {
         String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "0");
         return Integer.parseInt(value);
@@ -198,9 +238,9 @@ public class UserPreferences {
     }
 
     /**
-     * Returns true if notifications are persistent
+     * Returns true if the lockscreen background should be set to the current episode's image
      *
-     * @return {@code true} if notifications are persistent, {@code false}  otherwise
+     * @return {@code true} if the lockscreen background should be set, {@code false}  otherwise
      */
     public static boolean setLockscreenBackground() {
         return prefs.getBoolean(PREF_LOCKSCREEN_BACKGROUND, true);
@@ -509,6 +549,13 @@ public class UserPreferences {
         String str = TextUtils.join(",", items);
         prefs.edit()
              .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
+             .apply();
+    }
+
+    public static void setCompactNotificationButtons(List<Integer> items) {
+        String str = TextUtils.join(",", items);
+        prefs.edit()
+             .putString(PREF_COMPACT_NOTIFICATION_BUTTONS, str)
              .apply();
     }
 
