@@ -654,6 +654,18 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
             return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
 
+        @Override
+        public int getFeedCounterSum() {
+            if(navDrawerData == null) {
+                return 0;
+            }
+            int sum = 0;
+            for(int counter : navDrawerData.feedCounters.values()) {
+                sum += counter;
+            }
+            return sum;
+        }
+
     };
 
     private void loadData() {
