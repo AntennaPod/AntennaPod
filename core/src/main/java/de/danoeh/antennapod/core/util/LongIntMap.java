@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.util;
 
 
+import java.util.Arrays;
+
 /**
  * Fast and memory efficient long to long map
  */
@@ -195,6 +197,15 @@ public class LongIntMap {
         keys = new long[10];
         values = new int[10];
         size = 0;
+    }
+
+    /**
+     * Returns a copy of the values contained in this map.
+     *
+     * @return a copy of the values contained in this map
+     */
+    public int[] values() {
+        return Arrays.copyOf(values, size);
     }
 
     @Override

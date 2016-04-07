@@ -19,7 +19,6 @@ import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 
 /**
  * BaseAdapter for the navigation drawer
@@ -253,6 +253,14 @@ public class NavListAdapter extends BaseAdapter
             } else {
                 holder.count.setVisibility(View.GONE);
             }
+        } else if (tag.equals(SubscriptionFragment.TAG)) {
+            int sum = itemAccess.getFeedCounterSum();
+            if (sum > 0) {
+                holder.count.setVisibility(View.VISIBLE);
+                holder.count.setText(String.valueOf(sum));
+            } else {
+                holder.count.setVisibility(View.GONE);
+            }
         } else if(tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
             int epCacheSize = UserPreferences.getEpisodeCacheSize();
             // don't count episodes that can be reclaimed
@@ -372,6 +380,7 @@ public class NavListAdapter extends BaseAdapter
         int getNumberOfDownloadedItems();
         int getReclaimableItems();
         int getFeedCounter(long feedId);
+        int getFeedCounterSum();
     }
 
 }
