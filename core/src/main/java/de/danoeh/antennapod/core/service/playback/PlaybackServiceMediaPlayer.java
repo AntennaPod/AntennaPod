@@ -1,29 +1,14 @@
 package de.danoeh.antennapod.core.service.playback;
 
-import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Display;
-import android.view.InputDevice;
-import android.view.KeyEvent;
 import android.view.SurfaceHolder;
-import android.view.WindowManager;
-
-import com.bumptech.glide.Glide;
 
 import org.antennapod.audio.MediaPlayer;
 
@@ -40,7 +25,6 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
@@ -52,7 +36,7 @@ import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 /**
  * Manages the MediaPlayer object of the PlaybackService.
  */
-public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class PlaybackServiceMediaPlayer {
     public static final String TAG = "PlaybackSvcMediaPlayer";
 
     /**
@@ -66,10 +50,6 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     private volatile PlayerStatus statusBeforeSeeking;
     private volatile IPlayer mediaPlayer;
     private volatile Playable media;
-    /**
-     * Only used for Lollipop notifications.
-     */
-    private final MediaSessionCompat mediaSession;
 
     private volatile boolean stream;
     private volatile MediaType mediaType;
@@ -110,43 +90,12 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
                 }
         );
 
-        MediaButtonIntentReceiver.setMediaPlayer(this);
-        ComponentName eventReceiver = new ComponentName(context.getPackageName(), MediaButtonIntentReceiver.class.getName());
-        Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        mediaButtonIntent.setComponent(eventReceiver);
-        PendingIntent buttonReceiverIntent = PendingIntent.getBroadcast(context, 0, mediaButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        mediaSession = new MediaSessionCompat(context, TAG, eventReceiver, buttonReceiverIntent);
-
-        try {
-            mediaSession.setCallback(sessionCallback);
-            mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-            mediaSession.setActive(true);
-        } catch (NullPointerException npe) {
-            // on some devices (Huawei) setting active can cause a NullPointerException
-            // even with correct use of the api.
-            // See http://stackoverflow.com/questions/31556679/android-huawei-mediassessioncompat
-            // and https://plus.google.com/+IanLake/posts/YgdTkKFxz7d
-            Log.e(TAG, "NullPointerException while setting up MediaSession");
-            npe.printStackTrace();
-        }
-
         mediaPlayer = null;
         statusBeforeSeeking = null;
         pausedBecauseOfTransientAudiofocusLoss = false;
         mediaType = MediaType.UNKNOWN;
         playerStatus = PlayerStatus.STOPPED;
         videoSize = null;
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs.registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(UserPreferences.PREF_LOCKSCREEN_BACKGROUND)) {
-            updateMediaSessionMetadata();
-        }
     }
 
     /**
@@ -249,7 +198,7 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
             media.loadMetadata();
-            updateMediaSessionMetadata();
+            executor.submit(() -> callback.updateMediaSessionMetadata(media));
             if (stream) {
                 mediaPlayer.setDataSource(media.getStreamUrl());
             } else {
@@ -268,41 +217,6 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             setPlayerStatus(PlayerStatus.ERROR, null);
         }
     }
-
-    private void updateMediaSessionMetadata() {
-        executor.execute(() -> {
-            final Playable p = this.media;
-            if (p == null) {
-                return;
-            }
-            MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
-            builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
-            builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
-
-            if (p.getImageUri() != null && UserPreferences.setLockscreenBackground()) {
-                builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageUri().toString());
-                try {
-                    WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-                    Display display = wm.getDefaultDisplay();
-                    Bitmap art = Glide.with(context)
-                            .load(p.getImageUri())
-                            .asBitmap()
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                            .centerCrop()
-                            .into(display.getWidth(), display.getHeight())
-                            .get();
-                    builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-                } catch (Throwable tr) {
-                    Log.e(TAG, Log.getStackTraceString(tr));
-                }
-            }
-            mediaSession.setMetadata(builder.build());
-        });
-    }
-
 
     /**
      * Resumes playback if the PSMP object is in PREPARED or PAUSED state. If the PSMP object is in an invalid state.
@@ -718,9 +632,6 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-        if (mediaSession != null) {
-            mediaSession.release();
-        }
         releaseWifiLockIfNecessary();
     }
 
@@ -798,16 +709,6 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     /**
-     * Returns a token to this object's MediaSession. The MediaSession should only be used for notifications
-     * at the moment.
-     *
-     * @return The MediaSessionCompat.Token object.
-     */
-    public MediaSessionCompat.Token getSessionToken() {
-        return mediaSession.getSessionToken();
-    }
-
-    /**
      * Sets the player status of the PSMP object. PlayerStatus and media attributes have to be set at the same time
      * so that getPSMPInfo can't return an invalid state (e.g. status is PLAYING, but media is null).
      * <p/>
@@ -822,50 +723,9 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
         this.playerStatus = newStatus;
         this.media = newMedia;
-
-        PlaybackStateCompat.Builder sessionState = new PlaybackStateCompat.Builder();
-
-        int state;
         if (playerStatus != null) {
             Log.d(TAG, "playerStatus: " + playerStatus.toString());
-            switch (playerStatus) {
-                case PLAYING:
-                    state = PlaybackStateCompat.STATE_PLAYING;
-                    break;
-                case PREPARED:
-                case PAUSED:
-                    state = PlaybackStateCompat.STATE_PAUSED;
-                    break;
-                case STOPPED:
-                    state = PlaybackStateCompat.STATE_STOPPED;
-                    break;
-                case SEEKING:
-                    state = PlaybackStateCompat.STATE_FAST_FORWARDING;
-                    break;
-                case PREPARING:
-                case INITIALIZING:
-                    state = PlaybackStateCompat.STATE_CONNECTING;
-                    break;
-                case INITIALIZED:
-                case INDETERMINATE:
-                    state = PlaybackStateCompat.STATE_NONE;
-                    break;
-                case ERROR:
-                    state = PlaybackStateCompat.STATE_ERROR;
-                    break;
-                default:
-                    state = PlaybackStateCompat.STATE_NONE;
-                    break;
-            }
-        } else {
-            state = PlaybackStateCompat.STATE_NONE;
         }
-        sessionState.setState(state, getPosition(), getPlaybackSpeed());
-        sessionState.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE
-                | PlaybackStateCompat.ACTION_REWIND
-                | PlaybackStateCompat.ACTION_FAST_FORWARD
-                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT);
-        mediaSession.setPlaybackState(sessionState.build());
 
         callback.statusChanged(new PSMPInfo(playerStatus, media));
     }
@@ -1022,6 +882,8 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
 
         void onBufferingUpdate(int percent);
 
+        void updateMediaSessionMetadata(Playable p);
+
         boolean onMediaPlayerInfo(int code);
 
         boolean onMediaPlayerError(Object inObj, int what, int extra);
@@ -1129,154 +991,5 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
             playerLock.unlock();
         });
         t.start();
-    }
-
-    private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
-
-        private static final String TAG = "MediaSessionCompat";
-
-        @Override
-        public void onPlay() {
-            Log.d(TAG, "onPlay()");
-            if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                resume();
-            } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                setStartWhenPrepared(true);
-                prepare();
-            }
-        }
-
-        @Override
-        public void onPause() {
-            Log.d(TAG, "onPause()");
-            if (playerStatus == PlayerStatus.PLAYING) {
-                pause(false, true);
-            }
-            if (UserPreferences.isPersistNotify()) {
-                pause(false, true);
-            } else {
-                pause(true, true);
-            }
-        }
-
-        @Override
-        public void onStop() {
-            Log.d(TAG, "onStop()");
-            stop();
-        }
-
-        @Override
-        public void onSkipToPrevious() {
-            Log.d(TAG, "onSkipToPrevious()");
-            seekDelta(-UserPreferences.getRewindSecs() * 1000);
-        }
-
-        @Override
-        public void onRewind() {
-            Log.d(TAG, "onRewind()");
-            seekDelta(-UserPreferences.getRewindSecs() * 1000);
-        }
-
-        @Override
-        public void onFastForward() {
-            Log.d(TAG, "onFastForward()");
-            seekDelta(UserPreferences.getFastFowardSecs() * 1000);
-        }
-
-        @Override
-        public void onSkipToNext() {
-            Log.d(TAG, "onSkipToNext()");
-            if(UserPreferences.shouldHardwareButtonSkip()) {
-                endPlayback(true);
-            } else {
-                seekDelta(UserPreferences.getFastFowardSecs() * 1000);
-            }
-        }
-
-
-        @Override
-        public void onSeekTo(long pos) {
-            Log.d(TAG, "onSeekTo()");
-            seekTo((int) pos);
-        }
-
-        @Override
-        public boolean onMediaButtonEvent(final Intent mediaButton) {
-            Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
-            if (mediaButton != null) {
-                KeyEvent keyEvent = (KeyEvent) mediaButton.getExtras().get(Intent.EXTRA_KEY_EVENT);
-                handleMediaKey(keyEvent);
-            }
-            return false;
-        }
-    };
-
-    public boolean handleMediaKey(KeyEvent event) {
-        Log.d(TAG, "handleMediaKey(" + event +")");
-        if (event != null
-                && event.getAction() == KeyEvent.ACTION_DOWN
-                && event.getRepeatCount() == 0) {
-            switch (event.getKeyCode()) {
-                case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                case KeyEvent.KEYCODE_HEADSETHOOK: {
-                    Log.d(TAG, "Received Play/Pause event from RemoteControlClient");
-                    if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                        resume();
-                    } else if (playerStatus == PlayerStatus.INITIALIZED) {
-                        setStartWhenPrepared(true);
-                        prepare();
-                    } else if (playerStatus == PlayerStatus.PLAYING) {
-                        pause(false, true);
-                        if (UserPreferences.isPersistNotify()) {
-                            pause(false, true);
-                        } else {
-                            pause(true, true);
-                        }
-                    }
-                    return true;
-                }
-                case KeyEvent.KEYCODE_MEDIA_PLAY: {
-                    sessionCallback.onPlay();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_MEDIA_PAUSE: {
-                    sessionCallback.onPause();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_MEDIA_STOP: {
-                    sessionCallback.onStop();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_MEDIA_PREVIOUS: {
-                    sessionCallback.onSkipToPrevious();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_MEDIA_REWIND: {
-                    sessionCallback.onRewind();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD: {
-                    sessionCallback.onFastForward();
-                    return true;
-                }
-                case KeyEvent.KEYCODE_MEDIA_NEXT: {
-                    if(event.getSource() == InputDevice.SOURCE_CLASS_NONE ||
-                            UserPreferences.shouldHardwareButtonSkip()) {
-                        // assume the skip command comes from a notification or the lockscreen
-                        // a >| skip button should actually skip
-                        endPlayback(true);
-                    } else {
-                        // assume skip command comes from a (bluetooth) media button
-                        // user actually wants to fast-forward
-                        seekDelta(UserPreferences.getFastFowardSecs() * 1000);
-                    }
-                    return true;
-                }
-                default:
-                    Log.d(TAG, "Unhandled key code: " + event.getKeyCode());
-                    break;
-            }
-        }
-        return false;
     }
 }
