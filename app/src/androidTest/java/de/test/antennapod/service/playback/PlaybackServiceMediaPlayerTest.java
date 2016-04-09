@@ -175,6 +175,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void updateMediaSessionMetadata(Playable p) {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -245,6 +250,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
+            public void updateMediaSessionMetadata(Playable p) {
 
             }
 
@@ -322,6 +332,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
+            public void updateMediaSessionMetadata(Playable p) {
 
             }
 
@@ -404,6 +419,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void updateMediaSessionMetadata(Playable p) {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -472,6 +492,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
+            public void updateMediaSessionMetadata(Playable p) {
 
             }
 
@@ -549,6 +574,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void updateMediaSessionMetadata(Playable p) {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -620,6 +650,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
+            public void updateMediaSessionMetadata(Playable p) {
 
             }
 
@@ -702,6 +737,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void updateMediaSessionMetadata(Playable p) {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -751,6 +791,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
         @Override
         public void setSpeedAbilityChanged() {
+
+        }
+
+        @Override
+        public void updateMediaSessionMetadata(Playable p) {
 
         }
 
@@ -824,6 +869,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
+            public void updateMediaSessionMetadata(Playable p) {
 
             }
 
@@ -938,6 +988,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void updateMediaSessionMetadata(Playable p) {
+
+            }
+
+            @Override
             public void onBufferingUpdate(int percent) {
 
             }
@@ -1021,6 +1076,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
+            public void updateMediaSessionMetadata(Playable p) {
 
             }
 
@@ -1120,6 +1180,11 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
             @Override
             public void setSpeedAbilityChanged() {
+
+            }
+
+            @Override
+            public void updateMediaSessionMetadata(Playable p) {
 
             }
 
