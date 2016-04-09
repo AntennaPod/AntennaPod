@@ -284,6 +284,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
+        MediaButtonIntentReceiver.setMediaPlayer(null);
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -857,7 +858,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
     private Thread notificationSetupThread;
 
     /**
-     * Updates the Media Session with current media player info.
+     * Updates the Media Session for the corresponding status.
      * @param playerStatus the current {@link PlayerStatus}
      */
     private void updateMediaSession(final PlayerStatus playerStatus) {
