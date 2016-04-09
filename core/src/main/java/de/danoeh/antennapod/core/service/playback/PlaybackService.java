@@ -283,6 +283,9 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
+        if (mediaSession != null) {
+            mediaSession.release();
+        }
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -294,9 +297,6 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         unregisterReceiver(pauseResumeCurrentEpisodeReceiver);
         mediaPlayer.shutdown();
         taskManager.shutdown();
-        if (mediaSession != null) {
-            mediaSession.release();
-        }
     }
 
     @Override
