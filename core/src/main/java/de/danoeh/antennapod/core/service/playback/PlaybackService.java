@@ -250,8 +250,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
         mediaPlayer = new PlaybackServiceMediaPlayer(this, mediaPlayerCallback);
 
-        MediaButtonIntentReceiver.setMediaPlayer(this);
-        ComponentName eventReceiver = new ComponentName(getPackageName(), MediaButtonIntentReceiver.class.getName());
+        ComponentName eventReceiver = new ComponentName(getPackageName(), MediaButtonReceiver.class.getName());
         Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         mediaButtonIntent.setComponent(eventReceiver);
         PendingIntent buttonReceiverIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -284,7 +283,6 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
-        MediaButtonIntentReceiver.setMediaPlayer(null);
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -333,7 +331,8 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
 
             if (keycode != -1) {
                 Log.d(TAG, "Received media button event");
-                handleKeycode(keycode, InputDevice.SOURCE_CLASS_NONE);
+                handleKeycode(keycode, intent.getIntExtra(MediaButtonReceiver.EXTRA_SOURCE,
+                        InputDevice.SOURCE_CLASS_NONE));
             } else {
                 started = true;
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
