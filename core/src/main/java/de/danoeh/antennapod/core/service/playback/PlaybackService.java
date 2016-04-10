@@ -251,7 +251,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         mediaPlayer = new PlaybackServiceMediaPlayer(this, mediaPlayerCallback);
 
         ComponentName eventReceiver = new ComponentName(getApplicationContext(),
-                MediaButtonReceiver.class.getName());
+                MediaButtonReceiver.class);
         Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         mediaButtonIntent.setComponent(eventReceiver);
         PendingIntent buttonReceiverIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -351,7 +351,7 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
     /**
      * Handles media button events
      */
-    public void handleKeycode(int keycode, int source) {
+    private void handleKeycode(int keycode, int source) {
         Log.d(TAG, "Handling keycode: " + keycode);
         final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         final PlayerStatus status = info.playerStatus;
