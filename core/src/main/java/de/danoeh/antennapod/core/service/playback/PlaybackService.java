@@ -250,13 +250,13 @@ public class PlaybackService extends Service implements SharedPreferences.OnShar
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
         mediaPlayer = new PlaybackServiceMediaPlayer(this, mediaPlayerCallback);
 
-        ComponentName eventReceiver = new ComponentName(MediaButtonReceiver.class.getPackage().getName(),
+        ComponentName eventReceiver = new ComponentName(getApplicationContext(),
                 MediaButtonReceiver.class.getName());
         Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         mediaButtonIntent.setComponent(eventReceiver);
         PendingIntent buttonReceiverIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        mediaSession = new MediaSessionCompat(this, TAG, eventReceiver, buttonReceiverIntent);
+        mediaSession = new MediaSessionCompat(getApplicationContext(), TAG, eventReceiver, buttonReceiverIntent);
 
         try {
             mediaSession.setCallback(sessionCallback);
