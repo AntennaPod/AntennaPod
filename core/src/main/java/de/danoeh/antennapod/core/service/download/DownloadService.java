@@ -204,8 +204,10 @@ public class DownloadService extends Service {
                                     FeedItem item = media.getItem();
                                     boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
                                             && String.valueOf(HttpURLConnection.HTTP_NOT_FOUND).equals(status.getReasonDetailed());
+                                    boolean forbidden = status.getReason() == DownloadError.ERROR_FORBIDDEN
+                                            && String.valueOf(HttpURLConnection.HTTP_FORBIDDEN).equals(status.getReasonDetailed());
                                     boolean notEnoughSpace = status.getReason() == DownloadError.ERROR_NOT_ENOUGH_SPACE;
-                                    if (httpNotFound || notEnoughSpace) {
+                                    if (httpNotFound || forbidden || notEnoughSpace) {
                                         DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                                     }
                                     // to make lists reload the failed item, we fake an item update

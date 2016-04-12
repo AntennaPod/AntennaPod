@@ -124,14 +124,6 @@ public class HttpDownloader extends Downloader {
                 }
             }
 
-            if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                String contentType = response.header("Content-Type");
-                if(!contentType.startsWith("audio/") && !contentType.startsWith("video/")) {
-                    onFail(DownloadError.ERROR_FILE_TYPE, null);
-                    return;
-                }
-            }
-
             responseBody = response.body();
             String contentEncodingHeader = response.header("Content-Encoding");
             boolean isGzip = false;
@@ -174,6 +166,9 @@ public class HttpDownloader extends Downloader {
                 if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     error = DownloadError.ERROR_UNAUTHORIZED;
                     details = String.valueOf(response.code());
+                } else if(response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
+                    error = DownloadError.ERROR_FORBIDDEN;
+                    details = String.valueOf(response.code());
                 } else {
                     error = DownloadError.ERROR_HTTP_DATA_ERROR;
                     details = String.valueOf(response.code());
@@ -185,6 +180,14 @@ public class HttpDownloader extends Downloader {
             if (!StorageUtils.storageAvailable()) {
                 onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
                 return;
+            }
+
+            if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                String contentType = response.header("Content-Type");
+                if(!contentType.startsWith("audio/") && !contentType.startsWith("video/")) {
+                    onFail(DownloadError.ERROR_FILE_TYPE, null);
+                    return;
+                }
             }
 
             connection = new BufferedInputStream(responseBody.byteStream());
