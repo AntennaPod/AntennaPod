@@ -995,8 +995,8 @@ public class DownloadService extends Service {
         public void run() {
             FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
             if (media == null) {
-                throw new IllegalStateException(
-                        "Could not find downloaded media object in database");
+                Log.e(TAG, "Could not find downloaded media object in database");
+                return;
             }
             media.setDownloaded(true);
             media.setFile_url(request.getDestination());
