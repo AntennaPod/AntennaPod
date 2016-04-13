@@ -20,7 +20,9 @@ public enum DownloadError {
 	ERROR_REQUEST_ERROR(12, R.string.download_error_request_error),
     ERROR_DB_ACCESS_ERROR(13, R.string.download_error_db_access),
     ERROR_UNAUTHORIZED(14, R.string.download_error_unauthorized),
-	ERROR_FILE_TYPE(15, R.string.download_error_file_type_type);
+	ERROR_FILE_TYPE(15, R.string.download_error_file_type_type),
+	ERROR_FORBIDDEN(16, R.string.download_error_forbidden);
+
 
 	private final int code;
 	private final int resId;

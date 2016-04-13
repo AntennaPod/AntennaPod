@@ -53,8 +53,7 @@ public class DownloadLogAdapter extends BaseAdapter {
 			holder.date = (TextView) convertView.findViewById(R.id.txtvDate);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
 			holder.type = (TextView) convertView.findViewById(R.id.txtvType);
-			holder.reason = (TextView) convertView
-					.findViewById(R.id.txtvReason);
+			holder.reason = (TextView) convertView.findViewById(R.id.txtvReason);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();

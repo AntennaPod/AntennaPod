@@ -124,14 +124,6 @@ public class HttpDownloader extends Downloader {
                 }
             }
 
-            if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                String contentType = response.header("Content-Type");
-                if(!contentType.startsWith("audio/") && !contentType.startsWith("video/")) {
-                    onFail(DownloadError.ERROR_FILE_TYPE, null);
-                    return;
-                }
-            }
-
             responseBody = response.body();
             String contentEncodingHeader = response.header("Content-Encoding");
             boolean isGzip = false;
@@ -174,6 +166,9 @@ public class HttpDownloader extends Downloader {
                 if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     error = DownloadError.ERROR_UNAUTHORIZED;
                     details = String.valueOf(response.code());
+                } else if(response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
+                    error = DownloadError.ERROR_FORBIDDEN;
+                    details = String.valueOf(response.code());
                 } else {
                     error = DownloadError.ERROR_HTTP_DATA_ERROR;
                     details = String.valueOf(response.code());
@@ -185,6 +180,14 @@ public class HttpDownloader extends Downloader {
             if (!StorageUtils.storageAvailable()) {
                 onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
                 return;
+            }
+
+            if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                String contentType = response.header("Content-Type");
+                if(!contentType.startsWith("audio/") && !contentType.startsWith("video/")) {
+                    onFail(DownloadError.ERROR_FILE_TYPE, null);
+                    return;
+                }
             }
 
             connection = new BufferedInputStream(responseBody.byteStream());
@@ -219,21 +222,18 @@ public class HttpDownloader extends Downloader {
             long freeSpace = StorageUtils.getFreeSpaceAvailable();
             Log.d(TAG, "Free space is " + freeSpace);
 
-            if (request.getSize() != DownloadStatus.SIZE_UNKNOWN
-                    && request.getSize() > freeSpace) {
+            if (request.getSize() != DownloadStatus.SIZE_UNKNOWN && request.getSize() > freeSpace) {
                 onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, null);
                 return;
             }
 
             Log.d(TAG, "Starting download");
             try {
-                while (!cancelled
-                        && (count = connection.read(buffer)) != -1) {
+                while (!cancelled && (count = connection.read(buffer)) != -1) {
                     out.write(buffer, 0, count);
                     request.setSoFar(request.getSoFar() + count);
-                    request.setProgressPercent((int) (((double) request
-                            .getSoFar() / (double) request
-                            .getSize()) * 100));
+                    int progressPercent = (int)(100.0 * request.getSoFar() / request.getSize());
+                    request.setProgressPercent(progressPercent);
                 }
             } catch(IOException e) {
                 Log.e(TAG, Log.getStackTraceString(e));
@@ -245,12 +245,8 @@ public class HttpDownloader extends Downloader {
                 // written file. This check cannot be made if compression was used
                 if (!isGzip && request.getSize() != DownloadStatus.SIZE_UNKNOWN &&
                         request.getSoFar() != request.getSize()) {
-                    onFail(DownloadError.ERROR_IO_ERROR,
-                            "Download completed but size: " +
-                                    request.getSoFar() +
-                                    " does not equal expected size " +
-                                    request.getSize()
-                    );
+                    onFail(DownloadError.ERROR_IO_ERROR, "Download completed but size: " +
+                            request.getSoFar() + " does not equal expected size " + request.getSize());
                     return;
                 } else if(request.getSize() > 0 && request.getSoFar() == 0){
                     onFail(DownloadError.ERROR_IO_ERROR, "Download completed, but nothing was read");
@@ -294,7 +290,8 @@ public class HttpDownloader extends Downloader {
     }
 
     private void onFail(DownloadError reason, String reasonDetailed) {
-        Log.d(TAG, "Download failed");
+        Log.d(TAG, "onFail() called with: " + "reason = [" + reason + "], " +
+                "reasonDetailed = [" + reasonDetailed + "]");
         result.setFailed(reason, reasonDetailed);
         if (request.isDeleteOnFailure()) {
             cleanup();
