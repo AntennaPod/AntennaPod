@@ -950,7 +950,7 @@ public class PlaybackService extends Service {
     }
 
     private void updateMediaSessionMetadata(Playable p) {
-        if (p == null) {
+        if (p == null || mediaSession == null) {
             return;
         }
         MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
@@ -1695,7 +1695,7 @@ public class PlaybackService extends Service {
                             castManager.disconnect();
                         }
                     }
-                } else if(key.equals(UserPreferences.PREF_LOCKSCREEN_BACKGROUND)) {
+                } else if (UserPreferences.PREF_LOCKSCREEN_BACKGROUND.equals(key)) {
                     updateMediaSessionMetadata(getPlayable());
                 }
     };
