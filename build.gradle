@@ -45,7 +45,7 @@ project.ext {
     commonsioVersion = "2.4"
     commonslangVersion = "3.4"
     eventbusVersion = "2.4.0"
-    flattr4jVersion = "2.12"
+    flattr4jVersion = "2.13"
     glideVersion = "3.7.0"
     glideOkhttpIntegrationVersion = "1.4.0"
     iconifyVersion = "2.2.1"
