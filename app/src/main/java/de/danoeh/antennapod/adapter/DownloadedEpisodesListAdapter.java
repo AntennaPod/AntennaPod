@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +62,9 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
                     parent, false);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            if(Build.VERSION.SDK_INT >= 23) {
+                holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+            }
             holder.txtvSize = (TextView) convertView.findViewById(R.id.txtvSize);
             holder.queueStatus = (ImageView) convertView.findViewById(R.id.imgvInPlaylist);
             holder.pubDate = (TextView) convertView

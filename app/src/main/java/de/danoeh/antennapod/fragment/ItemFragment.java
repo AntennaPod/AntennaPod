@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GestureDetectorCompat;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -175,6 +176,9 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         txtvPodcast = (TextView) layout.findViewById(R.id.txtvPodcast);
         txtvPodcast.setOnClickListener(v -> openPodcast());
         txtvTitle = (TextView) layout.findViewById(R.id.txtvTitle);
+        if(Build.VERSION.SDK_INT >= 23) {
+            txtvTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+        }
         txtvDuration = (TextView) layout.findViewById(R.id.txtvDuration);
         txtvPublished = (TextView) layout.findViewById(R.id.txtvPublished);
         if (Build.VERSION.SDK_INT >= 14) { // ellipsize is causing problems on old versions, see #448

@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.adapter;
 
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Layout;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -81,6 +83,9 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.container = (FrameLayout) view.findViewById(R.id.container);
         holder.placeholder = (TextView) view.findViewById(R.id.txtvPlaceholder);
         holder.title = (TextView) view.findViewById(R.id.txtvTitle);
+        if(Build.VERSION.SDK_INT >= 23) {
+            holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+        }
         holder.pubDate = (TextView) view
                 .findViewById(R.id.txtvPublished);
         holder.statusUnread = view.findViewById(R.id.statusUnread);

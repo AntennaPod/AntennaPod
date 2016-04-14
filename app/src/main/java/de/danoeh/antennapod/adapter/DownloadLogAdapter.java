@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.text.Layout;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +54,9 @@ public class DownloadLogAdapter extends BaseAdapter {
 			holder.retry = (IconButton) convertView.findViewById(R.id.btnRetry);
 			holder.date = (TextView) convertView.findViewById(R.id.txtvDate);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+			if(Build.VERSION.SDK_INT >= 23) {
+				holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+			}
 			holder.type = (TextView) convertView.findViewById(R.id.txtvType);
 			holder.reason = (TextView) convertView.findViewById(R.id.txtvReason);
 			convertView.setTag(holder);
