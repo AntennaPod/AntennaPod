@@ -350,7 +350,6 @@ public class DBWriter {
             itemIds.add(item.getId());
             item.addTag(FeedItem.TAG_QUEUE);
         }
-        EventBus.getDefault().post(FeedItemEvent.updated(items));
         return addQueueItem(context, false, itemIds.toArray());
     }
 
@@ -374,6 +373,7 @@ public class DBWriter {
                     boolean queueModified = false;
                     LongList markAsUnplayedIds = new LongList();
                     List<QueueEvent> events = new ArrayList<>();
+                    List<FeedItem> updatedItems = new ArrayList<>();
                     for (int i = 0; i < itemIds.length; i++) {
                         if (!itemListContains(queue, itemIds[i])) {
                             final FeedItem item = DBReader.getFeedItem(itemIds[i]);
@@ -389,6 +389,8 @@ public class DBWriter {
                                     queue.add(item);
                                     events.add(QueueEvent.added(item, queue.size() - 1));
                                 }
+                                item.addTag(FeedItem.TAG_QUEUE);
+                                updatedItems.add(item);
                                 queueModified = true;
                                 if (item.isNew()) {
                                     markAsUnplayedIds.add(item.getId());
@@ -401,6 +403,7 @@ public class DBWriter {
                         for (QueueEvent event : events) {
                             EventBus.getDefault().post(event);
                         }
+                        EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
                         if (markAsUnplayedIds.size() > 0) {
                             DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
                         }
