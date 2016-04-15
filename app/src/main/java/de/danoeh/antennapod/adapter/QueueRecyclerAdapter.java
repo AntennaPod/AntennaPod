@@ -1,10 +1,12 @@
 package de.danoeh.antennapod.adapter;
 
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -141,6 +143,9 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             placeholder = (TextView) v.findViewById(R.id.txtvPlaceholder);
             cover = (ImageView) v.findViewById(R.id.imgvCover);
             title = (TextView) v.findViewById(R.id.txtvTitle);
+            if(Build.VERSION.SDK_INT >= 23) {
+                title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+            }
             pubDate = (TextView) v.findViewById(R.id.txtvPubDate);
             progressLeft = (TextView) v.findViewById(R.id.txtvProgressLeft);
             progressRight = (TextView) v.findViewById(R.id.txtvProgressRight);
