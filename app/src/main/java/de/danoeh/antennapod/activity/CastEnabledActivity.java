@@ -11,6 +11,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.SwitchableMediaRouteActionProvider;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 
 /**
  * Activity that allows for showing the MediaRouter button whenever there's a cast device in the
@@ -97,7 +98,9 @@ public abstract class CastEnabledActivity extends AppCompatActivity
                     mCastManager.decrementUiCounter();
                     castUICounter--;
                 }
-                //TODO disable any current casting (or possibly do it within the PlaybackService)
+                if (!PlaybackService.isRunning) {
+                    CastManager.getInstance().disconnect();
+                }
             }
         }
     }
