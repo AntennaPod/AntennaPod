@@ -235,12 +235,12 @@ public class PlaybackService extends Service {
      */
     public static Intent getPlayerActivityIntent(Context context) {
         if (isRunning) {
-            return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, currentMediaType);
+            return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, currentMediaType, isCasting);
         } else {
             if (PlaybackPreferences.getCurrentEpisodeIsVideo()) {
-                return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, MediaType.VIDEO);
+                return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, MediaType.VIDEO, isCasting);
             } else {
-                return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, MediaType.AUDIO);
+                return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, MediaType.AUDIO, isCasting);
             }
         }
     }
@@ -251,7 +251,7 @@ public class PlaybackService extends Service {
      */
     public static Intent getPlayerActivityIntent(Context context, Playable media) {
         MediaType mt = media.getMediaType();
-        return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, mt);
+        return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, mt, isCasting);
     }
 
     @Override
