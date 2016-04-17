@@ -715,9 +715,9 @@ public abstract class PlaybackController {
         }
     }
 
-    // TODO this method probably needs to change
-    public boolean isPlayingVideo() {
-        return playbackService != null && PlaybackService.getCurrentMediaType() == MediaType.VIDEO;
+    public boolean isPlayingVideoLocally() {
+        return playbackService != null && PlaybackService.getCurrentMediaType() == MediaType.VIDEO
+                && !PlaybackService.isCasting();
     }
 
     public Pair<Integer, Integer> getVideoSize() {
