@@ -65,12 +65,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY); // has to be called before setting layout content
         super.onCreate(savedInstanceState);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
-        if (CastManager.getInstance().isConnected()) {
-            Intent intent = PlaybackService.getPlayerActivityIntent(this);
-            if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
-                startActivity(intent);
-            }
-        }
     }
 
     @Override
@@ -90,6 +84,11 @@ public class VideoplayerActivity extends MediaplayerActivity {
             launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
                     true);
             startService(launchIntent);
+        } else if (CastManager.getInstance().isConnected()) {
+            Intent intent = PlaybackService.getPlayerActivityIntent(this);
+            if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
+                startActivity(intent);
+            }
         }
     }
 
