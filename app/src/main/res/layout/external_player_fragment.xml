@@ -37,6 +37,18 @@
             android:indeterminate="false"
             tools:progress="100"/>
 
+        <ImageButton
+            android:id="@+id/butPlay"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/episodeProgress"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/pause_label"
+            android:background="?attr/selectableItemBackground"
+            tools:src="@drawable/ic_play_arrow_white_36dp"/>
+
         <TextView
             android:id="@+id/txtvTitle"
             android:layout_width="wrap_content"
@@ -71,18 +83,6 @@
             android:ellipsize="end"
             android:maxLines="1"
             tools:text="Episode author that is too long and will cause the text to wrap"/>
-
-        <ImageButton
-            android:id="@+id/butPlay"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@id/episodeProgress"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/pause_label"
-            android:background="?attr/selectableItemBackground"
-            tools:src="@drawable/ic_play_arrow_white_36dp"/>
 
     </RelativeLayout>
 
