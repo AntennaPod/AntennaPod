@@ -645,7 +645,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if(butPlaybackSpeed == null) {
             return;
         }
-        if (controller == null) {
+        // TODO this possibly needs to change if we introduce an alternative button
+        if (controller == null || !(this instanceof AudioplayerActivity)) {
             butPlaybackSpeed.setVisibility(View.GONE);
             return;
         }
