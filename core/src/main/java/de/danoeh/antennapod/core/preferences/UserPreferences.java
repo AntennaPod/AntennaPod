@@ -494,16 +494,16 @@ public class UserPreferences {
 
     public static void setVolume(int leftVolume, int rightVolume) {
         assert(0 <= leftVolume && leftVolume <= 100);
-        assert (0 <= rightVolume && rightVolume <= 100);
+        assert(0 <= rightVolume && rightVolume <= 100);
         prefs.edit()
-                .putInt(PREF_LEFT_VOLUME, leftVolume)
+             .putInt(PREF_LEFT_VOLUME, leftVolume)
              .putInt(PREF_RIGHT_VOLUME, rightVolume)
              .apply();
     }
 
     public static void setAutodownloadSelectedNetworks(String[] value) {
         prefs.edit()
-                .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
+             .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
              .apply();
     }
 
@@ -541,7 +541,7 @@ public class UserPreferences {
             throw new IllegalArgumentException("Flattr threshold must be in range [0.0, 1.0]");
         }
         prefs.edit()
-                .putBoolean(PREF_AUTO_FLATTR, enabled)
+             .putBoolean(PREF_AUTO_FLATTR, enabled)
              .putFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD, autoFlattrThreshold)
              .apply();
     }
