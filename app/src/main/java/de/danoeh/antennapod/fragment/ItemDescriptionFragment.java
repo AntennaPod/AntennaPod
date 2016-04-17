@@ -27,8 +27,8 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AudioplayerActivity;
-import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
+import de.danoeh.antennapod.activity.MediaplayerInfoActivity;
+import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -47,7 +47,7 @@ import rx.schedulers.Schedulers;
 /**
  * Displays the description of a Playable object in a Webview.
  */
-public class ItemDescriptionFragment extends Fragment implements AudioplayerContentFragment {
+public class ItemDescriptionFragment extends Fragment implements MediaplayerInfoContentFragment {
 
     private static final String TAG = "ItemDescriptionFragment";
 
@@ -371,8 +371,8 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
 
     private void onTimecodeLinkSelected(String link) {
         int time = Timeline.getTimecodeLinkTime(link);
-        if (getActivity() != null && getActivity() instanceof AudioplayerActivity) {
-            PlaybackController pc = ((AudioplayerActivity) getActivity()).getPlaybackController();
+        if (getActivity() != null && getActivity() instanceof MediaplayerInfoActivity) {
+            PlaybackController pc = ((MediaplayerInfoActivity) getActivity()).getPlaybackController();
             if (pc != null) {
                 pc.seekTo(time);
             }

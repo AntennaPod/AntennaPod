@@ -172,6 +172,7 @@ public class ExternalPlayerFragment extends Fragment {
                         .into(imgvCover);
 
                 fragmentLayout.setVisibility(View.VISIBLE);
+                // TODO change this to show play button if connected to chromecast
                 if (controller.isPlayingVideo()) {
                     butPlay.setVisibility(View.GONE);
                 } else {

@@ -12,14 +12,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
+import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
  * Displays the cover and the title of a FeedItem.
  */
-public class CoverFragment extends Fragment implements AudioplayerContentFragment {
+public class CoverFragment extends Fragment implements MediaplayerInfoContentFragment {
 
     private static final String TAG = "CoverFragment";
     private static final String ARG_PLAYABLE = "arg.playable";
