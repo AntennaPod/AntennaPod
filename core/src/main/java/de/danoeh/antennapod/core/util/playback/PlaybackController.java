@@ -34,8 +34,8 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.LocalPSMP;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
@@ -176,7 +176,7 @@ public abstract class PlaybackController {
         if(serviceBinder != null) {
             serviceBinder.unsubscribe();
         }
-        serviceBinder = Observable.fromCallable(() -> getPlayLastPlayedMediaIntent())
+        serviceBinder = Observable.fromCallable(this::getPlayLastPlayedMediaIntent)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(intent -> {
@@ -281,7 +281,7 @@ public abstract class PlaybackController {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "Received statusUpdate Intent.");
             if (isConnectedToPlaybackService()) {
-                LocalPSMP.PSMPInfo info = playbackService.getPSMPInfo();
+                PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
                 status = info.playerStatus;
                 media = info.playable;
                 handleStatus();
@@ -392,7 +392,7 @@ public abstract class PlaybackController {
     }
 
     /**
-     * Is called whenever the PlaybackService changes it's status. This method
+     * Is called whenever the PlaybackService changes its status. This method
      * should be used to update the GUI or start/cancel background threads.
      */
     private void handleStatus() {
@@ -424,14 +424,16 @@ public abstract class PlaybackController {
                 cancelPositionObserver();
                 onPositionObserverUpdate();
                 updatePlayButtonAppearance(playResource, playText);
-                if (PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                if (!PlaybackService.isCasting() &&
+                        PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     setScreenOn(false);
                 }
                 break;
             case PLAYING:
                 clearStatusMsg();
                 checkMediaInfoLoaded();
-                if (PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                if (!PlaybackService.isCasting() &&
+                        PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     onAwaitingVideoSurface();
                     setScreenOn(true);
                 }
@@ -502,8 +504,9 @@ public abstract class PlaybackController {
     private void queryService() {
         Log.d(TAG, "Querying service info");
         if (playbackService != null) {
-            status = playbackService.getStatus();
-            media = playbackService.getPlayable();
+            PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
+            status = info.playerStatus;
+            media = info.playable;
             /*
             if (media == null) {
                 Log.w(TAG,
@@ -712,6 +715,7 @@ public abstract class PlaybackController {
         }
     }
 
+    // TODO this method probably needs to change
     public boolean isPlayingVideo() {
         return playbackService != null && PlaybackService.getCurrentMediaType() == MediaType.VIDEO;
     }
