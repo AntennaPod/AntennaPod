@@ -189,12 +189,14 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 || resId == R.string.player_seeking_msg
                 || resId == R.string.player_buffering_msg) {
             // TODO Show progress bar here
+            sbPosition.setIndeterminate(true);
         }
     }
 
     @Override
     protected void clearStatusMsg() {
         // TODO Hide progress bar here
+        sbPosition.setIndeterminate(false);
     }
 
 
