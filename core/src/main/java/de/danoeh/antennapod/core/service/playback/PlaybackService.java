@@ -27,6 +27,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.annotation.NonNull;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.media.MediaRouter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -204,6 +205,9 @@ public class PlaybackService extends Service {
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
+
+    private CastManager mCastMgr;
+    private MediaRouter mMediaRouter;
     /**
      * Only used for Lollipop notifications.
      */
@@ -277,20 +281,10 @@ public class PlaybackService extends Service {
         registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(
                 ACTION_RESUME_PLAY_CURRENT_EPISODE));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
+
+        mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(prefListener);
-        CastManager castMgr = CastManager.getInstance();
-        castMgr.addCastConsumer(castConsumer);
-        isCasting = castMgr.isConnected();
-        if (isCasting) {
-            if (UserPreferences.isCastEnabled()) {
-                onCastAppConnected(false);
-            } else {
-                castMgr.disconnect();
-            }
-        } else {
-            mediaPlayer = new LocalPSMP(this, mediaPlayerCallback);
-        }
 
         ComponentName eventReceiver = new ComponentName(getApplicationContext(),
                 MediaButtonReceiver.class);
@@ -303,7 +297,6 @@ public class PlaybackService extends Service {
         try {
             mediaSession.setCallback(sessionCallback);
             mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-            mediaSession.setActive(true);
         } catch (NullPointerException npe) {
             // on some devices (Huawei) setting active can cause a NullPointerException
             // even with correct use of the api.
@@ -312,6 +305,21 @@ public class PlaybackService extends Service {
             Log.e(TAG, "NullPointerException while setting up MediaSession");
             npe.printStackTrace();
         }
+
+        mCastMgr = CastManager.getInstance();
+        mCastMgr.addCastConsumer(castConsumer);
+        isCasting = mCastMgr.isConnected();
+        if (isCasting) {
+            if (UserPreferences.isCastEnabled()) {
+                onCastAppConnected(false);
+            } else {
+                mCastMgr.disconnect();
+            }
+        } else {
+            mediaPlayer = new LocalPSMP(this, mediaPlayerCallback);
+        }
+
+        mediaSession.setActive(true);
     }
 
     @Override
@@ -336,7 +344,7 @@ public class PlaybackService extends Service {
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
         unregisterReceiver(pauseResumeCurrentEpisodeReceiver);
-        CastManager.getInstance().removeCastConsumer(castConsumer);
+        mCastMgr.removeCastConsumer(castConsumer);
         unregisterWifiBroadcastReceiver();
         mediaPlayer.shutdown();
         taskManager.shutdown();
@@ -379,7 +387,7 @@ public class PlaybackService extends Service {
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
                 //If the user asks to play External Media, the casting session, if on, should end.
                 if (playable instanceof ExternalMedia) {
-                    CastManager.getInstance().disconnect();
+                    mCastMgr.disconnect();
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
@@ -1346,6 +1354,10 @@ public class PlaybackService extends Service {
         return currentMediaType;
     }
 
+    public static boolean isCasting() {
+        return isCasting;
+    }
+
     public void resume() {
         mediaPlayer.resume();
     }
@@ -1603,6 +1615,7 @@ public class PlaybackService extends Service {
                 Log.d(TAG, "Cast session disconnected, but no current media");
                 sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
             }
+            mMediaRouter.setMediaSessionCompat(null);
             unregisterWifiBroadcastReceiver();
         }
     };
@@ -1624,6 +1637,8 @@ public class PlaybackService extends Service {
                         new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null),
                 wasLaunched);
         sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, EXTRA_CODE_CAST);
+        // hardware volume buttons control the remote device volume
+        mMediaRouter.setMediaSessionCompat(mediaSession);
         registerWifiBroadcastReceiver();
     }
 
@@ -1665,9 +1680,8 @@ public class PlaybackService extends Service {
                     //apparently this method gets called twice when a change happens, but one run is enough.
                     if (isConnected && !mWifiConnectivity) {
                         mWifiConnectivity = true;
-                        CastManager castMgr = CastManager.getInstance();
-                        castMgr.startCastDiscovery();
-                        castMgr.reconnectSessionIfPossible(RECONNECTION_ATTEMPT_PERIOD_S, NetworkUtils.getWifiSsid());
+                        mCastMgr.startCastDiscovery();
+                        mCastMgr.reconnectSessionIfPossible(RECONNECTION_ATTEMPT_PERIOD_S, NetworkUtils.getWifiSsid());
                     } else {
                         mWifiConnectivity = isConnected;
                     }
@@ -1689,10 +1703,9 @@ public class PlaybackService extends Service {
             (sharedPreferences, key) -> {
                 if (UserPreferences.PREF_CAST_ENABLED.equals(key)) {
                     if (!UserPreferences.isCastEnabled()) {
-                        CastManager castManager = CastManager.getInstance();
-                        if (castManager.isConnecting() || castManager.isConnected()) {
+                        if (mCastMgr.isConnecting() || mCastMgr.isConnected()) {
                             Log.d(TAG, "Disconnecting cast device due to a change in user preferences");
-                            castManager.disconnect();
+                            mCastMgr.disconnect();
                         }
                     }
                 } else if (UserPreferences.PREF_LOCKSCREEN_BACKGROUND.equals(key)) {
