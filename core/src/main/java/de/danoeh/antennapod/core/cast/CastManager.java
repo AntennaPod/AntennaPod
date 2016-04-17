@@ -128,6 +128,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             CastConfiguration castConfiguration = new CastConfiguration.Builder(CAST_APP_ID)
                     .enableDebug()
                     .enableAutoReconnect()
+                    .enableWifiReconnection()
                     .setLaunchOptions(true, Locale.getDefault())
                     .build();
             Log.d(TAG, "New instance of CastManager is created");
@@ -1735,5 +1736,20 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             mediaRouteActionProvider.setDialogFactory(mCastConfiguration.getMediaRouteDialogFactory());
         }
         return mediaRouteActionProvider;
+    }
+
+    /* (non-Javadoc)
+     * These methods startReconnectionService and stopReconnectionService simply override the ones
+     * from BaseCastManager with empty implementations because we handle the service ourselves, but
+     * need to allow BaseCastManager to save current network information.
+     */
+    @Override
+    protected void startReconnectionService(long mediaDurationLeft) {
+        // Do nothing
+    }
+
+    @Override
+    protected void stopReconnectionService() {
+        // Do nothing
     }
 }
