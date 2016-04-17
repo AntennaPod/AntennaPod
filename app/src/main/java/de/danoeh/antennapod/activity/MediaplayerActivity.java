@@ -729,44 +729,50 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         // BUTTON SETUP
 
         if(butPlaybackSpeed != null) {
-            butPlaybackSpeed.setOnClickListener(v -> {
-                if (controller == null) {
-                    return;
-                }
-                if (controller.canSetPlaybackSpeed()) {
-                    String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
-                    String currentSpeed = UserPreferences.getPlaybackSpeed();
-
-                    // Provide initial value in case the speed list has changed
-                    // out from under us
-                    // and our current speed isn't in the new list
-                    String newSpeed;
-                    if (availableSpeeds.length > 0) {
-                        newSpeed = availableSpeeds[0];
-                    } else {
-                        newSpeed = "1.00";
+            if (this instanceof AudioplayerActivity) {
+                butPlaybackSpeed.setOnClickListener(v -> {
+                    if (controller == null) {
+                        return;
                     }
+                    if (controller.canSetPlaybackSpeed()) {
+                        String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
+                        String currentSpeed = UserPreferences.getPlaybackSpeed();
 
-                    for (int i = 0; i < availableSpeeds.length; i++) {
-                        if (availableSpeeds[i].equals(currentSpeed)) {
-                            if (i == availableSpeeds.length - 1) {
-                                newSpeed = availableSpeeds[0];
-                            } else {
-                                newSpeed = availableSpeeds[i + 1];
-                            }
-                            break;
+                        // Provide initial value in case the speed list has changed
+                        // out from under us
+                        // and our current speed isn't in the new list
+                        String newSpeed;
+                        if (availableSpeeds.length > 0) {
+                            newSpeed = availableSpeeds[0];
+                        } else {
+                            newSpeed = "1.00";
                         }
+
+                        for (int i = 0; i < availableSpeeds.length; i++) {
+                            if (availableSpeeds[i].equals(currentSpeed)) {
+                                if (i == availableSpeeds.length - 1) {
+                                    newSpeed = availableSpeeds[0];
+                                } else {
+                                    newSpeed = availableSpeeds[i + 1];
+                                }
+                                break;
+                            }
+                        }
+                        UserPreferences.setPlaybackSpeed(newSpeed);
+                        controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
+                    } else {
+                        VariableSpeedDialog.showGetPluginDialog(this);
                     }
-                    UserPreferences.setPlaybackSpeed(newSpeed);
-                    controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
-                } else {
-                    VariableSpeedDialog.showGetPluginDialog(this);
-                }
-            });
-            butPlaybackSpeed.setOnLongClickListener(v -> {
-                VariableSpeedDialog.showDialog(this);
-                return true;
-            });
+                });
+                butPlaybackSpeed.setOnLongClickListener(v -> {
+                    VariableSpeedDialog.showDialog(this);
+                    return true;
+                });
+                butPlaybackSpeed.setVisibility(View.VISIBLE);
+            } else {
+                // TODO in the future, perhaps replace it with some cast related button
+                butPlaybackSpeed.setVisibility(View.GONE);
+            }
         }
 
         if (butRev != null) {
