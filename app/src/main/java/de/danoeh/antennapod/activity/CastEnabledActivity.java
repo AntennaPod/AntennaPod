@@ -1,13 +1,18 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 
+import com.google.android.gms.cast.ApplicationMetadata;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.cast.CastConsumer;
+import de.danoeh.antennapod.core.cast.CastConsumerImpl;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.SwitchableMediaRouteActionProvider;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -35,13 +40,16 @@ public abstract class CastEnabledActivity extends AppCompatActivity
 
         castUICounter = 0;
         mCastManager = CastManager.getInstance();
+        mCastManager.addCastConsumer(castConsumer);
         isCastEnabled = UserPreferences.isCastEnabled();
+        onCastConnectionChanged(mCastManager.isConnected());
     }
 
     @Override
     protected void onDestroy() {
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                 .unregisterOnSharedPreferenceChangeListener(this);
+        mCastManager.removeCastConsumer(castConsumer);
         super.onDestroy();
     }
 
@@ -102,6 +110,26 @@ public abstract class CastEnabledActivity extends AppCompatActivity
                     CastManager.getInstance().disconnect();
                 }
             }
+        }
+    }
+
+    CastConsumer castConsumer = new CastConsumerImpl() {
+        @Override
+        public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
+            onCastConnectionChanged(true);
+        }
+
+        @Override
+        public void onDisconnected() {
+            onCastConnectionChanged(false);
+        }
+    };
+
+    private void onCastConnectionChanged(boolean connected) {
+        if (connected) {
+            setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
+        } else {
+            setVolumeControlStream(AudioManager.STREAM_MUSIC);
         }
     }
 }

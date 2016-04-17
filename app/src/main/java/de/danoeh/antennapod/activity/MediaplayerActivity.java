@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -207,8 +206,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
         Log.d(TAG, "onCreate()");
         StorageUtils.checkStorageAvailability(this);
-        //TODO we should most likely change this if casting
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         orientation = getResources().getConfiguration().orientation;
         getWindow().setFormat(PixelFormat.TRANSPARENT);
