@@ -23,6 +23,7 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -64,6 +65,12 @@ public class VideoplayerActivity extends MediaplayerActivity {
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY); // has to be called before setting layout content
         super.onCreate(savedInstanceState);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
+        if (CastManager.getInstance().isConnected()) {
+            Intent intent = PlaybackService.getPlayerActivityIntent(this);
+            if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
+                startActivity(intent);
+            }
+        }
     }
 
     @Override
@@ -257,6 +264,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
             Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
             finish();
             startActivity(new Intent(this, AudioplayerActivity.class));
+        } else if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
+            Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
+            finish();
+            startActivity(new Intent(this, CastplayerActivity.class));
         }
     }
 

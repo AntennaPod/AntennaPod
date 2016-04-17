@@ -1,9 +1,11 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
@@ -13,6 +15,17 @@ import de.danoeh.antennapod.core.util.playback.ExternalMedia;
  */
 public class AudioplayerActivity extends MediaplayerInfoActivity {
     public static final String TAG = "AudioPlayerActivity";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (CastManager.getInstance().isConnected()) {
+            Intent intent = PlaybackService.getPlayerActivityIntent(this);
+            if (!intent.getComponent().getClassName().equals(AudioplayerActivity.class.getName())) {
+                startActivity(intent);
+            }
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -30,6 +43,18 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
                     true);
             startService(launchIntent);
+        }
+    }
+
+    @Override
+    protected void onReloadNotification(int notificationCode) {
+        if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
+            Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
+            finish();
+            startActivity(new Intent(this, CastplayerActivity.class));
+
+        } else {
+            super.onReloadNotification(notificationCode);
         }
     }
 }
