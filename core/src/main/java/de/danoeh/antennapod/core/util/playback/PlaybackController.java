@@ -401,7 +401,8 @@ public abstract class PlaybackController {
         final CharSequence playText = activity.getString(R.string.play_label);
         final CharSequence pauseText = activity.getString(R.string.pause_label);
 
-        if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO) {
+        if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO ||
+                PlaybackService.isCasting()) {
             TypedArray res = activity.obtainStyledAttributes(new int[]{
                     R.attr.av_play_big, R.attr.av_pause_big});
             playResource = res.getResourceId(0, R.drawable.ic_play_arrow_grey600_36dp);
