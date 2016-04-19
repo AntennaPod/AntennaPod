@@ -27,9 +27,10 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     public static final String TAG = "CastEnabledActivity";
 
     protected CastManager mCastManager;
-    private volatile int castUICounter;
+    private final Object UI_COUNTER_LOCK = new Object();
+    private volatile boolean isResumed = false;
     protected SwitchableMediaRouteActionProvider mMediaRouteActionProvider;
-    protected volatile boolean isCastEnabled;
+    protected volatile boolean isCastEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,6 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).
                 registerOnSharedPreferenceChangeListener(this);
 
-        castUICounter = 0;
         mCastManager = CastManager.getInstance();
         mCastManager.addCastConsumer(castConsumer);
         isCastEnabled = UserPreferences.isCastEnabled();
@@ -72,43 +72,44 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        castUICounter++;
-        if (isCastEnabled) {
-            mCastManager.incrementUiCounter();
-            castUICounter++;
+        synchronized (UI_COUNTER_LOCK) {
+            isResumed = true;
+            if (isCastEnabled) {
+                mCastManager.incrementUiCounter();
+            }
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        castUICounter--;
-        if (isCastEnabled) {
-            mCastManager.decrementUiCounter();
-            castUICounter--;
+        synchronized (UI_COUNTER_LOCK) {
+            isResumed = false;
+            if (isCastEnabled) {
+                mCastManager.decrementUiCounter();
+            }
         }
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (UserPreferences.PREF_CAST_ENABLED.equals(key)) {
-            isCastEnabled = UserPreferences.isCastEnabled();
-            Log.d(TAG, "onSharedPreferenceChanged(), isCastEnabled set to " + isCastEnabled);
+            boolean newValue = UserPreferences.isCastEnabled();
+            Log.d(TAG, "onSharedPreferenceChanged(), isCastEnabled set to " + newValue);
+            synchronized (UI_COUNTER_LOCK) {
+                if (isCastEnabled != newValue && isResumed) {
+                    if (newValue) {
+                        mCastManager.incrementUiCounter();
+                    } else {
+                        mCastManager.decrementUiCounter();
+                    }
+                }
+                isCastEnabled = newValue;
+            }
             mMediaRouteActionProvider.setEnabled(isCastEnabled);
-            if (isCastEnabled) {
-                //Test if activity is resumed but without UI counter incremented
-                if (castUICounter==1) {
-                    mCastManager.incrementUiCounter();
-                    castUICounter++;
-                }
-            } else {
-                if (castUICounter > 1) {
-                    mCastManager.decrementUiCounter();
-                    castUICounter--;
-                }
-                if (!PlaybackService.isRunning) {
-                    CastManager.getInstance().disconnect();
-                }
+            // PlaybackService has its own listener, so if it's active we don't have to take action here.
+            if (!isCastEnabled && !PlaybackService.isRunning) {
+                CastManager.getInstance().disconnect();
             }
         }
     }
