@@ -688,6 +688,12 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
 
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
+        // we are only interested in the number of queue items, not download status or position
+        if(event.action == QueueEvent.Action.DELETED_MEDIA ||
+                event.action == QueueEvent.Action.SORTED ||
+                event.action == QueueEvent.Action.MOVED) {
+            return;
+        }
         loadData();
     }
 

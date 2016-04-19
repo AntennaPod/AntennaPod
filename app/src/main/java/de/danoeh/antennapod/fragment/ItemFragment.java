@@ -60,7 +60,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -117,8 +116,6 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     private long[] feedItems;
     private int feedItemPos;
     private FeedItem item;
-    private LongList queue;
-    private LongList favorites;
     private String webviewData;
     private List<Downloader> downloaderList;
 
@@ -317,10 +314,10 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         inflater.inflate(R.menu.feeditem_options, menu);
         popupMenu = menu;
         if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, queue, favorites);
+            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, null);
         } else {
             // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, queue, favorites,
+            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, null,
                     R.id.mark_read_item, R.id.visit_website_item);
         }
     }
@@ -530,18 +527,6 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         ((MainActivity)getActivity()).loadChildFragment(fragment);
     }
 
-    public void onEventMainThread(QueueEvent event) {
-        if(event.contains(feedItems[feedItemPos])) {
-            load();
-        }
-    }
-
-    public void onEventMainThread(FavoritesEvent event) {
-        if(event.item.getId() == feedItems[feedItemPos]) {
-            load();
-        }
-    }
-
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         for(FeedItem item : event.items) {
@@ -586,10 +571,8 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
-                item = (FeedItem) result[0];
-                queue = (LongList) result[1];
-                favorites = (LongList) result[2];
                 progbarLoading.setVisibility(View.GONE);
+                item = result;
                 if (!itemsLoaded) {
                     itemsLoaded = true;
                     onFragmentLoaded();
@@ -601,25 +584,13 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             });
     }
 
-    private Object[] loadInBackground() {
+    private FeedItem loadInBackground() {
         FeedItem feedItem = DBReader.getFeedItem(feedItems[feedItemPos]);
         if (feedItem != null) {
             Timeline t = new Timeline(getActivity(), feedItem);
             webviewData = t.processShownotes(false);
         }
-        LongList queue;
-        if(feedItem.isTagged(FeedItem.TAG_QUEUE)) {
-            queue = LongList.of(feedItem.getId());
-        } else {
-            queue = new LongList(0);
-        }
-        LongList favorites;
-        if(feedItem.isTagged(FeedItem.TAG_FAVORITE)) {
-            favorites = LongList.of(feedItem.getId());
-        } else {
-            favorites = new LongList(0);
-        }
-        return new Object[] { feedItem, queue, favorites };
+        return feedItem;
     }
 
 }

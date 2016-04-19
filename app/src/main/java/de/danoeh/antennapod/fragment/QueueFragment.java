@@ -568,20 +568,6 @@ public class QueueFragment extends Fragment {
         public LongList getQueueIds() {
             return queue != null ? LongList.of(FeedItemUtil.getIds(queue)) : new LongList(0);
         }
-
-        @Override
-        public LongList getFavoritesIds() {
-            LongList favoritesIds = new LongList();
-            if(queue == null) {
-                return favoritesIds;
-            }
-            for(FeedItem item : queue) {
-                if(item.isTagged(FeedItem.TAG_FAVORITE)) {
-                    favoritesIds.add(item.getId());
-                }
-            }
-            return favoritesIds;
-        }
     };
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

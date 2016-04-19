@@ -294,8 +294,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                     item1.setVisible(visible);
                 }
             };
-            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true,
-                    itemAccess.getQueueIds(), itemAccess.getFavoritesIds());
+            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
         }
 
     }
@@ -311,10 +310,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         int getItemDownloadProgressPercent(FeedItem item);
 
         boolean isInQueue(FeedItem item);
-
-        LongList getQueueIds();
-
-        LongList getFavoritesIds();
 
     }
 

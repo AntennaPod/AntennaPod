@@ -326,6 +326,7 @@ public class DBWriter {
                         adapter.setQueue(queue);
                         item.addTag(FeedItem.TAG_QUEUE);
                         EventBus.getDefault().post(QueueEvent.added(item, index));
+                        EventBus.getDefault().post(FeedItemEvent.updated(item));
                         if (item.isNew()) {
                             DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
                         }
@@ -372,6 +373,7 @@ public class DBWriter {
                     boolean queueModified = false;
                     LongList markAsUnplayedIds = new LongList();
                     List<QueueEvent> events = new ArrayList<>();
+                    List<FeedItem> updatedItems = new ArrayList<>();
                     for (int i = 0; i < itemIds.length; i++) {
                         if (!itemListContains(queue, itemIds[i])) {
                             final FeedItem item = DBReader.getFeedItem(itemIds[i]);
@@ -387,6 +389,8 @@ public class DBWriter {
                                     queue.add(item);
                                     events.add(QueueEvent.added(item, queue.size() - 1));
                                 }
+                                item.addTag(FeedItem.TAG_QUEUE);
+                                updatedItems.add(item);
                                 queueModified = true;
                                 if (item.isNew()) {
                                     markAsUnplayedIds.add(item.getId());
@@ -399,6 +403,7 @@ public class DBWriter {
                         for (QueueEvent event : events) {
                             EventBus.getDefault().post(event);
                         }
+                        EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
                         if (markAsUnplayedIds.size() > 0) {
                             DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
                         }
@@ -448,6 +453,7 @@ public class DBWriter {
                     adapter.setQueue(queue);
                     item.removeTag(FeedItem.TAG_QUEUE);
                     EventBus.getDefault().post(QueueEvent.removed(item));
+                    EventBus.getDefault().post(FeedItemEvent.updated(item));
                 } else {
                     Log.w(TAG, "Queue was not modified by call to removeQueueItem");
                 }
@@ -469,6 +475,7 @@ public class DBWriter {
             adapter.close();
             item.addTag(FeedItem.TAG_FAVORITE);
             EventBus.getDefault().post(FavoritesEvent.added(item));
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
         });
     }
 
@@ -484,6 +491,7 @@ public class DBWriter {
             adapter.close();
             item.addTag(FeedItem.TAG_FAVORITE);
             EventBus.getDefault().post(FavoritesEvent.added(item));
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
         });
     }
 
@@ -494,6 +502,7 @@ public class DBWriter {
             adapter.close();
             item.removeTag(FeedItem.TAG_FAVORITE);
             EventBus.getDefault().post(FavoritesEvent.removed(item));
+            EventBus.getDefault().post(FeedItemEvent.updated(item));
         });
     }
 

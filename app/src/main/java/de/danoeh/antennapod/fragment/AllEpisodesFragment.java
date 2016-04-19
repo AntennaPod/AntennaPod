@@ -70,10 +70,10 @@ public class AllEpisodesFragment extends Fragment {
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
     protected RecyclerView recyclerView;
-    private AllEpisodesRecycleAdapter listAdapter;
+    protected AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
 
-    private List<FeedItem> episodes;
+    protected List<FeedItem> episodes;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
@@ -378,33 +378,6 @@ public class AllEpisodesFragment extends Fragment {
             return item != null && item.isTagged(FeedItem.TAG_QUEUE);
         }
 
-        @Override
-        public LongList getQueueIds() {
-            LongList queueIds = new LongList();
-            if(episodes == null) {
-                return queueIds;
-            }
-            for(FeedItem item : episodes) {
-                if(item.isTagged(FeedItem.TAG_QUEUE)) {
-                    queueIds.add(item.getId());
-                }
-            }
-            return queueIds;
-        }
-
-        @Override
-        public LongList getFavoritesIds() {
-            LongList favoritesIds = new LongList();
-            if(episodes == null) {
-                return favoritesIds;
-            }
-            for(FeedItem item : episodes) {
-                if(item.isTagged(FeedItem.TAG_FAVORITE)) {
-                    favoritesIds.add(item.getId());
-                }
-            }
-            return favoritesIds;
-        }
     };
 
     public void onEventMainThread(FeedItemEvent event) {

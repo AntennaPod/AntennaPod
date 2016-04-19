@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.Menu;
@@ -21,7 +20,7 @@ import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -29,7 +28,6 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.LongList;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -44,7 +42,6 @@ public class PlaybackHistoryFragment extends ListFragment {
             EventDistributor.PLAYER_STATUS_UPDATE;
 
     private List<FeedItem> playbackHistory;
-    private LongList queue;
     private FeedItemlistAdapter adapter;
 
     private boolean itemsLoaded = false;
@@ -187,9 +184,18 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
-    public void onEvent(QueueEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        loadItems();
+    public void onEventMainThread(FeedItemEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if(playbackHistory == null) {
+            return;
+        }
+        for(FeedItem item : event.items) {
+            int pos = FeedItemUtil.indexOfItemWithId(playbackHistory, item.getId());
+            if(pos >= 0) {
+                loadItems();
+                return;
+            }
+        }
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -218,10 +224,6 @@ public class PlaybackHistoryFragment extends ListFragment {
     }
 
     private FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
-        @Override
-        public boolean isInQueue(FeedItem item) {
-            return (queue != null) && queue.contains(item.getId());
-        }
 
         @Override
         public int getItemDownloadProgressPercent(FeedItem item) {
@@ -260,8 +262,7 @@ public class PlaybackHistoryFragment extends ListFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {
-                        playbackHistory = result.first;
-                        queue = result.second;
+                        playbackHistory = result;
                         itemsLoaded = true;
                         if (viewsCreated) {
                             onFragmentLoaded();
@@ -272,11 +273,10 @@ public class PlaybackHistoryFragment extends ListFragment {
                 });
     }
 
-    private Pair<List<FeedItem>, LongList> loadData() {
+    private List<FeedItem> loadData() {
         List<FeedItem> history = DBReader.getPlaybackHistory();
-        LongList queue = DBReader.getQueueIDList();
         DBReader.loadAdditionalFeedItemListData(history);
-        return Pair.create(history, queue);
+        return history;
     }
 
 }
