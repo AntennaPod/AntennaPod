@@ -47,7 +47,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.cast.CastConsumer;
-import de.danoeh.antennapod.core.cast.CastConsumerImpl;
+import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -198,16 +198,16 @@ public class PlaybackService extends Service {
      */
     private volatile PlaybackServiceMediaPlayer.PSMPInfo infoBeforeCastDisconnection;
 
-    private boolean mWifiConnectivity = true;
-    private BroadcastReceiver mWifiBroadcastReceiver;
+    private boolean wifiConnectivity = true;
+    private BroadcastReceiver wifiBroadcastReceiver;
 
     private static final int NOTIFICATION_ID = 1;
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
 
-    private CastManager mCastMgr;
-    private MediaRouter mMediaRouter;
+    private CastManager castManager;
+    private MediaRouter mediaRouter;
     /**
      * Only used for Lollipop notifications.
      */
@@ -231,7 +231,6 @@ public class PlaybackService extends Service {
         return super.onUnbind(intent);
     }
 
-    //TODO review the general intent handling and how a casting activity can be introduced
     /**
      * Returns an intent which starts an audio- or videoplayer, depending on the
      * type of media that is being played. If the playbackservice is not
@@ -282,7 +281,7 @@ public class PlaybackService extends Service {
                 ACTION_RESUME_PLAY_CURRENT_EPISODE));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
-        mMediaRouter = MediaRouter.getInstance(getApplicationContext());
+        mediaRouter = MediaRouter.getInstance(getApplicationContext());
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(prefListener);
 
@@ -306,14 +305,14 @@ public class PlaybackService extends Service {
             npe.printStackTrace();
         }
 
-        mCastMgr = CastManager.getInstance();
-        mCastMgr.addCastConsumer(castConsumer);
-        isCasting = mCastMgr.isConnected();
+        castManager = CastManager.getInstance();
+        castManager.addCastConsumer(castConsumer);
+        isCasting = castManager.isConnected();
         if (isCasting) {
             if (UserPreferences.isCastEnabled()) {
                 onCastAppConnected(false);
             } else {
-                mCastMgr.disconnect();
+                castManager.disconnect();
             }
         } else {
             mediaPlayer = new LocalPSMP(this, mediaPlayerCallback);
@@ -344,7 +343,7 @@ public class PlaybackService extends Service {
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
         unregisterReceiver(pauseResumeCurrentEpisodeReceiver);
-        mCastMgr.removeCastConsumer(castConsumer);
+        castManager.removeCastConsumer(castConsumer);
         unregisterWifiBroadcastReceiver();
         mediaPlayer.shutdown();
         taskManager.shutdown();
@@ -387,7 +386,7 @@ public class PlaybackService extends Service {
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
                 //If the user asks to play External Media, the casting session, if on, should end.
                 if (playable instanceof ExternalMedia) {
-                    mCastMgr.disconnect();
+                    castManager.disconnect();
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
@@ -1485,6 +1484,57 @@ public class PlaybackService extends Service {
         }
     }
 
+    private CastConsumer castConsumer = new DefaultCastConsumer() {
+        @Override
+        public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
+            PlaybackService.this.onCastAppConnected(wasLaunched);
+        }
+
+        @Override
+        public void onDisconnectionReason(int reason) {
+            Log.d(TAG, "onDisconnectionReason() with code " + reason);
+            // This is our final chance to update the underlying stream position
+            // In onDisconnected(), the underlying CastPlayback#mVideoCastConsumer
+            // is disconnected and hence we update our local value of stream position
+            // to the latest position.
+            if (mediaPlayer != null) {
+                saveCurrentPosition(false, 0);
+                infoBeforeCastDisconnection = mediaPlayer.getPSMPInfo();
+                if (reason != BaseCastManager.DISCONNECT_REASON_EXPLICIT &&
+                        infoBeforeCastDisconnection.playerStatus == PlayerStatus.PLAYING) {
+                    // If it's NOT based on user action, we shouldn't automatically resume local playback
+                    infoBeforeCastDisconnection.playerStatus = PlayerStatus.PAUSED;
+                }
+            }
+        }
+
+        @Override
+        public void onDisconnected() {
+            Log.d(TAG, "onDisconnected()");
+            isCasting = false;
+            PlaybackServiceMediaPlayer.PSMPInfo info = infoBeforeCastDisconnection;
+            infoBeforeCastDisconnection = null;
+            if (info == null && mediaPlayer != null) {
+                info = mediaPlayer.getPSMPInfo();
+            }
+            if (info == null) {
+                info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null);
+            }
+            switchMediaPlayer(new LocalPSMP(PlaybackService.this, mediaPlayerCallback),
+                    info, false);
+            if (info.playable != null) {
+                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
+                        info.playable.getMediaType() == MediaType.AUDIO ? EXTRA_CODE_AUDIO : EXTRA_CODE_VIDEO);
+            } else {
+                Log.d(TAG, "Cast session disconnected, but no current media");
+                sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
+            }
+            // hardware volume buttons control the local device volume
+            mediaRouter.setMediaSessionCompat(null);
+            unregisterWifiBroadcastReceiver();
+        }
+    };
+
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
 
         private static final String TAG = "MediaSessionCompat";
@@ -1570,56 +1620,6 @@ public class PlaybackService extends Service {
         }
     };
 
-    private CastConsumer castConsumer = new CastConsumerImpl() {
-        @Override
-        public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
-            PlaybackService.this.onCastAppConnected(wasLaunched);
-        }
-
-        @Override
-        public void onDisconnectionReason(int reason) {
-            Log.d(TAG, "onDisconnectionReason() with code " + reason);
-            // This is our final chance to update the underlying stream position
-            // In onDisconnected(), the underlying CastPlayback#mVideoCastConsumer
-            // is disconnected and hence we update our local value of stream position
-            // to the latest position.
-            if (mediaPlayer != null) {
-                saveCurrentPosition(false, 0);
-                infoBeforeCastDisconnection = mediaPlayer.getPSMPInfo();
-                if (reason != BaseCastManager.DISCONNECT_REASON_EXPLICIT &&
-                        infoBeforeCastDisconnection.playerStatus == PlayerStatus.PLAYING) {
-                    // If it's NOT based on user action, we shouldn't automatically resume local playback
-                    infoBeforeCastDisconnection.playerStatus = PlayerStatus.PAUSED;
-                }
-            }
-        }
-
-        @Override
-        public void onDisconnected() {
-            Log.d(TAG, "onDisconnected()");
-            isCasting = false;
-            PlaybackServiceMediaPlayer.PSMPInfo info = infoBeforeCastDisconnection;
-            infoBeforeCastDisconnection = null;
-            if (info == null && mediaPlayer != null) {
-                info = mediaPlayer.getPSMPInfo();
-            }
-            if (info == null) {
-                info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null);
-            }
-            switchMediaPlayer(new LocalPSMP(PlaybackService.this, mediaPlayerCallback),
-                    info, false);
-            if (info.playable != null) {
-                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-                        info.playable.getMediaType() == MediaType.AUDIO ? EXTRA_CODE_AUDIO : EXTRA_CODE_VIDEO);
-            } else {
-                Log.d(TAG, "Cast session disconnected, but no current media");
-                sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
-            }
-            mMediaRouter.setMediaSessionCompat(null);
-            unregisterWifiBroadcastReceiver();
-        }
-    };
-
     private void onCastAppConnected(boolean wasLaunched) {
         Log.d(TAG, "A cast device application was " + (wasLaunched ? "launched" : "joined"));
         isCasting = true;
@@ -1638,7 +1638,7 @@ public class PlaybackService extends Service {
                 wasLaunched);
         sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, EXTRA_CODE_CAST);
         // hardware volume buttons control the remote device volume
-        mMediaRouter.setMediaSessionCompat(mediaSession);
+        mediaRouter.setMediaSessionCompat(mediaSession);
         registerWifiBroadcastReceiver();
     }
 
@@ -1668,34 +1668,34 @@ public class PlaybackService extends Service {
     }
 
     private void registerWifiBroadcastReceiver() {
-        if (mWifiBroadcastReceiver != null) {
+        if (wifiBroadcastReceiver != null) {
             return;
         }
-        mWifiBroadcastReceiver = new BroadcastReceiver() {
+        wifiBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
                     NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
                     boolean isConnected = info.isConnected();
                     //apparently this method gets called twice when a change happens, but one run is enough.
-                    if (isConnected && !mWifiConnectivity) {
-                        mWifiConnectivity = true;
-                        mCastMgr.startCastDiscovery();
-                        mCastMgr.reconnectSessionIfPossible(RECONNECTION_ATTEMPT_PERIOD_S, NetworkUtils.getWifiSsid());
+                    if (isConnected && !wifiConnectivity) {
+                        wifiConnectivity = true;
+                        castManager.startCastDiscovery();
+                        castManager.reconnectSessionIfPossible(RECONNECTION_ATTEMPT_PERIOD_S, NetworkUtils.getWifiSsid());
                     } else {
-                        mWifiConnectivity = isConnected;
+                        wifiConnectivity = isConnected;
                     }
                 }
             }
         };
-        registerReceiver(mWifiBroadcastReceiver,
+        registerReceiver(wifiBroadcastReceiver,
                 new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION));
     }
 
     private void unregisterWifiBroadcastReceiver() {
-        if (mWifiBroadcastReceiver != null) {
-            unregisterReceiver(mWifiBroadcastReceiver);
-            mWifiBroadcastReceiver = null;
+        if (wifiBroadcastReceiver != null) {
+            unregisterReceiver(wifiBroadcastReceiver);
+            wifiBroadcastReceiver = null;
         }
     }
 
@@ -1703,9 +1703,9 @@ public class PlaybackService extends Service {
             (sharedPreferences, key) -> {
                 if (UserPreferences.PREF_CAST_ENABLED.equals(key)) {
                     if (!UserPreferences.isCastEnabled()) {
-                        if (mCastMgr.isConnecting() || mCastMgr.isConnected()) {
+                        if (castManager.isConnecting() || castManager.isConnected()) {
                             Log.d(TAG, "Disconnecting cast device due to a change in user preferences");
-                            mCastMgr.disconnect();
+                            castManager.disconnect();
                         }
                     }
                 } else if (UserPreferences.PREF_LOCKSCREEN_BACKGROUND.equals(key)) {

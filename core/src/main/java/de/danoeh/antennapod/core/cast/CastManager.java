@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
+ * ------------------------------------------------------------------------
  *
- * TODO altered by Domingos Lopes
+ * Changes made by Domingos Lopes <domingos86lopes@gmail.com>
+ *
+ * original can be found at http://www.github.com/googlecast/CastCompanionLibrary-android
  */
 
 package de.danoeh.antennapod.core.cast;
@@ -76,7 +79,7 @@ import static com.google.android.gms.cast.RemoteMediaPlayer.RESUME_STATE_UNCHANG
  * (see {@link CastConsumer}).
  * Since the number of these callbacks is usually much larger than what a single application might
  * be interested in, there is a no-op implementation of this interface (see
- * {@link CastConsumerImpl}) that applications can subclass to override only those methods that
+ * {@link DefaultCastConsumer}) that applications can subclass to override only those methods that
  * they are interested in. Since this library depends on the cast functionalities provided by the
  * Google Play services, the library checks to ensure that the right version of that service is
  * installed. It also provides a simple static method {@code checkGooglePlayServices()} that clients
@@ -92,17 +95,17 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
 
     public static final double DEFAULT_VOLUME_STEP = 0.05;
     public static final long DEFAULT_LIVE_STREAM_DURATION_MS = TimeUnit.HOURS.toMillis(2);
-    private double mVolumeStep = DEFAULT_VOLUME_STEP;
-    private MediaQueue mMediaQueue;
-    private MediaStatus mMediaStatus;
+    private double volumeStep = DEFAULT_VOLUME_STEP;
+    private MediaQueue mediaQueue;
+    private MediaStatus mediaStatus;
 
     private static CastManager INSTANCE;
-    private RemoteMediaPlayer mRemoteMediaPlayer;
-    private int mState = MediaStatus.PLAYER_STATE_IDLE;
-    private int mIdleReason;
-    private final Set<CastConsumer> mCastConsumers = new CopyOnWriteArraySet<>();
-    private long mLiveStreamDuration = DEFAULT_LIVE_STREAM_DURATION_MS;
-    private MediaQueueItem mPreLoadingItem;
+    private RemoteMediaPlayer remoteMediaPlayer;
+    private int state = MediaStatus.PLAYER_STATE_IDLE;
+    private int idleReason;
+    private final Set<CastConsumer> castConsumers = new CopyOnWriteArraySet<>();
+    private long liveStreamDuration = DEFAULT_LIVE_STREAM_DURATION_MS;
+    private MediaQueueItem preLoadingItem;
 
     public static final int QUEUE_OPERATION_LOAD = 1;
     public static final int QUEUE_OPERATION_INSERT_ITEMS = 2;
@@ -163,7 +166,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      * those methods directly after obtaining an instance of the active {@link RemoteMediaPlayer}.
      */
     public final RemoteMediaPlayer getRemoteMediaPlayer() {
-        return mRemoteMediaPlayer;
+        return remoteMediaPlayer;
     }
 
     /**
@@ -180,10 +183,10 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     }
 
     /*
-     * A simple check to make sure mRemoteMediaPlayer is not null
+     * A simple check to make sure remoteMediaPlayer is not null
      */
     private void checkRemoteMediaPlayerAvailable() throws NoConnectionException {
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             throw new NoConnectionException();
         }
     }
@@ -199,9 +202,9 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     public String getRemoteMediaUrl() throws TransientNetworkDisconnectionException,
             NoConnectionException {
         checkConnectivity();
-        if (mRemoteMediaPlayer != null && mRemoteMediaPlayer.getMediaInfo() != null) {
-            MediaInfo info = mRemoteMediaPlayer.getMediaInfo();
-            mRemoteMediaPlayer.getMediaStatus().getPlayerState();
+        if (remoteMediaPlayer != null && remoteMediaPlayer.getMediaInfo() != null) {
+            MediaInfo info = remoteMediaPlayer.getMediaInfo();
+            remoteMediaPlayer.getMediaStatus().getPlayerState();
             return info.getContentId();
         }
         throw new NoConnectionException();
@@ -216,8 +219,8 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     public boolean isRemoteMediaPlaying() throws TransientNetworkDisconnectionException,
             NoConnectionException {
         checkConnectivity();
-        return mState == MediaStatus.PLAYER_STATE_BUFFERING
-                || mState == MediaStatus.PLAYER_STATE_PLAYING;
+        return state == MediaStatus.PLAYER_STATE_BUFFERING
+                || state == MediaStatus.PLAYER_STATE_PLAYING;
     }
 
     /**
@@ -229,7 +232,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     public boolean isRemoteMediaPaused() throws TransientNetworkDisconnectionException,
             NoConnectionException {
         checkConnectivity();
-        return mState == MediaStatus.PLAYER_STATE_PAUSED;
+        return state == MediaStatus.PLAYER_STATE_PAUSED;
     }
 
     /**
@@ -256,7 +259,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             NoConnectionException {
         checkConnectivity();
         checkRemoteMediaPlayerAvailable();
-        return mRemoteMediaPlayer.getMediaInfo();
+        return remoteMediaPlayer.getMediaInfo();
     }
 
     /**
@@ -269,7 +272,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     public double getStreamVolume() throws TransientNetworkDisconnectionException, NoConnectionException {
         checkConnectivity();
         checkRemoteMediaPlayerAvailable();
-        return mRemoteMediaPlayer.getMediaStatus().getStreamVolume();
+        return remoteMediaPlayer.getMediaStatus().getStreamVolume();
     }
 
     /**
@@ -313,7 +316,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     public boolean isStreamMute() throws TransientNetworkDisconnectionException, NoConnectionException {
         checkConnectivity();
         checkRemoteMediaPlayerAvailable();
-        return mRemoteMediaPlayer.getMediaStatus().isMute();
+        return remoteMediaPlayer.getMediaStatus().isMute();
     }
 
     /**
@@ -337,7 +340,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             NoConnectionException {
         checkConnectivity();
         checkRemoteMediaPlayerAvailable();
-        mRemoteMediaPlayer.setStreamMute(mApiClient, mute);
+        remoteMediaPlayer.setStreamMute(mApiClient, mute);
     }
 
     /**
@@ -350,7 +353,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             NoConnectionException {
         checkConnectivity();
         checkRemoteMediaPlayerAvailable();
-        return mRemoteMediaPlayer.getStreamDuration();
+        return remoteMediaPlayer.getStreamDuration();
     }
 
     /**
@@ -363,11 +366,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     public long getMediaTimeRemaining()
             throws TransientNetworkDisconnectionException, NoConnectionException {
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             return -1;
         }
-        return isRemoteStreamLive() ? mLiveStreamDuration : mRemoteMediaPlayer.getStreamDuration()
-                - mRemoteMediaPlayer.getApproximateStreamPosition();
+        return isRemoteStreamLive() ? liveStreamDuration : remoteMediaPlayer.getStreamDuration()
+                - remoteMediaPlayer.getApproximateStreamPosition();
     }
 
     /**
@@ -380,13 +383,13 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             NoConnectionException {
         checkConnectivity();
         checkRemoteMediaPlayerAvailable();
-        return mRemoteMediaPlayer.getApproximateStreamPosition();
+        return remoteMediaPlayer.getApproximateStreamPosition();
     }
 
     private void onApplicationDisconnected(int errorCode) {
         Log.d(TAG, "onApplicationDisconnected() reached with error code: " + errorCode);
         mApplicationErrorCode = errorCode;
-        for (CastConsumer consumer : mCastConsumers) {
+        for (CastConsumer consumer : castConsumers) {
             consumer.onApplicationDisconnected(errorCode);
         }
         if (mMediaRouter != null) {
@@ -408,7 +411,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         try {
             String appStatus = Cast.CastApi.getApplicationStatus(mApiClient);
             Log.d(TAG, "onApplicationStatusChanged() reached: " + appStatus);
-            for (CastConsumer consumer : mCastConsumers) {
+            for (CastConsumer consumer : castConsumers) {
                 consumer.onApplicationStatusChanged(appStatus);
             }
         } catch (IllegalStateException e) {
@@ -422,7 +425,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         try {
             volume = getDeviceVolume();
             boolean isMute = isDeviceMute();
-            for (CastConsumer consumer : mCastConsumers) {
+            for (CastConsumer consumer : castConsumers) {
                 consumer.onVolumeChanged(volume, isMute);
             }
         } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
@@ -437,7 +440,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         try {
             volume = getStreamVolume();
             boolean isMute = isStreamMute();
-            for (CastConsumer consumer : mCastConsumers) {
+            for (CastConsumer consumer : castConsumers) {
                 consumer.onStreamVolumeChanged(volume, isMute);
             }
         } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
@@ -474,13 +477,13 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             mSessionId = sessionId;
             // saving device for future retrieval; we only save the last session info
             mPreferenceAccessor.saveStringToPreference(PREFS_KEY_SESSION_ID, mSessionId);
-            mRemoteMediaPlayer.requestStatus(mApiClient).setResultCallback(result -> {
+            remoteMediaPlayer.requestStatus(mApiClient).setResultCallback(result -> {
                 if (!result.getStatus().isSuccess()) {
                     onFailed(R.string.cast_failed_status_request,
                             result.getStatus().getStatusCode());
                 }
             });
-            for (CastConsumer consumer : mCastConsumers) {
+            for (CastConsumer consumer : castConsumers) {
                 consumer.onApplicationConnected(appMetadata, mSessionId, wasLaunched);
             }
         } catch (TransientNetworkDisconnectionException e) {
@@ -510,7 +513,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      */
     @Override
     public void onApplicationStopFailed(int errorCode) {
-        for (CastConsumer consumer : mCastConsumers) {
+        for (CastConsumer consumer : castConsumers) {
             consumer.onApplicationStopFailed(errorCode);
         }
     }
@@ -527,7 +530,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
                 onDeviceSelected(null /* CastDevice */, null /* RouteInfo */);
             }
         } else {
-            for (CastConsumer consumer : mCastConsumers) {
+            for (CastConsumer consumer : castConsumers) {
                 consumer.onApplicationConnectionFailed(errorCode);
             }
             onDeviceSelected(null /* CastDevice */, null /* RouteInfo */);
@@ -590,14 +593,14 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (media == null) {
             return;
         }
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to load a video with no active media session");
             throw new NoConnectionException();
         }
 
-        mRemoteMediaPlayer.load(mApiClient, media, autoPlay, position, activeTracks, customData)
+        remoteMediaPlayer.load(mApiClient, media, autoPlay, position, activeTracks, customData)
                 .setResultCallback(result -> {
-                    for (CastConsumer consumer : mCastConsumers) {
+                    for (CastConsumer consumer : castConsumers) {
                         consumer.onMediaLoadResult(result.getStatus().getStatusCode());
                     }
                 });
@@ -637,14 +640,14 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (items == null || items.length == 0) {
             return;
         }
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to queue one or more videos with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueLoad(mApiClient, items, startIndex, repeatMode, customData)
                 .setResultCallback(result -> {
-                    for (CastConsumer consumer : mCastConsumers) {
+                    for (CastConsumer consumer : castConsumers) {
                         consumer.onMediaQueueOperationResult(QUEUE_OPERATION_LOAD,
                                 result.getStatus().getStatusCode());
                     }
@@ -676,15 +679,15 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (itemsToInsert == null || itemsToInsert.length == 0) {
             throw new IllegalArgumentException("items cannot be empty or null");
         }
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to insert into queue with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueInsertItems(mApiClient, itemsToInsert, insertBeforeItemId, customData)
                 .setResultCallback(
                         result -> {
-                            for (CastConsumer consumer : mCastConsumers) {
+                            for (CastConsumer consumer : castConsumers) {
                                 consumer.onMediaQueueOperationResult(
                                         QUEUE_OPERATION_INSERT_ITEMS,
                                         result.getStatus().getStatusCode());
@@ -709,16 +712,16 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     public void queueUpdateItems(final MediaQueueItem[] itemsToUpdate, final JSONObject customData)
             throws TransientNetworkDisconnectionException, NoConnectionException {
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to update the queue with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueUpdateItems(mApiClient, itemsToUpdate, customData).setResultCallback(
                 result -> {
                     Log.d(TAG, "queueUpdateItems() " + result.getStatus() + result.getStatus()
                             .isSuccess());
-                    for (CastConsumer consumer : mCastConsumers) {
+                    for (CastConsumer consumer : castConsumers) {
                         consumer.onMediaQueueOperationResult(QUEUE_OPERATION_UPDATE_ITEMS,
                                 result.getStatus().getStatusCode());
                     }
@@ -745,14 +748,14 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (itemId == MediaQueueItem.INVALID_ITEM_ID) {
             throw new IllegalArgumentException("itemId is not valid");
         }
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to jump in a queue with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueJumpToItem(mApiClient, itemId, customData).setResultCallback(
                 result -> {
-                    for (CastConsumer consumer : mCastConsumers) {
+                    for (CastConsumer consumer : castConsumers) {
                         consumer.onMediaQueueOperationResult(QUEUE_OPERATION_JUMP,
                                 result.getStatus().getStatusCode());
                     }
@@ -779,14 +782,14 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (itemIdsToRemove == null || itemIdsToRemove.length == 0) {
             throw new IllegalArgumentException("itemIds cannot be empty or null");
         }
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to remove items from queue with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueRemoveItems(mApiClient, itemIdsToRemove, customData).setResultCallback(
                 result -> {
-                    for (CastConsumer consumer : mCastConsumers) {
+                    for (CastConsumer consumer : castConsumers) {
                         consumer.onMediaQueueOperationResult(QUEUE_OPERATION_REMOVE_ITEMS,
                                 result.getStatus().getStatusCode());
                     }
@@ -815,14 +818,14 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (itemId == MediaQueueItem.INVALID_ITEM_ID) {
             throw new IllegalArgumentException("itemId is invalid");
         }
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to remove an item from queue with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueRemoveItem(mApiClient, itemId, customData).setResultCallback(
                 result -> {
-                    for (CastConsumer consumer : mCastConsumers) {
+                    for (CastConsumer consumer : castConsumers) {
                         consumer.onMediaQueueOperationResult(QUEUE_OPERATION_REMOVE_ITEM,
                                 result.getStatus().getStatusCode());
                     }
@@ -874,15 +877,15 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (itemIdsToReorder == null || itemIdsToReorder.length == 0) {
             throw new IllegalArgumentException("itemIdsToReorder cannot be empty or null");
         }
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to reorder items in a queue with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueReorderItems(mApiClient, itemIdsToReorder, insertBeforeItemId, customData)
                 .setResultCallback(
                         result -> {
-                            for (CastConsumer consumer : mCastConsumers) {
+                            for (CastConsumer consumer : castConsumers) {
                                 consumer.onMediaQueueOperationResult(QUEUE_OPERATION_REORDER,
                                         result.getStatus().getStatusCode());
                             }
@@ -910,15 +913,15 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             throws TransientNetworkDisconnectionException, NoConnectionException {
         Log.d(TAG, "queueMoveItemToNewIndex");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to mote item to new index with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueMoveItemToNewIndex(mApiClient, itemId, newIndex, customData)
                 .setResultCallback(
                         result -> {
-                            for (CastConsumer consumer : mCastConsumers) {
+                            for (CastConsumer consumer : castConsumers) {
                                 consumer.onMediaQueueOperationResult(QUEUE_OPERATION_MOVE,
                                         result.getStatus().getStatusCode());
                             }
@@ -938,15 +941,15 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             throws TransientNetworkDisconnectionException, NoConnectionException {
         Log.d(TAG, "queueAppendItem");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to append item with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueAppendItem(mApiClient, item, customData)
                 .setResultCallback(
                         result -> {
-                            for (CastConsumer consumer : mCastConsumers) {
+                            for (CastConsumer consumer : castConsumers) {
                                 consumer.onMediaQueueOperationResult(QUEUE_OPERATION_APPEND,
                                         result.getStatus().getStatusCode());
                             }
@@ -965,14 +968,14 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             throws TransientNetworkDisconnectionException, NoConnectionException {
         Log.d(TAG, "queueNext");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to update the queue with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueNext(mApiClient, customData).setResultCallback(
                 result -> {
-                    for (CastConsumer consumer : mCastConsumers) {
+                    for (CastConsumer consumer : castConsumers) {
                         consumer.onMediaQueueOperationResult(QUEUE_OPERATION_NEXT,
                                 result.getStatus().getStatusCode());
                     }
@@ -991,14 +994,14 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             throws TransientNetworkDisconnectionException, NoConnectionException {
         Log.d(TAG, "queuePrev");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to update the queue with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queuePrev(mApiClient, customData).setResultCallback(
                 result -> {
-                    for (CastConsumer consumer : mCastConsumers) {
+                    for (CastConsumer consumer : castConsumers) {
                         consumer.onMediaQueueOperationResult(QUEUE_OPERATION_PREV,
                                 result.getStatus().getStatusCode());
                     }
@@ -1023,7 +1026,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             throws TransientNetworkDisconnectionException, NoConnectionException {
         Log.d(TAG, "queueInsertBeforeCurrentAndPlay");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to insert into queue with no active media session");
             throw new NoConnectionException();
         }
@@ -1031,7 +1034,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             throw new IllegalArgumentException(
                     "item cannot be empty or insertBeforeItemId cannot be invalid");
         }
-        mRemoteMediaPlayer.queueInsertItems(mApiClient, new MediaQueueItem[]{item},
+        remoteMediaPlayer.queueInsertItems(mApiClient, new MediaQueueItem[]{item},
                 insertBeforeItemId, customData).setResultCallback(
                 result -> {
                     if (result.getStatus().isSuccess()) {
@@ -1043,7 +1046,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
                             Log.e(TAG, "queuePrev() Failed to skip to previous", e);
                         }
                     }
-                    for (CastConsumer consumer : mCastConsumers) {
+                    for (CastConsumer consumer : castConsumers) {
                         consumer.onMediaQueueOperationResult(QUEUE_OPERATION_INSERT_ITEMS,
                                 result.getStatus().getStatusCode());
                     }
@@ -1063,17 +1066,17 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             throws TransientNetworkDisconnectionException, NoConnectionException {
         Log.d(TAG, "queueSetRepeatMode");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to update the queue with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer
+        remoteMediaPlayer
                 .queueSetRepeatMode(mApiClient, repeatMode, customData).setResultCallback(
                 result -> {
                     if (!result.getStatus().isSuccess()) {
                         Log.d(TAG, "Failed with status: " + result.getStatus());
                     }
-                    for (CastConsumer consumer : mCastConsumers) {
+                    for (CastConsumer consumer : castConsumers) {
                         consumer.onMediaQueueOperationResult(QUEUE_OPERATION_SET_REPEAT,
                                 result.getStatus().getStatusCode());
                     }
@@ -1091,7 +1094,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             NoConnectionException {
         checkConnectivity();
         Log.d(TAG, "attempting to play media at position " + position + " seconds");
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to play a video with no active media session");
             throw new NoConnectionException();
         }
@@ -1109,11 +1112,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             TransientNetworkDisconnectionException, NoConnectionException {
         Log.d(TAG, "play(customData)");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to play a video with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer.play(mApiClient, customData)
+        remoteMediaPlayer.play(mApiClient, customData)
                 .setResultCallback(result -> {
                     if (!result.getStatus().isSuccess()) {
                         onFailed(R.string.cast_failed_to_play,
@@ -1145,11 +1148,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             TransientNetworkDisconnectionException, NoConnectionException {
         Log.d(TAG, "stop()");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to stop a stream with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer.stop(mApiClient, customData).setResultCallback(
+        remoteMediaPlayer.stop(mApiClient, customData).setResultCallback(
                 result -> {
                     if (!result.getStatus().isSuccess()) {
                         onFailed(R.string.cast_failed_to_stop,
@@ -1194,11 +1197,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             TransientNetworkDisconnectionException, NoConnectionException {
         Log.d(TAG, "attempting to pause media");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to pause a video with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer.pause(mApiClient, customData)
+        remoteMediaPlayer.pause(mApiClient, customData)
                 .setResultCallback(result -> {
                     if (!result.getStatus().isSuccess()) {
                         onFailed(R.string.cast_failed_to_pause,
@@ -1219,11 +1222,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             NoConnectionException {
         Log.d(TAG, "attempting to seek media");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to seek a video with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer.seek(mApiClient,
+        remoteMediaPlayer.seek(mApiClient,
                 position,
                 RESUME_STATE_UNCHANGED).
                 setResultCallback(result -> {
@@ -1245,11 +1248,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             NoConnectionException {
         Log.d(TAG, "forward(): attempting to forward media by " + lengthInMillis);
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to seek a video with no active media session");
             throw new NoConnectionException();
         }
-        long position = mRemoteMediaPlayer.getApproximateStreamPosition() + lengthInMillis;
+        long position = remoteMediaPlayer.getApproximateStreamPosition() + lengthInMillis;
         seek((int) position);
     }
 
@@ -1264,11 +1267,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             NoConnectionException {
         Log.d(TAG, "attempting to seek media");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
+        if (remoteMediaPlayer == null) {
             Log.e(TAG, "Trying to seekAndPlay a video with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer.seek(mApiClient, position, RESUME_STATE_PLAY)
+        remoteMediaPlayer.seek(mApiClient, position, RESUME_STATE_PLAY)
                 .setResultCallback(result -> {
                     if (!result.getStatus().isSuccess()) {
                         onFailed(R.string.cast_failed_seek, result.getStatus().getStatusCode());
@@ -1290,8 +1293,8 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (isPlaying) {
             pause();
         } else {
-            if (mState == MediaStatus.PLAYER_STATE_IDLE
-                    && mIdleReason == MediaStatus.IDLE_REASON_FINISHED) {
+            if (state == MediaStatus.PLAYER_STATE_IDLE
+                    && idleReason == MediaStatus.IDLE_REASON_FINISHED) {
                 loadMedia(getRemoteMediaInformation(), true, 0);
             } else {
                 play();
@@ -1303,17 +1306,17 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             NoConnectionException {
         Log.d(TAG, "attachMediaChannel()");
         checkConnectivity();
-        if (mRemoteMediaPlayer == null) {
-            mRemoteMediaPlayer = new RemoteMediaPlayer();
+        if (remoteMediaPlayer == null) {
+            remoteMediaPlayer = new RemoteMediaPlayer();
 
-            mRemoteMediaPlayer.setOnStatusUpdatedListener(
+            remoteMediaPlayer.setOnStatusUpdatedListener(
                     () -> {
                         Log.d(TAG, "RemoteMediaPlayer::onStatusUpdated() is reached");
                         CastManager.this.onRemoteMediaPlayerStatusUpdated();
                     }
             );
 
-            mRemoteMediaPlayer.setOnPreloadStatusUpdatedListener(
+            remoteMediaPlayer.setOnPreloadStatusUpdatedListener(
                     () -> {
                         Log.d(TAG,
                                 "RemoteMediaPlayer::onPreloadStatusUpdated() is "
@@ -1322,27 +1325,27 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
                     });
 
 
-            mRemoteMediaPlayer.setOnMetadataUpdatedListener(
+            remoteMediaPlayer.setOnMetadataUpdatedListener(
                     () -> {
                         Log.d(TAG, "RemoteMediaPlayer::onMetadataUpdated() is reached");
                         CastManager.this.onRemoteMediaPlayerMetadataUpdated();
                     }
             );
 
-            mRemoteMediaPlayer.setOnQueueStatusUpdatedListener(
+            remoteMediaPlayer.setOnQueueStatusUpdatedListener(
                     () -> {
                         Log.d(TAG,
                                 "RemoteMediaPlayer::onQueueStatusUpdated() is "
                                         + "reached");
-                        mMediaStatus = mRemoteMediaPlayer.getMediaStatus();
-                        if (mMediaStatus != null
-                                && mMediaStatus.getQueueItems() != null) {
-                            List<MediaQueueItem> queueItems = mMediaStatus
+                        mediaStatus = remoteMediaPlayer.getMediaStatus();
+                        if (mediaStatus != null
+                                && mediaStatus.getQueueItems() != null) {
+                            List<MediaQueueItem> queueItems = mediaStatus
                                     .getQueueItems();
-                            int itemId = mMediaStatus.getCurrentItemId();
-                            MediaQueueItem item = mMediaStatus
+                            int itemId = mediaStatus.getCurrentItemId();
+                            MediaQueueItem item = mediaStatus
                                     .getQueueItemById(itemId);
-                            int repeatMode = mMediaStatus.getQueueRepeatMode();
+                            int repeatMode = mediaStatus.getQueueRepeatMode();
                             onQueueUpdated(queueItems, item, repeatMode, false);
                         } else {
                             onQueueUpdated(null, null,
@@ -1353,19 +1356,19 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         }
         try {
             Log.d(TAG, "Registering MediaChannel namespace");
-            Cast.CastApi.setMessageReceivedCallbacks(mApiClient, mRemoteMediaPlayer.getNamespace(),
-                    mRemoteMediaPlayer);
+            Cast.CastApi.setMessageReceivedCallbacks(mApiClient, remoteMediaPlayer.getNamespace(),
+                    remoteMediaPlayer);
         } catch (IOException | IllegalStateException e) {
             Log.e(TAG, "attachMediaChannel()", e);
         }
     }
 
     private void reattachMediaChannel() {
-        if (mRemoteMediaPlayer != null && mApiClient != null) {
+        if (remoteMediaPlayer != null && mApiClient != null) {
             try {
                 Log.d(TAG, "Registering MediaChannel namespace");
                 Cast.CastApi.setMessageReceivedCallbacks(mApiClient,
-                        mRemoteMediaPlayer.getNamespace(), mRemoteMediaPlayer);
+                        remoteMediaPlayer.getNamespace(), remoteMediaPlayer);
             } catch (IOException | IllegalStateException e) {
                 Log.e(TAG, "reattachMediaChannel()", e);
             }
@@ -1374,14 +1377,14 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
 
     private void detachMediaChannel() {
         Log.d(TAG, "trying to detach media channel");
-        if (mRemoteMediaPlayer != null) {
+        if (remoteMediaPlayer != null) {
             try {
                 Cast.CastApi.removeMessageReceivedCallbacks(mApiClient,
-                        mRemoteMediaPlayer.getNamespace());
+                        remoteMediaPlayer.getNamespace());
             } catch (IOException | IllegalStateException e) {
                 Log.e(TAG, "detachMediaChannel()", e);
             }
-            mRemoteMediaPlayer = null;
+            remoteMediaPlayer = null;
         }
     }
 
@@ -1398,7 +1401,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      * </ul>
      */
     public int getPlaybackStatus() {
-        return mState;
+        return state;
     }
 
     /**
@@ -1406,7 +1409,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      * whenever the onStatusUpdated callback is called.
      */
     public final MediaStatus getMediaStatus() {
-        return mMediaStatus;
+        return mediaStatus;
     }
 
     /**
@@ -1424,11 +1427,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      * </ul>
      */
     public int getIdleReason() {
-        return mIdleReason;
+        return idleReason;
     }
 
     private void onMessageSendFailed(int errorCode) {
-        for (CastConsumer consumer : mCastConsumers) {
+        for (CastConsumer consumer : castConsumers) {
             consumer.onDataMessageSendFailed(errorCode);
         }
     }
@@ -1438,48 +1441,48 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      */
     private void onRemoteMediaPlayerStatusUpdated() {
         Log.d(TAG, "onRemoteMediaPlayerStatusUpdated() reached");
-        if (mApiClient == null || mRemoteMediaPlayer == null
-                || mRemoteMediaPlayer.getMediaStatus() == null) {
-            Log.d(TAG, "mApiClient or mRemoteMediaPlayer is null, so will not proceed");
+        if (mApiClient == null || remoteMediaPlayer == null
+                || remoteMediaPlayer.getMediaStatus() == null) {
+            Log.d(TAG, "mApiClient or remoteMediaPlayer is null, so will not proceed");
             return;
         }
-        mMediaStatus = mRemoteMediaPlayer.getMediaStatus();
-        List<MediaQueueItem> queueItems = mMediaStatus.getQueueItems();
+        mediaStatus = remoteMediaPlayer.getMediaStatus();
+        List<MediaQueueItem> queueItems = mediaStatus.getQueueItems();
         if (queueItems != null) {
-            int itemId = mMediaStatus.getCurrentItemId();
-            MediaQueueItem item = mMediaStatus.getQueueItemById(itemId);
-            int repeatMode = mMediaStatus.getQueueRepeatMode();
+            int itemId = mediaStatus.getCurrentItemId();
+            MediaQueueItem item = mediaStatus.getQueueItemById(itemId);
+            int repeatMode = mediaStatus.getQueueRepeatMode();
             onQueueUpdated(queueItems, item, repeatMode, false);
         } else {
             onQueueUpdated(null, null, MediaStatus.REPEAT_MODE_REPEAT_OFF, false);
         }
-        mState = mMediaStatus.getPlayerState();
-        mIdleReason = mMediaStatus.getIdleReason();
+        state = mediaStatus.getPlayerState();
+        idleReason = mediaStatus.getIdleReason();
 
         try {
             double volume = getStreamVolume();
             boolean isMute = isStreamMute();
-            if (mState == MediaStatus.PLAYER_STATE_PLAYING) {
+            if (state == MediaStatus.PLAYER_STATE_PLAYING) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = playing");
                 long mediaDurationLeft = getMediaTimeRemaining();
                 //startReconnectionService(mediaDurationLeft);
-            } else if (mState == MediaStatus.PLAYER_STATE_PAUSED) {
+            } else if (state == MediaStatus.PLAYER_STATE_PAUSED) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = paused");
-            } else if (mState == MediaStatus.PLAYER_STATE_IDLE) {
+            } else if (state == MediaStatus.PLAYER_STATE_IDLE) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = IDLE with reason: "
-                        + mIdleReason );
-                if (mIdleReason == MediaStatus.IDLE_REASON_ERROR) {
+                        + idleReason);
+                if (idleReason == MediaStatus.IDLE_REASON_ERROR) {
                     // something bad happened on the cast device
                     Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): IDLE reason = ERROR");
                     onFailed(R.string.cast_failed_receiver_player_error, NO_STATUS_CODE);
                 }
                 //stopReconnectionService();
-            } else if (mState == MediaStatus.PLAYER_STATE_BUFFERING) {
+            } else if (state == MediaStatus.PLAYER_STATE_BUFFERING) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = buffering");
             } else {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = unknown");
             }
-            for (CastConsumer consumer : mCastConsumers) {
+            for (CastConsumer consumer : castConsumers) {
                 consumer.onRemoteMediaPlayerStatusUpdated();
                 consumer.onStreamVolumeChanged(volume, isMute);
             }
@@ -1491,19 +1494,19 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
 
     private void onRemoteMediaPreloadStatusUpdated() {
         MediaQueueItem item = null;
-        mMediaStatus = mRemoteMediaPlayer.getMediaStatus();
-        if (mMediaStatus != null) {
-            item = mMediaStatus.getQueueItemById(mMediaStatus.getPreloadedItemId());
+        mediaStatus = remoteMediaPlayer.getMediaStatus();
+        if (mediaStatus != null) {
+            item = mediaStatus.getQueueItemById(mediaStatus.getPreloadedItemId());
         }
-        mPreLoadingItem = item;
+        preLoadingItem = item;
         Log.d(TAG, "onRemoteMediaPreloadStatusUpdated() " + item);
-        for (CastConsumer consumer : mCastConsumers) {
+        for (CastConsumer consumer : castConsumers) {
             consumer.onRemoteMediaPreloadStatusUpdated(item);
         }
     }
 
     public MediaQueueItem getPreLoadingItem() {
-        return mPreLoadingItem;
+        return preLoadingItem;
     }
 
     /*
@@ -1515,13 +1518,13 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         Log.d(TAG, String.format("Queue Items size: %d, Item: %s, Repeat Mode: %d, Shuffle: %s",
                 queueItems == null ? 0 : queueItems.size(), item, repeatMode, shuffle));
         if (queueItems != null) {
-            mMediaQueue = new MediaQueue(new CopyOnWriteArrayList<>(queueItems), item, shuffle,
+            mediaQueue = new MediaQueue(new CopyOnWriteArrayList<>(queueItems), item, shuffle,
                     repeatMode);
         } else {
-            mMediaQueue = new MediaQueue(new CopyOnWriteArrayList<>(), null, false,
+            mediaQueue = new MediaQueue(new CopyOnWriteArrayList<>(), null, false,
                     MediaStatus.REPEAT_MODE_REPEAT_OFF);
         }
-        for (CastConsumer consumer : mCastConsumers) {
+        for (CastConsumer consumer : castConsumers) {
             consumer.onMediaQueueUpdated(queueItems, item, repeatMode, shuffle);
         }
     }
@@ -1531,7 +1534,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      */
     public void onRemoteMediaPlayerMetadataUpdated() {
         Log.d(TAG, "onRemoteMediaPlayerMetadataUpdated() reached");
-        for (CastConsumer consumer : mCastConsumers) {
+        for (CastConsumer consumer : castConsumers) {
             consumer.onRemoteMediaPlayerMetadataUpdated();
         }
     }
@@ -1541,12 +1544,12 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      * Registered listeners will be notified of changes to a variety of
      * lifecycle and media status changes through the callbacks that the interface provides.
      *
-     * @see CastConsumerImpl
+     * @see DefaultCastConsumer
      */
     public synchronized void addCastConsumer(CastConsumer listener) {
         if (listener != null) {
             addBaseCastConsumer(listener);
-            mCastConsumers.add(listener);
+            castConsumers.add(listener);
             Log.d(TAG, "Successfully added the new CastConsumer listener " + listener);
         }
     }
@@ -1557,7 +1560,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     public synchronized void removeCastConsumer(CastConsumer listener) {
         if (listener != null) {
             removeBaseCastConsumer(listener);
-            mCastConsumers.remove(listener);
+            castConsumers.remove(listener);
         }
     }
 
@@ -1565,8 +1568,8 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     protected void onDeviceUnselected() {
         detachMediaChannel();
         //removeDataChannel();
-        mState = MediaStatus.PLAYER_STATE_IDLE;
-        mMediaStatus = null;
+        state = MediaStatus.PLAYER_STATE_IDLE;
+        mediaStatus = null;
     }
 
     @Override
@@ -1581,17 +1584,17 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         super.onConnectionFailed(result);
-        mState = MediaStatus.PLAYER_STATE_IDLE;
-        mMediaStatus = null;
+        state = MediaStatus.PLAYER_STATE_IDLE;
+        mediaStatus = null;
     }
 
     @Override
     public void onDisconnected(boolean stopAppOnExit, boolean clearPersistedConnectionData,
                                boolean setDefaultRoute) {
         super.onDisconnected(stopAppOnExit, clearPersistedConnectionData, setDefaultRoute);
-        mState = MediaStatus.PLAYER_STATE_IDLE;
-        mMediaStatus = null;
-        mMediaQueue = null;
+        state = MediaStatus.PLAYER_STATE_IDLE;
+        mediaStatus = null;
+        mediaQueue = null;
     }
 
     class CastListener extends Cast.Listener {
@@ -1682,7 +1685,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if ((volumeStep > 1) || (volumeStep < 0)) {
             throw new IllegalArgumentException("Volume Step should be between 0 and 1, inclusive");
         }
-        mVolumeStep = volumeStep;
+        this.volumeStep = volumeStep;
         return this;
     }
 
@@ -1690,11 +1693,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      * Returns the volume step. The default value is {@code DEFAULT_VOLUME_STEP}.
      */
     public double getVolumeStep() {
-        return mVolumeStep;
+        return volumeStep;
     }
 
     public final MediaQueue getMediaQueue() {
-        return mMediaQueue;
+        return mediaQueue;
     }
 
     /**

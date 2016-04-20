@@ -12,7 +12,7 @@ import com.google.android.gms.cast.ApplicationMetadata;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.cast.CastConsumer;
-import de.danoeh.antennapod.core.cast.CastConsumerImpl;
+import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.SwitchableMediaRouteActionProvider;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -26,10 +26,10 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String TAG = "CastEnabledActivity";
 
-    protected CastManager mCastManager;
+    protected CastManager castManager;
     private final Object UI_COUNTER_LOCK = new Object();
     private volatile boolean isResumed = false;
-    protected SwitchableMediaRouteActionProvider mMediaRouteActionProvider;
+    protected SwitchableMediaRouteActionProvider mediaRouteActionProvider;
     protected volatile boolean isCastEnabled = false;
 
     @Override
@@ -39,17 +39,17 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).
                 registerOnSharedPreferenceChangeListener(this);
 
-        mCastManager = CastManager.getInstance();
-        mCastManager.addCastConsumer(castConsumer);
+        castManager = CastManager.getInstance();
+        castManager.addCastConsumer(castConsumer);
         isCastEnabled = UserPreferences.isCastEnabled();
-        onCastConnectionChanged(mCastManager.isConnected());
+        onCastConnectionChanged(castManager.isConnected());
     }
 
     @Override
     protected void onDestroy() {
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                 .unregisterOnSharedPreferenceChangeListener(this);
-        mCastManager.removeCastConsumer(castConsumer);
+        castManager.removeCastConsumer(castConsumer);
         super.onDestroy();
     }
 
@@ -63,9 +63,9 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        mMediaRouteActionProvider = mCastManager
+        mediaRouteActionProvider = castManager
                 .addMediaRouterButton(menu.findItem(R.id.media_route_menu_item));
-        mMediaRouteActionProvider.setEnabled(isCastEnabled);
+        mediaRouteActionProvider.setEnabled(isCastEnabled);
         return true;
     }
 
@@ -75,7 +75,7 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         synchronized (UI_COUNTER_LOCK) {
             isResumed = true;
             if (isCastEnabled) {
-                mCastManager.incrementUiCounter();
+                castManager.incrementUiCounter();
             }
         }
     }
@@ -86,7 +86,7 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         synchronized (UI_COUNTER_LOCK) {
             isResumed = false;
             if (isCastEnabled) {
-                mCastManager.decrementUiCounter();
+                castManager.decrementUiCounter();
             }
         }
     }
@@ -99,14 +99,14 @@ public abstract class CastEnabledActivity extends AppCompatActivity
             synchronized (UI_COUNTER_LOCK) {
                 if (isCastEnabled != newValue && isResumed) {
                     if (newValue) {
-                        mCastManager.incrementUiCounter();
+                        castManager.incrementUiCounter();
                     } else {
-                        mCastManager.decrementUiCounter();
+                        castManager.decrementUiCounter();
                     }
                 }
                 isCastEnabled = newValue;
             }
-            mMediaRouteActionProvider.setEnabled(isCastEnabled);
+            mediaRouteActionProvider.setEnabled(isCastEnabled);
             // PlaybackService has its own listener, so if it's active we don't have to take action here.
             if (!isCastEnabled && !PlaybackService.isRunning) {
                 CastManager.getInstance().disconnect();
@@ -114,7 +114,7 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         }
     }
 
-    CastConsumer castConsumer = new CastConsumerImpl() {
+    CastConsumer castConsumer = new DefaultCastConsumer() {
         @Override
         public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
             onCastConnectionChanged(true);

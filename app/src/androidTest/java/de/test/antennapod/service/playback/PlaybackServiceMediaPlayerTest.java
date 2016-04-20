@@ -196,7 +196,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
 
@@ -275,7 +275,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -357,7 +357,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -440,7 +440,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
 
@@ -517,7 +517,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
 
@@ -595,7 +595,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -675,7 +675,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -758,7 +758,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -814,7 +814,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         }
 
         @Override
-        public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+        public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
             return false;
         }
     };
@@ -896,7 +896,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -1012,7 +1012,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -1103,7 +1103,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -1207,7 +1207,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped) {
+            public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };

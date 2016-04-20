@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.cast.CastConsumer;
-import de.danoeh.antennapod.core.cast.CastConsumerImpl;
+import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.RemoteMedia;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -47,11 +47,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     private final AtomicBoolean startWhenPrepared;
 
-    /**
-     * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
-     * have to wait until these operations have finished.
-     */
-    //private final ReentrantLock playerLock;
     private final ThreadPoolExecutor executor;
 
     public RemotePSMP(@NonNull Context context, @NonNull PSMPCallback callback) {
@@ -63,7 +58,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         startWhenPrepared = new AtomicBoolean(false);
         isBuffering = new AtomicBoolean(false);
 
-        //playerLock = new ReentrantLock();
         executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
                 (r, executor) -> Log.d(TAG, "Rejected execution of runnable"));
 
@@ -82,7 +76,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         //TODO
     }
 
-    private CastConsumer castConsumer = new CastConsumerImpl() {
+    private CastConsumer castConsumer = new DefaultCastConsumer() {
         @Override
         public void onRemoteMediaPlayerMetadataUpdated() {
             RemotePSMP.this.onRemoteMediaPlayerStatusUpdated(callback::endPlayback);
@@ -432,7 +426,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         return 1;
     }
 
-    //TODO make device volume being selected by the hardware keys
     @Override
     public void setVolume(float volumeLeft, float volumeRight) {
         Log.d(TAG, "Setting the Stream volume on Remote Media Player");
