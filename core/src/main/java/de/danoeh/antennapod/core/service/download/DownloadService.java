@@ -61,6 +61,7 @@ import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -317,6 +318,14 @@ public class DownloadService extends Service {
         feedSyncThread.shutdown();
         cancelNotificationUpdater();
         unregisterReceiver(cancelDownloadReceiver);
+
+        // if this was the initial gpodder sync, i.e. we just synced the feeds successfully,
+        // it is now time to sync the episode actions
+        if(GpodnetPreferences.loggedIn() &&
+                GpodnetPreferences.getLastSubscriptionSyncTimestamp() > 0 &&
+                GpodnetPreferences.getLastEpisodeActionsSyncTimestamp() == 0) {
+            GpodnetSyncService.sendSyncActionsIntent(this);
+        }
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
