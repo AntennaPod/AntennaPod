@@ -3,6 +3,9 @@ package de.danoeh.antennapod.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -12,6 +15,8 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
  */
 public class CastplayerActivity extends MediaplayerInfoActivity {
     public static final String TAG = "CastPlayerActivity";
+
+    private AtomicBoolean isSetup = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,17 @@ public class CastplayerActivity extends MediaplayerInfoActivity {
             startActivity(new Intent(this, AudioplayerActivity.class));
         } else {
             super.onReloadNotification(notificationCode);
+        }
+    }
+
+    @Override
+    protected void setupGUI() {
+        if(isSetup.getAndSet(true)) {
+            return;
+        }
+        super.setupGUI();
+        if (butPlaybackSpeed != null) {
+            butPlaybackSpeed.setVisibility(View.GONE);
         }
     }
 }

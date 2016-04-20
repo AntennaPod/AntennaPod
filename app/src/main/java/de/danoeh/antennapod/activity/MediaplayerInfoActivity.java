@@ -22,12 +22,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
@@ -84,8 +84,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
-    private AtomicBoolean isSetup = new AtomicBoolean(false);
-
+    protected Button butPlaybackSpeed;
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
     private ListView navList;
@@ -202,9 +201,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
     @Override
     protected void setupGUI() {
-        if(isSetup.getAndSet(true)) {
-            return;
-        }
         super.setupGUI();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -252,6 +248,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             drawerLayout.closeDrawer(navDrawer);
             startActivity(new Intent(MediaplayerInfoActivity.this, PreferenceController.getPreferenceActivity()));
         });
+
+        butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
 
         pager = (ViewPager) findViewById(R.id.pager);
         pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager(), media);
