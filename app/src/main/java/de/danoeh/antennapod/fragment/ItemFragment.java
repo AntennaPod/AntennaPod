@@ -352,8 +352,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
 
     private void onFragmentLoaded() {
         if (webviewData != null) {
-            webvDescription.loadDataWithBaseURL(null, webviewData, "text/html",
-                    "utf-8", "about:blank");
+            webvDescription.loadDataWithBaseURL(null, webviewData, "text/html", "utf-8", "about:blank");
         }
         updateAppearance();
     }
@@ -573,12 +572,8 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             .subscribe(result -> {
                 progbarLoading.setVisibility(View.GONE);
                 item = result;
-                if (!itemsLoaded) {
-                    itemsLoaded = true;
-                    onFragmentLoaded();
-                } else {
-                    updateAppearance();
-                }
+                itemsLoaded = true;
+                onFragmentLoaded();
             }, error -> {
                 Log.e(TAG, Log.getStackTraceString(error));
             });
