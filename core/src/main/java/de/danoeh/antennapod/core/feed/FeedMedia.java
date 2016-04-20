@@ -153,18 +153,7 @@ public class FeedMedia extends FeedFile implements Playable {
      * Uses mimetype to determine the type of media.
      */
     public MediaType getMediaType() {
-        if (mime_type == null || mime_type.isEmpty()) {
-            return MediaType.UNKNOWN;
-        } else {
-            if (mime_type.startsWith("audio")) {
-                return MediaType.AUDIO;
-            } else if (mime_type.startsWith("video")) {
-                return MediaType.VIDEO;
-            } else if (mime_type.equals("application/ogg")) {
-                return MediaType.AUDIO;
-            }
-        }
-        return MediaType.UNKNOWN;
+        return MediaType.fromMimeType(mime_type);
     }
 
     public void updateFromOther(FeedMedia other) {
