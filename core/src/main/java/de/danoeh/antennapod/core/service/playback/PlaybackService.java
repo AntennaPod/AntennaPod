@@ -1168,11 +1168,10 @@ public class PlaybackService extends Service {
                     DBTasks.flattrItemIfLoggedIn(this, item);
                 }
             }
-            playable.saveCurrentPosition(PreferenceManager
-                    .getDefaultSharedPreferences(getApplicationContext()),
+            playable.saveCurrentPosition(
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()),
                     position,
-                    System.currentTimeMillis()
-            );
+                    System.currentTimeMillis());
         }
     }
 
