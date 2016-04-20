@@ -60,6 +60,6 @@ dependencies {
 
     // Add casting features
     compile "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
-    //compile "com.android.support:mediarouter-v7:$supportVersion"
-    //compile "com.google.android.gms:play-services:$playServicesVersion"
+    compile "com.android.support:mediarouter-v7:$supportVersion"
+    compile "com.google.android.gms:play-services-cast:$playServicesVersion"
 }
