@@ -281,6 +281,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.mediaplayer, menu);
         return true;

@@ -4,16 +4,19 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.CallSuper;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.cast.ApplicationMetadata;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.cast.CastConsumer;
-import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
+import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.cast.SwitchableMediaRouteActionProvider;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -27,10 +30,8 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     public static final String TAG = "CastEnabledActivity";
 
     protected CastManager castManager;
-    private final Object UI_COUNTER_LOCK = new Object();
-    private volatile boolean isResumed = false;
     protected SwitchableMediaRouteActionProvider mediaRouteActionProvider;
-    protected volatile boolean isCastEnabled = false;
+    private final CastButtonVisibilityManager castButtonVisibilityManager = new CastButtonVisibilityManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public abstract class CastEnabledActivity extends AppCompatActivity
 
         castManager = CastManager.getInstance();
         castManager.addCastConsumer(castConsumer);
-        isCastEnabled = UserPreferences.isCastEnabled();
+        castButtonVisibilityManager.setPrefEnabled(UserPreferences.isCastEnabled());
         onCastConnectionChanged(castManager.isConnected());
     }
 
@@ -54,41 +55,34 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     }
 
     @Override
+    @CallSuper
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.cast_enabled, menu);
+        castButtonVisibilityManager.setMenu(menu);
         return true;
     }
 
     @Override
+    @CallSuper
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         mediaRouteActionProvider = castManager
                 .addMediaRouterButton(menu.findItem(R.id.media_route_menu_item));
-        mediaRouteActionProvider.setEnabled(isCastEnabled);
+        mediaRouteActionProvider.setEnabled(castButtonVisibilityManager.shouldEnable());
         return true;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        synchronized (UI_COUNTER_LOCK) {
-            isResumed = true;
-            if (isCastEnabled) {
-                castManager.incrementUiCounter();
-            }
-        }
+        castButtonVisibilityManager.setResumed(true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        synchronized (UI_COUNTER_LOCK) {
-            isResumed = false;
-            if (isCastEnabled) {
-                castManager.decrementUiCounter();
-            }
-        }
+        castButtonVisibilityManager.setResumed(false);
     }
 
     @Override
@@ -96,19 +90,9 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         if (UserPreferences.PREF_CAST_ENABLED.equals(key)) {
             boolean newValue = UserPreferences.isCastEnabled();
             Log.d(TAG, "onSharedPreferenceChanged(), isCastEnabled set to " + newValue);
-            synchronized (UI_COUNTER_LOCK) {
-                if (isCastEnabled != newValue && isResumed) {
-                    if (newValue) {
-                        castManager.incrementUiCounter();
-                    } else {
-                        castManager.decrementUiCounter();
-                    }
-                }
-                isCastEnabled = newValue;
-            }
-            mediaRouteActionProvider.setEnabled(isCastEnabled);
+            castButtonVisibilityManager.setPrefEnabled(newValue);
             // PlaybackService has its own listener, so if it's active we don't have to take action here.
-            if (!isCastEnabled && !PlaybackService.isRunning) {
+            if (!newValue && !PlaybackService.isRunning) {
                 CastManager.getInstance().disconnect();
             }
         }
@@ -131,6 +115,88 @@ public abstract class CastEnabledActivity extends AppCompatActivity
             setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
         } else {
             setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        }
+    }
+
+    /**
+     * Should be called by any activity or fragment for which the cast button should be shown.
+     *
+     * @param showAsAction refer to {@link MenuItem#setShowAsAction(int)}
+     */
+    public final void requestCastButton(int showAsAction) {
+        castButtonVisibilityManager.requestCastButton(showAsAction);
+    }
+
+    private class CastButtonVisibilityManager {
+        private volatile boolean prefEnabled = false;
+        private volatile boolean viewRequested = false;
+        private volatile boolean resumed = false;
+        private Menu menu;
+
+        public synchronized void setPrefEnabled(boolean newValue) {
+            if (prefEnabled != newValue && resumed && viewRequested) {
+                if (newValue) {
+                    castManager.incrementUiCounter();
+                } else {
+                    castManager.decrementUiCounter();
+                }
+            }
+            prefEnabled = newValue;
+            if (mediaRouteActionProvider != null) {
+                mediaRouteActionProvider.setEnabled(prefEnabled && viewRequested);
+            }
+        }
+
+        public synchronized void setResumed(boolean newValue) {
+            if (resumed == newValue) {
+                Log.e(TAG, "resumed should never change to the same value");
+                return;
+            }
+            resumed = newValue;
+            if (prefEnabled && viewRequested) {
+                if (resumed) {
+                    castManager.incrementUiCounter();
+                } else {
+                    castManager.decrementUiCounter();
+                }
+            }
+        }
+
+        public synchronized void setViewRequested(boolean newValue) {
+            if (viewRequested != newValue && resumed && prefEnabled) {
+                if (newValue) {
+                    castManager.incrementUiCounter();
+                } else {
+                    castManager.decrementUiCounter();
+                }
+            }
+            viewRequested = newValue;
+            if (mediaRouteActionProvider != null) {
+                mediaRouteActionProvider.setEnabled(prefEnabled && viewRequested);
+            }
+        }
+
+        public synchronized boolean shouldEnable() {
+            return prefEnabled && viewRequested;
+        }
+
+        public void setMenu(Menu menu) {
+            setViewRequested(false);
+            this.menu = menu;
+        }
+
+        public void requestCastButton(int showAsAction) {
+            setViewRequested(true);
+            if (menu == null) {
+                Log.e(TAG, "Cast button requested without a menu");
+                return;
+            }
+            MenuItem item = menu.findItem(R.id.media_route_menu_item);
+            if (item == null) {
+                Log.e(TAG, "Cast button requested, but not inflated");
+                return;
+            }
+            MenuItemCompat.setShowAsAction(menu.findItem(R.id.media_route_menu_item), showAsAction);
         }
     }
 }

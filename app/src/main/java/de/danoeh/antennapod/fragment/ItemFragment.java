@@ -39,6 +39,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.core.event.DownloadEvent;
@@ -311,6 +312,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         if(!isAdded() || item == null) {
             return;
         }
+        ((CastEnabledActivity) getActivity()).requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
         inflater.inflate(R.menu.feeditem_options, menu);
         popupMenu = menu;
         if (item.hasMedia()) {
