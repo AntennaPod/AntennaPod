@@ -121,7 +121,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                 final String passwordStr = password.getText().toString();
 
                 if (BuildConfig.DEBUG) Log.d(TAG, "Checking login credentials");
-                new AsyncTask<GpodnetService, Void, Void>() {
+                AsyncTask<GpodnetService, Void, Void> authTask = new AsyncTask<GpodnetService, Void, Void>() {
 
                     volatile Exception exception;
 
@@ -160,7 +160,12 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                         }
                         return null;
                     }
-                }.execute(service);
+                };
+                if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+                    authTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, service);
+                } else {
+                    authTask.execute();
+                }
             }
         });
     }
