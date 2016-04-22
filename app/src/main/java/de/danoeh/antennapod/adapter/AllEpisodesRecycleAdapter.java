@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -81,6 +82,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 .inflate(R.layout.new_episodes_listitem, parent, false);
         Holder holder = new Holder(view);
         holder.container = (FrameLayout) view.findViewById(R.id.container);
+        holder.content = (LinearLayout) view.findViewById(R.id.content);
         holder.placeholder = (TextView) view.findViewById(R.id.txtvPlaceholder);
         holder.title = (TextView) view.findViewById(R.id.txtvTitle);
         if(Build.VERSION.SDK_INT >= 23) {
@@ -125,6 +127,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             holder.statusUnread.setVisibility(View.INVISIBLE);
         } else {
             holder.statusUnread.setVisibility(View.VISIBLE);
+        }
+        if(item.isPlayed()) {
+            ViewHelper.setAlpha(holder.content, 0.5f);
+        } else {
+            ViewHelper.setAlpha(holder.content, 1.0f);
         }
 
         FeedMedia media = item.getMedia();
@@ -233,6 +240,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             implements View.OnClickListener,
                        View.OnCreateContextMenuListener,
                        ItemTouchHelperViewHolder {
+        LinearLayout content;
         FrameLayout container;
         TextView placeholder;
         TextView title;
