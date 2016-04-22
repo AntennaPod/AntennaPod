@@ -143,7 +143,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                         if (exception == null) {
                             advance();
                         } else {
-                            txtvError.setText(exception.getMessage());
+                            txtvError.setText(exception.getCause().getMessage());
                             txtvError.setVisibility(View.VISIBLE);
                         }
                     }
