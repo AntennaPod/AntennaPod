@@ -106,7 +106,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements NavDrawe
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
-        pagerAdapter.setController(null);
+        if(pagerAdapter != null) {
+            pagerAdapter.setController(null);
+        }
         if(subscription != null) {
             subscription.unsubscribe();
         }
