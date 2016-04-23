@@ -1520,7 +1520,7 @@ public class PlaybackService extends Service {
                 info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null);
             }
             switchMediaPlayer(new LocalPSMP(PlaybackService.this, mediaPlayerCallback),
-                    info, false);
+                    info, true);
             if (info.playable != null) {
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
                         info.playable.getMediaType() == MediaType.AUDIO ? EXTRA_CODE_AUDIO : EXTRA_CODE_VIDEO);
@@ -1622,8 +1622,9 @@ public class PlaybackService extends Service {
     private void onCastAppConnected(boolean wasLaunched) {
         Log.d(TAG, "A cast device application was " + (wasLaunched ? "launched" : "joined"));
         isCasting = true;
+        PlaybackServiceMediaPlayer.PSMPInfo info = null;
         if (mediaPlayer != null) {
-            PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
+            info = mediaPlayer.getPSMPInfo();
             if (info.playerStatus == PlayerStatus.PLAYING) {
                 // could be pause, but this way we make sure the new player will get the correct position,
                 // since pause runs asynchronously and we could be directing the new player to play even before
@@ -1631,11 +1632,11 @@ public class PlaybackService extends Service {
                 saveCurrentPosition(false, 0);
             }
         }
+        sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, EXTRA_CODE_CAST);
         switchMediaPlayer(new RemotePSMP(PlaybackService.this, mediaPlayerCallback),
-                (mediaPlayer != null) ? mediaPlayer.getPSMPInfo() :
+                (info != null) ? info :
                         new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null),
                 wasLaunched);
-        sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, EXTRA_CODE_CAST);
         // hardware volume buttons control the remote device volume
         mediaRouter.setMediaSessionCompat(mediaSession);
         registerWifiBroadcastReceiver();

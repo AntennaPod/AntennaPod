@@ -482,7 +482,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     @Override
     public void resetVideoSurface() {
-        throw new UnsupportedOperationException("Resetting Video Surface unsupported in Remote Media Player");
+        Log.e(TAG, "Resetting Video Surface unsupported in Remote Media Player");
     }
 
     @Override
