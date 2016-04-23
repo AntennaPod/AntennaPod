@@ -618,6 +618,7 @@
 
     <!-- Casting -->
     <string name="cast_media_route_menu_title">Play on&#8230;</string>
+    <string name="cast_disconnect_label">Disconnect the cast session</string>
     <string name="cast_failed_to_play">Failed to start the playback of media</string>
     <string name="cast_failed_to_stop">Failed to stop the playback of media</string>
     <string name="cast_failed_to_pause">Failed to pause the playback of media</string>

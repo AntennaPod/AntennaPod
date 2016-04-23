@@ -20,13 +20,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.cast.CastConsumer;
-import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
+import de.danoeh.antennapod.core.cast.CastUtils;
+import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.cast.RemoteMedia;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.cast.CastUtils;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -150,6 +149,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             setBuffering(false);
             setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             return;
+        } else {
+            Log.d(TAG, "Received remote status/media update. New state=" + status.getPlayerState());
         }
         Playable currentMedia = localVersion(status.getMediaInfo());
         if (currentMedia != null) {
@@ -195,6 +196,10 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 break;
             case MediaStatus.PLAYER_STATE_UNKNOWN:
                 //is this right?
+                setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
+                break;
+            default:
+                Log.e(TAG, "Remote media state undetermined!");
                 setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
         }
     }
@@ -265,7 +270,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void resume() {
         try {
-            setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
+            // TODO see comment on prepare()
+            // setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
             if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                 int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
                         media.getPosition(),
@@ -306,7 +312,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                             position,
                             media.getLastPlayedTime());
                 }
-                setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
+                // TODO We're not supporting user set stream volume yet, as we need to make a UI
+                // that doesn't allow changing playback speed or have different values for left/right
+                //setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
                 castMgr.loadMedia(remoteMedia, startWhenPrepared.get(), position);
             } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
                 Log.e(TAG, "Error loading media", e);

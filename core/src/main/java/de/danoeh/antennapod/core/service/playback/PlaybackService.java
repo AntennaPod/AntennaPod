@@ -47,8 +47,8 @@ import java.util.List;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.cast.CastConsumer;
-import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
+import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -84,6 +84,10 @@ public class PlaybackService extends Service {
      * Parcelable of type Playable.
      */
     public static final String EXTRA_PLAYABLE = "PlaybackService.PlayableExtra";
+    /**
+     * True if cast session should disconnect.
+     */
+    public static final String EXTRA_CAST_DISCONNECT = "extra.de.danoeh.antennapod.core.service.castDisconnect";
     /**
      * True if media should be streamed.
      */
@@ -361,8 +365,9 @@ public class PlaybackService extends Service {
 
         Log.d(TAG, "OnStartCommand called");
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
+        final boolean castDisconnect = intent.getBooleanExtra(EXTRA_CAST_DISCONNECT, false);
         final Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
-        if (keycode == -1 && playable == null) {
+        if (keycode == -1 && playable == null && !castDisconnect) {
             Log.e(TAG, "PlaybackService was started with no arguments");
             stopSelf();
             return Service.START_REDELIVER_INTENT;
@@ -377,6 +382,8 @@ public class PlaybackService extends Service {
                 Log.d(TAG, "Received media button event");
                 handleKeycode(keycode, intent.getIntExtra(MediaButtonReceiver.EXTRA_SOURCE,
                         InputDevice.SOURCE_CLASS_NONE));
+            } else if (castDisconnect) {
+                castManager.disconnect();
             } else {
                 started = true;
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
@@ -556,12 +563,13 @@ public class PlaybackService extends Service {
                     taskManager.cancelPositionSaver();
                     saveCurrentPosition(false, 0);
                     taskManager.cancelWidgetUpdater();
-                    if (UserPreferences.isPersistNotify() && android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    if ((UserPreferences.isPersistNotify() || isCasting) &&
+                            android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         // do not remove notification on pause based on user pref and whether android version supports expanded notifications
                         // Change [Play] button to [Pause]
                         setupNotification(newInfo);
-                    } else if (!UserPreferences.isPersistNotify()) {
-                        // remove notifcation on pause
+                    } else if (!UserPreferences.isPersistNotify() && !isCasting) {
+                        // remove notification on pause
                         stopForeground(true);
                     }
                     writePlayerStatusPlaybackPreferences();
@@ -1052,6 +1060,17 @@ public class PlaybackService extends Service {
 
                     int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
 
+                    if (isCasting) {
+                        Intent stopCastingIntent = new Intent(PlaybackService.this, PlaybackService.class);
+                        stopCastingIntent.putExtra(EXTRA_CAST_DISCONNECT, true);
+                        PendingIntent stopCastingPendingIntent = PendingIntent.getService(PlaybackService.this,
+                                numActions, stopCastingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        notificationBuilder.addAction(R.drawable.ic_media_cast_disconnect,
+                                getString(R.string.cast_disconnect_label),
+                                stopCastingPendingIntent);
+                        numActions++;
+                    }
+
                     // always let them rewind
                     PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
                             KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
@@ -1116,7 +1135,8 @@ public class PlaybackService extends Service {
 
                     if (playerStatus == PlayerStatus.PLAYING ||
                             playerStatus == PlayerStatus.PREPARING ||
-                            playerStatus == PlayerStatus.SEEKING) {
+                            playerStatus == PlayerStatus.SEEKING ||
+                            isCasting) {
                         startForeground(NOTIFICATION_ID, notification);
                     } else {
                         stopForeground(false);
@@ -1531,6 +1551,16 @@ public class PlaybackService extends Service {
             // hardware volume buttons control the local device volume
             mediaRouter.setMediaSessionCompat(null);
             unregisterWifiBroadcastReceiver();
+            PlayerStatus status = info.playerStatus;
+            if ((status == PlayerStatus.PLAYING ||
+                    status == PlayerStatus.SEEKING ||
+                    status == PlayerStatus.PREPARING ||
+                    UserPreferences.isPersistNotify()) &&
+                    android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                setupNotification(info);
+            } else if (!UserPreferences.isPersistNotify()){
+                stopForeground(true);
+            }
         }
     };
 
@@ -1632,14 +1662,17 @@ public class PlaybackService extends Service {
                 saveCurrentPosition(false, 0);
             }
         }
+        if (info == null) {
+            info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null);
+        }
         sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, EXTRA_CODE_CAST);
         switchMediaPlayer(new RemotePSMP(PlaybackService.this, mediaPlayerCallback),
-                (info != null) ? info :
-                        new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null),
+                info,
                 wasLaunched);
         // hardware volume buttons control the remote device volume
         mediaRouter.setMediaSessionCompat(mediaSession);
         registerWifiBroadcastReceiver();
+        setupNotification(info);
     }
 
     private void switchMediaPlayer(@NonNull PlaybackServiceMediaPlayer newPlayer,

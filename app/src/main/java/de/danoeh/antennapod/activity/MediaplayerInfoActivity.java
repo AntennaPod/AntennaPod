@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.viewpagerindicator.CirclePageIndicator;
@@ -85,6 +86,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     };
 
     protected Button butPlaybackSpeed;
+    protected ImageButton butCastDisconnect;
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
     private ListView navList;
@@ -250,6 +252,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         });
 
         butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
+        butCastDisconnect = (ImageButton) findViewById(R.id.butCastDisconnect);
 
         pager = (ViewPager) findViewById(R.id.pager);
         pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager(), media);

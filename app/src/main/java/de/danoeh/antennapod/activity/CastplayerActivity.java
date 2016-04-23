@@ -49,5 +49,9 @@ public class CastplayerActivity extends MediaplayerInfoActivity {
         if (butPlaybackSpeed != null) {
             butPlaybackSpeed.setVisibility(View.GONE);
         }
+        if (butCastDisconnect != null) {
+            butCastDisconnect.setOnClickListener(v -> castManager.disconnect());
+            butCastDisconnect.setVisibility(View.VISIBLE);
+        }
     }
 }
