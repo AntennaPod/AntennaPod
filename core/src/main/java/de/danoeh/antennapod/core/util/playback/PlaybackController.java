@@ -750,6 +750,7 @@ public abstract class PlaybackController {
     public void reinitServiceIfPaused() {
         if (playbackService != null
                 && playbackService.isStreaming()
+                && !PlaybackService.isCasting()
                 && (playbackService.getStatus() == PlayerStatus.PAUSED ||
                 (playbackService.getStatus() == PlayerStatus.PREPARING &&
                         !playbackService.isStartWhenPrepared()))) {

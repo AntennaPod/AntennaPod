@@ -1441,30 +1441,29 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      */
     private void onRemoteMediaPlayerStatusUpdated() {
         Log.d(TAG, "onRemoteMediaPlayerStatusUpdated() reached");
-        if (mApiClient == null || remoteMediaPlayer == null
-                || remoteMediaPlayer.getMediaStatus() == null) {
+        if (mApiClient == null || remoteMediaPlayer == null) {
             Log.d(TAG, "mApiClient or remoteMediaPlayer is null, so will not proceed");
             return;
         }
         mediaStatus = remoteMediaPlayer.getMediaStatus();
-        List<MediaQueueItem> queueItems = mediaStatus.getQueueItems();
-        if (queueItems != null) {
-            int itemId = mediaStatus.getCurrentItemId();
-            MediaQueueItem item = mediaStatus.getQueueItemById(itemId);
-            int repeatMode = mediaStatus.getQueueRepeatMode();
-            onQueueUpdated(queueItems, item, repeatMode, false);
+        if (mediaStatus == null) {
+            Log.d(TAG, "MediaStatus is null, so will not proceed");
         } else {
-            onQueueUpdated(null, null, MediaStatus.REPEAT_MODE_REPEAT_OFF, false);
-        }
-        state = mediaStatus.getPlayerState();
-        idleReason = mediaStatus.getIdleReason();
+            List<MediaQueueItem> queueItems = mediaStatus.getQueueItems();
+            if (queueItems != null) {
+                int itemId = mediaStatus.getCurrentItemId();
+                MediaQueueItem item = mediaStatus.getQueueItemById(itemId);
+                int repeatMode = mediaStatus.getQueueRepeatMode();
+                onQueueUpdated(queueItems, item, repeatMode, false);
+            } else {
+                onQueueUpdated(null, null, MediaStatus.REPEAT_MODE_REPEAT_OFF, false);
+            }
+            state = mediaStatus.getPlayerState();
+            idleReason = mediaStatus.getIdleReason();
 
-        try {
-            double volume = getStreamVolume();
-            boolean isMute = isStreamMute();
             if (state == MediaStatus.PLAYER_STATE_PLAYING) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = playing");
-                long mediaDurationLeft = getMediaTimeRemaining();
+                // long mediaDurationLeft = getMediaTimeRemaining();
                 //startReconnectionService(mediaDurationLeft);
             } else if (state == MediaStatus.PLAYER_STATE_PAUSED) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = paused");
@@ -1482,14 +1481,17 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             } else {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = unknown");
             }
+        }
+        for (CastConsumer consumer : castConsumers) {
+            consumer.onRemoteMediaPlayerStatusUpdated();
+        }
+        if (mediaStatus != null) {
+            double volume = mediaStatus.getStreamVolume();
+            boolean isMute = mediaStatus.isMute();
             for (CastConsumer consumer : castConsumers) {
-                consumer.onRemoteMediaPlayerStatusUpdated();
                 consumer.onStreamVolumeChanged(volume, isMute);
             }
-        } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-            Log.e(TAG, "Failed to get volume state due to network issues", e);
         }
-
     }
 
     private void onRemoteMediaPreloadStatusUpdated() {

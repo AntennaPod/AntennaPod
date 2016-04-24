@@ -278,7 +278,7 @@ public abstract class PlaybackServiceMediaPlayer {
      * @param newMedia  The new playable object of the PSMP object. This can be null.
      */
     protected synchronized final void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
-        Log.d(TAG, "Setting player status to " + newStatus);
+        Log.d(TAG, this.getClass().getSimpleName() + ": Setting player status to " + newStatus);
 
         this.playerStatus = newStatus;
         setPlayable(newMedia);
@@ -327,7 +327,7 @@ public abstract class PlaybackServiceMediaPlayer {
 
         boolean onMediaPlayerError(Object inObj, int what, int extra);
 
-        boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers);
+        boolean endPlayback(Playable media, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers);
     }
 
     /**

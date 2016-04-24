@@ -64,8 +64,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             if (castMgr.isConnected() && castMgr.isRemoteMediaLoaded()) {
                 // updates the state, but does not start playing new media if it was going to
                 onRemoteMediaPlayerStatusUpdated(
-                        ((playNextEpisode, wasSkipped, switchingPlayers) ->
-                        this.callback.endPlayback(false, wasSkipped, switchingPlayers)));
+                        ((p, playNextEpisode, wasSkipped, switchingPlayers) ->
+                        this.callback.endPlayback(p, false, wasSkipped, switchingPlayers)));
             }
         } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
             Log.e(TAG, "Unable to do initial check for loaded media", e);
@@ -146,6 +146,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     private void onRemoteMediaPlayerStatusUpdated(@NonNull EndPlaybackCall endPlaybackCall) {
         MediaStatus status = castMgr.getMediaStatus();
         if (status == null) {
+            Log.d(TAG, "Received null MediaStatus");
             setBuffering(false);
             setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             return;
@@ -186,12 +187,12 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                     case MediaStatus.IDLE_REASON_FINISHED:
                         boolean playing = playerStatus == PlayerStatus.PLAYING;
                         setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
-                        endPlaybackCall.endPlayback(playing, false, false);
+                        endPlaybackCall.endPlayback(currentMedia,playing, false, false);
                         break;
                     case MediaStatus.IDLE_REASON_ERROR:
-                        //Let's assume it's a media format error. Skipping...
+                        Log.w(TAG, "Got an error status from the Chromecast. Skipping, if possible, to the next episode...");
                         setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
-                        endPlaybackCall.endPlayback(startWhenPrepared.get(), true, false);
+                        endPlaybackCall.endPlayback(currentMedia, startWhenPrepared.get(), true, false);
                 }
                 break;
             case MediaStatus.PLAYER_STATE_UNKNOWN:
@@ -286,17 +287,12 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     @Override
     public void pause(boolean abandonFocus, boolean reinit) {
-        boolean playing = true;
         try {
-            playing = castMgr.isRemoteMediaPlaying();
-            if (playing) {
+            if (castMgr.isRemoteMediaPlaying()) {
                 castMgr.pause();
             }
         } catch (CastException | TransientNetworkDisconnectionException | NoConnectionException e) {
             Log.e(TAG, "Unable to pause", e);
-        }
-        if (playing && reinit) {
-            reinit();
         }
     }
 
@@ -325,6 +321,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     @Override
     public void reinit() {
+        Log.d(TAG, "reinit() called");
         if (media != null) {
             playMediaObject(media, true, false, startWhenPrepared.get(), false);
         } else {
@@ -513,11 +510,12 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     @Override
     public void endPlayback(boolean wasSkipped, boolean switchingPlayers) {
+        Log.d(TAG, "endPlayback() called");
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
         if (playerStatus != PlayerStatus.INDETERMINATE) {
             setPlayerStatus(PlayerStatus.INDETERMINATE, media);
         }
-        callback.endPlayback(isPlaying, wasSkipped, switchingPlayers);
+        callback.endPlayback(media, isPlaying, wasSkipped, switchingPlayers);
     }
 
     @Override
@@ -535,6 +533,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     }
 
     private interface EndPlaybackCall {
-        boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers);
+        boolean endPlayback(Playable media, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers);
     }
 }

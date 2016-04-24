@@ -413,11 +413,7 @@ public class PlaybackService extends Service {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    if (UserPreferences.isPersistNotify()) {
-                        mediaPlayer.pause(false, true);
-                    } else {
-                        mediaPlayer.pause(true, true);
-                    }
+                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
                 } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
                 } else if (status == PlayerStatus.PREPARING) {
@@ -437,12 +433,7 @@ public class PlaybackService extends Service {
                 break;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(false, true);
-                }
-                if (UserPreferences.isPersistNotify()) {
-                    mediaPlayer.pause(false, true);
-                } else {
-                    mediaPlayer.pause(true, true);
+                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
                 }
 
                 break;
@@ -674,16 +665,15 @@ public class PlaybackService extends Service {
         }
 
         @Override
-        public boolean endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-            PlaybackService.this.endPlayback(playNextEpisode, wasSkipped, switchingPlayers);
+        public boolean endPlayback(Playable media, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
+            PlaybackService.this.endPlayback(media, playNextEpisode, wasSkipped, switchingPlayers);
             return true;
         }
     };
 
-    private void endPlayback(boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
+    private void endPlayback(final Playable playable, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
         Log.d(TAG, "Playback ended");
 
-        final Playable playable = mediaPlayer.getPlayable();
         if (playable == null) {
             Log.e(TAG, "Cannot end playback: media was null");
             return;
@@ -698,37 +688,40 @@ public class PlaybackService extends Service {
             FeedMedia media = (FeedMedia) playable;
             FeedItem item = media.getItem();
 
-            try {
-                final List<FeedItem> queue = taskManager.getQueue();
-                isInQueue = QueueAccess.ItemListAccess(queue).contains(item.getId());
-                nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                // isInQueue remains false
-            }
+            if (!switchingPlayers) {
+                try {
+                    final List<FeedItem> queue = taskManager.getQueue();
+                    isInQueue = QueueAccess.ItemListAccess(queue).contains(item.getId());
+                    nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    // isInQueue remains false
+                }
 
-            boolean shouldKeep = wasSkipped && UserPreferences.shouldSkipKeepEpisode();
+                boolean shouldKeep = wasSkipped && UserPreferences.shouldSkipKeepEpisode();
 
-            if (!shouldKeep) {
-                // only mark the item as played if we're not keeping it anyways
-                DBWriter.markItemPlayed(item, FeedItem.PLAYED, true);
+                if (!shouldKeep) {
+                    // only mark the item as played if we're not keeping it anyways
+                    DBWriter.markItemPlayed(item, FeedItem.PLAYED, true);
 
-                if (isInQueue) {
-                    DBWriter.removeQueueItem(PlaybackService.this, item, true);
+                    if (isInQueue) {
+                        DBWriter.removeQueueItem(PlaybackService.this, item, true);
+                    }
+                }
+
+                // Delete episode if enabled
+                if (item.getFeed().getPreferences().getCurrentAutoDelete() && !shouldKeep) {
+                    DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
+                    Log.d(TAG, "Episode Deleted");
                 }
             }
+
 
             DBWriter.addItemToPlaybackHistory(media);
 
             // auto-flattr if enabled
             if (isAutoFlattrable(media) && UserPreferences.getAutoFlattrPlayedDurationThreshold() == 1.0f) {
                 DBTasks.flattrItemIfLoggedIn(PlaybackService.this, item);
-            }
-
-            // Delete episode if enabled
-            if(item.getFeed().getPreferences().getCurrentAutoDelete() && !shouldKeep ) {
-                DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
-                Log.d(TAG, "Episode Deleted");
             }
 
             // gpodder play action
@@ -744,49 +737,49 @@ public class PlaybackService extends Service {
             }
         }
 
-        // Load next episode if previous episode was in the queue and if there
-        // is an episode in the queue left.
-        // Start playback immediately if continuous playback is enabled
-        Playable nextMedia = null;
-        boolean loadNextItem = ClientConfig.playbackServiceCallbacks.useQueue() &&
-                isInQueue &&
-                nextItem != null;
+        if (!switchingPlayers) {
+            // Load next episode if previous episode was in the queue and if there
+            // is an episode in the queue left.
+            // Start playback immediately if continuous playback is enabled
+            Playable nextMedia = null;
+            boolean loadNextItem = ClientConfig.playbackServiceCallbacks.useQueue() &&
+                    isInQueue &&
+                    nextItem != null;
 
-        playNextEpisode = playNextEpisode &&
-                loadNextItem &&
-                UserPreferences.isFollowQueue();
+            playNextEpisode = playNextEpisode &&
+                    loadNextItem &&
+                    UserPreferences.isFollowQueue();
 
-        if (loadNextItem) {
-            Log.d(TAG, "Loading next item in queue");
-            nextMedia = nextItem.getMedia();
-        }
-        final boolean prepareImmediately;
-        final boolean startWhenPrepared;
-        final boolean stream;
-
-        if (playNextEpisode) {
-            Log.d(TAG, "Playback of next episode will start immediately.");
-            prepareImmediately = startWhenPrepared = true;
-        } else {
-            Log.d(TAG, "No more episodes available to play");
-            prepareImmediately = startWhenPrepared = false;
-            stopForeground(true);
-            stopWidgetUpdater();
-        }
-
-        writePlaybackPreferencesNoMediaPlaying();
-        if (nextMedia != null) {
-            stream = !nextMedia.localFileAvailable();
-            mediaPlayer.playMediaObject(nextMedia, stream, startWhenPrepared, prepareImmediately);
-            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-                    isCasting ? EXTRA_CODE_CAST :
-                    (nextMedia.getMediaType() == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
-        } else {
-            if (!switchingPlayers) {
-                sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
+            if (loadNextItem) {
+                Log.d(TAG, "Loading next item in queue");
+                nextMedia = nextItem.getMedia();
             }
-            mediaPlayer.stop();
-            //stopSelf();
+            final boolean prepareImmediately;
+            final boolean startWhenPrepared;
+            final boolean stream;
+
+            if (playNextEpisode) {
+                Log.d(TAG, "Playback of next episode will start immediately.");
+                prepareImmediately = startWhenPrepared = true;
+            } else {
+                Log.d(TAG, "No more episodes available to play");
+                prepareImmediately = startWhenPrepared = false;
+                stopForeground(true);
+                stopWidgetUpdater();
+            }
+
+            writePlaybackPreferencesNoMediaPlaying();
+            if (nextMedia != null) {
+                stream = !nextMedia.localFileAvailable();
+                mediaPlayer.playMediaObject(nextMedia, stream, startWhenPrepared, prepareImmediately);
+                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
+                        isCasting ? EXTRA_CODE_CAST :
+                                (nextMedia.getMediaType() == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
+            } else {
+                sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
+                mediaPlayer.stop();
+                //stopSelf();
+            }
         }
     }
 
@@ -1024,8 +1017,8 @@ public class PlaybackService extends Service {
                                     .centerCrop()
                                     .into(iconSize, iconSize)
                                     .get();
-                        } catch(Throwable tr) {
-                            Log.e(TAG, Log.getStackTraceString(tr));
+                        } catch (Throwable tr) {
+                            Log.e(TAG, "Error loading the media icon for the notification", tr);
                         }
                     }
                 }
@@ -1300,11 +1293,7 @@ public class PlaybackService extends Service {
             if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
                 transientPause = true;
             }
-            if (UserPreferences.isPersistNotify()) {
-                mediaPlayer.pause(false, true);
-            } else {
-                mediaPlayer.pause(true, true);
-            }
+            mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
         }
     }
 
