@@ -239,7 +239,11 @@ public class FeedInfoActivity extends ActionBarActivity {
                 }
             }
         };
-        loadTask.execute(feedId);
+        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+            loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, feedId);
+        } else {
+            loadTask.execute(feedId);
+        }
     }
 
 
