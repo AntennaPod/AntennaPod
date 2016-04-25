@@ -132,7 +132,8 @@ public class StorageErrorActivity extends AppCompatActivity {
         List<String> folders = new ArrayList<>(mediaDirs.length);
         List<CharSequence> choices = new ArrayList<>(mediaDirs.length);
         for(int i=0; i < mediaDirs.length; i++) {
-            if(mediaDirs[i] == null) {
+            File dir = mediaDirs[i];
+            if(dir == null || !dir.exists() || !dir.canRead() || !dir.canWrite()) {
                 continue;
             }
             String path = mediaDirs[i].getAbsolutePath();
