@@ -577,12 +577,13 @@ public final class DBTasks {
                         item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
                         savedFeed.getItems().add(idx, item);
 
-                        // only mark the item new if it actually occurs
-                        // before the most recent item (before we started adding things)
+                        // only mark the item new if it was published after or at the same time
+                        // as the most recent item
                         // (if the most recent date is null then we can assume there are no items
                         // and this is the first, hence 'new')
                         if (priorMostRecentDate == null ||
-                                priorMostRecentDate.before(item.getPubDate())) {
+                                priorMostRecentDate.before(item.getPubDate()) ||
+                                priorMostRecentDate.equals(item.getPubDate())) {
                             Log.d(TAG, "Marking item published on " + item.getPubDate() +
                                     " new, prior most recent date = " + priorMostRecentDate);
                             item.setNew();
