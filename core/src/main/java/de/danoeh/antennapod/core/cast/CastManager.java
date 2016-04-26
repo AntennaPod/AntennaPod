@@ -386,6 +386,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         return remoteMediaPlayer.getApproximateStreamPosition();
     }
 
+    public int getApplicationStandbyState() throws IllegalStateException {
+        Log.d(TAG, "getApplicationStandbyState()");
+        return Cast.CastApi.getStandbyState(mApiClient);
+    }
+
     private void onApplicationDisconnected(int errorCode) {
         Log.d(TAG, "onApplicationDisconnected() reached with error code: " + errorCode);
         mApplicationErrorCode = errorCode;
@@ -1448,6 +1453,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         mediaStatus = remoteMediaPlayer.getMediaStatus();
         if (mediaStatus == null) {
             Log.d(TAG, "MediaStatus is null, so will not proceed");
+            return;
         } else {
             List<MediaQueueItem> queueItems = mediaStatus.getQueueItems();
             if (queueItems != null) {
