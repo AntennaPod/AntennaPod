@@ -7,7 +7,6 @@ import android.view.View;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 
 /**
@@ -21,7 +20,7 @@ public class CastplayerActivity extends MediaplayerInfoActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!CastManager.getInstance().isConnected()) {
+        if (!PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(CastplayerActivity.class.getName())) {
                 startActivity(intent);
@@ -53,5 +52,16 @@ public class CastplayerActivity extends MediaplayerInfoActivity {
             butCastDisconnect.setOnClickListener(v -> castManager.disconnect());
             butCastDisconnect.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        if (!PlaybackService.isCasting()) {
+            Intent intent = PlaybackService.getPlayerActivityIntent(this);
+            if (!intent.getComponent().getClassName().equals(CastplayerActivity.class.getName())) {
+                startActivity(intent);
+            }
+        }
+        super.onResume();
     }
 }

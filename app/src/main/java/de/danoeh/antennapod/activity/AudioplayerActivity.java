@@ -8,7 +8,6 @@ import android.view.View;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -39,7 +38,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
                     true);
             startService(launchIntent);
-        } else if (CastManager.getInstance().isConnected()) {
+        } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(AudioplayerActivity.class.getName())) {
                 startActivity(intent);

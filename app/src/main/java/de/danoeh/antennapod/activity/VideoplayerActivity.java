@@ -23,7 +23,6 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -84,7 +83,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
                     true);
             startService(launchIntent);
-        } else if (CastManager.getInstance().isConnected()) {
+        } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
                 startActivity(intent);
