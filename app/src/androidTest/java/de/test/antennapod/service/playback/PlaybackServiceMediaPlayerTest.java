@@ -176,7 +176,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -255,7 +255,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -337,7 +337,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -420,7 +420,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -497,7 +497,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -575,7 +575,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -655,7 +655,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -738,7 +738,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -796,7 +796,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         }
 
         @Override
-        public void updateMediaSessionMetadata(Playable p) {
+        public void reloadUI() {
 
         }
 
@@ -874,7 +874,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -989,7 +989,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -1081,7 +1081,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 
@@ -1185,7 +1185,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void updateMediaSessionMetadata(Playable p) {
+            public void reloadUI() {
 
             }
 

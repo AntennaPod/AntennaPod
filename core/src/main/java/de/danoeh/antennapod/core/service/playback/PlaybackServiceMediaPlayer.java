@@ -321,7 +321,7 @@ public abstract class PlaybackServiceMediaPlayer {
 
         void onBufferingUpdate(int percent);
 
-        void updateMediaSessionMetadata(Playable p);
+        void reloadUI();
 
         boolean onMediaPlayerInfo(int code);
 

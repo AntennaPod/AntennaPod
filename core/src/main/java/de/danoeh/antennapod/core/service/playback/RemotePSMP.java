@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
+import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastStatusCodes;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaStatus;
@@ -14,9 +15,6 @@ import com.google.android.libraries.cast.companionlibrary.cast.exceptions.CastEx
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.NoConnectionException;
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.TransientNetworkDisconnectionException;
 
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.cast.CastConsumer;
@@ -46,8 +44,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     private final AtomicBoolean startWhenPrepared;
 
-    private final ThreadPoolExecutor executor;
-
     public RemotePSMP(@NonNull Context context, @NonNull PSMPCallback callback) {
         super(context, callback);
 
@@ -56,9 +52,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         mediaType = null;
         startWhenPrepared = new AtomicBoolean(false);
         isBuffering = new AtomicBoolean(false);
-
-        executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
-                (r, executor) -> Log.d(TAG, "Rejected execution of runnable"));
 
         try {
             if (castMgr.isConnected() && castMgr.isRemoteMediaLoaded()) {
@@ -107,6 +100,26 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "onMediaLoadResult called, but Player Status wasn't in preparing state, so we ignore the result");
             }
         }
+
+        @Override
+        public void onApplicationStatusChanged(String appStatus) {
+            if (playerStatus != PlayerStatus.PLAYING) {
+                Log.d(TAG, "onApplicationStatusChanged, but no media was playing");
+                return;
+            }
+            boolean playbackEnded = false;
+            try {
+                int standbyState = castMgr.getApplicationStandbyState();
+                Log.d(TAG, "standbyState: " + standbyState);
+                playbackEnded = standbyState == Cast.STANDBY_STATE_YES;
+            } catch (IllegalStateException e) {
+                Log.d(TAG, "unable to get standbyState on onApplicationStatusChanged()");
+            }
+            if (playbackEnded) {
+                setPlayerStatus(PlayerStatus.INDETERMINATE, media);
+                callback.endPlayback(media, true, false, false);
+            }
+        }
     };
 
     private void setBuffering(boolean buffering) {
@@ -147,13 +160,14 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         MediaStatus status = castMgr.getMediaStatus();
         if (status == null) {
             Log.d(TAG, "Received null MediaStatus");
-            setBuffering(false);
-            setPlayerStatus(PlayerStatus.INDETERMINATE, null);
+            //setBuffering(false);
+            //setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             return;
         } else {
             Log.d(TAG, "Received remote status/media update. New state=" + status.getPlayerState());
         }
         Playable currentMedia = localVersion(status.getMediaInfo());
+        boolean updateUI = currentMedia != media;
         if (currentMedia != null) {
             long position = status.getStreamPosition();
             if (position > 0 && currentMedia.getPosition() == 0) {
@@ -176,10 +190,20 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 int reason = status.getIdleReason();
                 switch (reason) {
                     case MediaStatus.IDLE_REASON_CANCELED:
-                        setPlayerStatus(PlayerStatus.STOPPED, currentMedia);
+                        // check if we're already loading something else
+                        if (!updateUI || media == null) {
+                            setPlayerStatus(PlayerStatus.STOPPED, currentMedia);
+                        } else {
+                            updateUI = false;
+                        }
                         break;
                     case MediaStatus.IDLE_REASON_INTERRUPTED:
-                        setPlayerStatus(PlayerStatus.PREPARING, currentMedia);
+                        // check if we're already loading something else
+                        if (!updateUI || media == null) {
+                            setPlayerStatus(PlayerStatus.PREPARING, currentMedia);
+                        } else {
+                            updateUI = false;
+                        }
                         break;
                     case MediaStatus.IDLE_REASON_NONE:
                         setPlayerStatus(PlayerStatus.INITIALIZED, currentMedia);
@@ -188,11 +212,15 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                         boolean playing = playerStatus == PlayerStatus.PLAYING;
                         setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
                         endPlaybackCall.endPlayback(currentMedia,playing, false, false);
+                        // endPlayback already updates the UI, so no need to trigger it ourselves
+                        updateUI = false;
                         break;
                     case MediaStatus.IDLE_REASON_ERROR:
                         Log.w(TAG, "Got an error status from the Chromecast. Skipping, if possible, to the next episode...");
                         setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
                         endPlaybackCall.endPlayback(currentMedia, startWhenPrepared.get(), true, false);
+                        // endPlayback already updates the UI, so no need to trigger it ourselves
+                        updateUI = false;
                 }
                 break;
             case MediaStatus.PLAYER_STATE_UNKNOWN:
@@ -202,6 +230,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             default:
                 Log.e(TAG, "Remote media state undetermined!");
                 setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
+        }
+        if (updateUI) {
+            callback.reloadUI();
         }
     }
 
@@ -257,7 +288,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
             media.loadMetadata();
-            executor.execute(() -> callback.updateMediaSessionMetadata(media));
+            callback.reloadUI();
             setPlayerStatus(PlayerStatus.INITIALIZED, media);
             if (prepareImmediately) {
                 prepare();
@@ -471,13 +502,11 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void shutdown() {
         castMgr.removeCastConsumer(castConsumer);
-        executor.shutdown();
     }
 
     @Override
     public void shutdownQuietly() {
-        executor.execute(this::shutdown);
-        executor.shutdown();
+        shutdown();
     }
 
     @Override
@@ -512,6 +541,18 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     public void endPlayback(boolean wasSkipped, boolean switchingPlayers) {
         Log.d(TAG, "endPlayback() called");
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
+        try {
+            isPlaying = castMgr.isRemoteMediaPlaying();
+        } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
+            Log.e(TAG, "Could not determine if media is playing", e);
+        }
+        if (wasSkipped) {
+            try {
+                castMgr.stop();
+            } catch (CastException | TransientNetworkDisconnectionException | NoConnectionException e) {
+                Log.e(TAG, "Could not stop remote playback when skipping", e);
+            }
+        }
         if (playerStatus != PlayerStatus.INDETERMINATE) {
             setPlayerStatus(PlayerStatus.INDETERMINATE, media);
         }

@@ -22,10 +22,10 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.annotation.NonNull;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.media.MediaRouter;
 import android.text.TextUtils;
@@ -39,6 +39,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.libraries.cast.companionlibrary.cast.BaseCastManager;
 
@@ -633,8 +634,9 @@ public class PlaybackService extends Service {
         }
 
         @Override
-        public void updateMediaSessionMetadata(Playable p) {
-            PlaybackService.this.updateMediaSessionMetadata(p);
+        public void reloadUI() {
+            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+            PlaybackService.this.updateMediaSessionMetadata(getPlayable());
         }
 
         @Override
@@ -672,7 +674,7 @@ public class PlaybackService extends Service {
     };
 
     private void endPlayback(final Playable playable, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-        Log.d(TAG, "Playback ended");
+        Log.d(TAG, "Playback ended" + (switchingPlayers ? " from switching players": ""));
 
         if (playable == null) {
             Log.e(TAG, "Cannot end playback: media was null");
@@ -707,12 +709,12 @@ public class PlaybackService extends Service {
                     if (isInQueue) {
                         DBWriter.removeQueueItem(PlaybackService.this, item, true);
                     }
-                }
 
-                // Delete episode if enabled
-                if (item.getFeed().getPreferences().getCurrentAutoDelete() && !shouldKeep) {
-                    DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
-                    Log.d(TAG, "Episode Deleted");
+                    // Delete episode if enabled
+                    if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
+                        DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
+                        Log.d(TAG, "Episode Deleted");
+                    }
                 }
             }
 
@@ -904,11 +906,6 @@ public class PlaybackService extends Service {
     }
 
     /**
-     * Used by setupNotification to load notification data in another thread.
-     */
-    private Thread notificationSetupThread;
-
-    /**
      * Updates the Media Session for the corresponding status.
      * @param playerStatus the current {@link PlayerStatus}
      */
@@ -957,36 +954,67 @@ public class PlaybackService extends Service {
         mediaSession.setPlaybackState(sessionState.build());
     }
 
-    private void updateMediaSessionMetadata(Playable p) {
+    /**
+     * Used by updateMediaSessionMetadata to load notification data in another thread.
+     */
+    private Thread mediaSessionSetupThread;
+
+    private void updateMediaSessionMetadata(final Playable p) {
         if (p == null || mediaSession == null) {
             return;
         }
-        MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
-        builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
-        builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
-        builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
-        builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
-        builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
-
-        if (p.getImageUri() != null && UserPreferences.setLockscreenBackground()) {
-            builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageUri().toString());
-            try {
-                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-                Display display = wm.getDefaultDisplay();
-                Bitmap art = Glide.with(this)
-                        .load(p.getImageUri())
-                        .asBitmap()
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .centerCrop()
-                        .into(display.getWidth(), display.getHeight())
-                        .get();
-                builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-            } catch (Throwable tr) {
-                Log.e(TAG, Log.getStackTraceString(tr));
-            }
+        if (mediaSessionSetupThread != null) {
+            mediaSessionSetupThread.interrupt();
         }
-        mediaSession.setMetadata(builder.build());
+
+        Runnable mediaSessionSetupTask = () -> {
+            MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
+            builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
+            builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
+            builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
+            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
+            builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
+
+            if (p.getImageUri() != null && UserPreferences.setLockscreenBackground()) {
+                builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageUri().toString());
+                try {
+                    if (isCasting) {
+                        Bitmap art = Glide.with(this)
+                                .load(p.getImageUri())
+                                .asBitmap()
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                .get();
+                        builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
+                    } else {
+                        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+                        Display display = wm.getDefaultDisplay();
+                        Bitmap art = Glide.with(this)
+                                .load(p.getImageUri())
+                                .asBitmap()
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .centerCrop()
+                                .into(display.getWidth(), display.getHeight())
+                                .get();
+                        builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
+                    }
+                } catch (Throwable tr) {
+                    Log.e(TAG, Log.getStackTraceString(tr));
+                }
+            }
+            if (!Thread.currentThread().isInterrupted() && started) {
+                mediaSession.setMetadata(builder.build());
+            }
+        };
+
+        mediaSessionSetupThread = new Thread(mediaSessionSetupTask);
+        mediaSessionSetupThread.start();
     }
+
+    /**
+     * Used by setupNotification to load notification data in another thread.
+     */
+    private Thread notificationSetupThread;
 
     /**
      * Prepares notification and starts the service in the foreground.
