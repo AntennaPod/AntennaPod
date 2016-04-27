@@ -18,12 +18,12 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
 class CoverTarget extends GlideDrawableImageViewTarget {
 
-    private final WeakReference<Uri> fallback;
+    private final WeakReference<String> fallback;
     private final WeakReference<TextView> placeholder;
     private final WeakReference<ImageView> cover;
     private final WeakReference<MainActivity> mainActivity;
 
-    public CoverTarget(Uri fallbackUri, TextView txtvPlaceholder, ImageView imgvCover, MainActivity activity) {
+    public CoverTarget(String fallbackUri, TextView txtvPlaceholder, ImageView imgvCover, MainActivity activity) {
         super(imgvCover);
         fallback = new WeakReference<>(fallbackUri);
         placeholder = new WeakReference<>(txtvPlaceholder);
@@ -33,7 +33,7 @@ class CoverTarget extends GlideDrawableImageViewTarget {
 
     @Override
     public void onLoadFailed(Exception e, Drawable errorDrawable) {
-        Uri fallbackUri = fallback.get();
+        String fallbackUri = fallback.get();
         TextView txtvPlaceholder = placeholder.get();
         ImageView imgvCover = cover.get();
         if (fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {

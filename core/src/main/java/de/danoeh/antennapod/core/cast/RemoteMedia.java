@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.android.gms.cast.MediaInfo;
@@ -267,11 +268,9 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public Uri getImageUri() {
-        if (imageUrl != null) {
-            return Uri.parse(imageUrl);
-        }
-        return null;
+    @Nullable
+    public String getImageLocation() {
+        return imageUrl;
     }
 
     @Override

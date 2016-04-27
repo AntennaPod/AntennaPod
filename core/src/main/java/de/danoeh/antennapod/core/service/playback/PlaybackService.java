@@ -988,12 +988,12 @@ public class PlaybackService extends Service {
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
             builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
 
-            if (p.getImageUri() != null && UserPreferences.setLockscreenBackground()) {
-                builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageUri().toString());
+            if (p.getImageLocation() != null && UserPreferences.setLockscreenBackground()) {
+                builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageLocation().toString());
                 try {
                     if (isCasting) {
                         Bitmap art = Glide.with(this)
-                                .load(p.getImageUri())
+                                .load(p.getImageLocation())
                                 .asBitmap()
                                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
@@ -1003,7 +1003,7 @@ public class PlaybackService extends Service {
                         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
                         Display display = wm.getDefaultDisplay();
                         Bitmap art = Glide.with(this)
-                                .load(p.getImageUri())
+                                .load(p.getImageLocation())
                                 .asBitmap()
                                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .centerCrop()
@@ -1052,7 +1052,7 @@ public class PlaybackService extends Service {
                                 android.R.dimen.notification_large_icon_width);
                         try {
                             icon = Glide.with(PlaybackService.this)
-                                    .load(info.playable.getImageUri())
+                                    .load(info.playable.getImageLocation())
                                     .asBitmap()
                                     .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                     .centerCrop()

@@ -513,7 +513,7 @@ public class ItemlistFragment extends ListFragment {
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
         Glide.with(getActivity())
-                .load(feed.getImageUri())
+                .load(feed.getImageLocation())
                 .placeholder(R.color.image_readability_tint)
                 .error(R.color.image_readability_tint)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
@@ -522,7 +522,7 @@ public class ItemlistFragment extends ListFragment {
                 .into(imgvBackground);
 
         Glide.with(getActivity())
-                .load(feed.getImageUri())
+                .load(feed.getImageLocation())
                 .placeholder(R.color.light_gray)
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)

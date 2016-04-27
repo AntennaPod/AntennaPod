@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
-import android.net.Uri;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -374,13 +373,13 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     }
 
     @Override
-    public Uri getImageUri() {
+    public String getImageLocation() {
         if(media != null && media.hasEmbeddedPicture()) {
-            return media.getImageUri();
+            return media.getImageLocation();
         } else if (image != null) {
-           return image.getImageUri();
+           return image.getImageLocation();
         } else if (feed != null) {
-            return feed.getImageUri();
+            return feed.getImageLocation();
         } else {
             return null;
         }
