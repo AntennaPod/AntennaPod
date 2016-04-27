@@ -1009,7 +1009,7 @@ public class DownloadService extends Service {
             }
             media.setDownloaded(true);
             media.setFile_url(request.getDestination());
-            media.setHasEmbeddedPicture(null);
+            media.checkEmbeddedPicture(); // enforce check
 
             // check if file has chapters
             ChapterUtils.loadChaptersFromFileUrl(media);
