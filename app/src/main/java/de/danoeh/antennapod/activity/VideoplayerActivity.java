@@ -86,6 +86,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
+                finish();
                 startActivity(intent);
             }
         }

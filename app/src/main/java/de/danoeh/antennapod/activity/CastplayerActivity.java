@@ -23,6 +23,7 @@ public class CastplayerActivity extends MediaplayerInfoActivity {
         if (!PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(CastplayerActivity.class.getName())) {
+                finish();
                 startActivity(intent);
             }
         }
@@ -32,6 +33,7 @@ public class CastplayerActivity extends MediaplayerInfoActivity {
     protected void onReloadNotification(int notificationCode) {
         if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
             Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
+            saveCurrentFragment();
             finish();
             startActivity(new Intent(this, AudioplayerActivity.class));
         } else {
@@ -59,6 +61,8 @@ public class CastplayerActivity extends MediaplayerInfoActivity {
         if (!PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(CastplayerActivity.class.getName())) {
+                saveCurrentFragment();
+                finish();
                 startActivity(intent);
             }
         }

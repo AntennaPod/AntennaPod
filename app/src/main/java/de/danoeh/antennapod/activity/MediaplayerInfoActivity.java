@@ -134,7 +134,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         setTheme(UserPreferences.getNoTitleTheme());
     }
 
-    private void saveCurrentFragment() {
+    protected void saveCurrentFragment() {
         if(pager == null) {
             return;
         }
