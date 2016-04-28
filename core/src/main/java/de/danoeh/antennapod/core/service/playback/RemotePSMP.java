@@ -17,6 +17,7 @@ import com.google.android.libraries.cast.companionlibrary.cast.exceptions.Transi
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.cast.CastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.CastUtils;
@@ -33,6 +34,10 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     public static final String TAG = "RemotePSMP";
+
+    public static final int CAST_ERROR = 3001;
+
+    public static final int CAST_ERROR_PRIORITY_HIGH = 3005;
 
     private final CastManager castMgr;
 
@@ -120,13 +125,18 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 callback.endPlayback(media, true, false, false);
             }
         }
+
+        @Override
+        public void onFailed(int resourceId, int statusCode) {
+            callback.onMediaPlayerInfo(CAST_ERROR, resourceId);
+        }
     };
 
     private void setBuffering(boolean buffering) {
         if (buffering && isBuffering.compareAndSet(false, true)) {
-            callback.onMediaPlayerInfo(MediaPlayer.MEDIA_INFO_BUFFERING_START);
+            callback.onMediaPlayerInfo(MediaPlayer.MEDIA_INFO_BUFFERING_START, 0);
         } else if (!buffering && isBuffering.compareAndSet(true, false)) {
-            callback.onMediaPlayerInfo(MediaPlayer.MEDIA_INFO_BUFFERING_END);
+            callback.onMediaPlayerInfo(MediaPlayer.MEDIA_INFO_BUFFERING_END, 0);
         }
     }
 
@@ -218,6 +228,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                     case MediaStatus.IDLE_REASON_ERROR:
                         Log.w(TAG, "Got an error status from the Chromecast. Skipping, if possible, to the next episode...");
                         setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
+                        callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH,
+                                R.string.cast_failed_media_error_skipping);
                         endPlaybackCall.endPlayback(currentMedia, startWhenPrepared.get(), true, false);
                         // endPlayback already updates the UI, so no need to trigger it ourselves
                         updateUI = false;
@@ -251,6 +263,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     private void playMediaObject(@NonNull final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (!CastUtils.isCastable(playable)) {
             Log.d(TAG, "media provided is not compatible with cast device");
+            callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH, R.string.cast_not_castable);
+            callback.endPlayback(playable, startWhenPrepared, true, false);
             return;
         }
 

@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -185,11 +186,14 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     }
 
     @Override
-    protected void postStatusMsg(int resId) {
+    protected void postStatusMsg(int resId, boolean showToast) {
         if (resId == R.string.player_preparing_msg
                 || resId == R.string.player_seeking_msg
                 || resId == R.string.player_buffering_msg) {
             // TODO Show progress bar here
+        }
+        if (showToast) {
+            Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -305,7 +309,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
     @Override
     protected void onBufferStart() {
-        postStatusMsg(R.string.player_buffering_msg);
+        postStatusMsg(R.string.player_buffering_msg, false);
     }
 
     @Override

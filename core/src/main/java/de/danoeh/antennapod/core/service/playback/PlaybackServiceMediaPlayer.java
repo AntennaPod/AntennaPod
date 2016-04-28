@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.service.playback;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
@@ -323,7 +324,7 @@ public abstract class PlaybackServiceMediaPlayer {
 
         void reloadUI();
 
-        boolean onMediaPlayerInfo(int code);
+        boolean onMediaPlayerInfo(int code, @StringRes int resourceId);
 
         boolean onMediaPlayerError(Object inObj, int what, int extra);
 

@@ -23,6 +23,7 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -169,6 +170,11 @@ public class PlaybackService extends Service {
      * Ability to set the playback speed has changed
      */
     public static final int NOTIFICATION_TYPE_SET_SPEED_ABILITY_CHANGED = 9;
+
+    /**
+     * Send a message to the user (with provided String resource id)
+     */
+    public static final int NOTIFICATION_TYPE_SHOW_TOAST = 10;
 
     /**
      * Returned by getPositionSafe() or getDurationSafe() if the playbackService
@@ -641,13 +647,19 @@ public class PlaybackService extends Service {
         }
 
         @Override
-        public boolean onMediaPlayerInfo(int code) {
+        public boolean onMediaPlayerInfo(int code, @StringRes int resourceId) {
             switch (code) {
                 case MediaPlayer.MEDIA_INFO_BUFFERING_START:
                     sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_START, 0);
                     return true;
                 case MediaPlayer.MEDIA_INFO_BUFFERING_END:
                     sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_END, 0);
+                    return true;
+                case RemotePSMP.CAST_ERROR:
+                    sendNotificationBroadcast(NOTIFICATION_TYPE_SHOW_TOAST, resourceId);
+                    return true;
+                case RemotePSMP.CAST_ERROR_PRIORITY_HIGH:
+                    Toast.makeText(PlaybackService.this, resourceId, Toast.LENGTH_SHORT).show();
                     return true;
                 default:
                     return false;

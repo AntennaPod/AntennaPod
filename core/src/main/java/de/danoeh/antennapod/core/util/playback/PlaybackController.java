@@ -338,6 +338,9 @@ public abstract class PlaybackController {
                     break;
                 case PlaybackService.NOTIFICATION_TYPE_SET_SPEED_ABILITY_CHANGED:
                     onSetSpeedAbilityChanged();
+                    break;
+                case PlaybackService.NOTIFICATION_TYPE_SHOW_TOAST:
+                    postStatusMsg(code, true);
             }
         }
 
@@ -416,7 +419,7 @@ public abstract class PlaybackController {
         Log.d(TAG, "status: " + status.toString());
         switch (status) {
             case ERROR:
-                postStatusMsg(R.string.player_error_msg);
+                postStatusMsg(R.string.player_error_msg, false);
                 handleError(MediaPlayer.MEDIA_ERROR_UNKNOWN);
                 break;
             case PAUSED:
@@ -442,7 +445,7 @@ public abstract class PlaybackController {
                 updatePlayButtonAppearance(pauseResource, pauseText);
                 break;
             case PREPARING:
-                postStatusMsg(R.string.player_preparing_msg);
+                postStatusMsg(R.string.player_preparing_msg, false);
                 checkMediaInfoLoaded();
                 if (playbackService != null) {
                     if (playbackService.isStartWhenPrepared()) {
@@ -453,16 +456,16 @@ public abstract class PlaybackController {
                 }
                 break;
             case STOPPED:
-                postStatusMsg(R.string.player_stopped_msg);
+                postStatusMsg(R.string.player_stopped_msg, false);
                 break;
             case PREPARED:
                 checkMediaInfoLoaded();
-                postStatusMsg(R.string.player_ready_msg);
+                postStatusMsg(R.string.player_ready_msg, false);
                 updatePlayButtonAppearance(playResource, playText);
                 break;
             case SEEKING:
                 onPositionObserverUpdate();
-                postStatusMsg(R.string.player_seeking_msg);
+                postStatusMsg(R.string.player_seeking_msg, false);
                 break;
             case INITIALIZED:
                 checkMediaInfoLoaded();
@@ -488,7 +491,7 @@ public abstract class PlaybackController {
         return null;
     }
 
-    public void postStatusMsg(int msg) {}
+    public void postStatusMsg(int msg, boolean showToast) {}
 
     public void clearStatusMsg() {}
 

@@ -848,7 +848,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             (mp, what, extra) -> genericInfoListener(what);
 
     private boolean genericInfoListener(int what) {
-        return callback.onMediaPlayerInfo(what);
+        return callback.onMediaPlayerInfo(what, 0);
     }
 
     private final MediaPlayer.OnSpeedAdjustmentAvailableChangedListener audioSetSpeedAbilityListener =

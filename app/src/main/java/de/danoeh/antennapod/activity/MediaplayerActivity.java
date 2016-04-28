@@ -125,8 +125,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             }
 
             @Override
-            public void postStatusMsg(int msg) {
-                MediaplayerActivity.this.postStatusMsg(msg);
+            public void postStatusMsg(int msg, boolean showToast) {
+                MediaplayerActivity.this.postStatusMsg(msg, showToast);
             }
 
             @Override
@@ -585,7 +585,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
      */
     protected abstract void onAwaitingVideoSurface();
 
-    protected abstract void postStatusMsg(int resId);
+    protected abstract void postStatusMsg(int resId, boolean showToast);
 
     protected abstract void clearStatusMsg();
 

@@ -619,6 +619,7 @@
     <!-- Casting -->
     <string name="cast_media_route_menu_title">Play on&#8230;</string>
     <string name="cast_disconnect_label">Disconnect the cast session</string>
+    <string name="cast_not_castable">Media selected is not compatible with cast device</string>
     <string name="cast_failed_to_play">Failed to start the playback of media</string>
     <string name="cast_failed_to_stop">Failed to stop the playback of media</string>
     <string name="cast_failed_to_pause">Failed to pause the playback of media</string>
@@ -630,4 +631,5 @@
     <string name="cast_failed_status_request">Failed to sync up with the cast device</string>
     <string name="cast_failed_seek">Failed to seek to the new position on the cast device</string>
     <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>
+    <string name="cast_failed_media_error_skipping">Error playing media. Skipping&#8230;</string>
 </resources>

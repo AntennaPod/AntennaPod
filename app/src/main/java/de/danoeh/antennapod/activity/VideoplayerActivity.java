@@ -164,7 +164,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @Override
-    protected void postStatusMsg(int resId) {
+    protected void postStatusMsg(int resId, boolean showToast) {
         if (resId == R.string.player_preparing_msg) {
             progressIndicator.setVisibility(View.VISIBLE);
         } else {

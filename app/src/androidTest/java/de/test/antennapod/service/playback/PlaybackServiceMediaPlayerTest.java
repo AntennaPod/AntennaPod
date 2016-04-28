@@ -186,7 +186,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -265,7 +265,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -347,7 +347,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -430,7 +430,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -507,7 +507,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -585,7 +585,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -665,7 +665,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -748,7 +748,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -806,7 +806,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         }
 
         @Override
-        public boolean onMediaPlayerInfo(int code) { return false; }
+        public boolean onMediaPlayerInfo(int code, int resourceId) { return false; }
 
         @Override
         public boolean onMediaPlayerError(Object inObj, int what, int extra) {
@@ -884,7 +884,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -999,7 +999,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -1091,7 +1091,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
@@ -1195,7 +1195,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean onMediaPlayerInfo(int code) {
+            public boolean onMediaPlayerInfo(int code, int resourceId) {
                 return false;
             }
 
