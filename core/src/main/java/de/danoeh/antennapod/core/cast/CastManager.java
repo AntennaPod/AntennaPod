@@ -36,6 +36,7 @@ import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastStatusCodes;
 import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.MediaQueueItem;
 import com.google.android.gms.cast.MediaStatus;
 import com.google.android.gms.cast.RemoteMediaPlayer;
@@ -603,6 +604,8 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             throw new NoConnectionException();
         }
 
+        Log.d(TAG, "remoteMediaPlayer.load() with media=" + media.getMetadata().getString(MediaMetadata.KEY_TITLE)
+                + ", position=" + position + ", autoplay=" + autoPlay);
         remoteMediaPlayer.load(mApiClient, media, autoPlay, position, activeTracks, customData)
                 .setResultCallback(result -> {
                     for (CastConsumer consumer : castConsumers) {
@@ -649,6 +652,8 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             Log.e(TAG, "Trying to queue one or more videos with no active media session");
             throw new NoConnectionException();
         }
+        Log.d(TAG, "remoteMediaPlayer.queueLoad() with " + items.length + "items, starting at "
+                + startIndex);
         remoteMediaPlayer
                 .queueLoad(mApiClient, items, startIndex, repeatMode, customData)
                 .setResultCallback(result -> {
@@ -1231,6 +1236,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             Log.e(TAG, "Trying to seek a video with no active media session");
             throw new NoConnectionException();
         }
+        Log.d(TAG, "remoteMediaPlayer.seek() to position " + position);
         remoteMediaPlayer.seek(mApiClient,
                 position,
                 RESUME_STATE_UNCHANGED).
@@ -1276,6 +1282,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             Log.e(TAG, "Trying to seekAndPlay a video with no active media session");
             throw new NoConnectionException();
         }
+        Log.d(TAG, "remoteMediaPlayer.seek() to position " + position + "and play");
         remoteMediaPlayer.seek(mApiClient, position, RESUME_STATE_PLAY)
                 .setResultCallback(result -> {
                     if (!result.getStatus().isSuccess()) {
@@ -1323,9 +1330,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
 
             remoteMediaPlayer.setOnPreloadStatusUpdatedListener(
                     () -> {
-                        Log.d(TAG,
-                                "RemoteMediaPlayer::onPreloadStatusUpdated() is "
-                                        + "reached");
+                        Log.d(TAG, "RemoteMediaPlayer::onPreloadStatusUpdated() is reached");
                         CastManager.this.onRemoteMediaPreloadStatusUpdated();
                     });
 
@@ -1339,9 +1344,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
 
             remoteMediaPlayer.setOnQueueStatusUpdatedListener(
                     () -> {
-                        Log.d(TAG,
-                                "RemoteMediaPlayer::onQueueStatusUpdated() is "
-                                        + "reached");
+                        Log.d(TAG, "RemoteMediaPlayer::onQueueStatusUpdated() is reached");
                         mediaStatus = remoteMediaPlayer.getMediaStatus();
                         if (mediaStatus != null
                                 && mediaStatus.getQueueItems() != null) {
