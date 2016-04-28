@@ -190,14 +190,12 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 || resId == R.string.player_seeking_msg
                 || resId == R.string.player_buffering_msg) {
             // TODO Show progress bar here
-            sbPosition.setIndeterminate(true);
         }
     }
 
     @Override
     protected void clearStatusMsg() {
         // TODO Hide progress bar here
-        sbPosition.setIndeterminate(false);
     }
 
 
@@ -560,6 +558,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         private ChaptersFragment chaptersFragment;
 
         public void onMediaChanged(Playable media) {
+            Log.d(TAG, "media changing to " + media.getEpisodeTitle());
             this.media = media;
             if(coverFragment != null) {
                 coverFragment.onMediaChanged(media);

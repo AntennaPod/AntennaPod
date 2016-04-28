@@ -64,4 +64,16 @@ public class CastplayerActivity extends MediaplayerInfoActivity {
         }
         super.onResume();
     }
+
+    @Override
+    protected void onBufferStart() {
+        //sbPosition.setIndeterminate(true);
+        sbPosition.setEnabled(false);
+    }
+
+    @Override
+    protected void onBufferEnd() {
+        //sbPosition.setIndeterminate(false);
+        sbPosition.setEnabled(true);
+    }
 }
