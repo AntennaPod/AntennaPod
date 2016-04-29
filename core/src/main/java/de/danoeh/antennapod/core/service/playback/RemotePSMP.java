@@ -560,13 +560,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
             Log.e(TAG, "Could not determine if media is playing", e);
         }
-//        if (wasSkipped) {
-//            try {
-//                castMgr.stop();
-//            } catch (CastException | TransientNetworkDisconnectionException | NoConnectionException e) {
-//                Log.e(TAG, "Could not stop remote playback when skipping", e);
-//            }
-//        }
+        // TODO make sure we stop playback whenever there's no next episode.
         if (playerStatus != PlayerStatus.INDETERMINATE) {
             setPlayerStatus(PlayerStatus.INDETERMINATE, media);
         }
