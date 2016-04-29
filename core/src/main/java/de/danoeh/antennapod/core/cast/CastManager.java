@@ -1472,8 +1472,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
 
             if (state == MediaStatus.PLAYER_STATE_PLAYING) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = playing");
-                // long mediaDurationLeft = getMediaTimeRemaining();
-                //startReconnectionService(mediaDurationLeft);
             } else if (state == MediaStatus.PLAYER_STATE_PAUSED) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = paused");
             } else if (state == MediaStatus.PLAYER_STATE_IDLE) {
@@ -1484,7 +1482,6 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
                     Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): IDLE reason = ERROR");
                     onFailed(R.string.cast_failed_receiver_player_error, NO_STATUS_CODE);
                 }
-                //stopReconnectionService();
             } else if (state == MediaStatus.PLAYER_STATE_BUFFERING) {
                 Log.d(TAG, "onRemoteMediaPlayerStatusUpdated(): Player status = buffering");
             } else {
