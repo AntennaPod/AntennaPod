@@ -7,14 +7,14 @@ import android.view.View;
 import android.widget.ListView;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
+import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
 
-public class ChaptersFragment extends ListFragment implements AudioplayerContentFragment {
+public class ChaptersFragment extends ListFragment implements MediaplayerInfoContentFragment {
 
     private static final String TAG = "ChaptersFragment";
 

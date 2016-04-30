@@ -111,6 +111,7 @@ public class UserPreferences {
     public static final String PREF_SONIC = "prefSonic";
     public static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
     public static final String PREF_NORMALIZER = "prefNormalizer";
+    public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
@@ -799,5 +800,12 @@ public class UserPreferences {
      */
     public static int readEpisodeCacheSize(String valueFromPrefs) {
         return readEpisodeCacheSizeInternal(valueFromPrefs);
+    }
+
+    /**
+     * Evaluates whether Cast support (Chromecast, Audio Cast, etc) is enabled on the preferences.
+     */
+    public static boolean isCastEnabled() {
+        return prefs.getBoolean(PREF_CAST_ENABLED, false);
     }
 }

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
-import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,11 +16,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,7 +69,7 @@ import rx.schedulers.Schedulers;
 /**
  * The activity that is shown when the user launches the app.
  */
-public class MainActivity extends AppCompatActivity implements NavDrawerActivity {
+public class MainActivity extends CastEnabledActivity implements NavDrawerActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -123,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -504,6 +502,26 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     public void onLowMemory() {
         super.onLowMemory();
         Glide.get(this).clearMemory();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean retVal = super.onCreateOptionsMenu(menu);
+        switch (getLastNavFragment()) {
+            case QueueFragment.TAG:
+            case EpisodesFragment.TAG:
+                requestCastButton(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                return retVal;
+            case DownloadsFragment.TAG:
+            case PlaybackHistoryFragment.TAG:
+            case AddFeedFragment.TAG:
+            case SubscriptionFragment.TAG:
+                return retVal;
+            default:
+                requestCastButton(MenuItem.SHOW_AS_ACTION_NEVER);
+                return retVal;
+        }
+
     }
 
     @Override

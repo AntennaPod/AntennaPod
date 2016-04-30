@@ -403,6 +403,8 @@
     <string name="pref_faq">FAQ</string>
     <string name="pref_known_issues">Known issues</string>
     <string name="pref_no_browser_found">No web browser found.</string>
+    <string name="pref_cast_title">Cast support</string>
+    <string name="pref_cast_message">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -614,4 +616,20 @@
     <string name="proxy_host_invalid_error">Host is not a valid IP address or domain</string>
     <string name="proxy_port_invalid_error">Port not valid</string>
 
+    <!-- Casting -->
+    <string name="cast_media_route_menu_title">Play on&#8230;</string>
+    <string name="cast_disconnect_label">Disconnect the cast session</string>
+    <string name="cast_not_castable">Media selected is not compatible with cast device</string>
+    <string name="cast_failed_to_play">Failed to start the playback of media</string>
+    <string name="cast_failed_to_stop">Failed to stop the playback of media</string>
+    <string name="cast_failed_to_pause">Failed to pause the playback of media</string>
+    <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+    <string name="cast_failed_setting_volume">Failed to set the volume</string>
+    <string name="cast_failed_no_connection">No connection to the cast device is present</string>
+    <string name="cast_failed_no_connection_trans">Connection to the cast device has been lost. Application is trying to re-establish the connection, if possible. Please wait for a few seconds and try again.</string>
+    <string name="cast_failed_perform_action">Failed to perform the action</string>
+    <string name="cast_failed_status_request">Failed to sync up with the cast device</string>
+    <string name="cast_failed_seek">Failed to seek to the new position on the cast device</string>
+    <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>
+    <string name="cast_failed_media_error_skipping">Error playing media. Skipping&#8230;</string>
 </resources>

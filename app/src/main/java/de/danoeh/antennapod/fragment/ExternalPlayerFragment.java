@@ -172,7 +172,7 @@ public class ExternalPlayerFragment extends Fragment {
                         .into(imgvCover);
 
                 fragmentLayout.setVisibility(View.VISIBLE);
-                if (controller.isPlayingVideo()) {
+                if (controller.isPlayingVideoLocally()) {
                     butPlay.setVisibility(View.GONE);
                 } else {
                     butPlay.setVisibility(View.VISIBLE);

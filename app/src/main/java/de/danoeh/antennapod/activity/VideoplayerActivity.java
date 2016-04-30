@@ -83,6 +83,12 @@ public class VideoplayerActivity extends MediaplayerActivity {
             launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
                     true);
             startService(launchIntent);
+        } else if (PlaybackService.isCasting()) {
+            Intent intent = PlaybackService.getPlayerActivityIntent(this);
+            if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
+                finish();
+                startActivity(intent);
+            }
         }
     }
 
@@ -159,7 +165,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @Override
-    protected void postStatusMsg(int resId) {
+    protected void postStatusMsg(int resId, boolean showToast) {
         if (resId == R.string.player_preparing_msg) {
             progressIndicator.setVisibility(View.VISIBLE);
         } else {
@@ -257,6 +263,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
             Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
             finish();
             startActivity(new Intent(this, AudioplayerActivity.class));
+        } else if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
+            Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
+            finish();
+            startActivity(new Intent(this, CastplayerActivity.class));
         }
     }
 

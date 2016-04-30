@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import de.danoeh.antennapod.core.cast.RemoteMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -152,18 +153,7 @@ public class FeedMedia extends FeedFile implements Playable {
      * Uses mimetype to determine the type of media.
      */
     public MediaType getMediaType() {
-        if (mime_type == null || mime_type.isEmpty()) {
-            return MediaType.UNKNOWN;
-        } else {
-            if (mime_type.startsWith("audio")) {
-                return MediaType.AUDIO;
-            } else if (mime_type.startsWith("video")) {
-                return MediaType.VIDEO;
-            } else if (mime_type.equals("application/ogg")) {
-                return MediaType.AUDIO;
-            }
-        }
-        return MediaType.UNKNOWN;
+        return MediaType.fromMimeType(mime_type);
     }
 
     public void updateFromOther(FeedMedia other) {
@@ -578,5 +568,13 @@ public class FeedMedia extends FeedFile implements Playable {
             e.printStackTrace();
             hasEmbeddedPicture = Boolean.FALSE;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof RemoteMedia) {
+            return o.equals(this);
+        }
+        return super.equals(o);
     }
 }

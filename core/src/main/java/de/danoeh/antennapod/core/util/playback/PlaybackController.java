@@ -176,7 +176,7 @@ public abstract class PlaybackController {
         if(serviceBinder != null) {
             serviceBinder.unsubscribe();
         }
-        serviceBinder = Observable.fromCallable(() -> getPlayLastPlayedMediaIntent())
+        serviceBinder = Observable.fromCallable(this::getPlayLastPlayedMediaIntent)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(intent -> {
@@ -338,6 +338,9 @@ public abstract class PlaybackController {
                     break;
                 case PlaybackService.NOTIFICATION_TYPE_SET_SPEED_ABILITY_CHANGED:
                     onSetSpeedAbilityChanged();
+                    break;
+                case PlaybackService.NOTIFICATION_TYPE_SHOW_TOAST:
+                    postStatusMsg(code, true);
             }
         }
 
@@ -392,7 +395,7 @@ public abstract class PlaybackController {
     }
 
     /**
-     * Is called whenever the PlaybackService changes it's status. This method
+     * Is called whenever the PlaybackService changes its status. This method
      * should be used to update the GUI or start/cancel background threads.
      */
     private void handleStatus() {
@@ -401,7 +404,8 @@ public abstract class PlaybackController {
         final CharSequence playText = activity.getString(R.string.play_label);
         final CharSequence pauseText = activity.getString(R.string.pause_label);
 
-        if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO) {
+        if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO ||
+                PlaybackService.isCasting()) {
             TypedArray res = activity.obtainStyledAttributes(new int[]{
                     R.attr.av_play_big, R.attr.av_pause_big});
             playResource = res.getResourceId(0, R.drawable.ic_play_arrow_grey600_36dp);
@@ -415,7 +419,7 @@ public abstract class PlaybackController {
         Log.d(TAG, "status: " + status.toString());
         switch (status) {
             case ERROR:
-                postStatusMsg(R.string.player_error_msg);
+                postStatusMsg(R.string.player_error_msg, false);
                 handleError(MediaPlayer.MEDIA_ERROR_UNKNOWN);
                 break;
             case PAUSED:
@@ -424,14 +428,16 @@ public abstract class PlaybackController {
                 cancelPositionObserver();
                 onPositionObserverUpdate();
                 updatePlayButtonAppearance(playResource, playText);
-                if (PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                if (!PlaybackService.isCasting() &&
+                        PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     setScreenOn(false);
                 }
                 break;
             case PLAYING:
                 clearStatusMsg();
                 checkMediaInfoLoaded();
-                if (PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                if (!PlaybackService.isCasting() &&
+                        PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     onAwaitingVideoSurface();
                     setScreenOn(true);
                 }
@@ -439,7 +445,7 @@ public abstract class PlaybackController {
                 updatePlayButtonAppearance(pauseResource, pauseText);
                 break;
             case PREPARING:
-                postStatusMsg(R.string.player_preparing_msg);
+                postStatusMsg(R.string.player_preparing_msg, false);
                 checkMediaInfoLoaded();
                 if (playbackService != null) {
                     if (playbackService.isStartWhenPrepared()) {
@@ -450,16 +456,16 @@ public abstract class PlaybackController {
                 }
                 break;
             case STOPPED:
-                postStatusMsg(R.string.player_stopped_msg);
+                postStatusMsg(R.string.player_stopped_msg, false);
                 break;
             case PREPARED:
                 checkMediaInfoLoaded();
-                postStatusMsg(R.string.player_ready_msg);
+                postStatusMsg(R.string.player_ready_msg, false);
                 updatePlayButtonAppearance(playResource, playText);
                 break;
             case SEEKING:
                 onPositionObserverUpdate();
-                postStatusMsg(R.string.player_seeking_msg);
+                postStatusMsg(R.string.player_seeking_msg, false);
                 break;
             case INITIALIZED:
                 checkMediaInfoLoaded();
@@ -485,7 +491,7 @@ public abstract class PlaybackController {
         return null;
     }
 
-    public void postStatusMsg(int msg) {}
+    public void postStatusMsg(int msg, boolean showToast) {}
 
     public void clearStatusMsg() {}
 
@@ -502,8 +508,9 @@ public abstract class PlaybackController {
     private void queryService() {
         Log.d(TAG, "Querying service info");
         if (playbackService != null) {
-            status = playbackService.getStatus();
-            media = playbackService.getPlayable();
+            PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
+            status = info.playerStatus;
+            media = info.playable;
             /*
             if (media == null) {
                 Log.w(TAG,
@@ -712,8 +719,9 @@ public abstract class PlaybackController {
         }
     }
 
-    public boolean isPlayingVideo() {
-        return playbackService != null && PlaybackService.getCurrentMediaType() == MediaType.VIDEO;
+    public boolean isPlayingVideoLocally() {
+        return playbackService != null && PlaybackService.getCurrentMediaType() == MediaType.VIDEO
+                && !PlaybackService.isCasting();
     }
 
     public Pair<Integer, Integer> getVideoSize() {
@@ -745,6 +753,7 @@ public abstract class PlaybackController {
     public void reinitServiceIfPaused() {
         if (playbackService != null
                 && playbackService.isStreaming()
+                && !PlaybackService.isCasting()
                 && (playbackService.getStatus() == PlayerStatus.PAUSED ||
                 (playbackService.getStatus() == PlayerStatus.PREPARING &&
                         !playbackService.isStartWhenPrepared()))) {

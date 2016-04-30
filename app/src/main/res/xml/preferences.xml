@@ -293,5 +293,14 @@
             android:key="prefAbout"
             android:title="@string/about_pref"/>
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/experimental_pref">
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefCast"
+            android:summary="@string/pref_cast_message"
+            android:title="@string/pref_cast_title"/>
+    </PreferenceCategory>
     
 </PreferenceScreen>

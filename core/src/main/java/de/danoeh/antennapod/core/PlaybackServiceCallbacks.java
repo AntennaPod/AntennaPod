@@ -15,9 +15,10 @@ public interface PlaybackServiceCallbacks {
      * type of media that is being played.
      *
      * @param mediaType The type of media that is being played.
+     * @param remotePlayback true if the media is played on a remote device.
      * @return A non-null activity intent.
      */
-    Intent getPlayerActivityIntent(Context context, MediaType mediaType);
+    Intent getPlayerActivityIntent(Context context, MediaType mediaType, boolean remotePlayback);
 
     /**
      * Returns true if the PlaybackService should load new episodes from the queue when playback ends

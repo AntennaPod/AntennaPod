@@ -152,6 +152,21 @@
                     android:src="?attr/av_fast_forward"
                     android:textSize="@dimen/text_size_medium"
                     android:textAllCaps="false"
+                    tools:visibility="gone"
+                    tools:background="@android:color/holo_green_dark" />
+
+                <ImageButton
+                    android:id="@+id/butCastDisconnect"
+                    android:layout_width="@dimen/audioplayer_playercontrols_length"
+                    android:layout_height="@dimen/audioplayer_playercontrols_length"
+                    android:layout_toLeftOf="@id/butRev"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/cast_disconnect_label"
+                    android:src="?attr/ic_cast_disconnect"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:src="@drawable/ic_cast_disconnect_white_36dp"
                     tools:background="@android:color/holo_green_dark" />
 
                 <ImageButton
