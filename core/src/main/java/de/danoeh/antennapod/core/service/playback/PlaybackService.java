@@ -700,121 +700,138 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public boolean endPlayback(Playable media, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-            PlaybackService.this.endPlayback(media, playNextEpisode, wasSkipped, switchingPlayers);
-            return true;
+        public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+            PlaybackService.this.onPostPlayback(media, ended, playingNext);
+        }
+
+        @Override
+        public Playable getNextInQueue(Playable currentMedia) {
+            return PlaybackService.this.getNextInQueue(currentMedia);
+        }
+
+        @Override
+        public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+            PlaybackService.this.onPlaybackEnded(mediaType, stopPlaying);
         }
     };
 
-    private void endPlayback(final Playable playable, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-        Log.d(TAG, "Playback ended" + (switchingPlayers ? " from switching players": ""));
+    private Playable getNextInQueue(final Playable currentMedia) {
+        if (!(currentMedia instanceof FeedMedia)) {
+            Log.d(TAG, "getNextInQueue(), but playable not an instance of FeedMedia, so not proceeding");
+            return null;
+        }
+        if (!ClientConfig.playbackServiceCallbacks.useQueue()) {
+            Log.d(TAG, "getNextInQueue(), but queue not in use by this app");
+            return null;
+        }
+        Log.d(TAG, "getNextInQueue()");
+        FeedMedia media = (FeedMedia) currentMedia;
+        try {
+            media.loadMetadata();
+        } catch (Playable.PlayableException e) {
+            Log.e(TAG, "Unable to load metadata to get next in queue", e);
+            return null;
+        }
+        FeedItem item = media.getItem();
+        if (item == null) {
+            Log.w(TAG, "getNextInQueue() with FeedMedia object whose FeedItem is null");
+            return null;
+        }
+        FeedItem nextItem;
+        try {
+            final List<FeedItem> queue = taskManager.getQueue();
+            nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "Error handling the queue in order to retrieve the next item", e);
+            return null;
+        }
+        return (nextItem != null)? nextItem.getMedia() : null;
 
+    }
+
+    /**
+     * Set of instructions to be performed when playback ends.
+     */
+    private void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+        Log.d(TAG, "Playback ended");
+        if (stopPlaying) {
+            taskManager.cancelPositionSaver();
+            writePlaybackPreferencesNoMediaPlaying();
+            if (!isCasting) {
+                stopForeground(true);
+            }
+            stopWidgetUpdater();
+        }
+        if (mediaType == null) {
+            sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
+        } else {
+            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
+                    isCasting ? EXTRA_CODE_CAST :
+                            (mediaType == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
+        }
+    }
+
+    //TODO add javadoc, that is is assumed that the playable object contains info about its position and duration
+    private void onPostPlayback(final Playable playable, boolean ended, boolean playingNext) {
         if (playable == null) {
-            Log.e(TAG, "Cannot end playback: media was null");
+            Log.e(TAG, "Cannot do post-playback processing: media was null");
             return;
         }
+        Log.d(TAG, "onPostPlayback(): media=" + playable.getEpisodeTitle());
 
-        taskManager.cancelPositionSaver();
+        if (!(playable instanceof FeedMedia)) {
+            Log.d(TAG, "Not doing post-playback processing: media not of type FeedMedia");
+            return;
+        }
+        FeedMedia media = (FeedMedia) playable;
+        FeedItem item = media.getItem();
+        boolean smartMarkAsPlayed = playingNext && media.hasAlmostEnded();
+        if (!ended && smartMarkAsPlayed) {
+            Log.d(TAG, "smart mark as played");
+        }
 
-        boolean isInQueue = false;
-        FeedItem nextItem = null;
+        // auto-flattr if enabled
+        if (isAutoFlattrable(media) && UserPreferences.getAutoFlattrPlayedDurationThreshold() == 1.0f) {
+            DBTasks.flattrItemIfLoggedIn(PlaybackService.this, item);
+        }
+        
+        // gpodder play action
+        if (GpodnetPreferences.loggedIn()) {
+            GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.PLAY)
+                    .currentDeviceId()
+                    .currentTimestamp()
+                    .started(startPosition / 1000)
+                    .position(((ended || smartMarkAsPlayed) ? media.getDuration() : media.getPosition()) / 1000)
+                    .total(media.getDuration() / 1000)
+                    .build();
+            GpodnetPreferences.enqueueEpisodeAction(action);
+        }
 
-        if (playable instanceof FeedMedia && ((FeedMedia) playable).getItem() != null) {
-            FeedMedia media = (FeedMedia) playable;
-            FeedItem item = media.getItem();
-
-            if (!switchingPlayers) {
+        if (item != null) {
+            if (ended || smartMarkAsPlayed ||
+                    !UserPreferences.shouldSkipKeepEpisode()) {
+                // only mark the item as played if we're not keeping it anyways
+                DBWriter.markItemPlayed(item, FeedItem.PLAYED, ended);
                 try {
                     final List<FeedItem> queue = taskManager.getQueue();
-                    isInQueue = QueueAccess.ItemListAccess(queue).contains(item.getId());
-                    nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
+                    if (QueueAccess.ItemListAccess(queue).contains(item.getId())) {
+                        // don't know if it actually matters to not autodownload when smart mark as played is triggered
+                        DBWriter.removeQueueItem(PlaybackService.this, item, ended);
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     // isInQueue remains false
                 }
-
-                boolean shouldKeep = wasSkipped && UserPreferences.shouldSkipKeepEpisode();
-
-                if (!shouldKeep) {
-                    // only mark the item as played if we're not keeping it anyways
-                    DBWriter.markItemPlayed(item, FeedItem.PLAYED, true);
-
-                    if (isInQueue) {
-                        DBWriter.removeQueueItem(PlaybackService.this, item, true);
-                    }
-
-                    // Delete episode if enabled
-                    if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                        DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
-                        Log.d(TAG, "Episode Deleted");
-                    }
+                // Delete episode if enabled
+                if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
+                    DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
+                    Log.d(TAG, "Episode Deleted");
                 }
-            }
-
-
-            DBWriter.addItemToPlaybackHistory(media);
-
-            // auto-flattr if enabled
-            if (isAutoFlattrable(media) && UserPreferences.getAutoFlattrPlayedDurationThreshold() == 1.0f) {
-                DBTasks.flattrItemIfLoggedIn(PlaybackService.this, item);
-            }
-
-            // gpodder play action
-            if(GpodnetPreferences.loggedIn()) {
-                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.PLAY)
-                        .currentDeviceId()
-                        .currentTimestamp()
-                        .started(startPosition / 1000)
-                        .position(getDuration() / 1000)
-                        .total(getDuration() / 1000)
-                        .build();
-                GpodnetPreferences.enqueueEpisodeAction(action);
             }
         }
 
-        if (!switchingPlayers) {
-            // Load next episode if previous episode was in the queue and if there
-            // is an episode in the queue left.
-            // Start playback immediately if continuous playback is enabled
-            Playable nextMedia = null;
-            boolean loadNextItem = ClientConfig.playbackServiceCallbacks.useQueue() &&
-                    isInQueue &&
-                    nextItem != null;
-
-            playNextEpisode = playNextEpisode &&
-                    loadNextItem &&
-                    UserPreferences.isFollowQueue();
-
-            if (loadNextItem) {
-                Log.d(TAG, "Loading next item in queue");
-                nextMedia = nextItem.getMedia();
-            }
-            final boolean prepareImmediately;
-            final boolean startWhenPrepared;
-            final boolean stream;
-
-            if (playNextEpisode) {
-                Log.d(TAG, "Playback of next episode will start immediately.");
-                prepareImmediately = startWhenPrepared = true;
-            } else {
-                Log.d(TAG, "No more episodes available to play");
-                prepareImmediately = startWhenPrepared = false;
-                stopForeground(true);
-                stopWidgetUpdater();
-            }
-
-            writePlaybackPreferencesNoMediaPlaying();
-            if (nextMedia != null) {
-                stream = !nextMedia.localFileAvailable();
-                mediaPlayer.playMediaObject(nextMedia, stream, startWhenPrepared, prepareImmediately);
-                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-                        isCasting ? EXTRA_CODE_CAST :
-                                (nextMedia.getMediaType() == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
-            } else {
-                sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
-                mediaPlayer.stop();
-                //stopSelf();
-            }
+        if (ended || playingNext) {
+            DBWriter.addItemToPlaybackHistory(media);
         }
     }
 

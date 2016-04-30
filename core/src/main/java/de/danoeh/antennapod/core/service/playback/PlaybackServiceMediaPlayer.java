@@ -9,10 +9,7 @@ import android.util.Pair;
 import android.view.SurfaceHolder;
 
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 
@@ -291,26 +288,6 @@ public abstract class PlaybackServiceMediaPlayer {
         callback.statusChanged(new PSMPInfo(playerStatus, getPlayable()));
     }
 
-    protected void smartMarkAsPlayed(Playable media) {
-        if(media != null && media instanceof FeedMedia) {
-            FeedMedia oldMedia = (FeedMedia) media;
-            if(oldMedia.hasAlmostEnded()) {
-                Log.d(TAG, "smart mark as read");
-                FeedItem item = oldMedia.getItem();
-                if (item == null) {
-                    return;
-                }
-                DBWriter.markItemPlayed(item, FeedItem.PLAYED, false);
-                DBWriter.removeQueueItem(context, item, false);
-                DBWriter.addItemToPlaybackHistory(oldMedia);
-                if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                    Log.d(TAG, "Delete " + oldMedia.toString());
-                    DBWriter.deleteFeedMediaOfItem(context, oldMedia.getId());
-                }
-            }
-        }
-    }
-
     public interface PSMPCallback {
         void statusChanged(PSMPInfo newInfo);
 
@@ -328,7 +305,11 @@ public abstract class PlaybackServiceMediaPlayer {
 
         boolean onMediaPlayerError(Object inObj, int what, int extra);
 
-        boolean endPlayback(Playable media, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers);
+        void onPostPlayback(Playable media, boolean ended, boolean playingNext);
+
+        Playable getNextInQueue(Playable currentMedia);
+
+        void onPlaybackEnded(MediaType mediaType, boolean stopPlaying);
     }
 
     /**

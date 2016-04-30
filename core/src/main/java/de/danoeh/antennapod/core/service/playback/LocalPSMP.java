@@ -143,7 +143,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     setPlayerStatus(PlayerStatus.PAUSED, media);
                 }
 
-                smartMarkAsPlayed(media);
+                if (!media.getIdentifier().equals(playable.getIdentifier())) {
+                    final Playable oldMedia = media;
+                    executor.submit(() -> callback.onPostPlayback(oldMedia, false, true));
+                }
 
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             }
@@ -762,13 +765,47 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             if (playerStatus != PlayerStatus.INDETERMINATE) {
                 setPlayerStatus(PlayerStatus.INDETERMINATE, media);
             }
+            // we're relying on the position stored in the Playable object for post-playback processing
+            if (media != null) {
+                int position = getPosition();
+                if (position >= 0) {
+                    media.setPosition(position);
+                }
+            }
+
             if (mediaPlayer != null) {
                 mediaPlayer.reset();
-
             }
             audioManager.abandonAudioFocus(audioFocusChangeListener);
-            callback.endPlayback(media, isPlaying, wasSkipped, switchingPlayers);
+            // Load next episode if previous episode was in the queue and if there
+            // is an episode in the queue left.
+            // Start playback immediately if continuous playback is enabled
+            final Playable currentMedia = media;
+            Playable nextMedia = callback.getNextInQueue(currentMedia);
 
+            boolean playNextEpisode = isPlaying &&
+                    nextMedia != null &&
+                    UserPreferences.isFollowQueue();
+
+            if (playNextEpisode) {
+                Log.d(TAG, "Playback of next episode will start immediately.");
+            } else if (nextMedia == null){
+                Log.d(TAG, "No more episodes available to play");
+            } else {
+                Log.d(TAG, "Loading next episode, but not playing automatically.");
+            }
+
+            if (nextMedia != null) {
+                callback.onPlaybackEnded(nextMedia.getMediaType(), !playNextEpisode);
+                // setting media to null signals to playMediaObject() that we're taking care of post-playback processing
+                media = null;
+                playMediaObject(nextMedia, false, !nextMedia.localFileAvailable(), playNextEpisode, playNextEpisode);
+            } else {
+                callback.onPlaybackEnded(null, true);
+                stop();
+            }
+
+            executor.submit(() -> callback.onPostPlayback(currentMedia, !wasSkipped, nextMedia != null));
             playerLock.unlock();
         });
     }

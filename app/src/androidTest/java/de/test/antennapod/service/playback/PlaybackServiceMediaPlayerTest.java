@@ -20,6 +20,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.LocalPSMP;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -196,10 +197,19 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
             }
 
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
+            }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
@@ -275,8 +285,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -357,8 +377,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -440,8 +470,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
 
         };
@@ -517,8 +557,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
 
         };
@@ -595,8 +645,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -675,8 +735,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -758,8 +828,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -814,8 +894,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         }
 
         @Override
-        public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-            return false;
+        public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+        }
+
+        @Override
+        public Playable getNextInQueue(Playable currentMedia) {
+            return null;
+        }
+
+        @Override
+        public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
         }
     };
 
@@ -896,8 +986,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -1012,8 +1112,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -1103,8 +1213,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -1207,8 +1327,18 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
+            public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+
+            }
+
+            @Override
+            public Playable getNextInQueue(Playable currentMedia) {
+                return null;
+            }
+
+            @Override
+            public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
