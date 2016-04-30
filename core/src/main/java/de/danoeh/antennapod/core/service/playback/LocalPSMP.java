@@ -755,7 +755,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
 
     @Override
-    public void endPlayback(final boolean wasSkipped, boolean switchingPlayers) {
+    protected void endPlayback(final boolean wasSkipped) {
         executor.submit(() -> {
             playerLock.lock();
             releaseWifiLockIfNecessary();
@@ -870,7 +870,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mp -> genericOnCompletion();
 
     private void genericOnCompletion() {
-        endPlayback(false, false);
+        endPlayback(false);
     }
 
     private final MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =

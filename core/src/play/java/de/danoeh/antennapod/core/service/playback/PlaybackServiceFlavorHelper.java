@@ -182,7 +182,8 @@ public class PlaybackServiceFlavorHelper {
                                    boolean wasLaunched) {
         PlaybackServiceMediaPlayer mediaPlayer = callback.getMediaPlayer();
         if (mediaPlayer != null) {
-            mediaPlayer.endPlayback(true, true);
+            //TODO change implementation to new protocol
+//            mediaPlayer.endPlayback(true, true);
             mediaPlayer.shutdownQuietly();
         }
         mediaPlayer = newPlayer;

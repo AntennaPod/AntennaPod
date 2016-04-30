@@ -473,7 +473,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         UserPreferences.shouldHardwareButtonSkip()) {
                     // assume the skip command comes from a notification or the lockscreen
                     // a >| skip button should actually skip
-                    mediaPlayer.endPlayback(true, false);
+                    mediaPlayer.endPlayback();
                 } else {
                     // assume skip command comes from a (bluetooth) media button
                     // user actually wants to fast-forward
@@ -1424,7 +1424,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
-                mediaPlayer.endPlayback(true, false);
+                mediaPlayer.endPlayback();
             }
         }
     };
@@ -1656,7 +1656,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onSkipToNext() {
             Log.d(TAG, "onSkipToNext()");
             if(UserPreferences.shouldHardwareButtonSkip()) {
-                mediaPlayer.endPlayback(true, false);
+                mediaPlayer.endPlayback();
             } else {
                 seekDelta(UserPreferences.getFastFowardSecs() * 1000);
             }

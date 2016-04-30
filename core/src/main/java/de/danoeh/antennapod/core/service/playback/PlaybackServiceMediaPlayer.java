@@ -233,7 +233,11 @@ public abstract class PlaybackServiceMediaPlayer {
 
     protected abstract void setPlayable(Playable playable);
 
-    public abstract void endPlayback(boolean wasSkipped, boolean switchingPlayers);
+    public void endPlayback() {
+        endPlayback(true);
+    }
+
+    protected abstract void endPlayback(boolean wasSkipped);
 
     /**
      * Moves the PSMP into STOPPED state. This call is only valid if the player is currently in

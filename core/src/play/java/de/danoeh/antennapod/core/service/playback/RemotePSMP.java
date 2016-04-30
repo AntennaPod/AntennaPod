@@ -557,7 +557,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public void endPlayback(boolean wasSkipped, boolean switchingPlayers) {
+    protected void endPlayback(boolean wasSkipped) {
         Log.d(TAG, "endPlayback() called");
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
         try {
