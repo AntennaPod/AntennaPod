@@ -176,7 +176,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -255,7 +255,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -337,7 +337,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -420,7 +420,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -497,7 +497,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -575,7 +575,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -655,7 +655,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -738,7 +738,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -796,7 +796,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         }
 
         @Override
-        public void reloadUI() {
+        public void reloadUI(boolean onlyMediaSession) {
 
         }
 
@@ -874,7 +874,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -989,7 +989,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -1081,7 +1081,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 
@@ -1185,7 +1185,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void reloadUI() {
+            public void reloadUI(boolean onlyMediaSession) {
 
             }
 

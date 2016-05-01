@@ -322,7 +322,7 @@ public abstract class PlaybackServiceMediaPlayer {
 
         void onBufferingUpdate(int percent);
 
-        void reloadUI();
+        void reloadUI(boolean onlyMediaSession);
 
         boolean onMediaPlayerInfo(int code, @StringRes int resourceId);
 

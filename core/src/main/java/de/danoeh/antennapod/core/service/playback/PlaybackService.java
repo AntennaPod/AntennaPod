@@ -499,7 +499,7 @@ public class PlaybackService extends Service {
     }
 
     public void notifyVideoSurfaceAbandoned() {
-        stopForeground(true);
+        stopForeground(!UserPreferences.isPersistNotify());
         mediaPlayer.resetVideoSurface();
     }
 
@@ -640,9 +640,11 @@ public class PlaybackService extends Service {
         }
 
         @Override
-        public void reloadUI() {
+        public void reloadUI(boolean onlyMediaSession) {
             Log.d(TAG, "reloadUI callback reached");
-            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+            if (!onlyMediaSession) {
+                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+            }
             PlaybackService.this.updateMediaSessionMetadata(getPlayable());
         }
 
