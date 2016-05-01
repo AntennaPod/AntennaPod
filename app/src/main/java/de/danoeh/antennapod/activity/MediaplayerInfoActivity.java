@@ -562,7 +562,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         private ChaptersFragment chaptersFragment;
 
         public void onMediaChanged(Playable media) {
-            Log.d(TAG, "media changing to " + media.getEpisodeTitle());
+            Log.d(TAG, "media changing to " + ((media != null) ? media.getEpisodeTitle() : "null"));
             this.media = media;
             if(coverFragment != null) {
                 coverFragment.onMediaChanged(media);
