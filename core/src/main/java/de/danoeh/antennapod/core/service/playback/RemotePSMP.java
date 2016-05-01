@@ -244,7 +244,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
         }
         if (updateUI) {
-            callback.reloadUI(false);
+            callback.onMediaChanged(true);
         }
     }
 
@@ -302,7 +302,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
             media.loadMetadata();
-            callback.reloadUI(false);
+            callback.onMediaChanged(true);
             setPlayerStatus(PlayerStatus.INITIALIZED, media);
             if (prepareImmediately) {
                 prepare();

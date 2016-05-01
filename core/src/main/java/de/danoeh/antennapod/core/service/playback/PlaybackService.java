@@ -640,9 +640,9 @@ public class PlaybackService extends Service {
         }
 
         @Override
-        public void reloadUI(boolean onlyMediaSession) {
+        public void onMediaChanged(boolean reloadUI) {
             Log.d(TAG, "reloadUI callback reached");
-            if (!onlyMediaSession) {
+            if (reloadUI) {
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
             }
             PlaybackService.this.updateMediaSessionMetadata(getPlayable());

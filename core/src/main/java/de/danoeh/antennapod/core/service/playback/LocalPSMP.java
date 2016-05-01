@@ -158,7 +158,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
             media.loadMetadata();
-            callback.reloadUI(true);
+            callback.onMediaChanged(false);
             if (stream) {
                 mediaPlayer.setDataSource(media.getStreamUrl());
             } else {
