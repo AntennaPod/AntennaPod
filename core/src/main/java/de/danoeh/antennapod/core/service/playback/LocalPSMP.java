@@ -158,7 +158,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
             media.loadMetadata();
-            callback.reloadUI();
+            callback.onMediaChanged(false);
             if (stream) {
                 mediaPlayer.setDataSource(media.getStreamUrl());
             } else {
@@ -337,6 +337,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     public void reinit() {
         executor.submit(() -> {
             playerLock.lock();
+            Log.d(TAG, "reinit()");
             releaseWifiLockIfNecessary();
             if (media != null) {
                 playMediaObject(media, true, stream, startWhenPrepared.get(), false);
@@ -629,9 +630,13 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     public void resetVideoSurface() {
         executor.submit(() -> {
             playerLock.lock();
-            Log.d(TAG, "Resetting video surface");
-            mediaPlayer.setDisplay(null);
-            reinit();
+            if (mediaType == MediaType.VIDEO) {
+                Log.d(TAG, "Resetting video surface");
+                mediaPlayer.setDisplay(null);
+                reinit();
+            } else {
+                Log.e(TAG, "Resetting video surface for media of Audio type");
+            }
             playerLock.unlock();
         });
     }

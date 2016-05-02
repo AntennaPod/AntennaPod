@@ -211,11 +211,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     @Override
     protected void onPause() {
-        super.onPause();
         if(controller != null) {
             controller.reinitServiceIfPaused();
             controller.pause();
         }
+        super.onPause();
     }
 
     /**
@@ -257,12 +257,12 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     @Override
     protected void onStop() {
-        super.onStop();
         Log.d(TAG, "onStop()");
         if (controller != null) {
             controller.release();
             controller = null; // prevent leak
         }
+        super.onStop();
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

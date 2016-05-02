@@ -41,6 +41,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
      */
     private boolean videoControlsShowing = true;
     private boolean videoSurfaceCreated = false;
+    private boolean destroyingDueToReload = false;
 
     private VideoControlsHider videoControlsHider = new VideoControlsHider(this);
 
@@ -86,6 +87,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
+                destroyingDueToReload = true;
                 finish();
                 startActivity(intent);
             }
@@ -94,18 +96,18 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
         videoControlsHider.stop();
         if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
             controller.pause();
         }
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         videoControlsHider.stop();
         videoControlsHider = null;
+        super.onDestroy();
     }
 
     @Override
@@ -242,7 +244,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
                 if (controller.serviceAvailable()) {
                     controller.setVideoSurface(holder);
                 } else {
-                    Log.e(TAG, "Could'nt attach surface to mediaplayer - reference to service was null");
+                    Log.e(TAG, "Couldn't attach surface to mediaplayer - reference to service was null");
                 }
             }
 
@@ -252,7 +254,9 @@ public class VideoplayerActivity extends MediaplayerActivity {
         public void surfaceDestroyed(SurfaceHolder holder) {
             Log.d(TAG, "Videosurface was destroyed");
             videoSurfaceCreated = false;
-            controller.notifyVideoSurfaceAbandoned();
+            if (!destroyingDueToReload) {
+                controller.notifyVideoSurfaceAbandoned();
+            }
         }
     };
 
@@ -261,10 +265,12 @@ public class VideoplayerActivity extends MediaplayerActivity {
     protected void onReloadNotification(int notificationCode) {
         if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
             Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
+            destroyingDueToReload = true;
             finish();
             startActivity(new Intent(this, AudioplayerActivity.class));
         } else if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
             Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
+            destroyingDueToReload = true;
             finish();
             startActivity(new Intent(this, CastplayerActivity.class));
         }
