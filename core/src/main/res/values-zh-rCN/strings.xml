@@ -22,9 +22,13 @@
   <string name="playback_history_label">播放历史</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net 登录</string>
+  <string name="episode_cache_full_title">曲目缓存已满</string>
+  <string name="episode_cache_full_message">已达到曲目缓存限制，可以在设置中提高缓存大小。</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">最近发布</string>
   <string name="episode_filter_label">仅显示新曲目</string>
+  <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">总播放时长：</string>
   <!--Main activity-->
   <string name="drawer_open">打开菜单</string>
   <string name="drawer_close">关闭菜单</string>
@@ -66,6 +70,7 @@
   <string name="length_prefix">长度:\u0020</string>
   <string name="size_prefix">大小:\u0020</string>
   <string name="processing_label">处理中</string>
+  <string name="loading_label">正在加载</string>
   <string name="save_username_password_label">保存用户名密码</string>
   <string name="close_label">关闭</string>
   <string name="retry_label">重试</string>
@@ -76,6 +81,7 @@
   <string name="feed_auto_download_global">全局</string>
   <string name="feed_auto_download_always"> 总是</string>
   <string name="feed_auto_download_never">从不</string>
+  <string name="send_label">发送</string>
   <string name="episode_cleanup_never">从不</string>
   <string name="episode_cleanup_queue_removal">当不在队列中</string>
   <string name="episode_cleanup_after_listening">结束后</string>
@@ -97,6 +103,7 @@
   <string name="mark_all_seen_label">所有可见</string>
   <string name="show_info_label">查看信息</string>
   <string name="remove_feed_label">删除播客</string>
+  <string name="share_label">分享</string>
   <string name="share_link_label">分享网站链接</string>
   <string name="share_link_with_position_label">分享网站链接与位置</string>
   <string name="share_feed_url_label">分享订阅地址</string>
@@ -116,6 +123,7 @@
   <string name="hide_not_downloaded_episodes_label">未下载</string>
   <string name="filtered_label">已过滤的</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} 上次刷新失败</string>
+  <string name="open_podcast">打开博客</string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <string name="play_label">播放</string>
@@ -131,7 +139,9 @@
   <string name="added_to_queue_label">已添加到播放列表</string>
   <string name="remove_from_queue_label">从播放列表中删除</string>
   <string name="add_to_favorite_label">加入收藏</string>
+  <string name="added_to_favorites">添加到收藏</string>
   <string name="remove_from_favorite_label">从收藏删除</string>
+  <string name="removed_from_favorites">从收藏中移除</string>
   <string name="visit_website_label">访问网站</string>
   <string name="support_label">Flattr 他</string>
   <string name="enqueue_all_new">全部添加到播放列表</string>
@@ -156,6 +166,7 @@
   <string name="download_error_connection_error">链接错误</string>
   <string name="download_error_unknown_host">未知主机</string>
   <string name="download_error_unauthorized">认证错误</string>
+  <string name="download_error_file_type_type">文件类型错误</string>
   <string name="cancel_all_downloads_label">取消所有下载</string>
   <string name="download_canceled_msg">已取消下载</string>
   <string name="download_canceled_autodownload_enabled_msg">已取消下载\n对该曲目禁用<i>自动下载</i></string>
@@ -165,6 +176,9 @@
   <string name="download_error_io_error">IO 错误</string>
   <string name="download_error_request_error">请求出错</string>
   <string name="download_error_db_access">数据库访问错误</string>
+  <plurals name="downloads_left">
+    <item quantity="other">剩余%d个下载项</item>
+  </plurals>
   <string name="downloads_processing">正在处理下载</string>
   <string name="download_notification_title">下载播客数据</string>
   <string name="download_report_content">%1$d 下载成功, %2$d 失败</string>
@@ -176,6 +190,7 @@
   <string name="authentication_notification_title">需要认证</string>
   <string name="authentication_notification_msg">您所请求的资源需要用户名和密码</string>
   <string name="confirm_mobile_download_dialog_title">确认手机下载</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">暂时允许</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">错误!</string>
   <string name="player_stopped_msg">没有可播放媒体</string>
@@ -192,6 +207,8 @@
   <!--Queue operations-->
   <string name="lock_queue">锁定播放列表</string>
   <string name="unlock_queue">解锁播放列表</string>
+  <string name="queue_locked">播放列表已锁定</string>
+  <string name="queue_unlocked">播放列表已解锁</string>
   <string name="clear_queue_label">清空播放列表</string>
   <string name="undo">撤消</string>
   <string name="removed_from_queue">已删除项</string>
@@ -237,13 +254,17 @@
   <!--Empty list labels-->
   <string name="no_items_label">列表为空.</string>
   <string name="no_feeds_label">还没有任何订阅.</string>
+  <string name="no_chapters_label">此曲目没有章节信息</string>
   <!--Preferences-->
   <string name="other_pref">其他</string>
   <string name="about_pref">关于</string>
   <string name="queue_label">播放列表</string>
   <string name="services_label">服务</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">清理曲目</string>
+  <string name="pref_pauseOnDisconnect_sum">暂停播放曲目当耳机或蓝牙重新连接</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">恢复播放曲目当蓝牙重新连接</string>
   <string name="pref_followQueue_sum">播放完成跳转到播放列表下一项</string>
   <string name="pref_auto_delete_sum">当播放完成后删除曲目</string>
   <string name="pref_auto_delete_title">自动删除</string>
@@ -256,11 +277,14 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">禁用</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">设置间隔</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">设置时间</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">每%1$s秒</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">第%1$s秒</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">仅在 WIFI 情况下载媒体文件</string>
   <string name="pref_followQueue_title">连续播放</string>
   <string name="pref_downloadMediaOnWifiOnly_title">仅在 WIFI 情况下载</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">耳机断开</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">耳机重新连接</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">蓝牙重新连接</string>
   <string name="pref_mobileUpdate_title">数据网络时更新</string>
   <string name="pref_mobileUpdate_sum">允许移动数据网络情况下进行数据链接</string>
   <string name="refreshing_label">刷新中</string>
@@ -305,6 +329,8 @@
   <string name="pref_gpodnet_logout_toast">注销成功</string>
   <string name="pref_gpodnet_setlogin_information_title">改变登录信息</string>
   <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
+  <string name="pref_gpodnet_sync_title">正在同步</string>
+  <string name="pref_gpodnet_sync_started">已开始同步</string>
   <string name="pref_playback_speed_title">播放速度</string>
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
   <string name="pref_rewind">时间倒回</string>
@@ -326,6 +352,11 @@
   <string name="crash_report_title">崩溃报告</string>
   <string name="crash_report_sum">通过 E-mail 发送最后崩溃报告</string>
   <string name="send_email">发送 E-mail</string>
+  <string name="pref_sonic_title">内置播放器</string>
+  <string name="pref_proxy_title">代理</string>
+  <string name="pref_proxy_sum">选择一个网络代理</string>
+  <string name="pref_known_issues">已知问题</string>
+  <string name="pref_no_browser_found">未找到浏览器</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">启用自动 flattring</string>
   <string name="auto_flattr_after_percent">当播放到百分之%d时Flattr改曲目</string>
@@ -348,13 +379,15 @@
   <string name="opml_import_label">OPML 导入</string>
   <string name="opml_directory_error">错误!</string>
   <string name="reading_opml_label">OPML 文件读取中</string>
-  <string name="opml_reader_error">读取 OPML 文件内容出错:</string>
-  <string name="opml_import_error_dir_empty">导入目录为空.</string>
+  <string name="opml_reader_error">读取OPML文档时发生错误</string>
+  <string name="opml_import_error_no_file">没有选择文件！</string>
   <string name="select_all_label">全选</string>
   <string name="deselect_all_label">取消所有选择</string>
+  <string name="select_options_label">选择</string>
   <string name="choose_file_from_filesystem">来自本地文件系统</string>
   <string name="choose_file_from_external_application">使用外部应用</string>
   <string name="opml_export_label">OPML 导出</string>
+  <string name="exporting_label">正在导出</string>
   <string name="export_error_label">导出出错</string>
   <string name="opml_export_success_title">OPML 导出成功.</string>
   <string name="opml_export_success_sum">.opml 文件已保存到:\u0020</string>
@@ -366,6 +399,7 @@
   <string name="time_left_label">计时剩余:\u0020</string>
   <string name="time_dialog_invalid_input">无效的输入, 时间是一个整数</string>
   <string name="timer_about_to_expire_label"><b>当计时器过期时:</b></string>
+  <string name="shake_to_reset_label">摇晃手机以重置计时器</string>
   <string name="timer_vibration_label">振动</string>
   <string name="time_seconds">秒</string>
   <string name="time_minutes">分</string>
@@ -430,6 +464,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">订阅</string>
   <string name="subscribed_label">已订阅</string>
+  <string name="downloading_label">正在下载</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">显示章节</string>
   <string name="show_shownotes_label">显示笔记</string>
@@ -452,11 +487,17 @@
   <!--Feed information screen-->
   <string name="authentication_label">验证</string>
   <string name="authentication_descr">给本播客及曲目变更用户名及密码</string>
+  <string name="auto_download_settings_label">自动下载设置</string>
+  <string name="episode_filters_label">曲目过滤器</string>
+  <string name="episode_filters_include">包含</string>
+  <string name="episode_filters_exclude">排除</string>
+  <string name="keep_updated">保持最新</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">升级数据库</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">正在从选定的应用中导入订阅...</string>
   <string name="search_itunes_label">搜索 iTunes</string>
+  <string name="filter">过滤器</string>
   <string name="all_label">全部</string>
   <string name="selected_all_label">全选</string>
   <string name="none_label">无</string>
@@ -469,6 +510,10 @@
   <string name="selected_downloaded_label">选择已下载的曲目</string>
   <string name="not_downloaded_label">未下载</string>
   <string name="selected_not_downloaded_label">选择未下载的曲目</string>
+  <string name="queued_label">已在播放列表中</string>
+  <string name="selected_queued_label">已选曲目</string>
+  <string name="not_queued_label">不在播放列表中</string>
+  <string name="selected_not_queued_label">选择不在播放列表的曲目</string>
   <string name="sort_title_a_z">标题 (A \u2192 Z)</string>
   <string name="sort_title_z_a">标题 (Z \u2192 A)</string>
   <string name="sort_date_new_old">日期 (新 \u2192 旧)</string>
@@ -481,4 +526,22 @@
   <string name="rating_later_label">稍后提醒</string>
   <string name="rating_now_label">好的, 就这样！</string>
   <!--Audio controls-->
+  <string name="audio_controls">音频控制</string>
+  <string name="playback_speed">播放速度</string>
+  <string name="volume">音量</string>
+  <string name="left_short">L</string>
+  <string name="right_short">R</string>
+  <string name="audio_effects">音频效果</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">类型</string>
+  <string name="host_label">主机地址</string>
+  <string name="port_label">端口</string>
+  <string name="optional_hint">（可选）</string>
+  <string name="proxy_test_label">测试</string>
+  <string name="proxy_checking">正在测试</string>
+  <string name="proxy_test_successful">测试成功</string>
+  <string name="proxy_test_failed">测试失败</string>
+  <string name="proxy_host_empty_error">主机地址不能为空</string>
+  <string name="proxy_host_invalid_error">主机地址不是有效IP或域名</string>
+  <string name="proxy_port_invalid_error">端口不可用</string>
 </resources>

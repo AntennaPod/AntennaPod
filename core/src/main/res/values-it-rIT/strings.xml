@@ -25,6 +25,7 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Pubblicati di recente</string>
   <string name="episode_filter_label">Mostra solo gli episodi nuovi</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
   <string name="drawer_close">Chiudi il menù</string>
@@ -90,6 +91,7 @@
   <string name="mark_all_seen_label">Segna tutti come visti</string>
   <string name="show_info_label">Informazioni</string>
   <string name="remove_feed_label">Rimuovi un podcast</string>
+  <string name="share_label">Condividi...</string>
   <string name="share_link_label">Condividi il link al sito</string>
   <string name="share_link_with_position_label">Condividi il Link con la Posizione</string>
   <string name="share_feed_url_label">Condividi URL del Feed</string>
@@ -123,7 +125,9 @@
   <string name="added_to_queue_label">Aggiunto alla coda</string>
   <string name="remove_from_queue_label">Rimuovi dalla coda</string>
   <string name="add_to_favorite_label">Aggiungi ai preferiti</string>
+  <string name="added_to_favorites">Aggiunto ai Preferiti</string>
   <string name="remove_from_favorite_label">Rimuovi dai preferiti</string>
+  <string name="removed_from_favorites">Rimosso dai Preferiti</string>
   <string name="visit_website_label">Visita il sito</string>
   <string name="support_label">Carica questo su Flattr</string>
   <string name="enqueue_all_new">Accoda tutti</string>
@@ -185,6 +189,8 @@
   <!--Queue operations-->
   <string name="lock_queue">Blocca la coda</string>
   <string name="unlock_queue">Sblocca la coda</string>
+  <string name="queue_locked">Coda bloccata</string>
+  <string name="queue_unlocked">Coda sbloccata</string>
   <string name="clear_queue_label">Svuota la coda</string>
   <string name="undo">Undo</string>
   <string name="removed_from_queue">Oggetto rimosso</string>
@@ -226,9 +232,11 @@
   <string name="download_plugin_label">Scarica plugin</string>
   <string name="no_playback_plugin_title">Plugin non installato</string>
   <string name="set_playback_speed_label">Velocità di riproduzione</string>
+  <string name="enable_sonic">Abilita Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Non ci sono oggetti in questo elenco.</string>
   <string name="no_feeds_label">Non sei ancora abbonato a nessun feed.</string>
+  <string name="no_chapters_label">Questo episodio non ha capitoli.</string>
   <!--Preferences-->
   <string name="other_pref">Altro</string>
   <string name="about_pref">Informazioni</string>
@@ -293,7 +301,12 @@
   <string name="pref_persistNotify_sum">Mantieni le notifiche e i controlli del blocco dello schermo quando la riproduzione è in pausa.</string>
   <string name="pref_showDownloadReport_title">Mostra il Rapporto del Download</string>
   <string name="pref_expand_notify_unsupport_toast">Le versioni di Android prima della 4.1 non supportano le notifiche estese.</string>
+  <string name="pref_queueAddToFront_title">Aggiungi in cima alla coda</string>
   <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
+  <string name="pref_image_cache_size_title">Dimensione Cache delle Immagini</string>
+  <string name="send_email">Invia e-mail</string>
+  <string name="experimental_pref">Sperimentale</string>
+  <string name="pref_current_value">Valore corrente: %1$s</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Abilita l\'esecuzione automatica di Flattr</string>
   <string name="auto_flattr_after_percent">Carica l\'episodio su Flattr appena è stato riprodotto al %d percento</string>
@@ -312,8 +325,6 @@
   <string name="opml_import_label">Importazione OPML</string>
   <string name="opml_directory_error">ERRORE!</string>
   <string name="reading_opml_label">Lettura OPML file in corso</string>
-  <string name="opml_reader_error">Un errore è stato rilevato mentre era in corso la lettura del documento opml:</string>
-  <string name="opml_import_error_dir_empty">La directory di importazione è vuota.</string>
   <string name="select_all_label">Seleziona tutti</string>
   <string name="deselect_all_label">Deseleziona tutti</string>
   <string name="choose_file_from_filesystem">Dal filesystem locale</string>
@@ -329,6 +340,7 @@
   <string name="sleep_timer_label">Timer di spegnimento</string>
   <string name="time_left_label">Tempo residuo:\u0020</string>
   <string name="time_dialog_invalid_input">Input non valido, il campo deve essere un numero intero.</string>
+  <string name="timer_vibration_label">Vibra</string>
   <string name="time_seconds">secondi</string>
   <string name="time_minutes">minuti</string>
   <string name="time_hours">ore</string>
@@ -412,6 +424,9 @@
   <!--Feed information screen-->
   <string name="authentication_label">Autenticazione</string>
   <string name="authentication_descr">Cambia il tuo nome utente e la tua password per questo podcast e i suoi episodi.</string>
+  <string name="episode_filters_include">Includi</string>
+  <string name="episode_filters_exclude">Escludi</string>
+  <string name="keep_updated">Mantieni Aggiornato</string>
   <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importazione di sottoscrizioni da applicazioni monouso in corso...</string>
@@ -422,6 +437,10 @@
   <string name="deselected_all_label">Tutti gli Episodi Deselezionati</string>
   <string name="played_label">Riprodotto</string>
   <string name="unplayed_label">Non riprodotto</string>
+  <string name="downloaded_label">Scaricati</string>
+  <string name="not_downloaded_label">Non scaricati</string>
+  <string name="queued_label">In coda</string>
+  <string name="not_queued_label">Non in coda</string>
   <string name="sort_title_a_z">Titolo (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titolo (Z \u2192 A)</string>
   <string name="sort_date_new_old">Data (New \u2192 Old)</string>
@@ -430,4 +449,7 @@
   <string name="sort_duration_long_short">Durata (Long \u2192 Short)</string>
   <!--Rating dialog-->
   <!--Audio controls-->
+  <string name="volume">Volume</string>
+  <string name="audio_effects">Effetti Audio</string>
+  <!--proxy settings-->
 </resources>

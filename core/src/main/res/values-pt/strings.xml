@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Fontes</string>
+  <string name="statistics_label">Estatísticas</string>
   <string name="add_feed_label">Adicionar podcast</string>
   <string name="podcasts_label">Podcasts</string>
   <string name="episodes_label">Episódios</string>
@@ -28,6 +29,9 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publicados recentemente</string>
   <string name="episode_filter_label">Mostrar apenas novos episódios</string>
+  <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Tempo total dos podcasts reproduzidos:</string>
+  <string name="statistics_details_dialog">%1$d de %2$d episódios iniciados.\n\nReproduzidos %3$s de %4$s.</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
   <string name="drawer_close">Fechar menu</string>
@@ -48,7 +52,7 @@
   <!--Playback history-->
   <string name="clear_history_label">Limpar histórico</string>
   <!--Other-->
-  <string name="confirm_label">Confirmação</string>
+  <string name="confirm_label">Confirmar</string>
   <string name="cancel_label">Cancelar</string>
   <string name="yes">Sim</string>
   <string name="no">Não</string>
@@ -94,13 +98,13 @@
   <string name="etxtFeedurlHint">URL da fonte ou do sítio web</string>
   <string name="txtvfeedurl_label">Adicionar podcast via URL</string>
   <string name="podcastdirectories_label">Localizar podcasts no diretório</string>
-  <string name="podcastdirectories_descr">Pode procurar por novos podcasts no gPodder.net e também na loja iTunes. Pode procurar por nome, categoria e popularidade.</string>
+  <string name="podcastdirectories_descr">Pode procurar por novos podcasts no gPodder.net e também na loja iTunes. Pode pesquisar por nome, categoria e popularidade.</string>
   <string name="browse_gpoddernet_label">Procurar no gPodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar tudo como reproduzido</string>
   <string name="mark_all_read_msg">Marcar todos os episódios como reproduzidos</string>
-  <string name="mark_all_read_confirmation_msg">Por favor confirme que deseja marcar todos os episódios como reproduzidos</string>
-  <string name="mark_all_read_feed_confirmation_msg">Por favor confirme que deseja marcar todos os episódios desta fonte como reproduzidos</string>
+  <string name="mark_all_read_confirmation_msg">Tem a certeza de que deseja marcar todos os episódios como reproduzidos?</string>
+  <string name="mark_all_read_feed_confirmation_msg">Tem a certeza de que deseja marcar todos os episódios desta fonte como reproduzidos?</string>
   <string name="mark_all_seen_label">Marcar tudo como visto</string>
   <string name="show_info_label">Mostrar informações</string>
   <string name="remove_feed_label">Remover podcast</string>
@@ -110,7 +114,7 @@
   <string name="share_feed_url_label">Partilhar URL da fonte</string>
   <string name="share_item_url_label">Partilhar URL do episódio</string>
   <string name="share_item_url_with_position_label">Partilhar URL do episódio com posição</string>
-  <string name="feed_delete_confirmation_msg">Confirma a remoção desta fonte e de todos os episódios descarregados?</string>
+  <string name="feed_delete_confirmation_msg">Tem a certeza de que deseja remover esta fonte e todos os episódios descarregados?</string>
   <string name="feed_remover_msg">Remover fonte</string>
   <string name="load_complete_feed">Atualizar todas as páginas da fonte</string>
   <string name="hide_episodes_title">Ocultar episódios</string>
@@ -124,6 +128,7 @@
   <string name="hide_not_downloaded_episodes_label">Não descarregados</string>
   <string name="filtered_label">Filtrados</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Última atualização falhada</string>
+  <string name="open_podcast">Abrir podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Descarregar</string>
   <string name="play_label">Reproduzir</string>
@@ -166,6 +171,7 @@
   <string name="download_error_connection_error">Erro de ligação</string>
   <string name="download_error_unknown_host">Servidor desconhecido</string>
   <string name="download_error_unauthorized">Erro de autenticação</string>
+  <string name="download_error_file_type_type">Erro do tipo de ficheiro</string>
   <string name="cancel_all_downloads_label">Cancelar descargas</string>
   <string name="download_canceled_msg">Descarga cancelada</string>
   <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\n<i>Descarga automática</i> desativada para este item</string>
@@ -223,7 +229,7 @@
   <string name="duration">Duração</string>
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
-  <string name="clear_queue_confirmation_msg">Tem a certeza de que deseja remover todos os episódios da lista de reprodução?</string>
+  <string name="clear_queue_confirmation_msg">Tem a certeza de que deseja remover todos os episódios da fila de reprodução?</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Sessão Flattr</string>
   <string name="flattr_auth_explanation">Prima o botão abaixo para iniciar a autenticação. O seu navegador web abrirá o ecrã da sessão flattr e ser-lhe-á solicitada a permissão para o AntennaPod efetuar as alterações. Após ser dada a permissão, voltará novamente a este ecrã.</string>
@@ -260,6 +266,7 @@
   <string name="no_items_label">Não existem itens nesta lista</string>
   <string name="no_feeds_label">Ainda não possui quaisquer fontes</string>
   <string name="no_chapters_label">Este episódio não tem capítulos.</string>
+  <string name="no_shownotes_label">Este episódio não tem notas.</string>
   <!--Preferences-->
   <string name="other_pref">Outras</string>
   <string name="about_pref">Sobre</string>
@@ -320,7 +327,7 @@
   <string name="pref_nav_drawer_feed_counter_sum">Alterar a informação mostrada no contador de subscrições</string>
   <string name="pref_set_theme_sum">Alterar a aparência do AntennaPod</string>
   <string name="pref_automatic_download_title">Descarga automática</string>
-  <string name="pref_automatic_download_sum">Configure a descarga automática dos episódios</string>
+  <string name="pref_automatic_download_sum">Configurar a descarga automática dos episódios</string>
   <string name="pref_autodl_wifi_filter_title">Ativar filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Apenas permitir descargas automáticas através de redes sem fios</string>
   <string name="pref_automatic_download_on_battery_title">Descarregar se não estiver a carregar</string>
@@ -339,6 +346,10 @@
   <string name="pref_gpodnet_logout_toast">Sessão terminada</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informação de acesso</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar a informação de acesso à sua conta gpodder.net</string>
+  <string name="pref_gpodnet_sync_title">Sincronizar agora</string>
+  <string name="pref_gpodnet_sync_sum">Sincronizar subscrições e estado dos episódios com o gpodder.net</string>
+  <string name="pref_gpodnet_sync_started">Sincronização iniciada</string>
+  <string name="pref_gpodnet_login_status"><![CDATA[Sessão iniciada como <i>%1$s</i> com o dispositivo <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Velocidades de reprodução</string>
   <string name="pref_playback_speed_sum">Personalizar as velocidades de reprodução disponíveis</string>
   <string name="pref_fast_forward">Tempo a avançar</string>
@@ -366,17 +377,21 @@
   <string name="pref_sonic_title">Reprodutor Sonic</string>
   <string name="pref_sonic_message">Utilizar o Sonic Media Player como substituto do reprodutor nativo do Android e do Prestissimo</string>
   <string name="pref_current_value">Valor atual: %1$s</string>
+  <string name="pref_proxy_title">Proxy</string>
+  <string name="pref_proxy_sum">Definir um proxy de rede</string>
+  <string name="pref_known_issues">Problemas conhecidos</string>
+  <string name="pref_no_browser_found">Navegador web não encontrado</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>
   <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>
   <string name="auto_flattr_ater_beginning">Flattr de episodios ao iniciar a reprodução</string>
   <string name="auto_flattr_ater_end">Flattr de episódios ao terminar a reprodução</string>
   <!--Search-->
-  <string name="search_hint">Procurar fontes ou episódios</string>
+  <string name="search_hint">Pesquisar fontes ou episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas</string>
   <string name="found_in_chapters_label">Encontrado nos capítulos</string>
   <string name="search_status_no_results">Nenhum resultado</string>
-  <string name="search_label">Procura</string>
+  <string name="search_label">Pesquisar</string>
   <string name="found_in_title_label">Encontrado no título</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Os ficheiros OPML permitem-lhe mover os podcasts entre aplicações</string>
@@ -389,7 +404,7 @@
   <string name="opml_directory_error">Erro!</string>
   <string name="reading_opml_label">A ler ficheiro OPML</string>
   <string name="opml_reader_error">Ocorreu um erro ao ler o ficheiro OPML:</string>
-  <string name="opml_import_error_dir_empty">O diretório de importação está vazio</string>
+  <string name="opml_import_error_no_file">Nenhum ficheiro selecionado!</string>
   <string name="select_all_label">Marcar tudo</string>
   <string name="deselect_all_label">Desmarcar tudo</string>
   <string name="select_options_label">Selecionar...</string>
@@ -430,7 +445,7 @@
   <string name="gpodnet_taglist_header">Categorias</string>
   <string name="gpodnet_toplist_header">Melhores</string>
   <string name="gpodnet_suggestions_header">Sugestões</string>
-  <string name="gpodnet_search_hint">Procurar no gpodder.net</string>
+  <string name="gpodnet_search_hint">Pesquisar no gpodder.net</string>
   <string name="gpodnetauth_login_title">Acesso</string>
   <string name="gpodnetauth_login_descr">Bem-vindo ao processo de acesso ao gpodder.net. Introduza os dados de acesso:</string>
   <string name="gpodnetauth_login_butLabel">Acesso</string>
@@ -491,7 +506,7 @@
   <string name="navigate_upwards_label">Navegar para cima</string>
   <string name="butAction_label">Mais ações</string>
   <string name="status_playing_label">Episódio em reprodução</string>
-  <string name="status_downloading_label">Episódio a ser descarregado</string>
+  <string name="status_downloading_label">A descarregar episódio</string>
   <string name="status_downloaded_label">Episódio descarregado</string>
   <string name="status_unread_label">Novo item</string>
   <string name="in_queue_label">Episódio está na fila</string>
@@ -513,7 +528,7 @@
   <string name="progress_upgrading_database">Atualizando base de dados</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importar subscrições de aplicações single-purpose...</string>
-  <string name="search_itunes_label">Procurar no iTunes</string>
+  <string name="search_itunes_label">Pesquisar no iTunes</string>
   <string name="select_label"><b>Selecionar...</b></string>
   <string name="filter">Filtro</string>
   <string name="all_label">Todos</string>
@@ -554,4 +569,16 @@
   <string name="audio_effects">Efeitos áudio</string>
   <string name="stereo_to_mono">Mistura: estéreo para mono</string>
   <string name="sonic_only">Apenas Sonic</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">Tipo</string>
+  <string name="host_label">Servidor</string>
+  <string name="port_label">Porta</string>
+  <string name="optional_hint">(Opcional)</string>
+  <string name="proxy_test_label">Testar</string>
+  <string name="proxy_checking">A verificar...</string>
+  <string name="proxy_test_successful">Teste bem sucedido</string>
+  <string name="proxy_test_failed">O teste falhou</string>
+  <string name="proxy_host_empty_error">O servidor não pode estar vazio</string>
+  <string name="proxy_host_invalid_error">IP ou domínio inválido</string>
+  <string name="proxy_port_invalid_error">Porta inválido</string>
 </resources>
