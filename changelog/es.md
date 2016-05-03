@@ -1,5 +1,21 @@
 Registro de cambios
 ==========
+
+Version 1.6.0
+-------------
+* New features:
+ * Experimental Chromecast support
+ * Subscription overview
+ * Proxy support
+ * Statistics
+ * Manual gpodder.net sync
+* Fixes:
+ * Audioplayer controls
+ * Audio ducking
+ * Video control fade-out
+ * External media controls
+ * Feed parsing
+
 Versión 1.5.0
 -------------
 * Excluir episodios de la auto descarga usando palabras clave

@@ -1,12 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">ಆಂಟೆನಾಪಾಡ್</string>
   <string name="feeds_label">ಫೀಡ್ಗಳು</string>
   <string name="new_label">ಹೊಸ</string>
   <string name="settings_label">ಸೆಟ್ಟಿಂಗ್ಗಳು</string>
   <string name="downloads_label">ಇಳಿಕೆಗಳು</string>
-  <!--New episodes fragment-->
+  <!--Statistics fragment-->
   <!--Main activity-->
   <!--Webview actions-->
   <!--Playback history-->
@@ -57,7 +56,6 @@
   <string name="playback_error_server_died">ಸರ್ವರ್ ಸತ್ತಿದೆ</string>
   <string name="playback_error_unknown">ತಿಳಿಯದ ದೋಷ</string>
   <string name="no_media_playing_label">ಯಾವುದೇ ಮಾಧ್ಯಮ ಓಡುತ್ತಿಲ್ಲ</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">ತುಣಿಗಲೆಯಾಗುತ್ತಿದೆ</string>
   <!--Queue operations-->
   <!--Flattr-->
@@ -98,6 +96,11 @@
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

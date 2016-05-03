@@ -1,11 +1,27 @@
 Registro dei cambiamenti
 ==========
-Version 1.5.0
+
+Version 1.6.0
+-------------
+* New features:
+ * Experimental Chromecast support
+ * Subscription overview
+ * Proxy support
+ * Statistics
+ * Manual gpodder.net sync
+* Fixes:
+ * Audioplayer controls
+ * Audio ducking
+ * Video control fade-out
+ * External media controls
+ * Feed parsing
+
+Versione 1.5.0
 -------------
 * Exclude episodes from auto download by keyword
 * Configure feeds to prevent them from refreshing automatically
-* Improved audio player
-* Improved UI
+* Player audio migliorato
+* Interfaccia Utente migliorata
 * Risoluzione bug
 
 Versione 1.4.1
@@ -13,17 +29,17 @@ Versione 1.4.1
 * Miglioramento delle prestazioni
 * Hardware buttons now ff and rewind instead of skipping
 * Option to have forward button skip
-* Option to send crash reports directly to developers
-* Highlight currently playing episode
-* Widget improvements
+* Opzione per mandare i report dei crash direttamente agli sviluppatori
+* Evidenzia l'episodio in riproduzione
+* Miglioramenti del Widget
 
 Versione 1.4.0.12
 ----------------
-* Fix for crash on Huawei devices (media buttons may not work)
+* Risolto crash con i dispositivi Huawei (pulsanti multimediali potrebbero non funzionare)
 
 Versione 1.4
 -----------
-* BLUETOOTH PERMISSION: Needed to be able to resume playback when a Bluetooth device reconnects with your phone
+* PERMESSI BLUETOOTH: Necessari per riprendere la riproduzione quando un dispositivo Bluetooth si riconnetta al tuo telefono
 * VIBRATE PERMISSION: Used optionally with the sleep timer
 * Native variable speed playback (experimental via options)
 * Migliorato il contatore per lo spegnimento

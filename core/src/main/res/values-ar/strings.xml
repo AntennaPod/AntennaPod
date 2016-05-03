@@ -1,19 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="all_episodes_short_label">الكل</string>
   <string name="favorite_episodes_label">المفضلات</string>
   <string name="new_label">جديد</string>
-  <string name="waiting_list_label">قائمة انتظار</string>
   <string name="settings_label">اعدادات</string>
   <string name="downloads_label">تنزيل</string>
   <string name="downloads_running_label">جارى التشغيل</string>
   <string name="downloads_completed_label">اكتمل</string>
   <string name="downloads_log_label">سجل</string>
   <string name="cancel_download_label">الغاء التنزيل</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">تم نشره مؤخرا</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">قائمة الفتح</string>
   <string name="drawer_close">قائمة الاغلاف</string>
@@ -51,7 +48,6 @@
   <string name="close_label">اغلاق</string>
   <string name="retry_label">اعادة المحاولة</string>
   <string name="auto_download_label">تضمين فى التنزيل التلقائي</string>
-  <string name="feed_auto_download_global">عام</string>
   <string name="feed_auto_download_always">دائما</string>
   <string name="feed_auto_download_never">ابدا</string>
   <string name="send_label">ارسال ...</string>
@@ -81,7 +77,6 @@
   <string name="remove_from_favorite_label">المسح من المفضلات</string>
   <string name="removed_from_favorites">تم مسحه من المفضلات</string>
   <string name="visit_website_label">زيارة الموقع</string>
-  <string name="download_all">تنزيل الكل</string>
   <string name="activate_auto_download">تفعيل التنزيل التلقائي</string>
   <string name="deactivate_auto_download">ايقاف التنزيل التلقائي</string>
   <string name="removed_item">تم حزف العنصر</string>
@@ -115,14 +110,18 @@
   <!--Directory chooser-->
   <!--Online feed view-->
   <!--Content descriptions for image buttons-->
-  <string name="new_episodes_count_label">الاعداد غير المقرؤة</string>
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
   <string name="all_label">الكل</string>
   <string name="unplayed_label">لم يتم تشغيله</string>
   <string name="downloaded_label">تم التنزيل</string>
   <string name="not_downloaded_label">لم يتم التنزيل</string>
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

@@ -1,12 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Ροές</string>
-  <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">Επεισόδια</string>
-  <string name="new_episodes_label">Νέα Επεισόδια</string>
-  <string name="all_episodes_label">Όλα τα Επεισόδια</string>
   <string name="all_episodes_short_label">Όλα</string>
   <string name="favorite_episodes_label">Αγαπημένα</string>
   <string name="new_label">Νέα</string>
@@ -18,9 +14,7 @@
   <string name="playback_history_label">Ιστορικό Αναπαραγωγής</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net Σύνδεση</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Πρόσφατα δημοσιεύθηκε</string>
-  <string name="episode_filter_label">Εμφάνιση μόνο νέων Επεισοδίων</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Άνοιγμα μενού</string>
   <string name="drawer_close">Κλείσιμο μενού</string>
@@ -86,8 +80,6 @@
   <string name="remove_from_favorite_label">Προσθήκη από τα Αγαπημένα</string>
   <string name="visit_website_label">Επισκεφθείτε την ιστοσελίδα</string>
   <string name="support_label">Flattr αυτό</string>
-  <string name="enqueue_all_new">Τοποθέτηση στην αναμονή ολων</string>
-  <string name="download_all">Λήψη όλων</string>
   <string name="skip_episode_label">Μετάβαση επεισοδίων</string>
   <string name="activate_auto_download">Ενεργοποίηση Αυτόματης Λήψης</string>
   <string name="deactivate_auto_download">Απενεργοποίηση Αυτόματης Λήψης</string>
@@ -131,7 +123,6 @@
   <string name="playback_error_server_died">Ο διακομιστής πέθανε</string>
   <string name="playback_error_unknown">Άγνωστο σφάλμα</string>
   <string name="no_media_playing_label">Δεν απαραγωνται πολυμεσα</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Προσωρινή μνήμη</string>
   <string name="playbackservice_notification_title">Αναπαραγωγή του podcast</string>
   <string name="unknown_media_key">AntennaPod - Άγνωστα πλήκτρα πολυμέσων: %1$d</string>
@@ -258,8 +249,6 @@
   <string name="opml_import_label">Εισαγωγή OPML</string>
   <string name="opml_directory_error">ΣΦΑΛΜΑ!</string>
   <string name="reading_opml_label">Ανάγνωση αρχείου OPML</string>
-  <string name="opml_reader_error">Παρουσιάστηκε σφάλμα κατά την ανάγνωση του εγγράφου OPML:</string>
-  <string name="opml_import_error_dir_empty">Ο κατάλογος εισαγωγής είναι άδειος.</string>
   <string name="select_all_label">Επιλογή όλων</string>
   <string name="deselect_all_label">Αποεπιλογή όλων</string>
   <string name="choose_file_from_filesystem">Από το τοπικό σύστημα αρχείων</string>
@@ -326,22 +315,13 @@
   <string name="subscribe_label">Εγγραφή</string>
   <string name="subscribed_label">Εγγεγραμμένα</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Εμφάνιση κεφαλαίων</string>
-  <string name="show_shownotes_label">Εμφάνιση σημειώσεων </string>
-  <string name="show_cover_label">Εμφάνιση εικόνας</string>
   <string name="rewind_label">Κίνηση εμπρός</string>
   <string name="fast_forward_label">Γρήγορη κίνηση εμπρός</string>
   <string name="media_type_audio_label">Ήχος</string>
   <string name="media_type_video_label">Βίντεο</string>
   <string name="navigate_upwards_label">Πλοήγηση προς τα πάνω</string>
-  <string name="butAction_label">Περισσότερες ενέργειες</string>
-  <string name="status_playing_label">Το επεισόδιο αναπαράγεται</string>
   <string name="status_downloading_label">Το επεισόδιο γίνεται λήφθετε</string>
-  <string name="status_downloaded_label">Το επεισόδιο εχει ληφθει</string>
-  <string name="status_unread_label">Το Στοιχείο είναι νέο</string>
   <string name="in_queue_label">Το επεισόδιο είναι στη σειρά αναμονής</string>
-  <string name="new_episodes_count_label">Αριθμός νέων επεισοδίων</string>
-  <string name="in_progress_episodes_count_label">Αριθμός επεισοδίων που έχετε αρχίσει να ακούτε</string>
   <string name="drag_handle_content_description">Σύρετε για να αλλάξετε τη θέση αυτού του στοιχείου</string>
   <string name="load_next_page_label">Τοποθέτηση επόμενης σελίδας</string>
   <!--Feed information screen-->
@@ -351,8 +331,13 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Εισαγωγή εγγραφών από εφαρμογές και μονο...</string>
   <string name="search_itunes_label">iTunes Αναζήτηση</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Όλα</string>
   <string name="downloaded_label">Ειλημμένα</string>
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>
