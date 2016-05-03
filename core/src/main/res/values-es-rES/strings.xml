@@ -23,6 +23,7 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publicado recientemente</string>
   <string name="episode_filter_label">Mostrar solo episodios nuevos</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
   <string name="drawer_close">Cerrar menu</string>
@@ -203,8 +204,6 @@
   <string name="opml_import_label">Importación de OPML</string>
   <string name="opml_directory_error">¡ERROR!</string>
   <string name="reading_opml_label">Leyendo el archivo OPML</string>
-  <string name="opml_reader_error">Ha ocurrido un error al leer el archivo OPML</string>
-  <string name="opml_import_error_dir_empty">El directorio de importación está vacío</string>
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
   <string name="opml_export_label">Exportar a OPML</string>
@@ -240,4 +239,5 @@
   <string name="none_label">Ningun</string>
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
 </resources>

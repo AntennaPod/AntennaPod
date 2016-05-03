@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Канали</string>
+  <string name="statistics_label">Статистика</string>
   <string name="add_feed_label">Додати подкаст</string>
   <string name="podcasts_label">Подкасти</string>
   <string name="episodes_label">Епізоди</string>
@@ -28,6 +29,9 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Щойно опубліковано</string>
   <string name="episode_filter_label">Показати тількі нові епізоди</string>
+  <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Загальний час прослуханих подкастів:</string>
+  <string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
   <string name="drawer_close">Сховати меню</string>
@@ -125,6 +129,7 @@
   <string name="hide_not_downloaded_episodes_label">Не завантажені</string>
   <string name="filtered_label">Фільтровані</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Останнє оновлення було невдалим</string>
+  <string name="open_podcast">Відкрити подкаст</string>
   <!--actions on feeditems-->
   <string name="download_label">Завантажити</string>
   <string name="play_label">Грати</string>
@@ -167,6 +172,7 @@
   <string name="download_error_connection_error">Помилка з\'єднання</string>
   <string name="download_error_unknown_host">Невідомий host</string>
   <string name="download_error_unauthorized">Помилка автентифікації</string>
+  <string name="download_error_file_type_type">Помилка типа файла</string>
   <string name="cancel_all_downloads_label">Скасувати всі завантаження</string>
   <string name="download_canceled_msg">Завантаження скасоване</string>
   <string name="download_canceled_autodownload_enabled_msg">Завантаження скасоване\n<i>Автозавантаження</i> для цього елемента вимкнуто</string>
@@ -262,6 +268,7 @@
   <string name="no_items_label">Нічого в цьому списку</string>
   <string name="no_feeds_label">Немає підписаних каналів </string>
   <string name="no_chapters_label">В цьому епізоді немає розділів.</string>
+  <string name="no_shownotes_label">До цього епізода немає нотаток.</string>
   <!--Preferences-->
   <string name="other_pref">Інше</string>
   <string name="about_pref">Про програму</string>
@@ -341,6 +348,10 @@
   <string name="pref_gpodnet_logout_toast">Успішно закрили доступ</string>
   <string name="pref_gpodnet_setlogin_information_title">Змінити інформацію для входу</string>
   <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net</string>
+  <string name="pref_gpodnet_sync_title">Cинхронізувати зараз</string>
+  <string name="pref_gpodnet_sync_sum">Cинхронізувати підписки та стан епізодів з сервісом gpodder.net</string>
+  <string name="pref_gpodnet_sync_started">Cинхронізація почалась</string>
+  <string name="pref_gpodnet_login_status"><![CDATA[Ви увійшли як <i>%1$s</i> з пристроя <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Швидкість програвання</string>
   <string name="pref_playback_speed_sum">Налаштування швідкості доступно для змінної швидкості програвання</string>
   <string name="pref_fast_forward">Час перемотки вперед</string>
@@ -368,6 +379,10 @@
   <string name="pref_sonic_title">Програвач Sonic</string>
   <string name="pref_sonic_message">Застосувати вбудований програвач sonic замість програвача Android та Prestissimo</string>
   <string name="pref_current_value">Поточне значення: %1$s</string>
+  <string name="pref_proxy_title">Проксі</string>
+  <string name="pref_proxy_sum">Застосувати проксі сервер</string>
+  <string name="pref_known_issues">Відомі проблеми</string>
+  <string name="pref_no_browser_found">Веб-браузер не знайдено.\"</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -390,8 +405,8 @@
   <string name="opml_import_label">OPML імпорт</string>
   <string name="opml_directory_error">Помилка!</string>
   <string name="reading_opml_label">Читаємо OPML файл</string>
-  <string name="opml_reader_error">Трапилась помілка коли читали OPML документ:</string>
-  <string name="opml_import_error_dir_empty">Директорія імпорту пуста</string>
+  <string name="opml_reader_error">Помилка при читанні документа OPML:</string>
+  <string name="opml_import_error_no_file">Жодного файла не обрано!</string>
   <string name="select_all_label">Обрати все</string>
   <string name="deselect_all_label">Убрати виділення</string>
   <string name="select_options_label">Обрати…</string>
@@ -559,4 +574,16 @@
   <string name="audio_effects">Аудіоефекти</string>
   <string name="stereo_to_mono">Зробити моно із стерео</string>
   <string name="sonic_only">Тільки Sonic</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">Тип</string>
+  <string name="host_label">Хост</string>
+  <string name="port_label">Порт</string>
+  <string name="optional_hint">(Необов\'язково)</string>
+  <string name="proxy_test_label">Тест</string>
+  <string name="proxy_checking">Перевіряється...</string>
+  <string name="proxy_test_successful">Протестовано успішно</string>
+  <string name="proxy_test_failed">Протестовано з помилками</string>
+  <string name="proxy_host_empty_error">Хост не можете бути пустим</string>
+  <string name="proxy_host_invalid_error">Хост не є правильною IP-адресою або доменним ім\'ям</string>
+  <string name="proxy_port_invalid_error">Неправильний порт</string>
 </resources>

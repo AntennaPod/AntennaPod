@@ -18,6 +18,7 @@
   <string name="gpodnet_auth_label">gpodder.net login</string>
   <!--New episodes fragment-->
   <string name="episode_filter_label">Mostrar apenas novos episódios</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
   <string name="drawer_close">Fechar menu</string>
@@ -237,8 +238,6 @@
   <string name="opml_import_label">Importação de OPML</string>
   <string name="opml_directory_error">ERRO!</string>
   <string name="reading_opml_label">Lendo arquivo OPML</string>
-  <string name="opml_reader_error">Ocorreu um erro durante a leitura do documento OPML:</string>
-  <string name="opml_import_error_dir_empty">O diretório de importação está vazio.</string>
   <string name="select_all_label">Selecionar todos</string>
   <string name="deselect_all_label">Remover seleção</string>
   <string name="opml_export_label">Exportar OPML</string>
@@ -312,4 +311,5 @@
   <!--AntennaPodSP-->
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
 </resources>

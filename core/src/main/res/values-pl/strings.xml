@@ -1,12 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
-  <string name="podcasts_label">PODKASTY</string>
   <string name="settings_label">Ustawienia</string>
   <string name="downloads_log_label">Dziennik</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Ostatnio opublikowane</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Otwórz menu</string>
   <string name="drawer_close">Zamknij menu</string>
@@ -50,7 +47,6 @@
   <string name="added_to_queue_label">Dodano do kolejki</string>
   <string name="remove_from_queue_label">Usuń z kolejki</string>
   <string name="visit_website_label">Odwiedź stronę</string>
-  <string name="download_all">Pobierz wszystko</string>
   <string name="skip_episode_label">Pomiń odcinek</string>
   <!--Download messages and labels-->
   <string name="download_error_error_unknown">Nieznany błąd</string>
@@ -58,7 +54,6 @@
   <string name="player_error_msg">Błąd!</string>
   <string name="playback_error_server_died">Serwer umarł</string>
   <string name="playback_error_unknown">Nieznany błąd</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buforowanie</string>
   <!--Queue operations-->
   <string name="sort">Sortuj</string>
@@ -94,6 +89,11 @@
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

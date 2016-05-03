@@ -1,5 +1,21 @@
 Ändringslogg
 ==========
+
+Version 1.6.0
+-------------
+* Nya funktioner:
+ * Experimentellt stöd för Chromecast
+ * Prenumerationsöversikt
+ * Proxystöd
+ * Statistik
+ * Manuell gpodder.net synkronisering
+* Fixar:
+ * Ljuduppspelningskontroller
+ * Ljudduckning
+ * Fade-out på videokontroller
+ * Externa mediakontroller
+ * Flödestolkning
+
 Version 1.5.0
 -------------
 * Exkludera episoder från automatisk nedladdning baserat på nyckelord

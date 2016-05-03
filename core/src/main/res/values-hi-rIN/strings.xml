@@ -14,6 +14,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
   <!--New episodes fragment-->
+  <!--Statistics fragment-->
   <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">ब्राउज़र में खोलें</string>
@@ -205,8 +206,6 @@
   <string name="opml_import_label">OPML आयात</string>
   <string name="opml_directory_error">त्रुटि!</string>
   <string name="reading_opml_label">OPML फ़ाइल पढ़ना</string>
-  <string name="opml_reader_error">OPML दस्तावेज़ पढ़ते समय एक त्रुटि हुई है:</string>
-  <string name="opml_import_error_dir_empty">आयात निर्देशिका खाली है.</string>
   <string name="select_all_label">सभी का चयन करें</string>
   <string name="deselect_all_label">सभी का चयन रद्द करें</string>
   <string name="opml_export_label">OPML निर्यात</string>
@@ -269,4 +268,5 @@
   <!--AntennaPodSP-->
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
 </resources>

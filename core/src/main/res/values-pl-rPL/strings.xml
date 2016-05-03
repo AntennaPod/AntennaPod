@@ -25,6 +25,7 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Ostatnio opublikowane</string>
   <string name="episode_filter_label">Pokaż tylko nowe odcinki</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Otwórz menu</string>
   <string name="drawer_close">Zamknij menu</string>
@@ -347,8 +348,6 @@
   <string name="opml_import_label">Import OPML</string>
   <string name="opml_directory_error">BŁĄD!</string>
   <string name="reading_opml_label">Odczytuję plik OPML</string>
-  <string name="opml_reader_error">Wystąpił błąd w czasie odczytu dokumentu OPML:</string>
-  <string name="opml_import_error_dir_empty">Katalog importowania jest pusty.</string>
   <string name="select_all_label">Zaznacz wszystko</string>
   <string name="deselect_all_label">Odznacz wszystko</string>
   <string name="choose_file_from_external_application">Użyj zewnętrznej aplikacji</string>
@@ -489,4 +488,5 @@ https://gpodder.net/register/</string>
   <string name="rating_later_label">Przypomnij później</string>
   <string name="rating_now_label">Pewnie, zróbmy to!</string>
   <!--Audio controls-->
+  <!--proxy settings-->
 </resources>

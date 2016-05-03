@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Canales</string>
+  <string name="statistics_label">Estadísticas</string>
   <string name="add_feed_label">Añadir podcast</string>
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">Episodios</string>
@@ -28,6 +29,9 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publicados recientemente</string>
   <string name="episode_filter_label">Mostrar solo episodios nuevos</string>
+  <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Tiempo total reproducido:</string>
+  <string name="statistics_details_dialog">Empezados %1$d episodios de %2$d.\n\nReproducidos %3$s de %4$s.</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
   <string name="drawer_close">Cerrar menú</string>
@@ -124,6 +128,7 @@
   <string name="hide_not_downloaded_episodes_label">No descargados</string>
   <string name="filtered_label">Filtrados</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Error en última actualización</string>
+  <string name="open_podcast">Abrir Podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <string name="play_label">Reproducir</string>
@@ -166,6 +171,7 @@
   <string name="download_error_connection_error">Error de conexión</string>
   <string name="download_error_unknown_host">Host desconocido</string>
   <string name="download_error_unauthorized">Error de autenticación</string>
+  <string name="download_error_file_type_type">Tipo de archivo erróneo</string>
   <string name="cancel_all_downloads_label">Cancelar todas las descargas</string>
   <string name="download_canceled_msg">Descarga cancelada</string>
   <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\nSe desactivó <i>Descarga automática</i> en este elemento</string>
@@ -260,6 +266,7 @@
   <string name="no_items_label">Esta lista no tiene elementos.</string>
   <string name="no_feeds_label">No se ha suscrito a ningún canal.</string>
   <string name="no_chapters_label">Este episodio no tiene capítulos.</string>
+  <string name="no_shownotes_label">Este episodio no tiene anotaciones.</string>
   <!--Preferences-->
   <string name="other_pref">Otros</string>
   <string name="about_pref">Acerca de</string>
@@ -339,6 +346,10 @@
   <string name="pref_gpodnet_logout_toast">Ha cerrado la sesión correctamente.</string>
   <string name="pref_gpodnet_setlogin_information_title">Cambiar información de acceso</string>
   <string name="pref_gpodnet_setlogin_information_sum">Modificar datos de inicio de sesión en gpodder.net.</string>
+  <string name="pref_gpodnet_sync_title">Sincronizar ahora</string>
+  <string name="pref_gpodnet_sync_sum">Sincronizar suscripciones y estados con gpodder.net</string>
+  <string name="pref_gpodnet_sync_started">Comenzó sincronización</string>
+  <string name="pref_gpodnet_login_status"><![CDATA[Autenticado como <i>%1$s</i> con dispositivo <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Velocidades de reproducción</string>
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles para la reproducción de audio a velocidad variable</string>
   <string name="pref_fast_forward">Intervalo de avance</string>
@@ -366,6 +377,10 @@
   <string name="pref_sonic_title">Sonic media player</string>
   <string name="pref_sonic_message">Usar el reproductor Sonic Media incorporado en lugar del reproductor multimedia de Android y Prestissimo</string>
   <string name="pref_current_value">Valor actual: %1$s</string>
+  <string name="pref_proxy_title">Proxy</string>
+  <string name="pref_proxy_sum">Configurar proxy de red</string>
+  <string name="pref_known_issues">Problemas conocidos</string>
+  <string name="pref_no_browser_found">No se encontró navegador web</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Hacer Flattr del episodio en cuanto se haya reproducido el %d por ciento</string>
@@ -388,8 +403,8 @@
   <string name="opml_import_label">Importación de OPML</string>
   <string name="opml_directory_error">¡ERROR!</string>
   <string name="reading_opml_label">Leyendo el archivo OPML</string>
-  <string name="opml_reader_error">Ha ocurrido un error al leer el archivo OPML</string>
-  <string name="opml_import_error_dir_empty">El directorio de importación está vacío.</string>
+  <string name="opml_reader_error">Error al leer el documento OPML</string>
+  <string name="opml_import_error_no_file">¡Debes seleccionar un archivo!</string>
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
   <string name="select_options_label">Seleccionar…</string>
@@ -554,4 +569,16 @@
   <string name="audio_effects">Efectos de audio</string>
   <string name="stereo_to_mono">Downmix: De estereo a mono</string>
   <string name="sonic_only">Sólo Sonic</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">Tipo</string>
+  <string name="host_label">Host</string>
+  <string name="port_label">Puerto</string>
+  <string name="optional_hint">(Opcional)</string>
+  <string name="proxy_test_label">Probar</string>
+  <string name="proxy_checking">Comprobando...</string>
+  <string name="proxy_test_successful">Test correcto</string>
+  <string name="proxy_test_failed">Test fallido</string>
+  <string name="proxy_host_empty_error">Debes introducir un Host</string>
+  <string name="proxy_host_invalid_error">El Host no es una IP ni un dominio válidos</string>
+  <string name="proxy_port_invalid_error">Puerto inválido</string>
 </resources>

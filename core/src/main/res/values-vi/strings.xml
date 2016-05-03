@@ -5,7 +5,7 @@
   <string name="new_label">Tạo mới</string>
   <string name="settings_label">Thiết lập</string>
   <string name="downloads_label">Tải về</string>
-  <!--New episodes fragment-->
+  <!--Statistics fragment-->
   <!--Main activity-->
   <!--Webview actions-->
   <!--Playback history-->
@@ -55,6 +55,11 @@
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

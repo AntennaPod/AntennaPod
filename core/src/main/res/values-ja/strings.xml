@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">フィード</string>
+  <string name="statistics_label">統計情報</string>
   <string name="add_feed_label">フィードを追加</string>
   <string name="podcasts_label">ポッドキャスト</string>
   <string name="episodes_label">エピソード</string>
@@ -28,6 +29,9 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">最近公開された</string>
   <string name="episode_filter_label">新しいエピソードのみ表示</string>
+  <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">ポッドキャストを再生した合計時間:</string>
+  <string name="statistics_details_dialog">%2$d から %1$d のエピソードが開始しました。\n\n%4$s から%3$s を再生しました。</string>
   <!--Main activity-->
   <string name="drawer_open">メニューを開く</string>
   <string name="drawer_close">メニューを閉じる</string>
@@ -123,6 +127,7 @@
   <string name="hide_not_downloaded_episodes_label">ダウンロードしていません</string>
   <string name="filtered_label">フィルターしました</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} 前回更新に失敗しました</string>
+  <string name="open_podcast">ポッドキャストを開く</string>
   <!--actions on feeditems-->
   <string name="download_label">ダウンロード</string>
   <string name="play_label">再生</string>
@@ -165,6 +170,7 @@
   <string name="download_error_connection_error">接続エラー</string>
   <string name="download_error_unknown_host">ホスト不明</string>
   <string name="download_error_unauthorized">認証エラー</string>
+  <string name="download_error_file_type_type">ファイルタイプ エラー</string>
   <string name="cancel_all_downloads_label">すべてのダウンロードをキャンセル</string>
   <string name="download_canceled_msg">ダウンロードをキャンセルしました</string>
   <string name="download_canceled_autodownload_enabled_msg">ダウンロードをキャンセルしました\nこのアイテムの <i>自動ダウンロード</i> を無効にしました</string>
@@ -258,6 +264,7 @@
   <string name="no_items_label">このリストにはアイテムがありません。</string>
   <string name="no_feeds_label">まだフィードを何も購読していません。</string>
   <string name="no_chapters_label">このエピソードにチャプターはありません。</string>
+  <string name="no_shownotes_label">このエピソードにショーノートはありません。</string>
   <!--Preferences-->
   <string name="other_pref">その他</string>
   <string name="about_pref">について</string>
@@ -337,6 +344,10 @@
   <string name="pref_gpodnet_logout_toast">ログアウトしました</string>
   <string name="pref_gpodnet_setlogin_information_title">ログイン情報を変更</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.netアカウントのログイン情報を変更します。</string>
+  <string name="pref_gpodnet_sync_title">今すぐ同期</string>
+  <string name="pref_gpodnet_sync_sum">購読とエピソードの状態を gpodder.net で同期</string>
+  <string name="pref_gpodnet_sync_started">同期を開始しました</string>
+  <string name="pref_gpodnet_login_status"><![CDATA[<i>%1$s</i> としてデバイス <i>%2$s</i> でログインしました]]></string>
   <string name="pref_playback_speed_title">再生速度</string>
   <string name="pref_playback_speed_sum">可変速度音声再生に使用可能な速度をカスタマイズします</string>
   <string name="pref_fast_forward">早送り時間</string>
@@ -364,6 +375,10 @@
   <string name="pref_sonic_title">Sonic メディアプレーヤー</string>
   <string name="pref_sonic_message">Android 標準のメディアプレーヤーと Prestissimo の代わりに、内蔵のソニックメディアプレーヤーを使用します</string>
   <string name="pref_current_value">現在の値: %1$s</string>
+  <string name="pref_proxy_title">プロキシ</string>
+  <string name="pref_proxy_sum">ネットワーク プロキシの設定</string>
+  <string name="pref_known_issues">既知の問題</string>
+  <string name="pref_no_browser_found">Web ブラウザーが見つかりません。\"</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">自動Flattrを有効にする</string>
   <string name="auto_flattr_after_percent">%d ％再生したらエピソードをFlattr </string>
@@ -386,8 +401,8 @@
   <string name="opml_import_label">OPMLインポート</string>
   <string name="opml_directory_error">エラー!</string>
   <string name="reading_opml_label">OPMLファイルを読み込み中</string>
-  <string name="opml_reader_error">OPMLドキュメントの読み込み中にエラーが発生しました。</string>
-  <string name="opml_import_error_dir_empty">インポートディレクトリが空です。</string>
+  <string name="opml_reader_error">OPMLドキュメントの読み込み中にエラーが発生しました:</string>
+  <string name="opml_import_error_no_file">ファイルが選択されていません!</string>
   <string name="select_all_label">すべてを選択</string>
   <string name="deselect_all_label">選択解除</string>
   <string name="select_options_label">選択…</string>
@@ -549,4 +564,16 @@
   <string name="audio_effects">オーディオエフェクト</string>
   <string name="stereo_to_mono">ダウンミックス: ステレオからモノラル</string>
   <string name="sonic_only">Sonic のみ</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">タイプ</string>
+  <string name="host_label">ホスト</string>
+  <string name="port_label">ポート</string>
+  <string name="optional_hint">(オプション)</string>
+  <string name="proxy_test_label">テスト</string>
+  <string name="proxy_checking">確認中…</string>
+  <string name="proxy_test_successful">テストに成功しました</string>
+  <string name="proxy_test_failed">テストに失敗しました</string>
+  <string name="proxy_host_empty_error">ホストは空にできません</string>
+  <string name="proxy_host_invalid_error">ホストが有効なIPまたはドメインではありません</string>
+  <string name="proxy_port_invalid_error">ポートが正しくありません</string>
 </resources>

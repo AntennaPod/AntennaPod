@@ -1,5 +1,21 @@
 Änderungen
 ==========
+
+Version 1.6.0
+-------------
+* Neue Funktionen:
+ * Unterstützung von Chromecast (experimentell)
+ * Abonnement Übersicht
+ * Unterstützung von Proxies
+ * Statistiken
+ * Manuelle Synchronization mit gpodder.net
+* Behobene Fehler:
+ * Wiedergabesteuerung
+ * Ducking (Absenken der Lautstärke bei anderen Signalen)
+ * Ausblenden der Video-Steuerelemente
+ * Externe Steuerelemente
+ * Einlesen von Feeds
+
 Version 1.5.0
 -------------
 * Schließe Episoden mit Hilfe von Schlüsselwörtern beim Automatischen Herunterladen aus

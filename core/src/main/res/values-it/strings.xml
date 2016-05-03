@@ -1,17 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feed</string>
   <string name="add_feed_label">Aggiungi un podcast</string>
-  <string name="podcasts_label">PODCAST</string>
   <string name="episodes_label">Episodi</string>
-  <string name="new_episodes_label">Episodi nuovi</string>
-  <string name="all_episodes_label">Tutti gli episodi</string>
   <string name="all_episodes_short_label">Tutto</string>
   <string name="favorite_episodes_label">Preferiti</string>
   <string name="new_label">Nuovo</string>
-  <string name="waiting_list_label">Lista d\'attesa</string>
   <string name="settings_label">Impostazioni</string>
   <string name="add_new_feed_label">Aggiungi un podcast</string>
   <string name="downloads_label">Download</string>
@@ -22,8 +17,7 @@
   <string name="playback_history_label">Cronologia delle riproduzioni</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Accesso a gpodder.net</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Pubblicati di recente</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
   <string name="drawer_close">Chiudi il menù</string>
@@ -61,7 +55,6 @@
   <string name="auto_download_label">Includi nei download automatici</string>
   <string name="auto_download_apply_to_items_title">Applica agli episodi precedenti</string>
   <string name="parallel_downloads_suffix">\u0020download paralleli</string>
-  <string name="feed_auto_download_global">Globale</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
   <string name="episode_cleanup_never">Mai</string>
@@ -106,8 +99,6 @@
   <string name="added_to_queue_label">Aggiunto alla Coda</string>
   <string name="remove_from_queue_label">Rimuovi dalla coda</string>
   <string name="visit_website_label">Visita il sito web</string>
-  <string name="enqueue_all_new">Metti tutti in coda</string>
-  <string name="download_all">Scarica tutti</string>
   <string name="skip_episode_label">Salta l\'episodio</string>
   <!--Download messages and labels-->
   <string name="download_successful">successo</string>
@@ -138,7 +129,6 @@
   <string name="playback_error_server_died">Server morto</string>
   <string name="playback_error_unknown">Errore sconosciuto</string>
   <string name="no_media_playing_label">Nessun elemento multimediale in riproduzione</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffer in corso</string>
   <string name="playbackservice_notification_title">Riproduzione del podcast in corso</string>
   <!--Queue operations-->
@@ -213,7 +203,6 @@
   <!--OPML import and export-->
   <string name="start_import_label">Avvia l\'importazione</string>
   <string name="opml_directory_error">ERRORE!</string>
-  <string name="opml_import_error_dir_empty">La directory dell\'importazione è vuota.</string>
   <string name="select_all_label">Seleziona tutto</string>
   <string name="deselect_all_label">Deseleziona tutto</string>
   <string name="choose_file_from_external_application">Usa un\'applicazione esterna</string>
@@ -264,27 +253,24 @@
   <string name="subscribe_label">Abbonati</string>
   <string name="subscribed_label">Abbonato</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Mostra i capitoli</string>
-  <string name="show_cover_label">Mostra l\'immagine</string>
   <string name="rewind_label">Riavvolgi</string>
   <string name="fast_forward_label">Avanti veloce</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
-  <string name="butAction_label">Altre azioni</string>
-  <string name="status_playing_label">L\'episodio sta venendo riprodotto</string>
   <string name="status_downloading_label">L\'episodio sta venendo scaricato</string>
-  <string name="status_downloaded_label">L\'episodio è stato scaricato</string>
-  <string name="status_unread_label">L\'oggetto è nuovo</string>
   <string name="in_queue_label">L\'episodio è in coda</string>
-  <string name="new_episodes_count_label">Numero di episodi nuovi</string>
-  <string name="in_progress_episodes_count_label">Numero di episodi che hai iniziato ad ascoltare</string>
   <string name="load_next_page_label">Carica la pagina successiva</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autenticazione</string>
   <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="search_itunes_label">Cerca su iTunes</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Tutto</string>
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

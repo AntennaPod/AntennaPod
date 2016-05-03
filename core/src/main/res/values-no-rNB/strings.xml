@@ -1,17 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Strømmer</string>
   <string name="add_feed_label">Legg til podcast</string>
-  <string name="podcasts_label">PODCASTER</string>
   <string name="episodes_label">Episoder</string>
-  <string name="new_episodes_label">Nye episoder</string>
-  <string name="all_episodes_label">Alle episoder</string>
   <string name="all_episodes_short_label">Alle</string>
   <string name="favorite_episodes_label">Favoritter</string>
   <string name="new_label">Nye</string>
-  <string name="waiting_list_label">Venteliste</string>
   <string name="settings_label">Innstillinger</string>
   <string name="add_new_feed_label">Legg til podcast</string>
   <string name="downloads_label">Nedlastninger</string>
@@ -23,9 +18,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net-innlogging</string>
   <string name="free_space_label">%1$s ledig</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Nylig publisert</string>
-  <string name="episode_filter_label">Vis kun nye episoder</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Åpne menyen</string>
   <string name="drawer_close">Lukk menyen</string>
@@ -73,9 +66,7 @@
   <string name="auto_download_label">Inkluder i automatiske nedlastninger</string>
   <string name="auto_download_apply_to_items_title">Angi for tidligere episoder</string>
   <string name="auto_download_apply_to_items_message">Den nye <i>Automatisk nedlasting</i>-innstillingen vil automatisk aktiveres for nye episoder.\nØnsker du å aktivere den for tidligere utgitte episoder også?</string>
-  <string name="auto_delete_label">Automatisk sletting av episode\n(overstyr den globale standarden)</string>
   <string name="parallel_downloads_suffix">\u0020samtidige nedlastinger</string>
-  <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Alltid</string>
   <string name="feed_auto_download_never">Aldri</string>
   <string name="episode_cleanup_never">AldriAldri</string>
@@ -103,8 +94,6 @@
   <string name="share_link_label">Del lenke</string>
   <string name="share_link_with_position_label">Del lenke med plassering</string>
   <string name="share_feed_url_label">Del strømmens URL</string>
-  <string name="share_item_url_label">Del episodens URL</string>
-  <string name="share_item_url_with_position_label">Del episodens URL med posisjon</string>
   <string name="feed_delete_confirmation_msg">Vil du virkelig slette denne strømmen og alle episodene av denne strømmen du har lastet ned?</string>
   <string name="feed_remover_msg">Fjerner strøm</string>
   <string name="load_complete_feed">Oppdater hele strømmen</string>
@@ -137,8 +126,6 @@
   <string name="remove_from_favorite_label">Fjern fra favoritter</string>
   <string name="visit_website_label">Besøk nettside</string>
   <string name="support_label">Flattr\'e dette</string>
-  <string name="enqueue_all_new">Legg alle til queue</string>
-  <string name="download_all">Last ned alle</string>
   <string name="skip_episode_label">Skip episode</string>
   <string name="activate_auto_download">Aktiver automatisk nedlasting</string>
   <string name="deactivate_auto_download">Deaktiver automatisk nedlasting</string>
@@ -192,7 +179,6 @@
   <string name="playback_error_server_died">Serveren døde</string>
   <string name="playback_error_unknown">Ukjent feil</string>
   <string name="no_media_playing_label">Ingen media spillende for øyeblikket.</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Bufrer</string>
   <string name="playbackservice_notification_title">Spiller podcast</string>
   <string name="unknown_media_key">AntennaPod - Ukjent medienøkkel: %1$d</string>
@@ -368,8 +354,6 @@
   <string name="opml_import_label">OPML-import</string>
   <string name="opml_directory_error">ERROR!</string>
   <string name="reading_opml_label">Leser OPML-fil</string>
-  <string name="opml_reader_error">En feil oppsto under lesingen av opml dokumentet:</string>
-  <string name="opml_import_error_dir_empty">Importkatalogen er tom.</string>
   <string name="select_all_label">Velg alle</string>
   <string name="deselect_all_label">Opphev alle markeringene</string>
   <string name="choose_file_from_filesystem">Fra lokalt filsystem</string>
@@ -456,22 +440,13 @@
   <string name="subscribe_label">Abonner</string>
   <string name="subscribed_label">Abonnert</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Vis kapitler</string>
-  <string name="show_shownotes_label">Vis notater</string>
-  <string name="show_cover_label">Vis bilde</string>
   <string name="rewind_label">Spol tilbake</string>
   <string name="fast_forward_label">Spol fremover</string>
   <string name="media_type_audio_label">Lyd</string>
   <string name="media_type_video_label">Video</string>
   <string name="navigate_upwards_label">Naviger oppover</string>
-  <string name="butAction_label">Flere handlinger</string>
-  <string name="status_playing_label">Episode spilles nå</string>
   <string name="status_downloading_label">Episode lastes ned nå</string>
-  <string name="status_downloaded_label">Episode har blitt lastet ned</string>
-  <string name="status_unread_label">Objekt er nytt</string>
   <string name="in_queue_label">Episoden er i queue</string>
-  <string name="new_episodes_count_label">Antall nye episoder</string>
-  <string name="in_progress_episodes_count_label">Antall episoder du har begynt å høre på</string>
   <string name="drag_handle_content_description">Dra for å endre posisjonen til dette objektet</string>
   <string name="load_next_page_label">Last inn neste side</string>
   <!--Feed information screen-->
@@ -482,6 +457,7 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abbonementer fra enkeltstående applikasjoner ...</string>
   <string name="search_itunes_label">Søk på iTunes</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Alle</string>
   <string name="selected_all_label">Valgte alle episoder</string>
   <string name="none_label">Ingen</string>
@@ -494,6 +470,7 @@
   <string name="selected_downloaded_label">Valgte nedlastede episoder</string>
   <string name="not_downloaded_label">Ikke nedlastet</string>
   <string name="selected_not_downloaded_label">Valgte ikke-nedlastede episoder</string>
+  <!--Sort-->
   <string name="sort_title_a_z">Tittel (A \u2192 Z)</string>
   <string name="sort_title_z_a">Tittel (Z \u2192 A)</string>
   <string name="sort_date_new_old">Dato (Ny \u2192 Gammel)</string>
@@ -507,4 +484,7 @@
   <string name="rating_later_label">Minn meg på dette senere</string>
   <string name="rating_now_label">Naturligvis, kom igjen!</string>
   <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>
