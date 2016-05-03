@@ -4,6 +4,7 @@ Change Log
 Version 1.6.0
 -------------
 * New features:
+ * Experimental Chromecast support
  * Subscription overview
  * Proxy support
  * Statistics
