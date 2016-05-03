@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Kanály</string>
+  <string name="statistics_label">Statistiky</string>
   <string name="add_feed_label">Přidat podcast</string>
   <string name="podcasts_label">PODCASTY</string>
   <string name="episodes_label">Epizody</string>
@@ -28,6 +29,9 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Nedávno zveřejněné</string>
   <string name="episode_filter_label">Zobrazit pouze nové epizody</string>
+  <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Celkový čas poslechnutých podcastů:</string>
+  <string name="statistics_details_dialog">%1$d z %2$d započatých epizod.\n\nPřehraných %3$s z %4$s.</string>
   <!--Main activity-->
   <string name="drawer_open">Otevřít menu</string>
   <string name="drawer_close">Zavřít menu</string>
@@ -126,6 +130,7 @@
   <string name="hide_not_downloaded_episodes_label">Nestažené</string>
   <string name="filtered_label">Filtrované</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Poslední aktualizace selhala</string>
+  <string name="open_podcast">Otevřít podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Stáhnout</string>
   <string name="play_label">Přehrát</string>
@@ -168,6 +173,7 @@
   <string name="download_error_connection_error">Chyba spojení</string>
   <string name="download_error_unknown_host">Neznámý host</string>
   <string name="download_error_unauthorized">Chyba přihlášení</string>
+  <string name="download_error_file_type_type">Chyba typu souboru</string>
   <string name="cancel_all_downloads_label">Zrušit všechna stahování</string>
   <string name="download_canceled_msg">Stahování zrušeno</string>
   <string name="download_canceled_autodownload_enabled_msg">Stahování zrušeno\nVypnuto <i>automatické stahování</i> této položky</string>
@@ -263,6 +269,7 @@
   <string name="no_items_label">Žádné položky v seznamu.</string>
   <string name="no_feeds_label">Zatím nebyly přidány žádné kanály.</string>
   <string name="no_chapters_label">Tato epizoda nemá žádné kapitoly.</string>
+  <string name="no_shownotes_label">Tato epizoda neobsahuje žádné poznámky.</string>
   <!--Preferences-->
   <string name="other_pref">Ostatní</string>
   <string name="about_pref">O aplikaci</string>
@@ -342,6 +349,10 @@
   <string name="pref_gpodnet_logout_toast">Úspěšně odhlášeno</string>
   <string name="pref_gpodnet_setlogin_information_title">Změna přihlašovacích údajů</string>
   <string name="pref_gpodnet_setlogin_information_sum">Změní přihlašovací údaje k vašemu gpodder.net účtu.</string>
+  <string name="pref_gpodnet_sync_title">Synchronizovat nyní</string>
+  <string name="pref_gpodnet_sync_sum">Synchronizovat odběry a stav epizod s gpodder.net</string>
+  <string name="pref_gpodnet_sync_started">Synchronizace spuštěna</string>
+  <string name="pref_gpodnet_login_status"><![CDATA[Přihlášen jako <i>%1$s</i> z přístroje <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Rychlosti přehrávání</string>
   <string name="pref_playback_speed_sum">Přizpůsobení rychlosti je dostupné pro přehrávání zvuku různými rychlostmi</string>
   <string name="pref_fast_forward">Čas rychlého posunu</string>
@@ -369,6 +380,10 @@
   <string name="pref_sonic_title">Přehrávač médií Sonic</string>
   <string name="pref_sonic_message">Použít připojený sonic media player jako náhradu za výchozí přehrávač médií pro Android a Prestissimo</string>
   <string name="pref_current_value">Aktuální hodnota: %1$s</string>
+  <string name="pref_proxy_title">Proxy</string>
+  <string name="pref_proxy_sum">Nastavit síťovou proxy</string>
+  <string name="pref_known_issues">Známé chyby</string>
+  <string name="pref_no_browser_found">Nebyl nalezen webový prohlížeč.\"</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Povolit automatické flattrování</string>
   <string name="auto_flattr_after_percent">Flattrovat díl jakmile bude odehráno %d procent</string>
@@ -391,8 +406,8 @@
   <string name="opml_import_label">OPML import</string>
   <string name="opml_directory_error">CHYBA!</string>
   <string name="reading_opml_label">Načítání OPML souboru</string>
-  <string name="opml_reader_error">Nastala chyba při čtení OPML souboru:</string>
-  <string name="opml_import_error_dir_empty">Adresář importu je prázdný.</string>
+  <string name="opml_reader_error">Došlo k chybě při čtení OPML dokumentu:</string>
+  <string name="opml_import_error_no_file">Nebyl vybrán žádný soubor!</string>
   <string name="select_all_label">Označit vše</string>
   <string name="deselect_all_label">Zrušit výběr</string>
   <string name="select_options_label">Vybrat</string>
@@ -560,4 +575,16 @@
   <string name="audio_effects">Audio efekty</string>
   <string name="stereo_to_mono">Downmix: Stereo na mono</string>
   <string name="sonic_only">Pouze Sonic</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">Typ</string>
+  <string name="host_label">Host</string>
+  <string name="port_label">Port</string>
+  <string name="optional_hint">(Volitelný)</string>
+  <string name="proxy_test_label">Test</string>
+  <string name="proxy_checking">Kontrola...</string>
+  <string name="proxy_test_successful">Test úspěšný</string>
+  <string name="proxy_test_failed">Test selhal</string>
+  <string name="proxy_host_empty_error">Host nesmí být nevyplněný</string>
+  <string name="proxy_host_invalid_error">Host není platná IP nebo doména</string>
+  <string name="proxy_port_invalid_error">Neplatný port</string>
 </resources>

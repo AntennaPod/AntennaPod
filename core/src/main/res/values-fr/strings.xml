@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Flux</string>
+  <string name="statistics_label">Statistiques</string>
   <string name="add_feed_label">Ajouter un podcast</string>
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">Épisodes</string>
@@ -24,10 +25,13 @@
   <string name="gpodnet_auth_label">Identifiants gpodder.net</string>
   <string name="free_space_label">%1$s d\'espace libre</string>
   <string name="episode_cache_full_title">L\'emplacement pour stocker les épisodes est plein</string>
-  <string name="episode_cache_full_message">Le volume maximum d\'épisode à stocker a été atteint. Vous pouvez augmenter la taille du cache dans les paramètres.</string>
+  <string name="episode_cache_full_message">Le nombre maximal d\'épisodes téléchargés a été atteint. Vous pouvez changer ce nombre dans les paramètres.</string>
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Publié récemment</string>
   <string name="episode_filter_label">N\'afficher que les nouveaux épisodes</string>
+  <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Temps d\'écoute total</string>
+  <string name="statistics_details_dialog">%1$d épisodes sur %2$d commencés.\n\nLu %3$s sur %4$s.</string>
   <!--Main activity-->
   <string name="drawer_open">Ouvrir le menu</string>
   <string name="drawer_close">Fermer le menu</string>
@@ -124,6 +128,7 @@
   <string name="hide_not_downloaded_episodes_label">Non téléchargé</string>
   <string name="filtered_label">Filtré</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} La dernière mise à jour a échoué</string>
+  <string name="open_podcast">Ouvrir Podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Télécharger</string>
   <string name="play_label">Lire</string>
@@ -139,7 +144,7 @@
   <string name="added_to_queue_label">Ajouté à la liste</string>
   <string name="remove_from_queue_label">Supprimer de la liste</string>
   <string name="add_to_favorite_label">Ajouter aux Favoris</string>
-  <string name="added_to_favorites">Ajouter aux Favoris</string>
+  <string name="added_to_favorites">Ajouté aux Favoris</string>
   <string name="remove_from_favorite_label">Supprimer des Favoris</string>
   <string name="removed_from_favorites">Supprimer des Favoris</string>
   <string name="visit_website_label">Visiter le site</string>
@@ -166,6 +171,7 @@
   <string name="download_error_connection_error">Erreur de connexion</string>
   <string name="download_error_unknown_host">Hôte inconnu</string>
   <string name="download_error_unauthorized">Erreur d\'authentification</string>
+  <string name="download_error_file_type_type">Erreur format de fichier</string>
   <string name="cancel_all_downloads_label">Annuler tous les téléchargements</string>
   <string name="download_canceled_msg">Téléchargement annulé</string>
   <string name="download_canceled_autodownload_enabled_msg">Téléchargement annulé\n <i>Téléchargement Automatique</i> désactivé pour cet élément</string>
@@ -253,13 +259,14 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Télécharger une extension</string>
   <string name="no_playback_plugin_title">Extension non installée</string>
-  <string name="no_playback_plugin_or_sonic_msg">Pour pouvoir changer la vitesse de lecture il est recommandé d\'activer le lecteur interne Sonic [Android 4.1+].\n\nSinon vous pouvez télécharger l\'extension <i>Prestissimo</i> depuis le Play Store.\nLes problème rencontrés avec Prestissimo ne sont pas de la responsabilité d\'AntennaPod et sont à communiquer au créateur de l\'extension.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Pour pouvoir changer la vitesse de lecture il est recommandé d\'activer le lecteur interne Sonic [Android 4.1+].\n\nVous pouvez également télécharger l\'extension <i>Prestissimo</i> depuis le Play Store.\nLes problème rencontrés avec Prestissimo ne sont pas de la responsabilité d\'AntennaPod et sont à communiquer au créateur de l\'extension.</string>
   <string name="set_playback_speed_label">Vitesses de lecture</string>
   <string name="enable_sonic">Activer Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Cette liste est vide.</string>
   <string name="no_feeds_label">Vous n\'êtes encore abonné à aucun flux.</string>
   <string name="no_chapters_label">Cet épisode n\'a pas de chapitres.</string>
+  <string name="no_shownotes_label">Aucun descriptif pour cet épisode.</string>
   <!--Preferences-->
   <string name="other_pref">Autres</string>
   <string name="about_pref">À propos</string>
@@ -339,6 +346,10 @@
   <string name="pref_gpodnet_logout_toast">Vous êtes maintenant déconnecté</string>
   <string name="pref_gpodnet_setlogin_information_title">Modifier les informations de connexion</string>
   <string name="pref_gpodnet_setlogin_information_sum">Modifier les information de connexion pour votre compte gpodder.net</string>
+  <string name="pref_gpodnet_sync_title">Synchroniser maintenant</string>
+  <string name="pref_gpodnet_sync_sum">Synchroniser les abonnements et l\'état de lecture avec gpodder.net</string>
+  <string name="pref_gpodnet_sync_started">Synchronisation démarrée</string>
+  <string name="pref_gpodnet_login_status"><![CDATA[Connecté comme <i>%1$s</i> avec l\'appareil <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Modifier la liste des vitesses disponibles pour la lecture audio</string>
   <string name="pref_fast_forward">Avance rapide</string>
@@ -364,8 +375,12 @@
   <string name="send_email">Envoyer e-mail</string>
   <string name="experimental_pref">Expérimental</string>
   <string name="pref_sonic_title">Lecteur multimédia Sonic</string>
-  <string name="pref_sonic_message">Utiliser le lecteur interne Sonic au lieu du lecteur natif d\'Android et de Prestissimo</string>
+  <string name="pref_sonic_message">Utiliser le lecteur multimédia interne Sonic au lieu du natif d\'Android ou de Prestissimo</string>
   <string name="pref_current_value">Valeur actuelle : %1$s</string>
+  <string name="pref_proxy_title">Proxy</string>
+  <string name="pref_proxy_sum">Paramétrer un réseau proxy</string>
+  <string name="pref_known_issues">Problèmes connus</string>
+  <string name="pref_no_browser_found">Aucun navigateur trouvé.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
   <string name="auto_flattr_after_percent">Lancer un paiement flattr pour un épisode dès que %d de l\'épisode a été joué</string>
@@ -388,8 +403,8 @@
   <string name="opml_import_label">Importation OPML</string>
   <string name="opml_directory_error">ERREUR !</string>
   <string name="reading_opml_label">Lecture du fichier OPML en cours</string>
-  <string name="opml_reader_error">Une erreur s\'est produite à la lecture du document OPML :</string>
-  <string name="opml_import_error_dir_empty">Le répertoire d\'importation est vide.</string>
+  <string name="opml_reader_error">Une erreur s\'est produite pendant la lecture du fichier OPML :</string>
+  <string name="opml_import_error_no_file">Aucun fichier sélectionné !</string>
   <string name="select_all_label">Tout choisir</string>
   <string name="deselect_all_label">Ne rien choisir</string>
   <string name="select_options_label">Choisir...</string>
@@ -400,7 +415,7 @@
   <string name="export_error_label">Erreur d\'exportation</string>
   <string name="opml_export_success_title">Exportation OPML réussie.</string>
   <string name="opml_export_success_sum">Le fichier .opml a été écrit ici :\u0020</string>
-  <string name="opml_import_ask_read_permission">L\'accès aux stockages externes est requis pour lire le fichier OPML</string>
+  <string name="opml_import_ask_read_permission">L\'accès au stockage externe est requis pour lire le fichier OPML</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Définir le minuteur d\'arrêt automatique</string>
   <string name="disable_sleeptimer_label">Désactiver le minuteur d\'arrêt automatique</string>
@@ -459,6 +474,7 @@
   <string name="create_folder_label">Créer répertoire</string>
   <string name="choose_data_directory">Choisir le répertoire</string>
   <string name="choose_data_directory_message">Choisissez le répertoire où enregistrer les données. AntennaPod créera automatiquement les sous-répertoires nécessaires.</string>
+  <string name="choose_data_directory_permission_rationale">L\'accès au stockage externe est requis pour changer le répertoire des données</string>
   <string name="create_folder_msg">Créer un répertoire nommé \"%1$s\" ?</string>
   <string name="create_folder_success">Répertoire créé</string>
   <string name="create_folder_error_no_write_access">Impossible d\'écrire dans ce répertoire</string>
@@ -503,11 +519,11 @@
   <string name="authentication_descr">Modifier votre identifiant et mot de passe pour ce podcast et tous ses épisodes</string>
   <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
   <string name="episode_filters_label">Filtre d\'épisode</string>
-  <string name="episode_filters_description">Liste de mots décidant si un épisode est à inclure ou exclure des téléchargements automatiques</string>
+  <string name="episode_filters_description">Liste de mots permettant de décider si un épisode est à inclure ou exclure des téléchargements automatiques</string>
   <string name="episode_filters_include">Inclure</string>
   <string name="episode_filters_exclude">Exclure</string>
   <string name="episode_filters_hint">Mots uniques \n\"Liste de mots\"</string>
-  <string name="keep_updated">Mettre à jour</string>
+  <string name="keep_updated">Maintenir à jour</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Mise à jour de la base de données</string>
   <!--AntennaPodSP-->
@@ -553,4 +569,16 @@
   <string name="audio_effects">Effets audio</string>
   <string name="stereo_to_mono">Mixage : stéréo à mono</string>
   <string name="sonic_only">Sonic seulement</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">Type</string>
+  <string name="host_label">Hôte</string>
+  <string name="port_label">Port</string>
+  <string name="optional_hint">(Facultatif)</string>
+  <string name="proxy_test_label">Tester</string>
+  <string name="proxy_checking">Vérification...</string>
+  <string name="proxy_test_successful">Test réussi</string>
+  <string name="proxy_test_failed">Échec</string>
+  <string name="proxy_host_empty_error">L\'hôte doit être renseigné</string>
+  <string name="proxy_host_invalid_error">IP ou domaine de l\'hôte non valide</string>
+  <string name="proxy_port_invalid_error">Port non valide</string>
 </resources>

@@ -24,6 +24,7 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">פורסם לאחרונה</string>
   <string name="episode_filter_label">הצג רק פרקים חדשים</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">פתח תפריט</string>
   <string name="drawer_close">סגור תפריט</string>
@@ -279,8 +280,6 @@
   <string name="opml_import_label">יבוא OPML</string>
   <string name="opml_directory_error">שגיאה!</string>
   <string name="reading_opml_label">קורא קובץ OPML</string>
-  <string name="opml_reader_error">אירעה שגיאה בזמן קריאת קובץ OPML:</string>
-  <string name="opml_import_error_dir_empty">ספריית היבוא ריקה.</string>
   <string name="select_all_label">בחר הכל</string>
   <string name="deselect_all_label">בטל בחירות</string>
   <string name="choose_file_from_filesystem">ממערכת הקבצים המקומית</string>
@@ -369,4 +368,5 @@
   <string name="search_itunes_label">חפש בiTunes</string>
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
 </resources>

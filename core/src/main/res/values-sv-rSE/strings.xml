@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Flöden</string>
+  <string name="statistics_label">Statistik</string>
   <string name="add_feed_label">Lägg till Podcast</string>
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">Episoder</string>
@@ -28,6 +29,9 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Nyligen publicerade</string>
   <string name="episode_filter_label">Visa bara nya Episoder</string>
+  <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Total uppspelningstid:</string>
+  <string name="statistics_details_dialog">%1$d av %2$d episoder startade.\n\nSpelat %3$s av %4$s.</string>
   <!--Main activity-->
   <string name="drawer_open">Öppna meny</string>
   <string name="drawer_close">Stäng meny</string>
@@ -124,6 +128,7 @@
   <string name="hide_not_downloaded_episodes_label">Ej nedladdade</string>
   <string name="filtered_label">Filtrerad</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Senaste uppdateringen misslyckades</string>
+  <string name="open_podcast">Öppna Podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Ladda ned</string>
   <string name="play_label">Spela</string>
@@ -166,6 +171,7 @@
   <string name="download_error_connection_error">Anslutningsfel</string>
   <string name="download_error_unknown_host">Okänd Värd</string>
   <string name="download_error_unauthorized">Autentiseringsfel</string>
+  <string name="download_error_file_type_type">Filtypsfel</string>
   <string name="cancel_all_downloads_label">Avbryt alla nedladdningar</string>
   <string name="download_canceled_msg">Nedladdning avbruten</string>
   <string name="download_canceled_autodownload_enabled_msg">Nedladdning avbruten\nStängde av <i>Automatisk nedladdning</i> för denna sak</string>
@@ -260,6 +266,7 @@
   <string name="no_items_label">Det finns inget i denna lista.</string>
   <string name="no_feeds_label">Du har inte prenumererat på något flöde ännu.</string>
   <string name="no_chapters_label">Denna episod har inga kapitel.</string>
+  <string name="no_shownotes_label">Denna episod har inga shownotes.</string>
   <!--Preferences-->
   <string name="other_pref">Annat</string>
   <string name="about_pref">Om</string>
@@ -339,6 +346,10 @@
   <string name="pref_gpodnet_logout_toast">Utloggning lyckades</string>
   <string name="pref_gpodnet_setlogin_information_title">Ändra inloggningsinformation</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net konto.</string>
+  <string name="pref_gpodnet_sync_title">Synkronisera nu</string>
+  <string name="pref_gpodnet_sync_sum">Synkronisera prenumerationer och episodtillstånd med gpodder.net</string>
+  <string name="pref_gpodnet_sync_started">Synkronisering startad</string>
+  <string name="pref_gpodnet_login_status">&lt;!CDATA[Inloggad som &lt;i&gt;%1$s&lt;/i&gt; med enhet &lt;i&gt;%2$s&lt;/i&gt;]]&gt;</string>
   <string name="pref_playback_speed_title">Uppspelningshastigheter</string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet.</string>
   <string name="pref_fast_forward">Spola framåt</string>
@@ -366,6 +377,10 @@
   <string name="pref_sonic_title">Sonic mediaspelare</string>
   <string name="pref_sonic_message">Använd den inbyggda Sonic mediaspelare som ersättning för Androids egna mediaspelare och Prestissimo</string>
   <string name="pref_current_value">Nuvarande värde: %1$s</string>
+  <string name="pref_proxy_title">Proxy</string>
+  <string name="pref_proxy_sum">Använd en nätverksproxy</string>
+  <string name="pref_known_issues">Kända problem</string>
+  <string name="pref_no_browser_found">Ingen webbläsare funnen.\"</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>
@@ -388,8 +403,8 @@
   <string name="opml_import_label">OPML Importering</string>
   <string name="opml_directory_error">FEL! </string>
   <string name="reading_opml_label">Läser OPML-fil</string>
-  <string name="opml_reader_error">Ett fel har skett vid iläsning av opml dokumentet:</string>
-  <string name="opml_import_error_dir_empty">Katalogen är tom.</string>
+  <string name="opml_reader_error">Ett fel uppstod vid läsning av OPML dokumentet:</string>
+  <string name="opml_import_error_no_file">Ingen fil vald!</string>
   <string name="select_all_label">Välj alla</string>
   <string name="deselect_all_label">Avmarkera alla</string>
   <string name="select_options_label">Välj…</string>
@@ -554,4 +569,16 @@
   <string name="audio_effects">Ljudeffekter</string>
   <string name="stereo_to_mono">Nedmixning: Stereo till mono</string>
   <string name="sonic_only">Bara Sonic</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">Typ</string>
+  <string name="host_label">Värd</string>
+  <string name="port_label">Port</string>
+  <string name="optional_hint">(Valfritt)</string>
+  <string name="proxy_test_label">Test</string>
+  <string name="proxy_checking">Kontrollerar…</string>
+  <string name="proxy_test_successful">Testet lyckades</string>
+  <string name="proxy_test_failed">Testet misslyckades</string>
+  <string name="proxy_host_empty_error">Värd får inte vara tomt</string>
+  <string name="proxy_host_invalid_error">Värd är inte en giltig UP eller domän</string>
+  <string name="proxy_port_invalid_error">Porten är inte giltig</string>
 </resources>

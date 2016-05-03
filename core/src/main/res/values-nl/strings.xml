@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
+  <string name="statistics_label">Statistieken</string>
   <string name="add_feed_label">Podcast toevoegen</string>
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">Afleveringen</string>
@@ -28,6 +29,9 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Recent gepubliceerd</string>
   <string name="episode_filter_label">Alleen nieuwe afleveringen weergeven</string>
+  <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Totale duur van afgespeelde podcasts:</string>
+  <string name="statistics_details_dialog">%1$d van de %2$d afleveringen gestart.\n\n%3$s van de %4$s afgespeeld.</string>
   <!--Main activity-->
   <string name="drawer_open">Menu openen</string>
   <string name="drawer_close">Menu sluiten</string>
@@ -35,7 +39,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Op aantal afleveringen</string>
   <string name="drawer_feed_order_alphabetical">Op alfabetische volgorde</string>
   <string name="drawer_feed_order_last_update">Op datum van feed-update</string>
-  <string name="drawer_feed_counter_new_unplayed">Aantal nieuwe en onbeluisterde afleveringen</string>
+  <string name="drawer_feed_counter_new_unplayed">Aantal nieuwe plus onbeluisterde afleveringen</string>
   <string name="drawer_feed_counter_new">Aantal nieuwe afleveringen</string>
   <string name="drawer_feed_counter_unplayed">Aantal onbeluisterde afleveringen</string>
   <string name="drawer_feed_counter_none">Geen (alfabetisch sorteren)</string>
@@ -76,7 +80,7 @@
   <string name="auto_download_label">Meenemen bij automatisch downloaden</string>
   <string name="auto_download_apply_to_items_title">Toepassen op bestaande afleveringen</string>
   <string name="auto_download_apply_to_items_message">De instelling voor <i>Automatisch downloaden</i> wordt automatisch toegepast op toekomstige afleveringen.\nWilt u het ook toepassen op eerder gepubliceerde afleveringen?</string>
-  <string name="auto_delete_label">Automatisch aflevering verwijderen</string>
+  <string name="auto_delete_label">Afleveringen automatisch\nverwijderen</string>
   <string name="parallel_downloads_suffix">\u0020parallele downloads</string>
   <string name="feed_auto_download_global">Standaardinstelling</string>
   <string name="feed_auto_download_always">Altijd</string>
@@ -110,7 +114,7 @@
   <string name="share_feed_url_label">URL van de feed delen</string>
   <string name="share_item_url_label">URL van het mediabestand delen</string>
   <string name="share_item_url_with_position_label">URL van mediabestand met tijdstip delen</string>
-  <string name="feed_delete_confirmation_msg">Bevestig dat u deze feed en ALLE afleveringen van deze feed die u hebt gedownload wilt verwijderen.</string>
+  <string name="feed_delete_confirmation_msg">Bevestig dat u deze feed en ALLE afleveringen van deze feed die u heeft gedownload wilt verwijderen.</string>
   <string name="feed_remover_msg">Feed verwijderen</string>
   <string name="load_complete_feed">Hele feed vernieuwen</string>
   <string name="hide_episodes_title">Afleveringen verbergen</string>
@@ -124,6 +128,7 @@
   <string name="hide_not_downloaded_episodes_label">Niet gedownload</string>
   <string name="filtered_label">Gefilterd</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Laatste vernieuwing mislukt</string>
+  <string name="open_podcast">Open podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <string name="play_label">Spelen</string>
@@ -166,6 +171,7 @@
   <string name="download_error_connection_error">Verbindingsfout</string>
   <string name="download_error_unknown_host">Onbekende host</string>
   <string name="download_error_unauthorized">Authenticatie fout</string>
+  <string name="download_error_file_type_type">Fout met bestandsformaat</string>
   <string name="cancel_all_downloads_label">Alle downloads annuleren</string>
   <string name="download_canceled_msg">Download geannuleerd</string>
   <string name="download_canceled_autodownload_enabled_msg">Downloaden geannuleerd\n<i>Automatisch downloaden</i> uitgezet voor deze aflevering</string>
@@ -180,7 +186,7 @@
     <item quantity="other">Nog %d downloads</item>
   </plurals>
   <string name="downloads_processing">Downloads verwerken</string>
-  <string name="download_notification_title">Podcast gegevens aan het downloaden</string>
+  <string name="download_notification_title">Podcastgegevens aan het downloaden</string>
   <string name="download_report_content">%1$d downloads geslaagd, %2$d mislukt</string>
   <string name="download_log_title_unknown">Onbekende titel</string>
   <string name="download_type_feed">Feed</string>
@@ -225,8 +231,8 @@
   <string name="descending">Aflopend</string>
   <string name="clear_queue_confirmation_msg">Bevestig aub dat u alle afleveringen uit de wachtrij wilt verwijderen</string>
   <!--Flattr-->
-  <string name="flattr_auth_label">Flattr inloggen</string>
-  <string name="flattr_auth_explanation">Druk op onderstaande knop om het verificatieproces te starten. U wordt doorgestuurd naar de Flattr inlogscherm in uw browser en wordt gevraagd om toestemming aan AntennaPod te geven om dingen te Flattr\'en. Nadat u toestemming hebt gegeven, keert u automatisch terug naar dit scherm.</string>
+  <string name="flattr_auth_label">Flattr login</string>
+  <string name="flattr_auth_explanation">Druk op onderstaande knop om het verificatieproces te starten. U wordt doorgestuurd naar het Flattr inlogscherm in uw browser en u wordt gevraagd om toestemming aan AntennaPod te geven om dingen te Flattr\'en. Nadat u toestemming heeft gegeven, keert u automatisch terug naar dit scherm.</string>
   <string name="authenticate_label">Authenticeren</string>
   <string name="return_home_label">Terug naar de startscherm</string>
   <string name="flattr_auth_success">Authenticatie is geslaagd! U kunt nu dingen vanuit de app Flattr\'en.</string>
@@ -255,11 +261,12 @@
   <string name="no_playback_plugin_title">Plugin niet geïnstalleerd</string>
   <string name="no_playback_plugin_or_sonic_msg">Om variabele afspeelsnelheid te kunnen gebruiken, raden wij u aan om de ingebouwde Sonic mediaspeler te activeren [Android 4.1+]\n\nEventueel kunt u de externe plugin <i>Prestissimo</i> downloaden van de Play Store.\nProblemen bij het gebruik van deze plugin zijn niet de verantwoordelijkheid van AntennaPod en moeten gemeld worden bij de ontwikkelaar van de plugin.</string>
   <string name="set_playback_speed_label">Afspeelsnelheden</string>
-  <string name="enable_sonic">Sonic instellen</string>
+  <string name="enable_sonic">Sonic inschakelen</string>
   <!--Empty list labels-->
   <string name="no_items_label">Er zijn geen items in deze lijst.</string>
   <string name="no_feeds_label">U bent nog tot geen enkele feed geabonneerd.</string>
   <string name="no_chapters_label">Deze aflevering heeft geen hoofdstukken.</string>
+  <string name="no_shownotes_label">Deze aflevering heeft geen shownotes.</string>
   <!--Preferences-->
   <string name="other_pref">Overig</string>
   <string name="about_pref">Over AntennaPod</string>
@@ -300,7 +307,7 @@
   <string name="pref_mobileUpdate_sum">Updates toestaan ​​via de mobiele dataverbinding</string>
   <string name="refreshing_label">Aan het verversen</string>
   <string name="flattr_settings_label">Flattr settings</string>
-  <string name="pref_flattr_auth_title">Flattr inlog</string>
+  <string name="pref_flattr_auth_title">Flattr accountgegevens</string>
   <string name="pref_flattr_auth_sum">Log in je Flattr account om dingen rechtstreeks vanuit de app te flattr\'en.</string>
   <string name="pref_flattr_this_app_title">Flattr deze app</string>
   <string name="pref_flattr_this_app_sum">Ondersteun de ontwikkeling van AntennaPod door het te flattr\'en. Bedankt!</string>
@@ -333,12 +340,16 @@
   <string name="pref_update_interval_hours_plural">uur</string>
   <string name="pref_update_interval_hours_singular">uur</string>
   <string name="pref_update_interval_hours_manual">Handmatig</string>
-  <string name="pref_gpodnet_authenticate_title">Log in</string>
-  <string name="pref_gpodnet_authenticate_sum">Log met je gpodder.net account in om je abonnementen te synchroniseren.</string>
+  <string name="pref_gpodnet_authenticate_title">Inloggen</string>
+  <string name="pref_gpodnet_authenticate_sum">Log in met je gpodder.net account om je abonnementen te synchroniseren.</string>
   <string name="pref_gpodnet_logout_title">Log uit</string>
   <string name="pref_gpodnet_logout_toast">Uitlog was succesvol</string>
   <string name="pref_gpodnet_setlogin_information_title">Aanmeldingsgegevens wijzigen</string>
   <string name="pref_gpodnet_setlogin_information_sum">Wijzig de aanmeldingsgegevens van je gpodder.net account.</string>
+  <string name="pref_gpodnet_sync_title">Nu synchroniseren</string>
+  <string name="pref_gpodnet_sync_sum">Synchroniseer abonnementen en aflevering-status met gpodder.net</string>
+  <string name="pref_gpodnet_sync_started">Synchroniseren gestart</string>
+  <string name="pref_gpodnet_login_status"><![CDATA[Ingelogd als <i>%1$s</i> met apparaat <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Afspeelsnelheden</string>
   <string name="pref_playback_speed_sum">Pas de beschikbare snelheden aan voor de variabele audio afspeelsnelheid</string>
   <string name="pref_fast_forward">Snelheid van vooruitspoelen</string>
@@ -349,8 +360,8 @@
   <string name="pref_expandNotify_sum">Altijd de bedieningsknoppen tonen bij de melding in het notificatiecentrum.</string>
   <string name="pref_persistNotify_title">Behoud bedieningsknoppen</string>
   <string name="pref_persistNotify_sum">Ook bedieningsknoppen in het notificatiecentrum en op het vergrendelingsscherm behouden als het afspelen gepauzeerd wordt.</string>
-  <string name="pref_lockscreen_background_title">Achtergorndafbeelding vergrendelingsscherm</string>
-  <string name="pref_lockscreen_background_sum">Laat de afbeelding van de huidige aflevering zien. Ten gevolge van deze functie is de aflevering ook beschikbaar voor andere apps.</string>
+  <string name="pref_lockscreen_background_title">Achtergrondafb. vergrendelscherm</string>
+  <string name="pref_lockscreen_background_sum">Laat de afbeelding van de huidige aflevering zien. Ten gevolge van deze functie is de afbeelding ook beschikbaar voor andere apps.</string>
   <string name="pref_showDownloadReport_title">Laat downloadrapport zien</string>
   <string name="pref_showDownloadReport_sum">Genereer een rapport met fout-details als downloads mislukken</string>
   <string name="pref_expand_notify_unsupport_toast">Android versies lager dan 4.1 ondersteunen geen knoppen in het notificatiecentrum.</string>
@@ -366,6 +377,10 @@
   <string name="pref_sonic_title">Sonic mediaspeler</string>
   <string name="pref_sonic_message">Gebruik AntennaPod\'s ingebouwde Sonic mediaspeler als een alternatief voor Prestissimo en de mediaspeler van Android.</string>
   <string name="pref_current_value">Huidige instelling: %1$s</string>
+  <string name="pref_proxy_title">Proxy</string>
+  <string name="pref_proxy_sum">Netwerkproxy instellen</string>
+  <string name="pref_known_issues">Reeds bekende bugs</string>
+  <string name="pref_no_browser_found">Geen browser gevonden.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisch flattr\'en aanzetten</string>
   <string name="auto_flattr_after_percent">Flattr een aflevering zodra %d procent is afgespeeld</string>
@@ -388,8 +403,8 @@
   <string name="opml_import_label">OPML importeren</string>
   <string name="opml_directory_error">FOUT!</string>
   <string name="reading_opml_label">OPML-bestand aan het lezen</string>
-  <string name="opml_reader_error">Er is een fout opgetreden bij het lezen van het OPML-bestand:</string>
-  <string name="opml_import_error_dir_empty">De import map is leeg.</string>
+  <string name="opml_reader_error">Er is iets misgegaan met het lezen van het OPML-bestand:</string>
+  <string name="opml_import_error_no_file">Geen bestand geselecteerd!</string>
   <string name="select_all_label">Alles selecteren</string>
   <string name="deselect_all_label">Alles deselecteren</string>
   <string name="select_options_label">Selecteren…</string>
@@ -432,9 +447,9 @@
   <string name="gpodnet_suggestions_header">SUGGESTIES</string>
   <string name="gpodnet_search_hint">Zoek gpodder.net</string>
   <string name="gpodnetauth_login_title">Log in</string>
-  <string name="gpodnetauth_login_descr">Welkom op de gpodder.net login proces. Eerst, typ je login gegevens:</string>
+  <string name="gpodnetauth_login_descr">Welkom bij het inlogproces van gpodder.net. Typ eerst je accountgegevens:</string>
   <string name="gpodnetauth_login_butLabel">Log in</string>
-  <string name="gpodnetauth_login_register">Als u nog geen account hebt, kunt u er hier een aanmaken:\nhttps://gpodder.net/register/</string>
+  <string name="gpodnetauth_login_register">Als u nog geen account heeft, kunt u er hier een aanmaken:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Gebruikersnaam</string>
   <string name="password_label">Wachtwoord</string>
   <string name="gpodnetauth_device_title">Apparaatselectie</string>
@@ -469,7 +484,7 @@
   <string name="folder_not_readable_error">\"%1$s\" kan niet gelezen worden</string>
   <string name="folder_not_writable_error">in \"%1$s\" kan geen data geschreven worden</string>
   <string name="folder_not_empty_dialog_title">Map is niet leeg</string>
-  <string name="folder_not_empty_dialog_msg">De map die je hebt gekozen is niet leeg. Media downloads en andere bestanden zullen rechtstreeks in deze map geplaatst worden. Toch doorgaan?</string>
+  <string name="folder_not_empty_dialog_msg">De map die u heeft gekozen is niet leeg. Gedownloade media en andere bestanden zullen rechtstreeks in deze map geplaatst worden. Toch doorgaan?</string>
   <string name="set_to_default_folder">Kies default map</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Het afspelen onderbreken in plaats van het volume te verlagen wanneer er een andere app geluiden af wil spelen</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pauzeren bij onderbrekingen</string>
@@ -507,6 +522,7 @@
   <string name="episode_filters_description">Lijst van zoektermen die bepalen of een aflevering meegenomen of uitgesloten wordt bij automatisch downloaden</string>
   <string name="episode_filters_include">Meenemen</string>
   <string name="episode_filters_exclude">Uitsluiten</string>
+  <string name="episode_filters_hint">Losse woorden \n\"Meerdere tussen aanhalingstekens\"</string>
   <string name="keep_updated">Up to date houden</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Database upgraden</string>
@@ -552,5 +568,17 @@
   <string name="right_short">R</string>
   <string name="audio_effects">Terugmixen</string>
   <string name="stereo_to_mono">Stereo terugmixen tot monogeluid op beide kanalen</string>
-  <string name="sonic_only">Alleen Sonic</string>
+  <string name="sonic_only">Sonic vereist</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">Type</string>
+  <string name="host_label">Host</string>
+  <string name="port_label">Poort</string>
+  <string name="optional_hint">(Optioneel)</string>
+  <string name="proxy_test_label">Testen</string>
+  <string name="proxy_checking">Controleren…</string>
+  <string name="proxy_test_successful">Test succesvol</string>
+  <string name="proxy_test_failed">Test mislukt</string>
+  <string name="proxy_host_empty_error">Host kan niet leeg zijn</string>
+  <string name="proxy_host_invalid_error">Host geen geldig IP-adres of domein</string>
+  <string name="proxy_port_invalid_error">Poortnummer ongeldig</string>
 </resources>
