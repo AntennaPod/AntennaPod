@@ -8,7 +8,6 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
-import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -127,13 +126,6 @@ public abstract class PlaybackServiceMediaPlayer {
     public abstract void seekDelta(int d);
 
     /**
-     * Seek to the start of the specified chapter.
-     */
-    public void seekToChapter(@NonNull Chapter c) {
-        seekTo((int) c.getStart());
-    }
-
-    /**
      * Returns the duration of the current media object or INVALID_TIME if the duration could not be retrieved.
      */
     public abstract int getDuration();
@@ -233,7 +225,7 @@ public abstract class PlaybackServiceMediaPlayer {
 
     protected abstract void setPlayable(Playable playable);
 
-    public void endPlayback() {
+    public void skip() {
         endPlayback(true);
     }
 

@@ -108,7 +108,7 @@ public class PlaybackServiceFlavorHelper {
                 // to the latest position.
                 PlaybackServiceMediaPlayer mediaPlayer = callback.getMediaPlayer();
                 if (mediaPlayer != null) {
-                    callback.saveCurrentPosition(false, 0);
+                    callback.saveCurrentPosition();
                     infoBeforeCastDisconnection = mediaPlayer.getPSMPInfo();
                     if (reason != BaseCastManager.DISCONNECT_REASON_EXPLICIT &&
                             infoBeforeCastDisconnection.playerStatus == PlayerStatus.PLAYING) {
@@ -160,7 +160,7 @@ public class PlaybackServiceFlavorHelper {
                 // could be pause, but this way we make sure the new player will get the correct position,
                 // since pause runs asynchronously and we could be directing the new player to play even before
                 // the old player gives us back the position.
-                callback.saveCurrentPosition(false, 0);
+                callback.saveCurrentPosition();
             }
         }
         if (info == null) {

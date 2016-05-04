@@ -52,9 +52,6 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
@@ -63,7 +60,6 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.QueueAccess;
-import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -205,8 +201,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Used for Lollipop notifications, Android Wear, and Android Auto.
      */
     private MediaSessionCompat mediaSession;
-
-    private int startPosition;
 
     private static volatile MediaType currentMediaType = MediaType.UNKNOWN;
 
@@ -473,7 +467,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         UserPreferences.shouldHardwareButtonSkip()) {
                     // assume the skip command comes from a notification or the lockscreen
                     // a >| skip button should actually skip
-                    mediaPlayer.endPlayback();
+                    mediaPlayer.skip();
                 } else {
                     // assume skip command comes from a (bluetooth) media button
                     // user actually wants to fast-forward
@@ -530,7 +524,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final PlaybackServiceTaskManager.PSTMCallback taskManagerCallback = new PlaybackServiceTaskManager.PSTMCallback() {
         @Override
         public void positionSaverTick() {
-            saveCurrentPosition(true, PlaybackServiceTaskManager.POSITION_SAVER_WAITING_INTERVAL);
+            saveCurrentPosition();
         }
 
         @Override
@@ -583,7 +577,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 case PAUSED:
                     taskManager.cancelPositionSaver();
-                    saveCurrentPosition(false, 0);
+                    saveCurrentPosition();
                     taskManager.cancelWidgetUpdater();
                     if ((UserPreferences.isPersistNotify() || isCasting) &&
                             android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -595,22 +589,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         stopForeground(true);
                     }
                     writePlayerStatusPlaybackPreferences();
-
-                    final Playable playable = newInfo.playable;
-
-                    // Gpodder: send play action
-                    if(GpodnetPreferences.loggedIn() && playable instanceof FeedMedia) {
-                        FeedMedia media = (FeedMedia) playable;
-                        FeedItem item = media.getItem();
-                        GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.PLAY)
-                                .currentDeviceId()
-                                .currentTimestamp()
-                                .started(startPosition / 1000)
-                                .position(getCurrentPosition() / 1000)
-                                .total(getDuration() / 1000)
-                                .build();
-                        GpodnetPreferences.enqueueEpisodeAction(action);
-                    }
                     break;
 
                 case STOPPED:
@@ -627,7 +605,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     writePlayerStatusPlaybackPreferences();
                     setupNotification(newInfo);
                     started = true;
-                    startPosition = mediaPlayer.getPosition();
                     break;
 
                 case ERROR:
@@ -790,21 +767,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "smart mark as played");
         }
 
-        // auto-flattr if enabled
-        if (isAutoFlattrable(media) && UserPreferences.getAutoFlattrPlayedDurationThreshold() == 1.0f) {
-            DBTasks.flattrItemIfLoggedIn(PlaybackService.this, item);
-        }
-        
-        // gpodder play action
-        if (GpodnetPreferences.loggedIn()) {
-            GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.PLAY)
-                    .currentDeviceId()
-                    .currentTimestamp()
-                    .started(startPosition / 1000)
-                    .position(((ended || smartMarkAsPlayed) ? media.getDuration() : media.getPosition()) / 1000)
-                    .total(media.getDuration() / 1000)
-                    .build();
-            GpodnetPreferences.enqueueEpisodeAction(action);
+        if (ended || smartMarkAsPlayed) {
+            media.onPlaybackCompleted(getApplicationContext());
+        } else {
+            media.onPlaybackPause(getApplicationContext());
         }
 
         if (item != null) {
@@ -1234,29 +1200,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     /**
      * Persists the current position and last played time of the media file.
-     *
-     * @param updatePlayedDuration true if played_duration should be updated. This applies only to FeedMedia objects
-     * @param deltaPlayedDuration  value by which played_duration should be increased.
      */
-    private synchronized void saveCurrentPosition(boolean updatePlayedDuration, int deltaPlayedDuration) {
+    private synchronized void saveCurrentPosition() {
         int position = getCurrentPosition();
         int duration = getDuration();
-        float playbackSpeed = getCurrentPlaybackSpeed();
         final Playable playable = mediaPlayer.getPlayable();
         if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
             Log.d(TAG, "Saving current position to " + position);
-            if (updatePlayedDuration && playable instanceof FeedMedia) {
-                FeedMedia media = (FeedMedia) playable;
-                FeedItem item = media.getItem();
-                media.setPlayedDuration(media.getPlayedDuration() + ((int) (deltaPlayedDuration * playbackSpeed)));
-                // Auto flattr
-                if (isAutoFlattrable(media) &&
-                        (media.getPlayedDuration() > UserPreferences.getAutoFlattrPlayedDurationThreshold() * duration)) {
-                    Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(media.getPlayedDuration())
-                                + " is " + UserPreferences.getAutoFlattrPlayedDurationThreshold() * 100 + "% of file duration " + Integer.toString(duration));
-                    DBTasks.flattrItemIfLoggedIn(this, item);
-                }
-            }
             playable.saveCurrentPosition(
                     PreferenceManager.getDefaultSharedPreferences(getApplicationContext()),
                     position,
@@ -1424,7 +1374,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
-                mediaPlayer.endPlayback();
+                mediaPlayer.skip();
             }
         }
     };
@@ -1517,26 +1467,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
 
     public void seekTo(final int t) {
-        if(mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING
-                && GpodnetPreferences.loggedIn()) {
-            final Playable playable = mediaPlayer.getPlayable();
-            if (playable instanceof FeedMedia) {
-                FeedMedia media = (FeedMedia) playable;
-                FeedItem item = media.getItem();
-                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.PLAY)
-                        .currentDeviceId()
-                        .currentTimestamp()
-                        .started(startPosition / 1000)
-                        .position(getCurrentPosition() / 1000)
-                        .total(getDuration() / 1000)
-                        .build();
-                GpodnetPreferences.enqueueEpisodeAction(action);
-            }
-        }
         mediaPlayer.seekTo(t);
-        if(mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING ) {
-            startPosition = t;
-        }
     }
 
 
@@ -1545,10 +1476,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     /**
-     * @see LocalPSMP#seekToChapter(de.danoeh.antennapod.core.feed.Chapter)
+     * Seek to the start of the specified chapter.
      */
     public void seekToChapter(Chapter c) {
-        mediaPlayer.seekToChapter(c);
+        seekTo((int) c.getStart());
     }
 
     /**
@@ -1573,15 +1504,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public Pair<Integer, Integer> getVideoSize() {
         return mediaPlayer.getVideoSize();
-    }
-
-    private boolean isAutoFlattrable(FeedMedia media) {
-        if (media != null) {
-            FeedItem item = media.getItem();
-            return item != null && FlattrUtils.hasToken() && UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred();
-        } else {
-            return false;
-        }
     }
 
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
@@ -1656,7 +1578,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onSkipToNext() {
             Log.d(TAG, "onSkipToNext()");
             if(UserPreferences.shouldHardwareButtonSkip()) {
-                mediaPlayer.endPlayback();
+                mediaPlayer.skip();
             } else {
                 seekDelta(UserPreferences.getFastFowardSecs() * 1000);
             }
@@ -1699,7 +1621,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         PlaybackServiceMediaPlayer getMediaPlayer();
         void setIsCasting(boolean isCasting);
         void sendNotificationBroadcast(int type, int code);
-        void saveCurrentPosition(boolean updatePlayedDuration, int deltaPlayedDuration);
+        void saveCurrentPosition();
         void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info);
         MediaSessionCompat getMediaSession();
         Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter);
@@ -1733,8 +1655,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void saveCurrentPosition(boolean updatePlayedDuration, int deltaPlayedDuration) {
-            PlaybackService.this.saveCurrentPosition(updatePlayedDuration, deltaPlayedDuration);
+        public void saveCurrentPosition() {
+            PlaybackService.this.saveCurrentPosition();
         }
 
         @Override

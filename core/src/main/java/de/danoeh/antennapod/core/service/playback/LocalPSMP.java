@@ -146,6 +146,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 if (!media.getIdentifier().equals(playable.getIdentifier())) {
                     final Playable oldMedia = media;
                     executor.submit(() -> callback.onPostPlayback(oldMedia, false, true));
+                } else {
+                    media.onPlaybackPause(context);
                 }
 
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
@@ -253,6 +255,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "Pausing playback.");
                 mediaPlayer.pause();
                 setPlayerStatus(PlayerStatus.PAUSED, media);
+                media.onPlaybackPause(context.getApplicationContext());
 
                 if (abandonFocus) {
                     audioManager.abandonAudioFocus(audioFocusChangeListener);
@@ -370,10 +373,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if (playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
-            if (!stream) {
-                statusBeforeSeeking = playerStatus;
-                setPlayerStatus(PlayerStatus.SEEKING, media);
-            }
+            statusBeforeSeeking = playerStatus;
+            setPlayerStatus(PlayerStatus.SEEKING, media);
             if(seekLatch != null && seekLatch.getCount() > 0) {
                 try {
                     seekLatch.await(3, TimeUnit.SECONDS);
@@ -382,6 +383,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 }
             }
             seekLatch = new CountDownLatch(1);
+            if (statusBeforeSeeking == PlayerStatus.PLAYING) {
+                media.setPosition(getPosition());
+                media.onPlaybackPause(context);
+            }
             mediaPlayer.seekTo(t);
             try {
                 seekLatch.await(3, TimeUnit.SECONDS);
@@ -926,7 +931,14 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 seekLatch.countDown();
             }
             playerLock.lock();
+            media.setPosition(getPosition());
+            if (playerStatus == PlayerStatus.PLAYING) {
+                media.onPlaybackStart();
+            }
             if (playerStatus == PlayerStatus.SEEKING) {
+                if (statusBeforeSeeking == PlayerStatus.PLAYING) {
+                    media.onPlaybackStart();
+                }
                 setPlayerStatus(statusBeforeSeeking, media);
             }
             playerLock.unlock();
