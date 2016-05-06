@@ -67,7 +67,7 @@ public class FeedInfoActivity extends ActionBarActivity {
     private RadioButton rdoFilterExclude;
     private CheckBox cbxAutoDownload;
     private CheckBox cbxKeepUpdated;
-    private Spinner spnAutoDelete;
+    private Spinner spnPlayedAction;
     private boolean filterInclude = true;
 
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
@@ -107,7 +107,7 @@ public class FeedInfoActivity extends ActionBarActivity {
         txtvUrl = (TextView) findViewById(R.id.txtvUrl);
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
         cbxKeepUpdated = (CheckBox) findViewById(R.id.cbxKeepUpdated);
-        spnAutoDelete = (Spinner) findViewById(R.id.spnAutoDelete);
+        spnPlayedAction = (Spinner) findViewById(R.id.spnFeedPlayedAction);
         etxtUsername = (EditText) findViewById(R.id.etxtUsername);
         etxtPassword = (EditText) findViewById(R.id.etxtPassword);
         etxtFilterText = (EditText) findViewById(R.id.etxtEpisodeFilterText);
@@ -176,27 +176,33 @@ public class FeedInfoActivity extends ActionBarActivity {
                         feed.getPreferences().setKeepUpdated(checked);
                         feed.savePreferences(FeedInfoActivity.this);
                     });
-                    spnAutoDelete.setOnItemSelectedListener(new OnItemSelectedListener() {
+                    spnPlayedAction.setOnItemSelectedListener(new OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                            FeedPreferences.AutoDeleteAction auto_delete_action;
+                            FeedPreferences.PlayedAction played_action;
                             switch (parent.getSelectedItemPosition()) {
                                 case 0:
-                                    auto_delete_action = FeedPreferences.AutoDeleteAction.GLOBAL;
+                                    played_action = FeedPreferences.PlayedAction.GLOBAL;
                                     break;
 
                                 case 1:
-                                    auto_delete_action = FeedPreferences.AutoDeleteAction.YES;
+                                    played_action = FeedPreferences.PlayedAction.DELETE;
                                     break;
 
                                 case 2:
-                                    auto_delete_action = FeedPreferences.AutoDeleteAction.NO;
+                                    played_action = FeedPreferences.PlayedAction.NONE;
                                     break;
 
-                                default: // TODO - add exceptions here
+                                case 3:
+                                    played_action = FeedPreferences.PlayedAction.ARCHIVE;
+                                    break;
+
+                                default:
+                                    Log.e(TAG, "spnPlayedAction: unhandled case = " +
+                                            parent.getSelectedItemPosition());
                                     return;
                             }
-                            feed.getPreferences().setAutoDeleteAction(auto_delete_action);// p
+                            feed.getPreferences().setPlayedAction(played_action);// p
                             autoDeleteChanged = true;
                         }
 
@@ -205,7 +211,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                             // Another interface callback
                         }
                     });
-                    spnAutoDelete.setSelection(prefs.getAutoDeleteAction().ordinal());
+                    spnPlayedAction.setSelection(prefs.getPlayedAction().ordinal());
 
                     etxtUsername.setText(prefs.getUsername());
                     etxtPassword.setText(prefs.getPassword());

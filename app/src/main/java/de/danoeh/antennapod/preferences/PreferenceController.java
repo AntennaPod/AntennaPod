@@ -56,6 +56,7 @@ import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
@@ -428,6 +429,9 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             }
             return true;
         });
+        ui.findPreference(UserPreferences.PREF_PLAYED_ACTION).setOnPreferenceChangeListener(
+                (preference, o) -> setPlayedActionText(FeedPreferences.PlayedAction.values()[Integer.parseInt((String) o)])
+        );
         buildEpisodeCleanupPreference();
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
@@ -450,6 +454,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         setParallelDownloadsText(UserPreferences.getParallelDownloads());
         setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
         setDataFolderText();
+        setPlayedActionText(UserPreferences.getPlayedAction());
         updateGpodnetPreferenceScreen();
     }
 
@@ -805,6 +810,31 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
+    }
+
+    private boolean setPlayedActionText(FeedPreferences.PlayedAction played_action) {
+        boolean rc = true;
+        final Context context = ui.getActivity();
+        String val;
+        switch (played_action) {
+            case DELETE:
+                val = context.getString(R.string.feed_played_action_delete);
+                break;
+            case NONE:
+                val = context.getString(R.string.feed_played_action_none);
+                break;
+            case ARCHIVE:
+                val = context.getString(R.string.feed_played_action_archive);
+                break;
+            default:
+                Log.e(TAG, "setPlayedActionText: unhandled case = " + played_action);
+                val = "";
+                rc = false;
+        }
+        String summary = context.getString(R.string.pref_played_action_sum) + "\n"
+                + String.format(context.getString(R.string.pref_current_value), val);
+        ui.findPreference(UserPreferences.PREF_PLAYED_ACTION).setSummary(summary);
+        return rc;
     }
 
     // CHOOSE DATA FOLDER

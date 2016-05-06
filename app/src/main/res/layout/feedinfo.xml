@@ -158,10 +158,10 @@
                 app:rowCount="1">
 
                 <TextView
-                    android:id="@+id/txtvFeedAutoDelete"
+                    android:id="@+id/txtvFeedPlayedAction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/auto_delete_label"
+                    android:text="@string/played_action_label"
                     app:layout_row="0"
                     app:layout_column="0"
                     app:layout_gravity="center_vertical"
@@ -170,8 +170,8 @@
                 <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/spnAutoDelete"
-                    android:entries="@array/spnAutoDeleteItems"
+                    android:id="@+id/spnFeedPlayedAction"
+                    android:entries="@array/spnFeedPlayedActionItems"
                     android:layout_marginTop="8dp"
                     app:layout_row="0"
                     app:layout_column="1"
