@@ -140,14 +140,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 }
                 // set temporarily to pause in order to update list with current position
                 if (playerStatus == PlayerStatus.PLAYING) {
-                    setPlayerStatus(PlayerStatus.PAUSED, media);
+                    callback.onPlaybackPause(media, getPosition());
                 }
 
                 if (!media.getIdentifier().equals(playable.getIdentifier())) {
                     final Playable oldMedia = media;
                     executor.submit(() -> callback.onPostPlayback(oldMedia, false, true));
-                } else {
-                    media.onPlaybackPause(context);
                 }
 
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
@@ -204,6 +202,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     audioFocusChangeListener, AudioManager.STREAM_MUSIC,
                     AudioManager.AUDIOFOCUS_GAIN);
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                Log.d(TAG, "Audiofocus successfully requested");
+                Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
                 float speed = 1.0f;
                 try {
@@ -223,10 +223,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 }
                 mediaPlayer.start();
 
+                callback.onPlaybackStart(media, INVALID_TIME);
                 setPlayerStatus(PlayerStatus.PLAYING, media);
                 pausedBecauseOfTransientAudiofocusLoss = false;
-                media.onPlaybackStart();
-
             } else {
                 Log.e(TAG, "Failed to request audio focus");
             }
@@ -254,8 +253,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             if (playerStatus == PlayerStatus.PLAYING) {
                 Log.d(TAG, "Pausing playback.");
                 mediaPlayer.pause();
+                callback.onPlaybackPause(media, getPosition());
                 setPlayerStatus(PlayerStatus.PAUSED, media);
-                media.onPlaybackPause(context.getApplicationContext());
 
                 if (abandonFocus) {
                     audioManager.abandonAudioFocus(audioFocusChangeListener);
@@ -384,8 +383,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             }
             seekLatch = new CountDownLatch(1);
             if (statusBeforeSeeking == PlayerStatus.PLAYING) {
-                media.setPosition(getPosition());
-                media.onPlaybackPause(context);
+                callback.onPlaybackPause(media, getPosition());
             }
             mediaPlayer.seekTo(t);
             try {
@@ -931,13 +929,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 seekLatch.countDown();
             }
             playerLock.lock();
-            media.setPosition(getPosition());
             if (playerStatus == PlayerStatus.PLAYING) {
-                media.onPlaybackStart();
+                callback.onPlaybackStart(media, getPosition());
             }
             if (playerStatus == PlayerStatus.SEEKING) {
                 if (statusBeforeSeeking == PlayerStatus.PLAYING) {
-                    media.onPlaybackStart();
+                    callback.onPlaybackStart(media, getPosition());
                 }
                 setPlayerStatus(statusBeforeSeeking, media);
             }

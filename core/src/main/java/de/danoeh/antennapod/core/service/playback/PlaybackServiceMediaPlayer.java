@@ -301,7 +301,11 @@ public abstract class PlaybackServiceMediaPlayer {
 
         boolean onMediaPlayerError(Object inObj, int what, int extra);
 
-        void onPostPlayback(Playable media, boolean ended, boolean playingNext);
+        void onPostPlayback(@NonNull Playable media, boolean ended, boolean playingNext);
+
+        void onPlaybackStart(@NonNull Playable playable, int position);
+
+        void onPlaybackPause(@NonNull Playable playable, int position);
 
         Playable getNextInQueue(Playable currentMedia);
 

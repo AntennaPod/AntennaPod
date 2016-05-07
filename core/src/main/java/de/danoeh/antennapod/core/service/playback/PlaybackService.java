@@ -524,7 +524,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final PlaybackServiceTaskManager.PSTMCallback taskManagerCallback = new PlaybackServiceTaskManager.PSTMCallback() {
         @Override
         public void positionSaverTick() {
-            saveCurrentPosition();
+            saveCurrentPosition(true, null, PlaybackServiceMediaPlayer.INVALID_TIME);
         }
 
         @Override
@@ -576,9 +576,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
 
                 case PAUSED:
-                    taskManager.cancelPositionSaver();
-                    saveCurrentPosition();
-                    taskManager.cancelWidgetUpdater();
                     if ((UserPreferences.isPersistNotify() || isCasting) &&
                             android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         // do not remove notification on pause based on user pref and whether android version supports expanded notifications
@@ -597,12 +594,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
 
                 case PLAYING:
-                    Log.d(TAG, "Audiofocus successfully requested");
-                    Log.d(TAG, "Resuming/Starting playback");
-
-                    taskManager.startPositionSaver();
-                    taskManager.startWidgetUpdater();
-                    writePlayerStatusPlaybackPreferences();
                     setupNotification(newInfo);
                     started = true;
                     break;
@@ -677,8 +668,28 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onPostPlayback(Playable media, boolean ended, boolean playingNext) {
+        public void onPostPlayback(@NonNull Playable media, boolean ended, boolean playingNext) {
             PlaybackService.this.onPostPlayback(media, ended, playingNext);
+        }
+
+        @Override
+        public void onPlaybackStart(@NonNull Playable playable, int position) {
+            taskManager.startWidgetUpdater();
+            writePlayerStatusPlaybackPreferences();
+            if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
+                playable.setPosition(position);
+            }
+            playable.onPlaybackStart();
+            taskManager.startPositionSaver();
+        }
+
+        @Override
+        public void onPlaybackPause(@NonNull Playable playable, int position) {
+            taskManager.cancelPositionSaver();
+            saveCurrentPosition(position == PlaybackServiceMediaPlayer.INVALID_TIME,
+                    playable, position);
+            taskManager.cancelWidgetUpdater();
+            playable.onPlaybackPause(getApplicationContext());
         }
 
         @Override
@@ -1200,11 +1211,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     /**
      * Persists the current position and last played time of the media file.
+     *
+     * @param fromMediaPlayer if true, the information is gathered from the current Media Player
+     *                        and {@param playable} and {@param position} become irrelevant.
+     * @param playable the playable for which the current position should be saved, unless
+     *                 {@param fromMediaPlayer} is true.
+     * @param position the position that should be saved, unless {@param fromMediaPlayer} is true.
      */
-    private synchronized void saveCurrentPosition() {
-        int position = getCurrentPosition();
-        int duration = getDuration();
-        final Playable playable = mediaPlayer.getPlayable();
+    private synchronized void saveCurrentPosition(boolean fromMediaPlayer, Playable playable, int position) {
+        int duration;
+        if (fromMediaPlayer) {
+            position = getCurrentPosition();
+            duration = getDuration();
+            playable = mediaPlayer.getPlayable();
+        } else {
+            duration = playable.getDuration();
+        }
         if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
             Log.d(TAG, "Saving current position to " + position);
             playable.saveCurrentPosition(
@@ -1621,7 +1643,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         PlaybackServiceMediaPlayer getMediaPlayer();
         void setIsCasting(boolean isCasting);
         void sendNotificationBroadcast(int type, int code);
-        void saveCurrentPosition();
+        void saveCurrentPosition(boolean fromMediaPlayer, Playable playable, int position);
         void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info);
         MediaSessionCompat getMediaSession();
         Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter);
@@ -1655,8 +1677,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void saveCurrentPosition() {
-            PlaybackService.this.saveCurrentPosition();
+        public void saveCurrentPosition(boolean fromMediaPlayer, Playable playable, int position) {
+            PlaybackService.this.saveCurrentPosition(fromMediaPlayer, playable, position);
         }
 
         @Override
