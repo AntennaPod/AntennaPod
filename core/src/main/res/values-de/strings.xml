@@ -579,12 +579,16 @@
   <!--Casting-->
   <string name="cast_media_route_menu_title">Abspielen auf...</string>
   <string name="cast_disconnect_label">Chromecast-Sitzung trennen</string>
+  <string name="cast_not_castable">Ausgewähltes Medium ist nicht kompatibel mit Cast-Gerät</string>
   <string name="cast_failed_to_play">Fehler beim Starten der Wiedergabe</string>
   <string name="cast_failed_to_stop">Fehler beim Stoppen der Wiedergabe</string>
   <string name="cast_failed_to_pause">Fehler beim Pausieren der Wiedergabe</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Fehler beim Einstellen der Lautstärke</string>
+  <string name="cast_failed_no_connection">Keine Verbindung zum Cast-Gerät</string>
+  <string name="cast_failed_no_connection_trans">Verbindung zum Cast-Device unterbrochen. Wenn möglich, wird die App die Verbindung wiederherstellen. Bitte warte ein paar Sekunden und versuche es erneut.</string>
   <string name="cast_failed_perform_action">Aktion konnte nicht ausgeführt werden</string>
   <string name="cast_failed_status_request">Synchronization mit Cast-Gerät fehlgeschlagen</string>
+  <string name="cast_failed_seek">Spulen zur neuen Position fehlgeschlagen</string>
   <string name="cast_failed_media_error_skipping">Fehler bei Wiedergabe. Überspringe...</string>
 </resources>
