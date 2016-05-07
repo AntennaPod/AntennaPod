@@ -1,20 +1,20 @@
 変更ログ
 ==========
 
-Version 1.6.0
+バージョン 1.6.0
 -------------
-* New features:
- * Experimental Chromecast support
- * Subscription overview
- * Proxy support
- * Statistics
- * Manual gpodder.net sync
-* Fixes:
- * Audioplayer controls
- * Audio ducking
- * Video control fade-out
- * External media controls
- * Feed parsing
+* 新機能:
+ * 実験的な Chromecast サポート
+ * 購読概要
+ * プロキシサポート
+ * 統計情報
+ * 手動 gpodder.net 同期
+* 修正:
+ * オーディオプレイヤー コントロール
+ * オーディオ ダッキング
+ * ビデオ コントロール フェードアウト
+ * 外部メディアコントロール
+ * フィードの解析
 
 バージョン 1.5.0
 -------------

@@ -1,24 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">フィード</string>
   <string name="statistics_label">統計情報</string>
   <string name="add_feed_label">フィードを追加</string>
-  <string name="podcasts_label">ポッドキャスト</string>
   <string name="episodes_label">エピソード</string>
-  <string name="new_episodes_label">新エピソード</string>
-  <string name="all_episodes_label">全てのエピソード</string>
   <string name="all_episodes_short_label">すべて</string>
   <string name="favorite_episodes_label">お気に入り</string>
   <string name="new_label">新</string>
-  <string name="waiting_list_label">待ちリスト</string>
   <string name="settings_label">設定</string>
   <string name="add_new_feed_label">フィードを追加</string>
   <string name="downloads_label">ダウンロード</string>
   <string name="downloads_running_label">実行中</string>
   <string name="downloads_completed_label">完了</string>
   <string name="downloads_log_label">ログ</string>
+  <string name="subscriptions_label">購読</string>
+  <string name="subscriptions_list_label">購読リスト</string>
   <string name="cancel_download_label">ダウンロードをキャンセル</string>
   <string name="playback_history_label">再生履歴</string>
   <string name="gpodnet_main_label">gpodder.net</string>
@@ -26,9 +23,6 @@
   <string name="free_space_label">%1$s 空き</string>
   <string name="episode_cache_full_title">エピソードキャッシュが一杯です</string>
   <string name="episode_cache_full_message">エピソードキャッシュが制限に達しました。設定でキャッシュサイズを増やすことができます。</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">最近公開された</string>
-  <string name="episode_filter_label">新しいエピソードのみ表示</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">ポッドキャストを再生した合計時間:</string>
   <string name="statistics_details_dialog">%2$d から %1$d のエピソードが開始しました。\n\n%4$s から%3$s を再生しました。</string>
@@ -80,9 +74,9 @@
   <string name="auto_download_label">自動ダウンロードに含む</string>
   <string name="auto_download_apply_to_items_title">前のエピソードに適用</string>
   <string name="auto_download_apply_to_items_message">新しい <i>自動ダウンロード</i> の設定は、自動的に新しいエピソードに適用されます。\n以前に公開されたエピソードにも適用しますか?</string>
-  <string name="auto_delete_label">エピソードの自動削除\n(全般のデフォルトを上書きします)</string>
+  <string name="auto_delete_label">エピソードを自動削除</string>
   <string name="parallel_downloads_suffix">\u0020パラレル ダウンロード</string>
-  <string name="feed_auto_download_global">全般</string>
+  <string name="feed_auto_download_global">全般のデフォルト</string>
   <string name="feed_auto_download_always">常に</string>
   <string name="feed_auto_download_never">しない</string>
   <string name="send_label">送信…</string>
@@ -111,8 +105,8 @@
   <string name="share_link_label">Webサイトのリンクを共有</string>
   <string name="share_link_with_position_label">場所とリンクを共有</string>
   <string name="share_feed_url_label">フィード URLを共有</string>
-  <string name="share_item_url_label">エピソード URLを共有</string>
-  <string name="share_item_url_with_position_label">場所とエピソード URL を共有</string>
+  <string name="share_item_url_label">エピソードファイル URLを共有</string>
+  <string name="share_item_url_with_position_label">エピソードファイル URL を位置と共に共有</string>
   <string name="feed_delete_confirmation_msg">このフィードと、このフィードのダウンロードしたすべてのエピソードを削除することを確認してください。</string>
   <string name="feed_remover_msg">フィードの削除中</string>
   <string name="load_complete_feed">フィードをすべて更新</string>
@@ -148,8 +142,6 @@
   <string name="removed_from_favorites">お気に入りから削除</string>
   <string name="visit_website_label">Webサイトを訪問</string>
   <string name="support_label">これをFlattr</string>
-  <string name="enqueue_all_new">すべてキューに入れる</string>
-  <string name="download_all">すべてダウンロード</string>
   <string name="skip_episode_label">エピソードをスキップ</string>
   <string name="activate_auto_download">自動ダウンロードを有効にする</string>
   <string name="deactivate_auto_download">自動ダウンロードを無効にする</string>
@@ -171,6 +163,7 @@
   <string name="download_error_unknown_host">ホスト不明</string>
   <string name="download_error_unauthorized">認証エラー</string>
   <string name="download_error_file_type_type">ファイルタイプ エラー</string>
+  <string name="download_error_forbidden">禁止</string>
   <string name="cancel_all_downloads_label">すべてのダウンロードをキャンセル</string>
   <string name="download_canceled_msg">ダウンロードをキャンセルしました</string>
   <string name="download_canceled_autodownload_enabled_msg">ダウンロードをキャンセルしました\nこのアイテムの <i>自動ダウンロード</i> を無効にしました</string>
@@ -207,7 +200,6 @@
   <string name="playback_error_server_died">サーバーがダウンしています</string>
   <string name="playback_error_unknown">不明なエラー</string>
   <string name="no_media_playing_label">再生するメディアがありません</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">バッファー中</string>
   <string name="playbackservice_notification_title">ポッドキャストを再生中</string>
   <string name="unknown_media_key">AntennaPod - 不明なメディアキー: %1$d</string>
@@ -266,6 +258,8 @@
   <string name="no_chapters_label">このエピソードにチャプターはありません。</string>
   <string name="no_shownotes_label">このエピソードにショーノートはありません。</string>
   <!--Preferences-->
+  <string name="storage_pref">ストレージ</string>
+  <string name="project_pref">プロジェクト</string>
   <string name="other_pref">その他</string>
   <string name="about_pref">について</string>
   <string name="queue_label">キュー</string>
@@ -358,6 +352,12 @@
   <string name="pref_expandNotify_sum">常に再生ボタンを表示するように通知を展開します。</string>
   <string name="pref_persistNotify_title">永続再生コントロール</string>
   <string name="pref_persistNotify_sum">再生が一時停止された時に、通知およびロック画面のコントロールを保持します。</string>
+  <string name="pref_compact_notification_buttons_title">ロック画面ボタンを設定</string>
+  <string name="pref_compact_notification_buttons_sum">ロック画面の再生ボタンを変更します。再生/一時停止ボタンを常に含みます。</string>
+  <string name="pref_compact_notification_buttons_dialog_title">最大 %1$d のアイテムを選択</string>
+  <string name="pref_compact_notification_buttons_dialog_error">最大 %1$d のアイテムのみを選択できます。</string>
+  <string name="pref_show_subscriptions_in_drawer_title">購読を表示</string>
+  <string name="pref_show_subscriptions_in_drawer_sum">ナビゲーションドロワーに直接購読リストを表示します</string>
   <string name="pref_lockscreen_background_title">ロック画面の背景を設定</string>
   <string name="pref_lockscreen_background_sum">ロック画面の背景を、現在のエピソードの画像に設定します。副作用として、これはサードパーティのアプリケーションでも画像を表示します。</string>
   <string name="pref_showDownloadReport_title">ダウンロード レポートを表示</string>
@@ -377,8 +377,11 @@
   <string name="pref_current_value">現在の値: %1$s</string>
   <string name="pref_proxy_title">プロキシ</string>
   <string name="pref_proxy_sum">ネットワーク プロキシの設定</string>
+  <string name="pref_faq">FAQ</string>
   <string name="pref_known_issues">既知の問題</string>
-  <string name="pref_no_browser_found">Web ブラウザーが見つかりません。\"</string>
+  <string name="pref_no_browser_found">Webブラウザーが見つかりません。</string>
+  <string name="pref_cast_title">Chromecast サポート</string>
+  <string name="pref_cast_message">(Chromecast、オーディオスピーカー、Android TV など) キャストデバイス上でリモートメディア再生のサポートを有効にします</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">自動Flattrを有効にする</string>
   <string name="auto_flattr_after_percent">%d ％再生したらエピソードをFlattr </string>
@@ -455,6 +458,7 @@
   <string name="gpodnetauth_device_chooseExistingDevice">既存の端末を選択:</string>
   <string name="gpodnetauth_device_errorEmpty">端末IDは空にできません</string>
   <string name="gpodnetauth_device_errorAlreadyUsed">端末IDは既に使用しています</string>
+  <string name="gpodnetauth_device_caption_errorEmpty">キャプションは空にできません</string>
   <string name="gpodnetauth_device_butChoose">選択</string>
   <string name="gpodnetauth_finish_title">ログインされました！</string>
   <string name="gpodnetauth_finish_descr">おめでとうございます! あなたのgpodder.netアカウントが今お使いの端末とリンクされました。 AntennaPodは今から自動的にgpodder.netアカウントを使用して端末の購読を同期します。</string>
@@ -491,22 +495,13 @@
   <string name="subscribed_label">購読しました</string>
   <string name="downloading_label">ダウンロード中…</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">チャプターを表示</string>
-  <string name="show_shownotes_label">ショーノートを表示</string>
-  <string name="show_cover_label">映像を表示</string>
   <string name="rewind_label">巻き戻し</string>
   <string name="fast_forward_label">早送り</string>
   <string name="media_type_audio_label">音声</string>
   <string name="media_type_video_label">動画</string>
   <string name="navigate_upwards_label">上に移動</string>
-  <string name="butAction_label">その他の操作</string>
-  <string name="status_playing_label">エピソードを再生中</string>
   <string name="status_downloading_label">エピソードをダウンロード中</string>
-  <string name="status_downloaded_label">エピソードをダウンロードしました</string>
-  <string name="status_unread_label">新しいアイテムです</string>
   <string name="in_queue_label">エピソードはキューの中にあります</string>
-  <string name="new_episodes_count_label">新しいエピソードの数</string>
-  <string name="in_progress_episodes_count_label">聞き始めたエピソードの数</string>
   <string name="drag_handle_content_description">このアイテムの場所を変更するにはドラッグしてください</string>
   <string name="load_next_page_label">次のページをロード</string>
   <!--Feed information screen-->
@@ -524,8 +519,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">単一目的のアプリから購読をインポート中…</string>
   <string name="search_itunes_label">iTunes を検索</string>
-  <string name="select_label"><b>選択…</b></string>
   <string name="filter">フィルター</string>
+  <!--Episodes apply actions-->
   <string name="all_label">すべて</string>
   <string name="selected_all_label">すべてのエピソードを選択しました</string>
   <string name="none_label">なし</string>
@@ -542,7 +537,7 @@
   <string name="selected_queued_label">キューに入ったエピソードを選択しました</string>
   <string name="not_queued_label">キューに入っていません</string>
   <string name="selected_not_queued_label">キューに入っていないエピソードを選択しました</string>
-  <string name="sort_title"><b>並び替え…</b></string>
+  <!--Sort-->
   <string name="sort_title_a_z">タイトル (A \u2192 Z)</string>
   <string name="sort_title_z_a">タイトル (Z \u2192 A)</string>
   <string name="sort_date_new_old">日付 (新 \u2192 旧)</string>
@@ -574,6 +569,22 @@
   <string name="proxy_test_successful">テストに成功しました</string>
   <string name="proxy_test_failed">テストに失敗しました</string>
   <string name="proxy_host_empty_error">ホストは空にできません</string>
-  <string name="proxy_host_invalid_error">ホストが有効なIPまたはドメインではありません</string>
+  <string name="proxy_host_invalid_error">ホストが有効なIPアドレスやドメインではありません</string>
   <string name="proxy_port_invalid_error">ポートが正しくありません</string>
+  <!--Casting-->
+  <string name="cast_media_route_menu_title">…で再生</string>
+  <string name="cast_disconnect_label">キャストセッションを切断</string>
+  <string name="cast_not_castable">選択したメディアはキャストデバイスと互換性がありません</string>
+  <string name="cast_failed_to_play">メディア再生の開始に失敗しました</string>
+  <string name="cast_failed_to_stop">メディア再生の停止に失敗しました</string>
+  <string name="cast_failed_to_pause">メディア再生の一時停止に失敗しました</string>
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_setting_volume">音量の設定に失敗しました</string>
+  <string name="cast_failed_no_connection">キャストデバイスへの接続が存在しません</string>
+  <string name="cast_failed_no_connection_trans">キャストデバイスへの接続が失われました。可能な場合、アプリケーションは接続を再確立しようとします。数秒待ってから、もう一度お試しください。</string>
+  <string name="cast_failed_perform_action">操作の実行に失敗しました</string>
+  <string name="cast_failed_status_request">キャストデバイスとの同期に失敗しました</string>
+  <string name="cast_failed_seek">キャストデバイスの新しい位置への移動に失敗しました</string>
+  <string name="cast_failed_receiver_player_error">レシーバープレーヤーで深刻なエラーが発生しました</string>
+  <string name="cast_failed_media_error_skipping">メディアの再生時にエラーが発生しました。スキップしています…</string>
 </resources>

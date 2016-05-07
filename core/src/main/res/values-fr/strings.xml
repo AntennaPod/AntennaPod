@@ -383,6 +383,7 @@
   <string name="pref_known_issues">Problèmes connus</string>
   <string name="pref_no_browser_found">Aucun navigateur trouvé.</string>
   <string name="pref_cast_title">Chromecast support</string>
+  <string name="pref_cast_message">Activer le support de lecture de médias à distance pour les appareils Cast (comme Chromecast, haut parleurs ou Android Tv) </string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
   <string name="auto_flattr_after_percent">Lancer un paiement flattr pour un épisode dès que %d de l\'épisode a été joué</string>
@@ -462,6 +463,7 @@
   <string name="gpodnetauth_device_chooseExistingDevice">Choisir un appareil existant :</string>
   <string name="gpodnetauth_device_errorEmpty">L\'ID de l\'appareil ne peut pas être vide</string>
   <string name="gpodnetauth_device_errorAlreadyUsed">L\'ID de cet appareil est déjà en cours d\'utilisation</string>
+  <string name="gpodnetauth_device_caption_errorEmpty">Le nom ne peut pas être vide</string>
   <string name="gpodnetauth_device_butChoose">Choisir</string>
   <string name="gpodnetauth_finish_title">Connexion réussie !</string>
   <string name="gpodnetauth_finish_descr">Félicitations ! Votre compte gpodder.net est maintenant lié à votre appareil. AntennaPod va désormais automatiquement synchroniser vos podcasts sur votre appareil avec votre compte gpodder.</string>
@@ -571,7 +573,23 @@
   <string name="proxy_checking">Vérification...</string>
   <string name="proxy_test_successful">Test réussi</string>
   <string name="proxy_test_failed">Échec</string>
+  <string name="proxy_host_empty_error">Hôte ne peut pas être vide</string>
+  <string name="proxy_host_invalid_error">L\'hôte n\'est pas une adresse IP ou un domaine valide</string>
   <string name="proxy_port_invalid_error">Port non valide</string>
   <!--Casting-->
+  <string name="cast_media_route_menu_title">Lire sur...</string>
+  <string name="cast_disconnect_label">Déconnecter la session cast</string>
+  <string name="cast_not_castable">Le média choisi n\'est pas compatible avec l\'appareil cast</string>
+  <string name="cast_failed_to_play">Échec de lecture du média</string>
+  <string name="cast_failed_to_stop">Échec de l\'arrêt de lecture du média</string>
+  <string name="cast_failed_to_pause">Échec de mise en pause du média</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_setting_volume">Échec de réglage du volume</string>
+  <string name="cast_failed_no_connection">Aucune connexion à l\'appareil Cast existe</string>
+  <string name="cast_failed_no_connection_trans">La connexion à l\'appareil cast a été perdu. L\'application tente de rétablir la connexion. Veuillez patienter quelques secondes et réessayer.</string>
+  <string name="cast_failed_perform_action">Échec de l\'action</string>
+  <string name="cast_failed_status_request">Échec de la synchronisation avec l\'appareil cast</string>
+  <string name="cast_failed_seek">Échec de la recherche de la nouvelle position sur l\'appareil cast</string>
+  <string name="cast_failed_receiver_player_error">Le lecteur de réception à rencontrer une grave erreur</string>
+  <string name="cast_failed_media_error_skipping">Erreur de lecture du média. Passage au suivant...</string>
 </resources>

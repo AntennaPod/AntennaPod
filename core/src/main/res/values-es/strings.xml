@@ -1,24 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Canales</string>
   <string name="statistics_label">Estadísticas</string>
   <string name="add_feed_label">Añadir podcast</string>
-  <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">Episodios</string>
-  <string name="new_episodes_label">Episodios nuevos</string>
-  <string name="all_episodes_label">Todos los episodios</string>
   <string name="all_episodes_short_label">Todos</string>
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Nuevos</string>
-  <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Ajustes</string>
   <string name="add_new_feed_label">Añadir podcast</string>
   <string name="downloads_label">Descargas</string>
   <string name="downloads_running_label">En curso</string>
   <string name="downloads_completed_label">Completadas</string>
   <string name="downloads_log_label">Registro</string>
+  <string name="subscriptions_label">Subscripciones</string>
+  <string name="subscriptions_list_label">Lista de subscripciones</string>
   <string name="cancel_download_label">Cancelar\ndescarga</string>
   <string name="playback_history_label">Historial de reproducciones</string>
   <string name="gpodnet_main_label">gpodder.net</string>
@@ -26,9 +23,6 @@
   <string name="free_space_label">%1$s libre</string>
   <string name="episode_cache_full_title">Caché de episodios completa</string>
   <string name="episode_cache_full_message">Se ha alcanzado el límite de caché de episodios. Puedes aumentar el tamaño de la caché en las Opciones.</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Publicados recientemente</string>
-  <string name="episode_filter_label">Mostrar solo episodios nuevos</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tiempo total reproducido:</string>
   <string name="statistics_details_dialog">Empezados %1$d episodios de %2$d.\n\nReproducidos %3$s de %4$s.</string>
@@ -80,9 +74,9 @@
   <string name="auto_download_label">Incluir en descargas automáticas</string>
   <string name="auto_download_apply_to_items_title">Aplicar a episodios anteriores</string>
   <string name="auto_download_apply_to_items_message">La nueva opción <i>Auto Descarga</i> se aplicará automáticamente a episodios nuevos.\n¿También desea aplicarlo a episodios anteriores?</string>
-  <string name="auto_delete_label">Eliminar episodio automáticamente\n(ignorar config. global)</string>
+  <string name="auto_delete_label">Borrar Episodio Automáticamente</string>
   <string name="parallel_downloads_suffix">\u0020descargas paralelas</string>
-  <string name="feed_auto_download_global">Global</string>
+  <string name="feed_auto_download_global">Global por defecto</string>
   <string name="feed_auto_download_always">Siempre</string>
   <string name="feed_auto_download_never">Nunca</string>
   <string name="send_label">Enviar…</string>
@@ -112,8 +106,6 @@
   <string name="share_link_label">Compartir el enlace de la web</string>
   <string name="share_link_with_position_label">Compartir enlace con posición</string>
   <string name="share_feed_url_label">Compartir URL del canal</string>
-  <string name="share_item_url_label">Compartir URL del episodio</string>
-  <string name="share_item_url_with_position_label">Compartir URL del episodio con posición</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
   <string name="feed_remover_msg">Quitando el canal</string>
   <string name="load_complete_feed">Actualizar el canal completo</string>
@@ -149,8 +141,6 @@
   <string name="removed_from_favorites">Quitado de Favoritos</string>
   <string name="visit_website_label">Visitar el sitio web</string>
   <string name="support_label">Añadir a Flattr</string>
-  <string name="enqueue_all_new">Ponerlos todos en cola</string>
-  <string name="download_all">Descargarlos todos</string>
   <string name="skip_episode_label">Omitir episodio</string>
   <string name="activate_auto_download">Activar descarga automática</string>
   <string name="deactivate_auto_download">Desactivar descarga automática</string>
@@ -172,6 +162,7 @@
   <string name="download_error_unknown_host">Host desconocido</string>
   <string name="download_error_unauthorized">Error de autenticación</string>
   <string name="download_error_file_type_type">Tipo de archivo erróneo</string>
+  <string name="download_error_forbidden">Prohibido</string>
   <string name="cancel_all_downloads_label">Cancelar todas las descargas</string>
   <string name="download_canceled_msg">Descarga cancelada</string>
   <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\nSe desactivó <i>Descarga automática</i> en este elemento</string>
@@ -209,7 +200,6 @@
   <string name="playback_error_server_died">El servidor está inactivo</string>
   <string name="playback_error_unknown">Error desconocido</string>
   <string name="no_media_playing_label">No hay medios en reproducción</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Almacenando</string>
   <string name="playbackservice_notification_title">Reproduciendo el podcast</string>
   <string name="unknown_media_key">AntennaPod - Tecla multimedia desconocida: %1$d</string>
@@ -268,6 +258,8 @@
   <string name="no_chapters_label">Este episodio no tiene capítulos.</string>
   <string name="no_shownotes_label">Este episodio no tiene anotaciones.</string>
   <!--Preferences-->
+  <string name="storage_pref">Almacenamiento</string>
+  <string name="project_pref">Proyecto</string>
   <string name="other_pref">Otros</string>
   <string name="about_pref">Acerca de</string>
   <string name="queue_label">Cola</string>
@@ -360,6 +352,9 @@
   <string name="pref_expandNotify_sum">Expandir siempre la notificación para mostrar los botones de reproducción</string>
   <string name="pref_persistNotify_title">Controles de reproducción persistentes</string>
   <string name="pref_persistNotify_sum">Mantener la notificación y controles en pantalla de bloqueo cuando se pausa.</string>
+  <string name="pref_compact_notification_buttons_dialog_title">Seleccionar un máximo de %1$d elementos</string>
+  <string name="pref_compact_notification_buttons_dialog_error">Sólo puedes seleccionar un máximo de %1$d elementos.</string>
+  <string name="pref_show_subscriptions_in_drawer_title">Mostrar Subscripciones</string>
   <string name="pref_lockscreen_background_title">Establecer fondo de pantalla de bloqueo</string>
   <string name="pref_lockscreen_background_sum">Establecer el fondo de pantalla de bloqueo desde la imagen del episodio. Como efecto lateral, esto también mostrará la imagen en aplicaciones de terceros.</string>
   <string name="pref_showDownloadReport_title">Mostrar informe de descarga</string>
@@ -379,8 +374,10 @@
   <string name="pref_current_value">Valor actual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Configurar proxy de red</string>
+  <string name="pref_faq">Preguntas frecuentes</string>
   <string name="pref_known_issues">Problemas conocidos</string>
-  <string name="pref_no_browser_found">No se encontró navegador web</string>
+  <string name="pref_no_browser_found">No se ha encontrado navegador web.</string>
+  <string name="pref_cast_title">Soporte para Chromecast</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Hacer Flattr del episodio en cuanto se haya reproducido el %d por ciento</string>
@@ -496,22 +493,13 @@
   <string name="subscribed_label">Suscrito</string>
   <string name="downloading_label">Descargando…</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Mostrar capítulos</string>
-  <string name="show_shownotes_label">Mostrar notas del programa</string>
-  <string name="show_cover_label">Mostrar imagen</string>
   <string name="rewind_label">Rebobinar</string>
   <string name="fast_forward_label">Avance rápido</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Vídeo</string>
   <string name="navigate_upwards_label">Navegar hacia arriba</string>
-  <string name="butAction_label">Más acciones</string>
-  <string name="status_playing_label">El episodio se está reproduciendo</string>
   <string name="status_downloading_label">El episodio se está descargando</string>
-  <string name="status_downloaded_label">El episodio está descargado</string>
-  <string name="status_unread_label">El elemento es nuevo</string>
   <string name="in_queue_label">El episodio está en la cola</string>
-  <string name="new_episodes_count_label">Cantidad de episodios nuevos</string>
-  <string name="in_progress_episodes_count_label">Cantidad de episodios que ha comenzado a escuchar</string>
   <string name="drag_handle_content_description">Arrastrar para cambiar la posición de este ítem</string>
   <string name="load_next_page_label">Cargar la página siguiente</string>
   <!--Feed information screen-->
@@ -529,8 +517,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importando subscripciones de aplicaciones de uso específico...</string>
   <string name="search_itunes_label">Buscar en iTunes</string>
-  <string name="select_label"><b>Seleccionar…</b></string>
   <string name="filter">Filtro</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Todo</string>
   <string name="selected_all_label">Seleccionados todos los episodios</string>
   <string name="none_label">Ninguno</string>
@@ -547,7 +535,7 @@
   <string name="selected_queued_label">Seleccionados episodios en cola</string>
   <string name="not_queued_label">No en cola</string>
   <string name="selected_not_queued_label">Seleccionados episodios no en cola</string>
-  <string name="sort_title"><b>Ordenar por…</b></string>
+  <!--Sort-->
   <string name="sort_title_a_z">Título (A \u2192 Z)</string>
   <string name="sort_title_z_a">Título (Z \u2192 A)</string>
   <string name="sort_date_new_old">Fecha (Nuevo \u2192 Antiguo)</string>
@@ -578,7 +566,7 @@
   <string name="proxy_checking">Comprobando...</string>
   <string name="proxy_test_successful">Test correcto</string>
   <string name="proxy_test_failed">Test fallido</string>
-  <string name="proxy_host_empty_error">Debes introducir un Host</string>
-  <string name="proxy_host_invalid_error">El Host no es una IP ni un dominio válidos</string>
   <string name="proxy_port_invalid_error">Puerto inválido</string>
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

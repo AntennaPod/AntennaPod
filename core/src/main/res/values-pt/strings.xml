@@ -1,24 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Fontes</string>
   <string name="statistics_label">Estatísticas</string>
   <string name="add_feed_label">Adicionar podcast</string>
-  <string name="podcasts_label">Podcasts</string>
   <string name="episodes_label">Episódios</string>
-  <string name="new_episodes_label">Novos episódios</string>
-  <string name="all_episodes_label">Todos os episódios</string>
   <string name="all_episodes_short_label">Todos</string>
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Novos</string>
-  <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Definições</string>
   <string name="add_new_feed_label">Adicionar podcast</string>
   <string name="downloads_label">Descargas</string>
   <string name="downloads_running_label">Em curso</string>
   <string name="downloads_completed_label">Terminada</string>
   <string name="downloads_log_label">Registo</string>
+  <string name="subscriptions_label">Subscrições</string>
+  <string name="subscriptions_list_label">Lista de subscrições</string>
   <string name="cancel_download_label">Cancelar\ndescarga</string>
   <string name="playback_history_label">Histórico de reprodução</string>
   <string name="gpodnet_main_label">gpodder.net</string>
@@ -26,9 +23,6 @@
   <string name="free_space_label">%1$s disponível</string>
   <string name="episode_cache_full_title">Cache de episódios cheia</string>
   <string name="episode_cache_full_message">Atingido o limite máximo de itens em cache. Pode aumentar o tamanho de cache nas definições.</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Publicados recentemente</string>
-  <string name="episode_filter_label">Mostrar apenas novos episódios</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tempo total dos podcasts reproduzidos:</string>
   <string name="statistics_details_dialog">%1$d de %2$d episódios iniciados.\n\nReproduzidos %3$s de %4$s.</string>
@@ -80,9 +74,9 @@
   <string name="auto_download_label">Incluir nas descargas automáticas</string>
   <string name="auto_download_apply_to_items_title">Aplicar aos episódios anteriores</string>
   <string name="auto_download_apply_to_items_message">A definição <i>Descarga automática</i> será aplicada a todos os novos episódios.\nGostaria de também a aplicar aos episódios anteriores?</string>
-  <string name="auto_delete_label">Apagar episódio automaticamente\n(altera a definição global)</string>
+  <string name="auto_delete_label">Apagar episódio automaticamente</string>
   <string name="parallel_downloads_suffix">\u0020descargas simultâneas</string>
-  <string name="feed_auto_download_global">Global</string>
+  <string name="feed_auto_download_global">Predefinições</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Nunca</string>
   <string name="send_label">Enviar...</string>
@@ -149,8 +143,6 @@
   <string name="removed_from_favorites">Removido dos favoritos</string>
   <string name="visit_website_label">Aceder ao sítio web</string>
   <string name="support_label">Flattr</string>
-  <string name="enqueue_all_new">Colocar tudo na fila</string>
-  <string name="download_all">Descarregar tudo</string>
   <string name="skip_episode_label">Ignorar episódio</string>
   <string name="activate_auto_download">Ativar descarga automática</string>
   <string name="deactivate_auto_download">Desativar descarga automática</string>
@@ -172,6 +164,7 @@
   <string name="download_error_unknown_host">Servidor desconhecido</string>
   <string name="download_error_unauthorized">Erro de autenticação</string>
   <string name="download_error_file_type_type">Erro do tipo de ficheiro</string>
+  <string name="download_error_forbidden">Proibido</string>
   <string name="cancel_all_downloads_label">Cancelar descargas</string>
   <string name="download_canceled_msg">Descarga cancelada</string>
   <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\n<i>Descarga automática</i> desativada para este item</string>
@@ -209,7 +202,6 @@
   <string name="playback_error_server_died">Erro de servidor</string>
   <string name="playback_error_unknown">Erro desconhecido</string>
   <string name="no_media_playing_label">Nada em reprodução</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">A processar...</string>
   <string name="playbackservice_notification_title">Reproduzir podcast</string>
   <string name="unknown_media_key">Tecla multimédia desconhecida: %1$d</string>
@@ -268,6 +260,8 @@
   <string name="no_chapters_label">Este episódio não tem capítulos.</string>
   <string name="no_shownotes_label">Este episódio não tem notas.</string>
   <!--Preferences-->
+  <string name="storage_pref">Armazenamento</string>
+  <string name="project_pref">Projeto</string>
   <string name="other_pref">Outras</string>
   <string name="about_pref">Sobre</string>
   <string name="queue_label">Fila</string>
@@ -360,6 +354,12 @@
   <string name="pref_expandNotify_sum">Expandir sempre a notificação para mostrar os botões de reprodução</string>
   <string name="pref_persistNotify_title">Controlos de reprodução</string>
   <string name="pref_persistNotify_sum">Manter controlos de notificação e ecrã de bloqueio ao colocar a reprodução em pausa</string>
+  <string name="pref_compact_notification_buttons_title">Definir botões do ecrã de bloqueio</string>
+  <string name="pref_compact_notification_buttons_sum">Alterar botões de reprodução do ecrã de bloqueio. Os botões Reproduzir/Pausa serão sempre incluídos.</string>
+  <string name="pref_compact_notification_buttons_dialog_title">Selecione no máximo %1$d itens</string>
+  <string name="pref_compact_notification_buttons_dialog_error">Apenas pode selecionar um máximo de %1$d itens.</string>
+  <string name="pref_show_subscriptions_in_drawer_title">Mostrar subscrições</string>
+  <string name="pref_show_subscriptions_in_drawer_sum">Mostrar lista de subscrições no menu de navegação</string>
   <string name="pref_lockscreen_background_title">Definir fundo do ecrã de bloqueio</string>
   <string name="pref_lockscreen_background_sum">Define a imagem do episódio como fundo do ecrã de bloqueio. Efeito colateral: também será mostrada em outras aplicações</string>
   <string name="pref_showDownloadReport_title">Mostrar relatório de erros</string>
@@ -379,8 +379,11 @@
   <string name="pref_current_value">Valor atual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Definir um proxy de rede</string>
+  <string name="pref_faq">FAQ</string>
   <string name="pref_known_issues">Problemas conhecidos</string>
   <string name="pref_no_browser_found">Navegador web não encontrado</string>
+  <string name="pref_cast_title">Suporte Chromecast</string>
+  <string name="pref_cast_message">Ativar suporte a reprodução multimédia remota em dispositivos Cast (tais como Chromecast, colunas áudio ou Android TV)</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>
   <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>
@@ -460,6 +463,7 @@
   <string name="gpodnetauth_device_chooseExistingDevice">Escolher dispositivo:</string>
   <string name="gpodnetauth_device_errorEmpty">ID do dispositivo não pode estar vazia</string>
   <string name="gpodnetauth_device_errorAlreadyUsed">ID de dispositivo já utilizada</string>
+  <string name="gpodnetauth_device_caption_errorEmpty">A descrição não pode estar vazia</string>
   <string name="gpodnetauth_device_butChoose">Escolher</string>
   <string name="gpodnetauth_finish_title">Sessão iniciada!</string>
   <string name="gpodnetauth_finish_descr">Parabéns! A sua conta gpodder.net está vinculada ao seu dispositivo. Agora, já pode sincronizar as subscrições no dispositivo com a sua conta gpodder.net.</string>
@@ -496,22 +500,13 @@
   <string name="subscribed_label">Subscrito</string>
   <string name="downloading_label">A descarregar...</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Mostrar capítulos</string>
-  <string name="show_shownotes_label">Mostrar notas</string>
-  <string name="show_cover_label">Mostrar imagem</string>
   <string name="rewind_label">Recuo rápido</string>
   <string name="fast_forward_label">Avanço rápido</string>
   <string name="media_type_audio_label">Áudio</string>
   <string name="media_type_video_label">Vídeo</string>
   <string name="navigate_upwards_label">Navegar para cima</string>
-  <string name="butAction_label">Mais ações</string>
-  <string name="status_playing_label">Episódio em reprodução</string>
   <string name="status_downloading_label">A descarregar episódio</string>
-  <string name="status_downloaded_label">Episódio descarregado</string>
-  <string name="status_unread_label">Novo item</string>
   <string name="in_queue_label">Episódio está na fila</string>
-  <string name="new_episodes_count_label">Número de novos episódios</string>
-  <string name="in_progress_episodes_count_label">Número de episódios que já foi iniciada a reprodução</string>
   <string name="drag_handle_content_description">Arraste para alterar a posição deste item</string>
   <string name="load_next_page_label">Carregar próxima página</string>
   <!--Feed information screen-->
@@ -529,8 +524,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importar subscrições de aplicações single-purpose...</string>
   <string name="search_itunes_label">Pesquisar no iTunes</string>
-  <string name="select_label"><b>Selecionar...</b></string>
   <string name="filter">Filtro</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Todos</string>
   <string name="selected_all_label">Marcar todos os episódios</string>
   <string name="none_label">Nenhum</string>
@@ -547,7 +542,7 @@
   <string name="selected_queued_label">Episódios selecionados na fila</string>
   <string name="not_queued_label">Não na fila</string>
   <string name="selected_not_queued_label">Episódios não selecionados na fila</string>
-  <string name="sort_title"><b>Ordenar por…</b></string>
+  <!--Sort-->
   <string name="sort_title_a_z">Título (A \u2192 Z)</string>
   <string name="sort_title_z_a">Título (Z \u2192 A)</string>
   <string name="sort_date_new_old">Data (Recente \u2192 Antiga)</string>
@@ -578,7 +573,23 @@
   <string name="proxy_checking">A verificar...</string>
   <string name="proxy_test_successful">Teste bem sucedido</string>
   <string name="proxy_test_failed">O teste falhou</string>
-  <string name="proxy_host_empty_error">O servidor não pode estar vazio</string>
-  <string name="proxy_host_invalid_error">IP ou domínio inválido</string>
+  <string name="proxy_host_empty_error">Servidor não pode estar vazio</string>
+  <string name="proxy_host_invalid_error">O servidor não tem um endereço ou domínio válido</string>
   <string name="proxy_port_invalid_error">Porta inválido</string>
+  <!--Casting-->
+  <string name="cast_media_route_menu_title">Reproduzir em...</string>
+  <string name="cast_disconnect_label">Desligar da última sessão</string>
+  <string name="cast_not_castable">O ficheiro selecionado não é compatível com este dispositivo</string>
+  <string name="cast_failed_to_play">Falha ao iniciar a reprodução</string>
+  <string name="cast_failed_to_stop">Falha ao parar a reprodução</string>
+  <string name="cast_failed_to_pause">Falha ao pausar a reprodução</string>
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_setting_volume">Falha ao definir o volume</string>
+  <string name="cast_failed_no_connection">Não existe ligação ao dispositivo</string>
+  <string name="cast_failed_no_connection_trans">Falha de ligação ao dispositivo. A aplicação está a tentar estabelecer uma nova ligação. Por favor aguarde alguns segundos e tente novamente.</string>
+  <string name="cast_failed_perform_action">Falha ao executar a ação</string>
+  <string name="cast_failed_status_request">Falha de sincronização com o dispositivo</string>
+  <string name="cast_failed_seek">Falha ao procurar a nova posição no dispositivo</string>
+  <string name="cast_failed_receiver_player_error">O reprodutor encontrou um erro crítico</string>
+  <string name="cast_failed_media_error_skipping">Erro de reprodução. A ignorar...</string>
 </resources>
