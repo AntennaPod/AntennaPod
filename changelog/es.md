@@ -5,7 +5,7 @@ Versión 1.6.0
 -------------
 * Nuevas funciones:
  * Soporte Experimental de Chromecast
- * Subscription overview
+ * Resumen de suscripciones
  * Soporte para proxy
  * Estadísticas
  * Sincronización manual a gpodder.net
@@ -14,7 +14,7 @@ Versión 1.6.0
  * Reducción de audio por canal (audio ducking)
  * Desvanecimiento del control de video
  * Controles para medios externos
- * Feed parsing
+ * Parseo de feeds
 
 Versión 1.5.0
 -------------
