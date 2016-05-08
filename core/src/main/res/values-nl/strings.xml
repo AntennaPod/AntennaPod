@@ -1,24 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
   <string name="statistics_label">Statistieken</string>
   <string name="add_feed_label">Podcast toevoegen</string>
-  <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">Afleveringen</string>
-  <string name="new_episodes_label">Nieuwe afleveringen</string>
-  <string name="all_episodes_label">Alle afleveringen</string>
   <string name="all_episodes_short_label">Alle</string>
   <string name="favorite_episodes_label">Favorieten</string>
   <string name="new_label">Nieuw</string>
-  <string name="waiting_list_label">Wachtlijst</string>
   <string name="settings_label">Instellingen</string>
   <string name="add_new_feed_label">Podcast toevoegen</string>
   <string name="downloads_label">Downloads</string>
   <string name="downloads_running_label">Bezig</string>
   <string name="downloads_completed_label">Voltooid</string>
   <string name="downloads_log_label">Geschiedenis</string>
+  <string name="subscriptions_label">Feeds</string>
+  <string name="subscriptions_list_label">Lijst met feeds</string>
   <string name="cancel_download_label">Annuleer download</string>
   <string name="playback_history_label">Afspeelgeschiedenis</string>
   <string name="gpodnet_main_label">gpodder.net</string>
@@ -26,9 +23,6 @@
   <string name="free_space_label">%1$s beschikbaar</string>
   <string name="episode_cache_full_title">Afleveringen cache is vol</string>
   <string name="episode_cache_full_message">Het maximum aantal gecachte afleveringen is bereikt. U kunt het maximum verhogen in de instellingen.</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Recent gepubliceerd</string>
-  <string name="episode_filter_label">Alleen nieuwe afleveringen weergeven</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Totale duur van afgespeelde podcasts:</string>
   <string name="statistics_details_dialog">%1$d van de %2$d afleveringen gestart.\n\n%3$s van de %4$s afgespeeld.</string>
@@ -149,8 +143,6 @@
   <string name="removed_from_favorites">Verwijderd uit favorieten</string>
   <string name="visit_website_label">Website bezoeken</string>
   <string name="support_label">Flattr dit</string>
-  <string name="enqueue_all_new">Alle aan wachtrij toevoegen</string>
-  <string name="download_all">Alles downloaden</string>
   <string name="skip_episode_label">Aflevering overslaan</string>
   <string name="activate_auto_download">Automatisch downloaden activeren</string>
   <string name="deactivate_auto_download">Automatisch downloaden deactiveren</string>
@@ -172,6 +164,7 @@
   <string name="download_error_unknown_host">Onbekende host</string>
   <string name="download_error_unauthorized">Authenticatie fout</string>
   <string name="download_error_file_type_type">Fout met bestandsformaat</string>
+  <string name="download_error_forbidden">Actie niet mogelijk</string>
   <string name="cancel_all_downloads_label">Alle downloads annuleren</string>
   <string name="download_canceled_msg">Download geannuleerd</string>
   <string name="download_canceled_autodownload_enabled_msg">Downloaden geannuleerd\n<i>Automatisch downloaden</i> uitgezet voor deze aflevering</string>
@@ -209,7 +202,6 @@
   <string name="playback_error_server_died">Server antwoord niet</string>
   <string name="playback_error_unknown">Onbekende fout</string>
   <string name="no_media_playing_label">Geen media aan het afspelen</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffering</string>
   <string name="playbackservice_notification_title">Podcast aan het afspelen</string>
   <string name="unknown_media_key">AntennaPod - Mediaknop onbekend: %1$d</string>
@@ -268,6 +260,8 @@
   <string name="no_chapters_label">Deze aflevering heeft geen hoofdstukken.</string>
   <string name="no_shownotes_label">Deze aflevering heeft geen shownotes.</string>
   <!--Preferences-->
+  <string name="storage_pref">Geheugen</string>
+  <string name="project_pref">Project</string>
   <string name="other_pref">Overig</string>
   <string name="about_pref">Over AntennaPod</string>
   <string name="queue_label">Wachtrij</string>
@@ -360,8 +354,12 @@
   <string name="pref_expandNotify_sum">Altijd de bedieningsknoppen tonen bij de melding in het notificatiecentrum.</string>
   <string name="pref_persistNotify_title">Behoud bedieningsknoppen</string>
   <string name="pref_persistNotify_sum">Ook bedieningsknoppen in het notificatiecentrum en op het vergrendelingsscherm behouden als het afspelen gepauzeerd wordt.</string>
-  <string name="pref_lockscreen_background_title">Achtergrondafb. vergrendelscherm</string>
-  <string name="pref_lockscreen_background_sum">Laat de afbeelding van de huidige aflevering zien. Ten gevolge van deze functie is de afbeelding ook beschikbaar voor andere apps.</string>
+  <string name="pref_compact_notification_buttons_title">Bedieningsknoppen vergrendelscherm</string>
+  <string name="pref_compact_notification_buttons_sum">Bedieningsknopppen voor op het vergrendelscherm kiezen. De play/pauze knop wordt altijd getoond.</string>
+  <string name="pref_compact_notification_buttons_dialog_title">Selecteer maximaal %1$d knoppen.</string>
+  <string name="pref_compact_notification_buttons_dialog_error">U kunt slechts maximaal %1$d knoppen selecteren.</string>
+  <string name="pref_lockscreen_background_title">Achtergrondafbeelding vergrendelscherm</string>
+  <string name="pref_lockscreen_background_sum">Laat de afbeelding van de huidige aflevering zien op het vergrendelscherm. Ten gevolge van deze functie is de afbeelding ook beschikbaar voor andere apps.</string>
   <string name="pref_showDownloadReport_title">Laat downloadrapport zien</string>
   <string name="pref_showDownloadReport_sum">Genereer een rapport met fout-details als downloads mislukken</string>
   <string name="pref_expand_notify_unsupport_toast">Android versies lager dan 4.1 ondersteunen geen knoppen in het notificatiecentrum.</string>
@@ -379,8 +377,11 @@
   <string name="pref_current_value">Huidige instelling: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Netwerkproxy instellen</string>
+  <string name="pref_faq">FAQ - veelgestelde vragen</string>
   <string name="pref_known_issues">Reeds bekende bugs</string>
-  <string name="pref_no_browser_found">Geen browser gevonden.</string>
+  <string name="pref_no_browser_found">Geen browser gevonden</string>
+  <string name="pref_cast_title">Chromecast</string>
+  <string name="pref_cast_message">Ondersteuning voor \'Cast\' apparaten (zoals Chromecast, Audio Speakers en Android TV) inschakelen</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisch flattr\'en aanzetten</string>
   <string name="auto_flattr_after_percent">Flattr een aflevering zodra %d procent is afgespeeld</string>
@@ -460,6 +461,7 @@
   <string name="gpodnetauth_device_chooseExistingDevice">Kies een bestaand apparaat:</string>
   <string name="gpodnetauth_device_errorEmpty">Apparaat ID mag niet leeg zijn</string>
   <string name="gpodnetauth_device_errorAlreadyUsed">Apparaat ID al in gebruik</string>
+  <string name="gpodnetauth_device_caption_errorEmpty">Apparaatomschrijving kan niet leeg zijn</string>
   <string name="gpodnetauth_device_butChoose">Kies</string>
   <string name="gpodnetauth_finish_title">Login succesvol</string>
   <string name="gpodnetauth_finish_descr">Gefeliciteerd! Jou gpodder.net account is nu verbonden met je apparaat. AntennaPod zal voortaan abonnementen op je apparaat automatisch met je gpodder.net account synchroniseren.</string>
@@ -496,22 +498,13 @@
   <string name="subscribed_label">Geabonneerd</string>
   <string name="downloading_label">Downloaden…</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Hoofdstukken tonen</string>
-  <string name="show_shownotes_label">Shownotes tonen</string>
-  <string name="show_cover_label">Beeld tonen</string>
   <string name="rewind_label">Terugspoelen</string>
   <string name="fast_forward_label">Vooruitspoelen</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
   <string name="navigate_upwards_label">Navigeer naar boven</string>
-  <string name="butAction_label">Meer acties</string>
-  <string name="status_playing_label">Aflevering wordt gespeeld</string>
   <string name="status_downloading_label">Aflevering wordt gedownload</string>
-  <string name="status_downloaded_label">Aflevering is gedownload</string>
-  <string name="status_unread_label">Item is nieuw</string>
   <string name="in_queue_label">Aflevering is in de queue</string>
-  <string name="new_episodes_count_label">Aantal nieuwe afleveringen</string>
-  <string name="in_progress_episodes_count_label">Aantal afleveringen dat begonnen te luisteren zijn</string>
   <string name="drag_handle_content_description">Item verslepen om het te verplaatsen</string>
   <string name="load_next_page_label">Volgende pagina laden</string>
   <!--Feed information screen-->
@@ -529,8 +522,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Abonnementen aan het importeren vanuit single-purpose apps...</string>
   <string name="search_itunes_label">Zoeken in iTunes</string>
-  <string name="select_label"><b>Selecteren…</b></string>
   <string name="filter">Filter</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Alle</string>
   <string name="selected_all_label">Alle afleveringen selecteren</string>
   <string name="none_label">Geen</string>
@@ -547,7 +540,7 @@
   <string name="selected_queued_label">Afleveringen in de wachtrij selecteren</string>
   <string name="not_queued_label">Niet in de wachtrij</string>
   <string name="selected_not_queued_label">Afleveringen geselecteerd die niet in de wachtrij staan</string>
-  <string name="sort_title"><b>Sorteren op…</b></string>
+  <!--Sort-->
   <string name="sort_title_a_z">Titel (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titel (A \u2192 A)</string>
   <string name="sort_date_new_old">Datum (nieuw \u2192 oud)</string>
@@ -579,6 +572,20 @@
   <string name="proxy_test_successful">Test succesvol</string>
   <string name="proxy_test_failed">Test mislukt</string>
   <string name="proxy_host_empty_error">Host kan niet leeg zijn</string>
-  <string name="proxy_host_invalid_error">Host geen geldig IP-adres of domein</string>
+  <string name="proxy_host_invalid_error">Host is geen geldig IP-adres of domein</string>
   <string name="proxy_port_invalid_error">Poortnummer ongeldig</string>
+  <!--Casting-->
+  <string name="cast_media_route_menu_title">Afspelen op…</string>
+  <string name="cast_not_castable">Dit bestand kan niet afgespeeld woorden door het Cast apparaat</string>
+  <string name="cast_failed_to_play">Starten van afspelen is mislukt</string>
+  <string name="cast_failed_to_stop">Stoppen van afspelen is mislukt</string>
+  <string name="cast_failed_to_pause">Pauzeren van afspelen is mislukt</string>
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_setting_volume">Het aanpassen van het volume is mislukt</string>
+  <string name="cast_failed_no_connection">Er is geen verbinding met het Cast apparaat</string>
+  <string name="cast_failed_no_connection_trans">De verbinding met het Cast apparaat is verloren. Antennapod probeert de verbinding te herstellen. Wacht aub een paar seconden en probeer opnieuw.</string>
+  <string name="cast_failed_perform_action">Het uitvoeren van de actie is mislukt</string>
+  <string name="cast_failed_status_request">Het synchroniseren met het Cast apparaat is mislukt</string>
+  <string name="cast_failed_seek">Het opzoeken van het nieuwe tijdstip op het Cast apparaat is mislukt</string>
+  <string name="cast_failed_media_error_skipping">Er was een fout bij het afspelen; de aflevering wordt overgeslagen…</string>
 </resources>
