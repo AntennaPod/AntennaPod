@@ -25,6 +25,7 @@ import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
 import de.danoeh.antennapod.core.cast.RemoteMedia;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -42,8 +43,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     private final CastManager castMgr;
 
     private volatile Playable media;
-    private volatile MediaInfo remoteMedia;
     private volatile MediaType mediaType;
+    private volatile MediaInfo remoteMedia;
+    private volatile int remoteState;
 
     private final AtomicBoolean isBuffering;
 
@@ -57,31 +59,28 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         mediaType = null;
         startWhenPrepared = new AtomicBoolean(false);
         isBuffering = new AtomicBoolean(false);
+        remoteState = MediaStatus.PLAYER_STATE_UNKNOWN;
 
         try {
             if (castMgr.isConnected() && castMgr.isRemoteMediaLoaded()) {
-                // updates the state, but does not start playing new media if it was going to
-                onRemoteMediaPlayerStatusUpdated(
-                        ((p, playNextEpisode, wasSkipped, switchingPlayers) ->
-                        this.callback.endPlayback(p, false, wasSkipped, switchingPlayers)));
+                onRemoteMediaPlayerStatusUpdated();
             }
         } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
             Log.e(TAG, "Unable to do initial check for loaded media", e);
         }
 
         castMgr.addCastConsumer(castConsumer);
-        //TODO
     }
 
     private CastConsumer castConsumer = new DefaultCastConsumer() {
         @Override
         public void onRemoteMediaPlayerMetadataUpdated() {
-            RemotePSMP.this.onRemoteMediaPlayerStatusUpdated(callback::endPlayback);
+            RemotePSMP.this.onRemoteMediaPlayerStatusUpdated();
         }
 
         @Override
         public void onRemoteMediaPlayerStatusUpdated() {
-            RemotePSMP.this.onRemoteMediaPlayerStatusUpdated(callback::endPlayback);
+            RemotePSMP.this.onRemoteMediaPlayerStatusUpdated();
         }
 
         @Override
@@ -121,8 +120,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "unable to get standbyState on onApplicationStatusChanged()");
             }
             if (playbackEnded) {
-                setPlayerStatus(PlayerStatus.INDETERMINATE, media);
-                callback.endPlayback(media, true, false, false);
+                // This is an unconventional thing to occur...
+                endPlayback(true);
             }
         }
 
@@ -166,85 +165,126 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         return null;
     }
 
-    private void onRemoteMediaPlayerStatusUpdated(@NonNull EndPlaybackCall endPlaybackCall) {
+    private void onRemoteMediaPlayerStatusUpdated() {
         MediaStatus status = castMgr.getMediaStatus();
         if (status == null) {
             Log.d(TAG, "Received null MediaStatus");
-            //setBuffering(false);
-            //setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             return;
         } else {
             Log.d(TAG, "Received remote status/media update. New state=" + status.getPlayerState());
         }
-        Playable currentMedia = localVersion(status.getMediaInfo());
-        boolean updateUI = currentMedia != media;
-        if (currentMedia != null) {
-            long position = status.getStreamPosition();
-            if (position > 0 && currentMedia.getPosition() == 0) {
-                currentMedia.setPosition((int) position);
-            }
-        }
         int state = status.getPlayerState();
+        int oldState = remoteState;
+        remoteMedia = status.getMediaInfo();
+        boolean mediaChanged = !CastUtils.matches(remoteMedia, media);
+        boolean stateChanged = state != oldState;
+        if (!mediaChanged && !stateChanged) {
+            Log.d(TAG, "Both media and state haven't changed, so nothing to do");
+            return;
+        }
+        Playable currentMedia = mediaChanged ? localVersion(remoteMedia) : media;
+        Playable oldMedia = media;
+        int position = (int) status.getStreamPosition();
+        // check for incompatible states
+        if ((state == MediaStatus.PLAYER_STATE_PLAYING || state == MediaStatus.PLAYER_STATE_PAUSED)
+                && currentMedia == null) {
+            Log.w(TAG, "RemoteMediaPlayer returned playing or pausing state, but with no media");
+            state = MediaStatus.PLAYER_STATE_UNKNOWN;
+            stateChanged = oldState != MediaStatus.PLAYER_STATE_UNKNOWN;
+        }
+
+        if (stateChanged) {
+            remoteState = state;
+        }
+
         setBuffering(state == MediaStatus.PLAYER_STATE_BUFFERING);
+
         switch (state) {
             case MediaStatus.PLAYER_STATE_PLAYING:
+                if (!stateChanged) {
+                    if (position >= 0) {
+                        currentMedia.setPosition(position);
+                    }
+                    currentMedia.onPlaybackStart();
+                } else {
+                    callback.onPlaybackStart(currentMedia, position);
+                }
                 setPlayerStatus(PlayerStatus.PLAYING, currentMedia);
                 break;
             case MediaStatus.PLAYER_STATE_PAUSED:
+                if (!mediaChanged &&
+                        oldState == MediaStatus.PLAYER_STATE_PLAYING) {
+                    callback.onPlaybackPause(currentMedia, position);
+                }
                 setPlayerStatus(PlayerStatus.PAUSED, currentMedia);
                 break;
             case MediaStatus.PLAYER_STATE_BUFFERING:
-                setPlayerStatus(playerStatus, currentMedia);
+                if (!mediaChanged && currentMedia != null &&
+                        oldState == MediaStatus.PLAYER_STATE_PLAYING) {
+                    // position could already refer to the new position after seeking
+                    // so our best guess is the last one reported
+                    callback.onPlaybackPause(currentMedia, position);
+                }
+                setPlayerStatus((mediaChanged || playerStatus == PlayerStatus.PREPARING) ?
+                        PlayerStatus.PREPARING : PlayerStatus.SEEKING,
+                        currentMedia);
                 break;
             case MediaStatus.PLAYER_STATE_IDLE:
                 int reason = status.getIdleReason();
                 switch (reason) {
                     case MediaStatus.IDLE_REASON_CANCELED:
-                        // check if we're already loading something else
-                        if (!updateUI || media == null) {
-                            setPlayerStatus(PlayerStatus.STOPPED, currentMedia);
-                        } else {
-                            updateUI = false;
+                        // Essentially means stopped at the request of a user
+                        callback.onPlaybackEnded(null, true);
+                        setPlayerStatus(PlayerStatus.STOPPED, currentMedia);
+                        if (oldMedia != null) {
+                            if (position >= 0) {
+                                oldMedia.setPosition(position);
+                            }
+                            callback.onPostPlayback(oldMedia, false, false);
                         }
-                        break;
+                        // onPlaybackEnded pretty much takes care of updating the UI
+                        return;
                     case MediaStatus.IDLE_REASON_INTERRUPTED:
-                        // check if we're already loading something else
-                        if (!updateUI || media == null) {
-                            setPlayerStatus(PlayerStatus.PREPARING, currentMedia);
-                        } else {
-                            updateUI = false;
+                        // Means that a request to load a different media was sent
+                        // Not sure if currentMedia already reflects the to be loaded one
+                        if (oldState == MediaStatus.PLAYER_STATE_PLAYING && oldMedia != null) {
+                            callback.onPlaybackPause(oldMedia, oldMedia.getPosition());
                         }
+                        setPlayerStatus(PlayerStatus.PREPARING, currentMedia);
                         break;
                     case MediaStatus.IDLE_REASON_NONE:
+                        // This probably only happens when we connected but no command has been sent yet.
                         setPlayerStatus(PlayerStatus.INITIALIZED, currentMedia);
                         break;
                     case MediaStatus.IDLE_REASON_FINISHED:
-                        boolean playing = playerStatus == PlayerStatus.PLAYING;
-                        setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
-                        endPlaybackCall.endPlayback(currentMedia,playing, false, false);
-                        // endPlayback already updates the UI, so no need to trigger it ourselves
-                        updateUI = false;
-                        break;
+                        // This is our onCompletionListener...
+                        if (mediaChanged && currentMedia != null) {
+                            media = currentMedia;
+                        }
+                        endPlayback(false);
+                        return;
                     case MediaStatus.IDLE_REASON_ERROR:
                         Log.w(TAG, "Got an error status from the Chromecast. Skipping, if possible, to the next episode...");
-                        setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
                         callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH,
                                 R.string.cast_failed_media_error_skipping);
-                        endPlaybackCall.endPlayback(currentMedia, startWhenPrepared.get(), true, false);
-                        // endPlayback already updates the UI, so no need to trigger it ourselves
-                        updateUI = false;
+                        endPlayback(true);
+                        return;
                 }
                 break;
             case MediaStatus.PLAYER_STATE_UNKNOWN:
-                //is this right?
+                if (oldState == MediaStatus.PLAYER_STATE_PLAYING && oldMedia != null) {
+                    callback.onPlaybackPause(oldMedia, position);
+                }
                 setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
                 break;
             default:
-                Log.e(TAG, "Remote media state undetermined!");
-                setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
+                Log.wtf(TAG, "Remote media state undetermined!");
         }
-        if (updateUI) {
+        if (mediaChanged) {
             callback.onMediaChanged(true);
+            if (oldMedia != null) {
+                callback.onPostPlayback(oldMedia, false, currentMedia != null);
+            }
         }
     }
 
@@ -264,12 +304,13 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         if (!CastUtils.isCastable(playable)) {
             Log.d(TAG, "media provided is not compatible with cast device");
             callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH, R.string.cast_not_castable);
-            try {
-                playable.loadMetadata();
-            } catch (Playable.PlayableException e) {
-                Log.e(TAG, "Unable to load metadata of playable", e);
+            Playable nextPlayable = playable;
+            do {
+                nextPlayable = callback.getNextInQueue(nextPlayable);
+            } while (nextPlayable != null && !CastUtils.isCastable(nextPlayable));
+            if (nextPlayable != null) {
+                playMediaObject(nextPlayable, forceReset, stream, startWhenPrepared, prepareImmediately);
             }
-            callback.endPlayback(playable, startWhenPrepared, true, false);
             return;
         }
 
@@ -281,19 +322,21 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 return;
             } else {
                 // set temporarily to pause in order to update list with current position
+                boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
+                int position = media.getPosition();
                 try {
-                    if (castMgr.isRemoteMediaPlaying()) {
-                        setPlayerStatus(PlayerStatus.PAUSED, media);
-                    }
+                    isPlaying = castMgr.isRemoteMediaPlaying();
+                    position = (int) castMgr.getCurrentMediaPosition();
                 } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
                     Log.e(TAG, "Unable to determine whether media was playing, falling back to stored player status", e);
-                    // this might end up just being pointless if we need to query the remote device for the position
-                    if (playerStatus == PlayerStatus.PLAYING) {
-                        setPlayerStatus(PlayerStatus.PAUSED, media);
-                    }
                 }
-                smartMarkAsPlayed(media);
-
+                if (isPlaying) {
+                    callback.onPlaybackPause(media, position);
+                }
+                if (!media.getIdentifier().equals(playable.getIdentifier())) {
+                    final Playable oldMedia = media;
+                    callback.onPostPlayback(oldMedia, false, true);
+                }
 
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             }
@@ -301,7 +344,6 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
         this.media = playable;
         remoteMedia = remoteVersion(playable);
-        //this.stream = stream;
         this.mediaType = media.getMediaType();
         this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
@@ -328,8 +370,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                         media.getPosition(),
                         media.getLastPlayedTime());
                 castMgr.play(newPosition);
+            } else {
+                castMgr.play();
             }
-            castMgr.play();
         } catch (CastException | TransientNetworkDisconnectionException | NoConnectionException e) {
             Log.e(TAG, "Unable to resume remote playback", e);
         }
@@ -464,8 +507,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         this.startWhenPrepared.set(startWhenPrepared);
     }
 
-    //TODO I believe some parts of the code make the same decision skipping this check, so that
-    //should be changed as well
+    // As things are right now, changing the return value of this function is not enough to ensure
+    // all other components recognize it.
     @Override
     public boolean canSetSpeed() {
         return false;
@@ -560,16 +603,39 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     protected void endPlayback(boolean wasSkipped) {
         Log.d(TAG, "endPlayback() called");
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
-        try {
-            isPlaying = castMgr.isRemoteMediaPlaying();
-        } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-            Log.e(TAG, "Could not determine if media is playing", e);
-        }
-        // TODO make sure we stop playback whenever there's no next episode.
         if (playerStatus != PlayerStatus.INDETERMINATE) {
             setPlayerStatus(PlayerStatus.INDETERMINATE, media);
         }
-        callback.endPlayback(media, isPlaying, wasSkipped, switchingPlayers);
+        if (media != null && wasSkipped) {
+            // current position only really matters when we skip
+            int position = getPosition();
+            if (position >= 0) {
+                media.setPosition(position);
+            }
+        }
+        final Playable currentMedia = media;
+        Playable nextMedia = callback.getNextInQueue(currentMedia);
+
+        boolean playNextEpisode = isPlaying && nextMedia != null && UserPreferences.isFollowQueue();
+        if (playNextEpisode) {
+            Log.d(TAG, "Playback of next episode will start immediately.");
+        } else if (nextMedia == null){
+            Log.d(TAG, "No more episodes available to play");
+        } else {
+            Log.d(TAG, "Loading next episode, but not playing automatically.");
+        }
+
+        if (nextMedia != null) {
+            callback.onPlaybackEnded(nextMedia.getMediaType(), !playNextEpisode);
+            // setting media to null signals to playMediaObject() that we're taking care of post-playback processing
+            media = null;
+            playMediaObject(nextMedia, false, true /*TODO for now we always stream*/, playNextEpisode, playNextEpisode);
+        } else {
+            callback.onPlaybackEnded(null, true);
+            stop();
+        }
+
+        callback.onPostPlayback(currentMedia, !wasSkipped, nextMedia != null);
     }
 
     @Override
@@ -584,9 +650,5 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     @Override
     protected boolean shouldLockWifi() {
         return false;
-    }
-
-    private interface EndPlaybackCall {
-        boolean endPlayback(Playable media, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers);
     }
 }
