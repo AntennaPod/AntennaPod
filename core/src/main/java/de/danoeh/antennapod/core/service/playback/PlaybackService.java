@@ -701,7 +701,7 @@ public class PlaybackService extends Service {
         boolean isInQueue = false;
         FeedItem nextItem = null;
 
-        if (playable instanceof FeedMedia) {
+        if (playable instanceof FeedMedia && ((FeedMedia) playable).getItem() != null) {
             FeedMedia media = (FeedMedia) playable;
             FeedItem item = media.getItem();
 
