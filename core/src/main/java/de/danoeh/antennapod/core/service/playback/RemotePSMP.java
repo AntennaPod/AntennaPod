@@ -264,6 +264,11 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         if (!CastUtils.isCastable(playable)) {
             Log.d(TAG, "media provided is not compatible with cast device");
             callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH, R.string.cast_not_castable);
+            try {
+                playable.loadMetadata();
+            } catch (Playable.PlayableException e) {
+                Log.e(TAG, "Unable to load metadata of playable", e);
+            }
             callback.endPlayback(playable, startWhenPrepared, true, false);
             return;
         }
