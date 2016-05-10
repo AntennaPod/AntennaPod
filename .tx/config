@@ -46,12 +46,17 @@ trans.vi = core/src/main/res/values-vi/strings.xml
 trans.vi_VN = core/src/main/res/values-vi-rVN/strings.xml
 
 [antennapod.description]
-file_filter = description/<lang>.txt
-source_file = description/en.txt
+file_filter = app/src/main/play/<lang>/listing/fulldescription
+source_file = app/src/main/play/en-US/listing/fulldescription
+source_lang = en
+
+[antennapod.shortdescription]
+file_filter = app/src/main/play/<lang>/listing/shortdescription
+source_file = app/src/main/play/en-US/listing/shortdescription
 source_lang = en
 
 [antennapod.changelog]
-file_filter = changelog/<lang>.md
-source_file = CHANGELOG.md
+file_filter = app/src/main/play/<lang>/whatsnew
+source_file = app/src/main/play/en-US/whatsnew
 source_lang = en
 
