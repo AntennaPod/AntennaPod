@@ -140,6 +140,11 @@ android {
     }
 }
 
+play {
+    serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
+    pk12File = file('../serviceaccount-c3d7d0f61387.p12')
+}
+
 // about.html is templatized so that we can automatically insert
 // our version string in to it at build time.
 task filterAbout {

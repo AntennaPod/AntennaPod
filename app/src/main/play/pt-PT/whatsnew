@@ -1,0 +1,12 @@
+* Novas funcionalidades
+ * Suporte Chromecast (experimental)
+ * Visão geral de subscrições
+ * Suporte a proxy
+ * Estatísticas
+ * Sincronização manual com gpodder.net
+* Correções:
+ * Controlos de reprodução áudio
+ * 'Ducking' de áudio
+ * Controlos de desvanecimento de vídeo
+ * Controlos multimédia externos
+ * Processamento de fontes

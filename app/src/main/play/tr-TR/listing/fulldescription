@@ -1,0 +1,20 @@
+AntennaPod, Android 2.3.3 ve üzeri için açık kaynak kodlu cepyayını yöneticisidir. Bölümleri yayınlama ve indirme, beslemelerin otomatik olarak yenilenmesi veya daha sonra dinlemek için sıraya konması gibi bir cepyayını yakalayıcısından beklediğiniz tüm temel özellikleri içerir. Hatta cepyayınlarını ve bölümleri uygulama içinden flattr aracılığıyla desteklemenize olanak verir.
+
+Şimdiye kadar aşağıdaki özellikler eklenmiştir:
+
+* Bölümlerin indirilmesi ve yayınlanması
+* Değişken çalma hızı (Presto Sound Library veya Prestissimo gerekir)
+* Atom ve RSS besleme desteği
+* Şifre korumalı besleme ve bölüm desteği
+* iTunes listelerinde arama yapma desteği
+* OPML içe aktarma ve dışa aktarma
+* Otomatik flatter içeren Flattr entegrasyonu
+* Ev ekranı oynatıcı widget'ı
+* Arama
+* Otomatik besleme güncellemeleri
+* Yeni bölümlerin otomatik indirilmesi
+*Uyku zamanlayıcı
+* gpodder.net cepyayını dizinine erişim
+* gpodder.net servisi ile üyelik senkronizasyonu
+* MP3 kısımları, VorbisComment kısımlar ve Podlove Simple Chapter desteği
+* Sayfalanmış beslemeler desteği (http://podlove.org/paged-feeds/)
