@@ -80,7 +80,7 @@ public class SearchlistAdapter extends BaseAdapter {
             holder.subtitle.setVisibility(View.GONE);
 
             Glide.with(context)
-                    .load(feed.getImageUri())
+                    .load(feed.getImageLocation())
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
                     .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
@@ -97,7 +97,7 @@ public class SearchlistAdapter extends BaseAdapter {
             }
 
             Glide.with(context)
-                    .load(item.getFeed().getImageUri())
+                    .load(item.getFeed().getImageLocation())
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
                     .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)

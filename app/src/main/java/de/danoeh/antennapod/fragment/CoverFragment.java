@@ -67,7 +67,7 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
             txtvPodcastTitle.setText(media.getFeedTitle());
             txtvEpisodeTitle.setText(media.getEpisodeTitle());
             Glide.with(this)
-                    .load(media.getImageUri())
+                    .load(media.getImageLocation())
                     .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .dontAnimate()
                     .fitCenter()

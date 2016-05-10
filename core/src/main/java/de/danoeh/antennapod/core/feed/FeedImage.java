@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
-import android.net.Uri;
 
 import java.io.File;
 
@@ -81,11 +80,11 @@ public class FeedImage extends FeedFile implements ImageResource {
 	}
 
     @Override
-    public Uri getImageUri() {
+    public String getImageLocation() {
         if (file_url != null && downloaded) {
-            return Uri.fromFile(new File(file_url));
+            return new File(file_url).getAbsolutePath();
         } else if(download_url != null) {
-            return Uri.parse(download_url);
+            return download_url;
         } else {
             return null;
         }

@@ -296,11 +296,11 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             butSecondary.setOnClickListener(secondaryActionListener);
 
             Glide.with(mainActivity.get())
-                .load(item.getImageUri())
+                .load(item.getImageLocation())
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate()
-                .into(new CoverTarget(item.getFeed().getImageUri(), placeholder, cover, mainActivity.get()));
+                .into(new CoverTarget(item.getFeed().getImageLocation(), placeholder, cover, mainActivity.get()));
         }
 
     }
