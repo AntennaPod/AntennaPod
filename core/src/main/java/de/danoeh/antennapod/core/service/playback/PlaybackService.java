@@ -759,7 +759,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     }
 
-    //TODO add javadoc, that is is assumed that the playable object contains info about its position and duration
+    /**
+     * This method processes the media object after its playback ended, either because it completed
+     * or because a different media object was selected for playback.
+     *
+     * Even though these tasks aren't supposed to be resource intensive, a good practice is to
+     * usually call this method on a background thread.
+     *
+     * @param playable the media object that was playing. It is assumed that its position property
+     *                 was updated before this method was called.
+     * @param ended if true, it signals that {@param playable} was played until its end.
+     *              In such case, the position property of the media becomes irrelevant for most of
+     *              the tasks (although it's still a good practice to keep it accurate).
+     * @param playingNext if true, it means another media object is being loaded in place of this one.
+     *                    Instances when we'd set it to false would be when we're not following the
+     *                    queue or when the queue has ended.
+     */
     private void onPostPlayback(final Playable playable, boolean ended, boolean playingNext) {
         if (playable == null) {
             Log.e(TAG, "Cannot do post-playback processing: media was null");
