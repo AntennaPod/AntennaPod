@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "com.android.application"
 apply plugin: "me.tatarka.retrolambda"
+apply plugin: 'com.github.triplet.play'
 
 repositories {
     maven { url "https://jitpack.io" }
