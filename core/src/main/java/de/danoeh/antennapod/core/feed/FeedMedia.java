@@ -481,7 +481,7 @@ public class FeedMedia extends FeedFile implements Playable {
         setPosition(newPosition);
         setLastPlayedTime(timeStamp);
         if(startPosition>=0 && position > startPosition) {
-            setDuration(playedDurationWhenStarted + position - startPosition);
+            setPlayedDuration(playedDurationWhenStarted + position - startPosition);
         }
         DBWriter.setFeedMediaPlaybackInformation(this);
     }

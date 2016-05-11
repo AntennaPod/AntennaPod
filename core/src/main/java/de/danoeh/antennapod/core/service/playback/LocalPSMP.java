@@ -316,11 +316,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
         }
 
+        // TODO this call has no effect!
         if (media.getPosition() > 0) {
             seekToSync(media.getPosition());
         }
 
-        if (media.getDuration() == 0) {
+        if (media.getDuration() <= 0) {
             Log.d(TAG, "Setting duration of media");
             media.setDuration(mediaPlayer.getDuration());
         }
