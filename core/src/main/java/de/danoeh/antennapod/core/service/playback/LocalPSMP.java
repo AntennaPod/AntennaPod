@@ -223,7 +223,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 }
                 mediaPlayer.start();
 
-                callback.onPlaybackStart(media, INVALID_TIME);
                 setPlayerStatus(PlayerStatus.PLAYING, media);
                 pausedBecauseOfTransientAudiofocusLoss = false;
             } else {
@@ -253,8 +252,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             if (playerStatus == PlayerStatus.PLAYING) {
                 Log.d(TAG, "Pausing playback.");
                 mediaPlayer.pause();
-                callback.onPlaybackPause(media, getPosition());
-                setPlayerStatus(PlayerStatus.PAUSED, media);
+                setPlayerStatus(PlayerStatus.PAUSED, media, getPosition());
 
                 if (abandonFocus) {
                     audioManager.abandonAudioFocus(audioFocusChangeListener);
@@ -373,8 +371,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if (playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
-            statusBeforeSeeking = playerStatus;
-            setPlayerStatus(PlayerStatus.SEEKING, media);
             if(seekLatch != null && seekLatch.getCount() > 0) {
                 try {
                     seekLatch.await(3, TimeUnit.SECONDS);
@@ -383,9 +379,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 }
             }
             seekLatch = new CountDownLatch(1);
-            if (statusBeforeSeeking == PlayerStatus.PLAYING) {
-                callback.onPlaybackPause(media, getPosition());
-            }
+            statusBeforeSeeking = playerStatus;
+            setPlayerStatus(PlayerStatus.SEEKING, media, getPosition());
             mediaPlayer.seekTo(t);
             try {
                 seekLatch.await(3, TimeUnit.SECONDS);
@@ -934,10 +929,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 callback.onPlaybackStart(media, getPosition());
             }
             if (playerStatus == PlayerStatus.SEEKING) {
-                if (statusBeforeSeeking == PlayerStatus.PLAYING) {
-                    callback.onPlaybackStart(media, getPosition());
-                }
-                setPlayerStatus(statusBeforeSeeking, media);
+                setPlayerStatus(statusBeforeSeeking, media, getPosition());
             }
             playerLock.unlock();
         });

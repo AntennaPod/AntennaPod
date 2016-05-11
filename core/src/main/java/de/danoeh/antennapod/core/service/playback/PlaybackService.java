@@ -594,6 +594,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
 
                 case PLAYING:
+                    writePlayerStatusPlaybackPreferences();
                     setupNotification(newInfo);
                     started = true;
                     break;
@@ -675,7 +676,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onPlaybackStart(@NonNull Playable playable, int position) {
             taskManager.startWidgetUpdater();
-            writePlayerStatusPlaybackPreferences();
             if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
                 playable.setPosition(position);
             }
@@ -684,12 +684,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onPlaybackPause(@NonNull Playable playable, int position) {
+        public void onPlaybackPause(Playable playable, int position) {
             taskManager.cancelPositionSaver();
-            saveCurrentPosition(position == PlaybackServiceMediaPlayer.INVALID_TIME,
+            saveCurrentPosition(position == PlaybackServiceMediaPlayer.INVALID_TIME || playable == null,
                     playable, position);
             taskManager.cancelWidgetUpdater();
-            playable.onPlaybackPause(getApplicationContext());
+            if (playable != null) {
+                playable.onPlaybackPause(getApplicationContext());
+            }
         }
 
         @Override
@@ -1578,12 +1580,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPause() {
             Log.d(TAG, "onPause()");
             if (getStatus() == PlayerStatus.PLAYING) {
-                pause(false, true);
-            }
-            if (UserPreferences.isPersistNotify()) {
-                pause(false, true);
-            } else {
-                pause(true, true);
+                pause(!UserPreferences.isPersistNotify(), true);
             }
         }
 

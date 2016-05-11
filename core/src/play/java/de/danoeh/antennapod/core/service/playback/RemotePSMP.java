@@ -197,37 +197,34 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             remoteState = state;
         }
 
+        if (mediaChanged && stateChanged && oldState == MediaStatus.PLAYER_STATE_PLAYING &&
+                state != MediaStatus.PLAYER_STATE_IDLE) {
+            callback.onPlaybackPause(null, INVALID_TIME);
+            // We don't want setPlayerStatus to handle the onPlaybackPause callback
+            setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
+        }
+
         setBuffering(state == MediaStatus.PLAYER_STATE_BUFFERING);
 
         switch (state) {
             case MediaStatus.PLAYER_STATE_PLAYING:
                 if (!stateChanged) {
+                    //These steps are necessary because they won't be performed by setPlayerStatus()
                     if (position >= 0) {
                         currentMedia.setPosition(position);
                     }
                     currentMedia.onPlaybackStart();
-                } else {
-                    callback.onPlaybackStart(currentMedia, position);
                 }
-                setPlayerStatus(PlayerStatus.PLAYING, currentMedia);
+                setPlayerStatus(PlayerStatus.PLAYING, currentMedia, position);
                 break;
             case MediaStatus.PLAYER_STATE_PAUSED:
-                if (!mediaChanged &&
-                        oldState == MediaStatus.PLAYER_STATE_PLAYING) {
-                    callback.onPlaybackPause(currentMedia, position);
-                }
-                setPlayerStatus(PlayerStatus.PAUSED, currentMedia);
+                setPlayerStatus(PlayerStatus.PAUSED, currentMedia, position);
                 break;
             case MediaStatus.PLAYER_STATE_BUFFERING:
-                if (!mediaChanged && currentMedia != null &&
-                        oldState == MediaStatus.PLAYER_STATE_PLAYING) {
-                    // position could already refer to the new position after seeking
-                    // so our best guess is the last one reported
-                    callback.onPlaybackPause(currentMedia, position);
-                }
                 setPlayerStatus((mediaChanged || playerStatus == PlayerStatus.PREPARING) ?
                         PlayerStatus.PREPARING : PlayerStatus.SEEKING,
-                        currentMedia);
+                        currentMedia,
+                        currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
                 break;
             case MediaStatus.PLAYER_STATE_IDLE:
                 int reason = status.getIdleReason();
@@ -247,8 +244,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                     case MediaStatus.IDLE_REASON_INTERRUPTED:
                         // Means that a request to load a different media was sent
                         // Not sure if currentMedia already reflects the to be loaded one
-                        if (oldState == MediaStatus.PLAYER_STATE_PLAYING && oldMedia != null) {
-                            callback.onPlaybackPause(oldMedia, oldMedia.getPosition());
+                        if (mediaChanged && oldState == MediaStatus.PLAYER_STATE_PLAYING) {
+                            callback.onPlaybackPause(null, INVALID_TIME);
+                            setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
                         }
                         setPlayerStatus(PlayerStatus.PREPARING, currentMedia);
                         break;
@@ -272,10 +270,9 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 }
                 break;
             case MediaStatus.PLAYER_STATE_UNKNOWN:
-                if (oldState == MediaStatus.PLAYER_STATE_PLAYING && oldMedia != null) {
-                    callback.onPlaybackPause(oldMedia, position);
+                if (playerStatus != PlayerStatus.INDETERMINATE || media != currentMedia) {
+                    setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
                 }
-                setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
                 break;
             default:
                 Log.wtf(TAG, "Remote media state undetermined!");

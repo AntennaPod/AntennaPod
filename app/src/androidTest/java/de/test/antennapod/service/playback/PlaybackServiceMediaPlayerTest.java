@@ -799,7 +799,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         }
 
         @Override
-        public void onPlaybackPause(@NonNull Playable playable, int position) {
+        public void onPlaybackPause(Playable playable, int position) {
 
         }
 

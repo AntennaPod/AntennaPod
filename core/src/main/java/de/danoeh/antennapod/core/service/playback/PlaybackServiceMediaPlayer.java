@@ -267,21 +267,39 @@ public abstract class PlaybackServiceMediaPlayer {
      * <p/>
      * This method will notify the callback about the change of the player status (even if the new status is the same
      * as the old one).
+     * <p/>
+     * It will also call {@link PSMPCallback#onPlaybackPause(Playable, int)} or {@link PSMPCallback#onPlaybackStart(Playable, int)}
+     * depending on the status change.
      *
      * @param newStatus The new PlayerStatus. This must not be null.
      * @param newMedia  The new playable object of the PSMP object. This can be null.
+     * @param position  The position to be set to the current Playable object in case playback started or paused.
+     *                  Will be ignored if given the value of {@link #INVALID_TIME}.
      */
-    protected final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
+    protected final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia, int position) {
         Log.d(TAG, this.getClass().getSimpleName() + ": Setting player status to " + newStatus);
+
+        PlayerStatus oldStatus = playerStatus;
 
         this.playerStatus = newStatus;
         setPlayable(newMedia);
 
-        if (playerStatus != null) {
-            Log.d(TAG, "playerStatus: " + playerStatus.toString());
+        if (newMedia != null && newStatus != PlayerStatus.INDETERMINATE) {
+            if (oldStatus == PlayerStatus.PLAYING && newStatus != PlayerStatus.PLAYING) {
+                callback.onPlaybackPause(newMedia, position);
+            } else if (oldStatus != PlayerStatus.PLAYING && newStatus == PlayerStatus.PLAYING) {
+                callback.onPlaybackStart(newMedia, position);
+            }
         }
 
         callback.statusChanged(new PSMPInfo(playerStatus, getPlayable()));
+    }
+
+    /**
+     * @see #setPlayerStatus(PlayerStatus, Playable, int)
+     */
+    protected final void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
+        setPlayerStatus(newStatus, newMedia, INVALID_TIME);
     }
 
     public interface PSMPCallback {
@@ -305,7 +323,7 @@ public abstract class PlaybackServiceMediaPlayer {
 
         void onPlaybackStart(@NonNull Playable playable, int position);
 
-        void onPlaybackPause(@NonNull Playable playable, int position);
+        void onPlaybackPause(Playable playable, int position);
 
         Playable getNextInQueue(Playable currentMedia);
 
