@@ -80,9 +80,9 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                     subscription.unsubscribe();
                 }
                 FeedItem item = holder.getFeedItem();
-                // we're marking it as unplayed since the user didn't actually play it
+                // we're marking it as played since the user didn't actually play it
                 // but they don't want it considered 'NEW' anymore
-                DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+                DBWriter.markItemPlayed(FeedItem.PLAYED, item.getId());
 
                 final Handler h = new Handler(getActivity().getMainLooper());
                 final Runnable r  = () -> {
