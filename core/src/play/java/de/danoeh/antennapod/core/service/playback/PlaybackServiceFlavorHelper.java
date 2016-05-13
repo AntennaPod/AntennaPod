@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.libraries.cast.companionlibrary.cast.BaseCastManager;
 
+import java.util.concurrent.ExecutionException;
+
 import de.danoeh.antennapod.core.cast.CastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
@@ -182,8 +184,11 @@ public class PlaybackServiceFlavorHelper {
                                    boolean wasLaunched) {
         PlaybackServiceMediaPlayer mediaPlayer = callback.getMediaPlayer();
         if (mediaPlayer != null) {
-            //TODO change implementation to new protocol
-//            mediaPlayer.endPlayback(true, true);
+            try {
+                mediaPlayer.stopPlayback(false).get();
+            } catch (InterruptedException | ExecutionException e) {
+                Log.e(TAG, "There was a problem stopping playback while switching media players", e);
+            }
             mediaPlayer.shutdownQuietly();
         }
         mediaPlayer = newPlayer;

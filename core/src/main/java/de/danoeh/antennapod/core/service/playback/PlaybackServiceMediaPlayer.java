@@ -8,6 +8,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
+import java.util.concurrent.Future;
+
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -226,18 +228,43 @@ public abstract class PlaybackServiceMediaPlayer {
     protected abstract void setPlayable(Playable playable);
 
     public void skip() {
-        endPlayback(true);
+        endPlayback(true, true, true);
     }
 
-    protected abstract void endPlayback(boolean wasSkipped);
+    /**
+     * Ends playback of current media (if any) and moves into INDETERMINATE state, unless
+     * {@param toStoppedState} is set to true, in which case it moves into STOPPED state.
+     *
+     * @see #endPlayback(boolean, boolean, boolean)
+     */
+    public Future<?> stopPlayback(boolean toStoppedState) {
+        return endPlayback(true, false, toStoppedState);
+    }
 
     /**
-     * Moves the PSMP into STOPPED state. This call is only valid if the player is currently in
-     * INDETERMINATE state, for example after a call to endPlayback.
-     * This method will only take care of changing the PlayerStatus of this object! Other tasks like
-     * abandoning audio focus have to be done with other methods.
+     * Internal method that handles end of playback.
+     *
+     * Currently, it has 4 use cases:
+     * <ul>
+     * <li>Media playback has completed: call with (false, true, true)</li>
+     * <li>User asks to skip to next episode: call with (true, true, true)</li>
+     * <li>Stopping the media player: call with (true, false, true)</li>
+     * <li>We want to change the media player implementation: call with (true, false, false)</li>
+     * </ul>
+     *
+     * @param wasSkipped       If true, we assume the current media's playback has ended, for
+     *                         purposes of post playback processing.
+     * @param shouldContinue   If true, the media player should try to load, and possibly play,
+     *                         the next item, based on the user preferences and whether such item
+     *                         exists.
+     * @param toStoppedState   If true, the playback state gets set to STOPPED if the media player
+     *                         is not loading/playing after this call, and the UI will reflect that.
+     *                         Only relevant if {@param shouldContinue} is set to false, otherwise
+     *                         this method's behavior defaults as if this parameter was true.
+     *
+     * @return a Future, just for the purpose of tracking its execution.
      */
-    public abstract void stop();
+    protected abstract Future<?> endPlayback(boolean wasSkipped, boolean shouldContinue, boolean toStoppedState);
 
     /**
      * @return {@code true} if the WifiLock feature should be used, {@code false} otherwise.

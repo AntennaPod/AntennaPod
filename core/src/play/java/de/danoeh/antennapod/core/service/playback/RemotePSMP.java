@@ -15,6 +15,8 @@ import com.google.android.libraries.cast.companionlibrary.cast.exceptions.CastEx
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.NoConnectionException;
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.TransientNetworkDisconnectionException;
 
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.R;
@@ -121,7 +123,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             }
             if (playbackEnded) {
                 // This is an unconventional thing to occur...
-                endPlayback(true);
+                endPlayback(true, true, true);
             }
         }
 
@@ -259,13 +261,13 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                         if (mediaChanged && currentMedia != null) {
                             media = currentMedia;
                         }
-                        endPlayback(false);
+                        endPlayback(false, true, true);
                         return;
                     case MediaStatus.IDLE_REASON_ERROR:
                         Log.w(TAG, "Got an error status from the Chromecast. Skipping, if possible, to the next episode...");
                         callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH,
                                 R.string.cast_failed_media_error_skipping);
-                        endPlayback(true);
+                        endPlayback(true, true, true);
                         return;
                 }
                 break;
@@ -597,7 +599,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    protected void endPlayback(boolean wasSkipped) {
+    protected Future<?> endPlayback(boolean wasSkipped, boolean shouldContinue, boolean toStoppedState) {
         Log.d(TAG, "endPlayback() called");
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
         if (playerStatus != PlayerStatus.INDETERMINATE) {
@@ -611,32 +613,43 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             }
         }
         final Playable currentMedia = media;
-        Playable nextMedia = callback.getNextInQueue(currentMedia);
+        Playable nextMedia = null;
+        if (shouldContinue) {
+            nextMedia = callback.getNextInQueue(currentMedia);
 
-        boolean playNextEpisode = isPlaying && nextMedia != null && UserPreferences.isFollowQueue();
-        if (playNextEpisode) {
-            Log.d(TAG, "Playback of next episode will start immediately.");
-        } else if (nextMedia == null){
-            Log.d(TAG, "No more episodes available to play");
-        } else {
-            Log.d(TAG, "Loading next episode, but not playing automatically.");
+            boolean playNextEpisode = isPlaying && nextMedia != null && UserPreferences.isFollowQueue();
+            if (playNextEpisode) {
+                Log.d(TAG, "Playback of next episode will start immediately.");
+            } else if (nextMedia == null){
+                Log.d(TAG, "No more episodes available to play");
+            } else {
+                Log.d(TAG, "Loading next episode, but not playing automatically.");
+            }
+
+            if (nextMedia != null) {
+                callback.onPlaybackEnded(nextMedia.getMediaType(), !playNextEpisode);
+                // setting media to null signals to playMediaObject() that we're taking care of post-playback processing
+                media = null;
+                playMediaObject(nextMedia, false, true /*TODO for now we always stream*/, playNextEpisode, playNextEpisode);
+            }
+        }
+        if (shouldContinue || toStoppedState) {
+            if (nextMedia != null) {
+                callback.onPlaybackEnded(null, true);
+                stop();
+            }
+            callback.onPostPlayback(currentMedia, !wasSkipped, nextMedia != null);
+        } else if (isPlaying) {
+            callback.onPlaybackPause(currentMedia,
+                    currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
         }
 
-        if (nextMedia != null) {
-            callback.onPlaybackEnded(nextMedia.getMediaType(), !playNextEpisode);
-            // setting media to null signals to playMediaObject() that we're taking care of post-playback processing
-            media = null;
-            playMediaObject(nextMedia, false, true /*TODO for now we always stream*/, playNextEpisode, playNextEpisode);
-        } else {
-            callback.onPlaybackEnded(null, true);
-            stop();
-        }
-
-        callback.onPostPlayback(currentMedia, !wasSkipped, nextMedia != null);
+        FutureTask<?> future = new FutureTask<>(() -> {}, null);
+        future.run();
+        return future;
     }
 
-    @Override
-    public void stop() {
+    private void stop() {
         if (playerStatus == PlayerStatus.INDETERMINATE) {
             setPlayerStatus(PlayerStatus.STOPPED, null);
         } else {

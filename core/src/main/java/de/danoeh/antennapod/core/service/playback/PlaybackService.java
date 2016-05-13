@@ -786,6 +786,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (!(playable instanceof FeedMedia)) {
             Log.d(TAG, "Not doing post-playback processing: media not of type FeedMedia");
+            if (ended) {
+                playable.onPlaybackCompleted(getApplicationContext());
+            } else {
+                playable.onPlaybackPause(getApplicationContext());
+            }
             return;
         }
         FeedMedia media = (FeedMedia) playable;
@@ -1587,7 +1592,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onStop() {
             Log.d(TAG, "onStop()");
-            mediaPlayer.stop();
+            mediaPlayer.stopPlayback(true);
         }
 
         @Override
