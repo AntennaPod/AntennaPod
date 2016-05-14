@@ -824,7 +824,9 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 val = context.getString(R.string.feed_played_action_none);
                 break;
             case ARCHIVE:
-                val = context.getString(R.string.feed_played_action_archive);
+                val = context.getString(R.string.feed_played_action_archive) + "\n" +
+                        context.getString(R.string.to) + " " +
+                        UserPreferences.getArchiveFolder(null).toString();
                 break;
             default:
                 Log.e(TAG, "setPlayedActionText: unhandled case = " + played_action);

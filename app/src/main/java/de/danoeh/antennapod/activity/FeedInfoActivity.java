@@ -180,21 +180,29 @@ public class FeedInfoActivity extends ActionBarActivity {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                             FeedPreferences.PlayedAction played_action;
+                            TextView playedActionTxt = (TextView) findViewById(R.id.txtFeedPlayedActionText);
+
                             switch (parent.getSelectedItemPosition()) {
                                 case 0:
                                     played_action = FeedPreferences.PlayedAction.GLOBAL;
+                                    playedActionTxt.setVisibility(View.GONE);
                                     break;
 
                                 case 1:
                                     played_action = FeedPreferences.PlayedAction.DELETE;
+                                    playedActionTxt.setVisibility(View.GONE);
                                     break;
 
                                 case 2:
                                     played_action = FeedPreferences.PlayedAction.NONE;
+                                    playedActionTxt.setVisibility(View.GONE);
                                     break;
 
                                 case 3:
                                     played_action = FeedPreferences.PlayedAction.ARCHIVE;
+                                    playedActionTxt.setVisibility(View.VISIBLE);
+                                    playedActionTxt.setText(getResources().getString(R.string.to) +
+                                            " " + UserPreferences.getArchiveFolder(null).toString());
                                     break;
 
                                 default:
