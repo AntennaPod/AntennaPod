@@ -48,7 +48,7 @@ class CoverTarget extends GlideDrawableImageViewTarget {
     }
 
     @Override
-    public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+    public void onResourceReady(GlideDrawable drawable, GlideAnimation<? super GlideDrawable> anim) {
         super.onResourceReady(drawable, anim);
         TextView txtvPlaceholder = placeholder.get();
         if (txtvPlaceholder != null) {

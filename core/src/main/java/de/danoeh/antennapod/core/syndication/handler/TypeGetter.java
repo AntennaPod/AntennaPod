@@ -78,9 +78,8 @@ public class TypeGetter {
                     }
                 } catch (IOException e1) {
                     e1.printStackTrace();
-                } finally {
-                    throw new UnsupportedFeedtypeException(Type.INVALID, rootElement);
                 }
+                throw new UnsupportedFeedtypeException(Type.INVALID, rootElement);
 
             } catch (IOException e) {
 				e.printStackTrace();
