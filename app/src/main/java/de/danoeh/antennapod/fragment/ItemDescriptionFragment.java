@@ -348,7 +348,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     }
 
     private boolean restoreFromPreference() {
-        if (!saveState) {
+        if (saveState) {
             Log.d(TAG, "Restoring from preferences");
             Activity activity = getActivity();
             if (activity != null) {
