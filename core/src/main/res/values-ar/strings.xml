@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Activitiy and fragment titles-->
+  <string name="all_episodes_short_label">الكل</string>
+  <string name="favorite_episodes_label">المفضلات</string>
+  <string name="new_label">جديد</string>
+  <string name="settings_label">اعدادات</string>
+  <string name="downloads_label">تنزيل</string>
+  <string name="downloads_running_label">جارى التشغيل</string>
+  <string name="downloads_completed_label">اكتمل</string>
+  <string name="downloads_log_label">سجل</string>
+  <string name="cancel_download_label">الغاء التنزيل</string>
+  <!--Statistics fragment-->
+  <!--Main activity-->
+  <string name="drawer_open">قائمة الفتح</string>
+  <string name="drawer_close">قائمة الاغلاف</string>
+  <string name="drawer_feed_order_unplayed_episodes">ترتيب بالعداد</string>
+  <string name="drawer_feed_order_alphabetical">ترتيب بالابجدية</string>
+  <string name="drawer_feed_order_last_update">ترتيب بتاريخ النشر</string>
+  <string name="drawer_feed_counter_new">الاعداد الجديدة</string>
+  <string name="drawer_feed_counter_unplayed">الاعداد غير المقرؤة</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">افتح فى المتصفح</string>
+  <string name="copy_url_label">انسخ رابط الموقع</string>
+  <string name="share_url_label">انشر رابط الموقع</string>
+  <string name="copied_url_msg">تم نسخ الرابط للحافظة</string>
+  <string name="go_to_position_label">اذهب لهذا الموقع</string>
+  <!--Playback history-->
+  <!--Other-->
+  <string name="confirm_label">تأكيد</string>
+  <string name="cancel_label">الغاء</string>
+  <string name="yes">نعم</string>
+  <string name="no">لا</string>
+  <string name="author_label">المؤلف</string>
+  <string name="language_label">لغة</string>
+  <string name="url_label">عنوان الموقع</string>
+  <string name="podcast_settings_label">اعدادات</string>
+  <string name="cover_label">صورة</string>
+  <string name="error_label">خطاء</string>
+  <string name="error_msg_prefix">حدث خطاء</string>
+  <string name="refresh_label">تحديث</string>
+  <string name="external_storage_error_msg">لا توجد ذاكرة خارجية متاحة. فضلا تاكد من اتاحة الذاكرة الخارجية للتطبيق حتى يعمل بصورة جيدة</string>
+  <string name="chapters_label">فصول</string>
+  <string name="description_label">وصف</string>
+  <string name="processing_label">جارى المعالجة</string>
+  <string name="loading_label">جارى التحميل ....</string>
+  <string name="save_username_password_label">حفظ اسم وكلمة المرور</string>
+  <string name="close_label">اغلاق</string>
+  <string name="retry_label">اعادة المحاولة</string>
+  <string name="auto_download_label">تضمين فى التنزيل التلقائي</string>
+  <string name="feed_auto_download_always">دائما</string>
+  <string name="feed_auto_download_never">ابدا</string>
+  <string name="send_label">ارسال ...</string>
+  <string name="episode_cleanup_never">ابدا</string>
+  <string name="episode_cleanup_after_listening">بعد الانتهاء</string>
+  <!--'Add Feed' Activity labels-->
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">تعليمه ك تم تشغيله</string>
+  <string name="mark_all_seen_label">تعليمه ك تم مشاهدته</string>
+  <string name="show_info_label">اظهار المعلومات</string>
+  <string name="share_label">مشاركة</string>
+  <string name="share_link_label">مشاركة الرابط</string>
+  <string name="episode_actions">تطبيق الاجراء</string>
+  <string name="hide_unplayed_episodes_label">لم يتم تشغيله</string>
+  <string name="hide_paused_episodes_label">ايقاف مؤقت</string>
+  <string name="hide_downloaded_episodes_label">تم التنزيل</string>
+  <string name="hide_not_downloaded_episodes_label">لم يتم التنزيل</string>
+  <!--actions on feeditems-->
+  <string name="play_label">تشغيل</string>
+  <string name="pause_label">ايقاف مؤقت</string>
+  <string name="stop_label">ايقاف</string>
+  <string name="remove_label">مسح</string>
+  <string name="marked_as_read_label">تم تعليمه ك مشغل</string>
+  <string name="mark_unread_label">تعليمه ك لم يتم تشغيله</string>
+  <string name="add_to_favorite_label">اضافة للمفضلات</string>
+  <string name="added_to_favorites">تم اضافته للمفضلات</string>
+  <string name="remove_from_favorite_label">المسح من المفضلات</string>
+  <string name="removed_from_favorites">تم مسحه من المفضلات</string>
+  <string name="visit_website_label">زيارة الموقع</string>
+  <string name="activate_auto_download">تفعيل التنزيل التلقائي</string>
+  <string name="deactivate_auto_download">ايقاف التنزيل التلقائي</string>
+  <string name="removed_item">تم حزف العنصر</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">نجحت العملية</string>
+  <string name="download_failed">فشلت العملية</string>
+  <string name="download_pending">التنزيل فى الانتظار</string>
+  <string name="download_running">جارى التنزيل</string>
+  <string name="download_error_device_not_found">حهاز التخزين غير موجود</string>
+  <string name="download_error_insufficient_space">مساحة غير كافية</string>
+  <string name="download_error_file_error">خطاء فى الملف</string>
+  <string name="download_error_http_data_error">خطاء فى بيانات HTTP</string>
+  <string name="download_error_error_unknown">خطاء غير معروف</string>
+  <string name="download_error_connection_error">خطاء فى الاتصال</string>
+  <string name="download_error_unknown_host">المضيف غير معروف</string>
+  <string name="download_error_unauthorized">خطاء فى التحقق</string>
+  <!--Mediaplayer messages-->
+  <string name="playback_error_unknown">خطاء غير معروف</string>
+  <!--Queue operations-->
+  <string name="removed_from_queue">تم حزف العنصر</string>
+  <!--Flattr-->
+  <!--Flattr-->
+  <!--Variable Speed-->
+  <!--Empty list labels-->
+  <!--Preferences-->
+  <!--Auto-Flattr dialog-->
+  <!--Search-->
+  <!--OPML import and export-->
+  <!--Sleep timer-->
+  <!--gpodder.net-->
+  <!--Directory chooser-->
+  <!--Online feed view-->
+  <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
+  <!--Progress information-->
+  <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <string name="all_label">الكل</string>
+  <string name="unplayed_label">لم يتم تشغيله</string>
+  <string name="downloaded_label">تم التنزيل</string>
+  <string name="not_downloaded_label">لم يتم التنزيل</string>
+  <!--Sort-->
+  <!--Rating dialog-->
+  <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+</resources>

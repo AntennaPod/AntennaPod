@@ -31,4 +31,6 @@
     <color name="highlight_light">#DDDDDD</color>
     <color name="highlight_dark">#414141</color>
 
+    <color name="antennapod_blue">#147BAF</color>
+
 </resources>

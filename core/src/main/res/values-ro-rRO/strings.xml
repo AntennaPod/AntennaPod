@@ -13,6 +13,7 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">autentificare gpodder.net</string>
   <!--New episodes fragment-->
+  <!--Statistics fragment-->
   <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">Deschide în browser</string>
@@ -179,8 +180,6 @@
   <string name="opml_import_label">OPML import</string>
   <string name="opml_directory_error">EROARE!</string>
   <string name="reading_opml_label">Citește fișierul OPML</string>
-  <string name="opml_reader_error">A avut loc o eroare la citirea documentului opml:</string>
-  <string name="opml_import_error_dir_empty">Directorul de import este gol.</string>
   <string name="select_all_label">Selectează toate</string>
   <string name="deselect_all_label">Deselectează toate</string>
   <string name="opml_export_label">Exportă OPML</string>
@@ -232,4 +231,5 @@
   <!--AntennaPodSP-->
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
 </resources>

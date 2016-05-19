@@ -41,10 +41,12 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        uiTestUtils = new UITestUtils(getInstrumentation().getTargetContext());
+        Context context = getInstrumentation().getTargetContext();
+        uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
 
         // create new database
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -107,6 +109,12 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnText(solo.getString(R.string.episodes_label));
         solo.waitForView(android.R.id.list);
         assertEquals(solo.getString(R.string.episodes_label), getActionbarTitle());
+
+        // Subscriptions
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.subscriptions_label));
+        solo.waitForView(R.id.subscriptions_grid);
+        assertEquals(solo.getString(R.string.subscriptions_label), getActionbarTitle());
 
         // downloads
         openNavDrawer();

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -42,7 +41,7 @@ import de.danoeh.antennapod.core.service.GpodnetSyncService;
  * Step 3: Choose from a list of actions
  */
 public class GpodnetAuthenticationActivity extends ActionBarActivity {
-    private static final String TAG = "GpodnetAuthenticationActivity";
+    private static final String TAG = "GpodnetAuthActivity";
 
     private static final String CURRENT_STEP = "current_step";
 
@@ -122,7 +121,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                 final String passwordStr = password.getText().toString();
 
                 if (BuildConfig.DEBUG) Log.d(TAG, "Checking login credentials");
-                new AsyncTask<GpodnetService, Void, Void>() {
+                AsyncTask<GpodnetService, Void, Void> authTask = new AsyncTask<GpodnetService, Void, Void>() {
 
                     volatile Exception exception;
 
@@ -144,7 +143,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                         if (exception == null) {
                             advance();
                         } else {
-                            txtvError.setText(exception.getMessage());
+                            txtvError.setText(exception.getCause().getMessage());
                             txtvError.setVisibility(View.VISIBLE);
                         }
                     }
@@ -161,7 +160,12 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                         }
                         return null;
                     }
-                }.execute(service);
+                };
+                if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+                    authTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, service);
+                } else {
+                    authTask.execute();
+                }
             }
         });
     }
@@ -177,7 +181,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
 
 
         // load device list
-        final AtomicReference<List<GpodnetDevice>> devices = new AtomicReference<List<GpodnetDevice>>();
+        final AtomicReference<List<GpodnetDevice>> devices = new AtomicReference<>();
         new AsyncTask<GpodnetService, Void, List<GpodnetDevice>>() {
 
             private volatile Exception exception;
@@ -194,17 +198,18 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
             protected void onPostExecute(List<GpodnetDevice> gpodnetDevices) {
                 super.onPostExecute(gpodnetDevices);
                 if (gpodnetDevices != null) {
-                    List<String> deviceNames = new ArrayList<String>();
+                    List<String> deviceNames = new ArrayList<>();
                     for (GpodnetDevice device : gpodnetDevices) {
                         deviceNames.add(device.getCaption());
                     }
-                    spinnerDevices.setAdapter(new ArrayAdapter<String>(GpodnetAuthenticationActivity.this,
+                    spinnerDevices.setAdapter(new ArrayAdapter<>(GpodnetAuthenticationActivity.this,
                             android.R.layout.simple_spinner_dropdown_item, deviceNames));
                     spinnerDevices.setEnabled(true);
                     if (!deviceNames.isEmpty()) {
                         chooseDevice.setEnabled(true);
                     }
                     devices.set(gpodnetDevices);
+                    deviceID.setText(generateDeviceID(gpodnetDevices));
                     createNewDevice.setEnabled(true);
                 }
             }
@@ -225,7 +230,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         createNewDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkDeviceIDText(deviceID, txtvError, devices.get())) {
+                if (checkDeviceIDText(deviceID, caption, txtvError, devices.get())) {
                     final String deviceStr = deviceID.getText().toString();
                     final String captionStr = caption.getText().toString();
 
@@ -273,45 +278,60 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
             }
         });
 
-        deviceID.setText(generateDeviceID());
-        chooseDevice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final int position = spinnerDevices.getSelectedItemPosition();
-                if (position != AdapterView.INVALID_POSITION) {
-                    selectedDevice = devices.get().get(position);
-                    advance();
-                }
+        chooseDevice.setOnClickListener(v -> {
+            final int position = spinnerDevices.getSelectedItemPosition();
+            if (position != AdapterView.INVALID_POSITION) {
+                selectedDevice = devices.get().get(position);
+                advance();
             }
         });
     }
 
 
-    private String generateDeviceID() {
-        final int DEVICE_ID_LENGTH = 10;
-        StringBuilder buffer = new StringBuilder(DEVICE_ID_LENGTH);
-        SecureRandom random = new SecureRandom();
-        for (int i = 0; i < DEVICE_ID_LENGTH; i++) {
-            buffer.append(random.nextInt(10));
+    private String generateDeviceID(List<GpodnetDevice> gpodnetDevices) {
+        // devices names must be of a certain form:
+        // https://gpoddernet.readthedocs.org/en/latest/api/reference/general.html#devices
+        // This is more restrictive than needed, but I think it makes for more readable names.
+        String baseId = Build.MODEL.replaceAll("\\W", "");
+        String id = baseId;
+        int num = 0;
 
+        while (isDeviceWithIdInList(id, gpodnetDevices)) {
+            id = baseId + "_" + num;
+            num++;
         }
-        return buffer.toString();
+
+        return id;
     }
 
-    private boolean checkDeviceIDText(EditText deviceID, TextView txtvError, List<GpodnetDevice> devices) {
+    private boolean isDeviceWithIdInList(String id, List<GpodnetDevice> gpodnetDevices) {
+        if (gpodnetDevices == null) {
+            return false;
+        }
+        for (GpodnetDevice device : gpodnetDevices) {
+            if (device.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkDeviceIDText(EditText deviceID, EditText caption, TextView txtvError, List<GpodnetDevice> devices) {
         String text = deviceID.getText().toString();
         if (text.length() == 0) {
             txtvError.setText(R.string.gpodnetauth_device_errorEmpty);
             txtvError.setVisibility(View.VISIBLE);
             return false;
+        } else if (caption.length() == 0) {
+            txtvError.setText(R.string.gpodnetauth_device_caption_errorEmpty);
+            txtvError.setVisibility(View.VISIBLE);
+            return false;
         } else {
             if (devices != null) {
-                for (GpodnetDevice device : devices) {
-                    if (device.getId().equals(text)) {
-                        txtvError.setText(R.string.gpodnetauth_device_errorAlreadyUsed);
-                        txtvError.setVisibility(View.VISIBLE);
-                        return false;
-                    }
+                if (isDeviceWithIdInList(text, devices)) {
+                    txtvError.setText(R.string.gpodnetauth_device_errorAlreadyUsed);
+                    txtvError.setVisibility(View.VISIBLE);
+                    return false;
                 }
                 txtvError.setVisibility(View.GONE);
                 return true;
@@ -325,20 +345,14 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         final Button sync = (Button) view.findViewById(R.id.butSyncNow);
         final Button back = (Button) view.findViewById(R.id.butGoMainscreen);
 
-        sync.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GpodnetSyncService.sendSyncIntent(GpodnetAuthenticationActivity.this);
-                finish();
-            }
+        sync.setOnClickListener(v -> {
+            GpodnetSyncService.sendSyncIntent(GpodnetAuthenticationActivity.this);
+            finish();
         });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GpodnetAuthenticationActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
+        back.setOnClickListener(v -> {
+            Intent intent = new Intent(GpodnetAuthenticationActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         });
     }
 

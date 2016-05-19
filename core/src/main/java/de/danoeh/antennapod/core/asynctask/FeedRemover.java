@@ -30,9 +30,7 @@ public class FeedRemover extends AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... params) {
         try {
             DBWriter.deleteFeed(context, feed.getId()).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;

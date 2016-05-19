@@ -1,12 +1,12 @@
 package de.danoeh.antennapod.adapter;
 
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -23,11 +23,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.joanzapata.iconify.Iconify;
 import com.nineoldandroids.view.ViewHelper;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -144,6 +143,9 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             placeholder = (TextView) v.findViewById(R.id.txtvPlaceholder);
             cover = (ImageView) v.findViewById(R.id.imgvCover);
             title = (TextView) v.findViewById(R.id.txtvTitle);
+            if(Build.VERSION.SDK_INT >= 23) {
+                title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+            }
             pubDate = (TextView) v.findViewById(R.id.txtvPubDate);
             progressLeft = (TextView) v.findViewById(R.id.txtvProgressLeft);
             progressRight = (TextView) v.findViewById(R.id.txtvProgressRight);
@@ -165,7 +167,9 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         public void onClick(View v) {
             MainActivity activity = mainActivity.get();
             if (activity != null) {
-                activity.loadChildFragment(ItemFragment.newInstance(item.getId()));
+                long[] ids = itemAccess.getQueueIds().toArray();
+                int position = ArrayUtils.indexOf(ids, item.getId());
+                activity.loadChildFragment(ItemFragment.newInstance(ids, position));
             }
         }
 
@@ -189,8 +193,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                     item1.setVisible(visible);
                 }
             };
-            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true,
-                    itemAccess.getQueueIds(), itemAccess.getFavoritesIds());
+            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, itemAccess.getQueueIds());
         }
 
         @Override
@@ -258,7 +261,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 } else {
                     if(media.getSize() > 0) {
                         progressLeft.setText(Converter.byteToString(media.getSize()));
-                    } else if(NetworkUtils.isDownloadAllowed() && false == media.checkedOnSizeButUnknown()) {
+                    } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
                         progressLeft.setText("{fa-spinner}");
                         Iconify.addIcons(progressLeft);
                         NetworkUtils.getFeedMediaSizeObservable(media)
@@ -297,48 +300,9 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate()
-                .into(new CoverTarget(item.getFeed().getImageUri(), placeholder, cover));
+                .into(new CoverTarget(item.getFeed().getImageUri(), placeholder, cover, mainActivity.get()));
         }
 
-    }
-    
-
-    private class CoverTarget extends GlideDrawableImageViewTarget {
-
-        private final WeakReference<Uri> fallback;
-        private final WeakReference<TextView> placeholder;
-        private final WeakReference<ImageView> cover;
-
-        public CoverTarget(Uri fallbackUri, TextView txtvPlaceholder, ImageView imgvCover) {
-            super(imgvCover);
-            fallback = new WeakReference<>(fallbackUri);
-            placeholder = new WeakReference<>(txtvPlaceholder);
-            cover = new WeakReference<>(imgvCover);
-        }
-
-        @Override
-        public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            Uri fallbackUri = fallback.get();
-            TextView txtvPlaceholder = placeholder.get();
-            ImageView imgvCover = cover.get();
-            if(fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
-                Glide.with(mainActivity.get())
-                        .load(fallbackUri)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
-                        .dontAnimate()
-                        .into(new CoverTarget(null, txtvPlaceholder, imgvCover));
-            }
-        }
-
-        @Override
-        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
-            super.onResourceReady(drawable, anim);
-            TextView txtvPlaceholder = placeholder.get();
-            if(txtvPlaceholder != null) {
-                txtvPlaceholder.setVisibility(View.INVISIBLE);
-            }
-        }
     }
 
     private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
@@ -357,7 +321,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         long getItemDownloadSize(FeedItem item);
         int getItemDownloadProgressPercent(FeedItem item);
         LongList getQueueIds();
-        LongList getFavoritesIds();
     }
 
     /**

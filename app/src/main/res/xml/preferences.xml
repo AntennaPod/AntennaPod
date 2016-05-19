@@ -49,6 +49,10 @@
             android:key="prefPersistNotify"
             android:summary="@string/pref_persistNotify_sum"
             android:title="@string/pref_persistNotify_title"/>
+        <Preference
+            android:key="prefCompactNotificationButtons"
+            android:summary="@string/pref_compact_notification_buttons_sum"
+            android:title="@string/pref_compact_notification_buttons_title"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
@@ -185,7 +189,7 @@
                 android:title="@string/pref_automatic_download_title"
                 android:defaultValue="false"/>
             <com.afollestad.materialdialogs.prefs.MaterialListPreference
-                android:defaultValue="20"
+                android:defaultValue="25"
                 android:entries="@array/episode_cache_size_entries"
                 android:key="prefEpisodeCacheSize"
                 android:title="@string/pref_episode_cache_title"
@@ -200,8 +204,11 @@
                 android:key="prefEnableAutoDownloadWifiFilter"
                 android:title="@string/pref_autodl_wifi_filter_title"
                 android:summary="@string/pref_autodl_wifi_filter_sum"/>
-
         </PreferenceScreen>
+        <Preference
+            android:key="prefProxy"
+            android:summary="@string/pref_proxy_sum"
+            android:title="@string/pref_proxy_title" />
 
     </PreferenceCategory>
 
@@ -240,6 +247,10 @@
                 android:title="@string/pref_gpodnet_setlogin_information_title"
                 android:summary="@string/pref_gpodnet_setlogin_information_sum"/>
             <Preference
+                android:key="pref_gpodnet_sync"
+                android:title="@string/pref_gpodnet_sync_title"
+                android:summary="@string/pref_gpodnet_sync_sum"/>
+            <Preference
                 android:key="pref_gpodnet_logout"
                 android:title="@string/pref_gpodnet_logout_title"/>
             <Preference
@@ -247,7 +258,7 @@
                 android:title="@string/pref_gpodnet_sethostname_title"/>
         </PreferenceScreen>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/other_pref">
+    <PreferenceCategory android:title="@string/storage_pref">
         <Preference
             android:title="@string/choose_data_directory"
             android:key="prefChooseDataDir"/>
@@ -258,16 +269,38 @@
             android:key="prefImageCacheSize"
             android:summary="@string/pref_image_cache_size_sum"
             android:defaultValue="100"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/other_pref">
         <Preference
             android:key="prefOpmlExport"
             android:title="@string/opml_export_label"/>
         <Preference
-            android:key="prefAbout"
-            android:title="@string/about_pref"/>
+            android:key="statistics"
+            android:title="@string/statistics_label"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/project_pref">
+        <Preference
+            android:key="prefFaq"
+            android:title="@string/pref_faq"/>
+        <Preference
+            android:key="prefKnownIssues"
+            android:title="@string/pref_known_issues"/>
         <Preference
             android:key="prefSendCrashReport"
             android:title="@string/crash_report_title"
             android:summary="@string/crash_report_sum"/>
+        <Preference
+            android:key="prefAbout"
+            android:title="@string/about_pref"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/experimental_pref">
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefCast"
+            android:summary="@string/pref_cast_message"
+            android:title="@string/pref_cast_title"/>
     </PreferenceCategory>
     
 </PreferenceScreen>

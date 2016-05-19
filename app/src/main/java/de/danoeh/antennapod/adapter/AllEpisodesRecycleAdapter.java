@@ -1,10 +1,10 @@
 package de.danoeh.antennapod.adapter;
 
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Layout;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -15,13 +15,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.joanzapata.iconify.Iconify;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -84,8 +82,12 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 .inflate(R.layout.new_episodes_listitem, parent, false);
         Holder holder = new Holder(view);
         holder.container = (FrameLayout) view.findViewById(R.id.container);
+        holder.content = (LinearLayout) view.findViewById(R.id.content);
         holder.placeholder = (TextView) view.findViewById(R.id.txtvPlaceholder);
         holder.title = (TextView) view.findViewById(R.id.txtvTitle);
+        if(Build.VERSION.SDK_INT >= 23) {
+            holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+        }
         holder.pubDate = (TextView) view
                 .findViewById(R.id.txtvPublished);
         holder.statusUnread = view.findViewById(R.id.statusUnread);
@@ -121,10 +123,15 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.title.setText(item.getTitle());
         String pubDateStr = DateUtils.formatAbbrev(mainActivityRef.get(), item.getPubDate());
         holder.pubDate.setText(pubDateStr);
-        if (showOnlyNewEpisodes || false == item.isNew()) {
+        if (showOnlyNewEpisodes || !item.isNew()) {
             holder.statusUnread.setVisibility(View.INVISIBLE);
         } else {
             holder.statusUnread.setVisibility(View.VISIBLE);
+        }
+        if(item.isPlayed()) {
+            ViewHelper.setAlpha(holder.content, 0.5f);
+        } else {
+            ViewHelper.setAlpha(holder.content, 1.0f);
         }
 
         FeedMedia media = item.getMedia();
@@ -135,7 +142,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 holder.txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             } else if (media.getSize() > 0) {
                 holder.txtvDuration.setText(Converter.byteToString(media.getSize()));
-            } else if(NetworkUtils.isDownloadAllowed() && false == media.checkedOnSizeButUnknown()) {
+            } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
                 holder.txtvDuration.setText("{fa-spinner}");
                 Iconify.addIcons(holder.txtvDuration);
                 NetworkUtils.getFeedMediaSizeObservable(media)
@@ -197,7 +204,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate()
-                .into(new CoverTarget(item.getFeed().getImageUri(), holder.placeholder, holder.cover));
+                .into(new CoverTarget(item.getFeed().getImageUri(), holder.placeholder, holder.cover, mainActivityRef.get()));
     }
 
     @Override
@@ -221,44 +228,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         return pos;
     }
 
-    private class CoverTarget extends GlideDrawableImageViewTarget {
-
-        private final WeakReference<Uri> fallback;
-        private final WeakReference<TextView> placeholder;
-        private final WeakReference<ImageView> cover;
-
-        public CoverTarget(Uri fallbackUri, TextView txtvPlaceholder, ImageView imgvCover) {
-            super(imgvCover);
-            fallback = new WeakReference<>(fallbackUri);
-            placeholder = new WeakReference<>(txtvPlaceholder);
-            cover = new WeakReference<>(imgvCover);
-        }
-
-        @Override
-        public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            Uri fallbackUri = fallback.get();
-            TextView txtvPlaceholder = placeholder.get();
-            ImageView imgvCover = cover.get();
-            if(fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
-                Glide.with(mainActivityRef.get())
-                        .load(fallbackUri)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
-                        .dontAnimate()
-                        .into(new CoverTarget(null, txtvPlaceholder, imgvCover));
-            }
-        }
-
-        @Override
-        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
-            super.onResourceReady(drawable, anim);
-            TextView txtvPlaceholder = placeholder.get();
-            if(txtvPlaceholder != null) {
-                txtvPlaceholder.setVisibility(View.INVISIBLE);
-            }
-        }
-    }
-
     private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -271,6 +240,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             implements View.OnClickListener,
                        View.OnCreateContextMenuListener,
                        ItemTouchHelperViewHolder {
+        LinearLayout content;
         FrameLayout container;
         TextView placeholder;
         TextView title;
@@ -295,7 +265,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         public void onClick(View v) {
             MainActivity mainActivity = mainActivityRef.get();
             if (mainActivity != null) {
-                mainActivity.loadChildFragment(ItemFragment.newInstance(item.getId()));
+                long[] ids = itemAccess.getItemsIds().toArray();
+                mainActivity.loadChildFragment(ItemFragment.newInstance(ids, position));
             }
         }
 
@@ -331,8 +302,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                     item1.setVisible(visible);
                 }
             };
-            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true,
-                    itemAccess.getQueueIds(), itemAccess.getFavoritesIds());
+            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
         }
 
     }
@@ -343,13 +313,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
         FeedItem getItem(int position);
 
+        LongList getItemsIds();
+
         int getItemDownloadProgressPercent(FeedItem item);
 
         boolean isInQueue(FeedItem item);
-
-        LongList getQueueIds();
-
-        LongList getFavoritesIds();
 
     }
 

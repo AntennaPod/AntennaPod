@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/listitem_iconwithtext_height"
+                android:paddingRight="@dimen/listitem_threeline_verticalpadding"
+                tools:background="@android:color/darker_gray">
+
+    <ImageView
+        android:id="@+id/imgvCover"
+        android:contentDescription="@string/cover_label"
+        android:layout_width="@dimen/thumbnail_length_navlist"
+        android:layout_height="@dimen/thumbnail_length_navlist"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="@dimen/listitem_icon_leftpadding"
+        tools:src="@drawable/ic_stat_antenna_default"
+        tools:background="@android:color/holo_green_dark"/>
+
+    <TextView
+        android:id="@+id/txtvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/list_vertical_padding"
+        android:lines="1"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size_navdrawer"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        tools:text="23"
+        tools:background="@android:color/holo_green_dark"/>
+
+    <TextView
+        android:id="@+id/txtvTitle"
+        android:lines="1"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:layout_centerVertical="true"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_navdrawer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/listitem_iconwithtext_textleftpadding"
+        android:layout_toRightOf="@id/imgvCover"
+        android:layout_toLeftOf="@id/txtvTime"
+        android:layout_alignWithParentIfMissing="true"
+        tools:text="Navigation feed item title"
+        tools:background="@android:color/holo_green_dark"/>
+
+
+</RelativeLayout>

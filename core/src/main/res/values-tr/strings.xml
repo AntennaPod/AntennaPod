@@ -25,6 +25,7 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Son yayınlananlar</string>
   <string name="episode_filter_label">Sadece yeni bölümleri göster</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
   <string name="drawer_close">Menüyü kapat</string>
@@ -354,8 +355,6 @@
   <string name="opml_import_label">OPML içe aktar</string>
   <string name="opml_directory_error">HATA!</string>
   <string name="reading_opml_label">OPML dosyası okunuyor</string>
-  <string name="opml_reader_error">OPML dosyası okunurken bir hata oluştu:</string>
-  <string name="opml_import_error_dir_empty">İça aktarma dizini boş</string>
   <string name="select_all_label">Hepsini seç</string>
   <string name="deselect_all_label">Tüm seçimleri geri al</string>
   <string name="choose_file_from_filesystem">Yerel dosya sisteminden</string>
@@ -493,4 +492,5 @@
   <string name="rating_later_label">Daha sonra hatırlat</string>
   <string name="rating_now_label">Evet, şimdi yapalım!</string>
   <!--Audio controls-->
+  <!--proxy settings-->
 </resources>

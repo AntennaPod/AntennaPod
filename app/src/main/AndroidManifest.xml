@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
-    android:versionCode="1050200"
-    android:versionName="1.5.2.0">
+    android:versionCode="1060007"
+    android:versionName="1.6.0.7">
     <!--
       Version code schema:
       "1.2.3-SNAPSHOT" -> 1020300
@@ -41,6 +41,10 @@
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
 
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -66,6 +70,13 @@
                 <data android:scheme="file"/>
                 <data android:mimeType="audio/*"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.CastplayerActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
         </activity>
 
         <activity
@@ -145,6 +156,13 @@
                 android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
         <activity
+            android:name=".activity.StatisticsActivity"
+            android:label="@string/statistics_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
+        </activity>
+        <activity
             android:name=".activity.OpmlImportFromPathActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/opml_import_label">
@@ -179,7 +197,7 @@
         <activity
             android:name=".activity.VideoplayerActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="landscape">
+            android:screenOrientation="sensorLandscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
@@ -200,10 +218,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
-
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
 
         <activity
             android:name=".activity.OnlineFeedViewActivity"
@@ -326,11 +340,6 @@
                 <data
                     android:path="de.danoeh.antennapod"
                     android:scheme="package"/>
-            </intent-filter>
-        </receiver>
-        <receiver android:name="de.danoeh.antennapod.core.service.playback.MediaButtonIntentReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
 

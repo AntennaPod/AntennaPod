@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -61,6 +62,9 @@ public class SearchlistAdapter extends BaseAdapter {
 
             convertView = inflater.inflate(R.layout.searchlist_item, parent, false);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            if(Build.VERSION.SDK_INT >= 23) {
+                holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
+            }
             holder.cover = (ImageView) convertView
                     .findViewById(R.id.imgvFeedimage);
             holder.subtitle = (TextView) convertView
@@ -112,7 +116,7 @@ public class SearchlistAdapter extends BaseAdapter {
         TextView subtitle;
     }
 
-    public static interface ItemAccess {
+    public interface ItemAccess {
         int getCount();
 
         SearchResult getItem(int position);

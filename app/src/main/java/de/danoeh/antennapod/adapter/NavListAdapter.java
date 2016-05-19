@@ -38,6 +38,7 @@ import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 
 /**
  * BaseAdapter for the navigation drawer
@@ -49,11 +50,18 @@ public class NavListAdapter extends BaseAdapter
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
     public static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
+    /**
+     * a tag used as a placeholder to indicate if the subscription list should be displayed or not
+     * This tag doesn't correspond to any specific activity.
+     */
+    public static final String SUBSCRIPTION_LIST_TAG = "SubscriptionList";
+
     private static List<String> tags;
     private static String[] titles;
 
     private ItemAccess itemAccess;
     private Context context;
+    private boolean showSubscriptionList = true;
 
     public NavListAdapter(ItemAccess itemAccess, Context context) {
         this.itemAccess = itemAccess;
@@ -73,11 +81,23 @@ public class NavListAdapter extends BaseAdapter
     }
 
     private void loadItems() {
-        List<String> newTags = new ArrayList<String>(Arrays.asList(MainActivity.NAV_DRAWER_TAGS));
+        List<String> newTags = new ArrayList<>(Arrays.asList(MainActivity.NAV_DRAWER_TAGS));
         List<String> hiddenFragments = UserPreferences.getHiddenDrawerItems();
         for(String hidden : hiddenFragments) {
             newTags.remove(hidden);
         }
+
+        if (newTags.contains(SUBSCRIPTION_LIST_TAG)) {
+            // we never want SUBSCRIPTION_LIST_TAG to be in 'tags'
+            // since it doesn't actually correspond to a position in the list, but is
+            // a placeholder that indicates if we should show the subscription list in the
+            // nav drawer at all.
+            showSubscriptionList = true;
+            newTags.remove(SUBSCRIPTION_LIST_TAG);
+        } else {
+            showSubscriptionList = false;
+        }
+
         tags = newTags;
         notifyDataSetChanged();
     }
@@ -108,6 +128,9 @@ public class NavListAdapter extends BaseAdapter
             case PlaybackHistoryFragment.TAG:
                 icon = R.attr.ic_history;
                 break;
+            case SubscriptionFragment.TAG:
+                icon = R.attr.ic_folder;
+                break;
             case AddFeedFragment.TAG:
                 icon = R.attr.content_new;
                 break;
@@ -127,7 +150,11 @@ public class NavListAdapter extends BaseAdapter
 
     @Override
     public int getCount() {
-        return getSubscriptionOffset() + itemAccess.getCount();
+        int baseCount = getSubscriptionOffset();
+        if (showSubscriptionList) {
+            baseCount += itemAccess.getCount();
+        }
+        return baseCount;
     }
 
     @Override
@@ -177,7 +204,7 @@ public class NavListAdapter extends BaseAdapter
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
             v = getSectionDividerView(convertView, parent);
         } else {
-            v = getFeedView(position - getSubscriptionOffset(), convertView, parent);
+            v = getFeedView(position, convertView, parent);
         }
         if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
             TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
@@ -226,6 +253,14 @@ public class NavListAdapter extends BaseAdapter
             } else {
                 holder.count.setVisibility(View.GONE);
             }
+        } else if (tag.equals(SubscriptionFragment.TAG)) {
+            int sum = itemAccess.getFeedCounterSum();
+            if (sum > 0) {
+                holder.count.setVisibility(View.VISIBLE);
+                holder.count.setText(String.valueOf(sum));
+            } else {
+                holder.count.setVisibility(View.GONE);
+            }
         } else if(tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
             int epCacheSize = UserPreferences.getEpisodeCacheSize();
             // don't count episodes that can be reclaimed
@@ -236,13 +271,13 @@ public class NavListAdapter extends BaseAdapter
                 holder.count.setText("{md-disc-full 150%}");
                 Iconify.addIcons(holder.count);
                 holder.count.setVisibility(View.VISIBLE);
-                holder.count.setOnClickListener(v -> {
+                holder.count.setOnClickListener(v ->
                     new AlertDialog.Builder(context)
                             .setTitle(R.string.episode_cache_full_title)
                             .setMessage(R.string.episode_cache_full_message)
                             .setPositiveButton(android.R.string.ok, (dialog, which) -> {})
-                            .show();
-                });
+                            .show()
+                );
             } else {
                 holder.count.setVisibility(View.GONE);
             }
@@ -267,10 +302,11 @@ public class NavListAdapter extends BaseAdapter
         return convertView;
     }
 
-    private View getFeedView(int feedPos, View convertView, ViewGroup parent) {
-        FeedHolder holder;
+    private View getFeedView(int position, View convertView, ViewGroup parent) {
+        int feedPos = position - getSubscriptionOffset();
         Feed feed = itemAccess.getItem(feedPos);
 
+        FeedHolder holder;
         if (convertView == null) {
             holder = new FeedHolder();
             LayoutInflater inflater = (LayoutInflater) context
@@ -298,7 +334,6 @@ public class NavListAdapter extends BaseAdapter
 
         holder.title.setText(feed.getTitle());
 
-
         if(feed.hasLastUpdateFailed()) {
             RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
             p.addRule(RelativeLayout.LEFT_OF, R.id.itxtvFailure);
@@ -312,7 +347,11 @@ public class NavListAdapter extends BaseAdapter
         if(counter > 0) {
             holder.count.setVisibility(View.VISIBLE);
             holder.count.setText(String.valueOf(counter));
-            holder.count.setTypeface(holder.title.getTypeface());
+            if (itemAccess.getSelectedItemIndex() == position) {
+                holder.count.setTypeface(null, Typeface.BOLD);
+            } else {
+                holder.count.setTypeface(null, Typeface.NORMAL);
+            }
         } else {
             holder.count.setVisibility(View.GONE);
         }
@@ -341,6 +380,7 @@ public class NavListAdapter extends BaseAdapter
         int getNumberOfDownloadedItems();
         int getReclaimableItems();
         int getFeedCounter(long feedId);
+        int getFeedCounterSum();
     }
 
 }

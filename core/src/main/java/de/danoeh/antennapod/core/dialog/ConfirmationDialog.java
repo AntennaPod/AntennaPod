@@ -49,28 +49,10 @@ public abstract class ConfirmationDialog {
 		builder.setTitle(titleId);
 		builder.setMessage(messageId);
 		builder.setPositiveButton(positiveText != 0 ? positiveText : R.string.confirm_label,
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						onConfirmButtonPressed(dialog);
-					}
-				});
+				(dialog, which) -> onConfirmButtonPressed(dialog));
 		builder.setNegativeButton(negativeText != 0 ? negativeText : R.string.cancel_label,
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						onCancelButtonPressed(dialog);
-					}
-				});
-		builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				onCancelButtonPressed(dialog);
-			}
-		});
+				(dialog, which) -> onCancelButtonPressed(dialog));
+		builder.setOnCancelListener(ConfirmationDialog.this::onCancelButtonPressed);
 		return builder.create();
 	}
 }

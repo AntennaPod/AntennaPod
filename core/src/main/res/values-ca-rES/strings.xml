@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Activitiy and fragment titles-->
+  <!--Statistics fragment-->
+  <!--Main activity-->
+  <!--Webview actions-->
+  <!--Playback history-->
+  <!--Other-->
+  <!--'Add Feed' Activity labels-->
+  <!--Actions on feeds-->
+  <!--actions on feeditems-->
+  <!--Download messages and labels-->
+  <!--Mediaplayer messages-->
+  <!--Queue operations-->
+  <!--Flattr-->
+  <!--Flattr-->
+  <!--Variable Speed-->
+  <!--Empty list labels-->
+  <!--Preferences-->
+  <!--Auto-Flattr dialog-->
+  <!--Search-->
+  <!--OPML import and export-->
+  <!--Sleep timer-->
+  <!--gpodder.net-->
+  <!--Directory chooser-->
+  <!--Online feed view-->
+  <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
+  <!--Progress information-->
+  <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
+  <!--Rating dialog-->
+  <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+</resources>

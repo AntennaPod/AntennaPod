@@ -3,10 +3,9 @@ package de.danoeh.antennapod.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.BatteryManager;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -25,6 +24,7 @@ public class PowerConnectionReceiver extends BroadcastReceiver {
 
         Log.d(TAG, "charging intent: " + action);
 
+        ClientConfig.initialize(context);
         if (Intent.ACTION_POWER_CONNECTED.equals(action)) {
             Log.d(TAG, "charging, starting auto-download");
             // we're plugged in, this is a great time to auto-download if everything else is

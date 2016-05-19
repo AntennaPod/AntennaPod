@@ -27,8 +27,8 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AudioplayerActivity;
-import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
+import de.danoeh.antennapod.activity.MediaplayerInfoActivity;
+import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -47,7 +47,7 @@ import rx.schedulers.Schedulers;
 /**
  * Displays the description of a Playable object in a Webview.
  */
-public class ItemDescriptionFragment extends Fragment implements AudioplayerContentFragment {
+public class ItemDescriptionFragment extends Fragment implements MediaplayerInfoContentFragment {
 
     private static final String TAG = "ItemDescriptionFragment";
 
@@ -111,7 +111,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "Creating view");
-        webvDescription = new WebView(getActivity());
+        webvDescription = new WebView(getActivity().getApplicationContext());
         if (Build.VERSION.SDK_INT >= 11) {
             webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
@@ -148,7 +148,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
                 super.onPageFinished(view, url);
                 Log.d(TAG, "Page finished");
                 // Restoring the scroll position might not always work
-                view.postDelayed(() -> restoreFromPreference(), 50);
+                view.postDelayed(ItemDescriptionFragment.this::restoreFromPreference, 50);
             }
 
         });
@@ -318,8 +318,7 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
 
     private String loadData() {
         Timeline timeline = new Timeline(getActivity(), shownotesProvider);
-        String data = timeline.processShownotes(highlightTimecodes);
-        return data;
+        return timeline.processShownotes(highlightTimecodes);
     }
 
     @Override
@@ -372,8 +371,8 @@ public class ItemDescriptionFragment extends Fragment implements AudioplayerCont
 
     private void onTimecodeLinkSelected(String link) {
         int time = Timeline.getTimecodeLinkTime(link);
-        if (getActivity() != null && getActivity() instanceof AudioplayerActivity) {
-            PlaybackController pc = ((AudioplayerActivity) getActivity()).getPlaybackController();
+        if (getActivity() != null && getActivity() instanceof MediaplayerInfoActivity) {
+            PlaybackController pc = ((MediaplayerInfoActivity) getActivity()).getPlaybackController();
             if (pc != null) {
                 pc.seekTo(time);
             }

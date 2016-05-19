@@ -73,7 +73,7 @@ public final class LongList {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer(size * 5 + 10);
+        StringBuilder sb = new StringBuilder(size * 5 + 10);
         sb.append("LongList{");
         for (int i = 0; i < size; i++) {
             if (i != 0) {

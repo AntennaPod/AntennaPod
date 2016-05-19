@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -27,29 +27,30 @@ public class SPAReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (TextUtils.equals(intent.getAction(), ACTION_SP_APPS_QUERY_FEEDS_REPSONSE)) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Received SP_APPS_QUERY_RESPONSE");
-            if (intent.hasExtra(ACTION_SP_APPS_QUERY_FEEDS_REPSONSE_FEEDS_EXTRA)) {
-                String[] feedUrls = intent.getStringArrayExtra(ACTION_SP_APPS_QUERY_FEEDS_REPSONSE_FEEDS_EXTRA);
-                if (feedUrls != null) {
-                    if (BuildConfig.DEBUG) Log.d(TAG, "Received feeds list: " + Arrays.toString(feedUrls));
-                    for (String url : feedUrls) {
-                        Feed f  = new Feed(url, null);
-                        try {
-                            DownloadRequester.getInstance().downloadFeed(context, f);
-                        } catch (DownloadRequestException e) {
-                            Log.e(TAG, "Error while trying to add feed " + url);
-                            e.printStackTrace();
-                        }
-                    }
-                    Toast.makeText(context, R.string.sp_apps_importing_feeds_msg, Toast.LENGTH_LONG).show();
-
-                } else {
-                    Log.e(TAG, "Received invalid SP_APPS_QUERY_REPSONSE: extra was null");
-                }
-            } else {
-                Log.e(TAG, "Received invalid SP_APPS_QUERY_RESPONSE: Contains no extra");
+        if (!TextUtils.equals(intent.getAction(), ACTION_SP_APPS_QUERY_FEEDS_REPSONSE)) {
+            return;
+        }
+        Log.d(TAG, "Received SP_APPS_QUERY_RESPONSE");
+        if (!intent.hasExtra(ACTION_SP_APPS_QUERY_FEEDS_REPSONSE_FEEDS_EXTRA)) {
+            Log.e(TAG, "Received invalid SP_APPS_QUERY_RESPONSE: Contains no extra");
+            return;
+        }
+        String[] feedUrls = intent.getStringArrayExtra(ACTION_SP_APPS_QUERY_FEEDS_REPSONSE_FEEDS_EXTRA);
+        if (feedUrls == null) {
+            Log.e(TAG, "Received invalid SP_APPS_QUERY_REPSONSE: extra was null");
+            return;
+        }
+        Log.d(TAG, "Received feeds list: " + Arrays.toString(feedUrls));
+        ClientConfig.initialize(context);
+        for (String url : feedUrls) {
+            Feed f = new Feed(url, null);
+            try {
+                DownloadRequester.getInstance().downloadFeed(context, f);
+            } catch (DownloadRequestException e) {
+                Log.e(TAG, "Error while trying to add feed " + url);
+                e.printStackTrace();
             }
         }
+        Toast.makeText(context, R.string.sp_apps_importing_feeds_msg, Toast.LENGTH_LONG).show();
     }
 }

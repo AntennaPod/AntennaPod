@@ -6,5 +6,5 @@ package de.danoeh.antennapod.core.service.download;
  */
 public interface DownloaderCallback {
 
-	public void onDownloadCompleted(Downloader downloader);
+	void onDownloadCompleted(Downloader downloader);
 }

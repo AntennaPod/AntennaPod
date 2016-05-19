@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Activitiy and fragment titles-->
+  <string name="settings_label">Ustawienia</string>
+  <string name="downloads_log_label">Dziennik</string>
+  <!--Statistics fragment-->
+  <!--Main activity-->
+  <string name="drawer_open">Otwórz menu</string>
+  <string name="drawer_close">Zamknij menu</string>
+  <!--Webview actions-->
+  <string name="copy_url_label">Kopiuj URL</string>
+  <string name="share_url_label">Udostępnij URL</string>
+  <!--Playback history-->
+  <!--Other-->
+  <string name="confirm_label">Potwierdź</string>
+  <string name="cancel_label">Anuluj</string>
+  <string name="author_label">Autor</string>
+  <string name="language_label">Język</string>
+  <string name="url_label">URL</string>
+  <string name="podcast_settings_label">Ustawienia</string>
+  <string name="cover_label">Obrazek</string>
+  <string name="error_label">Błąd</string>
+  <string name="refresh_label">Odśwież</string>
+  <string name="chapters_label">Rozdział</string>
+  <string name="description_label">Opis</string>
+  <string name="episodes_suffix">\u0020 odcinków</string>
+  <string name="length_prefix">Długość:\u0020</string>
+  <string name="size_prefix">Rozmiar:\u0020</string>
+  <string name="save_username_password_label">Zapis nazwę użytkownika i hasło</string>
+  <string name="close_label">Zamknij</string>
+  <string name="retry_label">Ponów</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="etxtFeedurlHint">www.example.com/feed</string>
+  <string name="browse_gpoddernet_label">Przeglądaj gpodder.net</string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">Zaznacz wszystkie jako przesłuchane</string>
+  <string name="show_info_label">Pokaż informacje</string>
+  <string name="hide_downloaded_episodes_label">Pobrany</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Pobierz</string>
+  <string name="play_label">Odtwórz</string>
+  <string name="stop_label">Zatrzymaj</string>
+  <string name="remove_label">Usuń</string>
+  <string name="mark_read_label">Zaznacz jako przesłuchany</string>
+  <string name="mark_unread_label">Zaznacz jako nieprzesłuchany</string>
+  <string name="add_to_queue_label">Dodaj do kolejki</string>
+  <string name="added_to_queue_label">Dodano do kolejki</string>
+  <string name="remove_from_queue_label">Usuń z kolejki</string>
+  <string name="visit_website_label">Odwiedź stronę</string>
+  <string name="skip_episode_label">Pomiń odcinek</string>
+  <!--Download messages and labels-->
+  <string name="download_error_error_unknown">Nieznany błąd</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">Błąd!</string>
+  <string name="playback_error_server_died">Serwer umarł</string>
+  <string name="playback_error_unknown">Nieznany błąd</string>
+  <string name="player_buffering_msg">Buforowanie</string>
+  <!--Queue operations-->
+  <string name="sort">Sortuj</string>
+  <string name="date">Data</string>
+  <string name="duration">Czas trwania</string>
+  <string name="ascending">Rosnąco</string>
+  <string name="descending">Malejąco</string>
+  <!--Flattr-->
+  <!--Flattr-->
+  <!--Variable Speed-->
+  <!--Empty list labels-->
+  <!--Preferences-->
+  <string name="queue_label">Kolejka</string>
+  <string name="services_label">Usługi</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Pobieraj pliki tylko przez WiFi</string>
+  <string name="refreshing_label">Odświeżanie</string>
+  <string name="user_interface_label">Interfejs Użytkownika</string>
+  <string name="pref_gpodnet_logout_toast">Wylogowano pomyślnie</string>
+  <!--Auto-Flattr dialog-->
+  <!--Search-->
+  <!--OPML import and export-->
+  <!--Sleep timer-->
+  <!--gpodder.net-->
+  <!--Directory chooser-->
+  <string name="selected_folder_label">Wybrany folder</string>
+  <string name="create_folder_msg">Utworzyć nowy folder z nazwą \"%1$s\"?</string>
+  <string name="create_folder_error_already_exists">Folder już istnieje</string>
+  <string name="create_folder_error">Nie można utworzyć folderu</string>
+  <string name="folder_not_empty_dialog_title">Folder nie jest pusty</string>
+  <string name="set_to_default_folder">Wybierz domyślny folder</string>
+  <!--Online feed view-->
+  <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
+  <!--Progress information-->
+  <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
+  <!--Rating dialog-->
+  <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+</resources>

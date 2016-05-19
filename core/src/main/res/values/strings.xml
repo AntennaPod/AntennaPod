@@ -4,23 +4,22 @@
     tools:ignore="MissingTranslation">
 
     <!-- Activitiy and fragment titles -->
-    <string name="app_name">AntennaPod</string>
+    <string name="app_name" translate="false">AntennaPod</string>
     <string name="feeds_label">Feeds</string>
+    <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
-    <string name="podcasts_label">PODCASTS</string>
     <string name="episodes_label">Episodes</string>
-    <string name="new_episodes_label">New Episodes</string>
-    <string name="all_episodes_label">All Episodes</string>
     <string name="all_episodes_short_label">All</string>
     <string name="favorite_episodes_label">Favorites</string>
     <string name="new_label">New</string>
-    <string name="waiting_list_label">Waiting List</string>
     <string name="settings_label">Settings</string>
     <string name="add_new_feed_label">Add Podcast</string>
     <string name="downloads_label">Downloads</string>
     <string name="downloads_running_label">Running</string>
     <string name="downloads_completed_label">Completed</string>
     <string name="downloads_log_label">Log</string>
+    <string name="subscriptions_label">Subscriptions</string>
+    <string name="subscriptions_list_label">Subscriptions List</string>
     <string name="cancel_download_label">Cancel\nDownload</string>
     <string name="playback_history_label">Playback History</string>
     <string name="gpodnet_main_label">gpodder.net</string>
@@ -29,9 +28,9 @@
     <string name="episode_cache_full_title">Episode cache full</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
 
-    <!-- New episodes fragment -->
-    <string name="recently_published_episodes_label">Recently published</string>
-    <string name="episode_filter_label">Show only new Episodes</string>
+    <!-- Statistics fragment -->
+    <string name="total_time_listened_to_podcasts">Total time of podcasts played:</string>
+    <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
@@ -84,9 +83,9 @@
     <string name="auto_download_label">Include in auto downloads</string>
     <string name="auto_download_apply_to_items_title">Apply to Previous Episodes</string>
     <string name="auto_download_apply_to_items_message">The new <i>Auto Download</i> setting will automatically be applied to new episodes.\nDo you also want to apply it to previously published episodes?</string>
-    <string name="auto_delete_label">Auto Delete Episode\n(override global default)</string>
+    <string name="auto_delete_label">Auto Delete Episode</string>
     <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
-    <string name="feed_auto_download_global">Global</string>
+    <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
     <string name="send_label">Send&#8230;</string>
@@ -118,8 +117,8 @@
     <string name="share_link_label">Share Link</string>
     <string name="share_link_with_position_label">Share Link with Position</string>
     <string name="share_feed_url_label">Share Feed URL</string>
-    <string name="share_item_url_label">Share Episode URL</string>
-    <string name="share_item_url_with_position_label">Share Episode URL with Position</string>
+    <string name="share_item_url_label">Share Episode File URL</string>
+    <string name="share_item_url_with_position_label">Share Episode File URL with Position</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete this feed and ALL episodes of this feed that you have downloaded.</string>
     <string name="feed_remover_msg">Removing Feed</string>
     <string name="load_complete_feed">Refresh complete Feed</string>
@@ -134,6 +133,7 @@
     <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
+    <string name="open_podcast">Open Podcast</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
@@ -155,8 +155,6 @@
     <string name="removed_from_favorites">Removed from Favorites</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="support_label">Flattr this</string>
-    <string name="enqueue_all_new">Enqueue all</string>
-    <string name="download_all">Download all</string>
     <string name="skip_episode_label">Skip episode</string>
     <string name="activate_auto_download">Activate Auto Download</string>
     <string name="deactivate_auto_download">Deactivate Auto Download</string>
@@ -178,6 +176,8 @@
     <string name="download_error_connection_error">Connection Error</string>
     <string name="download_error_unknown_host">Unknown Host</string>
     <string name="download_error_unauthorized">Authentication Error</string>
+    <string name="download_error_file_type_type">File Type Error</string>
+    <string name="download_error_forbidden">Forbidden</string>
     <string name="cancel_all_downloads_label">Cancel all downloads</string>
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
@@ -216,7 +216,7 @@
     <string name="playback_error_server_died">Server died</string>
     <string name="playback_error_unknown">Unknown Error</string>
     <string name="no_media_playing_label">No media playing</string>
-    <string name="position_default_label">00:00:00</string>
+    <string name="position_default_label" translate="false">00:00:00</string>
     <string name="player_buffering_msg">Buffering</string>
     <string name="playbackservice_notification_title">Playing podcast</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
@@ -278,8 +278,11 @@
     <string name="no_items_label">There are no items in this list.</string>
     <string name="no_feeds_label">You haven\'t subscribed to any feeds yet.</string>
     <string name="no_chapters_label">This episode has no chapters.</string>
+    <string name="no_shownotes_label">This episode has no shownotes.</string>
 
     <!-- Preferences -->
+    <string name="storage_pref">Storage</string>
+    <string name="project_pref">Project</string>
     <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
@@ -358,6 +361,10 @@
     <string name="pref_gpodnet_logout_toast">Logout was successful</string>
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
+    <string name="pref_gpodnet_sync_title">Sync now</string>
+    <string name="pref_gpodnet_sync_sum">Sync subscriptions and episode states with gpodder.net</string>
+    <string name="pref_gpodnet_sync_started">Sync started</string>
+    <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
     <string name="pref_fast_forward">Fast forward time</string>
@@ -368,6 +375,12 @@
     <string name="pref_expandNotify_sum">Always expand the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
+    <string name="pref_compact_notification_buttons_title">Set Lockscreen Buttons</string>
+    <string name="pref_compact_notification_buttons_sum">Change the playback buttons on the lockscreen. The play/pause button is always included.</string>
+    <string name="pref_compact_notification_buttons_dialog_title">Select a maximum of %1$d items</string>
+    <string name="pref_compact_notification_buttons_dialog_error">You can only select a maximum of %1$d items.</string>
+    <string name="pref_show_subscriptions_in_drawer_title">Show Subscriptions</string>
+    <string name="pref_show_subscriptions_in_drawer_sum">Show subscription list directly in navigation drawer</string>
     <string name="pref_lockscreen_background_title">Set Lockscreen Background</string>
     <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
     <string name="pref_showDownloadReport_title">Show Download Report</string>
@@ -385,6 +398,13 @@
     <string name="pref_sonic_title">Sonic media player</string>
     <string name="pref_sonic_message">Use built-in sonic media player as a replacement for Android\'s native mediaplayer and Prestissimo</string>
     <string name="pref_current_value">Current value: %1$s</string>
+    <string name="pref_proxy_title">Proxy</string>
+    <string name="pref_proxy_sum">Set a network proxy</string>
+    <string name="pref_faq">FAQ</string>
+    <string name="pref_known_issues">Known issues</string>
+    <string name="pref_no_browser_found">No web browser found.</string>
+    <string name="pref_cast_title">Chromecast support</string>
+    <string name="pref_cast_message">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -409,8 +429,8 @@
     <string name="opml_import_label">OPML Import</string>
     <string name="opml_directory_error">ERROR!</string>
     <string name="reading_opml_label">Reading OPML file</string>
-    <string name="opml_reader_error">An error has occurred while reading the opml document:</string>
-    <string name="opml_import_error_dir_empty">The import directory is empty.</string>
+    <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
+    <string name="opml_import_error_no_file">No file selected!</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
     <string name="select_options_label">Select&#8230;</string>
@@ -468,6 +488,7 @@
     <string name="gpodnetauth_device_chooseExistingDevice">Choose existing device:</string>
     <string name="gpodnetauth_device_errorEmpty">Device ID must not be empty</string>
     <string name="gpodnetauth_device_errorAlreadyUsed">Device ID already in use</string>
+    <string name="gpodnetauth_device_caption_errorEmpty">Caption must not be empty</string>
 
     <string name="gpodnetauth_device_butChoose">Choose</string>
     <string name="gpodnetauth_finish_title">Login successful!</string>
@@ -503,29 +524,19 @@
     <string name="pref_resumeAfterCall_title">Resume after Call</string>
     <string name="pref_restart_required">AntennaPod has to be restarted for this change to take effect.</string>
 
-
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
     <string name="subscribed_label">Subscribed</string>
     <string name="downloading_label">Downloading&#8230;</string>
 
     <!-- Content descriptions for image buttons -->
-    <string name="show_chapters_label">Show chapters</string>
-    <string name="show_shownotes_label">Show shownotes</string>
-    <string name="show_cover_label">Show picture</string>
     <string name="rewind_label">Rewind</string>
     <string name="fast_forward_label">Fast forward</string>
     <string name="media_type_audio_label">Audio</string>
     <string name="media_type_video_label">Video</string>
     <string name="navigate_upwards_label">Navigate upwards</string>
-    <string name="butAction_label">More actions</string>
-    <string name="status_playing_label">Episode is being played</string>
     <string name="status_downloading_label">Episode is being downloaded</string>
-    <string name="status_downloaded_label">Episode is downloaded</string>
-    <string name="status_unread_label">Item is new</string>
     <string name="in_queue_label">Episode is in the queue</string>
-    <string name="new_episodes_count_label">Number of new episodes</string>
-    <string name="in_progress_episodes_count_label">Number of episodes you have started listening to</string>
     <string name="drag_handle_content_description">Drag to change the position of this item</string>
     <string name="load_next_page_label">Load next page</string>
 
@@ -544,12 +555,12 @@
     <string name="progress_upgrading_database">Upgrading the database</string>
 
     <!-- AntennaPodSP -->
-
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
-    <string name="search_itunes_label">Search iTunes</string>
 
-    <string name="select_label"><b>Select&#8230;</b></string>
+    <string name="search_itunes_label">Search iTunes</string>
     <string name="filter">Filter</string>
+    
+    <!-- Episodes apply actions -->
     <string name="all_label">All</string>
     <string name="selected_all_label">Selected all Episodes</string>
     <string name="none_label">None</string>
@@ -566,7 +577,8 @@
     <string name="selected_queued_label">Selected queued Episodes</string>
     <string name="not_queued_label">Not queued</string>
     <string name="selected_not_queued_label">Selected not queued Episodes</string>
-    <string name="sort_title"><b>Sort by&#8230;</b></string>
+
+    <!-- Sort  -->
     <string name="sort_title_a_z">Title (A \u2192 Z)</string>
     <string name="sort_title_z_a">Title (Z \u2192 A)</string>
     <string name="sort_date_new_old">Date (New \u2192 Old)</string>
@@ -591,4 +603,33 @@
     <string name="stereo_to_mono">Downmix: Stereo to mono</string>
     <string name="sonic_only">Sonic only</string>
 
+    <!-- proxy settings -->
+    <string name="proxy_type_label">Type</string>
+    <string name="host_label">Host</string>
+    <string name="port_label">Port</string>
+    <string name="optional_hint">(Optional)</string>
+    <string name="proxy_test_label">Test</string>
+    <string name="proxy_checking">Checking&#8230;</string>
+    <string name="proxy_test_successful">Test successful</string>
+    <string name="proxy_test_failed">Test failed</string>
+    <string name="proxy_host_empty_error">Host can not be empty</string>
+    <string name="proxy_host_invalid_error">Host is not a valid IP address or domain</string>
+    <string name="proxy_port_invalid_error">Port not valid</string>
+
+    <!-- Casting -->
+    <string name="cast_media_route_menu_title">Play on&#8230;</string>
+    <string name="cast_disconnect_label">Disconnect the cast session</string>
+    <string name="cast_not_castable">Media selected is not compatible with cast device</string>
+    <string name="cast_failed_to_play">Failed to start the playback of media</string>
+    <string name="cast_failed_to_stop">Failed to stop the playback of media</string>
+    <string name="cast_failed_to_pause">Failed to pause the playback of media</string>
+    <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+    <string name="cast_failed_setting_volume">Failed to set the volume</string>
+    <string name="cast_failed_no_connection">No connection to the cast device is present</string>
+    <string name="cast_failed_no_connection_trans">Connection to the cast device has been lost. Application is trying to re-establish the connection, if possible. Please wait for a few seconds and try again.</string>
+    <string name="cast_failed_perform_action">Failed to perform the action</string>
+    <string name="cast_failed_status_request">Failed to sync up with the cast device</string>
+    <string name="cast_failed_seek">Failed to seek to the new position on the cast device</string>
+    <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>
+    <string name="cast_failed_media_error_skipping">Error playing media. Skipping&#8230;</string>
 </resources>

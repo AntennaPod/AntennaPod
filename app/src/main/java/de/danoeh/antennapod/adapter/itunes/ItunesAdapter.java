@@ -167,7 +167,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
             for(int i=0; imageUrl == null && i < images.length(); i++) {
                 JSONObject image = images.getJSONObject(i);
                 String height = image.getJSONObject("attributes").getString("height");
-                if(Integer.valueOf(height) >= 100) {
+                if(Integer.parseInt(height) >= 100) {
                     imageUrl = image.getString("label");
                 }
             }

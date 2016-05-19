@@ -13,8 +13,6 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.LongList;
 
 /**
  * Implementation of the EpisodeCleanupAlgorithm interface used by AntennaPod.

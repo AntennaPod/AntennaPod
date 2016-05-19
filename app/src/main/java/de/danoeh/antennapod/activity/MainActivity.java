@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
-import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,11 +16,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,15 +42,13 @@ import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
@@ -60,6 +57,7 @@ import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
@@ -71,7 +69,7 @@ import rx.schedulers.Schedulers;
 /**
  * The activity that is shown when the user launches the app.
  */
-public class MainActivity extends AppCompatActivity implements NavDrawerActivity {
+public class MainActivity extends CastEnabledActivity implements NavDrawerActivity {
 
     private static final String TAG = "MainActivity";
 
@@ -86,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     public static final String EXTRA_NAV_INDEX = "nav_index";
     public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
+    public static final String EXTRA_FEED_ID = "fragment_feed_id";
 
     public static final String SAVE_BACKSTACK_COUNT = "backstackCount";
     public static final String SAVE_TITLE = "title";
@@ -93,9 +92,11 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
             EpisodesFragment.TAG,
+            SubscriptionFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
-            AddFeedFragment.TAG
+            AddFeedFragment.TAG,
+            NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
     private Toolbar toolbar;
@@ -121,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
                 loadFragment(lastFragment, null);
             } else {
                 try {
-                    loadFeedFragmentById(Integer.valueOf(lastFragment), null);
+                    loadFeedFragmentById(Integer.parseInt(lastFragment), null);
                 } catch (NumberFormatException e) {
                     // it's not a number, this happens if we removed
                     // a label from the NAV_DRAWER_TAGS
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     }
 
     public void loadFragment(int index, Bundle args) {
-        Log.d(TAG, "loadFragment(index: " + index + ", args: " + args +")");
+        Log.d(TAG, "loadFragment(index: " + index + ", args: " + args + ")");
         if (index < navAdapter.getSubscriptionOffset()) {
             String tag = navAdapter.getTags().get(index);
             loadFragment(tag, args);
@@ -298,6 +298,10 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
                 break;
             case AddFeedFragment.TAG:
                 fragment = new AddFeedFragment();
+                break;
+            case SubscriptionFragment.TAG:
+                SubscriptionFragment subscriptionFragment = new SubscriptionFragment();
+                fragment = subscriptionFragment;
                 break;
             default:
                 // default to the queue
@@ -464,8 +468,9 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
         StorageUtils.checkStorageAvailability(this);
 
         Intent intent = getIntent();
-        if (navDrawerData != null && intent.hasExtra(EXTRA_NAV_TYPE) &&
-                (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG))) {
+        if (intent.hasExtra(EXTRA_FEED_ID) ||
+                (navDrawerData != null && intent.hasExtra(EXTRA_NAV_TYPE) &&
+                        (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG)))) {
             handleNavIntent();
         }
         loadData();
@@ -497,6 +502,26 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     public void onLowMemory() {
         super.onLowMemory();
         Glide.get(this).clearMemory();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean retVal = super.onCreateOptionsMenu(menu);
+        switch (getLastNavFragment()) {
+            case QueueFragment.TAG:
+            case EpisodesFragment.TAG:
+                requestCastButton(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                return retVal;
+            case DownloadsFragment.TAG:
+            case PlaybackHistoryFragment.TAG:
+            case AddFeedFragment.TAG:
+            case SubscriptionFragment.TAG:
+                return retVal;
+            default:
+                requestCastButton(MenuItem.SHOW_AS_ACTION_NEVER);
+                return retVal;
+        }
+
     }
 
     @Override
@@ -565,21 +590,15 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
                     public void onConfirmButtonPressed(
                             DialogInterface dialog) {
                         dialog.dismiss();
-                        if (externalPlayerFragment != null) {
-                            PlaybackController controller = externalPlayerFragment.getPlaybackControllerTestingOnly();
-                            if (controller != null) {
-                                Playable playable = controller.getMedia();
-                                if (playable != null && playable instanceof FeedMedia) {
-                                    FeedMedia media = (FeedMedia) playable;
-                                    if (media.getItem().getFeed().getId() == feed.getId()) {
-                                        Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
-                                        remover.skipOnCompletion = true;
-                                        if(controller.getStatus() == PlayerStatus.PLAYING) {
-                                            sendBroadcast(new Intent(
-                                                    PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
-                                        }
-                                    }
-                                }
+                        long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+                        if (mediaId > 0 &&
+                                FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId) >= 0) {
+                            Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
+                            remover.skipOnCompletion = true;
+                            int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
+                            if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
+                                sendBroadcast(new Intent(
+                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
                             }
                         }
                         remover.executeAsync();
@@ -652,10 +671,23 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
         public int getFeedCounter(long feedId) {
             return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
+
+        @Override
+        public int getFeedCounterSum() {
+            if(navDrawerData == null) {
+                return 0;
+            }
+            int sum = 0;
+            for(int counter : navDrawerData.feedCounters.values()) {
+                sum += counter;
+            }
+            return sum;
+        }
+
     };
 
     private void loadData() {
-        subscription = Observable.fromCallable(() -> DBReader.getNavDrawerData())
+        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
@@ -674,6 +706,12 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
 
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
+        // we are only interested in the number of queue items, not download status or position
+        if(event.action == QueueEvent.Action.DELETED_MEDIA ||
+                event.action == QueueEvent.Action.SORTED ||
+                event.action == QueueEvent.Action.MOVED) {
+            return;
+        }
         loadData();
     }
 
@@ -709,15 +747,19 @@ public class MainActivity extends AppCompatActivity implements NavDrawerActivity
     private void handleNavIntent() {
         Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_NAV_TYPE) &&
-                intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG)) {
+        if (intent.hasExtra(EXTRA_FEED_ID) ||
+                (intent.hasExtra(EXTRA_NAV_TYPE) &&
+                        (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG)))) {
             int index = intent.getIntExtra(EXTRA_NAV_INDEX, -1);
             String tag = intent.getStringExtra(EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
+            long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
             if (index >= 0) {
                 loadFragment(index, args);
             } else if (tag != null) {
                 loadFragment(tag, args);
+            } else if(feedId > 0) {
+                loadFeedFragmentById(feedId, args);
             }
         }
         setIntent(new Intent(MainActivity.this, MainActivity.class)); // to avoid handling the intent twice when the configuration changes

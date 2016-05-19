@@ -146,9 +146,11 @@
     <string-array name="nav_drawer_titles">
         <item>@string/queue_label</item>
         <item>@string/episodes_label</item>
+        <item>@string/subscriptions_label</item>
         <item>@string/downloads_label</item>
         <item>@string/playback_history_label</item>
         <item>@string/add_feed_label</item>
+        <item>@string/subscriptions_list_label</item>
     </string-array>
 
     <string-array name="nav_drawer_feed_order_options">
@@ -211,4 +213,9 @@
         <item>500</item>
     </string-array>
 
+    <string-array name="compact_notification_buttons_options">
+        <item>@string/rewind_label</item>
+        <item>@string/fast_forward_label</item>
+        <item>@string/skip_episode_label</item>
+    </string-array>
 </resources>

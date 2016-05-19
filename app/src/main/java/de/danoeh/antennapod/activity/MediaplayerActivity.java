@@ -6,13 +6,10 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,7 +55,7 @@ import rx.schedulers.Schedulers;
  * Provides general features which are both needed for playing audio and video
  * files.
  */
-public abstract class MediaplayerActivity extends AppCompatActivity implements OnSeekBarChangeListener {
+public abstract class MediaplayerActivity extends CastEnabledActivity implements OnSeekBarChangeListener {
     private static final String TAG = "MediaplayerActivity";
     private static final String PREFS = "MediaPlayerActivityPreferences";
     private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
@@ -68,7 +65,6 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     protected TextView txtvPosition;
     protected TextView txtvLength;
     protected SeekBar sbPosition;
-    protected Button butPlaybackSpeed;
     protected ImageButton butRev;
     protected TextView txtvRev;
     protected ImageButton butPlay;
@@ -129,8 +125,8 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             }
 
             @Override
-            public void postStatusMsg(int msg) {
-                MediaplayerActivity.this.postStatusMsg(msg);
+            public void postStatusMsg(int msg, boolean showToast) {
+                MediaplayerActivity.this.postStatusMsg(msg, showToast);
             }
 
             @Override
@@ -173,12 +169,21 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                 super.setScreenOn(enable);
                 MediaplayerActivity.this.setScreenOn(enable);
             }
-        };
 
+            @Override
+            public void onSetSpeedAbilityChanged() {
+                MediaplayerActivity.this.onSetSpeedAbilityChanged();
+            }
+        };
+    }
+
+    protected void onSetSpeedAbilityChanged() {
+        Log.d(TAG, "onSetSpeedAbilityChanged()");
+        updatePlaybackSpeedButton();
     }
 
     protected void onPlaybackSpeedChange() {
-        updateButPlaybackSpeed();
+        updatePlaybackSpeedButtonText();
     }
 
     protected void onServiceQueried() {
@@ -199,7 +204,6 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
         Log.d(TAG, "onCreate()");
         StorageUtils.checkStorageAvailability(this);
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         orientation = getResources().getConfiguration().orientation;
         getWindow().setFormat(PixelFormat.TRANSPARENT);
@@ -207,11 +211,11 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
     @Override
     protected void onPause() {
-        super.onPause();
         if(controller != null) {
             controller.reinitServiceIfPaused();
             controller.pause();
         }
+        super.onPause();
     }
 
     /**
@@ -249,18 +253,16 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             controller.release();
         }
         controller = newPlaybackController();
-        if(butPlay != null) {
-            butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
-        }
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
         Log.d(TAG, "onStop()");
         if (controller != null) {
             controller.release();
+            controller = null; // prevent leak
         }
+        super.onStop();
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -279,6 +281,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.mediaplayer, menu);
         return true;
@@ -389,18 +392,11 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                                     .getSleepTimerTimeLeft()));
                             stDialog.positiveText(R.string.disable_sleeptimer_label);
                             stDialog.negativeText(R.string.cancel_label);
-                            stDialog.callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    dialog.dismiss();
-                                    controller.disableSleepTimer();
-                                }
-
-                                @Override
-                                public void onNegative(MaterialDialog dialog) {
-                                    dialog.dismiss();
-                                }
+                            stDialog.onPositive((dialog, which) -> {
+                                dialog.dismiss();
+                                controller.disableSleepTimer();
                             });
+                            stDialog.onNegative((dialog, which) -> dialog.dismiss());
                             stDialog.build().show();
                         }
                         break;
@@ -466,9 +462,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                                     txtvPlaybackSpeed.setText(speedStr);
                                 } else if(fromUser) {
                                     float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
-                                    barPlaybackSpeed.post(() -> {
-                                        barPlaybackSpeed.setProgress((int) (20 * speed) - 10);
-                                    });
+                                    barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress((int) (20 * speed) - 10));
                                 }
                             }
 
@@ -486,9 +480,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barPlaybackSpeed.setProgress((int) (20 * currentSpeed) - 10);
 
                         final SeekBar barLeftVolume = (SeekBar) dialog.findViewById(R.id.volume_left);
-                        barLeftVolume.setProgress(100);
+                        barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
                         final SeekBar barRightVolume = (SeekBar) dialog.findViewById(R.id.volume_right);
-                        barRightVolume.setProgress(100);
+                        barRightVolume.setProgress(UserPreferences.getRightVolumePercentage());
                         final CheckBox stereoToMono = (CheckBox) dialog.findViewById(R.id.stereo_to_mono);
                         stereoToMono.setChecked(UserPreferences.stereoToMono());
                         if (controller != null && !controller.canDownmix()) {
@@ -500,14 +494,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barLeftVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                float leftVolume = 1.0f, rightVolume = 1.0f;
-                                if (progress < 100) {
-                                    leftVolume = progress / 100.0f;
-                                }
-                                if (barRightVolume.getProgress() < 100) {
-                                    rightVolume = barRightVolume.getProgress() / 100.0f;
-                                }
-                                controller.setVolume(leftVolume, rightVolume);
+                                controller.setVolume(
+                                        Converter.getVolumeFromPercentage(progress),
+                                        Converter.getVolumeFromPercentage(barRightVolume.getProgress()));
                             }
 
                             @Override
@@ -521,14 +510,9 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
                         barRightVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                float leftVolume = 1.0f, rightVolume = 1.0f;
-                                if (progress < 100) {
-                                    rightVolume = progress / 100.0f;
-                                }
-                                if (barLeftVolume.getProgress() < 100) {
-                                    leftVolume = barLeftVolume.getProgress() / 100.0f;
-                                }
-                                controller.setVolume(leftVolume, rightVolume);
+                                controller.setVolume(
+                                        Converter.getVolumeFromPercentage(barLeftVolume.getProgress()),
+                                        Converter.getVolumeFromPercentage(progress));
                             }
 
                             @Override
@@ -601,7 +585,7 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
      */
     protected abstract void onAwaitingVideoSurface();
 
-    protected abstract void postStatusMsg(int resId);
+    protected abstract void postStatusMsg(int resId, boolean showToast);
 
     protected abstract void clearStatusMsg();
 
@@ -649,24 +633,21 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         if (media != null) {
             onPositionObserverUpdate();
             checkFavorite();
-            if(butPlaybackSpeed != null) {
-                if (controller == null) {
-                    butPlaybackSpeed.setVisibility(View.GONE);
-                } else {
-                    butPlaybackSpeed.setVisibility(View.VISIBLE);
-                    if (controller.canSetPlaybackSpeed()) {
-                        ViewCompat.setAlpha(butPlaybackSpeed, 1.0f);
-                    } else {
-                        ViewCompat.setAlpha(butPlaybackSpeed, 0.5f);
-                    }
-                }
-                updateButPlaybackSpeed();
-            }
+            updatePlaybackSpeedButton();
             return true;
         } else {
             return false;
         }
     }
+
+    protected void updatePlaybackSpeedButton() {
+        // Only meaningful on AudioplayerActivity, where it is overridden.
+    }
+
+    protected void updatePlaybackSpeedButtonText() {
+        // Only meaningful on AudioplayerActivity, where it is overridden.
+    }
+
 
     protected void setupGUI() {
         setContentView(getContentViewResourceId());
@@ -677,28 +658,29 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
         Log.d("timeleft", showTimeLeft ? "true" : "false");
         txtvLength = (TextView) findViewById(R.id.txtvLength);
-        txtvLength.setOnClickListener(v -> {
-            showTimeLeft = !showTimeLeft;
-            Playable media = controller.getMedia();
-            if (media == null) {
-                return;
-            }
+        if (txtvLength != null) {
+            txtvLength.setOnClickListener(v -> {
+                showTimeLeft = !showTimeLeft;
+                Playable media = controller.getMedia();
+                if (media == null) {
+                    return;
+                }
 
-            String length;
-            if (showTimeLeft) {
-                length = "-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition());
-            } else {
-                length = Converter.getDurationStringLong(media.getDuration());
-            }
-            txtvLength.setText(length);
+                String length;
+                if (showTimeLeft) {
+                    length = "-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition());
+                } else {
+                    length = Converter.getDurationStringLong(media.getDuration());
+                }
+                txtvLength.setText(length);
 
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft);
-            editor.apply();
-            Log.d("timeleft on click", showTimeLeft ? "true" : "false");
-        });
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft);
+                editor.apply();
+                Log.d("timeleft on click", showTimeLeft ? "true" : "false");
+            });
+        }
 
-        butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
         butRev = (ImageButton) findViewById(R.id.butRev);
         txtvRev = (TextView) findViewById(R.id.txtvRev);
         if (txtvRev != null) {
@@ -718,52 +700,8 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
 
         // BUTTON SETUP
 
-        if(butPlaybackSpeed != null) {
-            butPlaybackSpeed.setOnClickListener(v -> {
-                if (controller == null) {
-                    return;
-                }
-                if (controller.canSetPlaybackSpeed()) {
-                    String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
-                    String currentSpeed = UserPreferences.getPlaybackSpeed();
-
-                    // Provide initial value in case the speed list has changed
-                    // out from under us
-                    // and our current speed isn't in the new list
-                    String newSpeed;
-                    if (availableSpeeds.length > 0) {
-                        newSpeed = availableSpeeds[0];
-                    } else {
-                        newSpeed = "1.00";
-                    }
-
-                    for (int i = 0; i < availableSpeeds.length; i++) {
-                        if (availableSpeeds[i].equals(currentSpeed)) {
-                            if (i == availableSpeeds.length - 1) {
-                                newSpeed = availableSpeeds[0];
-                            } else {
-                                newSpeed = availableSpeeds[i + 1];
-                            }
-                            break;
-                        }
-                    }
-                    UserPreferences.setPlaybackSpeed(newSpeed);
-                    controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
-                } else {
-                    VariableSpeedDialog.showGetPluginDialog(this);
-                }
-            });
-            butPlaybackSpeed.setOnLongClickListener(v -> {
-                VariableSpeedDialog.showDialog(this);
-                return true;
-            });
-        }
-
         if (butRev != null) {
-            butRev.setOnClickListener(v -> {
-                int curr = controller.getPosition();
-                controller.seekTo(curr - UserPreferences.getRewindSecs() * 1000);
-            });
+            butRev.setOnClickListener(v -> onRewind());
             butRev.setOnLongClickListener(new View.OnLongClickListener() {
 
                 int choice;
@@ -800,13 +738,10 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             });
         }
 
-        butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
+        butPlay.setOnClickListener(v -> onPlayPause());
 
         if (butFF != null) {
-            butFF.setOnClickListener(v -> {
-                int curr = controller.getPosition();
-                controller.seekTo(curr + UserPreferences.getFastFowardSecs() * 1000);
-            });
+            butFF.setOnClickListener(v -> onFastForward());
             butFF.setOnLongClickListener(new View.OnLongClickListener() {
 
                 int choice;
@@ -844,10 +779,31 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
         }
 
         if (butSkip != null) {
-            butSkip.setOnClickListener(v -> {
-                sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
-            });
+            butSkip.setOnClickListener(v -> sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE)));
         }
+    }
+
+    protected void onRewind() {
+        if (controller == null) {
+            return;
+        }
+        int curr = controller.getPosition();
+        controller.seekTo(curr - UserPreferences.getRewindSecs() * 1000);
+    }
+
+    protected void onPlayPause() {
+        if(controller == null) {
+            return;
+        }
+        controller.playPause();
+    }
+
+    protected void onFastForward() {
+        if (controller == null) {
+            return;
+        }
+        int curr = controller.getPosition();
+        controller.seekTo(curr + UserPreferences.getFastFowardSecs() * 1000);
     }
 
     protected abstract int getContentViewResourceId();
@@ -877,20 +833,6 @@ public abstract class MediaplayerActivity extends AppCompatActivity implements O
             int duration = controller.getDuration();
             String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
             txtvLength.setText(length);
-        }
-    }
-
-    private void updateButPlaybackSpeed() {
-        if (controller != null && butPlaybackSpeed != null) {
-            float speed = 1.0f;
-            try {
-                speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
-            } catch(NumberFormatException e) {
-                Log.e(TAG, Log.getStackTraceString(e));
-                UserPreferences.setPlaybackSpeed(String.valueOf(speed));
-            }
-            String speedStr = String.format("%.2fx", speed);
-            butPlaybackSpeed.setText(speedStr);
         }
     }
 

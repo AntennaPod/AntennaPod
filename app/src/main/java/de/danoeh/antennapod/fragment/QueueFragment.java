@@ -230,9 +230,8 @@ public class QueueFragment extends Fragment {
         resetViewState();
     }
 
-    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = () -> {
-        return DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
-    };
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
+            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -410,12 +409,12 @@ public class QueueFragment extends Fragment {
                     Log.d(TAG, "remove(" + position + ")");
                     final FeedItem item = queue.get(position);
                     final boolean isRead = item.isPlayed();
-                    DBWriter.markItemPlayed(FeedItem.PLAYED, item.getId());
+                    DBWriter.markItemPlayed(FeedItem.PLAYED, false, item.getId());
                     DBWriter.removeQueueItem(getActivity(), item, true);
                     Snackbar snackbar = Snackbar.make(root, getString(R.string.marked_as_read_label), Snackbar.LENGTH_LONG);
                     snackbar.setAction(getString(R.string.undo), v -> {
                         DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false);
-                        if(false == isRead) {
+                        if(!isRead) {
                             DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
                         }
                     });
@@ -424,12 +423,12 @@ public class QueueFragment extends Fragment {
 
                 @Override
                 public boolean isLongPressDragEnabled() {
-                    return false == UserPreferences.isQueueLocked();
+                    return !UserPreferences.isQueueLocked();
                 }
 
                 @Override
                 public boolean isItemViewSwipeEnabled() {
-                    return false == UserPreferences.isQueueLocked();
+                    return !UserPreferences.isQueueLocked();
                 }
 
                 @Override
@@ -569,20 +568,6 @@ public class QueueFragment extends Fragment {
         public LongList getQueueIds() {
             return queue != null ? LongList.of(FeedItemUtil.getIds(queue)) : new LongList(0);
         }
-
-        @Override
-        public LongList getFavoritesIds() {
-            LongList favoritesIds = new LongList();
-            if(queue == null) {
-                return favoritesIds;
-            }
-            for(FeedItem item : queue) {
-                if(item.isTagged(FeedItem.TAG_FAVORITE)) {
-                    favoritesIds.add(item.getId());
-                }
-            }
-            return favoritesIds;
-        }
     };
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -608,7 +593,7 @@ public class QueueFragment extends Fragment {
             txtvEmpty.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
-        subscription = Observable.fromCallable(() -> DBReader.getQueue())
+        subscription = Observable.fromCallable(DBReader::getQueue)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {

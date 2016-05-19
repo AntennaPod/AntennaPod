@@ -26,6 +26,7 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Nylig publisert</string>
   <string name="episode_filter_label">Vis kun nye episoder</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Åpne menyen</string>
   <string name="drawer_close">Lukk menyen</string>
@@ -369,7 +370,6 @@
   <string name="opml_directory_error">ERROR!</string>
   <string name="reading_opml_label">Leser OPML-fil</string>
   <string name="opml_reader_error">En feil oppsto under lesingen av opml dokumentet:</string>
-  <string name="opml_import_error_dir_empty">Importkatalogen er tom.</string>
   <string name="select_all_label">Velg alle</string>
   <string name="deselect_all_label">Opphev alle markeringene</string>
   <string name="choose_file_from_filesystem">Fra lokalt filsystem</string>
@@ -494,6 +494,8 @@
   <string name="selected_downloaded_label">Valgte nedlastede episoder</string>
   <string name="not_downloaded_label">Ikke nedlastet</string>
   <string name="selected_not_downloaded_label">Valgte ikke-nedlastede episoder</string>
+  <string name="queued_label">I kø</string>
+  <string name="not_queued_label">Ikke i kø</string>
   <string name="sort_title_a_z">Tittel (A \u2192 Z)</string>
   <string name="sort_title_z_a">Tittel (Z \u2192 A)</string>
   <string name="sort_date_new_old">Dato (Ny \u2192 Gammel)</string>
@@ -507,4 +509,5 @@
   <string name="rating_later_label">Minn meg på dette senere</string>
   <string name="rating_now_label">Naturligvis, kom igjen!</string>
   <!--Audio controls-->
+  <!--proxy settings-->
 </resources>

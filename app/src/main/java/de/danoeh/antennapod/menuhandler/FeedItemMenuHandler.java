@@ -3,6 +3,7 @@ package de.danoeh.antennapod.menuhandler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ public class FeedItemMenuHandler {
          * menu-object and call setVisibility(visibility) on the returned
          * MenuItem object.
          */
-        abstract void setItemVisibility(int id, boolean visible);
+        void setItemVisibility(int id, boolean visible);
     }
 
     /**
@@ -54,14 +55,14 @@ public class FeedItemMenuHandler {
      * @param showExtendedMenu True if MenuItems that let the user share information about
      *                         the FeedItem and visit its website should be set visible. This
      *                         parameter should be set to false if the menu space is limited.
-     * @param queueAccess      Used for testing if the queue contains the selected item
+     * @param queueAccess      Used for testing if the queue contains the selected item; only used for
+     *                         move to top/bottom in the queue
      * @return Returns true if selectedItem is not null.
      */
     public static boolean onPrepareMenu(MenuInterface mi,
                                         FeedItem selectedItem,
                                         boolean showExtendedMenu,
-                                        LongList queueAccess,
-                                        LongList favorites) {
+                                        @Nullable LongList queueAccess) {
         if (selectedItem == null) {
             return false;
         }
@@ -72,10 +73,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.skip_episode_item, false);
         }
 
-        boolean isInQueue = false;
-        if(queueAccess != null) {
-            isInQueue = queueAccess.contains(selectedItem.getId());
-        }
+        boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
         if(queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId()) {
             mi.setItemVisibility(R.id.move_to_top_item, false);
         }
@@ -98,7 +96,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_download_url_item, false);
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
-        if(false == hasMedia || selectedItem.getMedia().getPosition() <= 0) {
+        if(!hasMedia || selectedItem.getMedia().getPosition() <= 0) {
             mi.setItemVisibility(R.id.share_link_with_position_item, false);
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
@@ -113,7 +111,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.reset_position, false);
         }
 
-        if(false == UserPreferences.isEnableAutodownload()) {
+        if(!UserPreferences.isEnableAutodownload()) {
             mi.setItemVisibility(R.id.activate_auto_download, false);
             mi.setItemVisibility(R.id.deactivate_auto_download, false);
         } else if(selectedItem.getAutoDownload()) {
@@ -126,7 +124,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.support_item, false);
         }
 
-        boolean isFavorite = favorites != null && favorites.contains(selectedItem.getId());
+        boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
         mi.setItemVisibility(R.id.add_to_favorites_item, !isFavorite);
         mi.setItemVisibility(R.id.remove_from_favorites_item, isFavorite);
 
@@ -144,9 +142,8 @@ public class FeedItemMenuHandler {
                                         FeedItem selectedItem,
                                         boolean showExtendedMenu,
                                         LongList queueAccess,
-                                        LongList favorites,
                                         int... excludeIds) {
-        boolean rc = onPrepareMenu(mi, selectedItem, showExtendedMenu, queueAccess, favorites);
+        boolean rc = onPrepareMenu(mi, selectedItem, showExtendedMenu, queueAccess);
         if (rc && excludeIds != null) {
             for (int id : excludeIds) {
                 mi.setItemVisibility(id, false);
@@ -224,7 +221,7 @@ public class FeedItemMenuHandler {
                     context.startActivity(intent);
                 } else {
                     Toast.makeText(context, context.getString(R.string.download_error_malformed_url),
-                            Toast.LENGTH_SHORT);
+                            Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.support_item:

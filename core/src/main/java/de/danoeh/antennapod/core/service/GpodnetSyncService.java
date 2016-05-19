@@ -111,12 +111,17 @@ public class GpodnetSyncService extends Service {
             stopSelf();
             return;
         }
+        boolean initialSync =  GpodnetPreferences.getLastSubscriptionSyncTimestamp() == 0 &&
+                GpodnetPreferences.getLastEpisodeActionsSyncTimestamp() == 0;
         if(syncSubscriptions) {
             syncSubscriptionChanges();
             syncSubscriptions = false;
         }
         if(syncActions) {
-            syncEpisodeActions();
+            // we only sync episode actions after the subscriptions have been added to the database
+            if(!initialSync) {
+                syncEpisodeActions();
+            }
             syncActions = false;
         }
         stopSelf();

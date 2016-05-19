@@ -38,7 +38,7 @@ public class GpodnetEpisodeActionPostResponse {
         final JSONObject object = new JSONObject(objectString);
         final long timestamp = object.getLong("timestamp");
         JSONArray urls = object.getJSONArray("update_urls");
-        Map<String, String> updatedUrls = new ArrayMap<String, String>(urls.length());
+        Map<String, String> updatedUrls = new ArrayMap<>(urls.length());
         for (int i = 0; i < urls.length(); i++) {
             JSONArray urlPair = urls.getJSONArray(i);
             updatedUrls.put(urlPair.getString(0), urlPair.getString(1));

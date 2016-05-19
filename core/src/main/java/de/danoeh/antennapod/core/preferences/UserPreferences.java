@@ -17,6 +17,7 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -25,10 +26,12 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
+import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.core.util.Converter;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -49,8 +52,10 @@ public class UserPreferences {
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
+    public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
+
 
     // Queue
     public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
@@ -78,6 +83,11 @@ public class UserPreferences {
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
     public static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
+    public static final String PREF_PROXY_TYPE = "prefProxyType";
+    public static final String PREF_PROXY_HOST = "prefProxyHost";
+    public static final String PREF_PROXY_PORT = "prefProxyPort";
+    public static final String PREF_PROXY_USER = "prefProxyUser";
+    public static final String PREF_PROXY_PASSWORD = "prefProxyPassword";
 
     // Services
     public static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
@@ -101,11 +111,15 @@ public class UserPreferences {
     public static final String PREF_SONIC = "prefSonic";
     public static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
     public static final String PREF_NORMALIZER = "prefNormalizer";
+    public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
 
     // Constants
+    private static final int NOTIFICATION_BUTTON_REWIND = 0;
+    private static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
+    private static final int NOTIFICATION_BUTTON_SKIP = 2;
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static int FEED_ORDER_COUNTER = 0;
     public static int FEED_ORDER_ALPHABETICAL = 1;
@@ -156,14 +170,50 @@ public class UserPreferences {
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
     }
 
+    public static List<Integer> getCompactNotificationButtons() {
+        String[] buttons = TextUtils.split(
+                prefs.getString(PREF_COMPACT_NOTIFICATION_BUTTONS,
+                        String.valueOf(NOTIFICATION_BUTTON_SKIP)),
+                ",");
+        List<Integer> notificationButtons = new ArrayList<>();
+        for (int i=0; i<buttons.length; i++) {
+            notificationButtons.add(Integer.parseInt(buttons[i]));
+        }
+        return notificationButtons;
+    }
+
+    /**
+     * Helper function to return whether the specified button should be shown on compact
+     * notifications.
+     *
+     * @param buttonId Either NOTIFICATION_BUTTON_REWIND, NOTIFICATION_BUTTON_FAST_FORWARD or
+     *                 NOTIFICATION_BUTTON_SKIP.
+     * @return {@code true} if button should be shown, {@code false}  otherwise
+     */
+    private static boolean showButtonOnCompactNotification(int buttonId) {
+        return getCompactNotificationButtons().contains(buttonId);
+    }
+
+    public static boolean showRewindOnCompactNotification() {
+        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_REWIND);
+    }
+
+    public static boolean showFastForwardOnCompactNotification() {
+        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_FAST_FORWARD);
+    }
+
+    public static boolean showSkipOnCompactNotification() {
+        return showButtonOnCompactNotification(NOTIFICATION_BUTTON_SKIP);
+    }
+
     public static int getFeedOrder() {
         String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "0");
-        return Integer.valueOf(value);
+        return Integer.parseInt(value);
     }
 
     public static int getFeedCounterSetting() {
         String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "0");
-        return Integer.valueOf(value);
+        return Integer.parseInt(value);
     }
 
     /**
@@ -189,9 +239,9 @@ public class UserPreferences {
     }
 
     /**
-     * Returns true if notifications are persistent
+     * Returns true if the lockscreen background should be set to the current episode's image
      *
-     * @return {@code true} if notifications are persistent, {@code false}  otherwise
+     * @return {@code true} if the lockscreen background should be set, {@code false}  otherwise
      */
     public static boolean setLockscreenBackground() {
         return prefs.getBoolean(PREF_LOCKSCREEN_BACKGROUND, true);
@@ -243,7 +293,7 @@ public class UserPreferences {
     }
 
     public static int getSmartMarkAsPlayedSecs() {
-        return Integer.valueOf(prefs.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
+        return Integer.parseInt(prefs.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
     }
 
     public static boolean isAutoFlattr() {
@@ -260,20 +310,20 @@ public class UserPreferences {
 
     public static float getLeftVolume() {
         int volume = prefs.getInt(PREF_LEFT_VOLUME, 100);
-        if(volume == 100) {
-            return 1.0f;
-        } else {
-            return (float) (1 - (Math.log(100 - volume) / Math.log(100)));
-        }
+        return Converter.getVolumeFromPercentage(volume);
     }
 
     public static float getRightVolume() {
         int volume = prefs.getInt(PREF_RIGHT_VOLUME, 100);
-        if(volume == 100) {
-            return 1.0f;
-        } else {
-            return (float) (1 - (Math.log(100 - volume) / Math.log(100)));
-        }
+        return Converter.getVolumeFromPercentage(volume);
+    }
+
+    public static int getLeftVolumePercentage() {
+        return prefs.getInt(PREF_LEFT_VOLUME, 100);
+    }
+
+    public static int getRightVolumePercentage() {
+        return prefs.getInt(PREF_RIGHT_VOLUME, 100);
     }
 
     public static boolean shouldPauseForFocusLoss() {
@@ -284,7 +334,7 @@ public class UserPreferences {
 
     public static long getUpdateInterval() {
         String updateInterval = prefs.getString(PREF_UPDATE_INTERVAL, "0");
-        if(false == updateInterval.contains(":")) {
+        if(!updateInterval.contains(":")) {
             return readUpdateInterval(updateInterval);
         } else {
             return 0;
@@ -295,8 +345,8 @@ public class UserPreferences {
         String datetime = prefs.getString(PREF_UPDATE_INTERVAL, "");
         if(datetime.length() >= 3 && datetime.contains(":")) {
             String[] parts = datetime.split(":");
-            int hourOfDay = Integer.valueOf(parts[0]);
-            int minute = Integer.valueOf(parts[1]);
+            int hourOfDay = Integer.parseInt(parts[0]);
+            int minute = Integer.parseInt(parts[1]);
             return new int[] { hourOfDay, minute };
         } else {
             return new int[0];
@@ -308,7 +358,7 @@ public class UserPreferences {
     }
 
     public static int getParallelDownloads() {
-        return Integer.valueOf(prefs.getString(PREF_PARALLEL_DOWNLOADS, "4"));
+        return Integer.parseInt(prefs.getString(PREF_PARALLEL_DOWNLOADS, "4"));
     }
 
     public static int getEpisodeCacheSizeUnlimited() {
@@ -338,12 +388,12 @@ public class UserPreferences {
 
     public static int getImageCacheSize() {
         String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE);
-        int cacheSizeInt = Integer.valueOf(cacheSizeString);
+        int cacheSizeInt = Integer.parseInt(cacheSizeString);
         // if the cache size is too small the user won't get any images at all
         // that's bad, force it back to the default.
         if (cacheSizeInt < IMAGE_CACHE_SIZE_MINIMUM) {
             prefs.edit().putString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE).apply();
-            cacheSizeInt = Integer.valueOf(IMAGE_CACHE_DEFAULT_VALUE);
+            cacheSizeInt = Integer.parseInt(IMAGE_CACHE_DEFAULT_VALUE);
         }
         int cacheSizeMB = cacheSizeInt * 1024 * 1024;
         return cacheSizeMB;
@@ -369,6 +419,41 @@ public class UserPreferences {
     public static String[] getAutodownloadSelectedNetworks() {
         String selectedNetWorks = prefs.getString(PREF_AUTODL_SELECTED_NETWORKS, "");
         return TextUtils.split(selectedNetWorks, ",");
+    }
+
+    public static void setProxyConfig(ProxyConfig config) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(PREF_PROXY_TYPE, config.type.name());
+        if(TextUtils.isEmpty(config.host)) {
+            editor.remove(PREF_PROXY_HOST);
+        } else {
+            editor.putString(PREF_PROXY_HOST, config.host);
+        }
+        if(config.port <= 0 || config.port > 65535) {
+            editor.remove(PREF_PROXY_PORT);
+        } else {
+            editor.putInt(PREF_PROXY_PORT, config.port);
+        }
+        if(TextUtils.isEmpty(config.username)) {
+            editor.remove(PREF_PROXY_USER);
+        } else {
+            editor.putString(PREF_PROXY_USER, config.username);
+        }
+        if(TextUtils.isEmpty(config.password)) {
+            editor.remove(PREF_PROXY_PASSWORD);
+        } else {
+            editor.putString(PREF_PROXY_PASSWORD, config.password);
+        }
+        editor.apply();
+    }
+
+    public static ProxyConfig getProxyConfig() {
+        Proxy.Type type = Proxy.Type.valueOf(prefs.getString(PREF_PROXY_TYPE, Proxy.Type.DIRECT.name()));
+        String host = prefs.getString(PREF_PROXY_HOST, null);
+        int port = prefs.getInt(PREF_PROXY_PORT, 0);
+        String username = prefs.getString(PREF_PROXY_USER, null);
+        String password = prefs.getString(PREF_PROXY_PASSWORD, null);
+        return new ProxyConfig(type, host, port, username, password);
     }
 
     public static boolean shouldResumeAfterCall() {
@@ -468,6 +553,13 @@ public class UserPreferences {
              .apply();
     }
 
+    public static void setCompactNotificationButtons(List<Integer> items) {
+        String str = TextUtils.join(",", items);
+        prefs.edit()
+             .putString(PREF_COMPACT_NOTIFICATION_BUTTONS, str)
+             .apply();
+    }
+
     public static void setQueueLocked(boolean locked) {
         prefs.edit()
              .putBoolean(PREF_QUEUE_LOCKED, locked)
@@ -494,7 +586,7 @@ public class UserPreferences {
         if (valueFromPrefs.equals(context.getString(R.string.pref_episode_cache_unlimited))) {
             return EPISODE_CACHE_SIZE_UNLIMITED;
         } else {
-            return Integer.valueOf(valueFromPrefs);
+            return Integer.parseInt(valueFromPrefs);
         }
     }
 
@@ -502,15 +594,7 @@ public class UserPreferences {
         String[] selectedSpeeds = null;
         // If this preference hasn't been set yet, return the default options
         if (valueFromPrefs == null) {
-            String[] allSpeeds = context.getResources().getStringArray(R.array.playback_speed_values);
-            List<String> speedList = new ArrayList<>();
-            for (String speedStr : allSpeeds) {
-                float speed = Float.parseFloat(speedStr);
-                if (speed < 2.0001 && speed * 10 % 1 == 0) {
-                    speedList.add(speedStr);
-                }
-            }
-            selectedSpeeds = speedList.toArray(new String[speedList.size()]);
+            selectedSpeeds = new String[] { "1.00", "1.25", "1.50", "1.75", "2.00" };
         } else {
             try {
                 JSONArray jsonArray = new JSONArray(valueFromPrefs);
@@ -548,7 +632,7 @@ public class UserPreferences {
 
 
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
-        int cleanupValue = Integer.valueOf(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+        int cleanupValue = Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
         if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
             return new APQueueCleanupAlgorithm();
         } else if (cleanupValue == EPISODE_CLEANUP_NULL) {
@@ -716,5 +800,12 @@ public class UserPreferences {
      */
     public static int readEpisodeCacheSize(String valueFromPrefs) {
         return readEpisodeCacheSizeInternal(valueFromPrefs);
+    }
+
+    /**
+     * Evaluates whether Cast support (Chromecast, Audio Cast, etc) is enabled on the preferences.
+     */
+    public static boolean isCastEnabled() {
+        return prefs.getBoolean(PREF_CAST_ENABLED, false);
     }
 }

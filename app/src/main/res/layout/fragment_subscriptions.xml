@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <GridView
+      android:id="@+id/subscriptions_grid"
+      android:layout_width="match_parent"
+      android:numColumns="3"
+      android:horizontalSpacing="2dp"
+      android:verticalSpacing="2dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="center_horizontal">
+  </GridView>
+</LinearLayout>

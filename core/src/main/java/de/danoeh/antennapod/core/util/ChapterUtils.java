@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
@@ -63,11 +62,7 @@ public class ChapterUtils {
                 } else {
                     Log.i(TAG, "ChapterReader could not find any ID3 chapters");
                 }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ID3ReaderException e) {
+            } catch (IOException | ID3ReaderException e) {
                 e.printStackTrace();
             } finally {
                 if (in != null) {
@@ -116,9 +111,7 @@ public class ChapterUtils {
                         Log.i(TAG,
                                 "ChapterReader could not find any ID3 chapters");
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ID3ReaderException e) {
+                } catch (IOException | ID3ReaderException e) {
                     e.printStackTrace();
                 } finally {
                     if (in != null) {
@@ -144,8 +137,6 @@ public class ChapterUtils {
                 if (input != null) {
                     readOggChaptersFromInputStream(media, input);
                 }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {

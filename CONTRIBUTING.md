@@ -14,7 +14,7 @@ How to report a bug
 
 **Android version**: 5.x [Especially mention custom roms!]
 
-**Devide model**: 
+**Device model**: 
 
 **Expected behaviour**: 
 

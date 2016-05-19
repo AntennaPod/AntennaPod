@@ -1,17 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">안테나팟</string>
   <string name="feeds_label">피드</string>
   <string name="add_feed_label">팟캐스트 추가</string>
-  <string name="podcasts_label">팟캐스트</string>
   <string name="episodes_label">에피소드</string>
-  <string name="new_episodes_label">새 에피소드</string>
-  <string name="all_episodes_label">모든 에피소드</string>
   <string name="all_episodes_short_label">모두</string>
   <string name="favorite_episodes_label">즐겨찾기</string>
   <string name="new_label">신규</string>
-  <string name="waiting_list_label">추가 대기 목록</string>
   <string name="settings_label">설정</string>
   <string name="add_new_feed_label">팟캐스트 추가</string>
   <string name="downloads_label">다운로드</string>
@@ -25,9 +20,7 @@
   <string name="free_space_label">%1$s 남음</string>
   <string name="episode_cache_full_title">에피소드 캐시 꽉 참</string>
   <string name="episode_cache_full_message">에피소드 캐시 한계값에 도달했습니다. 설정에서 캐시 크기를 늘릴 수 있습니다.</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">최근에 발표</string>
-  <string name="episode_filter_label">새 에피소드만 표시</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">메뉴 열기</string>
   <string name="drawer_close">메뉴 닫기</string>
@@ -76,9 +69,7 @@
   <string name="auto_download_label">자동 다운로드에 포함</string>
   <string name="auto_download_apply_to_items_title">예전 에피소드에 적용</string>
   <string name="auto_download_apply_to_items_message">새로운 \'자동 다운로드\' 설정은 새 에피소드에 자동적으로 적용됩니다. 기존에 배포된 에피소드에도 적용할까요?</string>
-  <string name="auto_delete_label">에피소드 자동 삭제\n(전체 설정보다 우선)</string>
-  <string name="parallel_downloads_suffix">\u0020동시 다운로드</string>
-  <string name="feed_auto_download_global">전체 설정</string>
+  <string name="parallel_downloads_suffix">개 동시 다운로드</string>
   <string name="feed_auto_download_always">항상</string>
   <string name="feed_auto_download_never">안 함</string>
   <string name="send_label">보내기…</string>
@@ -107,8 +98,6 @@
   <string name="share_link_label">홈페이지 링크 공유</string>
   <string name="share_link_with_position_label">위치와 같이 링크 공유</string>
   <string name="share_feed_url_label">피드 URL 공유</string>
-  <string name="share_item_url_label">에피소드 URL 공유</string>
-  <string name="share_item_url_with_position_label">위치와 같이 에피소드 URL 공유</string>
   <string name="feed_delete_confirmation_msg">이 피드와 이 피드에서 다운로드한 모든 에피소드를 삭제하시려면 확인을 누르십시오.</string>
   <string name="feed_remover_msg">피드 삭제하는 중</string>
   <string name="load_complete_feed">전체 피드 새로고침</string>
@@ -143,8 +132,6 @@
   <string name="removed_from_favorites">즐겨찾기에서 제거함</string>
   <string name="visit_website_label">홈페이지 보기</string>
   <string name="support_label">Flattr하기</string>
-  <string name="enqueue_all_new">모두 대기열에 추가</string>
-  <string name="download_all">모두 다운로드</string>
   <string name="skip_episode_label">에피소드 건너뛰기</string>
   <string name="activate_auto_download">자동 다운로드 활성화</string>
   <string name="deactivate_auto_download">자동 다운로드 해제</string>
@@ -201,7 +188,6 @@
   <string name="playback_error_server_died">서버가 죽었습니다</string>
   <string name="playback_error_unknown">알 수 없는 오류</string>
   <string name="no_media_playing_label">재생 중인 미디어 없음</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">버퍼링 중</string>
   <string name="playbackservice_notification_title">팟캐스트 재생 중</string>
   <string name="unknown_media_key">안테나팟 - 알 수 없는 미디어 키: %1$d</string>
@@ -266,18 +252,18 @@
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">에피소드 정리</string>
   <string name="pref_episode_cleanup_summary">대기열에 없고 즐겨찾기에 넣지 않은 에피소드는 자동 다운로드에서 새 에피소드에 공간이 필요할 경우 제거될 수 있습니다.</string>
-  <string name="pref_pauseOnDisconnect_sum">헤드폰이나 블루투스가 연결 해제되었을 경우 일시정지</string>
-  <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰 다시 연결할 때 재생 계속</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">블루투스가 다시 연결되면 재생 재개 </string>
+  <string name="pref_pauseOnDisconnect_sum">헤드폰이나 블루투스가 연결 해제되었을 경우 일시정지합니다.</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰 다시 연결할 때 재생을 계속합니다.</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">블루투스가 다시 연결되면 재생을 계속합니다.</string>
   <string name="pref_hardwareForwardButtonSkips_title">빨리감기 버튼을 넘김 버튼으로</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">빨리감기 하드웨어 버튼을 눌렀을 경우 빨리감기 대신 다음 에피소드로 넘깁니다</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">빨리감기 하드웨어 버튼을 눌렀을 경우 빨리감기 대신 다음 에피소드로 넘깁니다.</string>
   <string name="pref_followQueue_sum">재생을 마쳤을 때 다음 대기열로 이동</string>
-  <string name="pref_auto_delete_sum">재생이 끝나면 에피소드 삭제</string>
+  <string name="pref_auto_delete_sum">재생이 끝나면 에피소드를 삭제합니다.</string>
   <string name="pref_auto_delete_title">자동 삭제</string>
   <string name="pref_smart_mark_as_played_sum">재생이 일정한 시간보다 (초 단위) 적게 남으면 에피소드를 재생한 것으로 표시</string>
   <string name="pref_smart_mark_as_played_title">똑똑하게 재생한 것으로 표시</string>
-  <string name="pref_skip_keeps_episodes_sum">에피소드를 넘겼을 경우에도 유지</string>
-  <string name="pref_skip_keeps_episodes_title">넘긴 에피소드를 유지 보관합니다</string>
+  <string name="pref_skip_keeps_episodes_sum">에피소드를 넘겼을 경우에도 유지합니다.</string>
+  <string name="pref_skip_keeps_episodes_title">넘긴 에피소드 유지 보관</string>
   <string name="playback_pref">재생</string>
   <string name="network_pref">네트워크</string>
   <string name="pref_autoUpdateIntervallOrTime_title">업데이트 주기 또는 하루 중 시각</string>
@@ -292,10 +278,10 @@
   <string name="pref_followQueue_title">연속 재생</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Wi-Fi 미디어 다운로드</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">헤드폰 연결 끊김</string>
-  <string name="pref_unpauseOnHeadsetReconnect_title">헤드폰 재연결</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">헤드폰 다시 연결</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">블루투스 다시 연결</string>
   <string name="pref_mobileUpdate_title">휴대전화망 업데이트</string>
-  <string name="pref_mobileUpdate_sum">휴대전화 데이터 연결을 통해 업데이트 허용</string>
+  <string name="pref_mobileUpdate_sum">휴대전화 데이터 연결을 통해 업데이트를 허용합니다</string>
   <string name="refreshing_label">새로 고치는 중</string>
   <string name="flattr_settings_label">Flattr 설정</string>
   <string name="pref_flattr_auth_title">Flattr 로그인</string>
@@ -344,9 +330,9 @@
   <string name="pref_gpodnet_sethostname_title">호스트 이름 설정</string>
   <string name="pref_gpodnet_sethostname_use_default_host">기본 호스트 사용</string>
   <string name="pref_expandNotify_title">알림 확장</string>
-  <string name="pref_expandNotify_sum">항상 알림에서 재생 버튼이 표시되도록 확장</string>
+  <string name="pref_expandNotify_sum">항상 알림에서 재생 버튼이 표시되도록 확장합니다.</string>
   <string name="pref_persistNotify_title">재생 조작 고정</string>
-  <string name="pref_persistNotify_sum">재생이 일시 중지했을 때에도 알림과 잠금 화면의 조작 기능 유지</string>
+  <string name="pref_persistNotify_sum">재생이 일시 중지했을 때에도 알림과 잠금 화면의 조작 기능을 유지합니다.</string>
   <string name="pref_lockscreen_background_title">잠금 화면 배경 설정</string>
   <string name="pref_lockscreen_background_sum">현재 에피소드의 이미지를 잠금 화면의 배경으로 설정합니다. 대신 이는 제3자 앱의 이미지도 표시하게 됩니다.</string>
   <string name="pref_showDownloadReport_title">다운로드 보고서 보기</string>
@@ -358,8 +344,8 @@
   <string name="pref_image_cache_size_title">이미지 캐시 크기</string>
   <string name="pref_image_cache_size_sum">이미지에 사용할 디스크 캐시 크기</string>
   <string name="crash_report_title">오류 보고</string>
-  <string name="crash_report_sum">최근의 오류 보고서를 전자메일로 보내기</string>
-  <string name="send_email">전자메일 보내기</string>
+  <string name="crash_report_sum">최근의 이상 종료 보고서를 이메일로 보냅니다.</string>
+  <string name="send_email">이메일 보내기</string>
   <string name="experimental_pref">실험적 기능</string>
   <string name="pref_sonic_title">소닉 미디어 플레이어</string>
   <string name="pref_sonic_message">내장 소닉 미디어 플레이어를 안드로이드 고유 미디어 플레이어와 Prestissimo 대신 사용합니다.</string>
@@ -386,8 +372,6 @@
   <string name="opml_import_label">OPML 가져오기</string>
   <string name="opml_directory_error">오류!</string>
   <string name="reading_opml_label">OPML 파일을 읽는 중</string>
-  <string name="opml_reader_error">OPML 문서를 읽는 중 오류가 발생했습니다:</string>
-  <string name="opml_import_error_dir_empty">가져오기 디렉터리가 비어 있습니다.</string>
   <string name="select_all_label">모두 선택</string>
   <string name="deselect_all_label">모두 선택 해제</string>
   <string name="select_options_label">선택…</string>
@@ -398,6 +382,7 @@
   <string name="export_error_label">내보내기 오류</string>
   <string name="opml_export_success_title">OPML 내보내기가 성공했습니다.</string>
   <string name="opml_export_success_sum">OPML 파일을 다음에 저장했습니다:\u0020</string>
+  <string name="opml_import_ask_read_permission">OPML 파일을 읽으려면 외부 저장소 접근이 필요합니다</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">취침 타이머 설정</string>
   <string name="disable_sleeptimer_label">취침 타이머 사용 않음</string>
@@ -453,6 +438,7 @@
   <string name="create_folder_label">폴더 만들기</string>
   <string name="choose_data_directory">데이터 폴더 선택</string>
   <string name="choose_data_directory_message">데이터 폴더를 선택하십시오. 안테나팟은 알아서 그 하위 디렉토리를 생성합니다.</string>
+  <string name="choose_data_directory_permission_rationale">데이터 폴더를 바꾸려면 외부 저장소 접근이 필요합니다</string>
   <string name="create_folder_msg">이름이 \"%1$s\"인 폴더를 만드시겠습니까?</string>
   <string name="create_folder_success">새 폴더를 만들었습니다</string>
   <string name="create_folder_error_no_write_access">이 폴더에 쓸 수 없습니다</string>
@@ -466,30 +452,21 @@
   <string name="set_to_default_folder">기본 폴더 선택</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">다른 앱이 소리를 낼 때 볼륨을 줄이지 않고 재생을 일시 중지</string>
   <string name="pref_pausePlaybackForFocusLoss_title">끼어들면 일시 중지</string>
-  <string name="pref_resumeAfterCall_sum">전화 통화가 끝난 후에 재생 다시 시작</string>
-  <string name="pref_resumeAfterCall_title">통화 후에 다시 시작</string>
+  <string name="pref_resumeAfterCall_sum">전화 통화가 끝난 후에 재생을 계속합니다.</string>
+  <string name="pref_resumeAfterCall_title">통화 후에 재생 계속</string>
   <string name="pref_restart_required">이 변경 사항을 적용하려면 안테나팟을 다시 시작해야 합니다.</string>
   <!--Online feed view-->
   <string name="subscribe_label">구독</string>
   <string name="subscribed_label">구독함</string>
   <string name="downloading_label">다운로드하는 중…</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">챕터 보이기</string>
-  <string name="show_shownotes_label">프로그램 메모 표시</string>
-  <string name="show_cover_label">그림 보이기</string>
   <string name="rewind_label">뒤로 감기</string>
   <string name="fast_forward_label">앞으로 감기</string>
   <string name="media_type_audio_label">오디오</string>
   <string name="media_type_video_label">비디오</string>
   <string name="navigate_upwards_label">위 단계로 이동</string>
-  <string name="butAction_label">기타 동작</string>
-  <string name="status_playing_label">에피소드를 재생하는 중입니다</string>
   <string name="status_downloading_label">에피소드를 다운로드하는 중입니다</string>
-  <string name="status_downloaded_label">에피소드를 다운로드했습니다</string>
-  <string name="status_unread_label">새로운 항목입니다</string>
   <string name="in_queue_label">에피소드가 대기열에 들어 있습니다</string>
-  <string name="new_episodes_count_label">새 에피소드 개수</string>
-  <string name="in_progress_episodes_count_label">듣기를 시작한 에피소드 개수</string>
   <string name="drag_handle_content_description">이 항목의 위치를 바꾸려면 드래그하십시오</string>
   <string name="load_next_page_label">다음 페이지 읽기</string>
   <!--Feed information screen-->
@@ -500,15 +477,15 @@
   <string name="episode_filters_description">자동 다운로드를 할 때 에피소드가 포함되어야할지 제외되어야할지 결정하는 규칙의 목록</string>
   <string name="episode_filters_include">포함</string>
   <string name="episode_filters_exclude">제외</string>
-  <string name="episode_filters_hint">단수 단어 \n\"복수 단어\"</string>
+  <string name="episode_filters_hint">개별 단어 \n\"여러 단어\"</string>
   <string name="keep_updated">최신 업데이트 유지</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">데이터베이스 업그레이드 중</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
   <string name="search_itunes_label">iTunes 검색</string>
-  <string name="select_label"><b>선택…</b></string>
   <string name="filter">필터</string>
+  <!--Episodes apply actions-->
   <string name="all_label">모두</string>
   <string name="selected_all_label">모든 에피소드 선택</string>
   <string name="none_label">없음</string>
@@ -521,7 +498,11 @@
   <string name="selected_downloaded_label">다운로드한 에피소드 선택</string>
   <string name="not_downloaded_label">다운로드 안 함</string>
   <string name="selected_not_downloaded_label">다운로드 안 한 에피소드 선택</string>
-  <string name="sort_title"><b>정렬…</b></string>
+  <string name="queued_label">대기열에 있음</string>
+  <string name="selected_queued_label">선택한 대기열의 에피소드</string>
+  <string name="not_queued_label">대기열에 없음</string>
+  <string name="selected_not_queued_label">선택한 대기열 외의 에피소드</string>
+  <!--Sort-->
   <string name="sort_title_a_z">제목 (A \u2192 Z)</string>
   <string name="sort_title_z_a">제목 (Z \u2192 A)</string>
   <string name="sort_date_new_old">시각 (최근 \u2192 과거)</string>
@@ -543,4 +524,7 @@
   <string name="audio_effects">오디오 효과</string>
   <string name="stereo_to_mono">다운믹스: 스테레오에서 모노로</string>
   <string name="sonic_only">소닉 전용</string>
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

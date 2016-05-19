@@ -25,6 +25,7 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Свежие</string>
   <string name="episode_filter_label">Только новые</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Открыть меню</string>
   <string name="drawer_close">Закрыть меню</string>
@@ -359,8 +360,6 @@
   <string name="opml_import_label">Импорт OPML</string>
   <string name="opml_directory_error">Ошибка</string>
   <string name="reading_opml_label">Чтение файла OPML</string>
-  <string name="opml_reader_error">Ошибка чтения файла OPML</string>
-  <string name="opml_import_error_dir_empty">Каталог для импорта пуст.</string>
   <string name="select_all_label">Отметить все</string>
   <string name="deselect_all_label">Снять все отметки</string>
   <string name="choose_file_from_filesystem">Из файловой системы</string>
@@ -503,4 +502,5 @@
   <string name="rating_later_label">Напомни позже</string>
   <string name="rating_now_label">Конечно, давай!</string>
   <!--Audio controls-->
+  <!--proxy settings-->
 </resources>

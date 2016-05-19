@@ -47,10 +47,10 @@ public class HandlerState {
     public HandlerState(Feed feed) {
         this.feed = feed;
         alternateUrls = new ArrayMap<>();
-        items = new ArrayList<FeedItem>();
-        tagstack = new Stack<SyndElement>();
+        items = new ArrayList<>();
+        tagstack = new Stack<>();
         namespaces = new ArrayMap<>();
-        defaultNamespaces = new Stack<Namespace>();
+        defaultNamespaces = new Stack<>();
         tempObjects = new ArrayMap<>();
     }
 

@@ -16,13 +16,13 @@ public interface ImageResource {
      * <p/>
      * For example implementations, see FeedMedia or ExternalMedia.
      */
-    public static final String SCHEME_MEDIA = "media";
+    String SCHEME_MEDIA = "media";
 
 
     /**
      * Parameter key for an encoded fallback Uri. This Uri MUST point to a local image file
      */
-    public static final String PARAM_FALLBACK = "fallback";
+    String PARAM_FALLBACK = "fallback";
 
     /**
      * Returns a Uri to the image or null if no image is available.
@@ -33,5 +33,5 @@ public interface ImageResource {
      * The Uri can also have an optional fallback-URL if loading the default URL
      * failed (see PARAM_FALLBACK).
      */
-    public Uri getImageUri();
+    Uri getImageUri();
 }

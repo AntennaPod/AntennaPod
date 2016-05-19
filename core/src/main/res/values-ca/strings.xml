@@ -1,17 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Canals</string>
   <string name="add_feed_label">Afegeix podcast</string>
-  <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">Episodis</string>
-  <string name="new_episodes_label">Episodis nous</string>
-  <string name="all_episodes_label">Tots els episodis</string>
   <string name="all_episodes_short_label">Tot</string>
   <string name="favorite_episodes_label">Favorits</string>
   <string name="new_label">Nous</string>
-  <string name="waiting_list_label">Llista d\'espera</string>
   <string name="settings_label">Configuració</string>
   <string name="add_new_feed_label">Afegeix podcast</string>
   <string name="downloads_label">Baixades</string>
@@ -25,9 +20,7 @@
   <string name="free_space_label">%1$s lliures</string>
   <string name="episode_cache_full_title">Caché d\'episodi completa</string>
   <string name="episode_cache_full_message">S\'ha arribat al límit de la caché. Pots incrementar la capacitat de la caché a les Opcions</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Publicats recentment</string>
-  <string name="episode_filter_label">Mostra només els episodis nous</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Obre menú</string>
   <string name="drawer_close">Tanca menú</string>
@@ -76,9 +69,7 @@
   <string name="auto_download_label">Inclou a baixades automàtiques</string>
   <string name="auto_download_apply_to_items_title">Aplica als episodis previs</string>
   <string name="auto_download_apply_to_items_message">El nou ajustament de <i>baixada automàtica</i> s\'aplicarà als nous episodis.\nVols que també sigui aplicat als episodis publicats prèviament?</string>
-  <string name="auto_delete_label">Esborra episodis automàticament\n(anula la preferència global)</string>
   <string name="parallel_downloads_suffix">\u0020baixades paral·leles</string>
-  <string name="feed_auto_download_global">Global</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
   <string name="send_label">Enviar...</string>
@@ -108,8 +99,6 @@
   <string name="share_link_label">Comparteix l\'enllaç</string>
   <string name="share_link_with_position_label">Comparteix enllaç amb posició</string>
   <string name="share_feed_url_label">Comparteix adreça del canal</string>
-  <string name="share_item_url_label">Comparteix adreça d\'Episodi</string>
-  <string name="share_item_url_with_position_label">Comparteix adreça d\'Episodi amb posició</string>
   <string name="feed_delete_confirmation_msg">Confirmeu que, efectivament, voleu suprimir aquest canal i tots els episodis que us n\'heu baixat.</string>
   <string name="feed_remover_msg">S\'està esborrant el canal</string>
   <string name="load_complete_feed">S\'ha actualitzat el canal</string>
@@ -144,8 +133,6 @@
   <string name="removed_from_favorites">Tret de favorits</string>
   <string name="visit_website_label">Visita el lloc web</string>
   <string name="support_label">Comparteix amb Flattr</string>
-  <string name="enqueue_all_new">Posa-ho tot a la cua</string>
-  <string name="download_all">Baixa-ho tot</string>
   <string name="skip_episode_label">Omet l\'episodi</string>
   <string name="activate_auto_download">Activa baixades automàtiques</string>
   <string name="deactivate_auto_download">Desactiva les baixades automàtiques</string>
@@ -203,7 +190,6 @@
   <string name="playback_error_server_died">El servidor no està operatiu</string>
   <string name="playback_error_unknown">Error desconegut</string>
   <string name="no_media_playing_label">No s\'està reproduint res</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">S\'està carregant</string>
   <string name="playbackservice_notification_title">Podcast en reproducció</string>
   <string name="unknown_media_key">AntennaPod - Control desconegut: %1$d</string>
@@ -388,8 +374,6 @@
   <string name="opml_import_label">Importació OPML</string>
   <string name="opml_directory_error">Error!</string>
   <string name="reading_opml_label">S\'està llegint el fitxer OPML</string>
-  <string name="opml_reader_error">S\'ha produït un error en llegir el document OPML:</string>
-  <string name="opml_import_error_dir_empty">El directori d\'importacions és buit.</string>
   <string name="select_all_label">Selecciona-ho tot</string>
   <string name="deselect_all_label">Deselecciona-ho tot</string>
   <string name="select_options_label">Selecciona...</string>
@@ -459,6 +443,7 @@
   <string name="create_folder_label">Crea una carpeta</string>
   <string name="choose_data_directory">Selecció de la carpeta de dades</string>
   <string name="choose_data_directory_message">Selecciona l\'arrel del teu directori d\'informació. AntennaPod crearà els subdirectoris pertinents</string>
+  <string name="choose_data_directory_permission_rationale">Es requereix accés a l\'emmagatzematge extern per canviar el directori d\'informació</string>
   <string name="create_folder_msg">Voleu crear una nova carpeta amb el nom \"%1$s\"?</string>
   <string name="create_folder_success">S\'ha creat la nova carpeta</string>
   <string name="create_folder_error_no_write_access">No es pot escriure dins d\'aquesta carpeta</string>
@@ -480,22 +465,13 @@
   <string name="subscribed_label">Subscrit</string>
   <string name="downloading_label">S\'està baixant...</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Mostra els capítols</string>
-  <string name="show_shownotes_label">Mostra les notes del programa</string>
-  <string name="show_cover_label">Mosta la imatge</string>
   <string name="rewind_label">Rebobina</string>
   <string name="fast_forward_label">Avança ràpidament</string>
   <string name="media_type_audio_label">Àudio</string>
   <string name="media_type_video_label">Vídeo</string>
   <string name="navigate_upwards_label">Navega cap amunt</string>
-  <string name="butAction_label">Més accions</string>
-  <string name="status_playing_label">S\'està reproduïnt l\'episodi</string>
   <string name="status_downloading_label">S\'està baixant l\'episodi</string>
-  <string name="status_downloaded_label">S\'ha baixat l\'episodi</string>
-  <string name="status_unread_label">L\'element és nou</string>
   <string name="in_queue_label">S\'ha afegit l\'episodi a la cua</string>
-  <string name="new_episodes_count_label">Nombre d\'episodis nous</string>
-  <string name="in_progress_episodes_count_label">Nombre d\'episodis que heu començat a escoltar</string>
   <string name="drag_handle_content_description">Arrossegueu l\'element per canviar-ne la posició</string>
   <string name="load_next_page_label">Carrega la següent pàgina</string>
   <!--Feed information screen-->
@@ -513,8 +489,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
   <string name="search_itunes_label">Cerca a iTunes</string>
-  <string name="select_label"><b>Selecciona...</b></string>
   <string name="filter">Filtrar</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Tot</string>
   <string name="selected_all_label">Selecciona tots els episodis</string>
   <string name="none_label">Cap</string>
@@ -531,7 +507,7 @@
   <string name="selected_queued_label">Episodis en cua seleccionats</string>
   <string name="not_queued_label">No a la cua</string>
   <string name="selected_not_queued_label">Episodis seleccionats i no a la cua</string>
-  <string name="sort_title"><b>Ordena per...</b></string>
+  <!--Sort-->
   <string name="sort_title_a_z">Títol (A \u2192 Z)</string>
   <string name="sort_title_z_a">Títol (Z \u2192 A)</string>
   <string name="sort_date_new_old">Data (Nou \u2192 Antic)</string>
@@ -553,4 +529,7 @@
   <string name="audio_effects">Efectes de so</string>
   <string name="stereo_to_mono">Downmix: D\'estereo a mono</string>
   <string name="sonic_only">Només Sonic</string>
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

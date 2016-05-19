@@ -22,6 +22,7 @@
   <!--New episodes fragment-->
   <string name="recently_published_episodes_label">Nyligt udgivet</string>
   <string name="episode_filter_label">Hvis kun nye episoder</string>
+  <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Åben menu</string>
   <string name="drawer_close">Luk menu</string>
@@ -257,8 +258,6 @@
   <string name="opml_import_label">OPML import</string>
   <string name="opml_directory_error">FEJL!</string>
   <string name="reading_opml_label">Indlæser OPML fil</string>
-  <string name="opml_reader_error">En fejl opstod under indlæsning af opml documentet:</string>
-  <string name="opml_import_error_dir_empty">Import mappen er tom.</string>
   <string name="select_all_label">Vælg alt</string>
   <string name="deselect_all_label">Fravælg alt</string>
   <string name="opml_export_label">OPML eksport</string>
@@ -344,4 +343,5 @@
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra single-purpose apps…</string>
   <!--Rating dialog-->
   <!--Audio controls-->
+  <!--proxy settings-->
 </resources>

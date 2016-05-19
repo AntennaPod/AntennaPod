@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/media_route_menu_item"
+        android:title="@string/cast_media_route_menu_title"
+        custom:actionProviderClass="de.danoeh.antennapod.core.cast.SwitchableMediaRouteActionProvider"
+        custom:showAsAction="ifRoom"/>
+</menu>
