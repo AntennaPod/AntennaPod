@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "com.android.application"
 apply plugin: "me.tatarka.retrolambda"
+apply plugin: 'com.github.triplet.play'
 
 repositories {
     maven { url "https://jitpack.io" }
@@ -137,6 +138,11 @@ android {
     aaptOptions {
         additionalParameters "--no-version-vectors"
     }
+}
+
+play {
+    serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
+    pk12File = file('../serviceaccount-c3d7d0f61387.p12')
 }
 
 // about.html is templatized so that we can automatically insert

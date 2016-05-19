@@ -1,0 +1,40 @@
+AntennaPod est un lecteur et gestionnaire de podcast permettant l'accès à des millions de podcast gratuits ou payants produit aussi bien par des podcasters indépendants que de gros éditeurs comme la BBC, NPR ou CNN. Ajoutez, importez et exportez leurs flux facilement à partir d'ITunes, de fichiers OPML ou simplement à partir de liens RSS. Économisez votre temps, votre batterie et votre consommation internet grâce à une automatisation puissante des téléchargements (quand, à quel rythme et à partir de quel réseau wifi) et de la suppression des épisodes (à partir d'un certains temps ou des favoris)<br>
+Encore plus important : téléchargez, streamez ou mettez dans votre liste de lecture vos épisodes et écoutez les à votre manière grâce à une vitesse de lecture réglable, au support des chapitres et une fonction de mise en veille automatique. Vous pouvez même montrer votre appréciation aux créateurs de contenu avec notre intégration de Flattr.
+
+Programmé par des fans de podcast, AntennaPod est gratuit dans tous les sens du terme : open source, aucun cout et pas de publicité.
+
+<b>Caractéristiques complètes :</b><br>
+Importer, gérer et écouter<br>
+&#8226; Ajouter et importer à partir d'iTunes, gPodder.net, de fichiers OPML ou de liens RSS ou Atom<br>
+&#8226; Gérez la lecture de n'importe où : widget sur l'écran d'accueil, notification système, commande casque ou bluetooth<br>
+&#8226; Ecoutez à votre façon grâce à une vitesse de lecture réglable, au support des chapitres (MP3, VorbisComment et Podlove), enregistrement de la position de lecture et une mise en veille automatique puissante (secouer pour prolonger le minuteur, baisse du volume et ralentissement de la lecture)<br>
+&#8226; Accès aux flux et épisodes protégés par mot de passe<br>
+&#8226; Tirez profit des flux à plusieurs pages (www.podlove.org/paged-feeds)
+
+GARDEZ TRACE, PARTAGEZ & APPRECIEZ<br>
+&#8226; Gardez trace des meilleurs épisodes en les marquant comme favoris<br>
+&#8226; Retrouvez un épisode à partir de l'historique de lecture ou en cherchant (les titres et les commentaires des épisodes)<br>
+&#8226; Partagez vos épisodes ou flux à travers des options de réseaux sociaux et email avancées, du service gPodder.net ou par des exports OPML<br>
+&#8226; Soutenez les créateurs de contenu avec l'intégration à Flattr et la possibilité de flatter automatiquement
+
+CONTRÔLER LE SYSTÈME<br>
+&#8226; Prenez le contrôle avec l'automatisation des téléchargements : choisissez les flux, empêchez l'utilisation du réseau mobile, sélectionnez les réseaux WIFI à utiliser, exigez que le téléphone soit en train de charger et spécifiez quand ou à quel rythme<br>
+&#8226; Gérez l'espace de stockage en paramétrant le nombre d'épisodes à garder, de leurs suppressions automatique (à partir de vos favoris et du statut de lecture) et de l'emplacement où les enregistrer<br>
+&#8226; Utilisez AntennaPod dans votre langue (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
+&#8226; Adaptez à votre environnement avec un thème clair ou sombre<br>
+&#8226; Sauvegardez vos abonnements avec l'intération à gPodder.net ou des exports OPML
+
+<b>Rejoignez la communauté d'AntennaPod !</b><br>
+AntennaPod est développé activement par des volontaires. Vous pouvez aussi contribuer avec du code ou des commentaires !
+
+GitHub est l'endroit où aller pour demander de nouvelles options, faire part de bug ou pour contribuer au code :<br>
+www.github.com/AntennaPod/AntennaPod
+
+Notre groupe Google est l'endroit où aller pour partager vos idées, moments préférés de podcast et vos remerciements aux volontaires :<br>
+https://groups.google.com/forum/#!forum/antennapod
+
+Transifex est le lieu où vous pouvez aider à la traduction :<br>
+www.transifex.com/antennapod/antennapod
+
+Jetez un coup d’œil à notre programme de version Beta pour bénéficier des dernières options :<br>
+www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

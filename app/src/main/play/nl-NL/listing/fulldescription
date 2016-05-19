@@ -1,0 +1,20 @@
+AntennaPod is een open-source podcast manager voor Android 2.3.3 en hoger. Het biedt alle basisfuncties die u verwacht van een podcatcher, zoals streaming en downloaden van episodes, alle feeds automatisch verversen of episodes aan een wachtrij toevoegen om ze later te luisteren. Bovendien laat AntennaPod je podcasts en afleveringen vanuit de app flattr'en.
+
+So far the following features are implemented:
+
+* Episodes downloaden en streamen
+* Variabele afspeelsnelheid (vereist Presto Sound Library of Prestissimo)
+* Support voor Atom en RSS feeds
+* Ondersteuning voor wachtwoord-beveiligde feeds en afleveringen
+* Support for searching iTunes listings
+* OPML import en export
+* Flattr integration including automatic flattring
+* Homescreen widget voor de player
+* Zoekfunctie
+* Automatische feed updates
+* Automatisch downloaden van nieuwe episodes
+* Sleep timer
+* Toegang tot de gpodder.net podcast gids
+* Abonnementen synchroniseren met de gpodder.net dienst
+* Supports MP3 chapters, VorbisComment chapters and Podlove Simple Chapters
+* Supports paged feeds (http://podlove.org/paged-feeds/)

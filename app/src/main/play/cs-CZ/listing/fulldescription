@@ -1,0 +1,20 @@
+AntennaPod je open-source správce podcastů pro Android 2.3.3 a novější. Nabízí všechny základní funkce, které můžete očekávat od podcast klienta, jako jsou přehrávání streamu a stahování epizod, automatické sledování jednotlivých podcastů nebo přidávání nových epizod do fronty pro pozdější poslech. Navíc AntennaPod umožňuje podpořit podcasty přímo z aplikace pomocí služby flattr.
+
+Zatím jsou zavedeny tyto možnosti:
+
+* Stahování a streamovaný poslech epizod
+* Různé rychlosti přehrávání (vyžaduje knihovnu Presto Sound nebo Prestissimo)
+* Podpora Atom a RSS zdrojů
+* Podpora pro zdroje a epizody chráněné heslem
+* Support for searching iTunes listings
+* OPML import a export
+* Integrace pro Flattr včetně automatického flattrování
+* Widget přehrávače na domácí obrazovku
+* Vyhledávání
+* Automatické sledování zdrojů
+* Automatické stahování nových epizod
+* Časovač vypnutí
+* Přístup do seznamu podcastů na gpodder.net
+* Synchronizace přihlášené služby na gpodder.net
+* Podporuje MP3 kapitoly, VorbisComment kapitoly a Podlove Simple Chapters
+* Podporuje stránkované kanály (http://podlove.org/paged-feeds/)

@@ -1,0 +1,20 @@
+AntennaPod 是一款开源播客管理软件, 提供 Android 2.3.3 及以上平台运行. 它提供了所有你所期望的播客基本功能, 例如在线流媒体和下载收听曲目, 以及自动刷新所有订阅和添加到播放列表. 此外, AntennaPod 支持应用内 Flattr 播客和节目表.
+
+So far the following features are implemented:
+
+* 在线流媒体和下载收听曲目
+* 变速播放 (需要 Presto 声音库或者 Prestissimo)
+* 支持 Atom 和 RSS 订阅
+* 支持加密的订阅
+* Support for searching iTunes listings
+* OPML 文件导入导出
+* Flattr integration including automatic flattring
+* 播放器主屏幕窗口小部件 (Widget)
+* 搜索
+* 自动订阅更新
+* 自动下载新曲目
+* 睡眠计时器
+* 访问 gpodder.net 播客目录
+* 同步 gpodder.net 订阅服务
+* Supports MP3 chapters, VorbisComment chapters and Podlove Simple Chapters
+* Supports paged feeds (http://podlove.org/paged-feeds/)
