@@ -185,8 +185,7 @@ public class HttpDownloader extends Downloader {
             if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 String contentType = response.header("Content-Type");
                 Log.d(TAG, "content type: " + contentType);
-                if(!contentType.startsWith("audio/") && !contentType.startsWith("video/") &&
-                        !contentType.equals("application/octet-stream")) {
+                if(contentType.startsWith("text/")) {
                     onFail(DownloadError.ERROR_FILE_TYPE, null);
                     return;
                 }
