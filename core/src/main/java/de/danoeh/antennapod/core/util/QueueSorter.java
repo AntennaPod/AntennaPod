@@ -59,6 +59,7 @@ public class QueueSorter {
 
                     return -1 * (duration1 - duration2);
                 };
+                break;
             default:
         }
 

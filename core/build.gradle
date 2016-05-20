@@ -63,3 +63,11 @@ dependencies {
     compile "com.android.support:mediarouter-v7:$supportVersion"
     compile "com.google.android.gms:play-services-cast:$playServicesVersion"
 }
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint" << "-Xlint:-deprecation" << "-Xlint:-serial"
+        }
+    }
+}

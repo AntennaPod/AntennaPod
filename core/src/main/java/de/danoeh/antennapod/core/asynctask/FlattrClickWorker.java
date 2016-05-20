@@ -106,7 +106,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
             return ExitCode.NO_THINGS;
         }
 
-        List<Future> dbFutures = new LinkedList<>();
+        List<Future<?>> dbFutures = new LinkedList<>();
         for (FlattrThing thing : flattrQueue) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Processing " + thing.getTitle());
 
@@ -131,7 +131,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
             }
         }
 
-        for (Future f : dbFutures) {
+        for (Future<?> f : dbFutures) {
             try {
                 f.get();
             } catch (InterruptedException | ExecutionException e) {

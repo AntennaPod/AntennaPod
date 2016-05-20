@@ -127,7 +127,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
      *
      * @return PreferenceActivity if the API level is greater than 10, PreferenceActivityGingerbread otherwise.
      */
-    public static Class getPreferenceActivity() {
+    public static Class<? extends Activity> getPreferenceActivity() {
         if (Build.VERSION.SDK_INT > 10) {
             return PreferenceActivity.class;
         } else {

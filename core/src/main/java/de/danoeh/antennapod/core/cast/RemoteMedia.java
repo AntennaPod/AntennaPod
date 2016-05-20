@@ -25,6 +25,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * Playable implementation for media on a Cast Device for which a local version of
  * {@link de.danoeh.antennapod.core.feed.FeedMedia} hasn't been found.
@@ -342,5 +344,14 @@ public class RemoteMedia implements Playable {
             return feed != null && TextUtils.equals(feedUrl, feed.getDownload_url());
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(downloadUrl)
+                .append(feedUrl)
+                .append(itemIdentifier)
+                .toHashCode();
     }
 }

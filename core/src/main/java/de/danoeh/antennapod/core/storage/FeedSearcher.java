@@ -33,15 +33,18 @@ public class FeedSearcher {
 
         List<SearchResult> result = new ArrayList<>();
 
-        FutureTask<List<FeedItem>>[] tasks = new FutureTask[4];
-        (tasks[0] = DBTasks.searchFeedItemContentEncoded(context, selectedFeed, query)).run();
-        (tasks[1] = DBTasks.searchFeedItemDescription(context, selectedFeed, query)).run();
-        (tasks[2] = DBTasks.searchFeedItemChapters(context, selectedFeed, query)).run();
-        (tasks[3] = DBTasks.searchFeedItemTitle(context, selectedFeed, query)).run();
+        List<FutureTask<List<FeedItem>>> tasks = new ArrayList<>();
+        tasks.add(DBTasks.searchFeedItemContentEncoded(context, selectedFeed, query));
+        tasks.add(DBTasks.searchFeedItemDescription(context, selectedFeed, query));
+        tasks.add(DBTasks.searchFeedItemChapters(context, selectedFeed, query));
+        tasks.add(DBTasks.searchFeedItemTitle(context, selectedFeed, query));
+        for (FutureTask<List<FeedItem>> task : tasks) {
+            task.run();
+        }
         try {
-            for (int i = 0; i < tasks.length; i++) {
-                FutureTask task = tasks[i];
-                List<FeedItem> items = (List<FeedItem>) task.get();
+            for (int i = 0; i < tasks.size(); i++) {
+                FutureTask<List<FeedItem>> task = tasks.get(i);
+                List<FeedItem> items = task.get();
                 for (FeedItem item : items) {
                     result.add(new SearchResult(item, values[i], subtitles[i]));
                 }

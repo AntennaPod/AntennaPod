@@ -42,11 +42,11 @@ public class PlaybackServiceTaskManager {
     private static final int SCHED_EX_POOL_SIZE = 2;
     private final ScheduledThreadPoolExecutor schedExecutor;
 
-    private ScheduledFuture positionSaverFuture;
-    private ScheduledFuture widgetUpdaterFuture;
-    private ScheduledFuture sleepTimerFuture;
+    private ScheduledFuture<?> positionSaverFuture;
+    private ScheduledFuture<?> widgetUpdaterFuture;
+    private ScheduledFuture<?> sleepTimerFuture;
     private volatile Future<List<FeedItem>> queueFuture;
-    private volatile Future chapterLoaderFuture;
+    private volatile Future<?> chapterLoaderFuture;
 
     private SleepTimer sleepTimer;
 
