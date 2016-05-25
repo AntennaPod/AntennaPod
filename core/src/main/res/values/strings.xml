@@ -232,9 +232,10 @@
     <string name="move_to_top_label">Move to top</string>
     <string name="move_to_bottom_label">Move to bottom</string>
     <string name="sort">Sort</string>
-    <string name="alpha">Alphabetically</string>
     <string name="date">Date</string>
     <string name="duration">Duration</string>
+    <string name="episode_title">Episode title</string>
+    <string name="feed_title">Feed title</string>
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
     <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
