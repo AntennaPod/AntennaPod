@@ -2,8 +2,12 @@
 
 This is the official repository of AntennaPod, the easy-to-use, flexible and open-source podcast manager for Android.
 
-[![Download from Google Play](http://www.android.com/images/brand/android_app_on_play_large.png "Download from Google Play")](https://play.google.com/store/apps/details?id=de.danoeh.antennapod)
-[![AntennaPod on fdroid.org](https://camo.githubusercontent.com/7df0eafa4433fa4919a56f87c3d99cf81b68d01c/68747470733a2f2f662d64726f69642e6f72672f77696b692f696d616765732f632f63342f462d44726f69642d627574746f6e5f617661696c61626c652d6f6e2e706e67 "Download from fdroid.org")](https://f-droid.org/repository/browse/?fdid=de.danoeh.antennapod)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+      alt="Get it on Google Play"
+      height="90">](https://play.google.com/store/apps/details?id=de.danoeh.antennapod)
+[<img src="https://f-droid.org/badge/get-it-on.png"
+      alt="Get it on F-Droid"
+      height="90">](https://f-droid.org/app/de.danoeh.antennapod)
 
 ## Feedback
 You can use the [AntennaPod Google Group](https://groups.google.com/forum/#!forum/antennapod) for discussions about the app.
