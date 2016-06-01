@@ -94,7 +94,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                     }
                 };
 
-                Snackbar snackbar = Snackbar.make(root, getString(R.string.marked_as_read_label),
+                Snackbar snackbar = Snackbar.make(root, getString(R.string.marked_as_seen_label),
                         Snackbar.LENGTH_LONG);
                 snackbar.setAction(getString(R.string.undo), v -> {
                     DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
