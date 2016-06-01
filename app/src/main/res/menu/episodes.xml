@@ -24,4 +24,11 @@
         custom:showAsAction="collapseActionView"
         android:icon="?attr/navigation_accept"/>
 
+    <item
+        android:id="@+id/mark_all_seen_item"
+        android:title="@string/mark_all_seen_label"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:icon="?attr/navigation_accept"/>
+
 </menu>
