@@ -1,24 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Канали</string>
   <string name="statistics_label">Статистика</string>
   <string name="add_feed_label">Додати подкаст</string>
-  <string name="podcasts_label">Подкасти</string>
   <string name="episodes_label">Епізоди</string>
-  <string name="new_episodes_label">Нові епізоди</string>
-  <string name="all_episodes_label">Всі епізоди</string>
   <string name="all_episodes_short_label">Всі</string>
   <string name="favorite_episodes_label">Улюблені</string>
   <string name="new_label">Нові</string>
-  <string name="waiting_list_label">Черга</string>
   <string name="settings_label">Налаштування</string>
   <string name="add_new_feed_label">Додати подкаст</string>
   <string name="downloads_label">Завантаження</string>
   <string name="downloads_running_label">В процесі</string>
   <string name="downloads_completed_label">Завершено</string>
   <string name="downloads_log_label">Журнал</string>
+  <string name="subscriptions_label">Підписки</string>
+  <string name="subscriptions_list_label">Перелік підписок</string>
   <string name="cancel_download_label">Скасувати завантаження</string>
   <string name="playback_history_label">Що грало</string>
   <string name="gpodnet_main_label">gpodder.net</string>
@@ -26,9 +23,6 @@
   <string name="free_space_label">%1$s вільно</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
   <string name="episode_cache_full_message">Досягнута межа розміра кеша епізодів. Розмір кеша можна збільшити в налаштуваннях.</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Щойно опубліковано</string>
-  <string name="episode_filter_label">Показати тількі нові епізоди</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Загальний час прослуханих подкастів:</string>
   <string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
@@ -80,9 +74,9 @@
   <string name="auto_download_label">Включити до автозавантаження</string>
   <string name="auto_download_apply_to_items_title">Застосувати до попередніх епізодів</string>
   <string name="auto_download_apply_to_items_message">Нове налаштування <i>Автозагрузка</i> буде автоматично застосоване до нових епізодів.\nБажаєте також застосувати його до тих епізодів що було опубліковано раніше?</string>
-  <string name="auto_delete_label">Автоматичне видалення епізода\n(перевизначити глобальне налаштування за замовчуванням)</string>
+  <string name="auto_delete_label">Автовидалення епізода</string>
   <string name="parallel_downloads_suffix">\u0020паралельних завантажень</string>
-  <string name="feed_auto_download_global">Для всіх</string>
+  <string name="feed_auto_download_global">За замовчанням</string>
   <string name="feed_auto_download_always">Завжди</string>
   <string name="feed_auto_download_never">Ніколи</string>
   <string name="send_label">Відправити…</string>
@@ -113,8 +107,8 @@
   <string name="share_link_label">Поділитися URL сайту</string>
   <string name="share_link_with_position_label">Поділитись посиланням на позицію</string>
   <string name="share_feed_url_label">Поділитись посиланням на канал</string>
-  <string name="share_item_url_label">Поділитись посиланням на епізод</string>
-  <string name="share_item_url_with_position_label">Поділитись посиланням на епізод з позицією</string>
+  <string name="share_item_url_label">Поділитись посиланням на файл епізода</string>
+  <string name="share_item_url_with_position_label">Поділитись посиланням на файл епізода з позицією</string>
   <string name="feed_delete_confirmation_msg">Ви впенені що хочете видаліти канал та всі завантажені епізоди?</string>
   <string name="feed_remover_msg">Удаляю канал</string>
   <string name="load_complete_feed">Оновити канал цілком</string>
@@ -150,8 +144,6 @@
   <string name="removed_from_favorites">Видалено з улюблених</string>
   <string name="visit_website_label">Відкрити сайт</string>
   <string name="support_label">Підтримати за допомогою Flattr</string>
-  <string name="enqueue_all_new">Додати до черги</string>
-  <string name="download_all">Завантажити все</string>
   <string name="skip_episode_label">Пропустити епізод</string>
   <string name="activate_auto_download">Включити автозавантаження</string>
   <string name="deactivate_auto_download">Виключити автозавантаження</string>
@@ -173,6 +165,7 @@
   <string name="download_error_unknown_host">Невідомий host</string>
   <string name="download_error_unauthorized">Помилка автентифікації</string>
   <string name="download_error_file_type_type">Помилка типа файла</string>
+  <string name="download_error_forbidden">Заборонено</string>
   <string name="cancel_all_downloads_label">Скасувати всі завантаження</string>
   <string name="download_canceled_msg">Завантаження скасоване</string>
   <string name="download_canceled_autodownload_enabled_msg">Завантаження скасоване\n<i>Автозавантаження</i> для цього елемента вимкнуто</string>
@@ -211,7 +204,6 @@
   <string name="playback_error_server_died">Сервер помер</string>
   <string name="playback_error_unknown">Невідома помилка</string>
   <string name="no_media_playing_label">Немає що грати</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Буферізую</string>
   <string name="playbackservice_notification_title">Грає подкаст</string>
   <string name="unknown_media_key">AntennaPod - Невідомий медіа ключ: %1$d</string>
@@ -270,6 +262,8 @@
   <string name="no_chapters_label">В цьому епізоді немає розділів.</string>
   <string name="no_shownotes_label">До цього епізода немає нотаток.</string>
   <!--Preferences-->
+  <string name="storage_pref">Зберігання</string>
+  <string name="project_pref">Проект</string>
   <string name="other_pref">Інше</string>
   <string name="about_pref">Про програму</string>
   <string name="queue_label">Черга</string>
@@ -362,6 +356,12 @@
   <string name="pref_expandNotify_sum">Завжди розгортати повідомлення, щоб показати кнопки керування.</string>
   <string name="pref_persistNotify_title">Завжди показувати елементи керування відтворенням</string>
   <string name="pref_persistNotify_sum">Показувати повідомлення та елементи керування на екрані блокування в режимі паузи.</string>
+  <string name="pref_compact_notification_buttons_title">Налаштувати кнопки на екрані блокування</string>
+  <string name="pref_compact_notification_buttons_sum">Змінити кнопки на екрані блокування. Кнопки програвання/пауза завжди включені.</string>
+  <string name="pref_compact_notification_buttons_dialog_title">Оберіть не більше ніж %1$d кнопок</string>
+  <string name="pref_compact_notification_buttons_dialog_error">Ви можете обрати не більше ніж %1$d кнопок.</string>
+  <string name="pref_show_subscriptions_in_drawer_title">Показати підписки</string>
+  <string name="pref_show_subscriptions_in_drawer_sum">Показати перелік підписок безпосередньо в меню навігації</string>
   <string name="pref_lockscreen_background_title">Змінювати фон екрана блокування</string>
   <string name="pref_lockscreen_background_sum">Встановити картинку поточного епізода як фон екрана блокування. Побічний ефект - це зображення буде також видно в інших додатках.</string>
   <string name="pref_showDownloadReport_title">Показати звіт про завантаження</string>
@@ -381,8 +381,10 @@
   <string name="pref_current_value">Поточне значення: %1$s</string>
   <string name="pref_proxy_title">Проксі</string>
   <string name="pref_proxy_sum">Застосувати проксі сервер</string>
+  <string name="pref_faq">ЧаПи</string>
   <string name="pref_known_issues">Відомі проблеми</string>
-  <string name="pref_no_browser_found">Веб-браузер не знайдено.\"</string>
+  <string name="pref_no_browser_found">Веб браузер не знайдено.</string>
+  <string name="pref_cast_title">Підтримка для Chromecast</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -501,22 +503,13 @@
   <string name="subscribed_label">Підписано</string>
   <string name="downloading_label">Завантажується…</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Показати глави</string>
-  <string name="show_shownotes_label">Показати нотатки</string>
-  <string name="show_cover_label">Показати зображення</string>
   <string name="rewind_label">Перемотка назад</string>
   <string name="fast_forward_label">Перемотка вперед</string>
   <string name="media_type_audio_label">Звук</string>
   <string name="media_type_video_label">Відео</string>
   <string name="navigate_upwards_label">Догори</string>
-  <string name="butAction_label">Додаткові дії</string>
-  <string name="status_playing_label">Епізод програється</string>
   <string name="status_downloading_label">Епізод завантажується</string>
-  <string name="status_downloaded_label">Епізод завантажено</string>
-  <string name="status_unread_label">Нове</string>
   <string name="in_queue_label">Епізод чекає в черзі</string>
-  <string name="new_episodes_count_label">Кількість нових епізодів</string>
-  <string name="in_progress_episodes_count_label">Кількість епізодів що ви почали слухати</string>
   <string name="drag_handle_content_description">Перетягніть щоб змінити позицію</string>
   <string name="load_next_page_label">Завантажити наступну сторінку</string>
   <!--Feed information screen-->
@@ -534,8 +527,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <string name="search_itunes_label">Пошук в iTunes</string>
-  <string name="select_label"><b>Обрати…</b></string>
   <string name="filter">Фільтр</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Всі</string>
   <string name="selected_all_label">Обрано всі епізоди</string>
   <string name="none_label">Жодного</string>
@@ -552,7 +545,7 @@
   <string name="selected_queued_label">Обрано епізоди що в черзі</string>
   <string name="not_queued_label">Не в черзі</string>
   <string name="selected_not_queued_label">Обрано епізоди що не в черзі</string>
-  <string name="sort_title"><b>Сортувати за…</b></string>
+  <!--Sort-->
   <string name="sort_title_a_z">Назва (А \u2192 Я)</string>
   <string name="sort_title_z_a">Назва (Я \u2192 А)</string>
   <string name="sort_date_new_old">Дата (Нові \u2192 Старі)</string>
@@ -583,7 +576,7 @@
   <string name="proxy_checking">Перевіряється...</string>
   <string name="proxy_test_successful">Протестовано успішно</string>
   <string name="proxy_test_failed">Протестовано з помилками</string>
-  <string name="proxy_host_empty_error">Хост не можете бути пустим</string>
-  <string name="proxy_host_invalid_error">Хост не є правильною IP-адресою або доменним ім\'ям</string>
   <string name="proxy_port_invalid_error">Неправильний порт</string>
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>
