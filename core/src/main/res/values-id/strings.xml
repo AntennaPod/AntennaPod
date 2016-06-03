@@ -1,14 +1,25 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="add_feed_label">Tambah Podcast</string>
+  <string name="episodes_label">Kisah</string>
   <string name="all_episodes_short_label">Semua</string>
+  <string name="favorite_episodes_label">Favorit</string>
+  <string name="new_label">Baru</string>
   <string name="settings_label">Pengaturan</string>
+  <string name="add_new_feed_label">Tambah Podcast</string>
   <string name="downloads_label">Unduhan</string>
+  <string name="subscriptions_label">Abonemen</string>
+  <string name="subscriptions_list_label">Daftar Abonemen</string>
+  <string name="cancel_download_label">Batal\nUnduhan</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Buka daftar</string>
   <string name="drawer_close">Tutup daftar</string>
+  <string name="drawer_feed_counter_new_unplayed">Nomor kisah baru dan kisah yang belum diputar</string>
+  <string name="drawer_feed_counter_new">Nomor kisah baru</string>
+  <string name="drawer_feed_counter_unplayed">Nomor kisah yang belum diputar</string>
   <!--Webview actions-->
   <string name="copy_url_label">Salin URL</string>
   <string name="share_url_label">Bagikan URL</string>
@@ -17,16 +28,24 @@
   <string name="cancel_label">Batal</string>
   <string name="yes">Ya</string>
   <string name="no">Tidak</string>
+  <string name="author_label">Penulis</string>
   <string name="language_label">Bahasa</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Pengaturan</string>
   <string name="cover_label">Gambar</string>
   <string name="refresh_label">Segarkan</string>
   <string name="description_label">Deskripsi</string>
+  <string name="most_recent_prefix">Kisah terbaru:\u0020</string>
+  <string name="episodes_suffix">\u0020kisah</string>
   <string name="save_username_password_label">Simpan nama pengguna dan kata sandi</string>
   <string name="close_label">Tutup</string>
+  <string name="send_label">Kirim…</string>
   <!--'Add Feed' Activity labels-->
   <!--Actions on feeds-->
+  <string name="mark_all_read_label">Tandai semua diputar</string>
+  <string name="mark_all_read_msg">Tandai semua Kisah diputar</string>
+  <string name="mark_all_seen_label">Tandai semua dilihat</string>
+  <string name="remove_feed_label">Hapus Podcast</string>
   <string name="share_label">Bagikan...</string>
   <string name="share_link_label">Bagikan Tautan</string>
   <string name="hide_unplayed_episodes_label">Tidak diputar</string>
@@ -41,6 +60,9 @@
   <string name="stop_label">Henti</string>
   <string name="remove_label">Hapus</string>
   <string name="remove_episode_lable">Hapus Episode</string>
+  <string name="mark_read_label">Tandai diputar</string>
+  <string name="marked_as_read_label">Ditandai diputar</string>
+  <string name="mark_unread_label">Ditandai belum diputar</string>
   <string name="add_to_queue_label">Tambah ke Antrian</string>
   <string name="added_to_queue_label">Ditambah ke Antrian</string>
   <string name="remove_from_queue_label">Hapus dari Antrian</string>
