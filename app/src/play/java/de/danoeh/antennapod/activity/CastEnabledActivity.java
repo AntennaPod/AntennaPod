@@ -67,9 +67,16 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     @CallSuper
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        mediaRouteActionProvider = castManager
-                .addMediaRouterButton(menu.findItem(R.id.media_route_menu_item));
-        mediaRouteActionProvider.setEnabled(castButtonVisibilityManager.shouldEnable());
+        MenuItem mediaRouteButton = menu.findItem(R.id.media_route_menu_item);
+        if (mediaRouteButton == null) {
+            Log.wtf(TAG, "MediaRoute item could not be found on the menu!");
+            mediaRouteActionProvider = null;
+            return true;
+        }
+        mediaRouteActionProvider = castManager.addMediaRouterButton(mediaRouteButton);
+        if (mediaRouteActionProvider != null) {
+            mediaRouteActionProvider.setEnabled(castButtonVisibilityManager.shouldEnable());
+        }
         return true;
     }
 
