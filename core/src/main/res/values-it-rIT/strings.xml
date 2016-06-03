@@ -1,35 +1,35 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feed</string>
+  <string name="statistics_label">Statistiche</string>
   <string name="add_feed_label">Aggiungi un podcast</string>
-  <string name="podcasts_label">PODCAST</string>
   <string name="episodes_label">Episodi</string>
-  <string name="new_episodes_label">Episodi nuovi</string>
-  <string name="all_episodes_label">Tutti gli episodi</string>
   <string name="all_episodes_short_label">Tutti</string>
   <string name="favorite_episodes_label">Preferiti</string>
   <string name="new_label">Nuovo</string>
-  <string name="waiting_list_label">Lista d\'attesa</string>
   <string name="settings_label">Impostazioni</string>
   <string name="add_new_feed_label">Aggiungi podcast</string>
   <string name="downloads_label">Download</string>
   <string name="downloads_running_label">In esecuzione</string>
   <string name="downloads_completed_label">Completati</string>
   <string name="downloads_log_label">Registro</string>
+  <string name="subscriptions_label">Iscrizioni</string>
+  <string name="subscriptions_list_label">Lista Iscrizioni</string>
   <string name="cancel_download_label">Annulla download</string>
   <string name="playback_history_label">Cronologia delle riproduzioni</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Pubblicati di recente</string>
-  <string name="episode_filter_label">Mostra solo gli episodi nuovi</string>
+  <string name="episode_cache_full_title">Cache degli episodi piena</string>
+  <string name="episode_cache_full_message">Il limite della cache degli episodi è stato raggiunto. Puoi incrementare la dimensione della cache nelle Impostazioni.</string>
   <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Tempo totale di riproduzione podcast:</string>
+  <string name="statistics_details_dialog">%1$d di %2$d episodi iniziati.\n\nRiprodotti %3$s di %4$s.</string>
   <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
   <string name="drawer_close">Chiudi il menù</string>
   <string name="drawer_feed_order_alphabetical">Ordina alfabeticamente</string>
+  <string name="drawer_feed_order_last_update">Ordina per data di pubblicazione</string>
   <string name="drawer_feed_counter_new_unplayed">Numero di episodi nuovi e non riprodotti</string>
   <string name="drawer_feed_counter_new">Numero di episodi nuovi</string>
   <string name="drawer_feed_counter_unplayed">Numero di episodi non riprodotti</string>
@@ -64,16 +64,19 @@
   <string name="length_prefix">Durata:\u0020</string>
   <string name="size_prefix">Dimensione:\u0020</string>
   <string name="processing_label">Elaborazione in corso</string>
+  <string name="loading_label">Caricamento...</string>
   <string name="save_username_password_label">Salva nome utente e password</string>
   <string name="close_label">Chiudi</string>
   <string name="retry_label">Riprova</string>
   <string name="auto_download_label">Includi nei download automatici</string>
   <string name="auto_download_apply_to_items_title">Applica ai Precedenti Episodi</string>
+  <string name="auto_delete_label">Elimina Episodi Automaticamente</string>
   <string name="parallel_downloads_suffix">\u0020download paralleli</string>
-  <string name="feed_auto_download_global">Globale</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
+  <string name="send_label">Invia...</string>
   <string name="episode_cleanup_never">Mai</string>
+  <string name="episode_cleanup_queue_removal">Quando non è in coda</string>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 giorno dopo il completamento</item>
     <item quantity="other">%d giorni dopo il completamento</item>
@@ -88,6 +91,8 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Segna tutti come riprodotti</string>
   <string name="mark_all_read_msg">Segnati tutti gli episodi come riprodotti</string>
+  <string name="mark_all_read_confirmation_msg">Per favore conferma che vuoi segnare tutti gli episodi come riprodotti.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Per favore conferma che vuoi segnare tutti gli episodi di questo feed come riprodotti.</string>
   <string name="mark_all_seen_label">Segna tutti come visti</string>
   <string name="show_info_label">Informazioni</string>
   <string name="remove_feed_label">Rimuovi un podcast</string>
@@ -95,12 +100,13 @@
   <string name="share_link_label">Condividi il link al sito</string>
   <string name="share_link_with_position_label">Condividi il Link con la Posizione</string>
   <string name="share_feed_url_label">Condividi URL del Feed</string>
-  <string name="share_item_url_label">Condividi URL dell\'Episodio</string>
-  <string name="share_item_url_with_position_label">Condividi l\'URL dell\'Episodio con la Posizione</string>
+  <string name="share_item_url_label">Condividi URL del File dell\'episodio</string>
+  <string name="share_item_url_with_position_label">Condividi l\'URL del File dell\'epsiodio con la Posizione</string>
   <string name="feed_delete_confirmation_msg">Per favore conferma la cancellazione di questo feed e di TUTTI gli episodi collegati che sono stati precedentemente scaricati.</string>
   <string name="feed_remover_msg">Rimozione feed</string>
   <string name="load_complete_feed">Ricarica il feed completo</string>
   <string name="hide_episodes_title">Nascondi gli episodi</string>
+  <string name="episode_actions">Applica azioni</string>
   <string name="hide_unplayed_episodes_label">Non riprodotti</string>
   <string name="hide_paused_episodes_label">In pausa</string>
   <string name="hide_played_episodes_label">Riprodotti</string>
@@ -110,6 +116,7 @@
   <string name="hide_not_downloaded_episodes_label">Non scaricati</string>
   <string name="filtered_label">Filtrati</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Ultimo aggiornamento fallito</string>
+  <string name="open_podcast">Apri Podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <string name="play_label">Riproduci</string>
@@ -130,8 +137,6 @@
   <string name="removed_from_favorites">Rimosso dai Preferiti</string>
   <string name="visit_website_label">Visita il sito</string>
   <string name="support_label">Carica questo su Flattr</string>
-  <string name="enqueue_all_new">Accoda tutti</string>
-  <string name="download_all">Scarica tutti</string>
   <string name="skip_episode_label">Salta l\'episodio</string>
   <string name="activate_auto_download">Attiva il download automatico</string>
   <string name="deactivate_auto_download">Disattiva il download automatico</string>
@@ -152,6 +157,8 @@
   <string name="download_error_connection_error">Errore di connessione</string>
   <string name="download_error_unknown_host">Host sconosciuto</string>
   <string name="download_error_unauthorized">Errore di autenticazione</string>
+  <string name="download_error_file_type_type">Errore Formato FIle</string>
+  <string name="download_error_forbidden">Proibito</string>
   <string name="cancel_all_downloads_label">Annulla tutti i download</string>
   <string name="download_canceled_msg">Download annullato</string>
   <string name="download_report_title">Download completato con un errore (o errori)</string>
@@ -160,6 +167,10 @@
   <string name="download_error_io_error">Errore IO</string>
   <string name="download_error_request_error">Errore della richiesta</string>
   <string name="download_error_db_access">Errore di accesso al database</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d download rimanente</item>
+    <item quantity="other">%d download rimanenti</item>
+  </plurals>
   <string name="downloads_processing">Elaborazione dei download in corso</string>
   <string name="download_notification_title">Download podcast in corso</string>
   <string name="download_report_content">%1$d download con successo, %2$d falliti</string>
@@ -182,7 +193,6 @@
   <string name="playback_error_server_died">Server morto</string>
   <string name="playback_error_unknown">Errore sconosciuto</string>
   <string name="no_media_playing_label">Nessun elemento multimediale in riproduzione</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffer in corso</string>
   <string name="playbackservice_notification_title">Riproduzione del podcast in corso</string>
   <string name="unknown_media_key">AntennaPod - Chiave dell\'elemento multimediale sconosciuta: %1$d</string>
@@ -238,6 +248,7 @@
   <string name="no_feeds_label">Non sei ancora abbonato a nessun feed.</string>
   <string name="no_chapters_label">Questo episodio non ha capitoli.</string>
   <!--Preferences-->
+  <string name="project_pref">Progetto</string>
   <string name="other_pref">Altro</string>
   <string name="about_pref">Informazioni</string>
   <string name="queue_label">Coda</string>
@@ -251,6 +262,8 @@
   <string name="network_pref">Rete</string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Disabilita</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Imposta Intervallo</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">ogni %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">alle %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Abilita il download dei media solo tramite WiFi</string>
   <string name="pref_followQueue_title">Playback continuo</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Download dei media su WiFi</string>
@@ -291,6 +304,8 @@
   <string name="pref_gpodnet_logout_toast">Logout effettuato</string>
   <string name="pref_gpodnet_setlogin_information_title">Cambia le informazioni di login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Cambia le informazioni di login per il tuo account gpodder.net.</string>
+  <string name="pref_gpodnet_sync_title">Sincronizza ora</string>
+  <string name="pref_gpodnet_sync_started">Sincronizzazione avviata</string>
   <string name="pref_playback_speed_title">Velocità di riproduzione</string>
   <string name="pref_playback_speed_sum">Personalizza le velocità disponibili per la riproduzione audio a velocità variabile</string>
   <string name="pref_gpodnet_sethostname_title">Imposta l\'hostname</string>
@@ -307,6 +322,9 @@
   <string name="send_email">Invia e-mail</string>
   <string name="experimental_pref">Sperimentale</string>
   <string name="pref_current_value">Valore corrente: %1$s</string>
+  <string name="pref_proxy_title">Proxy</string>
+  <string name="pref_faq">FAQ</string>
+  <string name="pref_cast_title">Supporto a Chromecast</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Abilita l\'esecuzione automatica di Flattr</string>
   <string name="auto_flattr_after_percent">Carica l\'episodio su Flattr appena è stato riprodotto al %d percento</string>
@@ -325,6 +343,7 @@
   <string name="opml_import_label">Importazione OPML</string>
   <string name="opml_directory_error">ERRORE!</string>
   <string name="reading_opml_label">Lettura OPML file in corso</string>
+  <string name="opml_import_error_no_file">Nessun file selezionato!</string>
   <string name="select_all_label">Seleziona tutti</string>
   <string name="deselect_all_label">Deseleziona tutti</string>
   <string name="choose_file_from_filesystem">Dal filesystem locale</string>
@@ -393,6 +412,9 @@
   <string name="create_folder_error_no_write_access">Impossibile scrivere in questa directory</string>
   <string name="create_folder_error_already_exists">La cartella esiste già</string>
   <string name="create_folder_error">Non è stato possibile creare la cartella</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" non esiste</string>
+  <string name="folder_not_readable_error">\"%1$s\" non è leggibile</string>
+  <string name="folder_not_writable_error">\"%1$s\" non è scrivibile</string>
   <string name="folder_not_empty_dialog_title">La cartella non è vuota</string>
   <string name="folder_not_empty_dialog_msg">La cartella che hai selezionato non è vuota. I download dei media e altri file saranno creati in questa cartella. Continuare?</string>
   <string name="set_to_default_folder">Scegli la cartella predefinita</string>
@@ -403,22 +425,13 @@
   <string name="subscribe_label">Abbonati</string>
   <string name="subscribed_label">Abbonato</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Mostra i capitoli</string>
-  <string name="show_shownotes_label">Mostra le note dell\'episodio</string>
-  <string name="show_cover_label">Mosta l\'immagine</string>
   <string name="rewind_label">Riavvolgi</string>
   <string name="fast_forward_label">Avanti veloce</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
   <string name="navigate_upwards_label">Naviga verso l\'alto</string>
-  <string name="butAction_label">Ulteriori azioni</string>
-  <string name="status_playing_label">L\'episodio è in riproduzione</string>
   <string name="status_downloading_label">L\'episodio sta venendo scaricato</string>
-  <string name="status_downloaded_label">L\'episodio è stato scaricato</string>
-  <string name="status_unread_label">L\'oggetto è nuovo</string>
   <string name="in_queue_label">L\'episodio è in coda</string>
-  <string name="new_episodes_count_label">Numero di episodi nuovi</string>
-  <string name="in_progress_episodes_count_label">Numero di episodi che hai iniziato ad ascoltare</string>
   <string name="drag_handle_content_description">Trascina per cambiare la posizione di questo oggetto</string>
   <string name="load_next_page_label">Carica la pagina successiva</string>
   <!--Feed information screen-->
@@ -431,6 +444,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importazione di sottoscrizioni da applicazioni monouso in corso...</string>
   <string name="search_itunes_label">Cerca su iTunes</string>
+  <string name="filter">Filtro</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Tutti</string>
   <string name="selected_all_label">Tutti gli Episodi Selezionati</string>
   <string name="none_label">Nessuno</string>
@@ -441,6 +456,7 @@
   <string name="not_downloaded_label">Non scaricati</string>
   <string name="queued_label">In coda</string>
   <string name="not_queued_label">Non in coda</string>
+  <!--Sort-->
   <string name="sort_title_a_z">Titolo (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titolo (Z \u2192 A)</string>
   <string name="sort_date_new_old">Data (New \u2192 Old)</string>
@@ -448,8 +464,18 @@
   <string name="sort_duration_short_long">Durata (Short \u2192 Long)</string>
   <string name="sort_duration_long_short">Durata (Long \u2192 Short)</string>
   <!--Rating dialog-->
+  <string name="rating_title">Ti piace AntennaPod?</string>
+  <string name="rating_later_label">Ricordamelo più tardi</string>
   <!--Audio controls-->
   <string name="volume">Volume</string>
   <string name="audio_effects">Effetti Audio</string>
   <!--proxy settings-->
+  <string name="proxy_type_label">Tipo</string>
+  <string name="host_label">Host</string>
+  <string name="port_label">Porta</string>
+  <string name="optional_hint">(Opzionale)</string>
+  <string name="proxy_port_invalid_error">Porta non valida</string>
+  <!--Casting-->
+  <string name="cast_media_route_menu_title">Riproduci su...</string>
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>
