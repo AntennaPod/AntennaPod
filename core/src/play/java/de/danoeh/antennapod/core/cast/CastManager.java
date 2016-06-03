@@ -1746,7 +1746,8 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         if (!(actionProvider instanceof SwitchableMediaRouteActionProvider)) {
             Log.wtf(TAG, "MenuItem provided to addMediaRouterButton() is not compatible with " +
                     "SwitchableMediaRouteActionProvider." +
-                    ((actionProvider == null) ? " Its action provider is null!" : ""));
+                    ((actionProvider == null) ? " Its action provider is null!" : ""),
+                    new ClassCastException());
             return null;
         }
         SwitchableMediaRouteActionProvider mediaRouteActionProvider =
