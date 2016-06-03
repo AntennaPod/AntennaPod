@@ -258,14 +258,15 @@ public abstract class PlaybackController {
 
     private final ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            playbackService = ((PlaybackService.LocalBinder) service)
-                    .getService();
-            if (!released) {
-                queryService();
-                Log.d(TAG, "Connection to Service established");
-            } else {
-                Log.i(TAG, "Connection to playback service has been established, " +
-                        "but controller has already been released");
+            if(service instanceof PlaybackService.LocalBinder) {
+                playbackService = ((PlaybackService.LocalBinder) service).getService();
+                if (!released) {
+                    queryService();
+                    Log.d(TAG, "Connection to Service established");
+                } else {
+                    Log.i(TAG, "Connection to playback service has been established, " +
+                            "but controller has already been released");
+                }
             }
         }
 
