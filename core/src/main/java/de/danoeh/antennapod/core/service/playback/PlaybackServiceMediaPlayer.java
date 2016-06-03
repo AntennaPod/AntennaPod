@@ -13,6 +13,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.PlayedActionUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 
@@ -303,10 +304,7 @@ public abstract class PlaybackServiceMediaPlayer {
                 DBWriter.markItemPlayed(item, FeedItem.PLAYED, false);
                 DBWriter.removeQueueItem(context, item, false);
                 DBWriter.addItemToPlaybackHistory(oldMedia);
-                if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                    Log.d(TAG, "Delete " + oldMedia.toString());
-                    DBWriter.deleteFeedMediaOfItem(context, oldMedia.getId());
-                }
+                PlayedActionUtils.performPlayedAction(context, oldMedia);
             }
         }
     }

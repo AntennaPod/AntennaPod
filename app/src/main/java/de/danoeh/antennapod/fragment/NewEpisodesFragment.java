@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.PlayedActionUtils;
 
 
 /**
@@ -87,8 +88,8 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                 final Handler h = new Handler(getActivity().getMainLooper());
                 final Runnable r  = () -> {
                     FeedMedia media = item.getMedia();
-                    if (media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
-                        DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
+                    if (media != null && media.hasAlmostEnded()) {
+                        PlayedActionUtils.performPlayedAction(getActivity(), media);
                     }
                 };
 

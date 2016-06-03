@@ -66,6 +66,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.PlayedActionUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
@@ -725,11 +726,8 @@ public class PlaybackService extends Service {
                         DBWriter.removeQueueItem(PlaybackService.this, item, true);
                     }
 
-                    // Delete episode if enabled
-                    if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                        DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
-                        Log.d(TAG, "Episode Deleted");
-                    }
+                    // Perform episode played action if one
+                    PlayedActionUtils.performPlayedAction(PlaybackService.this, media);
                 }
             }
 

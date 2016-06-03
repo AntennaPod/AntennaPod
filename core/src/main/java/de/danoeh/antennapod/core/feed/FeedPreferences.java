@@ -20,24 +20,25 @@ public class FeedPreferences {
     private boolean autoDownload;
     private boolean keepUpdated;
 
-    public enum AutoDeleteAction {
+    public enum PlayedAction {
         GLOBAL,
-        YES,
-        NO
+        DELETE,
+        NONE,
+        ARCHIVE
     }
-    private AutoDeleteAction auto_delete_action;
+    private PlayedAction played_action;
     private String username;
     private String password;
 
-    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, String username, String password) {
-        this(feedID, autoDownload, true, auto_delete_action, username, password, new FeedFilter());
+    public FeedPreferences(long feedID, boolean autoDownload, PlayedAction played_action, String username, String password) {
+        this(feedID, autoDownload, true, played_action, username, password, new FeedFilter());
     }
 
-    public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, String username, String password, @NonNull FeedFilter filter) {
+    public FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, PlayedAction played_action, String username, String password, @NonNull FeedFilter filter) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
-        this.auto_delete_action = auto_delete_action;
+        this.played_action = played_action;
         this.username = username;
         this.password = password;
         this.filter = filter;
@@ -47,7 +48,7 @@ public class FeedPreferences {
         int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
         int indexAutoDownload = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD);
         int indexAutoRefresh = cursor.getColumnIndex(PodDBAdapter.KEY_KEEP_UPDATED);
-        int indexAutoDeleteAction = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DELETE_ACTION);
+        int indexPlayedAction = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DELETE_ACTION);
         int indexUsername = cursor.getColumnIndex(PodDBAdapter.KEY_USERNAME);
         int indexPassword = cursor.getColumnIndex(PodDBAdapter.KEY_PASSWORD);
         int indexIncludeFilter = cursor.getColumnIndex(PodDBAdapter.KEY_INCLUDE_FILTER);
@@ -56,13 +57,13 @@ public class FeedPreferences {
         long feedId = cursor.getLong(indexId);
         boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
         boolean autoRefresh = cursor.getInt(indexAutoRefresh) > 0;
-        int autoDeleteActionIndex = cursor.getInt(indexAutoDeleteAction);
-        AutoDeleteAction autoDeleteAction = AutoDeleteAction.values()[autoDeleteActionIndex];
+        int playedActionIndex = cursor.getInt(indexPlayedAction);
+        PlayedAction playedAction = PlayedAction.values()[playedActionIndex];
         String username = cursor.getString(indexUsername);
         String password = cursor.getString(indexPassword);
         String includeFilter = cursor.getString(indexIncludeFilter);
         String excludeFilter = cursor.getString(indexExcludeFilter);
-        return new FeedPreferences(feedId, autoDownload, autoRefresh, autoDeleteAction, username, password, new FeedFilter(includeFilter, excludeFilter));
+        return new FeedPreferences(feedId, autoDownload, autoRefresh, playedAction, username, password, new FeedFilter(includeFilter, excludeFilter));
     }
 
     /**
@@ -134,26 +135,22 @@ public class FeedPreferences {
         this.autoDownload = autoDownload;
     }
 
-    public AutoDeleteAction getAutoDeleteAction() {
-        return auto_delete_action;
+    public PlayedAction getPlayedAction() {
+        return played_action;
     }
 
-    public void setAutoDeleteAction(AutoDeleteAction auto_delete_action) {
-        this.auto_delete_action = auto_delete_action;
+    public void setPlayedAction(PlayedAction played_action) {
+        this.played_action = played_action;
     }
 
-    public boolean getCurrentAutoDelete() {
-        switch (auto_delete_action) {
+    public PlayedAction getCurrentPlayedAction() {
+        switch (played_action) {
             case GLOBAL:
-                return UserPreferences.isAutoDelete();
+                return UserPreferences.getPlayedAction();
 
-            case YES:
-                return true;
-
-            case NO:
-                return false;
+            default:
+                return played_action;
         }
-        return false; // TODO - add exceptions here
     }
 
     public void save(Context context) {

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.antennapod.audio.MediaPlayer;
@@ -16,6 +17,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -91,6 +93,12 @@ public class UpdateManager {
             if(MediaPlayer.isPrestoLibraryInstalled(context) && Build.VERSION.SDK_INT >= 16) {
                 UserPreferences.enableSonic(true);
             }
+        }
+        if(oldVersionCode < 1070000) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            UserPreferences.setPlayedAction(prefs.getBoolean("prefAutoDelete", false) ?
+                    FeedPreferences.PlayedAction.DELETE : FeedPreferences.PlayedAction.NONE);
+            prefs.edit().remove("prefAutoDelete").commit();
         }
     }
 

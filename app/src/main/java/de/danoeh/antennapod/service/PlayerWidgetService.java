@@ -22,6 +22,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.PlayedActionUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.receiver.PlayerWidget;
@@ -69,10 +70,7 @@ public class PlayerWidgetService extends Service {
                     DBWriter.markItemPlayed(item, FeedItem.PLAYED, false);
                     DBWriter.removeQueueItem(this, item, false);
                     DBWriter.addItemToPlaybackHistory(media);
-                    if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                        Log.d(TAG, "Delete " + media.toString());
-                        DBWriter.deleteFeedMediaOfItem(this, media.getId());
-                    }
+                    PlayedActionUtils.performPlayedAction(this, media);
                 }
             }
         }

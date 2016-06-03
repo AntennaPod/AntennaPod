@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
@@ -162,12 +163,20 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> continuousPlayback == UserPreferences.isFollowQueue(), Timeout.getLargeTimeout()));
     }
 
-    public void testAutoDelete() {
-        final boolean autoDelete = UserPreferences.isAutoDelete();
-        solo.clickOnText(solo.getString(R.string.pref_auto_delete_title));
-        assertTrue(solo.waitForCondition(() -> autoDelete != UserPreferences.isAutoDelete(), Timeout.getLargeTimeout()));
-        solo.clickOnText(solo.getString(R.string.pref_auto_delete_title));
-        assertTrue(solo.waitForCondition(() -> autoDelete == UserPreferences.isAutoDelete(), Timeout.getLargeTimeout()));
+    public void testPlayedAction() {
+        UserPreferences.setPlayedAction(FeedPreferences.PlayedAction.NONE);
+        solo.clickOnText(solo.getString(R.string.pref_played_action_title));
+        solo.waitForDialogToOpen(1000);
+        solo.clickOnText(solo.getString(R.string.feed_played_action_archive));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getPlayedAction() == FeedPreferences.PlayedAction.ARCHIVE , Timeout.getLargeTimeout()));
+        solo.clickOnText(solo.getString(R.string.pref_played_action_title));
+        solo.waitForDialogToOpen(1000);
+        solo.clickOnText(solo.getString(R.string.feed_played_action_delete));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getPlayedAction() == FeedPreferences.PlayedAction.DELETE , Timeout.getLargeTimeout()));
+        solo.clickOnText(solo.getString(R.string.pref_played_action_title));
+        solo.waitForDialogToOpen(1000);
+        solo.clickOnText(solo.getString(R.string.feed_played_action_none));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getPlayedAction() == FeedPreferences.PlayedAction.NONE , Timeout.getLargeTimeout()));
     }
 
     public void testPlaybackSpeeds() {
