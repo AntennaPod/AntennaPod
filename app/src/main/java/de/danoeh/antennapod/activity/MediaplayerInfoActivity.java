@@ -43,6 +43,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -168,6 +169,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             pagerAdapter.onMediaChanged(media);
             pagerAdapter.setController(controller);
         }
+        DBTasks.checkShouldRefreshFeeds(getApplicationContext());
 
         EventDistributor.getInstance().register(contentUpdate);
         loadData();
