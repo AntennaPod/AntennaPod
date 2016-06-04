@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.LongList;
 
 public class FeedItemFilter {
     private final String[] mProperties;
@@ -66,13 +67,14 @@ public class FeedItemFilter {
         if (showQueued && showNotQueued) return result;
         if (showDownloaded && showNotDownloaded) return result;
 
+        final LongList queuedIds =  DBReader.getQueueIDList();
         for(FeedItem item : items) {
             // If the item does not meet a requirement, skip it.
             if (showPlayed && !item.isPlayed()) continue;
             if (showUnplayed && item.isPlayed()) continue;
             if (showPaused && item.getState() != FeedItem.State.IN_PROGRESS) continue;
 
-            boolean queued = DBReader.getQueueIDList().contains(item.getId());
+            boolean queued = queuedIds.contains(item.getId());
             if (showQueued && !queued) continue;
             if (showNotQueued && queued) continue;
 

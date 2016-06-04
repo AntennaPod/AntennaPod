@@ -112,7 +112,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected boolean loadMediaInfo() {
-        if (!super.loadMediaInfo()) {
+        if (!super.loadMediaInfo() || controller == null) {
             return false;
         }
         Playable media = controller.getMedia();
@@ -152,7 +152,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onAwaitingVideoSurface() {
-        if (videoSurfaceCreated) {
+        if (videoSurfaceCreated && controller != null) {
             Log.d(TAG, "Videosurface already created, setting videosurface now");
 
             Pair<Integer, Integer> videoSize = controller.getVideoSize();
@@ -240,7 +240,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         public void surfaceCreated(SurfaceHolder holder) {
             Log.d(TAG, "Videoview holder created");
             videoSurfaceCreated = true;
-            if (controller.getStatus() == PlayerStatus.PLAYING) {
+            if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
                 if (controller.serviceAvailable()) {
                     controller.setVideoSurface(holder);
                 } else {
@@ -254,7 +254,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         public void surfaceDestroyed(SurfaceHolder holder) {
             Log.d(TAG, "Videosurface was destroyed");
             videoSurfaceCreated = false;
-            if (!destroyingDueToReload) {
+            if (controller != null && !destroyingDueToReload) {
                 controller.notifyVideoSurfaceAbandoned();
             }
         }

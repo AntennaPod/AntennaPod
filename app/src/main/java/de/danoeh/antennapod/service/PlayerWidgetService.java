@@ -196,9 +196,10 @@ public class PlayerWidgetService extends Service {
         public void onServiceConnected(ComponentName className, IBinder service) {
             Log.d(TAG, "Connection to service established");
             synchronized (psLock) {
-                playbackService = ((PlaybackService.LocalBinder) service)
-                        .getService();
-                startViewUpdaterIfNotRunning();
+                if(service instanceof PlaybackService.LocalBinder) {
+                    playbackService = ((PlaybackService.LocalBinder) service).getService();
+                    startViewUpdaterIfNotRunning();
+                }
             }
         }
 

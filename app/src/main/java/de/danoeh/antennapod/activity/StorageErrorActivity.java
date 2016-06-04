@@ -189,6 +189,9 @@ public class StorageErrorActivity extends AppCompatActivity {
             } else {
                 path = getExternalFilesDir(null);
             }
+            if(path == null) {
+                return;
+            }
             String message = null;
 			if(!path.exists()) {
 				message = String.format(getString(R.string.folder_does_not_exist_error), dir);

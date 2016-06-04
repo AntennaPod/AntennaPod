@@ -98,6 +98,7 @@
   <string name="mark_all_read_label">Marcar todos como lido</string>
   <string name="mark_all_read_msg">Marcar todos Episódios como lidos</string>
   <string name="mark_all_read_confirmation_msg">Por favor, confirme que você quer marcar todos os episódios como já tocados.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Por favor confirme se você quer marcar todos os episódios deste feed como já tocados.</string>
   <string name="mark_all_seen_label">Marcar todos como lido</string>
   <string name="show_info_label">Mostrar informação</string>
   <string name="remove_feed_label">Remover Podcast</string>
@@ -188,6 +189,8 @@
   <string name="authentication_notification_title">Autenticação requerida</string>
   <string name="authentication_notification_msg">O recurso que você requisitou requer um usuário e uma senha</string>
   <string name="confirm_mobile_download_dialog_title">Confirmar Download Mobile</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Baixar sobre plano de dados foi desabilitado nas configurações.\n\nVocê pode escolher entre apenas adicionar o episódio na fila ou você pode permitir o download temporáriamente.\n\n<small>Sua escolha será lembrada por 10 minutos.</small></string>
+  <string name="confirm_mobile_download_dialog_message">Baixar sobre plano de dados foi desabilitado em configurações.\n\n Você quer permitir o download temporáriamente?\n\n<small>Sua escolha será lembrada por 10 minutos</small></string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Enfileirados</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Permitir temporariamente</string>
   <!--Mediaplayer messages-->
@@ -226,6 +229,7 @@
   <string name="return_home_label">Retornar ao início</string>
   <string name="flattr_auth_success">Autenticado com sucesso! Agora você poderá utilizar o Flattr de dentro do AntennaPod.</string>
   <string name="no_flattr_token_title">Nenhum token do Flattr encontrado</string>
+  <string name="no_flattr_token_notification_msg">Sua conta flattr parece não estar conectada ao AntennaPod. Toque aqui para autenticar.</string>
   <string name="no_flattr_token_msg">Sua conta Flattr não está conectada ao AntennaPod. Você pode conectar sua conta ao AntennaPod para usar o Flattr de dentro da aplicação ou pode visitar o website do feed para usar o Flattr por lá.</string>
   <string name="authenticate_now_label">Autenticar</string>
   <string name="action_forbidden_title">Ação proibida</string>
@@ -247,6 +251,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Download Plugin</string>
   <string name="no_playback_plugin_title">Plugin Não Instalado</string>
+  <string name="no_playback_plugin_or_sonic_msg">Para alterar a velocidade da reprodução, nós recomendamos que você abilite o reprodutor de mídias Sonic [Android 4.1+].\n\nOu então, vocÊ pode baixar o plugin de terceiros <i>Prestissimo</i> da Play Store.\nQualquer problema com Prestissimo não é responsabilidade do AntennaPod e deverá ser reportado para o proprietário do plugin.</string>
   <string name="set_playback_speed_label">Velocidades de Reprodução</string>
   <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->
@@ -265,13 +270,33 @@
   <string name="pref_episode_cleanup_title">Limpar Episódio</string>
   <string name="pref_episode_cleanup_summary">Episódios que não foram enfileirados e não foram favoritados deveriam ser elegídos para remoção se o Auto Download precisar de espaço para novos episódios</string>
   <string name="pref_pauseOnDisconnect_sum">Pausar a exibição quando phones de ouvidos ou bluetooth forem disconectados</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Continuar a exibição quando os fones de ouvido forem reconectados</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Continuar a exibição quando o bluetooth reconectar</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Botão avançar pula</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Quando pressionar um botão físico, avançar para o próximo episódio ao invés de avançar rápido</string>
   <string name="pref_followQueue_sum">Pular para próximo item da fila quando a reprodução terminar</string>
+  <string name="pref_auto_delete_sum">Apagar os episódios quando a exibição for concluída</string>
+  <string name="pref_auto_delete_title">Deletar automaticamente</string>
+  <string name="pref_smart_mark_as_played_sum">Marcar episódios como escutados </string>
+  <string name="pref_smart_mark_as_played_title">Inteligentemente marcar como escutado </string>
+  <string name="pref_skip_keeps_episodes_sum">Manter os episódios quando eles forem avançados</string>
+  <string name="pref_skip_keeps_episodes_title">Manter episódios avançados</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">Intervado de atualização ou Tempo do dia</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Especifique um intervalo ou um tempo específico do dia para atualizar os seus feed automaticamente</string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Você pode configurar um <i>intervalo</i> como \"cada 2 horas\", configurar um específico <i>horário do dia</i> como \"7:00 AM\" ou <i>desabilitar</i> atualizações automaticas completamente.\n\n<small>Observe: Horários de atualização não são precisos. Você deve considar um possível atraso.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_Disable">Desabilitar</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Configurar Intervalo</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Configurar Tempo do dia</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">cada %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">às %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Fazer download dos arquivos apenas via rede WiFi</string>
   <string name="pref_followQueue_title">Reprodução contínua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Download de mídia via WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Fones de ouvido desconectados</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Fones de ouvido reconectados</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth reconectados</string>
   <string name="pref_mobileUpdate_title">Atualizações via Rede de Dados Celular</string>
   <string name="pref_mobileUpdate_sum">Permite atualizações quando conectado na rede de dados celular</string>
   <string name="refreshing_label">Atualizando</string>
@@ -282,13 +307,26 @@
   <string name="pref_flattr_this_app_sum">Suportar o desenvolvimento do AntennaPod usando o Flattr. Obrigado!</string>
   <string name="pref_revokeAccess_title">Revogar acesso</string>
   <string name="pref_revokeAccess_sum">Cancelar permissão de acesso à sua conta Flattr</string>
+  <string name="pref_auto_flattr_title">Flattr automático</string>
+  <string name="pref_auto_flattr_sum">Configurar automaticamente com flattr</string>
   <string name="user_interface_label">Interface com usuário</string>
   <string name="pref_set_theme_title">Selecionar tema</string>
+  <string name="pref_nav_drawer_title">Customizar Gaveta de Navegação</string>
+  <string name="pref_nav_drawer_sum">Customizar a aparencia da gaveta de navegação.</string>
+  <string name="pref_nav_drawer_items_title">Configurar items a Gaveta de Navegação</string>
+  <string name="pref_nav_drawer_items_sum">Escolher quais items irão aparecer na gaveta de navegação.</string>
+  <string name="pref_nav_drawer_feed_order_title">Configurar Ordem de Assinaturas</string>
+  <string name="pref_nav_drawer_feed_order_sum">Mudar a ordem de suas assinaturas</string>
+  <string name="pref_nav_drawer_feed_counter_title">Configurar um contador de assinaturas</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Mudar a informação exibida pelo contador de assinaturas</string>
   <string name="pref_set_theme_sum">Altera a aparência do AntennaPod</string>
   <string name="pref_automatic_download_title">Download automático</string>
   <string name="pref_automatic_download_sum">Configurar download automático de episódios.</string>
   <string name="pref_autodl_wifi_filter_title">Habilitar filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir download automático somente pelas redes Wi-Fi selecionadas.</string>
+  <string name="pref_automatic_download_on_battery_title">Baixar enquanto não está carregando</string>
+  <string name="pref_automatic_download_on_battery_sum">Permitir download automático enquanto a bateria não está carregando</string>
+  <string name="pref_parallel_downloads_title">Downloads paralelos</string>
   <string name="pref_episode_cache_title">Cache de episódios</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Escuro</string>
@@ -302,11 +340,55 @@
   <string name="pref_gpodnet_logout_toast">Saiu com sucesso</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informações de login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar informações de login da sua conta gpodder.net</string>
+  <string name="pref_gpodnet_sync_title">Sincronizar agora</string>
+  <string name="pref_gpodnet_sync_sum">Sincronizar assinaturas e estados dos episódios com gpodder.net</string>
+  <string name="pref_gpodnet_sync_started">Sincronização iniciada</string>
+  <string name="pref_gpodnet_login_status"><![CDATA[Entrou como <i>%1$s</i> com o dispositivo <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Velocidades de Reprodução</string>
   <string name="pref_playback_speed_sum">Personalize as velocidades variáveis de reprodução de áudio.</string>
+  <string name="pref_fast_forward">Avançar o tempo</string>
+  <string name="pref_rewind">Voltar o tempo</string>
   <string name="pref_gpodnet_sethostname_title">Configurar hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usar host padrão</string>
+  <string name="pref_expandNotify_title">Expandir Notificação</string>
+  <string name="pref_expandNotify_sum">Sempre expandir a notificação para mostrar os botões de reprodução.</string>
+  <string name="pref_persistNotify_title">Controles de Reprodução Persistentes</string>
+  <string name="pref_persistNotify_sum">Manter a notificação e controles na tela de bloqueio enquanto a reprodução está pausada.</string>
+  <string name="pref_compact_notification_buttons_title">Configurar Botões da tela de bloqueio</string>
+  <string name="pref_compact_notification_buttons_sum">Mudar os botões de reprodução na tela de bloqueio. O botão tocar/pausar sempre é incluso.</string>
+  <string name="pref_compact_notification_buttons_dialog_title">Selecione no máximo %1$d itens</string>
+  <string name="pref_compact_notification_buttons_dialog_error">Você só pode selecionar no máximo %1$d itens.</string>
+  <string name="pref_show_subscriptions_in_drawer_title">Mostrar Assinaturas</string>
+  <string name="pref_show_subscriptions_in_drawer_sum">Mostrar lista de assinaturas diretamente da gaveta de navegação</string>
+  <string name="pref_lockscreen_background_title">Configurar plano de fundo da tela de bloqueio</string>
+  <string name="pref_lockscreen_background_sum">Configurar o plano de fundo da tela de bloqueio para a imagem do episódio atual. Como um efeito colateral, também ira mostrar imagens de aplicativos de terceiros.</string>
+  <string name="pref_showDownloadReport_title">Mostrar Relatório de Downloads</string>
+  <string name="pref_showDownloadReport_sum">Se os downloads falharem, gerar um relatório que mostra os detalhes da falha.</string>
+  <string name="pref_expand_notify_unsupport_toast">Versões do Android inferiores a 4.1 não suportam notificações expansíveis</string>
+  <string name="pref_queueAddToFront_sum">Adicionar um novo episódio para a frente da fila.</string>
+  <string name="pref_queueAddToFront_title">Enfileirar para a frente</string>
+  <string name="pref_smart_mark_as_played_disabled">Desabilitado</string>
+  <string name="pref_image_cache_size_title">Tamanho da Imagem em Cache</string>
+  <string name="pref_image_cache_size_sum">Tamanho do cache de disco para imagens.</string>
+  <string name="crash_report_title">Relatório de Falha</string>
+  <string name="crash_report_sum">Enviar o relatório da última falha por e-mail</string>
+  <string name="send_email">Enviar e-mail</string>
+  <string name="experimental_pref">Experimental</string>
+  <string name="pref_sonic_title">Reprodutor de mídia Sonic</string>
+  <string name="pref_sonic_message">Utilizar o reprodutor de mídia Sonic no lugar do reprodutor de mídia nativo do Android e do Prestissimo</string>
+  <string name="pref_current_value">Valor atual: %1$s</string>
+  <string name="pref_proxy_title">Proxy</string>
+  <string name="pref_proxy_sum">Configurar um proxy da rede</string>
+  <string name="pref_faq">FAQ</string>
+  <string name="pref_known_issues">Problemas conhecidos</string>
+  <string name="pref_no_browser_found">Nenhum navegador web encontrado.</string>
+  <string name="pref_cast_title">Suporte ao Chromecast</string>
+  <string name="pref_cast_message">Abilitar o suporte de reprodução de mídia remota em dispositivos Cast ( assim como Chromecast, Caixas de som ou Android TV)</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Abilitar automaticamente o flattr</string>
+  <string name="auto_flattr_after_percent">Episódio Flattr assim que %d porcento for tocado</string>
+  <string name="auto_flattr_ater_beginning">Episódio Flattr quando a repodução iniciar</string>
+  <string name="auto_flattr_ater_end">Episódio Flattr quando a reprodução finalizar</string>
   <!--Search-->
   <string name="search_hint">Procurar por Feeds ou Episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas do podcast</string>
@@ -316,15 +398,27 @@
   <string name="found_in_title_label">Encontrado no título</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Arquivos OPML permitem que você mova seus podcasts de um programa de podcasts para outro.</string>
+  <string name="opml_import_option">Opção %1$d</string>
+  <string name="opml_import_explanation_1">Escolha o caminho específico de um arquivo no sistema.</string>
+  <string name="opml_import_explanation_2">Utilizar uma aplicação externa como Dropbox, Google Drive ou o seu gerenciador de arquivos favoritos para abrir um arquivo OPML.</string>
+  <string name="opml_import_explanation_3">Muitos aplicativos como Google Mail, Dropbox, Google Drive e outros gerenciadores podem <i>abrir</i> arquivos OPML <i>com</i> AntennaPod.</string>
   <string name="start_import_label">Iniciar importação</string>
   <string name="opml_import_label">Importação de OPML</string>
   <string name="opml_directory_error">ERRO!</string>
   <string name="reading_opml_label">Lendo arquivo OPML</string>
+  <string name="opml_reader_error">Um erro ocorreu ao ler o documento OPML:</string>
+  <string name="opml_import_error_no_file">Nenhum arquivo selecionado!</string>
   <string name="select_all_label">Selecionar todos</string>
   <string name="deselect_all_label">Remover seleção</string>
+  <string name="select_options_label">Selecionar...</string>
+  <string name="choose_file_from_filesystem">Dos arquivos locais do sistema</string>
+  <string name="choose_file_from_external_application">Utilizar aplicação externa</string>
   <string name="opml_export_label">Exportar OPML</string>
+  <string name="exporting_label">Exportando...</string>
   <string name="export_error_label">Erro na exportação</string>
+  <string name="opml_export_success_title">Exportação do OPML realizada com sucesso.</string>
   <string name="opml_export_success_sum">O arquivo .opml foi gravado em:\u0020</string>
+  <string name="opml_import_ask_read_permission">Acesso ao armazenamento externo é necessária para ler o arquivo OPML</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Configura desligamento automático</string>
   <string name="disable_sleeptimer_label">Desabilita desligamento automático</string>
@@ -332,9 +426,24 @@
   <string name="sleep_timer_label">Desligamento automático</string>
   <string name="time_left_label">Tempo restante:\u0020</string>
   <string name="time_dialog_invalid_input">Entrada inválida, a duração precisa ser um número inteiro</string>
+  <string name="timer_about_to_expire_label"><b>Quando o temporizador está prestes a expirar: </b></string>
+  <string name="shake_to_reset_label">Sacudir para reiniciar o temporizador</string>
+  <string name="timer_vibration_label">Vibrar</string>
   <string name="time_seconds">segundos</string>
   <string name="time_minutes">minutos</string>
   <string name="time_hours">horas</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="one">1 segundo</item>
+    <item quantity="other">%d segundos</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="one">1 minuto</item>
+    <item quantity="other">%d minutos</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="one">1 hora</item>
+    <item quantity="other">%d horas</item>
+  </plurals>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIAS</string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
@@ -354,6 +463,7 @@
   <string name="gpodnetauth_device_chooseExistingDevice">Escolher dispositivo existente:</string>
   <string name="gpodnetauth_device_errorEmpty">ID do dispostivo não pode estar em branco</string>
   <string name="gpodnetauth_device_errorAlreadyUsed">ID do dispositivo já está em uso</string>
+  <string name="gpodnetauth_device_caption_errorEmpty">A legenda não deve ser vazia</string>
   <string name="gpodnetauth_device_butChoose">Escolher</string>
   <string name="gpodnetauth_finish_title">Login realizado com sucesso!</string>
   <string name="gpodnetauth_finish_descr">Parabéns! Sua conta gpodder.net agora está conectada ao seu dispositivo. O AntennaPod irá, daqui em diante, sincronizar automaticamente assinaturas do seu dispositivo com sua conta gpodder.net.</string>
@@ -367,29 +477,119 @@
   <string name="selected_folder_label">Selecionar pasta:</string>
   <string name="create_folder_label">Criar pasta</string>
   <string name="choose_data_directory">Escolher pasta de dados</string>
+  <string name="choose_data_directory_message">Por favor escolha a base do seu repositório de dados. O AntennaPode irá criar os sub-diretórios apropriados.</string>
+  <string name="choose_data_directory_permission_rationale">Acesso ao armazenamento externo é necessário para mudar o repositório de dados</string>
   <string name="create_folder_msg">Criar nova pasta com o nome \"%1$s\"?</string>
   <string name="create_folder_success">Nova pasta criada</string>
   <string name="create_folder_error_no_write_access">Não é possível escrever nesta pasta</string>
   <string name="create_folder_error_already_exists">Pasta já existente</string>
   <string name="create_folder_error">Não foi possível criar pasta</string>
+  <string name="folder_does_not_exist_error">\"%1$s\" não existe</string>
+  <string name="folder_not_readable_error">\"%1$s\" não pode ser lido</string>
+  <string name="folder_not_writable_error">\"%1$s\" não pode ser escrito</string>
   <string name="folder_not_empty_dialog_title">A pasta não está vazia</string>
   <string name="folder_not_empty_dialog_msg">A pasta que você selecionou não está vazia. Os downloads de mídia e outros arquivos serão colocados diretamente nesta pasta. Deseja mesmo continuar?</string>
   <string name="set_to_default_folder">Escolher pasta padrão</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pause a reprodução em vez de abaixar o volume quando outro aplicativo reproduzir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausar em interrupções</string>
+  <string name="pref_resumeAfterCall_sum">Continuar a reprodução depois que uma ligação telefonica for concluida</string>
+  <string name="pref_resumeAfterCall_title">Continuar após ligação</string>
+  <string name="pref_restart_required">AntennaPode deve ser reiniciado para que esta mudanças tenha efeito.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Assinar</string>
   <string name="subscribed_label">Assinado</string>
+  <string name="downloading_label">Baixando...</string>
   <!--Content descriptions for image buttons-->
+  <string name="rewind_label">Voltar</string>
+  <string name="fast_forward_label">Avançar</string>
+  <string name="media_type_audio_label">Áudio</string>
+  <string name="media_type_video_label">Vídeo</string>
+  <string name="navigate_upwards_label">Navegar para cima</string>
+  <string name="status_downloading_label">O epísódio está sendo baixado</string>
   <string name="in_queue_label">Episódio está na fila</string>
+  <string name="drag_handle_content_description">Arrastar para mudar a posição deste item</string>
+  <string name="load_next_page_label">Carregar a próxima página</string>
   <!--Feed information screen-->
+  <string name="authentication_label">Autenticação</string>
+  <string name="authentication_descr">Mudar o seu usuário e senha para este podcast e seus episódios.</string>
+  <string name="auto_download_settings_label">Configurações de Download Automático</string>
+  <string name="episode_filters_label">Filtrar Episódio</string>
+  <string name="episode_filters_description">Lista de termos utilizados para decidir se um episódio deverá ser incluído ou excluído quando está baixando automaticamente</string>
+  <string name="episode_filters_include">Incluir</string>
+  <string name="episode_filters_exclude">Excluir</string>
+  <string name="episode_filters_hint">Única palavra \n\"Múltiplas palavras\"</string>
+  <string name="keep_updated">Manter Atualizado</string>
   <!--Progress information-->
+  <string name="progress_upgrading_database">Atualizar o banco de dados</string>
   <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Importar assinaturas de aplicativos de finalidade única...</string>
+  <string name="search_itunes_label">Procurar no iTunes</string>
+  <string name="filter">Filtrar</string>
   <!--Episodes apply actions-->
+  <string name="all_label">Todos</string>
+  <string name="selected_all_label">Selecionar todos Episódios</string>
+  <string name="none_label">Nenhum</string>
+  <string name="deselected_all_label">Desmarcar todos Episódios</string>
+  <string name="played_label">Tocado</string>
+  <string name="selected_played_label">Selecionar episódios tocados</string>
+  <string name="unplayed_label">Não tocado</string>
+  <string name="selected_unplayed_label">Selecionar episódios não tocados</string>
+  <string name="downloaded_label">Baixados</string>
+  <string name="selected_downloaded_label">Selecionar episódios baixados</string>
+  <string name="not_downloaded_label">Não baixado</string>
+  <string name="selected_not_downloaded_label">Selecionar episídios não baixados</string>
+  <string name="queued_label">Enfileirado</string>
+  <string name="selected_queued_label">Selecionar episódios enfileirados</string>
+  <string name="not_queued_label">Não enfileirado</string>
+  <string name="selected_not_queued_label">Selecionar episódios não enfileirados</string>
   <!--Sort-->
+  <string name="sort_title_a_z">Título (A \u2192 Z)</string>
+  <string name="sort_title_z_a">Título (Z \u2192 A)</string>
+  <string name="sort_date_new_old">Data (Novo \u2192 Velho)</string>
+  <string name="sort_date_old_new">Data (Velho \u2192 Novo)</string>
+  <string name="sort_duration_short_long">Duração (Curta \u2192 Longa)</string>
+  <string name="sort_duration_long_short">Duração (Longa \u2192 Curta)</string>
   <!--Rating dialog-->
+  <string name="rating_title">Gostou do AntennaPod?</string>
+  <string name="rating_message">Nós gostaríamos que você dedicasse um tempo para avaliar o AntennaPod.</string>
+  <string name="rating_never_label">Me deixe em paz</string>
+  <string name="rating_later_label">Lembre-me mais tarde</string>
+  <string name="rating_now_label">Claro, deixe-me fazer isso!</string>
   <!--Audio controls-->
+  <string name="audio_controls">Controles de Àudio</string>
+  <string name="playback_speed">Velocidade da Reprodução</string>
+  <string name="volume">Volume</string>
+  <string name="left_short">E</string>
+  <string name="right_short">D</string>
+  <string name="audio_effects">Efeitos Sonoros</string>
+  <string name="stereo_to_mono">Downmix: Stereo para mono</string>
+  <string name="sonic_only">Apenas Sonic</string>
   <!--proxy settings-->
+  <string name="proxy_type_label">Tipo</string>
+  <string name="host_label">Host</string>
+  <string name="port_label">Porta</string>
+  <string name="optional_hint">(Opcional)</string>
+  <string name="proxy_test_label">Teste</string>
+  <string name="proxy_checking">Verificando...</string>
+  <string name="proxy_test_successful">Teste realizado com sucesso</string>
+  <string name="proxy_test_failed">Teste falhou</string>
+  <string name="proxy_host_empty_error">Host não pode ser vazio</string>
+  <string name="proxy_host_invalid_error">Host não possui um endereço de IP válido ou dominio</string>
+  <string name="proxy_port_invalid_error">Porta inválida</string>
   <!--Casting-->
+  <string name="cast_media_route_menu_title">Tocar em...</string>
+  <string name="cast_disconnect_label">Desconectar a sessão do cast</string>
+  <string name="cast_not_castable">A mídia selecionada não é compatível com o dispositivo cast</string>
+  <string name="cast_failed_to_play">Falha ao iniciar a reprodução da mídia</string>
+  <string name="cast_failed_to_stop">Falha ao parar a reprodução da mídia</string>
+  <string name="cast_failed_to_pause">Falha ao pausar a reprodução da mídia</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_setting_volume">Falha ao configurar o volume</string>
+  <string name="cast_failed_no_connection">Sem conexão com o dispositivo cast</string>
+  <string name="cast_failed_no_connection_trans">A conexão com o dispositivo cast foi perdida. A aplicação está tentando re-estabelecer a coneção, se possivel. Por favor espere por alguns segundos e tente novamente.</string>
+  <string name="cast_failed_perform_action">Falha ao executar a ação</string>
+  <string name="cast_failed_status_request">Falha ao sincronizar com o dispositivo cast</string>
+  <string name="cast_failed_seek">Falha ao buscar uma nova posição no dispositivo cast</string>
+  <string name="cast_failed_receiver_player_error">O receptor de reprodução encontrou um erro no servidor</string>
+  <string name="cast_failed_media_error_skipping">Erro ao tocar a mídia. Pulando...</string>
 </resources>
