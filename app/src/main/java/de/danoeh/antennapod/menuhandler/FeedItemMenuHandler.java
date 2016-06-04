@@ -80,7 +80,7 @@ public class FeedItemMenuHandler {
         if(queueAccess == null || queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == selectedItem.getId()) {
             mi.setItemVisibility(R.id.move_to_bottom_item, false);
         }
-        if (!isInQueue || isPlaying) {
+        if (!isInQueue) {
             mi.setItemVisibility(R.id.remove_from_queue_item, false);
         }
         if (!(!isInQueue && selectedItem.getMedia() != null)) {
