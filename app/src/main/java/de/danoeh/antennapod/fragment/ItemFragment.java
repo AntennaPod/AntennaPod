@@ -421,7 +421,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 butAction2Text = R.string.stream_label;
             } else {
                 butAction2Icon = "{md-delete 24sp}";
-                butAction2Text = R.string.remove_label;
+                butAction2Text = R.string.delete_label;
             }
             if (isDownloading) {
                 butAction1Icon = "{md-cancel 24sp}";
