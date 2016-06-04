@@ -48,6 +48,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
@@ -507,21 +508,24 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean retVal = super.onCreateOptionsMenu(menu);
-        switch (getLastNavFragment()) {
-            case QueueFragment.TAG:
-            case EpisodesFragment.TAG:
+        if (Flavors.FLAVOR == Flavors.PLAY) {
+            switch (getLastNavFragment()) {
+                case QueueFragment.TAG:
+                case EpisodesFragment.TAG:
                 requestCastButton(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-                return retVal;
-            case DownloadsFragment.TAG:
-            case PlaybackHistoryFragment.TAG:
-            case AddFeedFragment.TAG:
-            case SubscriptionFragment.TAG:
-                return retVal;
-            default:
+                    return retVal;
+                case DownloadsFragment.TAG:
+                case PlaybackHistoryFragment.TAG:
+                case AddFeedFragment.TAG:
+                case SubscriptionFragment.TAG:
+                    return retVal;
+                default:
                 requestCastButton(MenuItem.SHOW_AS_ACTION_NEVER);
-                return retVal;
+                    return retVal;
+            }
+        } else {
+            return retVal;
         }
-
     }
 
     @Override
