@@ -272,8 +272,6 @@ public class DBWriter {
         return dbExec.submit(() -> {
             Log.d(TAG, "Adding new item to playback history");
             media.setPlaybackCompletionDate(new Date());
-            // reset played_duration to 0 so that it behaves correctly when the episode is played again
-            media.setPlayedDuration(0);
 
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
