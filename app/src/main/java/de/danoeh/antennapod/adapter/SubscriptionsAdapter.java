@@ -30,8 +30,8 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
     /** placeholder object that indicates item should be added */
     public static final Object ADD_ITEM_OBJ = new Object();
 
-    /** the position in the view that holds the add item */
-    private static final int ADD_POSITION = 0;
+    /** the position in the view that holds the add item; 0 is the first, -1 is the last position */
+    private static final int ADD_POSITION = -1;
     private static final String TAG = "SubscriptionsAdapter";
 
     private final WeakReference<MainActivity> mainActivityRef;
@@ -42,8 +42,16 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         this.itemAccess = itemAccess;
     }
 
+    private int getAddTilePosition() {
+        if(ADD_POSITION < 0) {
+            return ADD_POSITION + getCount();
+        }
+        return ADD_POSITION;
+    }
+
     private int getAdjustedPosition(int origPosition) {
-        return origPosition - 1;
+        assert(origPosition != getAddTilePosition());
+        return origPosition < getAddTilePosition() ? origPosition : origPosition - 1;
     }
 
     @Override
@@ -53,7 +61,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public Object getItem(int position) {
-        if (position == ADD_POSITION) {
+        if (position == getAddTilePosition()) {
             return ADD_ITEM_OBJ;
         }
         return itemAccess.getItem(getAdjustedPosition(position));
@@ -61,7 +69,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public long getItemId(int position) {
-        if (position == ADD_POSITION) {
+        if (position == getAddTilePosition()) {
             return 0;
         }
         return itemAccess.getItem(getAdjustedPosition(position)).getId();
@@ -87,7 +95,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             holder = (Holder) convertView.getTag();
         }
 
-        if (position == ADD_POSITION) {
+        if (position == getAddTilePosition()) {
             holder.feedTitle.setText("{md-add 500%}\n\n" + mainActivityRef.get().getString(R.string.add_feed_label));
                     holder.feedTitle.setVisibility(View.VISIBLE);
             // prevent any accidental re-use of old values (not sure how that would happen...)
