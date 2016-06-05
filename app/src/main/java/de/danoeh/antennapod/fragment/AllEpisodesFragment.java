@@ -378,6 +378,20 @@ public class AllEpisodesFragment extends Fragment {
             return item != null && item.isTagged(FeedItem.TAG_QUEUE);
         }
 
+        @Override
+        public LongList getQueueIds() {
+            LongList queueIds = new LongList();
+            if(episodes == null) {
+                return queueIds;
+            }
+            for(FeedItem item : episodes) {
+                if(item.isTagged(FeedItem.TAG_QUEUE)) {
+                    queueIds.add(item.getId());
+                }
+            }
+            return queueIds;
+        }
+
     };
 
     public void onEventMainThread(FeedItemEvent event) {

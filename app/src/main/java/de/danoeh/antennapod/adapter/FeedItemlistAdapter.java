@@ -26,6 +26,7 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 
 /**
@@ -219,7 +220,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
         @Override
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();
-            callback.onActionButtonPressed(item);
+            callback.onActionButtonPressed(item, itemAccess.getQueueIds());
         }
     };
 
@@ -242,6 +243,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
         int getCount();
 
         FeedItem getItem(int position);
+
+        LongList getQueueIds();
 
     }
 
