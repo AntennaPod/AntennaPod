@@ -102,8 +102,13 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
         holder.feedTitle.setText(feed.getTitle());
         holder.feedTitle.setVisibility(View.VISIBLE);
-        holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
-        holder.count.setVisibility(View.VISIBLE);
+        int count = itemAccess.getFeedCounter(feed.getId());
+        if(count > 0) {
+            holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
+            holder.count.setVisibility(View.VISIBLE);
+        } else {
+            holder.count.setVisibility(View.GONE);
+        }
         Glide.with(mainActivityRef.get())
                 .load(feed.getImageLocation())
                 .error(R.color.light_gray)
