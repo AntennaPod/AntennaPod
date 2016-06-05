@@ -68,6 +68,11 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
     }
 
     @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    @Override
     public long getItemId(int position) {
         if (position == getAddTilePosition()) {
             return 0;
