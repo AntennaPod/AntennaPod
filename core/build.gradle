@@ -74,7 +74,8 @@ dependencies {
             String[] buildTypes = ["Debug", "Release"];
             String[] taskTypes = ["", "AndroidTest", "AndroidTestSources", "Annotations", "Classes",
                                   "JarArtifact", "PlayResources", "Sources", "UnitTest", "UnitTestSources"];
-            boolean skip = taskName == "tasks" || taskName == "assemble" + flavorName;
+            boolean skip = taskName == "tasks" || taskName == "assemble" + flavorName ||
+                    taskName == "clean";
             for (int i = 0; i < buildTypes.length && skip == false; ++i) {
                 String buildType = buildTypes[i];
                 for (int j = 0; j < taskTypes.length && skip == false; j++) {
