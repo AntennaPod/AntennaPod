@@ -135,7 +135,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == CHOOSE_OPML_FILE) {
             Uri uri = data.getData();
-            if(uri.toString().startsWith("/")) {
+            if(uri != null && uri.toString().startsWith("/")) {
                 uri = Uri.parse("file://" + uri.toString());
             }
             importUri(uri);
