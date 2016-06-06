@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import de.danoeh.antennapod.core.cast.RemoteMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -560,7 +559,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof RemoteMedia) {
+        if (FeedMediaHelper.instanceOfRemoteMedia(o)) {
             return o.equals(this);
         }
         return super.equals(o);
