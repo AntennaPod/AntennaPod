@@ -15,14 +15,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -61,6 +58,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
@@ -175,12 +173,6 @@ public class PlaybackService extends Service {
     public static final int INVALID_TIME = -1;
 
     /**
-     * Time in seconds during which the CastManager will try to reconnect to the Cast Device after
-     * the Wifi Connection is regained.
-     */
-    private static final int RECONNECTION_ATTEMPT_PERIOD_S = 15;
-
-    /**
      * Is true if service is running.
      */
     public static boolean isRunning = false;
@@ -196,21 +188,13 @@ public class PlaybackService extends Service {
      * Is true if a Cast Device is connected to the service.
      */
     private static volatile boolean isCasting = false;
-    /**
-     * Stores the state of the cast playback just before it disconnects.
-     */
-    private volatile PlaybackServiceMediaPlayer.PSMPInfo infoBeforeCastDisconnection;
-
-    private boolean wifiConnectivity = true;
-    private BroadcastReceiver wifiBroadcastReceiver;
 
     private static final int NOTIFICATION_ID = 1;
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
+    private PlaybackServiceFlavorHelper flavorHelper;
 
-//    private CastManager castManager;
-//    private MediaRouter mediaRouter;
     /**
      * Only used for Lollipop notifications.
      */
@@ -284,7 +268,7 @@ public class PlaybackService extends Service {
                 ACTION_RESUME_PLAY_CURRENT_EPISODE));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
-//        mediaRouter = MediaRouter.getInstance(getApplicationContext());
+        flavorHelper = new PlaybackServiceFlavorHelper(PlaybackService.this, flavorHelperCallback);
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(prefListener);
 
@@ -308,18 +292,7 @@ public class PlaybackService extends Service {
             npe.printStackTrace();
         }
 
-//        castManager = CastManager.getInstance();
-//        castManager.addCastConsumer(castConsumer);
-//        isCasting = castManager.isConnected();
-//        if (isCasting) {
-//            if (UserPreferences.isCastEnabled()) {
-//                onCastAppConnected(false);
-//            } else {
-//                castManager.disconnect();
-//            }
-//        } else {
-            mediaPlayer = new LocalPSMP(this, mediaPlayerCallback);
-//        }
+        flavorHelper.initializeMediaPlayer(PlaybackService.this);
 
         mediaSession.setActive(true);
     }
@@ -346,8 +319,8 @@ public class PlaybackService extends Service {
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
         unregisterReceiver(pauseResumeCurrentEpisodeReceiver);
-//        castManager.removeCastConsumer(castConsumer);
-        unregisterWifiBroadcastReceiver();
+        flavorHelper.removeCastConsumer();
+        flavorHelper.unregisterWifiBroadcastReceiver();
         mediaPlayer.shutdown();
         taskManager.shutdown();
     }
@@ -381,9 +354,7 @@ public class PlaybackService extends Service {
                 Log.d(TAG, "Received media button event");
                 handleKeycode(keycode, intent.getIntExtra(MediaButtonReceiver.EXTRA_SOURCE,
                         InputDevice.SOURCE_CLASS_NONE));
-//            } else if (castDisconnect) {
-//                castManager.disconnect();
-            } else {
+            } else if (!flavorHelper.castDisconnect(castDisconnect)) {
                 started = true;
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
                         true);
@@ -391,9 +362,7 @@ public class PlaybackService extends Service {
                 boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
                 //If the user asks to play External Media, the casting session, if on, should end.
-//                if (playable instanceof ExternalMedia) {
-//                    castManager.disconnect();
-//                }
+                flavorHelper.castDisconnect(playable instanceof ExternalMedia);
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
         }
@@ -649,14 +618,8 @@ public class PlaybackService extends Service {
                 case MediaPlayer.MEDIA_INFO_BUFFERING_END:
                     sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_END, 0);
                     return true;
-//                case RemotePSMP.CAST_ERROR:
-//                    sendNotificationBroadcast(NOTIFICATION_TYPE_SHOW_TOAST, resourceId);
-//                    return true;
-//                case RemotePSMP.CAST_ERROR_PRIORITY_HIGH:
-//                    Toast.makeText(PlaybackService.this, resourceId, Toast.LENGTH_SHORT).show();
-//                    return true;
                 default:
-                    return false;
+                    return flavorHelper.onMediaPlayerInfo(PlaybackService.this, code, resourceId);
             }
         }
 
@@ -1527,67 +1490,6 @@ public class PlaybackService extends Service {
         }
     }
 
-//    private CastConsumer castConsumer = new DefaultCastConsumer() {
-//        @Override
-//        public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
-//            PlaybackService.this.onCastAppConnected(wasLaunched);
-//        }
-//
-//        @Override
-//        public void onDisconnectionReason(int reason) {
-//            Log.d(TAG, "onDisconnectionReason() with code " + reason);
-//            // This is our final chance to update the underlying stream position
-//            // In onDisconnected(), the underlying CastPlayback#mVideoCastConsumer
-//            // is disconnected and hence we update our local value of stream position
-//            // to the latest position.
-//            if (mediaPlayer != null) {
-//                saveCurrentPosition(false, 0);
-//                infoBeforeCastDisconnection = mediaPlayer.getPSMPInfo();
-//                if (reason != BaseCastManager.DISCONNECT_REASON_EXPLICIT &&
-//                        infoBeforeCastDisconnection.playerStatus == PlayerStatus.PLAYING) {
-//                    // If it's NOT based on user action, we shouldn't automatically resume local playback
-//                    infoBeforeCastDisconnection.playerStatus = PlayerStatus.PAUSED;
-//                }
-//            }
-//        }
-//
-//        @Override
-//        public void onDisconnected() {
-//            Log.d(TAG, "onDisconnected()");
-//            isCasting = false;
-//            PlaybackServiceMediaPlayer.PSMPInfo info = infoBeforeCastDisconnection;
-//            infoBeforeCastDisconnection = null;
-//            if (info == null && mediaPlayer != null) {
-//                info = mediaPlayer.getPSMPInfo();
-//            }
-//            if (info == null) {
-//                info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null);
-//            }
-//            switchMediaPlayer(new LocalPSMP(PlaybackService.this, mediaPlayerCallback),
-//                    info, true);
-//            if (info.playable != null) {
-//                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-//                        info.playable.getMediaType() == MediaType.AUDIO ? EXTRA_CODE_AUDIO : EXTRA_CODE_VIDEO);
-//            } else {
-//                Log.d(TAG, "Cast session disconnected, but no current media");
-//                sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
-//            }
-//            // hardware volume buttons control the local device volume
-//            mediaRouter.setMediaSessionCompat(null);
-//            unregisterWifiBroadcastReceiver();
-//            PlayerStatus status = info.playerStatus;
-//            if ((status == PlayerStatus.PLAYING ||
-//                    status == PlayerStatus.SEEKING ||
-//                    status == PlayerStatus.PREPARING ||
-//                    UserPreferences.isPersistNotify()) &&
-//                    android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                setupNotification(info);
-//            } else if (!UserPreferences.isPersistNotify()){
-//                stopForeground(true);
-//            }
-//        }
-//    };
-
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
 
         private static final String TAG = "MediaSessionCompat";
@@ -1673,101 +1575,90 @@ public class PlaybackService extends Service {
         }
     };
 
-//    private void onCastAppConnected(boolean wasLaunched) {
-//        Log.d(TAG, "A cast device application was " + (wasLaunched ? "launched" : "joined"));
-//        isCasting = true;
-//        PlaybackServiceMediaPlayer.PSMPInfo info = null;
-//        if (mediaPlayer != null) {
-//            info = mediaPlayer.getPSMPInfo();
-//            if (info.playerStatus == PlayerStatus.PLAYING) {
-//                // could be pause, but this way we make sure the new player will get the correct position,
-//                // since pause runs asynchronously and we could be directing the new player to play even before
-//                // the old player gives us back the position.
-//                saveCurrentPosition(false, 0);
-//            }
-//        }
-//        if (info == null) {
-//            info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null);
-//        }
-//        sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, EXTRA_CODE_CAST);
-//        switchMediaPlayer(new RemotePSMP(PlaybackService.this, mediaPlayerCallback),
-//                info,
-//                wasLaunched);
-//        // hardware volume buttons control the remote device volume
-//        mediaRouter.setMediaSessionCompat(mediaSession);
-//        registerWifiBroadcastReceiver();
-//        setupNotification(info);
-//    }
-
-    private void switchMediaPlayer(@NonNull PlaybackServiceMediaPlayer newPlayer,
-                                   @NonNull PlaybackServiceMediaPlayer.PSMPInfo info,
-                                   boolean wasLaunched) {
-        if (mediaPlayer != null) {
-            mediaPlayer.endPlayback(true, true);
-            mediaPlayer.shutdownQuietly();
-        }
-        mediaPlayer = newPlayer;
-        Log.d(TAG, "switched to " + mediaPlayer.getClass().getSimpleName());
-        if (!wasLaunched) {
-            PlaybackServiceMediaPlayer.PSMPInfo candidate = mediaPlayer.getPSMPInfo();
-            if (candidate.playable != null &&
-                    candidate.playerStatus.isAtLeast(PlayerStatus.PREPARING)) {
-                // do not automatically send new media to cast device
-                info.playable = null;
-            }
-        }
-        if (info.playable != null) {
-            mediaPlayer.playMediaObject(info.playable,
-                    !info.playable.localFileAvailable(),
-                    info.playerStatus == PlayerStatus.PLAYING,
-                    info.playerStatus.isAtLeast(PlayerStatus.PREPARING));
-        }
-    }
-
-    private void registerWifiBroadcastReceiver() {
-        if (wifiBroadcastReceiver != null) {
-            return;
-        }
-        wifiBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
-                    NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-                    boolean isConnected = info.isConnected();
-                    //apparently this method gets called twice when a change happens, but one run is enough.
-                    if (isConnected && !wifiConnectivity) {
-                        wifiConnectivity = true;
-//                        castManager.startCastDiscovery();
-//                        castManager.reconnectSessionIfPossible(RECONNECTION_ATTEMPT_PERIOD_S, NetworkUtils.getWifiSsid());
-                    } else {
-                        wifiConnectivity = isConnected;
-                    }
-                }
-            }
-        };
-        registerReceiver(wifiBroadcastReceiver,
-                new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION));
-    }
-
-    private void unregisterWifiBroadcastReceiver() {
-        if (wifiBroadcastReceiver != null) {
-            unregisterReceiver(wifiBroadcastReceiver);
-            wifiBroadcastReceiver = null;
-        }
-    }
-
     private SharedPreferences.OnSharedPreferenceChangeListener prefListener =
             (sharedPreferences, key) -> {
-//                if (UserPreferences.PREF_CAST_ENABLED.equals(key)) {
-//                    if (!UserPreferences.isCastEnabled()) {
-//                        if (castManager.isConnecting() || castManager.isConnected()) {
-//                            Log.d(TAG, "Disconnecting cast device due to a change in user preferences");
-//                            castManager.disconnect();
-//                        }
-//                    }
-//                } else
                 if (UserPreferences.PREF_LOCKSCREEN_BACKGROUND.equals(key)) {
                     updateMediaSessionMetadata(getPlayable());
+                } else {
+                    flavorHelper.onSharedPreference(key);
                 }
+    };
+
+    interface FlavorHelperCallback {
+        PlaybackServiceMediaPlayer.PSMPCallback getMediaPlayerCallback();
+        void setMediaPlayer(PlaybackServiceMediaPlayer mediaPlayer);
+        PlaybackServiceMediaPlayer getMediaPlayer();
+        void setIsCasting(boolean isCasting);
+        void sendNotificationBroadcast(int type, int code);
+        void saveCurrentPosition(boolean updatePlayedDuration, int deltaPlayedDuration);
+        void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info);
+        MediaSessionCompat getMediaSession();
+        Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter);
+        void unregisterReceiver(BroadcastReceiver receiver);
+    }
+
+    private FlavorHelperCallback flavorHelperCallback = new FlavorHelperCallback() {
+        @Override
+        public PlaybackServiceMediaPlayer.PSMPCallback getMediaPlayerCallback() {
+            return PlaybackService.this.mediaPlayerCallback;
+        }
+
+        @Override
+        public void setMediaPlayer(PlaybackServiceMediaPlayer mediaPlayer) {
+            PlaybackService.this.mediaPlayer = mediaPlayer;
+        }
+
+        @Override
+        public PlaybackServiceMediaPlayer getMediaPlayer() {
+            return PlaybackService.this.mediaPlayer;
+        }
+
+        @Override
+        public void setIsCasting(boolean isCasting) {
+            PlaybackService.isCasting = isCasting;
+        }
+
+        @Override
+        public void sendNotificationBroadcast(int type, int code) {
+            PlaybackService.this.sendNotificationBroadcast(type, code);
+        }
+
+        @Override
+        public void saveCurrentPosition(boolean updatePlayedDuration, int deltaPlayedDuration) {
+            PlaybackService.this.saveCurrentPosition(updatePlayedDuration, deltaPlayedDuration);
+        }
+
+        @Override
+        public void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info) {
+            if (connected) {
+                PlaybackService.this.setupNotification(info);
+            } else {
+                PlayerStatus status = info.playerStatus;
+                if ((status == PlayerStatus.PLAYING ||
+                        status == PlayerStatus.SEEKING ||
+                        status == PlayerStatus.PREPARING ||
+                        UserPreferences.isPersistNotify()) &&
+                        android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    PlaybackService.this.setupNotification(info);
+                } else if (!UserPreferences.isPersistNotify()){
+                    PlaybackService.this.stopForeground(true);
+                }
+            }
+        }
+
+        @Override
+        public MediaSessionCompat getMediaSession() {
+            return PlaybackService.this.mediaSession;
+        }
+
+        @Override
+        public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) {
+            return PlaybackService.this.registerReceiver(receiver, filter);
+        }
+
+        @Override
+        public void unregisterReceiver(BroadcastReceiver receiver) {
+            PlaybackService.this.unregisterReceiver(receiver);
+        }
     };
 }
