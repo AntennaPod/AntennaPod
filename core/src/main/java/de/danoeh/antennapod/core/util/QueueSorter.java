@@ -13,22 +13,24 @@ import de.danoeh.antennapod.core.storage.DBWriter;
  */
 public class QueueSorter {
     public enum Rule {
-        ALPHA_ASC,
-        ALPHA_DESC,
+        EPISODE_TITLE_ASC,
+        EPISODE_TITLE_DESC,
         DATE_ASC,
         DATE_DESC,
         DURATION_ASC,
-        DURATION_DESC
+        DURATION_DESC,
+        FEED_TITLE_ASC,
+        FEED_TITLE_DESC
     }
 
     public static void sort(final Context context, final Rule rule, final boolean broadcastUpdate) {
         Comparator<FeedItem> comparator = null;
 
         switch (rule) {
-            case ALPHA_ASC:
+            case EPISODE_TITLE_ASC:
                 comparator = (f1, f2) -> f1.getTitle().compareTo(f2.getTitle());
                 break;
-            case ALPHA_DESC:
+            case EPISODE_TITLE_DESC:
                 comparator = (f1, f2) -> f2.getTitle().compareTo(f1.getTitle());
                 break;
             case DATE_ASC:
@@ -59,6 +61,12 @@ public class QueueSorter {
 
                     return -1 * (duration1 - duration2);
                 };
+                break;
+            case FEED_TITLE_ASC:
+                comparator = (f1, f2) -> f1.getFeed().getTitle().compareTo(f2.getFeed().getTitle());
+                break;
+            case FEED_TITLE_DESC:
+                comparator = (f1, f2) -> f2.getFeed().getTitle().compareTo(f1.getFeed().getTitle());
                 break;
             default:
         }

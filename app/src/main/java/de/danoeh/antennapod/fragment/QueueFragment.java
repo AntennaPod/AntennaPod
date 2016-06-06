@@ -304,11 +304,11 @@ public class QueueFragment extends Fragment {
                     };
                     conDialog.createNewDialog().show();
                     return true;
-                case R.id.queue_sort_alpha_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.ALPHA_ASC, true);
+                case R.id.queue_sort_episode_title_asc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.EPISODE_TITLE_ASC, true);
                     return true;
-                case R.id.queue_sort_alpha_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.ALPHA_DESC, true);
+                case R.id.queue_sort_episode_title_desc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.EPISODE_TITLE_DESC, true);
                     return true;
                 case R.id.queue_sort_date_asc:
                     QueueSorter.sort(getActivity(), QueueSorter.Rule.DATE_ASC, true);
@@ -321,6 +321,12 @@ public class QueueFragment extends Fragment {
                     return true;
                 case R.id.queue_sort_duration_desc:
                     QueueSorter.sort(getActivity(), QueueSorter.Rule.DURATION_DESC, true);
+                    return true;
+                case R.id.queue_sort_feed_title_asc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.FEED_TITLE_ASC, true);
+                    return true;
+                case R.id.queue_sort_feed_title_desc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.FEED_TITLE_DESC, true);
                     return true;
                 default:
                     return false;
