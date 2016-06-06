@@ -5,9 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -42,11 +41,15 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LangUtils;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Displays information about a feed.
  */
-public class FeedInfoActivity extends ActionBarActivity {
+public class FeedInfoActivity extends AppCompatActivity {
     private static final String TAG = "FeedInfoActivity";
     private boolean autoDeleteChanged = false;
 
@@ -69,6 +72,8 @@ public class FeedInfoActivity extends ActionBarActivity {
     private CheckBox cbxKeepUpdated;
     private Spinner spnAutoDelete;
     private boolean filterInclude = true;
+
+    private Subscription subscription;
 
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
         @Override
@@ -124,29 +129,27 @@ public class FeedInfoActivity extends ActionBarActivity {
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
-        AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>() {
-
-            @Override
-            protected Feed doInBackground(Long... params) {
-                return DBReader.getFeed(params[0]);
-            }
-
-            @Override
-            protected void onPostExecute(Feed result) {
-                if (result != null) {
+        subscription = Observable.fromCallable(()-> DBReader.getFeed(feedId))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result == null) {
+                        Log.e(TAG, "Activity was started with invalid arguments");
+                        finish();
+                    }
                     feed = result;
                     Log.d(TAG, "Language is " + feed.getLanguage());
                     Log.d(TAG, "Author is " + feed.getAuthor());
                     Log.d(TAG, "URL is " + feed.getDownload_url());
                     FeedPreferences prefs = feed.getPreferences();
-                    imgvCover.post(() -> Glide.with(FeedInfoActivity.this)
+                    Glide.with(FeedInfoActivity.this)
                             .load(feed.getImageLocation())
                             .placeholder(R.color.light_gray)
                             .error(R.color.light_gray)
                             .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                             .fitCenter()
                             .dontAnimate()
-                            .into(imgvCover));
+                            .into(imgvCover);
 
                     txtvTitle.setText(feed.getTitle());
                     String description = feed.getDescription();
@@ -159,7 +162,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                                 .getLanguageString(feed.getLanguage()));
                     }
                     txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
-                            Iconify.addIcons(txtvUrl);
+                    Iconify.addIcons(txtvUrl);
 
                     cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
                     cbxAutoDownload.setChecked(prefs.getAutoDownload());
@@ -184,15 +187,12 @@ public class FeedInfoActivity extends ActionBarActivity {
                                 case 0:
                                     auto_delete_action = FeedPreferences.AutoDeleteAction.GLOBAL;
                                     break;
-
                                 case 1:
                                     auto_delete_action = FeedPreferences.AutoDeleteAction.YES;
                                     break;
-
                                 case 2:
                                     auto_delete_action = FeedPreferences.AutoDeleteAction.NO;
                                     break;
-
                                 default: // TODO - add exceptions here
                                     return;
                             }
@@ -234,15 +234,17 @@ public class FeedInfoActivity extends ActionBarActivity {
 
                     supportInvalidateOptionsMenu();
                     updateAutoDownloadSettings();
-                } else {
-                    Log.e(TAG, "Activity was started with invalid arguments");
-                }
-            }
-        };
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, feedId);
-        } else {
-            loadTask.execute(feedId);
+                }, error -> {
+                    Log.d(TAG, Log.getStackTraceString(error));
+                    finish();
+                });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
     }
 
