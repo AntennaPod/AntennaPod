@@ -410,7 +410,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             ui.getActivity().startActivity(Intent.createChooser(emailIntent, intentTitle));
             return true;
         });
-        PreferenceControllerHelper.setupFlavoredUI(ui);
+        PreferenceControllerFlavorHelper.setupFlavoredUI(ui);
         buildEpisodeCleanupPreference();
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();

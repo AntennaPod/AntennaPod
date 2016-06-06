@@ -559,7 +559,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public boolean equals(Object o) {
-        if (FeedMediaHelper.instanceOfRemoteMedia(o)) {
+        if (FeedMediaFlavorHelper.instanceOfRemoteMedia(o)) {
             return o.equals(this);
         }
         return super.equals(o);

@@ -1,10 +1,12 @@
 package de.danoeh.antennapod.core.feed;
 
+import de.danoeh.antennapod.core.cast.RemoteMedia;
+
 /**
  * Implements methods for FeedMedia that are flavor dependent.
  */
-public class FeedMediaHelper {
+public class FeedMediaFlavorHelper {
     static boolean instanceOfRemoteMedia(Object o) {
-        return false;
+        return o instanceof RemoteMedia;
     }
 }

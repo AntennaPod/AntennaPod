@@ -8,7 +8,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 /**
  * Implements functions from PreferenceController that are flavor dependent.
  */
-public class PreferenceControllerHelper {
+public class PreferenceControllerFlavorHelper {
 
     static void setupFlavoredUI(PreferenceController.PreferenceUI ui) {
         //checks whether Google Play Services is installed on the device (condition necessary for Cast support)
