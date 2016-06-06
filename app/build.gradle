@@ -111,7 +111,29 @@ android {
 
 dependencies {
     freeCompile project(path: ":core", configuration: "freeRelease")
-    playCompile project(path: ":core", configuration: "playRelease")
+    // free build hack to skip "play" specific dependencies on "free" builds
+    gradle.startParameter.taskRequests.each { taskRequest ->
+        taskRequest.args.each { taskName ->
+            String flavorName = "Free";
+            String[] buildTypes = ["Debug", "Release"];
+            String[] taskTypes = ["", "AndroidTest", "AndroidTestSources", "Annotations", "Classes",
+                                  "JarArtifact", "PlayResources", "Sources", "UnitTest", "UnitTestSources"];
+            boolean skip = taskName == "tasks" || taskName == "assemble" + flavorName;
+            for (int i = 0; i < buildTypes.length && skip == false; ++i) {
+                String buildType = buildTypes[i];
+                for (int j = 0; j < taskTypes.length && skip == false; j++) {
+                    if (taskName.endsWith(flavorName + buildType + taskTypes[j])) {
+                        skip = true;
+                    }
+                }
+            }
+            if (!skip) {
+                playCompile project(path: ":core", configuration: "playRelease")
+            } else if (taskName != "tasks") {
+                System.out.println("app: skipping some dependencies due to free build hack");
+            }
+        }
+    }
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
