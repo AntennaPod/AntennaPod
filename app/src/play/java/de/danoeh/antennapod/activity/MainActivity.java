@@ -209,7 +209,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         } else {
             edit.remove(PREF_LAST_FRAGMENT_TAG);
         }
-        edit.commit();
+        edit.apply();
     }
 
     private String getLastNavFragment() {

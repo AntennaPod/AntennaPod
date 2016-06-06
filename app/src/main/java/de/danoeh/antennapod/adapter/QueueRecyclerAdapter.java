@@ -309,7 +309,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         @Override
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();
-            actionButtonCallback.onActionButtonPressed(item);
+            actionButtonCallback.onActionButtonPressed(item, itemAccess.getQueueIds());
         }
     };
 

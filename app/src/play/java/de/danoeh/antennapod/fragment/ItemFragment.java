@@ -59,6 +59,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -220,7 +221,8 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 return;
             }
             DefaultActionButtonCallback actionButtonCallback = new DefaultActionButtonCallback(getActivity());
-            actionButtonCallback.onActionButtonPressed(item);
+            actionButtonCallback.onActionButtonPressed(item, item.isTagged(FeedItem.TAG_QUEUE) ?
+                    LongList.of(item.getId()) : new LongList(0));
             FeedMedia media = item.getMedia();
             if (media != null && media.isDownloaded()) {
                 // playback was started, dialog should close itself
