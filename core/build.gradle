@@ -67,9 +67,14 @@ dependencies {
     compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     // Add casting features
-    playCompile "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
-    compile "com.android.support:mediarouter-v7:$supportVersion"
-    playCompile "com.google.android.gms:play-services-cast:$playServicesVersion"
+    // free build hack: skip some dependencies
+    if (!doFreeBuild()) {
+        playCompile "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
+        compile "com.android.support:mediarouter-v7:$supportVersion"
+        playCompile "com.google.android.gms:play-services-cast:$playServicesVersion"
+    } else {
+        System.out.println("core: free build hack, skipping some dependencies")
+    }
 }
 
 allprojects {

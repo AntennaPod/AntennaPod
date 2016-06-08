@@ -109,9 +109,23 @@ android {
     }
 }
 
+configurations {
+    freeDebugCompile
+    freeReleaseCompile
+    playDebugCompile
+    playReleaseCompile
+}
+
 dependencies {
-    freeCompile project(path: ":core", configuration: "freeRelease")
-    playCompile project(path: ":core", configuration: "playRelease")
+    freeDebugCompile project(path: ":core", configuration: "freeDebug")
+    freeReleaseCompile project(path: ":core", configuration: "freeRelease")
+    // free build hack: skip some dependencies
+    if (!doFreeBuild()) {
+        playDebugCompile project(path: ":core", configuration: "playDebug")
+        playReleaseCompile project(path: ":core", configuration: "playRelease")
+    } else {
+        System.out.println("app: free build hack, skipping some dependencies")
+    }
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
