@@ -512,7 +512,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             switch (getLastNavFragment()) {
                 case QueueFragment.TAG:
                 case EpisodesFragment.TAG:
-                requestCastButton(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                    requestCastButton(MenuItem.SHOW_AS_ACTION_IF_ROOM);
                     return retVal;
                 case DownloadsFragment.TAG:
                 case PlaybackHistoryFragment.TAG:
@@ -520,7 +520,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 case SubscriptionFragment.TAG:
                     return retVal;
                 default:
-                requestCastButton(MenuItem.SHOW_AS_ACTION_NEVER);
+                    requestCastButton(MenuItem.SHOW_AS_ACTION_NEVER);
                     return retVal;
             }
         } else {
