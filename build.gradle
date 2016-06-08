@@ -70,3 +70,8 @@ project.ext {
 task wrapper(type: Wrapper) {
     gradleVersion = "2.11"
 }
+
+// free build hack: common functions
+def doFreeBuild() {
+    return System.properties["freeBuildHackDoFreeBuild"] == "true"
+}
