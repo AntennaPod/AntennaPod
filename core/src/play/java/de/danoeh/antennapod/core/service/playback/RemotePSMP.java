@@ -634,11 +634,21 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             }
         }
         if (shouldContinue || toStoppedState) {
-            if (nextMedia != null) {
-                callback.onPlaybackEnded(null, true);
-                stop();
+            boolean shouldPostProcess = true;
+            if (nextMedia == null) {
+                try {
+                    castMgr.stop();
+                    shouldPostProcess = false;
+                } catch (CastException | TransientNetworkDisconnectionException | NoConnectionException e) {
+                    Log.e(TAG, "Unable to stop playback", e);
+                    callback.onPlaybackEnded(null, true);
+                    stop();
+                }
             }
-            callback.onPostPlayback(currentMedia, !wasSkipped, nextMedia != null);
+            if (shouldPostProcess) {
+                // Otherwise we rely on the chromecast callback to tell us the playback has stopped.
+                callback.onPostPlayback(currentMedia, !wasSkipped, nextMedia != null);
+            }
         } else if (isPlaying) {
             callback.onPlaybackPause(currentMedia,
                     currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
