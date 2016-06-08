@@ -67,9 +67,32 @@ dependencies {
     compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     // Add casting features
-    playCompile "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
-    compile "com.android.support:mediarouter-v7:$supportVersion"
-    playCompile "com.google.android.gms:play-services-cast:$playServicesVersion"
+    //// free build hack to skip "play" specific dependencies on "free" builds
+    gradle.startParameter.taskRequests.each { taskRequest ->
+        taskRequest.args.each { taskName ->
+            String flavorName = "Free";
+            String[] buildTypes = ["Debug", "Release"];
+            String[] taskTypes = ["", "AndroidTest", "AndroidTestSources", "Annotations", "Classes",
+                                  "JarArtifact", "PlayResources", "Sources", "UnitTest", "UnitTestSources"];
+            boolean skip = taskName == "tasks" || taskName == "assemble" + flavorName ||
+                    taskName == "clean";
+            for (int i = 0; i < buildTypes.length && skip == false; ++i) {
+                String buildType = buildTypes[i];
+                for (int j = 0; j < taskTypes.length && skip == false; j++) {
+                    if (taskName.endsWith(flavorName + buildType + taskTypes[j])) {
+                        skip = true;
+                    }
+                }
+            }
+            if (!skip) {
+                playCompile "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
+                compile "com.android.support:mediarouter-v7:$supportVersion"
+                playCompile "com.google.android.gms:play-services-cast:$playServicesVersion"
+            } else if (taskName != "tasks") {
+                System.out.println("core: skipping some dependencies due to free build hack");
+            }
+        }
+    }
 }
 
 allprojects {
