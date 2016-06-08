@@ -180,7 +180,7 @@ public class AllEpisodesFragment extends Fragment {
         }
         super.onCreateOptionsMenu(menu, inflater);
         if (itemsLoaded) {
-            inflater.inflate(R.menu.new_episodes, menu);
+            inflater.inflate(R.menu.episodes, menu);
 
             MenuItem searchItem = menu.findItem(R.id.action_search);
             final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -206,11 +206,13 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (itemsLoaded) {
-            MenuItem menuItem = menu.findItem(R.id.mark_all_read_item);
-            if (menuItem != null) {
-                menuItem.setVisible(episodes != null && !episodes.isEmpty());
-            }
+        MenuItem markAllRead = menu.findItem(R.id.mark_all_read_item);
+        if (markAllRead != null) {
+            markAllRead.setVisible(!showOnlyNewEpisodes() && episodes != null && !episodes.isEmpty());
+        }
+        MenuItem markAllSeen = menu.findItem(R.id.mark_all_seen_item);
+        if(markAllSeen != null) {
+            markAllSeen.setVisible(showOnlyNewEpisodes() && episodes != null && !episodes.isEmpty());
         }
     }
 
