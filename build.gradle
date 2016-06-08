@@ -73,5 +73,5 @@ task wrapper(type: Wrapper) {
 
 // free build hack: common functions
 def doFreeBuild() {
-    return System.properties["freeBuildHackDoFreeBuild"] == "true"
+    return hasProperty("freeBuild")
 }
