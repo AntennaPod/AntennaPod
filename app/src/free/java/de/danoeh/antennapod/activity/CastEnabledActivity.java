@@ -106,10 +106,10 @@ public abstract class CastEnabledActivity extends AppCompatActivity {
 //     *
 //     * @param showAsAction refer to {@link MenuItem#setShowAsAction(int)}
 //     */
-//    public final void requestCastButton(int showAsAction) {
-//        castButtonVisibilityManager.requestCastButton(showAsAction);
-//    }
-//
+    public final void requestCastButton(int showAsAction) {
+        // no-op
+    }
+
 //    private class CastButtonVisibilityManager {
 //        private volatile boolean prefEnabled = false;
 //        private volatile boolean viewRequested = false;

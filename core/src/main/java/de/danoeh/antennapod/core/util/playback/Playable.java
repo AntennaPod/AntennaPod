@@ -8,7 +8,6 @@ import android.util.Log;
 import java.util.List;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;
-import de.danoeh.antennapod.core.cast.RemoteMedia;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -184,9 +183,6 @@ public interface Playable extends Parcelable,
                 case ExternalMedia.PLAYABLE_TYPE_EXTERNAL_MEDIA:
                     result = createExternalMediaInstance(pref);
                     break;
-                case RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA:
-                    result = createRemoteMediaInstance(pref);
-                    break;
             }
             if (result == null) {
                 Log.e(TAG, "Could not restore Playable object from preferences");
@@ -214,12 +210,6 @@ public interface Playable extends Parcelable,
                         position, lastPlayedTime);
             }
             return result;
-        }
-
-        private static Playable createRemoteMediaInstance(SharedPreferences pref) {
-            //TODO there's probably no point in restoring RemoteMedia from preferences, because we
-            //only care about it while it's playing on the cast device.
-            return null;
         }
     }
 

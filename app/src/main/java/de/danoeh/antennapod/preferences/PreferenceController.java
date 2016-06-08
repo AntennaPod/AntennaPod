@@ -34,8 +34,6 @@ import android.widget.Toast;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -412,22 +410,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             ui.getActivity().startActivity(Intent.createChooser(emailIntent, intentTitle));
             return true;
         });
-        //checks whether Google Play Services is installed on the device (condition necessary for Cast support)
-        ui.findPreference(UserPreferences.PREF_CAST_ENABLED).setOnPreferenceChangeListener((preference, o) -> {
-            if (o instanceof Boolean && ((Boolean) o)) {
-                final int googlePlayServicesCheck = GoogleApiAvailability.getInstance()
-                        .isGooglePlayServicesAvailable(ui.getActivity());
-                if (googlePlayServicesCheck == ConnectionResult.SUCCESS) {
-                    return true;
-                } else {
-                    GoogleApiAvailability.getInstance()
-                            .getErrorDialog(ui.getActivity(), googlePlayServicesCheck, 0)
-                            .show();
-                    return false;
-                }
-            }
-            return true;
-        });
+        PreferenceControllerFlavorHelper.setupFlavoredUI(ui);
         buildEpisodeCleanupPreference();
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
