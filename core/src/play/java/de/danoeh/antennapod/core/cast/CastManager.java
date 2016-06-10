@@ -24,6 +24,8 @@ package de.danoeh.antennapod.core.cast;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.view.ActionProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.media.MediaRouter;
 import android.util.Log;
@@ -1739,9 +1741,17 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
      *
      * @param menuItem MenuItem of the Media Router cast button.
      */
-    public final SwitchableMediaRouteActionProvider addMediaRouterButton(MenuItem menuItem) {
-        SwitchableMediaRouteActionProvider mediaRouteActionProvider = (SwitchableMediaRouteActionProvider)
-                MenuItemCompat.getActionProvider(menuItem);
+    public final SwitchableMediaRouteActionProvider addMediaRouterButton(@NonNull MenuItem menuItem) {
+        ActionProvider actionProvider = MenuItemCompat.getActionProvider(menuItem);
+        if (!(actionProvider instanceof SwitchableMediaRouteActionProvider)) {
+            Log.wtf(TAG, "MenuItem provided to addMediaRouterButton() is not compatible with " +
+                    "SwitchableMediaRouteActionProvider." +
+                    ((actionProvider == null) ? " Its action provider is null!" : ""),
+                    new ClassCastException());
+            return null;
+        }
+        SwitchableMediaRouteActionProvider mediaRouteActionProvider =
+                (SwitchableMediaRouteActionProvider) actionProvider;
         mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
         if (mCastConfiguration.getMediaRouteDialogFactory() != null) {
             mediaRouteActionProvider.setDialogFactory(mCastConfiguration.getMediaRouteDialogFactory());
