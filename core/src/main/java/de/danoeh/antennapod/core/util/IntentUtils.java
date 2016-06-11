@@ -9,10 +9,18 @@ import java.util.List;
 
 public class IntentUtils {
 
+    /*
+     *  Checks if there is at least one exported activity that can be performed for the intent
+     */
     public static boolean isCallable(final Context context, final Intent intent) {
         List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent,
                 PackageManager.MATCH_DEFAULT_ONLY);
-        return list.size() > 0;
+        for(ResolveInfo info : list) {
+            if(info.activityInfo.exported) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
