@@ -949,8 +949,12 @@ public final class DBReader {
                     continue;
                 }
 
+                // played duration used to be reset when the item is added to the playback history
+                if(media.getPlaybackCompletionDate() != null) {
+                    feedPlayedTime += media.getDuration() / 1000;
+                }
                 feedPlayedTime += media.getPlayedDuration() / 1000;
-                if(media.getPlayedDuration() > 0) {
+                if (media.getPlaybackCompletionDate() != null || media.getPlayedDuration() > 0) {
                     episodesStarted++;
                 }
                 feedTotalTime += media.getDuration() / 1000;
