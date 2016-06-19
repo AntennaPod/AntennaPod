@@ -1,17 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Kanallar</string>
-  <string name="podcasts_label">PODKASTLAR</string>
   <string name="new_label">Yeni</string>
-  <string name="waiting_list_label">Gözləmədə</string>
   <string name="settings_label">Parametrlər</string>
   <string name="downloads_label">Yükləmələr</string>
   <string name="cancel_download_label">Yükləməyi ləğv et</string>
   <string name="playback_history_label">Oynatma tarixiçəsi</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <!--New episodes fragment-->
   <!--Statistics fragment-->
   <!--Main activity-->
   <!--Webview actions-->
@@ -58,8 +54,6 @@
   <string name="remove_from_queue_label">Növbədən sil</string>
   <string name="visit_website_label">Web-səhifəsini aç</string>
   <string name="support_label">Flattrla</string>
-  <string name="enqueue_all_new">Hamsını növbəyə əlavə et</string>
-  <string name="download_all">Hamısını yüklə</string>
   <string name="skip_episode_label">Epizodu burax</string>
   <!--Download messages and labels-->
   <string name="download_pending">Yükləmə gözlənir</string>
@@ -95,7 +89,6 @@
   <string name="playback_error_server_died">Server iştəmir</string>
   <string name="playback_error_unknown">Naməlum xəta</string>
   <string name="no_media_playing_label">Heç nə oynadılmır</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buferləşmə</string>
   <string name="playbackservice_notification_title">Podkast oynadılır</string>
   <!--Queue operations-->
@@ -202,7 +195,11 @@
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

@@ -98,7 +98,7 @@
   <string name="mark_all_read_msg">すべてのエピソードを再生済にしました</string>
   <string name="mark_all_read_confirmation_msg">再生済としてマークするすべてのエピソードを確認してください。</string>
   <string name="mark_all_read_feed_confirmation_msg">再生済としてマークするこのフィードのすべてのエピソードを確認してください。</string>
-  <string name="mark_all_seen_label">参照済としてマーク</string>
+  <string name="mark_all_seen_label">すべて参照済としてマーク</string>
   <string name="show_info_label">情報を表示</string>
   <string name="remove_feed_label">ポッドキャストを削除</string>
   <string name="share_label">共有…</string>
@@ -130,6 +130,7 @@
   <string name="stream_label">ストリーム</string>
   <string name="remove_label">削除</string>
   <string name="remove_episode_lable">エピソードを削除</string>
+  <string name="marked_as_seen_label">参照済としてマーク</string>
   <string name="mark_read_label">再生済としてマーク</string>
   <string name="marked_as_read_label">再生済としてマークしました</string>
   <string name="mark_unread_label">未再生としてマーク</string>
@@ -214,9 +215,10 @@
   <string name="move_to_top_label">先頭に移動</string>
   <string name="move_to_bottom_label">最後に移動</string>
   <string name="sort">並べ替え</string>
-  <string name="alpha">アルファベット順</string>
   <string name="date">日付</string>
   <string name="duration">継続時間</string>
+  <string name="episode_title">エピソード タイトル</string>
+  <string name="feed_title">フィード タイトル</string>
   <string name="ascending">昇順</string>
   <string name="descending">降順</string>
   <string name="clear_queue_confirmation_msg">クリアする、キューに含まれるすべてのエピソードを確認してください。</string>
@@ -356,8 +358,6 @@
   <string name="pref_compact_notification_buttons_sum">ロック画面の再生ボタンを変更します。再生/一時停止ボタンを常に含みます。</string>
   <string name="pref_compact_notification_buttons_dialog_title">最大 %1$d のアイテムを選択</string>
   <string name="pref_compact_notification_buttons_dialog_error">最大 %1$d のアイテムのみを選択できます。</string>
-  <string name="pref_show_subscriptions_in_drawer_title">購読を表示</string>
-  <string name="pref_show_subscriptions_in_drawer_sum">ナビゲーションドロワーに直接購読リストを表示します</string>
   <string name="pref_lockscreen_background_title">ロック画面の背景を設定</string>
   <string name="pref_lockscreen_background_sum">ロック画面の背景を、現在のエピソードの画像に設定します。副作用として、これはサードパーティのアプリケーションでも画像を表示します。</string>
   <string name="pref_showDownloadReport_title">ダウンロード レポートを表示</string>
@@ -381,7 +381,8 @@
   <string name="pref_known_issues">既知の問題</string>
   <string name="pref_no_browser_found">Webブラウザーが見つかりません。</string>
   <string name="pref_cast_title">Chromecast サポート</string>
-  <string name="pref_cast_message">(Chromecast、オーディオスピーカー、Android TV など) キャストデバイス上でリモートメディア再生のサポートを有効にします</string>
+  <string name="pref_cast_message_play_flavor">(Chromecast、オーディオスピーカー、Android TV など) キャストデバイス上でリモートメディア再生のサポートを有効にします</string>
+  <string name="pref_cast_message_free_flavor">Chromecast は AntennaPod のこのバージョンで無効になっているサードパーティ独自のライブラリーが必要です</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">自動Flattrを有効にする</string>
   <string name="auto_flattr_after_percent">%d ％再生したらエピソードをFlattr </string>

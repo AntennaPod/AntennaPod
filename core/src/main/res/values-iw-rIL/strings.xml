@@ -1,16 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">אנטנה-פוד</string>
   <string name="feeds_label">הזנות</string>
   <string name="add_feed_label">הוסף פודקאסט</string>
-  <string name="podcasts_label">פודקאסטים</string>
   <string name="episodes_label">פרקים</string>
-  <string name="new_episodes_label">פרקים חדשים</string>
-  <string name="all_episodes_label">כל הפרקים</string>
   <string name="favorite_episodes_label">מועדפים</string>
   <string name="new_label">חדש</string>
-  <string name="waiting_list_label">רשימת המתנה</string>
   <string name="settings_label">הגדרות</string>
   <string name="add_new_feed_label">הוסף פודקאסט</string>
   <string name="downloads_label">הורדות</string>
@@ -21,9 +16,6 @@
   <string name="playback_history_label">היסטוריית ניגון</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">התחברות אל gpodder.net</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">פורסם לאחרונה</string>
-  <string name="episode_filter_label">הצג רק פרקים חדשים</string>
   <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">פתח תפריט</string>
@@ -61,9 +53,7 @@
   <string name="close_label">סגור</string>
   <string name="retry_label">נסה שוב</string>
   <string name="auto_download_label">כלול בהורדות אוטומטיות</string>
-  <string name="auto_delete_label">מחק לאחר ההשמעה\n(גובר על ההגדרה הגלובלית)</string>
   <string name="parallel_downloads_suffix">\u0020הורדות במקביל</string>
-  <string name="feed_auto_download_global">לפי הגדרה גלובלית</string>
   <string name="feed_auto_download_always">תמיד</string>
   <string name="feed_auto_download_never">אף פעם</string>
   <string name="episode_cleanup_never">אף פעם</string>
@@ -102,8 +92,6 @@
   <string name="add_to_favorite_label">התווסף למועדפים</string>
   <string name="visit_website_label">בקר באתר</string>
   <string name="support_label">תרום באמצעות Flattr</string>
-  <string name="enqueue_all_new">הכנס לתור הכל</string>
-  <string name="download_all">הורד הכל</string>
   <string name="skip_episode_label">דלג על הפרק</string>
   <!--Download messages and labels-->
   <string name="download_successful">הצלחה</string>
@@ -146,7 +134,6 @@
   <string name="playback_error_server_died">שרת מת</string>
   <string name="playback_error_unknown">שגיאה לא ידועה</string>
   <string name="no_media_playing_label">מדיה לא מתנגנת</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">ממלא חוצץ</string>
   <string name="playbackservice_notification_title">מנגן פודקאסט</string>
   <string name="unknown_media_key">אנטנה-פוד - מפתח מדיה לא ידוע: %1$d</string>
@@ -157,7 +144,6 @@
   <string name="move_to_top_label">העבר למעלה</string>
   <string name="move_to_bottom_label">העבר למטה</string>
   <string name="sort">מיין</string>
-  <string name="alpha">בסדר אלפביתי</string>
   <string name="date">תאריך</string>
   <string name="duration">משך</string>
   <string name="ascending">בסדר עולה</string>
@@ -341,22 +327,13 @@
   <string name="subscribe_label">הרשם</string>
   <string name="subscribed_label">נרשם</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">הצג פרקים</string>
-  <string name="show_shownotes_label">הצג הערות פרק</string>
-  <string name="show_cover_label">הצג תמונה</string>
   <string name="rewind_label">דלג לאחור</string>
   <string name="fast_forward_label">הרץ קדימה</string>
   <string name="media_type_audio_label">שמע</string>
   <string name="media_type_video_label">וידאו</string>
   <string name="navigate_upwards_label">נווט למעלה</string>
-  <string name="butAction_label">עוד פעולות</string>
-  <string name="status_playing_label">הפרק מתנגן</string>
   <string name="status_downloading_label">הפרק יורד</string>
-  <string name="status_downloaded_label">הפרק ירד</string>
-  <string name="status_unread_label">פריט חדש</string>
   <string name="in_queue_label">הפרק בתור</string>
-  <string name="new_episodes_count_label">מספר הפרקים החדשים</string>
-  <string name="in_progress_episodes_count_label">מספר הפרקים שהתחלת להאזין להם</string>
   <string name="drag_handle_content_description">גרור לשינוי מיקום פריט זה</string>
   <string name="load_next_page_label">טען את הדף הבא</string>
   <!--Feed information screen-->
@@ -366,7 +343,11 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">מייבא רישום מאפליקציות יעודיות...</string>
   <string name="search_itunes_label">חפש בiTunes</string>
+  <!--Episodes apply actions-->
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

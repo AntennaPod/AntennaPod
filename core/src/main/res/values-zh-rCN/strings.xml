@@ -1,17 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">订阅</string>
   <string name="add_feed_label">添加播客</string>
-  <string name="podcasts_label">播客</string>
   <string name="episodes_label">曲目</string>
-  <string name="new_episodes_label">新曲目</string>
-  <string name="all_episodes_label">所有曲目</string>
   <string name="all_episodes_short_label">全部</string>
   <string name="favorite_episodes_label">收藏</string>
   <string name="new_label">最新</string>
-  <string name="waiting_list_label">等待列表</string>
   <string name="settings_label">设置</string>
   <string name="add_new_feed_label">添加播客</string>
   <string name="downloads_label">下载</string>
@@ -24,9 +19,6 @@
   <string name="gpodnet_auth_label">gpodder.net 登录</string>
   <string name="episode_cache_full_title">曲目缓存已满</string>
   <string name="episode_cache_full_message">已达到曲目缓存限制，可以在设置中提高缓存大小。</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">最近发布</string>
-  <string name="episode_filter_label">仅显示新曲目</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">总播放时长：</string>
   <!--Main activity-->
@@ -76,9 +68,7 @@
   <string name="retry_label">重试</string>
   <string name="auto_download_label">包含到自动下载</string>
   <string name="auto_download_apply_to_items_title"> 应用到之前的曲目中</string>
-  <string name="auto_delete_label">自动删除曲目(覆盖全局选项)</string>
   <string name="parallel_downloads_suffix">\u0020 并行下载</string>
-  <string name="feed_auto_download_global">全局</string>
   <string name="feed_auto_download_always"> 总是</string>
   <string name="feed_auto_download_never">从不</string>
   <string name="send_label">发送</string>
@@ -107,8 +97,6 @@
   <string name="share_link_label">分享网站链接</string>
   <string name="share_link_with_position_label">分享网站链接与位置</string>
   <string name="share_feed_url_label">分享订阅地址</string>
-  <string name="share_item_url_label">分享曲目下载地址</string>
-  <string name="share_item_url_with_position_label">分享曲目下载地址与位置</string>
   <string name="feed_delete_confirmation_msg">确认要删除这些订阅吗? 该订阅所有已经下载的曲目将一并删除. </string>
   <string name="feed_remover_msg">删除订阅</string>
   <string name="load_complete_feed">刷新全部订阅</string>
@@ -144,8 +132,6 @@
   <string name="removed_from_favorites">从收藏中移除</string>
   <string name="visit_website_label">访问网站</string>
   <string name="support_label">Flattr 他</string>
-  <string name="enqueue_all_new">全部添加到播放列表</string>
-  <string name="download_all">全部下载</string>
   <string name="skip_episode_label">跳过曲目</string>
   <string name="activate_auto_download">开启自动下载</string>
   <string name="deactivate_auto_download">关闭自动下载</string>
@@ -200,7 +186,6 @@
   <string name="playback_error_server_died">服务器宕机</string>
   <string name="playback_error_unknown">未知错误</string>
   <string name="no_media_playing_label">没有可播放的媒体</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">缓冲中</string>
   <string name="playbackservice_notification_title">播客播放中</string>
   <string name="unknown_media_key">AntennaPod - 未知媒体密钥: %1$d</string>
@@ -215,7 +200,6 @@
   <string name="move_to_top_label">移到顶端</string>
   <string name="move_to_bottom_label">移到下部</string>
   <string name="sort">排序</string>
-  <string name="alpha">按字母</string>
   <string name="date">按日期</string>
   <string name="duration">按时长</string>
   <string name="ascending">升序</string>
@@ -356,7 +340,6 @@
   <string name="pref_proxy_title">代理</string>
   <string name="pref_proxy_sum">选择一个网络代理</string>
   <string name="pref_known_issues">已知问题</string>
-  <string name="pref_no_browser_found">未找到浏览器</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">启用自动 flattring</string>
   <string name="auto_flattr_after_percent">当播放到百分之%d时Flattr改曲目</string>
@@ -466,22 +449,13 @@
   <string name="subscribed_label">已订阅</string>
   <string name="downloading_label">正在下载</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">显示章节</string>
-  <string name="show_shownotes_label">显示笔记</string>
-  <string name="show_cover_label">显示图片</string>
   <string name="rewind_label">回放</string>
   <string name="fast_forward_label">快进</string>
   <string name="media_type_audio_label">音频</string>
   <string name="media_type_video_label">视频</string>
   <string name="navigate_upwards_label">向上导航</string>
-  <string name="butAction_label">更多动作</string>
-  <string name="status_playing_label">曲目正在播放</string>
   <string name="status_downloading_label">曲目正在下载</string>
-  <string name="status_downloaded_label">曲目已下载</string>
-  <string name="status_unread_label">新项目</string>
   <string name="in_queue_label">曲目已经在播放列表中</string>
-  <string name="new_episodes_count_label">新曲目数</string>
-  <string name="in_progress_episodes_count_label">已收听曲目数</string>
   <string name="drag_handle_content_description">拖动以变更本项目的位置</string>
   <string name="load_next_page_label">载入下一页</string>
   <!--Feed information screen-->
@@ -498,6 +472,7 @@
   <string name="sp_apps_importing_feeds_msg">正在从选定的应用中导入订阅...</string>
   <string name="search_itunes_label">搜索 iTunes</string>
   <string name="filter">过滤器</string>
+  <!--Episodes apply actions-->
   <string name="all_label">全部</string>
   <string name="selected_all_label">全选</string>
   <string name="none_label">无</string>
@@ -514,6 +489,7 @@
   <string name="selected_queued_label">已选曲目</string>
   <string name="not_queued_label">不在播放列表中</string>
   <string name="selected_not_queued_label">选择不在播放列表的曲目</string>
+  <!--Sort-->
   <string name="sort_title_a_z">标题 (A \u2192 Z)</string>
   <string name="sort_title_z_a">标题 (Z \u2192 A)</string>
   <string name="sort_date_new_old">日期 (新 \u2192 旧)</string>
@@ -541,7 +517,7 @@
   <string name="proxy_checking">正在测试</string>
   <string name="proxy_test_successful">测试成功</string>
   <string name="proxy_test_failed">测试失败</string>
-  <string name="proxy_host_empty_error">主机地址不能为空</string>
-  <string name="proxy_host_invalid_error">主机地址不是有效IP或域名</string>
   <string name="proxy_port_invalid_error">端口不可用</string>
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

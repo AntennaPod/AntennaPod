@@ -131,6 +131,7 @@
   <string name="stream_label">Stream</string>
   <string name="remove_label">Remover</string>
   <string name="remove_episode_lable">Remover Episódio</string>
+  <string name="marked_as_seen_label">Marcar como visto</string>
   <string name="mark_read_label">Marcar como lido</string>
   <string name="marked_as_read_label">Marcado como lido</string>
   <string name="mark_unread_label">Marcar como não lido</string>
@@ -216,9 +217,10 @@
   <string name="move_to_top_label">Mover para o topo</string>
   <string name="move_to_bottom_label">Mover para o fim</string>
   <string name="sort">Ordenar</string>
-  <string name="alpha">Alfabeticamente</string>
   <string name="date">Data</string>
   <string name="duration">Duração</string>
+  <string name="episode_title">Titulo do Episodio</string>
+  <string name="feed_title">Titulo do Feed</string>
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
   <string name="clear_queue_confirmation_msg">Por favor confirme que você quer limpar a fila de  TODOS eposódios</string>
@@ -358,8 +360,6 @@
   <string name="pref_compact_notification_buttons_sum">Mudar os botões de reprodução na tela de bloqueio. O botão tocar/pausar sempre é incluso.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Selecione no máximo %1$d itens</string>
   <string name="pref_compact_notification_buttons_dialog_error">Você só pode selecionar no máximo %1$d itens.</string>
-  <string name="pref_show_subscriptions_in_drawer_title">Mostrar Assinaturas</string>
-  <string name="pref_show_subscriptions_in_drawer_sum">Mostrar lista de assinaturas diretamente da gaveta de navegação</string>
   <string name="pref_lockscreen_background_title">Configurar plano de fundo da tela de bloqueio</string>
   <string name="pref_lockscreen_background_sum">Configurar o plano de fundo da tela de bloqueio para a imagem do episódio atual. Como um efeito colateral, também ira mostrar imagens de aplicativos de terceiros.</string>
   <string name="pref_showDownloadReport_title">Mostrar Relatório de Downloads</string>
@@ -383,7 +383,8 @@
   <string name="pref_known_issues">Problemas conhecidos</string>
   <string name="pref_no_browser_found">Nenhum navegador web encontrado.</string>
   <string name="pref_cast_title">Suporte ao Chromecast</string>
-  <string name="pref_cast_message">Abilitar o suporte de reprodução de mídia remota em dispositivos Cast ( assim como Chromecast, Caixas de som ou Android TV)</string>
+  <string name="pref_cast_message_play_flavor">Habilitar o suporte para reprodução remota de mídia em dispositivos Cast (como Chromecast, Caixa de som ou Android TV)</string>
+  <string name="pref_cast_message_free_flavor">O Chromecast necessita de bibliotecas proprietárias de terceiros que estão desativadas nesta versão do AntennaPod</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Abilitar automaticamente o flattr</string>
   <string name="auto_flattr_after_percent">Episódio Flattr assim que %d porcento for tocado</string>

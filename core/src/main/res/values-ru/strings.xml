@@ -189,7 +189,7 @@
   <string name="download_type_feed">Канал</string>
   <string name="download_type_media">Медиафайл</string>
   <string name="download_type_image">Изображение</string>
-  <string name="download_request_error_dialog_message_prefix">Ошибка при загрузки файла:\u0020</string>
+  <string name="download_request_error_dialog_message_prefix">Ошибка при загрузке файла:\u0020</string>
   <string name="authentication_notification_title">Необходима авторизация</string>
   <string name="authentication_notification_msg">Для доступа к ресурсу необходимо ввести имя пользователя и пароль</string>
   <string name="confirm_mobile_download_dialog_title">Подтвердите загрузку через мобильное соединение</string>
@@ -220,7 +220,6 @@
   <string name="move_to_top_label">Переместить вверх</string>
   <string name="move_to_bottom_label">Переместить вниз</string>
   <string name="sort">Сортировать</string>
-  <string name="alpha">По алфавиту</string>
   <string name="date">По дате</string>
   <string name="duration">По продолжительности</string>
   <string name="ascending">По возрастанию</string>
@@ -299,7 +298,7 @@
   <string name="pref_followQueue_title">Непрерывное воспроизведение</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Загрузка по Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Наушники отсоединены</string>
-  <string name="pref_unpauseOnHeadsetReconnect_title">Наушники отсоединены</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Наушники подключены обратно</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth-соединение восстановлено</string>
   <string name="pref_mobileUpdate_title">Мобильные обновления</string>
   <string name="pref_mobileUpdate_sum">Позволить обновления через мобильное интернет-подключение</string>
@@ -362,8 +361,6 @@
   <string name="pref_compact_notification_buttons_sum">Поменять кнопки управления на экране блокировки. Кнопка воспроизведения/паузы присутствует постоянно.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Выберите не более %1$d элементов</string>
   <string name="pref_compact_notification_buttons_dialog_error">Нельзя выбрать больше %1$d элементов.</string>
-  <string name="pref_show_subscriptions_in_drawer_title">Показать подписки</string>
-  <string name="pref_show_subscriptions_in_drawer_sum">Показывать перечень подписок в боковой панели</string>
   <string name="pref_lockscreen_background_title">Выбрать фон экрана блокировки</string>
   <string name="pref_lockscreen_background_sum">Изменяет фон экрана блокировки на обложку выпуска. Кроме того показывает обложку в сторонних приложениях.</string>
   <string name="pref_showDownloadReport_title">Показывать отчёт о загрузках</string>
@@ -387,7 +384,6 @@
   <string name="pref_known_issues">Известные проблемы</string>
   <string name="pref_no_browser_found">Веб-браузер не обнаружен.</string>
   <string name="pref_cast_title">Поддержка Chromecast</string>
-  <string name="pref_cast_message">Включить поддержку удалённого воспроизведения на устройствах с Google Cast (таких как Chromecast, динамики или ТВ на ОС Android)</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включить автоматическую поддержку через Flattr</string>
   <string name="auto_flattr_after_percent">Поддерживать через Flattr эпизоды, прослушанные на %d процентов</string>

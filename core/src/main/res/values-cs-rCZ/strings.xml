@@ -1,24 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Kanály</string>
   <string name="statistics_label">Statistiky</string>
   <string name="add_feed_label">Přidat podcast</string>
-  <string name="podcasts_label">PODCASTY</string>
   <string name="episodes_label">Epizody</string>
-  <string name="new_episodes_label">Nové epizody</string>
-  <string name="all_episodes_label">Všechny epizody</string>
   <string name="all_episodes_short_label">Vše</string>
   <string name="favorite_episodes_label">Oblíbené</string>
   <string name="new_label">Nový</string>
-  <string name="waiting_list_label">Seznam nepřečtených</string>
   <string name="settings_label">Nastavení</string>
   <string name="add_new_feed_label">Přidat podcast</string>
   <string name="downloads_label">Stahování</string>
   <string name="downloads_running_label">Právě běží</string>
   <string name="downloads_completed_label">Dokončeno</string>
   <string name="downloads_log_label">Log</string>
+  <string name="subscriptions_label">Sbírky</string>
+  <string name="subscriptions_list_label">Seznam sbírek</string>
   <string name="cancel_download_label">Zrušit stahování</string>
   <string name="playback_history_label">Historie přehrávání</string>
   <string name="gpodnet_main_label">gpodder.net</string>
@@ -26,9 +23,6 @@
   <string name="free_space_label">%1$s volné</string>
   <string name="episode_cache_full_title">Odkládací prostor pro epizody je plný</string>
   <string name="episode_cache_full_message">Došlo k zaplnění limitu odkládacího prostoru pro epizody. Můžete navýšit vyhrazený prostor v Nastavení.</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Nedávno zveřejněné</string>
-  <string name="episode_filter_label">Zobrazit pouze nové epizody</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Celkový čas poslechnutých podcastů:</string>
   <string name="statistics_details_dialog">%1$d z %2$d započatých epizod.\n\nPřehraných %3$s z %4$s.</string>
@@ -81,9 +75,9 @@
   <string name="auto_download_label">Zahrnout do automaticky stahovaných</string>
   <string name="auto_download_apply_to_items_title">Použít na předchozí epizody</string>
   <string name="auto_download_apply_to_items_message">Nové nastavení <i>automatického stahování</i> bude použito pro nové epizody.\nChcete ho použít také na epizody zveřejněné dříve?</string>
-  <string name="auto_delete_label">Automaticky smazat epizodu\n(přeskočit globální nastavení)</string>
+  <string name="auto_delete_label">Automatické mazání epizod</string>
   <string name="parallel_downloads_suffix">\u0020paralelních stahování</string>
-  <string name="feed_auto_download_global">Globální</string>
+  <string name="feed_auto_download_global">Globální nastavení</string>
   <string name="feed_auto_download_always">Vždy</string>
   <string name="feed_auto_download_never">Nikdy</string>
   <string name="send_label">Odeslat</string>
@@ -114,8 +108,8 @@
   <string name="share_link_label">Sdílet odkaz</string>
   <string name="share_link_with_position_label">Sdílet odkaz s pozicí</string>
   <string name="share_feed_url_label">Sdílet URL kanálu</string>
-  <string name="share_item_url_label">Sdílet URL epizody</string>
-  <string name="share_item_url_with_position_label">Sdílet URL epizody s pozicí</string>
+  <string name="share_item_url_label">Sdílet URL souboru epizody</string>
+  <string name="share_item_url_with_position_label">Sdílet URL souboru epizody s pozicí</string>
   <string name="feed_delete_confirmation_msg">Prosím potvrďte, že chcete smazat tento kanál včetně všech stažených epizod.</string>
   <string name="feed_remover_msg">Odstranit kanál</string>
   <string name="load_complete_feed">Obnovit kompletní kanál</string>
@@ -139,6 +133,7 @@
   <string name="stream_label">Vysílat</string>
   <string name="remove_label">Odstranit</string>
   <string name="remove_episode_lable">Odstranit epizodu</string>
+  <string name="marked_as_seen_label">Označit jako shlédnuté</string>
   <string name="mark_read_label">Označit jako poslechnuté</string>
   <string name="marked_as_read_label">Označeno jako poslechnuté</string>
   <string name="mark_unread_label">Označit jako neposlechnuté</string>
@@ -151,8 +146,6 @@
   <string name="removed_from_favorites">Odebráno z oblíbených</string>
   <string name="visit_website_label">Navštívit stránku</string>
   <string name="support_label">Flattrovat</string>
-  <string name="enqueue_all_new">Vše do fronty</string>
-  <string name="download_all">Stáhnout vše</string>
   <string name="skip_episode_label">Přeskočit epizodu</string>
   <string name="activate_auto_download">Aktivovat automatické stahování</string>
   <string name="deactivate_auto_download">Deaktivovat automatické stahování</string>
@@ -174,6 +167,7 @@
   <string name="download_error_unknown_host">Neznámý host</string>
   <string name="download_error_unauthorized">Chyba přihlášení</string>
   <string name="download_error_file_type_type">Chyba typu souboru</string>
+  <string name="download_error_forbidden">Zákázáno</string>
   <string name="cancel_all_downloads_label">Zrušit všechna stahování</string>
   <string name="download_canceled_msg">Stahování zrušeno</string>
   <string name="download_canceled_autodownload_enabled_msg">Stahování zrušeno\nVypnuto <i>automatické stahování</i> této položky</string>
@@ -212,7 +206,6 @@
   <string name="playback_error_server_died">Server nereaguje</string>
   <string name="playback_error_unknown">Neznámá chyba</string>
   <string name="no_media_playing_label">Žádné probíhající přehrávání</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Načítání</string>
   <string name="playbackservice_notification_title">Přehrávaný podcast</string>
   <string name="unknown_media_key">AntennaPod - Neznámý klíč médií: %1$d</string>
@@ -227,9 +220,10 @@
   <string name="move_to_top_label">Posunout na začátek</string>
   <string name="move_to_bottom_label">Posunout na konec</string>
   <string name="sort">Řazení</string>
-  <string name="alpha">Abecedně</string>
   <string name="date">Datum</string>
   <string name="duration">Délka</string>
+  <string name="episode_title">Název epizody</string>
+  <string name="feed_title">Název kanálu</string>
   <string name="ascending">Vzestupně</string>
   <string name="descending">Sestupně</string>
   <string name="clear_queue_confirmation_msg">Prosím potvrďte, že chcete vyčistit tuto frontu a VŠECHNY v ní obsažené epizody</string>
@@ -271,6 +265,8 @@
   <string name="no_chapters_label">Tato epizoda nemá žádné kapitoly.</string>
   <string name="no_shownotes_label">Tato epizoda neobsahuje žádné poznámky.</string>
   <!--Preferences-->
+  <string name="storage_pref">Úložiště</string>
+  <string name="project_pref">Projekt</string>
   <string name="other_pref">Ostatní</string>
   <string name="about_pref">O aplikaci</string>
   <string name="queue_label">Fronta</string>
@@ -363,6 +359,7 @@
   <string name="pref_expandNotify_sum">Vždy zobrazovat tlačítka pro přehrávání v upozornění.</string>
   <string name="pref_persistNotify_title">Pevné ovládání přehrávání</string>
   <string name="pref_persistNotify_sum">Zachovat upozornění a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
+  <string name="pref_compact_notification_buttons_title">Nastavení tlačítek uzamčené obrazovky</string>
   <string name="pref_lockscreen_background_title">Nastavit pozadí uzamčené obrazovky</string>
   <string name="pref_lockscreen_background_sum">Nastavit pozadí uzamčené obrazovky na obrázek aktuální epizody. Jako vedlejší efekt zobrazí toto nastavení obrázek i v aplikacích třetích stran. </string>
   <string name="pref_showDownloadReport_title">Zobrazit report stahování</string>
@@ -382,8 +379,10 @@
   <string name="pref_current_value">Aktuální hodnota: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Nastavit síťovou proxy</string>
+  <string name="pref_faq">FAQ</string>
   <string name="pref_known_issues">Známé chyby</string>
-  <string name="pref_no_browser_found">Nebyl nalezen webový prohlížeč.\"</string>
+  <string name="pref_no_browser_found">Webový prohlížeč nenalezen.</string>
+  <string name="pref_cast_title">Chromecast podpora</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Povolit automatické flattrování</string>
   <string name="auto_flattr_after_percent">Flattrovat díl jakmile bude odehráno %d procent</string>
@@ -502,22 +501,13 @@
   <string name="subscribed_label">Odebíráno</string>
   <string name="downloading_label">Stahování</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Zobrazit kapitoly</string>
-  <string name="show_shownotes_label">Zobrazit poznámky o pořadu</string>
-  <string name="show_cover_label">Zobrazit obrázek</string>
   <string name="rewind_label">Posunout zpět</string>
   <string name="fast_forward_label">Posunout vpřed</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
   <string name="navigate_upwards_label">Navigovat vzhůru</string>
-  <string name="butAction_label">Více možností</string>
-  <string name="status_playing_label">Epizoda se právě přehrává</string>
   <string name="status_downloading_label">Epizoda je právě stahována</string>
-  <string name="status_downloaded_label">Epizoda je stažena</string>
-  <string name="status_unread_label">Nová položka</string>
   <string name="in_queue_label">Epizoda je ve frontě</string>
-  <string name="new_episodes_count_label">Počet nových epizod</string>
-  <string name="in_progress_episodes_count_label">Počet epizod u kterých byl započat poslech</string>
   <string name="drag_handle_content_description">Tahem změnit pozici této položky</string>
   <string name="load_next_page_label">Načíst další stranu</string>
   <!--Feed information screen-->
@@ -535,8 +525,8 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací...</string>
   <string name="search_itunes_label">Prohledat iTunes</string>
-  <string name="select_label"><b>Vybrat…</b></string>
   <string name="filter">Filtr</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Vše</string>
   <string name="selected_all_label">Vybrány všechny epizody</string>
   <string name="none_label">Žádné</string>
@@ -553,7 +543,7 @@
   <string name="selected_queued_label">Vybrané epizody ve frontě</string>
   <string name="not_queued_label">Mimo frontu</string>
   <string name="selected_not_queued_label">Vybrané epizody mimo frontu</string>
-  <string name="sort_title"><b>Řadit dle</b></string>
+  <!--Sort-->
   <string name="sort_title_a_z">Názvu (A \u2192 Z)</string>
   <string name="sort_title_z_a">Názvu (Z \u2192 A)</string>
   <string name="sort_date_new_old">Data (Nové \u2192 Staré)</string>
@@ -584,7 +574,17 @@
   <string name="proxy_checking">Kontrola...</string>
   <string name="proxy_test_successful">Test úspěšný</string>
   <string name="proxy_test_failed">Test selhal</string>
-  <string name="proxy_host_empty_error">Host nesmí být nevyplněný</string>
+  <string name="proxy_host_empty_error">Host nesmí být prázdný</string>
   <string name="proxy_host_invalid_error">Host není platná IP nebo doména</string>
   <string name="proxy_port_invalid_error">Neplatný port</string>
+  <!--Casting-->
+  <string name="cast_media_route_menu_title">Přehrát na...</string>
+  <string name="cast_disconnect_label">Odpojit sezení vysílání</string>
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_setting_volume">Selhalo nastavení hlasitosti</string>
+  <string name="cast_failed_perform_action">Selhalo provedení akce</string>
+  <string name="cast_failed_status_request">Selhala synchronizace s vysílačem</string>
+  <string name="cast_failed_seek">Selhal posun na novou pozici na vysílači</string>
+  <string name="cast_failed_receiver_player_error">Přijímač zaznamenal závažnou chybu</string>
+  <string name="cast_failed_media_error_skipping">Chyba přehrávání médií. Přeskakuji...</string>
 </resources>

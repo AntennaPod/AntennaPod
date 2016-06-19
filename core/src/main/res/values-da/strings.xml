@@ -1,14 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
   <string name="add_feed_label">Tilføj podcast</string>
-  <string name="podcasts_label">PODCASTS</string>
-  <string name="new_episodes_label">Nye episoder</string>
-  <string name="all_episodes_label">Alle episoder</string>
   <string name="new_label">Nye</string>
-  <string name="waiting_list_label">Venteliste</string>
   <string name="settings_label">Indstillinger</string>
   <string name="add_new_feed_label">Tilføj podcast</string>
   <string name="downloads_label">Downloads</string>
@@ -19,9 +14,6 @@
   <string name="playback_history_label">Afspilningshistorik</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Nyligt udgivet</string>
-  <string name="episode_filter_label">Hvis kun nye episoder</string>
   <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Åben menu</string>
@@ -87,8 +79,6 @@
   <string name="remove_from_queue_label">Fjern fra kø</string>
   <string name="visit_website_label">Besøg webside</string>
   <string name="support_label">Flattr dette</string>
-  <string name="enqueue_all_new">Sæt alle i kø</string>
-  <string name="download_all">Download alle</string>
   <string name="skip_episode_label">Spring episode over</string>
   <!--Download messages and labels-->
   <string name="download_successful">succesfuld</string>
@@ -131,7 +121,6 @@
   <string name="playback_error_server_died">Server døde</string>
   <string name="playback_error_unknown">Ukendt fejl</string>
   <string name="no_media_playing_label">Ingen medier afspiller</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffering</string>
   <string name="playbackservice_notification_title">Afspiller podcast</string>
   <string name="unknown_media_key">AntennaPod - ukendt medie nøgle: %1$d</string>
@@ -142,7 +131,6 @@
   <string name="move_to_top_label">Flyt til toppen</string>
   <string name="move_to_bottom_label">Flyt til bunden</string>
   <string name="sort">Sorter</string>
-  <string name="alpha">Alfabetisk</string>
   <string name="date">Dato</string>
   <string name="duration">Varighed</string>
   <string name="ascending">Stigende</string>
@@ -317,22 +305,13 @@
   <string name="subscribe_label">Abonner</string>
   <string name="subscribed_label">Abonneret</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Vis kapitler</string>
-  <string name="show_shownotes_label">Vis shownoter</string>
-  <string name="show_cover_label">Vis billede</string>
   <string name="rewind_label">Spol tilbage</string>
   <string name="fast_forward_label">Hurtigt fremad</string>
   <string name="media_type_audio_label">Lyd</string>
   <string name="media_type_video_label">Video</string>
   <string name="navigate_upwards_label">Naviger opad</string>
-  <string name="butAction_label">Flere handlinger</string>
-  <string name="status_playing_label">Episode afspilles</string>
   <string name="status_downloading_label">Episode downloades</string>
-  <string name="status_downloaded_label">Episode er downloadet</string>
-  <string name="status_unread_label">Nyt emne</string>
   <string name="in_queue_label">Episode er i køen</string>
-  <string name="new_episodes_count_label">Antal nye episoder</string>
-  <string name="in_progress_episodes_count_label">Antallet af episoder du er begyndt at lytte til</string>
   <string name="drag_handle_content_description">Træk for at skifte denne tings position</string>
   <string name="load_next_page_label">Indlæs næste side</string>
   <!--Feed information screen-->
@@ -341,7 +320,11 @@
   <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra single-purpose apps…</string>
+  <!--Episodes apply actions-->
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

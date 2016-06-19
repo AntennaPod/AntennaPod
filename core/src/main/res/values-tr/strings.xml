@@ -1,17 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Beslemeler</string>
   <string name="add_feed_label">Cep yayını ekle</string>
-  <string name="podcasts_label">CEP YAYINLARI</string>
   <string name="episodes_label">Bölümler</string>
-  <string name="new_episodes_label">Yeni bölümler</string>
-  <string name="all_episodes_label">Tüm bölümler</string>
   <string name="all_episodes_short_label">Tümü</string>
   <string name="favorite_episodes_label">Favoriler</string>
   <string name="new_label">Yeni</string>
-  <string name="waiting_list_label">Bekleme listesi</string>
   <string name="settings_label">Ayarlar</string>
   <string name="add_new_feed_label">Cep Yayını ekle</string>
   <string name="downloads_label">İndirilenler</string>
@@ -22,9 +17,6 @@
   <string name="playback_history_label">Çalma geçmişi</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net giriş</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Son yayınlananlar</string>
-  <string name="episode_filter_label">Sadece yeni bölümleri göster</string>
   <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
@@ -72,9 +64,7 @@
   <string name="retry_label">Yeniden dene</string>
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
   <string name="auto_download_apply_to_items_title">Önceki Bölümlere Uygula</string>
-  <string name="auto_delete_label">Bölümü Otomatik Olarak Sil\n(genel varsayılanı yoksayar)</string>
   <string name="parallel_downloads_suffix">\u0020paralel indirmeler</string>
-  <string name="feed_auto_download_global">Genel</string>
   <string name="feed_auto_download_always">Her zaman</string>
   <string name="feed_auto_download_never">Hiçbir zaman</string>
   <string name="episode_cleanup_never">Hiçbir zaman</string>
@@ -102,8 +92,6 @@
   <string name="share_link_label">Link\'i paylaş</string>
   <string name="share_link_with_position_label">Link\'i Konumla birlikte paylaş</string>
   <string name="share_feed_url_label">Besleme Adresini Paylaş</string>
-  <string name="share_item_url_label">Bölüm Adresini Paylaş</string>
-  <string name="share_item_url_with_position_label">Bölüm Adresini Konumla birlikte paylaş</string>
   <string name="feed_delete_confirmation_msg">Lütfen bu beslemeyi ve bu beslemeye ait indirilmiş BÜTÜN bölümleri silme isteğinizi onaylayın.</string>
   <string name="feed_remover_msg">Besleme kaldırılıyor</string>
   <string name="load_complete_feed">Tüm beslemeyi yenile</string>
@@ -136,8 +124,6 @@
   <string name="remove_from_favorite_label">Favorilerden Kaldır</string>
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
   <string name="support_label">Flattr ile destekle</string>
-  <string name="enqueue_all_new">Hepsini kuyruğa ekle</string>
-  <string name="download_all">Hepsini indir</string>
   <string name="skip_episode_label">Bölümü atla</string>
   <string name="activate_auto_download">Otomatik indirmeyi etkinleştir</string>
   <string name="deactivate_auto_download">Otomatik indirmeyi devre dışı bırak</string>
@@ -191,7 +177,6 @@
   <string name="playback_error_server_died">Sunucu geberdi</string>
   <string name="playback_error_unknown">Bilinmeyen Hata</string>
   <string name="no_media_playing_label">Çalınan medya yok</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Ara belleğe alınıyor</string>
   <string name="playbackservice_notification_title">Cep yayını çalınıyor</string>
   <string name="unknown_media_key">AntennaPod - Bilinmeyen medya anahtarı: %1$d</string>
@@ -204,7 +189,6 @@
   <string name="move_to_top_label">En üste taşı</string>
   <string name="move_to_bottom_label">En alta taşı</string>
   <string name="sort">Sırala</string>
-  <string name="alpha">Alfabetik olarak</string>
   <string name="date">Tarih</string>
   <string name="duration">Süre</string>
   <string name="ascending">Artan</string>
@@ -441,22 +425,13 @@
   <string name="subscribe_label">Üye ol</string>
   <string name="subscribed_label">Üye olundu</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Kısımları göster</string>
-  <string name="show_shownotes_label">Notları göster</string>
-  <string name="show_cover_label">Resmi göster</string>
   <string name="rewind_label">Geri sar</string>
   <string name="fast_forward_label">İleri sar</string>
   <string name="media_type_audio_label">Ses</string>
   <string name="media_type_video_label">Vidyo</string>
   <string name="navigate_upwards_label">Yukarı çık</string>
-  <string name="butAction_label">Daha fazla eylem</string>
-  <string name="status_playing_label">Bölüm çalınıyor</string>
   <string name="status_downloading_label">Bölüm indiriliyor</string>
-  <string name="status_downloaded_label">Bölüm indirildi</string>
-  <string name="status_unread_label">Bu öğe yeni</string>
   <string name="in_queue_label">Bölüm kuyrukta</string>
-  <string name="new_episodes_count_label">Yeni bölümlerin sayısı</string>
-  <string name="in_progress_episodes_count_label">Dinlemeye başladığınız yeni bölümlerin sayısı</string>
   <string name="drag_handle_content_description">Bu öğenin pozisyonunu değiştirmek için sürükleyin</string>
   <string name="load_next_page_label">Sonraki sayfayı yükle</string>
   <!--Feed information screen-->
@@ -467,6 +442,7 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <string name="search_itunes_label">iTunes\'da Arama</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Tümü</string>
   <string name="selected_all_label">Tüm Bölümler Seçildi</string>
   <string name="none_label">Hiçbiri</string>
@@ -479,6 +455,7 @@
   <string name="selected_downloaded_label">İndirilen Bölümler Seçildi</string>
   <string name="not_downloaded_label">İndirilmeyen</string>
   <string name="selected_not_downloaded_label">İndirilmeyen Bölümler Seçildi</string>
+  <!--Sort-->
   <string name="sort_title_a_z">Başlık (A \u2192 Z)</string>
   <string name="sort_title_z_a">Başlık (Z \u2192 A)</string>
   <string name="sort_date_new_old">Tarih (Yeni \u2192 Eski)</string>
@@ -493,4 +470,6 @@
   <string name="rating_now_label">Evet, şimdi yapalım!</string>
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

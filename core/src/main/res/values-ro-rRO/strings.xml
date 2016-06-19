@@ -1,18 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeduri</string>
-  <string name="podcasts_label">PODCASTURI</string>
   <string name="new_label">Nou</string>
-  <string name="waiting_list_label">Listă de așteptare</string>
   <string name="settings_label">Setări</string>
   <string name="downloads_label">Descărcări</string>
   <string name="cancel_download_label">Anulează descărcare</string>
   <string name="playback_history_label">Istorie ascultare</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">autentificare gpodder.net</string>
-  <!--New episodes fragment-->
   <!--Statistics fragment-->
   <!--Main activity-->
   <!--Webview actions-->
@@ -62,8 +58,6 @@
   <string name="remove_from_queue_label">Șterge din Coadă</string>
   <string name="visit_website_label">Vizitează Website</string>
   <string name="support_label">Flattr aceasta</string>
-  <string name="enqueue_all_new">Adaugă toate în coadă</string>
-  <string name="download_all">Descarcă toate</string>
   <string name="skip_episode_label">Sari peste episod</string>
   <!--Download messages and labels-->
   <string name="download_pending">Descărcare în așteptare</string>
@@ -99,7 +93,6 @@
   <string name="playback_error_server_died">Server mort</string>
   <string name="playback_error_unknown">Eroare necuonscută</string>
   <string name="no_media_playing_label">Nu se ascultă nimic</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffering</string>
   <string name="playbackservice_notification_title">Cântă podcast</string>
   <!--Queue operations-->
@@ -229,7 +222,11 @@
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>
