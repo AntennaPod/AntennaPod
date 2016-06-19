@@ -27,6 +27,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -46,6 +47,7 @@ public class SubscriptionFragment extends Fragment {
 
     private int mPosition = -1;
 
+    private Subscription subscription;
 
     public SubscriptionFragment() {
     }
@@ -88,8 +90,19 @@ public class SubscriptionFragment extends Fragment {
         EventDistributor.getInstance().register(contentUpdate);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+    }
+
     private void loadSubscriptions() {
-        Observable.fromCallable(() -> DBReader.getNavDrawerData())
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+        subscription = Observable.fromCallable(() -> DBReader.getNavDrawerData())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {

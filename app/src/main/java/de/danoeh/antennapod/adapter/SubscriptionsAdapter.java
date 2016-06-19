@@ -107,6 +107,10 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             holder.count.setPrimaryText("");
             // make it go away, we don't need it for add feed
             holder.count.setVisibility(View.INVISIBLE);
+
+            // when this holder is reused, we could else end up with a cover image
+            Glide.clear(holder.imageView);
+
             return convertView;
         }
 
@@ -135,7 +139,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (position == ADD_POSITION) {
+        if (position == getAddTilePosition()) {
             mainActivityRef.get().loadChildFragment(new AddFeedFragment());
         } else {
             Fragment fragment = ItemlistFragment.newInstance(getItemId(position));
