@@ -135,7 +135,6 @@
   <string name="move_to_top_label">Μετακίνηση στην κορυφή</string>
   <string name="move_to_bottom_label">Μετακίνηση προς τα κάτω</string>
   <string name="sort">Ταξινόμηση</string>
-  <string name="alpha">Αλφαβητικά</string>
   <string name="date">Ημερομηνία</string>
   <string name="duration">Δάρκεια</string>
   <string name="ascending">Αύξουσα</string>

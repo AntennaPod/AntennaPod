@@ -1,11 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">	ऐन्टेनापॉड</string>
   <string name="feeds_label">फिड्स</string>
-  <string name="podcasts_label">पॉडकास्ट</string>
   <string name="new_label">नया</string>
-  <string name="waiting_list_label">वेटिंग लिस्ट</string>
   <string name="settings_label">सेटिंग्स</string>
   <string name="add_new_feed_label">पॉडकास्ट जोड़ें</string>
   <string name="downloads_label">डाउनलोड</string>
@@ -13,7 +10,6 @@
   <string name="playback_history_label">प्लेबैक इतिहास</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
-  <!--New episodes fragment-->
   <!--Statistics fragment-->
   <!--Main activity-->
   <!--Webview actions-->
@@ -70,8 +66,6 @@
   <string name="remove_from_queue_label">क़तार से हटाएँ</string>
   <string name="visit_website_label">वेबसाइट पर जाएँ</string>
   <string name="support_label">इसे Flattr करें</string>
-  <string name="enqueue_all_new">पंक्ति में सभी को डालें</string>
-  <string name="download_all">सभी डाउनलोड</string>
   <string name="skip_episode_label">एपिसोड छोङें</string>
   <!--Download messages and labels-->
   <string name="download_successful">सफल
@@ -111,7 +105,6 @@
   <string name="playback_error_server_died">सर्वर निरस्त</string>
   <string name="playback_error_unknown">अज्ञात त्रुटि</string>
   <string name="no_media_playing_label">मीडिया नहीं चल रहा</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">बफरिंग</string>
   <string name="playbackservice_notification_title">प्लेईंग पॉडकास्ट</string>
   <!--Queue operations-->
@@ -266,7 +259,11 @@
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

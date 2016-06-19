@@ -214,7 +214,6 @@
   <string name="move_to_top_label">맨 위로 이동</string>
   <string name="move_to_bottom_label">맨 아래로 이동</string>
   <string name="sort">정렬</string>
-  <string name="alpha">사전순</string>
   <string name="date">날짜</string>
   <string name="duration">기간</string>
   <string name="ascending">오름차순</string>
@@ -356,8 +355,6 @@
   <string name="pref_compact_notification_buttons_sum">잠금화면의 조작 버튼을 바꿉니다. 재생/일시중지 버튼은 항상 포함됩니다.</string>
   <string name="pref_compact_notification_buttons_dialog_title">최대 %1$d개 항목 선택</string>
   <string name="pref_compact_notification_buttons_dialog_error">최대 %1$d개 항모만 선택할 수 있습니다.</string>
-  <string name="pref_show_subscriptions_in_drawer_title">구독 표시</string>
-  <string name="pref_show_subscriptions_in_drawer_sum">네비게이션 드로어에 직접 구독 목록을 표시</string>
   <string name="pref_lockscreen_background_title">잠금 화면 배경 설정</string>
   <string name="pref_lockscreen_background_sum">현재 에피소드의 이미지를 잠금 화면의 배경으로 설정합니다. 대신 이는 제3자 앱의 이미지도 표시하게 됩니다.</string>
   <string name="pref_showDownloadReport_title">다운로드 보고서 보기</string>
@@ -381,7 +378,6 @@
   <string name="pref_known_issues">알려진 문제점</string>
   <string name="pref_no_browser_found">웹브라우저가 없습니다.</string>
   <string name="pref_cast_title">크롬캐스트 지원</string>
-  <string name="pref_cast_message">캐스트 장치의 원격 미디어 재생 기능 사용 (예: 크롬캐스트, 안드로이드 TV의 오디오 스피커)</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">자동 flattr 사용</string>
   <string name="auto_flattr_after_percent">%d 퍼센트를 재생하면 에피소드에 flattr합니다</string>

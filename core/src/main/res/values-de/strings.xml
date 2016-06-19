@@ -131,6 +131,7 @@
   <string name="stream_label">Streamen</string>
   <string name="remove_label">Entfernen</string>
   <string name="remove_episode_lable">Episode entfernen</string>
+  <string name="marked_as_seen_label">Als gesehen markiert</string>
   <string name="mark_read_label">Als gespielt markieren</string>
   <string name="marked_as_read_label">Als gespielt markiert</string>
   <string name="mark_unread_label">Als ungespielt markieren</string>
@@ -216,9 +217,10 @@
   <string name="move_to_top_label">Zum Anfang verschieben</string>
   <string name="move_to_bottom_label">Zum Ende verschieben</string>
   <string name="sort">Sortieren</string>
-  <string name="alpha">Alphabetisch</string>
   <string name="date">Datum</string>
   <string name="duration">Dauer</string>
+  <string name="episode_title">Episodentitel</string>
+  <string name="feed_title">Podcastname</string>
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
   <string name="clear_queue_confirmation_msg">Bitte bestätige, dass alle Episoden in der Warteschlange gelöscht werden sollen</string>
@@ -358,8 +360,6 @@
   <string name="pref_compact_notification_buttons_sum">Verändere die Wiedergabetasten auf dem Lockscreen. Die Abspielen-/Pause-Taste wird immer angezeigt.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Wähle bis zu %1$d Elemente aus</string>
   <string name="pref_compact_notification_buttons_dialog_error">Du kannst maximal %1$d Elemente auswählen.</string>
-  <string name="pref_show_subscriptions_in_drawer_title">Zeige Abonnements</string>
-  <string name="pref_show_subscriptions_in_drawer_sum">Liste von Abonnements in Seitenleiste anzeigen</string>
   <string name="pref_lockscreen_background_title">Lockscreen-Hintergrund einstellen</string>
   <string name="pref_lockscreen_background_sum">Verwende das aktuelle Episodenbild als Lockscreen-Hintergrund. Es wird als Nebeneffekt auch in anderen Apps gezeigt.</string>
   <string name="pref_showDownloadReport_title">Zeige Download-Bericht</string>
@@ -383,7 +383,7 @@
   <string name="pref_known_issues">Bekannte Probleme</string>
   <string name="pref_no_browser_found">Kein Browser gefunden.</string>
   <string name="pref_cast_title">Chromecast-Unterstützung</string>
-  <string name="pref_cast_message">Aktiviere Wiedergabe auf Chromecast-Geräten (unter anderem Lautsprecher, Android TV)</string>
+  <string name="pref_cast_message_play_flavor">Aktiviere die Unterstützung von Cast-Geräten (Chromecast, Lautsprecher oder Android TV) zum entfernten Abspielen</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
   <string name="auto_flattr_after_percent">Flattr eine Episode, sobald %d Prozent gespielt worden sind</string>

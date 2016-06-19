@@ -131,6 +131,7 @@
   <string name="stream_label">Strömma</string>
   <string name="remove_label">Ta bort</string>
   <string name="remove_episode_lable">Ta bort Episod</string>
+  <string name="marked_as_seen_label">Markera som sedd</string>
   <string name="mark_read_label">Markera som spelad</string>
   <string name="marked_as_read_label">Markera som spelad</string>
   <string name="mark_unread_label">Markera som ospelad</string>
@@ -216,9 +217,10 @@
   <string name="move_to_top_label">Flytta längst upp</string>
   <string name="move_to_bottom_label">Flytta längst ned</string>
   <string name="sort">Sortering</string>
-  <string name="alpha">Alfabetiskt</string>
   <string name="date">Datum</string>
   <string name="duration">Längd</string>
+  <string name="episode_title">Episodtitel</string>
+  <string name="feed_title">Flödestitel</string>
   <string name="ascending">Stigande</string>
   <string name="descending">Fallande</string>
   <string name="clear_queue_confirmation_msg">Bekräfta att du vill rensa kön från ALLA episoder.</string>
@@ -358,8 +360,6 @@
   <string name="pref_compact_notification_buttons_sum">Ändra uppspelningsknapparna på låsskärmen. Spela/Pausa knappen är alltid inkluderad.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Välj maximalt %1$d st.</string>
   <string name="pref_compact_notification_buttons_dialog_error">Du kan bara välja maximalt %1$d st.</string>
-  <string name="pref_show_subscriptions_in_drawer_title">Visa Prenumerationer</string>
-  <string name="pref_show_subscriptions_in_drawer_sum">Visa prenumerationslistan direkt i navigeringsmenyn</string>
   <string name="pref_lockscreen_background_title">Sätt Låsskärmens Bakgrund</string>
   <string name="pref_lockscreen_background_sum">Sätt låsskärmens bakgrund till den spelade episodens bild. En bieffekt är att även tredjepartsappar kan visa bilden.</string>
   <string name="pref_showDownloadReport_title">Visa Nedladdningsrapport</string>
@@ -383,7 +383,8 @@
   <string name="pref_known_issues">Kända problem</string>
   <string name="pref_no_browser_found">Ingen webbläsare hittades.</string>
   <string name="pref_cast_title">Chromecast-stöd</string>
-  <string name="pref_cast_message">Aktivera stöd för fjärruppspelning av media på Cast-enheter (såsom Chromecast, Ljudanläggningar eller Android TV)</string>
+  <string name="pref_cast_message_play_flavor">Aktivera stöd för fjärruppspelning av media på Cast-enheter (såsom Chromecast, Ljudanläggningar eller Android TV)</string>
+  <string name="pref_cast_message_free_flavor">Chromecast kräver propretiära tredjepartsbibliotek som inte är inkluderade i denna version av AntennaPod</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>

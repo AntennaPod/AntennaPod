@@ -1,17 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Kanały</string>
   <string name="add_feed_label">Dodaj podcast</string>
-  <string name="podcasts_label">PODCASTY</string>
   <string name="episodes_label">Odcinki</string>
-  <string name="new_episodes_label">Nowe odcinki</string>
-  <string name="all_episodes_label">Wszystkie odcinki</string>
   <string name="all_episodes_short_label">Wszystkie</string>
   <string name="favorite_episodes_label">Ulubione</string>
   <string name="new_label">Nowy</string>
-  <string name="waiting_list_label">Lista oczekujących</string>
   <string name="settings_label">Ustawienia</string>
   <string name="add_new_feed_label">Dodaj podcast</string>
   <string name="downloads_label">Pobrane</string>
@@ -22,9 +17,6 @@
   <string name="playback_history_label">Historia odtwarzania</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Ostatnio opublikowane</string>
-  <string name="episode_filter_label">Pokaż tylko nowe odcinki</string>
   <!--Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Otwórz menu</string>
@@ -72,9 +64,7 @@
   <string name="auto_download_label">Dołącz do automatycznego pobierania</string>
   <string name="auto_download_apply_to_items_title">Zastosuj do poprzednich odcinków</string>
   <string name="auto_download_apply_to_items_message">Nowe ustawienie <i>automatycznego pobierania</i> zostanie zastosowane do nowych odcinków.\n Czy chcesz zastosować je także do odcinków opublikowanych wcześniej?</string>
-  <string name="auto_delete_label">Automatyczne usuwanie odcinków\n(nadpisz ustawienia globalne)</string>
   <string name="parallel_downloads_suffix">\u0020równoległych pobierań</string>
-  <string name="feed_auto_download_global">Globalnie</string>
   <string name="feed_auto_download_always">Zawsze</string>
   <string name="feed_auto_download_never">Nigdy</string>
   <string name="episode_cleanup_never">Nigdy</string>
@@ -101,8 +91,6 @@
   <string name="share_link_label">Udostępnij stronę</string>
   <string name="share_link_with_position_label">Udostępnij link z aktualną pozycją</string>
   <string name="share_feed_url_label">Udostępnij adres kanału</string>
-  <string name="share_item_url_label">Udostępnij adres URL odcinka</string>
-  <string name="share_item_url_with_position_label">Udostępnij adres URL odcinka z aktualną pozycją</string>
   <string name="feed_delete_confirmation_msg">Potwierdź chęć usunięcia tego kanału wraz ze WSZYSTKIMI odcinkami, które zostały pobrane.</string>
   <string name="feed_remover_msg">Usuwanie kanału</string>
   <string name="load_complete_feed">Odśwież cały kanał</string>
@@ -132,8 +120,6 @@
   <string name="remove_from_favorite_label">Usuń z Ulubionych</string>
   <string name="visit_website_label">Odwiedź stronę</string>
   <string name="support_label">Wspomóż na Flattr</string>
-  <string name="enqueue_all_new">Dodaj wszystko do kolejki</string>
-  <string name="download_all">Pobierz wszystkie</string>
   <string name="skip_episode_label">Pomiń odcinek</string>
   <string name="activate_auto_download">Włącz automatyczne pobieranie</string>
   <string name="deactivate_auto_download">Wyłącz automatyczne pobieranie</string>
@@ -185,7 +171,6 @@
   <string name="playback_error_server_died">Serwer zdechł</string>
   <string name="playback_error_unknown">Nieznany błąd</string>
   <string name="no_media_playing_label">Żadne media nie odtwarzane </string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buferowanie</string>
   <string name="playbackservice_notification_title">Odtwarzenie podcastu </string>
   <string name="unknown_media_key">AntennaPod - Nieznany klawisz: %1$d</string>
@@ -198,7 +183,6 @@
   <string name="move_to_top_label">Przesuń na górę</string>
   <string name="move_to_bottom_label">Przesuń na dół</string>
   <string name="sort">Sortuj</string>
-  <string name="alpha">Alfabetycznie</string>
   <string name="date">Według daty</string>
   <string name="duration">Według długości</string>
   <string name="ascending">Rosnąco</string>
@@ -437,22 +421,13 @@ https://gpodder.net/register/</string>
   <string name="subscribe_label">Subskrybuj</string>
   <string name="subscribed_label">Subskrybowane</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Pokaż rozdziały</string>
-  <string name="show_shownotes_label">Pokaż opis odcinka</string>
-  <string name="show_cover_label">Pokaż obraz</string>
   <string name="rewind_label">Cofnij</string>
   <string name="fast_forward_label">Przewiń</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Wideo</string>
   <string name="navigate_upwards_label">Przesuń w górę</string>
-  <string name="butAction_label">Więcej akcji</string>
-  <string name="status_playing_label">Odcinek jest odtwarzany</string>
   <string name="status_downloading_label">Odcinek jest pobierany</string>
-  <string name="status_downloaded_label">Odcinek pobrany</string>
-  <string name="status_unread_label">Nowa pozycja</string>
   <string name="in_queue_label">Odcinek jest w kolejce</string>
-  <string name="new_episodes_count_label">Liczba nowych odcinków</string>
-  <string name="in_progress_episodes_count_label">Liczba odcinków, których zacząłeś słuchać</string>
   <string name="drag_handle_content_description">Przeciągnij aby zmienić pozycję elementu</string>
   <string name="load_next_page_label">Załaduj następną stronę</string>
   <!--Feed information screen-->
@@ -463,6 +438,7 @@ https://gpodder.net/register/</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
   <string name="search_itunes_label">Szukaj w iTunes</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Wszystkie</string>
   <string name="selected_all_label">Zaznaczono wszystkie odcinki</string>
   <string name="none_label">Brak</string>
@@ -475,6 +451,7 @@ https://gpodder.net/register/</string>
   <string name="selected_downloaded_label">Zaznaczono pobrane odcinki</string>
   <string name="not_downloaded_label">Nie pobrane</string>
   <string name="selected_not_downloaded_label">Zaznaczono niepobrane odcinki</string>
+  <!--Sort-->
   <string name="sort_title_a_z">Tytuł (A \u2192 Z)</string>
   <string name="sort_title_z_a">Tytuł (Z \u2192 A)</string>
   <string name="sort_date_new_old">Data (Nowe \u2192 Stare)</string>
@@ -489,4 +466,6 @@ https://gpodder.net/register/</string>
   <string name="rating_now_label">Pewnie, zróbmy to!</string>
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>
