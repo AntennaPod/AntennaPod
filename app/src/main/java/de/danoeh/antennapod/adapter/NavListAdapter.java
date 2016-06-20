@@ -236,30 +236,28 @@ public class NavListAdapter extends BaseAdapter
 
         holder.title.setText(title);
 
+        // reset for re-use
+        holder.count.setVisibility(View.GONE);
+        holder.count.setOnClickListener(null);
+
         String tag = tags.get(position);
         if (tag.equals(QueueFragment.TAG)) {
             int queueSize = itemAccess.getQueueSize();
             if (queueSize > 0) {
-                holder.count.setVisibility(View.VISIBLE);
                 holder.count.setText(String.valueOf(queueSize));
-            } else {
-                holder.count.setVisibility(View.GONE);
+                holder.count.setVisibility(View.VISIBLE);
             }
         } else if (tag.equals(EpisodesFragment.TAG)) {
             int unreadItems = itemAccess.getNumberOfNewItems();
             if (unreadItems > 0) {
-                holder.count.setVisibility(View.VISIBLE);
                 holder.count.setText(String.valueOf(unreadItems));
-            } else {
-                holder.count.setVisibility(View.GONE);
+                holder.count.setVisibility(View.VISIBLE);
             }
         } else if (tag.equals(SubscriptionFragment.TAG)) {
             int sum = itemAccess.getFeedCounterSum();
             if (sum > 0) {
-                holder.count.setVisibility(View.VISIBLE);
                 holder.count.setText(String.valueOf(sum));
-            } else {
-                holder.count.setVisibility(View.GONE);
+                holder.count.setVisibility(View.VISIBLE);
             }
         } else if(tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
             int epCacheSize = UserPreferences.getEpisodeCacheSize();
@@ -278,11 +276,7 @@ public class NavListAdapter extends BaseAdapter
                             .setPositiveButton(android.R.string.ok, (dialog, which) -> {})
                             .show()
                 );
-            } else {
-                holder.count.setVisibility(View.GONE);
             }
-        } else {
-            holder.count.setVisibility(View.GONE);
         }
 
         holder.image.setImageDrawable(getDrawable(tags.get(position)));
