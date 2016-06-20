@@ -103,6 +103,7 @@ public class PreferenceActivity extends AppCompatActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences);
             PreferenceActivity activity = instance.get();
             if(activity != null && activity.preferenceController != null) {
