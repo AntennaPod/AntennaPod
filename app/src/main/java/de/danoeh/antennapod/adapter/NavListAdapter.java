@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
@@ -21,6 +22,7 @@ import com.joanzapata.iconify.widget.IconTextView;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,6 +47,7 @@ import de.danoeh.antennapod.fragment.SubscriptionFragment;
  */
 public class NavListAdapter extends BaseAdapter
         implements SharedPreferences.OnSharedPreferenceChangeListener {
+
     public static final int VIEW_TYPE_COUNT = 3;
     public static final int VIEW_TYPE_NAV = 0;
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
@@ -60,12 +63,12 @@ public class NavListAdapter extends BaseAdapter
     private static String[] titles;
 
     private ItemAccess itemAccess;
-    private Context context;
+    private WeakReference<Activity> activity;
     private boolean showSubscriptionList = true;
 
-    public NavListAdapter(ItemAccess itemAccess, Context context) {
+    public NavListAdapter(ItemAccess itemAccess, Activity context) {
         this.itemAccess = itemAccess;
-        this.context = context;
+        this.activity = new WeakReference<>(context);
 
         titles = context.getResources().getStringArray(R.array.nav_drawer_titles);
         loadItems();
@@ -108,6 +111,10 @@ public class NavListAdapter extends BaseAdapter
     }
 
     private Drawable getDrawable(String tag) {
+        Activity context = activity.get();
+        if(context == null) {
+            return null;
+        }
         int icon;
         switch (tag) {
             case QueueFragment.TAG:
@@ -218,6 +225,10 @@ public class NavListAdapter extends BaseAdapter
     }
 
     private View getNavView(String title, int position, View convertView, ViewGroup parent) {
+        Activity context = activity.get();
+        if(context == null) {
+            return null;
+        }
         NavHolder holder;
         if (convertView == null) {
             holder = new NavHolder();
@@ -285,6 +296,10 @@ public class NavListAdapter extends BaseAdapter
     }
 
     private View getSectionDividerView(View convertView, ViewGroup parent) {
+        Activity context = activity.get();
+        if(context == null) {
+            return null;
+        }
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -297,6 +312,10 @@ public class NavListAdapter extends BaseAdapter
     }
 
     private View getFeedView(int position, View convertView, ViewGroup parent) {
+        Activity context = activity.get();
+        if(context == null) {
+            return null;
+        }
         int feedPos = position - getSubscriptionOffset();
         Feed feed = itemAccess.getItem(feedPos);
 
