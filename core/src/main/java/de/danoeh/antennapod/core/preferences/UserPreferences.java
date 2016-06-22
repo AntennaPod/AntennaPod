@@ -121,13 +121,13 @@ public class UserPreferences {
     private static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
     private static final int NOTIFICATION_BUTTON_SKIP = 2;
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
-    public static int FEED_ORDER_COUNTER = 0;
-    public static int FEED_ORDER_ALPHABETICAL = 1;
-    public static int FEED_ORDER_LAST_UPDATE = 2;
-    public static int FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM = 0;
-    public static int FEED_COUNTER_SHOW_NEW = 1;
-    public static int FEED_COUNTER_SHOW_UNPLAYED = 2;
-    public static int FEED_COUNTER_SHOW_NONE = 3;
+    public static final int FEED_ORDER_COUNTER = 0;
+    public static final int FEED_ORDER_ALPHABETICAL = 1;
+    public static final int FEED_ORDER_LAST_UPDATE = 2;
+    public static final int FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM = 0;
+    public static final int FEED_COUNTER_SHOW_NEW = 1;
+    public static final int FEED_COUNTER_SHOW_UNPLAYED = 2;
+    public static final int FEED_COUNTER_SHOW_NONE = 3;
 
     private static Context context;
     private static SharedPreferences prefs;
