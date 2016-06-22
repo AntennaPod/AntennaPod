@@ -35,6 +35,9 @@ import de.danoeh.antennapod.core.storage.DBWriter;
  * Provides access to a HttpClient singleton.
  */
 public class AntennapodHttpClient {
+
+    private AntennapodHttpClient(){}
+
     private static final String TAG = "AntennapodHttpClient";
 
     public static final int CONNECTION_TIMEOUT = 30000;

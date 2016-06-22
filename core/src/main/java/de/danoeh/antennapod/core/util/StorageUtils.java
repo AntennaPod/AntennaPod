@@ -14,6 +14,8 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
  * Utility functions for handling storage errors
  */
 public class StorageUtils {
+    private StorageUtils(){}
+
     private static final String TAG = "StorageUtils";
 
     public static boolean storageAvailable() {

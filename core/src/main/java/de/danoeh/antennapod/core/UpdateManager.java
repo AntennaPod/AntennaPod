@@ -25,6 +25,8 @@ import de.danoeh.antennapod.core.storage.DBWriter;
  */
 public class UpdateManager {
 
+    private UpdateManager(){}
+
     public static final String TAG = UpdateManager.class.getSimpleName();
 
     private static final String PREF_NAME = "app_version";

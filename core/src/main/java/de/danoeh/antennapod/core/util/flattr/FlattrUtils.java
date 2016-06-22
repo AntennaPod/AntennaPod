@@ -36,6 +36,8 @@ import de.danoeh.antennapod.core.storage.DBWriter;
  */
 
 public class FlattrUtils {
+    private FlattrUtils(){}
+
     private static final String TAG = "FlattrUtils";
 
     private static final String HOST_NAME = "de.danoeh.antennapod";
