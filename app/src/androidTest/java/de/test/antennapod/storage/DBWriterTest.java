@@ -138,7 +138,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         image.setOwner(feed);
         feed.setImage(image);
 
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed, true);
@@ -207,7 +207,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
         feed.setImage(null);
 
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
@@ -418,7 +418,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         image.setOwner(feed);
         feed.setImage(image);
 
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
@@ -444,7 +444,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         }
 
 
-        List<FeedItem> queue = new ArrayList<FeedItem>();
+        List<FeedItem> queue = new ArrayList<>();
         queue.addAll(feed.getItems());
         adapter.open();
         adapter.setQueue(queue);
@@ -482,7 +482,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertNotNull(destFolder);
 
         Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
 
         // create Feed image
         File imgFile = new File(destFolder, "image");
@@ -490,7 +490,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         image.setOwner(feed);
         feed.setImage(image);
 
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
@@ -598,7 +598,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         for (FeedItem item : feed.getItems()) {
             assertTrue(item.getId() != 0);
         }
-        List<Future<?>> futures = new ArrayList<Future<?>>();
+        List<Future<?>> futures = new ArrayList<>();
         for (FeedItem item : feed.getItems()) {
             futures.add(DBWriter.addQueueItem(context, item));
         }
