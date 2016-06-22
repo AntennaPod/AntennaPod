@@ -101,6 +101,7 @@ public abstract class NanoHTTPD {
      * Pseudo-Parameter to use to store the actual query string in the parameters map for later re-processing.
      */
     private static final String QUERY_STRING_PARAMETER = "NanoHttpd.QUERY_STRING";
+    private static final String NANO_HTTPD_SHUTDOWN_EXCEPTION_MESSAGE = "NanoHttpd Shutdown";
     private final String hostname;
     private final int myPort;
     private ServerSocket myServerSocket;
@@ -191,7 +192,7 @@ public abstract class NanoHTTPD {
                                 } catch (Exception e) {
                                     // When the socket is closed by the client, we throw our own SocketException
                                     // to break the  "keep alive" loop above.
-                                    if (!(e instanceof SocketException && "NanoHttpd Shutdown".equals(e.getMessage()))) {
+                                    if (!(e instanceof SocketException && NANO_HTTPD_SHUTDOWN_EXCEPTION_MESSAGE.equals(e.getMessage()))) {
                                         e.printStackTrace();
                                     }
                                 } finally {
@@ -888,13 +889,13 @@ public abstract class NanoHTTPD {
                     } catch (Exception e) {
                         safeClose(inputStream);
                         safeClose(outputStream);
-                        throw new SocketException("NanoHttpd Shutdown");
+                        throw new SocketException(NANO_HTTPD_SHUTDOWN_EXCEPTION_MESSAGE);
                     }
                     if (read == -1) {
                         // socket was been closed
                         safeClose(inputStream);
                         safeClose(outputStream);
-                        throw new SocketException("NanoHttpd Shutdown");
+                        throw new SocketException(NANO_HTTPD_SHUTDOWN_EXCEPTION_MESSAGE);
                     }
                     while (read > 0) {
                         rlen += read;

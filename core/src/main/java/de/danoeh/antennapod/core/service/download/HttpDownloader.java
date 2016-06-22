@@ -37,6 +37,8 @@ import okio.ByteString;
 public class HttpDownloader extends Downloader {
     private static final String TAG = "HttpDownloader";
 
+    private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
+
     private static final int BUFFER_SIZE = 8 * 1024;
 
     public HttpDownloader(DownloadRequest request) {
@@ -95,12 +97,12 @@ public class HttpDownloader extends Downloader {
                 String[] parts = userInfo.split(":");
                 if (parts.length == 2) {
                     String credentials = encodeCredentials(parts[0], parts[1], "ISO-8859-1");
-                    httpReq.header("Authorization", credentials);
+                    httpReq.header(AUTHORIZATION_HEADER_NAME, credentials);
                 }
             } else if (!TextUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
                 String credentials = encodeCredentials(request.getUsername(), request.getPassword(),
                         "ISO-8859-1");
-                httpReq.header("Authorization", credentials);
+                httpReq.header(AUTHORIZATION_HEADER_NAME, credentials);
             }
 
             // add range header if necessary
@@ -139,12 +141,12 @@ public class HttpDownloader extends Downloader {
                     String[] parts = userInfo.split(":");
                     if (parts.length == 2) {
                         String credentials = encodeCredentials(parts[0], parts[1], "UTF-8");
-                        httpReq.header("Authorization", credentials);
+                        httpReq.header(AUTHORIZATION_HEADER_NAME, credentials);
                     }
                 } else if (!TextUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
                     String credentials = encodeCredentials(request.getUsername(), request.getPassword(),
                             "UTF-8");
-                    httpReq.header("Authorization", credentials);
+                    httpReq.header(AUTHORIZATION_HEADER_NAME, credentials);
                 }
                 response = httpClient.newCall(httpReq.build()).execute();
                 responseBody = response.body();

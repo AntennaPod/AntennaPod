@@ -37,6 +37,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     private static final String PLAYABLE_DEST_URL = "psmptestfile.mp3";
     private String PLAYABLE_LOCAL_URL = null;
     private static final int LATCH_TIMEOUT_SECONDS = 10;
+    private static final String MEDIA_PLAYER_ERROR = "MediaPlayer error";
 
     private HTTPBin httpServer;
 
@@ -144,7 +145,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
-                        throw new IllegalStateException("MediaPlayer error");
+                        throw new IllegalStateException(MEDIA_PLAYER_ERROR);
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 2) {
@@ -223,7 +224,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
-                        throw new IllegalStateException("MediaPlayer error");
+                        throw new IllegalStateException(MEDIA_PLAYER_ERROR);
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 2) {
@@ -302,7 +303,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
-                        throw new IllegalStateException("MediaPlayer error");
+                        throw new IllegalStateException(MEDIA_PLAYER_ERROR);
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 4) {
@@ -382,7 +383,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
-                        throw new IllegalStateException("MediaPlayer error");
+                        throw new IllegalStateException(MEDIA_PLAYER_ERROR);
                     if (countDownLatch.getCount() == 0) {
                         fail();
 
@@ -465,7 +466,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
-                        throw new IllegalStateException("MediaPlayer error");
+                        throw new IllegalStateException(MEDIA_PLAYER_ERROR);
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 2) {
@@ -543,7 +544,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
-                        throw new IllegalStateException("MediaPlayer error");
+                        throw new IllegalStateException(MEDIA_PLAYER_ERROR);
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 2) {
@@ -620,7 +621,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
-                        throw new IllegalStateException("MediaPlayer error");
+                        throw new IllegalStateException(MEDIA_PLAYER_ERROR);
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 4) {
@@ -699,7 +700,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
-                        throw new IllegalStateException("MediaPlayer error");
+                        throw new IllegalStateException(MEDIA_PLAYER_ERROR);
                     if (countDownLatch.getCount() == 0) {
                         fail();
                     } else if (countDownLatch.getCount() == 5) {

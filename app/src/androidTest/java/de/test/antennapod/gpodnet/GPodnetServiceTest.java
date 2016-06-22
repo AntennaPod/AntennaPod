@@ -20,6 +20,9 @@ public class GPodnetServiceTest extends AndroidTestCase {
 
     private static final String USER = "";
     private static final String PW = "";
+    private static final String RADIO = "radio";
+    private static final String BITSUDSO_FEED_URL = "http://bitsundso.de/feed";
+
 
     @Override
     protected void setUp() throws Exception {
@@ -39,31 +42,31 @@ public class GPodnetServiceTest extends AndroidTestCase {
     public void testUploadSubscription() throws GpodnetServiceException {
         authenticate();
         ArrayList<String> l = new ArrayList<String>();
-        l.add("http://bitsundso.de/feed");
-        service.uploadSubscriptions(USER, "radio", l);
+        l.add(BITSUDSO_FEED_URL);
+        service.uploadSubscriptions(USER, RADIO, l);
     }
 
     public void testUploadSubscription2() throws GpodnetServiceException {
         authenticate();
         ArrayList<String> l = new ArrayList<String>();
-        l.add("http://bitsundso.de/feed");
+        l.add(BITSUDSO_FEED_URL);
         l.add("http://gamesundso.de/feed");
-        service.uploadSubscriptions(USER, "radio", l);
+        service.uploadSubscriptions(USER, RADIO, l);
     }
 
     public void testUploadChanges() throws GpodnetServiceException {
         authenticate();
-        String[] URLS = {"http://bitsundso.de/feed", "http://gamesundso.de/feed", "http://cre.fm/feed/mp3/", "http://freakshow.fm/feed/m4a/"};
+        String[] URLS = {BITSUDSO_FEED_URL, "http://gamesundso.de/feed", "http://cre.fm/feed/mp3/", "http://freakshow.fm/feed/m4a/"};
         List<String> subscriptions = Arrays.asList(URLS[0], URLS[1]);
         List<String> removed = Arrays.asList(URLS[0]);
         List<String> added = Arrays.asList(URLS[2], URLS[3]);
-        service.uploadSubscriptions(USER, "radio", subscriptions);
-        service.uploadChanges(USER, "radio", added, removed);
+        service.uploadSubscriptions(USER, RADIO, subscriptions);
+        service.uploadChanges(USER, RADIO, added, removed);
     }
 
     public void testGetSubscriptionChanges() throws GpodnetServiceException {
         authenticate();
-        service.getSubscriptionChanges(USER, "radio", 1362322610L);
+        service.getSubscriptionChanges(USER, RADIO, 1362322610L);
     }
 
     public void testGetSubscriptionsOfUser()
@@ -75,7 +78,7 @@ public class GPodnetServiceTest extends AndroidTestCase {
     public void testGetSubscriptionsOfDevice()
             throws GpodnetServiceException {
         authenticate();
-        service.getSubscriptionsOfDevice(USER, "radio");
+        service.getSubscriptionsOfDevice(USER, RADIO);
     }
 
     public void testConfigureDevices() throws GpodnetServiceException {

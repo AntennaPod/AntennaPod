@@ -118,79 +118,89 @@ public class PodDBAdapter {
     public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
     public static final String TABLE_NAME_FAVORITES = "Favorites";
 
+    // Sql Keywords
+    private static final String CREATE_TABLE_COMMAND = "CREATE TABLE ";
+    private static final String CREATE_INDEX = "CREATE INDEX ";
+    private static final String UPDATE_COMMAND = "UPDATE ";
+    private static final String SET_COMMAND = " SET ";
+    private static final String WHERE_COMMAND = " WHERE ";
+
+    private static final String TEXT_TYPE = " TEXT,";
+    private static final String INTEGER_TYPE = " INTEGER,";
+
     // SQL Statements for creating new tables
     private static final String TABLE_PRIMARY_KEY = KEY_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT ,";
 
-    public static final String CREATE_TABLE_FEEDS = "CREATE TABLE "
+    public static final String CREATE_TABLE_FEEDS = CREATE_TABLE_COMMAND
             + TABLE_NAME_FEEDS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
-            + KEY_DOWNLOADED + " INTEGER," + KEY_LINK + " TEXT,"
-            + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
-            + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
-            + " TEXT," + KEY_IMAGE + " INTEGER," + KEY_TYPE + " TEXT,"
-            + KEY_FEED_IDENTIFIER + " TEXT," + KEY_AUTO_DOWNLOAD + " INTEGER DEFAULT 1,"
-            + KEY_FLATTR_STATUS + " INTEGER,"
-            + KEY_USERNAME + " TEXT,"
-            + KEY_PASSWORD + " TEXT,"
+            + TEXT_TYPE + KEY_FILE_URL + TEXT_TYPE + KEY_DOWNLOAD_URL + TEXT_TYPE
+            + KEY_DOWNLOADED + INTEGER_TYPE + KEY_LINK + TEXT_TYPE
+            + KEY_DESCRIPTION + TEXT_TYPE + KEY_PAYMENT_LINK + TEXT_TYPE
+            + KEY_LASTUPDATE + TEXT_TYPE + KEY_LANGUAGE + TEXT_TYPE + KEY_AUTHOR
+            + TEXT_TYPE + KEY_IMAGE + INTEGER_TYPE + KEY_TYPE + TEXT_TYPE
+            + KEY_FEED_IDENTIFIER + TEXT_TYPE + KEY_AUTO_DOWNLOAD + " INTEGER DEFAULT 1,"
+            + KEY_FLATTR_STATUS + INTEGER_TYPE
+            + KEY_USERNAME + TEXT_TYPE
+            + KEY_PASSWORD + TEXT_TYPE
             + KEY_INCLUDE_FILTER + " TEXT DEFAULT '',"
             + KEY_EXCLUDE_FILTER + " TEXT DEFAULT '',"
             + KEY_KEEP_UPDATED + " INTEGER DEFAULT 1,"
             + KEY_IS_PAGED + " INTEGER DEFAULT 0,"
-            + KEY_NEXT_PAGE_LINK + " TEXT,"
-            + KEY_HIDE + " TEXT,"
+            + KEY_NEXT_PAGE_LINK + TEXT_TYPE
+            + KEY_HIDE + TEXT_TYPE
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0)";
 
-    public static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
+    public static final String CREATE_TABLE_FEED_ITEMS = CREATE_TABLE_COMMAND
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_CONTENT_ENCODED + " TEXT," + KEY_PUBDATE
-            + " INTEGER," + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
-            + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
-            + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
-            + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
-            + KEY_FLATTR_STATUS + " INTEGER,"
-            + KEY_IMAGE + " INTEGER,"
+            + TEXT_TYPE + KEY_CONTENT_ENCODED + TEXT_TYPE + KEY_PUBDATE
+            + INTEGER_TYPE + KEY_READ + INTEGER_TYPE + KEY_LINK + TEXT_TYPE
+            + KEY_DESCRIPTION + TEXT_TYPE + KEY_PAYMENT_LINK + TEXT_TYPE
+            + KEY_MEDIA + INTEGER_TYPE + KEY_FEED + INTEGER_TYPE
+            + KEY_HAS_CHAPTERS + INTEGER_TYPE + KEY_ITEM_IDENTIFIER + TEXT_TYPE
+            + KEY_FLATTR_STATUS + INTEGER_TYPE
+            + KEY_IMAGE + INTEGER_TYPE
             + KEY_AUTO_DOWNLOAD + " INTEGER)";
 
-    public static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
+    public static final String CREATE_TABLE_FEED_IMAGES = CREATE_TABLE_COMMAND
             + TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
+            + TEXT_TYPE + KEY_FILE_URL + TEXT_TYPE + KEY_DOWNLOAD_URL + TEXT_TYPE
             + KEY_DOWNLOADED + " INTEGER)";
 
-    public static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
+    public static final String CREATE_TABLE_FEED_MEDIA = CREATE_TABLE_COMMAND
             + TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
-            + " INTEGER," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL
-            + " TEXT," + KEY_DOWNLOADED + " INTEGER," + KEY_POSITION
-            + " INTEGER," + KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT,"
-            + KEY_PLAYBACK_COMPLETION_DATE + " INTEGER,"
-            + KEY_FEEDITEM + " INTEGER,"
-            + KEY_PLAYED_DURATION + " INTEGER,"
-            + KEY_HAS_EMBEDDED_PICTURE + " INTEGER,"
+            + INTEGER_TYPE + KEY_FILE_URL + TEXT_TYPE + KEY_DOWNLOAD_URL
+            + TEXT_TYPE + KEY_DOWNLOADED + INTEGER_TYPE + KEY_POSITION
+            + INTEGER_TYPE + KEY_SIZE + INTEGER_TYPE + KEY_MIME_TYPE + TEXT_TYPE
+            + KEY_PLAYBACK_COMPLETION_DATE + INTEGER_TYPE
+            + KEY_FEEDITEM + INTEGER_TYPE
+            + KEY_PLAYED_DURATION + INTEGER_TYPE
+            + KEY_HAS_EMBEDDED_PICTURE + INTEGER_TYPE
             + KEY_LAST_PLAYED_TIME + " INTEGER)";
 
-    public static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
+    public static final String CREATE_TABLE_DOWNLOAD_LOG = CREATE_TABLE_COMMAND
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
-            + " INTEGER," + KEY_FEEDFILETYPE + " INTEGER," + KEY_REASON
-            + " INTEGER," + KEY_SUCCESSFUL + " INTEGER," + KEY_COMPLETION_DATE
-            + " INTEGER," + KEY_REASON_DETAILED + " TEXT,"
+            + INTEGER_TYPE + KEY_FEEDFILETYPE + INTEGER_TYPE + KEY_REASON
+            + INTEGER_TYPE + KEY_SUCCESSFUL + INTEGER_TYPE + KEY_COMPLETION_DATE
+            + INTEGER_TYPE + KEY_REASON_DETAILED + TEXT_TYPE
             + KEY_DOWNLOADSTATUS_TITLE + " TEXT)";
 
-    public static final String CREATE_TABLE_QUEUE = "CREATE TABLE "
+    public static final String CREATE_TABLE_QUEUE = CREATE_TABLE_COMMAND
             + TABLE_NAME_QUEUE + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
-            + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
+            + KEY_FEEDITEM + INTEGER_TYPE + KEY_FEED + " INTEGER)";
 
-    public static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
+    public static final String CREATE_TABLE_SIMPLECHAPTERS = CREATE_TABLE_COMMAND
             + TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER,"
-            + KEY_LINK + " TEXT," + KEY_CHAPTER_TYPE + " INTEGER)";
+            + TEXT_TYPE + KEY_START + INTEGER_TYPE + KEY_FEEDITEM + INTEGER_TYPE
+            + KEY_LINK + TEXT_TYPE + KEY_CHAPTER_TYPE + " INTEGER)";
 
     // SQL Statements for creating indexes
-    public static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
+    public static final String CREATE_INDEX_FEEDITEMS_FEED = CREATE_INDEX
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_FEED + ")";
 
-    public static final String CREATE_INDEX_FEEDITEMS_IMAGE = "CREATE INDEX "
+    public static final String CREATE_INDEX_FEEDITEMS_IMAGE = CREATE_INDEX
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_IMAGE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_IMAGE + ")";
 
@@ -203,21 +213,21 @@ public class PodDBAdapter {
             + KEY_READ + ")";
 
 
-    public static final String CREATE_INDEX_QUEUE_FEEDITEM = "CREATE INDEX "
+    public static final String CREATE_INDEX_QUEUE_FEEDITEM = CREATE_INDEX
             + TABLE_NAME_QUEUE + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_QUEUE + " ("
             + KEY_FEEDITEM + ")";
 
-    public static final String CREATE_INDEX_FEEDMEDIA_FEEDITEM = "CREATE INDEX "
+    public static final String CREATE_INDEX_FEEDMEDIA_FEEDITEM = CREATE_INDEX
             + TABLE_NAME_FEED_MEDIA + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_FEED_MEDIA + " ("
             + KEY_FEEDITEM + ")";
 
-    public static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = "CREATE INDEX "
+    public static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = CREATE_INDEX
             + TABLE_NAME_SIMPLECHAPTERS + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_SIMPLECHAPTERS + " ("
             + KEY_FEEDITEM + ")";
 
-    public static final String CREATE_TABLE_FAVORITES = "CREATE TABLE "
+    public static final String CREATE_TABLE_FAVORITES = CREATE_TABLE_COMMAND
             + TABLE_NAME_FAVORITES + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
-            + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
+            + KEY_FEEDITEM + INTEGER_TYPE + KEY_FEED + " INTEGER)";
     
     /**
      * Select all columns from the feed-table
@@ -848,9 +858,9 @@ public class PodDBAdapter {
     }
 
     public void setFeedLastUpdateFailed(long feedId, boolean failed) {
-        final String sql = "UPDATE " + TABLE_NAME_FEEDS
-                + " SET " + KEY_LAST_UPDATE_FAILED+ "=" + (failed ? "1" : "0")
-                + " WHERE " + KEY_ID + "="+ feedId;
+        final String sql = UPDATE_COMMAND + TABLE_NAME_FEEDS
+                + SET_COMMAND + KEY_LAST_UPDATE_FAILED+ "=" + (failed ? "1" : "0")
+                + WHERE_COMMAND + KEY_ID + "="+ feedId;
         db.execSQL(sql);
     }
 
@@ -883,9 +893,9 @@ public class PodDBAdapter {
     }
 
     public void setFeedsItemsAutoDownload(Feed feed, boolean autoDownload) {
-        final String sql = "UPDATE " + TABLE_NAME_FEED_ITEMS
-                + " SET " + KEY_AUTO_DOWNLOAD + "="+ (autoDownload ? "1" : "0")
-                + " WHERE " + KEY_FEED + "=" + feed.getId();
+        final String sql = UPDATE_COMMAND + TABLE_NAME_FEED_ITEMS
+                + SET_COMMAND + KEY_AUTO_DOWNLOAD + "="+ (autoDownload ? "1" : "0")
+                + WHERE_COMMAND + KEY_FEED + "=" + feed.getId();
         db.execSQL(sql);
     }
 
@@ -1145,7 +1155,7 @@ public class PodDBAdapter {
                 }
 
                 cursors[i] = db.rawQuery("SELECT * FROM "
-                        + TABLE_NAME_FEED_IMAGES + " WHERE " + KEY_ID + " IN "
+                        + TABLE_NAME_FEED_IMAGES + WHERE_COMMAND + KEY_ID + " IN "
                         + buildInOperator(neededLength), parts);
             }
             return new MergeCursor(cursors);
@@ -1164,7 +1174,7 @@ public class PodDBAdapter {
 
     public final Cursor getDownloadLog(final int feedFileType, final long feedFileId) {
         final String query = "SELECT * FROM " + TABLE_NAME_DOWNLOAD_LOG +
-                " WHERE " + KEY_FEEDFILE + "=" + feedFileId + " AND " + KEY_FEEDFILETYPE + "=" + feedFileType
+                WHERE_COMMAND + KEY_FEEDFILE + "=" + feedFileId + " AND " + KEY_FEEDFILETYPE + "=" + feedFileType
                 + " ORDER BY " + KEY_ID + " DESC";
         return db.rawQuery(query, null);
     }
@@ -1222,7 +1232,7 @@ public class PodDBAdapter {
     public final Cursor getNewItemsIdsCursor(long feedId) {
         final String query = "SELECT " + KEY_ID
                 + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " WHERE " + KEY_FEED + "=" + feedId
+                + WHERE_COMMAND + KEY_FEED + "=" + feedId
                 + " AND " + KEY_READ + "=" + FeedItem.NEW
                 + " ORDER BY " + KEY_PUBDATE + " DESC";
         return db.rawQuery(query, null);
@@ -1255,7 +1265,7 @@ public class PodDBAdapter {
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " INNER JOIN " + TABLE_NAME_FEED_MEDIA
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
-                + " WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + ">0";
+                + WHERE_COMMAND + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + ">0";
         return db.rawQuery(query, null);
     }
 
@@ -1306,7 +1316,7 @@ public class PodDBAdapter {
                 }
 
                 cursors[i] = db.rawQuery("SELECT * FROM "
-                        + TABLE_NAME_FEED_MEDIA + " WHERE " + KEY_FEEDITEM + " IN "
+                        + TABLE_NAME_FEED_MEDIA + WHERE_COMMAND + KEY_FEEDITEM + " IN "
                         + buildInOperator(neededLength), parts);
             }
             return new MergeCursor(cursors);
@@ -1362,7 +1372,7 @@ public class PodDBAdapter {
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
                 + " INNER JOIN " + TABLE_NAME_FEED_MEDIA
                 + " ON " + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM + "=" +  TABLE_NAME_FEED_ITEMS + "." + KEY_ID
-                + " WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_URL + "=" + escapedEpisodeUrl
+                + WHERE_COMMAND + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_URL + "=" + escapedEpisodeUrl
                 + " AND " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL + "=" + escapedPodcastUrl;
         Log.d(TAG, "SQL: " + query);
         return db.rawQuery(query, null);
@@ -1374,14 +1384,14 @@ public class PodDBAdapter {
                 + "SELECT " + KEY_USERNAME + "," + KEY_PASSWORD + " FROM " + TABLE_NAME_FEED_IMAGES
                 + " INNER JOIN " + TABLE_NAME_FEEDS
                 + " ON " + TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" + TABLE_NAME_FEEDS + "." + KEY_IMAGE
-                + " WHERE " + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "=" + downloadUrl
+                + WHERE_COMMAND + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "=" + downloadUrl
                 + " UNION SELECT " + KEY_USERNAME + "," + KEY_PASSWORD
                 + " FROM " + TABLE_NAME_FEED_IMAGES
                 + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
                 + " ON " + TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE
                 + " INNER JOIN " + TABLE_NAME_FEEDS
                 + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                + " WHERE " + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "=" + downloadUrl;
+                + WHERE_COMMAND + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "=" + downloadUrl;
         return db.rawQuery(query, null);
     }
 
@@ -1399,7 +1409,7 @@ public class PodDBAdapter {
     public final int getNumberOfNewItems() {
         final String query = "SELECT COUNT(" + KEY_ID + ")"
                 + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " WHERE " + KEY_READ + "=" + FeedItem.NEW;
+                + WHERE_COMMAND + KEY_READ + "=" + FeedItem.NEW;
         Cursor c = db.rawQuery(query, null);
         int result = 0;
         if (c.moveToFirst()) {
@@ -1437,7 +1447,7 @@ public class PodDBAdapter {
 
         final String query = "SELECT " + KEY_FEED + ", COUNT(" + KEY_ID + ") AS count "
                 + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " WHERE " + KEY_FEED + " IN (" + builder.toString() + ") "
+                + WHERE_COMMAND + KEY_FEED + " IN (" + builder.toString() + ") "
                 + " AND " + whereRead + " GROUP BY " + KEY_FEED;
 
         Cursor c = db.rawQuery(query, null);
@@ -1455,7 +1465,7 @@ public class PodDBAdapter {
 
     public final int getNumberOfDownloadedEpisodes() {
         final String query = "SELECT COUNT(DISTINCT " + KEY_ID + ") AS count FROM " + TABLE_NAME_FEED_MEDIA +
-                " WHERE " + KEY_DOWNLOADED + " > 0";
+                WHERE_COMMAND + KEY_DOWNLOADED + " > 0";
 
         Cursor c = db.rawQuery(query, null);
         int result = 0;
@@ -1551,13 +1561,13 @@ public class PodDBAdapter {
         if (feedID != 0) {
             query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS + " INNER JOIN " +
                     TABLE_NAME_SIMPLECHAPTERS + " ON " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_FEEDITEM + "=" +
-                    TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" +
+                    TABLE_NAME_FEED_ITEMS + "." + KEY_ID + WHERE_COMMAND + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" +
                     feedID + " AND " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%"
                     + prepareSearchQuery(searchQuery) + "%'";
         } else {
             query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS + " INNER JOIN " +
                     TABLE_NAME_SIMPLECHAPTERS + " ON " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_FEEDITEM + "=" +
-                    TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " WHERE " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%"
+                    TABLE_NAME_FEED_ITEMS + "." + KEY_ID + WHERE_COMMAND + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%"
                     + prepareSearchQuery(searchQuery) + "%'";
         }
         return db.rawQuery(query, null);
@@ -1744,11 +1754,11 @@ public class PodDBAdapter {
             if(oldVersion <= 14) {
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
                         + " ADD COLUMN " + KEY_AUTO_DOWNLOAD + " INTEGER");
-                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                        + " SET " + KEY_AUTO_DOWNLOAD + " = "
+                db.execSQL(UPDATE_COMMAND + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                        + SET_COMMAND + KEY_AUTO_DOWNLOAD + " = "
                         + "(SELECT " + KEY_AUTO_DOWNLOAD
                         + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " WHERE " + PodDBAdapter.TABLE_NAME_FEEDS + "." + KEY_ID
+                        + WHERE_COMMAND + PodDBAdapter.TABLE_NAME_FEEDS + "." + KEY_ID
                         + " = " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + ")");
 
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
@@ -1767,12 +1777,12 @@ public class PodDBAdapter {
             if(oldVersion <= 15) {
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
                         + " ADD COLUMN " + KEY_HAS_EMBEDDED_PICTURE + " INTEGER DEFAULT -1");
-                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                        + " SET " + KEY_HAS_EMBEDDED_PICTURE + "=0"
-                        + " WHERE " + KEY_DOWNLOADED + "=0");
+                db.execSQL(UPDATE_COMMAND + PodDBAdapter.TABLE_NAME_FEED_MEDIA
+                        + SET_COMMAND + KEY_HAS_EMBEDDED_PICTURE + "=0"
+                        + WHERE_COMMAND + KEY_DOWNLOADED + "=0");
                 Cursor c = db.rawQuery("SELECT " + KEY_FILE_URL
                         + " FROM " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                        + " WHERE " + KEY_DOWNLOADED + "=1 "
+                        + WHERE_COMMAND + KEY_DOWNLOADED + "=1 "
                         + " AND " + KEY_HAS_EMBEDDED_PICTURE + "=-1", null);
                 if(c.moveToFirst()) {
                     MediaMetadataRetriever mmr = new MediaMetadataRetriever();
@@ -1782,13 +1792,13 @@ public class PodDBAdapter {
                             mmr.setDataSource(fileUrl);
                             byte[] image = mmr.getEmbeddedPicture();
                             if (image != null) {
-                                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                                        + " SET " + KEY_HAS_EMBEDDED_PICTURE + "=1"
-                                        + " WHERE " + KEY_FILE_URL + "='"+ fileUrl + "'");
+                                db.execSQL(UPDATE_COMMAND + PodDBAdapter.TABLE_NAME_FEED_MEDIA
+                                        + SET_COMMAND + KEY_HAS_EMBEDDED_PICTURE + "=1"
+                                        + WHERE_COMMAND + KEY_FILE_URL + "='"+ fileUrl + "'");
                             } else {
-                                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                                        + " SET " + KEY_HAS_EMBEDDED_PICTURE + "=0"
-                                        + " WHERE " + KEY_FILE_URL + "='"+ fileUrl + "'");
+                                db.execSQL(UPDATE_COMMAND + PodDBAdapter.TABLE_NAME_FEED_MEDIA
+                                        + SET_COMMAND + KEY_HAS_EMBEDDED_PICTURE + "=0"
+                                        + WHERE_COMMAND + KEY_FILE_URL + "='"+ fileUrl + "'");
                             }
                         } catch(Exception e) {
                             e.printStackTrace();
@@ -1806,14 +1816,14 @@ public class PodDBAdapter {
                         + " LEFT OUTER JOIN " + PodDBAdapter.TABLE_NAME_QUEUE + " ON "
                         + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
                         + PodDBAdapter.TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
-                        + " WHERE "
+                        + WHERE_COMMAND
                         + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " = 0 AND " // unplayed
                         + PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " = 0 AND " // undownloaded
                         + PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + " = 0 AND " // not partially played
                         + PodDBAdapter.TABLE_NAME_QUEUE + "." + KEY_ID + " IS NULL"; // not in queue
-                String sql =  "UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                        + " SET " + KEY_READ + "=" + FeedItem.NEW
-                        + " WHERE " + KEY_ID + " IN (" + selectNew + ")";
+                String sql =  UPDATE_COMMAND + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                        + SET_COMMAND + KEY_READ + "=" + FeedItem.NEW
+                        + WHERE_COMMAND + KEY_ID + " IN (" + selectNew + ")";
                 Log.d("Migration", "SQL: " + sql);
                 db.execSQL(sql);
             }
@@ -1843,31 +1853,31 @@ public class PodDBAdapter {
                 db.beginTransaction();
 
                 // Change to intermediate values to avoid overwriting in the following find/replace
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                db.execSQL(UPDATE_COMMAND + TABLE_NAME_FEEDS + "\n" +
                         "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'unplayed', 'noplay')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                db.execSQL(UPDATE_COMMAND + TABLE_NAME_FEEDS + "\n" +
                         "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'not_queued', 'noqueue')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                db.execSQL(UPDATE_COMMAND + TABLE_NAME_FEEDS + "\n" +
                         "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'not_downloaded', 'nodl')");
 
                 // Replace played, queued, and downloaded with their opposites
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                db.execSQL(UPDATE_COMMAND + TABLE_NAME_FEEDS + "\n" +
                         "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'played', 'unplayed')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                db.execSQL(UPDATE_COMMAND + TABLE_NAME_FEEDS + "\n" +
                         "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'queued', 'not_queued')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                db.execSQL(UPDATE_COMMAND + TABLE_NAME_FEEDS + "\n" +
                         "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'downloaded', 'not_downloaded')");
 
                 // Now replace intermediates for unplayed, not queued, etc. with their opposites
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                db.execSQL(UPDATE_COMMAND + TABLE_NAME_FEEDS + "\n" +
                         "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'noplay', 'played')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                db.execSQL(UPDATE_COMMAND + TABLE_NAME_FEEDS + "\n" +
                         "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'noqueue', 'queued')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                db.execSQL(UPDATE_COMMAND + TABLE_NAME_FEEDS + "\n" +
                         "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'nodl', 'downloaded')");
 
                 // Paused doesn't have an opposite, so unplayed is the next best option
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                db.execSQL(UPDATE_COMMAND + TABLE_NAME_FEEDS + "\n" +
                         "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'paused', 'unplayed')");
 
                 db.setTransactionSuccessful();
@@ -1886,8 +1896,8 @@ public class PodDBAdapter {
             }
             if (oldVersion < 1050004) {
                 // prevent old timestamps to be misinterpreted as ETags
-                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        +" SET " + PodDBAdapter.KEY_LASTUPDATE + "=NULL");
+                db.execSQL(UPDATE_COMMAND + PodDBAdapter.TABLE_NAME_FEEDS
+                        +SET_COMMAND + PodDBAdapter.KEY_LASTUPDATE + "=NULL");
             }
 
             EventBus.getDefault().post(ProgressEvent.end());

@@ -53,6 +53,8 @@ public class ItunesSearchFragment extends Fragment {
 
     private static final String API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
 
+    private static final String USER_HEADER_HEADER_NAME = "User-Agent";
+
 
     /**
      * Adapter responsible with the search results
@@ -128,7 +130,7 @@ public class ItunesSearchFragment extends Fragment {
                             OkHttpClient client = AntennapodHttpClient.getHttpClient();
                             Request.Builder httpReq = new Request.Builder()
                                     .url(podcast.feedUrl)
-                                    .header("User-Agent", ClientConfig.USER_AGENT);
+                                    .header(USER_HEADER_HEADER_NAME, ClientConfig.USER_AGENT);
                             try {
                                 Response response = client.newCall(httpReq.build()).execute();
                                 if (response.isSuccessful()) {
@@ -239,7 +241,7 @@ public class ItunesSearchFragment extends Fragment {
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
                     Request.Builder httpReq = new Request.Builder()
                             .url(url)
-                            .header("User-Agent", ClientConfig.USER_AGENT);
+                            .header(USER_HEADER_HEADER_NAME, ClientConfig.USER_AGENT);
                     List<Podcast> results = new ArrayList<>();
                     try {
                         Response response = client.newCall(httpReq.build()).execute();
@@ -248,7 +250,7 @@ public class ItunesSearchFragment extends Fragment {
                             url = "https://itunes.apple.com/us/rss/toppodcasts/limit=25/explicit=true/json";
                             httpReq = new Request.Builder()
                                     .url(url)
-                                    .header("User-Agent", ClientConfig.USER_AGENT);
+                                    .header(USER_HEADER_HEADER_NAME, ClientConfig.USER_AGENT);
                             response = client.newCall(httpReq.build()).execute();
                         }
                         if(response.isSuccessful()) {
@@ -315,7 +317,7 @@ public class ItunesSearchFragment extends Fragment {
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
                     Request.Builder httpReq = new Request.Builder()
                             .url(formattedUrl)
-                            .header("User-Agent", ClientConfig.USER_AGENT);
+                            .header(USER_HEADER_HEADER_NAME, ClientConfig.USER_AGENT);
                     List<Podcast> podcasts = new ArrayList<>();
                     try {
                         Response response = client.newCall(httpReq.build()).execute();
