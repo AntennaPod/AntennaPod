@@ -30,6 +30,9 @@ import de.danoeh.antennapod.core.util.ShareUtils;
  * Handles interactions with the FeedItemMenu.
  */
 public class FeedMenuHandler {
+
+    private FeedMenuHandler(){ }
+
     private static final String TAG = "FeedMenuHandler";
 
     public static boolean onCreateOptionsMenu(MenuInflater inflater, Menu menu) {

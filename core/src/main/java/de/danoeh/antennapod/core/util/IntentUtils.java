@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import java.util.List;
 
 public class IntentUtils {
+    private IntentUtils(){}
 
     public static boolean isCallable(final Context context, final Intent intent) {
         List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent,

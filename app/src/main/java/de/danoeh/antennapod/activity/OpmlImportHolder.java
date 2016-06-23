@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class OpmlImportHolder {
 
+    private OpmlImportHolder(){}
+
     private static ArrayList<OpmlElement> readElements;
 
     public static ArrayList<OpmlElement> getReadElements() {

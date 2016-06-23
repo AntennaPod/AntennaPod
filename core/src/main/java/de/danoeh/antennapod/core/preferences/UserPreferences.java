@@ -40,6 +40,7 @@ import de.danoeh.antennapod.core.util.Converter;
  * when called.
  */
 public class UserPreferences {
+    private UserPreferences(){}
 
     public static final String IMPORT_DIR = "import/";
 

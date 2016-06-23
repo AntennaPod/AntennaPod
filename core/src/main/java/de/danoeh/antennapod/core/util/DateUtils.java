@@ -16,6 +16,7 @@ import java.util.TimeZone;
  * Parses several date formats.
  */
 public class DateUtils {
+    private DateUtils(){}
     
 	private static final String TAG = "DateUtils";
 

@@ -27,6 +27,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class NetworkUtils {
+    private NetworkUtils(){}
 
 	private static final String TAG = NetworkUtils.class.getSimpleName();
 
