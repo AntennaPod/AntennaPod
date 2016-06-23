@@ -145,9 +145,9 @@ public class DBCleanupTests extends InstrumentationTestCase {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
         Feed feed = new Feed("url", null, "title");
-        List<FeedItem> items = new ArrayList<FeedItem>();
+        List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         populateItems(NUM_ITEMS, feed, items, files, FeedItem.UNPLAYED, false, false);
 
         DBTasks.performAutoCleanup(context);

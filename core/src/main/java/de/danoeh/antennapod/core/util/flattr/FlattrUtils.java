@@ -118,7 +118,7 @@ public class FlattrUtils {
 
     public static List<Flattr> retrieveFlattredThings()
             throws FlattrException {
-        ArrayList<Flattr> myFlattrs = new ArrayList<Flattr>();
+        ArrayList<Flattr> myFlattrs = new ArrayList<>();
 
         if (hasToken()) {
             FlattrService fs = FlattrServiceCreator.getService(retrieveToken());

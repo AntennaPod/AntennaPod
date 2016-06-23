@@ -100,7 +100,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         assertTrue(feed.getId() != 0);
         final long feedID = feed.getId();
         feed.setId(0);
-        List<Long> itemIDs = new ArrayList<Long>();
+        List<Long> itemIDs = new ArrayList<>();
         for (FeedItem item : feed.getItems()) {
             assertTrue(item.getId() != 0);
             itemIDs.add(item.getId());

@@ -38,14 +38,14 @@ public class GPodnetServiceTest extends AndroidTestCase {
 
     public void testUploadSubscription() throws GpodnetServiceException {
         authenticate();
-        ArrayList<String> l = new ArrayList<String>();
+        ArrayList<String> l = new ArrayList<>();
         l.add("http://bitsundso.de/feed");
         service.uploadSubscriptions(USER, "radio", l);
     }
 
     public void testUploadSubscription2() throws GpodnetServiceException {
         authenticate();
-        ArrayList<String> l = new ArrayList<String>();
+        ArrayList<String> l = new ArrayList<>();
         l.add("http://bitsundso.de/feed");
         l.add("http://gamesundso.de/feed");
         service.uploadSubscriptions(USER, "radio", l);
