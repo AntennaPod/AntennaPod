@@ -208,7 +208,8 @@ public class DownloadService extends Service {
                                     boolean forbidden = status.getReason() == DownloadError.ERROR_FORBIDDEN
                                             && String.valueOf(HttpURLConnection.HTTP_FORBIDDEN).equals(status.getReasonDetailed());
                                     boolean notEnoughSpace = status.getReason() == DownloadError.ERROR_NOT_ENOUGH_SPACE;
-                                    if (httpNotFound || forbidden || notEnoughSpace) {
+                                    boolean wrongFileType = status.getReason() == DownloadError.ERROR_FILE_TYPE;
+                                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType) {
                                         DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                                     }
                                     // to make lists reload the failed item, we fake an item update
