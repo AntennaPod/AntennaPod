@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.nineoldandroids.view.ViewHelper;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -84,6 +85,12 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
                 .fitCenter()
                 .dontAnimate()
                 .into(holder.imageView);
+
+        if(item.isPlayed()) {
+            ViewHelper.setAlpha(convertView, 0.5f);
+        } else {
+            ViewHelper.setAlpha(convertView, 1.0f);
+        }
 
         holder.title.setText(item.getTitle());
         holder.txtvSize.setText(Converter.byteToString(item.getMedia().getSize()));
