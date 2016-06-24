@@ -241,6 +241,9 @@ public class AllEpisodesFragment extends Fragment {
                     };
                     conDialog.createNewDialog().show();
                     return true;
+                case R.id.mark_all_seen_item:
+                    DBWriter.markNewItemsSeen();
+                    return true;
                 default:
                     return false;
             }
