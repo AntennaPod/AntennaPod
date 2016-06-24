@@ -277,7 +277,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         if (!super.loadMediaInfo()) {
             return false;
         }
-        if(controller.getMedia() != media) {
+        if(controller != null && controller.getMedia() != media) {
             media = controller.getMedia();
             pagerAdapter.onMediaChanged(media);
         }
