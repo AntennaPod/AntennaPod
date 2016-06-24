@@ -4,7 +4,6 @@ import android.app.backup.BackupManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -649,7 +648,7 @@ public class DBWriter {
     }
 
     /**
-     * Sets the 'read'-attribute of all FeedItems of a specific Feed to true.
+     * Sets the 'read'-attribute of all NEW FeedItems of a specific Feed to UNPLAYED.
      *
      * @param feedId  ID of the Feed.
      */
@@ -657,15 +656,7 @@ public class DBWriter {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            Cursor itemCursor = adapter.getNewItemsIdsCursor(feedId);
-            long[] ids = new long[itemCursor.getCount()];
-            itemCursor.moveToFirst();
-            for (int i = 0; i < ids.length; i++) {
-                ids[i] = itemCursor.getLong(0);
-                itemCursor.moveToNext();
-            }
-            itemCursor.close();
-            adapter.setFeedItemRead(FeedItem.UNPLAYED, ids);
+            adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED, feedId);
             adapter.close();
 
             EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
@@ -673,7 +664,7 @@ public class DBWriter {
     }
 
     /**
-     * Sets the 'read'-attribute of all FeedItems of a specific Feed to true.
+     * Sets the 'read'-attribute of all FeedItems of a specific Feed to PLAYED.
      *
      * @param feedId  ID of the Feed.
      */
@@ -681,16 +672,7 @@ public class DBWriter {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            Cursor itemCursor = adapter.getAllItemsOfFeedCursor(feedId);
-            long[] itemIds = new long[itemCursor.getCount()];
-            itemCursor.moveToFirst();
-            for (int i = 0; i < itemIds.length; i++) {
-                int indexId = itemCursor.getColumnIndex(PodDBAdapter.KEY_ID);
-                itemIds[i] = itemCursor.getLong(indexId);
-                itemCursor.moveToNext();
-            }
-            itemCursor.close();
-            adapter.setFeedItemRead(FeedItem.PLAYED, itemIds);
+            adapter.setFeedItems(FeedItem.PLAYED, feedId);
             adapter.close();
 
             EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
@@ -698,27 +680,31 @@ public class DBWriter {
     }
 
     /**
-     * Sets the 'read'-attribute of all FeedItems to true.
+     * Sets the 'read'-attribute of all FeedItems to PLAYED.
      */
     public static Future<?> markAllItemsRead() {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            Cursor itemCursor = adapter.getUnreadItemsCursor();
-            long[] itemIds = new long[itemCursor.getCount()];
-            itemCursor.moveToFirst();
-            for (int i = 0; i < itemIds.length; i++) {
-                int indexId = itemCursor.getColumnIndex(PodDBAdapter.KEY_ID);
-                itemIds[i] = itemCursor.getLong(indexId);
-                itemCursor.moveToNext();
-            }
-            itemCursor.close();
-            adapter.setFeedItemRead(FeedItem.PLAYED, itemIds);
+            adapter.setFeedItems(FeedItem.PLAYED);
             adapter.close();
 
             EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
         });
+    }
 
+    /**
+     * Sets the 'read'-attribute of all NEW FeedItems to UNPLAYED.
+     */
+    public static Future<?> markNewItemsSeen() {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED);
+            adapter.close();
+
+            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+        });
     }
 
     static Future<?> addNewFeed(final Context context, final Feed... feeds) {

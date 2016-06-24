@@ -1215,6 +1215,30 @@ public class PodDBAdapter {
                 + "<" + FeedItem.PLAYED, null, null, null, KEY_PUBDATE + " DESC");
     }
 
+    public void setFeedItems(int state) {
+        setFeedItems(Integer.MIN_VALUE, state, 0);
+    }
+
+    public void setFeedItems(int oldState, int newState) {
+        setFeedItems(oldState, newState, 0);
+    }
+
+    public void setFeedItems(int state, long feedId) {
+        setFeedItems(Integer.MIN_VALUE, state, feedId);
+    }
+
+    public void setFeedItems(int oldState, int newState, long feedId) {
+        String sql = "UPDATE " + TABLE_NAME_FEED_ITEMS + " SET " + KEY_READ + "=" + newState;
+        if(feedId > 0) {
+            sql += " WHERE " + KEY_FEED + "=" + feedId;
+        }
+        if(FeedItem.NEW <= oldState && oldState <= FeedItem.PLAYED) {
+            sql += feedId > 0 ? " AND " : " WHERE ";
+            sql += KEY_READ + "=" + oldState;
+        }
+        db.execSQL(sql);
+    }
+
     /**
      * Returns a cursor which contains all items of a feed that are considered new.
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
