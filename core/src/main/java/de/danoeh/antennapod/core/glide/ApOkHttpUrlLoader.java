@@ -86,7 +86,9 @@ public class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     public DataFetcher<InputStream> getResourceFetcher(String model, int width, int height) {
         Log.d(TAG, "getResourceFetcher() called with: " + "model = [" + model + "], width = ["
                 + width + "], height = [" + height + "]");
-        if(model.startsWith("/")) {
+        if(TextUtils.isEmpty(model)) {
+            return null;
+        } else if(model.startsWith("/")) {
             return new AudioCoverFetcher(model);
         } else {
             GlideUrl url = new GlideUrl(model);
