@@ -630,17 +630,16 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
      */
     protected boolean loadMediaInfo() {
         Log.d(TAG, "loadMediaInfo()");
+        if(controller == null || controller.getMedia() == null) {
+            return false;
+        }
         Playable media = controller.getMedia();
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
-        if (media != null) {
-            onPositionObserverUpdate();
-            checkFavorite();
-            updatePlaybackSpeedButton();
-            return true;
-        } else {
-            return false;
-        }
+        onPositionObserverUpdate();
+        checkFavorite();
+        updatePlaybackSpeedButton();
+        return true;
     }
 
     protected void updatePlaybackSpeedButton() {
