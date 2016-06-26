@@ -42,7 +42,7 @@ project.ext {
     minSdkVersion = 10
     targetSdkVersion = 23
 
-    supportVersion = "23.2.1"
+    supportVersion = "24.0.0"
     commonsioVersion = "2.4"
     commonslangVersion = "3.4"
     eventbusVersion = "2.4.0"
