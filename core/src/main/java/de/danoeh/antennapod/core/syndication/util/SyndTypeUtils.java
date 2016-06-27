@@ -6,7 +6,7 @@ import org.apache.commons.io.FilenameUtils;
 /** Utility class for handling MIME-Types of enclosures */
 public class SyndTypeUtils {
 
-	private final static String VALID_MIMETYPE = "audio/.*" + "|" + "video/.*"
+	private static final String VALID_MIMETYPE = "audio/.*" + "|" + "video/.*"
 			+ "|" + "application/ogg";
 
 	private SyndTypeUtils() {

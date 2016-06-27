@@ -53,9 +53,9 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     private long feedId;
 
     private int state;
-    public final static int NEW = -1;
-    public final static int UNPLAYED = 0;
-    public final static int PLAYED = 1;
+    public static final int NEW = -1;
+    public static final int UNPLAYED = 0;
+    public static final int PLAYED = 1;
 
     private String paymentLink;
     private FlattrStatus flattrStatus;

@@ -15,14 +15,14 @@ public class FlattrServiceCreator {
 	
 	private static volatile FlattrService flattrService;
 	
-	public synchronized static FlattrService getService(AccessToken token) {
+	public static synchronized FlattrService getService(AccessToken token) {
 		if (flattrService == null) {
 			flattrService = FlattrFactory.getInstance().createFlattrService(token);
 		}
 		return flattrService;
 	}
 	
-	public synchronized static void deleteFlattrService() {
+	public static synchronized void deleteFlattrService() {
 		if (BuildConfig.DEBUG) Log.d(TAG, "Deleting service instance");
 		flattrService = null;
 	}

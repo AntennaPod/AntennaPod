@@ -717,7 +717,7 @@ public final class DBTasks {
      * This class automatically creates a PodDBAdapter object and closes it when
      * it is no longer in use.
      */
-    static abstract class QueryTask<T> implements Callable<T> {
+    abstract static class QueryTask<T> implements Callable<T> {
         private T result;
         private Context context;
 
