@@ -12,7 +12,7 @@ public class ProxyConfig {
     @Nullable public final String username;
     @Nullable public final String password;
 
-    public final static int DEFAULT_PORT = 8080;
+    public static final int DEFAULT_PORT = 8080;
 
     public static ProxyConfig direct() {
         return new ProxyConfig(Proxy.Type.DIRECT, null, 0, null, null);

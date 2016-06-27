@@ -1593,7 +1593,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 1050004;
+        private static final int VERSION = 1050004;
 
         private Context context;
 

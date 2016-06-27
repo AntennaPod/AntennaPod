@@ -24,21 +24,21 @@ public class NSRSS20 extends Namespace {
 	public static final String NSTAG = "rss";
 	public static final String NSURI = "";
 
-	public final static String CHANNEL = "channel";
-	public final static String ITEM = "item";
-	public final static String GUID = "guid";
-	public final static String TITLE = "title";
-	public final static String LINK = "link";
-	public final static String DESCR = "description";
-	public final static String PUBDATE = "pubDate";
-	public final static String ENCLOSURE = "enclosure";
-	public final static String IMAGE = "image";
-	public final static String URL = "url";
-	public final static String LANGUAGE = "language";
+	public static final String CHANNEL = "channel";
+	public static final String ITEM = "item";
+	public static final String GUID = "guid";
+	public static final String TITLE = "title";
+	public static final String LINK = "link";
+	public static final String DESCR = "description";
+	public static final String PUBDATE = "pubDate";
+	public static final String ENCLOSURE = "enclosure";
+	public static final String IMAGE = "image";
+	public static final String URL = "url";
+	public static final String LANGUAGE = "language";
 
-	public final static String ENC_URL = "url";
-	public final static String ENC_LEN = "length";
-	public final static String ENC_TYPE = "type";
+	public static final String ENC_URL = "url";
+	public static final String ENC_LEN = "length";
+	public static final String ENC_TYPE = "type";
 
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,

@@ -96,7 +96,7 @@ public class EventDistributor extends Observable {
 
     public void sendPlayerStatusUpdateBroadcast() { addEvent(PLAYER_STATUS_UPDATE); }
 
-	public static abstract class EventListener implements Observer {
+	public abstract static class EventListener implements Observer {
 
 		@Override
 		public void update(Observable observable, Object data) {

@@ -278,7 +278,7 @@ public abstract class PlaybackServiceMediaPlayer {
      * @param newStatus The new PlayerStatus. This must not be null.
      * @param newMedia  The new playable object of the PSMP object. This can be null.
      */
-    protected synchronized final void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
+    protected final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
         Log.d(TAG, this.getClass().getSimpleName() + ": Setting player status to " + newStatus);
 
         this.playerStatus = newStatus;
