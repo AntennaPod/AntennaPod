@@ -39,12 +39,12 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_toLeftOf="@id/mrc_control_play_pause"
-            android:layout_toStartOf="@id/mrc_control_play_pause">
+            android:layout_toStartOf="@id/mrc_control_play_pause"
+            android:layout_centerVertical="true">
             <TextView android:id="@+id/mrc_control_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/mediaRouteControllerPrimaryTextStyle"
-                android:singleLine="true" />
+                android:textAppearance="?attr/mediaRouteControllerPrimaryTextStyle"/>
             <TextView android:id="@+id/mrc_control_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

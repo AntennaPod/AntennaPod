@@ -1,29 +1,43 @@
 package de.danoeh.antennapod.cast;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.support.annotation.NonNull;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v7.app.MediaRouteControllerDialog;
+import android.support.v7.graphics.Palette;
 import android.support.v7.media.MediaRouter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
+
+import java.util.concurrent.ExecutionException;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
 public class CustomMRControllerDialog extends MediaRouteControllerDialog {
     public static final String TAG = "CustomMRContrDialog";
@@ -36,6 +50,10 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
     private TextView subtitleView;
     private ImageButton playPauseButton;
     private LinearLayout rootView;
+
+    private boolean viewsCreated = false;
+
+    private FetchArtTask fetchArtTask;
 
     private MediaControllerCompat mediaController;
     private MediaControllerCompat.Callback mediaControllerCallback;
@@ -87,10 +105,24 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         rootView.setOrientation(LinearLayout.VERTICAL);
 
+        // Start the session activity when a content item (album art, title or subtitle) is clicked.
+        View.OnClickListener onClickListener = v -> {
+            if (mediaController != null) {
+                PendingIntent pi = mediaController.getSessionActivity();
+                if (pi != null) {
+                    try {
+                        pi.send();
+                        dismiss();
+                    } catch (PendingIntent.CanceledException e) {
+                        Log.e(TAG, pi + " was not sent, it had been canceled.");
+                    }
+                }
+            }
+        };
+
         artView = new ImageView(getContext()) {
             @Override
             protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-                int desiredWidth = widthMeasureSpec;
                 int desiredHeight = heightMeasureSpec;
                 if (MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY) {
                     Drawable drawable = getDrawable();
@@ -110,26 +142,53 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
                     }
                 }
 
-                super.onMeasure(desiredWidth, desiredHeight);
+                super.onMeasure(widthMeasureSpec, desiredHeight);
             }
         };
         artView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         artView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        artView.setOnClickListener(onClickListener);
 
         rootView.addView(artView);
         View playbackControlLayout = View.inflate(getContext(), R.layout.media_router_controller, rootView);
 
         titleView = (TextView) playbackControlLayout.findViewById(R.id.mrc_control_title);
         subtitleView = (TextView) playbackControlLayout.findViewById(R.id.mrc_control_subtitle);
+        playbackControlLayout.findViewById(R.id.mrc_control_title_container).setOnClickListener(onClickListener);
         playPauseButton = (ImageButton) playbackControlLayout.findViewById(R.id.mrc_control_play_pause);
+        playPauseButton.setOnClickListener(v -> {
+            PlaybackStateCompat state;
+            if (mediaController != null && (state = mediaController.getPlaybackState()) != null) {
+                boolean isPlaying = state.getState() == PlaybackStateCompat.STATE_PLAYING;
+                if (isPlaying) {
+                    mediaController.getTransportControls().pause();
+                } else {
+                    mediaController.getTransportControls().play();
+                }
+                // Announce the action for accessibility.
+                AccessibilityManager accessibilityManager = (AccessibilityManager)
+                        getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+                if (accessibilityManager != null && accessibilityManager.isEnabled()) {
+                    AccessibilityEvent event = AccessibilityEvent.obtain(
+                            AccessibilityEventCompat.TYPE_ANNOUNCEMENT);
+                    event.setPackageName(getContext().getPackageName());
+                    event.setClassName(getClass().getName());
+                    int resId = isPlaying ?
+                            android.support.v7.mediarouter.R.string.mr_controller_pause : android.support.v7.mediarouter.R.string.mr_controller_play;
+                    event.getText().add(getContext().getString(resId));
+                    accessibilityManager.sendAccessibilityEvent(event);
+                }
+            }
+        });
 
+        viewsCreated = true;
         updateViews();
         return rootView;
     }
 
     private void updateViews() {
-        if (token == null || artView == null || mediaController == null) {
+        if (!viewsCreated || token == null || mediaController == null) {
             rootView.setVisibility(View.GONE);
             return;
         }
@@ -174,19 +233,27 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
                 showSubtitle = true;
             }
         }
+        if (showSubtitle) {
+            titleView.setSingleLine();
+        } else {
+            titleView.setMaxLines(2);
+        }
         titleView.setVisibility(showTitle ? View.VISIBLE : View.GONE);
         subtitleView.setVisibility(showSubtitle ? View.VISIBLE : View.GONE);
 
         updateState();
 
-        Bitmap art = metadata.getBitmap(MediaMetadataCompat.METADATA_KEY_ART);
-        if (art == null) {
+        if(rootView.getVisibility() != View.VISIBLE) {
             artView.setVisibility(View.GONE);
-            return;
+            rootView.setVisibility(View.VISIBLE);
         }
-        artView.setImageBitmap(art);
-        artView.setVisibility(View.VISIBLE);
-        rootView.setVisibility(View.VISIBLE);
+
+        if (fetchArtTask != null) {
+            fetchArtTask.cancel(true);
+        }
+
+        fetchArtTask = new FetchArtTask(description);
+        fetchArtTask.execute();
     }
 
     private void updateState() {
@@ -222,5 +289,59 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
     private static int getThemeResource(Context context, int attr) {
         TypedValue value = new TypedValue();
         return context.getTheme().resolveAttribute(attr, value, true) ? value.resourceId : 0;
+    }
+
+    private class FetchArtTask extends AsyncTask<Void, Void, Bitmap> {
+        final Bitmap iconBitmap;
+        final Uri iconUri;
+        int backgroundColor;
+
+        FetchArtTask(@NonNull MediaDescriptionCompat description) {
+            iconBitmap = description.getIconBitmap();
+            iconUri = description.getIconUri();
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... arg) {
+            Bitmap art = null;
+            if (iconBitmap != null) {
+                art = iconBitmap;
+            } else if (iconUri != null) {
+                try {
+                    art = Glide.with(getContext().getApplicationContext())
+                            .load(iconUri.toString())
+                            .asBitmap()
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .get();
+                } catch (InterruptedException | ExecutionException e) {
+                    Log.e(TAG, "Image art load failed", e);
+                }
+            }
+            if (art != null && art.getWidth()*9 < art.getHeight()*16) {
+                // Portrait art requires dominant color as background color.
+                Palette palette = new Palette.Builder(art).maximumColorCount(1).generate();
+                backgroundColor = palette.getSwatches().isEmpty()
+                        ? 0 : palette.getSwatches().get(0).getRgb();
+            }
+            return art;
+        }
+
+        @Override
+        protected void onCancelled() {
+            fetchArtTask = null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap art) {
+            fetchArtTask = null;
+            if (art != null) {
+                artView.setBackgroundColor(backgroundColor);
+                artView.setImageBitmap(art);
+                artView.setVisibility(View.VISIBLE);
+            } else {
+                artView.setVisibility(View.GONE);
+            }
+        }
     }
 }

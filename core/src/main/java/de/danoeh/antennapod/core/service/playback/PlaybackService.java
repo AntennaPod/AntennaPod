@@ -939,16 +939,16 @@ public class PlaybackService extends Service {
             MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
             builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
             builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
+            builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
             builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
-            builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
+            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, p.getFeedTitle());
 
             String imageLocation = p.getImageLocation();
 
             if (!TextUtils.isEmpty(imageLocation)) {
-                if (isCasting || UserPreferences.setLockscreenBackground()) {
+                if (UserPreferences.setLockscreenBackground()) {
                     builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, imageLocation);
-                    builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, imageLocation);
                     try {
                         Bitmap art = Glide.with(this)
                                 .load(imageLocation)
@@ -957,18 +957,12 @@ public class PlaybackService extends Service {
                                 .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                                 .get();
                         builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-                        // Icon is useful for MediaDescription,
-                        Bitmap icon = Glide.with(this)
-                                .load(imageLocation)
-                                .asBitmap()
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .fitCenter()
-                                .into(128, 128)
-                                .get();
-                        builder.putBitmap(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, icon);
                     } catch (Throwable tr) {
                         Log.e(TAG, Log.getStackTraceString(tr));
                     }
+                } else if (isCasting) {
+                    // In the absence of metadata art, the controller dialog takes care of creating it.
+                    builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, imageLocation);
                 }
             }
             if (!Thread.currentThread().isInterrupted() && started) {
