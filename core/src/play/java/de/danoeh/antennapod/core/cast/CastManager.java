@@ -62,6 +62,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 
 import static com.google.android.gms.cast.RemoteMediaPlayer.RESUME_STATE_PLAY;
@@ -130,12 +131,12 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
 
     public static synchronized CastManager init(Context context) {
         if (INSTANCE == null) {
-            //TODO also setup dialog factory if necessary
             CastConfiguration castConfiguration = new CastConfiguration.Builder(CAST_APP_ID)
                     .enableDebug()
                     .enableAutoReconnect()
                     .enableWifiReconnection()
                     .setLaunchOptions(true, Locale.getDefault())
+                    .setMediaRouteDialogFactory(ClientConfig.castCallbacks.getMediaRouterDialogFactory())
                     .build();
             Log.d(TAG, "New instance of CastManager is created");
             if (ConnectionResult.SUCCESS != GoogleApiAvailability.getInstance()

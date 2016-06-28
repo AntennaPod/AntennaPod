@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!--<ImageView android:id="@+id/mrc_art"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--android:background="?attr/colorPrimary"-->
+        <!--android:layout_gravity="top"-->
+        <!--android:visibility="gone"/>-->
+
+    <RelativeLayout android:id="@+id/mrc_playback_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="24dp"
+        android:paddingStart="24dp"
+        android:paddingRight="12dp"
+        android:paddingEnd="12dp">
+        <ImageButton android:id="@+id/mrc_control_play_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/mr_controller_play"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
+
+        <LinearLayout android:id="@+id/mrc_control_title_container"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@id/mrc_control_play_pause"
+            android:layout_toStartOf="@id/mrc_control_play_pause">
+            <TextView android:id="@+id/mrc_control_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/mediaRouteControllerPrimaryTextStyle"
+                android:singleLine="true" />
+            <TextView android:id="@+id/mrc_control_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/mediaRouteControllerSecondaryTextStyle"
+                android:singleLine="true" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View android:id="@+id/mrc_control_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="8dp"/>
+</LinearLayout>

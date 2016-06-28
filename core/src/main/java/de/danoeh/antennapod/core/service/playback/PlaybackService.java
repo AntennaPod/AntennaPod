@@ -28,11 +28,9 @@ import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Display;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -945,31 +943,32 @@ public class PlaybackService extends Service {
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
             builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
 
-            if (p.getImageLocation() != null && UserPreferences.setLockscreenBackground()) {
-                builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageLocation().toString());
-                try {
-                    if (isCasting) {
+            String imageLocation = p.getImageLocation();
+
+            if (!TextUtils.isEmpty(imageLocation)) {
+                if (isCasting || UserPreferences.setLockscreenBackground()) {
+                    builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, imageLocation);
+                    builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, imageLocation);
+                    try {
                         Bitmap art = Glide.with(this)
-                                .load(p.getImageLocation())
+                                .load(imageLocation)
                                 .asBitmap()
                                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                                 .get();
                         builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-                    } else {
-                        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-                        Display display = wm.getDefaultDisplay();
-                        Bitmap art = Glide.with(this)
-                                .load(p.getImageLocation())
+                        // Icon is useful for MediaDescription,
+                        Bitmap icon = Glide.with(this)
+                                .load(imageLocation)
                                 .asBitmap()
                                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .centerCrop()
-                                .into(display.getWidth(), display.getHeight())
+                                .fitCenter()
+                                .into(128, 128)
                                 .get();
-                        builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
+                        builder.putBitmap(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, icon);
+                    } catch (Throwable tr) {
+                        Log.e(TAG, Log.getStackTraceString(tr));
                     }
-                } catch (Throwable tr) {
-                    Log.e(TAG, Log.getStackTraceString(tr));
                 }
             }
             if (!Thread.currentThread().isInterrupted() && started) {
