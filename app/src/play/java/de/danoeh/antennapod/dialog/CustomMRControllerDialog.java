@@ -1,11 +1,10 @@
-package de.danoeh.antennapod.cast;
+package de.danoeh.antennapod.dialog;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
@@ -14,6 +13,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v7.app.MediaRouteControllerDialog;
 import android.support.v7.graphics.Palette;
@@ -38,6 +38,10 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class CustomMRControllerDialog extends MediaRouteControllerDialog {
     public static final String TAG = "CustomMRContrDialog";
@@ -53,7 +57,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
 
     private boolean viewsCreated = false;
 
-    private FetchArtTask fetchArtTask;
+    private Subscription fetchArtSubscription;
 
     private MediaControllerCompat mediaController;
     private MediaControllerCompat.Callback mediaControllerCallback;
@@ -187,6 +191,15 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         return rootView;
     }
 
+    @Override
+    public void onDetachedFromWindow() {
+        if (fetchArtSubscription != null) {
+            fetchArtSubscription.unsubscribe();
+            fetchArtSubscription = null;
+        }
+        super.onDetachedFromWindow();
+    }
+
     private void updateViews() {
         if (!viewsCreated || token == null || mediaController == null) {
             rootView.setVisibility(View.GONE);
@@ -248,41 +261,51 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
             rootView.setVisibility(View.VISIBLE);
         }
 
-        if (fetchArtTask != null) {
-            fetchArtTask.cancel(true);
+        if (fetchArtSubscription != null) {
+            fetchArtSubscription.unsubscribe();
         }
 
-        fetchArtTask = new FetchArtTask(description);
-        fetchArtTask.execute();
+        fetchArtSubscription = Observable.fromCallable(() -> fetchArt(description))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    fetchArtSubscription = null;
+                    if (result.first != null) {
+                        artView.setBackgroundColor(result.second);
+                        artView.setImageBitmap(result.first);
+                        artView.setVisibility(View.VISIBLE);
+                    } else {
+                        artView.setVisibility(View.GONE);
+                    }
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void updateState() {
-        if (mediaController == null) {
+        PlaybackStateCompat state;
+        if (!viewsCreated || mediaController == null ||
+                (state = mediaController.getPlaybackState()) == null) {
             return;
         }
-        PlaybackStateCompat state = mediaController.getPlaybackState();
-        if (state != null) {
-            boolean isPlaying = state.getState() == PlaybackStateCompat.STATE_BUFFERING
-                    || state.getState() == PlaybackStateCompat.STATE_PLAYING;
-            boolean supportsPlay = (state.getActions() & (PlaybackStateCompat.ACTION_PLAY
-                    | PlaybackStateCompat.ACTION_PLAY_PAUSE)) != 0;
-            boolean supportsPause = (state.getActions() & (PlaybackStateCompat.ACTION_PAUSE
-                    | PlaybackStateCompat.ACTION_PLAY_PAUSE)) != 0;
-            if (isPlaying && supportsPause) {
-                playPauseButton.setVisibility(View.VISIBLE);
-                playPauseButton.setImageResource(getThemeResource(getContext(),
-                        android.support.v7.mediarouter.R.attr.mediaRoutePauseDrawable));
-                playPauseButton.setContentDescription(getContext().getResources()
-                        .getText(android.support.v7.mediarouter.R.string.mr_controller_pause));
-            } else if (!isPlaying && supportsPlay) {
-                playPauseButton.setVisibility(View.VISIBLE);
-                playPauseButton.setImageResource(getThemeResource(getContext(),
-                        android.support.v7.mediarouter.R.attr.mediaRoutePlayDrawable));
-                playPauseButton.setContentDescription(getContext().getResources()
-                        .getText(android.support.v7.mediarouter.R.string.mr_controller_play));
-            } else {
-                playPauseButton.setVisibility(View.GONE);
-            }
+        boolean isPlaying = state.getState() == PlaybackStateCompat.STATE_BUFFERING
+                || state.getState() == PlaybackStateCompat.STATE_PLAYING;
+        boolean supportsPlay = (state.getActions() & (PlaybackStateCompat.ACTION_PLAY
+                | PlaybackStateCompat.ACTION_PLAY_PAUSE)) != 0;
+        boolean supportsPause = (state.getActions() & (PlaybackStateCompat.ACTION_PAUSE
+                | PlaybackStateCompat.ACTION_PLAY_PAUSE)) != 0;
+        if (isPlaying && supportsPause) {
+            playPauseButton.setVisibility(View.VISIBLE);
+            playPauseButton.setImageResource(getThemeResource(getContext(),
+                    android.support.v7.mediarouter.R.attr.mediaRoutePauseDrawable));
+            playPauseButton.setContentDescription(getContext().getResources()
+                    .getText(android.support.v7.mediarouter.R.string.mr_controller_pause));
+        } else if (!isPlaying && supportsPlay) {
+            playPauseButton.setVisibility(View.VISIBLE);
+            playPauseButton.setImageResource(getThemeResource(getContext(),
+                    android.support.v7.mediarouter.R.attr.mediaRoutePlayDrawable));
+            playPauseButton.setContentDescription(getContext().getResources()
+                    .getText(android.support.v7.mediarouter.R.string.mr_controller_play));
+        } else {
+            playPauseButton.setVisibility(View.GONE);
         }
     }
 
@@ -291,57 +314,31 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         return context.getTheme().resolveAttribute(attr, value, true) ? value.resourceId : 0;
     }
 
-    private class FetchArtTask extends AsyncTask<Void, Void, Bitmap> {
-        final Bitmap iconBitmap;
-        final Uri iconUri;
-        int backgroundColor;
-
-        FetchArtTask(@NonNull MediaDescriptionCompat description) {
-            iconBitmap = description.getIconBitmap();
-            iconUri = description.getIconUri();
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... arg) {
-            Bitmap art = null;
-            if (iconBitmap != null) {
-                art = iconBitmap;
-            } else if (iconUri != null) {
-                try {
-                    art = Glide.with(getContext().getApplicationContext())
-                            .load(iconUri.toString())
-                            .asBitmap()
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                            .get();
-                } catch (InterruptedException | ExecutionException e) {
-                    Log.e(TAG, "Image art load failed", e);
-                }
-            }
-            if (art != null && art.getWidth()*9 < art.getHeight()*16) {
-                // Portrait art requires dominant color as background color.
-                Palette palette = new Palette.Builder(art).maximumColorCount(1).generate();
-                backgroundColor = palette.getSwatches().isEmpty()
-                        ? 0 : palette.getSwatches().get(0).getRgb();
-            }
-            return art;
-        }
-
-        @Override
-        protected void onCancelled() {
-            fetchArtTask = null;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap art) {
-            fetchArtTask = null;
-            if (art != null) {
-                artView.setBackgroundColor(backgroundColor);
-                artView.setImageBitmap(art);
-                artView.setVisibility(View.VISIBLE);
-            } else {
-                artView.setVisibility(View.GONE);
+    private Pair<Bitmap, Integer> fetchArt(@NonNull MediaDescriptionCompat description) {
+        Bitmap iconBitmap = description.getIconBitmap();
+        Uri iconUri = description.getIconUri();
+        Bitmap art = null;
+        if (iconBitmap != null) {
+            art = iconBitmap;
+        } else if (iconUri != null) {
+            try {
+                art = Glide.with(getContext().getApplicationContext())
+                        .load(iconUri.toString())
+                        .asBitmap()
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .get();
+            } catch (InterruptedException | ExecutionException e) {
+                Log.e(TAG, "Image art load failed", e);
             }
         }
+        int backgroundColor = 0;
+        if (art != null && art.getWidth()*9 < art.getHeight()*16) {
+            // Portrait art requires dominant color as background color.
+            Palette palette = new Palette.Builder(art).maximumColorCount(1).generate();
+            backgroundColor = palette.getSwatches().isEmpty()
+                    ? 0 : palette.getSwatches().get(0).getRgb();
+        }
+        return new Pair<>(art, backgroundColor);
     }
 }

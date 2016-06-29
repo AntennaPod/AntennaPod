@@ -7,7 +7,7 @@ import android.support.v7.app.MediaRouteControllerDialog;
 import android.support.v7.app.MediaRouteControllerDialogFragment;
 import android.support.v7.app.MediaRouteDialogFactory;
 
-import de.danoeh.antennapod.cast.CustomMRControllerDialog;
+import de.danoeh.antennapod.dialog.CustomMRControllerDialog;
 import de.danoeh.antennapod.core.CastCallbacks;
 
 public class CastCallbackImpl implements CastCallbacks {
