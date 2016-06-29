@@ -17,10 +17,15 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.MediaBrowserServiceCompat;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -37,6 +42,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -51,6 +57,7 @@ import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntList;
@@ -62,7 +69,7 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
  */
-public class PlaybackService extends Service {
+public class PlaybackService extends MediaBrowserServiceCompat {
     public static final String FORCE_WIDGET_UPDATE = "de.danoeh.antennapod.FORCE_WIDGET_UPDATE";
     public static final String STOP_WIDGET_UPDATE = "de.danoeh.antennapod.STOP_WIDGET_UPDATE";
     /**
@@ -194,15 +201,13 @@ public class PlaybackService extends Service {
     private PlaybackServiceFlavorHelper flavorHelper;
 
     /**
-     * Only used for Lollipop notifications.
+     * Used for Lollipop notifications, Android Wear, and Android Auto.
      */
     private MediaSessionCompat mediaSession;
 
     private int startPosition;
 
     private static volatile MediaType currentMediaType = MediaType.UNKNOWN;
-
-    private final IBinder mBinder = new LocalBinder();
 
     public class LocalBinder extends Binder {
         public PlaybackService getService() {
@@ -248,6 +253,8 @@ public class PlaybackService extends Service {
         Log.d(TAG, "Service created.");
         isRunning = true;
 
+        registerReceiver(autoStateUpdated, new IntentFilter(
+                "com.google.android.gms.car.media.STATUS"));
         registerReceiver(headsetDisconnected, new IntentFilter(
                 Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(
@@ -277,6 +284,7 @@ public class PlaybackService extends Service {
         PendingIntent buttonReceiverIntent = PendingIntent.getBroadcast(this, 0, mediaButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mediaSession = new MediaSessionCompat(getApplicationContext(), TAG, eventReceiver, buttonReceiverIntent);
+        setSessionToken(mediaSession.getSessionToken());
 
         try {
             mediaSession.setCallback(sessionCallback);
@@ -288,6 +296,16 @@ public class PlaybackService extends Service {
             // and https://plus.google.com/+IanLake/posts/YgdTkKFxz7d
             Log.e(TAG, "NullPointerException while setting up MediaSession");
             npe.printStackTrace();
+        }
+
+        List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
+        try {
+            for (FeedItem feedItem: taskManager.getQueue()) {
+                queueItems.add(new MediaSessionCompat.QueueItem(feedItem.getMedia().getMediaItem().getDescription(), feedItem.getId()));
+            }
+            mediaSession.setQueue(queueItems);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         flavorHelper.initializeMediaPlayer(PlaybackService.this);
@@ -308,6 +326,7 @@ public class PlaybackService extends Service {
         if (mediaSession != null) {
             mediaSession.release();
         }
+        unregisterReceiver(autoStateUpdated);
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -324,9 +343,48 @@ public class PlaybackService extends Service {
     }
 
     @Override
+    public BrowserRoot onGetRoot(String clientPackageName, int clientUid, Bundle rootHints) {
+        Log.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName +
+                "; clientUid=" + clientUid + " ; rootHints=" + rootHints);
+        return new BrowserRoot(
+                getResources().getString(R.string.app_name), // Name visible in Android Auto
+                null); // Bundle of optional extras
+    }
+
+    private MediaBrowserCompat.MediaItem createBrowsableMediaItemForRoot() {
+        MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
+                .setMediaId(getResources().getString(R.string.queue_label))
+                .setTitle(getResources().getString(R.string.queue_label))
+                .build();
+        return new MediaBrowserCompat.MediaItem(description,
+                MediaBrowserCompat.MediaItem.FLAG_BROWSABLE);
+    }
+
+    @Override
+    public void onLoadChildren(String parentId,
+                               Result<List<MediaBrowserCompat.MediaItem>> result) {
+        Log.d(TAG, "OnLoadChildren: parentMediaId=" + parentId);
+        List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<MediaBrowserCompat.MediaItem>();
+        if (parentId.equals(getResources().getString(R.string.app_name))) {
+            // Root List
+            mediaItems.add(createBrowsableMediaItemForRoot());
+        } else if (parentId.equals(getResources().getString(R.string.queue_label))){
+            // Child List
+            try {
+                for (FeedItem feedItem: taskManager.getQueue()) {
+                    mediaItems.add(feedItem.getMedia().getMediaItem());
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        result.sendResult(mediaItems);
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "Received onBind event");
-        return mBinder;
+        return super.onBind(intent);
     }
 
     @Override
@@ -1221,6 +1279,22 @@ public class PlaybackService extends Service {
         }
     }
 
+    private final BroadcastReceiver autoStateUpdated = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String status = intent.getStringExtra("media_connection_status");
+            boolean isConnectedToCar = "media_connected".equals(status);
+            Log.d(TAG, "Received Auto Connection update: " + status);
+            if(!isConnectedToCar) {
+                Log.d(TAG, "Car was unplugged during playback.");
+                pauseIfPauseOnDisconnect();
+            } else {
+                mediaPlayer.setStartWhenPrepared(true);
+                mediaPlayer.prepare();
+            }
+        }
+    };
+
     /**
      * Pauses playback when the headset is disconnected and the preference is
      * set
@@ -1497,6 +1571,21 @@ public class PlaybackService extends Service {
                 setStartWhenPrepared(true);
                 prepare();
             }
+        }
+
+        @Override
+        public void onPlayFromMediaId(String mediaId, Bundle extras) {
+            Log.d(TAG, "onPlayFromMediaId: mediaId: " + mediaId + " extras: " + extras.toString());
+            FeedMedia p = DBReader.getFeedMedia(Long.parseLong(mediaId));
+            if(p != null) {
+                mediaPlayer.playMediaObject(p, !p.localFileAvailable(), true, true);
+            }
+        }
+
+        @Override
+        public void onPlayFromSearch (String query, Bundle extras) {
+            //Until we parse the query just play from queue
+            onPlay();
         }
 
         @Override

@@ -17,10 +17,14 @@
         <service
             android:name=".service.download.DownloadService"
             android:enabled="true" />
-        <service
-            android:name=".service.playback.PlaybackService"
+        <service android:name=".service.playback.PlaybackService"
+            android:label="@string/app_name"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService"/>
+            </intent-filter>
+        </service>
         <service
             android:name=".service.GpodnetSyncService"
             android:enabled="true" />
