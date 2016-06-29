@@ -31,6 +31,8 @@ public class ClientConfig {
 
     public static DBTasksCallbacks dbTasksCallbacks;
 
+    public static CastCallbacks castCallbacks;
+
     private static boolean initialized = false;
 
     public static synchronized void initialize(Context context) {
