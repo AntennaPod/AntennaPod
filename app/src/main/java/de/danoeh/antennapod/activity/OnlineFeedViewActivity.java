@@ -119,9 +119,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 updater = Observable.fromCallable(() -> DBReader.getFeedList())
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(feeds -> {
+                        .subscribe(
+                                feeds -> {
                                     OnlineFeedViewActivity.this.feeds = feeds;
                                     setSubscribeButtonState(feed);
+                                }, error -> {
+                                    Log.e(TAG, Log.getStackTraceString(error));
                                 }
                         );
             } else if ((arg & EVENTS) != 0) {
@@ -281,30 +284,33 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(status -> {
-                    if (status != null) {
-                        if (!status.isCancelled()) {
-                            if (status.isSuccessful()) {
-                                parseFeed();
-                            } else if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
-                                if (!isFinishing() && !isPaused) {
-                                    dialog = new FeedViewAuthenticationDialog(OnlineFeedViewActivity.this,
-                                            R.string.authentication_notification_title, downloader.getDownloadRequest().getSource());
-                                    dialog.show();
-                                }
-                            } else {
-                                String errorMsg = status.getReason().getErrorString(OnlineFeedViewActivity.this);
-                                if (errorMsg != null && status.getReasonDetailed() != null) {
-                                    errorMsg += " (" + status.getReasonDetailed() + ")";
-                                }
-                                showErrorDialog(errorMsg);
-                            }
-                        }
-                    } else {
-                        Log.wtf(TAG, "DownloadStatus returned by Downloader was null");
-                        finish();
-                    }
-                });
+                .subscribe(status -> checkDownloadResult(status),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    private void checkDownloadResult(DownloadStatus status) {
+        if (status == null) {
+            Log.wtf(TAG, "DownloadStatus returned by Downloader was null");
+            finish();
+        }
+        if (status.isCancelled()) {
+            return;
+        }
+        if (status.isSuccessful()) {
+            parseFeed();
+        } else if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
+            if (!isFinishing() && !isPaused) {
+                dialog = new FeedViewAuthenticationDialog(OnlineFeedViewActivity.this,
+                        R.string.authentication_notification_title, downloader.getDownloadRequest().getSource());
+                dialog.show();
+            }
+        } else {
+            String errorMsg = status.getReason().getErrorString(OnlineFeedViewActivity.this);
+            if (errorMsg != null && status.getReasonDetailed() != null) {
+                errorMsg += " (" + status.getReasonDetailed() + ")";
+            }
+            showErrorDialog(errorMsg);
+        }
     }
 
     private void parseFeed() {
