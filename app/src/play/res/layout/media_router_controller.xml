@@ -3,15 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!--<ImageView android:id="@+id/mrc_art"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:adjustViewBounds="true"-->
-        <!--android:scaleType="fitCenter"-->
-        <!--android:background="?attr/colorPrimary"-->
-        <!--android:layout_gravity="top"-->
-        <!--android:visibility="gone"/>-->
-
     <RelativeLayout android:id="@+id/mrc_playback_control"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
