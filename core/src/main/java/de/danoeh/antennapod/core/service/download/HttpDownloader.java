@@ -185,8 +185,6 @@ public class HttpDownloader extends Downloader {
             // fail with a file type error when the content type is text and
             // the reported content length is less than 100kb (or no length is given)
             if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                String contentType = response.header("Content-Type");
-                Log.d(TAG, "content type: " + contentType);
                 int contentLength = -1;
                 String contentLen = response.header("Content-Length");
                 if(contentLen != null) {
@@ -195,7 +193,10 @@ public class HttpDownloader extends Downloader {
                     } catch(NumberFormatException e) {}
                 }
                 Log.d(TAG, "content length: " + contentLength);
-                if(contentType.startsWith("text/") && contentLength < 100 * 1024) {
+                String contentType = response.header("Content-Type");
+                Log.d(TAG, "content type: " + contentType);
+                if(contentType != null && contentType.startsWith("text/") &&
+                        contentLength < 100 * 1024) {
                     onFail(DownloadError.ERROR_FILE_TYPE, null);
                     return;
                 }
