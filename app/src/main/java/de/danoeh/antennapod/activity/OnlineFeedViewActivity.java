@@ -514,9 +514,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 builder.setMessage(R.string.error_msg_prefix);
             }
             builder.setNeutralButton(android.R.string.ok,
-                    (dialog, which) -> {
-                        dialog.cancel();
-                    }
+                    (dialog, which) -> dialog.cancel()
             );
             builder.setOnCancelListener(dialog -> {
                 setResult(RESULT_ERROR);

@@ -725,9 +725,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
                     builder.setTitle(R.string.pref_rewind);
                     builder.setSingleChoiceItems(choices, checked,
-                            (dialog, which) -> {
-                                choice = values[which];
-                            });
+                            (dialog, which) -> choice = values[which]);
                     builder.setNegativeButton(R.string.cancel_label, null);
                     builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                         UserPreferences.setPrefRewindSecs(choice);
@@ -765,9 +763,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
                     builder.setTitle(R.string.pref_fast_forward);
                     builder.setSingleChoiceItems(choices, checked,
-                            (dialog, which) -> {
-                                choice = values[which];
-                            });
+                            (dialog, which) -> choice = values[which]);
                     builder.setNegativeButton(R.string.cancel_label, null);
                     builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                         UserPreferences.setPrefFastForwardSecs(choice);
@@ -868,10 +864,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                                 isFavorite = isFav;
                                 invalidateOptionsMenu();
                             }
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                        }
-                    );
+                        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
             }
         }
     }

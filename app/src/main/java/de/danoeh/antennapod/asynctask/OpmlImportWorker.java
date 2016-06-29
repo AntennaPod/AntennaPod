@@ -75,9 +75,7 @@ public class OpmlImportWorker extends
 			alert.setTitle(R.string.error_label);
 			alert.setMessage(context.getString(R.string.opml_reader_error)
 					+ exception.getMessage());
-			alert.setNeutralButton(android.R.string.ok, (dialog, which) -> {
-                dialog.dismiss();
-            });
+			alert.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
 			alert.create().show();
 		}
 	}

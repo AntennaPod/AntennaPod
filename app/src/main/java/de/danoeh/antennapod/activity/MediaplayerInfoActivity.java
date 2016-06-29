@@ -443,9 +443,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
-        });
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> UserPreferences.setHiddenDrawerItems(hiddenDrawerItems));
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
     }
@@ -461,9 +459,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                     if (navAdapter != null) {
                         navAdapter.notifyDataSetChanged();
                     }
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
 

@@ -611,9 +611,7 @@ public class QueueFragment extends Fragment {
                             recyclerAdapter.notifyDataSetChanged();
                         }
                     }
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
 }

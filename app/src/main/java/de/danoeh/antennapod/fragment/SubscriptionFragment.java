@@ -108,9 +108,7 @@ public class SubscriptionFragment extends Fragment {
                 .subscribe(result -> {
                     navDrawerData = result;
                     subscriptionAdapter.notifyDataSetChanged();
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Override
@@ -156,21 +154,15 @@ public class SubscriptionFragment extends Fragment {
                 Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> {
-                            loadSubscriptions();
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                        });
+                        .subscribe(result -> loadSubscriptions(),
+                                error -> Log.e(TAG, Log.getStackTraceString(error)));
                 return true;
             case R.id.mark_all_read_item:
                 Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> {
-                            loadSubscriptions();
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                        });
+                        .subscribe(result -> loadSubscriptions(),
+                                error -> Log.e(TAG, Log.getStackTraceString(error)));
                 return true;
             case R.id.remove_item:
                 final FeedRemover remover = new FeedRemover(getContext(), feed) {

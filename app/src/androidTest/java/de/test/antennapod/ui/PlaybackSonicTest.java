@@ -245,10 +245,10 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         }, Timeout.getSmallTimeout());
         assertTrue(startedPlaying);
 
-        boolean stoppedPlaying = solo.waitForCondition(() -> {
-            return uiTestUtils.getCurrentMedia(getActivity()) == null
-                    || uiTestUtils.getCurrentMedia(getActivity()).getId() != mediaId;
-        }, Timeout.getLargeTimeout());
+        boolean stoppedPlaying = solo.waitForCondition(() ->
+                uiTestUtils.getCurrentMedia(getActivity()) == null
+                    || uiTestUtils.getCurrentMedia(getActivity()).getId() != mediaId
+        , Timeout.getLargeTimeout());
         assertTrue(stoppedPlaying);
 
         startLocalPlayback();

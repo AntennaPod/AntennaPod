@@ -124,12 +124,11 @@ public class AboutActivity extends AppCompatActivity {
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(webviewData -> {
-                    webview.loadDataWithBaseURL("file:///android_asset/", webviewData, "text/html",
-                            "utf-8", "about:blank");
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                .subscribe(
+                        webviewData ->
+                                webview.loadDataWithBaseURL("file:///android_asset/", webviewData, "text/html", "utf-8", "about:blank"),
+                        error -> Log.e(TAG, Log.getStackTraceString(error))
+                );
     }
 
     @Override
