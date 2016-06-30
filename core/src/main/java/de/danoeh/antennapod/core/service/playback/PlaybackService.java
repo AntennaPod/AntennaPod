@@ -1024,6 +1024,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             }
             if (!Thread.currentThread().isInterrupted() && started) {
+                //TODO mediaSession.setSessionActivity();
                 mediaSession.setMetadata(builder.build());
             }
         };
