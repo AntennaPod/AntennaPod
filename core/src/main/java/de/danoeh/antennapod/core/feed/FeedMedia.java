@@ -7,6 +7,8 @@ import android.media.MediaMetadataRetriever;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.MediaDescriptionCompat;
 
 import java.util.Date;
 import java.util.List;
@@ -145,6 +147,21 @@ public class FeedMedia extends FeedFile implements Playable {
         } else {
             return download_url;
         }
+    }
+
+    /**
+     * Returns a MediaItem representing the FeedMedia object.
+     * This is used by the MediaBrowserService
+     */
+    public MediaBrowserCompat.MediaItem getMediaItem() {
+        Playable p = this;
+        MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
+                .setMediaId(String.valueOf(id))
+                .setTitle(p.getEpisodeTitle())
+                .setDescription(p.getFeedTitle())
+                .setSubtitle(p.getFeedTitle())
+                .build();
+        return new MediaBrowserCompat.MediaItem(description, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
     }
 
     /**

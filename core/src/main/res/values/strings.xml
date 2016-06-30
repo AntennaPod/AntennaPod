@@ -4,6 +4,7 @@
     tools:ignore="MissingTranslation">
 
     <!-- Activitiy and fragment titles -->
+    <string name="app_name" translate="false">AntennaPod</string>
     <string name="feeds_label">Feeds</string>
     <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
