@@ -1003,21 +1003,19 @@ public class PlaybackService extends Service {
             @Override
             public void run() {
                 Log.d(TAG, "Starting background work");
-                if (android.os.Build.VERSION.SDK_INT >= 11) {
-                    if (info.playable != null) {
-                        int iconSize = getResources().getDimensionPixelSize(
-                                android.R.dimen.notification_large_icon_width);
-                        try {
-                            icon = Glide.with(PlaybackService.this)
-                                    .load(info.playable.getImageLocation())
-                                    .asBitmap()
-                                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                    .centerCrop()
-                                    .into(iconSize, iconSize)
-                                    .get();
-                        } catch (Throwable tr) {
-                            Log.e(TAG, "Error loading the media icon for the notification", tr);
-                        }
+                if (android.os.Build.VERSION.SDK_INT >= 11 && info.playable != null) {
+                    int iconSize = getResources().getDimensionPixelSize(
+                            android.R.dimen.notification_large_icon_width);
+                    try {
+                        icon = Glide.with(PlaybackService.this)
+                                .load(info.playable.getImageLocation())
+                                .asBitmap()
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .centerCrop()
+                                .into(iconSize, iconSize)
+                                .get();
+                    } catch (Throwable tr) {
+                        Log.e(TAG, "Error loading the media icon for the notification", tr);
                     }
                 }
                 if (icon == null) {

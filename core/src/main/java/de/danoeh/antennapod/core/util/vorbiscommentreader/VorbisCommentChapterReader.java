@@ -60,10 +60,8 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 			if (chapter != null) {
 				chapter.setTitle(value);
 			}
-		} else if (attribute.equals(CHAPTER_ATTRIBUTE_LINK)) {
-			if (chapter != null) {
-				chapter.setLink(value);
-			}
+		} else if (attribute.equals(CHAPTER_ATTRIBUTE_LINK) && chapter != null) {
+			chapter.setLink(value);
 		}
 	}
 

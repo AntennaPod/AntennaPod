@@ -47,12 +47,10 @@ public class SyndHandler extends DefaultHandler {
 	@Override
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
-		if (!state.tagstack.empty()) {
-			if (state.getTagstack().size() >= 2) {
-				if (state.contentBuf != null) {
-					state.contentBuf.append(ch, start, length);
-				}
-			}
+		if (!state.tagstack.empty()
+				&& state.getTagstack().size() >= 2
+				&& state.contentBuf != null) {
+			state.contentBuf.append(ch, start, length);
 		}
 	}
 

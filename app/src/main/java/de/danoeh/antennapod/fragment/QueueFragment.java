@@ -441,12 +441,11 @@ public class QueueFragment extends Fragment {
                 public void onSelectedChanged(RecyclerView.ViewHolder viewHolder,
                                               int actionState) {
                     // We only want the active item
-                    if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-                        if (viewHolder instanceof QueueRecyclerAdapter.ItemTouchHelperViewHolder) {
-                            QueueRecyclerAdapter.ItemTouchHelperViewHolder itemViewHolder =
-                                    (QueueRecyclerAdapter.ItemTouchHelperViewHolder) viewHolder;
-                            itemViewHolder.onItemSelected();
-                        }
+                    if (actionState != ItemTouchHelper.ACTION_STATE_IDLE
+                            && viewHolder instanceof QueueRecyclerAdapter.ItemTouchHelperViewHolder) {
+                        QueueRecyclerAdapter.ItemTouchHelperViewHolder itemViewHolder =
+                                (QueueRecyclerAdapter.ItemTouchHelperViewHolder) viewHolder;
+                        itemViewHolder.onItemSelected();
                     }
 
                     super.onSelectedChanged(viewHolder, actionState);

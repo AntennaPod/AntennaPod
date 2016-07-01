@@ -351,12 +351,11 @@ public abstract class PlaybackController {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (isConnectedToPlaybackService()) {
-                if (TextUtils.equals(intent.getAction(),
-                        PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
-                    release();
-                    onShutdownNotification();
-                }
+            if (isConnectedToPlaybackService()
+                    && TextUtils.equals(intent.getAction(),
+                            PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
+                release();
+                onShutdownNotification();
             }
         }
     };

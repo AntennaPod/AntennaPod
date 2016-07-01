@@ -658,11 +658,9 @@ public class UserPreferences {
             return context.getExternalFilesDir(type);
         } else {
             File dataDir = new File(strDir);
-            if (!dataDir.exists()) {
-                if (!dataDir.mkdir()) {
-                    Log.w(TAG, "Could not create data folder");
-                    return null;
-                }
+            if (!dataDir.exists() && !dataDir.mkdir()) {
+                Log.w(TAG, "Could not create data folder");
+                return null;
             }
 
             if (type == null) {
@@ -682,13 +680,9 @@ public class UserPreferences {
                     }
                 }
                 File typeDir = new File(dataDir, type);
-                if (!typeDir.exists()) {
-                    if (dataDir.canWrite()) {
-                        if (!typeDir.mkdir()) {
-                            Log.e(TAG, "Could not create data folder named " + type);
-                            return null;
-                        }
-                    }
+                if (!typeDir.exists() && dataDir.canWrite() && !typeDir.mkdir()) {
+                    Log.e(TAG, "Could not create data folder named " + type);
+                    return null;
                 }
                 return typeDir;
             }

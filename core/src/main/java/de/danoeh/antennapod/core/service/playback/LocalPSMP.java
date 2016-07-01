@@ -500,12 +500,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     private void setSpeedSync(float speed) {
         playerLock.lock();
-        if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            if (mediaPlayer.canSetSpeed()) {
-                mediaPlayer.setPlaybackSpeed(speed);
-                Log.d(TAG, "Playback speed was set to " + speed);
-                callback.playbackSpeedChanged(speed);
-            }
+        if (media != null && media.getMediaType() == MediaType.AUDIO && mediaPlayer.canSetSpeed()) {
+            mediaPlayer.setPlaybackSpeed(speed);
+            Log.d(TAG, "Playback speed was set to " + speed);
+            callback.playbackSpeedChanged(speed);
         }
         playerLock.unlock();
     }
@@ -737,12 +735,11 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                                 pausedBecauseOfTransientAudiofocusLoss = true;
                             }
                         }
-                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
-                        if (playerStatus == PlayerStatus.PLAYING) {
-                            Log.d(TAG, "Lost audio focus temporarily. Pausing...");
-                            pause(false, false);
-                            pausedBecauseOfTransientAudiofocusLoss = true;
-                        }
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT
+                            && playerStatus == PlayerStatus.PLAYING) {
+                        Log.d(TAG, "Lost audio focus temporarily. Pausing...");
+                        pause(false, false);
+                        pausedBecauseOfTransientAudiofocusLoss = true;
                     }
                     playerLock.unlock();
                 }

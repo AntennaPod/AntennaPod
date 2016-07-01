@@ -46,25 +46,23 @@ public class NetworkUtils {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-		if (networkInfo != null) {
-			if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-				Log.d(TAG, "Device is connected to Wi-Fi");
-				if (networkInfo.isConnected()) {
-					if (!UserPreferences.isEnableAutodownloadWifiFilter()) {
-						Log.d(TAG, "Auto-dl filter is disabled");
+		if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+			Log.d(TAG, "Device is connected to Wi-Fi");
+			if (networkInfo.isConnected()) {
+				if (!UserPreferences.isEnableAutodownloadWifiFilter()) {
+					Log.d(TAG, "Auto-dl filter is disabled");
+					return true;
+				} else {
+					WifiManager wm = (WifiManager) context
+							.getSystemService(Context.WIFI_SERVICE);
+					WifiInfo wifiInfo = wm.getConnectionInfo();
+					List<String> selectedNetworks = Arrays
+							.asList(UserPreferences
+									.getAutodownloadSelectedNetworks());
+					if (selectedNetworks.contains(Integer.toString(wifiInfo
+							.getNetworkId()))) {
+						Log.d(TAG, "Current network is on the selected networks list");
 						return true;
-					} else {
-						WifiManager wm = (WifiManager) context
-								.getSystemService(Context.WIFI_SERVICE);
-						WifiInfo wifiInfo = wm.getConnectionInfo();
-						List<String> selectedNetworks = Arrays
-								.asList(UserPreferences
-										.getAutodownloadSelectedNetworks());
-						if (selectedNetworks.contains(Integer.toString(wifiInfo
-								.getNetworkId()))) {
-							Log.d(TAG, "Current network is on the selected networks list");
-							return true;
-						}
 					}
 				}
 			}

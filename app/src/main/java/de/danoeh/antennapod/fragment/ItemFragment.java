@@ -550,10 +550,8 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             return;
         }
         long mediaId = item.getMedia().getId();
-        if(ArrayUtils.contains(update.mediaIds, mediaId)) {
-            if (itemsLoaded && getActivity() != null) {
-                updateAppearance();
-            }
+        if(ArrayUtils.contains(update.mediaIds, mediaId) && itemsLoaded && getActivity() != null) {
+            updateAppearance();
         }
     }
 

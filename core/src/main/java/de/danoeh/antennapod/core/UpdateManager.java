@@ -87,10 +87,10 @@ public class UpdateManager {
                 }
             }.start();
         }
-        if(oldVersionCode < 1050004) {
-            if(MediaPlayer.isPrestoLibraryInstalled(context) && Build.VERSION.SDK_INT >= 16) {
-                UserPreferences.enableSonic(true);
-            }
+        if(oldVersionCode < 1050004
+                && MediaPlayer.isPrestoLibraryInstalled(context)
+                && Build.VERSION.SDK_INT >= 16) {
+            UserPreferences.enableSonic(true);
         }
     }
 

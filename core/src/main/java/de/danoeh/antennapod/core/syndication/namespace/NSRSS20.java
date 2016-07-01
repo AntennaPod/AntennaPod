@@ -74,15 +74,13 @@ public class NSRSS20 extends Namespace {
 						new FeedMedia(state.getCurrentItem(), url, size, type));
 			}
 
-		} else if (IMAGE.equals(localName)) {
-			if (state.getTagstack().size() >= 1) {
-				String parent = state.getTagstack().peek().getName();
-				if (CHANNEL.equals(parent)) {
-					Feed feed = state.getFeed();
-					if(feed != null && feed.getImage() == null) {
-						feed.setImage(new FeedImage());
-						feed.getImage().setOwner(state.getFeed());
-					}
+		} else if (IMAGE.equals(localName) && state.getTagstack().size() >= 1) {
+			String parent = state.getTagstack().peek().getName();
+			if (CHANNEL.equals(parent)) {
+				Feed feed = state.getFeed();
+				if(feed != null && feed.getImage() == null) {
+					feed.setImage(new FeedImage());
+					feed.getImage().setOwner(state.getFeed());
 				}
 			}
 		}

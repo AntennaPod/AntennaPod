@@ -374,15 +374,13 @@ public class DownloadService extends Service {
                         }
                         bigText.append("\u2022 ").append(request.getTitle());
                     }
-                } else if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                    if (request.getTitle() != null) {
-                        if (i > 0) {
-                            bigText.append("\n");
-                        }
-                        bigText.append("\u2022 ").append(request.getTitle())
-                                .append(" (").append(request.getProgressPercent())
-                                .append("%)");
+                } else if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA && request.getTitle() != null) {
+                    if (i > 0) {
+                        bigText.append("\n");
                     }
+                    bigText.append("\u2022 ").append(request.getTitle())
+                            .append(" (").append(request.getProgressPercent())
+                            .append("%)");
                 }
 
             }

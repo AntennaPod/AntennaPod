@@ -203,10 +203,8 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         if (other.paymentLink != null) {
             paymentLink = other.paymentLink;
         }
-        if (other.chapters != null) {
-            if (!hasChapters) {
-                chapters = other.chapters;
-            }
+        if (other.chapters != null && !hasChapters) {
+            chapters = other.chapters;
         }
         if (image == null) {
             image = other.image;

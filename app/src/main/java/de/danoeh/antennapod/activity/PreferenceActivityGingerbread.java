@@ -70,9 +70,9 @@ public class PreferenceActivityGingerbread extends android.preference.Preference
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
                                          Preference preference) {
         super.onPreferenceTreeClick(preferenceScreen, preference);
-        if (preference != null)
-            if (preference instanceof PreferenceScreen)
-                if (((PreferenceScreen) preference).getDialog() != null)
+        if (preference != null
+            && preference instanceof PreferenceScreen
+            && ((PreferenceScreen) preference).getDialog() != null)
                     ((PreferenceScreen) preference)
                             .getDialog()
                             .getWindow()

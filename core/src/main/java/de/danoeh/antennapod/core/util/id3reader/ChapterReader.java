@@ -37,12 +37,10 @@ public class ChapterReader extends ID3Reader {
 		System.out.println(header.toString());
 		switch (header.getId()) {
 			case FRAME_ID_CHAPTER:
-				if (currentChapter != null) {
-					if (!hasId3Chapter(currentChapter)) {
-						chapters.add(currentChapter);
-						if (BuildConfig.DEBUG) Log.d(TAG, "Found chapter: " + currentChapter);
-						currentChapter = null;
-					}
+				if (currentChapter != null && !hasId3Chapter(currentChapter)) {
+					chapters.add(currentChapter);
+					if (BuildConfig.DEBUG) Log.d(TAG, "Found chapter: " + currentChapter);
+					currentChapter = null;
 				}
 				StringBuffer elementId = new StringBuffer();
 				readISOString(elementId, input, Integer.MAX_VALUE);
@@ -97,10 +95,8 @@ public class ChapterReader extends ID3Reader {
 
 	@Override
 	public void onEndTag() {
-		if (currentChapter != null) {
-			if (!hasId3Chapter(currentChapter)) {
-				chapters.add(currentChapter);
-			}
+		if (currentChapter != null && !hasId3Chapter(currentChapter)) {
+			chapters.add(currentChapter);
 		}
 		System.out.println("Reached end of tag");
 		if (chapters != null) {

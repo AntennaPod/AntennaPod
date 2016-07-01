@@ -109,12 +109,11 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             public void onSelectedChanged(RecyclerView.ViewHolder viewHolder,
                                           int actionState) {
                 // We only want the active item
-                if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-                    if (viewHolder instanceof AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) {
-                        AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder itemViewHolder =
-                                (AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) viewHolder;
-                        itemViewHolder.onItemSelected();
-                    }
+                if (actionState != ItemTouchHelper.ACTION_STATE_IDLE
+                        && viewHolder instanceof AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) {
+                    AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder itemViewHolder =
+                            (AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) viewHolder;
+                    itemViewHolder.onItemSelected();
                 }
 
                 super.onSelectedChanged(viewHolder, actionState);

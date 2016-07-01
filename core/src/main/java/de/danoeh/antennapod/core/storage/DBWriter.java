@@ -316,18 +316,16 @@ public class DBWriter {
             final List<FeedItem> queue = DBReader.getQueue(adapter);
             FeedItem item;
 
-            if (queue != null) {
-                if (!itemListContains(queue, itemId)) {
-                    item = DBReader.getFeedItem(itemId);
-                    if (item != null) {
-                        queue.add(index, item);
-                        adapter.setQueue(queue);
-                        item.addTag(FeedItem.TAG_QUEUE);
-                        EventBus.getDefault().post(QueueEvent.added(item, index));
-                        EventBus.getDefault().post(FeedItemEvent.updated(item));
-                        if (item.isNew()) {
-                            DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-                        }
+            if (queue != null && !itemListContains(queue, itemId)) {
+                item = DBReader.getFeedItem(itemId);
+                if (item != null) {
+                    queue.add(index, item);
+                    adapter.setQueue(queue);
+                    item.addTag(FeedItem.TAG_QUEUE);
+                    EventBus.getDefault().post(QueueEvent.added(item, index));
+                    EventBus.getDefault().post(FeedItemEvent.updated(item));
+                    if (item.isNew()) {
+                        DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
                     }
                 }
             }

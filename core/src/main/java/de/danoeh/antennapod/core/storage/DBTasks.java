@@ -108,12 +108,10 @@ public final class DBTasks {
     public static void playMedia(final Context context, final FeedMedia media,
                                  boolean showPlayer, boolean startWhenPrepared, boolean shouldStream) {
         try {
-            if (!shouldStream) {
-                if (!media.fileExists()) {
-                    throw new MediaFileNotFoundException(
-                            "No episode was found at " + media.getFile_url(),
-                            media);
-                }
+            if (!shouldStream && !media.fileExists()) {
+                throw new MediaFileNotFoundException(
+                        "No episode was found at " + media.getFile_url(),
+                        media);
             }
             // Start playback Service
             Intent launchIntent = new Intent(context, PlaybackService.class);

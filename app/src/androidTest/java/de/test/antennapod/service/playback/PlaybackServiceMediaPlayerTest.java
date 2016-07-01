@@ -847,9 +847,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                         case INITIALIZED:
                             if (stream && reinit && countDownLatch.getCount() < latchCount) {
                                 countDownLatch.countDown();
-                            } else if (countDownLatch.getCount() < latchCount) {
-                                if (assertionError == null)
-                                    assertionError = new UnexpectedStateChange(newInfo.playerStatus);
+                            } else if (countDownLatch.getCount() < latchCount && assertionError == null) {
+                                assertionError = new UnexpectedStateChange(newInfo.playerStatus);
                             }
                             break;
                     }
