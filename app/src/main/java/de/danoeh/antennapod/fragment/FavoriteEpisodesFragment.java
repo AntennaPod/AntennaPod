@@ -71,9 +71,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
                     Snackbar snackbar = Snackbar.make(root, getString(R.string.removed_item),
                             Snackbar.LENGTH_LONG);
-                    snackbar.setAction(getString(R.string.undo), v -> {
-                        DBWriter.addFavoriteItem(item);
-                    });
+                    snackbar.setAction(getString(R.string.undo), v -> DBWriter.addFavoriteItem(item));
                     snackbar.show();
                 }
             }

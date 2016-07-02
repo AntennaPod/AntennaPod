@@ -197,9 +197,7 @@ public abstract class PlaybackController {
                                 mConnection, 0);
                     }
                     Log.d(TAG, "Result for service binding: " + bound);
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     /**

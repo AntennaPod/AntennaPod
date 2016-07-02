@@ -469,9 +469,7 @@ public class AllEpisodesFragment extends Fragment {
                             onFragmentLoaded();
                         }
                     }
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     protected List<FeedItem> loadData() {

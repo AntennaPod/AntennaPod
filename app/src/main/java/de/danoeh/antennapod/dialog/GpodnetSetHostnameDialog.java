@@ -32,9 +32,7 @@ public class GpodnetSetHostnameDialog {
                     }
                     dialog1.dismiss();
                 })
-                .setNegativeButton(R.string.cancel_label, (dialog1, which) -> {
-                    dialog1.cancel();
-                })
+                .setNegativeButton(R.string.cancel_label, (dialog1, which) -> dialog1.cancel())
                 .setNeutralButton(R.string.pref_gpodnet_sethostname_use_default_host, (dialog1, which) -> {
                     GpodnetPreferences.setHostname(GpodnetService.DEFAULT_BASE_HOST);
                     dialog1.dismiss();

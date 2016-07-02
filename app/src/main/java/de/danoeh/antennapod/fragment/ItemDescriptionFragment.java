@@ -196,9 +196,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                     .subscribe(feedItem -> {
                         shownotesProvider = feedItem;
                         load();
-                    }, error -> {
-                        Log.e(TAG, Log.getStackTraceString(error));
-                    });
+                    }, error -> Log.e(TAG, Log.getStackTraceString(error)));
         }
     }
 
@@ -311,9 +309,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                     webvDescription.loadDataWithBaseURL(null, data, "text/html",
                             "utf-8", "about:blank");
                     Log.d(TAG, "Webview loaded");
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private String loadData() {

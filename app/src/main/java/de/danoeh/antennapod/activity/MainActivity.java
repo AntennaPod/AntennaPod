@@ -149,9 +149,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         final FragmentManager fm = getSupportFragmentManager();
 
-        fm.addOnBackStackChangedListener(() -> {
-            drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0);
-        });
+        fm.addOnBackStackChangedListener(() -> drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -255,9 +253,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
-        });
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> UserPreferences.setHiddenDrawerItems(hiddenDrawerItems));
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
     }
@@ -703,9 +699,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                     if (handleIntent) {
                         handleNavIntent();
                     }
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     public void onEvent(QueueEvent event) {

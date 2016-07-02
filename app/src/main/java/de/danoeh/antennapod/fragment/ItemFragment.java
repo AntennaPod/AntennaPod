@@ -580,9 +580,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 item = result;
                 itemsLoaded = true;
                 onFragmentLoaded();
-            }, error -> {
-                Log.e(TAG, Log.getStackTraceString(error));
-            });
+            }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private FeedItem loadInBackground() {

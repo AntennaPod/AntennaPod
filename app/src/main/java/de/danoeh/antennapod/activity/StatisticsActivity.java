@@ -85,9 +85,7 @@ public class StatisticsActivity extends AppCompatActivity
                         totalTimeTextView.setVisibility(View.VISIBLE);
                         feedStatisticsList.setVisibility(View.VISIBLE);
                     }
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Override
