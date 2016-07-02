@@ -301,6 +301,7 @@ public class GpodnetSyncService extends Service {
 
     private void updateErrorNotification(GpodnetServiceException exception) {
      Log.d(TAG, "Posting error notification");
+        GpodnetPreferences.setLastSyncAttempt(false, System.currentTimeMillis());
 
         final String title;
         final String description;
@@ -310,7 +311,6 @@ public class GpodnetSyncService extends Service {
             description = getString(R.string.gpodnetsync_auth_error_descr);
             id = R.id.notification_gpodnet_sync_autherror;
         } else {
-            GpodnetPreferences.setLastSyncAttempt(false, System.currentTimeMillis());
             if (UserPreferences.gpodnetNotificationsEnabled()) {
                 title = getString(R.string.gpodnetsync_error_title);
                 description = getString(R.string.gpodnetsync_error_descr) + exception.getMessage();
