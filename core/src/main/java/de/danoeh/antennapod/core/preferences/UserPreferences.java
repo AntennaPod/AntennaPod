@@ -92,6 +92,7 @@ public class UserPreferences {
     // Services
     public static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
     public static final String PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD = "prefAutoFlattrPlayedDurationThreshold";
+    public static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
 
     // Other
     public static final String PREF_DATA_FOLDER = "prefDataFolder";
@@ -544,6 +545,16 @@ public class UserPreferences {
              .putBoolean(PREF_AUTO_FLATTR, enabled)
              .putFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD, autoFlattrThreshold)
              .apply();
+    }
+
+    public static boolean gpodnetNotificationsEnabled() {
+        return prefs.getBoolean(PREF_GPODNET_NOTIFICATIONS, true);
+    }
+
+    public static void setGpodnetNotificationsEnabled() {
+        prefs.edit()
+                .putBoolean(PREF_GPODNET_NOTIFICATIONS, true)
+                .apply();
     }
 
     public static void setHiddenDrawerItems(List<String> items) {

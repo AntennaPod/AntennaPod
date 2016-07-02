@@ -28,10 +28,11 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -89,6 +90,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public static final String PREF_GPODNET_SYNC = "pref_gpodnet_sync";
     public static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
     public static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
+    public static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
+    public static final String PREF_GPODNET_SYNC_REPORT = "pref_gpodnet_sync_report";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PROXY = "prefProxy";
     public static final String PREF_KNOWN_ISSUES = "prefKnownIssues";
@@ -433,7 +436,15 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         setParallelDownloadsText(UserPreferences.getParallelDownloads());
         setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
         setDataFolderText();
+        GpodnetPreferences.setSyncAttemptListener(() -> ui.getActivity().runOnUiThread(
+                () -> updateLastGpodnetSyncReport(
+                        GpodnetPreferences.getLastSyncAttemptResult(),
+                        GpodnetPreferences.getLastSyncAttemptTimestamp())));
         updateGpodnetPreferenceScreen();
+    }
+
+    public void onPause() {
+        GpodnetPreferences.setSyncAttemptListener(null);
     }
 
     @SuppressLint("NewApi")
@@ -478,15 +489,41 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(PreferenceController.PREF_GPODNET_SETLOGIN_INFORMATION).setEnabled(loggedIn);
         ui.findPreference(PreferenceController.PREF_GPODNET_SYNC).setEnabled(loggedIn);
         ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
+        ui.findPreference(PREF_GPODNET_NOTIFICATIONS).setEnabled(loggedIn);
         if(loggedIn) {
             String format = ui.getActivity().getString(R.string.pref_gpodnet_login_status);
             String summary = String.format(format, GpodnetPreferences.getUsername(),
                     GpodnetPreferences.getDeviceID());
             ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setSummary(Html.fromHtml(summary));
+            updateLastGpodnetSyncReport(GpodnetPreferences.getLastSyncAttemptResult(),
+                    GpodnetPreferences.getLastSyncAttemptTimestamp());
         } else {
             ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setSummary(null);
+            updateLastGpodnetSyncReport(false, 0);
         }
         ui.findPreference(PreferenceController.PREF_GPODNET_HOSTNAME).setSummary(GpodnetPreferences.getHostname());
+    }
+
+    private void updateLastGpodnetSyncReport(boolean successful, long lastTime) {
+        Preference syncReport = ui.findPreference(PREF_GPODNET_SYNC_REPORT);
+        if (lastTime != 0) {
+            syncReport.setTitle(ui.getActivity().getString(R.string.pref_gpodnet_last_sync_title,
+                    ui.getActivity().getString(successful ?
+                            R.string.gpodnetsync_pref_report_successful :
+                            R.string.gpodnetsync_pref_report_failed)));
+            syncReport.setSummary(DateUtils.getRelativeDateTimeString(
+                    ui.getActivity(),
+                    lastTime,
+                    DateUtils.MINUTE_IN_MILLIS,
+                    DateUtils.WEEK_IN_MILLIS,
+                    DateUtils.FORMAT_SHOW_TIME));
+            syncReport.setEnabled(true);
+        } else {
+            syncReport.setTitle(ui.getActivity().getString(R.string.pref_gpodnet_last_sync_title,
+                    ui.getActivity().getString(R.string.gpodnetsync_pref_report_undetermined)));
+            syncReport.setSummary(null);
+            syncReport.setEnabled(false);
+        }
     }
 
     private String[] getUpdateIntervalEntries(final String[] values) {

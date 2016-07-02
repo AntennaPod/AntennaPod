@@ -74,7 +74,6 @@
             android:key="prefQueueAddToFront"
             android:summary="@string/pref_queueAddToFront_sum"
             android:title="@string/pref_queueAddToFront_title"/>
-        />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_pref">
@@ -233,7 +232,7 @@
                 android:title="@string/pref_revokeAccess_title"/>
         </PreferenceScreen>
         <PreferenceScreen
-            android:key="prefFlattrSettings"
+            android:key="prefGpodderSettings"
             android:title="@string/gpodnet_main_label">
 
             <PreferenceScreen
@@ -256,6 +255,16 @@
             <Preference
                 android:key="pref_gpodnet_hostname"
                 android:title="@string/pref_gpodnet_sethostname_title"/>
+            <de.danoeh.antennapod.preferences.SwitchCompatPreference
+                android:key="pref_gpodnet_notifications"
+                android:title="@string/pref_gpodnet_notifications_title"
+                android:summary="@string/pref_gpodnet_notifications_sum"
+                android:defaultValue="true"/>
+            <Preference android:key="pref_gpodnet_sync_report"
+                android:title="@string/pref_gpodnet_last_sync_title"
+                android:selectable="false"
+                android:enabled="false"
+                android:shouldDisableView="true"/>
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/storage_pref">

@@ -6,7 +6,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -40,7 +40,7 @@ import de.danoeh.antennapod.core.service.GpodnetSyncService;
  * Step 2: Choose device from a list of available devices or create a new one
  * Step 3: Choose from a list of actions
  */
-public class GpodnetAuthenticationActivity extends ActionBarActivity {
+public class GpodnetAuthenticationActivity extends AppCompatActivity {
     private static final String TAG = "GpodnetAuthActivity";
 
     private static final String CURRENT_STEP = "current_step";
