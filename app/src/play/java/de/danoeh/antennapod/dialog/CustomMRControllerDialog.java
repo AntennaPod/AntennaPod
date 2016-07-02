@@ -108,6 +108,29 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
     public View onCreateMediaControlView(Bundle savedInstanceState) {
         boolean landscape = getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         if (landscape) {
+            /*
+             * When a horizontal LinearLayout measures itself, it first measures its children and
+             * settles their widths on the first pass, and only then figures out its height, never
+             * revisiting the widths measurements.
+             * When one has a child view that imposes a certain aspect ratio (such as an ImageView),
+             * then its width and height are related to each other, and so if one allows for a large
+             * height, then it will request for itself a large width as well. However, on the first
+             * child measurement, the LinearLayout imposes a very relaxed height bound, that the
+             * child uses to tell the width it wants, a value which the LinearLayout will interpret
+             * as final, even though the child will want to change it once a more restrictive height
+             * bound is imposed later.
+             *
+             * Our solution is, given that the heights of the children do not depend on their widths
+             * in this case, we first figure out the layout's height and only then perform the
+             * usual sequence of measurements.
+             *
+             * Note: this solution does not take into account any vertical paddings nor children's
+             * vertical margins in determining the height, as this View as well as its children are
+             * defined in code and no paddings/margins that would influence these computations are
+             * introduced.
+             *
+             * There were no resources online for this type of issue as far as I could gather.
+             */
             rootView = new LinearLayout(getContext()) {
                 @Override
                 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -118,6 +141,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
                             int height = Integer.MIN_VALUE;
                             View child = getChildAt(i);
                             ViewGroup.LayoutParams lp = child.getLayoutParams();
+                            // we only measure children whose layout_height is not MATCH_PARENT
                             if (lp.height >= 0) {
                                 height = lp.height;
                             } else if (lp.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
@@ -135,8 +159,10 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
                     }
                 }
             };
+            rootView.setOrientation(LinearLayout.HORIZONTAL);
         } else {
             rootView = new LinearLayout(getContext());
+            rootView.setOrientation(LinearLayout.VERTICAL);
         }
         FrameLayout.LayoutParams rootParams = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -144,11 +170,6 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         rootParams.setMargins(0, 0, 0,
                 getContext().getResources().getDimensionPixelSize(R.dimen.media_router_controller_bottom_margin));
         rootView.setLayoutParams(rootParams);
-        if (landscape) {
-            rootView.setOrientation(LinearLayout.HORIZONTAL);
-        } else {
-            rootView.setOrientation(LinearLayout.VERTICAL);
-        }
 
         // Start the session activity when a content item (album art, title or subtitle) is clicked.
         View.OnClickListener onClickListener = v -> {
@@ -166,6 +187,21 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         };
 
         LinearLayout.LayoutParams artParams;
+        /*
+         * On portrait orientation, we want to limit the artView's height to 9/16 of the available
+         * width. Reason is that we need to choose the height wisely otherwise we risk the dialog
+         * being much larger than the screen, and there doesn't seem to be a good way to know the
+         * available height beforehand.
+         *
+         * On landscape orientation, we want to limit the artView's width to its available height.
+         * Otherwise, horizontal images would take too much space and severely restrict the space
+         * for episode title and play/pause button.
+         *
+         * Internal implementation of ImageView only uses the source image's aspect ratio, but we
+         * want to impose our own and fallback to the source image's when it is more favorable.
+         * Solutions were inspired, among other similar sources, on
+         * http://stackoverflow.com/questions/18077325/scale-image-to-fill-imageview-width-and-keep-aspect-ratio
+         */
         if (landscape) {
             artView = new ImageView(getContext()) {
                 @Override
@@ -228,6 +264,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
         }
+        // When we fetch the bitmap, we want to know if we should set a background color or not.
         artView.setTag(landscape);
 
         artView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -239,6 +276,8 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         ViewGroup wrapper = rootView;
 
         if (landscape) {
+            // Here we wrap with a frame layout because we want to set different layout parameters
+            // for landscape orientation.
             wrapper = new FrameLayout(getContext());
             wrapper.setLayoutParams(new LinearLayout.LayoutParams(
                     0,
