@@ -386,7 +386,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "Received onBind event");
-        if(intent.getAction() != null && intent.getAction().equals("android.media.browse.MediaBrowserService")) {
+        if(intent.getAction() != null && TextUtils.equals(intent.getAction(), MediaBrowserServiceCompat.SERVICE_INTERFACE)) {
             return super.onBind(intent);
         } else {
             return mBinder;
