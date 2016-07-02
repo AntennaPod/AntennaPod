@@ -75,9 +75,8 @@ public class PlaybackServiceFlavorHelper {
     boolean castDisconnect(boolean castDisconnect) {
         if (castDisconnect) {
             castManager.disconnect();
-            return true;
         }
-        return false;
+        return castDisconnect;
     }
 
     boolean onMediaPlayerInfo(Context context, int code, @StringRes int resourceId) {
