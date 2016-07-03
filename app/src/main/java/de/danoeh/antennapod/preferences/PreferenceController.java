@@ -123,6 +123,14 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         }
     }
 
+    private final SharedPreferences.OnSharedPreferenceChangeListener gpoddernetListener =
+            (sharedPreferences, key) -> {
+                if (GpodnetPreferences.PREF_LAST_SYNC_ATTEMPT_TIMESTAMP.equals(key)) {
+                    updateLastGpodnetSyncReport(GpodnetPreferences.getLastSyncAttemptResult(),
+                            GpodnetPreferences.getLastSyncAttemptTimestamp());
+                }
+            };
+
     /**
      * Returns the preference activity that should be used on this device.
      *
@@ -436,15 +444,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         setParallelDownloadsText(UserPreferences.getParallelDownloads());
         setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
         setDataFolderText();
-        GpodnetPreferences.setSyncAttemptListener(() -> ui.getActivity().runOnUiThread(
-                () -> updateLastGpodnetSyncReport(
-                        GpodnetPreferences.getLastSyncAttemptResult(),
-                        GpodnetPreferences.getLastSyncAttemptTimestamp())));
+        GpodnetPreferences.registerOnSharedPreferenceChangeListener(gpoddernetListener);
         updateGpodnetPreferenceScreen();
     }
 
     public void onPause() {
-        GpodnetPreferences.setSyncAttemptListener(null);
+        GpodnetPreferences.unregisterOnSharedPreferenceChangeListener(gpoddernetListener);
     }
 
     @SuppressLint("NewApi")

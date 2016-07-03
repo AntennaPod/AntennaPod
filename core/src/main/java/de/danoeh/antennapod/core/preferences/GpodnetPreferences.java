@@ -62,12 +62,20 @@ public class GpodnetPreferences {
 
     private static boolean lastSyncAttemptResult;
 
-    private static Runnable syncAttemptListener;
-
     private static boolean preferencesLoaded = false;
 
     private static SharedPreferences getPreferences() {
         return ClientConfig.applicationCallbacks.getApplicationInstance().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    }
+
+    public static void registerOnSharedPreferenceChangeListener(
+            SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        getPreferences().registerOnSharedPreferenceChangeListener(listener);
+    }
+
+    public static void unregisterOnSharedPreferenceChangeListener(
+            SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        getPreferences().unregisterOnSharedPreferenceChangeListener(listener);
     }
 
     private static synchronized void ensurePreferencesLoaded() {
@@ -178,9 +186,6 @@ public class GpodnetPreferences {
         GpodnetPreferences.lastSyncAttemptTimestamp = timestamp;
         writePreference(PREF_LAST_SYNC_ATTEMPT_RESULT, result);
         writePreference(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, timestamp);
-        if (timestamp != 0 && syncAttemptListener != null) {
-            syncAttemptListener.run();
-        }
     }
 
     public static String getHostname() {
@@ -307,10 +312,6 @@ public class GpodnetPreferences {
         setLastSubscriptionSyncTimestamp(0);
         setLastSyncAttempt(false, 0);
         UserPreferences.setGpodnetNotificationsEnabled();
-    }
-
-    public static void setSyncAttemptListener(Runnable listener) {
-        syncAttemptListener = listener;
     }
 
     private static Set<String> readListFromString(String s) {
