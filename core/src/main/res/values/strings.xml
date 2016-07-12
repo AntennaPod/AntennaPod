@@ -421,6 +421,7 @@
     <string name="search_status_no_results">No results were found</string>
     <string name="search_label">Search</string>
     <string name="found_in_title_label">Found in title</string>
+    <string name="no_results_for_query">No results were found for</string>
 
     <!-- OPML import and export -->
     <string name="opml_import_txtv_button_lable">OPML files allow you to move your podcasts from one podcatcher to another.</string>

@@ -182,6 +182,9 @@ public class SearchFragment extends ListFragment {
         }
         searchAdapter.notifyDataSetChanged();
         setListShown(true);
+
+        String query = getArguments().getString(ARG_QUERY);
+        setEmptyText(getString(R.string.no_results_for_query) + " \"" + query + "\"");
     }
 
     private final SearchlistAdapter.ItemAccess itemAccess = new SearchlistAdapter.ItemAccess() {
