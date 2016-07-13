@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.nineoldandroids.view.ViewHelper;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -94,6 +95,12 @@ public class SearchlistAdapter extends BaseAdapter {
             if (result.getSubtitle() != null) {
                 holder.subtitle.setVisibility(View.VISIBLE);
                 holder.subtitle.setText(result.getSubtitle());
+            }
+
+            if(item.isPlayed()) {
+                ViewHelper.setAlpha(convertView, 0.5f);
+            } else {
+                ViewHelper.setAlpha(convertView, 1.0f);
             }
 
             Glide.with(context)
