@@ -251,7 +251,6 @@
                 android:summary="@string/pref_gpodnet_sync_sum"/>
             <Preference android:key="pref_gpodnet_sync_report"
                 android:title="@string/pref_gpodnet_last_sync_title"
-                android:selectable="false"
                 android:enabled="false"
                 android:shouldDisableView="true"/>
             <Preference
