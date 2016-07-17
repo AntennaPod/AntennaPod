@@ -91,7 +91,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
     public static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
     public static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
-    public static final String PREF_GPODNET_SYNC_REPORT = "pref_gpodnet_sync_report";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PROXY = "prefProxy";
     public static final String PREF_KNOWN_ISSUES = "prefKnownIssues";
@@ -510,24 +509,20 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     private void updateLastGpodnetSyncReport(boolean successful, long lastTime) {
-        Preference syncReport = ui.findPreference(PREF_GPODNET_SYNC_REPORT);
+        Preference sync = ui.findPreference(PREF_GPODNET_SYNC);
         if (lastTime != 0) {
-            syncReport.setTitle(ui.getActivity().getString(R.string.pref_gpodnet_last_sync_title,
-                    ui.getActivity().getString(successful ?
-                            R.string.gpodnetsync_pref_report_successful :
-                            R.string.gpodnetsync_pref_report_failed)));
-            syncReport.setSummary(DateUtils.getRelativeDateTimeString(
-                    ui.getActivity(),
-                    lastTime,
-                    DateUtils.MINUTE_IN_MILLIS,
-                    DateUtils.WEEK_IN_MILLIS,
-                    DateUtils.FORMAT_SHOW_TIME));
-            syncReport.setEnabled(true);
+            sync.setSummary(ui.getActivity().getString(R.string.pref_gpodnet_sync_sum) + "\n" +
+                    ui.getActivity().getString(R.string.pref_gpodnet_sync_sum_last_sync_line,
+                            ui.getActivity().getString(successful ?
+                                    R.string.gpodnetsync_pref_report_successful :
+                                    R.string.gpodnetsync_pref_report_failed),
+                            DateUtils.getRelativeDateTimeString(ui.getActivity(),
+                                    lastTime,
+                                    DateUtils.MINUTE_IN_MILLIS,
+                                    DateUtils.WEEK_IN_MILLIS,
+                                    DateUtils.FORMAT_SHOW_TIME)));
         } else {
-            syncReport.setTitle(ui.getActivity().getString(R.string.pref_gpodnet_last_sync_title,
-                    ui.getActivity().getString(R.string.gpodnetsync_pref_report_undetermined)));
-            syncReport.setSummary(null);
-            syncReport.setEnabled(false);
+            sync.setSummary(ui.getActivity().getString(R.string.pref_gpodnet_sync_sum));
         }
     }
 

@@ -365,12 +365,12 @@
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
     <string name="pref_gpodnet_sync_title">Sync now</string>
-    <string name="pref_gpodnet_sync_sum">Sync subscriptions and episode states with gpodder.net</string>
+    <string name="pref_gpodnet_sync_sum">Sync subscriptions and episode states with gpodder.net.</string>
+    <string name="pref_gpodnet_sync_sum_last_sync_line">Last sync attempt: %1$s (%2$s)</string>
     <string name="pref_gpodnet_sync_started">Sync started</string>
     <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_gpodnet_notifications_title">Show sync error notifications</string>
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
-    <string name="pref_gpodnet_last_sync_title">Last sync attempt: %1$s</string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
     <string name="pref_fast_forward">Fast forward time</string>
@@ -507,7 +507,6 @@
     <string name="gpodnetsync_error_descr">An error occurred during syncing:\u0020</string>
     <string name="gpodnetsync_pref_report_successful">Successful</string>
     <string name="gpodnetsync_pref_report_failed">Failed</string>
-    <string name="gpodnetsync_pref_report_undetermined">Never</string>
 
     <!-- Directory chooser -->
     <string name="selected_folder_label">Selected folder:</string>
