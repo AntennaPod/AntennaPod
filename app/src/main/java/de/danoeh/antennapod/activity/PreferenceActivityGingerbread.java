@@ -55,6 +55,12 @@ public class PreferenceActivityGingerbread extends android.preference.Preference
     }
 
     @Override
+    protected void onPause() {
+        preferenceController.onPause();
+        super.onPause();
+    }
+
+    @Override
     protected void onApplyThemeResource(Theme theme, int resid, boolean first) {
         theme.applyStyle(UserPreferences.getTheme(), true);
     }

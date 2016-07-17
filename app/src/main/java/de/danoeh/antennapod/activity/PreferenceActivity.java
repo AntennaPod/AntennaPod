@@ -118,5 +118,14 @@ public class PreferenceActivity extends AppCompatActivity {
                 activity.preferenceController.onResume();
             }
         }
+
+        @Override
+        public void onPause() {
+            PreferenceActivity activity = instance.get();
+            if(activity != null && activity.preferenceController != null) {
+                activity.preferenceController.onPause();
+            }
+            super.onPause();
+        }
     }
 }

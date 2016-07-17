@@ -6,11 +6,13 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,7 +42,7 @@ import de.danoeh.antennapod.core.service.GpodnetSyncService;
  * Step 2: Choose device from a list of available devices or create a new one
  * Step 3: Choose from a list of actions
  */
-public class GpodnetAuthenticationActivity extends ActionBarActivity {
+public class GpodnetAuthenticationActivity extends AppCompatActivity {
     private static final String TAG = "GpodnetAuthActivity";
 
     private static final String CURRENT_STEP = "current_step";
@@ -113,6 +115,9 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         final TextView txtvError = (TextView) view.findViewById(R.id.txtvError);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progBarLogin);
 
+        password.setOnEditorActionListener((v, actionID, event) ->
+            actionID == EditorInfo.IME_ACTION_GO && login.performClick());
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +136,11 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                         login.setEnabled(false);
                         progressBar.setVisibility(View.VISIBLE);
                         txtvError.setVisibility(View.GONE);
+                        // hide the keyboard
+                        InputMethodManager inputManager = (InputMethodManager)
+                                getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputManager.hideSoftInputFromWindow(login.getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
 
                     }
 

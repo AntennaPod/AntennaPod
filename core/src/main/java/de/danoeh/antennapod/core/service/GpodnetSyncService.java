@@ -30,6 +30,7 @@ import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeActionPostRespon
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetSubscriptionChange;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetUploadChangesResponse;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -107,7 +108,7 @@ public class GpodnetSyncService extends Service {
 
 
     private synchronized void sync() {
-        if (GpodnetPreferences.loggedIn() == false || NetworkUtils.networkAvailable() == false) {
+        if (!GpodnetPreferences.loggedIn() || !NetworkUtils.networkAvailable()) {
             stopSelf();
             return;
         }
@@ -161,6 +162,7 @@ public class GpodnetSyncService extends Service {
                 GpodnetPreferences.removeRemovedFeeds(localRemoved);
             }
             GpodnetPreferences.setLastSubscriptionSyncTimestamp(newTimeStamp);
+            GpodnetPreferences.setLastSyncAttempt(true, System.currentTimeMillis());
             clearErrorNotifications();
         } catch (GpodnetServiceException e) {
             e.printStackTrace();
@@ -177,15 +179,15 @@ public class GpodnetSyncService extends Service {
         // local changes are always superior to remote changes!
         // add subscription if (1) not already subscribed and (2) not just unsubscribed
         for (String downloadUrl : changes.getAdded()) {
-            if (false == localSubscriptions.contains(downloadUrl) &&
-                    false == localRemoved.contains(downloadUrl)) {
+            if (!localSubscriptions.contains(downloadUrl) &&
+                    !localRemoved.contains(downloadUrl)) {
                 Feed feed = new Feed(downloadUrl, null);
                 DownloadRequester.getInstance().downloadFeed(this, feed);
             }
         }
         // remove subscription if not just subscribed (again)
         for (String downloadUrl : changes.getRemoved()) {
-            if(false == localAdded.contains(downloadUrl)) {
+            if(!localAdded.contains(downloadUrl)) {
                 DBTasks.removeFeedWithDownloadUrl(GpodnetSyncService.this, downloadUrl);
             }
         }
@@ -215,6 +217,7 @@ public class GpodnetSyncService extends Service {
                 GpodnetPreferences.removeQueuedEpisodeActions(localActions);
             }
             GpodnetPreferences.setLastEpisodeActionsSyncTimestamp(lastUpdate);
+            GpodnetPreferences.setLastSyncAttempt(true, System.currentTimeMillis());
             clearErrorNotifications();
         } catch (GpodnetServiceException e) {
             e.printStackTrace();
@@ -298,8 +301,8 @@ public class GpodnetSyncService extends Service {
 
     private void updateErrorNotification(GpodnetServiceException exception) {
      Log.d(TAG, "Posting error notification");
+        GpodnetPreferences.setLastSyncAttempt(false, System.currentTimeMillis());
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         final String title;
         final String description;
         final int id;
@@ -308,18 +311,23 @@ public class GpodnetSyncService extends Service {
             description = getString(R.string.gpodnetsync_auth_error_descr);
             id = R.id.notification_gpodnet_sync_autherror;
         } else {
-            title = getString(R.string.gpodnetsync_error_title);
-            description = getString(R.string.gpodnetsync_error_descr) + exception.getMessage();
-            id = R.id.notification_gpodnet_sync_error;
+            if (UserPreferences.gpodnetNotificationsEnabled()) {
+                title = getString(R.string.gpodnetsync_error_title);
+                description = getString(R.string.gpodnetsync_error_descr) + exception.getMessage();
+                id = R.id.notification_gpodnet_sync_error;
+            } else {
+                return;
+            }
         }
 
         PendingIntent activityIntent = ClientConfig.gpodnetCallbacks.getGpodnetSyncServiceErrorNotificationPendingIntent(this);
-        Notification notification = builder.setContentTitle(title)
+        Notification notification = new NotificationCompat.Builder(this)
+                .setContentTitle(title)
                 .setContentText(description)
                 .setContentIntent(activityIntent)
                 .setSmallIcon(R.drawable.stat_notify_sync_error)
                 .setAutoCancel(true)
-                .setVisibility(Notification.VISIBILITY_PUBLIC)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build();
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(id, notification);
