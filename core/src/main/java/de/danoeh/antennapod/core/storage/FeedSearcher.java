@@ -21,23 +21,32 @@ public class FeedSearcher {
 
 
     /**
-     * Performs a search in all feeds or one specific feed.
+     * Search through a feed, or all feeds, for episodes that match the query in either the title,
+     * chapter, or show notes. The search is first performed on titles, then chapters, and finally
+     * show notes. The list of resulting episodes also describes where the first match occurred
+     * (title, chapters, or show notes).
+     *
+     * @param context
+     * @param query search query
+     * @param selectedFeed feed to search, 0 to search through all feeds
+     * @return list of episodes containing the query
      */
     public static List<SearchResult> performSearch(final Context context,
                                                    final String query, final long selectedFeed) {
-        final int values[] = {0, 0, 1, 2};
-        final String[] subtitles = {context.getString(R.string.found_in_shownotes_label),
-                context.getString(R.string.found_in_shownotes_label),
+        final int values[] = {2, 1, 0, 0};
+        final String[] subtitles = {context.getString(R.string.found_in_title_label),
                 context.getString(R.string.found_in_chapters_label),
-                context.getString(R.string.found_in_title_label)};
+                context.getString(R.string.found_in_shownotes_label),
+                context.getString(R.string.found_in_shownotes_label)};
 
         List<SearchResult> result = new ArrayList<>();
 
         List<FutureTask<List<FeedItem>>> tasks = new ArrayList<>();
-        tasks.add(DBTasks.searchFeedItemContentEncoded(context, selectedFeed, query));
-        tasks.add(DBTasks.searchFeedItemDescription(context, selectedFeed, query));
-        tasks.add(DBTasks.searchFeedItemChapters(context, selectedFeed, query));
         tasks.add(DBTasks.searchFeedItemTitle(context, selectedFeed, query));
+        tasks.add(DBTasks.searchFeedItemChapters(context, selectedFeed, query));
+        tasks.add(DBTasks.searchFeedItemDescription(context, selectedFeed, query));
+        tasks.add(DBTasks.searchFeedItemContentEncoded(context, selectedFeed, query));
+
         for (FutureTask<List<FeedItem>> task : tasks) {
             task.run();
         }
@@ -46,7 +55,9 @@ public class FeedSearcher {
                 FutureTask<List<FeedItem>> task = tasks.get(i);
                 List<FeedItem> items = task.get();
                 for (FeedItem item : items) {
-                    result.add(new SearchResult(item, values[i], subtitles[i]));
+                    if (result.isEmpty() || !isDuplicate(result, item)) {
+                        result.add(new SearchResult(item, values[i], subtitles[i]));
+                    }
                 }
 
             }
@@ -55,5 +66,21 @@ public class FeedSearcher {
         }
         Collections.sort(result, new SearchResultValueComparator());
         return result;
+    }
+
+    /**
+     * Determines if the feed item is already in the search result list.
+     *
+     * @param result list of search results
+     * @param item feed item to validate
+     * @return true if the feed item is already in the results
+     */
+    private static boolean isDuplicate(List<SearchResult> result, FeedItem item) {
+        for (SearchResult resultItem : result) {
+            if (resultItem.getComponent().getId() == item.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
