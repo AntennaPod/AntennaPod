@@ -97,11 +97,7 @@ public class SearchlistAdapter extends BaseAdapter {
                 holder.subtitle.setText(result.getSubtitle());
             }
 
-            if(item.isPlayed()) {
-                ViewHelper.setAlpha(convertView, 0.5f);
-            } else {
-                ViewHelper.setAlpha(convertView, 1.0f);
-            }
+            ViewHelper.setAlpha(convertView, item.isPlayed() ? 0.5f : 1.0f);
 
             Glide.with(context)
                     .load(item.getFeed().getImageLocation())

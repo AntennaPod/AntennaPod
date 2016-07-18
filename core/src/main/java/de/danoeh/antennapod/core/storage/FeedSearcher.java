@@ -21,7 +21,15 @@ public class FeedSearcher {
 
 
     /**
-     * Performs a search in all feeds or one specific feed.
+     * Search through a feed, or all feeds, for episodes that match the query in either the title,
+     * chapter, or show notes. The search is first performed on titles, then chapters, and finally
+     * show notes. The list of resulting episodes also describes where the first match occurred
+     * (title, chapters, or show notes).
+     *
+     * @param context
+     * @param query search query
+     * @param selectedFeed feed to search, 0 to search through all feeds
+     * @return list of episodes containing the query
      */
     public static List<SearchResult> performSearch(final Context context,
                                                    final String query, final long selectedFeed) {

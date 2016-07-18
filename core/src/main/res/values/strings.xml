@@ -415,8 +415,8 @@
     <string name="auto_flattr_ater_end">Flattr episode when playback ends</string>
 
     <!-- Search -->
-    <string name="search_hint">Search for Feeds or Episodes</string>
-    <string name="found_in_shownotes_label">Found in shownotes</string>
+    <string name="search_hint">Search for episodes</string>
+    <string name="found_in_shownotes_label">Found in show notes</string>
     <string name="found_in_chapters_label">Found in chapters</string>
     <string name="search_status_no_results">No results were found</string>
     <string name="search_label">Search</string>
