@@ -209,6 +209,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private static volatile MediaType currentMediaType = MediaType.UNKNOWN;
 
+    private final IBinder mBinder = new LocalBinder();
+
     public class LocalBinder extends Binder {
         public PlaybackService getService() {
             return PlaybackService.this;
@@ -384,7 +386,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "Received onBind event");
-        return super.onBind(intent);
+        if(intent.getAction() != null && TextUtils.equals(intent.getAction(), MediaBrowserServiceCompat.SERVICE_INTERFACE)) {
+            return super.onBind(intent);
+        } else {
+            return mBinder;
+        }
     }
 
     @Override
