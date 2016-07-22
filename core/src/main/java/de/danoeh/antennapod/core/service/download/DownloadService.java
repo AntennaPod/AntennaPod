@@ -76,7 +76,7 @@ import de.danoeh.antennapod.core.util.InvalidFeedException;
 import de.greenrobot.event.EventBus;
 
 /**
- * Manages the download of feedfiles in the app. Downloads can be enqueued viathe startService intent.
+ * Manages the download of feedfiles in the app. Downloads can be enqueued via the startService intent.
  * The argument of the intent is an instance of DownloadRequest in the EXTRA_REQUEST field of
  * the intent.
  * After the downloads have finished, the downloaded object will be passed on to a specific handler, depending on the
@@ -199,10 +199,10 @@ public class DownloadService extends Service {
                                 if(type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                                     long id = status.getFeedfileId();
                                     FeedMedia media = DBReader.getFeedMedia(id);
-                                    if(media == null || media.getItem() == null) {
+                                    FeedItem item;
+                                    if(media == null || (item = media.getItem()) == null) {
                                         return;
                                     }
-                                    FeedItem item = media.getItem();
                                     boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
                                             && String.valueOf(HttpURLConnection.HTTP_NOT_FOUND).equals(status.getReasonDetailed());
                                     boolean forbidden = status.getReason() == DownloadError.ERROR_FORBIDDEN
@@ -221,7 +221,11 @@ public class DownloadService extends Service {
                             // so that lists reload that it
                             if(status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                                 FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
-                                EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
+                                FeedItem item;
+                                if(media == null || (item = media.getItem()) == null) {
+                                    return;
+                                }
+                                EventBus.getDefault().post(FeedItemEvent.updated(item));
                             }
                         }
                         queryDownloadsAsync();

@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.support.v4.net.ConnectivityManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -80,16 +81,13 @@ public class NetworkUtils {
     }
 
 	public static boolean isDownloadAllowed() {
-		return UserPreferences.isAllowMobileUpdate() || NetworkUtils.connectedToWifi();
+		return UserPreferences.isAllowMobileUpdate() || !NetworkUtils.isNetworkMetered();
 	}
 
-	public static boolean connectedToWifi() {
+	public static boolean isNetworkMetered() {
 		ConnectivityManager connManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo mWifi = connManager
-				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-		return mWifi.isConnected();
+        return ConnectivityManagerCompat.isActiveNetworkMetered(connManager);
 	}
 
     /**
