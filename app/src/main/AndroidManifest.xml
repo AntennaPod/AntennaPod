@@ -176,16 +176,15 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data
-                    android:host="*"
-                    android:pathPattern=".*\\.opml"
-                    android:scheme="file"
-                    android:mimeType="*/*"/>
-                <data
-                    android:host="*"
-                    android:pathPattern=".*\\.opml"
-                    android:scheme="content"
-                    android:mimeType="*/*"/>
+                <data android:mimeType="text/xml"/>
+                <data android:mimeType="text/x-opml"/>
+                <data android:mimeType="application/xml"/>
+                <data android:mimeType="application/octet-stream"/>
+
+                <data android:scheme="file"/>
+                <data android:scheme="content"/>
+
+                <data android:host="*"/>
             </intent-filter>
         </activity>
         <activity
