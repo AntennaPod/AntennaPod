@@ -2,6 +2,7 @@ package de.danoeh.antennapod.dialog;
 
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v4.util.Pair;
+import android.support.v4.view.MarginLayoutParamsCompat;
 import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v7.app.MediaRouteControllerDialog;
 import android.support.v7.graphics.Palette;
@@ -104,10 +106,70 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
 
     @Override
     public View onCreateMediaControlView(Bundle savedInstanceState) {
-        rootView = new LinearLayout(getContext());
-        rootView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        rootView.setOrientation(LinearLayout.VERTICAL);
+        boolean landscape = getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        if (landscape) {
+            /*
+             * When a horizontal LinearLayout measures itself, it first measures its children and
+             * settles their widths on the first pass, and only then figures out its height, never
+             * revisiting the widths measurements.
+             * When one has a child view that imposes a certain aspect ratio (such as an ImageView),
+             * then its width and height are related to each other, and so if one allows for a large
+             * height, then it will request for itself a large width as well. However, on the first
+             * child measurement, the LinearLayout imposes a very relaxed height bound, that the
+             * child uses to tell the width it wants, a value which the LinearLayout will interpret
+             * as final, even though the child will want to change it once a more restrictive height
+             * bound is imposed later.
+             *
+             * Our solution is, given that the heights of the children do not depend on their widths
+             * in this case, we first figure out the layout's height and only then perform the
+             * usual sequence of measurements.
+             *
+             * Note: this solution does not take into account any vertical paddings nor children's
+             * vertical margins in determining the height, as this View as well as its children are
+             * defined in code and no paddings/margins that would influence these computations are
+             * introduced.
+             *
+             * There were no resources online for this type of issue as far as I could gather.
+             */
+            rootView = new LinearLayout(getContext()) {
+                @Override
+                protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                    // We'd like to find the overall height before adjusting the widths within the LinearLayout
+                    int maxHeight = Integer.MIN_VALUE;
+                    if (MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY) {
+                        for (int i = 0; i < getChildCount(); i++) {
+                            int height = Integer.MIN_VALUE;
+                            View child = getChildAt(i);
+                            ViewGroup.LayoutParams lp = child.getLayoutParams();
+                            // we only measure children whose layout_height is not MATCH_PARENT
+                            if (lp.height >= 0) {
+                                height = lp.height;
+                            } else if (lp.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+                                child.measure(widthMeasureSpec, heightMeasureSpec);
+                                height = child.getMeasuredHeight();
+                            }
+                            maxHeight = Math.max(maxHeight, height);
+                        }
+                    }
+                    if (maxHeight > 0) {
+                        super.onMeasure(widthMeasureSpec,
+                                MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.EXACTLY));
+                    } else {
+                        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+                    }
+                }
+            };
+            rootView.setOrientation(LinearLayout.HORIZONTAL);
+        } else {
+            rootView = new LinearLayout(getContext());
+            rootView.setOrientation(LinearLayout.VERTICAL);
+        }
+        FrameLayout.LayoutParams rootParams = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        rootParams.setMargins(0, 0, 0,
+                getContext().getResources().getDimensionPixelSize(R.dimen.media_router_controller_bottom_margin));
+        rootView.setLayoutParams(rootParams);
 
         // Start the session activity when a content item (album art, title or subtitle) is clicked.
         View.OnClickListener onClickListener = v -> {
@@ -124,38 +186,107 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
             }
         };
 
-        artView = new ImageView(getContext()) {
-            @Override
-            protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-                int desiredHeight = heightMeasureSpec;
-                if (MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY) {
-                    Drawable drawable = getDrawable();
-                    if (drawable != null) {
-                        int originalWidth = MeasureSpec.getSize(widthMeasureSpec);
-                        int intrHeight = drawable.getIntrinsicHeight();
-                        int intrWidth = drawable.getIntrinsicWidth();
-                        float scale;
-                        if (intrHeight*16 > intrWidth*9) {
-                            // image is taller than 16:9
-                            scale = (float) originalWidth * 9 / 16 / intrHeight;
-                        } else {
-                            // image is more horizontal than 16:9
-                            scale = (float) originalWidth / intrWidth;
+        LinearLayout.LayoutParams artParams;
+        /*
+         * On portrait orientation, we want to limit the artView's height to 9/16 of the available
+         * width. Reason is that we need to choose the height wisely otherwise we risk the dialog
+         * being much larger than the screen, and there doesn't seem to be a good way to know the
+         * available height beforehand.
+         *
+         * On landscape orientation, we want to limit the artView's width to its available height.
+         * Otherwise, horizontal images would take too much space and severely restrict the space
+         * for episode title and play/pause button.
+         *
+         * Internal implementation of ImageView only uses the source image's aspect ratio, but we
+         * want to impose our own and fallback to the source image's when it is more favorable.
+         * Solutions were inspired, among other similar sources, on
+         * http://stackoverflow.com/questions/18077325/scale-image-to-fill-imageview-width-and-keep-aspect-ratio
+         */
+        if (landscape) {
+            artView = new ImageView(getContext()) {
+                @Override
+                protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                    int desiredWidth = widthMeasureSpec;
+                    int desiredMeasureMode = MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY ?
+                            MeasureSpec.EXACTLY : MeasureSpec.AT_MOST;
+                    if (MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.EXACTLY) {
+                        Drawable drawable = getDrawable();
+                        if (drawable != null) {
+                            int intrHeight = drawable.getIntrinsicHeight();
+                            int intrWidth = drawable.getIntrinsicWidth();
+                            int originalHeight = MeasureSpec.getSize(heightMeasureSpec);
+                            if (intrHeight < intrWidth) {
+                                desiredWidth = MeasureSpec.makeMeasureSpec(
+                                        originalHeight, desiredMeasureMode);
+                            } else {
+                                desiredWidth = MeasureSpec.makeMeasureSpec(
+                                        Math.round((float) originalHeight * intrWidth / intrHeight),
+                                        desiredMeasureMode);
+                            }
                         }
-                        desiredHeight = MeasureSpec.makeMeasureSpec((int) (intrHeight * scale + 0.5f), MeasureSpec.EXACTLY);
                     }
+                    super.onMeasure(desiredWidth, heightMeasureSpec);
                 }
+            };
+            artParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            MarginLayoutParamsCompat.setMarginStart(artParams,
+                    getContext().getResources().getDimensionPixelSize(R.dimen.media_router_controller_playback_control_horizontal_spacing));
+        } else {
+            artView = new ImageView(getContext()) {
+                @Override
+                protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                    int desiredHeight = heightMeasureSpec;
+                    if (MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY) {
+                        Drawable drawable = getDrawable();
+                        if (drawable != null) {
+                            int originalWidth = MeasureSpec.getSize(widthMeasureSpec);
+                            int intrHeight = drawable.getIntrinsicHeight();
+                            int intrWidth = drawable.getIntrinsicWidth();
+                            float scale;
+                            if (intrHeight*16 > intrWidth*9) {
+                                // image is taller than 16:9
+                                scale = (float) originalWidth * 9 / 16 / intrHeight;
+                            } else {
+                                // image is more horizontal than 16:9
+                                scale = (float) originalWidth / intrWidth;
+                            }
+                            desiredHeight = MeasureSpec.makeMeasureSpec(
+                                    Math.round(intrHeight * scale),
+                                    MeasureSpec.EXACTLY);
+                        }
+                    }
+                    super.onMeasure(widthMeasureSpec, desiredHeight);
+                }
+            };
+            artParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        // When we fetch the bitmap, we want to know if we should set a background color or not.
+        artView.setTag(landscape);
 
-                super.onMeasure(widthMeasureSpec, desiredHeight);
-            }
-        };
-        artView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
         artView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         artView.setOnClickListener(onClickListener);
 
+        artView.setLayoutParams(artParams);
         rootView.addView(artView);
-        View playbackControlLayout = View.inflate(getContext(), R.layout.media_router_controller, rootView);
+
+        ViewGroup wrapper = rootView;
+
+        if (landscape) {
+            // Here we wrap with a frame layout because we want to set different layout parameters
+            // for landscape orientation.
+            wrapper = new FrameLayout(getContext());
+            wrapper.setLayoutParams(new LinearLayout.LayoutParams(
+                    0,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+            rootView.addView(wrapper);
+            rootView.setWeightSum(1f);
+        }
+
+        View playbackControlLayout = View.inflate(getContext(), R.layout.media_router_controller, wrapper);
 
         titleView = (TextView) playbackControlLayout.findViewById(R.id.mrc_control_title);
         subtitleView = (TextView) playbackControlLayout.findViewById(R.id.mrc_control_subtitle);
@@ -179,7 +310,8 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
                     event.setPackageName(getContext().getPackageName());
                     event.setClassName(getClass().getName());
                     int resId = isPlaying ?
-                            android.support.v7.mediarouter.R.string.mr_controller_pause : android.support.v7.mediarouter.R.string.mr_controller_play;
+                            android.support.v7.mediarouter.R.string.mr_controller_pause :
+                            android.support.v7.mediarouter.R.string.mr_controller_play;
                     event.getText().add(getContext().getString(resId));
                     accessibilityManager.sendAccessibilityEvent(event);
                 }
@@ -270,14 +402,20 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     fetchArtSubscription = null;
+                    if (artView == null) {
+                        return;
+                    }
                     if (result.first != null) {
-                        artView.setBackgroundColor(result.second);
+                        if (!((Boolean) artView.getTag())) {
+                            artView.setBackgroundColor(result.second);
+                        }
                         artView.setImageBitmap(result.first);
                         artView.setVisibility(View.VISIBLE);
                     } else {
                         artView.setVisibility(View.GONE);
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+
     }
 
     private void updateState() {

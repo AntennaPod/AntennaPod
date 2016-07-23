@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="media_router_controller_playback_control_start_padding">@dimen/media_router_controller_playback_control_horizontal_spacing</dimen>
+</resources>

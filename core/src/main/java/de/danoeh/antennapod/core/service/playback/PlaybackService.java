@@ -29,6 +29,7 @@ import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v4.view.InputDeviceCompat;
 import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -41,8 +42,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -302,7 +303,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
         try {
-            for (FeedItem feedItem: taskManager.getQueue()) {
+            for (FeedItem feedItem : taskManager.getQueue()) {
                 queueItems.add(new MediaSessionCompat.QueueItem(feedItem.getMedia().getMediaItem().getDescription(), feedItem.getId()));
             }
             mediaSession.setQueue(queueItems);
@@ -345,7 +346,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     @Override
-    public BrowserRoot onGetRoot(String clientPackageName, int clientUid, Bundle rootHints) {
+    public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, Bundle rootHints) {
         Log.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName +
                 "; clientUid=" + clientUid + " ; rootHints=" + rootHints);
         return new BrowserRoot(
@@ -363,10 +364,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     @Override
-    public void onLoadChildren(String parentId,
-                               Result<List<MediaBrowserCompat.MediaItem>> result) {
+    public void onLoadChildren(@NonNull String parentId,
+                               @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
         Log.d(TAG, "OnLoadChildren: parentMediaId=" + parentId);
-        List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<MediaBrowserCompat.MediaItem>();
+        List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             // Root List
             mediaItems.add(createBrowsableMediaItemForRoot());
@@ -415,7 +416,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (keycode != -1) {
                 Log.d(TAG, "Received media button event");
                 handleKeycode(keycode, intent.getIntExtra(MediaButtonReceiver.EXTRA_SOURCE,
-                        InputDevice.SOURCE_CLASS_NONE));
+                        InputDeviceCompat.SOURCE_CLASS_NONE));
             } else if (!flavorHelper.castDisconnect(castDisconnect)) {
                 started = true;
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
@@ -1030,6 +1031,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             }
             if (!Thread.currentThread().isInterrupted() && started) {
+                mediaSession.setSessionActivity(PendingIntent.getActivity(this, 0,
+                        PlaybackService.getPlayerActivityIntent(this),
+                        PendingIntent.FLAG_UPDATE_CURRENT));
                 mediaSession.setMetadata(builder.build());
             }
         };
@@ -1176,8 +1180,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             .setShowActionsInCompactView(compactActionList.toArray())
                             .setShowCancelButton(true)
                             .setCancelButtonIntent(stopButtonPendingIntent))
-                            .setVisibility(Notification.VISIBILITY_PUBLIC)
-                            .setColor(Notification.COLOR_DEFAULT);
+                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                            .setColor(NotificationCompat.COLOR_DEFAULT);
 
                     notification = notificationBuilder.build();
 
