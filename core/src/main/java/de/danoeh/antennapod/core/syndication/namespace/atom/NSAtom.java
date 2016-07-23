@@ -28,8 +28,10 @@ public class NSAtom extends Namespace {
     private static final String LINK = "link";
     private static final String UPDATED = "updated";
     private static final String AUTHOR = "author";
+    private static final String AUTHOR_NAME = "name";
     private static final String CONTENT = "content";
-    private static final String IMAGE = "logo";
+    private static final String IMAGE_LOGO = "logo";
+    private static final String IMAGE_ICON = "icon";
     private static final String SUBTITLE = "subtitle";
     private static final String PUBLISHED = "published";
 
@@ -194,10 +196,15 @@ public class NSAtom extends Namespace {
                 state.getCurrentItem().setPubDate(DateUtils.parse(content));
             } else if (PUBLISHED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null) {
                 state.getCurrentItem().setPubDate(DateUtils.parse(content));
-            } else if (IMAGE.equals(top) && state.getFeed() != null && state.getFeed().getImage() == null) {
+            } else if (IMAGE_LOGO.equals(top) && state.getFeed() != null && state.getFeed().getImage() == null) {
                 state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
+            } else if (IMAGE_ICON.equals(top) && state.getFeed() != null) {
+                state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
+            } else if (AUTHOR.equals(second) && state.getFeed() != null) {
+                if (AUTHOR_NAME.equals(top)) {
+                    state.getFeed().setAuthor(content);
+                }
             }
         }
     }
-
 }
