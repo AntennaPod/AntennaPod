@@ -26,19 +26,19 @@ public class NSMedia extends Namespace {
 
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
-			Attributes attributes) {
+										  Attributes attributes) {
 		if (CONTENT.equals(localName)) {
 			String url = attributes.getValue(DOWNLOAD_URL);
 			String type = attributes.getValue(MIME_TYPE);
-            boolean validType;
-            if(SyndTypeUtils.enclosureTypeValid(type)) {
-                validType = true;
-            } else {
-                type = SyndTypeUtils.getValidMimeTypeFromUrl(url);
-                validType = type != null;
-            }
-            if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null &&
-                url != null && validType) {
+			boolean validType;
+			if (SyndTypeUtils.enclosureTypeValid(type)) {
+				validType = true;
+			} else {
+				type = SyndTypeUtils.getValidMimeTypeFromUrl(url);
+				validType = type != null;
+			}
+			if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null &&
+					url != null && validType) {
 				long size = 0;
 				String sizeStr = attributes.getValue(SIZE);
 				try {
@@ -51,14 +51,14 @@ public class NSMedia extends Namespace {
 				String durationStr = attributes.getValue(DURATION);
 				if (!TextUtils.isEmpty(durationStr)) {
 					try {
-                        long duration = Long.parseLong(durationStr);
+						long duration = Long.parseLong(durationStr);
 						durationMs = (int) TimeUnit.MILLISECONDS.convert(duration, TimeUnit.SECONDS);
 					} catch (NumberFormatException e) {
 						Log.e(TAG, "Duration \"" + durationStr + "\" could not be parsed");
 					}
 				}
 				FeedMedia media = new FeedMedia(state.getCurrentItem(), url, size, type);
-				if(durationMs > 0) {
+				if (durationMs > 0) {
 					media.setDuration(durationMs);
 				}
 				state.getCurrentItem().setMedia(media);
@@ -71,5 +71,4 @@ public class NSMedia extends Namespace {
 	public void handleElementEnd(String localName, HandlerState state) {
 
 	}
-
 }
