@@ -7,8 +7,10 @@ import org.xml.sax.Attributes;
 
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
+import de.danoeh.antennapod.core.syndication.namespace.atom.AtomText;
 import de.danoeh.antennapod.core.syndication.util.SyndTypeUtils;
 
 /** Processes tags from the http://search.yahoo.com/mrss/ namespace. */
@@ -27,6 +29,9 @@ public class NSMedia extends Namespace {
 
 	private static final String IMAGE = "thumbnail";
 	private static final String IMAGE_URL = "url";
+
+	private static final String DESCRIPTION = "description";
+	private static final String DESCRIPTION_TYPE = "type";
 
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
@@ -90,13 +95,22 @@ public class NSMedia extends Namespace {
 					}
 				}
 			}
+		} else if (DESCRIPTION.equals(localName)) {
+			String type = attributes.getValue(DESCRIPTION_TYPE);
+			return new AtomText(localName, this, type);
 		}
 		return new SyndElement(localName, this);
 	}
 
 	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
-
+		if (DESCRIPTION.equals(localName)) {
+			String content = state.getContentBuf().toString();
+			if (state.getCurrentItem() != null && content != null &&
+				state.getCurrentItem().getDescription() == null) {
+					state.getCurrentItem().setDescription(content);
+			}
+		}
 	}
 }
 
