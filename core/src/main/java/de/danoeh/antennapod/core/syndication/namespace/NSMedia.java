@@ -23,6 +23,7 @@ public class NSMedia extends Namespace {
 	private static final String SIZE = "fileSize";
 	private static final String MIME_TYPE = "type";
 	private static final String DURATION = "duration";
+	private static final String DEFAULT = "isDefault";
 
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
@@ -30,14 +31,21 @@ public class NSMedia extends Namespace {
 		if (CONTENT.equals(localName)) {
 			String url = attributes.getValue(DOWNLOAD_URL);
 			String type = attributes.getValue(MIME_TYPE);
+			String defaultStr = attributes.getValue(DEFAULT);
 			boolean validType;
+			boolean isDefault = false;
 			if (SyndTypeUtils.enclosureTypeValid(type)) {
 				validType = true;
 			} else {
 				type = SyndTypeUtils.getValidMimeTypeFromUrl(url);
 				validType = type != null;
 			}
-			if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null &&
+
+			if (defaultStr == "true")
+				isDefault = true;
+
+			if (state.getCurrentItem() != null &&
+					(state.getCurrentItem().getMedia() == null || isDefault) &&
 					url != null && validType) {
 				long size = 0;
 				String sizeStr = attributes.getValue(SIZE);
@@ -72,3 +80,4 @@ public class NSMedia extends Namespace {
 
 	}
 }
+
