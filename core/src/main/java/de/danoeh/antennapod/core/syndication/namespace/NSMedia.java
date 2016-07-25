@@ -41,16 +41,15 @@ public class NSMedia extends Namespace {
 			String type = attributes.getValue(MIME_TYPE);
 			String defaultStr = attributes.getValue(DEFAULT);
 			boolean validType;
-			boolean isDefault = false;
+
+			boolean isDefault = "true".equals(defaultStr);
+
 			if (SyndTypeUtils.enclosureTypeValid(type)) {
 				validType = true;
 			} else {
 				type = SyndTypeUtils.getValidMimeTypeFromUrl(url);
 				validType = type != null;
 			}
-
-			if (defaultStr == "true")
-				isDefault = true;
 
 			if (state.getCurrentItem() != null &&
 					(state.getCurrentItem().getMedia() == null || isDefault) &&
