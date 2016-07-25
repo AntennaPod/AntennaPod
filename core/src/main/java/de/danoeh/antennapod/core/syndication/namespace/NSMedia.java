@@ -25,6 +25,9 @@ public class NSMedia extends Namespace {
 	private static final String DURATION = "duration";
 	private static final String DEFAULT = "isDefault";
 
+	private static final String IMAGE = "thumbnail";
+	private static final String IMAGE_URL = "url";
+
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 										  Attributes attributes) {
@@ -70,6 +73,22 @@ public class NSMedia extends Namespace {
 					media.setDuration(durationMs);
 				}
 				state.getCurrentItem().setMedia(media);
+			}
+		} else if (IMAGE.equals(localName)) {
+			String url = attributes.getValue(IMAGE_URL);
+			if (url != null) {
+				FeedImage image = new FeedImage();
+				image.setDownload_url(url);
+
+				if (state.getCurrentItem() != null) {
+					image.setOwner(state.getCurrentItem());
+					state.getCurrentItem().setImage(image);
+				} else {
+					if (state.getFeed().getImage() == null) {
+						image.setOwner(state.getFeed());
+						state.getFeed().setImage(image);
+					}
+				}
 			}
 		}
 		return new SyndElement(localName, this);
