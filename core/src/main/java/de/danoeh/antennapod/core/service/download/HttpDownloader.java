@@ -2,13 +2,21 @@ package de.danoeh.antennapod.core.service.download;
 
 import android.text.TextUtils;
 import android.util.Log;
-
+import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Protocol;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
-
+import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.URIUtil;
+import okio.ByteString;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -23,16 +31,6 @@ import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Date;
-
-import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.FeedImage;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.core.util.URIUtil;
-import okio.ByteString;
 
 public class HttpDownloader extends Downloader {
     private static final String TAG = "HttpDownloader";
@@ -59,7 +57,8 @@ public class HttpDownloader extends Downloader {
             }
         }
 
-        OkHttpClient httpClient = AntennapodHttpClient.getHttpClient();
+        OkHttpClient httpClient = AntennapodHttpClient.newHttpClient();
+        httpClient.interceptors().add(new BasicAuthorizationInterceptor(request));
         RandomAccessFile out = null;
         InputStream connection;
         ResponseBody responseBody = null;
@@ -68,16 +67,16 @@ public class HttpDownloader extends Downloader {
             final URI uri = URIUtil.getURIFromRequestUrl(request.getSource());
             Request.Builder httpReq = new Request.Builder().url(uri.toURL())
                     .header("User-Agent", ClientConfig.USER_AGENT);
-            if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 // set header explicitly so that okhttp doesn't do transparent gzip
                 Log.d(TAG, "addHeader(\"Accept-Encoding\", \"identity\")");
                 httpReq.addHeader("Accept-Encoding", "identity");
             }
 
-            if(!TextUtils.isEmpty(request.getLastModified())) {
+            if (!TextUtils.isEmpty(request.getLastModified())) {
                 String lastModified = request.getLastModified();
                 Date lastModifiedDate = DateUtils.parse(lastModified);
-                if(lastModifiedDate != null) {
+                if (lastModifiedDate != null) {
                     long threeDaysAgo = System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 3;
                     if (lastModifiedDate.getTime() > threeDaysAgo) {
                         Log.d(TAG, "addHeader(\"If-Modified-Since\", \"" + lastModified + "\")");
@@ -89,19 +88,6 @@ public class HttpDownloader extends Downloader {
                 }
             }
 
-            // add authentication information
-            String userInfo = uri.getUserInfo();
-            if (userInfo != null) {
-                String[] parts = userInfo.split(":");
-                if (parts.length == 2) {
-                    String credentials = encodeCredentials(parts[0], parts[1], "ISO-8859-1");
-                    httpReq.header("Authorization", credentials);
-                }
-            } else if (!TextUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
-                String credentials = encodeCredentials(request.getUsername(), request.getPassword(),
-                        "ISO-8859-1");
-                httpReq.header("Authorization", credentials);
-            }
 
             // add range header if necessary
             if (fileExists) {
@@ -111,15 +97,15 @@ public class HttpDownloader extends Downloader {
             }
 
             Response response;
+
             try {
                 response = httpClient.newCall(httpReq.build()).execute();
-            } catch(IOException e) {
+            } catch (IOException e) {
                 Log.e(TAG, e.toString());
-                if(e.getMessage().contains("PROTOCOL_ERROR")) {
+                if (e.getMessage().contains("PROTOCOL_ERROR")) {
                     httpClient.setProtocols(Collections.singletonList(Protocol.HTTP_1_1));
                     response = httpClient.newCall(httpReq.build()).execute();
-                }
-                else {
+                } else {
                     throw e;
                 }
             }
@@ -127,34 +113,13 @@ public class HttpDownloader extends Downloader {
             responseBody = response.body();
             String contentEncodingHeader = response.header("Content-Encoding");
             boolean isGzip = false;
-            if(!TextUtils.isEmpty(contentEncodingHeader)) {
+            if (!TextUtils.isEmpty(contentEncodingHeader)) {
                 isGzip = TextUtils.equals(contentEncodingHeader.toLowerCase(), "gzip");
             }
 
             Log.d(TAG, "Response code is " + response.code());
 
-            if(!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                Log.d(TAG, "Authorization failed, re-trying with UTF-8 encoding");
-                if (userInfo != null) {
-                    String[] parts = userInfo.split(":");
-                    if (parts.length == 2) {
-                        String credentials = encodeCredentials(parts[0], parts[1], "UTF-8");
-                        httpReq.header("Authorization", credentials);
-                    }
-                } else if (!TextUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
-                    String credentials = encodeCredentials(request.getUsername(), request.getPassword(),
-                            "UTF-8");
-                    httpReq.header("Authorization", credentials);
-                }
-                response = httpClient.newCall(httpReq.build()).execute();
-                responseBody = response.body();
-                contentEncodingHeader = response.header("Content-Encoding");
-                if(!TextUtils.isEmpty(contentEncodingHeader)) {
-                    isGzip = TextUtils.equals(contentEncodingHeader.toLowerCase(), "gzip");
-                }
-            }
-
-            if(!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_MODIFIED) {
+            if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_MODIFIED) {
                 Log.d(TAG, "Feed '" + request.getSource() + "' not modified since last update, Download canceled");
                 onCancelled();
                 return;
@@ -166,7 +131,7 @@ public class HttpDownloader extends Downloader {
                 if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     error = DownloadError.ERROR_UNAUTHORIZED;
                     details = String.valueOf(response.code());
-                } else if(response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
+                } else if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
                     error = DownloadError.ERROR_FORBIDDEN;
                     details = String.valueOf(response.code());
                 } else {
@@ -184,18 +149,19 @@ public class HttpDownloader extends Downloader {
 
             // fail with a file type error when the content type is text and
             // the reported content length is less than 100kb (or no length is given)
-            if(request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 int contentLength = -1;
                 String contentLen = response.header("Content-Length");
-                if(contentLen != null) {
+                if (contentLen != null) {
                     try {
                         contentLength = Integer.parseInt(contentLen);
-                    } catch(NumberFormatException e) {}
+                    } catch (NumberFormatException e) {
+                    }
                 }
                 Log.d(TAG, "content length: " + contentLength);
                 String contentType = response.header("Content-Type");
                 Log.d(TAG, "content type: " + contentType);
-                if(contentType != null && contentType.startsWith("text/") &&
+                if (contentType != null && contentType.startsWith("text/") &&
                         contentLength < 100 * 1024) {
                     onFail(DownloadError.ERROR_FILE_TYPE, null);
                     return;
@@ -244,10 +210,10 @@ public class HttpDownloader extends Downloader {
                 while (!cancelled && (count = connection.read(buffer)) != -1) {
                     out.write(buffer, 0, count);
                     request.setSoFar(request.getSoFar() + count);
-                    int progressPercent = (int)(100.0 * request.getSoFar() / request.getSize());
+                    int progressPercent = (int) (100.0 * request.getSoFar() / request.getSize());
                     request.setProgressPercent(progressPercent);
                 }
-            } catch(IOException e) {
+            } catch (IOException e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
             if (cancelled) {
@@ -260,12 +226,12 @@ public class HttpDownloader extends Downloader {
                     onFail(DownloadError.ERROR_IO_ERROR, "Download completed but size: " +
                             request.getSoFar() + " does not equal expected size " + request.getSize());
                     return;
-                } else if(request.getSize() > 0 && request.getSoFar() == 0){
+                } else if (request.getSize() > 0 && request.getSoFar() == 0) {
                     onFail(DownloadError.ERROR_IO_ERROR, "Download completed, but nothing was read");
                     return;
                 }
                 String lastModified = response.header("Last-Modified");
-                if(lastModified != null) {
+                if (lastModified != null) {
                     request.setLastModified(lastModified);
                 } else {
                     request.setLastModified(response.header("ETag"));
@@ -325,7 +291,7 @@ public class HttpDownloader extends Downloader {
             if (dest.exists()) {
                 boolean rc = dest.delete();
                 Log.d(TAG, "Deleted file " + dest.getName() + "; Result: "
-                            + rc);
+                        + rc);
             } else {
                 Log.d(TAG, "cleanup() didn't delete file: does not exist.");
             }
@@ -341,6 +307,64 @@ public class HttpDownloader extends Downloader {
         } catch (UnsupportedEncodingException e) {
             throw new AssertionError();
         }
+    }
+
+    private class BasicAuthorizationInterceptor implements Interceptor {
+
+        private DownloadRequest downloadRequest;
+
+        public BasicAuthorizationInterceptor(DownloadRequest downloadRequest) {
+            this.downloadRequest = downloadRequest;
+        }
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            String userInfo = URIUtil.getURIFromRequestUrl(downloadRequest.getSource()).getUserInfo();
+
+            Response response = chain.proceed(request);
+
+            if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) {
+                return response;
+            }
+
+            Request.Builder newRequest = request.newBuilder();
+
+            Log.d(TAG, "Authorization failed, re-trying with ISO-8859-1 encoded credentials");
+            if (userInfo != null) {
+                String[] parts = userInfo.split(":");
+                if (parts.length == 2) {
+                    String credentials = encodeCredentials(parts[0], parts[1], "ISO-8859-1");
+                    newRequest.header("Authorization", credentials);
+                }
+            } else if (!TextUtils.isEmpty(downloadRequest.getUsername()) && downloadRequest.getPassword() != null) {
+                String credentials = encodeCredentials(downloadRequest.getUsername(), downloadRequest.getPassword(),
+                        "ISO-8859-1");
+                newRequest.header("Authorization", credentials);
+            }
+
+            response = chain.proceed(newRequest.build());
+
+            if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) {
+                return response;
+            }
+
+            Log.d(TAG, "Authorization failed, re-trying with UTF-8 encoded credentials");
+            if (userInfo != null) {
+                String[] parts = userInfo.split(":");
+                if (parts.length == 2) {
+                    String credentials = encodeCredentials(parts[0], parts[1], "UTF-8");
+                    newRequest.header("Authorization", credentials);
+                }
+            } else if (!TextUtils.isEmpty(downloadRequest.getUsername()) && downloadRequest.getPassword() != null) {
+                String credentials = encodeCredentials(downloadRequest.getUsername(), downloadRequest.getPassword(),
+                        "UTF-8");
+                newRequest.header("Authorization", credentials);
+            }
+
+            return chain.proceed(newRequest.build());
+        }
+
     }
 
 }
