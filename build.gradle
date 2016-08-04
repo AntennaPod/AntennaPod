@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:1.5.0"
+        classpath 'com.android.tools.build:gradle:2.1.2'
         classpath "me.tatarka:gradle-retrolambda:3.2.4"
         classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
         classpath 'com.github.triplet.gradle:play-publisher:1.1.4'
@@ -38,7 +38,7 @@ subprojects {
 
 project.ext {
     compileSdkVersion = 23
-    buildToolsVersion = "23.0.2"
+    buildToolsVersion = "23.0.3"
     minSdkVersion = 10
     targetSdkVersion = 23
 
@@ -49,16 +49,16 @@ project.ext {
     flattr4jVersion = "2.13"
     glideVersion = "3.7.0"
     glideOkhttpIntegrationVersion = "1.4.0"
-    iconifyVersion = "2.2.1"
-    jsoupVersion = "1.7.3"
+    iconifyVersion = "2.2.2"
+    jsoupVersion = "1.9.2"
     materialDialogsVersion = "0.8.5.6@aar"
     okhttpVersion = "2.7.5"
-    okioVersion = "1.6.0"
+    okioVersion = "1.9.0"
     recyclerviewFlexibledividerVersion = "1.2.6"
-    robotiumSoloVersion = "5.5.3"
-    rxAndroidVersion = "1.1.0"
-    rxJavaVersion = "1.1.0"
-    rxJavaRulesVersion = "1.1.0.0"
+    robotiumSoloVersion = "5.6.0"
+    rxAndroidVersion = "1.2.1"
+    rxJavaVersion = "1.1.8"
+    rxJavaRulesVersion = "1.1.8.0"
     triangleLabelViewVersion = "1.1.0"
 
     audioPlayerVersion = "v1.0.16"
@@ -68,7 +68,7 @@ project.ext {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "2.11"
+    gradleVersion = "2.14.1"
 }
 
 // free build hack: common functions
