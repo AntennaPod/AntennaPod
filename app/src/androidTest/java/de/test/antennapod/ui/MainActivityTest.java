@@ -138,7 +138,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         ListView list = (ListView) solo.getView(R.id.nav_list);
         for (int i = 0; i < uiTestUtils.hostedFeeds.size(); i++) {
             Feed f = uiTestUtils.hostedFeeds.get(i);
-            solo.clickOnScreen(50, 50); // open nav drawer
+            openNavDrawer();
             solo.scrollListToLine(list, i);
             solo.clickOnText(f.getTitle());
             solo.waitForView(android.R.id.list);
