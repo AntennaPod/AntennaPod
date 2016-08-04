@@ -13,6 +13,7 @@ import org.antennapod.audio.MediaPlayer;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -140,10 +141,13 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 }
                 // set temporarily to pause in order to update list with current position
                 if (playerStatus == PlayerStatus.PLAYING) {
-                    setPlayerStatus(PlayerStatus.PAUSED, media);
+                    callback.onPlaybackPause(media, getPosition());
                 }
 
-                smartMarkAsPlayed(media);
+                if (!media.getIdentifier().equals(playable.getIdentifier())) {
+                    final Playable oldMedia = media;
+                    executor.submit(() -> callback.onPostPlayback(oldMedia, false, true));
+                }
 
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             }
@@ -199,6 +203,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     audioFocusChangeListener, AudioManager.STREAM_MUSIC,
                     AudioManager.AUDIOFOCUS_GAIN);
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                Log.d(TAG, "Audiofocus successfully requested");
+                Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
                 float speed = 1.0f;
                 try {
@@ -220,8 +226,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
                 setPlayerStatus(PlayerStatus.PLAYING, media);
                 pausedBecauseOfTransientAudiofocusLoss = false;
-                media.onPlaybackStart();
-
             } else {
                 Log.e(TAG, "Failed to request audio focus");
             }
@@ -249,7 +253,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             if (playerStatus == PlayerStatus.PLAYING) {
                 Log.d(TAG, "Pausing playback.");
                 mediaPlayer.pause();
-                setPlayerStatus(PlayerStatus.PAUSED, media);
+                setPlayerStatus(PlayerStatus.PAUSED, media, getPosition());
 
                 if (abandonFocus) {
                     audioManager.abandonAudioFocus(audioFocusChangeListener);
@@ -311,11 +315,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
         }
 
+        // TODO this call has no effect!
         if (media.getPosition() > 0) {
             seekToSync(media.getPosition());
         }
 
-        if (media.getDuration() == 0) {
+        if (media.getDuration() <= 0) {
             Log.d(TAG, "Setting duration of media");
             media.setDuration(mediaPlayer.getDuration());
         }
@@ -367,10 +372,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if (playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
-            if (!stream) {
-                statusBeforeSeeking = playerStatus;
-                setPlayerStatus(PlayerStatus.SEEKING, media);
-            }
             if(seekLatch != null && seekLatch.getCount() > 0) {
                 try {
                     seekLatch.await(3, TimeUnit.SECONDS);
@@ -379,6 +380,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 }
             }
             seekLatch = new CountDownLatch(1);
+            statusBeforeSeeking = playerStatus;
+            setPlayerStatus(PlayerStatus.SEEKING, media, getPosition());
             mediaPlayer.seekTo(t);
             try {
                 seekLatch.await(3, TimeUnit.SECONDS);
@@ -752,8 +755,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
 
     @Override
-    public void endPlayback(final boolean wasSkipped, boolean switchingPlayers) {
-        executor.submit(() -> {
+    protected Future<?> endPlayback(final boolean wasSkipped, final boolean shouldContinue, final boolean toStoppedState) {
+        return executor.submit(() -> {
             playerLock.lock();
             releaseWifiLockIfNecessary();
 
@@ -762,13 +765,58 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             if (playerStatus != PlayerStatus.INDETERMINATE) {
                 setPlayerStatus(PlayerStatus.INDETERMINATE, media);
             }
+            // we're relying on the position stored in the Playable object for post-playback processing
+            if (media != null) {
+                int position = getPosition();
+                if (position >= 0) {
+                    media.setPosition(position);
+                }
+            }
+
             if (mediaPlayer != null) {
                 mediaPlayer.reset();
-
             }
             audioManager.abandonAudioFocus(audioFocusChangeListener);
-            callback.endPlayback(media, isPlaying, wasSkipped, switchingPlayers);
 
+            final Playable currentMedia = media;
+            Playable nextMedia = null;
+
+            if (shouldContinue) {
+                // Load next episode if previous episode was in the queue and if there
+                // is an episode in the queue left.
+                // Start playback immediately if continuous playback is enabled
+                nextMedia = callback.getNextInQueue(currentMedia);
+
+                boolean playNextEpisode = isPlaying &&
+                        nextMedia != null &&
+                        UserPreferences.isFollowQueue();
+
+                if (playNextEpisode) {
+                    Log.d(TAG, "Playback of next episode will start immediately.");
+                } else if (nextMedia == null){
+                    Log.d(TAG, "No more episodes available to play");
+                } else {
+                    Log.d(TAG, "Loading next episode, but not playing automatically.");
+                }
+
+                if (nextMedia != null) {
+                    callback.onPlaybackEnded(nextMedia.getMediaType(), !playNextEpisode);
+                    // setting media to null signals to playMediaObject() that we're taking care of post-playback processing
+                    media = null;
+                    playMediaObject(nextMedia, false, !nextMedia.localFileAvailable(), playNextEpisode, playNextEpisode);
+                }
+            }
+            if (shouldContinue || toStoppedState) {
+                if (nextMedia == null) {
+                    callback.onPlaybackEnded(null, true);
+                    stop();
+                }
+                final boolean hasNext = nextMedia != null;
+
+                executor.submit(() -> callback.onPostPlayback(currentMedia, !wasSkipped, hasNext));
+            } else if (isPlaying) {
+                callback.onPlaybackPause(currentMedia, currentMedia.getPosition());
+            }
             playerLock.unlock();
         });
     }
@@ -779,8 +827,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * This method will only take care of changing the PlayerStatus of this object! Other tasks like
      * abandoning audio focus have to be done with other methods.
      */
-    @Override
-    public void stop() {
+    private void stop() {
         executor.submit(() -> {
             playerLock.lock();
             releaseWifiLockIfNecessary();
@@ -833,7 +880,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mp -> genericOnCompletion();
 
     private void genericOnCompletion() {
-        endPlayback(false, false);
+        endPlayback(false, true, true);
     }
 
     private final MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =
@@ -889,8 +936,11 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 seekLatch.countDown();
             }
             playerLock.lock();
+            if (playerStatus == PlayerStatus.PLAYING) {
+                callback.onPlaybackStart(media, getPosition());
+            }
             if (playerStatus == PlayerStatus.SEEKING) {
-                setPlayerStatus(statusBeforeSeeking, media);
+                setPlayerStatus(statusBeforeSeeking, media, getPosition());
             }
             playerLock.unlock();
         });

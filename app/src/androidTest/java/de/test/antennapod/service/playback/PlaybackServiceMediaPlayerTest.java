@@ -1,6 +1,8 @@
 package de.test.antennapod.service.playback;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.test.InstrumentationTestCase;
 
 import junit.framework.AssertionFailedError;
@@ -20,6 +22,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.LocalPSMP;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -112,7 +115,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
     public void testInit() {
         final Context c = getInstrumentation().getTargetContext();
-        PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, defaultCallback);
+        PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, new DefaultPSMPCallback());
         psmp.shutdown();
     }
 
@@ -138,7 +141,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectStreamNoStartNoPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
@@ -159,47 +162,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                         assertionError = e;
                 }
             }
-
-            @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
-            }
-
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
@@ -217,7 +179,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectStreamStartNoPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
@@ -237,46 +199,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                     if (assertionError == null)
                         assertionError = e;
                 }
-            }
-
-            @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -296,7 +218,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectStreamNoStartPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(4);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
@@ -320,46 +242,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                         assertionError = e;
                 }
             }
-
-            @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
@@ -376,7 +258,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectStreamStartPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(5);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
@@ -403,47 +285,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                         assertionError = e;
                 }
             }
-
-            @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
-            }
-
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
@@ -459,7 +300,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectLocalNoStartNoPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
@@ -480,47 +321,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                         assertionError = e;
                 }
             }
-
-            @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
-            }
-
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
@@ -537,7 +337,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectLocalStartNoPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
@@ -557,46 +357,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                     if (assertionError == null)
                         assertionError = e;
                 }
-            }
-
-            @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
             }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
@@ -614,7 +374,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectLocalNoStartPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(4);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
@@ -638,46 +398,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                         assertionError = e;
                 }
             }
-
-            @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
@@ -693,7 +413,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     public void testPlayMediaObjectLocalStartPrepare() throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final CountDownLatch countDownLatch = new CountDownLatch(5);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 try {
@@ -721,46 +441,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                     countDownLatch.countDown();
                 }
             }
-
-            @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
-            public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-                return false;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
@@ -773,58 +453,12 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         psmp.shutdown();
     }
 
-
-    private final PlaybackServiceMediaPlayer.PSMPCallback defaultCallback = new PlaybackServiceMediaPlayer.PSMPCallback() {
-        @Override
-        public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
-            checkPSMPInfo(newInfo);
-        }
-
-        @Override
-        public void shouldStop() {
-
-        }
-
-        @Override
-        public void playbackSpeedChanged(float s) {
-
-        }
-
-        @Override
-        public void setSpeedAbilityChanged() {
-
-        }
-
-        @Override
-        public void onMediaChanged(boolean reloadUI) {
-
-        }
-
-        @Override
-        public void onBufferingUpdate(int percent) {
-
-        }
-
-        @Override
-        public boolean onMediaPlayerInfo(int code, int resourceId) { return false; }
-
-        @Override
-        public boolean onMediaPlayerError(Object inObj, int what, int extra) {
-            return false;
-        }
-
-        @Override
-        public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
-            return false;
-        }
-    };
-
     private void pauseTestSkeleton(final PlayerStatus initialState, final boolean stream, final boolean abandonAudioFocus, final boolean reinit, long timeoutSeconds) throws InterruptedException {
         final Context c = getInstrumentation().getTargetContext();
         final int latchCount = (stream && reinit) ? 2 : 1;
         final CountDownLatch countDownLatch = new CountDownLatch(latchCount);
 
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
@@ -864,39 +498,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
             public boolean onMediaPlayerError(Object inObj, int what, int extra) {
                 if (assertionError == null)
                     assertionError = new AssertionFailedError("Unexpected call to onMediaPlayerError");
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -955,7 +559,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 (initialState == PlayerStatus.PREPARED) ? 1 : 0;
         final CountDownLatch countDownLatch = new CountDownLatch(latchCount);
 
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
@@ -974,45 +578,10 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
             public boolean onMediaPlayerError(Object inObj, int what, int extra) {
                 if (assertionError == null) {
                     assertionError = new AssertionFailedError("Unexpected call of onMediaPlayerError");
                 }
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -1048,7 +617,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final Context c = getInstrumentation().getTargetContext();
         final int latchCount = 1;
         final CountDownLatch countDownLatch = new CountDownLatch(latchCount);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
@@ -1062,48 +631,12 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                         countDownLatch.countDown();
                     }
                 }
-
-            }
-
-            @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
             }
 
             @Override
             public boolean onMediaPlayerError(Object inObj, int what, int extra) {
                 if (assertionError == null)
                     assertionError = new AssertionFailedError("Unexpected call to onMediaPlayerError");
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -1153,7 +686,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final Context c = getInstrumentation().getTargetContext();
         final int latchCount = 2;
         final CountDownLatch countDownLatch = new CountDownLatch(latchCount);
-        PlaybackServiceMediaPlayer.PSMPCallback callback = new PlaybackServiceMediaPlayer.PSMPCallback() {
+        PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
             public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
@@ -1170,44 +703,9 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void shouldStop() {
-
-            }
-
-            @Override
-            public void playbackSpeedChanged(float s) {
-
-            }
-
-            @Override
-            public void setSpeedAbilityChanged() {
-
-            }
-
-            @Override
-            public void onMediaChanged(boolean reloadUI) {
-
-            }
-
-            @Override
-            public void onBufferingUpdate(int percent) {
-
-            }
-
-            @Override
-            public boolean onMediaPlayerInfo(int code, int resourceId) {
-                return false;
-            }
-
-            @Override
             public boolean onMediaPlayerError(Object inObj, int what, int extra) {
                 if (assertionError == null)
                     assertionError = new AssertionFailedError("Unexpected call to onMediaPlayerError");
-                return false;
-            }
-
-            @Override
-            public boolean endPlayback(Playable p, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers) {
                 return false;
             }
         };
@@ -1246,6 +744,73 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     private static class UnexpectedStateChange extends AssertionFailedError {
         public UnexpectedStateChange(PlayerStatus status) {
             super("Unexpected state change: " + status);
+        }
+    }
+
+    private class DefaultPSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallback {
+        @Override
+        public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+
+        }
+
+        @Override
+        public void shouldStop() {
+
+        }
+
+        @Override
+        public void playbackSpeedChanged(float s) {
+
+        }
+
+        @Override
+        public void setSpeedAbilityChanged() {
+
+        }
+
+        @Override
+        public void onBufferingUpdate(int percent) {
+
+        }
+
+        @Override
+        public void onMediaChanged(boolean reloadUI) {
+
+        }
+
+        @Override
+        public boolean onMediaPlayerInfo(int code, @StringRes int resourceId) {
+            return false;
+        }
+
+        @Override
+        public boolean onMediaPlayerError(Object inObj, int what, int extra) {
+            return false;
+        }
+
+        @Override
+        public void onPostPlayback(@NonNull Playable media, boolean ended, boolean playingNext) {
+
+        }
+
+        @Override
+        public void onPlaybackStart(@NonNull Playable playable, int position) {
+
+        }
+
+        @Override
+        public void onPlaybackPause(Playable playable, int position) {
+
+        }
+
+        @Override
+        public Playable getNextInQueue(Playable currentMedia) {
+            return null;
+        }
+
+        @Override
+        public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+
         }
     }
 }

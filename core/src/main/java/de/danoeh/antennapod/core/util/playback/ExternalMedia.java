@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util.playback;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.MediaMetadataRetriever;
@@ -205,7 +206,12 @@ public class ExternalMedia implements Playable {
 	}
 
 	@Override
-	public void onPlaybackCompleted() {
+	public void onPlaybackPause(Context context) {
+
+	}
+
+	@Override
+	public void onPlaybackCompleted(Context context) {
 
 	}
 

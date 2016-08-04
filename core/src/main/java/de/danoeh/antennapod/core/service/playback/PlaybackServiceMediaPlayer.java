@@ -8,11 +8,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import java.util.concurrent.Future;
+
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 
@@ -130,13 +128,6 @@ public abstract class PlaybackServiceMediaPlayer {
     public abstract void seekDelta(int d);
 
     /**
-     * Seek to the start of the specified chapter.
-     */
-    public void seekToChapter(@NonNull Chapter c) {
-        seekTo((int) c.getStart());
-    }
-
-    /**
      * Returns the duration of the current media object or INVALID_TIME if the duration could not be retrieved.
      */
     public abstract int getDuration();
@@ -236,15 +227,44 @@ public abstract class PlaybackServiceMediaPlayer {
 
     protected abstract void setPlayable(Playable playable);
 
-    public abstract void endPlayback(boolean wasSkipped, boolean switchingPlayers);
+    public void skip() {
+        endPlayback(true, true, true);
+    }
 
     /**
-     * Moves the PSMP into STOPPED state. This call is only valid if the player is currently in
-     * INDETERMINATE state, for example after a call to endPlayback.
-     * This method will only take care of changing the PlayerStatus of this object! Other tasks like
-     * abandoning audio focus have to be done with other methods.
+     * Ends playback of current media (if any) and moves into INDETERMINATE state, unless
+     * {@param toStoppedState} is set to true, in which case it moves into STOPPED state.
+     *
+     * @see #endPlayback(boolean, boolean, boolean)
      */
-    public abstract void stop();
+    public Future<?> stopPlayback(boolean toStoppedState) {
+        return endPlayback(true, false, toStoppedState);
+    }
+
+    /**
+     * Internal method that handles end of playback.
+     *
+     * Currently, it has 4 use cases:
+     * <ul>
+     * <li>Media playback has completed: call with (false, true, true)</li>
+     * <li>User asks to skip to next episode: call with (true, true, true)</li>
+     * <li>Stopping the media player: call with (true, false, true)</li>
+     * <li>We want to change the media player implementation: call with (true, false, false)</li>
+     * </ul>
+     *
+     * @param wasSkipped       If true, we assume the current media's playback has ended, for
+     *                         purposes of post playback processing.
+     * @param shouldContinue   If true, the media player should try to load, and possibly play,
+     *                         the next item, based on the user preferences and whether such item
+     *                         exists.
+     * @param toStoppedState   If true, the playback state gets set to STOPPED if the media player
+     *                         is not loading/playing after this call, and the UI will reflect that.
+     *                         Only relevant if {@param shouldContinue} is set to false, otherwise
+     *                         this method's behavior defaults as if this parameter was true.
+     *
+     * @return a Future, just for the purpose of tracking its execution.
+     */
+    protected abstract Future<?> endPlayback(boolean wasSkipped, boolean shouldContinue, boolean toStoppedState);
 
     /**
      * @return {@code true} if the WifiLock feature should be used, {@code false} otherwise.
@@ -274,41 +294,39 @@ public abstract class PlaybackServiceMediaPlayer {
      * <p/>
      * This method will notify the callback about the change of the player status (even if the new status is the same
      * as the old one).
+     * <p/>
+     * It will also call {@link PSMPCallback#onPlaybackPause(Playable, int)} or {@link PSMPCallback#onPlaybackStart(Playable, int)}
+     * depending on the status change.
      *
      * @param newStatus The new PlayerStatus. This must not be null.
      * @param newMedia  The new playable object of the PSMP object. This can be null.
+     * @param position  The position to be set to the current Playable object in case playback started or paused.
+     *                  Will be ignored if given the value of {@link #INVALID_TIME}.
      */
-    protected final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
+    protected final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia, int position) {
         Log.d(TAG, this.getClass().getSimpleName() + ": Setting player status to " + newStatus);
+
+        PlayerStatus oldStatus = playerStatus;
 
         this.playerStatus = newStatus;
         setPlayable(newMedia);
 
-        if (playerStatus != null) {
-            Log.d(TAG, "playerStatus: " + playerStatus.toString());
+        if (newMedia != null && newStatus != PlayerStatus.INDETERMINATE) {
+            if (oldStatus == PlayerStatus.PLAYING && newStatus != PlayerStatus.PLAYING) {
+                callback.onPlaybackPause(newMedia, position);
+            } else if (oldStatus != PlayerStatus.PLAYING && newStatus == PlayerStatus.PLAYING) {
+                callback.onPlaybackStart(newMedia, position);
+            }
         }
 
         callback.statusChanged(new PSMPInfo(playerStatus, getPlayable()));
     }
 
-    protected void smartMarkAsPlayed(Playable media) {
-        if(media != null && media instanceof FeedMedia) {
-            FeedMedia oldMedia = (FeedMedia) media;
-            if(oldMedia.hasAlmostEnded()) {
-                Log.d(TAG, "smart mark as read");
-                FeedItem item = oldMedia.getItem();
-                if (item == null) {
-                    return;
-                }
-                DBWriter.markItemPlayed(item, FeedItem.PLAYED, false);
-                DBWriter.removeQueueItem(context, item, false);
-                DBWriter.addItemToPlaybackHistory(oldMedia);
-                if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                    Log.d(TAG, "Delete " + oldMedia.toString());
-                    DBWriter.deleteFeedMediaOfItem(context, oldMedia.getId());
-                }
-            }
-        }
+    /**
+     * @see #setPlayerStatus(PlayerStatus, Playable, int)
+     */
+    protected final void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
+        setPlayerStatus(newStatus, newMedia, INVALID_TIME);
     }
 
     public interface PSMPCallback {
@@ -328,7 +346,15 @@ public abstract class PlaybackServiceMediaPlayer {
 
         boolean onMediaPlayerError(Object inObj, int what, int extra);
 
-        boolean endPlayback(Playable media, boolean playNextEpisode, boolean wasSkipped, boolean switchingPlayers);
+        void onPostPlayback(@NonNull Playable media, boolean ended, boolean playingNext);
+
+        void onPlaybackStart(@NonNull Playable playable, int position);
+
+        void onPlaybackPause(Playable playable, int position);
+
+        Playable getNextInQueue(Playable currentMedia);
+
+        void onPlaybackEnded(MediaType mediaType, boolean stopPlaying);
     }
 
     /**

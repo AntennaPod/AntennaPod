@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.libraries.cast.companionlibrary.cast.BaseCastManager;
 
+import java.util.concurrent.ExecutionException;
+
 import de.danoeh.antennapod.core.cast.CastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
@@ -108,7 +110,7 @@ public class PlaybackServiceFlavorHelper {
                 // to the latest position.
                 PlaybackServiceMediaPlayer mediaPlayer = callback.getMediaPlayer();
                 if (mediaPlayer != null) {
-                    callback.saveCurrentPosition(false, 0);
+                    callback.saveCurrentPosition(true, null, PlaybackServiceMediaPlayer.INVALID_TIME);
                     infoBeforeCastDisconnection = mediaPlayer.getPSMPInfo();
                     if (reason != BaseCastManager.DISCONNECT_REASON_EXPLICIT &&
                             infoBeforeCastDisconnection.playerStatus == PlayerStatus.PLAYING) {
@@ -160,7 +162,7 @@ public class PlaybackServiceFlavorHelper {
                 // could be pause, but this way we make sure the new player will get the correct position,
                 // since pause runs asynchronously and we could be directing the new player to play even before
                 // the old player gives us back the position.
-                callback.saveCurrentPosition(false, 0);
+                callback.saveCurrentPosition(true, null, PlaybackServiceMediaPlayer.INVALID_TIME);
             }
         }
         if (info == null) {
@@ -182,7 +184,11 @@ public class PlaybackServiceFlavorHelper {
                                    boolean wasLaunched) {
         PlaybackServiceMediaPlayer mediaPlayer = callback.getMediaPlayer();
         if (mediaPlayer != null) {
-            mediaPlayer.endPlayback(true, true);
+            try {
+                mediaPlayer.stopPlayback(false).get();
+            } catch (InterruptedException | ExecutionException e) {
+                Log.e(TAG, "There was a problem stopping playback while switching media players", e);
+            }
             mediaPlayer.shutdownQuietly();
         }
         mediaPlayer = newPlayer;

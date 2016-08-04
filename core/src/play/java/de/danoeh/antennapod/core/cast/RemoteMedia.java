@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.cast;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Parcel;
@@ -255,7 +256,12 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public void onPlaybackCompleted() {
+    public void onPlaybackPause(Context context) {
+        // no-op
+    }
+
+    @Override
+    public void onPlaybackCompleted(Context context) {
         // no-op
     }
 
