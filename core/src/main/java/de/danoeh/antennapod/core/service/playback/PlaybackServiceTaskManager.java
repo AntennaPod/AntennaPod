@@ -299,7 +299,8 @@ public class PlaybackServiceTaskManager {
         private static final String TAG = "SleepTimer";
         private static final long UPDATE_INTERVAL = 1000L;
         private static final long NOTIFICATION_THRESHOLD = 10000;
-        private long waitingTime;
+        private final long waitingTime;
+        private long timeLeft;
         private final boolean shakeToReset;
         private final boolean vibrate;
         private ShakeListener shakeListener;
@@ -307,6 +308,7 @@ public class PlaybackServiceTaskManager {
         public SleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
             super();
             this.waitingTime = waitingTime;
+            this.timeLeft = waitingTime;
             this.shakeToReset = shakeToReset;
             this.vibrate = vibrate;
         }
@@ -316,14 +318,14 @@ public class PlaybackServiceTaskManager {
             Log.d(TAG, "Starting");
             boolean notifiedAlmostExpired = false;
             long lastTick = System.currentTimeMillis();
-            while (waitingTime > 0) {
+            while (timeLeft > 0) {
                 try {
                     Thread.sleep(UPDATE_INTERVAL);
                     long now = System.currentTimeMillis();
-                    waitingTime -= now - lastTick;
+                    timeLeft -= now - lastTick;
                     lastTick = now;
 
-                    if(waitingTime < NOTIFICATION_THRESHOLD && !notifiedAlmostExpired) {
+                    if(timeLeft < NOTIFICATION_THRESHOLD && !notifiedAlmostExpired) {
                         Log.d(TAG, "Sleep timer is about to expire");
                         if(vibrate) {
                             Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -337,7 +339,7 @@ public class PlaybackServiceTaskManager {
                         callback.onSleepTimerAlmostExpired();
                         notifiedAlmostExpired = true;
                     }
-                    if (waitingTime <= 0) {
+                    if (timeLeft <= 0) {
                         Log.d(TAG, "Sleep timer expired");
                         if(shakeListener != null) {
                             shakeListener.pause();
@@ -358,11 +360,11 @@ public class PlaybackServiceTaskManager {
         }
 
         public long getWaitingTime() {
-            return waitingTime;
+            return timeLeft;
         }
 
         public void onShake() {
-            setSleepTimer(15 * 60 * 1000, shakeToReset, vibrate);
+            setSleepTimer(waitingTime, shakeToReset, vibrate);
             callback.onSleepTimerReset();
             shakeListener.pause();
             shakeListener = null;
