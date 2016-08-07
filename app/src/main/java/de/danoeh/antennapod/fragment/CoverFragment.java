@@ -33,22 +33,15 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
 
     public static CoverFragment newInstance(Playable item) {
         CoverFragment f = new CoverFragment();
-        if (item != null) {
-            Bundle args = new Bundle();
-            args.putParcelable(ARG_PLAYABLE, item);
-            f.setArguments(args);
-        }
+        f.media = item;
         return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null) {
-            media = args.getParcelable(ARG_PLAYABLE);
-        } else {
-            Log.e(TAG, TAG + " was called with invalid arguments");
+        if (media == null) {
+            Log.e(TAG, TAG + " was called without media");
         }
     }
 
@@ -98,11 +91,13 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
 
     @Override
     public void onMediaChanged(Playable media) {
-        if(!isAdded() || this.media == media) {
+        if(this.media == media) {
             return;
         }
         this.media = media;
-        loadMediaInfo();
+        if (isAdded()) {
+            loadMediaInfo();
+        }
     }
 
 }
