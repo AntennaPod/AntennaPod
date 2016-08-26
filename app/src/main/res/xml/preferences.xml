@@ -110,6 +110,12 @@
             android:summary="@string/pref_hardwareForwardButtonSkips_sum"
             android:title="@string/pref_hardwareForwardButtonSkips_title"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefHardwarePreviousButtonRestarts"
+            android:summary="@string/pref_hardwarePreviousButtonRestarts_sum"
+            android:title="@string/pref_hardwarePreviousButtonRestarts_title"/>
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefFollowQueue"
