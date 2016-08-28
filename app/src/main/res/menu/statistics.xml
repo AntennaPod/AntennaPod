@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/calculation_type"
+        android:icon="?attr/ic_filter"
+        android:title="@string/calculation_type"
+        custom:showAsAction="never">
+    </item>
+
+</menu>
