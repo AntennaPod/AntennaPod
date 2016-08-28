@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RadioButton
+        android:id="@+id/calculation_type_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/calculation_type_normal" />
+
+    <RadioButton
+        android:id="@+id/calculation_type_count_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/calculation_type_count_all" />
+</RadioGroup>
