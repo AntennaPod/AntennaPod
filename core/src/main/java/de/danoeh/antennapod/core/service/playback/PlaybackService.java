@@ -996,11 +996,32 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             state = PlaybackStateCompat.STATE_NONE;
         }
         sessionState.setState(state, mediaPlayer.getPosition(), mediaPlayer.getPlaybackSpeed());
-        sessionState.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE
+        long capabilities = PlaybackStateCompat.ACTION_PLAY_PAUSE
                 | PlaybackStateCompat.ACTION_REWIND
                 | PlaybackStateCompat.ACTION_FAST_FORWARD
-                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT);
+                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
+
+        if (useSkipToPreviousForRewindInLockscreen()) {
+            // Workaround to fool Android so that Lockscreen will expose a skip-to-previous button,
+            // which will be used for rewind.
+            //
+            // @see #sessionCallback in the backing callback, skipToPrevious implementation
+            // is actually the same as rewind. So no new inconsistency is created.
+            capabilities = capabilities | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
+        }
+
+        sessionState.setActions(capabilities);
         mediaSession.setPlaybackState(sessionState.build());
+    }
+
+    private static boolean useSkipToPreviousForRewindInLockscreen() {
+        // showRewindOnCompactNotification() corresponds to the "Set Lockscreen Buttons"
+        // Settings in UI.
+        // Hence, from user perspective, he/she is setting the buttons for Loackscreen
+        //
+        // OPEN: it might contain other logic, e.g., the woakround might be applicable
+        // only to prev-Androidv5 devices.
+        return UserPreferences.showRewindOnCompactNotification();
     }
 
     /**
