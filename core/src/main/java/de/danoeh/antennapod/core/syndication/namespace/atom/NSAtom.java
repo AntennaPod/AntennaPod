@@ -30,6 +30,7 @@ public class NSAtom extends Namespace {
     private static final String AUTHOR = "author";
     private static final String AUTHOR_NAME = "name";
     private static final String CONTENT = "content";
+    private static final String SUMMARY = "summary";
     private static final String IMAGE_LOGO = "logo";
     private static final String IMAGE_ICON = "icon";
     private static final String SUBTITLE = "subtitle";
@@ -59,8 +60,8 @@ public class NSAtom extends Namespace {
     /**
      * Regexp to test whether an Element is a Text Element.
      */
-    private static final String isText = TITLE + "|" + CONTENT + "|" + "|"
-            + SUBTITLE;
+    private static final String isText = TITLE + "|" + CONTENT + "|"
+            + SUBTITLE + "|" + SUMMARY;
 
     public static final String isFeed = FEED + "|" + NSRSS20.CHANNEL;
     public static final String isFeedItem = ENTRY + "|" + NSRSS20.ITEM;
@@ -190,6 +191,9 @@ public class NSAtom extends Namespace {
                 state.getFeed().setDescription(textElement.getProcessedContent());
             } else if (CONTENT.equals(top) && ENTRY.equals(second) && textElement != null &&
                 state.getCurrentItem() != null) {
+                state.getCurrentItem().setDescription(textElement.getProcessedContent());
+            } else if (SUMMARY.equals(top) && ENTRY.equals(second) && textElement != null &&
+                state.getCurrentItem() != null && state.getCurrentItem().getDescription() == null) {
                 state.getCurrentItem().setDescription(textElement.getProcessedContent());
             } else if (UPDATED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null &&
                 state.getCurrentItem().getPubDate() == null) {
