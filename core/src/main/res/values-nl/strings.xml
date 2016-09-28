@@ -380,6 +380,8 @@
   <string name="pref_known_issues">Reeds bekende bugs</string>
   <string name="pref_no_browser_found">Geen browser gevonden</string>
   <string name="pref_cast_title">Chromecast</string>
+  <string name="pref_rewind_sum">Pas het aantal seconden achteruit springen wanneer het terugspoelen knop wordt geklikt</string>
+  <string name="pref_fast_forward_sum">Pas het aantal seconden om vooruit te springen wanneer de fast forward knop wordt geklikt</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisch flattr\'en aanzetten</string>
   <string name="auto_flattr_after_percent">Flattr een aflevering zodra %d procent is afgespeeld</string>

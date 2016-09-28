@@ -51,6 +51,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.activity.MediaplayerActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.activity.StatisticsActivity;
@@ -85,6 +86,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     public static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
     public static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
+    public static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
+    public static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
     public static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
     public static final String PREF_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
     public static final String PREF_GPODNET_SYNC = "pref_gpodnet_sync";
@@ -324,6 +327,16 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(PreferenceController.PREF_PLAYBACK_SPEED_LAUNCHER)
                 .setOnPreferenceClickListener(preference -> {
                     VariableSpeedDialog.showDialog(activity);
+                    return true;
+                });
+        ui.findPreference(PreferenceController.PREF_PLAYBACK_REWIND_DELTA_LAUNCHER)
+                .setOnPreferenceClickListener(preference -> {
+                    MediaplayerActivity.showSkipPreference(activity, MediaplayerActivity.SkipDirection.SKIP_REWIND);
+                    return true;
+                });
+        ui.findPreference(PreferenceController.PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER)
+                .setOnPreferenceClickListener(preference -> {
+                    MediaplayerActivity.showSkipPreference(activity, MediaplayerActivity.SkipDirection.SKIP_FORWARD);
                     return true;
                 });
         ui.findPreference(PreferenceController.PREF_GPODNET_SETLOGIN_INFORMATION)
@@ -641,7 +654,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 val = String.format(context.getString(R.string.pref_autoUpdateIntervallOrTime_at),
                         timeOfDayStr);
             } else {
-                val = context.getString(R.string.pref_smart_mark_as_played_disabled);
+                val = context.getString(R.string.pref_smart_mark_as_played_disabled);  // TODO: Is this a bug? Otherwise document why is this related to smart mark???
             }
         }
         String summary = context.getString(R.string.pref_autoUpdateIntervallOrTime_sum) + "\n"

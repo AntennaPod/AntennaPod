@@ -400,7 +400,7 @@ public class UserPreferences {
         return cacheSizeMB;
     }
 
-    public static int getFastFowardSecs() {
+    public static int getFastForwardSecs() {
         return prefs.getInt(PREF_FAST_FORWARD_SECS, 30);
     }
 
@@ -465,13 +465,13 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_QUEUE_LOCKED, false);
     }
 
-    public static void setPrefFastForwardSecs(int secs) {
+    public static void setFastForwardSecs(int secs) {
         prefs.edit()
              .putInt(PREF_FAST_FORWARD_SECS, secs)
              .apply();
     }
 
-    public static void setPrefRewindSecs(int secs) {
+    public static void setRewindSecs(int secs) {
         prefs.edit()
              .putInt(PREF_REWIND_SECS, secs)
              .apply();

@@ -340,6 +340,8 @@
   <string name="pref_proxy_title">代理</string>
   <string name="pref_proxy_sum">选择一个网络代理</string>
   <string name="pref_known_issues">已知问题</string>
+  <string name="pref_rewind_sum">自定义的秒数向后跳转点击快退按钮时</string>
+  <string name="pref_fast_forward_sum">自定义的秒数向前跳单击快进按钮时</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">启用自动 flattring</string>
   <string name="auto_flattr_after_percent">当播放到百分之%d时Flattr改曲目</string>

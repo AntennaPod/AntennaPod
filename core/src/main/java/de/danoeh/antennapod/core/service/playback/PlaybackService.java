@@ -471,11 +471,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else {
                     // assume skip command comes from a (bluetooth) media button
                     // user actually wants to fast-forward
-                    seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+                    seekDelta(UserPreferences.getFastForwardSecs() * 1000);
                 }
                 break;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-                mediaPlayer.seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+                mediaPlayer.seekDelta(UserPreferences.getFastForwardSecs() * 1000);
                 break;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
             case KeyEvent.KEYCODE_MEDIA_REWIND:
@@ -1610,7 +1610,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onFastForward() {
             Log.d(TAG, "onFastForward()");
-            seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+            seekDelta(UserPreferences.getFastForwardSecs() * 1000);
         }
 
         @Override
@@ -1619,7 +1619,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if(UserPreferences.shouldHardwareButtonSkip()) {
                 mediaPlayer.skip();
             } else {
-                seekDelta(UserPreferences.getFastFowardSecs() * 1000);
+                seekDelta(UserPreferences.getFastForwardSecs() * 1000);
             }
         }
 

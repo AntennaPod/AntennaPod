@@ -385,6 +385,8 @@
   <string name="pref_cast_title">Suporte ao Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar o suporte para reprodução remota de mídia em dispositivos Cast (como Chromecast, Caixa de som ou Android TV)</string>
   <string name="pref_cast_message_free_flavor">O Chromecast necessita de bibliotecas proprietárias de terceiros que estão desativadas nesta versão do AntennaPod</string>
+  <string name="pref_rewind_sum">Personalizar o número de segundos para saltar para trás quando o botão de voltar é clicado</string>
+  <string name="pref_fast_forward_sum">Personalizar o número de segundos para saltar para a frente quando o botão de avanço rápido é clicado</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Abilitar automaticamente o flattr</string>
   <string name="auto_flattr_after_percent">Episódio Flattr assim que %d porcento for tocado</string>

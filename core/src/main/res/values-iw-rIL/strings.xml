@@ -245,6 +245,8 @@
   <string name="pref_expand_notify_unsupport_toast">גרסאות אנדרויד לפני 4.1 לא תומכות בהודעות מורחבות.</string>
   <string name="pref_queueAddToFront_sum">הוסף פרקים חדשים לראש התור.</string>
   <string name="pref_queueAddToFront_title">הוסף לראש התור.</string>
+  <string name="pref_rewind_sum">התאמה אישית של מספר השניות כדי לקפוץ לאחור כאשר כפתור rewind לוחץ</string>
+  <string name="pref_fast_forward_sum">התאמה אישית של מספר השניות כדי לקפוץ קדימה בעת הלחיצה על לחצן קדימה מהר לוחצת</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">הפעל תרומות flattr אוטומטיות</string>
   <string name="auto_flattr_after_percent">תרום באמצעות flattr כשנוגן %d אחוזים מהפרק</string>

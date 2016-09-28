@@ -331,6 +331,8 @@
   <string name="send_email">Send e-post</string>
   <string name="experimental_pref">Eksperimentell</string>
   <string name="pref_sonic_title">Sonic medieavspiller</string>
+  <string name="pref_rewind_sum">Tilpass antall sekunder for å hoppe bakover når tilbakespolingsknapp klikkes</string>
+  <string name="pref_fast_forward_sum">Tilpass antall sekunder for å hoppe fremover når spol forover-knapp klikkes</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktiver automatisk flattring</string>
   <string name="auto_flattr_after_percent">Flattre episode så snart %d prosent er avspilt</string>

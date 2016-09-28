@@ -313,6 +313,8 @@
   <string name="send_email">Wyślij e-mail</string>
   <string name="experimental_pref">Eksperymentalne</string>
   <string name="pref_sonic_title">Odtwarzacz mediów Sonic</string>
+  <string name="pref_rewind_sum">Dostosuj liczbę sekund, aby przejść do tyłu po naciśnięciu przycisku przewijania kliknięciu</string>
+  <string name="pref_fast_forward_sum">Dostosuj liczbę sekund, aby przejść do przodu, gdy szybko do przodu kliknięciu przycisku</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Włącz automatyczne wspieranie na flattr.</string>
   <string name="auto_flattr_after_percent">Z-flattr-uj odcinki odegrane %d procentach.</string>

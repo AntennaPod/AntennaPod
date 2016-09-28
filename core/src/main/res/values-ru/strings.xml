@@ -384,6 +384,8 @@
   <string name="pref_known_issues">Известные проблемы</string>
   <string name="pref_no_browser_found">Веб-браузер не обнаружен.</string>
   <string name="pref_cast_title">Поддержка Chromecast</string>
+  <string name="pref_rewind_sum">Настроить количество секунд для перехода назад, когда кнопка перемотки нажата</string>
+  <string name="pref_fast_forward_sum">Настроить количество секунд, чтобы перейти вперед, когда кнопка перемотки вперед нажата</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включить автоматическую поддержку через Flattr</string>
   <string name="auto_flattr_after_percent">Поддерживать через Flattr эпизоды, прослушанные на %d процентов</string>

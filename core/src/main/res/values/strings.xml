@@ -296,13 +296,13 @@
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
-    <string name="pref_hardwareForwardButtonSkips_title">Forward button skips</string>
+    <string name="pref_hardwareForwardButtonSkips_title">Forward Button Skips</string>
     <string name="pref_hardwareForwardButtonSkips_sum">When pressing a hardware forward button skip to the next episode instead of fast-forwarding</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
     <string name="pref_smart_mark_as_played_sum">Mark episodes as played even if less than a certain amount of seconds of playing time is still left</string>
-    <string name="pref_smart_mark_as_played_title">Smart mark as played</string>
+    <string name="pref_smart_mark_as_played_title">Smart Mark as Played</string>
     <string name="pref_skip_keeps_episodes_sum">Keep episodes when they are skipped</string>
     <string name="pref_skip_keeps_episodes_title">Keep Skipped Episodes</string>
     <string name="playback_pref">Playback</string>
@@ -373,8 +373,10 @@
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
-    <string name="pref_fast_forward">Fast forward time</string>
-    <string name="pref_rewind">Rewind time</string>
+    <string name="pref_fast_forward">Fast Forward Skip Time</string>
+    <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast forward button is clicked</string>
+    <string name="pref_rewind">Rewind Skip Time</string>
+    <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
     <string name="pref_gpodnet_sethostname_title">Set hostname</string>
     <string name="pref_gpodnet_sethostname_use_default_host">Use default host</string>
     <string name="pref_expandNotify_title">Expand Notification</string>
@@ -399,7 +401,7 @@
     <string name="crash_report_sum">Send the latest crash report via e-mail</string>
     <string name="send_email">Send e-mail</string>
     <string name="experimental_pref">Experimental</string>
-    <string name="pref_sonic_title">Sonic media player</string>
+    <string name="pref_sonic_title">Sonic Media Player</string>
     <string name="pref_sonic_message">Use built-in sonic media player as a replacement for Android\'s native mediaplayer and Prestissimo</string>
     <string name="pref_current_value">Current value: %1$s</string>
     <string name="pref_proxy_title">Proxy</string>

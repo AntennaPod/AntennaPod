@@ -179,6 +179,8 @@
   <string name="pref_autodl_wifi_filter_title">Activar el filtro WiFi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir la descarga automática sólo para las redes WiFi marcadas.</string>
   <string name="pref_episode_cache_title">Caché de episodios</string>
+  <string name="pref_rewind_sum">Personalizar el número de segundos para saltar hacia atrás cuando se hace clic en el botón de rebobinado</string>
+  <string name="pref_fast_forward_sum">Personalizar el número de segundos para saltar hacia adelante cuando se hace clic en el botón de avance rápido</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Buscar canales o episodios</string>

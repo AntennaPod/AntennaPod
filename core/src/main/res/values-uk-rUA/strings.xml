@@ -382,6 +382,8 @@
   <string name="pref_known_issues">Відомі проблеми</string>
   <string name="pref_no_browser_found">Веб браузер не знайдено.</string>
   <string name="pref_cast_title">Підтримка для Chromecast</string>
+  <string name="pref_rewind_sum">Налаштувати кількість секунд для переходу назад, коли кнопка перемотування натиснута</string>
+  <string name="pref_fast_forward_sum">Налаштувати кількість секунд, щоб перейти вперед, коли кнопка перемотування вперед натиснута</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>

@@ -317,6 +317,8 @@
   <string name="send_email">E-posta gönder</string>
   <string name="experimental_pref">Deneysel</string>
   <string name="pref_sonic_title">Sonic ortam yürütücüsü</string>
+  <string name="pref_rewind_sum">Geri sarma düğmesi tıklandığında geriye atlamak için saniye sayısını özelleştirin</string>
+  <string name="pref_fast_forward_sum">Hızlı ileri sar düğmesi tıklandığında öne atlamak için saniye sayısını özelleştirin</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Otomatik Flattr\'lamayı etkinleştir</string>
   <string name="auto_flattr_after_percent">Bölümün yüzde %d kısmı oynatıldığında Flattr\'la</string>

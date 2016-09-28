@@ -297,6 +297,8 @@
   <string name="pref_proxy_title">Vaheserver</string>
   <string name="pref_proxy_sum">Määra võrgu vaheserver</string>
   <string name="pref_known_issues">Teadaolevad probleemid</string>
+  <string name="pref_rewind_sum">Kohanda mitu sekundit hüpata tagasi, kui tagasikerimise nupule vajutamist</string>
+  <string name="pref_fast_forward_sum">Kohanda mitu sekundit hüpata edasi, kui kiiresti edasi Klõpsamise</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Uudisvoogude või saadete otsing</string>
@@ -464,6 +466,7 @@
   <string name="proxy_test_successful">Kontroll oli edukas</string>
   <string name="proxy_test_failed">Kontroll ebaõnnestus</string>
   <string name="proxy_port_invalid_error">Port pole korrektne</string>
+
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

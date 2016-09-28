@@ -383,6 +383,8 @@
   <string name="pref_known_issues">Známé chyby</string>
   <string name="pref_no_browser_found">Webový prohlížeč nenalezen.</string>
   <string name="pref_cast_title">Chromecast podpora</string>
+  <string name="pref_rewind_sum">Přizpůsobte počet sekund ke skoku zpět při klepnutí na tlačítko převíjení</string>
+  <string name="pref_fast_forward_sum">Přizpůsobit počet sekund skok dopředu při klepnutí na tlačítko rychle vpřed</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Povolit automatické flattrování</string>
   <string name="auto_flattr_after_percent">Flattrovat díl jakmile bude odehráno %d procent</string>

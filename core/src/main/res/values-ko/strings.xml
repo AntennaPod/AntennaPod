@@ -378,6 +378,8 @@
   <string name="pref_known_issues">알려진 문제점</string>
   <string name="pref_no_browser_found">웹브라우저가 없습니다.</string>
   <string name="pref_cast_title">크롬캐스트 지원</string>
+  <string name="pref_rewind_sum">되감기 버튼을 클릭하면 뒤로 이동 (초)을 정의</string>
+  <string name="pref_fast_forward_sum">빨리 감기 버튼을 클릭 할 때 앞으로 이동 (초)을 정의</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">자동 flattr 사용</string>
   <string name="auto_flattr_after_percent">%d 퍼센트를 재생하면 에피소드에 flattr합니다</string>
