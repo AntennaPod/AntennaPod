@@ -3,10 +3,12 @@ package de.test.antennapod.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
@@ -362,4 +364,57 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
                 Timeout.getLargeTimeout()));
     }
 
+
+    public void testRewindChange() {
+        int seconds = UserPreferences.getRewindSecs();
+        int deltas[] = res.getIntArray(R.array.seek_delta_values);
+
+        //Log.d("PreferencesTest", "Before rewind secs: " + UserPreferences.getRewindSecs());
+
+        solo.clickOnText(solo.getString(R.string.pref_rewind));
+        solo.waitForDialogToOpen();
+
+        int currentIndex = Arrays.binarySearch(deltas, seconds);
+        assertTrue(currentIndex >= 0 && currentIndex < deltas.length);  // found?
+
+        // Find next value (wrapping around to next)
+        int newIndex = (currentIndex + 1) % deltas.length;
+
+        solo.clickOnText(String.valueOf(deltas[newIndex]) + " seconds");
+        solo.clickOnButton("Confirm");
+
+        solo.waitForDialogToClose();
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getRewindSecs() == deltas[newIndex],
+                Timeout.getLargeTimeout()));
+
+        //Log.d("PreferencesTest", "After rewind secs: " + UserPreferences.getRewindSecs());
+
+    }
+
+    public void testFastForwardChange() {
+        for (int i = 2; i > 0; i--) { // repeat twice to catch any error where fastforward is tracking rewind
+            int seconds = UserPreferences.getFastForwardSecs();
+            int deltas[] = res.getIntArray(R.array.seek_delta_values);
+
+            //Log.d("PreferencesTest", "Before fastForward secs: " + UserPreferences.getFastForwardSecs());
+
+            solo.clickOnText(solo.getString(R.string.pref_fast_forward));
+            solo.waitForDialogToOpen();
+
+            int currentIndex = Arrays.binarySearch(deltas, seconds);
+            assertTrue(currentIndex >= 0 && currentIndex < deltas.length);  // found?
+
+            // Find next value (wrapping around to next)
+            int newIndex = (currentIndex + 1) % deltas.length;
+
+            solo.clickOnText(String.valueOf(deltas[newIndex]) + " seconds");
+            solo.clickOnButton("Confirm");
+
+            solo.waitForDialogToClose();
+            assertTrue(solo.waitForCondition(() -> UserPreferences.getFastForwardSecs() == deltas[newIndex],
+                    Timeout.getLargeTimeout()));
+
+            //Log.d("PreferencesTest", "After fastForward secs: " + UserPreferences.getFastForwardSecs());
+        }
+    }
 }
