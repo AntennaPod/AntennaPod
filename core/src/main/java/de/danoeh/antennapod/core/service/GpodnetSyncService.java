@@ -232,7 +232,7 @@ public class GpodnetSyncService extends Service {
         }
         Map<Pair<String, String>, GpodnetEpisodeAction> localMostRecentPlayAction = new ArrayMap<>();
         for(GpodnetEpisodeAction action : localActions) {
-            Pair key = new Pair(action.getPodcast(), action.getEpisode());
+            Pair<String, String> key = new Pair<>(action.getPodcast(), action.getEpisode());
             GpodnetEpisodeAction mostRecent = localMostRecentPlayAction.get(key);
             if (mostRecent == null || mostRecent.getTimestamp() == null) {
                 localMostRecentPlayAction.put(key, action);
@@ -256,7 +256,7 @@ public class GpodnetSyncService extends Service {
                 case DOWNLOAD:
                     break;
                 case PLAY:
-                    Pair key = new Pair(action.getPodcast(), action.getEpisode());
+                    Pair<String, String> key = new Pair<>(action.getPodcast(), action.getEpisode());
                     GpodnetEpisodeAction localMostRecent = localMostRecentPlayAction.get(key);
                     if(localMostRecent == null ||
                             localMostRecent.getTimestamp() == null ||

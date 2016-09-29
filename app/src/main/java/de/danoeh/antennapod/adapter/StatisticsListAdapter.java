@@ -9,11 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -69,7 +67,7 @@ public class StatisticsListAdapter extends BaseAdapter {
         }
 
         Glide.with(context)
-                .load(feed.getImageUri())
+                .load(feed.getImageLocation())
                 .placeholder(R.color.light_gray)
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)

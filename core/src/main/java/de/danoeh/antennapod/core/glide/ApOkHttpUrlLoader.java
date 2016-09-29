@@ -26,14 +26,14 @@ import de.danoeh.antennapod.core.util.NetworkUtils;
 /**
  * @see com.bumptech.glide.integration.okhttp.OkHttpUrlLoader
  */
-public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
+public class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
     private static final String TAG = ApOkHttpUrlLoader.class.getSimpleName();
 
     /**
      * The default factory for {@link ApOkHttpUrlLoader}s.
      */
-    public static class Factory implements ModelLoaderFactory<GlideUrl, InputStream> {
+    public static class Factory implements ModelLoaderFactory<String, InputStream> {
 
         private static volatile OkHttpClient internalClient;
         private OkHttpClient client;
@@ -66,7 +66,7 @@ public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
         }
 
         @Override
-        public ModelLoader<GlideUrl, InputStream> build(Context context, GenericLoaderFactory factories) {
+        public ModelLoader<String, InputStream> build(Context context, GenericLoaderFactory factories) {
             return new ApOkHttpUrlLoader(client);
         }
 
@@ -83,8 +83,15 @@ public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
     }
 
     @Override
-    public DataFetcher<InputStream> getResourceFetcher(GlideUrl model, int width, int height) {
-        return new OkHttpStreamFetcher(client, model);
+    public DataFetcher<InputStream> getResourceFetcher(String model, int width, int height) {
+        Log.d(TAG, "getResourceFetcher() called with: " + "model = [" + model + "], width = ["
+                + width + "], height = [" + height + "]");
+        if(model.startsWith("/")) {
+            return new AudioCoverFetcher(model);
+        } else {
+            GlideUrl url = new GlideUrl(model);
+            return new OkHttpStreamFetcher(client, url);
+        }
     }
 
     private static class NetworkAllowanceInterceptor implements Interceptor {

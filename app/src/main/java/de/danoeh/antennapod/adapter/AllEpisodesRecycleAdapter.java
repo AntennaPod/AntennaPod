@@ -200,11 +200,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
         Glide.with(mainActivityRef.get())
-                .load(item.getImageUri())
+                .load(item.getImageLocation())
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate()
-                .into(new CoverTarget(item.getFeed().getImageUri(), holder.placeholder, holder.cover, mainActivityRef.get()));
+                .into(new CoverTarget(item.getFeed().getImageLocation(), holder.placeholder, holder.cover, mainActivityRef.get()));
     }
 
     @Override

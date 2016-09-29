@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.android.gms.cast.MediaInfo;
@@ -23,6 +24,8 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Playable implementation for media on a Cast Device for which a local version of
@@ -267,11 +270,9 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public Uri getImageUri() {
-        if (imageUrl != null) {
-            return Uri.parse(imageUrl);
-        }
-        return null;
+    @Nullable
+    public String getImageLocation() {
+        return imageUrl;
     }
 
     @Override
@@ -343,5 +344,14 @@ public class RemoteMedia implements Playable {
             return feed != null && TextUtils.equals(feedUrl, feed.getDownload_url());
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(downloadUrl)
+                .append(feedUrl)
+                .append(itemIdentifier)
+                .toHashCode();
     }
 }

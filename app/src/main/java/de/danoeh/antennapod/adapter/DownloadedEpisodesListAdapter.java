@@ -77,7 +77,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         }
 
         Glide.with(context)
-                .load(item.getImageUri())
+                .load(item.getImageLocation())
                 .placeholder(R.color.light_gray)
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)

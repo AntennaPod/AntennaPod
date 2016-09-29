@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -321,12 +320,10 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public boolean hasEmbeddedPicture() {
-        return false;
-        // TODO: reenable!
-        //if(hasEmbeddedPicture == null) {
-        //    checkEmbeddedPicture();
-        //}
-        //return hasEmbeddedPicture;
+        if(hasEmbeddedPicture == null) {
+            checkEmbeddedPicture();
+        }
+        return hasEmbeddedPicture;
     }
 
     @Override
@@ -514,20 +511,11 @@ public class FeedMedia extends FeedFile implements Playable {
     };
 
     @Override
-    public Uri getImageUri() {
+    public String getImageLocation() {
         if (hasEmbeddedPicture()) {
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme(SCHEME_MEDIA).encodedPath(getLocalMediaUrl());
-
-            if (item != null && item.getFeed() != null) {
-                final Uri feedImgUri = item.getFeed().getImageUri();
-                if (feedImgUri != null) {
-                    builder.appendQueryParameter(PARAM_FALLBACK, feedImgUri.toString());
-                }
-            }
-            return builder.build();
+            return getLocalMediaUrl();
         } else if(item != null) {
-            return item.getImageUri();
+            return item.getImageLocation();
         } else {
             return null;
         }
@@ -550,7 +538,7 @@ public class FeedMedia extends FeedFile implements Playable {
         super.setFile_url(file_url);
     }
 
-    private void checkEmbeddedPicture() {
+    public void checkEmbeddedPicture() {
         if (!localFileAvailable()) {
             hasEmbeddedPicture = Boolean.FALSE;
             return;

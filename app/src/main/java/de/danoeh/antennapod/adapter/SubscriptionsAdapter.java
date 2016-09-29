@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,7 +105,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
         holder.count.setVisibility(View.VISIBLE);
         Glide.with(mainActivityRef.get())
-                .load(feed.getImageUri())
+                .load(feed.getImageLocation())
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()

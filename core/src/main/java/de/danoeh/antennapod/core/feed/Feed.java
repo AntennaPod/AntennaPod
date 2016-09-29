@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.feed;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -501,9 +500,9 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     }
 
     @Override
-    public Uri getImageUri() {
+    public String getImageLocation() {
         if (image != null) {
-            return image.getImageUri();
+            return image.getImageLocation();
         } else {
             return null;
         }

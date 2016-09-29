@@ -3,7 +3,6 @@ package de.danoeh.antennapod.core.util.playback;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -242,9 +241,9 @@ public class ExternalMedia implements Playable {
 	};
 
     @Override
-    public Uri getImageUri() {
+    public String getImageLocation() {
         if (localFileAvailable()) {
-            return new Uri.Builder().scheme(SCHEME_MEDIA).encodedPath(getLocalMediaUrl()).build();
+            return getLocalMediaUrl();
         } else {
             return null;
         }

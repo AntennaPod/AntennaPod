@@ -1,0 +1,20 @@
+ऐन्टेनापॉड एंड्रॉयड 2.3.3 और ऊपर के लिए एक खुला स्रोत पॉडकास्ट प्रबंधक है. यह आपको स्वचालित रूप से सभी फ़ीड ताज़ा या बाद में उन्हें सुनने के लिए एक कतार में जोड़ने, एपिसोड स्ट्रीमिंग और डाउनलोड करने, एक पॉडकैचर से उम्मीद रखने वाली सभी बुनियादी सुविधाएँ प्रदान करता है. इसके अलावा, ऐन्टेनापॉड आपको अनुप्रयोग के भीतर से फ्लेटर पॉडकास्ट और प्रकरणों की सुविधा देता है.
+
+So far the following features are implemented:
+
+* डाउनलोड और एपिसोड के स्ट्रीमिंग
+* चर गति प्लेबैक (सफ़ाई ध्वनि पुस्तकालय या प्रेस्टिसीमो कि आवश्यकता है)
+ * एटम और आरएसएस फ़ीड के लिए सहायता
+* Support for password-protected feeds and episodes
+* Support for searching iTunes listings
+* ओएमपीएल आयात और निर्यात
+* Flattr integration including automatic flattring
+* प्लेयर होमस्क्रीन विजेट
+* खोज
+* स्वचालित फ़ीड अद्यतन
+*  नए एपिसोड की स्वचालित डाउनलोड
+* स्लीप टाइमर
+* Gpodder.net podcast निर्देशिका के लिए प्रवेश
+* gpodder.net सेवा के साथ सदस्यता सिंक्रनाइज़ 
+* Supports MP3 chapters, VorbisComment chapters and Podlove Simple Chapters
+* Supports paged feeds (http://podlove.org/paged-feeds/)

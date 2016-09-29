@@ -145,7 +145,7 @@ public class DownloadService extends Service {
     private Handler handler;
 
     private NotificationUpdater notificationUpdater;
-    private ScheduledFuture notificationUpdaterFuture;
+    private ScheduledFuture<?> notificationUpdaterFuture;
     private static final int SCHED_EX_POOL_SIZE = 1;
     private ScheduledThreadPoolExecutor schedExecutor;
 
@@ -1009,7 +1009,7 @@ public class DownloadService extends Service {
             }
             media.setDownloaded(true);
             media.setFile_url(request.getDestination());
-            media.setHasEmbeddedPicture(null);
+            media.checkEmbeddedPicture(); // enforce check
 
             // check if file has chapters
             ChapterUtils.loadChaptersFromFileUrl(media);

@@ -1,0 +1,20 @@
+AntennaPod jest menadżerem podcastów dla Androida 2.3.3 i nowszych na otwartej licencji. Oferuje wszystkie podstawowe funkcje których oczekuje się od podcathera, takie jak strumieniowanie oraz pobieranie odcinków, odświeżanie wszystkich wątków automatycznie i dodawanie ich do kolejki do późniejszego odsłuchania. Oprócz tego AntennaPod pozwala na flattr-owanie podcastów i odcinków z poziomu aplikacji.
+
+Dotychczas zostały wdrożone następujące funkcjonalności:
+
+* Pobieranie i strumieniowanie odcinków
+* Zmienna prędkość odtwarzania (wymaga Presto Sound Library lub Prestissimo)
+* Wsparcie dla wątków Atom i RSS
+* Wsparcie dla kanałów i odcinków zabezpieczonych hasłem
+* Support for searching iTunes listings
+* Import i eksport OPML
+Integracja z serwisem Flattr umożliwiająca flattring
+* Widget odtwarzacza na home screen
+* Wyszukiwanie
+* Automatyczne aktualizaje wątków 
+* Automatyczne pobieranie nowych odcinków
+* Timer snu
+* Dostęp do katalogu podcastów na gpodder.net 
+* Synchronizację subskrypcji z gpodder.net
+* Obsługuje rodziały MP3, VorbisComment i Podlove Simple.
+* Wspiera stronicowane kanały (http://podlove.org/paged-feeds/)

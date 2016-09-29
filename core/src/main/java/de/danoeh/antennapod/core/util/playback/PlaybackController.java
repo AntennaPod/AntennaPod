@@ -65,7 +65,7 @@ public abstract class PlaybackController {
     private static final int SCHED_EX_POOLSIZE = 1;
 
     private MediaPositionObserver positionObserver;
-    private ScheduledFuture positionObserverFuture;
+    private ScheduledFuture<?> positionObserverFuture;
 
     private boolean mediaInfoLoaded = false;
     private boolean released = false;
