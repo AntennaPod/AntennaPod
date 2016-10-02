@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
-        classpath "me.tatarka:gradle-retrolambda:3.2.4"
+        classpath "me.tatarka:gradle-retrolambda:3.3.0"
         classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
         classpath 'com.github.triplet.gradle:play-publisher:1.1.4'
         // Exclude the version that the android plugin depends on.
