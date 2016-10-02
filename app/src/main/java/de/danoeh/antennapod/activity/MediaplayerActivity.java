@@ -183,10 +183,10 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         };
     }
 
-    static protected TextView getTxtvFFFromActivity(MediaplayerActivity activity) {
+    protected static TextView getTxtvFFFromActivity(MediaplayerActivity activity) {
         return activity.txtvFF;
     }
-    static protected TextView getTxtvRevFromActivity(MediaplayerActivity activity) {
+    protected static TextView getTxtvRevFromActivity(MediaplayerActivity activity) {
         return activity.txtvRev;
     }
 
@@ -666,8 +666,15 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
      * Abstract directions to skip forward or back (rewind) and encapsulates behavior to get or set preference (including update of UI on the skip buttons).
      */
     static public enum SkipDirection {
-        SKIP_FORWARD(UserPreferences::getFastForwardSecs, MediaplayerActivity::getTxtvFFFromActivity, UserPreferences::setFastForwardSecs, R.string.pref_fast_forward),
-        SKIP_REWIND(UserPreferences::getRewindSecs, MediaplayerActivity::getTxtvRevFromActivity,  UserPreferences::setRewindSecs, R.string.pref_rewind);
+        SKIP_FORWARD(
+                UserPreferences::getFastForwardSecs,
+                MediaplayerActivity::getTxtvFFFromActivity,
+                UserPreferences::setFastForwardSecs,
+                R.string.pref_fast_forward),
+        SKIP_REWIND(UserPreferences::getRewindSecs,
+                MediaplayerActivity::getTxtvRevFromActivity,
+                UserPreferences::setRewindSecs,
+                R.string.pref_rewind);
 
         private final Supplier<Integer> getPrefSecsFn;
         private final Func1<MediaplayerActivity, TextView> getTextViewFn;
@@ -704,7 +711,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         public void setPrefSkipSeconds(int seconds, @Nullable Activity activity) {
             setPrefSecsFn.call(seconds);
 
-            /// Optionlally, update display of skip value on ff/rewind buttons in mediaplayer
             if (activity != null && activity instanceof  MediaplayerActivity)  {
                 TextView tv = getTextViewFn.call((MediaplayerActivity)activity);
                 if (tv != null) tv.setText(String.valueOf(seconds));

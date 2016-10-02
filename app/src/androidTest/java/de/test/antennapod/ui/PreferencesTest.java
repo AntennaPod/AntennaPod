@@ -369,8 +369,6 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         int seconds = UserPreferences.getRewindSecs();
         int deltas[] = res.getIntArray(R.array.seek_delta_values);
 
-        //Log.d("PreferencesTest", "Before rewind secs: " + UserPreferences.getRewindSecs());
-
         solo.clickOnText(solo.getString(R.string.pref_rewind));
         solo.waitForDialogToOpen();
 
@@ -386,9 +384,6 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         solo.waitForDialogToClose();
         assertTrue(solo.waitForCondition(() -> UserPreferences.getRewindSecs() == deltas[newIndex],
                 Timeout.getLargeTimeout()));
-
-        //Log.d("PreferencesTest", "After rewind secs: " + UserPreferences.getRewindSecs());
-
     }
 
     public void testFastForwardChange() {
