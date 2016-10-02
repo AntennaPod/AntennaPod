@@ -391,8 +391,6 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
             int seconds = UserPreferences.getFastForwardSecs();
             int deltas[] = res.getIntArray(R.array.seek_delta_values);
 
-            //Log.d("PreferencesTest", "Before fastForward secs: " + UserPreferences.getFastForwardSecs());
-
             solo.clickOnText(solo.getString(R.string.pref_fast_forward));
             solo.waitForDialogToOpen();
 
@@ -408,8 +406,6 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
             solo.waitForDialogToClose();
             assertTrue(solo.waitForCondition(() -> UserPreferences.getFastForwardSecs() == deltas[newIndex],
                     Timeout.getLargeTimeout()));
-
-            //Log.d("PreferencesTest", "After fastForward secs: " + UserPreferences.getFastForwardSecs());
         }
     }
 }
