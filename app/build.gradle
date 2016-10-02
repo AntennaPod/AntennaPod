@@ -178,7 +178,8 @@ task filterAbout {
         from "src/main/templates/about.html"
         into "src/main/assets"
         filter(ReplaceTokens, tokens: [versionname: android.defaultConfig.versionName,
-                                       commit     : "git rev-parse --short HEAD".execute().text])
+                                       commit     : "git rev-parse --short HEAD".execute().text,
+                                       year       : new Date().format('yyyy')])
     }
 }
 
