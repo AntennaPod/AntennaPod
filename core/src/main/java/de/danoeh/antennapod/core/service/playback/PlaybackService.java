@@ -478,6 +478,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 mediaPlayer.seekDelta(UserPreferences.getFastFowardSecs() * 1000);
                 break;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                if(UserPreferences.shouldHardwarePreviousButtonRestart()) {
+                    // user wants to restart current episode
+                    mediaPlayer.seekTo(0);
+                } else {
+                    //  user wants to rewind current episode
+                    mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                }
+                break;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
                 break;
