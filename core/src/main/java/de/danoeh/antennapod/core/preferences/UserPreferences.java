@@ -332,7 +332,10 @@ public class UserPreferences {
     }
 
 
-
+    /*
+     * Returns update interval in milliseconds; value 0 means that auto update is disabled
+     * or feeds are updated at a certain time of day
+     */
     public static long getUpdateInterval() {
         String updateInterval = prefs.getString(PREF_UPDATE_INTERVAL, "0");
         if(!updateInterval.contains(":")) {
@@ -754,12 +757,12 @@ public class UserPreferences {
         if (timeOfDay.length == 2) {
             restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
         } else {
-            long hours = getUpdateInterval();
-            long startTrigger = hours;
+            long milliseconds = getUpdateInterval();
+            long startTrigger = milliseconds;
             if (now) {
                 startTrigger = TimeUnit.SECONDS.toMillis(10);
             }
-            restartUpdateIntervalAlarm(startTrigger, hours);
+            restartUpdateIntervalAlarm(startTrigger, milliseconds);
         }
     }
 
