@@ -28,6 +28,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -157,9 +161,20 @@ public class FeedInfoActivity extends AppCompatActivity {
                             .into(imgvCover);
 
                     txtvTitle.setText(feed.getTitle());
+
                     String description = feed.getDescription();
-                    txtvDescription.setText((description != null) ? description.trim() : "");
-                    if (!TextUtils.isEmpty(feed.getAuthor())) {
+                    if(description != null) {
+                        if(Feed.TYPE_ATOM1.equals(feed.getType())) {
+                            HtmlToPlainText formatter = new HtmlToPlainText();
+                            Document feedDescription = Jsoup.parse(feed.getDescription());
+                            description = StringUtils.trim(formatter.getPlainText(feedDescription));
+                        }
+                    } else {
+                        description = "";
+                    }
+                    txtvDescription.setText(description);
+
+                    if (feed.getAuthor() != null) {
                         txtvAuthor.setText(feed.getAuthor());
                     } else {
                         lblAuthor.setVisibility(View.GONE);
@@ -379,7 +394,7 @@ public class FeedInfoActivity extends AppCompatActivity {
         private final Feed feed;
         private final boolean autoDownload;
 
-        public ApplyToEpisodesDialog(Context context, Feed feed, boolean autoDownload) {
+        ApplyToEpisodesDialog(Context context, Feed feed, boolean autoDownload) {
             super(context, R.string.auto_download_apply_to_items_title,
                     R.string.auto_download_apply_to_items_message);
             this.feed = feed;
