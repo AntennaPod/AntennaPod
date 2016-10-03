@@ -168,12 +168,14 @@
         <item>@string/drawer_feed_counter_new_unplayed</item>
         <item>@string/drawer_feed_counter_new</item>
         <item>@string/drawer_feed_counter_unplayed</item>
+        <item>@string/drawer_feed_counter_downloaded</item>
         <item>@string/drawer_feed_counter_none</item>
     </string-array>
     <string-array name="nav_drawer_feed_counter_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>4</item>
         <item>3</item>
     </string-array>
 

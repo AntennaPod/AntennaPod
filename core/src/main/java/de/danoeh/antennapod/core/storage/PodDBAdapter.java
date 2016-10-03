@@ -42,12 +42,12 @@ import de.greenrobot.event.EventBus;
 public class PodDBAdapter {
     
     private static final String TAG = "PodDBAdapter";
-    public static final String DATABASE_NAME = "Antennapod.db";
+    private static final String DATABASE_NAME = "Antennapod.db";
 
     /**
      * Maximum number of arguments for IN-operator.
      */
-    public static final int IN_OPERATOR_MAXIMUM = 800;
+    private static final int IN_OPERATOR_MAXIMUM = 800;
 
     /**
      * Maximum number of entries per search request.
@@ -109,14 +109,14 @@ public class PodDBAdapter {
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
 
     // Table names
-    public static final String TABLE_NAME_FEEDS = "Feeds";
-    public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
-    public static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
-    public static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
-    public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
-    public static final String TABLE_NAME_QUEUE = "Queue";
-    public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
-    public static final String TABLE_NAME_FAVORITES = "Favorites";
+    private static final String TABLE_NAME_FEEDS = "Feeds";
+    private static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
+    private static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
+    private static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
+    private static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
+    private static final String TABLE_NAME_QUEUE = "Queue";
+    private static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
+    private static final String TABLE_NAME_FAVORITES = "Favorites";
 
     // SQL Statements for creating new tables
     private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -1436,15 +1436,24 @@ public class PodDBAdapter {
     public final LongIntMap getFeedCounters(long... feedIds) {
         int setting = UserPreferences.getFeedCounterSetting();
         String whereRead;
-        if(setting == UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM) {
-            whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
-                    + " OR " + KEY_READ  + "=" + FeedItem.UNPLAYED + ")";
-        } else if(setting == UserPreferences.FEED_COUNTER_SHOW_NEW) {
-            whereRead = KEY_READ + "=" + FeedItem.NEW;
-        } else if(setting == UserPreferences.FEED_COUNTER_SHOW_UNPLAYED) {
-            whereRead = KEY_READ + "=" + FeedItem.UNPLAYED;
-        } else { // NONE
-            return new LongIntMap(0);
+        switch(setting) {
+            case UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM:
+                whereRead = "(" + KEY_READ + "=" + FeedItem.NEW +
+                        " OR " + KEY_READ  + "=" + FeedItem.UNPLAYED + ")";
+                break;
+            case UserPreferences.FEED_COUNTER_SHOW_NEW:
+                whereRead = KEY_READ + "=" + FeedItem.NEW;
+                break;
+            case UserPreferences.FEED_COUNTER_SHOW_UNPLAYED:
+                whereRead = KEY_READ + "=" + FeedItem.UNPLAYED;
+                break;
+            case UserPreferences.FEED_COUNTER_SHOW_DOWNLOADED:
+                whereRead = KEY_DOWNLOADED + "=1";
+                break;
+            case UserPreferences.FEED_COUNTER_SHOW_NONE:
+                // deliberate fall-through
+            default: // NONE
+                return new LongIntMap(0);
         }
 
         // work around TextUtils.join wanting only boxed items
@@ -1459,8 +1468,10 @@ public class PodDBAdapter {
             builder.deleteCharAt(builder.length() - 1);
         }
 
-        final String query = "SELECT " + KEY_FEED + ", COUNT(" + KEY_ID + ") AS count "
+        final String query = "SELECT " + KEY_FEED + ", COUNT(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") AS count "
                 + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
                 + " WHERE " + KEY_FEED + " IN (" + builder.toString() + ") "
                 + " AND " + whereRead + " GROUP BY " + KEY_FEED;
 
