@@ -587,6 +587,8 @@
     <string name="selected_queued_label">Selected queued Episodes</string>
     <string name="not_queued_label">Not queued</string>
     <string name="selected_not_queued_label">Selected not queued Episodes</string>
+    <string name="has_media">Has media</string>
+    <string name="selected_has_media_label">Selected episodes with media</string>
 
     <!-- Sort  -->
     <string name="sort_title_a_z">Title (A \u2192 Z)</string>

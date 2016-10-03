@@ -46,6 +46,8 @@
                 android:title="@string/queued_label"/>
             <item android:id="@+id/check_not_queued"
                 android:title="@string/not_queued_label"/>
+            <item android:id="@+id/check_has_media"
+                android:title="@string/has_media"/>
         </menu>
     </item>
 
