@@ -1,32 +1,32 @@
 Últimas modificações
 ==========
 
-Version 1.6.0
+Versão 1.6.0
 -------------
-* New features:
- * Experimental Chromecast support
- * Subscription overview
- * Proxy support
- * Statistics
- * Manual gpodder.net sync
-* Fixes:
- * Audioplayer controls
- * Audio ducking
- * Video control fade-out
- * External media controls
- * Feed parsing
+* Novas funcionalidades:
+ * Suporte experimental do Chromecast
+ * Visão geral das assinaturas
+ * Suporte a proxy
+ * Estatísticas
+ * Sincronia manual do gpodder.net
+* Ajustes:
+ * Controles de exibição de áudio
+ * Áudio ducking
+ * Controle de vídeo de desaparecimento gradual
+ * Controles de mídia externa
+ * Analisar Feed
 
-Version 1.5.0
+Versão 1.5.0
 -------------
-* Exclude episodes from auto download by keyword
-* Configure feeds to prevent them from refreshing automatically
-* Improved audio player
-* Improved UI
-* Bug fixes
+* Excluir episódios do download automático por palavra chave.
+* Configurar feeds para previnir-los de atualizações automáticas
+* Melhoria no tocador de áudio
+* Melhoria na UI
+* Ajustes de Bugs
 
-Version 1.4.1
+Versão 1.4.1
 -------------
-* Performance improvements
+* Melhoria de performance
 * Hardware buttons now ff and rewind instead of skipping
 * Option to have forward button skip
 * Option to send crash reports directly to developers
@@ -50,7 +50,7 @@ Version 1.4
 * Flexible episode cleanup
 * Rewind after pause
 * Usability improvements
-* Bug fixes
+* Ajustes de Bugs
 
 Versão 1.3
 -----------
