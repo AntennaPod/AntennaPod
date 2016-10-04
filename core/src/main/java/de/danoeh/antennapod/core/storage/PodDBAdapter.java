@@ -8,6 +8,7 @@ import android.database.MergeCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
@@ -1659,8 +1660,7 @@ public class PodDBAdapter {
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
                               final int newVersion) {
             EventBus.getDefault().post(ProgressEvent.start(context.getString(R.string.progress_upgrading_database)));
-            Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
-                    + newVersion + ".");
+            Log.i("DBAdapter", "Upgrading from version " + oldVersion + " to " + newVersion + ".");
             if (oldVersion <= 1) {
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS + " ADD COLUMN "
                         + KEY_TYPE + " TEXT");
@@ -1913,8 +1913,57 @@ public class PodDBAdapter {
                 db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS
                         +" SET " + PodDBAdapter.KEY_LASTUPDATE + "=NULL");
             }
-
             EventBus.getDefault().post(ProgressEvent.end());
         }
+
+        @Override
+        public void onDowngrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+            Log.i("DBAdapter", "Downgrading from version " + oldVersion + " to " + newVersion + ".");
+            EventBus.getDefault().post(ProgressEvent.start(context.getString(R.string.progress_downgrading_database)));
+            if (newVersion < 1030005) {
+                throw new SQLiteException("Can't downgrade database from version " +
+                    oldVersion + " to " + newVersion);
+            }
+            if (oldVersion >= 1050004 && newVersion < 1050004) {
+                // prevent misinterpretation
+                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    +" SET " + PodDBAdapter.KEY_LASTUPDATE + "=NULL");
+            }
+            if (oldVersion >= 1050003 && newVersion < 1050003) {
+                // This is the exact same code as in onUpgrade(SQLiteDatabase,int,int)
+                // for oldVersion < 1050003, without trying to restore paused
+
+                db.beginTransaction();
+
+                // Change to intermediate values to avoid overwriting in the following find/replace
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                    "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'unplayed', 'noplay')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                    "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'not_queued', 'noqueue')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                    "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'not_downloaded', 'nodl')");
+
+                // Replace played, queued, and downloaded with their opposites
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                    "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'played', 'unplayed')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                    "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'queued', 'not_queued')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                    "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'downloaded', 'not_downloaded')");
+
+                // Now replace intermediates for unplayed, not queued, etc. with their opposites
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                    "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'noplay', 'played')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                    "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'noqueue', 'queued')");
+                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
+                    "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'nodl', 'downloaded')");
+
+                db.setTransactionSuccessful();
+                db.endTransaction();
+            }
+            EventBus.getDefault().post(ProgressEvent.end());
+        }
+
     }
 }
