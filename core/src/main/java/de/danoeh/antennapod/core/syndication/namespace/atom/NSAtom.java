@@ -206,7 +206,12 @@ public class NSAtom extends Namespace {
                 state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
             } else if (AUTHOR.equals(second) && state.getFeed() != null) {
                 if (AUTHOR_NAME.equals(top)) {
-                    state.getFeed().setAuthor(content);
+                    String currentName = state.getFeed().getAuthor();
+                    if (currentName == null) {
+                        state.getFeed().setAuthor(content);
+                    } else {
+                        state.getFeed().setAuthor(currentName + ", " + content);
+                    }
                 }
             }
         }
