@@ -111,7 +111,7 @@
   <string name="hide_not_downloaded_episodes_label">未下载</string>
   <string name="filtered_label">已过滤的</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} 上次刷新失败</string>
-  <string name="open_podcast">打开博客</string>
+  <string name="open_podcast">打开播客</string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <string name="play_label">播放</string>
