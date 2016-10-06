@@ -45,6 +45,7 @@ public class NSAtom extends Namespace {
     private static final String LINK_LENGTH = "length";
     // rel-values
     private static final String LINK_REL_ALTERNATE = "alternate";
+    private static final String LINK_REL_ARCHIVES = "archives";
     private static final String LINK_REL_ENCLOSURE = "enclosure";
     private static final String LINK_REL_PAYMENT = "payment";
     private static final String LINK_REL_RELATED = "related";
@@ -129,6 +130,17 @@ public class NSAtom extends Namespace {
                             title = href;
                         }
                         state.addAlternateFeedUrl(title, href);
+                    }
+                } else if (LINK_REL_ARCHIVES.equals(rel) && state.getFeed() != null) {
+                    String type = attributes.getValue(LINK_TYPE);
+                    if (LINK_TYPE_ATOM.equals(type) || LINK_TYPE_RSS.equals(type)) {
+                        String title = attributes.getValue(LINK_TITLE);
+                        if (TextUtils.isEmpty(title)) {
+                            title = href;
+                        }
+                        state.addAlternateFeedUrl(title, href);
+                    } else if (LINK_TYPE_HTML.equals(type) || LINK_TYPE_XHTML.equals(type)) {
+                        //A Link such as to a directory such as iTunes
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel) && state.getFeed() != null) {
                     state.getFeed().setPaymentLink(href);
