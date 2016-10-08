@@ -225,6 +225,9 @@ public class EpisodesApplyActionFragment extends Fragment {
                 checkQueued(false);
                 resId = R.string.selected_not_queued_label;
                 break;
+            case R.id.check_has_media:
+                checkWithMedia();
+                resId = R.string.selected_has_media_label;
             case R.id.sort_title_a_z:
                 sortByTitle(false);
                 return true;
@@ -349,6 +352,17 @@ public class EpisodesApplyActionFragment extends Fragment {
     private void checkQueued(boolean isQueued) {
         for (FeedItem episode : episodes) {
             if(episode.isTagged(FeedItem.TAG_QUEUE) == isQueued) {
+                checkedIds.add(episode.getId());
+            } else {
+                checkedIds.remove(episode.getId());
+            }
+        }
+        refreshCheckboxes();
+    }
+
+    private void checkWithMedia() {
+        for (FeedItem episode : episodes) {
+            if(episode.hasMedia()) {
                 checkedIds.add(episode.getId());
             } else {
                 checkedIds.remove(episode.getId());

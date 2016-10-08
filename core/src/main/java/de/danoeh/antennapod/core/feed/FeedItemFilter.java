@@ -18,6 +18,7 @@ public class FeedItemFilter {
     private boolean showNotQueued = false;
     private boolean showDownloaded = false;
     private boolean showNotDownloaded = false;
+    private boolean showHasMedia = false;
 
     public FeedItemFilter(String properties) {
         this(TextUtils.split(properties, ","));
@@ -48,6 +49,9 @@ public class FeedItemFilter {
                     break;
                 case "not_downloaded":
                     showNotDownloaded = true;
+                    break;
+                case "has_media":
+                    showHasMedia = true;
                     break;
             }
         }
@@ -81,6 +85,8 @@ public class FeedItemFilter {
             boolean downloaded = item.getMedia() != null && item.getMedia().isDownloaded();
             if (showDownloaded && !downloaded) continue;
             if (showNotDownloaded && downloaded) continue;
+
+            if (showHasMedia && !item.hasMedia()) continue;
 
             // If the item reaches here, it meets all criteria
             result.add(item);
