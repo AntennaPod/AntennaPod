@@ -369,10 +369,13 @@
     <string name="pref_gpodnet_logout_toast">Logout was successful</string>
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
-    <string name="pref_gpodnet_sync_title">Sync now</string>
-    <string name="pref_gpodnet_sync_sum">Sync subscriptions and episode states with gpodder.net.</string>
+    <string name="pref_gpodnet_sync_changes_title">Sync changes now</string>
+    <string name="pref_gpodnet_sync_changes_sum">Sync subscription and episode state changes with gpodder.net.</string>
+    <string name="pref_gpodnet_full_sync_title">Full sync now</string>
+    <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
     <string name="pref_gpodnet_sync_sum_last_sync_line">Last sync attempt: %1$s (%2$s)</string>
     <string name="pref_gpodnet_sync_started">Sync started</string>
+    <string name="pref_gpodnet_full_sync_started">Full sync started</string>
     <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_gpodnet_notifications_title">Show sync error notifications</string>
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>

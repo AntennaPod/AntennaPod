@@ -75,27 +75,28 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     private static final String TAG = "PreferenceController";
 
-    public static final String PREF_FLATTR_SETTINGS = "prefFlattrSettings";
-    public static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
-    public static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
-    public static final String PREF_AUTO_FLATTR_PREFS = "prefAutoFlattrPrefs";
-    public static final String PREF_OPML_EXPORT = "prefOpmlExport";
-    public static final String STATISTICS = "statistics";
-    public static final String PREF_ABOUT = "prefAbout";
-    public static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
-    public static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
-    public static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
-    public static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
-    public static final String PREF_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
-    public static final String PREF_GPODNET_SYNC = "pref_gpodnet_sync";
-    public static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
-    public static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
-    public static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
-    public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
-    public static final String PREF_PROXY = "prefProxy";
-    public static final String PREF_KNOWN_ISSUES = "prefKnownIssues";
-    public static final String PREF_FAQ = "prefFaq";
-    public static final String PREF_SEND_CRASH_REPORT = "prefSendCrashReport";
+    private static final String PREF_FLATTR_SETTINGS = "prefFlattrSettings";
+    private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
+    private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
+    private static final String PREF_AUTO_FLATTR_PREFS = "prefAutoFlattrPrefs";
+    private static final String PREF_OPML_EXPORT = "prefOpmlExport";
+    private static final String STATISTICS = "statistics";
+    private static final String PREF_ABOUT = "prefAbout";
+    private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
+    private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
+    private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
+    private static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
+    private static final String PREF_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
+    private static final String PREF_GPODNET_SYNC = "pref_gpodnet_sync";
+    private static final String PREF_GPODNET_FORCE_FULL_SYNC = "pref_gpodnet_force_full_sync";
+    private static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
+    private static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
+    private static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
+    private static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
+    private static final String PREF_PROXY = "prefProxy";
+    private static final String PREF_KNOWN_ISSUES = "prefKnownIssues";
+    private static final String PREF_FAQ = "prefFaq";
+    private static final String PREF_SEND_CRASH_REPORT = "prefSendCrashReport";
 
     private final PreferenceUI ui;
 
@@ -348,6 +349,18 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     toast.show();
                     return true;
                 });
+        ui.findPreference(PreferenceController.PREF_GPODNET_FORCE_FULL_SYNC).
+                setOnPreferenceClickListener(preference -> {
+                    GpodnetPreferences.setLastSubscriptionSyncTimestamp(0L);
+                    GpodnetPreferences.setLastEpisodeActionsSyncTimestamp(0L);
+                    GpodnetPreferences.setLastSyncAttempt(false, 0);
+                    updateLastGpodnetSyncReport(false, 0);
+                    GpodnetSyncService.sendSyncIntent(ui.getActivity().getApplicationContext());
+                    Toast toast = Toast.makeText(ui.getActivity(), R.string.pref_gpodnet_sync_started,
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    return true;
+                });
         ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(
                 preference -> {
                     GpodnetPreferences.logout();
@@ -492,6 +505,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(PreferenceController.PREF_GPODNET_LOGIN).setEnabled(!loggedIn);
         ui.findPreference(PreferenceController.PREF_GPODNET_SETLOGIN_INFORMATION).setEnabled(loggedIn);
         ui.findPreference(PreferenceController.PREF_GPODNET_SYNC).setEnabled(loggedIn);
+        ui.findPreference(PreferenceController.PREF_GPODNET_FORCE_FULL_SYNC).setEnabled(loggedIn);
         ui.findPreference(PreferenceController.PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
         ui.findPreference(PREF_GPODNET_NOTIFICATIONS).setEnabled(loggedIn);
         if(loggedIn) {
@@ -511,7 +525,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private void updateLastGpodnetSyncReport(boolean successful, long lastTime) {
         Preference sync = ui.findPreference(PREF_GPODNET_SYNC);
         if (lastTime != 0) {
-            sync.setSummary(ui.getActivity().getString(R.string.pref_gpodnet_sync_sum) + "\n" +
+            sync.setSummary(ui.getActivity().getString(R.string.pref_gpodnet_sync_changes_sum) + "\n" +
                     ui.getActivity().getString(R.string.pref_gpodnet_sync_sum_last_sync_line,
                             ui.getActivity().getString(successful ?
                                     R.string.gpodnetsync_pref_report_successful :
@@ -522,7 +536,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                                     DateUtils.WEEK_IN_MILLIS,
                                     DateUtils.FORMAT_SHOW_TIME)));
         } else {
-            sync.setSummary(ui.getActivity().getString(R.string.pref_gpodnet_sync_sum));
+            sync.setSummary(ui.getActivity().getString(R.string.pref_gpodnet_sync_changes_sum));
         }
     }
 
@@ -774,9 +788,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
-        });
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) ->
+            UserPreferences.setHiddenDrawerItems(hiddenDrawerItems));
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
     }
@@ -820,9 +833,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 preferredButtons.remove((Integer) which);
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            UserPreferences.setCompactNotificationButtons(preferredButtons);
-        });
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) ->
+            UserPreferences.setCompactNotificationButtons(preferredButtons));
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
     }
