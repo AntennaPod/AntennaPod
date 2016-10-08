@@ -227,22 +227,32 @@ public class AllEpisodesFragment extends Fragment {
                     }
                     return true;
                 case R.id.mark_all_read_item:
-                    ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
+                    ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
                             R.string.mark_all_read_label,
                             R.string.mark_all_read_confirmation_msg) {
 
                         @Override
-                        public void onConfirmButtonPressed(
-                                DialogInterface dialog) {
+                        public void onConfirmButtonPressed(DialogInterface dialog) {
                             dialog.dismiss();
                             DBWriter.markAllItemsRead();
                             Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
                         }
                     };
-                    conDialog.createNewDialog().show();
+                    markAllReadConfirmationDialog.createNewDialog().show();
                     return true;
                 case R.id.mark_all_seen_item:
-                    DBWriter.markNewItemsSeen();
+                    ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(getActivity(),
+                            R.string.mark_all_seen_label,
+                            R.string.mark_all_seen_confirmation_msg) {
+
+                        @Override
+                        public void onConfirmButtonPressed(DialogInterface dialog) {
+                            dialog.dismiss();
+                            DBWriter.markNewItemsSeen();
+                            Toast.makeText(getActivity(), R.string.mark_all_seen_msg, Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    markAllSeenConfirmationDialog.createNewDialog().show();
                     return true;
                 default:
                     return false;

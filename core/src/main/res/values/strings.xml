@@ -111,6 +111,8 @@
     <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
     <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being played.</string>
     <string name="mark_all_seen_label">Mark all as seen</string>
+    <string name="mark_all_seen_msg">Marked all Episodes as seen</string>
+    <string name="mark_all_seen_confirmation_msg">Please confirm that you want to mark all episodes as seen.</string>
     <string name="show_info_label">Show information</string>
     <string name="remove_feed_label">Remove Podcast</string>
     <string name="share_label">Share&#8230;</string>
