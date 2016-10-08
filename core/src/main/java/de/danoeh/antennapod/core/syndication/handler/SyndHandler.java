@@ -6,7 +6,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.syndication.namespace.NSContent;
 import de.danoeh.antennapod.core.syndication.namespace.NSDublinCore;
@@ -86,34 +85,28 @@ public class SyndHandler extends DefaultHandler {
 					state.defaultNamespaces.push(new NSAtom());
 				} else if (prefix.equals(NSAtom.NSTAG)) {
 					state.namespaces.put(uri, new NSAtom());
-					if (BuildConfig.DEBUG)
-						Log.d(TAG, "Recognized Atom namespace");
+					Log.d(TAG, "Recognized Atom namespace");
 				}
 			} else if (uri.equals(NSContent.NSURI)
 					&& prefix.equals(NSContent.NSTAG)) {
 				state.namespaces.put(uri, new NSContent());
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Recognized Content namespace");
+				Log.d(TAG, "Recognized Content namespace");
 			} else if (uri.equals(NSITunes.NSURI)
 					&& prefix.equals(NSITunes.NSTAG)) {
 				state.namespaces.put(uri, new NSITunes());
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Recognized ITunes namespace");
+				Log.d(TAG, "Recognized ITunes namespace");
 			} else if (uri.equals(NSSimpleChapters.NSURI)
 					&& prefix.matches(NSSimpleChapters.NSTAG)) {
 				state.namespaces.put(uri, new NSSimpleChapters());
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Recognized SimpleChapters namespace");
+				Log.d(TAG, "Recognized SimpleChapters namespace");
 			} else if (uri.equals(NSMedia.NSURI)
 					&& prefix.equals(NSMedia.NSTAG)) {
 				state.namespaces.put(uri, new NSMedia());
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Recognized media namespace");
+				Log.d(TAG, "Recognized media namespace");
 			} else if (uri.equals(NSDublinCore.NSURI)
                     && prefix.equals(NSDublinCore.NSTAG)) {
                 state.namespaces.put(uri, new NSDublinCore());
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Recognized DublinCore namespace");
+                Log.d(TAG, "Recognized DublinCore namespace");
             }
 		}
 	}

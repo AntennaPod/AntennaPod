@@ -20,25 +20,27 @@ import de.danoeh.antennapod.core.util.DateUtils;
  * 
  */
 public class NSRSS20 extends Namespace {
-	private static final String TAG = "NSRSS20";
-	public static final String NSTAG = "rss";
-	public static final String NSURI = "";
 
-	public static final String CHANNEL = "channel";
+    private static final String TAG = "NSRSS20";
+
+    private static final String NSTAG = "rss";
+	private static final String NSURI = "";
+
+    public static final String CHANNEL = "channel";
 	public static final String ITEM = "item";
-	public static final String GUID = "guid";
-	public static final String TITLE = "title";
-	public static final String LINK = "link";
-	public static final String DESCR = "description";
-	public static final String PUBDATE = "pubDate";
-	public static final String ENCLOSURE = "enclosure";
-	public static final String IMAGE = "image";
-	public static final String URL = "url";
-	public static final String LANGUAGE = "language";
+    private static final String GUID = "guid";
+    private static final String TITLE = "title";
+    private static final String LINK = "link";
+    private static final String DESCR = "description";
+    private static final String PUBDATE = "pubDate";
+    private static final String ENCLOSURE = "enclosure";
+    private static final String IMAGE = "image";
+	private static final String URL = "url";
+    private static final String LANGUAGE = "language";
 
-	public static final String ENC_URL = "url";
-	public static final String ENC_LEN = "length";
-	public static final String ENC_TYPE = "type";
+    private static final String ENC_URL = "url";
+    private static final String ENC_LEN = "length";
+    private static final String ENC_TYPE = "type";
 
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
@@ -55,11 +57,12 @@ public class NSRSS20 extends Namespace {
 			if(SyndTypeUtils.enclosureTypeValid(type)) {
 				validType = true;
 			} else {
-				type = type = SyndTypeUtils.getValidMimeTypeFromUrl(url);
+				type = SyndTypeUtils.getValidMimeTypeFromUrl(url);
 				validType = type != null;
 			}
+            boolean validUrl = !TextUtils.isEmpty(url);
 			if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null &&
-				validType) {
+				validType && validUrl) {
 				long size = 0;
 				try {
 					size = Long.parseLong(attributes.getValue(ENC_LEN));
@@ -70,8 +73,8 @@ public class NSRSS20 extends Namespace {
 				} catch (NumberFormatException e) {
 					Log.d(TAG, "Length attribute could not be parsed.");
 				}
-				state.getCurrentItem().setMedia(
-						new FeedMedia(state.getCurrentItem(), url, size, type));
+				FeedMedia media = new FeedMedia(state.getCurrentItem(), url, size, type);
+				state.getCurrentItem().setMedia(media);
 			}
 
 		} else if (IMAGE.equals(localName)) {
