@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -38,6 +39,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -731,6 +733,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 }
                 break;
         }
+    }
+
+    public void onEventMainThread(MessageEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        Toast.makeText(this, event.message, Toast.LENGTH_SHORT).show();
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

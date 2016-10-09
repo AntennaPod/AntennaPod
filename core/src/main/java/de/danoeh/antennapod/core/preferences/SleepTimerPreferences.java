@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.util.concurrent.TimeUnit;
+
 public class SleepTimerPreferences {
 
     private static final String TAG = "SleepTimerPreferences";
@@ -15,6 +17,8 @@ public class SleepTimerPreferences {
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
+
+    private static final TimeUnit[] UNITS = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
 
     private static final String DEFAULT_VALUE = "15";
     private static final int DEFAULT_TIME_UNIT = 1;
@@ -42,6 +46,11 @@ public class SleepTimerPreferences {
 
     public static int lastTimerTimeUnit() {
         return prefs.getInt(PREF_TIME_UNIT, DEFAULT_TIME_UNIT);
+    }
+
+    public static long timerMillis() {
+        long value = Long.parseLong(lastTimerValue());
+        return UNITS[lastTimerTimeUnit()].toMillis(value);
     }
 
     public static void setVibrate(boolean vibrate) {

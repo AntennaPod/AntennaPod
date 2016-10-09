@@ -47,12 +47,14 @@ import java.util.List;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -62,6 +64,7 @@ import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.greenrobot.event.EventBus;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
@@ -605,6 +608,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     writePlayerStatusPlaybackPreferences();
                     setupNotification(newInfo);
                     started = true;
+                    // set sleep timer if auto-enabled
+                    if(SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
+                        setSleepTimer(SleepTimerPreferences.timerMillis(), SleepTimerPreferences.shakeToReset(),
+                                SleepTimerPreferences.vibrate());
+                    }
                     break;
 
                 case ERROR:
@@ -846,11 +854,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime) + " milliseconds");
         taskManager.setSleepTimer(waitingTime, shakeToReset, vibrate);
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label)));
     }
 
     public void disableSleepTimer() {
         taskManager.disableSleepTimer();
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_disabled_label)));
     }
 
     private void writePlaybackPreferencesNoMediaPlaying() {

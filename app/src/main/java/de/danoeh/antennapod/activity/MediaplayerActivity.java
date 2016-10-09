@@ -31,6 +31,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -47,6 +48,7 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -217,6 +219,12 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             controller.pause();
         }
         super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(MessageEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        Toast.makeText(this, event.message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -580,6 +588,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if(controller != null) {
             controller.init();
         }
+        EventBus.getDefault().register(this);
     }
 
     /**

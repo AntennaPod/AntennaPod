@@ -482,7 +482,9 @@
         <item quantity="one">1 hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-    <string name="auto_enable">Auto-enable</string>
+    <string name="auto_enable_label">Auto-enable</string>
+    <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
+    <string name="sleep_timer_disabled_label">Sleep timer disabled</string>
 
     <!-- gpodder.net -->
     <string name="gpodnet_taglist_header">CATEGORIES</string>
