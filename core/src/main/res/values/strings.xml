@@ -482,6 +482,7 @@
         <item quantity="one">1 hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
+    <string name="auto_enable">Auto-enable</string>
 
     <!-- gpodder.net -->
     <string name="gpodnet_taglist_header">CATEGORIES</string>
