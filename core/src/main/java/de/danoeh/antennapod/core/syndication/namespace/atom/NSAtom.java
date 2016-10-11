@@ -95,14 +95,12 @@ public class NSAtom extends Namespace {
                         Log.d(TAG, "Length attribute could not be parsed.");
                     }
                     String type = attributes.getValue(LINK_TYPE);
-                    boolean validType;
-                    if(SyndTypeUtils.enclosureTypeValid(type)) {
-                        validType = true;
-                    } else {
-                        type = SyndTypeUtils.getValidMimeTypeFromUrl(href);
-                        validType = type != null;
+
+                    if (type == null) {
+                        type = SyndTypeUtils.getMimeTypeFromUrl(href);
                     }
-                    if (validType) {
+
+                    if(SyndTypeUtils.enclosureTypeValid(type)) {
                         FeedItem currItem = state.getCurrentItem();
                         if(currItem != null && !currItem.hasMedia()) {
                             currItem.setMedia(new FeedMedia(currItem, href, size, type));

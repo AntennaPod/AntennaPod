@@ -26,6 +26,11 @@ public class NSMedia extends Namespace {
 	private static final String MIME_TYPE = "type";
 	private static final String DURATION = "duration";
 	private static final String DEFAULT = "isDefault";
+	private static final String MEDIUM = "medium";
+
+	private static final String MEDIUM_IMAGE = "image";
+	private static final String MEDIUM_AUDIO = "audio";
+	private static final String MEDIUM_VIDEO = "video";
 
 	private static final String IMAGE = "thumbnail";
 	private static final String IMAGE_URL = "url";
@@ -40,20 +45,31 @@ public class NSMedia extends Namespace {
 			String url = attributes.getValue(DOWNLOAD_URL);
 			String type = attributes.getValue(MIME_TYPE);
 			String defaultStr = attributes.getValue(DEFAULT);
-			boolean validType;
+			String medium = attributes.getValue(MEDIUM);
+			boolean validTypeMedia = false;
+			boolean validTypeImage = false;
 
 			boolean isDefault = "true".equals(defaultStr);
 
-			if (SyndTypeUtils.enclosureTypeValid(type)) {
-				validType = true;
+			if (MEDIUM_AUDIO.equals(medium) || MEDIUM_VIDEO.equals(medium)) {
+				validTypeMedia = true;
+			} else if (MEDIUM_IMAGE.equals(medium)) {
+				validTypeImage = true;
 			} else {
-				type = SyndTypeUtils.getValidMimeTypeFromUrl(url);
-				validType = type != null;
+				if (type == null) {
+					type = SyndTypeUtils.getMimeTypeFromUrl(url);
+				}
+
+				if (SyndTypeUtils.enclosureTypeValid(type)) {
+					validTypeMedia = true;
+				} else if (SyndTypeUtils.imageTypeValid(type)) {
+					validTypeImage = true;
+				}
 			}
 
 			if (state.getCurrentItem() != null &&
 					(state.getCurrentItem().getMedia() == null || isDefault) &&
-					url != null && validType) {
+					url != null && validTypeMedia) {
 				long size = 0;
 				String sizeStr = attributes.getValue(SIZE);
 				try {
@@ -77,6 +93,12 @@ public class NSMedia extends Namespace {
 					media.setDuration(durationMs);
 				}
 				state.getCurrentItem().setMedia(media);
+			} else if (state.getCurrentItem() != null && url != null && validTypeImage) {
+				FeedImage image = new FeedImage();
+				image.setDownload_url(url);
+				image.setOwner(state.getCurrentItem());
+
+				state.getCurrentItem().setImage(image);
 			}
 		} else if (IMAGE.equals(localName)) {
 			String url = attributes.getValue(IMAGE_URL);

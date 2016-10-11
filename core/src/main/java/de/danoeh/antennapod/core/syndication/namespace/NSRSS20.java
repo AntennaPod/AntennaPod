@@ -53,14 +53,17 @@ public class NSRSS20 extends Namespace {
 		} else if (ENCLOSURE.equals(localName)) {
 			String type = attributes.getValue(ENC_TYPE);
 			String url = attributes.getValue(ENC_URL);
-			boolean validType;
+			boolean validType = false;
+			boolean validUrl = !TextUtils.isEmpty(url);
+
+			if (type == null) {
+				type = SyndTypeUtils.getMimeTypeFromUrl(url);
+			}
+
 			if(SyndTypeUtils.enclosureTypeValid(type)) {
 				validType = true;
-			} else {
-				type = SyndTypeUtils.getValidMimeTypeFromUrl(url);
-				validType = type != null;
 			}
-            boolean validUrl = !TextUtils.isEmpty(url);
+
 			if (state.getCurrentItem() != null && state.getCurrentItem().getMedia() == null &&
 				validType && validUrl) {
 				long size = 0;
