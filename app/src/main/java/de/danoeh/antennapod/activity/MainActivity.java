@@ -10,6 +10,7 @@ import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,7 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -737,7 +737,14 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        Toast.makeText(this, event.message, Toast.LENGTH_SHORT).show();
+        View parentLayout = findViewById(R.id.drawer_layout);
+        Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);
+        if(event.action != null) {
+            snackbar.setAction(getString(R.string.undo), v -> {
+                event.action.run();
+            });
+        }
+        snackbar.show();
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

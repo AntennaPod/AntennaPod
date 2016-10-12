@@ -31,7 +31,6 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -220,11 +219,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
         super.onPause();
         EventBus.getDefault().unregister(this);
-    }
-
-    public void onEventMainThread(MessageEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        Toast.makeText(this, event.message, Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -854,7 +854,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime) + " milliseconds");
         taskManager.setSleepTimer(waitingTime, shakeToReset, vibrate);
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label)));
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
+                () -> disableSleepTimer()));
     }
 
     public void disableSleepTimer() {
