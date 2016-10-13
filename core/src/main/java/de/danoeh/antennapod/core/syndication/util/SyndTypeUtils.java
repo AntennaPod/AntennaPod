@@ -37,16 +37,12 @@ public class SyndTypeUtils {
 	 * the type is not supported, this method will return null.
 	 */
 	public static String getValidMimeTypeFromUrl(String url) {
-		if (url != null) {
-			String extension = FilenameUtils.getExtension(url);
-			if (extension != null) {
-				String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-				if (type != null && enclosureTypeValid(type)) {
-					return type;
-				}
-			}
+		String type = getMimeTypeFromUrl(url);
+		if (enclosureTypeValid(type)) {
+			return type;
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	/**
@@ -54,13 +50,14 @@ public class SyndTypeUtils {
 	 * method will return the mime-type of the file extension.
 	 */
 	public static String getMimeTypeFromUrl(String url) {
-		if (url != null) {
-			String extension = FilenameUtils.getExtension(url);
-			if (extension != null) {
-				return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-			}
+		if (url == null) {
+			return null;
 		}
-		return null;
-	}
+		String extension = FilenameUtils.getExtension(url);
+		if (extension == null) {
+			return null;
+		}
 
+		return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+	}
 }
