@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.opml;
+package de.danoeh.antennapod.core.export.opml;
 
 import android.util.Log;
 import android.util.Xml;

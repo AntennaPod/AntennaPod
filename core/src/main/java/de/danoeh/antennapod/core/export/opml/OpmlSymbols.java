@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.opml;
+package de.danoeh.antennapod.core.export.opml;
 
 /** Contains symbols for reading and writing OPML documents. */
 public final class OpmlSymbols {
