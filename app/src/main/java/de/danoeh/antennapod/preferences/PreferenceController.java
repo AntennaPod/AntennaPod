@@ -55,7 +55,10 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.activity.StatisticsActivity;
-import de.danoeh.antennapod.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.asynctask.ExportWorker;
+import de.danoeh.antennapod.core.export.ExportWriter;
+import de.danoeh.antennapod.core.export.html.HtmlWriter;
+import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
@@ -85,6 +88,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
     private static final String PREF_AUTO_FLATTR_PREFS = "prefAutoFlattrPrefs";
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
+    private static final String PREF_HTML_EXPORT = "prefHtmlExport";
     private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
@@ -181,7 +185,9 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 }
         );
         ui.findPreference(PreferenceController.PREF_OPML_EXPORT).setOnPreferenceClickListener(
-                preference -> exportOpml());
+                preference -> export(new OpmlWriter()));
+        ui.findPreference(PreferenceController.PREF_HTML_EXPORT).setOnPreferenceClickListener(
+                preference -> export(new HtmlWriter()));
         ui.findPreference(PreferenceController.PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(
                 preference -> {
                     if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT &&
@@ -438,7 +444,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
     }
 
-    private boolean exportOpml() {
+    private boolean export(ExportWriter exportWriter) {
         Context context = ui.getActivity();
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(context.getString(R.string.exporting_label));
@@ -446,7 +452,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         progressDialog.show();
         final AlertDialog.Builder alert = new AlertDialog.Builder(context)
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
-        Observable<File> observable = new OpmlExportWorker().exportObservable();
+        Observable<File> observable = new ExportWorker(exportWriter).exportObservable();
         subscription = observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(output -> {

@@ -1,19 +1,18 @@
 package de.danoeh.antennapod.core.export.opml;
 
+import de.danoeh.antennapod.core.export.CommonSymbols;
+
 /** Contains symbols for reading and writing OPML documents. */
-public final class OpmlSymbols {
+public final class OpmlSymbols extends CommonSymbols {
 	
 	public static final String OPML = "opml";
-	public static final String BODY = "body";
-	public static final String OUTLINE = "outline";
-	public static final String TEXT = "text";
-	public static final String XMLURL = "xmlUrl";
-	public static final String HTMLURL = "htmlUrl";
-	public static final String TYPE = "type";
-	public static final String VERSION = "version";
-	public static final String HEAD = "head";
-	public static final String TITLE = "title";
-	public static final String DATE_CREATED = "dateCreated";
+	static final String OUTLINE = "outline";
+	static final String TEXT = "text";
+	static final String XMLURL = "xmlUrl";
+	static final String HTMLURL = "htmlUrl";
+	static final String TYPE = "type";
+	static final String VERSION = "version";
+	static final String DATE_CREATED = "dateCreated";
 	
 	private OpmlSymbols() {
 		
