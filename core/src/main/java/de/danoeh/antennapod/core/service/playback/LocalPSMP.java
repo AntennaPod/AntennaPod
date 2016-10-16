@@ -383,6 +383,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             statusBeforeSeeking = playerStatus;
             setPlayerStatus(PlayerStatus.SEEKING, media, getPosition());
             mediaPlayer.seekTo(t);
+            if (statusBeforeSeeking == PlayerStatus.PREPARED) {
+                media.setPosition(t);
+            }
             try {
                 seekLatch.await(3, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
