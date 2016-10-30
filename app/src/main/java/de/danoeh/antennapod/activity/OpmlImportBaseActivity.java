@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
 import de.danoeh.antennapod.asynctask.OpmlImportWorker;
-import de.danoeh.antennapod.core.opml.OpmlElement;
+import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.util.LangUtils;
 
 /**
@@ -29,9 +29,8 @@ import de.danoeh.antennapod.core.util.LangUtils;
 public class OpmlImportBaseActivity extends AppCompatActivity {
 
     private static final String TAG = "OpmlImportBaseActivity";
-    private OpmlImportWorker importWorker;
-
 	private static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 5;
+    private OpmlImportWorker importWorker;
 	@Nullable private Uri uri;
 
 	/**

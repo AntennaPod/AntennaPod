@@ -18,9 +18,6 @@ import de.danoeh.antennapod.preferences.PreferenceController;
  */
 public class PreferenceActivityGingerbread extends android.preference.PreferenceActivity {
     private static final String TAG = "PreferenceActivity";
-
-    private PreferenceController preferenceController;
-
     private final PreferenceController.PreferenceUI preferenceUI = new PreferenceController.PreferenceUI() {
 
         @SuppressWarnings("deprecation")
@@ -34,6 +31,7 @@ public class PreferenceActivityGingerbread extends android.preference.Preference
             return PreferenceActivityGingerbread.this;
         }
     };
+    private PreferenceController preferenceController;
 
     @SuppressLint("NewApi")
     @SuppressWarnings("deprecation")
@@ -58,6 +56,12 @@ public class PreferenceActivityGingerbread extends android.preference.Preference
     protected void onPause() {
         preferenceController.onPause();
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        preferenceController.onStop();
+        super.onStop();
     }
 
     @Override

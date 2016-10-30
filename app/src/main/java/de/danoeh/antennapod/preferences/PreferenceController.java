@@ -3,6 +3,7 @@ package de.danoeh.antennapod.preferences;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -54,7 +55,10 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.activity.StatisticsActivity;
-import de.danoeh.antennapod.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.asynctask.ExportWorker;
+import de.danoeh.antennapod.core.export.ExportWriter;
+import de.danoeh.antennapod.core.export.html.HtmlWriter;
+import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
@@ -66,6 +70,10 @@ import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
 import de.danoeh.antennapod.dialog.ProxyDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Sets up a preference UI that lets the user change user preferences.
@@ -80,6 +88,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
     private static final String PREF_AUTO_FLATTR_PREFS = "prefAutoFlattrPrefs";
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
+    private static final String PREF_HTML_EXPORT = "prefHtmlExport";
     private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
@@ -97,32 +106,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_KNOWN_ISSUES = "prefKnownIssues";
     private static final String PREF_FAQ = "prefFaq";
     private static final String PREF_SEND_CRASH_REPORT = "prefSendCrashReport";
-
-    private final PreferenceUI ui;
-
-    private CheckBoxPreference[] selectedNetworks;
-
     private static final String[] EXTERNAL_STORAGE_PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE };
     private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 41;
-
-    public PreferenceController(PreferenceUI ui) {
-        this.ui = ui;
-        PreferenceManager.getDefaultSharedPreferences(ui.getActivity().getApplicationContext())
-            .registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(UserPreferences.PREF_SONIC)) {
-            CheckBoxPreference prefSonic = (CheckBoxPreference) ui.findPreference(UserPreferences.PREF_SONIC);
-            if(prefSonic != null) {
-                prefSonic.setChecked(sharedPreferences.getBoolean(UserPreferences.PREF_SONIC, false));
-            }
-        }
-    }
-
+    private final PreferenceUI ui;
     private final SharedPreferences.OnSharedPreferenceChangeListener gpoddernetListener =
             (sharedPreferences, key) -> {
                 if (GpodnetPreferences.PREF_LAST_SYNC_ATTEMPT_TIMESTAMP.equals(key)) {
@@ -130,6 +118,14 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                             GpodnetPreferences.getLastSyncAttemptTimestamp());
                 }
             };
+    private CheckBoxPreference[] selectedNetworks;
+    private Subscription subscription;
+
+    public PreferenceController(PreferenceUI ui) {
+        this.ui = ui;
+        PreferenceManager.getDefaultSharedPreferences(ui.getActivity().getApplicationContext())
+            .registerOnSharedPreferenceChangeListener(this);
+    }
 
     /**
      * Returns the preference activity that should be used on this device.
@@ -141,6 +137,16 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             return PreferenceActivity.class;
         } else {
             return PreferenceActivityGingerbread.class;
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(UserPreferences.PREF_SONIC)) {
+            CheckBoxPreference prefSonic = (CheckBoxPreference) ui.findPreference(UserPreferences.PREF_SONIC);
+            if(prefSonic != null) {
+                prefSonic.setChecked(sharedPreferences.getBoolean(UserPreferences.PREF_SONIC, false));
+            }
         }
     }
 
@@ -179,11 +185,9 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 }
         );
         ui.findPreference(PreferenceController.PREF_OPML_EXPORT).setOnPreferenceClickListener(
-                preference -> {
-                    new OpmlExportWorker(activity).executeAsync();
-                    return true;
-                }
-        );
+                preference -> export(new OpmlWriter()));
+        ui.findPreference(PreferenceController.PREF_HTML_EXPORT).setOnPreferenceClickListener(
+                preference -> export(new HtmlWriter()));
         ui.findPreference(PreferenceController.PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(
                 preference -> {
                     if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT &&
@@ -440,6 +444,40 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
     }
 
+    private boolean export(ExportWriter exportWriter) {
+        Context context = ui.getActivity();
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(context.getString(R.string.exporting_label));
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
+        final AlertDialog.Builder alert = new AlertDialog.Builder(context)
+                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+        Observable<File> observable = new ExportWorker(exportWriter).exportObservable();
+        subscription = observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(output -> {
+                    alert.setTitle(R.string.opml_export_success_title);
+                    String message = context.getString(R.string.opml_export_success_sum) + output.toString();
+                    alert.setMessage(message);
+                    alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
+                        Uri outputUri = Uri.fromFile(output);
+                        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_SUBJECT,
+                                context.getResources().getText(R.string.opml_export_label));
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
+                        sendIntent.setType("text/plain");
+                        context.startActivity(Intent.createChooser(sendIntent,
+                                context.getResources().getText(R.string.send_label)));
+                    });
+                    alert.create().show();
+                }, error -> {
+                    alert.setTitle(R.string.export_error_label);
+                    alert.setMessage(error.getMessage());
+                    alert.show();
+                }, () -> progressDialog.dismiss());
+        return true;
+    }
+
     private void openInBrowser(String url) {
         try {
             Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -462,6 +500,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     public void onPause() {
         GpodnetPreferences.unregisterOnSharedPreferenceChangeListener(gpoddernetListener);
+    }
+
+    public void onStop() {
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @SuppressLint("NewApi")
