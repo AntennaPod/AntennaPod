@@ -216,7 +216,7 @@ public abstract class PlaybackController {
                 Intent serviceIntent = new Intent(activity, PlaybackService.class);
                 serviceIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
                 serviceIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, false);
-                serviceIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, false);
+                serviceIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, true);
                 boolean fileExists = media.localFileAvailable();
                 boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
                 if (!fileExists && !lastIsStream && media instanceof FeedMedia) {

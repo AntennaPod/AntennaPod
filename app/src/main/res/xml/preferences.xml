@@ -289,6 +289,9 @@
             android:key="prefOpmlExport"
             android:title="@string/opml_export_label"/>
         <Preference
+            android:key="prefHtmlExport"
+            android:title="@string/html_export_label"/>
+        <Preference
             android:key="statistics"
             android:title="@string/statistics_label"/>
     </PreferenceCategory>

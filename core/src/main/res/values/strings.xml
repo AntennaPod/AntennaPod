@@ -451,6 +451,7 @@
     <string name="choose_file_from_filesystem">From local filesystem</string>
     <string name="choose_file_from_external_application">Use external application</string>
     <string name="opml_export_label">OPML export</string>
+    <string name="html_export_label">HTML export</string>
     <string name="exporting_label">Exporting&#8230;</string>
     <string name="export_error_label">Export error</string>
     <string name="opml_export_success_title">OPML Export successful.</string>

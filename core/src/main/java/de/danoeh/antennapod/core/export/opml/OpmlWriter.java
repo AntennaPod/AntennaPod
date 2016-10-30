@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.opml;
+package de.danoeh.antennapod.core.export.opml;
 
 import android.util.Log;
 import android.util.Xml;
@@ -10,11 +10,13 @@ import java.io.Writer;
 import java.util.Date;
 import java.util.List;
 
+import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.util.DateUtils;
 
 /** Writes OPML documents. */
-public class OpmlWriter {
+public class OpmlWriter implements ExportWriter {
+
 	private static final String TAG = "OpmlWriter";
 	private static final String ENCODING = "UTF-8";
 	private static final String OPML_VERSION = "2.0";
@@ -28,6 +30,7 @@ public class OpmlWriter {
 	 * @throws IllegalStateException
 	 * @throws IllegalArgumentException
 	 */
+	@Override
 	public void writeDocument(List<Feed> feeds, Writer writer)
 			throws IllegalArgumentException, IllegalStateException, IOException {
 		Log.d(TAG, "Starting to write document");
@@ -83,4 +86,9 @@ public class OpmlWriter {
 		xs.endDocument();
 		Log.d(TAG, "Finished writing document");
 	}
+
+	public String fileExtension() {
+		return "opml";
+	}
+
 }
