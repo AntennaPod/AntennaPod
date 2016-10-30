@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -36,6 +37,7 @@ import de.danoeh.antennapod.adapter.ChaptersListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -464,7 +466,17 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-
+    public void onEventMainThread(MessageEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        View parentLayout = findViewById(R.id.drawer_layout);
+        Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);
+        if (event.action != null) {
+            snackbar.setAction(getString(R.string.undo), v -> {
+                event.action.run();
+            });
+        }
+        snackbar.show();
+    }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
