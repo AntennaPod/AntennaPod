@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter.itunes;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.mfietz.fyydlin.SearchHit;
 
 public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
     /**
@@ -42,8 +44,9 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         //Current podcast
         Podcast podcast = data.get(position);
 
@@ -87,35 +90,6 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
     }
 
     /**
-     * View holder object for the GridView
-     */
-    class PodcastViewHolder {
-
-        /**
-         * ImageView holding the Podcast image
-         */
-        public final ImageView coverView;
-
-        /**
-         * TextView holding the Podcast title
-         */
-        public final TextView titleView;
-
-        public final TextView urlView;
-
-
-        /**
-         * Constructor
-         * @param view GridView cell
-         */
-        PodcastViewHolder(View view){
-            coverView = (ImageView) view.findViewById(R.id.imgvCover);
-            titleView = (TextView) view.findViewById(R.id.txtvTitle);
-            urlView = (TextView) view.findViewById(R.id.txtvUrl);
-        }
-    }
-
-    /**
      * Represents an individual podcast on the iTunes Store.
      */
     public static class Podcast { //TODO: Move this out eventually. Possibly to core.itunes.model
@@ -154,6 +128,10 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
             return new Podcast(title, imageUrl, feedUrl);
         }
 
+        public static Podcast fromSearch(SearchHit searchHit) {
+            return new Podcast(searchHit.getTitle(), searchHit.getImageUrl(), searchHit.getXmlUrl());
+        }
+
         /**
          * Constructs a Podcast instance from iTunes toplist entry
          *
@@ -176,5 +154,34 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
             return new Podcast(title, imageUrl, feedUrl);
         }
 
+    }
+
+    /**
+     * View holder object for the GridView
+     */
+    class PodcastViewHolder {
+
+        /**
+         * ImageView holding the Podcast image
+         */
+        final ImageView coverView;
+
+        /**
+         * TextView holding the Podcast title
+         */
+        final TextView titleView;
+
+        final TextView urlView;
+
+
+        /**
+         * Constructor
+         * @param view GridView cell
+         */
+        PodcastViewHolder(View view){
+            coverView = (ImageView) view.findViewById(R.id.imgvCover);
+            titleView = (TextView) view.findViewById(R.id.txtvTitle);
+            urlView = (TextView) view.findViewById(R.id.txtvUrl);
+        }
     }
 }

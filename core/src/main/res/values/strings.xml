@@ -102,7 +102,7 @@
     <string name="etxtFeedurlHint">www.example.com/feed</string>
     <string name="txtvfeedurl_label">Add Podcast by URL</string>
     <string name="podcastdirectories_label">Find Podcast in Directory</string>
-    <string name="podcastdirectories_descr">You can search for new podcasts by name, category or popularity in the gpodder.net directory, or search the iTunes store.</string>
+    <string name="podcastdirectories_descr">For new podcasts, you can search iTunes or fyyd, or browse gpodder.net by name, category or popularity.</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
 
     <!-- Actions on feeds -->
@@ -575,6 +575,8 @@
 
     <string name="search_itunes_label">Search iTunes</string>
     <string name="filter">Filter</string>
+
+    <string name="search_fyyd_label">Search fyyd</string>
     
     <!-- Episodes apply actions -->
     <string name="all_label">All</string>

@@ -285,6 +285,16 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
     <style name="AntennaPod.Dialog.Light" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/holo_blue_light</item>
     </style>
