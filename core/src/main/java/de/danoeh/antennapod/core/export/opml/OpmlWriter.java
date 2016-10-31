@@ -35,36 +35,24 @@ public class OpmlWriter implements ExportWriter {
 			throws IllegalArgumentException, IllegalStateException, IOException {
 		Log.d(TAG, "Starting to write document");
 		XmlSerializer xs = Xml.newSerializer();
+		xs.setFeature(OpmlSymbols.XML_FEATURE_INDENT_OUTPUT, true);
 		xs.setOutput(writer);
 
 		xs.startDocument(ENCODING, false);
-		xs.text("\n");
 		xs.startTag(null, OpmlSymbols.OPML);
 		xs.attribute(null, OpmlSymbols.VERSION, OPML_VERSION);
-		xs.text("\n");
 
-		xs.text("  ");
 		xs.startTag(null, OpmlSymbols.HEAD);
-		xs.text("\n");
-		xs.text("    ");
 		xs.startTag(null, OpmlSymbols.TITLE);
 		xs.text(OPML_TITLE);
 		xs.endTag(null, OpmlSymbols.TITLE);
-		xs.text("\n");
-		xs.text("    ");
 		xs.startTag(null, OpmlSymbols.DATE_CREATED);
 		xs.text(DateUtils.formatRFC822Date(new Date()));
 		xs.endTag(null, OpmlSymbols.DATE_CREATED);
-		xs.text("\n");
-		xs.text("  ");
 		xs.endTag(null, OpmlSymbols.HEAD);
-		xs.text("\n");
 
-		xs.text("  ");
 		xs.startTag(null, OpmlSymbols.BODY);
-		xs.text("\n");
 		for (Feed feed : feeds) {
-			xs.text("    ");
 			xs.startTag(null, OpmlSymbols.OUTLINE);
 			xs.attribute(null, OpmlSymbols.TEXT, feed.getTitle());
 			xs.attribute(null, OpmlSymbols.TITLE, feed.getTitle());
@@ -76,13 +64,9 @@ public class OpmlWriter implements ExportWriter {
 				xs.attribute(null, OpmlSymbols.HTMLURL, feed.getLink());
 			}
 			xs.endTag(null, OpmlSymbols.OUTLINE);
-			xs.text("\n");
 		}
-		xs.text("  ");
 		xs.endTag(null, OpmlSymbols.BODY);
-		xs.text("\n");
 		xs.endTag(null, OpmlSymbols.OPML);
-		xs.text("\n");
 		xs.endDocument();
 		Log.d(TAG, "Finished writing document");
 	}
