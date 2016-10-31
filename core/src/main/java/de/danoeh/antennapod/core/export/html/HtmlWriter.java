@@ -33,29 +33,22 @@ public class HtmlWriter implements ExportWriter {
             throws IllegalArgumentException, IllegalStateException, IOException {
         Log.d(TAG, "Starting to write document");
         XmlSerializer xs = Xml.newSerializer();
+        xs.setFeature(HtmlSymbols.XML_FEATURE_INDENT_OUTPUT, true);
         xs.setOutput(writer);
 
         xs.startDocument(ENCODING, false);
-        xs.text("\n");
         xs.startTag(null, HtmlSymbols.HTML);
-        xs.text("\n");
         xs.startTag(null, HtmlSymbols.HEAD);
-        xs.text("\n");
         xs.startTag(null, HtmlSymbols.TITLE);
         xs.text(HTML_TITLE);
         xs.endTag(null, HtmlSymbols.TITLE);
-        xs.text("\n");
         xs.endTag(null, HtmlSymbols.HEAD);
-        xs.text("\n");
 
         xs.startTag(null, HtmlSymbols.BODY);
-        xs.text("\n");
         xs.startTag(null, HtmlSymbols.HEADING);
         xs.text(HTML_TITLE);
         xs.endTag(null, HtmlSymbols.HEADING);
-        xs.text("\n");
         xs.startTag(null, HtmlSymbols.ORDERED_LIST);
-        xs.text("\n");
         for (Feed feed : feeds) {
             xs.startTag(null, HtmlSymbols.LIST_ITEM);
             xs.text(feed.getTitle());
@@ -74,13 +67,10 @@ public class HtmlWriter implements ExportWriter {
             xs.endTag(null, HtmlSymbols.LINK);
             xs.text("]");
             xs.endTag(null, HtmlSymbols.LIST_ITEM);
-            xs.text("\n");
         }
         xs.endTag(null, HtmlSymbols.ORDERED_LIST);
         xs.endTag(null, HtmlSymbols.BODY);
-        xs.text("\n");
         xs.endTag(null, HtmlSymbols.HTML);
-        xs.text("\n");
         xs.endDocument();
         Log.d(TAG, "Finished writing document");
     }
