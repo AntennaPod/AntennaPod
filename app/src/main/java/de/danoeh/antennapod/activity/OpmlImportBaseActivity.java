@@ -3,6 +3,7 @@ package de.danoeh.antennapod.activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -76,7 +77,8 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
             return;
         }
 		this.uri = uri;
-        if(uri.toString().contains(Environment.getExternalStorageDirectory().toString())) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+				uri.toString().contains(Environment.getExternalStorageDirectory().toString())) {
             int permission = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
             if (permission != PackageManager.PERMISSION_GRANTED) {
                 requestPermission();
