@@ -49,6 +49,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.ChaptersFragment;
 import de.danoeh.antennapod.fragment.CoverFragment;
@@ -373,6 +374,9 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 return true;
             case R.id.mark_all_read_item:
                 DBWriter.markFeedRead(feed.getId());
+                return true;
+            case R.id.rename_item:
+                new RenameFeedDialog(this, feed).show();
                 return true;
             case R.id.remove_item:
                 final FeedRemover remover = new FeedRemover(this, feed) {

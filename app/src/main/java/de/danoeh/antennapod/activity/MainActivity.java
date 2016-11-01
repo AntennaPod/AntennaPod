@@ -54,6 +54,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.RatingDialog;
+import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
@@ -576,6 +577,9 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 return true;
             case R.id.mark_all_read_item:
                 DBWriter.markFeedRead(feed.getId());
+                return true;
+            case R.id.rename_item:
+                new RenameFeedDialog(this, feed).show();
                 return true;
             case R.id.remove_item:
                 final FeedRemover remover = new FeedRemover(this, feed) {

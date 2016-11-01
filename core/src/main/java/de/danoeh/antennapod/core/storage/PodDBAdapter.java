@@ -57,6 +57,7 @@ public class PodDBAdapter {
     // Key-constants
     public static final String KEY_ID = "id";
     public static final String KEY_TITLE = "title";
+    public static final String KEY_CUSTOM_TITLE = "custom_title";
     public static final String KEY_NAME = "name";
     public static final String KEY_LINK = "link";
     public static final String KEY_DESCRIPTION = "description";
@@ -124,7 +125,7 @@ public class PodDBAdapter {
 
     public static final String CREATE_TABLE_FEEDS = "CREATE TABLE "
             + TABLE_NAME_FEEDS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
+            + " TEXT," + KEY_CUSTOM_TITLE + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
             + KEY_DOWNLOADED + " INTEGER," + KEY_LINK + " TEXT,"
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
@@ -225,6 +226,7 @@ public class PodDBAdapter {
     private static final String[] FEED_SEL_STD = {
             TABLE_NAME_FEEDS + "." + KEY_ID,
             TABLE_NAME_FEEDS + "." + KEY_TITLE,
+            TABLE_NAME_FEEDS + "." + KEY_CUSTOM_TITLE,
             TABLE_NAME_FEEDS + "." + KEY_FILE_URL,
             TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL,
             TABLE_NAME_FEEDS + "." + KEY_DOWNLOADED,
@@ -363,7 +365,7 @@ public class PodDBAdapter {
      */
     public long setFeed(Feed feed) {
         ContentValues values = new ContentValues();
-        values.put(KEY_TITLE, feed.getTitle());
+        values.put(KEY_TITLE, feed.getFeedTitle());
         values.put(KEY_LINK, feed.getLink());
         values.put(KEY_DESCRIPTION, feed.getDescription());
         values.put(KEY_PAYMENT_LINK, feed.getPaymentLink());
@@ -852,6 +854,12 @@ public class PodDBAdapter {
                 + " SET " + KEY_LAST_UPDATE_FAILED+ "=" + (failed ? "1" : "0")
                 + " WHERE " + KEY_ID + "="+ feedId;
         db.execSQL(sql);
+    }
+
+    void setFeedCustomTitle(long feedId, String customTitle) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_CUSTOM_TITLE, customTitle);
+        db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
     /**
@@ -1628,7 +1636,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private static final int VERSION = 1050004;
+        private static final int VERSION = 1060200;
 
         private Context context;
 
@@ -1923,6 +1931,10 @@ public class PodDBAdapter {
                 // prevent old timestamps to be misinterpreted as ETags
                 db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS
                         +" SET " + PodDBAdapter.KEY_LASTUPDATE + "=NULL");
+            }
+            if(oldVersion < 1060200) {
+                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + PodDBAdapter.KEY_CUSTOM_TITLE + " TEXT");
             }
 
             EventBus.getDefault().post(ProgressEvent.end());
