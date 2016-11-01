@@ -61,6 +61,7 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
+import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -104,6 +105,12 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     private MediaplayerInfoPagerAdapter pagerAdapter;
 
     private Subscription subscription;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     protected void onStop() {
@@ -175,6 +182,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         DBTasks.checkShouldRefreshFeeds(getApplicationContext());
 
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         loadData();
     }
 

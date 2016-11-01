@@ -47,7 +47,6 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -218,7 +217,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             controller.pause();
         }
         super.onPause();
-        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -582,7 +580,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if(controller != null) {
             controller.init();
         }
-        EventBus.getDefault().register(this);
     }
 
     /**
