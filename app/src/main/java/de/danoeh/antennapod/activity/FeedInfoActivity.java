@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -60,7 +61,9 @@ public class FeedInfoActivity extends AppCompatActivity {
     private ImageView imgvCover;
     private TextView txtvTitle;
     private TextView txtvDescription;
+    private TextView lblLanguage;
     private TextView txtvLanguage;
+    private TextView lblAuthor;
     private TextView txtvAuthor;
     private TextView txtvUrl;
     private EditText etxtUsername;
@@ -107,7 +110,9 @@ public class FeedInfoActivity extends AppCompatActivity {
         imgvCover = (ImageView) findViewById(R.id.imgvCover);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
         txtvDescription = (TextView) findViewById(R.id.txtvDescription);
+        lblLanguage = (TextView) findViewById(R.id.lblLanguage);
         txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
+        lblAuthor = (TextView) findViewById(R.id.lblAuthor);
         txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
         txtvUrl = (TextView) findViewById(R.id.txtvUrl);
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
@@ -154,12 +159,17 @@ public class FeedInfoActivity extends AppCompatActivity {
                     txtvTitle.setText(feed.getTitle());
                     String description = feed.getDescription();
                     txtvDescription.setText((description != null) ? description.trim() : "");
-                    if (feed.getAuthor() != null) {
+                    if (!TextUtils.isEmpty(feed.getAuthor())) {
                         txtvAuthor.setText(feed.getAuthor());
+                    } else {
+                        lblAuthor.setVisibility(View.GONE);
+                        txtvAuthor.setVisibility(View.GONE);
                     }
-                    if (feed.getLanguage() != null) {
-                        txtvLanguage.setText(LangUtils
-                                .getLanguageString(feed.getLanguage()));
+                    if (!TextUtils.isEmpty(feed.getLanguage())) {
+                        txtvLanguage.setText(LangUtils.getLanguageString(feed.getLanguage()));
+                    } else {
+                        lblLanguage.setVisibility(View.GONE);
+                        txtvLanguage.setVisibility(View.GONE);
                     }
                     txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
                     Iconify.addIcons(txtvUrl);
