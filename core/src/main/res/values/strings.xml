@@ -60,6 +60,7 @@
     <string name="cancel_label">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="reset">Reset</string>
     <string name="author_label">Author</string>
     <string name="language_label">Language</string>
     <string name="url_label">URL</string>
@@ -115,6 +116,7 @@
     <string name="mark_all_seen_msg">Marked all Episodes as seen</string>
     <string name="mark_all_seen_confirmation_msg">Please confirm that you want to mark all episodes as seen.</string>
     <string name="show_info_label">Show information</string>
+    <string name="rename_feed_label">Rename Podcast</string>
     <string name="remove_feed_label">Remove Podcast</string>
     <string name="share_label">Share&#8230;</string>
     <string name="share_link_label">Share Link</string>
