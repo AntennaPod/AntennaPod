@@ -29,7 +29,6 @@ import com.bumptech.glide.Glide;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.examples.HtmlToPlainText;
 import org.jsoup.nodes.Document;
 
 import java.io.File;
@@ -63,6 +62,7 @@ import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
+import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
@@ -81,17 +81,12 @@ import rx.schedulers.Schedulers;
  */
 public class OnlineFeedViewActivity extends AppCompatActivity {
 
-    private static final String TAG = "OnlineFeedViewActivity";
-
     public static final String ARG_FEEDURL = "arg.feedurl";
-
     // Optional argument: specify a title for the actionbar.
     public static final String ARG_TITLE = "title";
-
-    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
-
     public static final int RESULT_ERROR = 2;
-
+    private static final String TAG = "OnlineFeedViewActivity";
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
     private volatile List<Feed> feeds;
     private Feed feed;
     private String selectedDownloadUrl;
@@ -106,12 +101,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Subscription download;
     private Subscription parser;
     private Subscription updater;
-
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        setSubscribeButtonState(feed);
-    }
-
     private EventDistributor.EventListener listener = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
@@ -132,6 +121,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
         }
     };
+
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        setSubscribeButtonState(feed);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

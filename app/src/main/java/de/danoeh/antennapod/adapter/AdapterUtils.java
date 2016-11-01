@@ -15,7 +15,7 @@ import de.danoeh.antennapod.core.util.NetworkUtils;
 /**
  * Utility methods for adapters
  */
-public class AdapterUtils {
+class AdapterUtils {
 
     private static final String TAG = AdapterUtils.class.getSimpleName();
 
@@ -26,7 +26,7 @@ public class AdapterUtils {
     /**
      * Updates the contents of the TextView that shows the current playback position and the ProgressBar.
      */
-    public static void updateEpisodePlaybackProgress(FeedItem item, TextView txtvPos, ProgressBar episodeProgress) {
+    static void updateEpisodePlaybackProgress(FeedItem item, TextView txtvPos, ProgressBar episodeProgress) {
         FeedMedia media = item.getMedia();
         episodeProgress.setVisibility(View.GONE);
         if (media == null) {
@@ -47,7 +47,6 @@ public class AdapterUtils {
                                 - media.getPosition()));
             }
         } else if (!media.isDownloaded()) {
-            Log.d(TAG, "size: " + media.getSize());
             if (media.getSize() > 0) {
                 txtvPos.setText(Converter.byteToString(media.getSize()));
             } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {

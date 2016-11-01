@@ -45,6 +45,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LangUtils;
+import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import rx.Observable;
 import rx.Subscription;
@@ -55,11 +56,10 @@ import rx.schedulers.Schedulers;
  * Displays information about a feed.
  */
 public class FeedInfoActivity extends AppCompatActivity {
-    private static final String TAG = "FeedInfoActivity";
-    private boolean autoDeleteChanged = false;
 
     public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
-
+    private static final String TAG = "FeedInfoActivity";
+    private boolean autoDeleteChanged = false;
     private Feed feed;
 
     private ImageView imgvCover;
@@ -82,6 +82,7 @@ public class FeedInfoActivity extends AppCompatActivity {
 
     private Subscription subscription;
 
+
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -100,6 +101,40 @@ public class FeedInfoActivity extends AppCompatActivity {
                 Toast t = Toast.makeText(FeedInfoActivity.this, R.string.copied_url_msg, Toast.LENGTH_SHORT);
                 t.show();
             }
+        }
+    };
+
+    private boolean authInfoChanged = false;
+
+    private TextWatcher authTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            authInfoChanged = true;
+        }
+    };
+
+    private boolean filterTextChanged = false;
+
+    private TextWatcher filterTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            filterTextChanged = true;
         }
     };
 
@@ -174,7 +209,7 @@ public class FeedInfoActivity extends AppCompatActivity {
                     }
                     txtvDescription.setText(description);
 
-                    if (feed.getAuthor() != null) {
+                    if (!TextUtils.isEmpty(feed.getAuthor())) {
                         txtvAuthor.setText(feed.getAuthor());
                     } else {
                         lblAuthor.setVisibility(View.GONE);
@@ -266,53 +301,6 @@ public class FeedInfoActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(subscription != null) {
-            subscription.unsubscribe();
-        }
-    }
-
-
-    private boolean authInfoChanged = false;
-
-    private TextWatcher authTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            authInfoChanged = true;
-        }
-    };
-
-    private boolean filterTextChanged = false;
-
-    private TextWatcher filterTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            filterTextChanged = true;
-        }
-    };
-
-    @Override
     protected void onPause() {
         super.onPause();
         if (feed != null) {
@@ -340,6 +328,14 @@ public class FeedInfoActivity extends AppCompatActivity {
             authInfoChanged = false;
             autoDeleteChanged = false;
             filterTextChanged = false;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
     }
 
