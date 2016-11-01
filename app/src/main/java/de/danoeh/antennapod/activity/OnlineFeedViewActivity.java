@@ -29,7 +29,6 @@ import com.bumptech.glide.Glide;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.examples.HtmlToPlainText;
 import org.jsoup.nodes.Document;
 
 import java.io.File;
@@ -63,6 +62,7 @@ import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
+import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
@@ -81,17 +81,12 @@ import rx.schedulers.Schedulers;
  */
 public class OnlineFeedViewActivity extends AppCompatActivity {
 
-    private static final String TAG = "OnlineFeedViewActivity";
-
     public static final String ARG_FEEDURL = "arg.feedurl";
-
     // Optional argument: specify a title for the actionbar.
     public static final String ARG_TITLE = "title";
-
-    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
-
     public static final int RESULT_ERROR = 2;
-
+    private static final String TAG = "OnlineFeedViewActivity";
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
     private volatile List<Feed> feeds;
     private Feed feed;
     private String selectedDownloadUrl;
@@ -106,17 +101,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Subscription download;
     private Subscription parser;
     private Subscription updater;
-
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        setSubscribeButtonState(feed);
-    }
-
     private EventDistributor.EventListener listener = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EventDistributor.FEED_LIST_UPDATE) != 0) {
-                updater = Observable.fromCallable(() -> DBReader.getFeedList())
+                updater = Observable.fromCallable(DBReader::getFeedList)
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -132,6 +121,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
         }
     };
+
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        setSubscribeButtonState(feed);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -284,7 +278,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(status -> checkDownloadResult(status),
+                .subscribe(this::checkDownloadResult,
                         error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
@@ -360,14 +354,19 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      * This method is executed on a background thread
      */
     private void beforeShowFeedInformation(Feed feed) {
-        // remove HTML tags from descriptions
+        final HtmlToPlainText formatter = new HtmlToPlainText();
+        if(Feed.TYPE_ATOM1.equals(feed.getType())) {
+            // remove HTML tags from descriptions
+            Log.d(TAG, "Removing HTML from feed description");
+            Document feedDescription = Jsoup.parse(feed.getDescription());
+            feed.setDescription(StringUtils.trim(formatter.getPlainText(feedDescription)));
+        }
         Log.d(TAG, "Removing HTML from shownotes");
         if (feed.getItems() != null) {
-            HtmlToPlainText formatter = new HtmlToPlainText();
             for (FeedItem item : feed.getItems()) {
                 if (item.getDescription() != null) {
-                    Document description = Jsoup.parse(item.getDescription());
-                    item.setDescription(StringUtils.trim(formatter.getPlainText(description)));
+                    Document itemDescription = Jsoup.parse(item.getDescription());
+                    item.setDescription(StringUtils.trim(formatter.getPlainText(itemDescription)));
                 }
             }
         }
@@ -589,7 +588,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         private String feedUrl;
 
-        public FeedViewAuthenticationDialog(Context context, int titleRes, String feedUrl) {
+        FeedViewAuthenticationDialog(Context context, int titleRes, String feedUrl) {
             super(context, titleRes, true, false, null, null);
             this.feedUrl = feedUrl;
         }
