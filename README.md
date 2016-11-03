@@ -21,7 +21,7 @@ AntennaPod has many users and we don't want them to run into trouble when we add
 
 There are APKs available for every branch that is actively worked on. Please note that these might be very unstable versions of the app, which can break your current installation. Install them at your own risk!
 
-Click [here](https://www.dropbox.com/sh/4h2kfa2d2jesnu8/AABF7u5QsOn8Lg8MDie4Z4Ama?dl=0) to get to the nightly builds folder.
+Click [here](https://www.dropbox.com/sh/lzfd640z63qz3fr/AACyxTF1ygR9wMlPLPwVGIUKa?dl=0) to get to the nightly builds folder.
     
 ## License
 
