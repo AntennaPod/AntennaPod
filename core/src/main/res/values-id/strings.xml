@@ -95,7 +95,6 @@
   <string name="pref_update_interval_hours_singular">jam</string>
   <string name="pref_gpodnet_authenticate_title">Masuk</string>
   <string name="pref_gpodnet_logout_title">Keluar</string>
-  <string name="pref_gpodnet_sync_title">Sinkronkan sekarang</string>
   <string name="pref_gpodnet_sync_started">Sinkronkan dimulai</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->

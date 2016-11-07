@@ -11,7 +11,6 @@ Version 1.6.2
  * Auto-enable sleep timer
  * "has media" filter
  * Force gpodder full sync
- * Preliminary support for Android Auto
 * Improvements:
  * Better support for Atom feeds, e.g. summary tag
  * Confirmation dialog on mark all as seen

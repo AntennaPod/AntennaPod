@@ -121,7 +121,6 @@
   <string name="pref_theme_title_dark">Tamsi</string>
   <string name="pref_gpodnet_logout_title">Atsijungti</string>
   <string name="pref_gpodnet_logout_toast">Sėkmingai atsijungta</string>
-  <string name="pref_gpodnet_sync_title">Sinchronizuoti dabar</string>
   <string name="pref_queueAddToFront_sum">Naujus epizodus dėti į eilės priekį.</string>
   <string name="pref_queueAddToFront_title">Dėti į eilės priekį</string>
   <string name="pref_faq">DUK</string>

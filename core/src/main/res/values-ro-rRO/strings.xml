@@ -162,8 +162,6 @@
   <string name="pref_playback_speed_sum">Modifică vitezele disponibile pentru viteza de ascultare.</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
-  <string name="search_hint">Caută feeduri sau episoade</string>
-  <string name="found_in_shownotes_label">Găsit în notițe</string>
   <string name="found_in_chapters_label">Găsit în capitole</string>
   <string name="search_status_no_results">Nu s-a găsit nici un rezultat</string>
   <string name="search_label">Caută</string>

@@ -181,8 +181,6 @@
   <string name="pref_episode_cache_title">Caché de episodios</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
-  <string name="search_hint">Buscar canales o episodios</string>
-  <string name="found_in_shownotes_label">Encontrado en las notas del programa</string>
   <string name="found_in_chapters_label">Encontrado en los capítulos</string>
   <string name="search_status_no_results">No se han encontrado resultados</string>
   <string name="search_label">Buscar</string>

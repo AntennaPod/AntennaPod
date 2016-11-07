@@ -82,8 +82,6 @@
   <string name="user_interface_label">ಬಳಕೆದಾರ ಸಂಪರ್ಕಸಾಧನ</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
-  <string name="search_hint">ಫೀಡ್ಸ್ ಅಥವಾ ಸಂಚಿಕೆಗಳಿಗಾಗಿ ಹುಡುಕಿ</string>
-  <string name="found_in_shownotes_label">ಪ್ರದರ್ಶನ ಟಿಪ್ಪಣಿಗಳಲ್ಲಿ ಕಂಡುಬರುತ್ತವೆ</string>
   <string name="found_in_chapters_label">ಅಧ್ಯಾಯಗಳಲ್ಲಿ ಕಂಡುಬರುತ್ತವೆ</string>
   <string name="search_status_no_results">ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ</string>
   <string name="search_label">ಹುಡುಕು</string>

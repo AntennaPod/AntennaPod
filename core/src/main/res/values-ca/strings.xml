@@ -85,7 +85,6 @@
   <string name="etxtFeedurlHint">URL, canal o lloc web</string>
   <string name="txtvfeedurl_label">Afegeix podcast amb l\'URL</string>
   <string name="podcastdirectories_label">Cerca podcast al directori</string>
-  <string name="podcastdirectories_descr">Podeu cercar nous podcasts al directori de gpodder.net mitjançant el seu nom, categoria o popularitat.</string>
   <string name="browse_gpoddernet_label">Navega gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marca-ho tot com a llegit</string>
@@ -357,8 +356,6 @@
   <string name="auto_flattr_ater_beginning">Comparteix per Flattr l\'episodi en haver-ne iniciat la reproducció</string>
   <string name="auto_flattr_ater_end">Comparteix per Flattr l\'episodi en acabar-se\'n la reproducció</string>
   <!--Search-->
-  <string name="search_hint">Cerca canals o episodis</string>
-  <string name="found_in_shownotes_label">Trobat a notes del programa</string>
   <string name="found_in_chapters_label">Trobat als capítols</string>
   <string name="search_status_no_results">No s\'ha trobat cap resultat</string>
   <string name="search_label">Cerca</string>
