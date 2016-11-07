@@ -47,7 +47,7 @@ trans.te = core/src/main/res/values-te/strings.xml
 trans.tr = core/src/main/res/values-tr/strings.xml
 trans.vi = core/src/main/res/values-vi/strings.xml
 trans.vi_VN = core/src/main/res/values-vi-rVN/strings.xml
-trans.zh_TW = core/src/main/res/values-zh-TW/strings.xml
+trans.zh_TW = core/src/main/res/values-zh-rTW/strings.xml
 
 [antennapod.description]
 file_filter = app/src/main/play/<lang>/listing/fulldescription
