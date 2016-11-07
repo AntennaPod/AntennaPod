@@ -1,15 +1,22 @@
 package de.danoeh.antennapod.core.syndication.util;
 
+import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
+
 import org.apache.commons.io.FilenameUtils;
+
+import java.util.Arrays;
 
 /** Utility class for handling MIME-Types of enclosures */
 public class SyndTypeUtils {
 
-	private static final String VALID_MEDIA_MIMETYPE = "audio/.*" + "|" + "video/.*"
-			+ "|" + "application/ogg";
-	private static final String VALID_IMAGE_MIMETYPE = "image/.*";
+	private static final String VALID_MEDIA_MIMETYPE = TextUtils.join("|", Arrays.asList(
+			"audio/.*",
+			"video/.*",
+			"application/ogg",
+			"application/octet-stream"));
 
+	private static final String VALID_IMAGE_MIMETYPE = "image/.*";
 
 	private SyndTypeUtils() {
 
