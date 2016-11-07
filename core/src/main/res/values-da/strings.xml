@@ -54,7 +54,6 @@
   <string name="etxtFeedurlHint">URL af feed eller webside</string>
   <string name="txtvfeedurl_label">Tilføj Podcast med URL</string>
   <string name="podcastdirectories_label">Find podcast i mappen</string>
-  <string name="podcastdirectories_descr">Du kan søge efter nye podcasts efter navn, kategori eller popularitet i gpodder.net biblioteket</string>
   <string name="browse_gpoddernet_label">Gennemse gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som læst</string>
@@ -234,8 +233,6 @@
   <string name="auto_flattr_ater_beginning">Flattr episoder når afspilning starter</string>
   <string name="auto_flattr_ater_end">Flattr episoder når afspilning slutter</string>
   <!--Search-->
-  <string name="search_hint">Søg efter feeds eller episoder</string>
-  <string name="found_in_shownotes_label">Funder i showets noter</string>
   <string name="found_in_chapters_label">Fundet i kapitler</string>
   <string name="search_status_no_results">Fandt ingen resultater</string>
   <string name="search_label">Søg</string>

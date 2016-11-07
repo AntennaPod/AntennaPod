@@ -81,7 +81,6 @@
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Legg til en podcast via URL</string>
   <string name="podcastdirectories_label">Finn podcast i katalog</string>
-  <string name="podcastdirectories_descr">Du kan søke etter nye podcaster på navn, kategori eller popularitet i gpodder.nets katalog eller på iTunes.</string>
   <string name="browse_gpoddernet_label">Bla gjennom gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som avspilt</string>
@@ -337,8 +336,6 @@
   <string name="auto_flattr_ater_beginning">Flattre episode når avspillingen starter</string>
   <string name="auto_flattr_ater_end">Flattre episode når avspillingen tar slutt</string>
   <!--Search-->
-  <string name="search_hint">Søk etter strømmer eller episoder</string>
-  <string name="found_in_shownotes_label">Funnet i shownotater</string>
   <string name="found_in_chapters_label">Funnet i kapitler</string>
   <string name="search_status_no_results">Ingen resultater ble funnet</string>
   <string name="search_label">Søk</string>

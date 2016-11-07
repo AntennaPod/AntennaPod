@@ -92,7 +92,6 @@
   <string name="etxtFeedurlHint">URL till flöde eller webbsida</string>
   <string name="txtvfeedurl_label">Lägg till podcast via URL</string>
   <string name="podcastdirectories_label">Hitta Podcast i Biblioteket</string>
-  <string name="podcastdirectories_descr">Du kan söka efter podcasts baserat på namn, kategori eller populäritet med tjänsten gpodder.net eller på iTunes Store.</string>
   <string name="browse_gpoddernet_label">Bläddra på gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Markera alla som spelade</string>
@@ -342,8 +341,6 @@
   <string name="pref_gpodnet_logout_toast">Utloggning lyckades</string>
   <string name="pref_gpodnet_setlogin_information_title">Ändra inloggningsinformation</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net konto.</string>
-  <string name="pref_gpodnet_sync_title">Synkronisera nu</string>
-  <string name="pref_gpodnet_sync_sum">Synkronisera prenumerationer och episodtillstånd med gpodder.net</string>
   <string name="pref_gpodnet_sync_started">Synkronisering startad</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Inloggad som <i>%1$s</i> med enhet <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Uppspelningshastigheter</string>
@@ -391,8 +388,6 @@
   <string name="auto_flattr_ater_beginning">Flattra episoden när den startas</string>
   <string name="auto_flattr_ater_end">Flattra episoden när den spelats klart</string>
   <!--Search-->
-  <string name="search_hint">Sök efter flöden eller episoder</string>
-  <string name="found_in_shownotes_label">Hittad i shownotes</string>
   <string name="found_in_chapters_label">Hittad i kapitel</string>
   <string name="search_status_no_results">Inga resultat hittades</string>
   <string name="search_label">Sök</string>

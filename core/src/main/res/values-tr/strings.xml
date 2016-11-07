@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
   <string name="feeds_label">Beslemeler</string>
+  <string name="statistics_label">İstatistikler</string>
   <string name="add_feed_label">Cep yayını ekle</string>
   <string name="episodes_label">Bölümler</string>
   <string name="all_episodes_short_label">Tümü</string>
@@ -13,11 +14,15 @@
   <string name="downloads_running_label">Çalışıyor</string>
   <string name="downloads_completed_label">Tamamlandı</string>
   <string name="downloads_log_label">Günlük</string>
+  <string name="subscriptions_label">Abonelikler</string>
+  <string name="subscriptions_list_label">Abonelik Listesi</string>
   <string name="cancel_download_label">İndirmeyi İptal Et</string>
   <string name="playback_history_label">Çalma geçmişi</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net giriş</string>
+  <string name="free_space_label">%1$s ücretsiz</string>
   <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Toplam cep yayını çalma zamanı:</string>
   <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
   <string name="drawer_close">Menüyü kapat</string>
@@ -59,6 +64,7 @@
   <string name="length_prefix">Uzunluk:\u0020</string>
   <string name="size_prefix">Boyut:\u0020</string>
   <string name="processing_label">İşleniyor</string>
+  <string name="loading_label">Yükleniyor...</string>
   <string name="save_username_password_label">Kullanıcı adı ve şifreyi kaydet</string>
   <string name="close_label">Kapat</string>
   <string name="retry_label">Yeniden dene</string>
@@ -67,6 +73,7 @@
   <string name="parallel_downloads_suffix">\u0020paralel indirmeler</string>
   <string name="feed_auto_download_always">Her zaman</string>
   <string name="feed_auto_download_never">Hiçbir zaman</string>
+  <string name="send_label">Gönder...</string>
   <string name="episode_cleanup_never">Hiçbir zaman</string>
   <string name="episode_cleanup_queue_removal">Sırada değilse</string>
   <string name="episode_cleanup_after_listening">Bittikten sonra</string>
@@ -79,7 +86,6 @@
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">URL ile cep yayını ekle</string>
   <string name="podcastdirectories_label">Dizinde cep yayını bul</string>
-  <string name="podcastdirectories_descr">gdpodder.net dizininde yeni cep yayınlarını isme, kategoriye veya popülerliğe göre arayabilirsiniz veya iTunes mağazasında arama yapabilirsiniz.</string>
   <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Hepsini oynatıldı olarak işaretle</string>
@@ -89,6 +95,7 @@
   <string name="mark_all_seen_label">Hepsini görüldü olarak işaretle</string>
   <string name="show_info_label">Bilgiyi göster</string>
   <string name="remove_feed_label">Cep yayını kaldır</string>
+  <string name="share_label">Paylaş...</string>
   <string name="share_link_label">Link\'i paylaş</string>
   <string name="share_link_with_position_label">Link\'i Konumla birlikte paylaş</string>
   <string name="share_feed_url_label">Besleme Adresini Paylaş</string>
@@ -121,7 +128,9 @@
   <string name="added_to_queue_label">Kuyruğa Eklendi</string>
   <string name="remove_from_queue_label">Kuyruktan Kaldır</string>
   <string name="add_to_favorite_label">Favorilere Ekle</string>
+  <string name="added_to_favorites">Favorilere Eklendi</string>
   <string name="remove_from_favorite_label">Favorilerden Kaldır</string>
+  <string name="removed_from_favorites">Favorilerden Kaldırıldı</string>
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
   <string name="support_label">Flattr ile destekle</string>
   <string name="skip_episode_label">Bölümü atla</string>
@@ -153,6 +162,10 @@
   <string name="download_error_io_error">G/Ç Hatası</string>
   <string name="download_error_request_error">İstek hatası</string>
   <string name="download_error_db_access">Veritabanı erişim hatası</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d indirme kaldı</item>
+    <item quantity="other">%d indirme kaldı</item>
+  </plurals>
   <string name="downloads_processing">İndirmeler işleniyor</string>
   <string name="download_notification_title">Cep yayını verileri indiriliyor</string>
   <string name="download_report_content">%1$d indirme başarılı, %2$d başarısız</string>
@@ -229,6 +242,8 @@
   <string name="no_items_label">Bu listede hiç öge yok.</string>
   <string name="no_feeds_label">Henüz hiçbir beslemeye abone değilsiniz.</string>
   <!--Preferences-->
+  <string name="storage_pref">Depolama</string>
+  <string name="project_pref">Proje</string>
   <string name="other_pref">Diğer</string>
   <string name="about_pref">Hakkında</string>
   <string name="queue_label">Kuyruk</string>
@@ -317,14 +332,13 @@
   <string name="send_email">E-posta gönder</string>
   <string name="experimental_pref">Deneysel</string>
   <string name="pref_sonic_title">Sonic ortam yürütücüsü</string>
+  <string name="pref_faq">SSS</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Otomatik Flattr\'lamayı etkinleştir</string>
   <string name="auto_flattr_after_percent">Bölümün yüzde %d kısmı oynatıldığında Flattr\'la</string>
   <string name="auto_flattr_ater_beginning">Oynatma başladığında bölümü Flattr\'la</string>
   <string name="auto_flattr_ater_end">Oynatma bittiğinde bölümü Flattr\'la</string>
   <!--Search-->
-  <string name="search_hint">Besleme veya Bölüm Ara</string>
-  <string name="found_in_shownotes_label">Nolarda bulundu</string>
   <string name="found_in_chapters_label">Kısımlarda bulundu</string>
   <string name="search_status_no_results">Sonuç bulunamadı</string>
   <string name="search_label">Ara</string>
@@ -470,6 +484,9 @@
   <string name="rating_now_label">Evet, şimdi yapalım!</string>
   <!--Audio controls-->
   <!--proxy settings-->
+  <string name="proxy_test_label">Test</string>
+  <string name="proxy_test_successful">Test başarılı</string>
+  <string name="proxy_test_failed">Test başarısız</string>
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

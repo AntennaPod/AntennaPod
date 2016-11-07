@@ -36,6 +36,7 @@
   <string name="drawer_feed_counter_new_unplayed">Cantidad de episodios nuevos y no escuchados</string>
   <string name="drawer_feed_counter_new">Cantidad de episodios nuevos</string>
   <string name="drawer_feed_counter_unplayed">Cantidad de episodios no escuchados</string>
+  <string name="drawer_feed_counter_downloaded">Cantidad de episodios descargados</string>
   <string name="drawer_feed_counter_none">Ninguno</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir en el navegador</string>
@@ -50,6 +51,7 @@
   <string name="cancel_label">Cancelar</string>
   <string name="yes">Sí</string>
   <string name="no">No</string>
+  <string name="reset">Resetear</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Idioma</string>
   <string name="url_label">URL</string>
@@ -92,7 +94,7 @@
   <string name="etxtFeedurlHint">www.ejemplo.com/feed</string>
   <string name="txtvfeedurl_label">Añadir podcast por URL</string>
   <string name="podcastdirectories_label">Buscar podcast en directorio</string>
-  <string name="podcastdirectories_descr">Es posible buscar podcasts nuevos por nombre, categoría o popularidad en el directorio de gpodder.net.</string>
+  <string name="podcastdirectories_descr">Para podcasts nuevos, puedes buscar en iTunes o fyyd, o explorar gpodder.net por nombre, categoría o popularidad.</string>
   <string name="browse_gpoddernet_label">Explorar gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todos como escuchado</string>
@@ -100,7 +102,10 @@
   <string name="mark_all_read_confirmation_msg">Confirme que quiere marcar todos los episodios como escuchados.</string>
   <string name="mark_all_read_feed_confirmation_msg">Confirme que quiere marcar todos los episodios de este canal como escuchados.</string>
   <string name="mark_all_seen_label">Marcar todos como vistos</string>
+  <string name="mark_all_seen_msg">Marcar todos los episodios como vistos</string>
+  <string name="mark_all_seen_confirmation_msg">Por favor confirma que quieres marcar todos los episodios como vistos.</string>
   <string name="show_info_label">Información del programa</string>
+  <string name="rename_feed_label">Renombrar Podcast</string>
   <string name="remove_feed_label">Eliminar podcast</string>
   <string name="share_label">Compartir…</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
@@ -120,6 +125,7 @@
   <string name="hide_not_queued_episodes_label">No en cola</string>
   <string name="hide_downloaded_episodes_label">Descargados</string>
   <string name="hide_not_downloaded_episodes_label">No descargados</string>
+  <string name="hide_has_media_label">Tiene multimedia</string>
   <string name="filtered_label">Filtrados</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Error en última actualización</string>
   <string name="open_podcast">Abrir Podcast</string>
@@ -130,6 +136,7 @@
   <string name="stop_label">Detener</string>
   <string name="stream_label">Transmitir</string>
   <string name="remove_label">Quitar</string>
+  <string name="delete_label">Borrar</string>
   <string name="remove_episode_lable">Quitar episodio</string>
   <string name="marked_as_seen_label">Marcar como visto</string>
   <string name="mark_read_label">Marcar como escuchado</string>
@@ -276,6 +283,8 @@
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reanudar reproducción cuando se reconecte el bluetooth</string>
   <string name="pref_hardwareForwardButtonSkips_title">Saltar episodio con botón</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Al pulsar el botón físico de avanzar se saltará al siguiente episodio en lugar de sólo avanzar</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">Botón anterior reinicia</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">Al pulsar el botón físico de retroceder se comenzará el episodio de nuevo, en lugar de rebobinar</string>
   <string name="pref_followQueue_sum">Saltar al siguiente elemento de la cola al acabar la reproducción</string>
   <string name="pref_auto_delete_sum">Borrar episodio cuando finalice la reproducción</string>
   <string name="pref_auto_delete_title">Eliminar automáticamente</string>
@@ -342,10 +351,16 @@
   <string name="pref_gpodnet_logout_toast">Ha cerrado la sesión correctamente.</string>
   <string name="pref_gpodnet_setlogin_information_title">Cambiar información de acceso</string>
   <string name="pref_gpodnet_setlogin_information_sum">Modificar datos de inicio de sesión en gpodder.net.</string>
-  <string name="pref_gpodnet_sync_title">Sincronizar ahora</string>
-  <string name="pref_gpodnet_sync_sum">Sincronizar suscripciones y estados con gpodder.net</string>
+  <string name="pref_gpodnet_sync_changes_title">Sincronizar cambios ahora</string>
+  <string name="pref_gpodnet_sync_changes_sum">Sincronizar cambios del estado de subscripción y episodio con gpodder.net.</string>
+  <string name="pref_gpodnet_full_sync_title">Sincronización completa ahora</string>
+  <string name="pref_gpodnet_full_sync_sum">Sincronizar el estado de todas las suscripciones y estados de episodio con gpodder.net.</string>
+  <string name="pref_gpodnet_sync_sum_last_sync_line">Último intento de sincronización: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Comenzó sincronización</string>
+  <string name="pref_gpodnet_full_sync_started">Comenzó sincronización completa</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Autenticado como <i>%1$s</i> con dispositivo <i>%2$s</i>]]></string>
+  <string name="pref_gpodnet_notifications_title">Mostrar notificaciones de errores de sincronización</string>
+  <string name="pref_gpodnet_notifications_sum">Este ajuste no afecta a errores de autenticación.</string>
   <string name="pref_playback_speed_title">Velocidades de reproducción</string>
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles para la reproducción de audio a velocidad variable</string>
   <string name="pref_fast_forward">Intervalo de avance</string>
@@ -391,12 +406,13 @@
   <string name="auto_flattr_ater_beginning">Hacer Flattr del episodio al comenzar la reproducción</string>
   <string name="auto_flattr_ater_end">Hacer Flattr del episodio al terminar la reproducción</string>
   <!--Search-->
-  <string name="search_hint">Buscar canales o episodios</string>
-  <string name="found_in_shownotes_label">Encontrado en las notas del programa</string>
+  <string name="search_hint">Buscar episodios</string>
+  <string name="found_in_shownotes_label">Encontrado en las notas del show</string>
   <string name="found_in_chapters_label">Encontrado en los capítulos</string>
   <string name="search_status_no_results">No se han encontrado resultados</string>
   <string name="search_label">Buscar</string>
   <string name="found_in_title_label">Encontrado en el título</string>
+  <string name="no_results_for_query">No se han encontrado resultados para \"%1$s\"</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Los archivos OPML le permiten migrar sus podcasts de una aplicación a otra.</string>
   <string name="opml_import_option">Opción %1$d</string>
@@ -415,6 +431,7 @@
   <string name="choose_file_from_filesystem">Desde el sistema de ficheros local</string>
   <string name="choose_file_from_external_application">Usar aplicación externa</string>
   <string name="opml_export_label">Exportar a OPML</string>
+  <string name="html_export_label">Exportar a HTML</string>
   <string name="exporting_label">Exportando…</string>
   <string name="export_error_label">Error en la exportación</string>
   <string name="opml_export_success_title">Exportación a OPML exitosa</string>
@@ -445,6 +462,9 @@
     <item quantity="one">1 hora</item>
     <item quantity="other">%d horas</item>
   </plurals>
+  <string name="auto_enable_label">Auto-habilitar</string>
+  <string name="sleep_timer_enabled_label">Temporizador de sueño habilitado</string>
+  <string name="sleep_timer_disabled_label">Temporizador de sueño deshabilitado</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORÍAS</string>
   <string name="gpodnet_toplist_header">MEJORES PODCASTS</string>
@@ -474,6 +494,8 @@
   <string name="gpodnetsync_auth_error_descr">Usuario o contraseña incorrectos</string>
   <string name="gpodnetsync_error_title">Error de sincronización de gpodder.net</string>
   <string name="gpodnetsync_error_descr">Ocurrió un error de sincronización:\u0020</string>
+  <string name="gpodnetsync_pref_report_successful">Exitoso</string>
+  <string name="gpodnetsync_pref_report_failed">Fallido</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Carpeta seleccionada</string>
   <string name="create_folder_label">Crear carpeta</string>
@@ -526,6 +548,7 @@
   <string name="sp_apps_importing_feeds_msg">Importando subscripciones de aplicaciones de uso específico...</string>
   <string name="search_itunes_label">Buscar en iTunes</string>
   <string name="filter">Filtro</string>
+  <string name="search_fyyd_label">Buscar fyyd</string>
   <!--Episodes apply actions-->
   <string name="all_label">Todo</string>
   <string name="selected_all_label">Seleccionados todos los episodios</string>
@@ -543,6 +566,8 @@
   <string name="selected_queued_label">Seleccionados episodios en cola</string>
   <string name="not_queued_label">No en cola</string>
   <string name="selected_not_queued_label">Seleccionados episodios no en cola</string>
+  <string name="has_media">Tiene multimedia</string>
+  <string name="selected_has_media_label">Seleccionar episodios con multimedia</string>
   <!--Sort-->
   <string name="sort_title_a_z">Título (A \u2192 Z)</string>
   <string name="sort_title_z_a">Título (Z \u2192 A)</string>

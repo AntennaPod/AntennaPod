@@ -94,7 +94,6 @@
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Добавить подкаст по URL</string>
   <string name="podcastdirectories_label">Найти подкаст в каталоге</string>
-  <string name="podcastdirectories_descr">Вы можете искать новые подкасты по имени, категории или популярности в каталоге gpodder.net и в магазине iTunes.</string>
   <string name="browse_gpoddernet_label">Просмотр gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Отметить как прослушанное</string>
@@ -133,6 +132,7 @@
   <string name="stream_label">Воспроизвести из сети</string>
   <string name="remove_label">Удалить</string>
   <string name="remove_episode_lable">Удалить выпуск</string>
+  <string name="marked_as_seen_label">Помечено все как замеченное</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
   <string name="marked_as_read_label">Помечено как прослушанное</string>
   <string name="mark_unread_label">Отметить как непрослушанное</string>
@@ -222,6 +222,8 @@
   <string name="sort">Сортировать</string>
   <string name="date">По дате</string>
   <string name="duration">По продолжительности</string>
+  <string name="episode_title">Название выпуска</string>
+  <string name="feed_title">Название канала</string>
   <string name="ascending">По возрастанию</string>
   <string name="descending">По убыванию</string>
   <string name="clear_queue_confirmation_msg">Подтвердите, что хотите очистить очередь от ВСЕХ эпизодов.</string>
@@ -343,8 +345,6 @@
   <string name="pref_gpodnet_logout_toast">Выход произведён успешно</string>
   <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
   <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
-  <string name="pref_gpodnet_sync_title">Синхронизировать</string>
-  <string name="pref_gpodnet_sync_sum">Синхронизировать подписки и статус выпусков с сервисом gpodder.net</string>
   <string name="pref_gpodnet_sync_started">Синхронизация запущена</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Вход как <i>%1$s</i> с устройства <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Скорость воспроизведения</string>
@@ -354,8 +354,8 @@
   <string name="pref_gpodnet_sethostname_title">Задать имя узла</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Использовать узел по умолчанию</string>
   <string name="pref_expandNotify_title">Расширенное уведомление</string>
-  <string name="pref_expandNotify_sum">Всегда показывать в уведомлении кнопки управления вопспроизведением</string>
-  <string name="pref_persistNotify_title">Постоянный контрооль воспроизведения</string>
+  <string name="pref_expandNotify_sum">Всегда показывать в уведомлении кнопки управления воспроизведением.</string>
+  <string name="pref_persistNotify_title">Постоянный контроль воспроизведения</string>
   <string name="pref_persistNotify_sum">Сохранять уведомление и кнопки воспроизведения на экране блокировки во время паузы.</string>
   <string name="pref_compact_notification_buttons_title">Выбрать кнопки экрана блокировки</string>
   <string name="pref_compact_notification_buttons_sum">Поменять кнопки управления на экране блокировки. Кнопка воспроизведения/паузы присутствует постоянно.</string>
@@ -364,10 +364,10 @@
   <string name="pref_lockscreen_background_title">Выбрать фон экрана блокировки</string>
   <string name="pref_lockscreen_background_sum">Изменяет фон экрана блокировки на обложку выпуска. Кроме того показывает обложку в сторонних приложениях.</string>
   <string name="pref_showDownloadReport_title">Показывать отчёт о загрузках</string>
-  <string name="pref_showDownloadReport_sum">Если загрузка не удается, показывать отчет с подробностями об ошибке.</string>
+  <string name="pref_showDownloadReport_sum">Если загрузка не удаётся, показывать отчёт с подробностями об ошибке.</string>
   <string name="pref_expand_notify_unsupport_toast">Версии Android ниже 4.1 не поддерживают расширенные уведомления.</string>
-  <string name="pref_queueAddToFront_sum">Добавлять новые выпуски в начало очереди.</string>
-  <string name="pref_queueAddToFront_title">В начало очереди.</string>
+  <string name="pref_queueAddToFront_sum">Добавлять новые выпуски в начало очереди</string>
+  <string name="pref_queueAddToFront_title">В начало очереди</string>
   <string name="pref_smart_mark_as_played_disabled">Отключено</string>
   <string name="pref_image_cache_size_title">Размер кэша для изображений</string>
   <string name="pref_image_cache_size_sum">Размер дискового кэша для изображений</string>
@@ -384,14 +384,14 @@
   <string name="pref_known_issues">Известные проблемы</string>
   <string name="pref_no_browser_found">Веб-браузер не обнаружен.</string>
   <string name="pref_cast_title">Поддержка Chromecast</string>
+  <string name="pref_cast_message_play_flavor">Включить поддержку удалённого воспроизведения на устройствах с Google Cast (таких как Chromecast, динамики или ТВ на ОС Android)</string>
+  <string name="pref_cast_message_free_flavor">Для работы Chromecast требуются собственнические библиотеки третьей стороны, которые не включены в данную версию AntennaPod</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включить автоматическую поддержку через Flattr</string>
   <string name="auto_flattr_after_percent">Поддерживать через Flattr эпизоды, прослушанные на %d процентов</string>
   <string name="auto_flattr_ater_beginning">Поддерживать эпизод через Flattr в начале воспроизведения</string>
   <string name="auto_flattr_ater_end">Поддерживать эпизод через Flattr в конце воспроизведения</string>
   <!--Search-->
-  <string name="search_hint">Поиск каналов или выпусков</string>
-  <string name="found_in_shownotes_label">Найдено в описании выпуска</string>
   <string name="found_in_chapters_label">Найдено в главах</string>
   <string name="search_status_no_results">Ничего не найдено</string>
   <string name="search_label">Поиск</string>
