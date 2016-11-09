@@ -123,7 +123,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             }
             if (playbackEnded) {
                 // This is an unconventional thing to occur...
-                endPlayback(true, true, true);
+                Log.w(TAG, "Somehow, Chromecast went from playing directly to standby mode");
+                endPlayback(false, false, true, true);
             }
         }
 
@@ -239,7 +240,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                             if (position >= 0) {
                                 oldMedia.setPosition(position);
                             }
-                            callback.onPostPlayback(oldMedia, false, false);
+                            callback.onPostPlayback(oldMedia, false, false, false);
                         }
                         // onPlaybackEnded pretty much takes care of updating the UI
                         return;
@@ -261,13 +262,13 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                         if (mediaChanged && currentMedia != null) {
                             media = currentMedia;
                         }
-                        endPlayback(false, true, true);
+                        endPlayback(true, false, true, true);
                         return;
                     case MediaStatus.IDLE_REASON_ERROR:
                         Log.w(TAG, "Got an error status from the Chromecast. Skipping, if possible, to the next episode...");
                         callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH,
                                 R.string.cast_failed_media_error_skipping);
-                        endPlayback(true, true, true);
+                        endPlayback(false, false, true, true);
                         return;
                 }
                 break;
@@ -282,7 +283,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         if (mediaChanged) {
             callback.onMediaChanged(true);
             if (oldMedia != null) {
-                callback.onPostPlayback(oldMedia, false, currentMedia != null);
+                callback.onPostPlayback(oldMedia, false, false, currentMedia != null);
             }
         }
     }
@@ -334,7 +335,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                 }
                 if (!media.getIdentifier().equals(playable.getIdentifier())) {
                     final Playable oldMedia = media;
-                    callback.onPostPlayback(oldMedia, false, true);
+                    callback.onPostPlayback(oldMedia, false, false, true);
                 }
 
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
@@ -599,7 +600,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    protected Future<?> endPlayback(boolean wasSkipped, boolean shouldContinue, boolean toStoppedState) {
+    protected Future<?> endPlayback(boolean hasEnded, boolean wasSkipped, boolean shouldContinue,
+                                    boolean toStoppedState) {
         Log.d(TAG, "endPlayback() called");
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
         if (playerStatus != PlayerStatus.INDETERMINATE) {
@@ -647,7 +649,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             }
             if (shouldPostProcess) {
                 // Otherwise we rely on the chromecast callback to tell us the playback has stopped.
-                callback.onPostPlayback(currentMedia, !wasSkipped, nextMedia != null);
+                callback.onPostPlayback(currentMedia, hasEnded, wasSkipped, nextMedia != null);
             }
         } else if (isPlaying) {
             callback.onPlaybackPause(currentMedia,

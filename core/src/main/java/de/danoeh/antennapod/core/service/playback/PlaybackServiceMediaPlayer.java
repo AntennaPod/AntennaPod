@@ -228,32 +228,35 @@ public abstract class PlaybackServiceMediaPlayer {
     protected abstract void setPlayable(Playable playable);
 
     public void skip() {
-        endPlayback(true, true, true);
+        endPlayback(false, true, true, true);
     }
 
     /**
      * Ends playback of current media (if any) and moves into INDETERMINATE state, unless
      * {@param toStoppedState} is set to true, in which case it moves into STOPPED state.
      *
-     * @see #endPlayback(boolean, boolean, boolean)
+     * @see #endPlayback(boolean, boolean, boolean, boolean)
      */
     public Future<?> stopPlayback(boolean toStoppedState) {
-        return endPlayback(true, false, toStoppedState);
+        return endPlayback(false, false, false, toStoppedState);
     }
 
     /**
      * Internal method that handles end of playback.
      *
-     * Currently, it has 4 use cases:
+     * Currently, it has 5 use cases:
      * <ul>
-     * <li>Media playback has completed: call with (false, true, true)</li>
-     * <li>User asks to skip to next episode: call with (true, true, true)</li>
-     * <li>Stopping the media player: call with (true, false, true)</li>
-     * <li>We want to change the media player implementation: call with (true, false, false)</li>
+     * <li>Media playback has completed: call with (true, false, true, true)</li>
+     * <li>User asks to skip to next episode: call with (false, true, true, true)</li>
+     * <li>Skipping to next episode due to playback error: call with (false, false, true, true)</li>
+     * <li>Stopping the media player: call with (false, false, false, true)</li>
+     * <li>We want to change the media player implementation: call with (false, false, false, false)</li>
      * </ul>
      *
-     * @param wasSkipped       If true, we assume the current media's playback has ended, for
+     * @param hasEnded         If true, we assume the current media's playback has ended, for
      *                         purposes of post playback processing.
+     * @param wasSkipped       Whether the user chose to skip the episode (by pressing the skip
+     *                         button).
      * @param shouldContinue   If true, the media player should try to load, and possibly play,
      *                         the next item, based on the user preferences and whether such item
      *                         exists.
@@ -264,7 +267,8 @@ public abstract class PlaybackServiceMediaPlayer {
      *
      * @return a Future, just for the purpose of tracking its execution.
      */
-    protected abstract Future<?> endPlayback(boolean wasSkipped, boolean shouldContinue, boolean toStoppedState);
+    protected abstract Future<?> endPlayback(boolean hasEnded, boolean wasSkipped,
+                                             boolean shouldContinue, boolean toStoppedState);
 
     /**
      * @return {@code true} if the WifiLock feature should be used, {@code false} otherwise.
@@ -346,7 +350,7 @@ public abstract class PlaybackServiceMediaPlayer {
 
         boolean onMediaPlayerError(Object inObj, int what, int extra);
 
-        void onPostPlayback(@NonNull Playable media, boolean ended, boolean playingNext);
+        void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped, boolean playingNext);
 
         void onPlaybackStart(@NonNull Playable playable, int position);
 

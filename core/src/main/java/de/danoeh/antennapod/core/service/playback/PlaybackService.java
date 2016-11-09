@@ -685,8 +685,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onPostPlayback(@NonNull Playable media, boolean ended, boolean playingNext) {
-            PlaybackService.this.onPostPlayback(media, ended, playingNext);
+        public void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped,
+                                   boolean playingNext) {
+            PlaybackService.this.onPostPlayback(media, ended, skipped, playingNext);
         }
 
         @Override
@@ -784,16 +785,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Even though these tasks aren't supposed to be resource intensive, a good practice is to
      * usually call this method on a background thread.
      *
-     * @param playable the media object that was playing. It is assumed that its position property
-     *                 was updated before this method was called.
-     * @param ended if true, it signals that {@param playable} was played until its end.
-     *              In such case, the position property of the media becomes irrelevant for most of
-     *              the tasks (although it's still a good practice to keep it accurate).
-     * @param playingNext if true, it means another media object is being loaded in place of this one.
+     * @param playable    the media object that was playing. It is assumed that its position
+     *                    property was updated before this method was called.
+     * @param ended       if true, it signals that {@param playable} was played until its end.
+     *                    In such case, the position property of the media becomes irrelevant for
+     *                    most of the tasks (although it's still a good practice to keep it
+     *                    accurate).
+     * @param skipped     if the user pressed a skip >| button.
+     * @param playingNext if true, it means another media object is being loaded in place of this
+     *                    one.
      *                    Instances when we'd set it to false would be when we're not following the
      *                    queue or when the queue has ended.
      */
-    private void onPostPlayback(final Playable playable, boolean ended, boolean playingNext) {
+    private void onPostPlayback(final Playable playable, boolean ended, boolean skipped,
+                                boolean playingNext) {
         if (playable == null) {
             Log.e(TAG, "Cannot do post-playback processing: media was null");
             return;
@@ -824,7 +829,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (item != null) {
             if (ended || smartMarkAsPlayed ||
-                    !UserPreferences.shouldSkipKeepEpisode()) {
+                    (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 // only mark the item as played if we're not keeping it anyways
                 DBWriter.markItemPlayed(item, FeedItem.PLAYED, ended);
                 try {
@@ -845,7 +850,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
 
-        if (ended || playingNext) {
+        if (ended || skipped || playingNext) {
             DBWriter.addItemToPlaybackHistory(media);
         }
     }
