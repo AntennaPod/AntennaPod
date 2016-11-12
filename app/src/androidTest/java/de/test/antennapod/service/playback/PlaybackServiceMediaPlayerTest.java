@@ -789,7 +789,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         }
 
         @Override
-        public void onPostPlayback(@NonNull Playable media, boolean ended, boolean playingNext) {
+        public void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped, boolean playingNext) {
 
         }
 
