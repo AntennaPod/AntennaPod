@@ -146,7 +146,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
                 if (!media.getIdentifier().equals(playable.getIdentifier())) {
                     final Playable oldMedia = media;
-                    executor.submit(() -> callback.onPostPlayback(oldMedia, false, true));
+                    executor.submit(() -> callback.onPostPlayback(oldMedia, false, false, true));
                 }
 
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
@@ -758,7 +758,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
 
     @Override
-    protected Future<?> endPlayback(final boolean wasSkipped, final boolean shouldContinue, final boolean toStoppedState) {
+    protected Future<?> endPlayback(final boolean hasEnded, final boolean wasSkipped,
+                                    final boolean shouldContinue, final boolean toStoppedState) {
         return executor.submit(() -> {
             playerLock.lock();
             releaseWifiLockIfNecessary();
@@ -816,7 +817,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 }
                 final boolean hasNext = nextMedia != null;
 
-                executor.submit(() -> callback.onPostPlayback(currentMedia, !wasSkipped, hasNext));
+                executor.submit(() -> callback.onPostPlayback(currentMedia, hasEnded, wasSkipped, hasNext));
             } else if (isPlaying) {
                 callback.onPlaybackPause(currentMedia, currentMedia.getPosition());
             }
@@ -883,7 +884,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mp -> genericOnCompletion();
 
     private void genericOnCompletion() {
-        endPlayback(false, true, true);
+        endPlayback(true, false, true, true);
     }
 
     private final MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =
