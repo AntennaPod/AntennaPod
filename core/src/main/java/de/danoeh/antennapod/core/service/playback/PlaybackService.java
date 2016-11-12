@@ -301,7 +301,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
         try {
             for (FeedItem feedItem : taskManager.getQueue()) {
-                queueItems.add(new MediaSessionCompat.QueueItem(feedItem.getMedia().getMediaItem().getDescription(), feedItem.getId()));
+                if(feedItem.getMedia() != null) {
+                    MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
+                    queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
+                }
             }
             mediaSession.setQueue(queueItems);
         } catch (InterruptedException e) {
