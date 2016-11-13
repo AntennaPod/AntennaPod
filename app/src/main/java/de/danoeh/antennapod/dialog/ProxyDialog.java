@@ -18,10 +18,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.internal.MDButton;
-import com.squareup.okhttp.Credentials;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -33,6 +29,10 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
+import okhttp3.Credentials;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -258,10 +258,11 @@ public class ProxyDialog {
                         SocketAddress address = InetSocketAddress.createUnresolved(host, portValue);
                         Proxy.Type proxyType = Proxy.Type.valueOf(type.toUpperCase());
                         Proxy proxy = new Proxy(proxyType, address);
-                        OkHttpClient client = AntennapodHttpClient.newHttpClient();
-                        client.setConnectTimeout(10, TimeUnit.SECONDS);
-                        client.setProxy(proxy);
-                        client.interceptors().clear();
+                        OkHttpClient.Builder builder = AntennapodHttpClient.newBuilder()
+                                .connectTimeout(10, TimeUnit.SECONDS)
+                                .proxy(proxy);
+                        builder.interceptors().clear();
+                        OkHttpClient client = builder.build();
                         if(!TextUtils.isEmpty(username)) {
                             String credentials = Credentials.basic(username, password);
                             client.interceptors().add(chain -> {

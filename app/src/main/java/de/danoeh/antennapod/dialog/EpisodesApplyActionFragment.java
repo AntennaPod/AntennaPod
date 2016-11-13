@@ -228,6 +228,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             case R.id.check_has_media:
                 checkWithMedia();
                 resId = R.string.selected_has_media_label;
+                break;
             case R.id.sort_title_a_z:
                 sortByTitle(false);
                 return true;
