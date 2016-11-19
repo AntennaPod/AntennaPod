@@ -100,6 +100,7 @@ public class ItemlistFragment extends ListFragment {
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
+    private boolean headerCreated = false;
 
     private List<Downloader> downloaderList;
 
@@ -466,8 +467,8 @@ public class ItemlistFragment extends ListFragment {
     }
 
     private void refreshHeaderView() {
-        if (getListView() == null || feed == null) {
-            Log.e(TAG, "Unable to setup listview: recyclerView = null or feed = null");
+        if (getListView() == null || feed == null || !headerCreated) {
+            Log.e(TAG, "Unable to refresh header view");
             return;
         }
         if(feed.hasLastUpdateFailed()) {
@@ -546,6 +547,7 @@ public class ItemlistFragment extends ListFragment {
                 startActivity(startIntent);
             }
         });
+        headerCreated = true;
     }
 
 
