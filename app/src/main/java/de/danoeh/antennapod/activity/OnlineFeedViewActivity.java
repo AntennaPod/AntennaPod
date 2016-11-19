@@ -355,7 +355,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      */
     private void beforeShowFeedInformation(Feed feed) {
         final HtmlToPlainText formatter = new HtmlToPlainText();
-        if(Feed.TYPE_ATOM1.equals(feed.getType())) {
+        if(Feed.TYPE_ATOM1.equals(feed.getType()) && feed.getDescription() != null) {
             // remove HTML tags from descriptions
             Log.d(TAG, "Removing HTML from feed description");
             Document feedDescription = Jsoup.parse(feed.getDescription());
