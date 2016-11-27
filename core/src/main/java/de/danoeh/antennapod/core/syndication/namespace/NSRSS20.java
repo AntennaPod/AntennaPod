@@ -56,7 +56,9 @@ public class NSRSS20 extends Namespace {
 			boolean validType = false;
 			boolean validUrl = !TextUtils.isEmpty(url);
 
-			if (type == null) {
+			if(SyndTypeUtils.enclosureTypeValid(type)) {
+				validType = true;
+			} else {
 				type = SyndTypeUtils.getMimeTypeFromUrl(url);
 			}
 
