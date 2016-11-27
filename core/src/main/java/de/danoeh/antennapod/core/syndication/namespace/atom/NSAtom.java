@@ -220,7 +220,7 @@ public class NSAtom extends Namespace {
                 if (currentName == null) {
                     state.getFeed().setAuthor(content);
                 } else {
-                    state.getFeed().setAuthor(currentName + "\n" + content);
+                    state.getFeed().setAuthor(currentName + ", " + content);
                 }
             }
         }
