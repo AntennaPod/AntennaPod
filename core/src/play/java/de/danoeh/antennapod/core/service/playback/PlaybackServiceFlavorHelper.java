@@ -131,7 +131,8 @@ public class PlaybackServiceFlavorHelper {
                     info = mediaPlayer.getPSMPInfo();
                 }
                 if (info == null) {
-                    info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null);
+                    info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.INDETERMINATE,
+                            PlayerStatus.STOPPED, null);
                 }
                 switchMediaPlayer(new LocalPSMP(context, callback.getMediaPlayerCallback()),
                         info, true);
@@ -166,7 +167,7 @@ public class PlaybackServiceFlavorHelper {
             }
         }
         if (info == null) {
-            info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.STOPPED, null);
+            info = new PlaybackServiceMediaPlayer.PSMPInfo(PlayerStatus.INDETERMINATE, PlayerStatus.STOPPED, null);
         }
         callback.sendNotificationBroadcast(PlaybackService.NOTIFICATION_TYPE_RELOAD,
                 PlaybackService.EXTRA_CODE_CAST);
