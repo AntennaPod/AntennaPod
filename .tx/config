@@ -4,6 +4,7 @@ host = https://www.transifex.com
 [antennapod.english]
 source_file = core/src/main/res/values/strings.xml
 source_lang = en
+trans.ast_ES = core/src/main/res/values-b+ast/strings.xml
 trans.ar = core/src/main/res/values-ar/strings.xml
 trans.az = core/src/main/res/values-az/strings.xml
 trans.ca = core/src/main/res/values-ca/strings.xml
