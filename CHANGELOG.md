@@ -1,6 +1,7 @@
 Change Log
 ==========
 
+
 Version 1.6.2
 -------------
 
@@ -24,6 +25,7 @@ Version 1.6.2
  * Cast dialog image
  * Mini player not showing up
  * Audio player cover fragment
+ * Prevent out of memory and casting crashes
 
 Version 1.6.0
 -------------
