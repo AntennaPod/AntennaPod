@@ -30,6 +30,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        multiDexEnabled true
         versionCode getMyVersionCode()
         versionName "${getMyVersionName()}"
         testApplicationId "de.test.antennapod"
@@ -126,6 +127,7 @@ dependencies {
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
+    compile "com.android.support:multidex:$multiDexVersion"
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
