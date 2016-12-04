@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -16,7 +18,9 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.greenrobot.event.EventBus;
 
 public abstract class SleepTimerDialog {
     
@@ -32,7 +36,7 @@ public abstract class SleepTimerDialog {
     private CheckBox chAutoEnable;
 
 
-    public SleepTimerDialog(Context context) {
+    protected SleepTimerDialog(Context context) {
         this.context = context;
     }
 
@@ -99,6 +103,11 @@ public abstract class SleepTimerDialog {
         cbVibrate.setChecked(SleepTimerPreferences.vibrate());
         chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
 
+        chAutoEnable.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            SleepTimerPreferences.setAutoEnable(isChecked);
+            int messageString = isChecked ? R.string.sleep_timer_enabled_label : R.string.sleep_timer_disabled_label;
+            EventBus.getDefault().post(new MessageEvent(context.getString(messageString)));
+        });
         return dialog;
     }
 
