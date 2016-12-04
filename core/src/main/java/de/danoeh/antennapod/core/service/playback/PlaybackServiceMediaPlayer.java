@@ -29,9 +29,10 @@ public abstract class PlaybackServiceMediaPlayer {
     /**
      * Return value of some PSMP methods if the method call failed.
      */
-    public static final int INVALID_TIME = -1;
+    static final int INVALID_TIME = -1;
 
-    protected volatile PlayerStatus playerStatus;
+    volatile PlayerStatus oldPlayerStatus;
+    volatile PlayerStatus playerStatus;
 
     /**
      * A wifi-lock that is acquired if the media file is being streamed.
@@ -41,8 +42,8 @@ public abstract class PlaybackServiceMediaPlayer {
     protected final PSMPCallback callback;
     protected final Context context;
 
-    public PlaybackServiceMediaPlayer(@NonNull Context context,
-                                      @NonNull PSMPCallback callback){
+    PlaybackServiceMediaPlayer(@NonNull Context context,
+                               @NonNull PSMPCallback callback){
         this.context = context;
         this.callback = callback;
 
@@ -204,7 +205,7 @@ public abstract class PlaybackServiceMediaPlayer {
      * @return The PSMPInfo object.
      */
     public final synchronized PSMPInfo getPSMPInfo() {
-        return new PSMPInfo(playerStatus, getPlayable());
+        return new PSMPInfo(oldPlayerStatus, playerStatus, getPlayable());
     }
 
     /**
@@ -275,7 +276,7 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     protected abstract boolean shouldLockWifi();
 
-    protected final synchronized void acquireWifiLockIfNecessary() {
+    final synchronized void acquireWifiLockIfNecessary() {
         if (shouldLockWifi()) {
             if (wifiLock == null) {
                 wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
@@ -286,7 +287,7 @@ public abstract class PlaybackServiceMediaPlayer {
         }
     }
 
-    protected final synchronized void releaseWifiLockIfNecessary() {
+    final synchronized void releaseWifiLockIfNecessary() {
         if (wifiLock != null && wifiLock.isHeld()) {
             wifiLock.release();
         }
@@ -307,29 +308,28 @@ public abstract class PlaybackServiceMediaPlayer {
      * @param position  The position to be set to the current Playable object in case playback started or paused.
      *                  Will be ignored if given the value of {@link #INVALID_TIME}.
      */
-    protected final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia, int position) {
+    final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia, int position) {
         Log.d(TAG, this.getClass().getSimpleName() + ": Setting player status to " + newStatus);
 
-        PlayerStatus oldStatus = playerStatus;
-
+        this.oldPlayerStatus = playerStatus;
         this.playerStatus = newStatus;
         setPlayable(newMedia);
 
         if (newMedia != null && newStatus != PlayerStatus.INDETERMINATE) {
-            if (oldStatus == PlayerStatus.PLAYING && newStatus != PlayerStatus.PLAYING) {
+            if (oldPlayerStatus == PlayerStatus.PLAYING && newStatus != PlayerStatus.PLAYING) {
                 callback.onPlaybackPause(newMedia, position);
-            } else if (oldStatus != PlayerStatus.PLAYING && newStatus == PlayerStatus.PLAYING) {
+            } else if (oldPlayerStatus != PlayerStatus.PLAYING && newStatus == PlayerStatus.PLAYING) {
                 callback.onPlaybackStart(newMedia, position);
             }
         }
 
-        callback.statusChanged(new PSMPInfo(playerStatus, getPlayable()));
+        callback.statusChanged(new PSMPInfo(oldPlayerStatus, playerStatus, getPlayable()));
     }
 
     /**
      * @see #setPlayerStatus(PlayerStatus, Playable, int)
      */
-    protected final void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
+    final void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia) {
         setPlayerStatus(newStatus, newMedia, INVALID_TIME);
     }
 
@@ -365,10 +365,12 @@ public abstract class PlaybackServiceMediaPlayer {
      * Holds information about a PSMP object.
      */
     public static class PSMPInfo {
+        public PlayerStatus oldPlayerStatus;
         public PlayerStatus playerStatus;
         public Playable playable;
 
-        public PSMPInfo(PlayerStatus playerStatus, Playable playable) {
+        PSMPInfo(PlayerStatus oldPlayerStatus, PlayerStatus playerStatus, Playable playable) {
+            this.oldPlayerStatus = oldPlayerStatus;
             this.playerStatus = playerStatus;
             this.playable = playable;
         }

@@ -612,7 +612,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     setupNotification(newInfo);
                     started = true;
                     // set sleep timer if auto-enabled
-                    if(SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
+                    if(newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING &&
+                        SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
                         setSleepTimer(SleepTimerPreferences.timerMillis(), SleepTimerPreferences.shakeToReset(),
                                 SleepTimerPreferences.vibrate());
                     }
