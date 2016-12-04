@@ -1101,7 +1101,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 mediaSession.setSessionActivity(PendingIntent.getActivity(this, 0,
                         PlaybackService.getPlayerActivityIntent(this),
                         PendingIntent.FLAG_UPDATE_CURRENT));
-                mediaSession.setMetadata(builder.build());
+                try {
+                    mediaSession.setMetadata(builder.build());
+                }  catch (OutOfMemoryError e) {
+                    Log.e(TAG, "Setting media session metadata", e);
+                    builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, null);
+                    mediaSession.setMetadata(builder.build());
+                }
             }
         };
 
