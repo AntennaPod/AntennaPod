@@ -42,7 +42,6 @@ project.ext {
     minSdkVersion = 10
     targetSdkVersion = 23
 
-    multiDexVersion = "1.0.1"
     supportVersion = "23.4.0"
     commonsioVersion = "2.4"
     commonslangVersion = "3.4"
