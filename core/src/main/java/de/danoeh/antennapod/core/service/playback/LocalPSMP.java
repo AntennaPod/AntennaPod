@@ -852,27 +852,24 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     private IPlayer setMediaPlayerListeners(IPlayer mp) {
-        if (mp != null && media != null) {
-            if (media.getMediaType() == MediaType.AUDIO) {
-                ((AudioPlayer) mp)
-                        .setOnCompletionListener(audioCompletionListener);
-                ((AudioPlayer) mp)
-                        .setOnSeekCompleteListener(audioSeekCompleteListener);
-                ((AudioPlayer) mp).setOnErrorListener(audioErrorListener);
-                ((AudioPlayer) mp)
-                        .setOnBufferingUpdateListener(audioBufferingUpdateListener);
-                ((AudioPlayer) mp).setOnInfoListener(audioInfoListener);
-                ((AudioPlayer) mp).setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
-            } else {
-                ((VideoPlayer) mp)
-                        .setOnCompletionListener(videoCompletionListener);
-                ((VideoPlayer) mp)
-                        .setOnSeekCompleteListener(videoSeekCompleteListener);
-                ((VideoPlayer) mp).setOnErrorListener(videoErrorListener);
-                ((VideoPlayer) mp)
-                        .setOnBufferingUpdateListener(videoBufferingUpdateListener);
-                ((VideoPlayer) mp).setOnInfoListener(videoInfoListener);
-            }
+        if (mp == null || media == null) {
+            return mp;
+        }
+        if (media.getMediaType() == MediaType.VIDEO) {
+            VideoPlayer vp = (VideoPlayer) mp;
+            vp.setOnCompletionListener(videoCompletionListener);
+            vp.setOnSeekCompleteListener(videoSeekCompleteListener);
+            vp.setOnErrorListener(videoErrorListener);
+            vp.setOnBufferingUpdateListener(videoBufferingUpdateListener);
+            vp.setOnInfoListener(videoInfoListener);
+        } else {
+            AudioPlayer ap = (AudioPlayer) mp;
+            ap.setOnCompletionListener(audioCompletionListener);
+            ap.setOnSeekCompleteListener(audioSeekCompleteListener);
+            ap.setOnErrorListener(audioErrorListener);
+            ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
+            ap.setOnInfoListener(audioInfoListener);
+            ap.setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
         }
         return mp;
     }
