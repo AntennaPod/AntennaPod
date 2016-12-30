@@ -23,6 +23,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.mfietz.fyydlin.FyydClient;
 import de.mfietz.fyydlin.FyydResponse;
@@ -48,7 +49,7 @@ public class FyydSearchFragment extends Fragment {
     private Button butRetry;
     private TextView txtvEmpty;
 
-    private FyydClient client = new FyydClient();
+    private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
 
     /**
      * List of podcasts retreived from the search
