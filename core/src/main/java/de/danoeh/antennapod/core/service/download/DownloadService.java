@@ -22,6 +22,7 @@ import android.util.Log;
 import android.webkit.URLUtil;
 
 import org.apache.commons.io.FileUtils;
+import org.shredzone.flattr4j.model.User;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -1048,7 +1049,8 @@ public class DownloadService extends Service {
 
                 DBWriter.setFeedMedia(media).get();
 
-                if (item != null && !DBTasks.isInQueue(DownloadService.this, item.getId())) {
+                if (item != null && UserPreferences.enqueueDownloadedEpisodes() &&
+                        !DBTasks.isInQueue(DownloadService.this, item.getId())) {
                     DBWriter.addQueueItem(DownloadService.this, item).get();
                 }
             } catch (ExecutionException | InterruptedException e) {

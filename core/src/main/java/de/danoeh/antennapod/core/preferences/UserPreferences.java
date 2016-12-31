@@ -74,6 +74,7 @@ public class UserPreferences {
     public static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
 
     // Network
+    public static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
@@ -258,11 +259,10 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_SHOW_DOWNLOAD_REPORT, true);
     }
 
-    /**
-     * Returns {@code true} if new queue elements are added to the front
-     *
-     * @return {@code true} if new queue elements are added to the front; {@code false}  otherwise
-     */
+    public static boolean enqueueDownloadedEpisodes() {
+        return prefs.getBoolean(PREF_ENQUEUE_DOWNLOADED, true);
+    }
+
     public static boolean enqueueAtFront() {
         return prefs.getBoolean(PREF_QUEUE_ADD_TO_FRONT, false);
     }
