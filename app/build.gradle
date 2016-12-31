@@ -107,6 +107,10 @@ android {
         play {
         }
     }
+
+    dexOptions {
+        jumboMode true
+    }
 }
 
 configurations {
