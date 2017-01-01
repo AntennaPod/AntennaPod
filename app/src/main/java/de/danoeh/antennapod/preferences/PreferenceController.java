@@ -43,6 +43,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -748,6 +750,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         List<WifiConfiguration> networks = wifiservice.getConfiguredNetworks();
 
         if (networks != null) {
+            Collections.sort(networks, new Comparator<WifiConfiguration>() {
+                @Override
+                public int compare(WifiConfiguration x, WifiConfiguration y) {
+                    return x.SSID.compareTo(y.SSID);
+                }
+            });
             selectedNetworks = new CheckBoxPreference[networks.size()];
             List<String> prefValues = Arrays.asList(UserPreferences
                     .getAutodownloadSelectedNetworks());
