@@ -12,8 +12,6 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 /** Receives media button events. */
 public class MediaButtonReceiver extends BroadcastReceiver {
 	private static final String TAG = "MediaButtonReceiver";
-	public static final String EXTRA_KEYCODE = "de.danoeh.antennapod.core.service.extra.MediaButtonReceiver.KEYCODE";
-	public static final String EXTRA_SOURCE = "de.danoeh.antennapod.core.service.extra.MediaButtonReceiver.SOURCE";
 
 	public static final String NOTIFY_BUTTON_RECEIVER = "de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER";
 
@@ -24,8 +22,8 @@ public class MediaButtonReceiver extends BroadcastReceiver {
 		if (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount()==0) {
 			ClientConfig.initialize(context);
 			Intent serviceIntent = new Intent(context, PlaybackService.class);
-			serviceIntent.putExtra(EXTRA_KEYCODE, event.getKeyCode());
-			serviceIntent.putExtra(EXTRA_SOURCE, event.getSource());
+			serviceIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
+			serviceIntent.setAction(Intent.ACTION_MEDIA_BUTTON);
 			context.startService(serviceIntent);
 		}
 

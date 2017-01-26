@@ -688,6 +688,12 @@ public abstract class PlaybackController {
                 || playbackService != null && playbackService.canSetSpeed();
     }
 
+    public void increasePlaybackSpeed() {
+        if(playbackService != null) {
+            playbackService.increaseSpeed();
+        }
+    }
+
     public void setPlaybackSpeed(float speed) {
         if (playbackService != null) {
             playbackService.setSpeed(speed);

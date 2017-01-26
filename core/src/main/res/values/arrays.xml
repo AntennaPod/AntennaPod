@@ -16,6 +16,58 @@
         <item>300</item>
     </string-array>
 
+    <string-array name="pref_hardwareForwardSingleTapAction_options">
+        <item>@string/pref_hardwareForwardAction_skip</item>
+        <item>@string/pref_hardwareForwardAction_seek</item>
+        <item>@string/pref_hardwareForwardAction_speed</item>
+    </string-array>
+    <string-array name="pref_hardwareForwardSingleTapAction_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pref_hardwareForwardDoubleTapAction_options">
+        <item>@string/pref_hardwareForwardAction_none</item>
+        <item>@string/pref_hardwareForwardAction_skip</item>
+        <item>@string/pref_hardwareForwardAction_seek</item>
+        <item>@string/pref_hardwareForwardAction_speed</item>
+    </string-array>
+    <string-array name="pref_hardwareForwardDoubleTapAction_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pref_hardwareBackSingleTapAction_options">
+        <item>@string/pref_hardwareBackAction_skip</item>
+        <item>@string/pref_hardwareBackAction_seek</item>
+        <item>@string/pref_hardwareBackAction_speed</item>
+        <item>@string/pref_hardwareBackAction_restart</item>
+    </string-array>
+    <string-array name="pref_hardwareBackSingleTapAction_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="pref_hardwareBackDoubleTapAction_options">
+        <item>@string/pref_hardwareBackAction_none</item>
+        <item>@string/pref_hardwareBackAction_skip</item>
+        <item>@string/pref_hardwareBackAction_seek</item>
+        <item>@string/pref_hardwareBackAction_speed</item>
+        <item>@string/pref_hardwareBackAction_restart</item>
+    </string-array>
+    <string-array name="pref_hardwareBackDoubleTapAction_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
 
     <integer-array name="seek_delta_values">
         <item>5</item>

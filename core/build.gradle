@@ -30,6 +30,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     publishNonDefault true
     productFlavors {
         free {
@@ -75,6 +79,9 @@ dependencies {
     } else {
         System.out.println("core: free build hack, skipping some dependencies")
     }
+
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
 }
 
 allprojects {

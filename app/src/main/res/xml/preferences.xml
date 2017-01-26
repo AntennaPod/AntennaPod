@@ -103,18 +103,43 @@
             android:key="prefUnpauseOnBluetoothReconnect"
             android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
             android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefHardwareForwardButtonSkips"
-            android:summary="@string/pref_hardwareForwardButtonSkips_sum"
-            android:title="@string/pref_hardwareForwardButtonSkips_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefHardwarePreviousButtonRestarts"
-            android:summary="@string/pref_hardwarePreviousButtonRestarts_sum"
-            android:title="@string/pref_hardwarePreviousButtonRestarts_title"/>
+        <PreferenceScreen
+            android:key="prefHardwareSettings"
+            android:summary="@string/pref_hardwareControls_sum"
+            android:title="@string/pref_hardwareControls_title">
+            <com.afollestad.materialdialogs.prefs.MaterialListPreference
+                android:entryValues="@array/pref_hardwareForwardSingleTapAction_values"
+                android:entries="@array/pref_hardwareForwardSingleTapAction_options"
+                android:title="@string/pref_hardwareForwardSingleTapAction_title"
+                android:key="prefHardwareForwardSingleTapAction"
+                android:summary="@string/pref_hardwareForwardSingleTapAction_sum"
+                android:defaultValue="2"
+                app:useStockLayout="true"/>
+            <com.afollestad.materialdialogs.prefs.MaterialListPreference
+                android:entryValues="@array/pref_hardwareBackSingleTapAction_values"
+                android:entries="@array/pref_hardwareBackSingleTapAction_options"
+                android:title="@string/pref_hardwareBackSingleTapAction_title"
+                android:key="prefHardwareBackSingleTapAction"
+                android:summary="@string/pref_hardwareBackSingleTapAction_sum"
+                android:defaultValue="2"
+                app:useStockLayout="true"/>
+            <com.afollestad.materialdialogs.prefs.MaterialListPreference
+                android:entryValues="@array/pref_hardwareForwardDoubleTapAction_values"
+                android:entries="@array/pref_hardwareForwardDoubleTapAction_options"
+                android:title="@string/pref_hardwareForwardDoubleTapAction_title"
+                android:key="prefHardwareForwardDoubleTapAction"
+                android:summary="@string/pref_hardwareForwardDoubleTapAction_sum"
+                android:defaultValue="0"
+                app:useStockLayout="true"/>
+            <com.afollestad.materialdialogs.prefs.MaterialListPreference
+                android:entryValues="@array/pref_hardwareBackDoubleTapAction_values"
+                android:entries="@array/pref_hardwareBackDoubleTapAction_options"
+                android:title="@string/pref_hardwareBackDoubleTapAction_title"
+                android:key="prefHardwareBackDoubleTapAction"
+                android:summary="@string/pref_hardwareBackDoubleTapAction_sum"
+                android:defaultValue="0"
+                app:useStockLayout="true"/>
+        </PreferenceScreen>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"

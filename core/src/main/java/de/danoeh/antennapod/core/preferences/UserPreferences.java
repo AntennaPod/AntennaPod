@@ -45,6 +45,9 @@ public class UserPreferences {
 
     private static final String TAG = "UserPreferences";
 
+    // Versioning
+    private static final String PREF_VERSION = "prefVersion";
+
     // User Interface
     public static final String PREF_THEME = "prefTheme";
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
@@ -65,6 +68,10 @@ public class UserPreferences {
     public static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
     public static final String PREF_HARDWARE_FOWARD_BUTTON_SKIPS = "prefHardwareForwardButtonSkips";
     public static final String PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS = "prefHardwarePreviousButtonRestarts";
+    public static final String PREF_HARDWARE_FORWARD_SINGLE_TAP_ACTION = "prefHardwareForwardSingleTapAction";
+    public static final String PREF_HARDWARE_FORWARD_DOUBLE_TAP_ACTION = "prefHardwareForwardDoubleTapAction";
+    public static final String PREF_HARDWARE_BACK_SINGLE_TAP_ACTION = "prefHardwareBackSingleTapAction";
+    public static final String PREF_HARDWARE_BACK_DOUBLE_TAP_ACTION = "prefHardwareBackDoubleTapAction";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
@@ -118,6 +125,7 @@ public class UserPreferences {
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
 
     // Constants
+    private static final int CURRENT_VERSION = 2;
     private static final int NOTIFICATION_BUTTON_REWIND = 0;
     private static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
     private static final int NOTIFICATION_BUTTON_SKIP = 2;
@@ -145,6 +153,10 @@ public class UserPreferences {
         UserPreferences.context = context.getApplicationContext();
         UserPreferences.prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
+        int oldVersion = prefs.getInt("prefVersion", 1);
+        if(oldVersion != CURRENT_VERSION) {
+            migrate(oldVersion);
+        }
         createImportDirectory();
         createNoMediaFile();
     }
@@ -279,14 +291,27 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT, false);
     }
 
-    public static boolean shouldHardwareButtonSkip() {
-        return prefs.getBoolean(PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
+    public static MediaAction getHardwareForwardSingleTapAction() {
+        return MediaAction.fromString(prefs.getString(PREF_HARDWARE_FORWARD_SINGLE_TAP_ACTION,
+                                                      null),
+                                      MediaAction.SEEK);
     }
 
-    public static boolean shouldHardwarePreviousButtonRestart() {
-        return prefs.getBoolean(PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS, false);
+    public static MediaAction getHardwareForwardDoubleTapAction() {
+        return MediaAction.fromString(prefs.getString(PREF_HARDWARE_FORWARD_DOUBLE_TAP_ACTION,
+                                                      null),
+                                      MediaAction.NONE);
     }
 
+    public static MediaAction getHardwareBackSingleTapAction() {
+        return MediaAction.fromString(prefs.getString(PREF_HARDWARE_BACK_SINGLE_TAP_ACTION, null),
+                                      MediaAction.SEEK);
+    }
+
+    public static MediaAction getHardwareBackDoubleTapAction() {
+        return MediaAction.fromString(prefs.getString(PREF_HARDWARE_BACK_DOUBLE_TAP_ACTION, null),
+                                      MediaAction.NONE);
+    }
 
     public static boolean isFollowQueue() {
         return prefs.getBoolean(PREF_FOLLOW_QUEUE, true);
@@ -826,5 +851,30 @@ public class UserPreferences {
      */
     public static boolean isCastEnabled() {
         return prefs.getBoolean(PREF_CAST_ENABLED, false);
+    }
+
+    private static void migrate(int oldVersion) {
+        SharedPreferences.Editor editor = prefs.edit();
+
+        if(oldVersion < 2) {
+            boolean nextButtonSkips = prefs.getBoolean(PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
+            boolean previousButtonRestarts =
+                    prefs.getBoolean(PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS, false);
+            if(nextButtonSkips) {
+                editor.putString(PREF_HARDWARE_FORWARD_SINGLE_TAP_ACTION, "1"); // Skip
+            } else {
+                editor.putString(PREF_HARDWARE_FORWARD_SINGLE_TAP_ACTION, "2"); // Fast Forward
+            }
+            if(previousButtonRestarts) {
+                editor.putString(PREF_HARDWARE_BACK_SINGLE_TAP_ACTION, "4"); // Restart
+            } else {
+                editor.putString(PREF_HARDWARE_BACK_SINGLE_TAP_ACTION, "2"); // Rewind
+            }
+            editor.remove(PREF_HARDWARE_FOWARD_BUTTON_SKIPS);
+            editor.remove(PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS);
+        }
+
+        editor.putInt(PREF_VERSION, CURRENT_VERSION);
+        editor.apply();
     }
 }
