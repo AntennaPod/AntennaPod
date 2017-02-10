@@ -1589,6 +1589,52 @@ public class PodDBAdapter {
         }
     }
 
+    public Cursor searchItemAuthors(long feedID, String query) {
+        if (feedID != 0) {
+            // search items in specific feed
+            return db.rawQuery("SELECT " + TextUtils.join(", ", FEEDITEM_SEL_FI_SMALL) + " FROM " + TABLE_NAME_FEED_ITEMS
+                    + " JOIN " + TABLE_NAME_FEEDS + " ON " + TABLE_NAME_FEED_ITEMS+"."+KEY_FEED+"="+TABLE_NAME_FEEDS+"."+KEY_ID
+                    + " WHERE " + KEY_FEED
+                            + "=? AND " + KEY_AUTHOR + " LIKE '%"
+                            + prepareSearchQuery(query) + "%' ORDER BY "
+                            + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC",
+                    new String[]{String.valueOf(feedID)}
+            );
+        } else {
+            // search through all items
+            return db.rawQuery("SELECT " + TextUtils.join(", ", FEEDITEM_SEL_FI_SMALL) + " FROM " + TABLE_NAME_FEED_ITEMS
+                            + " JOIN " + TABLE_NAME_FEEDS + " ON " + TABLE_NAME_FEED_ITEMS+"."+KEY_FEED+"="+TABLE_NAME_FEEDS+"."+KEY_ID
+                            + " WHERE " + KEY_AUTHOR + " LIKE '%"
+                            + prepareSearchQuery(query) + "%' ORDER BY "
+                            + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC",
+                    null
+            );
+        }
+    }
+
+    public Cursor searchItemFeedIdentifiers(long feedID, String query) {
+        if (feedID != 0) {
+            // search items in specific feed
+            return db.rawQuery("SELECT " + TextUtils.join(", ", FEEDITEM_SEL_FI_SMALL) + " FROM " + TABLE_NAME_FEED_ITEMS
+                            + " JOIN " + TABLE_NAME_FEEDS + " ON " + TABLE_NAME_FEED_ITEMS+"."+KEY_FEED+"="+TABLE_NAME_FEEDS+"."+KEY_ID
+                            + " WHERE " + KEY_FEED
+                            + "=? AND " + KEY_FEED_IDENTIFIER + " LIKE '%"
+                            + prepareSearchQuery(query) + "%' ORDER BY "
+                            + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC",
+                    new String[]{String.valueOf(feedID)}
+            );
+        } else {
+            // search through all items
+            return db.rawQuery("SELECT " + TextUtils.join(", ", FEEDITEM_SEL_FI_SMALL) + " FROM " + TABLE_NAME_FEED_ITEMS
+                            + " JOIN " + TABLE_NAME_FEEDS + " ON " + TABLE_NAME_FEED_ITEMS+"."+KEY_FEED+"="+TABLE_NAME_FEEDS+"."+KEY_ID
+                            + " WHERE " + KEY_FEED_IDENTIFIER + " LIKE '%"
+                            + prepareSearchQuery(query) + "%' ORDER BY "
+                            + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC",
+                    null
+            );
+        }
+    }
+
     public Cursor searchItemChapters(long feedID, String searchQuery) {
         final String query;
         if (feedID != 0) {

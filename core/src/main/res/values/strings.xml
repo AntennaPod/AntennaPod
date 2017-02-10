@@ -432,6 +432,8 @@
     <string name="search_hint">Search for episodes</string>
     <string name="found_in_shownotes_label">Found in show notes</string>
     <string name="found_in_chapters_label">Found in chapters</string>
+    <string name="found_in_authors_label">Found in authors</string>
+    <string name="found_in_feeds_label">Found in feeds</string>
     <string name="search_status_no_results">No results were found</string>
     <string name="search_label">Search</string>
     <string name="found_in_title_label">Found in title</string>

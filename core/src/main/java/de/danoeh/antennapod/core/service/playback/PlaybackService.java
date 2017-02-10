@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,9 +50,11 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -60,6 +63,7 @@ import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
@@ -363,6 +367,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 MediaBrowserCompat.MediaItem.FLAG_BROWSABLE);
     }
 
+    private MediaBrowserCompat.MediaItem createBrowsableMediaItemForFeed(Feed feed) {
+        MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
+                .setMediaId("FeedId:" + Long.toString(feed.getId()))
+                .setTitle(feed.getTitle())
+                .setDescription(feed.getDescription())
+                .setIconUri(Uri.parse(feed.getImageLocation()))
+                .setSubtitle(feed.getCustomTitle())
+                .setMediaUri(Uri.parse(feed.getLink()))
+                .build();
+        return new MediaBrowserCompat.MediaItem(description,
+                MediaBrowserCompat.MediaItem.FLAG_BROWSABLE);
+    }
+
     @Override
     public void onLoadChildren(@NonNull String parentId,
                                @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
@@ -371,6 +388,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             // Root List
             mediaItems.add(createBrowsableMediaItemForRoot());
+            List<Feed> feeds = DBReader.getFeedList();
+            for (Feed feed: feeds) {
+                mediaItems.add(createBrowsableMediaItemForFeed(feed));
+            }
         } else if (parentId.equals(getResources().getString(R.string.queue_label))){
             // Child List
             try {
@@ -379,6 +400,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        } else if (parentId.startsWith("FeedId:")) {
+            Long feedId = Long.parseLong(parentId.split(":")[1]);
+            List<FeedItem> feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
+            for (FeedItem feedItem: feedItems) {
+                mediaItems.add(feedItem.getMedia().getMediaItem());
             }
         }
         result.sendResult(mediaItems);
@@ -1635,8 +1662,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPlayFromSearch (String query, Bundle extras) {
-            //Until we parse the query just play from queue
+            Log.d(TAG, "onPlayFromSearch  query=" + query + " extras=" + extras.toString());
+
+            List<SearchResult> results = FeedSearcher.performSearch(getBaseContext(),query,0);
+            for( SearchResult result : results) {
+                try {
+                    FeedMedia p = ((FeedItem)(result.getComponent())).getMedia();
+                    mediaPlayer.playMediaObject(p, !p.localFileAvailable(), true, true);
+                    return;
+                } catch (Exception e) {
+                    Log.d(TAG, e.getMessage());
+                    e.printStackTrace();
+                    continue;
+                }
+            }
             onPlay();
+            return;
         }
 
         @Override
