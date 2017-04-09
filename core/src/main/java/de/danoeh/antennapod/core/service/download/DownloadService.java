@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.service.download;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -15,13 +14,15 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.webkit.URLUtil;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -30,8 +31,10 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
@@ -196,11 +199,11 @@ public class DownloadService extends Service {
                                 saveDownloadStatus(status);
                                 handleFailedDownload(status, downloader.getDownloadRequest());
 
-                                if(type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                                if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                                     long id = status.getFeedfileId();
                                     FeedMedia media = DBReader.getFeedMedia(id);
                                     FeedItem item;
-                                    if(media == null || (item = media.getItem()) == null) {
+                                    if (media == null || (item = media.getItem()) == null) {
                                         return;
                                     }
                                     boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
@@ -219,10 +222,10 @@ public class DownloadService extends Service {
                         } else {
                             // if FeedMedia download has been canceled, fake FeedItem update
                             // so that lists reload that it
-                            if(status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                            if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                                 FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
                                 FeedItem item;
-                                if(media == null || (item = media.getItem()) == null) {
+                                if (media == null || (item = media.getItem()) == null) {
                                     return;
                                 }
                                 EventBus.getDefault().post(FeedItemEvent.updated(item));
@@ -231,9 +234,10 @@ public class DownloadService extends Service {
                         queryDownloadsAsync();
                     }
                 } catch (InterruptedException e) {
-                    Log.d(TAG, "DownloadCompletionThread was interrupted");
+                    Log.e(TAG, "DownloadCompletionThread was interrupted");
+                    Thread.currentThread().interrupt();
                 } catch (ExecutionException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "ExecutionException in DownloadCompletionThread: " + e.getMessage());
                     numberOfDownloads.decrementAndGet();
                 }
             }
@@ -251,7 +255,6 @@ public class DownloadService extends Service {
         return Service.START_NOT_STICKY;
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void onCreate() {
         Log.d(TAG, "Service started");
@@ -326,7 +329,7 @@ public class DownloadService extends Service {
 
         // if this was the initial gpodder sync, i.e. we just synced the feeds successfully,
         // it is now time to sync the episode actions
-        if(GpodnetPreferences.loggedIn() &&
+        if (GpodnetPreferences.loggedIn() &&
                 GpodnetPreferences.getLastSubscriptionSyncTimestamp() > 0 &&
                 GpodnetPreferences.getLastEpisodeActionsSyncTimestamp() == 0) {
             GpodnetSyncService.sendSyncActionsIntent(this);
@@ -337,16 +340,14 @@ public class DownloadService extends Service {
     }
 
     private void setupNotificationBuilders() {
-        Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.stat_notify_sync);
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.stat_notify_sync);
 
-            notificationCompatBuilder = new NotificationCompat.Builder(this)
-                    .setOngoing(true)
-                    .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
-                    .setLargeIcon(icon)
-                    .setSmallIcon(R.drawable.stat_notify_sync)
-                    .setVisibility(Notification.VISIBILITY_PUBLIC);
-
+        notificationCompatBuilder = new NotificationCompat.Builder(this)
+                .setOngoing(true)
+                .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
+                .setLargeIcon(icon)
+                .setSmallIcon(R.drawable.stat_notify_sync)
+                .setVisibility(Notification.VISIBILITY_PUBLIC);
 
         Log.d(TAG, "Notification set up");
     }
@@ -356,49 +357,21 @@ public class DownloadService extends Service {
      * before setupNotificationBuilders.
      */
     private Notification updateNotifications() {
+        if (notificationCompatBuilder == null) {
+            return null;
+        }
+
         String contentTitle = getString(R.string.download_notification_title);
         int numDownloads = requester.getNumberOfDownloads();
-        String downloadsLeft;
-        if (numDownloads > 0) {
-            downloadsLeft = getResources()
-                    .getQuantityString(R.plurals.downloads_left, numDownloads, numDownloads);
-        } else {
-            downloadsLeft = getString(R.string.downloads_processing);
-        }
-        if (notificationCompatBuilder != null) {
+        String downloadsLeft = (numDownloads > 0) ?
+                getResources().getQuantityString(R.plurals.downloads_left, numDownloads, numDownloads) :
+                getString(R.string.downloads_processing);
+        String bigText = compileNotificationString(downloads);
 
-            StringBuilder bigText = new StringBuilder("");
-            for (int i = 0; i < downloads.size(); i++) {
-                Downloader downloader = downloads.get(i);
-                final DownloadRequest request = downloader
-                        .getDownloadRequest();
-                if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-                    if (request.getTitle() != null) {
-                        if (i > 0) {
-                            bigText.append("\n");
-                        }
-                        bigText.append("\u2022 ").append(request.getTitle());
-                    }
-                } else if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                    if (request.getTitle() != null) {
-                        if (i > 0) {
-                            bigText.append("\n");
-                        }
-                        bigText.append("\u2022 ").append(request.getTitle())
-                                .append(" (").append(request.getProgressPercent())
-                                .append("%)");
-                    }
-                }
-
-            }
-            notificationCompatBuilder.setContentTitle(contentTitle);
-            notificationCompatBuilder.setContentText(downloadsLeft);
-            if (bigText != null) {
-                notificationCompatBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText.toString()));
-            }
-            return notificationCompatBuilder.build();
-        }
-        return null;
+        notificationCompatBuilder.setContentTitle(contentTitle);
+        notificationCompatBuilder.setContentText(downloadsLeft);
+        notificationCompatBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
+        return notificationCompatBuilder.build();
     }
 
     private Downloader getDownloader(String downloadUrl) {
@@ -416,7 +389,7 @@ public class DownloadService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(intent.getAction(), ACTION_CANCEL_DOWNLOAD)) {
                 String url = intent.getStringExtra(EXTRA_DOWNLOAD_URL);
-                if(url == null) {
+                if (url == null) {
                     throw new IllegalArgumentException("ACTION_CANCEL_DOWNLOAD intent needs download url extra");
                 }
 
@@ -453,7 +426,7 @@ public class DownloadService extends Service {
         if (downloader != null) {
             numberOfDownloads.incrementAndGet();
             // smaller rss feeds before bigger media files
-            if(request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+            if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
                 downloads.add(0, downloader);
             } else {
                 downloads.add(downloader);
@@ -467,15 +440,11 @@ public class DownloadService extends Service {
     }
 
     private Downloader getDownloader(DownloadRequest request) {
-        if (URLUtil.isHttpUrl(request.getSource())
-                || URLUtil.isHttpsUrl(request.getSource())) {
-            return new HttpDownloader(request);
+        if (!URLUtil.isHttpUrl(request.getSource()) && !URLUtil.isHttpsUrl(request.getSource())) {
+            Log.e(TAG, "Could not find appropriate downloader for " + request.getSource());
+            return null;
         }
-        Log.e(TAG,
-                "Could not find appropriate downloader for "
-                        + request.getSource()
-        );
-        return null;
+        return new HttpDownloader(request);
     }
 
     /**
@@ -484,8 +453,7 @@ public class DownloadService extends Service {
      */
     private void removeDownload(final Downloader d) {
         handler.post(() -> {
-            Log.d(TAG, "Removing downloader: "
-                    + d.getDownloadRequest().getSource());
+            Log.d(TAG, "Removing downloader: " + d.getDownloadRequest().getSource());
             boolean rc = downloads.remove(d);
             Log.d(TAG, "Result of downloads.remove: " + rc);
             DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
@@ -532,10 +500,8 @@ public class DownloadService extends Service {
             Log.d(TAG, "Creating report");
             // create notification object
             Notification notification = new NotificationCompat.Builder(this)
-                    .setTicker(
-                            getString(R.string.download_report_title))
-                    .setContentTitle(
-                            getString(R.string.download_report_content_title))
+                    .setTicker(getString(R.string.download_report_title))
+                    .setContentTitle(getString(R.string.download_report_content_title))
                     .setContentText(
                             String.format(
                                     getString(R.string.download_report_content),
@@ -585,8 +551,8 @@ public class DownloadService extends Service {
 
     private void postAuthenticationNotification(final DownloadRequest downloadRequest) {
         handler.post(() -> {
-            final String resourceTitle = (downloadRequest.getTitle() != null)
-                    ? downloadRequest.getTitle() : downloadRequest.getSource();
+            final String resourceTitle = (downloadRequest.getTitle() != null) ?
+                    downloadRequest.getTitle() : downloadRequest.getSource();
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(DownloadService.this);
             builder.setTicker(getText(R.string.authentication_notification_title))
@@ -611,7 +577,6 @@ public class DownloadService extends Service {
     private void handleCompletedFeedDownload(DownloadRequest request) {
         Log.d(TAG, "Handling completed Feed Download");
         feedSyncThread.submitCompletedDownload(request);
-
     }
 
     /**
@@ -660,6 +625,8 @@ public class DownloadService extends Service {
                 parserService.submit(new FeedParserTask(request));
                 tasks++;
             } catch (InterruptedException e) {
+                Log.e(TAG, "FeedSyncThread was interrupted");
+                Thread.currentThread().interrupt();
                 return null;
             }
 
@@ -678,6 +645,7 @@ public class DownloadService extends Service {
                     } catch (InterruptedException e) {
                         Log.d(TAG, "interrupted while waiting for more downloads");
                         tasks += pollCompletedDownloads();
+                        Thread.currentThread().interrupt();
                     } finally {
                         currentTime = System.currentTimeMillis();
                     }
@@ -695,9 +663,11 @@ public class DownloadService extends Service {
                     if (result != null) {
                         results.add(result);
                     }
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "FeedSyncThread was interrupted");
+                    Thread.currentThread().interrupt();
+                } catch (ExecutionException e) {
+                    Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
                 }
             }
 
@@ -706,7 +676,7 @@ public class DownloadService extends Service {
 
         private int pollCompletedDownloads() {
             int tasks = 0;
-            for (int i = 0; i < completedRequests.size(); i++) {
+            while (!completedRequests.isEmpty()) {
                 parserService.submit(new FeedParserTask(completedRequests.poll()));
                 tasks++;
             }
@@ -732,8 +702,11 @@ public class DownloadService extends Service {
                 if (dbUpdateFuture != null) {
                     try {
                         dbUpdateFuture.get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        Log.e(TAG, "FeedSyncThread was interrupted");
+                        Thread.currentThread().interrupt();
+                    } catch (ExecutionException e) {
+                        Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
                     }
                 }
 
@@ -770,14 +743,14 @@ public class DownloadService extends Service {
                 try {
                     dbUpdateFuture.get();
                 } catch (InterruptedException e) {
+                    Log.e(TAG, "interrupted while updating the db");
+                    Thread.currentThread().interrupt();
                 } catch (ExecutionException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "ExecutionException while updating the db: " + e.getMessage());
                 }
             }
 
-
             Log.d(TAG, "Shutting down");
-
         }
 
         /**
@@ -844,7 +817,7 @@ public class DownloadService extends Service {
                 reasonDetailed = e.getMessage();
             } finally {
                 File feedFile = new File(request.getDestination());
-                if(feedFile.exists()) {
+                if (feedFile.exists()) {
                     boolean deleted = feedFile.delete();
                     Log.d(TAG, "Deletion of file '" + feedFile.getAbsolutePath() + "' " + (deleted ? "successful" : "FAILED"));
                 }
@@ -853,17 +826,17 @@ public class DownloadService extends Service {
             if (successful) {
                 // we create a 'successful' download log if the feed's last refresh failed
                 List<DownloadStatus> log = DBReader.getFeedDownloadLog(feed);
-                if(log.size() > 0 && !log.get(0).isSuccessful()) {
-                    saveDownloadStatus(new DownloadStatus(feed,
-                            feed.getHumanReadableIdentifier(), DownloadError.SUCCESS, successful,
-                            reasonDetailed));
+                if (log.size() > 0 && !log.get(0).isSuccessful()) {
+                    saveDownloadStatus(
+                            new DownloadStatus(feed, feed.getHumanReadableIdentifier(),
+                                    DownloadError.SUCCESS, successful, reasonDetailed));
                 }
                 return Pair.create(request, result);
             } else {
                 numberOfDownloads.decrementAndGet();
-                saveDownloadStatus(new DownloadStatus(feed,
-                        feed.getHumanReadableIdentifier(), reason, successful,
-                        reasonDetailed));
+                saveDownloadStatus(
+                        new DownloadStatus(feed, feed.getHumanReadableIdentifier(), reason,
+                                successful, reasonDetailed));
                 return null;
             }
         }
@@ -884,26 +857,6 @@ public class DownloadService extends Service {
             return true;
         }
 
-        /**
-         * Checks if the FeedItems of this feed have images that point
-         * to the same URL. If two FeedItems have an image that points to
-         * the same URL, the reference of the second item is removed, so that every image
-         * reference is unique.
-         */
-        private void removeDuplicateImages(Feed feed) {
-            for (int x = 0; x < feed.getItems().size(); x++) {
-                for (int y = x + 1; y < feed.getItems().size(); y++) {
-                    FeedItem item1 = feed.getItems().get(x);
-                    FeedItem item2 = feed.getItems().get(y);
-                    if (item1.hasItemImage() && item2.hasItemImage()) {
-                        if (TextUtils.equals(item1.getImage().getDownload_url(), item2.getImage().getDownload_url())) {
-                            item2.setImage(null);
-                        }
-                    }
-                }
-            }
-        }
-
         private boolean hasValidFeedItems(Feed feed) {
             for (FeedItem item : feed.getItems()) {
                 if (item.getTitle() == null) {
@@ -911,8 +864,7 @@ public class DownloadService extends Service {
                     return false;
                 }
                 if (item.getPubDate() == null) {
-                    Log.e(TAG,
-                            "Item has no pubDate. Using current time as pubDate");
+                    Log.e(TAG, "Item has no pubDate. Using current time as pubDate");
                     if (item.getTitle() != null) {
                         Log.e(TAG, "Title of invalid item: " + item.getTitle());
                     }
@@ -974,11 +926,11 @@ public class DownloadService extends Service {
 
         @Override
         public void run() {
-            if(request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+            if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
                 DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
             } else if (request.isDeleteOnFailure()) {
                 Log.d(TAG, "Ignoring failed download, deleteOnFailure=true");
-            } else  {
+            } else {
                 File dest = new File(request.getDestination());
                 if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                     Log.d(TAG, "File has been partially downloaded. Writing file url");
@@ -986,8 +938,11 @@ public class DownloadService extends Service {
                     media.setFile_url(request.getDestination());
                     try {
                         DBWriter.setFeedMedia(media).get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        Log.e(TAG, "FailedDownloadHandler was interrupted");
+                        Thread.currentThread().interrupt();
+                    } catch (ExecutionException e) {
+                        Log.e(TAG, "ExecutionException in FailedDownloadHandler: " + e.getMessage());
                     }
                 }
             }
@@ -1023,17 +978,14 @@ public class DownloadService extends Service {
             ChapterUtils.loadChaptersFromFileUrl(media);
 
             // Get duration
-            MediaMetadataRetriever mmr = null;
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            mmr.setDataSource(media.getFile_url());
+            String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             try {
-                mmr = new MediaMetadataRetriever();
-                mmr.setDataSource(media.getFile_url());
-                String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                 media.setDuration(Integer.parseInt(durationStr));
                 Log.d(TAG, "Duration of file is " + media.getDuration());
             } catch (NumberFormatException e) {
-                e.printStackTrace();
-            } catch (RuntimeException e) {
-                e.printStackTrace();
+                Log.d(TAG, "Invalid file duration: " + durationStr);
             } finally {
                 if (mmr != null) {
                     mmr.release();
@@ -1044,7 +996,7 @@ public class DownloadService extends Service {
 
             try {
                 // we've received the media, we don't want to autodownload it again
-                if(item != null) {
+                if (item != null) {
                     item.setAutoDownload(false);
                     DBWriter.setFeedItem(item).get();
                 }
@@ -1055,19 +1007,22 @@ public class DownloadService extends Service {
                         !DBTasks.isInQueue(DownloadService.this, item.getId())) {
                     DBWriter.addQueueItem(DownloadService.this, item).get();
                 }
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException e) {
+                Log.e(TAG, "MediaHandlerThread was interrupted");
+                Thread.currentThread().interrupt();
+            } catch (ExecutionException e) {
+                Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
                 status = new DownloadStatus(media, media.getEpisodeTitle(), DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
             }
 
             saveDownloadStatus(status);
 
-            if(GpodnetPreferences.loggedIn() && item != null) {
-                    GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DOWNLOAD)
-                            .currentDeviceId()
-                            .currentTimestamp()
-                            .build();
-                    GpodnetPreferences.enqueueEpisodeAction(action);
+            if (GpodnetPreferences.loggedIn() && item != null) {
+                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DOWNLOAD)
+                        .currentDeviceId()
+                        .currentTimestamp()
+                        .build();
+                GpodnetPreferences.enqueueEpisodeAction(action);
             }
 
             numberOfDownloads.decrementAndGet();
@@ -1107,6 +1062,7 @@ public class DownloadService extends Service {
                 }
             });
         }
+
     }
 
 
@@ -1123,11 +1079,57 @@ public class DownloadService extends Service {
 
     private void postDownloaders() {
         long now = System.currentTimeMillis();
-        if(now - lastPost >= 250) {
+        if (now - lastPost >= 250) {
             postHandler.removeCallbacks(postDownloaderTask);
             postDownloaderTask.run();
             lastPost = now;
         }
     }
 
+    /**
+     * Checks if the FeedItems of this feed have images that point to the same URL. If two FeedItems
+     * have an image that points to the same URL, the reference of the second item is removed, so
+     * that every image reference is unique.
+     */
+    @VisibleForTesting
+    public static void removeDuplicateImages(Feed feed) {
+        Set<String> known = new HashSet<String>();
+        for (FeedItem item : feed.getItems()) {
+            String url = item.hasItemImage() ? item.getImage().getDownload_url() : null;
+            if (url != null) {
+                if (known.contains(url)) {
+                    item.setImage(null);
+                } else {
+                    known.add(url);
+                }
+            }
+        }
+    }
+
+    private static String compileNotificationString(List<Downloader> downloads) {
+        List<String> lines = new ArrayList<>(downloads.size());
+        for (Downloader downloader : downloads) {
+            StringBuilder line = new StringBuilder("\u2022 ");
+            DownloadRequest request = downloader.getDownloadRequest();
+            switch (request.getFeedfileType()) {
+                case Feed.FEEDFILETYPE_FEED:
+                    if (request.getTitle() != null) {
+                        line.append(request.getTitle());
+                    }
+                    break;
+                case FeedMedia.FEEDFILETYPE_FEEDMEDIA:
+                    if (request.getTitle() != null) {
+                        line.append(request.getTitle())
+                                .append(" (")
+                                .append(request.getProgressPercent())
+                                .append("%)");
+                    }
+                    break;
+                default:
+                    line.append("Unknown: ").append(request.getFeedfileType());
+            }
+            lines.add(line.toString());
+        }
+        return StringUtils.join(lines, '\n');
+    }
 }
