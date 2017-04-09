@@ -517,6 +517,8 @@
   <string name="pref_resumeAfterCall_sum">Continuar reprodução ao terminar a chamada</string>
   <string name="pref_resumeAfterCall_title">Continuar após a chamada</string>
   <string name="pref_restart_required">Tem que reiniciar o AntennaPod para aplicar as alterações</string>
+  <string name="pref_rewind_sum">Personalizar o número de segundos para saltar para trás quando o botão de voltar é clicado</string>
+  <string name="pref_fast_forward_sum">Personalizar o número de segundos para saltar para a frente quando o botão de avanço rápido é clicado</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscrever</string>
   <string name="subscribed_label">Subscrito</string>

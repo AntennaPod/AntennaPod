@@ -382,6 +382,8 @@
   <string name="pref_cast_title">Chromecast-stöd</string>
   <string name="pref_cast_message_play_flavor">Aktivera stöd för fjärruppspelning av media på Cast-enheter (såsom Chromecast, Ljudanläggningar eller Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast kräver propretiära tredjepartsbibliotek som inte är inkluderade i denna version av AntennaPod</string>
+  <string name="pref_rewind_sum">Anpassa antalet sekunder för att hoppa bakåt när bakåt-knappen klickas</string>
+  <string name="pref_fast_forward_sum">Anpassa antalet sekunder för att hoppa framåt när snabbspolning framåt klickar på knappen</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>

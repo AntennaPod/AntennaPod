@@ -400,6 +400,8 @@
   <string name="pref_known_issues">Відомі проблеми</string>
   <string name="pref_no_browser_found">Веб браузер не знайдено.</string>
   <string name="pref_cast_title">Підтримка для Chromecast</string>
+  <string name="pref_rewind_sum">Налаштувати кількість секунд для переходу назад, коли кнопка перемотування натиснута</string>
+  <string name="pref_fast_forward_sum">Налаштувати кількість секунд, щоб перейти вперед, коли кнопка перемотування вперед натиснута</string>
   <string name="pref_cast_message_play_flavor">Включити підтримку програвання на таких пристроях як Chromecast або Android TV</string>
   <string name="pref_cast_message_free_flavor">Для підтримки Chromecast потрібні бібліотеки які не включені в цю версію AntennaPod</string>
   <!--Auto-Flattr dialog-->

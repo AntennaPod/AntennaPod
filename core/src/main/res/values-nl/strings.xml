@@ -398,6 +398,8 @@
   <string name="pref_known_issues">Reeds bekende bugs</string>
   <string name="pref_no_browser_found">Geen browser gevonden</string>
   <string name="pref_cast_title">Chromecast</string>
+  <string name="pref_rewind_sum">Pas het aantal seconden achteruit springen wanneer het terugspoelen knop wordt geklikt</string>
+  <string name="pref_fast_forward_sum">Pas het aantal seconden om vooruit te springen wanneer de fast forward knop wordt geklikt</string>
   <string name="pref_cast_message_play_flavor">Ondersteuning activeren voor draadloos afspelen via Cast apparaten (zoals Chromecast, Audio speakers en Android TV)</string>
   <string name="pref_cast_message_free_flavor">Voor Chromecast is software van derden vereist die niet beschikbaar zijn in deze versie van AntennaPod</string>
   <!--Auto-Flattr dialog-->

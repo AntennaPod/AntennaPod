@@ -378,6 +378,8 @@
   <string name="pref_known_issues">알려진 문제점</string>
   <string name="pref_no_browser_found">웹브라우저가 없습니다.</string>
   <string name="pref_cast_title">크롬캐스트 지원</string>
+  <string name="pref_rewind_sum">되감기 버튼을 클릭하면 뒤로 이동 (초)을 정의</string>
+  <string name="pref_fast_forward_sum">빨리 감기 버튼을 클릭 할 때 앞으로 이동 (초)을 정의</string>
   <string name="pref_cast_message_play_flavor">캐스트 장치의 원격 미디어 재생 기능 사용 (예: 크롬캐스트, 안드로이드 TV의 오디오 스피커)</string>
   <string name="pref_cast_message_free_flavor">크롬캐스트는 서드파티 라이브러리가 필요하지만, 이 버전의 안테나팟에서는 사용하지 않게 되어 있습니다.</string>
   <!--Auto-Flattr dialog-->

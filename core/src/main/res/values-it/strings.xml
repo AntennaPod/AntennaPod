@@ -191,6 +191,8 @@
   <string name="pref_expandNotify_title">Espandi le notifiche</string>
   <string name="pref_queueAddToFront_sum">Aggiungi un nuovo episodio in testa alla coda.</string>
   <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
+  <string name="pref_rewind_sum">Personalizzare il numero di secondi per saltare all\'indietro quando il pulsante di riavvolgimento viene cliccato</string>
+  <string name="pref_fast_forward_sum">Personalizzare il numero di secondi per saltare in avanti quando il pulsante di avanzamento rapido viene cliccato</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="found_in_chapters_label">Trovato nei capitoli</string>

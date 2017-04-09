@@ -381,6 +381,8 @@
   <string name="pref_no_browser_found">Kein Browser gefunden.</string>
   <string name="pref_cast_title">Chromecast-Unterstützung</string>
   <string name="pref_cast_message_play_flavor">Aktiviere die Unterstützung von Cast-Geräten (Chromecast, Lautsprecher oder Android TV) zum entfernten Abspielen</string>
+  <string name="pref_rewind_sum">Passen Sie die Anzahl der Sekunden rückwärts zu springen, wenn die Rücklauf -Taste angeklickt wird</string>
+  <string name="pref_fast_forward_sum">Passen Sie die Anzahl der Sekunden nach vorne zu springen, wenn die Schnellvorlauf -Taste angeklickt wird</string>
   <string name="pref_cast_message_free_flavor">Chromecast benötigt proprietäre Bibliotheken von Drittanbietern, die in dieser Version von AntennaPod deaktiviert sind</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>

@@ -151,6 +151,8 @@
   <string name="pref_update_interval_hours_plural">saat</string>
   <string name="pref_update_interval_hours_singular">saat</string>
   <string name="pref_update_interval_hours_manual">Əl ilə</string>
+  <string name="pref_fast_forward_sum">Sürətli irəli düyməsini tıklandığında irəli tullanmaq üçün saniyə sayı özelleştirin</string>
+  <string name="pref_rewind_sum">Geri düyməsinə tıklandığında geri tullanmaq üçün saniyə sayı özelleştirin</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="found_in_chapters_label">Fəsillərdə tapıldı</string>

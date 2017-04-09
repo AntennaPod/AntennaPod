@@ -109,6 +109,14 @@
             android:key="prefHardwareForwardButtonSkips"
             android:summary="@string/pref_hardwareForwardButtonSkips_sum"
             android:title="@string/pref_hardwareForwardButtonSkips_title"/>
+        <Preference
+            android:key="prefPlaybackFastForwardDeltaLauncher"
+            android:summary="@string/pref_fast_forward_sum"
+            android:title="@string/pref_fast_forward" />
+        <Preference
+            android:key="prefPlaybackRewindDeltaLauncher"
+            android:summary="@string/pref_rewind_sum"
+            android:title="@string/pref_rewind" />
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
@@ -145,7 +153,6 @@
             android:key="prefPlaybackSpeedLauncher"
             android:summary="@string/pref_playback_speed_sum"
             android:title="@string/pref_playback_speed_title" />
-
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"

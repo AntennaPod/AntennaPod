@@ -374,6 +374,8 @@
   <string name="send_email">Wyślij e-mail</string>
   <string name="experimental_pref">Eksperymentalne</string>
   <string name="pref_sonic_title">Odtwarzacz mediów Sonic</string>
+  <string name="pref_rewind_sum">Dostosuj liczbę sekund, aby przejść do tyłu po naciśnięciu przycisku przewijania kliknięciu</string>
+  <string name="pref_fast_forward_sum">Dostosuj liczbę sekund, aby przejść do przodu, gdy szybko do przodu kliknięciu przycisku</string>
   <string name="pref_sonic_message">Użyj wbudowanego odtwarzacza Sonic jako oprogramowanie zastępcze do natywnego odtwarzacza Android i Prestissimo</string>
   <string name="pref_current_value">Aktualna wartość: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>

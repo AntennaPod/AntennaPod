@@ -400,6 +400,8 @@
   <string name="pref_cast_title">Support Chromecast</string>
   <string name="pref_cast_message_play_flavor">Activer la lecture à distance sur les appareils Cast (comme Chromecast, Audio Speaker ou Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast nécessite des bibiliothèques tierces qui sont désactivées dans cette version d\'AntennaPod</string>
+  <string name="pref_rewind_sum">Personnaliser le nombre de secondes pour sauter vers l\'arrière lorsque le bouton de rembobinage est cliqué</string>
+  <string name="pref_fast_forward_sum">Personnaliser le nombre de secondes pour sauter vers l\'avant lorsque le bouton d\'avance rapide est cliqué</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
   <string name="auto_flattr_after_percent">Lancer un paiement flattr pour un épisode dès que %d de l\'épisode a été joué</string>

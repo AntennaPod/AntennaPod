@@ -160,6 +160,8 @@
   <string name="pref_gpodnet_authenticate_title">Autentificare</string>
   <string name="pref_playback_speed_title">Viteze de ascutare</string>
   <string name="pref_playback_speed_sum">Modifică vitezele disponibile pentru viteza de ascultare.</string>
+  <string name="pref_fast_forward_sum">Personaliza numărul de secunde pentru a sări înainte atunci când butonul fast forward este apasat</string>
+  <string name="pref_rewind_sum">Personaliza numărul de secunde pentru a sări înapoi atunci când butonul de derulare înapoi se face clic</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="found_in_chapters_label">Găsit în capitole</string>

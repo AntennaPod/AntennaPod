@@ -365,6 +365,7 @@
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles para la reproducción de audio a velocidad variable</string>
   <string name="pref_fast_forward">Intervalo de avance</string>
   <string name="pref_rewind">Intervalo de retroceso</string>
+
   <string name="pref_gpodnet_sethostname_title">Definir nombre de equipo</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usar nombre de equipo por defecto</string>
   <string name="pref_expandNotify_title">Expandir Notificación</string>
@@ -400,6 +401,9 @@
   <string name="pref_cast_title">Soporte para Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar soporte para reproducción remota en dispositivos Cast (como Chromecast, altavoces o Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast requiere librerías propietarias de terceros que están deshabilitadas en esta versión de AntennaPod</string>
+  <string name="pref_fast_forward_sum">Personalizar el número de segundos para saltar hacia adelante cuando se hace clic en el botón de avance rápido</string>
+  <string name="pref_rewind_sum">Personalizar el número de segundos para saltar hacia atrás cuando se hace clic en el botón de rebobinado</string>
+
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Hacer Flattr del episodio en cuanto se haya reproducido el %d por ciento</string>

@@ -513,6 +513,8 @@
   <string name="pref_resumeAfterCall_sum">着信が完了した後に再生を再開します</string>
   <string name="pref_resumeAfterCall_title">着信後に再開</string>
   <string name="pref_restart_required">この変更を有効にするには AntennaPod を再起動する必要があります。</string>
+  <string name="pref_rewind_sum">巻き戻しボタンがクリックされたときに後方にジャンプする秒数をカスタマイズします</string>
+  <string name="pref_fast_forward_sum">早送りボタンがクリックされたときに前方にジャンプする秒数をカスタマイズします</string>
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
   <string name="subscribed_label">購読しました</string>
