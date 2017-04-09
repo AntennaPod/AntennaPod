@@ -42,6 +42,7 @@
     <string name="drawer_feed_counter_new_unplayed">Number of new and unplayed episodes</string>
     <string name="drawer_feed_counter_new">Number of new episodes</string>
     <string name="drawer_feed_counter_unplayed">Number of unplayed episodes</string>
+    <string name="drawer_feed_counter_downloaded">Number of downloaded episodes</string>
     <string name="drawer_feed_counter_none">None</string>
 
     <!-- Webview actions -->
@@ -59,6 +60,7 @@
     <string name="cancel_label">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="reset">Reset</string>
     <string name="author_label">Author</string>
     <string name="language_label">Language</string>
     <string name="url_label">URL</string>
@@ -102,7 +104,7 @@
     <string name="etxtFeedurlHint">www.example.com/feed</string>
     <string name="txtvfeedurl_label">Add Podcast by URL</string>
     <string name="podcastdirectories_label">Find Podcast in Directory</string>
-    <string name="podcastdirectories_descr">You can search for new podcasts by name, category or popularity in the gpodder.net directory, or search the iTunes store.</string>
+    <string name="podcastdirectories_descr">For new podcasts, you can search iTunes or fyyd, or browse gpodder.net by name, category or popularity.</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
 
     <!-- Actions on feeds -->
@@ -111,7 +113,10 @@
     <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
     <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being played.</string>
     <string name="mark_all_seen_label">Mark all as seen</string>
+    <string name="mark_all_seen_msg">Marked all Episodes as seen</string>
+    <string name="mark_all_seen_confirmation_msg">Please confirm that you want to mark all episodes as seen.</string>
     <string name="show_info_label">Show information</string>
+    <string name="rename_feed_label">Rename Podcast</string>
     <string name="remove_feed_label">Remove Podcast</string>
     <string name="share_label">Share&#8230;</string>
     <string name="share_link_label">Share Link</string>
@@ -131,6 +136,7 @@
     <string name="hide_not_queued_episodes_label">Not queued</string>
     <string name="hide_downloaded_episodes_label">Downloaded</string>
     <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
+    <string name="hide_has_media_label">Has media</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
     <string name="open_podcast">Open Podcast</string>
@@ -298,6 +304,8 @@
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
     <string name="pref_hardwareForwardButtonSkips_title">Forward Button Skips</string>
     <string name="pref_hardwareForwardButtonSkips_sum">When pressing a hardware forward button skip to the next episode instead of fast-forwarding</string>
+    <string name="pref_hardwarePreviousButtonRestarts_title">Previous button restarts</string>
+    <string name="pref_hardwarePreviousButtonRestarts_sum">When pressing a hardware previous button restart playing the current episode instead of rewinding</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
@@ -364,10 +372,13 @@
     <string name="pref_gpodnet_logout_toast">Logout was successful</string>
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
-    <string name="pref_gpodnet_sync_title">Sync now</string>
-    <string name="pref_gpodnet_sync_sum">Sync subscriptions and episode states with gpodder.net.</string>
+    <string name="pref_gpodnet_sync_changes_title">Sync changes now</string>
+    <string name="pref_gpodnet_sync_changes_sum">Sync subscription and episode state changes with gpodder.net.</string>
+    <string name="pref_gpodnet_full_sync_title">Full sync now</string>
+    <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
     <string name="pref_gpodnet_sync_sum_last_sync_line">Last sync attempt: %1$s (%2$s)</string>
     <string name="pref_gpodnet_sync_started">Sync started</string>
+    <string name="pref_gpodnet_full_sync_started">Full sync started</string>
     <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_gpodnet_notifications_title">Show sync error notifications</string>
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
@@ -412,6 +423,8 @@
     <string name="pref_cast_title">Chromecast support</string>
     <string name="pref_cast_message_play_flavor">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
+    <string name="pref_enqueue_downloaded_title">Enqueue Dowloaded</string>
+    <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -445,6 +458,7 @@
     <string name="choose_file_from_filesystem">From local filesystem</string>
     <string name="choose_file_from_external_application">Use external application</string>
     <string name="opml_export_label">OPML export</string>
+    <string name="html_export_label">HTML export</string>
     <string name="exporting_label">Exporting&#8230;</string>
     <string name="export_error_label">Export error</string>
     <string name="opml_export_success_title">OPML Export successful.</string>
@@ -476,6 +490,9 @@
         <item quantity="one">1 hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
+    <string name="auto_enable_label">Auto-enable</string>
+    <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
+    <string name="sleep_timer_disabled_label">Sleep timer disabled</string>
 
     <!-- gpodder.net -->
     <string name="gpodnet_taglist_header">CATEGORIES</string>
@@ -569,6 +586,8 @@
 
     <string name="search_itunes_label">Search iTunes</string>
     <string name="filter">Filter</string>
+
+    <string name="search_fyyd_label">Search fyyd</string>
     
     <!-- Episodes apply actions -->
     <string name="all_label">All</string>
@@ -587,6 +606,8 @@
     <string name="selected_queued_label">Selected queued Episodes</string>
     <string name="not_queued_label">Not queued</string>
     <string name="selected_not_queued_label">Selected not queued Episodes</string>
+    <string name="has_media">Has media</string>
+    <string name="selected_has_media_label">Selected episodes with media</string>
 
     <!-- Sort  -->
     <string name="sort_title_a_z">Title (A \u2192 Z)</string>

@@ -155,8 +155,6 @@
   <string name="pref_rewind_sum">Geri düyməsinə tıklandığında geri tullanmaq üçün saniyə sayı özelleştirin</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
-  <string name="search_hint">Kanalları və ya epizodları axtar</string>
-  <string name="found_in_shownotes_label">Təsvirlərdə tapıldı</string>
   <string name="found_in_chapters_label">Fəsillərdə tapıldı</string>
   <string name="search_status_no_results">Heç nə tapılmadı</string>
   <string name="search_label">Axtar</string>

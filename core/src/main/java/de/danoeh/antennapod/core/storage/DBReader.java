@@ -1063,7 +1063,7 @@ public final class DBReader {
                     // reverse natural order: podcast with most unplayed episodes first
                     return -1;
                 } else if(counterLhs == counterRhs) {
-                    return lhs.getTitle().compareTo(rhs.getTitle());
+                    return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
                 } else {
                     return 1;
                 }
@@ -1077,7 +1077,7 @@ public final class DBReader {
                 } else if(t2 == null) {
                     return -1;
                 } else {
-                    return t1.toLowerCase().compareTo(t2.toLowerCase());
+                    return t1.compareToIgnoreCase(t2);
                 }
             };
         } else {

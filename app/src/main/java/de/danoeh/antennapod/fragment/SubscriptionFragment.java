@@ -26,6 +26,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -102,7 +103,7 @@ public class SubscriptionFragment extends Fragment {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        subscription = Observable.fromCallable(() -> DBReader.getNavDrawerData())
+        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
@@ -163,6 +164,9 @@ public class SubscriptionFragment extends Fragment {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(result -> loadSubscriptions(),
                                 error -> Log.e(TAG, Log.getStackTraceString(error)));
+                return true;
+            case R.id.rename_item:
+                new RenameFeedDialog(getActivity(), feed).show();
                 return true;
             case R.id.remove_item:
                 final FeedRemover remover = new FeedRemover(getContext(), feed) {

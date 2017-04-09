@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Activitiy and fragment titles-->
+  <string name="feeds_label">Sklaidos kanalai</string>
+  <string name="statistics_label">Statistika</string>
+  <string name="add_feed_label">Pridėti tinklalaidę</string>
+  <string name="episodes_label">Epizodai</string>
+  <string name="all_episodes_short_label">Visi</string>
+  <string name="favorite_episodes_label">Mėgstamiausi</string>
+  <string name="new_label">Nauji</string>
+  <string name="settings_label">Nustatymai</string>
+  <string name="add_new_feed_label">Pridėti tinklalaidę</string>
+  <string name="downloads_running_label">Vykdomi</string>
+  <string name="downloads_completed_label">Užbaigti</string>
+  <string name="downloads_log_label">Žurnalas</string>
+  <string name="subscriptions_label">Prenumeratos</string>
+  <string name="subscriptions_list_label">Prenumeratų sąrašas</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net prisijungimas</string>
+  <!--Statistics fragment-->
+  <!--Main activity-->
+  <string name="drawer_open">Atverti meniu</string>
+  <string name="drawer_close">Uždaryti meniu</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">Atverti naršyklėje</string>
+  <string name="copy_url_label">Kopijuoti URL</string>
+  <string name="share_url_label">Dalintis URL</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Išvalyti istoriją</string>
+  <!--Other-->
+  <string name="confirm_label">Patvirtinti</string>
+  <string name="cancel_label">Atšaukti</string>
+  <string name="yes">Taip</string>
+  <string name="no">Ne</string>
+  <string name="author_label">Autorius</string>
+  <string name="language_label">Kalba</string>
+  <string name="url_label">URL</string>
+  <string name="podcast_settings_label">Nustatymai</string>
+  <string name="error_label">Klaida</string>
+  <string name="error_msg_prefix">Įvyko klaida:</string>
+  <string name="refresh_label">Atnaujinti</string>
+  <string name="chapters_label">Skyriai</string>
+  <string name="description_label">Aprašymas</string>
+  <string name="episodes_suffix">\u0020epizodai</string>
+  <string name="length_prefix">Trukmė:\u0020</string>
+  <string name="size_prefix">Dydis:\u0020</string>
+  <string name="processing_label">Apdorojama</string>
+  <string name="loading_label">Kraunama...</string>
+  <string name="save_username_password_label">Išsaugoti vartotojo vardą ir slaptažodį</string>
+  <string name="retry_label">Bandyti vėl</string>
+  <string name="feed_auto_download_always">Visada</string>
+  <string name="feed_auto_download_never">Niekada</string>
+  <string name="send_label">Siųsti...</string>
+  <string name="episode_cleanup_never">Niekada</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">Sklaidos kanalo URL</string>
+  <!--Actions on feeds-->
+  <string name="show_info_label">Rodyti informaciją</string>
+  <string name="remove_feed_label">Pašalinti tinklalaidę</string>
+  <string name="share_label">Dalintis...</string>
+  <string name="share_link_label">Dalintis nuoroda</string>
+  <string name="share_feed_url_label">Dalintis sklaidos kanalo URL</string>
+  <string name="share_item_url_label">Dalintis epizodo failo URL</string>
+  <string name="feed_remover_msg">Šalinamas sklaidos kanalas</string>
+  <string name="hide_episodes_title">Slėpti epizodus</string>
+  <string name="open_podcast">Atverti tinklalaidę</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Atsisiųsti</string>
+  <string name="play_label">Atkurti</string>
+  <string name="pause_label">Pristabdyti</string>
+  <string name="stop_label">Sustabdyti</string>
+  <string name="remove_label">Pašalinti</string>
+  <string name="remove_episode_lable">Pašalinti epizodą</string>
+  <string name="add_to_queue_label">Pridėti į eilę</string>
+  <string name="added_to_queue_label">Pridėtas į eilę</string>
+  <string name="remove_from_queue_label">Pašalinti iš eilės</string>
+  <string name="skip_episode_label">Praleisti epizodą</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">sėkmingi</string>
+  <string name="download_failed">nepavyko</string>
+  <string name="download_error_file_error">Failo klaida</string>
+  <string name="download_error_http_data_error">HTTP duomenų klaida</string>
+  <string name="download_error_error_unknown">Nežinoma klaida</string>
+  <string name="download_error_unsupported_type">Nepalaikomas sklaidos kanalo tipas</string>
+  <string name="download_error_connection_error">Susijungimo klaida</string>
+  <string name="cancel_all_downloads_label">Atšaukti visus atsiuntimus</string>
+  <string name="download_report_content_title">Atsiuntimų ataskaita</string>
+  <string name="download_error_request_error">Užklausos klaida</string>
+  <string name="download_notification_title">Atsiunčiami tinklalaidės duomenys</string>
+  <string name="download_type_feed">Sklaidos kanalas</string>
+  <string name="authentication_notification_title">Reikalinga autentifikacija</string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">Pridėti į eilę</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">Klaida!</string>
+  <!--Queue operations-->
+  <string name="lock_queue">Užrakinti eilę</string>
+  <string name="unlock_queue">Atrakinti eilę</string>
+  <string name="queue_locked">Eilė užrakinta</string>
+  <string name="queue_unlocked">Eilė atrakinta</string>
+  <string name="clear_queue_label">Išvalyti eilę</string>
+  <string name="ascending">Didėjančiai</string>
+  <string name="descending">Mažėjančiai</string>
+  <!--Flattr-->
+  <string name="action_forbidden_title">Veiksmas uždraustas</string>
+  <!--Flattr-->
+  <!--Variable Speed-->
+  <!--Empty list labels-->
+  <!--Preferences-->
+  <string name="project_pref">Projektas</string>
+  <string name="other_pref">Kita</string>
+  <string name="about_pref">Apie</string>
+  <string name="queue_label">Eilė</string>
+  <string name="services_label">Paslaugos</string>
+  <string name="flattr_label">Flattr</string>
+  <string name="playback_pref">Atkūrimas</string>
+  <string name="network_pref">Tinklas</string>
+  <string name="user_interface_label">Vartotojo sąsaja</string>
+  <string name="pref_set_theme_title">Pasirinkti temą</string>
+  <string name="pref_episode_cache_title">Epizodų podėlis</string>
+  <string name="pref_theme_title_light">Šviesi</string>
+  <string name="pref_theme_title_dark">Tamsi</string>
+  <string name="pref_gpodnet_logout_title">Atsijungti</string>
+  <string name="pref_gpodnet_logout_toast">Sėkmingai atsijungta</string>
+  <string name="pref_queueAddToFront_sum">Naujus epizodus dėti į eilės priekį.</string>
+  <string name="pref_queueAddToFront_title">Dėti į eilės priekį</string>
+  <string name="pref_faq">DUK</string>
+  <string name="pref_no_browser_found">Nerasta jokia interneto naršyklė.</string>
+  <string name="pref_cast_title">„Chromecast“ palaikymas</string>
+  <!--Auto-Flattr dialog-->
+  <!--Search-->
+  <!--OPML import and export-->
+  <string name="opml_directory_error">KLAIDA!</string>
+  <!--Sleep timer-->
+  <!--gpodder.net-->
+  <string name="username_label">Vartotojo vardas</string>
+  <string name="gpodnetsync_auth_error_descr">Neteisingas vartotojo vardas ar slaptažodis</string>
+  <!--Directory chooser-->
+  <!--Online feed view-->
+  <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
+  <!--Progress information-->
+  <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
+  <!--Rating dialog-->
+  <!--Audio controls-->
+  <string name="playback_speed">Atkūrimo sparta</string>
+  <string name="left_short">K</string>
+  <string name="right_short">D</string>
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+</resources>

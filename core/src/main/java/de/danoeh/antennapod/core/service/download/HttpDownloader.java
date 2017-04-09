@@ -2,21 +2,7 @@ package de.danoeh.antennapod.core.service.download;
 
 import android.text.TextUtils;
 import android.util.Log;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Protocol;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.okhttp.ResponseBody;
-import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.FeedImage;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.core.util.URIUtil;
-import okio.ByteString;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -31,6 +17,22 @@ import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Date;
+
+import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.URIUtil;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.ByteString;
 
 public class HttpDownloader extends Downloader {
     private static final String TAG = "HttpDownloader";
@@ -57,8 +59,9 @@ public class HttpDownloader extends Downloader {
             }
         }
 
-        OkHttpClient httpClient = AntennapodHttpClient.newHttpClient();
-        httpClient.interceptors().add(new BasicAuthorizationInterceptor(request));
+        OkHttpClient.Builder httpClientBuilder = AntennapodHttpClient.newBuilder();
+        httpClientBuilder.interceptors().add(new BasicAuthorizationInterceptor(request));
+        OkHttpClient httpClient = httpClientBuilder.build();
         RandomAccessFile out = null;
         InputStream connection;
         ResponseBody responseBody = null;
@@ -103,7 +106,9 @@ public class HttpDownloader extends Downloader {
             } catch (IOException e) {
                 Log.e(TAG, e.toString());
                 if (e.getMessage().contains("PROTOCOL_ERROR")) {
-                    httpClient.setProtocols(Collections.singletonList(Protocol.HTTP_1_1));
+                    httpClient = httpClient.newBuilder()
+                            .protocols(Collections.singletonList(Protocol.HTTP_1_1))
+                            .build();
                     response = httpClient.newCall(httpReq.build()).execute();
                 } else {
                     throw e;

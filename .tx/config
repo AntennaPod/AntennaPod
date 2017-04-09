@@ -4,6 +4,7 @@ host = https://www.transifex.com
 [antennapod.english]
 source_file = core/src/main/res/values/strings.xml
 source_lang = en
+trans.ast_ES = core/src/main/res/values-b+ast/strings.xml
 trans.ar = core/src/main/res/values-ar/strings.xml
 trans.az = core/src/main/res/values-az/strings.xml
 trans.ca = core/src/main/res/values-ca/strings.xml
@@ -27,6 +28,7 @@ trans.ja = core/src/main/res/values-ja/strings.xml
 trans.kn_IN = core/src/main/res/values-kn-rIN/strings.xml
 trans.ko = core/src/main/res/values-ko/strings.xml
 trans.ko_KR = core/src/main/res/values-ko-rKR/strings.xml
+trans.lt = core/src/main/res/values-lt/strings.xml
 trans.nb = core/src/main/res/values-nb/strings.xml
 trans.no = core/src/main/res/values-no/strings.xml
 trans.nl = core/src/main/res/values-nl/strings.xml
@@ -42,9 +44,11 @@ trans.ru_RU = core/src/main/res/values-ru/strings.xml
 trans.uk_UA = core/src/main/res/values-uk-rUA/strings.xml
 trans.zh_CN = core/src/main/res/values-zh-rCN/strings.xml
 trans.sv_SE = core/src/main/res/values-sv-rSE/strings.xml
+trans.te = core/src/main/res/values-te/strings.xml
 trans.tr = core/src/main/res/values-tr/strings.xml
 trans.vi = core/src/main/res/values-vi/strings.xml
 trans.vi_VN = core/src/main/res/values-vi-rVN/strings.xml
+trans.zh_TW = core/src/main/res/values-zh-rTW/strings.xml
 
 [antennapod.description]
 file_filter = app/src/main/play/<lang>/listing/fulldescription

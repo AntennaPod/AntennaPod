@@ -47,6 +47,7 @@ public class ActionButtonUtils {
      * Sets the displayed bitmap and content description of the given
      * action button so that it matches the state of the FeedItem.
      */
+    @SuppressWarnings("ResourceType")
     public void configureActionButton(ImageButton butSecondary, FeedItem item, boolean isInQueue) {
         Validate.isTrue(butSecondary != null && item != null, "butSecondary or item was null");
 
@@ -57,8 +58,7 @@ public class ActionButtonUtils {
                 if (isDownloadingMedia) {
                     // item is being downloaded
                     butSecondary.setVisibility(View.VISIBLE);
-                    butSecondary.setImageDrawable(drawables
-                            .getDrawable(1));
+                    butSecondary.setImageDrawable(drawables.getDrawable(1));
                     butSecondary.setContentDescription(context.getString(labels[1]));
                 } else {
                     // item is not downloaded and not being downloaded

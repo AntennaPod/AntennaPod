@@ -30,6 +30,7 @@ public class NSAtom extends Namespace {
     private static final String AUTHOR = "author";
     private static final String AUTHOR_NAME = "name";
     private static final String CONTENT = "content";
+    private static final String SUMMARY = "summary";
     private static final String IMAGE_LOGO = "logo";
     private static final String IMAGE_ICON = "icon";
     private static final String SUBTITLE = "subtitle";
@@ -44,6 +45,7 @@ public class NSAtom extends Namespace {
     private static final String LINK_LENGTH = "length";
     // rel-values
     private static final String LINK_REL_ALTERNATE = "alternate";
+    private static final String LINK_REL_ARCHIVES = "archives";
     private static final String LINK_REL_ENCLOSURE = "enclosure";
     private static final String LINK_REL_PAYMENT = "payment";
     private static final String LINK_REL_RELATED = "related";
@@ -59,8 +61,8 @@ public class NSAtom extends Namespace {
     /**
      * Regexp to test whether an Element is a Text Element.
      */
-    private static final String isText = TITLE + "|" + CONTENT + "|" + "|"
-            + SUBTITLE;
+    private static final String isText = TITLE + "|" + CONTENT + "|"
+            + SUBTITLE + "|" + SUMMARY;
 
     public static final String isFeed = FEED + "|" + NSRSS20.CHANNEL;
     public static final String isFeedItem = ENTRY + "|" + NSRSS20.ITEM;
@@ -93,14 +95,12 @@ public class NSAtom extends Namespace {
                         Log.d(TAG, "Length attribute could not be parsed.");
                     }
                     String type = attributes.getValue(LINK_TYPE);
-                    boolean validType;
-                    if(SyndTypeUtils.enclosureTypeValid(type)) {
-                        validType = true;
-                    } else {
-                        type = SyndTypeUtils.getValidMimeTypeFromUrl(href);
-                        validType = type != null;
+
+                    if (type == null) {
+                        type = SyndTypeUtils.getMimeTypeFromUrl(href);
                     }
-                    if (validType) {
+
+                    if(SyndTypeUtils.enclosureTypeValid(type)) {
                         FeedItem currItem = state.getCurrentItem();
                         if(currItem != null && !currItem.hasMedia()) {
                             currItem.setMedia(new FeedMedia(currItem, href, size, type));
@@ -128,6 +128,17 @@ public class NSAtom extends Namespace {
                             title = href;
                         }
                         state.addAlternateFeedUrl(title, href);
+                    }
+                } else if (LINK_REL_ARCHIVES.equals(rel) && state.getFeed() != null) {
+                    String type = attributes.getValue(LINK_TYPE);
+                    if (LINK_TYPE_ATOM.equals(type) || LINK_TYPE_RSS.equals(type)) {
+                        String title = attributes.getValue(LINK_TITLE);
+                        if (TextUtils.isEmpty(title)) {
+                            title = href;
+                        }
+                        state.addAlternateFeedUrl(title, href);
+                    } else if (LINK_TYPE_HTML.equals(type) || LINK_TYPE_XHTML.equals(type)) {
+                        //A Link such as to a directory such as iTunes
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel) && state.getFeed() != null) {
                     state.getFeed().setPaymentLink(href);
@@ -191,6 +202,9 @@ public class NSAtom extends Namespace {
             } else if (CONTENT.equals(top) && ENTRY.equals(second) && textElement != null &&
                 state.getCurrentItem() != null) {
                 state.getCurrentItem().setDescription(textElement.getProcessedContent());
+            } else if (SUMMARY.equals(top) && ENTRY.equals(second) && textElement != null &&
+                state.getCurrentItem() != null && state.getCurrentItem().getDescription() == null) {
+                state.getCurrentItem().setDescription(textElement.getProcessedContent());
             } else if (UPDATED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null &&
                 state.getCurrentItem().getPubDate() == null) {
                 state.getCurrentItem().setPubDate(DateUtils.parse(content));
@@ -200,9 +214,13 @@ public class NSAtom extends Namespace {
                 state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
             } else if (IMAGE_ICON.equals(top) && state.getFeed() != null) {
                 state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
-            } else if (AUTHOR.equals(second) && state.getFeed() != null) {
-                if (AUTHOR_NAME.equals(top)) {
+            } else if (AUTHOR_NAME.equals(top) && AUTHOR.equals(second) &&
+                    state.getFeed() != null && state.getCurrentItem() == null) {
+                String currentName = state.getFeed().getAuthor();
+                if (currentName == null) {
                     state.getFeed().setAuthor(content);
+                } else {
+                    state.getFeed().setAuthor(currentName + ", " + content);
                 }
             }
         }

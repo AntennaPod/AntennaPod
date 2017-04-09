@@ -42,12 +42,12 @@ import de.greenrobot.event.EventBus;
 public class PodDBAdapter {
     
     private static final String TAG = "PodDBAdapter";
-    public static final String DATABASE_NAME = "Antennapod.db";
+    private static final String DATABASE_NAME = "Antennapod.db";
 
     /**
      * Maximum number of arguments for IN-operator.
      */
-    public static final int IN_OPERATOR_MAXIMUM = 800;
+    private static final int IN_OPERATOR_MAXIMUM = 800;
 
     /**
      * Maximum number of entries per search request.
@@ -57,6 +57,7 @@ public class PodDBAdapter {
     // Key-constants
     public static final String KEY_ID = "id";
     public static final String KEY_TITLE = "title";
+    public static final String KEY_CUSTOM_TITLE = "custom_title";
     public static final String KEY_NAME = "name";
     public static final String KEY_LINK = "link";
     public static final String KEY_DESCRIPTION = "description";
@@ -109,14 +110,14 @@ public class PodDBAdapter {
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
 
     // Table names
-    public static final String TABLE_NAME_FEEDS = "Feeds";
-    public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
-    public static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
-    public static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
-    public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
-    public static final String TABLE_NAME_QUEUE = "Queue";
-    public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
-    public static final String TABLE_NAME_FAVORITES = "Favorites";
+    private static final String TABLE_NAME_FEEDS = "Feeds";
+    private static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
+    private static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
+    private static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
+    private static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
+    private static final String TABLE_NAME_QUEUE = "Queue";
+    private static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
+    private static final String TABLE_NAME_FAVORITES = "Favorites";
 
     // SQL Statements for creating new tables
     private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -124,7 +125,7 @@ public class PodDBAdapter {
 
     public static final String CREATE_TABLE_FEEDS = "CREATE TABLE "
             + TABLE_NAME_FEEDS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
+            + " TEXT," + KEY_CUSTOM_TITLE + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
             + KEY_DOWNLOADED + " INTEGER," + KEY_LINK + " TEXT,"
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
@@ -225,6 +226,7 @@ public class PodDBAdapter {
     private static final String[] FEED_SEL_STD = {
             TABLE_NAME_FEEDS + "." + KEY_ID,
             TABLE_NAME_FEEDS + "." + KEY_TITLE,
+            TABLE_NAME_FEEDS + "." + KEY_CUSTOM_TITLE,
             TABLE_NAME_FEEDS + "." + KEY_FILE_URL,
             TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL,
             TABLE_NAME_FEEDS + "." + KEY_DOWNLOADED,
@@ -363,7 +365,7 @@ public class PodDBAdapter {
      */
     public long setFeed(Feed feed) {
         ContentValues values = new ContentValues();
-        values.put(KEY_TITLE, feed.getTitle());
+        values.put(KEY_TITLE, feed.getFeedTitle());
         values.put(KEY_LINK, feed.getLink());
         values.put(KEY_DESCRIPTION, feed.getDescription());
         values.put(KEY_PAYMENT_LINK, feed.getPaymentLink());
@@ -852,6 +854,12 @@ public class PodDBAdapter {
                 + " SET " + KEY_LAST_UPDATE_FAILED+ "=" + (failed ? "1" : "0")
                 + " WHERE " + KEY_ID + "="+ feedId;
         db.execSQL(sql);
+    }
+
+    void setFeedCustomTitle(long feedId, String customTitle) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_CUSTOM_TITLE, customTitle);
+        db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
     /**
@@ -1436,15 +1444,24 @@ public class PodDBAdapter {
     public final LongIntMap getFeedCounters(long... feedIds) {
         int setting = UserPreferences.getFeedCounterSetting();
         String whereRead;
-        if(setting == UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM) {
-            whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
-                    + " OR " + KEY_READ  + "=" + FeedItem.UNPLAYED + ")";
-        } else if(setting == UserPreferences.FEED_COUNTER_SHOW_NEW) {
-            whereRead = KEY_READ + "=" + FeedItem.NEW;
-        } else if(setting == UserPreferences.FEED_COUNTER_SHOW_UNPLAYED) {
-            whereRead = KEY_READ + "=" + FeedItem.UNPLAYED;
-        } else { // NONE
-            return new LongIntMap(0);
+        switch(setting) {
+            case UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM:
+                whereRead = "(" + KEY_READ + "=" + FeedItem.NEW +
+                        " OR " + KEY_READ  + "=" + FeedItem.UNPLAYED + ")";
+                break;
+            case UserPreferences.FEED_COUNTER_SHOW_NEW:
+                whereRead = KEY_READ + "=" + FeedItem.NEW;
+                break;
+            case UserPreferences.FEED_COUNTER_SHOW_UNPLAYED:
+                whereRead = KEY_READ + "=" + FeedItem.UNPLAYED;
+                break;
+            case UserPreferences.FEED_COUNTER_SHOW_DOWNLOADED:
+                whereRead = KEY_DOWNLOADED + "=1";
+                break;
+            case UserPreferences.FEED_COUNTER_SHOW_NONE:
+                // deliberate fall-through
+            default: // NONE
+                return new LongIntMap(0);
         }
 
         // work around TextUtils.join wanting only boxed items
@@ -1459,8 +1476,10 @@ public class PodDBAdapter {
             builder.deleteCharAt(builder.length() - 1);
         }
 
-        final String query = "SELECT " + KEY_FEED + ", COUNT(" + KEY_ID + ") AS count "
+        final String query = "SELECT " + KEY_FEED + ", COUNT(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") AS count "
                 + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
                 + " WHERE " + KEY_FEED + " IN (" + builder.toString() + ") "
                 + " AND " + whereRead + " GROUP BY " + KEY_FEED;
 
@@ -1617,7 +1636,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private static final int VERSION = 1050004;
+        private static final int VERSION = 1060200;
 
         private Context context;
 
@@ -1912,6 +1931,10 @@ public class PodDBAdapter {
                 // prevent old timestamps to be misinterpreted as ETags
                 db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS
                         +" SET " + PodDBAdapter.KEY_LASTUPDATE + "=NULL");
+            }
+            if(oldVersion < 1060200) {
+                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + PodDBAdapter.KEY_CUSTOM_TITLE + " TEXT");
             }
 
             EventBus.getDefault().post(ProgressEvent.end());

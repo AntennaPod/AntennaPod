@@ -36,6 +36,7 @@
   <string name="drawer_feed_counter_new_unplayed">Кількість нових та непрослуханих епізодів</string>
   <string name="drawer_feed_counter_new">Кількість нових епізодів</string>
   <string name="drawer_feed_counter_unplayed">Кількість непрослуханих епізодів</string>
+  <string name="drawer_feed_counter_downloaded">Кількість завантажених епізодів</string>
   <string name="drawer_feed_counter_none">Жодних</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Відкрити в браузері</string>
@@ -50,6 +51,7 @@
   <string name="cancel_label">Скасувати</string>
   <string name="yes">Так</string>
   <string name="no">Ні</string>
+  <string name="reset">Перезапуск</string>
   <string name="author_label">Автор</string>
   <string name="language_label">Мова</string>
   <string name="url_label">URL</string>
@@ -93,7 +95,7 @@
   <string name="etxtFeedurlHint">URL канала або сайта</string>
   <string name="txtvfeedurl_label">Додати подкаст за URL</string>
   <string name="podcastdirectories_label">Знайти подкаст в каталозі</string>
-  <string name="podcastdirectories_descr">В каталозі gpodder.net можливий пошук за назвою, категорією або популярністю.</string>
+  <string name="podcastdirectories_descr">Нові подкасти можна шукати на iTunes або fyyd, або переглянути gpodder.net за іменами, категоріями або популярністю.</string>
   <string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Позначити всі як грані</string>
@@ -101,7 +103,10 @@
   <string name="mark_all_read_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як грані.</string>
   <string name="mark_all_read_feed_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди цього канала як грані.</string>
   <string name="mark_all_seen_label">Позначити всі як переглянуті</string>
+  <string name="mark_all_seen_msg">Всі епізоди позначено як переглянуті</string>
+  <string name="mark_all_seen_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як переглянуті.</string>
   <string name="show_info_label">Інформація</string>
+  <string name="rename_feed_label">Перейменувати подкаст</string>
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_label">Поділитися…</string>
   <string name="share_link_label">Поділитися URL сайту</string>
@@ -121,6 +126,7 @@
   <string name="hide_not_queued_episodes_label">Не в черзі</string>
   <string name="hide_downloaded_episodes_label">Завантажені</string>
   <string name="hide_not_downloaded_episodes_label">Не завантажені</string>
+  <string name="hide_has_media_label">Із звуком або відео</string>
   <string name="filtered_label">Фільтровані</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Останнє оновлення було невдалим</string>
   <string name="open_podcast">Відкрити подкаст</string>
@@ -131,7 +137,9 @@
   <string name="stop_label">Стоп</string>
   <string name="stream_label">Прослухати без завантаження</string>
   <string name="remove_label">Видалити</string>
+  <string name="delete_label">Видалити</string>
   <string name="remove_episode_lable">Видалити епізод</string>
+  <string name="marked_as_seen_label">Позначено як переглянутий</string>
   <string name="mark_read_label">Позначити як граний</string>
   <string name="marked_as_read_label">Позначено як граний</string>
   <string name="mark_unread_label">Позначити як не граний</string>
@@ -220,6 +228,8 @@
   <string name="sort">Впорядкувати</string>
   <string name="date">За датою</string>
   <string name="duration">За тривалістю</string>
+  <string name="episode_title">Назва епізода</string>
+  <string name="feed_title">Назва канала</string>
   <string name="ascending">За зростанням</string>
   <string name="descending">За спаданням</string>
   <string name="clear_queue_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте вилучити всі епізоди з черги.</string>
@@ -275,6 +285,8 @@
   <string name="pref_unpauseOnBluetoothReconnect_sum">Поновити відтворення коли блютуз повторно під’єднано</string>
   <string name="pref_hardwareForwardButtonSkips_title">Пропуск кнопкой перемотки</string>
   <string name="pref_hardwareForwardButtonSkips_sum">При натисканні апаратної кнопки перемотки перейти до наступного епізода замість перемотки.</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">Кнопка \"назад\" повертає до початку</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">При натисканні апаратної кнопки \"назад\", замість перемотки, розпочати програвання поточного епізода заново</string>
   <string name="pref_followQueue_sum">Перейти до наступного епізода в черзі коли поточний закінчено</string>
   <string name="pref_auto_delete_sum">Видалити епізод після повного відтворення</string>
   <string name="pref_auto_delete_title">Автовидалення</string>
@@ -341,10 +353,16 @@
   <string name="pref_gpodnet_logout_toast">Успішно закрили доступ</string>
   <string name="pref_gpodnet_setlogin_information_title">Змінити інформацію для входу</string>
   <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net</string>
-  <string name="pref_gpodnet_sync_title">Cинхронізувати зараз</string>
-  <string name="pref_gpodnet_sync_sum">Cинхронізувати підписки та стан епізодів з сервісом gpodder.net</string>
+  <string name="pref_gpodnet_sync_changes_title">Синхронізувати зміни негайно</string>
+  <string name="pref_gpodnet_sync_changes_sum">Синхронізувати підписки та зміни стана епізодів з gpodder.net</string>
+  <string name="pref_gpodnet_full_sync_title">Виконати повну синхронізацію негайно</string>
+  <string name="pref_gpodnet_full_sync_sum">Синхронізувати всі підписки та стан епізодів з gpodder.net.</string>
+  <string name="pref_gpodnet_sync_sum_last_sync_line">Остання спроба синхронізації: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Cинхронізація почалась</string>
+  <string name="pref_gpodnet_full_sync_started">Повну синхронізацію розпочато</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Ви увійшли як <i>%1$s</i> з пристроя <i>%2$s</i>]]></string>
+  <string name="pref_gpodnet_notifications_title">Повідомляти про помилки синхронізації</string>
+  <string name="pref_gpodnet_notifications_sum">Це налаштування не застосовується до помилок автентифікації.</string>
   <string name="pref_playback_speed_title">Швидкість програвання</string>
   <string name="pref_playback_speed_sum">Налаштування швідкості доступно для змінної швидкості програвання</string>
   <string name="pref_fast_forward">Час перемотки вперед</string>
@@ -384,18 +402,21 @@
   <string name="pref_cast_title">Підтримка для Chromecast</string>
   <string name="pref_rewind_sum">Налаштувати кількість секунд для переходу назад, коли кнопка перемотування натиснута</string>
   <string name="pref_fast_forward_sum">Налаштувати кількість секунд, щоб перейти вперед, коли кнопка перемотування вперед натиснута</string>
+  <string name="pref_cast_message_play_flavor">Включити підтримку програвання на таких пристроях як Chromecast або Android TV</string>
+  <string name="pref_cast_message_free_flavor">Для підтримки Chromecast потрібні бібліотеки які не включені в цю версію AntennaPod</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
   <string name="auto_flattr_ater_beginning">Заохотити автора через Flattr коли починається відтворення</string>
   <string name="auto_flattr_ater_end">Заохотити автора через Flattr коли закінчується відтворення</string>
   <!--Search-->
-  <string name="search_hint">Пошук каналів та епізодів</string>
-  <string name="found_in_shownotes_label">Знайдено у примітках</string>
+  <string name="search_hint">Пошук епізодів</string>
+  <string name="found_in_shownotes_label">Знайдено в нотатках епізода</string>
   <string name="found_in_chapters_label">Знайдено в главах</string>
   <string name="search_status_no_results">Жодних результатів немає</string>
   <string name="search_label">Пошук</string>
   <string name="found_in_title_label">Знайдено у назві</string>
+  <string name="no_results_for_query">Нічого не знайдено за запитом \"%1$s\"</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML файли дозволяют вам перенести подкасти з однієї программи до іншої</string>
   <string name="opml_import_option">Варіант %1$d</string>
@@ -414,6 +435,7 @@
   <string name="choose_file_from_filesystem">З локальної файлової системи</string>
   <string name="choose_file_from_external_application">За допомогою додатка</string>
   <string name="opml_export_label">OPML экспорт</string>
+  <string name="html_export_label">Експорт до HTML</string>
   <string name="exporting_label">Експортується…</string>
   <string name="export_error_label">Помилка експорту</string>
   <string name="opml_export_success_title">OPML експорт успішний</string>
@@ -447,6 +469,9 @@
     <item quantity="few">%d години</item>
     <item quantity="other">%d годин</item>
   </plurals>
+  <string name="auto_enable_label">Увімкнути автоматично</string>
+  <string name="sleep_timer_enabled_label">Таймер сну увімкнено</string>
+  <string name="sleep_timer_disabled_label">Таймер сну вимкнено</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">КАТЕГОРІЇ</string>
   <string name="gpodnet_toplist_header">ТОП ПОДКАСТІВ</string>
@@ -466,6 +491,7 @@
   <string name="gpodnetauth_device_chooseExistingDevice">Вибрати існуючий пристрій</string>
   <string name="gpodnetauth_device_errorEmpty">ID пристрою не можете бути пустим</string>
   <string name="gpodnetauth_device_errorAlreadyUsed">Таке ID пристрою вже є</string>
+  <string name="gpodnetauth_device_caption_errorEmpty">Підпис не повинен бути пустим</string>
   <string name="gpodnetauth_device_butChoose">Обрати</string>
   <string name="gpodnetauth_finish_title">Успішно зайшли</string>
   <string name="gpodnetauth_finish_descr">Поздоровляємо! Ваш обліковий запис на gpodder.net зараз пов\'язаний за вашим пристроєм</string>
@@ -475,6 +501,8 @@
   <string name="gpodnetsync_auth_error_descr">Помилка в імені користувача або паролі</string>
   <string name="gpodnetsync_error_title">gpodder.net помилка синхронізації</string>
   <string name="gpodnetsync_error_descr">Трапилась помилка при сінхронизації:\u0020</string>
+  <string name="gpodnetsync_pref_report_successful">Успішно</string>
+  <string name="gpodnetsync_pref_report_failed">Невдало</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Обрати папку:</string>
   <string name="create_folder_label">Нова папка</string>
@@ -527,6 +555,7 @@
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <string name="search_itunes_label">Пошук в iTunes</string>
   <string name="filter">Фільтр</string>
+  <string name="search_fyyd_label">Шукати в fyyd</string>
   <!--Episodes apply actions-->
   <string name="all_label">Всі</string>
   <string name="selected_all_label">Обрано всі епізоди</string>
@@ -544,6 +573,8 @@
   <string name="selected_queued_label">Обрано епізоди що в черзі</string>
   <string name="not_queued_label">Не в черзі</string>
   <string name="selected_not_queued_label">Обрано епізоди що не в черзі</string>
+  <string name="has_media">Із звуком або відео</string>
+  <string name="selected_has_media_label">Обрано епізоди із звуком або відео</string>
   <!--Sort-->
   <string name="sort_title_a_z">Назва (А \u2192 Я)</string>
   <string name="sort_title_z_a">Назва (Я \u2192 А)</string>
@@ -575,7 +606,23 @@
   <string name="proxy_checking">Перевіряється...</string>
   <string name="proxy_test_successful">Протестовано успішно</string>
   <string name="proxy_test_failed">Протестовано з помилками</string>
+  <string name="proxy_host_empty_error">Хост не може бути пустим</string>
+  <string name="proxy_host_invalid_error">Хост не є правильною IP-адресою або доменним ім’ям</string>
   <string name="proxy_port_invalid_error">Неправильний порт</string>
   <!--Casting-->
+  <string name="cast_media_route_menu_title">Грати на…</string>
+  <string name="cast_disconnect_label">Від’єднатись від пристроя програвання</string>
+  <string name="cast_not_castable">Обраний файл не сумісний з пристроєм програвання</string>
+  <string name="cast_failed_to_play">Помилка програвання файла</string>
+  <string name="cast_failed_to_stop">Помилка спроби зупинки програвання</string>
+  <string name="cast_failed_to_pause">Помилка спроби призупинення програвання</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_setting_volume">Помилка встановлення гучності</string>
+  <string name="cast_failed_no_connection">Немає з’єднання з пристроєм програвання</string>
+  <string name="cast_failed_no_connection_trans">Зв’язок з пристроєм програвання втрачено. Програма намагається поновити зв’язок, якщо це можливо. Будь ласка зачекайте кілька секунд і спробуйте знов.</string>
+  <string name="cast_failed_perform_action">Помилка виконання дії</string>
+  <string name="cast_failed_status_request">Помилка синхронизації з пристроєм програвання</string>
+  <string name="cast_failed_seek">Помилка перехода на нову позицію програвання на пристрої.</string>
+  <string name="cast_failed_receiver_player_error">Серйозна помилка програвання на пристрої</string>
+  <string name="cast_failed_media_error_skipping">Помилка програвання файла. Пропускаю...</string>
 </resources>

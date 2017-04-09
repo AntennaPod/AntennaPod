@@ -189,8 +189,6 @@
   <string name="pref_rewind_sum">पीछे की ओर कूद करने के लिए सेकंड की संख्या अनुकूलित जब उल्टा बटन क्लिक किया जाता है</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
-  <string name="search_hint">फ़ीड या एपिसोड के लिए खोज</string>
-  <string name="found_in_shownotes_label">Shownotes में मिला</string>
   <string name="found_in_chapters_label">अध्यायों में मिला</string>
   <string name="search_status_no_results">कोई परिणाम नहीं मिले</string>
   <string name="search_label">खोज</string>

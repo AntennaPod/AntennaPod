@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core;
 import android.content.Context;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -43,7 +44,7 @@ public class ClientConfig {
         UpdateManager.init(context);
         PlaybackPreferences.init(context);
         NetworkUtils.init(context);
-//        CastManager.init(context);
+        SleepTimerPreferences.init(context);
         initialized = true;
     }
 

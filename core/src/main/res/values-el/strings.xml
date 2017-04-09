@@ -2,15 +2,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
   <string name="feeds_label">Ροές</string>
+  <string name="statistics_label">Στατιστικά</string>
+  <string name="add_feed_label">Προσθήκη Podcast</string>
   <string name="episodes_label">Επεισόδια</string>
   <string name="all_episodes_short_label">Όλα</string>
   <string name="favorite_episodes_label">Αγαπημένα</string>
   <string name="new_label">Νέα</string>
   <string name="settings_label">Ρυθμίσεις</string>
+  <string name="add_new_feed_label">Προσθήκη Podcast</string>
   <string name="downloads_label">Λήψεις</string>
   <string name="downloads_running_label">Εκτέλεση</string>
   <string name="downloads_completed_label">Ολοκληρώθηκε</string>
   <string name="downloads_log_label">Είσοδος</string>
+  <string name="subscriptions_label">Συνδρομές</string>
+  <string name="subscriptions_list_label">Λίστα Συνδρομών</string>
+  <string name="cancel_download_label">Ακύρωση\nΛήψης</string>
   <string name="playback_history_label">Ιστορικό Αναπαραγωγής</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net Σύνδεση</string>
@@ -58,7 +64,6 @@
   <string name="feedurl_label">URL της Ροής</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Προσθήκη Podcast με τη διεύθυνση URL</string>
-  <string name="podcastdirectories_descr">Μπορείτε να ψάξετε για νέα podcast από το όνομα, κατηγορία ή δημοτικότητα στον κατάλογο του iTunes.</string>
   <string name="browse_gpoddernet_label">Περιήγηση στο gpodder.net</string>
   <!--Actions on feeds-->
   <string name="show_info_label">Εμφάνιση πληροφοριών</string>
@@ -233,8 +238,6 @@
   <string name="auto_flattr_ater_beginning">Flattr επεισόδιο όταν αρχίζει η αναπαραγωγή</string>
   <string name="auto_flattr_ater_end">Flattr επεισόδιο όταν ολοκληρωθεί η αναπαραγωγή του</string>
   <!--Search-->
-  <string name="search_hint">Αναζήτηση για Τροφοδοσίες ή Επεισόδια</string>
-  <string name="found_in_shownotes_label">Βρέθηκε στις σημειώσεις</string>
   <string name="found_in_chapters_label">Βρέθηκε σε κεφάλαια</string>
   <string name="search_status_no_results">Δεν βρέθηκαν αποτελέσματα</string>
   <string name="search_label">Αναζήτηση</string>
@@ -321,7 +324,7 @@
   <string name="media_type_audio_label">Ήχος</string>
   <string name="media_type_video_label">Βίντεο</string>
   <string name="navigate_upwards_label">Πλοήγηση προς τα πάνω</string>
-  <string name="status_downloading_label">Το επεισόδιο γίνεται λήφθετε</string>
+  <string name="status_downloading_label">Λήψη επεισοδίου</string>
   <string name="in_queue_label">Το επεισόδιο είναι στη σειρά αναμονής</string>
   <string name="drag_handle_content_description">Σύρετε για να αλλάξετε τη θέση αυτού του στοιχείου</string>
   <string name="load_next_page_label">Τοποθέτηση επόμενης σελίδας</string>
@@ -334,7 +337,7 @@
   <string name="search_itunes_label">iTunes Αναζήτηση</string>
   <!--Episodes apply actions-->
   <string name="all_label">Όλα</string>
-  <string name="downloaded_label">Ειλημμένα</string>
+  <string name="downloaded_label">Λήψεις</string>
   <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->

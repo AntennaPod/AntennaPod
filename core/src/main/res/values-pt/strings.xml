@@ -36,6 +36,7 @@
   <string name="drawer_feed_counter_new_unplayed">Número de episódios novos ou por reproduzir</string>
   <string name="drawer_feed_counter_new">Número de novos episódios</string>
   <string name="drawer_feed_counter_unplayed">Número de episódios por reproduzir</string>
+  <string name="drawer_feed_counter_downloaded">Número de episódios descarregados</string>
   <string name="drawer_feed_counter_none">Nenhum</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir no navegador</string>
@@ -50,6 +51,7 @@
   <string name="cancel_label">Cancelar</string>
   <string name="yes">Sim</string>
   <string name="no">Não</string>
+  <string name="reset">Repor</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Idioma</string>
   <string name="url_label">URL</string>
@@ -92,7 +94,7 @@
   <string name="etxtFeedurlHint">URL da fonte ou do sítio web</string>
   <string name="txtvfeedurl_label">Adicionar podcast via URL</string>
   <string name="podcastdirectories_label">Localizar podcasts no diretório</string>
-  <string name="podcastdirectories_descr">Pode procurar por novos podcasts no gPodder.net e também na loja iTunes. Pode pesquisar por nome, categoria e popularidade.</string>
+  <string name="podcastdirectories_descr">Para novos podcasts, pode pesquisar no iTunes ou no fyyd. Também pode explorar no gpoder.net por nome, categoria ou popularidade.</string>
   <string name="browse_gpoddernet_label">Procurar no gPodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar tudo como reproduzido</string>
@@ -100,7 +102,10 @@
   <string name="mark_all_read_confirmation_msg">Tem a certeza de que deseja marcar todos os episódios como reproduzidos?</string>
   <string name="mark_all_read_feed_confirmation_msg">Tem a certeza de que deseja marcar todos os episódios desta fonte como reproduzidos?</string>
   <string name="mark_all_seen_label">Marcar tudo como visto</string>
+  <string name="mark_all_seen_msg">Marcar todos os episódios como vistos</string>
+  <string name="mark_all_seen_confirmation_msg">Confirma de que deseja marcar todos os episódios como vistos?</string>
   <string name="show_info_label">Mostrar informações</string>
+  <string name="rename_feed_label">Renomear podcast</string>
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_label">Partilhar...</string>
   <string name="share_link_label">Partilhar ligação</string>
@@ -130,6 +135,7 @@
   <string name="stop_label">Parar</string>
   <string name="stream_label">Emitir</string>
   <string name="remove_label">Remover</string>
+  <string name="delete_label">Apagar</string>
   <string name="remove_episode_lable">Remover episódio</string>
   <string name="marked_as_seen_label">Marcar como visto</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
@@ -276,6 +282,8 @@
   <string name="pref_unpauseOnBluetoothReconnect_sum">Continuar reprodução ao estabelecer a ligação bluetooth</string>
   <string name="pref_hardwareForwardButtonSkips_title">Botão para avançar</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Ao premir o botão Avançar, ir para o episódio seguinte em vez de avançar a reprodução</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">Botão Anterior para reiniciar</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">Ao premir o botão do telefone, reiniciar o episódio atual em vez de recuar para o episódio anterior</string>
   <string name="pref_followQueue_sum">Ir para a episódio seguinte ao terminar a reprodução</string>
   <string name="pref_auto_delete_sum">Apagar episódio ao terminar a reprodução</string>
   <string name="pref_auto_delete_title">Eliminação automática</string>
@@ -342,10 +350,16 @@
   <string name="pref_gpodnet_logout_toast">Sessão terminada</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informação de acesso</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar a informação de acesso à sua conta gpodder.net</string>
-  <string name="pref_gpodnet_sync_title">Sincronizar agora</string>
-  <string name="pref_gpodnet_sync_sum">Sincronizar subscrições e estado dos episódios com o gpodder.net</string>
+  <string name="pref_gpodnet_sync_changes_title">Sincronizar alterações</string>
+  <string name="pref_gpodnet_sync_changes_sum">Sincronizar subscrição e estado do episódio com o gpodder.net.</string>
+  <string name="pref_gpodnet_full_sync_title">Sincronização total</string>
+  <string name="pref_gpodnet_full_sync_sum">Sincronizar todas as subscrições e estados dos episódios com o gpodder.net.</string>
+  <string name="pref_gpodnet_sync_sum_last_sync_line">Última tentativa de sincronização: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Sincronização iniciada</string>
+  <string name="pref_gpodnet_full_sync_started">Sincronização iniciada</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Sessão iniciada como <i>%1$s</i> com o dispositivo <i>%2$s</i>]]></string>
+  <string name="pref_gpodnet_notifications_title">Mostrar erros de sincronização</string>
+  <string name="pref_gpodnet_notifications_sum">Esta definição não é aplicável aos erros de autenticação.</string>
   <string name="pref_playback_speed_title">Velocidades de reprodução</string>
   <string name="pref_playback_speed_sum">Personalizar as velocidades de reprodução disponíveis</string>
   <string name="pref_fast_forward">Tempo a avançar</string>
@@ -391,12 +405,13 @@
   <string name="auto_flattr_ater_beginning">Flattr de episodios ao iniciar a reprodução</string>
   <string name="auto_flattr_ater_end">Flattr de episódios ao terminar a reprodução</string>
   <!--Search-->
-  <string name="search_hint">Pesquisar fontes ou episódios</string>
+  <string name="search_hint">Pesquisar por episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas</string>
   <string name="found_in_chapters_label">Encontrado nos capítulos</string>
   <string name="search_status_no_results">Nenhum resultado</string>
   <string name="search_label">Pesquisar</string>
   <string name="found_in_title_label">Encontrado no título</string>
+  <string name="no_results_for_query">Não existem resultados para \"%1$s\"</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Os ficheiros OPML permitem-lhe mover os podcasts entre aplicações</string>
   <string name="opml_import_option">Opção %1$d</string>
@@ -415,6 +430,7 @@
   <string name="choose_file_from_filesystem">Do sistema local de ficheiros</string>
   <string name="choose_file_from_external_application">Utilizar aplicação externa</string>
   <string name="opml_export_label">Exportação OPML</string>
+  <string name="html_export_label">Exportação OPML</string>
   <string name="exporting_label">A exportar...</string>
   <string name="export_error_label">Erro de exportação</string>
   <string name="opml_export_success_title">Exportação efetuada</string>
@@ -445,6 +461,9 @@
     <item quantity="one">1 hora</item>
     <item quantity="other">%d horas</item>
   </plurals>
+  <string name="auto_enable_label">Ativar automaticamente</string>
+  <string name="sleep_timer_enabled_label">Temporizador ativado</string>
+  <string name="sleep_timer_disabled_label">Temporizador desativado</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">Categorias</string>
   <string name="gpodnet_toplist_header">Melhores</string>
@@ -474,6 +493,8 @@
   <string name="gpodnetsync_auth_error_descr">Utilizador ou palavra-passe inválida</string>
   <string name="gpodnetsync_error_title">Erro de sincronização gpodder.net</string>
   <string name="gpodnetsync_error_descr">Ocorreu um erro ao sincronizar:\u0020</string>
+  <string name="gpodnetsync_pref_report_successful">Sucesso</string>
+  <string name="gpodnetsync_pref_report_failed">Falha</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Diretório escolhido:</string>
   <string name="create_folder_label">Criar pasta</string>
@@ -528,6 +549,7 @@
   <string name="sp_apps_importing_feeds_msg">Importar subscrições de aplicações single-purpose...</string>
   <string name="search_itunes_label">Pesquisar no iTunes</string>
   <string name="filter">Filtro</string>
+  <string name="search_fyyd_label">Pesquisar no fyyd</string>
   <!--Episodes apply actions-->
   <string name="all_label">Todos</string>
   <string name="selected_all_label">Marcar todos os episódios</string>

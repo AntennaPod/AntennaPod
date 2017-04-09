@@ -183,8 +183,6 @@
   <string name="pref_fast_forward_sum">Personalizar el número de segundos para saltar hacia adelante cuando se hace clic en el botón de avance rápido</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
-  <string name="search_hint">Buscar canales o episodios</string>
-  <string name="found_in_shownotes_label">Encontrado en las notas del programa</string>
   <string name="found_in_chapters_label">Encontrado en los capítulos</string>
   <string name="search_status_no_results">No se han encontrado resultados</string>
   <string name="search_label">Buscar</string>

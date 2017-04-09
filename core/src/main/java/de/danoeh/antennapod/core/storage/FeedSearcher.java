@@ -4,7 +4,9 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -51,36 +53,22 @@ public class FeedSearcher {
             task.run();
         }
         try {
+            Set<Long> set = new HashSet<>();
+
             for (int i = 0; i < tasks.size(); i++) {
                 FutureTask<List<FeedItem>> task = tasks.get(i);
                 List<FeedItem> items = task.get();
                 for (FeedItem item : items) {
-                    if (result.isEmpty() || !isDuplicate(result, item)) {
+                    if (!set.contains(item.getId())) { // to prevent duplicate results
                         result.add(new SearchResult(item, values[i], subtitles[i]));
+                        set.add(item.getId());
                     }
                 }
-
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         Collections.sort(result, new SearchResultValueComparator());
         return result;
-    }
-
-    /**
-     * Determines if the feed item is already in the search result list.
-     *
-     * @param result list of search results
-     * @param item feed item to validate
-     * @return true if the feed item is already in the results
-     */
-    private static boolean isDuplicate(List<SearchResult> result, FeedItem item) {
-        for (SearchResult resultItem : result) {
-            if (resultItem.getComponent().getId() == item.getId()) {
-                return true;
-            }
-        }
-        return false;
     }
 }

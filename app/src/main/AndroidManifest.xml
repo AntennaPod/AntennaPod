@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
-    android:versionCode="1060102"
-    android:versionName="1.6.1.2">
+    android:versionCode="1060203"
+    android:versionName="1.6.2.3">
     <!--
       Version code schema:
       "1.2.3-SNAPSHOT" -> 1020300
@@ -37,21 +37,26 @@
         android:backupAgent=".core.backup.OpmlBackupAgent"
         android:restoreAnyVersion="true"
         android:logo="@drawable/ic_launcher">
-        <meta-data android:name="com.google.android.gms.car.notification.SmallIcon"
-            android:resource="@drawable/ic_notification" />
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AntennaPod.Dark.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:label="@string/app_name">
         </activity>
         <activity
             android:name=".activity.AudioplayerActivity"
@@ -344,10 +349,6 @@
         <meta-data
             android:name="de.danoeh.antennapod.core.glide.ApGlideModule"
             android:value="GlideModule" />
-
-        <meta-data
-            android:name="com.google.android.gms.car.application"
-            android:resource="@xml/automotive_app_desc"/>
     </application>
 
 </manifest>

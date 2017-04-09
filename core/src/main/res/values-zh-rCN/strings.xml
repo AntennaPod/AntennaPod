@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
   <string name="feeds_label">订阅</string>
+  <string name="statistics_label">统计</string>
   <string name="add_feed_label">添加播客</string>
   <string name="episodes_label">曲目</string>
   <string name="all_episodes_short_label">全部</string>
@@ -13,14 +14,18 @@
   <string name="downloads_running_label">正在运行</string>
   <string name="downloads_completed_label">已完成</string>
   <string name="downloads_log_label">日志</string>
+  <string name="subscriptions_label">订阅</string>
+  <string name="subscriptions_list_label">订阅列表</string>
   <string name="cancel_download_label">取消下载</string>
   <string name="playback_history_label">播放历史</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net 登录</string>
+  <string name="free_space_label">%1$s可用</string>
   <string name="episode_cache_full_title">曲目缓存已满</string>
   <string name="episode_cache_full_message">已达到曲目缓存限制，可以在设置中提高缓存大小。</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">总播放时长：</string>
+  <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
   <!--Main activity-->
   <string name="drawer_open">打开菜单</string>
   <string name="drawer_close">关闭菜单</string>
@@ -68,7 +73,9 @@
   <string name="retry_label">重试</string>
   <string name="auto_download_label">包含到自动下载</string>
   <string name="auto_download_apply_to_items_title"> 应用到之前的曲目中</string>
+  <string name="auto_delete_label">自动删除剧集</string>
   <string name="parallel_downloads_suffix">\u0020 并行下载</string>
+  <string name="feed_auto_download_global">全局默认</string>
   <string name="feed_auto_download_always"> 总是</string>
   <string name="feed_auto_download_never">从不</string>
   <string name="send_label">发送</string>
@@ -83,7 +90,6 @@
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">添加播客 URL</string>
   <string name="podcastdirectories_label">从目录中寻找播客</string>
-  <string name="podcastdirectories_descr">您可以在 gpodder.net 通过名称、类别或热门来搜索新播客</string>
   <string name="browse_gpoddernet_label">浏览 gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">全部标识已读</string>
@@ -97,6 +103,8 @@
   <string name="share_link_label">分享网站链接</string>
   <string name="share_link_with_position_label">分享网站链接与位置</string>
   <string name="share_feed_url_label">分享订阅地址</string>
+  <string name="share_item_url_label">分享剧集文件URL</string>
+  <string name="share_item_url_with_position_label">分享剧集文件URL及其状态</string>
   <string name="feed_delete_confirmation_msg">确认要删除这些订阅吗? 该订阅所有已经下载的曲目将一并删除. </string>
   <string name="feed_remover_msg">删除订阅</string>
   <string name="load_complete_feed">刷新全部订阅</string>
@@ -111,7 +119,7 @@
   <string name="hide_not_downloaded_episodes_label">未下载</string>
   <string name="filtered_label">已过滤的</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} 上次刷新失败</string>
-  <string name="open_podcast">打开博客</string>
+  <string name="open_podcast">打开播客</string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <string name="play_label">播放</string>
@@ -120,6 +128,7 @@
   <string name="stream_label">流媒体</string>
   <string name="remove_label">删除</string>
   <string name="remove_episode_lable">移除曲目</string>
+  <string name="marked_as_seen_label">标记为已读</string>
   <string name="mark_read_label">标记已播放</string>
   <string name="marked_as_read_label">已标记为已播放</string>
   <string name="mark_unread_label">标记未播放</string>
@@ -153,6 +162,7 @@
   <string name="download_error_unknown_host">未知主机</string>
   <string name="download_error_unauthorized">认证错误</string>
   <string name="download_error_file_type_type">文件类型错误</string>
+  <string name="download_error_forbidden">禁用的</string>
   <string name="cancel_all_downloads_label">取消所有下载</string>
   <string name="download_canceled_msg">已取消下载</string>
   <string name="download_canceled_autodownload_enabled_msg">已取消下载\n对该曲目禁用<i>自动下载</i></string>
@@ -176,6 +186,7 @@
   <string name="authentication_notification_title">需要认证</string>
   <string name="authentication_notification_msg">您所请求的资源需要用户名和密码</string>
   <string name="confirm_mobile_download_dialog_title">确认手机下载</string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">队列</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">暂时允许</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">错误!</string>
@@ -202,6 +213,8 @@
   <string name="sort">排序</string>
   <string name="date">按日期</string>
   <string name="duration">按时长</string>
+  <string name="episode_title">剧集标题</string>
+  <string name="feed_title">订阅标题</string>
   <string name="ascending">升序</string>
   <string name="descending">降序</string>
   <string name="clear_queue_confirmation_msg">请确认您要清除队列中的全部曲目</string>
@@ -235,11 +248,15 @@
   <string name="download_plugin_label">插件下载</string>
   <string name="no_playback_plugin_title">插件没有安装</string>
   <string name="set_playback_speed_label">播放速度</string>
+  <string name="enable_sonic">允许声音</string>
   <!--Empty list labels-->
   <string name="no_items_label">列表为空.</string>
   <string name="no_feeds_label">还没有任何订阅.</string>
   <string name="no_chapters_label">此曲目没有章节信息</string>
+  <string name="no_shownotes_label">本集不包含展示信息</string>
   <!--Preferences-->
+  <string name="storage_pref">存储</string>
+  <string name="project_pref">项目</string>
   <string name="other_pref">其他</string>
   <string name="about_pref">关于</string>
   <string name="queue_label">播放列表</string>
@@ -313,7 +330,6 @@
   <string name="pref_gpodnet_logout_toast">注销成功</string>
   <string name="pref_gpodnet_setlogin_information_title">改变登录信息</string>
   <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
-  <string name="pref_gpodnet_sync_title">正在同步</string>
   <string name="pref_gpodnet_sync_started">已开始同步</string>
   <string name="pref_playback_speed_title">播放速度</string>
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
@@ -324,6 +340,9 @@
   <string name="pref_expandNotify_sum">总是扩展通知以显示播放按钮</string>
   <string name="pref_persistNotify_title">保持播放控制</string>
   <string name="pref_persistNotify_sum">在暂停时保持通知和锁屏界面的控制。</string>
+  <string name="pref_compact_notification_buttons_title">设置锁屏按钮</string>
+  <string name="pref_compact_notification_buttons_dialog_title">选择%1$d中的最大值</string>
+  <string name="pref_compact_notification_buttons_dialog_error">你只能选择%1$d中的最大值</string>
   <string name="pref_lockscreen_background_title">设置锁屏背景</string>
   <string name="pref_showDownloadReport_title">显示下载报告</string>
   <string name="pref_showDownloadReport_sum">如果下载失败，生成一份显示详细失败信息的报告。</string>
@@ -337,19 +356,21 @@
   <string name="crash_report_sum">通过 E-mail 发送最后崩溃报告</string>
   <string name="send_email">发送 E-mail</string>
   <string name="pref_sonic_title">内置播放器</string>
+  <string name="pref_current_value">当前值：%1$s</string>
   <string name="pref_proxy_title">代理</string>
   <string name="pref_proxy_sum">选择一个网络代理</string>
+  <string name="pref_faq">FAQ</string>
   <string name="pref_known_issues">已知问题</string>
   <string name="pref_rewind_sum">自定义的秒数向后跳转点击快退按钮时</string>
   <string name="pref_fast_forward_sum">自定义的秒数向前跳单击快进按钮时</string>
+  <string name="pref_no_browser_found">无网络浏览器</string>
+  <string name="pref_cast_title">Chromecast 支持</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">启用自动 flattring</string>
   <string name="auto_flattr_after_percent">当播放到百分之%d时Flattr改曲目</string>
   <string name="auto_flattr_ater_beginning">当播放开始时Flattr改曲目</string>
   <string name="auto_flattr_ater_end">当播放结束时Flattr改曲目</string>
   <!--Search-->
-  <string name="search_hint">搜索订阅或者曲目</string>
-  <string name="found_in_shownotes_label">笔记中查找</string>
   <string name="found_in_chapters_label">章节中查找</string>
   <string name="search_status_no_results">没有找到任何结果</string>
   <string name="search_label">搜索</string>
@@ -376,6 +397,7 @@
   <string name="export_error_label">导出出错</string>
   <string name="opml_export_success_title">OPML 导出成功.</string>
   <string name="opml_export_success_sum">.opml 文件已保存到:\u0020</string>
+  <string name="opml_import_ask_read_permission">访问外部存储需要读取OPML文件</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">设置休眠计时器</string>
   <string name="disable_sleeptimer_label">禁用休眠计时器</string>
@@ -430,6 +452,7 @@
   <string name="selected_folder_label">已选文件夹:</string>
   <string name="create_folder_label">穿件文件夹</string>
   <string name="choose_data_directory">选择数据文件夹</string>
+  <string name="choose_data_directory_permission_rationale">访问外部存储需要</string>
   <string name="create_folder_msg">确实创建 \"%1$s\" 文件夹?</string>
   <string name="create_folder_success">创建新文件夹</string>
   <string name="create_folder_error_no_write_access">本文件夹不能写入</string>
@@ -500,6 +523,7 @@
   <string name="sort_duration_long_short">时长 (长 \u2192 短)</string>
   <!--Rating dialog-->
   <string name="rating_title">喜欢 AntennaPod?</string>
+  <string name="rating_message">如您能在百忙之外抽时间评价一下AntennaPod，我们感激不尽.</string>
   <string name="rating_never_label">请勿打扰</string>
   <string name="rating_later_label">稍后提醒</string>
   <string name="rating_now_label">好的, 就这样！</string>
@@ -510,6 +534,7 @@
   <string name="left_short">L</string>
   <string name="right_short">R</string>
   <string name="audio_effects">音频效果</string>
+  <string name="sonic_only">仅声音</string>
   <!--proxy settings-->
   <string name="proxy_type_label">类型</string>
   <string name="host_label">主机地址</string>
@@ -519,7 +544,11 @@
   <string name="proxy_checking">正在测试</string>
   <string name="proxy_test_successful">测试成功</string>
   <string name="proxy_test_failed">测试失败</string>
+  <string name="proxy_host_empty_error">主机地址不能为空</string>
+  <string name="proxy_host_invalid_error">主机地址为无效的IP地址或域名</string>
   <string name="proxy_port_invalid_error">端口不可用</string>
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_setting_volume">音量设置失败</string>
+  <string name="cast_failed_media_error_skipping">媒体播放出错.跳转中...</string>
 </resources>

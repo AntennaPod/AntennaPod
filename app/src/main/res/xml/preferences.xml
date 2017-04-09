@@ -118,6 +118,12 @@
             android:summary="@string/pref_rewind_sum"
             android:title="@string/pref_rewind" />
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefHardwarePreviousButtonRestarts"
+            android:summary="@string/pref_hardwarePreviousButtonRestarts_sum"
+            android:title="@string/pref_hardwarePreviousButtonRestarts_title"/>
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefFollowQueue"
@@ -162,6 +168,12 @@
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref">
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefEnqueueDownloaded"
+            android:summary="@string/pref_enqueue_downloaded_summary"
+            android:title="@string/pref_enqueue_downloaded_title" />
         <Preference
             android:key="prefAutoUpdateIntervall"
             android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
@@ -254,8 +266,12 @@
                 android:summary="@string/pref_gpodnet_setlogin_information_sum"/>
             <Preference
                 android:key="pref_gpodnet_sync"
-                android:title="@string/pref_gpodnet_sync_title"
-                android:summary="@string/pref_gpodnet_sync_sum"/>
+                android:title="@string/pref_gpodnet_sync_changes_title"
+                android:summary="@string/pref_gpodnet_sync_changes_sum"/>
+            <Preference
+                android:key="pref_gpodnet_force_full_sync"
+                android:title="@string/pref_gpodnet_full_sync_title"
+                android:summary="@string/pref_gpodnet_full_sync_sum"/>
             <Preference
                 android:key="pref_gpodnet_logout"
                 android:title="@string/pref_gpodnet_logout_title"/>
@@ -285,6 +301,9 @@
         <Preference
             android:key="prefOpmlExport"
             android:title="@string/opml_export_label"/>
+        <Preference
+            android:key="prefHtmlExport"
+            android:title="@string/html_export_label"/>
         <Preference
             android:key="statistics"
             android:title="@string/statistics_label"/>

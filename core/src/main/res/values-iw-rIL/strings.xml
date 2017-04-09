@@ -2,8 +2,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
   <string name="feeds_label">הזנות</string>
+  <string name="statistics_label">סטטיסטיקות</string>
   <string name="add_feed_label">הוסף פודקאסט</string>
   <string name="episodes_label">פרקים</string>
+  <string name="all_episodes_short_label">הכל</string>
   <string name="favorite_episodes_label">מועדפים</string>
   <string name="new_label">חדש</string>
   <string name="settings_label">הגדרות</string>
@@ -20,6 +22,8 @@
   <!--Main activity-->
   <string name="drawer_open">פתח תפריט</string>
   <string name="drawer_close">סגור תפריט</string>
+  <string name="drawer_feed_order_alphabetical">מיין בסדר אלפביתי</string>
+  <string name="drawer_feed_order_last_update">מיין לפי תאריך פרסום</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">פתח בדפדפן</string>
   <string name="copy_url_label">העתק כתובת אתר</string>
@@ -35,6 +39,7 @@
   <string name="no">לא</string>
   <string name="author_label">מחבר</string>
   <string name="language_label">שפה</string>
+  <string name="url_label">כתובת</string>
   <string name="podcast_settings_label">הגדרות</string>
   <string name="cover_label">תמונה</string>
   <string name="error_label">שגיאה</string>
@@ -49,6 +54,7 @@
   <string name="length_prefix">אורך:\u0020</string>
   <string name="size_prefix">גודל:\u0020</string>
   <string name="processing_label">מעבד</string>
+  <string name="loading_label">טוען...</string>
   <string name="save_username_password_label">שמור שם משתמש וססמה</string>
   <string name="close_label">סגור</string>
   <string name="retry_label">נסה שוב</string>
@@ -62,7 +68,6 @@
   <string name="etxtFeedurlHint">כתובת של הזנה או אתר אינטרנט</string>
   <string name="txtvfeedurl_label">הוסף פודקאסט לפי כתובת אתר</string>
   <string name="podcastdirectories_label">חפש פודקאסט בספריה</string>
-  <string name="podcastdirectories_descr">אפשר לחפש פודקסטים חדשים לפי בשם, קטגוריה או פופולריות בספריית gpodder.net.</string>
   <string name="browse_gpoddernet_label">עיין בgpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">סמן הכל כנקרא</string>
@@ -253,8 +258,6 @@
   <string name="auto_flattr_ater_beginning">תרום באמצעות flattr כשניגון פרק מתחיל</string>
   <string name="auto_flattr_ater_end">תרום באמצעות flattr כשניגון פרק מסתיים</string>
   <!--Search-->
-  <string name="search_hint">חפש הזנות או פרקים</string>
-  <string name="found_in_shownotes_label">נמצא בהערות פרק</string>
   <string name="found_in_chapters_label">נמצא בפרקים</string>
   <string name="search_status_no_results">אין תוצאות</string>
   <string name="search_label">חיפוש</string>

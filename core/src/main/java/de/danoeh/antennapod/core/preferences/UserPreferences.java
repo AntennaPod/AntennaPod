@@ -56,7 +56,6 @@ public class UserPreferences {
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
 
-
     // Queue
     public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
 
@@ -65,6 +64,7 @@ public class UserPreferences {
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
     public static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
     public static final String PREF_HARDWARE_FOWARD_BUTTON_SKIPS = "prefHardwareForwardButtonSkips";
+    public static final String PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS = "prefHardwarePreviousButtonRestarts";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
@@ -74,6 +74,7 @@ public class UserPreferences {
     public static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
 
     // Network
+    public static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
@@ -122,13 +123,14 @@ public class UserPreferences {
     private static final int NOTIFICATION_BUTTON_FAST_FORWARD = 1;
     private static final int NOTIFICATION_BUTTON_SKIP = 2;
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
-    public static int FEED_ORDER_COUNTER = 0;
-    public static int FEED_ORDER_ALPHABETICAL = 1;
-    public static int FEED_ORDER_LAST_UPDATE = 2;
-    public static int FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM = 0;
-    public static int FEED_COUNTER_SHOW_NEW = 1;
-    public static int FEED_COUNTER_SHOW_UNPLAYED = 2;
-    public static int FEED_COUNTER_SHOW_NONE = 3;
+    public static final int FEED_ORDER_COUNTER = 0;
+    public static final int FEED_ORDER_ALPHABETICAL = 1;
+    public static final int FEED_ORDER_LAST_UPDATE = 2;
+    public static final int FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM = 0;
+    public static final int FEED_COUNTER_SHOW_NEW = 1;
+    public static final int FEED_COUNTER_SHOW_UNPLAYED = 2;
+    public static final int FEED_COUNTER_SHOW_NONE = 3;
+    public static final int FEED_COUNTER_SHOW_DOWNLOADED = 4;
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -257,11 +259,10 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_SHOW_DOWNLOAD_REPORT, true);
     }
 
-    /**
-     * Returns {@code true} if new queue elements are added to the front
-     *
-     * @return {@code true} if new queue elements are added to the front; {@code false}  otherwise
-     */
+    public static boolean enqueueDownloadedEpisodes() {
+        return prefs.getBoolean(PREF_ENQUEUE_DOWNLOADED, true);
+    }
+
     public static boolean enqueueAtFront() {
         return prefs.getBoolean(PREF_QUEUE_ADD_TO_FRONT, false);
     }
@@ -280,6 +281,10 @@ public class UserPreferences {
 
     public static boolean shouldHardwareButtonSkip() {
         return prefs.getBoolean(PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
+    }
+
+    public static boolean shouldHardwarePreviousButtonRestart() {
+        return prefs.getBoolean(PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS, false);
     }
 
 
@@ -332,7 +337,10 @@ public class UserPreferences {
     }
 
 
-
+    /*
+     * Returns update interval in milliseconds; value 0 means that auto update is disabled
+     * or feeds are updated at a certain time of day
+     */
     public static long getUpdateInterval() {
         String updateInterval = prefs.getString(PREF_UPDATE_INTERVAL, "0");
         if(!updateInterval.contains(":")) {
@@ -754,12 +762,12 @@ public class UserPreferences {
         if (timeOfDay.length == 2) {
             restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
         } else {
-            long hours = getUpdateInterval();
-            long startTrigger = hours;
+            long milliseconds = getUpdateInterval();
+            long startTrigger = milliseconds;
             if (now) {
                 startTrigger = TimeUnit.SECONDS.toMillis(10);
             }
-            restartUpdateIntervalAlarm(startTrigger, hours);
+            restartUpdateIntervalAlarm(startTrigger, milliseconds);
         }
     }
 

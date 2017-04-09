@@ -32,10 +32,11 @@
   <string name="drawer_preferences">Menu voorkeuren</string>
   <string name="drawer_feed_order_unplayed_episodes">Op aantal afleveringen</string>
   <string name="drawer_feed_order_alphabetical">Op alfabetische volgorde</string>
-  <string name="drawer_feed_order_last_update">Op datum van feed-update</string>
+  <string name="drawer_feed_order_last_update">Op datum van publicatie</string>
   <string name="drawer_feed_counter_new_unplayed">Aantal nieuwe plus onbeluisterde afleveringen</string>
   <string name="drawer_feed_counter_new">Aantal nieuwe afleveringen</string>
   <string name="drawer_feed_counter_unplayed">Aantal onbeluisterde afleveringen</string>
+  <string name="drawer_feed_counter_downloaded">Aantal gedownloade afleveringen</string>
   <string name="drawer_feed_counter_none">Geen (alfabetisch sorteren)</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">In de browser openen</string>
@@ -50,6 +51,7 @@
   <string name="cancel_label">Annuleren</string>
   <string name="yes">Ja</string>
   <string name="no">Nee</string>
+  <string name="reset">Reset</string>
   <string name="author_label">Auteur</string>
   <string name="language_label">Taal</string>
   <string name="url_label">URL</string>
@@ -100,7 +102,10 @@
   <string name="mark_all_read_confirmation_msg">Bevestig aub dat u alle afleveringen als afgespeeld wilt markeren.</string>
   <string name="mark_all_read_feed_confirmation_msg">Bevestig aub dat u alle afleveringen van deze feed als afgespeeld wilt markeren.</string>
   <string name="mark_all_seen_label">\'Nieuw\' label van alle afleveringen verwijderen.</string>
+  <string name="mark_all_seen_msg">\'Nieuw\' label van alle afleveringen verwijderend</string>
+  <string name="mark_all_seen_confirmation_msg">Bevestig aub dat u het \'nieuw\' label van alle afleveringen wilt verwijderen.</string>
   <string name="show_info_label">Toon informatie</string>
+  <string name="rename_feed_label">Podcast hernoemen</string>
   <string name="remove_feed_label">Podcast verwijderen</string>
   <string name="share_label">Delen…</string>
   <string name="share_link_label">Link van de aflevering delen</string>
@@ -120,6 +125,7 @@
   <string name="hide_not_queued_episodes_label">Niet in de wachtrij</string>
   <string name="hide_downloaded_episodes_label">Gedownload</string>
   <string name="hide_not_downloaded_episodes_label">Niet gedownload</string>
+  <string name="hide_has_media_label">Bevat media</string>
   <string name="filtered_label">Gefilterd</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Laatste vernieuwing mislukt</string>
   <string name="open_podcast">Open podcast</string>
@@ -130,7 +136,9 @@
   <string name="stop_label">Stop</string>
   <string name="stream_label">Stream</string>
   <string name="remove_label">Verwijderen</string>
+  <string name="delete_label">Verwijderen</string>
   <string name="remove_episode_lable">Aflevering(en) verwijderen</string>
+  <string name="marked_as_seen_label">Verwijder \'nieuw\' label</string>
   <string name="mark_read_label">Als afgespeeld markeren</string>
   <string name="marked_as_read_label">Als afgespeeld gemarkeerd</string>
   <string name="mark_unread_label">Als niet afgespeeld markeren</string>
@@ -218,6 +226,8 @@
   <string name="sort">Sorteren</string>
   <string name="date">Datum</string>
   <string name="duration">Lengte</string>
+  <string name="episode_title">Afleveringtitel</string>
+  <string name="feed_title">Feed-titel</string>
   <string name="ascending">Oplopend</string>
   <string name="descending">Aflopend</string>
   <string name="clear_queue_confirmation_msg">Bevestig aub dat u alle afleveringen uit de wachtrij wilt verwijderen</string>
@@ -273,6 +283,8 @@
   <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten wanneer de bluetooth verbinding hervat wordt</string>
   <string name="pref_hardwareForwardButtonSkips_title">\'Volgende\' knop voor overslaan</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Aflevering overslaan ipv vooruitspoelen wanneer op een fysieke \'volgende\' knop wordt gedrukt</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">Vorige voor opnieuw afspelen</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">Aflevering afspelen vanaf het begin ipv terugspoelen wanneer op een fysieke \'vorige\' knop wordt gedrukt</string>
   <string name="pref_followQueue_sum">Volgende item in de wachtrij afspelen als de aflevering voltooid is</string>
   <string name="pref_auto_delete_sum">Afleveringen verwijderen als ze zijn afgespeeld</string>
   <string name="pref_auto_delete_title">Automatisch verwijderen</string>
@@ -339,10 +351,16 @@
   <string name="pref_gpodnet_logout_toast">Uitlog was succesvol</string>
   <string name="pref_gpodnet_setlogin_information_title">Aanmeldingsgegevens wijzigen</string>
   <string name="pref_gpodnet_setlogin_information_sum">Wijzig de aanmeldingsgegevens van je gpodder.net account.</string>
-  <string name="pref_gpodnet_sync_title">Nu synchroniseren</string>
-  <string name="pref_gpodnet_sync_sum">Synchroniseer abonnementen en aflevering-status met gpodder.net</string>
+  <string name="pref_gpodnet_sync_changes_title">Wijzigingen nu synchroniseren</string>
+  <string name="pref_gpodnet_sync_changes_sum">Synchroniseer veranderde abonnementen en aflevering-statussen met gpodder.net</string>
+  <string name="pref_gpodnet_full_sync_title">Nu alles synchroniseren</string>
+  <string name="pref_gpodnet_full_sync_sum">Synchroniseer alle abonnementen en aflevering-statussen met gpodder.net</string>
+  <string name="pref_gpodnet_sync_sum_last_sync_line">Laatste synchronisatie:  %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Synchroniseren gestart</string>
+  <string name="pref_gpodnet_full_sync_started">Volledige synchronisatie gestart</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Ingelogd als <i>%1$s</i> met apparaat <i>%2$s</i>]]></string>
+  <string name="pref_gpodnet_notifications_title">Toon synchronisatiefouten in melding</string>
+  <string name="pref_gpodnet_notifications_sum">Deze instelling is niet van toepassing op inlogfouten.</string>
   <string name="pref_playback_speed_title">Afspeelsnelheden</string>
   <string name="pref_playback_speed_sum">Pas de beschikbare snelheden aan voor de variabele audio afspeelsnelheid</string>
   <string name="pref_fast_forward">Snelheid van vooruitspoelen</string>
@@ -382,18 +400,21 @@
   <string name="pref_cast_title">Chromecast</string>
   <string name="pref_rewind_sum">Pas het aantal seconden achteruit springen wanneer het terugspoelen knop wordt geklikt</string>
   <string name="pref_fast_forward_sum">Pas het aantal seconden om vooruit te springen wanneer de fast forward knop wordt geklikt</string>
+  <string name="pref_cast_message_play_flavor">Ondersteuning activeren voor draadloos afspelen via Cast apparaten (zoals Chromecast, Audio speakers en Android TV)</string>
+  <string name="pref_cast_message_free_flavor">Voor Chromecast is software van derden vereist die niet beschikbaar zijn in deze versie van AntennaPod</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisch flattr\'en aanzetten</string>
   <string name="auto_flattr_after_percent">Flattr een aflevering zodra %d procent is afgespeeld</string>
   <string name="auto_flattr_ater_beginning">Flattr de aflevering bij afspelen</string>
   <string name="auto_flattr_ater_end">Flattr aflevering als afspelen is gestopt</string>
   <!--Search-->
-  <string name="search_hint">Feeds of afleveringen zoeken</string>
+  <string name="search_hint">Zoeken naar afleveringen</string>
   <string name="found_in_shownotes_label">Gevonden in de shownotes</string>
   <string name="found_in_chapters_label">Gevonden in hoofdstukken</string>
   <string name="search_status_no_results">Er zijn geen resultaten gevonden</string>
   <string name="search_label">Zoeken</string>
   <string name="found_in_title_label">Gevonden in de titel</string>
+  <string name="no_results_for_query">Geen resultaten gevonden voor  \"%1$s\"</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Met OPML-bestanden kan je podcasts van de ene naar de andere podcatcher verplaatsen.</string>
   <string name="opml_import_option">Optie  %1$d</string>
@@ -412,6 +433,7 @@
   <string name="choose_file_from_filesystem">Via bestandsbeheer</string>
   <string name="choose_file_from_external_application">Via externe app</string>
   <string name="opml_export_label">OPML export</string>
+  <string name="html_export_label">HTML export</string>
   <string name="exporting_label">Exporteren…</string>
   <string name="export_error_label">Export fout</string>
   <string name="opml_export_success_title">OPML bestand succesvol geëxporteerd.</string>
@@ -442,6 +464,9 @@
     <item quantity="one">1 uur</item>
     <item quantity="other">%d uur</item>
   </plurals>
+  <string name="auto_enable_label">Automatisch inschakelen</string>
+  <string name="sleep_timer_enabled_label">Slaap timer ingeschakeld</string>
+  <string name="sleep_timer_disabled_label">Slaap timer uitgeschakeld</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIEËN</string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
@@ -471,6 +496,8 @@
   <string name="gpodnetsync_auth_error_descr">Ongeldig gebruikersnaam of wachtwoord</string>
   <string name="gpodnetsync_error_title">gpodder.net synchronisatie fout</string>
   <string name="gpodnetsync_error_descr">Er is een fout opgetreden tijdens het synchroniseren:\u0020</string>
+  <string name="gpodnetsync_pref_report_successful">Succesvol</string>
+  <string name="gpodnetsync_pref_report_failed">Gefaald</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Geselecteerde map:</string>
   <string name="create_folder_label">Map aanmaken</string>
@@ -523,6 +550,7 @@
   <string name="sp_apps_importing_feeds_msg">Abonnementen aan het importeren vanuit single-purpose apps...</string>
   <string name="search_itunes_label">Zoeken in iTunes</string>
   <string name="filter">Filter</string>
+  <string name="search_fyyd_label">Fyyd doorzoeken</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>
   <string name="selected_all_label">Alle afleveringen selecteren</string>
@@ -540,6 +568,8 @@
   <string name="selected_queued_label">Afleveringen in de wachtrij selecteren</string>
   <string name="not_queued_label">Niet in de wachtrij</string>
   <string name="selected_not_queued_label">Afleveringen geselecteerd die niet in de wachtrij staan</string>
+  <string name="has_media">Bevat media</string>
+  <string name="selected_has_media_label">Geselecteerde afleveringen met media</string>
   <!--Sort-->
   <string name="sort_title_a_z">Titel (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titel (A \u2192 A)</string>
@@ -576,6 +606,7 @@
   <string name="proxy_port_invalid_error">Poortnummer ongeldig</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Afspelen op…</string>
+  <string name="cast_disconnect_label">Cast loskoppelen</string>
   <string name="cast_not_castable">Dit bestand kan niet afgespeeld woorden door het Cast apparaat</string>
   <string name="cast_failed_to_play">Starten van afspelen is mislukt</string>
   <string name="cast_failed_to_stop">Stoppen van afspelen is mislukt</string>
@@ -587,5 +618,6 @@
   <string name="cast_failed_perform_action">Het uitvoeren van de actie is mislukt</string>
   <string name="cast_failed_status_request">Het synchroniseren met het Cast apparaat is mislukt</string>
   <string name="cast_failed_seek">Het opzoeken van het nieuwe tijdstip op het Cast apparaat is mislukt</string>
+  <string name="cast_failed_receiver_player_error">Ernstige fout opgetreden bij het afspelende Cast apparaat</string>
   <string name="cast_failed_media_error_skipping">Er was een fout bij het afspelen; de aflevering wordt overgeslagen…</string>
 </resources>

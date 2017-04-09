@@ -94,7 +94,6 @@
   <string name="etxtFeedurlHint">URL nebo webová stránka kanálu</string>
   <string name="txtvfeedurl_label">Přidat podcast pomocí URL</string>
   <string name="podcastdirectories_label">Najít podcast v seznamu</string>
-  <string name="podcastdirectories_descr">Můžete vyhledávat nové podcasty podle jména, kategorie nebo popularity v seznamu gpodder.net.</string>
   <string name="browse_gpoddernet_label">Prohledávat gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Označit vše jako poslechnuté</string>
@@ -345,8 +344,6 @@
   <string name="pref_gpodnet_logout_toast">Úspěšně odhlášeno</string>
   <string name="pref_gpodnet_setlogin_information_title">Změna přihlašovacích údajů</string>
   <string name="pref_gpodnet_setlogin_information_sum">Změní přihlašovací údaje k vašemu gpodder.net účtu.</string>
-  <string name="pref_gpodnet_sync_title">Synchronizovat nyní</string>
-  <string name="pref_gpodnet_sync_sum">Synchronizovat odběry a stav epizod s gpodder.net</string>
   <string name="pref_gpodnet_sync_started">Synchronizace spuštěna</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Přihlášen jako <i>%1$s</i> z přístroje <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Rychlosti přehrávání</string>
@@ -360,6 +357,9 @@
   <string name="pref_persistNotify_title">Pevné ovládání přehrávání</string>
   <string name="pref_persistNotify_sum">Zachovat upozornění a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
   <string name="pref_compact_notification_buttons_title">Nastavení tlačítek uzamčené obrazovky</string>
+  <string name="pref_compact_notification_buttons_sum">Změnit tlačítka ovládání na obrazovce uzamčení. Tlačítka přehrát/pozastavit jsou vždy zobrazena.</string>
+  <string name="pref_compact_notification_buttons_dialog_title">Vybrat maximálně %1$d položek</string>
+  <string name="pref_compact_notification_buttons_dialog_error">Lze vybrat maximálně %1$d položek.</string>
   <string name="pref_lockscreen_background_title">Nastavit pozadí uzamčené obrazovky</string>
   <string name="pref_lockscreen_background_sum">Nastavit pozadí uzamčené obrazovky na obrázek aktuální epizody. Jako vedlejší efekt zobrazí toto nastavení obrázek i v aplikacích třetích stran. </string>
   <string name="pref_showDownloadReport_title">Zobrazit report stahování</string>
@@ -385,14 +385,14 @@
   <string name="pref_cast_title">Chromecast podpora</string>
   <string name="pref_rewind_sum">Přizpůsobte počet sekund ke skoku zpět při klepnutí na tlačítko převíjení</string>
   <string name="pref_fast_forward_sum">Přizpůsobit počet sekund skok dopředu při klepnutí na tlačítko rychle vpřed</string>
+  <string name="pref_cast_message_play_flavor">Povolit podporu vzdáleného přehrávání médií na Cast přístrojích (jako třeba Chromecast, Audio Speakers nebo Android TV)</string>
+  <string name="pref_cast_message_free_flavor">Chromecast vyžaduje proprietární knihovny třetích stran, které jsou vypnuty v této verzi AntennaPod</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Povolit automatické flattrování</string>
   <string name="auto_flattr_after_percent">Flattrovat díl jakmile bude odehráno %d procent</string>
   <string name="auto_flattr_ater_beginning">Flattrovat díl po začátku přehrávání</string>
   <string name="auto_flattr_ater_end">Flattrovat díl po konci přehrávání</string>
   <!--Search-->
-  <string name="search_hint">Hledat kanály a epizody</string>
-  <string name="found_in_shownotes_label">Nalezeno v poznámkách k show</string>
   <string name="found_in_chapters_label">Nalezeno v kapitolách</string>
   <string name="search_status_no_results">Žádné výsledky</string>
   <string name="search_label">Vyhledat</string>
@@ -467,6 +467,7 @@
   <string name="gpodnetauth_device_chooseExistingDevice">Vybrat existující zařízení:</string>
   <string name="gpodnetauth_device_errorEmpty">ID zařízení nesmí být prázdné</string>
   <string name="gpodnetauth_device_errorAlreadyUsed">ID zařízení je již obsazeno</string>
+  <string name="gpodnetauth_device_caption_errorEmpty">Titulek nesmí být prázdný</string>
   <string name="gpodnetauth_device_butChoose">Vybrat</string>
   <string name="gpodnetauth_finish_title">Úspěšně přihlášeno!</string>
   <string name="gpodnetauth_finish_descr">Gratulujeme! Váš gpodder.net účet je nyní úspěšně propojen s vaším zařízením. AntennaPod bude automaticky synchronizovat odebírané podcasty s nastaveným účtem na gpodder.net.</string>
@@ -582,8 +583,14 @@
   <!--Casting-->
   <string name="cast_media_route_menu_title">Přehrát na...</string>
   <string name="cast_disconnect_label">Odpojit sezení vysílání</string>
+  <string name="cast_not_castable">Vybraná média nejsou kompatibilní s přehrávacím přístrojem</string>
+  <string name="cast_failed_to_play">Selhalo spuštění přehrávání média</string>
+  <string name="cast_failed_to_stop">Selhalo zastavení přehrávání média</string>
+  <string name="cast_failed_to_pause">Selhalo pozastavení přehrávání média</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Selhalo nastavení hlasitosti</string>
+  <string name="cast_failed_no_connection">Není dostupné připojení k přehrávacímu přístroji</string>
+  <string name="cast_failed_no_connection_trans">Došlo ke ztrátě připojení k přehrávacímu přístroji. Aplikace se pokouší znovu připojit, pokud to bude možné. Počkejte několik sekund a zkuste znovu.</string>
   <string name="cast_failed_perform_action">Selhalo provedení akce</string>
   <string name="cast_failed_status_request">Selhala synchronizace s vysílačem</string>
   <string name="cast_failed_seek">Selhal posun na novou pozici na vysílači</string>

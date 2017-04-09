@@ -146,7 +146,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
                 if (!media.getIdentifier().equals(playable.getIdentifier())) {
                     final Playable oldMedia = media;
-                    executor.submit(() -> callback.onPostPlayback(oldMedia, false, true));
+                    executor.submit(() -> callback.onPostPlayback(oldMedia, false, false, true));
                 }
 
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
@@ -383,6 +383,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             statusBeforeSeeking = playerStatus;
             setPlayerStatus(PlayerStatus.SEEKING, media, getPosition());
             mediaPlayer.seekTo(t);
+            if (statusBeforeSeeking == PlayerStatus.PREPARED) {
+                media.setPosition(t);
+            }
             try {
                 seekLatch.await(3, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
@@ -755,7 +758,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
 
     @Override
-    protected Future<?> endPlayback(final boolean wasSkipped, final boolean shouldContinue, final boolean toStoppedState) {
+    protected Future<?> endPlayback(final boolean hasEnded, final boolean wasSkipped,
+                                    final boolean shouldContinue, final boolean toStoppedState) {
         return executor.submit(() -> {
             playerLock.lock();
             releaseWifiLockIfNecessary();
@@ -813,7 +817,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 }
                 final boolean hasNext = nextMedia != null;
 
-                executor.submit(() -> callback.onPostPlayback(currentMedia, !wasSkipped, hasNext));
+                executor.submit(() -> callback.onPostPlayback(currentMedia, hasEnded, wasSkipped, hasNext));
             } else if (isPlaying) {
                 callback.onPlaybackPause(currentMedia, currentMedia.getPosition());
             }
@@ -848,27 +852,24 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     private IPlayer setMediaPlayerListeners(IPlayer mp) {
-        if (mp != null && media != null) {
-            if (media.getMediaType() == MediaType.AUDIO) {
-                ((AudioPlayer) mp)
-                        .setOnCompletionListener(audioCompletionListener);
-                ((AudioPlayer) mp)
-                        .setOnSeekCompleteListener(audioSeekCompleteListener);
-                ((AudioPlayer) mp).setOnErrorListener(audioErrorListener);
-                ((AudioPlayer) mp)
-                        .setOnBufferingUpdateListener(audioBufferingUpdateListener);
-                ((AudioPlayer) mp).setOnInfoListener(audioInfoListener);
-                ((AudioPlayer) mp).setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
-            } else {
-                ((VideoPlayer) mp)
-                        .setOnCompletionListener(videoCompletionListener);
-                ((VideoPlayer) mp)
-                        .setOnSeekCompleteListener(videoSeekCompleteListener);
-                ((VideoPlayer) mp).setOnErrorListener(videoErrorListener);
-                ((VideoPlayer) mp)
-                        .setOnBufferingUpdateListener(videoBufferingUpdateListener);
-                ((VideoPlayer) mp).setOnInfoListener(videoInfoListener);
-            }
+        if (mp == null || media == null) {
+            return mp;
+        }
+        if (media.getMediaType() == MediaType.VIDEO) {
+            VideoPlayer vp = (VideoPlayer) mp;
+            vp.setOnCompletionListener(videoCompletionListener);
+            vp.setOnSeekCompleteListener(videoSeekCompleteListener);
+            vp.setOnErrorListener(videoErrorListener);
+            vp.setOnBufferingUpdateListener(videoBufferingUpdateListener);
+            vp.setOnInfoListener(videoInfoListener);
+        } else {
+            AudioPlayer ap = (AudioPlayer) mp;
+            ap.setOnCompletionListener(audioCompletionListener);
+            ap.setOnSeekCompleteListener(audioSeekCompleteListener);
+            ap.setOnErrorListener(audioErrorListener);
+            ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
+            ap.setOnInfoListener(audioInfoListener);
+            ap.setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
         }
         return mp;
     }
@@ -880,7 +881,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mp -> genericOnCompletion();
 
     private void genericOnCompletion() {
-        endPlayback(false, true, true);
+        endPlayback(true, false, true, true);
     }
 
     private final MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =

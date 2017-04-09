@@ -67,6 +67,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
+import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -99,6 +100,7 @@ public class ItemlistFragment extends ListFragment {
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
+    private boolean headerCreated = false;
 
     private List<Downloader> downloaderList;
 
@@ -106,6 +108,7 @@ public class ItemlistFragment extends ListFragment {
 
     private boolean isUpdatingFeed;
     
+    private TextView txtvTitle;
     private IconTextView txtvFailure;
 
     private TextView txtvInformation;
@@ -247,6 +250,9 @@ public class ItemlistFragment extends ListFragment {
                             EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
                                     .newInstance(feed.getItems());
                             ((MainActivity)getActivity()).loadChildFragment(fragment);
+                            return true;
+                        case R.id.rename_item:
+                            new RenameFeedDialog(getActivity(), feed).show();
                             return true;
                         case R.id.remove_item:
                             final FeedRemover remover = new FeedRemover(
@@ -415,6 +421,7 @@ public class ItemlistFragment extends ListFragment {
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
                 Log.d(TAG, "Received contentUpdate Intent. arg " + arg);
+                refreshHeaderView();
                 loadItems();
                 updateProgressBarVisibility();
             }
@@ -460,8 +467,8 @@ public class ItemlistFragment extends ListFragment {
     }
 
     private void refreshHeaderView() {
-        if (getListView() == null || feed == null) {
-            Log.e(TAG, "Unable to setup listview: recyclerView = null or feed = null");
+        if (getListView() == null || feed == null || !headerCreated) {
+            Log.e(TAG, "Unable to refresh header view");
             return;
         }
         if(feed.hasLastUpdateFailed()) {
@@ -469,6 +476,7 @@ public class ItemlistFragment extends ListFragment {
         } else {
             txtvFailure.setVisibility(View.GONE);
         }
+        txtvTitle.setText(feed.getTitle());
         if(feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if(filter.getValues().length > 0) {
@@ -498,7 +506,7 @@ public class ItemlistFragment extends ListFragment {
         View header = inflater.inflate(R.layout.feeditemlist_header, lv, false);
         lv.addHeaderView(header);
 
-        TextView txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
+        txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
         TextView txtvAuthor = (TextView) header.findViewById(R.id.txtvAuthor);
         ImageView imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
         ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
@@ -539,6 +547,7 @@ public class ItemlistFragment extends ListFragment {
                 startActivity(startIntent);
             }
         });
+        headerCreated = true;
     }
 
 

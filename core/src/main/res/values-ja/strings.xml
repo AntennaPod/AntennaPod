@@ -36,6 +36,7 @@
   <string name="drawer_feed_counter_new_unplayed">新しい未再生のエピソードの数</string>
   <string name="drawer_feed_counter_new">新しいエピソードの数</string>
   <string name="drawer_feed_counter_unplayed">未再生のエピソードの数</string>
+  <string name="drawer_feed_counter_downloaded">ダウンロード済のエピソードの数</string>
   <string name="drawer_feed_counter_none">なし</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">ブラウザーで開く</string>
@@ -50,6 +51,7 @@
   <string name="cancel_label">キャンセル</string>
   <string name="yes">はい</string>
   <string name="no">いいえ</string>
+  <string name="reset">リセット</string>
   <string name="author_label">作者</string>
   <string name="language_label">言語</string>
   <string name="url_label">URL</string>
@@ -91,7 +93,7 @@
   <string name="etxtFeedurlHint">フィードまたはWebサイトのURL</string>
   <string name="txtvfeedurl_label">URLでポッドキャストを追加</string>
   <string name="podcastdirectories_label">ディレクトリでポッドキャストを検索</string>
-  <string name="podcastdirectories_descr">名前、カテゴリや人気で、gpodder.netディレクトリ内の新しいポッドキャストを検索することができます。</string>
+  <string name="podcastdirectories_descr">新しいポッドキャストでは、名前、カテゴリー、人気でiTunesやfyydを検索したり、gpodder.netを参照することができます。</string>
   <string name="browse_gpoddernet_label">gpodder.netを参照</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">すべて再生済としてマーク</string>
@@ -99,7 +101,10 @@
   <string name="mark_all_read_confirmation_msg">再生済としてマークするすべてのエピソードを確認してください。</string>
   <string name="mark_all_read_feed_confirmation_msg">再生済としてマークするこのフィードのすべてのエピソードを確認してください。</string>
   <string name="mark_all_seen_label">すべて参照済としてマーク</string>
+  <string name="mark_all_seen_msg">すべてのエピソードを参照済にしました</string>
+  <string name="mark_all_seen_confirmation_msg">参照済としてマークするすべてのエピソードを確認してください。</string>
   <string name="show_info_label">情報を表示</string>
+  <string name="rename_feed_label">ポッドキャストの名前を変更</string>
   <string name="remove_feed_label">ポッドキャストを削除</string>
   <string name="share_label">共有…</string>
   <string name="share_link_label">Webサイトのリンクを共有</string>
@@ -119,6 +124,7 @@
   <string name="hide_not_queued_episodes_label">キューに入っていません</string>
   <string name="hide_downloaded_episodes_label">ダウンロードしました</string>
   <string name="hide_not_downloaded_episodes_label">ダウンロードしていません</string>
+  <string name="hide_has_media_label">メディアあり</string>
   <string name="filtered_label">フィルターしました</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} 前回更新に失敗しました</string>
   <string name="open_podcast">ポッドキャストを開く</string>
@@ -129,6 +135,7 @@
   <string name="stop_label">停止</string>
   <string name="stream_label">ストリーム</string>
   <string name="remove_label">削除</string>
+  <string name="delete_label">削除</string>
   <string name="remove_episode_lable">エピソードを削除</string>
   <string name="marked_as_seen_label">参照済としてマーク</string>
   <string name="mark_read_label">再生済としてマーク</string>
@@ -274,6 +281,8 @@
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetoothが再接続された時に再生を再開します</string>
   <string name="pref_hardwareForwardButtonSkips_title">早送りボタンでスキップ</string>
   <string name="pref_hardwareForwardButtonSkips_sum">ハードウェアの早送りボタンを押したときに、早送りの代わりに次のエピソードにスキップします</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">戻るボタンで再開</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">ハードウェアの戻るボタンを押したときに、巻き戻しの代わりに現在のエピソードの再生を再開します</string>
   <string name="pref_followQueue_sum">再生が完了した時に次のキューのアイテムに移動します</string>
   <string name="pref_auto_delete_sum">再生が完了した時にエピソードを削除します</string>
   <string name="pref_auto_delete_title">自動削除</string>
@@ -340,10 +349,16 @@
   <string name="pref_gpodnet_logout_toast">ログアウトしました</string>
   <string name="pref_gpodnet_setlogin_information_title">ログイン情報を変更</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.netアカウントのログイン情報を変更します。</string>
-  <string name="pref_gpodnet_sync_title">今すぐ同期</string>
-  <string name="pref_gpodnet_sync_sum">購読とエピソードの状態を gpodder.net で同期</string>
+  <string name="pref_gpodnet_sync_changes_title">今すぐ変更を同期</string>
+  <string name="pref_gpodnet_sync_changes_sum">購読とエピソードの状態の変更を gpodder.net で同期します。</string>
+  <string name="pref_gpodnet_full_sync_title">今すぐ完全に同期</string>
+  <string name="pref_gpodnet_full_sync_sum">すべての購読とエピソードの状態を gpodder.net で同期します。</string>
+  <string name="pref_gpodnet_sync_sum_last_sync_line">最後に同期を試行: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">同期を開始しました</string>
+  <string name="pref_gpodnet_full_sync_started">完全な同期を開始しました</string>
   <string name="pref_gpodnet_login_status"><![CDATA[<i>%1$s</i> としてデバイス <i>%2$s</i> でログインしました]]></string>
+  <string name="pref_gpodnet_notifications_title">同期エラーの通知を表示</string>
+  <string name="pref_gpodnet_notifications_sum">この設定は、認証エラーには適用されません。</string>
   <string name="pref_playback_speed_title">再生速度</string>
   <string name="pref_playback_speed_sum">可変速度音声再生に使用可能な速度をカスタマイズします</string>
   <string name="pref_fast_forward">早送り時間</string>
@@ -389,12 +404,13 @@
   <string name="auto_flattr_ater_beginning">再生を開始した時にエピソードをFlattr</string>
   <string name="auto_flattr_ater_end">再生が終了した時にエピソードをFlattr</string>
   <!--Search-->
-  <string name="search_hint">フィードまたはエピソードを検索</string>
+  <string name="search_hint">エピソードの検索</string>
   <string name="found_in_shownotes_label">ショーノートで見つかりました</string>
   <string name="found_in_chapters_label">チャプターで見つかりました</string>
   <string name="search_status_no_results">見つかりませんでした</string>
   <string name="search_label">検索</string>
   <string name="found_in_title_label">タイトルで見つかりました</string>
+  <string name="no_results_for_query">\"%1$s\" の結果は見つかりませんでした</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPMLファイルで、あるポッドキャッチャーから別のものにポッドキャストを移動することができます。</string>
   <string name="opml_import_option">オプション %1$d</string>
@@ -413,6 +429,7 @@
   <string name="choose_file_from_filesystem">ローカル ファイルシステムから</string>
   <string name="choose_file_from_external_application">外部アプリケーションを使用する</string>
   <string name="opml_export_label">OPMLエクスポート</string>
+  <string name="html_export_label">HTML エクスポート</string>
   <string name="exporting_label">エクスポート中…</string>
   <string name="export_error_label">エクスポートエラー</string>
   <string name="opml_export_success_title">OPMLをエクスポートしました。</string>
@@ -440,6 +457,9 @@
   <plurals name="time_hours_quantified">
     <item quantity="other">%d 時間</item>
   </plurals>
+  <string name="auto_enable_label">自動有効化</string>
+  <string name="sleep_timer_enabled_label">スリープタイマーを有効にしました</string>
+  <string name="sleep_timer_disabled_label">スリープタイマーを無効にしました</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">カテゴリー</string>
   <string name="gpodnet_toplist_header">トップ ボッドキャスト</string>
@@ -469,6 +489,8 @@
   <string name="gpodnetsync_auth_error_descr">ユーザー名またはパスワードが間違っています</string>
   <string name="gpodnetsync_error_title">gpodder.net 同期エラー</string>
   <string name="gpodnetsync_error_descr">同期中にエラーが発生しました:\u0020</string>
+  <string name="gpodnetsync_pref_report_successful">成功しました</string>
+  <string name="gpodnetsync_pref_report_failed">失敗しました</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">選択したフォルダー:</string>
   <string name="create_folder_label">フォルダーを作成</string>
@@ -523,6 +545,7 @@
   <string name="sp_apps_importing_feeds_msg">単一目的のアプリから購読をインポート中…</string>
   <string name="search_itunes_label">iTunes を検索</string>
   <string name="filter">フィルター</string>
+  <string name="search_fyyd_label">fyydを検索</string>
   <!--Episodes apply actions-->
   <string name="all_label">すべて</string>
   <string name="selected_all_label">すべてのエピソードを選択しました</string>
@@ -540,6 +563,8 @@
   <string name="selected_queued_label">キューに入ったエピソードを選択しました</string>
   <string name="not_queued_label">キューに入っていません</string>
   <string name="selected_not_queued_label">キューに入っていないエピソードを選択しました</string>
+  <string name="has_media">メディアあり</string>
+  <string name="selected_has_media_label">メディアのあるエピソードを選択しました</string>
   <!--Sort-->
   <string name="sort_title_a_z">タイトル (A \u2192 Z)</string>
   <string name="sort_title_z_a">タイトル (Z \u2192 A)</string>

@@ -14,8 +14,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.opml.OpmlElement;
-import de.danoeh.antennapod.core.opml.OpmlReader;
+import de.danoeh.antennapod.core.export.opml.OpmlElement;
+import de.danoeh.antennapod.core.export.opml.OpmlReader;
 
 public class OpmlImportWorker extends
 		AsyncTask<Void, Void, ArrayList<OpmlElement>> {

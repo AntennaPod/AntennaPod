@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version='1.0' encoding='utf-8'?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_layout"
     android:layout_width="@dimen/drawer_width"
@@ -23,8 +21,6 @@
             android:id="@+id/imgvCover"
             android:layout_width="@dimen/thumbnail_length_navlist"
             android:layout_height="@dimen/thumbnail_length_navlist"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="@dimen/listitem_icon_leftpadding"
             android:layout_marginTop="4dp"
@@ -34,8 +30,8 @@
             android:padding="8dp"
             android:scaleType="centerCrop"
             android:src="?attr/ic_settings"
-            tools:src="@android:drawable/sym_def_app_icon"
-            tools:background="@android:color/holo_orange_dark" />
+            tools:background="@android:color/holo_orange_dark"
+            tools:src="@android:drawable/sym_def_app_icon"></ImageView>
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,16 +43,15 @@
             android:text="@string/settings_label"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/text_size_navdrawer"
-            tools:background="@android:color/holo_green_light"/>
-
+            tools:background="@android:color/holo_green_light" />
     </LinearLayout>
 
     <View
         android:id="@+id/divider"
         android:layout_width="@dimen/drawer_width"
         android:layout_height="1dp"
-        android:layout_centerVertical="true"
         android:layout_above="@id/nav_settings"
+        android:layout_centerVertical="true"
         android:background="?android:attr/listDivider"
         tools:background="@android:color/holo_red_dark" />
 
@@ -64,7 +59,6 @@
         android:id="@+id/nav_list"
         android:layout_width="@dimen/drawer_width"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_above="@id/divider"
         android:layout_alignParentTop="true"
         android:choiceMode="singleChoice"
@@ -74,7 +68,6 @@
         android:paddingBottom="@dimen/list_vertical_padding"
         android:paddingTop="@dimen/list_vertical_padding"
         android:scrollbarStyle="outsideOverlay"
-        tools:listitem="@layout/nav_listitem"
-        tools:background="@android:color/holo_purple" />
-
+        tools:background="@android:color/holo_purple"
+        tools:listitem="@layout/nav_listitem"></ListView>
 </RelativeLayout>

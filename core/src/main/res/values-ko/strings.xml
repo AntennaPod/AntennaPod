@@ -91,7 +91,6 @@
   <string name="etxtFeedurlHint">피드의 URL 또는 홈페이지</string>
   <string name="txtvfeedurl_label">URL로 팟캐스트를 추가</string>
   <string name="podcastdirectories_label">디렉터리에서 팟캐스트 찾기</string>
-  <string name="podcastdirectories_descr">gpodder.net 디렉터리에서 이름, 분류, 인기에 따라 새 팟캐스트를 검색할 수 있고, iTunes 스토어에서 검색할 수도 있습니다.</string>
   <string name="browse_gpoddernet_label">gpodder.net 둘러보기</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">모두 재생했다고 표시</string>
@@ -130,6 +129,7 @@
   <string name="stream_label">스트리밍</string>
   <string name="remove_label">제거</string>
   <string name="remove_episode_lable">에피소드 제거</string>
+  <string name="marked_as_seen_label">봤다고 표시</string>
   <string name="mark_read_label">재생했다고 표시</string>
   <string name="marked_as_read_label">재생했다고 표시함</string>
   <string name="mark_unread_label">재생하지 않음으로 표시</string>
@@ -216,6 +216,8 @@
   <string name="sort">정렬</string>
   <string name="date">날짜</string>
   <string name="duration">기간</string>
+  <string name="episode_title">에피소드 제목</string>
+  <string name="feed_title">피드 제목</string>
   <string name="ascending">오름차순</string>
   <string name="descending">내림차순</string>
   <string name="clear_queue_confirmation_msg">내부의 모든 에피소드 대기열을 지울지 확인하십시오.</string>
@@ -337,8 +339,6 @@
   <string name="pref_gpodnet_logout_toast">로그아웃 성공</string>
   <string name="pref_gpodnet_setlogin_information_title">로그인 정보 바꾸기</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net 계정의 로그인 정보를 바꿉니다.</string>
-  <string name="pref_gpodnet_sync_title">지금 동기화</string>
-  <string name="pref_gpodnet_sync_sum">gpodder.net의 구독과 에피소드 상태 동기화</string>
   <string name="pref_gpodnet_sync_started">동기화 시작함</string>
   <string name="pref_gpodnet_login_status"><![CDATA[<i>%1$s</i> 사용자로 로그인, <i>%2$s</i> 장치]]></string>
   <string name="pref_playback_speed_title">재생 속도</string>
@@ -380,14 +380,14 @@
   <string name="pref_cast_title">크롬캐스트 지원</string>
   <string name="pref_rewind_sum">되감기 버튼을 클릭하면 뒤로 이동 (초)을 정의</string>
   <string name="pref_fast_forward_sum">빨리 감기 버튼을 클릭 할 때 앞으로 이동 (초)을 정의</string>
+  <string name="pref_cast_message_play_flavor">캐스트 장치의 원격 미디어 재생 기능 사용 (예: 크롬캐스트, 안드로이드 TV의 오디오 스피커)</string>
+  <string name="pref_cast_message_free_flavor">크롬캐스트는 서드파티 라이브러리가 필요하지만, 이 버전의 안테나팟에서는 사용하지 않게 되어 있습니다.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">자동 flattr 사용</string>
   <string name="auto_flattr_after_percent">%d 퍼센트를 재생하면 에피소드에 flattr합니다</string>
   <string name="auto_flattr_ater_beginning">재생이 시작하면 에피소드 flattr</string>
   <string name="auto_flattr_ater_end">재생이 끝나면 에피소드 flattr</string>
   <!--Search-->
-  <string name="search_hint">피드나 에피소드 검색</string>
-  <string name="found_in_shownotes_label">프로그램 메모에서 발견</string>
   <string name="found_in_chapters_label">챕터에서 발견</string>
   <string name="search_status_no_results">검색 결과가 없습니다</string>
   <string name="search_label">검색</string>
@@ -520,21 +520,21 @@
   <string name="filter">필터</string>
   <!--Episodes apply actions-->
   <string name="all_label">모두</string>
-  <string name="selected_all_label">모든 에피소드 선택</string>
+  <string name="selected_all_label">모든 에피소드 선택함</string>
   <string name="none_label">없음</string>
-  <string name="deselected_all_label">모든 에피소드 선택 해제</string>
+  <string name="deselected_all_label">모든 에피소드 선택 해제함</string>
   <string name="played_label">재생함</string>
-  <string name="selected_played_label">재생 에피소드 선택</string>
+  <string name="selected_played_label">재생한 에피소드 선택함</string>
   <string name="unplayed_label">재생 안 함</string>
-  <string name="selected_unplayed_label">재생 안 한 에피소드 선택</string>
+  <string name="selected_unplayed_label">재생 안 한 에피소드 선택함</string>
   <string name="downloaded_label">다운로드함</string>
-  <string name="selected_downloaded_label">다운로드한 에피소드 선택</string>
+  <string name="selected_downloaded_label">다운로드한 에피소드 선택함</string>
   <string name="not_downloaded_label">다운로드 안 함</string>
-  <string name="selected_not_downloaded_label">다운로드 안 한 에피소드 선택</string>
+  <string name="selected_not_downloaded_label">다운로드 안 한 에피소드 선택함</string>
   <string name="queued_label">대기열에 있음</string>
-  <string name="selected_queued_label">선택한 대기열의 에피소드</string>
+  <string name="selected_queued_label">대기열의 에피소드 선택함</string>
   <string name="not_queued_label">대기열에 없음</string>
-  <string name="selected_not_queued_label">선택한 대기열 외의 에피소드</string>
+  <string name="selected_not_queued_label">대기열 외의 에피소드 선택함</string>
   <!--Sort-->
   <string name="sort_title_a_z">제목 (A \u2192 Z)</string>
   <string name="sort_title_z_a">제목 (Z \u2192 A)</string>

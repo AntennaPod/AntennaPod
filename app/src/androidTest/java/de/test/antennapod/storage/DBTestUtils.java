@@ -44,7 +44,7 @@ public class DBTestUtils {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         for (int i = 0; i < numFeeds; i++) {
-            Feed f = new Feed(0, null, "feed " + i, "link" + i, "descr", null, null,
+            Feed f = new Feed(0, null, "feed " + i, null, "link" + i, "descr", null, null,
                     null, null, "id" + i, null, null, "url" + i, false, new FlattrStatus(), false, null, null, false);
             f.setItems(new ArrayList<>());
             for (int j = 0; j < numItems; j++) {

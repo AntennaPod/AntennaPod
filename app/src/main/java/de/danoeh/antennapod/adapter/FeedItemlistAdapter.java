@@ -87,6 +87,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
     }
 
     @Override
+    @SuppressWarnings("ResourceType")
     public View getView(final int position, View convertView, ViewGroup parent) {
         Holder holder;
         final FeedItem item = getItem(position);

@@ -47,12 +47,14 @@ import java.util.List;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -62,6 +64,7 @@ import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.greenrobot.event.EventBus;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
@@ -298,7 +301,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
         try {
             for (FeedItem feedItem : taskManager.getQueue()) {
-                queueItems.add(new MediaSessionCompat.QueueItem(feedItem.getMedia().getMediaItem().getDescription(), feedItem.getId()));
+                if(feedItem.getMedia() != null) {
+                    MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
+                    queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
+                }
             }
             mediaSession.setQueue(queueItems);
         } catch (InterruptedException e) {
@@ -478,6 +484,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 mediaPlayer.seekDelta(UserPreferences.getFastForwardSecs() * 1000);
                 break;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                if(UserPreferences.shouldHardwarePreviousButtonRestart()) {
+                    // user wants to restart current episode
+                    mediaPlayer.seekTo(0);
+                } else {
+                    //  user wants to rewind current episode
+                    mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                }
+                break;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
                 break;
@@ -597,6 +611,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     writePlayerStatusPlaybackPreferences();
                     setupNotification(newInfo);
                     started = true;
+                    // set sleep timer if auto-enabled
+                    if(newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING &&
+                        SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
+                        setSleepTimer(SleepTimerPreferences.timerMillis(), SleepTimerPreferences.shakeToReset(),
+                                SleepTimerPreferences.vibrate());
+                    }
                     break;
 
                 case ERROR:
@@ -669,8 +689,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onPostPlayback(@NonNull Playable media, boolean ended, boolean playingNext) {
-            PlaybackService.this.onPostPlayback(media, ended, playingNext);
+        public void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped,
+                                   boolean playingNext) {
+            PlaybackService.this.onPostPlayback(media, ended, skipped, playingNext);
         }
 
         @Override
@@ -768,16 +789,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Even though these tasks aren't supposed to be resource intensive, a good practice is to
      * usually call this method on a background thread.
      *
-     * @param playable the media object that was playing. It is assumed that its position property
-     *                 was updated before this method was called.
-     * @param ended if true, it signals that {@param playable} was played until its end.
-     *              In such case, the position property of the media becomes irrelevant for most of
-     *              the tasks (although it's still a good practice to keep it accurate).
-     * @param playingNext if true, it means another media object is being loaded in place of this one.
+     * @param playable    the media object that was playing. It is assumed that its position
+     *                    property was updated before this method was called.
+     * @param ended       if true, it signals that {@param playable} was played until its end.
+     *                    In such case, the position property of the media becomes irrelevant for
+     *                    most of the tasks (although it's still a good practice to keep it
+     *                    accurate).
+     * @param skipped     if the user pressed a skip >| button.
+     * @param playingNext if true, it means another media object is being loaded in place of this
+     *                    one.
      *                    Instances when we'd set it to false would be when we're not following the
      *                    queue or when the queue has ended.
      */
-    private void onPostPlayback(final Playable playable, boolean ended, boolean playingNext) {
+    private void onPostPlayback(final Playable playable, boolean ended, boolean skipped,
+                                boolean playingNext) {
         if (playable == null) {
             Log.e(TAG, "Cannot do post-playback processing: media was null");
             return;
@@ -808,7 +833,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (item != null) {
             if (ended || smartMarkAsPlayed ||
-                    !UserPreferences.shouldSkipKeepEpisode()) {
+                    (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 // only mark the item as played if we're not keeping it anyways
                 DBWriter.markItemPlayed(item, FeedItem.PLAYED, ended);
                 try {
@@ -829,7 +854,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
 
-        if (ended || playingNext) {
+        if (ended || skipped || playingNext) {
             DBWriter.addItemToPlaybackHistory(media);
         }
     }
@@ -838,11 +863,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime) + " milliseconds");
         taskManager.setSleepTimer(waitingTime, shakeToReset, vibrate);
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
+                () -> disableSleepTimer()));
     }
 
     public void disableSleepTimer() {
         taskManager.disableSleepTimer();
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_disabled_label)));
     }
 
     private void writePlaybackPreferencesNoMediaPlaying() {
@@ -996,11 +1024,35 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             state = PlaybackStateCompat.STATE_NONE;
         }
         sessionState.setState(state, mediaPlayer.getPosition(), mediaPlayer.getPlaybackSpeed());
-        sessionState.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE
+        long capabilities = PlaybackStateCompat.ACTION_PLAY_PAUSE
                 | PlaybackStateCompat.ACTION_REWIND
                 | PlaybackStateCompat.ACTION_FAST_FORWARD
-                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT);
+                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
+
+        if (useSkipToPreviousForRewindInLockscreen()) {
+            // Workaround to fool Android so that Lockscreen will expose a skip-to-previous button,
+            // which will be used for rewind.
+            // The workaround is used for pre Lollipop (Androidv5) devices.
+            // For Androidv5+, lockscreen widges are really notifications (compact),
+            // with an independent codepath
+            //
+            // @see #sessionCallback in the backing callback, skipToPrevious implementation
+            //   is actually the same as rewind. So no new inconsistency is created.
+            // @see #setupNotification() for the method to create Androidv5+ lockscreen UI
+            //   with notification (compact)
+            capabilities = capabilities | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
+        }
+
+        sessionState.setActions(capabilities);
         mediaSession.setPlaybackState(sessionState.build());
+    }
+
+    private static boolean useSkipToPreviousForRewindInLockscreen() {
+        // showRewindOnCompactNotification() corresponds to the "Set Lockscreen Buttons"
+        // Settings in UI.
+        // Hence, from user perspective, he/she is setting the buttons for Lockscreen
+        return ( UserPreferences.showRewindOnCompactNotification() &&
+                 (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) );
     }
 
     /**
@@ -1050,7 +1102,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 mediaSession.setSessionActivity(PendingIntent.getActivity(this, 0,
                         PlaybackService.getPlayerActivityIntent(this),
                         PendingIntent.FLAG_UPDATE_CURRENT));
-                mediaSession.setMetadata(builder.build());
+                try {
+                    mediaSession.setMetadata(builder.build());
+                }  catch (OutOfMemoryError e) {
+                    Log.e(TAG, "Setting media session metadata", e);
+                    builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, null);
+                    mediaSession.setMetadata(builder.build());
+                }
             }
         };
 
@@ -1285,7 +1343,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (info.playable != null) {
             Intent i = new Intent(whatChanged);
-            i.putExtra("id", 1);
+            i.putExtra("id", 1L);
             i.putExtra("artist", "");
             i.putExtra("album", info.playable.getFeedTitle());
             i.putExtra("track", info.playable.getEpisodeTitle());
@@ -1294,8 +1352,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (queue != null) {
                 i.putExtra("ListSize", queue.size());
             }
-            i.putExtra("duration", info.playable.getDuration());
-            i.putExtra("position", info.playable.getPosition());
+            i.putExtra("duration", (long) info.playable.getDuration());
+            i.putExtra("position", (long) info.playable.getPosition());
             sendBroadcast(i);
         }
     }
@@ -1375,7 +1433,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Pauses playback if PREF_PAUSE_ON_HEADSET_DISCONNECT was set to true.
      */
     private void pauseIfPauseOnDisconnect() {
-        if (UserPreferences.isPauseOnHeadsetDisconnect()) {
+        if (UserPreferences.isPauseOnHeadsetDisconnect() && !isCasting()) {
             if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
                 transientPause = true;
             }

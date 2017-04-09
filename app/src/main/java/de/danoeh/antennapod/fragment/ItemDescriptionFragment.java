@@ -185,8 +185,10 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
         super.onViewCreated(view, savedInstanceState);
         Bundle args = getArguments();
         if (args.containsKey(ARG_PLAYABLE)) {
-            media = args.getParcelable(ARG_PLAYABLE);
-            shownotesProvider = media;
+            if (media == null) {
+                media = args.getParcelable(ARG_PLAYABLE);
+                shownotesProvider = media;
+            }
             load();
         } else if (args.containsKey(ARG_FEEDITEM_ID)) {
             long id = getArguments().getLong(ARG_FEEDITEM_ID);
@@ -377,12 +379,14 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
 
     @Override
     public void onMediaChanged(Playable media) {
-        if(this.media == media || webvDescription == null) {
+        if(this.media == media) {
             return;
         }
         this.media = media;
         this.shownotesProvider = media;
-        load();
+        if (webvDescription != null) {
+            load();
+        }
     }
 
 }

@@ -2,6 +2,8 @@ general:
   artifacts:
     - app/build/outputs/apk
 machine:
+  environment:
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
   java:
     version: oraclejdk8
 dependencies:
@@ -16,4 +18,5 @@ dependencies:
 
 test:
   override:
-    - ./gradlew assembleDebug -PdisablePreDex
+    - ./gradlew assembleDebug -PdisablePreDex:
+        timeout: 1800

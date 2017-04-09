@@ -67,7 +67,6 @@
   <string name="feedurl_label">URL del feed</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Aggiungi un podcast inserendo un URL</string>
-  <string name="podcastdirectories_descr">Puoi cercare nuovi podcast per nome, categoria o popolarità su gpodder.net, oppure sull\'iTunes store.</string>
   <string name="browse_gpoddernet_label">Esplora gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Segna tutti come riprodotti</string>
@@ -196,7 +195,6 @@
   <string name="pref_fast_forward_sum">Personalizzare il numero di secondi per saltare in avanti quando il pulsante di avanzamento rapido viene cliccato</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
-  <string name="search_hint">Cerca dei feed o degli episodi</string>
   <string name="found_in_chapters_label">Trovato nei capitoli</string>
   <string name="search_status_no_results">Nessun risultato trovato</string>
   <string name="search_label">Cerca</string>

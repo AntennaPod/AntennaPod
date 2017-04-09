@@ -92,7 +92,6 @@
   <string name="etxtFeedurlHint">URL des Feeds oder der Webseite</string>
   <string name="txtvfeedurl_label">Podcast per URL hinzufügen</string>
   <string name="podcastdirectories_label">Podcast in Verzeichnis finden</string>
-  <string name="podcastdirectories_descr">Bei gpodder.net kannst du neue Podcasts nach Name, Kategorie oder Popularität suchen. Oder suche bei iTunes.</string>
   <string name="browse_gpoddernet_label">gpodder.net durchsuchen</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Alle als gespielt markieren</string>
@@ -342,8 +341,6 @@
   <string name="pref_gpodnet_logout_toast">Abmeldung war erfolgreich</string>
   <string name="pref_gpodnet_setlogin_information_title">Anmeldeinformationen ändern</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ändere die Anmeldeinformationen deines gpodder.net Profils</string>
-  <string name="pref_gpodnet_sync_title">Jetzt synchronisieren</string>
-  <string name="pref_gpodnet_sync_sum">Synchronisiere Abonnements und Episodenstatus mit gpodder.net</string>
   <string name="pref_gpodnet_sync_started">Synchronisation starten</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Eingeloggt als <i>%1$s</i> mit dem Gerät <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Wiedergabegeschwindigkeiten</string>
@@ -386,15 +383,13 @@
   <string name="pref_cast_message_play_flavor">Aktiviere die Unterstützung von Cast-Geräten (Chromecast, Lautsprecher oder Android TV) zum entfernten Abspielen</string>
   <string name="pref_rewind_sum">Passen Sie die Anzahl der Sekunden rückwärts zu springen, wenn die Rücklauf -Taste angeklickt wird</string>
   <string name="pref_fast_forward_sum">Passen Sie die Anzahl der Sekunden nach vorne zu springen, wenn die Schnellvorlauf -Taste angeklickt wird</string>
-
+  <string name="pref_cast_message_free_flavor">Chromecast benötigt proprietäre Bibliotheken von Drittanbietern, die in dieser Version von AntennaPod deaktiviert sind</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
   <string name="auto_flattr_after_percent">Flattr eine Episode, sobald %d Prozent gespielt worden sind</string>
   <string name="auto_flattr_ater_beginning">Flattr Episode, sobald die Wiedergabe beginnt</string>
   <string name="auto_flattr_ater_end">Flattr Episode, sobald die Wiedergabe endet</string>
   <!--Search-->
-  <string name="search_hint">Suche nach Feeds oder Episoden</string>
-  <string name="found_in_shownotes_label">In Sendungsnotizen gefunden</string>
   <string name="found_in_chapters_label">In Kapiteln gefunden</string>
   <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
   <string name="search_label">Suche</string>

@@ -36,22 +36,30 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="16sp"
-                android:text="@string/timer_about_to_expire_label"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/timer_about_to_expire_label"
+            android:textSize="16sp" />
 
-            <CheckBox android:id="@+id/cbShakeToReset"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:text="@string/shake_to_reset_label"/>
+        <CheckBox
+            android:id="@+id/cbShakeToReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shake_to_reset_label" />
 
-            <CheckBox android:id="@+id/cbVibrate"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:text="@string/timer_vibration_label"/>
+        <CheckBox
+            android:id="@+id/cbVibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timer_vibration_label" />
+
+        <CheckBox
+            android:id="@+id/chAutoEnable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auto_enable_label" />
 
     </LinearLayout>
 

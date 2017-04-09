@@ -884,6 +884,17 @@ public class DBWriter {
         });
     }
 
+    public static Future<?> setFeedCustomTitle(Feed feed) {
+        return dbExec.submit(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedCustomTitle(feed.getId(), feed.getCustomTitle());
+            adapter.close();
+            EventDistributor.getInstance().sendFeedUpdateBroadcast();
+        });
+    }
+
+
     /**
      * format an url for querying the database
      * (postfix a / and apply percent-encoding)

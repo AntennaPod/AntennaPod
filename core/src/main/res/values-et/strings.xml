@@ -14,6 +14,8 @@
   <string name="downloads_running_label">Käimas</string>
   <string name="downloads_completed_label">Lõpetatud</string>
   <string name="downloads_log_label">Logi</string>
+  <string name="subscriptions_label">Tellimused</string>
+  <string name="subscriptions_list_label">Tellimuste nimekiri</string>
   <string name="cancel_download_label">Tühista\nLaadi alla</string>
   <string name="playback_history_label">Esitamise ajalugu</string>
   <string name="gpodnet_main_label">gpodder.net</string>
@@ -68,7 +70,9 @@
   <string name="retry_label">Proovi uuesti</string>
   <string name="auto_download_label">Kaasa heli allalaadimises</string>
   <string name="auto_download_apply_to_items_title">Rakenda eelmistele saadetele</string>
+  <string name="auto_delete_label">Saadeta automaatne kustutamine</string>
   <string name="parallel_downloads_suffix">\u0020samaaegset allalaadimist</string>
+  <string name="feed_auto_download_global">Üldine vaikeväärtus</string>
   <string name="feed_auto_download_always">Alati</string>
   <string name="feed_auto_download_never">Mitte kunagi</string>
   <string name="send_label">Saada...</string>
@@ -194,7 +198,6 @@
   <string name="move_to_top_label">Liiguta üles</string>
   <string name="move_to_bottom_label">Liiguta alla</string>
   <string name="sort">Sorteeri</string>
-  <string name="alpha">Tähestiku järgi</string>
   <string name="date">Kuupäeva järgi</string>
   <string name="duration">Kestuse järgi</string>
   <string name="ascending">Kasvavalt</string>
@@ -273,7 +276,6 @@
   <string name="pref_gpodnet_logout_title">Logi välja</string>
   <string name="pref_gpodnet_logout_toast">Väljalogimine oli edukas</string>
   <string name="pref_gpodnet_setlogin_information_title">Muuda kasutajakonto infot</string>
-  <string name="pref_gpodnet_sync_title">Sünkroniseeri kohe</string>
   <string name="pref_gpodnet_sync_started">Sünkroonimine on käivitatud</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Sisseloginud kui <i>%1$s</i> seadmega <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Esitamise kiirused</string>
@@ -301,8 +303,6 @@
   <string name="pref_fast_forward_sum">Kohanda mitu sekundit hüpata edasi, kui kiiresti edasi Klõpsamise</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
-  <string name="search_hint">Uudisvoogude või saadete otsing</string>
-  <string name="found_in_shownotes_label">Leitud märkmetest</string>
   <string name="found_in_chapters_label">Leitud peatükkidest</string>
   <string name="search_status_no_results">ei leitud midagi</string>
   <string name="search_label">Otsi</string>
