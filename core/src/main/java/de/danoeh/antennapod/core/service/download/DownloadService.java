@@ -842,10 +842,13 @@ public class DownloadService extends Service {
                 successful = false;
                 reason = DownloadError.ERROR_PARSER_EXCEPTION;
                 reasonDetailed = e.getMessage();
+            } finally {
+                File feedFile = new File(request.getDestination());
+                if(feedFile.exists()) {
+                    boolean deleted = feedFile.delete();
+                    Log.d(TAG, "Deletion of file '" + feedFile.getAbsolutePath() + "' " + (deleted ? "successful" : "FAILED"));
+                }
             }
-
-            // cleanup();
-
 
             if (successful) {
                 // we create a 'successful' download log if the feed's last refresh failed
