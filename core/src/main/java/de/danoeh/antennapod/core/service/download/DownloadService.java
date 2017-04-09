@@ -1051,7 +1051,8 @@ public class DownloadService extends Service {
 
                 DBWriter.setFeedMedia(media).get();
 
-                if (item != null && !DBTasks.isInQueue(DownloadService.this, item.getId())) {
+                if (item != null && UserPreferences.enqueueDownloadedEpisodes() &&
+                        !DBTasks.isInQueue(DownloadService.this, item.getId())) {
                     DBWriter.addQueueItem(DownloadService.this, item).get();
                 }
             } catch (ExecutionException | InterruptedException e) {

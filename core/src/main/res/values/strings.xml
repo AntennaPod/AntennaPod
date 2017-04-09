@@ -421,6 +421,8 @@
     <string name="pref_cast_title">Chromecast support</string>
     <string name="pref_cast_message_play_flavor">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
+    <string name="pref_enqueue_downloaded_title">Enqueue Dowloaded</string>
+    <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
