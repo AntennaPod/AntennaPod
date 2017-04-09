@@ -22,7 +22,6 @@ import android.util.Log;
 import android.webkit.URLUtil;
 
 import org.apache.commons.io.FileUtils;
-import org.shredzone.flattr4j.model.User;
 import org.xml.sax.SAXException;
 
 import java.io.File;
