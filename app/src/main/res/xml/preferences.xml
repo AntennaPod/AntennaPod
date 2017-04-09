@@ -161,6 +161,12 @@
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref">
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefEnqueueDownloaded"
+            android:summary="@string/pref_enqueue_downloaded_summary"
+            android:title="@string/pref_enqueue_downloaded_title" />
         <Preference
             android:key="prefAutoUpdateIntervall"
             android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
