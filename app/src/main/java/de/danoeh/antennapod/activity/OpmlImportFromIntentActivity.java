@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -18,8 +19,12 @@ public class OpmlImportFromIntentActivity extends OpmlImportBaseActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Uri uri = getIntent().getData();
-        if(uri.toString().startsWith("/")) {
-            uri = Uri.parse("file://" + uri.toString());
+        if(uri != null) {
+            if(uri.toString().startsWith("/")) {
+                uri = Uri.parse("file://" + uri.toString());
+            }
+        } else {
+            uri = getIntent().getStringExtra(Intent.EXTRA_TEXT);
         }
         importUri(uri);
     }
