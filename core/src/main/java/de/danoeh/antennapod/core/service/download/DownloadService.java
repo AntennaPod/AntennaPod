@@ -235,7 +235,6 @@ public class DownloadService extends Service {
                     }
                 } catch (InterruptedException e) {
                     Log.e(TAG, "DownloadCompletionThread was interrupted");
-                    Thread.currentThread().interrupt();
                 } catch (ExecutionException e) {
                     Log.e(TAG, "ExecutionException in DownloadCompletionThread: " + e.getMessage());
                     numberOfDownloads.decrementAndGet();
@@ -626,7 +625,6 @@ public class DownloadService extends Service {
                 tasks++;
             } catch (InterruptedException e) {
                 Log.e(TAG, "FeedSyncThread was interrupted");
-                Thread.currentThread().interrupt();
                 return null;
             }
 
@@ -645,7 +643,6 @@ public class DownloadService extends Service {
                     } catch (InterruptedException e) {
                         Log.d(TAG, "interrupted while waiting for more downloads");
                         tasks += pollCompletedDownloads();
-                        Thread.currentThread().interrupt();
                     } finally {
                         currentTime = System.currentTimeMillis();
                     }
@@ -665,7 +662,6 @@ public class DownloadService extends Service {
                     }
                 } catch (InterruptedException e) {
                     Log.e(TAG, "FeedSyncThread was interrupted");
-                    Thread.currentThread().interrupt();
                 } catch (ExecutionException e) {
                     Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
                 }
@@ -704,7 +700,6 @@ public class DownloadService extends Service {
                         dbUpdateFuture.get();
                     } catch (InterruptedException e) {
                         Log.e(TAG, "FeedSyncThread was interrupted");
-                        Thread.currentThread().interrupt();
                     } catch (ExecutionException e) {
                         Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
                     }
@@ -744,7 +739,6 @@ public class DownloadService extends Service {
                     dbUpdateFuture.get();
                 } catch (InterruptedException e) {
                     Log.e(TAG, "interrupted while updating the db");
-                    Thread.currentThread().interrupt();
                 } catch (ExecutionException e) {
                     Log.e(TAG, "ExecutionException while updating the db: " + e.getMessage());
                 }
@@ -940,7 +934,6 @@ public class DownloadService extends Service {
                         DBWriter.setFeedMedia(media).get();
                     } catch (InterruptedException e) {
                         Log.e(TAG, "FailedDownloadHandler was interrupted");
-                        Thread.currentThread().interrupt();
                     } catch (ExecutionException e) {
                         Log.e(TAG, "ExecutionException in FailedDownloadHandler: " + e.getMessage());
                     }
@@ -1009,7 +1002,6 @@ public class DownloadService extends Service {
                 }
             } catch (InterruptedException e) {
                 Log.e(TAG, "MediaHandlerThread was interrupted");
-                Thread.currentThread().interrupt();
             } catch (ExecutionException e) {
                 Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
                 status = new DownloadStatus(media, media.getEpisodeTitle(), DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
