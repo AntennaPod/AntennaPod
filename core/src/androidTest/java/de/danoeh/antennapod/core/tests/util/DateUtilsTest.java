@@ -101,4 +101,19 @@ public class DateUtilsTest extends AndroidTestCase {
         assertEquals(expected, actual);
     }
 
+    public void testParseDateWithNoTimezonePadding() throws Exception {
+        GregorianCalendar exp = new GregorianCalendar(2017, 1, 22, 22, 28, 00);
+        exp.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date expected = new Date(exp.getTimeInMillis() + 2);
+        Date actual = DateUtils.parse("2017-02-22T14:28:00.002-08:00");
+        assertEquals(expected, actual);
+    }
+
+    public void testParseDateWithForCest() throws Exception {
+        GregorianCalendar exp = new GregorianCalendar(2017, 0, 28, 23, 00, 00);
+        exp.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date expected = new Date(exp.getTimeInMillis());
+        Date actual = DateUtils.parse("Sun, 29 Jan 2017 00:00:00 CEST");
+        assertEquals(expected, actual);
+    }
 }
