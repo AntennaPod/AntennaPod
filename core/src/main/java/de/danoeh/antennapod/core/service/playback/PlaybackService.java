@@ -405,7 +405,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Long feedId = Long.parseLong(parentId.split(":")[1]);
             List<FeedItem> feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
             for (FeedItem feedItem: feedItems) {
-                mediaItems.add(feedItem.getMedia().getMediaItem());
+                if(feedItem.getMedia() != null && feedItem.getMedia().getMediaItem() != null) {
+                    mediaItems.add(feedItem.getMedia().getMediaItem());
+                }
             }
         }
         result.sendResult(mediaItems);
