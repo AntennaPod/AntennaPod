@@ -35,11 +35,13 @@ public class FeedSearcher {
      */
     public static List<SearchResult> performSearch(final Context context,
                                                    final String query, final long selectedFeed) {
-        final int values[] = {2, 1, 0, 0};
+        final int values[] = {2, 1, 0, 0, 0, 0};
         final String[] subtitles = {context.getString(R.string.found_in_title_label),
                 context.getString(R.string.found_in_chapters_label),
                 context.getString(R.string.found_in_shownotes_label),
-                context.getString(R.string.found_in_shownotes_label)};
+                context.getString(R.string.found_in_shownotes_label),
+                context.getString(R.string.found_in_authors_label),
+                context.getString(R.string.found_in_feeds_label)};
 
         List<SearchResult> result = new ArrayList<>();
 
@@ -48,6 +50,8 @@ public class FeedSearcher {
         tasks.add(DBTasks.searchFeedItemChapters(context, selectedFeed, query));
         tasks.add(DBTasks.searchFeedItemDescription(context, selectedFeed, query));
         tasks.add(DBTasks.searchFeedItemContentEncoded(context, selectedFeed, query));
+        tasks.add(DBTasks.searchFeedItemAuthor(context, selectedFeed, query));
+        tasks.add(DBTasks.searchFeedItemFeedIdentifier(context, selectedFeed, query));
 
         for (FutureTask<List<FeedItem>> task : tasks) {
             task.run();

@@ -678,6 +678,54 @@ public final class DBTasks {
     }
 
     /**
+     * Searches the authors of FeedItems of a specific Feed for a given
+     * string.
+     *
+     * @param context Used for accessing the DB.
+     * @param feedID  The id of the feed whose items should be searched.
+     * @param query   The search string.
+     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
+     */
+    public static FutureTask<List<FeedItem>> searchFeedItemAuthor(final Context context,
+                                                                 final long feedID, final String query) {
+        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
+            @Override
+            public void execute(PodDBAdapter adapter) {
+                Cursor searchResult = adapter.searchItemAuthors(feedID,
+                        query);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadAdditionalFeedItemListData(items);
+                setResult(items);
+                searchResult.close();
+            }
+        });
+    }
+
+    /**
+     * Searches the feed identifiers of FeedItems of a specific Feed for a given
+     * string.
+     *
+     * @param context Used for accessing the DB.
+     * @param feedID  The id of the feed whose items should be searched.
+     * @param query   The search string.
+     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
+     */
+    public static FutureTask<List<FeedItem>> searchFeedItemFeedIdentifier(final Context context,
+                                                                 final long feedID, final String query) {
+        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
+            @Override
+            public void execute(PodDBAdapter adapter) {
+                Cursor searchResult = adapter.searchItemFeedIdentifiers(feedID,
+                        query);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadAdditionalFeedItemListData(items);
+                setResult(items);
+                searchResult.close();
+            }
+        });
+    }
+
+    /**
      * Searches the descriptions of FeedItems of a specific Feed for a given
      * string.
      *
