@@ -28,7 +28,8 @@ public class DateUtils {
         String date = input.trim().replace('/', '-').replaceAll("( ){2,}+", " ");
 
         // CEST is widely used but not in the "ISO 8601 Time zone" list. Let's hack around.
-        date = date.replaceAll("CEST$", "+01:00");
+        date = date.replaceAll("CEST$", "+02:00");
+        date = date.replaceAll("CET$", "+01:00");
 
         // if datetime is more precise than seconds, make sure the value is in ms
         if (date.contains(".")) {
