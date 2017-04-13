@@ -110,10 +110,16 @@ public class DateUtilsTest extends AndroidTestCase {
     }
 
     public void testParseDateWithForCest() throws Exception {
-        GregorianCalendar exp = new GregorianCalendar(2017, 0, 28, 23, 00, 00);
-        exp.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date expected = new Date(exp.getTimeInMillis());
-        Date actual = DateUtils.parse("Sun, 29 Jan 2017 00:00:00 CEST");
-        assertEquals(expected, actual);
+        GregorianCalendar exp1 = new GregorianCalendar(2017, 0, 28, 22, 00, 00);
+        exp1.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date expected1 = new Date(exp1.getTimeInMillis());
+        Date actual1 = DateUtils.parse("Sun, 29 Jan 2017 00:00:00 CEST");
+        assertEquals(expected1, actual1);
+
+        GregorianCalendar exp2 = new GregorianCalendar(2017, 0, 28, 23, 00, 00);
+        exp2.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date expected2 = new Date(exp2.getTimeInMillis());
+        Date actual2 = DateUtils.parse("Sun, 29 Jan 2017 00:00:00 CET");
+        assertEquals(expected2, actual2);
     }
 }
