@@ -32,8 +32,8 @@
     <string name="total_time_listened_to_podcasts">Total time of podcasts played:</string>
     <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
     <string name="statistics_mode">Statistics mode</string>
-    <string name="statistics_mode_normal">The time you actually played podcasts, respecting playback speed</string>
-    <string name="statistics_mode_count_all">Sum up all played podcast durations, including those just marked as played</string>
+    <string name="statistics_mode_normal">Duration that was actually played</string>
+    <string name="statistics_mode_count_all">Include podcasts that are just marked as played</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
