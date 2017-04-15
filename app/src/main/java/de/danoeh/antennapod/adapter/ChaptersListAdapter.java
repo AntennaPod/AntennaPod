@@ -60,6 +60,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
             defaultTextColor = holder.title.getTextColors().getDefaultColor();
             holder.start = (TextView) convertView.findViewById(R.id.txtvStart);
             holder.link = (TextView) convertView.findViewById(R.id.txtvLink);
+            holder.duration = (TextView) convertView.findViewById(R.id.txtvDuration);
             holder.butPlayChapter = (ImageButton) convertView.findViewById(R.id.butPlayChapter);
             convertView.setTag(holder);
         } else {
@@ -70,6 +71,16 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
         holder.title.setText(sc.getTitle());
         holder.start.setText(Converter.getDurationStringLong((int) sc
                 .getStart()));
+
+        long duration;
+        if (position + 1 < media.getChapters().size()) {
+            duration = media.getChapters().get(position + 1).getStart() - sc.getStart();
+        } else {
+            duration = media.getDuration() - sc.getStart();
+        }
+        holder.duration.setText(getContext().getString(R.string.chapter_duration,
+                Converter.getDurationStringLong((int) duration)));
+
         if (sc.getLink() != null) {
             holder.link.setVisibility(View.VISIBLE);
             holder.link.setText(sc.getLink());
@@ -155,6 +166,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
         TextView title;
         TextView start;
         TextView link;
+        TextView duration;
         ImageButton butPlayChapter;
     }
 
