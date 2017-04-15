@@ -37,6 +37,9 @@ public final class URLChecker {
         } else if (url.startsWith("pcast://")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Removing pcast://");
             return prepareURL(url.substring("pcast://".length()));
+        } else if (url.startsWith("pcast:")) {
+            if (BuildConfig.DEBUG) Log.d(TAG, "Removing pcast:");
+            return prepareURL(url.substring("pcast:".length()));
         } else if (url.startsWith("itpc")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing itpc:// with http://");
             return url.replaceFirst("itpc://", "http://");
