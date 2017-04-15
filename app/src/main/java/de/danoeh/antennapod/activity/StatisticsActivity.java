@@ -65,7 +65,7 @@ public class StatisticsActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-        refreshStats();
+        refreshStatistics();
     }
 
     @Override
@@ -81,44 +81,44 @@ public class StatisticsActivity extends AppCompatActivity
         if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
-        } else if (item.getItemId() == R.id.calculation_type) {
-            selectCalculationType();
+        } else if (item.getItemId() == R.id.statistics_mode) {
+            selectStatisticsMode();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
 
-    private void selectCalculationType() {
-        View contentView = View.inflate(this, R.layout.calculation_type, null);
+    private void selectStatisticsMode() {
+        View contentView = View.inflate(this, R.layout.statistics_mode_select_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(contentView);
-        builder.setTitle(R.string.calculation_type);
+        builder.setTitle(R.string.statistics_mode);
 
         if (countAll) {
-            ((RadioButton) contentView.findViewById(R.id.calculation_type_count_all)).setChecked(true);
+            ((RadioButton) contentView.findViewById(R.id.statistics_mode_count_all)).setChecked(true);
         } else {
-            ((RadioButton) contentView.findViewById(R.id.calculation_type_normal)).setChecked(true);
+            ((RadioButton) contentView.findViewById(R.id.statistics_mode_normal)).setChecked(true);
         }
 
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            countAll = ((RadioButton) contentView.findViewById(R.id.calculation_type_count_all)).isChecked();
+            countAll = ((RadioButton) contentView.findViewById(R.id.statistics_mode_count_all)).isChecked();
             listAdapter.setCountAll(countAll);
-            prefs.edit().putBoolean(PREF_COUNT_ALL, countAll).commit();
-            refreshStats();
+            prefs.edit().putBoolean(PREF_COUNT_ALL, countAll).apply();
+            refreshStatistics();
         });
 
         builder.show();
     }
 
-    private void refreshStats() {
+    private void refreshStatistics() {
         progressBar.setVisibility(View.VISIBLE);
         totalTimeTextView.setVisibility(View.GONE);
         feedStatisticsList.setVisibility(View.GONE);
-        loadStats();
+        loadStatistics();
     }
 
-    private void loadStats() {
+    private void loadStatistics() {
         if (subscription != null) {
             subscription.unsubscribe();
         }
