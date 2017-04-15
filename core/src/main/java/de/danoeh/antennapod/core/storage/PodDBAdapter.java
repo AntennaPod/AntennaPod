@@ -1463,7 +1463,10 @@ public class PodDBAdapter {
             default: // NONE
                 return new LongIntMap(0);
         }
+        return conditionalFeedCounterRead(whereRead, feedIds);
+    }
 
+    private LongIntMap conditionalFeedCounterRead(String whereRead, long... feedIds) {
         // work around TextUtils.join wanting only boxed items
         // and StringUtils.join() causing NoSuchMethodErrors on MIUI
         StringBuilder builder = new StringBuilder();
@@ -1494,6 +1497,11 @@ public class PodDBAdapter {
         }
         c.close();
         return result;
+    }
+
+    public final LongIntMap getPlayedEpisodesCounters(long... feedIds) {
+        String whereRead = KEY_READ + "=" + FeedItem.PLAYED;
+        return conditionalFeedCounterRead(whereRead, feedIds);
     }
 
     public final int getNumberOfDownloadedEpisodes() {
