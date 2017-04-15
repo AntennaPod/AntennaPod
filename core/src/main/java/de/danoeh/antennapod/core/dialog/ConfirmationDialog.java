@@ -16,16 +16,20 @@ public abstract class ConfirmationDialog {
 	private static final String TAG = ConfirmationDialog.class.getSimpleName();
 
 	protected Context context;
-	int titleId;
-	int messageId;
+	private int titleId;
+	private String message;
 
-    int positiveText;
-    int negativeText;
+	private int positiveText;
+	private int negativeText;
 
 	public ConfirmationDialog(Context context, int titleId, int messageId) {
+		this(context, titleId, context.getString(messageId));
+	}
+
+	public ConfirmationDialog(Context context, int titleId, String message) {
 		this.context = context;
 		this.titleId = titleId;
-		this.messageId = messageId;
+		this.message = message;
 	}
 
 	public void onCancelButtonPressed(DialogInterface dialog) {
@@ -47,7 +51,7 @@ public abstract class ConfirmationDialog {
 	public final AlertDialog createNewDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(titleId);
-		builder.setMessage(messageId);
+		builder.setMessage(message);
 		builder.setPositiveButton(positiveText != 0 ? positiveText : R.string.confirm_label,
 				(dialog, which) -> onConfirmButtonPressed(dialog));
 		builder.setNegativeButton(negativeText != 0 ? negativeText : R.string.cancel_label,

@@ -178,7 +178,7 @@ public class SubscriptionFragment extends Fragment {
                 };
                 ConfirmationDialog conDialog = new ConfirmationDialog(getContext(),
                         R.string.remove_feed_label,
-                        R.string.feed_delete_confirmation_msg) {
+                        getString(R.string.feed_delete_confirmation_msg, feed.getTitle())) {
                     @Override
                     public void onConfirmButtonPressed(
                             DialogInterface dialog) {
