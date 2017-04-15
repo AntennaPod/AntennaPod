@@ -101,7 +101,10 @@ public class NSITunes extends Namespace {
             if (TextUtils.isEmpty(summary)) {
                 return;
             }
-            if (state.getCurrentItem() != null) {
+            if (state.getCurrentItem() != null &&
+                    (TextUtils.isEmpty(state.getCurrentItem().getDescription()) ||
+                            state.getCurrentItem().getDescription().length() * 1.25 < summary.length())
+            ) {
                 state.getCurrentItem().setDescription(summary);
             } else if (state.getFeed() != null) {
                 state.getFeed().setDescription(summary);
