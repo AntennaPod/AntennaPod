@@ -927,64 +927,107 @@ public final class DBReader {
     /**
      * Searches the DB for statistics
      *
+     * @param sortByCountAll If true, the statistic items will be sorted according to the
+     *                       countAll calculation time
      * @return The StatisticsInfo object
      */
-    public static StatisticsData getStatistics() {
+    public static StatisticsData getStatistics(boolean sortByCountAll) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
+        long totalTimeCountAll = 0;
         long totalTime = 0;
         List<StatisticsItem> feedTime = new ArrayList<>();
 
         List<Feed> feeds = getFeedList();
         for (Feed feed : feeds) {
+            long feedPlayedTimeCountAll = 0;
             long feedPlayedTime = 0;
             long feedTotalTime = 0;
             long episodes = 0;
             long episodesStarted = 0;
+            long episodesStartedIncludingMarked = 0;
             List<FeedItem> items = getFeed(feed.getId()).getItems();
-            for(FeedItem item : items) {
+            for (FeedItem item : items) {
                 FeedMedia media = item.getMedia();
-                if(media == null) {
+                if (media == null) {
                     continue;
                 }
 
                 // played duration used to be reset when the item is added to the playback history
-                if(media.getPlaybackCompletionDate() != null) {
+                if (media.getPlaybackCompletionDate() != null) {
                     feedPlayedTime += media.getDuration() / 1000;
                 }
                 feedPlayedTime += media.getPlayedDuration() / 1000;
+
+                if (item.isPlayed()) {
+                    feedPlayedTimeCountAll += media.getDuration() / 1000;
+                } else {
+                    feedPlayedTimeCountAll += media.getPosition() / 1000;
+                }
+
                 if (media.getPlaybackCompletionDate() != null || media.getPlayedDuration() > 0) {
                     episodesStarted++;
                 }
+
+                if (item.isPlayed() || media.getPosition() != 0) {
+                    episodesStartedIncludingMarked++;
+                }
+
                 feedTotalTime += media.getDuration() / 1000;
                 episodes++;
             }
             feedTime.add(new StatisticsItem(
-                    feed, feedTotalTime, feedPlayedTime, episodes, episodesStarted));
+                    feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
+                    episodesStarted, episodesStartedIncludingMarked));
             totalTime += feedPlayedTime;
+            totalTimeCountAll += feedPlayedTimeCountAll;
         }
 
-        Collections.sort(feedTime, (item1, item2) -> {
-            if(item1.timePlayed > item2.timePlayed) {
-                return -1;
-            } else if(item1.timePlayed < item2.timePlayed) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
+        if (sortByCountAll) {
+            Collections.sort(feedTime, (item1, item2) ->
+                    compareLong(item1.timePlayedCountAll, item2.timePlayedCountAll));
+        } else {
+            Collections.sort(feedTime, (item1, item2) ->
+                    compareLong(item1.timePlayed, item2.timePlayed));
+        }
 
         adapter.close();
-        return new StatisticsData(totalTime, feedTime);
+        return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
+    }
+
+    /**
+     * Compares two {@code long} values. Long.compare() is not available before API 19
+     *
+     * @return 0 if long1 = long2, less than 0 if long1 &lt; long2,
+     * and greater than 0 if long1 &gt; long2.
+     */
+    private static int compareLong(long long1, long long2) {
+        if (long1 > long2) {
+            return -1;
+        } else if (long1 < long2) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public static class StatisticsData {
+        /**
+         * Simply sums up time of podcasts that are marked as played
+         */
+        public long totalTimeCountAll;
+
+        /**
+         * Respects speed, listening twice, ...
+         */
         public long totalTime;
+
         public List<StatisticsItem> feedTime;
 
-        public StatisticsData(long totalTime, List<StatisticsItem> feedTime) {
+        public StatisticsData(long totalTime, long totalTimeCountAll, List<StatisticsItem> feedTime) {
             this.totalTime = totalTime;
+            this.totalTimeCountAll = totalTimeCountAll;
             this.feedTime = feedTime;
         }
     }
@@ -992,17 +1035,34 @@ public final class DBReader {
     public static class StatisticsItem {
         public Feed feed;
         public long time;
-        public long timePlayed;
-        public long episodes;
-        public long episodesStarted;
 
-        public StatisticsItem(Feed feed, long time, long timePlayed,
-                              long episodes, long episodesStarted) {
+        /**
+         * Respects speed, listening twice, ...
+         */
+        public long timePlayed;
+        /**
+         * Simply sums up time of podcasts that are marked as played
+         */
+        public long timePlayedCountAll;
+        public long episodes;
+        /**
+         * Episodes that are actually played
+         */
+        public long episodesStarted;
+        /**
+         * All episodes that are marked as played (or have position != 0)
+         */
+        public long episodesStartedIncludingMarked;
+
+        public StatisticsItem(Feed feed, long time, long timePlayed, long timePlayedCountAll,
+                              long episodes, long episodesStarted, long episodesStartedIncludingMarked) {
             this.feed = feed;
             this.time = time;
             this.timePlayed = timePlayed;
+            this.timePlayedCountAll = timePlayedCountAll;
             this.episodes = episodes;
             this.episodesStarted = episodesStarted;
+            this.episodesStartedIncludingMarked = episodesStartedIncludingMarked;
         }
     }
 
