@@ -86,7 +86,7 @@ public class DateUtilsTest extends AndroidTestCase {
     }
 
     public void testAsctime() throws Exception {
-        GregorianCalendar exp = new GregorianCalendar(2011, 4, 25, 12, 33, 00);
+        GregorianCalendar exp = new GregorianCalendar(2011, 4, 25, 12, 33, 0);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis());
         Date actual = DateUtils.parse("Wed, 25 May 2011 12:33:00");
@@ -102,7 +102,7 @@ public class DateUtilsTest extends AndroidTestCase {
     }
 
     public void testParseDateWithNoTimezonePadding() throws Exception {
-        GregorianCalendar exp = new GregorianCalendar(2017, 1, 22, 22, 28, 00);
+        GregorianCalendar exp = new GregorianCalendar(2017, 1, 22, 22, 28, 0);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis() + 2);
         Date actual = DateUtils.parse("2017-02-22T14:28:00.002-08:00");
@@ -110,13 +110,13 @@ public class DateUtilsTest extends AndroidTestCase {
     }
 
     public void testParseDateWithForCest() throws Exception {
-        GregorianCalendar exp1 = new GregorianCalendar(2017, 0, 28, 22, 00, 00);
+        GregorianCalendar exp1 = new GregorianCalendar(2017, 0, 28, 22, 0, 0);
         exp1.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected1 = new Date(exp1.getTimeInMillis());
         Date actual1 = DateUtils.parse("Sun, 29 Jan 2017 00:00:00 CEST");
         assertEquals(expected1, actual1);
 
-        GregorianCalendar exp2 = new GregorianCalendar(2017, 0, 28, 23, 00, 00);
+        GregorianCalendar exp2 = new GregorianCalendar(2017, 0, 28, 23, 0, 0);
         exp2.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected2 = new Date(exp2.getTimeInMillis());
         Date actual2 = DateUtils.parse("Sun, 29 Jan 2017 00:00:00 CET");
@@ -124,7 +124,7 @@ public class DateUtilsTest extends AndroidTestCase {
     }
 
     public void testParseDateWithIncorrectWeekday() {
-        GregorianCalendar exp1 = new GregorianCalendar(2014, 9, 8, 9, 00, 00);
+        GregorianCalendar exp1 = new GregorianCalendar(2014, 9, 8, 9, 0, 0);
         exp1.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date expected = new Date(exp1.getTimeInMillis());
         Date actual = DateUtils.parse("Thu, 8 Oct 2014 09:00:00 GMT"); // actually a Wednesday
