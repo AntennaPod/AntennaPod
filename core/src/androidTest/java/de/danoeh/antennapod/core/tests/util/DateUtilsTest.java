@@ -122,4 +122,12 @@ public class DateUtilsTest extends AndroidTestCase {
         Date actual2 = DateUtils.parse("Sun, 29 Jan 2017 00:00:00 CET");
         assertEquals(expected2, actual2);
     }
+
+    public void testParseDateWithIncorrectWeekday() {
+        GregorianCalendar exp1 = new GregorianCalendar(2014, 9, 8, 9, 00, 00);
+        exp1.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date expected = new Date(exp1.getTimeInMillis());
+        Date actual = DateUtils.parse("Thu, 8 Oct 2014 09:00:00 GMT"); // actually a Wednesday
+        assertEquals(expected, actual);
+    }
 }
