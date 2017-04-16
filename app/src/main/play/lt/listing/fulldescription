@@ -1,43 +1,43 @@
 AntennaPod is a podcast manager and player that gives you instant access to millions of free and paid podcasts, from independent podcasters to large publishing houses such as the BBC, NPR and CNN. Add, import and export their feeds hassle-free using the iTunes podcast database, OPML files or simple RSS URLs. Save effort, battery power and mobile data usage with powerful automation controls for downloading episodes (specify times, intervals and WiFi networks) and deleting episodes (based your favourites and delay settings).<br>
-But most importantly: Download, stream or queue episodes and enjoy them the way you like with adjustable playback speeds, chapter support and a sleep timer. You can even show your love to the content creators  with our Flattr integration.
+Bet svarbiausia: atsisiųskite, klausykitės iš karto ar pridėkite epizodus į eilę ir mėgaukitės jais pasirinkdami atkūrimo spartą, naudodamiesi skyrių palaikymu bei miego laikmačiu. Jūs netgi galite išreikšti savo meilę turinio kūrėjams naudodamiesi mūsų „Flattr“ integracija.
 
-Made by podcast-enthousiast, AntennaPod is free in all senses of the word: open source, no costs, no ads.
+Sukurtas tinklalaidžių entuziasto, „AntennaPod“ yra laisvas visomis šio žodžio prasmėmis: atvirojo kodo, jokių mokesčių, jokių reklamų.
 
-<b>All features:</b><br>
-IMPORT, ORGANIZE AND PLAY<br>
-&#8226; Add and import feeds via the iTunes and gPodder.net directories, OPML files and RSS or Atom links<br>
+<b>Visos funkcijos:</b><br>
+IMPORTUOKITE, TVARKYKITE BEI KLAUSYKITĖS<br>
+&#8226; Pridėkite bei importuokite sklaidos kanalus iš „iTunes“ bei „gPodder.net“ paslaugų, OPML failų ir RSS ar Atom nuorodų<br>
 &#8226; Manage playback from anywhere: homescreen widget, system notification and earplug and bluetooth controls<br>
 &#8226; Enjoy listening your way with adjustable playback speed, chapter support (MP3, VorbisComment and Podlove), remembered playback position and an advanced sleep timer (shake to reset, lower volume and slow down playback)<br>
-&#8226; Access password-protected feeds and episodes<br>
-&#8226; Take advantage of paged feeds (www.podlove.org/paged-feeds)
+&#8226; Pasiekite slaptažodžiu apsaugotus sklaidos kanalus bei epizodus<br>
+&#8226; Išnaudokite puslapiuotus sklaidos kanalus (www.podlove.org/paged-feeds)
 
 KEEP TRACK, SHARE & APPRECIATE<br>
-&#8226; Keep track of the best of the best by marking episodes as favourites<br>
+&#8226; Kaupkite geriausius iš geriausiųjų pažymėdami epizodus kaip mėgstamiausius<br>
 &#8226; Find that one episode through the playback history or by searching (titles and shownotes)<br>
-&#8226; Share episodes and feeds through advanced social media and email options, the gPodder.net services and via OPML export<br>
-&#8226; Support content creators with Flattr integration including automatic flattring
+&#8226; Dalinkitės epizodais bei sklaidos kanalais per socialinius tinklus, el. paštu, „gPodder.net“ paslaugą bei eksportuotus OPML failus<br>
+&#8226; Remkite turinio kūrėjus naudodamiesi „Flattr“ integracija bei automatiniu rėmimu
 
-CONTROL THE SYSTEM<br>
+VALDYKITE SISTEMĄ<br>
 &#8226; Take control over automated downloading: choose feeds, exclude mobile networks, select specific WiFi networks, require the phone to be charging and set times or intervals<br>
 &#8226; Manage storage by setting the amount of cached episodes, smart deletion (based on your favourites and play status) and selecting your preferred location<br>
-&#8226; Use AntennaPod in your language (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
-&#8226; Adapt to your environment using the light and dark theme<br>
-&#8226; Back-up your subscriptions with the gPodder.net integration and OPML export
+&#8226; Naudokitės „AntennaPod“ savo kalba (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH, LT)<br>
+&#8226; Pritaikykite savo aplinkai pasirinkdami šviesią arba tamsią temą<br>
+&#8226; Sukurkite savo prenumeratų atsarginę kopiją pasinaudodami „gPodder.net“ integracija arba OPML eksportu
 
-<b>Join the AntennaPod community!</b><br>
-AntennaPod is under active development by volunteers. You can contribute too, with code or with comment!
+<b>Prisijunkite prie AntennaPod bendruomenės!</b><br>
+„AntennaPod“ aplikaciją aktyviai vysto savanoriai. Jūs taip pat galite prisidėti, nuo atsiliepimų iki programinio kodo!
 
-GitHub is the place to go for feature requests, bug reports and code contributions:<br>
+„GitHub“ yra ta vieta, kur galite pageidauti naujų funkcijų, pranešti apie riktą arba prisidėti programiniu kodu:<br>
 https://www.github.com/AntennaPod/AntennaPod
 
-Our Google Group is the place to share your ideas, favourite podcasting moments and gratitude to all the volunteers:<br>
+Mūsų „Google“ grupė yra puiki vieta pasidalinti idėjomis, mėgstamiausiais tinklalaidžių sklaidos momentais ar išreikšti padėką visiems savanoriams:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
-Have a question or want to give us feedback?
+Turite klausimų ar norite palikti atsiliepimą?
 https://twitter.com/@AntennaPod
 
-Transifex is the place to help with translations:<br>
+„Transifex“ yra ta vieta, kur galite prisidėti prie aplikacijos vertimo:<br>
 https://www.transifex.com/antennapod/antennapod
 
-Check out our Beta Testing programme to get the latest features first:<br>
+Išbandykite mūsų Beta Testavimo programą, jei norite pirmieji gauti naujausias funkcijas:<br>
 https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
