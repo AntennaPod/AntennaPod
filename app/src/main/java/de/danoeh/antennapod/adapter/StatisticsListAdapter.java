@@ -25,11 +25,15 @@ import de.danoeh.antennapod.core.util.Converter;
 public class StatisticsListAdapter extends BaseAdapter {
     private Context context;
     List<DBReader.StatisticsItem> feedTime = new ArrayList<>();
+    private boolean countAll = true;
 
     public StatisticsListAdapter(Context context) {
         this.context = context;
     }
 
+    public void setCountAll(boolean countAll) {
+        this.countAll = countAll;
+    }
 
     @Override
     public int getCount() {
@@ -77,7 +81,8 @@ public class StatisticsListAdapter extends BaseAdapter {
 
         holder.title.setText(feed.getTitle());
         holder.time.setText(Converter.shortLocalizedDuration(context,
-                feedTime.get(position).timePlayed));
+                countAll ? feedTime.get(position).timePlayedCountAll
+                        : feedTime.get(position).timePlayed));
         return convertView;
     }
 

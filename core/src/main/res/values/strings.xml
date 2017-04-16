@@ -31,6 +31,10 @@
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of podcasts played:</string>
     <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
+    <string name="statistics_mode">Statistics mode</string>
+    <string name="statistics_mode_normal">Calculate duration that was actually played. Playing twice is counted twice, while marking as played is not counted</string>
+    <string name="statistics_mode_count_all">Sum up all podcasts marked as played</string>
+    <string name="statistics_speed_not_counted">Notice: Playback speed is never taken into account.</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
