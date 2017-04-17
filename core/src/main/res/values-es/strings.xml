@@ -113,7 +113,6 @@
   <string name="share_feed_url_label">Compartir URL del canal</string>
   <string name="share_item_url_label">Compartir URL del archivo del episodio</string>
   <string name="share_item_url_with_position_label">Compartir URL del episodio con posición</string>
-  <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
   <string name="feed_remover_msg">Quitando el canal</string>
   <string name="load_complete_feed">Actualizar el canal completo</string>
   <string name="hide_episodes_title">Ocultar episodios</string>
@@ -281,7 +280,6 @@
   <string name="pref_pauseOnDisconnect_sum">Pausar la reproducción al desconectar los auriculares o el bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reanudar reproducción cuando se reconecten los auriculares</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reanudar reproducción cuando se reconecte el bluetooth</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Saltar episodio con botón</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Al pulsar el botón físico de avanzar se saltará al siguiente episodio en lugar de sólo avanzar</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Botón anterior reinicia</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Al pulsar el botón físico de retroceder se comenzará el episodio de nuevo, en lugar de rebobinar</string>
@@ -289,7 +287,6 @@
   <string name="pref_auto_delete_sum">Borrar episodio cuando finalice la reproducción</string>
   <string name="pref_auto_delete_title">Eliminar automáticamente</string>
   <string name="pref_smart_mark_as_played_sum">Marcar episodios como escuchados incluso si todavía quedan unos segundos por escuchar</string>
-  <string name="pref_smart_mark_as_played_title">Marcar como escuchado inteligente</string>
   <string name="pref_skip_keeps_episodes_sum">Conservar episodios al saltarlos</string>
   <string name="pref_skip_keeps_episodes_title">Conservar episodios saltados</string>
   <string name="playback_pref">Reproducción</string>
@@ -363,9 +360,6 @@
   <string name="pref_gpodnet_notifications_sum">Este ajuste no afecta a errores de autenticación.</string>
   <string name="pref_playback_speed_title">Velocidades de reproducción</string>
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles para la reproducción de audio a velocidad variable</string>
-  <string name="pref_fast_forward">Intervalo de avance</string>
-  <string name="pref_rewind">Intervalo de retroceso</string>
-
   <string name="pref_gpodnet_sethostname_title">Definir nombre de equipo</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usar nombre de equipo por defecto</string>
   <string name="pref_expandNotify_title">Expandir Notificación</string>
@@ -390,7 +384,6 @@
   <string name="crash_report_sum">Enviar el último informe de fallo por e-mail</string>
   <string name="send_email">Enviar e-mail</string>
   <string name="experimental_pref">Experimental</string>
-  <string name="pref_sonic_title">Sonic media player</string>
   <string name="pref_sonic_message">Usar el reproductor Sonic Media incorporado en lugar del reproductor multimedia de Android y Prestissimo</string>
   <string name="pref_current_value">Valor actual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
@@ -401,9 +394,6 @@
   <string name="pref_cast_title">Soporte para Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar soporte para reproducción remota en dispositivos Cast (como Chromecast, altavoces o Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast requiere librerías propietarias de terceros que están deshabilitadas en esta versión de AntennaPod</string>
-  <string name="pref_fast_forward_sum">Personalizar el número de segundos para saltar hacia adelante cuando se hace clic en el botón de avance rápido</string>
-  <string name="pref_rewind_sum">Personalizar el número de segundos para saltar hacia atrás cuando se hace clic en el botón de rebobinado</string>
-
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Hacer Flattr del episodio en cuanto se haya reproducido el %d por ciento</string>

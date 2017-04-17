@@ -105,7 +105,6 @@
   <string name="share_feed_url_label">Chia sẻ liên kết feed</string>
   <string name="share_item_url_label">Chia sẻ liên kết của tập này</string>
   <string name="share_item_url_with_position_label">Chia sẻ liên kết và vị trí phát tập này</string>
-  <string name="feed_delete_confirmation_msg">Hãy xác nhận bạn muốn xoá feed và TẤT CẢ các tập đã tải về từ feed này.</string>
   <string name="feed_remover_msg">Đang xoá feed</string>
   <string name="hide_episodes_title">Ẩn các tập</string>
   <string name="episode_actions">Áp dụng hành động</string>
@@ -235,7 +234,6 @@
   <string name="pref_pauseOnDisconnect_sum">Tạm dừng khi tai nghe hoặc thiết bị Bluetooth bị ngắt kết nối</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Tiếp tục phát khi tai nghe được kết nối lại</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Tiếp tục phát khi thiết bị Bluetooth được kết nối lại</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Chuyển tập khi ấn nút tua nhanh</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Khi ấn nút tua nhanh (nút cứng), không tua mà chuyến sang tập tiếp theo</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Nghe lại khi ấn nút tua lại</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Khi ấn nút tua lại (nút cứng), không tua lại mà phát lại tập đang nghe</string>
@@ -243,7 +241,6 @@
   <string name="pref_auto_delete_sum">Xoá các tập podcast sau khi nghe xong</string>
   <string name="pref_auto_delete_title">Tự động xoá</string>
   <string name="pref_smart_mark_as_played_sum">Khi còn một khoảng thời gian chưa nghe hết, vẫn đánh dấu đã nghe tập podcast</string>
-  <string name="pref_smart_mark_as_played_title">Đánh dấu đã nghe thông minh</string>
   <string name="pref_skip_keeps_episodes_sum">Giữ lại các tập podcast khi bị bỏ qua</string>
   <string name="pref_skip_keeps_episodes_title">Giữ các tập bị bỏ qua</string>
   <string name="playback_pref">Phát</string>

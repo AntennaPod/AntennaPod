@@ -48,6 +48,7 @@
   <string name="cancel_label">Loobu</string>
   <string name="yes">Jah</string>
   <string name="no">Ei</string>
+  <string name="reset">Nulli</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Keel</string>
   <string name="url_label">URL</string>
@@ -93,7 +94,9 @@
   <string name="mark_all_read_label">Märgi kuulatuks</string>
   <string name="mark_all_read_msg">Märgi kõik saated esitatuks</string>
   <string name="mark_all_seen_label">Märgi kõik nähtuks</string>
+  <string name="mark_all_seen_msg">Märgi kõik saated nähtuks</string>
   <string name="show_info_label">Näita infot</string>
+  <string name="rename_feed_label">Nimeta taskuhääling ümber</string>
   <string name="remove_feed_label">Eemalda taskuhääling</string>
   <string name="share_label">Jaga...</string>
   <string name="share_link_label">Jaga linki</string>
@@ -110,6 +113,7 @@
   <string name="hide_not_queued_episodes_label">Pole järjekorras</string>
   <string name="hide_downloaded_episodes_label">Alla laaditud</string>
   <string name="hide_not_downloaded_episodes_label">Pole alla laaditud</string>
+  <string name="hide_has_media_label">On meediafaile</string>
   <string name="filtered_label">Filtreeritud</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Viimane värskendamine ebaõnnestus</string>
   <string name="open_podcast">Ava taskuhääling</string>
@@ -120,7 +124,9 @@
   <string name="stop_label">Stopp</string>
   <string name="stream_label">Voogedastusena</string>
   <string name="remove_label">Eemalda</string>
+  <string name="delete_label">Kustuta</string>
   <string name="remove_episode_lable">Eemalda saade</string>
+  <string name="marked_as_seen_label">Märgitud nähtuks</string>
   <string name="mark_read_label">Märgi esitatuks</string>
   <string name="marked_as_read_label">Märgitud kuulatuks</string>
   <string name="mark_unread_label">Märgitud kui kuulamata</string>
@@ -153,6 +159,7 @@
   <string name="download_error_unknown_host">Tundmatu host</string>
   <string name="download_error_unauthorized">Autentimise viga</string>
   <string name="download_error_file_type_type">Failitüübi viga</string>
+  <string name="download_error_forbidden">Keelatud</string>
   <string name="cancel_all_downloads_label">Tühista kõik allalaadimised</string>
   <string name="download_canceled_msg">Allalaadimine on tühistatud</string>
   <string name="download_report_title">Allalaadimised lõpetati veaga (vigadega)</string>
@@ -200,6 +207,8 @@
   <string name="sort">Sorteeri</string>
   <string name="date">Kuupäeva järgi</string>
   <string name="duration">Kestuse järgi</string>
+  <string name="episode_title">Saate pealkiri</string>
+  <string name="feed_title">Uudisvoo pealkiri</string>
   <string name="ascending">Kasvavalt</string>
   <string name="descending">Kahanevalt</string>
   <!--Flattr-->
@@ -220,6 +229,8 @@
   <string name="no_chapters_label">Saatel pole peatükke.</string>
   <string name="no_shownotes_label">Sellel saatel pole mingeid märkusi.</string>
   <!--Preferences-->
+  <string name="storage_pref">Salvestusruum</string>
+  <string name="project_pref">Projekt</string>
   <string name="other_pref">Muud</string>
   <string name="about_pref">Info</string>
   <string name="queue_label">Järjekord</string>
@@ -229,7 +240,6 @@
   <string name="pref_followQueue_sum">Kui saade lõpeb, siis esita kohe järgmine järjekorras olev saade.</string>
   <string name="pref_auto_delete_sum">Kustuta saated, kui need on kuulatud</string>
   <string name="pref_auto_delete_title">Automaatne kustutamine</string>
-  <string name="pref_smart_mark_as_played_title">Märgi nutikalt kuulatuks</string>
   <string name="pref_skip_keeps_episodes_sum">Hoia saated alles, kui need jäetakse vahele</string>
   <string name="pref_skip_keeps_episodes_title">Hoia vahelejäetud osad alles</string>
   <string name="playback_pref">Esitamine</string>
@@ -239,6 +249,7 @@
   <string name="pref_autoUpdateIntervallOrTime_Interval">Määra intervall</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Määra aeg päevades</string>
   <string name="pref_autoUpdateIntervallOrTime_every">iga %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">kell %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Laadi meediafaile alla ainult üle Wifi</string>
   <string name="pref_followQueue_title">Pidev esitamine</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Meedia allalaadimine üle Wifi</string>
@@ -276,18 +287,20 @@
   <string name="pref_gpodnet_logout_title">Logi välja</string>
   <string name="pref_gpodnet_logout_toast">Väljalogimine oli edukas</string>
   <string name="pref_gpodnet_setlogin_information_title">Muuda kasutajakonto infot</string>
+  <string name="pref_gpodnet_sync_changes_title">Sünkrooni muudatused kohe</string>
+  <string name="pref_gpodnet_full_sync_title">Täielik sünkroonimine kohe</string>
   <string name="pref_gpodnet_sync_started">Sünkroonimine on käivitatud</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Sisseloginud kui <i>%1$s</i> seadmega <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Esitamise kiirused</string>
-  <string name="pref_fast_forward">Kiire edasi kerimise aeg</string>
-  <string name="pref_rewind">Tagasi kerimise aeg</string>
   <string name="pref_gpodnet_sethostname_title">Määra hostinimi</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Kasuta vaikimisi hosti</string>
   <string name="pref_expandNotify_title">Teavituste laiendamine</string>
   <string name="pref_expandNotify_sum">Näita alati teavitustes pleieri nuppe.</string>
   <string name="pref_persistNotify_title">Püsivad taasesitamise nupud</string>
+  <string name="pref_compact_notification_buttons_title">Määra lukustutekraani nupud</string>
   <string name="pref_lockscreen_background_title">Määra lukustusekraani taustapilt</string>
   <string name="pref_showDownloadReport_title">Näita allalaadimise aruannet</string>
+  <string name="pref_queueAddToFront_title">Pane järjekorra algusesse</string>
   <string name="pref_smart_mark_as_played_disabled">Välja lülitatud</string>
   <string name="pref_image_cache_size_title">Pildi vahemälu suurus</string>
   <string name="pref_image_cache_size_sum">Piltide jaoks kasutatava vahemälu suurus</string>
@@ -298,11 +311,14 @@
   <string name="pref_current_value">Praegune väärtus: %1$s</string>
   <string name="pref_proxy_title">Vaheserver</string>
   <string name="pref_proxy_sum">Määra võrgu vaheserver</string>
+  <string name="pref_faq">KKK</string>
   <string name="pref_known_issues">Teadaolevad probleemid</string>
-  <string name="pref_rewind_sum">Kohanda mitu sekundit hüpata tagasi, kui tagasikerimise nupule vajutamist</string>
-  <string name="pref_fast_forward_sum">Kohanda mitu sekundit hüpata edasi, kui kiiresti edasi Klõpsamise</string>
+  <string name="pref_no_browser_found">Veebilehitsejat ei leitud.</string>
+  <string name="pref_cast_title">Chromecasti tugi</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
+  <string name="search_hint">Otsi saateid</string>
+  <string name="found_in_shownotes_label">Leitud saate märkmetest</string>
   <string name="found_in_chapters_label">Leitud peatükkidest</string>
   <string name="search_status_no_results">ei leitud midagi</string>
   <string name="search_label">Otsi</string>
@@ -324,12 +340,17 @@
   <string name="choose_file_from_filesystem">Kohalikust failisüsteemist</string>
   <string name="choose_file_from_external_application">Kasuta välist rakendust</string>
   <string name="opml_export_label">OPML eksport</string>
+  <string name="html_export_label">HTML eksport</string>
   <string name="exporting_label">Eksportimine...</string>
   <string name="export_error_label">Viga eksportimisel</string>
   <string name="opml_export_success_title">OPML eksport oli edukas.</string>
   <string name="opml_export_success_sum">.opml fail kirjutati kausta:\u0020</string>
   <!--Sleep timer-->
+  <string name="set_sleeptimer_label">Määra unetaimer</string>
+  <string name="disable_sleeptimer_label">Keela unetaimer</string>
   <string name="enter_time_here_label">Sisesta aeg</string>
+  <string name="sleep_timer_label">Unetaimer</string>
+  <string name="time_left_label">Aega järgi:\u0020</string>
   <string name="time_dialog_invalid_input">Vigane sisend, aeg peab olema arvuna</string>
   <string name="shake_to_reset_label">Raputa taimeri nullimiseks</string>
   <string name="timer_vibration_label">Vibreeri</string>
@@ -373,6 +394,8 @@
   <string name="gpodnetsync_auth_error_descr">Vale kasutajanimi või parool</string>
   <string name="gpodnetsync_error_title">gpodder.net sünkroonimise viga</string>
   <string name="gpodnetsync_error_descr">Sünkroonimise ajal tekkis viga:\u0020</string>
+  <string name="gpodnetsync_pref_report_successful">Korras</string>
+  <string name="gpodnetsync_pref_report_failed">Ebaõnnestus</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Vali kaust:</string>
   <string name="create_folder_label">Loo kaust</string>
@@ -434,6 +457,8 @@
   <string name="selected_queued_label">Valitud järjekorras olevad saated</string>
   <string name="not_queued_label">Pole järjekorras</string>
   <string name="selected_not_queued_label">Valitud järjekorras mitte olevad saated</string>
+  <string name="has_media">On meediafaile</string>
+  <string name="selected_has_media_label">Valitud saated meediafailidega</string>
   <!--Sort-->
   <string name="sort_title_a_z">Pealkiri (A \u2192 Z)</string>
   <string name="sort_title_z_a">Pealkiri (Z \u2192 A)</string>
@@ -465,8 +490,9 @@
   <string name="proxy_checking">Kontrollimine...</string>
   <string name="proxy_test_successful">Kontroll oli edukas</string>
   <string name="proxy_test_failed">Kontroll ebaõnnestus</string>
+  <string name="proxy_host_empty_error">Hostinimi ei saa olla tühi</string>
   <string name="proxy_port_invalid_error">Port pole korrektne</string>
-
   <!--Casting-->
+  <string name="cast_media_route_menu_title">Esita...</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

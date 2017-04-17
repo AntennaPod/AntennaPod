@@ -41,7 +41,6 @@
   <string name="mark_all_read_label">Hamısını oxunmuş kimi işarələ</string>
   <string name="show_info_label">Məlumatı göstər</string>
   <string name="share_link_label">Web-səhifəyi paylaş</string>
-  <string name="feed_delete_confirmation_msg">Bütün kanallar və epizodlar silinəçək.</string>
   <!--actions on feeditems-->
   <string name="download_label">Yüklə</string>
   <string name="play_label">Oynat</string>
@@ -151,8 +150,6 @@
   <string name="pref_update_interval_hours_plural">saat</string>
   <string name="pref_update_interval_hours_singular">saat</string>
   <string name="pref_update_interval_hours_manual">Əl ilə</string>
-  <string name="pref_fast_forward_sum">Sürətli irəli düyməsini tıklandığında irəli tullanmaq üçün saniyə sayı özelleştirin</string>
-  <string name="pref_rewind_sum">Geri düyməsinə tıklandığında geri tullanmaq üçün saniyə sayı özelleştirin</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="found_in_chapters_label">Fəsillərdə tapıldı</string>

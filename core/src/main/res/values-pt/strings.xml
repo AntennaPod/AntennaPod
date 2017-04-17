@@ -26,6 +26,10 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tempo total dos podcasts reproduzidos:</string>
   <string name="statistics_details_dialog">%1$d de %2$d episódios iniciados.\n\nReproduzidos %3$s de %4$s.</string>
+  <string name="statistics_mode">Modo estatístico</string>
+  <string name="statistics_mode_normal">Calcula a duração dos podcasts reproduzidos. Se os reproduzir duas vezes, serão contados duas vezes mas se os marcar como reproduzidos não serão contados.</string>
+  <string name="statistics_mode_count_all">Somar todos os podcasts marcados como reproduzidos</string>
+  <string name="statistics_speed_not_counted">Aviso: a velocidade de reprodução nunca será considerada.</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
   <string name="drawer_close">Fechar menu</string>
@@ -33,6 +37,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Ordenar por contador</string>
   <string name="drawer_feed_order_alphabetical">Ordenar alfabeticamente</string>
   <string name="drawer_feed_order_last_update">Ordenar por data de publicação</string>
+  <string name="drawer_feed_order_most_played">Ordenar por número de episódios reproduzidos</string>
   <string name="drawer_feed_counter_new_unplayed">Número de episódios novos ou por reproduzir</string>
   <string name="drawer_feed_counter_new">Número de novos episódios</string>
   <string name="drawer_feed_counter_unplayed">Número de episódios por reproduzir</string>
@@ -62,6 +67,7 @@
   <string name="refresh_label">Atualizar</string>
   <string name="external_storage_error_msg">Cartão SD não disponível. Certifique-se de que inseriu o cartão corretamente para que a aplicação funcione corretamente.</string>
   <string name="chapters_label">Capítulos</string>
+  <string name="chapter_duration">Duração: %1$s</string>
   <string name="shownotes_label">Notas</string>
   <string name="description_label">Descrição</string>
   <string name="most_recent_prefix">Episódio mais recente:\u0020</string>
@@ -113,7 +119,7 @@
   <string name="share_feed_url_label">Partilhar URL da fonte</string>
   <string name="share_item_url_label">Partilhar URL do episódio</string>
   <string name="share_item_url_with_position_label">Partilhar URL do episódio com posição</string>
-  <string name="feed_delete_confirmation_msg">Tem a certeza de que deseja remover esta fonte e todos os episódios descarregados?</string>
+  <string name="feed_delete_confirmation_msg">Tem a certeza de que deseja remover a fonte  \"%1$s\" e TODOS os episódios descarregados?</string>
   <string name="feed_remover_msg">Remover fonte</string>
   <string name="load_complete_feed">Atualizar todas as páginas da fonte</string>
   <string name="hide_episodes_title">Ocultar episódios</string>
@@ -125,6 +131,7 @@
   <string name="hide_not_queued_episodes_label">Não na fila</string>
   <string name="hide_downloaded_episodes_label">Descarregados</string>
   <string name="hide_not_downloaded_episodes_label">Não descarregados</string>
+  <string name="hide_has_media_label">Tem ficheiro</string>
   <string name="filtered_label">Filtrados</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Última atualização falhada</string>
   <string name="open_podcast">Abrir podcast</string>
@@ -363,7 +370,9 @@
   <string name="pref_playback_speed_title">Velocidades de reprodução</string>
   <string name="pref_playback_speed_sum">Personalizar as velocidades de reprodução disponíveis</string>
   <string name="pref_fast_forward">Tempo a avançar</string>
+  <string name="pref_fast_forward_sum">Personalizar o número de segundos a avançar ao clicar no botão de avanço rápido</string>
   <string name="pref_rewind">Tempo a recuar</string>
+  <string name="pref_rewind_sum">Personalizar o número de segundos a recuar ao clicar no botão de recuo rápido</string>
   <string name="pref_gpodnet_sethostname_title">Definir nome de servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilizar predefinições</string>
   <string name="pref_expandNotify_title">Expansão de notificação</string>
@@ -388,7 +397,7 @@
   <string name="crash_report_sum">Enviar o relatório de erros por e-mail</string>
   <string name="send_email">Enviar e-mail</string>
   <string name="experimental_pref">Experimental</string>
-  <string name="pref_sonic_title">Reprodutor Sonic</string>
+  <string name="pref_sonic_title">Reprodutor multimédia Sonic</string>
   <string name="pref_sonic_message">Utilizar o Sonic Media Player como substituto do reprodutor nativo do Android e do Prestissimo</string>
   <string name="pref_current_value">Valor atual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
@@ -399,6 +408,8 @@
   <string name="pref_cast_title">Suporte Chromecast</string>
   <string name="pref_cast_message_play_flavor">Ativar suporte a reprodução multimédia em dispositivos Cast (tais como Chromecast, Android TV...)</string>
   <string name="pref_cast_message_free_flavor">O Chromecast necessita de bibliotecas proprietárias de terceiros que estão desativadas nesta versão do AntennaPod</string>
+  <string name="pref_enqueue_downloaded_title">Colocar descarregados na fila</string>
+  <string name="pref_enqueue_downloaded_summary">Adicionar à fila os episódios descarregados</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>
   <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>
@@ -408,6 +419,8 @@
   <string name="search_hint">Pesquisar por episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas</string>
   <string name="found_in_chapters_label">Encontrado nos capítulos</string>
+  <string name="found_in_authors_label">Encontrado em autores</string>
+  <string name="found_in_feeds_label">Encontrado em fontes</string>
   <string name="search_status_no_results">Nenhum resultado</string>
   <string name="search_label">Pesquisar</string>
   <string name="found_in_title_label">Encontrado no título</string>
@@ -430,7 +443,7 @@
   <string name="choose_file_from_filesystem">Do sistema local de ficheiros</string>
   <string name="choose_file_from_external_application">Utilizar aplicação externa</string>
   <string name="opml_export_label">Exportação OPML</string>
-  <string name="html_export_label">Exportação OPML</string>
+  <string name="html_export_label">Exportação HTML</string>
   <string name="exporting_label">A exportar...</string>
   <string name="export_error_label">Erro de exportação</string>
   <string name="opml_export_success_title">Exportação efetuada</string>
@@ -517,8 +530,6 @@
   <string name="pref_resumeAfterCall_sum">Continuar reprodução ao terminar a chamada</string>
   <string name="pref_resumeAfterCall_title">Continuar após a chamada</string>
   <string name="pref_restart_required">Tem que reiniciar o AntennaPod para aplicar as alterações</string>
-  <string name="pref_rewind_sum">Personalizar o número de segundos para saltar para trás quando o botão de voltar é clicado</string>
-  <string name="pref_fast_forward_sum">Personalizar o número de segundos para saltar para a frente quando o botão de avanço rápido é clicado</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscrever</string>
   <string name="subscribed_label">Subscrito</string>
@@ -567,6 +578,8 @@
   <string name="selected_queued_label">Episódios selecionados na fila</string>
   <string name="not_queued_label">Não na fila</string>
   <string name="selected_not_queued_label">Episódios não selecionados na fila</string>
+  <string name="has_media">Tem ficheiro</string>
+  <string name="selected_has_media_label">Episódios selecionados com ficheiros</string>
   <!--Sort-->
   <string name="sort_title_a_z">Título (A \u2192 Z)</string>
   <string name="sort_title_z_a">Título (Z \u2192 A)</string>

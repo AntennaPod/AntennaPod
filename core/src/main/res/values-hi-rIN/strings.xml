@@ -52,7 +52,6 @@
   <string name="remove_feed_label">पॉडकास्ट हटाएँ
 </string>
   <string name="share_link_label">शेयर वेबसाइट लिंक</string>
-  <string name="feed_delete_confirmation_msg">इसकी पुष्टि करें कि आप इस फ़ीड और इस फ़ीड के सभी प्रकरणों को हटाना चाहते हैं जिन्हें आपने डाउनलोड किया है.</string>
   <string name="feed_remover_msg">फ़ीड निकाल रहा है</string>
   <!--actions on feeditems-->
   <string name="download_label">डाउनलोड</string>
@@ -185,8 +184,6 @@
   <string name="pref_playback_speed_sum">चर गति ऑडियो प्लेबैक के लिए उपलब्ध गति बनाइए</string>
   <string name="pref_gpodnet_sethostname_title">होस्टनाम सेट</string>
   <string name="pref_gpodnet_sethostname_use_default_host">डिफ़ॉल्ट होस्ट का प्रयोग करें</string>
-  <string name="pref_fast_forward_sum">आगे कूद करने के लिए सेकंड की संख्या अनुकूलित जब तेजी से आगे बटन क्लिक किया जाता है</string>
-  <string name="pref_rewind_sum">पीछे की ओर कूद करने के लिए सेकंड की संख्या अनुकूलित जब उल्टा बटन क्लिक किया जाता है</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="found_in_chapters_label">अध्यायों में मिला</string>

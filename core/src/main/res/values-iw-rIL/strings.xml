@@ -77,7 +77,6 @@
   <string name="show_info_label">הצג מידע</string>
   <string name="remove_feed_label">הסר פודקאסט</string>
   <string name="share_link_label">שתף קישור אתר</string>
-  <string name="feed_delete_confirmation_msg">אשר מחיקת הזנה זו ואת כל פרקי ההזנה שהורדת.</string>
   <string name="feed_remover_msg">הסר הזנה</string>
   <string name="load_complete_feed">רענן את כל ההזנה</string>
   <!--actions on feeditems-->
@@ -250,8 +249,6 @@
   <string name="pref_expand_notify_unsupport_toast">גרסאות אנדרויד לפני 4.1 לא תומכות בהודעות מורחבות.</string>
   <string name="pref_queueAddToFront_sum">הוסף פרקים חדשים לראש התור.</string>
   <string name="pref_queueAddToFront_title">הוסף לראש התור.</string>
-  <string name="pref_rewind_sum">התאמה אישית של מספר השניות כדי לקפוץ לאחור כאשר כפתור rewind לוחץ</string>
-  <string name="pref_fast_forward_sum">התאמה אישית של מספר השניות כדי לקפוץ קדימה בעת הלחיצה על לחצן קדימה מהר לוחצת</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">הפעל תרומות flattr אוטומטיות</string>
   <string name="auto_flattr_after_percent">תרום באמצעות flattr כשנוגן %d אחוזים מהפרק</string>

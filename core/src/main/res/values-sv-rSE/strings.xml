@@ -107,7 +107,6 @@
   <string name="share_feed_url_label">Dela Flödets URL</string>
   <string name="share_item_url_label">Dela Episoden Fil-URL</string>
   <string name="share_item_url_with_position_label">Dela Episodens Fil-URL med Position</string>
-  <string name="feed_delete_confirmation_msg">Bekräfta att du vill ta bort denna feed och ALLA avsnitt av denna feed som du har hämtat.</string>
   <string name="feed_remover_msg">Tar bort Flöde</string>
   <string name="load_complete_feed">Uppdatera hela Flödet</string>
   <string name="hide_episodes_title">Dölj Episoder</string>
@@ -273,13 +272,11 @@
   <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller bluetooth kopplas ifrån.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Fortsätt uppspelningen när hörlurarna återansluts</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsätt uppspelningen när bluetooth återansluts</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Framåt-knappen hoppar</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Hoppa till nästa episod istället för att snabbspola vid tryck på hårdvaruknappen</string>
   <string name="pref_followQueue_sum">Hoppa till nästa i kön när uppspelningen är klar</string>
   <string name="pref_auto_delete_sum">Ta bort episoden när uppspelningen är klar</string>
   <string name="pref_auto_delete_title">Automatisk Borttagning</string>
   <string name="pref_smart_mark_as_played_sum">Markera episoder som spelade även om mindre än ett visst antal sekunder är kvar</string>
-  <string name="pref_smart_mark_as_played_title">Smart markering av uppspelat innehåll</string>
   <string name="pref_skip_keeps_episodes_sum">Ta inte bort episoder när de hoppas över</string>
   <string name="pref_skip_keeps_episodes_title">Behåll Överhoppade Episoder</string>
   <string name="playback_pref">Uppspelning</string>
@@ -345,8 +342,6 @@
   <string name="pref_gpodnet_login_status"><![CDATA[Inloggad som <i>%1$s</i> med enhet <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Uppspelningshastigheter</string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet.</string>
-  <string name="pref_fast_forward">Spola framåt</string>
-  <string name="pref_rewind">Spola bakåt</string>
   <string name="pref_gpodnet_sethostname_title">Sätt värdnamn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Använd standardvärden</string>
   <string name="pref_expandNotify_title">Expandera aviseringen</string>
@@ -371,7 +366,6 @@
   <string name="crash_report_sum">Sänd den senaste krashrapporten via e-post</string>
   <string name="send_email">Sänd e-post</string>
   <string name="experimental_pref">Experimentellt</string>
-  <string name="pref_sonic_title">Sonic mediaspelare</string>
   <string name="pref_sonic_message">Använd den inbyggda Sonic mediaspelare som ersättning för Androids egna mediaspelare och Prestissimo</string>
   <string name="pref_current_value">Nuvarande värde: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
@@ -382,8 +376,6 @@
   <string name="pref_cast_title">Chromecast-stöd</string>
   <string name="pref_cast_message_play_flavor">Aktivera stöd för fjärruppspelning av media på Cast-enheter (såsom Chromecast, Ljudanläggningar eller Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast kräver propretiära tredjepartsbibliotek som inte är inkluderade i denna version av AntennaPod</string>
-  <string name="pref_rewind_sum">Anpassa antalet sekunder för att hoppa bakåt när bakåt-knappen klickas</string>
-  <string name="pref_fast_forward_sum">Anpassa antalet sekunder för att hoppa framåt när snabbspolning framåt klickar på knappen</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>

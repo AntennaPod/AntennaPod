@@ -20,6 +20,7 @@
   <string name="playback_history_label">Cronologia delle riproduzioni</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
+  <string name="free_space_label">%1$s disponibili</string>
   <string name="episode_cache_full_title">Cache degli episodi piena</string>
   <string name="episode_cache_full_message">Il limite della cache degli episodi è stato raggiunto. Puoi incrementare la dimensione della cache nelle Impostazioni.</string>
   <!--Statistics fragment-->
@@ -28,11 +29,13 @@
   <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
   <string name="drawer_close">Chiudi il menù</string>
+  <string name="drawer_preferences">Preferenze Cassetto</string>
   <string name="drawer_feed_order_alphabetical">Ordina alfabeticamente</string>
   <string name="drawer_feed_order_last_update">Ordina per data di pubblicazione</string>
   <string name="drawer_feed_counter_new_unplayed">Numero di episodi nuovi e non riprodotti</string>
   <string name="drawer_feed_counter_new">Numero di episodi nuovi</string>
   <string name="drawer_feed_counter_unplayed">Numero di episodi non riprodotti</string>
+  <string name="drawer_feed_counter_downloaded">Numero di episodi scaricati</string>
   <string name="drawer_feed_counter_none">Nessuno</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Apri nel browser</string>
@@ -70,6 +73,7 @@
   <string name="retry_label">Riprova</string>
   <string name="auto_download_label">Includi nei download automatici</string>
   <string name="auto_download_apply_to_items_title">Applica ai Precedenti Episodi</string>
+  <string name="auto_download_apply_to_items_message">La nuova funzione <i>Auto Download</i> sarà applicata automaticamente ai nuovi episodi.\nVuoi attivarla anche per gli episodi pubblicati precedentemente?</string>
   <string name="auto_delete_label">Elimina Episodi Automaticamente</string>
   <string name="parallel_downloads_suffix">\u0020download paralleli</string>
   <string name="feed_auto_download_always">Sempre</string>
@@ -94,14 +98,14 @@
   <string name="mark_all_read_feed_confirmation_msg">Per favore conferma che vuoi segnare tutti gli episodi di questo feed come riprodotti.</string>
   <string name="mark_all_seen_label">Segna tutti come visti</string>
   <string name="show_info_label">Informazioni</string>
-  <string name="remove_feed_label">Rimuovi un podcast</string>
+  <string name="rename_feed_label">Rinomina Podcast</string>
+  <string name="remove_feed_label">Rimuovi podcast</string>
   <string name="share_label">Condividi...</string>
   <string name="share_link_label">Condividi il link al sito</string>
   <string name="share_link_with_position_label">Condividi il Link con la Posizione</string>
   <string name="share_feed_url_label">Condividi URL del Feed</string>
   <string name="share_item_url_label">Condividi URL del File dell\'episodio</string>
   <string name="share_item_url_with_position_label">Condividi l\'URL del File dell\'epsiodio con la Posizione</string>
-  <string name="feed_delete_confirmation_msg">Per favore conferma la cancellazione di questo feed e di TUTTI gli episodi collegati che sono stati precedentemente scaricati.</string>
   <string name="feed_remover_msg">Rimozione feed</string>
   <string name="load_complete_feed">Ricarica il feed completo</string>
   <string name="hide_episodes_title">Nascondi gli episodi</string>
@@ -123,7 +127,9 @@
   <string name="stop_label">Ferma</string>
   <string name="stream_label">Stream</string>
   <string name="remove_label">Rimuovi</string>
+  <string name="delete_label">Elimina</string>
   <string name="remove_episode_lable">Rimuovi l\'episodio</string>
+  <string name="marked_as_seen_label">Segna come visto</string>
   <string name="mark_read_label">Segna come riprodotto</string>
   <string name="marked_as_read_label">Segnato come riprodotto</string>
   <string name="mark_unread_label">Segna come non riprodotto</string>
@@ -329,8 +335,6 @@
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_faq">FAQ</string>
   <string name="pref_cast_title">Supporto a Chromecast</string>
-  <string name="pref_rewind_sum">Personalizzare il numero di secondi per saltare all\'indietro quando il pulsante di riavvolgimento viene cliccato</string>
-  <string name="pref_fast_forward_sum">Personalizzare il numero di secondi per saltare in avanti quando il pulsante di avanzamento rapido viene cliccato</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Abilita l\'esecuzione automatica di Flattr</string>
   <string name="auto_flattr_after_percent">Carica l\'episodio su Flattr appena è stato riprodotto al %d percento</string>

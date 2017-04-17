@@ -28,7 +28,6 @@
   <string name="feedurl_label">ಫೀಡ್ ಯು.ಆರ್.ಎಲ್</string>
   <!--Actions on feeds-->
   <string name="show_info_label">ಮಾಹಿತಿ ತೋರಿಸು</string>
-  <string name="feed_delete_confirmation_msg">ನೀವು ಈ ಫೀಡ್ ಮತ್ತು ನೀವು ಡೌನ್ಲೋಡ್ ಮಾಡಿದ ಈ ಫೀಡ್ನ ಎಲ್ಲಾ ಕಂತುಗಳು ಅಳಿಸಲು ಬಯಸುತ್ತೀರಿ ಎಂಬುದನ್ನು ದಯವಿಟ್ಟು ದೃಢಪಡಿಸಿ.</string>
   <!--actions on feeditems-->
   <string name="download_label">ಡೌನ್ಲೋಡ್</string>
   <string name="play_label">ಚಾಲನೆಗೊಳಿಸು</string>

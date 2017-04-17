@@ -230,7 +230,6 @@
   <string name="pref_image_cache_size_title">Paveikslėlių podėlio dydis</string>
   <string name="pref_image_cache_size_sum">Paveikslėlių podėlio diske dydis.</string>
   <string name="send_email">Siųsti el. laišką</string>
-  <string name="pref_sonic_title">„Sonic“ medijos grotuvas</string>
   <string name="pref_current_value">Dabartinė reikšmė: %1$s</string>
   <string name="pref_faq">DUK</string>
   <string name="pref_known_issues">Žinomos problemos</string>

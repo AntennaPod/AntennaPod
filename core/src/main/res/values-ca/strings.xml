@@ -69,6 +69,7 @@
   <string name="auto_download_label">Inclou a baixades automàtiques</string>
   <string name="auto_download_apply_to_items_title">Aplica als episodis previs</string>
   <string name="auto_download_apply_to_items_message">El nou ajustament de <i>baixada automàtica</i> s\'aplicarà als nous episodis.\nVols que també sigui aplicat als episodis publicats prèviament?</string>
+  <string name="auto_delete_label">Esborrar episodi automàticament</string>
   <string name="parallel_downloads_suffix">\u0020baixades paral·leles</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
@@ -92,13 +93,17 @@
   <string name="mark_all_read_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com reproduits.</string>
   <string name="mark_all_read_feed_confirmation_msg">Si us plau confirma que vols marcar tots els episodis d\'aquest canal com reproduits.</string>
   <string name="mark_all_seen_label">Marca tot com a llegit</string>
+  <string name="mark_all_seen_msg">S\'han marcat tots els episodis com a vistos</string>
+  <string name="mark_all_seen_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com vistos.</string>
   <string name="show_info_label">Mostra informació</string>
+  <string name="rename_feed_label">Renombra podcast</string>
   <string name="remove_feed_label">Esborra podcast</string>
   <string name="share_label">Compartir...</string>
   <string name="share_link_label">Comparteix l\'enllaç</string>
   <string name="share_link_with_position_label">Comparteix enllaç amb posició</string>
   <string name="share_feed_url_label">Comparteix adreça del canal</string>
-  <string name="feed_delete_confirmation_msg">Confirmeu que, efectivament, voleu suprimir aquest canal i tots els episodis que us n\'heu baixat.</string>
+  <string name="share_item_url_label">Comparteix adreça del fitxer del canal</string>
+  <string name="share_item_url_with_position_label">Comparteix adreça del fitxer del canal amb posició</string>
   <string name="feed_remover_msg">S\'està esborrant el canal</string>
   <string name="load_complete_feed">S\'ha actualitzat el canal</string>
   <string name="hide_episodes_title">Amaga Episodis</string>
@@ -110,8 +115,10 @@
   <string name="hide_not_queued_episodes_label">No en cua</string>
   <string name="hide_downloaded_episodes_label">Baixat</string>
   <string name="hide_not_downloaded_episodes_label">No baixat</string>
+  <string name="hide_has_media_label">Conté medis</string>
   <string name="filtered_label">Filtrat</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Darrera actualització fallida</string>
+  <string name="open_podcast">Obrir podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Baixa</string>
   <string name="play_label">Reprodueix</string>
@@ -119,7 +126,9 @@
   <string name="stop_label">Atura</string>
   <string name="stream_label">Reprodueix sense baixar</string>
   <string name="remove_label">Suprimeix</string>
+  <string name="delete_label">Esborrar</string>
   <string name="remove_episode_lable">Esborra episodi</string>
+  <string name="marked_as_seen_label">Marcat com a vist</string>
   <string name="mark_read_label">Marca com a llegit</string>
   <string name="marked_as_read_label">Marcats com llegits</string>
   <string name="mark_unread_label">Marca com a pendent</string>
@@ -152,6 +161,8 @@
   <string name="download_error_connection_error">Error de connexió</string>
   <string name="download_error_unknown_host">Amfitrió desconegut</string>
   <string name="download_error_unauthorized">Error d\'autenticació</string>
+  <string name="download_error_file_type_type">Error de tipus de fitxer</string>
+  <string name="download_error_forbidden">Prohibit</string>
   <string name="cancel_all_downloads_label">Cancel·la totes les baixades</string>
   <string name="download_canceled_msg">S\'ha cancel·lat la baixada</string>
   <string name="download_canceled_autodownload_enabled_msg">Baixada cancel·lada\nDesactivada les <i>baixades automàtiques</i> per aquest element</string>
@@ -205,6 +216,8 @@
   <string name="sort">Ordena</string>
   <string name="date">Data</string>
   <string name="duration">Durada</string>
+  <string name="episode_title">Títol de l\'episodi</string>
+  <string name="feed_title">Títol del feed</string>
   <string name="ascending">Ascendent</string>
   <string name="descending">Descendent</string>
   <string name="clear_queue_confirmation_msg">Si us plau confirma que vols suprimir tots els episodis de la cua</string>
@@ -255,13 +268,11 @@
   <string name="pref_pauseOnDisconnect_sum">Pausa la reproducció en desconnectar els auriculars o el bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continua la reproducció en connectar novament els auriculars</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Continua la reproducció en connectar novament el bluetooth</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Botó \'Endavant\' passa al següent</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Al prémer el botó de hardware \'Endavant\' passar al següent episodi en comptes d\'avançar a la reproducció</string>
   <string name="pref_followQueue_sum">Salta al següent element de la cua en acabar la reproducció</string>
   <string name="pref_auto_delete_sum">Suprimeix l\'episodi quan s\'acabi de reproduir</string>
   <string name="pref_auto_delete_title">Esborrat automàtic</string>
   <string name="pref_smart_mark_as_played_sum">Marca episodis com com reproduits, encara que quedi menys d\'una certa quantitat de segons de temps</string>
-  <string name="pref_smart_mark_as_played_title">Marcació intel·ligent com a reproduit</string>
   <string name="pref_skip_keeps_episodes_sum">Mantenir episodis quan són passats de llarg</string>
   <string name="pref_skip_keeps_episodes_title">Mantenir els episodis passats de llarg</string>
   <string name="playback_pref">Reproducció</string>
@@ -325,8 +336,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
   <string name="pref_playback_speed_title">Velocitats de reproducció</string>
   <string name="pref_playback_speed_sum">Personalitzeu les velocitats disponibles per a una velocitat de reproducció d\'àudio variable</string>
-  <string name="pref_fast_forward">Temps d\'avançada ràpida</string>
-  <string name="pref_rewind">Temps de rebobinat</string>
   <string name="pref_gpodnet_sethostname_title">Definex nom del servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilitza el servidor per defecte</string>
   <string name="pref_expandNotify_title">Amplia la notificació</string>
@@ -347,11 +356,8 @@
   <string name="crash_report_sum">Enviar l\'últim report de tancament abrupte per e-mail</string>
   <string name="send_email">Envia e-mail</string>
   <string name="experimental_pref">Experimental</string>
-  <string name="pref_sonic_title">Reproductor multimèdia Sonic</string>
   <string name="pref_sonic_message">Fer servir el reproductor Sonic Media integrat en comptes del reproductor natiu d\'Android i Prestissimo</string>
   <string name="pref_current_value">Valor actual: %1$s</string>
-  <string name="pref_rewind_sum">Personalitzar el nombre de segons per saltar cap enrere quan es fa clic al botó de rebobinat</string>
-  <string name="pref_fast_forward_sum">Personalitzar el nombre de segons per saltar cap endavant quan es fa clic al botó d\'avanç ràpid</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activa la compartició automàtica per Flattr</string>
   <string name="auto_flattr_after_percent">Comparteix per Flattr l\'episodi en haver-ne reproduït el %d per cent</string>
@@ -529,5 +535,9 @@
   <string name="sonic_only">Només Sonic</string>
   <!--proxy settings-->
   <!--Casting-->
+  <string name="cast_failed_to_play">Error en començar la reproducció del medi</string>
+  <string name="cast_failed_to_stop">Error en aturar la reproducció del medi</string>
+  <string name="cast_failed_to_pause">Error en pausar la reproducció del medi</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_setting_volume">Error al establir el volum</string>
 </resources>

@@ -112,7 +112,6 @@
   <string name="share_feed_url_label">フィード URLを共有</string>
   <string name="share_item_url_label">エピソードファイル URLを共有</string>
   <string name="share_item_url_with_position_label">エピソードファイル URL を位置と共に共有</string>
-  <string name="feed_delete_confirmation_msg">このフィードと、このフィードのダウンロードしたすべてのエピソードを削除することを確認してください。</string>
   <string name="feed_remover_msg">フィードの削除中</string>
   <string name="load_complete_feed">フィードをすべて更新</string>
   <string name="hide_episodes_title">エピソードを非表示にする</string>
@@ -279,7 +278,6 @@
   <string name="pref_pauseOnDisconnect_sum">ヘッドフォンまたはBluetoothの接続が切断された時、再生を一時停止します</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">ヘッドフォンが再接続された時に再生を再開します</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetoothが再接続された時に再生を再開します</string>
-  <string name="pref_hardwareForwardButtonSkips_title">早送りボタンでスキップ</string>
   <string name="pref_hardwareForwardButtonSkips_sum">ハードウェアの早送りボタンを押したときに、早送りの代わりに次のエピソードにスキップします</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">戻るボタンで再開</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">ハードウェアの戻るボタンを押したときに、巻き戻しの代わりに現在のエピソードの再生を再開します</string>
@@ -287,7 +285,6 @@
   <string name="pref_auto_delete_sum">再生が完了した時にエピソードを削除します</string>
   <string name="pref_auto_delete_title">自動削除</string>
   <string name="pref_smart_mark_as_played_sum">一定の秒数未満の再生時間がまだ残っている場合でも、エピソードを再生済としてマークします</string>
-  <string name="pref_smart_mark_as_played_title">再生済としてスマートマーク</string>
   <string name="pref_skip_keeps_episodes_sum">エピソードをスキップした時に残しておきます</string>
   <string name="pref_skip_keeps_episodes_title">エピソードのスキップ時に残す</string>
   <string name="playback_pref">再生</string>
@@ -361,8 +358,6 @@
   <string name="pref_gpodnet_notifications_sum">この設定は、認証エラーには適用されません。</string>
   <string name="pref_playback_speed_title">再生速度</string>
   <string name="pref_playback_speed_sum">可変速度音声再生に使用可能な速度をカスタマイズします</string>
-  <string name="pref_fast_forward">早送り時間</string>
-  <string name="pref_rewind">巻き戻し時間</string>
   <string name="pref_gpodnet_sethostname_title">ホスト名をセット</string>
   <string name="pref_gpodnet_sethostname_use_default_host">デフォルトホストを使用</string>
   <string name="pref_expandNotify_title">拡張通知</string>
@@ -387,7 +382,6 @@
   <string name="crash_report_sum">メールで最新のクラッシュレポートを送信します</string>
   <string name="send_email">メールを送信</string>
   <string name="experimental_pref">実験的</string>
-  <string name="pref_sonic_title">Sonic メディアプレーヤー</string>
   <string name="pref_sonic_message">Android 標準のメディアプレーヤーと Prestissimo の代わりに、内蔵のソニックメディアプレーヤーを使用します</string>
   <string name="pref_current_value">現在の値: %1$s</string>
   <string name="pref_proxy_title">プロキシ</string>
@@ -513,8 +507,6 @@
   <string name="pref_resumeAfterCall_sum">着信が完了した後に再生を再開します</string>
   <string name="pref_resumeAfterCall_title">着信後に再開</string>
   <string name="pref_restart_required">この変更を有効にするには AntennaPod を再起動する必要があります。</string>
-  <string name="pref_rewind_sum">巻き戻しボタンがクリックされたときに後方にジャンプする秒数をカスタマイズします</string>
-  <string name="pref_fast_forward_sum">早送りボタンがクリックされたときに前方にジャンプする秒数をカスタマイズします</string>
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
   <string name="subscribed_label">購読しました</string>

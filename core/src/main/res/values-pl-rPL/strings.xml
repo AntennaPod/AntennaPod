@@ -36,6 +36,7 @@
   <string name="drawer_feed_counter_new_unplayed">Liczba nowych i nieodtworzonych odcinków</string>
   <string name="drawer_feed_counter_new">Liczba nowych odcinków</string>
   <string name="drawer_feed_counter_unplayed">Liczba nieodtworzonych odcinków</string>
+  <string name="drawer_feed_counter_downloaded">Liczba pobranych odcinków</string>
   <string name="drawer_feed_counter_none">Brak</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Otwórz w przeglądarce</string>
@@ -50,6 +51,7 @@
   <string name="cancel_label">Anuluj</string>
   <string name="yes">Tak</string>
   <string name="no">Nie</string>
+  <string name="reset">Reset</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Język</string>
   <string name="url_label">URL</string>
@@ -86,6 +88,7 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 dzień po odtworzeniu</item>
     <item quantity="few">%d dni po odtworzeniu</item>
+    <item quantity="many">%d dni po odtworzeniu</item>
     <item quantity="other">%d dni po odtworzeniu</item>
   </plurals>
   <!--'Add Feed' Activity labels-->
@@ -93,6 +96,7 @@
   <string name="etxtFeedurlHint">Adres URL kanału lub strony internetowej</string>
   <string name="txtvfeedurl_label">Dodaj podcast przez adres</string>
   <string name="podcastdirectories_label">Znajdź podcast w folderze</string>
+  <string name="podcastdirectories_descr">Możesz wyszukiwać nowe podcasty ze względu na nazwę, kategorię lub popularność na gpodder.net, Itunes lub fyyd</string>
   <string name="browse_gpoddernet_label">Przeglądaj gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Oznacz wszystkie jako odtworzone</string>
@@ -100,7 +104,10 @@
   <string name="mark_all_read_confirmation_msg">Proszę potwierdzić, że chcesz zaznaczyć wszystkie odcinki do odtworzenia.</string>
   <string name="mark_all_read_feed_confirmation_msg">Proszę potwierdzić, że chcesz zaznaczyć wszystkie odcinki na tym kanale do odtworzenia.</string>
   <string name="mark_all_seen_label">Oznacz wszystkie jako widziane</string>
+  <string name="mark_all_seen_msg">Zaznacz wszystkie Odcinki jako obejrzane</string>
+  <string name="mark_all_seen_confirmation_msg">Proszę potwierdzić chęć zaznaczenia wszystkich odcinków jako obejrzanych.</string>
   <string name="show_info_label">Pokaż informacje</string>
+  <string name="rename_feed_label">Zmień nazwę podcast-u</string>
   <string name="remove_feed_label">Usuń podcast</string>
   <string name="share_label">Udostępnij...</string>
   <string name="share_link_label">Udostępnij stronę</string>
@@ -108,7 +115,6 @@
   <string name="share_feed_url_label">Udostępnij adres kanału</string>
   <string name="share_item_url_label">Udostępnij plik URL odcinka</string>
   <string name="share_item_url_with_position_label">Udostępnik plik URL odcinka z pozycją</string>
-  <string name="feed_delete_confirmation_msg">Potwierdź chęć usunięcia tego kanału wraz ze WSZYSTKIMI odcinkami, które zostały pobrane.</string>
   <string name="feed_remover_msg">Usuwanie kanału</string>
   <string name="load_complete_feed">Odśwież cały kanał</string>
   <string name="hide_episodes_title">Ukryj odcinki</string>
@@ -120,6 +126,7 @@
   <string name="hide_not_queued_episodes_label">Nie w kolejce</string>
   <string name="hide_downloaded_episodes_label">Pobrane</string>
   <string name="hide_not_downloaded_episodes_label">Nie pobrane</string>
+  <string name="hide_has_media_label">Ma media</string>
   <string name="filtered_label">Przefiltrowany</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Ostatnie odświerzanie nie powiodło się</string>
   <string name="open_podcast">Otwarty Podcast</string>
@@ -130,6 +137,7 @@
   <string name="stop_label">Stop</string>
   <string name="stream_label">Strumień</string>
   <string name="remove_label">Usuń</string>
+  <string name="delete_label">Usuń</string>
   <string name="remove_episode_lable">Usuń odcinek</string>
   <string name="marked_as_seen_label">Zaznaczono jako wyświetlone</string>
   <string name="mark_read_label">Oznacz jako odtworzone</string>
@@ -178,6 +186,7 @@
   <plurals name="downloads_left">
     <item quantity="one">%d element został do pobrania</item>
     <item quantity="few">%d elementów zostało do pobrania</item>
+    <item quantity="many">%d elementów zostało do pobrania</item>
     <item quantity="other">%d elementów zostało do pobrania</item>
   </plurals>
   <string name="downloads_processing">Przetwarzanie pobranych</string>
@@ -275,13 +284,13 @@
   <string name="pref_pauseOnDisconnect_sum">Wstrzymaj odtwarzanie po rozłączeniu słuchawek lub Bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wznów odtwarzanie kiedy słuchawki zostaną podłączone ponownie</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wznów odtwarzanie po przywróceniu połączenia Bluetooth</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Przycisk \'Do przodu\' pomija odcinek</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Przyciśnięcie fizycznego przycisku \'Do przodu\' przeskakuje do następnego odcinka zamiast przewijania</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">Przycisk wstecz restartuje</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">Podczas odtwarzania przycisk wstecz restartuje zamiast przewijać</string>
   <string name="pref_followQueue_sum">Przeskocz do następnego elementu kolejki po zakończeniu odtwarzania</string>
   <string name="pref_auto_delete_sum">Usuń odcinek kiedy jego odtwarzanie zostanie zakończone</string>
   <string name="pref_auto_delete_title">Automatyczne usuwanie</string>
   <string name="pref_smart_mark_as_played_sum">Oznacz odcinek jako odtworzony, jeśli do końca pozostało mniej niż określona ilość czasu</string>
-  <string name="pref_smart_mark_as_played_title">Inteligentnie oznacz jako odtworzone</string>
   <string name="pref_skip_keeps_episodes_sum">Zachowuje pominięte odcinki w kolejce</string>
   <string name="pref_skip_keeps_episodes_title">Zachowaj pominięte odcinki</string>
   <string name="playback_pref">Odtwarzanie</string>
@@ -343,12 +352,18 @@
   <string name="pref_gpodnet_logout_toast">Wylogowanie się powiodło</string>
   <string name="pref_gpodnet_setlogin_information_title">Zmień informacje logowania</string>
   <string name="pref_gpodnet_setlogin_information_sum">Zmień dane logowania konta gpodder.net.</string>
+  <string name="pref_gpodnet_sync_changes_title">Zsynchronizuj zmiany teraz</string>
+  <string name="pref_gpodnet_sync_changes_sum">Synchronizuj subskrypcje oraz stan odcinków z pomocą gpodder.net.</string>
+  <string name="pref_gpodnet_full_sync_title">Wykonaj pełną synchronizację teraz</string>
+  <string name="pref_gpodnet_full_sync_sum">Synchronizuj wszystkie subskrypcje oraz stan odcinków z pomocą gpodder.net.</string>
+  <string name="pref_gpodnet_sync_sum_last_sync_line">Ostatnia próba synchronizacji: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Synchronizacja uruchomiona</string>
+  <string name="pref_gpodnet_full_sync_started">Pełna synchronizacja rozpoczęta</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Zalogowano jako <i>%1$s</i> na urządzeniu <i>%2$s</i>]]></string>
+  <string name="pref_gpodnet_notifications_title">Pokaż powiadomienia błędów synchronizacji</string>
+  <string name="pref_gpodnet_notifications_sum">To ustawienie nie dotyczy błędów autoryzacji.</string>
   <string name="pref_playback_speed_title">Prędkość odtwarzania</string>
   <string name="pref_playback_speed_sum">Dostosuj prędkości dostępne dla odtwarzania audio o zmiennej prędkości</string>
-  <string name="pref_fast_forward">Szybkie przewijanie do przodu</string>
-  <string name="pref_rewind">Przewijanie do tyłu</string>
   <string name="pref_gpodnet_sethostname_title">Ustaw nazwę hosta</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Użyj domyślnego hosta</string>
   <string name="pref_expandNotify_title">Rozwiń Powiadomienia</string>
@@ -373,9 +388,6 @@
   <string name="crash_report_sum">Wyślij ostatni raport o błędach przez e-mail</string>
   <string name="send_email">Wyślij e-mail</string>
   <string name="experimental_pref">Eksperymentalne</string>
-  <string name="pref_sonic_title">Odtwarzacz mediów Sonic</string>
-  <string name="pref_rewind_sum">Dostosuj liczbę sekund, aby przejść do tyłu po naciśnięciu przycisku przewijania kliknięciu</string>
-  <string name="pref_fast_forward_sum">Dostosuj liczbę sekund, aby przejść do przodu, gdy szybko do przodu kliknięciu przycisku</string>
   <string name="pref_sonic_message">Użyj wbudowanego odtwarzacza Sonic jako oprogramowanie zastępcze do natywnego odtwarzacza Android i Prestissimo</string>
   <string name="pref_current_value">Aktualna wartość: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
@@ -392,10 +404,13 @@
   <string name="auto_flattr_ater_beginning">Z-flattr-uj odcinek gdy odtawarzanie zostanie rozpoczęte</string>
   <string name="auto_flattr_ater_end">Z-flattr-uj odcinek gdy odtwarzanie zostanie zakończone</string>
   <!--Search-->
+  <string name="search_hint">Szukaj odcinków</string>
+  <string name="found_in_shownotes_label">Znalezione w notatkach dotyczących show</string>
   <string name="found_in_chapters_label">Znaleziono w rozdziałach</string>
   <string name="search_status_no_results">Brak wyników</string>
   <string name="search_label">Szukaj</string>
   <string name="found_in_title_label">Znaleziono w tytułach</string>
+  <string name="no_results_for_query">Brak wyników dla \"%1$s\"</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Pliki OPML pozwalają na przenoszenie podcastów między aplikacjami.</string>
   <string name="opml_import_option">Opcja %1$d</string>
@@ -414,6 +429,7 @@
   <string name="choose_file_from_filesystem">Z lokalnego systemu plików</string>
   <string name="choose_file_from_external_application">Użyj zewnętrznej aplikacji</string>
   <string name="opml_export_label">Eksport OPML</string>
+  <string name="html_export_label">Eksport HTML</string>
   <string name="exporting_label">Eksportowanie...</string>
   <string name="export_error_label">Błąd eksportu</string>
   <string name="opml_export_success_title">Eksport OPML udany.</string>
@@ -435,18 +451,24 @@
   <plurals name="time_seconds_quantified">
     <item quantity="one">1 sekunda</item>
     <item quantity="few">%d sekundy</item>
+    <item quantity="many">%d sekund</item>
     <item quantity="other">%d sekund</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">1 minuta</item>
     <item quantity="few">%d minuty</item>
+    <item quantity="many">%d minut</item>
     <item quantity="other">%d minut</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="one">1 godzina</item>
     <item quantity="few">%d godziny</item>
+    <item quantity="many">%d godzin</item>
     <item quantity="other">%d godzin</item>
   </plurals>
+  <string name="auto_enable_label">Automaczyne włączenie</string>
+  <string name="sleep_timer_enabled_label">Wyłącznik czasowy włączony</string>
+  <string name="sleep_timer_disabled_label">Wyłącznik czasowy wyłączony</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCASTY</string>
@@ -477,6 +499,8 @@ https://gpodder.net/register/</string>
   <string name="gpodnetsync_auth_error_descr">Niepoprawna nazwa użytkownika lub hasło</string>
   <string name="gpodnetsync_error_title">Błąd synchronizacji z gpodder.net</string>
   <string name="gpodnetsync_error_descr">Wystąpił błąd podczas synchronizacji:\u0020</string>
+  <string name="gpodnetsync_pref_report_successful">Sukces</string>
+  <string name="gpodnetsync_pref_report_failed">Porażka</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Wybrany folder:</string>
   <string name="create_folder_label">Utwórz folder</string>
@@ -529,6 +553,7 @@ https://gpodder.net/register/</string>
   <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
   <string name="search_itunes_label">Szukaj w iTunes</string>
   <string name="filter">Filtruj</string>
+  <string name="search_fyyd_label">Szukaj w fyyd</string>
   <!--Episodes apply actions-->
   <string name="all_label">Wszystkie</string>
   <string name="selected_all_label">Zaznaczono wszystkie odcinki</string>
@@ -546,6 +571,8 @@ https://gpodder.net/register/</string>
   <string name="selected_queued_label">Wybierz odcinki w kolejce</string>
   <string name="not_queued_label">Nie w kolejce</string>
   <string name="selected_not_queued_label">Wybierz odcinki, które nie są w kolejce</string>
+  <string name="has_media">Ma media</string>
+  <string name="selected_has_media_label">Wybrane odcinki z mediami</string>
   <!--Sort-->
   <string name="sort_title_a_z">Tytuł (A \u2192 Z)</string>
   <string name="sort_title_z_a">Tytuł (Z \u2192 A)</string>

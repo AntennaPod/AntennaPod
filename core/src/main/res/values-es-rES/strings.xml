@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
   <string name="feeds_label">Canales</string>
-  <string name="add_feed_label">Añadir podcast</string>
+  <string name="add_feed_label">Añadir Podcast</string>
   <string name="episodes_label">Episodios</string>
   <string name="all_episodes_short_label">Todos</string>
   <string name="favorite_episodes_label">Favoritos</string>
@@ -17,8 +17,8 @@
   <string name="free_space_label">%1$s disponible</string>
   <!--Statistics fragment-->
   <!--Main activity-->
-  <string name="drawer_open">Abrir menu</string>
-  <string name="drawer_close">Cerrar menu</string>
+  <string name="drawer_open">Abrir menú</string>
+  <string name="drawer_close">Cerrar menú</string>
   <string name="drawer_feed_order_unplayed_episodes">Ordenar por contador</string>
   <string name="drawer_feed_order_alphabetical">Ordenar alfabéticamente</string>
   <string name="drawer_feed_order_last_update">Ordenar por fecha de publicación</string>
@@ -80,7 +80,7 @@
   <string name="show_info_label">Información del programa</string>
   <string name="remove_feed_label">Eliminar podcast</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
-  <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
+  <string name="hide_queued_episodes_label">En cola</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <string name="play_label">Reproducir</string>
@@ -179,8 +179,6 @@
   <string name="pref_autodl_wifi_filter_title">Activar el filtro WiFi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir la descarga automática sólo para las redes WiFi marcadas.</string>
   <string name="pref_episode_cache_title">Caché de episodios</string>
-  <string name="pref_rewind_sum">Personalizar el número de segundos para saltar hacia atrás cuando se hace clic en el botón de rebobinado</string>
-  <string name="pref_fast_forward_sum">Personalizar el número de segundos para saltar hacia adelante cuando se hace clic en el botón de avance rápido</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="found_in_chapters_label">Encontrado en los capítulos</string>

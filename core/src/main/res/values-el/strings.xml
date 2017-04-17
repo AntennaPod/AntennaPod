@@ -68,7 +68,6 @@
   <!--Actions on feeds-->
   <string name="show_info_label">Εμφάνιση πληροφοριών</string>
   <string name="remove_feed_label">Κατάργηση Podcast</string>
-  <string name="feed_delete_confirmation_msg">Παρακαλούμε επιβεβαιώστε ότι θέλετε να διαγράφθουν αυτες οι τροφοδοσιες και όλα τα επεισόδια του υλικού αυτού που έχετε κανει λήψη.</string>
   <string name="hide_episodes_title">Απόκρυψη Επεισοδίων</string>
   <string name="hide_downloaded_episodes_label">Ειλημμένα</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Η Τελευταία Ανανέωση Απέτυχε</string>
@@ -313,8 +312,6 @@
   <string name="pref_resumeAfterCall_sum">Συνέχιση της αναπαραγωγής, μετά το πέρας τηλεφωνικής κλήσης</string>
   <string name="pref_resumeAfterCall_title">Συνέχιση της αναπαραγωγής, μετά από Κλήση</string>
   <string name="pref_restart_required">Το AntennaPod χρειάζεται επανεκκίνηση για την εφαρμογή των αλλαγών.</string>
-  <string name="pref_rewind_sum">Προσαρμόστε τον αριθμό των δευτερολέπτων για να μεταβείτε προς τα πίσω, όταν το πίσω κουμπί έχει πατηθεί</string>
-  <string name="pref_fast_forward_sum">Προσαρμόστε τον αριθμό των δευτερολέπτων για να μεταβείτε προς τα εμπρός όταν το γρήγορο κουμπί προς τα εμπρός κλικ</string>
   <!--Online feed view-->
   <string name="subscribe_label">Εγγραφή</string>
   <string name="subscribed_label">Εγγεγραμμένα</string>

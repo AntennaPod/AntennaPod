@@ -73,7 +73,6 @@
   <string name="mark_all_read_confirmation_msg">Conferma che desideri segnare tutti gli episodi come riprodotti.</string>
   <string name="mark_all_read_feed_confirmation_msg">Conferma che desideri segnare tutti gli episodi in questo feed come riprodotti.</string>
   <string name="show_info_label">Mostra delle informazioni</string>
-  <string name="feed_delete_confirmation_msg">Conferma che desideri cancellare questo feed e TUTTI gli episodi di  questo feed che hai scaricato.</string>
   <string name="hide_episodes_title">Nascondi gli episodi</string>
   <string name="episode_actions">Applica le azioni</string>
   <string name="hide_unplayed_episodes_label">Non riprodotti</string>
@@ -191,8 +190,6 @@
   <string name="pref_expandNotify_title">Espandi le notifiche</string>
   <string name="pref_queueAddToFront_sum">Aggiungi un nuovo episodio in testa alla coda.</string>
   <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
-  <string name="pref_rewind_sum">Personalizzare il numero di secondi per saltare all\'indietro quando il pulsante di riavvolgimento viene cliccato</string>
-  <string name="pref_fast_forward_sum">Personalizzare il numero di secondi per saltare in avanti quando il pulsante di avanzamento rapido viene cliccato</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="found_in_chapters_label">Trovato nei capitoli</string>

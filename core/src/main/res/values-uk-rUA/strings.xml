@@ -114,7 +114,6 @@
   <string name="share_feed_url_label">Поділитись посиланням на канал</string>
   <string name="share_item_url_label">Поділитись посиланням на файл епізода</string>
   <string name="share_item_url_with_position_label">Поділитись посиланням на файл епізода з позицією</string>
-  <string name="feed_delete_confirmation_msg">Ви впенені що хочете видаліти канал та всі завантажені епізоди?</string>
   <string name="feed_remover_msg">Удаляю канал</string>
   <string name="load_complete_feed">Оновити канал цілком</string>
   <string name="hide_episodes_title">Приховати епізоди</string>
@@ -283,7 +282,6 @@
   <string name="pref_pauseOnDisconnect_sum">Зупинятись коли навушники або блютуз від’єднано</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Поновити відтворення коли навушники повторно під’єднано</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Поновити відтворення коли блютуз повторно під’єднано</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Пропуск кнопкой перемотки</string>
   <string name="pref_hardwareForwardButtonSkips_sum">При натисканні апаратної кнопки перемотки перейти до наступного епізода замість перемотки.</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Кнопка \"назад\" повертає до початку</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">При натисканні апаратної кнопки \"назад\", замість перемотки, розпочати програвання поточного епізода заново</string>
@@ -291,7 +289,6 @@
   <string name="pref_auto_delete_sum">Видалити епізод після повного відтворення</string>
   <string name="pref_auto_delete_title">Автовидалення</string>
   <string name="pref_smart_mark_as_played_sum">Позначити епізоди як грані навіть якщо залишилось менш ніж зазначене число секунд до кінця відтворення</string>
-  <string name="pref_smart_mark_as_played_title">Розумне позначення граних епізодів</string>
   <string name="pref_skip_keeps_episodes_sum">Зберігати епізоди що пропущені при програванні  </string>
   <string name="pref_skip_keeps_episodes_title">Зберігати пропущені при програванні епізоди </string>
   <string name="playback_pref">Відтворення</string>
@@ -365,8 +362,6 @@
   <string name="pref_gpodnet_notifications_sum">Це налаштування не застосовується до помилок автентифікації.</string>
   <string name="pref_playback_speed_title">Швидкість програвання</string>
   <string name="pref_playback_speed_sum">Налаштування швідкості доступно для змінної швидкості програвання</string>
-  <string name="pref_fast_forward">Час перемотки вперед</string>
-  <string name="pref_rewind">Час перемотки назад</string>
   <string name="pref_gpodnet_sethostname_title">Встановити ім\'я хоста</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Використати хост по замовчанню</string>
   <string name="pref_expandNotify_title">Розгорнути повідомлення</string>
@@ -391,7 +386,6 @@
   <string name="crash_report_sum">Надіслати е-пошту зі звітом про останній збій</string>
   <string name="send_email">Надіслати е-пошту</string>
   <string name="experimental_pref">Експериментальні</string>
-  <string name="pref_sonic_title">Програвач Sonic</string>
   <string name="pref_sonic_message">Застосувати вбудований програвач sonic замість програвача Android та Prestissimo</string>
   <string name="pref_current_value">Поточне значення: %1$s</string>
   <string name="pref_proxy_title">Проксі</string>
@@ -400,8 +394,6 @@
   <string name="pref_known_issues">Відомі проблеми</string>
   <string name="pref_no_browser_found">Веб браузер не знайдено.</string>
   <string name="pref_cast_title">Підтримка для Chromecast</string>
-  <string name="pref_rewind_sum">Налаштувати кількість секунд для переходу назад, коли кнопка перемотування натиснута</string>
-  <string name="pref_fast_forward_sum">Налаштувати кількість секунд, щоб перейти вперед, коли кнопка перемотування вперед натиснута</string>
   <string name="pref_cast_message_play_flavor">Включити підтримку програвання на таких пристроях як Chromecast або Android TV</string>
   <string name="pref_cast_message_free_flavor">Для підтримки Chromecast потрібні бібліотеки які не включені в цю версію AntennaPod</string>
   <!--Auto-Flattr dialog-->

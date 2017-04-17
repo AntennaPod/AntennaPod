@@ -105,7 +105,6 @@
   <string name="share_feed_url_label">分享订阅地址</string>
   <string name="share_item_url_label">分享剧集文件URL</string>
   <string name="share_item_url_with_position_label">分享剧集文件URL及其状态</string>
-  <string name="feed_delete_confirmation_msg">确认要删除这些订阅吗? 该订阅所有已经下载的曲目将一并删除. </string>
   <string name="feed_remover_msg">删除订阅</string>
   <string name="load_complete_feed">刷新全部订阅</string>
   <string name="hide_episodes_title">隐藏曲目</string>
@@ -270,7 +269,6 @@
   <string name="pref_auto_delete_sum">当播放完成后删除曲目</string>
   <string name="pref_auto_delete_title">自动删除</string>
   <string name="pref_smart_mark_as_played_sum">当曲目的剩余未播放时间小于一个确定值时将其表为已播放</string>
-  <string name="pref_smart_mark_as_played_title">智能标记为已播放</string>
   <string name="playback_pref">播放</string>
   <string name="network_pref">网络</string>
   <string name="pref_autoUpdateIntervallOrTime_title">定时更新</string>
@@ -333,7 +331,6 @@
   <string name="pref_gpodnet_sync_started">已开始同步</string>
   <string name="pref_playback_speed_title">播放速度</string>
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
-  <string name="pref_rewind">时间倒回</string>
   <string name="pref_gpodnet_sethostname_title">设置主机名</string>
   <string name="pref_gpodnet_sethostname_use_default_host">使用默认主机</string>
   <string name="pref_expandNotify_title">扩展通知</string>
@@ -355,14 +352,11 @@
   <string name="crash_report_title">崩溃报告</string>
   <string name="crash_report_sum">通过 E-mail 发送最后崩溃报告</string>
   <string name="send_email">发送 E-mail</string>
-  <string name="pref_sonic_title">内置播放器</string>
   <string name="pref_current_value">当前值：%1$s</string>
   <string name="pref_proxy_title">代理</string>
   <string name="pref_proxy_sum">选择一个网络代理</string>
   <string name="pref_faq">FAQ</string>
   <string name="pref_known_issues">已知问题</string>
-  <string name="pref_rewind_sum">自定义的秒数向后跳转点击快退按钮时</string>
-  <string name="pref_fast_forward_sum">自定义的秒数向前跳单击快进按钮时</string>
   <string name="pref_no_browser_found">无网络浏览器</string>
   <string name="pref_cast_title">Chromecast 支持</string>
   <!--Auto-Flattr dialog-->

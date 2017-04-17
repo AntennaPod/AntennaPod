@@ -107,7 +107,6 @@
   <string name="share_link_label">Compartir enllaz</string>
   <string name="share_feed_url_label">Compartir URL del feed</string>
   <string name="share_item_url_label">Compatir URL del ficheru del episodiu</string>
-  <string name="feed_delete_confirmation_msg">Confirma que quies desaniciar esti feed y TOLOS episodios d\'elli que baxares.</string>
   <string name="feed_remover_msg">Desaniciando fees</string>
   <string name="load_complete_feed">Completóse\'l refrescu\'l feed</string>
   <string name="hide_episodes_title">Anubrir episodios</string>

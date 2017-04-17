@@ -113,7 +113,6 @@
   <string name="share_feed_url_label">Idővonal URL megosztása</string>
   <string name="share_item_url_label">Epizód fájl URL megosztása</string>
   <string name="share_item_url_with_position_label">Epizód fájl URL megosztása pozícióval</string>
-  <string name="feed_delete_confirmation_msg">Biztosan törlöd ezt az idővonalat és az összes hozzá tartozó epizódot, amit letöltöttél róla?</string>
   <string name="feed_remover_msg">Idővonal eltávolítása</string>
   <string name="load_complete_feed">Teljes idővonal frissítése</string>
   <string name="hide_episodes_title">Epizódok elrejtése</string>

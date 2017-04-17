@@ -36,6 +36,7 @@
   <string name="drawer_feed_counter_new_unplayed">새로운 에피소드와 재생하지 않은 에피소드 수</string>
   <string name="drawer_feed_counter_new">새로운 에피소드 수</string>
   <string name="drawer_feed_counter_unplayed">재생하지 않은 에피소드 수</string>
+  <string name="drawer_feed_counter_downloaded">다운로드한 에피소드 수</string>
   <string name="drawer_feed_counter_none">없음</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">브라우저에서 열기</string>
@@ -50,6 +51,7 @@
   <string name="cancel_label">취소</string>
   <string name="yes">예</string>
   <string name="no">아니요</string>
+  <string name="reset">초기화</string>
   <string name="author_label">저자</string>
   <string name="language_label">언어</string>
   <string name="url_label">URL</string>
@@ -91,6 +93,7 @@
   <string name="etxtFeedurlHint">피드의 URL 또는 홈페이지</string>
   <string name="txtvfeedurl_label">URL로 팟캐스트를 추가</string>
   <string name="podcastdirectories_label">디렉터리에서 팟캐스트 찾기</string>
+  <string name="podcastdirectories_descr">새 팟캐스트는 iTunes, fyyd, gpodder.net에서 이름, 분류, 인기로 검색할 수 있습니다.</string>
   <string name="browse_gpoddernet_label">gpodder.net 둘러보기</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">모두 재생했다고 표시</string>
@@ -98,7 +101,10 @@
   <string name="mark_all_read_confirmation_msg">모든 에피소드를 재생했다고 표시할지 확인하십시오.</string>
   <string name="mark_all_read_feed_confirmation_msg">이 피드에 들어 있는 모든 에피소드를 재생했다고 표시할지 확인하십시오.</string>
   <string name="mark_all_seen_label">모두 봤다고 표시</string>
+  <string name="mark_all_seen_msg">모든 에피소드를 봤다고 표시했습니다</string>
+  <string name="mark_all_seen_confirmation_msg">모든 에피소드를 본 것으로 표시하는지 확인하십시오.</string>
   <string name="show_info_label">정보 표시</string>
+  <string name="rename_feed_label">팟캐스트 이름 바꾸기</string>
   <string name="remove_feed_label">팟캐스트 제거</string>
   <string name="share_label">공유…</string>
   <string name="share_link_label">홈페이지 링크 공유</string>
@@ -106,7 +112,6 @@
   <string name="share_feed_url_label">피드 URL 공유</string>
   <string name="share_item_url_label">에피소드 파일 URL 공유</string>
   <string name="share_item_url_with_position_label">에피소드 파일 URL과 재생 위치 공유</string>
-  <string name="feed_delete_confirmation_msg">이 피드와 이 피드에서 다운로드한 모든 에피소드를 삭제하시려면 확인을 누르십시오.</string>
   <string name="feed_remover_msg">피드 삭제하는 중</string>
   <string name="load_complete_feed">전체 피드 새로고침</string>
   <string name="hide_episodes_title">에피소드 감추기</string>
@@ -118,6 +123,7 @@
   <string name="hide_not_queued_episodes_label">대기열 추가 안 함</string>
   <string name="hide_downloaded_episodes_label">다운로드함</string>
   <string name="hide_not_downloaded_episodes_label">다운로드 안 함</string>
+  <string name="hide_has_media_label">미디어 있음</string>
   <string name="filtered_label">필터링함</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} 최근 새로 고침 실패</string>
   <string name="open_podcast">팟캐스트 열기</string>
@@ -128,10 +134,11 @@
   <string name="stop_label">중지</string>
   <string name="stream_label">스트리밍</string>
   <string name="remove_label">제거</string>
+  <string name="delete_label">삭제</string>
   <string name="remove_episode_lable">에피소드 제거</string>
-  <string name="marked_as_seen_label">봤다고 표시</string>
+  <string name="marked_as_seen_label">봤다고 표시했습니다</string>
   <string name="mark_read_label">재생했다고 표시</string>
-  <string name="marked_as_read_label">재생했다고 표시함</string>
+  <string name="marked_as_read_label">재생했다고 표시했습니다</string>
   <string name="mark_unread_label">재생하지 않음으로 표시</string>
   <string name="add_to_queue_label">대기열에 추가</string>
   <string name="added_to_queue_label">대기열에 추가함</string>
@@ -271,13 +278,13 @@
   <string name="pref_pauseOnDisconnect_sum">헤드폰이나 블루투스가 연결 해제되었을 경우 일시정지합니다.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰 다시 연결할 때 재생을 계속합니다.</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">블루투스가 다시 연결되면 재생을 계속합니다.</string>
-  <string name="pref_hardwareForwardButtonSkips_title">빨리감기 버튼을 넘김 버튼으로</string>
   <string name="pref_hardwareForwardButtonSkips_sum">빨리감기 하드웨어 버튼을 눌렀을 경우 빨리감기 대신 다음 에피소드로 넘깁니다.</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">이전 버튼을 누르면 재시작</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">하드웨어 이전 버튼을 누르면 뒤로감기 대신 현재 에피소드를 재시작합니다</string>
   <string name="pref_followQueue_sum">재생을 마쳤을 때 다음 대기열로 이동</string>
   <string name="pref_auto_delete_sum">재생이 끝나면 에피소드를 삭제합니다.</string>
   <string name="pref_auto_delete_title">자동 삭제</string>
   <string name="pref_smart_mark_as_played_sum">재생이 일정한 시간보다 (초 단위) 적게 남으면 에피소드를 재생한 것으로 표시</string>
-  <string name="pref_smart_mark_as_played_title">똑똑하게 재생한 것으로 표시</string>
   <string name="pref_skip_keeps_episodes_sum">에피소드를 넘겼을 경우에도 유지합니다.</string>
   <string name="pref_skip_keeps_episodes_title">넘긴 에피소드 유지 보관</string>
   <string name="playback_pref">재생</string>
@@ -339,12 +346,18 @@
   <string name="pref_gpodnet_logout_toast">로그아웃 성공</string>
   <string name="pref_gpodnet_setlogin_information_title">로그인 정보 바꾸기</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net 계정의 로그인 정보를 바꿉니다.</string>
+  <string name="pref_gpodnet_sync_changes_title">변경 사항 지금 동기화</string>
+  <string name="pref_gpodnet_sync_changes_sum">gpodder.net의 구독과 에피소드 상태 변화를 동기화합니다.</string>
+  <string name="pref_gpodnet_full_sync_title">지금 전체 동기화</string>
+  <string name="pref_gpodnet_full_sync_sum">gpodder.net의 모든 구독과 에피소드 상태를 동기화합니다.</string>
+  <string name="pref_gpodnet_sync_sum_last_sync_line">최근 동기화 시도: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">동기화 시작함</string>
+  <string name="pref_gpodnet_full_sync_started">전체 동기화 시작함</string>
   <string name="pref_gpodnet_login_status"><![CDATA[<i>%1$s</i> 사용자로 로그인, <i>%2$s</i> 장치]]></string>
+  <string name="pref_gpodnet_notifications_title">동기화 오류 알림 표시</string>
+  <string name="pref_gpodnet_notifications_sum">이 설정은 인증 오류에는 적용되지 않습니다.</string>
   <string name="pref_playback_speed_title">재생 속도</string>
   <string name="pref_playback_speed_sum">여러가지 오디오 재생 속도 직접 설정</string>
-  <string name="pref_fast_forward">빠르게 감기 시간</string>
-  <string name="pref_rewind">뒤로 감기 시간</string>
   <string name="pref_gpodnet_sethostname_title">호스트 이름 설정</string>
   <string name="pref_gpodnet_sethostname_use_default_host">기본 호스트 사용</string>
   <string name="pref_expandNotify_title">알림 확장</string>
@@ -369,7 +382,6 @@
   <string name="crash_report_sum">최근의 이상 종료 보고서를 이메일로 보냅니다.</string>
   <string name="send_email">이메일 보내기</string>
   <string name="experimental_pref">실험적 기능</string>
-  <string name="pref_sonic_title">소닉 미디어 플레이어</string>
   <string name="pref_sonic_message">내장 소닉 미디어 플레이어를 안드로이드 고유 미디어 플레이어와 Prestissimo 대신 사용합니다.</string>
   <string name="pref_current_value">현재 값: %1$s</string>
   <string name="pref_proxy_title">프록시</string>
@@ -378,8 +390,6 @@
   <string name="pref_known_issues">알려진 문제점</string>
   <string name="pref_no_browser_found">웹브라우저가 없습니다.</string>
   <string name="pref_cast_title">크롬캐스트 지원</string>
-  <string name="pref_rewind_sum">되감기 버튼을 클릭하면 뒤로 이동 (초)을 정의</string>
-  <string name="pref_fast_forward_sum">빨리 감기 버튼을 클릭 할 때 앞으로 이동 (초)을 정의</string>
   <string name="pref_cast_message_play_flavor">캐스트 장치의 원격 미디어 재생 기능 사용 (예: 크롬캐스트, 안드로이드 TV의 오디오 스피커)</string>
   <string name="pref_cast_message_free_flavor">크롬캐스트는 서드파티 라이브러리가 필요하지만, 이 버전의 안테나팟에서는 사용하지 않게 되어 있습니다.</string>
   <!--Auto-Flattr dialog-->
@@ -388,10 +398,13 @@
   <string name="auto_flattr_ater_beginning">재생이 시작하면 에피소드 flattr</string>
   <string name="auto_flattr_ater_end">재생이 끝나면 에피소드 flattr</string>
   <!--Search-->
+  <string name="search_hint">에피소드 검색</string>
+  <string name="found_in_shownotes_label">프로그램 메모에서 </string>
   <string name="found_in_chapters_label">챕터에서 발견</string>
   <string name="search_status_no_results">검색 결과가 없습니다</string>
   <string name="search_label">검색</string>
   <string name="found_in_title_label">제목에서 발견</string>
+  <string name="no_results_for_query">\"%1$s\" 검색 결과가 없습니다</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML 파일을 이용하면 팟캐스트 목록을 한 팟캐스트 프로그램에서 다른 팟캐스트 프로그램으로 옮길 수 있습니다.</string>
   <string name="opml_import_option">옵션 %1$d</string>
@@ -410,6 +423,7 @@
   <string name="choose_file_from_filesystem">로컬 파일시스템에서</string>
   <string name="choose_file_from_external_application">외부 앱 사용</string>
   <string name="opml_export_label">OPML 내보내기</string>
+  <string name="html_export_label">HTML 내보내기</string>
   <string name="exporting_label">내보내는 중…</string>
   <string name="export_error_label">내보내기 오류</string>
   <string name="opml_export_success_title">OPML 내보내기가 성공했습니다.</string>
@@ -437,6 +451,9 @@
   <plurals name="time_hours_quantified">
     <item quantity="other">%d시간</item>
   </plurals>
+  <string name="auto_enable_label">자동 사용</string>
+  <string name="sleep_timer_enabled_label">취침 타이머 사용함</string>
+  <string name="sleep_timer_disabled_label">취침 타이머 해제함</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">분류</string>
   <string name="gpodnet_toplist_header">상위 팟캐스트</string>
@@ -466,6 +483,8 @@
   <string name="gpodnetsync_auth_error_descr">잘못된 사용자 이름 또는 암호</string>
   <string name="gpodnetsync_error_title">gpodder.net 동기화 오류</string>
   <string name="gpodnetsync_error_descr">동기화 중에 오류가 발생했습니다:\u0020</string>
+  <string name="gpodnetsync_pref_report_successful">성공</string>
+  <string name="gpodnetsync_pref_report_failed">실패</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">선택한 폴더:</string>
   <string name="create_folder_label">폴더 만들기</string>
@@ -518,6 +537,7 @@
   <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
   <string name="search_itunes_label">iTunes 검색</string>
   <string name="filter">필터</string>
+  <string name="search_fyyd_label">fyyd 검색</string>
   <!--Episodes apply actions-->
   <string name="all_label">모두</string>
   <string name="selected_all_label">모든 에피소드 선택함</string>
@@ -535,6 +555,8 @@
   <string name="selected_queued_label">대기열의 에피소드 선택함</string>
   <string name="not_queued_label">대기열에 없음</string>
   <string name="selected_not_queued_label">대기열 외의 에피소드 선택함</string>
+  <string name="has_media">미디어 있음</string>
+  <string name="selected_has_media_label">미디어가 있는 에피소드 선택함</string>
   <!--Sort-->
   <string name="sort_title_a_z">제목 (A \u2192 Z)</string>
   <string name="sort_title_z_a">제목 (Z \u2192 A)</string>

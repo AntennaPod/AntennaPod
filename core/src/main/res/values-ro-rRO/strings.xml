@@ -45,7 +45,6 @@
   <string name="mark_all_read_label">Marchează toate ca citite</string>
   <string name="show_info_label">Arată informații</string>
   <string name="share_link_label">Împarte adresă website</string>
-  <string name="feed_delete_confirmation_msg">Confirmați ștergerea feedului și a TUTUROR episoadelor pe care le-ați descărcat.</string>
   <!--actions on feeditems-->
   <string name="download_label">Descarcă</string>
   <string name="play_label">Play</string>
@@ -160,8 +159,6 @@
   <string name="pref_gpodnet_authenticate_title">Autentificare</string>
   <string name="pref_playback_speed_title">Viteze de ascutare</string>
   <string name="pref_playback_speed_sum">Modifică vitezele disponibile pentru viteza de ascultare.</string>
-  <string name="pref_fast_forward_sum">Personaliza numărul de secunde pentru a sări înainte atunci când butonul fast forward este apasat</string>
-  <string name="pref_rewind_sum">Personaliza numărul de secunde pentru a sări înapoi atunci când butonul de derulare înapoi se face clic</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="found_in_chapters_label">Găsit în capitole</string>

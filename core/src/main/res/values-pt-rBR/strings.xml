@@ -107,7 +107,6 @@
   <string name="share_feed_url_label">Compartilhar Link do Feed</string>
   <string name="share_item_url_label">Compartilhar URL do arquivo do episódio</string>
   <string name="share_item_url_with_position_label">Compartilhar URL do arquivo do episódio com posição</string>
-  <string name="feed_delete_confirmation_msg">Por favor confirme que você deseja apagar este feed e TODOS os episódios que você fez download deste feed.</string>
   <string name="feed_remover_msg">Removendo feed</string>
   <string name="load_complete_feed">Atualizar feed completamente</string>
   <string name="hide_episodes_title">Ocultar Episódios</string>
@@ -273,13 +272,11 @@
   <string name="pref_pauseOnDisconnect_sum">Pausar a reprodução quando o fone de ouvido ou bluetooth forem disconectados</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continuar a reprodução quando os fones de ouvido forem reconectados</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Continuar a reprodução quando o bluetooth reconectar</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Botão avançar pula</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Quando pressionar um botão físico, avançar para o próximo episódio ao invés de avançar a reprodução</string>
   <string name="pref_followQueue_sum">Pular para próximo item da fila quando a reprodução terminar</string>
   <string name="pref_auto_delete_sum">Apagar os episódios quando a reprodução for concluída</string>
   <string name="pref_auto_delete_title">Deletar automaticamente</string>
   <string name="pref_smart_mark_as_played_sum">Marcar episódios como reproduzidos mesmo que restem alguns segundos de reprodução</string>
-  <string name="pref_smart_mark_as_played_title">Marcar como reproduzido inteligentemente</string>
   <string name="pref_skip_keeps_episodes_sum">Manter os episódios quando eles forem avançados</string>
   <string name="pref_skip_keeps_episodes_title">Manter episódios avançados</string>
   <string name="playback_pref">Reprodução</string>
@@ -345,8 +342,6 @@
   <string name="pref_gpodnet_login_status"><![CDATA[Entrou como <i>%1$s</i> com o dispositivo <i>%2$s</i>]]></string>
   <string name="pref_playback_speed_title">Velocidades de Reprodução</string>
   <string name="pref_playback_speed_sum">Personalize as velocidades variáveis de reprodução de áudio.</string>
-  <string name="pref_fast_forward">Avançar o tempo</string>
-  <string name="pref_rewind">Voltar o tempo</string>
   <string name="pref_gpodnet_sethostname_title">Configurar hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usar host padrão</string>
   <string name="pref_expandNotify_title">Expandir Notificação</string>
@@ -371,7 +366,6 @@
   <string name="crash_report_sum">Enviar o relatório da última falha por e-mail</string>
   <string name="send_email">Enviar e-mail</string>
   <string name="experimental_pref">Experimental</string>
-  <string name="pref_sonic_title">Reprodutor de mídia Sonic</string>
   <string name="pref_sonic_message">Utilizar o reprodutor de mídia Sonic no lugar do reprodutor de mídia nativo do Android e do Prestissimo</string>
   <string name="pref_current_value">Valor atual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
@@ -382,8 +376,6 @@
   <string name="pref_cast_title">Suporte ao Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar o suporte para reprodução remota de mídia em dispositivos Cast (como Chromecast, Caixa de som ou Android TV)</string>
   <string name="pref_cast_message_free_flavor">O Chromecast necessita de bibliotecas proprietárias de terceiros que estão desativadas nesta versão do AntennaPod</string>
-  <string name="pref_rewind_sum">Personalizar o número de segundos para saltar para trás quando o botão de voltar é clicado</string>
-  <string name="pref_fast_forward_sum">Personalizar o número de segundos para saltar para a frente quando o botão de avanço rápido é clicado</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Abilitar automaticamente o flattr</string>
   <string name="auto_flattr_after_percent">Episódio Flattr assim que %d porcento for tocado</string>

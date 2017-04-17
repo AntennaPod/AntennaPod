@@ -26,6 +26,10 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Temps d\'écoute total</string>
   <string name="statistics_details_dialog">%1$d épisodes sur %2$d commencés.\n\nLu %3$s sur %4$s.</string>
+  <string name="statistics_mode">Préférences statistiques</string>
+  <string name="statistics_mode_normal">Calculer la durée réellement écoutée. Les doubles écoutes comptent double alors que marqué lu n\'est pas compté</string>
+  <string name="statistics_mode_count_all">Additionner tous les podcasts marqués comme lus</string>
+  <string name="statistics_speed_not_counted">Note : la vitesse de lecture n\'est jamais pris en compte.</string>
   <!--Main activity-->
   <string name="drawer_open">Ouvrir le menu</string>
   <string name="drawer_close">Fermer le menu</string>
@@ -33,6 +37,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Trier par compteur</string>
   <string name="drawer_feed_order_alphabetical">Trier alphabétiquement</string>
   <string name="drawer_feed_order_last_update">Trier par date de publication</string>
+  <string name="drawer_feed_order_most_played">Trier selon le nombre d\'épisodes</string>
   <string name="drawer_feed_counter_new_unplayed">Nombre de nouveaux épisodes non-lus</string>
   <string name="drawer_feed_counter_new">Nombre de nouveaux épisodes</string>
   <string name="drawer_feed_counter_unplayed">Nombre d\'épisodes non-lus</string>
@@ -62,6 +67,7 @@
   <string name="refresh_label">Rafraîchir</string>
   <string name="external_storage_error_msg">Aucun stockage externe n\'est disponible. Merci de connecter un  volume de stockage externe pour que l\'application puisse fonctionner correctement.</string>
   <string name="chapters_label">Chapitres</string>
+  <string name="chapter_duration">Durée : %1$s</string>
   <string name="shownotes_label">Notes d\'épisode</string>
   <string name="description_label">Description</string>
   <string name="most_recent_prefix">Épisode le plus récent :\u0020</string>
@@ -113,7 +119,7 @@
   <string name="share_feed_url_label">Partager lien du flux</string>
   <string name="share_item_url_label">Partager le lien de l\'épisode</string>
   <string name="share_item_url_with_position_label">Partager le lien de l\'épisode avec la position</string>
-  <string name="feed_delete_confirmation_msg">Veuillez confirmer que vous voulez bien supprimer ce flux et TOUS ses épisodes que vous avez téléchargés.</string>
+  <string name="feed_delete_confirmation_msg">Confirmer que vous voulez supprimer le flux \"%1$s\" et TOUS les épisodes que vous avez téléchargés.</string>
   <string name="feed_remover_msg">Flux en cours de suppression</string>
   <string name="load_complete_feed">Mettre à jour tout le flux</string>
   <string name="hide_episodes_title">Cacher épisodes</string>
@@ -363,8 +369,10 @@
   <string name="pref_gpodnet_notifications_sum">Ce paramètre ne s\'applique pas aux erreurs d\'authentification.</string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Modifier la liste des vitesses disponibles pour la lecture audio</string>
-  <string name="pref_fast_forward">Avance rapide</string>
-  <string name="pref_rewind">Retour en arrière</string>
+  <string name="pref_fast_forward">Durée du saut avant</string>
+  <string name="pref_fast_forward_sum">Régler le nombre de secondes à sauter quand le bouton \"saut avant\" est cliqué</string>
+  <string name="pref_rewind">Durée du saut arrière</string>
+  <string name="pref_rewind_sum">Régler le nombre de secondes à sauter quand le bouton \"saut arrière\" est cliqué</string>
   <string name="pref_gpodnet_sethostname_title">Choisir un nom de domaine</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utiliser le nom de domaine par défaut</string>
   <string name="pref_expandNotify_title">Etendre la notification</string>
@@ -400,8 +408,8 @@
   <string name="pref_cast_title">Support Chromecast</string>
   <string name="pref_cast_message_play_flavor">Activer la lecture à distance sur les appareils Cast (comme Chromecast, Audio Speaker ou Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast nécessite des bibiliothèques tierces qui sont désactivées dans cette version d\'AntennaPod</string>
-  <string name="pref_rewind_sum">Personnaliser le nombre de secondes pour sauter vers l\'arrière lorsque le bouton de rembobinage est cliqué</string>
-  <string name="pref_fast_forward_sum">Personnaliser le nombre de secondes pour sauter vers l\'avant lorsque le bouton d\'avance rapide est cliqué</string>
+  <string name="pref_enqueue_downloaded_title">File d\'attente après téléchargement</string>
+  <string name="pref_enqueue_downloaded_summary">Mettre en file d\'attente après téléchargement</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
   <string name="auto_flattr_after_percent">Lancer un paiement flattr pour un épisode dès que %d de l\'épisode a été joué</string>
@@ -411,6 +419,8 @@
   <string name="search_hint">Chercher les épisodes</string>
   <string name="found_in_shownotes_label">Trouvé dans les notes d\'épisodes</string>
   <string name="found_in_chapters_label">Trouvé dans les titres de chapitre</string>
+  <string name="found_in_authors_label">Trouvés en tant qu\'auteur</string>
+  <string name="found_in_feeds_label">Trouvés dans les flux</string>
   <string name="search_status_no_results">Aucun résultat trouvé</string>
   <string name="search_label">Recherche</string>
   <string name="found_in_title_label">Trouvé dans le titre</string>

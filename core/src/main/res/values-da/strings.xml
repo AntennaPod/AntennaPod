@@ -61,7 +61,6 @@
   <string name="show_info_label">Vis information</string>
   <string name="remove_feed_label">Fjern podcast</string>
   <string name="share_link_label">Del webside link</string>
-  <string name="feed_delete_confirmation_msg">Bekræft venligst at du vil fjerne dette feed og ALLE episoder du har downloadet fra dette feed.</string>
   <string name="feed_remover_msg">Fjerner feed</string>
   <string name="load_complete_feed">Opdater hele feed\'et</string>
   <!--actions on feeditems-->
@@ -298,8 +297,6 @@
   <string name="set_to_default_folder">Vælg standard mappe</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Sæt afspilning på pause i stedet for at sænke lydniveauet når en anden app vil afspille lyde</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pause for afbrydelser</string>
-  <string name="pref_fast_forward_sum">Tilpas antallet af sekunder til at springe frem, når den hurtige knap frem der klikkes</string>
-  <string name="pref_rewind_sum">Tilpas antallet af sekunder for at hoppe baglæns, når knappen tilbagespoling klikkes</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
   <string name="subscribed_label">Abonneret</string>
