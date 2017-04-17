@@ -1,6 +1,22 @@
 Change Log
 ==========
 
+Version 1.6.3
+-------------
+
+* New features:
+ * Support for Android Auto
+ * Sort feeds by number of played episodes
+ * Statistics modes
+ * Setting: Enqueue downloaded
+ * Launch screen
+* Improvements
+ * Chapter duration
+ * Feed title in deletion confirmation
+* Fixes:
+ * Episodes refresh spinner
+ * Publication date parsing
+ * Unknown mime type
 
 Version 1.6.2
 -------------
