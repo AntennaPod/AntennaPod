@@ -80,6 +80,7 @@ public class AllEpisodesFragment extends Fragment {
     private boolean viewsCreated = false;
 
     private boolean isUpdatingFeeds;
+    protected boolean isMenuInvalidationAllowed = false;
 
     protected Subscription subscription;
     private LinearLayoutManager layoutManager;
@@ -430,7 +431,7 @@ public class AllEpisodesFragment extends Fragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if (isUpdatingFeeds != update.feedIds.length > 0) {
+        if (isMenuInvalidationAllowed && isUpdatingFeeds != update.feedIds.length > 0) {
                 getActivity().supportInvalidateOptionsMenu();
         }
         if(listAdapter != null && update.mediaIds.length > 0) {
