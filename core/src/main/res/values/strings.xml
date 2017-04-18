@@ -126,6 +126,7 @@
     <string name="remove_feed_label">Remove Podcast</string>
     <string name="share_label">Share&#8230;</string>
     <string name="share_link_label">Share Link</string>
+    <string name="share_file_label">Share file</string>
     <string name="share_link_with_position_label">Share Link with Position</string>
     <string name="share_feed_url_label">Share Feed URL</string>
     <string name="share_item_url_label">Share Episode File URL</string>

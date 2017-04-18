@@ -328,6 +328,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         boolean isItemHasDownloadLink = media != null && (media instanceof FeedMedia) && ((FeedMedia) media).getDownload_url() != null;
         menu.findItem(R.id.share_download_url_item).setVisible(isItemHasDownloadLink);
         menu.findItem(R.id.share_download_url_with_position_item).setVisible(isItemHasDownloadLink);
+        menu.findItem(R.id.share_file).setVisible(((FeedMedia) media).fileExists());
 
         menu.findItem(R.id.share_item).setVisible(hasWebsiteLink || isItemAndHasLink || isItemHasDownloadLink);
 
@@ -572,6 +573,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     case R.id.share_download_url_with_position_item:
                         if (media instanceof FeedMedia) {
                             ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem(), true);
+                        }
+                        break;
+                    case R.id.share_file:
+                        if (media instanceof FeedMedia) {
+                            ShareUtils.shareFeedItemFile(this, ((FeedMedia) media));
                         }
                         break;
                     default:
