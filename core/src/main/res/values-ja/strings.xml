@@ -26,6 +26,10 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">ポッドキャストを再生した合計時間:</string>
   <string name="statistics_details_dialog">%2$d から %1$d のエピソードが開始しました。\n\n%4$s から%3$s を再生しました。</string>
+  <string name="statistics_mode">統計情報モード</string>
+  <string name="statistics_mode_normal">実際に再生された時間を計算します。 2回再生すると2回カウントされ、再生済のマークはカウントされません</string>
+  <string name="statistics_mode_count_all">再生済みとマークされたすべてのポッドキャストを集計する</string>
+  <string name="statistics_speed_not_counted">注意: 再生速度は考慮されません。</string>
   <!--Main activity-->
   <string name="drawer_open">メニューを開く</string>
   <string name="drawer_close">メニューを閉じる</string>
@@ -33,6 +37,7 @@
   <string name="drawer_feed_order_unplayed_episodes">カウンターで並び替え</string>
   <string name="drawer_feed_order_alphabetical">アルファベット順に並び替え</string>
   <string name="drawer_feed_order_last_update">公開日で並び替え</string>
+  <string name="drawer_feed_order_most_played">再生されたエピソードの数で並べ替え</string>
   <string name="drawer_feed_counter_new_unplayed">新しい未再生のエピソードの数</string>
   <string name="drawer_feed_counter_new">新しいエピソードの数</string>
   <string name="drawer_feed_counter_unplayed">未再生のエピソードの数</string>
@@ -62,6 +67,7 @@
   <string name="refresh_label">更新</string>
   <string name="external_storage_error_msg">外部ストレージが利用できません。アプリが正常に動作できるように、外部ストレージがマウントされていることを確認してください。</string>
   <string name="chapters_label">チャプター</string>
+  <string name="chapter_duration">時間: %1$s</string>
   <string name="shownotes_label">ショーノート</string>
   <string name="description_label">説明</string>
   <string name="most_recent_prefix">最も最近のエピソード:\u0020</string>
@@ -112,6 +118,7 @@
   <string name="share_feed_url_label">フィード URLを共有</string>
   <string name="share_item_url_label">エピソードファイル URLを共有</string>
   <string name="share_item_url_with_position_label">エピソードファイル URL を位置と共に共有</string>
+  <string name="feed_delete_confirmation_msg">フィード \"%1$s\" と、このフィードのすべてのダウンロードしたエピソードを削除することを確認してください。</string>
   <string name="feed_remover_msg">フィードの削除中</string>
   <string name="load_complete_feed">フィードをすべて更新</string>
   <string name="hide_episodes_title">エピソードを非表示にする</string>
@@ -278,6 +285,7 @@
   <string name="pref_pauseOnDisconnect_sum">ヘッドフォンまたはBluetoothの接続が切断された時、再生を一時停止します</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">ヘッドフォンが再接続された時に再生を再開します</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetoothが再接続された時に再生を再開します</string>
+  <string name="pref_hardwareForwardButtonSkips_title">早送りボタンでスキップ</string>
   <string name="pref_hardwareForwardButtonSkips_sum">ハードウェアの早送りボタンを押したときに、早送りの代わりに次のエピソードにスキップします</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">戻るボタンで再開</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">ハードウェアの戻るボタンを押したときに、巻き戻しの代わりに現在のエピソードの再生を再開します</string>
@@ -285,6 +293,7 @@
   <string name="pref_auto_delete_sum">再生が完了した時にエピソードを削除します</string>
   <string name="pref_auto_delete_title">自動削除</string>
   <string name="pref_smart_mark_as_played_sum">一定の秒数未満の再生時間がまだ残っている場合でも、エピソードを再生済としてマークします</string>
+  <string name="pref_smart_mark_as_played_title">再生済としてスマートマーク</string>
   <string name="pref_skip_keeps_episodes_sum">エピソードをスキップした時に残しておきます</string>
   <string name="pref_skip_keeps_episodes_title">エピソードのスキップ時に残す</string>
   <string name="playback_pref">再生</string>
@@ -358,6 +367,10 @@
   <string name="pref_gpodnet_notifications_sum">この設定は、認証エラーには適用されません。</string>
   <string name="pref_playback_speed_title">再生速度</string>
   <string name="pref_playback_speed_sum">可変速度音声再生に使用可能な速度をカスタマイズします</string>
+  <string name="pref_fast_forward">早送りのスキップ時間</string>
+  <string name="pref_fast_forward_sum">早送りボタンがクリックされたときにジャンプする秒数をカスタマイズします</string>
+  <string name="pref_rewind">巻き戻しスキップ時間</string>
+  <string name="pref_rewind_sum">巻き戻しボタンがクリックされたときに後方にジャンプする秒数をカスタマイズします</string>
   <string name="pref_gpodnet_sethostname_title">ホスト名をセット</string>
   <string name="pref_gpodnet_sethostname_use_default_host">デフォルトホストを使用</string>
   <string name="pref_expandNotify_title">拡張通知</string>
@@ -382,6 +395,7 @@
   <string name="crash_report_sum">メールで最新のクラッシュレポートを送信します</string>
   <string name="send_email">メールを送信</string>
   <string name="experimental_pref">実験的</string>
+  <string name="pref_sonic_title">Sonic メディアプレーヤー</string>
   <string name="pref_sonic_message">Android 標準のメディアプレーヤーと Prestissimo の代わりに、内蔵のソニックメディアプレーヤーを使用します</string>
   <string name="pref_current_value">現在の値: %1$s</string>
   <string name="pref_proxy_title">プロキシ</string>
@@ -392,6 +406,8 @@
   <string name="pref_cast_title">Chromecast サポート</string>
   <string name="pref_cast_message_play_flavor">(Chromecast、オーディオスピーカー、Android TV など) キャストデバイス上でリモートメディア再生のサポートを有効にします</string>
   <string name="pref_cast_message_free_flavor">Chromecast は AntennaPod のこのバージョンで無効になっているサードパーティ独自のライブラリーが必要です</string>
+  <string name="pref_enqueue_downloaded_title">ダウンロード済みをキューに入れる</string>
+  <string name="pref_enqueue_downloaded_summary">ダウンロードしたエピソードをキューに追加します</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">自動Flattrを有効にする</string>
   <string name="auto_flattr_after_percent">%d ％再生したらエピソードをFlattr </string>
@@ -401,6 +417,8 @@
   <string name="search_hint">エピソードの検索</string>
   <string name="found_in_shownotes_label">ショーノートで見つかりました</string>
   <string name="found_in_chapters_label">チャプターで見つかりました</string>
+  <string name="found_in_authors_label">作者で見つかりました</string>
+  <string name="found_in_feeds_label">フィードで見つかりました</string>
   <string name="search_status_no_results">見つかりませんでした</string>
   <string name="search_label">検索</string>
   <string name="found_in_title_label">タイトルで見つかりました</string>

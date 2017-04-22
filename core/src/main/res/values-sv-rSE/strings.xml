@@ -26,6 +26,10 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Total uppspelningstid:</string>
   <string name="statistics_details_dialog">%1$d av %2$d episoder startade.\n\nSpelat %3$s av %4$s.</string>
+  <string name="statistics_mode">Statistikläge</string>
+  <string name="statistics_mode_normal">Beräkna faktisk speltid. Att spela två gånger räknas två gånger, men att markera som spelad räknas inte</string>
+  <string name="statistics_mode_count_all">Summera alla podcasts som markerats som spelade</string>
+  <string name="statistics_speed_not_counted">Notera: Uppspelningshastighet tas inte med i beräkningarna. </string>
   <!--Main activity-->
   <string name="drawer_open">Öppna meny</string>
   <string name="drawer_close">Stäng meny</string>
@@ -33,9 +37,11 @@
   <string name="drawer_feed_order_unplayed_episodes">Sortera efter räknare</string>
   <string name="drawer_feed_order_alphabetical">Sortera alfabetiskt</string>
   <string name="drawer_feed_order_last_update">Sortera efter publiceringsdatum</string>
+  <string name="drawer_feed_order_most_played">Sortera efter antal spelade episoder</string>
   <string name="drawer_feed_counter_new_unplayed">Antal nya och ospelade episoder</string>
   <string name="drawer_feed_counter_new">Antal nya episoder</string>
   <string name="drawer_feed_counter_unplayed">Antal ospelade episoder</string>
+  <string name="drawer_feed_counter_downloaded">Antal nedladdade episoder</string>
   <string name="drawer_feed_counter_none">Inga</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Öppna i Webbläsare</string>
@@ -50,6 +56,7 @@
   <string name="cancel_label">Avbryt</string>
   <string name="yes">Ja</string>
   <string name="no">Nej</string>
+  <string name="reset">Återställ</string>
   <string name="author_label">Skapare</string>
   <string name="language_label">Språk</string>
   <string name="url_label">URL</string>
@@ -60,6 +67,7 @@
   <string name="refresh_label">Uppdatera</string>
   <string name="external_storage_error_msg">Ingen extern lagring är tillgänglig. Se till att montera en extern lagringsenhet så att appen kan fungera korrekt.</string>
   <string name="chapters_label">Kapitel</string>
+  <string name="chapter_duration">Längd: %1$s</string>
   <string name="shownotes_label">Shownotes</string>
   <string name="description_label">Beskrivning</string>
   <string name="most_recent_prefix">Senaste episoden:\u0020</string>
@@ -92,6 +100,7 @@
   <string name="etxtFeedurlHint">URL till flöde eller webbsida</string>
   <string name="txtvfeedurl_label">Lägg till podcast via URL</string>
   <string name="podcastdirectories_label">Hitta Podcast i Biblioteket</string>
+  <string name="podcastdirectories_descr">För att hitta nya podcasts kan du söka i iTunes, fyyd, eller på gpodder.net baserat på namn, kategori eller popularitet.</string>
   <string name="browse_gpoddernet_label">Bläddra på gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Markera alla som spelade</string>
@@ -99,7 +108,10 @@
   <string name="mark_all_read_confirmation_msg">Bekräfta att du verkligen vill markera alla episoder som spelade.</string>
   <string name="mark_all_read_feed_confirmation_msg">Bekräfta att du verkligen vill markera alla episoder i detta flöde som spelade.</string>
   <string name="mark_all_seen_label">Markera alla som sedda</string>
+  <string name="mark_all_seen_msg">Markera alla Episoder som sedda</string>
+  <string name="mark_all_seen_confirmation_msg">Bekräfta att du vill markera alla episoder som sedda.</string>
   <string name="show_info_label">Visa information</string>
+  <string name="rename_feed_label">Byt namn på Podcast</string>
   <string name="remove_feed_label">Ta bort Podcast</string>
   <string name="share_label">Dela…</string>
   <string name="share_link_label">Dela Länk</string>
@@ -107,6 +119,7 @@
   <string name="share_feed_url_label">Dela Flödets URL</string>
   <string name="share_item_url_label">Dela Episoden Fil-URL</string>
   <string name="share_item_url_with_position_label">Dela Episodens Fil-URL med Position</string>
+  <string name="feed_delete_confirmation_msg">Bekräfta att du vill ta bort flödet \"%1$s\" och ALLA episoder du laddat ned från detta flöde.</string>
   <string name="feed_remover_msg">Tar bort Flöde</string>
   <string name="load_complete_feed">Uppdatera hela Flödet</string>
   <string name="hide_episodes_title">Dölj Episoder</string>
@@ -118,6 +131,7 @@
   <string name="hide_not_queued_episodes_label">Inte köade</string>
   <string name="hide_downloaded_episodes_label">Nedladdade</string>
   <string name="hide_not_downloaded_episodes_label">Ej nedladdade</string>
+  <string name="hide_has_media_label">Har media</string>
   <string name="filtered_label">Filtrerad</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Senaste uppdateringen misslyckades</string>
   <string name="open_podcast">Öppna Podcast</string>
@@ -128,6 +142,7 @@
   <string name="stop_label">Stopp</string>
   <string name="stream_label">Strömma</string>
   <string name="remove_label">Ta bort</string>
+  <string name="delete_label">Ta bort</string>
   <string name="remove_episode_lable">Ta bort Episod</string>
   <string name="marked_as_seen_label">Markera som sedd</string>
   <string name="mark_read_label">Markera som spelad</string>
@@ -272,11 +287,15 @@
   <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller bluetooth kopplas ifrån.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Fortsätt uppspelningen när hörlurarna återansluts</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsätt uppspelningen när bluetooth återansluts</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Knappen spola fram hoppar</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Hoppa till nästa episod istället för att snabbspola vid tryck på hårdvaruknappen</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">Knappen föregående startar om</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">Starta om den nuvarande episoden när du trycker på hårdvaruknappen för föregående istället för att spola tillbaka</string>
   <string name="pref_followQueue_sum">Hoppa till nästa i kön när uppspelningen är klar</string>
   <string name="pref_auto_delete_sum">Ta bort episoden när uppspelningen är klar</string>
   <string name="pref_auto_delete_title">Automatisk Borttagning</string>
   <string name="pref_smart_mark_as_played_sum">Markera episoder som spelade även om mindre än ett visst antal sekunder är kvar</string>
+  <string name="pref_smart_mark_as_played_title">Smart markera som spelad</string>
   <string name="pref_skip_keeps_episodes_sum">Ta inte bort episoder när de hoppas över</string>
   <string name="pref_skip_keeps_episodes_title">Behåll Överhoppade Episoder</string>
   <string name="playback_pref">Uppspelning</string>
@@ -338,10 +357,22 @@
   <string name="pref_gpodnet_logout_toast">Utloggning lyckades</string>
   <string name="pref_gpodnet_setlogin_information_title">Ändra inloggningsinformation</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net konto.</string>
+  <string name="pref_gpodnet_sync_changes_title">Synkronisera ändringar nu</string>
+  <string name="pref_gpodnet_sync_changes_sum">Synkronisera ändringar i prenumerationer och episodstatus med gpodder.net.</string>
+  <string name="pref_gpodnet_full_sync_title">Full synkronisering nu</string>
+  <string name="pref_gpodnet_full_sync_sum">Synkronisera alla prenumerationer och episodstatus med gpodder.net.</string>
+  <string name="pref_gpodnet_sync_sum_last_sync_line">Senaste synkroniseringsförsök: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Synkronisering startad</string>
+  <string name="pref_gpodnet_full_sync_started">Full synkronisering påbörjad</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Inloggad som <i>%1$s</i> med enhet <i>%2$s</i>]]></string>
+  <string name="pref_gpodnet_notifications_title">Visa notifieringar om synkroniseringsfel</string>
+  <string name="pref_gpodnet_notifications_sum">Denna inställning påverkar inte autentiseringsfel.</string>
   <string name="pref_playback_speed_title">Uppspelningshastigheter</string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet.</string>
+  <string name="pref_fast_forward">Snabbspolningslängd</string>
+  <string name="pref_fast_forward_sum">Anpassa antalet sekunder att hoppa framåt när snabbspolningsknappen används</string>
+  <string name="pref_rewind">Snabbspolningslängd bakåt</string>
+  <string name="pref_rewind_sum">Anpassa antalet sekunder att hoppa bakåt när snabbspolningsknappen bakåt används</string>
   <string name="pref_gpodnet_sethostname_title">Sätt värdnamn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Använd standardvärden</string>
   <string name="pref_expandNotify_title">Expandera aviseringen</string>
@@ -366,6 +397,7 @@
   <string name="crash_report_sum">Sänd den senaste krashrapporten via e-post</string>
   <string name="send_email">Sänd e-post</string>
   <string name="experimental_pref">Experimentellt</string>
+  <string name="pref_sonic_title">Sonic Mediaspelare</string>
   <string name="pref_sonic_message">Använd den inbyggda Sonic mediaspelare som ersättning för Androids egna mediaspelare och Prestissimo</string>
   <string name="pref_current_value">Nuvarande värde: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
@@ -376,16 +408,23 @@
   <string name="pref_cast_title">Chromecast-stöd</string>
   <string name="pref_cast_message_play_flavor">Aktivera stöd för fjärruppspelning av media på Cast-enheter (såsom Chromecast, Ljudanläggningar eller Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast kräver propretiära tredjepartsbibliotek som inte är inkluderade i denna version av AntennaPod</string>
+  <string name="pref_enqueue_downloaded_title">Lägg nedladdade i kön</string>
+  <string name="pref_enqueue_downloaded_summary">Lägg nedladdade episoder i uppspelningskön</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>
   <string name="auto_flattr_ater_beginning">Flattra episoden när den startas</string>
   <string name="auto_flattr_ater_end">Flattra episoden när den spelats klart</string>
   <!--Search-->
+  <string name="search_hint">Sök efter episoder</string>
+  <string name="found_in_shownotes_label">Hittad i shownotes</string>
   <string name="found_in_chapters_label">Hittad i kapitel</string>
+  <string name="found_in_authors_label">Hittad i författare</string>
+  <string name="found_in_feeds_label">Hittad i flöden</string>
   <string name="search_status_no_results">Inga resultat hittades</string>
   <string name="search_label">Sök</string>
   <string name="found_in_title_label">Hittad i titeln</string>
+  <string name="no_results_for_query">Inga resultat hittades för \"%1$s\"</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML-filer låter dig flytta dina podcasts från en podcatcher till en annan.</string>
   <string name="opml_import_option">Val %1$d</string>
@@ -404,6 +443,7 @@
   <string name="choose_file_from_filesystem">Från lokalt filsystem</string>
   <string name="choose_file_from_external_application">Använd extern applikation</string>
   <string name="opml_export_label">OPML export</string>
+  <string name="html_export_label">HTML export</string>
   <string name="exporting_label">Exporterar…</string>
   <string name="export_error_label">Exporteringsfel</string>
   <string name="opml_export_success_title">OPML Exportering lyckades.</string>
@@ -434,6 +474,9 @@
     <item quantity="one">1 timme</item>
     <item quantity="other">%d timmar</item>
   </plurals>
+  <string name="auto_enable_label">Auto-aktivera</string>
+  <string name="sleep_timer_enabled_label">Sömntimer aktiverad</string>
+  <string name="sleep_timer_disabled_label">Sömntimer inaktiverad</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIER</string>
   <string name="gpodnet_toplist_header">BÄSTA PODCASTS</string>
@@ -463,6 +506,8 @@
   <string name="gpodnetsync_auth_error_descr">Fel användarnamn eller lösenord</string>
   <string name="gpodnetsync_error_title">gpodder.net synkroniseringsfel</string>
   <string name="gpodnetsync_error_descr">Ett fel uppstod under synkronisering:\u0020</string>
+  <string name="gpodnetsync_pref_report_successful">Lyckades</string>
+  <string name="gpodnetsync_pref_report_failed">Misslyckades</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Vald mapp:</string>
   <string name="create_folder_label">Skapa mapp</string>
@@ -515,6 +560,7 @@
   <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte…</string>
   <string name="search_itunes_label">Leta i iTunes</string>
   <string name="filter">Filtrera</string>
+  <string name="search_fyyd_label">Sök i fyyd</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alla</string>
   <string name="selected_all_label">Välj alla Episoder</string>
@@ -532,6 +578,8 @@
   <string name="selected_queued_label">Valde köade Episoder</string>
   <string name="not_queued_label">Ej köad</string>
   <string name="selected_not_queued_label">Välj ej köade Episoder</string>
+  <string name="has_media">Har media</string>
+  <string name="selected_has_media_label">Valde episoder med media</string>
   <!--Sort-->
   <string name="sort_title_a_z">Titel (A \u2192 Ö)</string>
   <string name="sort_title_z_a">Titel (Ö \u2192 A)</string>

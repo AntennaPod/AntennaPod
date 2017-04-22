@@ -90,7 +90,7 @@
   <string name="send_label">Senden…</string>
   <string name="episode_cleanup_never">Nie</string>
   <string name="episode_cleanup_queue_removal">Wenn nicht in der Abspielliste</string>
-  <string name="episode_cleanup_after_listening">wenn fertig gespielt</string>
+  <string name="episode_cleanup_after_listening">Wenn fertig gespielt</string>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 Tag nachdem fertig gespielt</item>
     <item quantity="other">%d Tage nachdem fertig gespielt</item>
@@ -295,7 +295,7 @@
   <string name="pref_auto_delete_sum">Episode löschen, wenn die Wiedergabe endet</string>
   <string name="pref_auto_delete_title">Automatisches Löschen</string>
   <string name="pref_smart_mark_as_played_sum">Episoden werden bereits als gespielt markiert, wenn weniger als eine bestimmte Anzahl Sekunden Restspielzeit übrig sind</string>
-  <string name="pref_smart_mark_as_played_title">Schlaues als gespielt markieren</string>
+  <string name="pref_smart_mark_as_played_title">Schlau als gespielt markieren</string>
   <string name="pref_skip_keeps_episodes_sum">Behalte Episoden beim Überspringen</string>
   <string name="pref_skip_keeps_episodes_title">Behalte übersprungene Episoden</string>
   <string name="playback_pref">Wiedergabe</string>

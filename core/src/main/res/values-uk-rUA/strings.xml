@@ -26,6 +26,10 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Загальний час прослуханих подкастів:</string>
   <string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
+  <string name="statistics_mode">Режим статистики</string>
+  <string name="statistics_mode_normal">Обчислити тривалість прослуханого. Прослухане двічі враховується двічи, але просто позначене як прослухане не враховується </string>
+  <string name="statistics_mode_count_all">Підсумувати всі подкасти позначені як прослухані</string>
+  <string name="statistics_speed_not_counted">Зауваження: Швидкість програвання не береться до уваги.</string>
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
   <string name="drawer_close">Сховати меню</string>
@@ -33,6 +37,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Сортувати за лічильником</string>
   <string name="drawer_feed_order_alphabetical">Сортування за абеткою</string>
   <string name="drawer_feed_order_last_update">Сортувати за датою публікації</string>
+  <string name="drawer_feed_order_most_played">Сортування за кількістю прослуханих епізодів</string>
   <string name="drawer_feed_counter_new_unplayed">Кількість нових та непрослуханих епізодів</string>
   <string name="drawer_feed_counter_new">Кількість нових епізодів</string>
   <string name="drawer_feed_counter_unplayed">Кількість непрослуханих епізодів</string>
@@ -62,6 +67,7 @@
   <string name="refresh_label">Оновити</string>
   <string name="external_storage_error_msg">Немає доступної карти пам\'яті. Зовнішній носій потрібен для коректної роботи додатку</string>
   <string name="chapters_label">Глави</string>
+  <string name="chapter_duration">Тривалість: %1$s</string>
   <string name="shownotes_label">Нотатки до епізода</string>
   <string name="description_label">Опис</string>
   <string name="most_recent_prefix">Найновіший епізод:\u0020</string>
@@ -114,6 +120,7 @@
   <string name="share_feed_url_label">Поділитись посиланням на канал</string>
   <string name="share_item_url_label">Поділитись посиланням на файл епізода</string>
   <string name="share_item_url_with_position_label">Поділитись посиланням на файл епізода з позицією</string>
+  <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте видалити канал \"%1$s\" і ВСІ епізоди цього канала які ви завантажили.</string>
   <string name="feed_remover_msg">Удаляю канал</string>
   <string name="load_complete_feed">Оновити канал цілком</string>
   <string name="hide_episodes_title">Приховати епізоди</string>
@@ -282,6 +289,7 @@
   <string name="pref_pauseOnDisconnect_sum">Зупинятись коли навушники або блютуз від’єднано</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Поновити відтворення коли навушники повторно під’єднано</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Поновити відтворення коли блютуз повторно під’єднано</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Кнопка перемотки пропускає</string>
   <string name="pref_hardwareForwardButtonSkips_sum">При натисканні апаратної кнопки перемотки перейти до наступного епізода замість перемотки.</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Кнопка \"назад\" повертає до початку</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">При натисканні апаратної кнопки \"назад\", замість перемотки, розпочати програвання поточного епізода заново</string>
@@ -289,6 +297,7 @@
   <string name="pref_auto_delete_sum">Видалити епізод після повного відтворення</string>
   <string name="pref_auto_delete_title">Автовидалення</string>
   <string name="pref_smart_mark_as_played_sum">Позначити епізоди як грані навіть якщо залишилось менш ніж зазначене число секунд до кінця відтворення</string>
+  <string name="pref_smart_mark_as_played_title">Розумне позначення прослуханих епізодів</string>
   <string name="pref_skip_keeps_episodes_sum">Зберігати епізоди що пропущені при програванні  </string>
   <string name="pref_skip_keeps_episodes_title">Зберігати пропущені при програванні епізоди </string>
   <string name="playback_pref">Відтворення</string>
@@ -362,6 +371,10 @@
   <string name="pref_gpodnet_notifications_sum">Це налаштування не застосовується до помилок автентифікації.</string>
   <string name="pref_playback_speed_title">Швидкість програвання</string>
   <string name="pref_playback_speed_sum">Налаштування швідкості доступно для змінної швидкості програвання</string>
+  <string name="pref_fast_forward">Час пропуска кнопкой перемотки вперед</string>
+  <string name="pref_fast_forward_sum">Налаштувати кількість секунд які пропускаються при натисканні кнопки перемотки вперед</string>
+  <string name="pref_rewind">Час пропуска кнопкой перемотки назад</string>
+  <string name="pref_rewind_sum">Налаштувати кількість секунд які відмотуються при натисканні кнопки перемотки назад</string>
   <string name="pref_gpodnet_sethostname_title">Встановити ім\'я хоста</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Використати хост по замовчанню</string>
   <string name="pref_expandNotify_title">Розгорнути повідомлення</string>
@@ -386,6 +399,7 @@
   <string name="crash_report_sum">Надіслати е-пошту зі звітом про останній збій</string>
   <string name="send_email">Надіслати е-пошту</string>
   <string name="experimental_pref">Експериментальні</string>
+  <string name="pref_sonic_title">Sonic Media Player</string>
   <string name="pref_sonic_message">Застосувати вбудований програвач sonic замість програвача Android та Prestissimo</string>
   <string name="pref_current_value">Поточне значення: %1$s</string>
   <string name="pref_proxy_title">Проксі</string>
@@ -396,6 +410,8 @@
   <string name="pref_cast_title">Підтримка для Chromecast</string>
   <string name="pref_cast_message_play_flavor">Включити підтримку програвання на таких пристроях як Chromecast або Android TV</string>
   <string name="pref_cast_message_free_flavor">Для підтримки Chromecast потрібні бібліотеки які не включені в цю версію AntennaPod</string>
+  <string name="pref_enqueue_downloaded_title">Додавати до черги завантажене</string>
+  <string name="pref_enqueue_downloaded_summary">Додавати завантажені епізоди до черги</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -405,6 +421,8 @@
   <string name="search_hint">Пошук епізодів</string>
   <string name="found_in_shownotes_label">Знайдено в нотатках епізода</string>
   <string name="found_in_chapters_label">Знайдено в главах</string>
+  <string name="found_in_authors_label">Знайдено в авторах</string>
+  <string name="found_in_feeds_label">Знайдено в каналах</string>
   <string name="search_status_no_results">Жодних результатів немає</string>
   <string name="search_label">Пошук</string>
   <string name="found_in_title_label">Знайдено у назві</string>

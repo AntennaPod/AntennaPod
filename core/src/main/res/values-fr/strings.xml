@@ -26,10 +26,10 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Temps d\'écoute total</string>
   <string name="statistics_details_dialog">%1$d épisodes sur %2$d commencés.\n\nLu %3$s sur %4$s.</string>
-  <string name="statistics_mode">Préférences statistiques</string>
-  <string name="statistics_mode_normal">Calculer la durée réellement écoutée. Les doubles écoutes comptent double alors que marqué lu n\'est pas compté</string>
+  <string name="statistics_mode">Type de statistiques</string>
+  <string name="statistics_mode_normal">Calculer la durée réellement écoutée. Les épisodes écoutés deux fois comptent double alors que ceux simplement marqués lu ne sont pas comptés</string>
   <string name="statistics_mode_count_all">Additionner tous les podcasts marqués comme lus</string>
-  <string name="statistics_speed_not_counted">Note : la vitesse de lecture n\'est jamais pris en compte.</string>
+  <string name="statistics_speed_not_counted">Note : la vitesse de lecture n\'est jamais prise en compte.</string>
   <!--Main activity-->
   <string name="drawer_open">Ouvrir le menu</string>
   <string name="drawer_close">Fermer le menu</string>
@@ -287,15 +287,15 @@
   <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture lorsque le casque ou le bluetooth sont déconnectés</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se reconnecte</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Le bouton piste suivante saute l\'épisode</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\'épisode suivant au lieu de faire un saut avant quand il est pressé un bouton physique pour avancer à la piste suivante</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Le bouton saut avant saute l\'épisode</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\'épisode suivant au lieu de faire un saut avant quand un bouton physique \"saut avant\" est pressé</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Bouton précédent redémarre</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">Quand un bouton précédent physique est appuyé l\'épisode en cours repart de zéro au lieu de revenir en arrière</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">Repartir de zéro au lieu de faire un saut arrière quand un bouton physique \"saut arrière\" est pressé</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
   <string name="pref_auto_delete_title">Suppression automatique</string>
   <string name="pref_smart_mark_as_played_sum">Marquer les épisodes comme lus même s\'il reste encore un certain nombre de secondes à jouer</string>
-  <string name="pref_smart_mark_as_played_title">Marquer comme lu de manière intelligente</string>
+  <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligemment</string>
   <string name="pref_skip_keeps_episodes_sum">Garder les épisodes quand ils sont passés</string>
   <string name="pref_skip_keeps_episodes_title">Garder les épisodes passés</string>
   <string name="playback_pref">Lecture</string>
@@ -398,7 +398,7 @@
   <string name="send_email">Envoyer e-mail</string>
   <string name="experimental_pref">Expérimental</string>
   <string name="pref_sonic_title">Lecteur multimédia Sonic</string>
-  <string name="pref_sonic_message">Utiliser le lecteur multimédia interne Sonic au lieu du natif d\'Android ou de Prestissimo</string>
+  <string name="pref_sonic_message">Utiliser le lecteur multimédia interne Sonic au lieu du lecteur natif d\'Android ou Prestissimo</string>
   <string name="pref_current_value">Valeur actuelle : %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Paramétrer un réseau proxy</string>
@@ -535,7 +535,7 @@
   <string name="subscribed_label">Abonné</string>
   <string name="downloading_label">En cours de téléchargement...</string>
   <!--Content descriptions for image buttons-->
-  <string name="rewind_label">Retour en arrière</string>
+  <string name="rewind_label">Saut arrière</string>
   <string name="fast_forward_label">Avance rapide</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Vidéo</string>
