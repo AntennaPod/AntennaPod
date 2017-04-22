@@ -15,9 +15,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.ProgressEvent;
@@ -303,60 +306,87 @@ public class PodDBAdapter {
     private static final String[] SEL_FI_EXTRA = {KEY_ID, KEY_DESCRIPTION,
             KEY_CONTENT_ENCODED, KEY_FEED};
 
-
-    private static SQLiteDatabase db;
     private static Context context;
     private static PodDBHelper dbHelper;
+
+    private static volatile SQLiteDatabase db;
+    private static Lock dbLock = new ReentrantLock();
     private static AtomicInteger counter = new AtomicInteger(0);
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
     }
 
-    public static synchronized PodDBAdapter getInstance() {
-        if (dbHelper == null) {
-            dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
-        }
+    private static class PodDBHelperholder {
+        public static final PodDBHelper dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
+    }
+
+    public static PodDBAdapter getInstance() {
+        dbHelper = PodDBHelperholder.dbHelper;
         return new PodDBAdapter();
     }
 
     private PodDBAdapter() {
     }
 
-    public synchronized PodDBAdapter open() {
+    public PodDBAdapter open() {
         int adapters = counter.incrementAndGet();
         Log.v(TAG, "Opening DB #" + adapters);
-        if (db == null || !db.isOpen() || db.isReadOnly()) {
+
+        if ((db == null) || (!db.isOpen()) || (db.isReadOnly())) {
             try {
-                db = dbHelper.getWritableDatabase();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    db.enableWriteAheadLogging();
+                dbLock.lock();
+                if ((db == null) || (!db.isOpen()) || (db.isReadOnly())) {
+                    db = openDb();
                 }
-            } catch (SQLException ex) {
-                Log.e(TAG, Log.getStackTraceString(ex));
-                db = dbHelper.getReadableDatabase();
+            } finally {
+                dbLock.unlock();
             }
         }
         return this;
     }
 
-    public synchronized void close() {
+    private SQLiteDatabase openDb() {
+        SQLiteDatabase newDb = null;
+        try {
+            newDb = dbHelper.getWritableDatabase();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                newDb.enableWriteAheadLogging();
+            }
+        } catch (SQLException ex) {
+            Log.e(TAG, Log.getStackTraceString(ex));
+            newDb = dbHelper.getReadableDatabase();
+        }
+        return newDb;
+    }
+
+    public void close() {
         int adapters = counter.decrementAndGet();
         Log.v(TAG, "Closing DB #" + adapters);
+
         if (adapters == 0) {
             Log.v(TAG, "Closing DB, really");
-            db.close();
+            try {
+                dbLock.lock();
+                db.close();
+                db = null;
+            } finally {
+                dbLock.unlock();
+            }
         }
     }
 
     public static boolean deleteDatabase() {
         PodDBAdapter adapter = getInstance();
         adapter.open();
-        for (String tableName : ALL_TABLES) {
-            db.delete(tableName, "1", null);
+        try {
+            for (String tableName : ALL_TABLES) {
+                db.delete(tableName, "1", null);
+            }
+            return true;
+        } finally {
+            adapter.close();
         }
-        adapter.close();
-        return true;
     }
 
     /**
@@ -425,10 +455,11 @@ public class PodDBAdapter {
     }
 
     public void setFeedItemFilter(long feedId, Set<String> filterValues) {
-        Log.d(TAG, "setFeedItemFilter() called with: " + "feedId = [" + feedId + "], " +
-                "filterValues = [" + TextUtils.join(",", filterValues) + "]");
+        String valuesList = TextUtils.join(",", filterValues);
+        Log.d(TAG, String.format(
+                "setFeedItemFilter() called with: feedId = [%d], filterValues = [%s]", feedId, valuesList));
         ContentValues values = new ContentValues();
-        values.put(KEY_HIDE, TextUtils.join(",", filterValues));
+        values.put(KEY_HIDE, valuesList);
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
@@ -1357,11 +1388,10 @@ public class PodDBAdapter {
         if (size == 1) {
             return "(?)";
         }
-        StringBuilder builder = new StringBuilder("(");
-        for (int i = 0; i < size - 1; i++) {
-            builder.append("?,");
-        }
-        builder.append("?)");
+        StringBuilder builder =
+                new StringBuilder("(")
+                        .append(TextUtils.join(",", Collections.nCopies(size, "?")))
+                        .append(")");
         return builder.toString();
     }
 
