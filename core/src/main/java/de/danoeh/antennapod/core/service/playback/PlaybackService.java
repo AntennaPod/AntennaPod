@@ -387,7 +387,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
         if (parentId.equals(getResources().getString(R.string.app_name))) {
             // Root List
-            mediaItems.add(createBrowsableMediaItemForRoot());
+            try {
+                if (!(taskManager.getQueue().isEmpty())) {
+                    mediaItems.add(createBrowsableMediaItemForRoot());
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed feed: feeds) {
                 mediaItems.add(createBrowsableMediaItemForFeed(feed));

@@ -1156,7 +1156,9 @@ public class PodDBAdapter {
                         + TABLE_NAME_FEED_IMAGES + " WHERE " + KEY_ID + " IN "
                         + buildInOperator(neededLength), parts);
             }
-            return new MergeCursor(cursors);
+            Cursor result = new MergeCursor(cursors);
+            result.moveToFirst();
+            return result;
         } else {
             return db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + " IN "
                     + buildInOperator(length), imageIds, null, null, null);
@@ -1341,7 +1343,9 @@ public class PodDBAdapter {
                         + TABLE_NAME_FEED_MEDIA + " WHERE " + KEY_FEEDITEM + " IN "
                         + buildInOperator(neededLength), parts);
             }
-            return new MergeCursor(cursors);
+            Cursor result = new MergeCursor(cursors);
+            result.moveToFirst();
+            return result;
         } else {
             return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_FEEDITEM + " IN "
                     + buildInOperator(length), itemIds, null, null, null);

@@ -1,46 +1,62 @@
 Change Log
 ==========
 
+Version 1.6.3
+-------------
+
+* New features:
+   * Support for Android Auto
+   * Sort feeds by number of played episodes
+   * Statistics modes
+   * Setting: Enqueue downloaded
+   * Launch screen
+* Improvements
+   * Chapter duration
+   * Feed title in deletion confirmation
+* Fixes:
+   * Episodes refresh spinner
+   * Publication date parsing
+   * Unknown mime type
 
 Version 1.6.2
 -------------
 
 * New features:
- * Integration of fyyd Podcast Search Engine
- * Export subscriptions as HTML
- * Rename feeds
- * Auto-enable sleep timer
- * "has media" filter
- * Force gpodder full sync
+  * Integration of fyyd Podcast Search Engine
+  * Export subscriptions as HTML
+  * Rename feeds
+  * Auto-enable sleep timer
+  * "has media" filter
+  * Force gpodder full sync
 * Improvements:
- * Better support for Atom feeds, e.g. summary tag
- * Confirmation dialog on mark all as seen
- * Number of downloaded episodes in subscription counter
- * Gpodder sync error optional
- * Search results
- * MRSS support
- * Sanitize HTML from Atom feed
+  * Better support for Atom feeds, e.g. summary tag
+  * Confirmation dialog on mark all as seen
+  * Number of downloaded episodes in subscription counter
+  * Gpodder sync error optional
+  * Search results
+  * MRSS support
+  * Sanitize HTML from Atom feed
 * Fixes:
- * Reset sleep timer on shake to current waiting time
- * Cast dialog image
- * Mini player not showing up
- * Audio player cover fragment
- * Prevent out of memory and casting crashes
+  * Reset sleep timer on shake to current waiting time
+  * Cast dialog image
+  * Mini player not showing up
+  * Audio player cover fragment
+  * Prevent out of memory and casting crashes
 
 Version 1.6.0
 -------------
 * New features:
- * Experimental Chromecast support
- * Subscription overview
- * Proxy support
- * Statistics
- * Manual gpodder.net sync
+  * Experimental Chromecast support
+  * Subscription overview
+  * Proxy support
+  * Statistics
+  * Manual gpodder.net sync
 * Fixes:
- * Audioplayer controls
- * Audio ducking
- * Video control fade-out
- * External media controls
- * Feed parsing
+  * Audioplayer controls
+  * Audio ducking
+  * Video control fade-out
+  * External media controls
+  * Feed parsing
 
 Version 1.5.0
 -------------

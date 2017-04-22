@@ -568,7 +568,9 @@ public class GpodnetService {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         } finally {
-            body.close();
+            if (body != null) {
+                body.close();
+            }
         }
         return responseString;
     }
