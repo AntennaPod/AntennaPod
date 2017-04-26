@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import android.widget.Toast;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -84,12 +85,15 @@ public class DBWriter {
             if (media != null) {
                 Log.i(TAG, String.format("Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
                         media.getId(), media.getEpisodeTitle(), String.valueOf(media.isDownloaded())));
-                boolean result = false;
                 if (media.isDownloaded()) {
                     // delete downloaded media file
                     File mediaFile = new File(media.getFile_url());
                     if (mediaFile.exists()) {
-                        result = mediaFile.delete();
+                        if (!mediaFile.delete()) {
+                            Toast.makeText(context, "Unable to delete file. Rebooting the device could help.",
+                                    Toast.LENGTH_LONG).show();
+                            return;
+                        }
                     }
                     media.setDownloaded(false);
                     media.setFile_url(null);
@@ -129,7 +133,6 @@ public class DBWriter {
                         GpodnetPreferences.enqueueEpisodeAction(action);
                     }
                 }
-                Log.d(TAG, "Deleting File. Result: " + result);
                 EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
