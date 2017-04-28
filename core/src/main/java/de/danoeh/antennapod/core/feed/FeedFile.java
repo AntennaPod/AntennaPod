@@ -8,10 +8,13 @@ import java.io.File;
  * Represents a component of a Feed that has to be downloaded
  */
 public abstract class FeedFile extends FeedComponent {
+    public static final int NOT_DOWNLOADED = 0;
+    public static final int DOWNLOADED = 1;
+    public static final int DOWNLOAD_STARTED = 2;
 
     protected String file_url;
     protected String download_url;
-    protected boolean downloaded;
+    protected int downloadStatus;
 
     /**
      * Creates a new FeedFile object.
@@ -19,18 +22,18 @@ public abstract class FeedFile extends FeedComponent {
      * @param file_url     The location of the FeedFile. If this is null, the downloaded-attribute
      *                     will automatically be set to false.
      * @param download_url The location where the FeedFile can be downloaded.
-     * @param downloaded   true if the FeedFile has been downloaded, false otherwise. This parameter
-     *                     will automatically be interpreted as false if the file_url is null.
+     * @param downloadStatus 1 if the FeedFile has been downloaded, 2 if the download has been started,
+     *                       0 otherwise.
      */
-    public FeedFile(String file_url, String download_url, boolean downloaded) {
+    public FeedFile(String file_url, String download_url, int downloadStatus) {
         super();
         this.file_url = file_url;
         this.download_url = download_url;
-        this.downloaded = (file_url != null) && downloaded;
+        this.downloadStatus = downloadStatus;
     }
 
     public FeedFile() {
-        this(null, null, false);
+        this(null, null, NOT_DOWNLOADED);
     }
 
     public abstract int getTypeAsInt();
@@ -85,7 +88,7 @@ public abstract class FeedFile extends FeedComponent {
     public void setFile_url(String file_url) {
         this.file_url = file_url;
         if (file_url == null) {
-            downloaded = false;
+            downloadStatus = NOT_DOWNLOADED;
         }
     }
 
@@ -98,10 +101,14 @@ public abstract class FeedFile extends FeedComponent {
     }
 
     public boolean isDownloaded() {
-        return downloaded;
+        return downloadStatus == DOWNLOADED;
     }
 
     public void setDownloaded(boolean downloaded) {
-        this.downloaded = downloaded;
+        this.downloadStatus = downloaded ? DOWNLOADED : NOT_DOWNLOADED;
+    }
+
+    public void setDownloadStatus(int status) {
+        this.downloadStatus = status;
     }
 }

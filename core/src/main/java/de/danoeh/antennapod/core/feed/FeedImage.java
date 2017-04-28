@@ -15,15 +15,15 @@ public class FeedImage extends FeedFile implements ImageResource {
 	protected FeedComponent owner;
 
 	public FeedImage(FeedComponent owner, String download_url, String title) {
-		super(null, download_url, false);
+		super(null, download_url, FeedFile.NOT_DOWNLOADED);
 		this.download_url = download_url;
 		this.title = title;
         this.owner = owner;
 	}
 
 	public FeedImage(long id, String title, String file_url,
-			String download_url, boolean downloaded) {
-		super(file_url, download_url, downloaded);
+			String download_url, int downloadStatus) {
+		super(file_url, download_url, downloadStatus);
 		this.id = id;
 		this.title = title;
 	}
@@ -44,7 +44,7 @@ public class FeedImage extends FeedFile implements ImageResource {
 				cursor.getString(indexTitle),
 				cursor.getString(indexFileUrl),
 				cursor.getString(indexDownloadUrl),
-				cursor.getInt(indexDownloaded) > 0
+				cursor.getInt(indexDownloaded)
 		);
 	}
 
@@ -81,7 +81,7 @@ public class FeedImage extends FeedFile implements ImageResource {
 
     @Override
     public String getImageLocation() {
-        if (file_url != null && downloaded) {
+        if (file_url != null && downloadStatus == FeedFile.DOWNLOADED) {
             return new File(file_url).getAbsolutePath();
         } else if(download_url != null) {
             return download_url;

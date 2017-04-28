@@ -64,7 +64,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public FeedMedia(FeedItem i, String download_url, long size,
                      String mime_type) {
-        super(null, download_url, false);
+        super(null, download_url, FeedFile.NOT_DOWNLOADED);
         this.item = i;
         this.size = size;
         this.mime_type = mime_type;
@@ -72,9 +72,9 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mime_type, String file_url, String download_url,
-                     boolean downloaded, Date playbackCompletionDate, int played_duration,
+                     int downloadStatus, Date playbackCompletionDate, int played_duration,
                      long lastPlayedTime) {
-        super(file_url, download_url, downloaded);
+        super(file_url, download_url, downloadStatus);
         this.id = id;
         this.item = item;
         this.duration = duration;
@@ -90,9 +90,9 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mime_type, String file_url, String download_url,
-                     boolean downloaded, Date playbackCompletionDate, int played_duration,
+                     int downloadStatus, Date playbackCompletionDate, int played_duration,
                      Boolean hasEmbeddedPicture, long lastPlayedTime) {
-        this(id, item, duration, position, size, mime_type, file_url, download_url, downloaded,
+        this(id, item, duration, position, size, mime_type, file_url, download_url, downloadStatus,
                 playbackCompletionDate, played_duration, lastPlayedTime);
         this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
@@ -139,7 +139,7 @@ public class FeedMedia extends FeedFile implements Playable {
                 cursor.getString(indexMimeType),
                 cursor.getString(indexFileUrl),
                 cursor.getString(indexDownloadUrl),
-                cursor.getInt(indexDownloaded) > 0,
+                cursor.getInt(indexDownloaded),
                 playbackCompletionDate,
                 cursor.getInt(indexPlayedDuration),
                 hasEmbeddedPicture,
@@ -361,7 +361,7 @@ public class FeedMedia extends FeedFile implements Playable {
         dest.writeString(mime_type);
         dest.writeString(file_url);
         dest.writeString(download_url);
-        dest.writeByte((byte) ((downloaded) ? 1 : 0));
+        dest.writeByte((byte) downloadStatus);
         dest.writeLong((playbackCompletionDate != null) ? playbackCompletionDate.getTime() : 0);
         dest.writeInt(played_duration);
         dest.writeLong(lastPlayedTime);
@@ -568,7 +568,7 @@ public class FeedMedia extends FeedFile implements Playable {
             final long id = in.readLong();
             final long itemID = in.readLong();
             FeedMedia result = new FeedMedia(id, null, in.readInt(), in.readInt(), in.readLong(), in.readString(), in.readString(),
-                    in.readString(), in.readByte() != 0, new Date(in.readLong()), in.readInt(), in.readLong());
+                    in.readString(), (int) in.readByte(), new Date(in.readLong()), in.readInt(), in.readLong());
             result.itemID = itemID;
             return result;
         }
