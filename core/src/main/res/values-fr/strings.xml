@@ -20,7 +20,7 @@
   <string name="playback_history_label">Journal des lectures</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Identifiants gpodder.net</string>
-  <string name="free_space_label">%1$s d\\'espace libre</string>
+  <string name="free_space_label">%1$s d\'espace libre</string>
   <string name="episode_cache_full_title">L\'emplacement pour stocker les épisodes est plein</string>
   <string name="episode_cache_full_message">Le nombre maximal d\'épisodes téléchargés a été atteint. Vous pouvez changer ce nombre dans les paramètres.</string>
   <!--Statistics fragment-->
@@ -65,7 +65,7 @@
   <string name="error_label">Erreur</string>
   <string name="error_msg_prefix">Une erreur a eu lieu :</string>
   <string name="refresh_label">Rafraîchir</string>
-  <string name="external_storage_error_msg">Aucun stockage externe n\\'est disponible. Merci de connecter un  volume de stockage externe pour que l\\'application puisse fonctionner correctement.</string>
+  <string name="external_storage_error_msg">Aucun stockage externe n\'est disponible. Merci de connecter un  volume de stockage externe pour que l\'application puisse fonctionner correctement.</string>
   <string name="chapters_label">Chapitres</string>
   <string name="chapter_duration">Durée : %1$s</string>
   <string name="shownotes_label">Notes d\'épisode</string>
@@ -117,8 +117,8 @@
   <string name="share_link_label">Partager un lien vers le site</string>
   <string name="share_link_with_position_label">Partager lien avec position</string>
   <string name="share_feed_url_label">Partager lien du flux</string>
-  <string name="share_item_url_label">Partager le lien de l\\'épisode</string>
-  <string name="share_item_url_with_position_label">Partager le lien de l\\'épisode avec la position</string>
+  <string name="share_item_url_label">Partager le lien de l\'épisode</string>
+  <string name="share_item_url_with_position_label">Partager le lien de l\'épisode avec la position</string>
   <string name="feed_delete_confirmation_msg">Confirmer que vous voulez supprimer le flux \"%1$s\" et TOUS les épisodes que vous avez téléchargés.</string>
   <string name="feed_remover_msg">Flux en cours de suppression</string>
   <string name="load_complete_feed">Mettre à jour tout le flux</string>
@@ -127,8 +127,8 @@
   <string name="hide_unplayed_episodes_label">Non joués</string>
   <string name="hide_paused_episodes_label">En pause</string>
   <string name="hide_played_episodes_label">Joués</string>
-  <string name="hide_queued_episodes_label">Rajouté à la liste d\\'attente</string>
-  <string name="hide_not_queued_episodes_label">Non rajouté à la liste d\\'attente</string>
+  <string name="hide_queued_episodes_label">Rajouté à la liste d\'attente</string>
+  <string name="hide_not_queued_episodes_label">Non rajouté à la liste d\'attente</string>
   <string name="hide_downloaded_episodes_label">Téléchargé</string>
   <string name="hide_not_downloaded_episodes_label">Non téléchargé</string>
   <string name="hide_has_media_label">À des médias</string>
@@ -288,7 +288,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se reconnecte</string>
   <string name="pref_hardwareForwardButtonSkips_title">Le bouton \"saut avant\" saute l\'épisode</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\\'épisode suivant au lieu de faire un saut avant quand un bouton physique \\"saut avant\\" est pressé</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\'épisode suivant au lieu de faire un saut avant quand un bouton physique \\"saut avant\\" est pressé</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Le bouton \"saut arrière\" redémarre l\'épisode</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Repartir de zéro au lieu de faire un saut arrière quand un bouton physique \"saut arrière\" est pressé</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
@@ -302,7 +302,7 @@
   <string name="network_pref">Réseau</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Mettre à jour l’intervalle ou l\'heure</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Indiquer un intervalle ou une heure spécifique de mise à jour des flux</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez mettre en place un <i>intervalle</i> comme \\"toutes les 2 heures\\", une <i>heure précise</i> comme \\"7:00\\" ou désactiver les mises à jours automatique.\n\n<small>Note: Il est possible qu\\'il y ait un délai car l\\'heure de mise à jour peut être inexacte.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez mettre en place un <i>intervalle</i> comme \\"toutes les 2 heures\\", une <i>heure précise</i> comme \\"7:00\\" ou désactiver les mises à jours automatique.\n\n<small>Note: Il est possible qu\'il y ait un délai car l\'heure de mise à jour peut être inexacte.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Désactiver</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Définir intervalle</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Régler l\'heure</string>
@@ -450,7 +450,7 @@
   <string name="opml_export_success_sum">Le fichier .opml a été écrit ici :\u0020</string>
   <string name="opml_import_ask_read_permission">L\'accès au stockage externe est requis pour lire le fichier OPML</string>
   <!--Sleep timer-->
-  <string name="set_sleeptimer_label">Activer le minuteur d\\'arrêt</string>
+  <string name="set_sleeptimer_label">Activer le minuteur d\'arrêt</string>
   <string name="disable_sleeptimer_label">Désactiver le minuteur d\'arrêt</string>
   <string name="enter_time_here_label">Entrer l\'heure</string>
   <string name="sleep_timer_label">Minuteur d\'arrêt</string>
