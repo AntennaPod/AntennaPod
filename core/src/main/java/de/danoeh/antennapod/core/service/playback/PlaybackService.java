@@ -368,14 +368,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItemForFeed(Feed feed) {
-        MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
+        MediaDescriptionCompat.Builder builder = new MediaDescriptionCompat.Builder()
                 .setMediaId("FeedId:" + Long.toString(feed.getId()))
                 .setTitle(feed.getTitle())
                 .setDescription(feed.getDescription())
-                .setIconUri(Uri.parse(feed.getImageLocation()))
-                .setSubtitle(feed.getCustomTitle())
-                .setMediaUri(Uri.parse(feed.getLink()))
-                .build();
+                .setSubtitle(feed.getCustomTitle());
+        if(feed.getImageLocation() != null) {
+            builder.setIconUri(Uri.parse(feed.getImageLocation()));
+        }
+        if(feed.getLink() != null) {
+            builder.setMediaUri(Uri.parse(feed.getLink()));
+        }
+        MediaDescriptionCompat description = builder.build();
         return new MediaBrowserCompat.MediaItem(description,
                 MediaBrowserCompat.MediaItem.FLAG_BROWSABLE);
     }
