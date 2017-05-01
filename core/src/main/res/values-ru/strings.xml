@@ -33,6 +33,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Сортировать по количеству</string>
   <string name="drawer_feed_order_alphabetical">Сортировать по алфавиту</string>
   <string name="drawer_feed_order_last_update">Сортировать по дате</string>
+  <string name="drawer_feed_order_most_played">Сортировать по количеству прослушанных выпусков</string>
   <string name="drawer_feed_counter_new_unplayed">Количество новых и непрослушанных выпусков</string>
   <string name="drawer_feed_counter_new">Количество новых выпусков</string>
   <string name="drawer_feed_counter_unplayed">Количество непрослушанных выпусков</string>
@@ -62,6 +63,7 @@
   <string name="refresh_label">Обновить</string>
   <string name="external_storage_error_msg">Внешний носитель недоступен. Убедитесь что внешний носитель установлен, иначе приложение не сможет нормально работать.</string>
   <string name="chapters_label">Главы</string>
+  <string name="chapter_duration">Продолжительность: %1$s</string>
   <string name="shownotes_label">Примечания к выпуску</string>
   <string name="description_label">Описание</string>
   <string name="most_recent_prefix">Последний выпуск:\u0020</string>
@@ -115,6 +117,7 @@
   <string name="share_feed_url_label">Поделиться ссылкой на канал</string>
   <string name="share_item_url_label">Поделиться ссылкой на файл выпуска</string>
   <string name="share_item_url_with_position_label">Поделиться ссылкой на файл выпуска с отметкой времени</string>
+  <string name="feed_delete_confirmation_msg">Подтвердите, что хотите удалить канал \"%1$s\" и ВСЕ скачанные эпизоды этого канала.</string>
   <string name="feed_remover_msg">Удаление канала</string>
   <string name="load_complete_feed">Обновить весь канал</string>
   <string name="hide_episodes_title">Скрыть выпуски</string>
@@ -407,6 +410,8 @@
   <string name="search_hint">Найти выпуски</string>
   <string name="found_in_shownotes_label">Найдено в примечаниях к выпуску</string>
   <string name="found_in_chapters_label">Найдено в главах</string>
+  <string name="found_in_authors_label">Найдено в авторах</string>
+  <string name="found_in_feeds_label">Найдено в каналах</string>
   <string name="search_status_no_results">Ничего не найдено</string>
   <string name="search_label">Поиск</string>
   <string name="found_in_title_label">Найдено в заголовке</string>

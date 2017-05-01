@@ -20,14 +20,14 @@
   <string name="playback_history_label">Journal des lectures</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Identifiants gpodder.net</string>
-  <string name="free_space_label">%1$s d\'espace libre</string>
+  <string name="free_space_label">%1$s d\\'espace libre</string>
   <string name="episode_cache_full_title">L\'emplacement pour stocker les épisodes est plein</string>
   <string name="episode_cache_full_message">Le nombre maximal d\'épisodes téléchargés a été atteint. Vous pouvez changer ce nombre dans les paramètres.</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Temps d\'écoute total</string>
   <string name="statistics_details_dialog">%1$d épisodes sur %2$d commencés.\n\nLu %3$s sur %4$s.</string>
   <string name="statistics_mode">Type de statistiques</string>
-  <string name="statistics_mode_normal">Calculer la durée réellement écoutée. Les épisodes écoutés deux fois comptent double alors que ceux simplement marqués lu ne sont pas comptés</string>
+  <string name="statistics_mode_normal">Calculer la durée réellement écoutée. Les épisodes écoutés deux fois comptent double alors que ceux simplement marqués lus ne sont pas comptés</string>
   <string name="statistics_mode_count_all">Additionner tous les podcasts marqués comme lus</string>
   <string name="statistics_speed_not_counted">Note : la vitesse de lecture n\'est jamais prise en compte.</string>
   <!--Main activity-->
@@ -37,7 +37,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Trier par compteur</string>
   <string name="drawer_feed_order_alphabetical">Trier alphabétiquement</string>
   <string name="drawer_feed_order_last_update">Trier par date de publication</string>
-  <string name="drawer_feed_order_most_played">Trier selon le nombre d\'épisodes</string>
+  <string name="drawer_feed_order_most_played">Trier par nombre d\'épisodes lus</string>
   <string name="drawer_feed_counter_new_unplayed">Nombre de nouveaux épisodes non-lus</string>
   <string name="drawer_feed_counter_new">Nombre de nouveaux épisodes</string>
   <string name="drawer_feed_counter_unplayed">Nombre d\'épisodes non-lus</string>
@@ -56,7 +56,7 @@
   <string name="cancel_label">Annuler</string>
   <string name="yes">Oui</string>
   <string name="no">Non</string>
-  <string name="reset">Reset</string>
+  <string name="reset">Réinitialiser</string>
   <string name="author_label">Auteur</string>
   <string name="language_label">Langue</string>
   <string name="url_label">URL</string>
@@ -65,7 +65,7 @@
   <string name="error_label">Erreur</string>
   <string name="error_msg_prefix">Une erreur a eu lieu :</string>
   <string name="refresh_label">Rafraîchir</string>
-  <string name="external_storage_error_msg">Aucun stockage externe n\'est disponible. Merci de connecter un  volume de stockage externe pour que l\'application puisse fonctionner correctement.</string>
+  <string name="external_storage_error_msg">Aucun stockage externe n\\'est disponible. Merci de connecter un  volume de stockage externe pour que l\\'application puisse fonctionner correctement.</string>
   <string name="chapters_label">Chapitres</string>
   <string name="chapter_duration">Durée : %1$s</string>
   <string name="shownotes_label">Notes d\'épisode</string>
@@ -117,8 +117,8 @@
   <string name="share_link_label">Partager un lien vers le site</string>
   <string name="share_link_with_position_label">Partager lien avec position</string>
   <string name="share_feed_url_label">Partager lien du flux</string>
-  <string name="share_item_url_label">Partager le lien de l\'épisode</string>
-  <string name="share_item_url_with_position_label">Partager le lien de l\'épisode avec la position</string>
+  <string name="share_item_url_label">Partager le lien de l\\'épisode</string>
+  <string name="share_item_url_with_position_label">Partager le lien de l\\'épisode avec la position</string>
   <string name="feed_delete_confirmation_msg">Confirmer que vous voulez supprimer le flux \"%1$s\" et TOUS les épisodes que vous avez téléchargés.</string>
   <string name="feed_remover_msg">Flux en cours de suppression</string>
   <string name="load_complete_feed">Mettre à jour tout le flux</string>
@@ -127,8 +127,8 @@
   <string name="hide_unplayed_episodes_label">Non joués</string>
   <string name="hide_paused_episodes_label">En pause</string>
   <string name="hide_played_episodes_label">Joués</string>
-  <string name="hide_queued_episodes_label">Rajouté à la liste d\'attente</string>
-  <string name="hide_not_queued_episodes_label">Pas rajouté à la liste d\'attente</string>
+  <string name="hide_queued_episodes_label">Rajouté à la liste d\\'attente</string>
+  <string name="hide_not_queued_episodes_label">Non rajouté à la liste d\\'attente</string>
   <string name="hide_downloaded_episodes_label">Téléchargé</string>
   <string name="hide_not_downloaded_episodes_label">Non téléchargé</string>
   <string name="hide_has_media_label">À des médias</string>
@@ -144,7 +144,7 @@
   <string name="remove_label">Supprimer</string>
   <string name="delete_label">Effacer</string>
   <string name="remove_episode_lable">Supprimer cet épisode</string>
-  <string name="marked_as_seen_label">Marquer comme vu</string>
+  <string name="marked_as_seen_label">Marqué comme vu</string>
   <string name="mark_read_label">Marquer comme lu</string>
   <string name="marked_as_read_label">Les épisodes ont été marqués comme lus</string>
   <string name="mark_unread_label">Marquer comme non lu</string>
@@ -287,14 +287,14 @@
   <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture lorsque le casque ou le bluetooth sont déconnectés</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se reconnecte</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Le bouton saut avant saute l\'épisode</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\'épisode suivant au lieu de faire un saut avant quand un bouton physique \"saut avant\" est pressé</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">Bouton précédent redémarre</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Le bouton \"saut avant\" saute l\'épisode</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\\'épisode suivant au lieu de faire un saut avant quand un bouton physique \\"saut avant\\" est pressé</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">Le bouton \"saut arrière\" redémarre l\'épisode</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Repartir de zéro au lieu de faire un saut arrière quand un bouton physique \"saut arrière\" est pressé</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
   <string name="pref_auto_delete_title">Suppression automatique</string>
-  <string name="pref_smart_mark_as_played_sum">Marquer les épisodes comme lus même s\'il reste encore un certain nombre de secondes à jouer</string>
+  <string name="pref_smart_mark_as_played_sum">Les épisodes seront marqués comme lus même s\'il reste quelques secondes à jouer</string>
   <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligemment</string>
   <string name="pref_skip_keeps_episodes_sum">Garder les épisodes quand ils sont passés</string>
   <string name="pref_skip_keeps_episodes_title">Garder les épisodes passés</string>
@@ -302,7 +302,7 @@
   <string name="network_pref">Réseau</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Mettre à jour l’intervalle ou l\'heure</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Indiquer un intervalle ou une heure spécifique de mise à jour des flux</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez mettre en place un <i>intervalle</i> comme \"toutes les 2 heures\", une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note: Il est possible qu\'il y ait un délai car l\'heure de mise à jour peut être inexacte.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez mettre en place un <i>intervalle</i> comme \\"toutes les 2 heures\\", une <i>heure précise</i> comme \\"7:00\\" ou désactiver les mises à jours automatique.\n\n<small>Note: Il est possible qu\\'il y ait un délai car l\\'heure de mise à jour peut être inexacte.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Désactiver</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Définir intervalle</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Régler l\'heure</string>
@@ -368,15 +368,15 @@
   <string name="pref_gpodnet_notifications_title">Notification des erreurs de synchronisation</string>
   <string name="pref_gpodnet_notifications_sum">Ce paramètre ne s\'applique pas aux erreurs d\'authentification.</string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
-  <string name="pref_playback_speed_sum">Modifier la liste des vitesses disponibles pour la lecture audio</string>
+  <string name="pref_playback_speed_sum">Définir les vitesses disponibles lors de la lecture audio</string>
   <string name="pref_fast_forward">Durée du saut avant</string>
-  <string name="pref_fast_forward_sum">Régler le nombre de secondes à sauter quand le bouton \"saut avant\" est cliqué</string>
+  <string name="pref_fast_forward_sum">Nombre de secondes à sauter quand le bouton \"saut avant\" est cliqué</string>
   <string name="pref_rewind">Durée du saut arrière</string>
-  <string name="pref_rewind_sum">Régler le nombre de secondes à sauter quand le bouton \"saut arrière\" est cliqué</string>
+  <string name="pref_rewind_sum">Nombre de secondes à sauter quand le bouton \"saut arrière\" est cliqué</string>
   <string name="pref_gpodnet_sethostname_title">Choisir un nom de domaine</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utiliser le nom de domaine par défaut</string>
   <string name="pref_expandNotify_title">Etendre la notification</string>
-  <string name="pref_expandNotify_sum">Toujours étendre les notifications pour montrer les boutons de lecture</string>
+  <string name="pref_expandNotify_sum">Toujours étendre la notification pour montrer tous les boutons de lecture </string>
   <string name="pref_persistNotify_title">Boutons de lecture permanents</string>
   <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verouillage quand la lecture est en pause</string>
   <string name="pref_compact_notification_buttons_title">Définir les boutons de l\'écran de verrouillage</string>
@@ -388,7 +388,7 @@
   <string name="pref_showDownloadReport_title">Afficher le rapport de téléchargements</string>
   <string name="pref_showDownloadReport_sum">Si les téléchargements échouent, générer un rapport des détails des échecs.</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android antérieures à 4.1 ne sont pas compatibles avec les notifications élargies</string>
-  <string name="pref_queueAddToFront_sum">Ajouter de nouveaux épisodes en tête de file</string>
+  <string name="pref_queueAddToFront_sum">Ajouter les nouveaux épisodes au début de la liste de lecture.</string>
   <string name="pref_queueAddToFront_title">Mettre au début de la file d\'attente</string>
   <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
   <string name="pref_image_cache_size_title">Taille du cache de l\'image</string>
@@ -450,14 +450,14 @@
   <string name="opml_export_success_sum">Le fichier .opml a été écrit ici :\u0020</string>
   <string name="opml_import_ask_read_permission">L\'accès au stockage externe est requis pour lire le fichier OPML</string>
   <!--Sleep timer-->
-  <string name="set_sleeptimer_label">Définir le minuteur d\'arrêt automatique</string>
-  <string name="disable_sleeptimer_label">Désactiver le minuteur d\'arrêt automatique</string>
+  <string name="set_sleeptimer_label">Activer le minuteur d\\'arrêt</string>
+  <string name="disable_sleeptimer_label">Désactiver le minuteur d\'arrêt</string>
   <string name="enter_time_here_label">Entrer l\'heure</string>
-  <string name="sleep_timer_label">Minuteur de mise en  veille</string>
+  <string name="sleep_timer_label">Minuteur d\'arrêt</string>
   <string name="time_left_label">Durée restante :\u0020</string>
   <string name="time_dialog_invalid_input">Entrée invalide, la durée doit être un nombre entier</string>
-  <string name="timer_about_to_expire_label"><b>Quand le minuteur est sur le point de se terminer:</b></string>
-  <string name="shake_to_reset_label">Secouer afin de remettre le minuteur a zéro</string>
+  <string name="timer_about_to_expire_label"><b>Quand le minuteur se termine :</b></string>
+  <string name="shake_to_reset_label">Secouer pour redémarrer le minuteur</string>
   <string name="timer_vibration_label">Vibrer</string>
   <string name="time_seconds">secondes</string>
   <string name="time_minutes">minutes</string>
@@ -525,7 +525,7 @@
   <string name="folder_not_empty_dialog_title">Le répertoire n\'est pas vide</string>
   <string name="folder_not_empty_dialog_msg">Le répertoire que vous avez choisi n\'est pas vide. Les fichiers téléchargés seront ajoutés à ce répertoire. Continuer malgré tout ?</string>
   <string name="set_to_default_folder">Choisir le répertoire par défaut</string>
-  <string name="pref_pausePlaybackForFocusLoss_sum">Mettre la lecture en pause au lieu de baisser le volume quand une autre application veut jouer un son</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Pauser la lecture au lieu de baisser le volume quand une autre application joue un son</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Mettre en pause lors d\'interruptions</string>
   <string name="pref_resumeAfterCall_sum">Reprendre la lecture après un appel téléphonique</string>
   <string name="pref_resumeAfterCall_title">Reprendre après appel</string>
@@ -536,7 +536,7 @@
   <string name="downloading_label">En cours de téléchargement...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Saut arrière</string>
-  <string name="fast_forward_label">Avance rapide</string>
+  <string name="fast_forward_label">Saut avant</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Vidéo</string>
   <string name="navigate_upwards_label">Naviguer vers le haut</string>
