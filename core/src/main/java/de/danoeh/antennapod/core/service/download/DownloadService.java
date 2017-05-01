@@ -972,17 +972,18 @@ public class DownloadService extends Service {
 
             // Get duration
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-            mmr.setDataSource(media.getFile_url());
-            String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            String durationStr = null;
             try {
+                mmr.setDataSource(media.getFile_url());
+                durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                 media.setDuration(Integer.parseInt(durationStr));
                 Log.d(TAG, "Duration of file is " + media.getDuration());
             } catch (NumberFormatException e) {
                 Log.d(TAG, "Invalid file duration: " + durationStr);
+            } catch(Exception e) {
+                Log.e(TAG, "Get duration failed", e);
             } finally {
-                if (mmr != null) {
-                    mmr.release();
-                }
+                mmr.release();
             }
 
             final FeedItem item = media.getItem();
