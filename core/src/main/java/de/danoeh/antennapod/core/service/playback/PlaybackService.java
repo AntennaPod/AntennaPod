@@ -1407,8 +1407,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Log.d(TAG, "Car was unplugged during playback.");
                 pauseIfPauseOnDisconnect();
             } else {
-                mediaPlayer.setStartWhenPrepared(true);
-                mediaPlayer.prepare();
+                PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
+                if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                    mediaPlayer.resume();
+                } else if (playerStatus == PlayerStatus.PREPARING) {
+                    mediaPlayer.setStartWhenPrepared(!mediaPlayer.isStartWhenPrepared());
+                } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                    mediaPlayer.setStartWhenPrepared(true);
+                    mediaPlayer.prepare();
+                }
             }
         }
     };
