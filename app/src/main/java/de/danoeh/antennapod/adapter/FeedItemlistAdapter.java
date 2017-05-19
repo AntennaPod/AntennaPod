@@ -157,7 +157,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
             FeedMedia media = item.getMedia();
             if (media == null) {
-                holder.episodeProgress.setVisibility(View.GONE);
+                holder.episodeProgress.setVisibility(View.INVISIBLE);
                 holder.inPlaylist.setVisibility(View.INVISIBLE);
                 holder.type.setVisibility(View.INVISIBLE);
                 holder.lenSize.setVisibility(View.INVISIBLE);
@@ -176,7 +176,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
                     holder.episodeProgress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
                 } else {
                     if(media.getPosition() == 0) {
-                        holder.episodeProgress.setVisibility(View.GONE);
+                        holder.episodeProgress.setVisibility(View.INVISIBLE);
                     }
                 }
 
