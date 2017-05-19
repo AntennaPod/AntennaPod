@@ -23,7 +23,6 @@
     <dimen name="listitem_iconwithtext_textleftpadding">14dp</dimen>
     <dimen name="listitem_iconwithtext_textverticalpadding">16dp</dimen>
 
-    <dimen name="listitem_threeline_height">96dp</dimen>
     <dimen name="listitem_threeline_textleftpadding">14dp</dimen>
     <dimen name="listitem_threeline_textrightpadding">8dp</dimen>
     <dimen name="listitem_threeline_verticalpadding">16dp</dimen>

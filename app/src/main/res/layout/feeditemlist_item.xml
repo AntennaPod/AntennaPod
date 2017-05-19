@@ -5,9 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/listitem_threeline_height"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    tools:background="@android:color/darker_gray">
+    tools:background="@android:color/darker_gray"
+    android:paddingTop="@dimen/listitem_threeline_verticalpadding"
+    android:paddingBottom="@dimen/listitem_threeline_verticalpadding">
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -23,7 +25,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             tools:text="NEW"
@@ -37,7 +38,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
             android:layout_toLeftOf="@id/statusUnread"
             tools:text="Episode title"
             tools:background="@android:color/holo_green_dark" />
