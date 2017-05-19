@@ -7,15 +7,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    tools:background="@android:color/darker_gray"
-    android:paddingTop="@dimen/listitem_threeline_verticalpadding"
-    android:paddingBottom="@dimen/listitem_threeline_verticalpadding">
+    tools:background="@android:color/darker_gray">
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
         android:layout_weight="1"
+        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
         tools:background="@android:color/holo_orange_dark">
 
         <TextView
