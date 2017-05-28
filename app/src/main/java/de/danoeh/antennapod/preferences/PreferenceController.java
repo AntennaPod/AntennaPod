@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import de.danoeh.antennapod.activity.ImportExportActivity;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -95,6 +96,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
     private static final String PREF_HTML_EXPORT = "prefHtmlExport";
     private static final String STATISTICS = "statistics";
+    private static final String IMPORT_EXPORT = "importExport";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
@@ -188,6 +190,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(PreferenceController.STATISTICS).setOnPreferenceClickListener(
                 preference -> {
                     activity.startActivity(new Intent(activity, StatisticsActivity.class));
+                    return true;
+                }
+        );
+        ui.findPreference(PreferenceController.IMPORT_EXPORT).setOnPreferenceClickListener(
+                preference -> {
+                    activity.startActivity(new Intent(activity, ImportExportActivity.class));
                     return true;
                 }
         );
