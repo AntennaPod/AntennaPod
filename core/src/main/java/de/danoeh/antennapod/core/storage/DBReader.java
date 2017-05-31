@@ -372,30 +372,6 @@ public final class DBReader {
     }
 
     /**
-     * Loads a list of FeedItems whose 'read'-attribute is set to false.
-     *
-     * @return A list of FeedItems whose 'read'-attribute it set to false.
-     */
-    public static List<FeedItem> getUnreadItemsList() {
-        Log.d(TAG, "getUnreadItemsList() called");
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getUnreadItemsCursor();
-            List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
-            loadAdditionalFeedItemListData(items);
-            return items;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            adapter.close();
-        }
-    }
-
-    /**
      * Loads a list of FeedItems that are considered new.
      * Excludes items from feeds that do not have keep updated enabled.
      *
