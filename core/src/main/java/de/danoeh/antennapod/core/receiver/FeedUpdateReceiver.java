@@ -21,7 +21,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Received intent");
         ClientConfig.initialize(context);
-        if (NetworkUtils.isDownloadAllowed()) {
+        if (NetworkUtils.networkAvailable() && NetworkUtils.isDownloadAllowed()) {
             DBTasks.refreshAllFeeds(context, null);
         } else {
             Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
