@@ -111,6 +111,7 @@ android {
     dexOptions {
         jumboMode true
     }
+    buildToolsVersion '25.0.0'
 }
 
 configurations {
