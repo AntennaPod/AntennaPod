@@ -228,7 +228,7 @@ public class FeedInfoActivity extends AppCompatActivity {
                     cbxAutoDownload.setChecked(prefs.getAutoDownload());
                     cbxAutoDownload.setOnCheckedChangeListener((compoundButton, checked) -> {
                         feed.getPreferences().setAutoDownload(checked);
-                        feed.savePreferences(FeedInfoActivity.this);
+                        feed.savePreferences();
                         updateAutoDownloadSettings();
                         ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(FeedInfoActivity.this,
                                 feed, checked);
@@ -237,7 +237,7 @@ public class FeedInfoActivity extends AppCompatActivity {
                     cbxKeepUpdated.setChecked(prefs.getKeepUpdated());
                     cbxKeepUpdated.setOnCheckedChangeListener((compoundButton, checked) -> {
                         feed.getPreferences().setKeepUpdated(checked);
-                        feed.savePreferences(FeedInfoActivity.this);
+                        feed.savePreferences();
                     });
                     spnAutoDelete.setOnItemSelectedListener(new OnItemSelectedListener() {
                         @Override

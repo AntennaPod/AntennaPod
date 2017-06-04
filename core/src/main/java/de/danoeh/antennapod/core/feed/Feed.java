@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -21,9 +20,9 @@ import de.danoeh.antennapod.core.util.flattr.FlattrThing;
  * @author daniel
  */
 public class Feed extends FeedFile implements FlattrThing, ImageResource {
+
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
-    public static final String TYPE_RSS091 = "rss";
     public static final String TYPE_ATOM1 = "atom";
 
     /* title as defined by the feed */
@@ -219,33 +218,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         FeedPreferences preferences = FeedPreferences.fromCursor(cursor);
         feed.setPreferences(preferences);
         return feed;
-    }
-
-
-        /**
-         * Returns true if at least one item in the itemlist is unread.
-         *
-         */
-    public boolean hasNewItems() {
-        for (FeedItem item : items) {
-            if (item.isNew()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns true if at least one item in the itemlist is unread.
-     *
-     */
-    public boolean hasUnplayedItems() {
-        for (FeedItem item : items) {
-            if (!item.isNew() && !item.isPlayed()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -511,7 +483,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         return preferences;
     }
 
-    public void savePreferences(Context context) {
+    public void savePreferences() {
         DBWriter.setFeedPreferences(preferences);
     }
 
