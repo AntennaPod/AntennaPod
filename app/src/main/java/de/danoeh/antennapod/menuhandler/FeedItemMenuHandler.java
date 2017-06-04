@@ -101,7 +101,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
 
-        mi.setItemVisibility(R.id.share_file, selectedItem.getMedia().fileExists());
+        mi.setItemVisibility(R.id.share_file, hasMedia && selectedItem.getMedia().fileExists());
 
         if (selectedItem.isPlayed()) {
             mi.setItemVisibility(R.id.mark_read_item, false);
