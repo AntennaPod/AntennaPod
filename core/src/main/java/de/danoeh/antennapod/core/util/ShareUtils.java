@@ -3,9 +3,13 @@ package de.danoeh.antennapod.core.util;
 import android.content.Context;
 import android.content.Intent;
 
+import android.net.Uri;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+
+import java.io.File;
 
 /** Utility methods for sharing data */
 public class ShareUtils {
@@ -58,4 +62,11 @@ public class ShareUtils {
 		shareLink(context, text);
 	}
 
+	public static void shareFeedItemFile(Context context, FeedMedia media) {
+		Intent i = new Intent(Intent.ACTION_SEND);
+		i.setType(media.getMime_type());
+		i.putExtra(Intent.EXTRA_STREAM,  Uri.fromFile(new File(media.getLocalMediaUrl())));
+		i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		context.startActivity(Intent.createChooser(i, context.getString(R.string.share_file_label)));
+	}
 }

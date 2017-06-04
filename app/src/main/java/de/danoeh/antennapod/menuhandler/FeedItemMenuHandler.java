@@ -101,6 +101,8 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
 
+        mi.setItemVisibility(R.id.share_file, hasMedia && selectedItem.getMedia().fileExists());
+
         if (selectedItem.isPlayed()) {
             mi.setItemVisibility(R.id.mark_read_item, false);
         } else {
@@ -238,6 +240,9 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.share_download_url_with_position_item:
                 ShareUtils.shareFeedItemDownloadLink(context, selectedItem, true);
+                break;
+            case R.id.share_file:
+                ShareUtils.shareFeedItemFile(context, selectedItem.getMedia());
                 break;
             default:
                 Log.d(TAG, "Unknown menuItemId: " + menuItemId);

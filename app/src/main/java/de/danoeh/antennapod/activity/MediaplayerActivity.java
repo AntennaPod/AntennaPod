@@ -309,10 +309,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             return false;
         }
         Playable media = controller.getMedia();
+        boolean isFeedMedia = media != null && (media instanceof FeedMedia);
 
-        menu.findItem(R.id.support_item).setVisible(
-                media != null && media.getPaymentLink() != null &&
-                        (media instanceof FeedMedia) &&
+        menu.findItem(R.id.support_item).setVisible(isFeedMedia && media.getPaymentLink() != null &&
                         ((FeedMedia) media).getItem() != null &&
                         ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
         );
@@ -320,20 +319,21 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         boolean hasWebsiteLink = media != null && media.getWebsiteLink() != null;
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
-        boolean isItemAndHasLink = media != null && (media instanceof FeedMedia) &&
+        boolean isItemAndHasLink = isFeedMedia &&
                 ((FeedMedia) media).getItem() != null && ((FeedMedia) media).getItem().getLink() != null;
         menu.findItem(R.id.share_link_item).setVisible(isItemAndHasLink);
         menu.findItem(R.id.share_link_with_position_item).setVisible(isItemAndHasLink);
 
-        boolean isItemHasDownloadLink = media != null && (media instanceof FeedMedia) && ((FeedMedia) media).getDownload_url() != null;
+        boolean isItemHasDownloadLink = isFeedMedia && ((FeedMedia) media).getDownload_url() != null;
         menu.findItem(R.id.share_download_url_item).setVisible(isItemHasDownloadLink);
         menu.findItem(R.id.share_download_url_with_position_item).setVisible(isItemHasDownloadLink);
+        menu.findItem(R.id.share_file).setVisible(isFeedMedia && ((FeedMedia) media).fileExists());
 
         menu.findItem(R.id.share_item).setVisible(hasWebsiteLink || isItemAndHasLink || isItemHasDownloadLink);
 
         menu.findItem(R.id.add_to_favorites_item).setVisible(false);
         menu.findItem(R.id.remove_from_favorites_item).setVisible(false);
-        if(media != null && media instanceof FeedMedia) {
+        if (isFeedMedia) {
             menu.findItem(R.id.add_to_favorites_item).setVisible(!isFavorite);
             menu.findItem(R.id.remove_from_favorites_item).setVisible(isFavorite);
         }
@@ -572,6 +572,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     case R.id.share_download_url_with_position_item:
                         if (media instanceof FeedMedia) {
                             ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem(), true);
+                        }
+                        break;
+                    case R.id.share_file:
+                        if (media instanceof FeedMedia) {
+                            ShareUtils.shareFeedItemFile(this, ((FeedMedia) media));
                         }
                         break;
                     default:
