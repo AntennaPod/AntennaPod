@@ -7,7 +7,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import android.widget.Toast;
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.MessageEvent;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -88,12 +89,10 @@ public class DBWriter {
                 if (media.isDownloaded()) {
                     // delete downloaded media file
                     File mediaFile = new File(media.getFile_url());
-                    if (mediaFile.exists()) {
-                        if (!mediaFile.delete()) {
-                            Toast.makeText(context, "Unable to delete file. Rebooting the device could help.",
-                                    Toast.LENGTH_LONG).show();
-                            return;
-                        }
+                    if (mediaFile.exists() && !mediaFile.delete()) {
+                        MessageEvent evt = new MessageEvent(context.getString(R.string.delete_failed));
+                        EventBus.getDefault().post(evt);
+                        return;
                     }
                     media.setDownloaded(false);
                     media.setFile_url(null);
