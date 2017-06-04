@@ -13,7 +13,6 @@
         android:layout_height="@dimen/thumbnail_length_itemlist"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
         android:contentDescription="@string/cover_label"
         android:scaleType="centerCrop"

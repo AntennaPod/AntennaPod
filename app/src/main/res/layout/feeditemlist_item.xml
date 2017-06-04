@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:layout_toLeftOf="@id/statusUnread"
             tools:text="Episode title"
             tools:background="@android:color/holo_green_dark" />
@@ -101,8 +101,7 @@
             tools:background="@android:color/holo_blue_light"
             android:max="100"
             android:progress="42"
-            android:indeterminate="false"
-            />
+            android:indeterminate="false" />
 
     </RelativeLayout>
 
