@@ -1249,15 +1249,6 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    /**
-     * Returns a cursor which contains all feed items in the unread items list.
-     * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
-     */
-    public final Cursor getUnreadItemsCursor() {
-        return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_READ
-                + "<" + FeedItem.PLAYED, null, null, null, KEY_PUBDATE + " DESC");
-    }
-
     public void setFeedItems(int state) {
         setFeedItems(Integer.MIN_VALUE, state, 0);
     }
@@ -1280,19 +1271,6 @@ public class PodDBAdapter {
             sql += KEY_READ + "=" + oldState;
         }
         db.execSQL(sql);
-    }
-
-    /**
-     * Returns a cursor which contains all items of a feed that are considered new.
-     * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
-     */
-    public final Cursor getNewItemsIdsCursor(long feedId) {
-        final String query = "SELECT " + KEY_ID
-                + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " WHERE " + KEY_FEED + "=" + feedId
-                + " AND " + KEY_READ + "=" + FeedItem.NEW
-                + " ORDER BY " + KEY_PUBDATE + " DESC";
-        return db.rawQuery(query, null);
     }
 
     /**

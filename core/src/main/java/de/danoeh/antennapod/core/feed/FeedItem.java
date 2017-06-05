@@ -177,6 +177,9 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
 
     public void updateFromOther(FeedItem other) {
         super.updateFromOther(other);
+        if (other.image != null) {
+            this.image = other.image;
+        }
         if (other.title != null) {
             title = other.title;
         }

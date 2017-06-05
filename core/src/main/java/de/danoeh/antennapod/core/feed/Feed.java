@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -21,9 +20,9 @@ import de.danoeh.antennapod.core.util.flattr.FlattrThing;
  * @author daniel
  */
 public class Feed extends FeedFile implements FlattrThing, ImageResource {
+
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
-    public static final String TYPE_RSS091 = "rss";
     public static final String TYPE_ATOM1 = "atom";
 
     /* title as defined by the feed */
@@ -221,33 +220,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         return feed;
     }
 
-
-        /**
-         * Returns true if at least one item in the itemlist is unread.
-         *
-         */
-    public boolean hasNewItems() {
-        for (FeedItem item : items) {
-            if (item.isNew()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns true if at least one item in the itemlist is unread.
-     *
-     */
-    public boolean hasUnplayedItems() {
-        for (FeedItem item : items) {
-            if (!item.isNew() && !item.isPlayed()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Returns the number of FeedItems.
      *
@@ -294,6 +266,9 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     public void updateFromOther(Feed other) {
         // don't update feed's download_url, we do that manually if redirected
         // see AntennapodHttpClient
+        if (other.image != null) {
+            this.image = other.image;
+        }
         if (other.feedTitle != null) {
             feedTitle = other.feedTitle;
         }
@@ -328,6 +303,9 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
 
     public boolean compareWithOther(Feed other) {
         if (super.compareWithOther(other)) {
+            return true;
+        }
+        if(other.image != null && !TextUtils.equals(image.download_url, other.image.download_url)) {
             return true;
         }
         if (!TextUtils.equals(feedTitle, other.feedTitle)) {
@@ -511,7 +489,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         return preferences;
     }
 
-    public void savePreferences(Context context) {
+    public void savePreferences() {
         DBWriter.setFeedPreferences(preferences);
     }
 

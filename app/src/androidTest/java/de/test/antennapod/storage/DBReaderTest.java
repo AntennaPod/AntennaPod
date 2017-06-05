@@ -218,58 +218,43 @@ public class DBReaderTest extends InstrumentationTestCase {
         }
     }
 
-    private List<FeedItem> saveUnreadItems(int numItems) {
-        if (numItems <= 0) {
-            throw new IllegalArgumentException("numItems<=0");
-        }
+    private List<FeedItem> saveNewItems(int numItems) {
         List<Feed> feeds = saveFeedlist(numItems, numItems, true);
         List<FeedItem> items = new ArrayList<>();
         for (Feed f : feeds) {
             items.addAll(f.getItems());
         }
-        List<FeedItem> unread = new ArrayList<>();
+        List<FeedItem> newItems = new ArrayList<>();
         Random random = new Random();
 
-        while (unread.size() < numItems) {
+        while (newItems.size() < numItems) {
             int i = random.nextInt(numItems);
-            if (!unread.contains(items.get(i))) {
+            if (!newItems.contains(items.get(i))) {
                 FeedItem item = items.get(i);
-                item.setPlayed(false);
-                unread.add(item);
+                item.setNew();
+                newItems.add(item);
             }
         }
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        adapter.setFeedItemlist(unread);
+        adapter.setFeedItemlist(newItems);
         adapter.close();
-        return unread;
-    }
-
-    public void testGetUnreadItemsList() {
-        final int numItems = 10;
-
-        List<FeedItem> unread = saveUnreadItems(numItems);
-        List<FeedItem> unreadSaved = DBReader.getUnreadItemsList();
-        assertNotNull(unreadSaved);
-        assertTrue(unread.size() == unreadSaved.size());
-        for (FeedItem item : unreadSaved) {
-            assertFalse(item.isPlayed());
-        }
+        return newItems;
     }
 
     public void testGetNewItemIds() {
         final int numItems = 10;
 
-        List<FeedItem> unread = saveUnreadItems(numItems);
-        long[] unreadIds = new long[unread.size()];
-        for (int i = 0; i < unread.size(); i++) {
-            unreadIds[i] = unread.get(i).getId();
+        List<FeedItem> newItems = saveNewItems(numItems);
+        long[] unreadIds = new long[newItems.size()];
+        for (int i = 0; i < newItems.size(); i++) {
+            unreadIds[i] = newItems.get(i).getId();
         }
-        List<FeedItem> unreadSaved = DBReader.getUnreadItemsList();
-        assertNotNull(unreadSaved);
-        assertTrue(unread.size() == unreadSaved.size());
-        for(int i=0; i < unreadSaved.size(); i++) {
-            long savedId = unreadSaved.get(i).getId();
+        List<FeedItem> newItemsSaved = DBReader.getNewItemsList();
+        assertNotNull(newItemsSaved);
+        assertTrue(newItems.size() == newItemsSaved.size());
+        for(int i=0; i < newItemsSaved.size(); i++) {
+            long savedId = newItemsSaved.get(i).getId();
             boolean found = false;
             for (long id : unreadIds) {
                 if (id == savedId) {
