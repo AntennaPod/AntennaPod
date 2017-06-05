@@ -110,6 +110,8 @@ public class ItemlistFragment extends ListFragment {
     
     private TextView txtvTitle;
     private IconTextView txtvFailure;
+    private ImageView imgvBackground;
+    private ImageView imgvCover;
 
     private TextView txtvInformation;
 
@@ -471,6 +473,7 @@ public class ItemlistFragment extends ListFragment {
             Log.e(TAG, "Unable to refresh header view");
             return;
         }
+        loadFeedImage();
         if(feed.hasLastUpdateFailed()) {
             txtvFailure.setVisibility(View.VISIBLE);
         } else {
@@ -508,8 +511,8 @@ public class ItemlistFragment extends ListFragment {
 
         txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
         TextView txtvAuthor = (TextView) header.findViewById(R.id.txtvAuthor);
-        ImageView imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
-        ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
+        imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
+        imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
         txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
@@ -521,6 +524,20 @@ public class ItemlistFragment extends ListFragment {
         // https://github.com/bumptech/glide/issues/529
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
+        loadFeedImage();
+
+        butShowInfo.setOnClickListener(v -> {
+            if (viewsCreated && itemsLoaded) {
+                Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
+                startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
+                        feed.getId());
+                startActivity(startIntent);
+            }
+        });
+        headerCreated = true;
+    }
+
+    private void loadFeedImage() {
         Glide.with(getActivity())
                 .load(feed.getImageLocation())
                 .placeholder(R.color.image_readability_tint)
@@ -538,16 +555,6 @@ public class ItemlistFragment extends ListFragment {
                 .fitCenter()
                 .dontAnimate()
                 .into(imgvCover);
-
-        butShowInfo.setOnClickListener(v -> {
-            if (viewsCreated && itemsLoaded) {
-                Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
-                startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
-                        feed.getId());
-                startActivity(startIntent);
-            }
-        });
-        headerCreated = true;
     }
 
 
