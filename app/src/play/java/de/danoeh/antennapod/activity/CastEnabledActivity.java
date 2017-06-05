@@ -55,7 +55,6 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     }
 
     @Override
-    @CallSuper
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.cast_enabled, menu);
@@ -64,7 +63,6 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     }
 
     @Override
-    @CallSuper
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem mediaRouteButton = menu.findItem(R.id.media_route_menu_item);

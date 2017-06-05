@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import de.danoeh.antennapod.activity.MediaplayerActivity;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -54,7 +55,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.activity.StatisticsActivity;

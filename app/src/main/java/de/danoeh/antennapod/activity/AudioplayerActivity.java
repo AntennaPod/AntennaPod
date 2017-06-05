@@ -1,13 +1,16 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import android.view.ViewGroup;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -23,26 +26,26 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
     private AtomicBoolean isSetup = new AtomicBoolean(false);
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
-            Intent intent = getIntent();
+        if (TextUtils.equals(getActivity().getIntent().getAction(), Intent.ACTION_VIEW)) {
+            Intent intent = getActivity().getIntent();
             Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
             ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
                     MediaType.AUDIO);
-            Intent launchIntent = new Intent(this, PlaybackService.class);
+            Intent launchIntent = new Intent(getContext(), PlaybackService.class);
             launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
             launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
                     true);
             launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, false);
             launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
                     true);
-            startService(launchIntent);
+            getActivity().startService(launchIntent);
         } else if (PlaybackService.isCasting()) {
-            Intent intent = PlaybackService.getPlayerActivityIntent(this);
+            Intent intent = PlaybackService.getPlayerActivityIntent(getContext());
             if (!intent.getComponent().getClassName().equals(AudioplayerActivity.class.getName())) {
                 saveCurrentFragment();
-                finish();
+                getActivity().finish();
                 startActivity(intent);
             }
         }
@@ -53,8 +56,8 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
             Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
             saveCurrentFragment();
-            finish();
-            startActivity(new Intent(this, CastplayerActivity.class));
+            getActivity().finish();
+            startActivity(new Intent(getContext(), CastplayerActivity.class));
 
         } else {
             super.onReloadNotification(notificationCode);
@@ -100,11 +103,10 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
     }
 
     @Override
-    protected void setupGUI() {
-        if(isSetup.getAndSet(true)) {
-            return;
-        }
-        super.setupGUI();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
+
         if(butCastDisconnect != null) {
             butCastDisconnect.setVisibility(View.GONE);
         }
@@ -140,14 +142,15 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                     UserPreferences.setPlaybackSpeed(newSpeed);
                     controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
                 } else {
-                    VariableSpeedDialog.showGetPluginDialog(this);
+                    VariableSpeedDialog.showGetPluginDialog(getContext());
                 }
             });
             butPlaybackSpeed.setOnLongClickListener(v -> {
-                VariableSpeedDialog.showDialog(this);
+                VariableSpeedDialog.showDialog(getContext());
                 return true;
             });
             butPlaybackSpeed.setVisibility(View.VISIBLE);
         }
+        return root;
     }
 }

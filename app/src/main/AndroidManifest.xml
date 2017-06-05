@@ -67,29 +67,6 @@
             android:launchMode="singleTask"
             android:label="@string/app_name">
         </activity>
-        <activity
-            android:name=".activity.AudioplayerActivity"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity"/>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="file"/>
-                <data android:mimeType="audio/*"/>
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.CastplayerActivity"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity"/>
-        </activity>
 
         <activity
             android:name=".activity.DownloadAuthenticationActivity"
@@ -219,24 +196,6 @@
         <activity
             android:name=".activity.OpmlFeedChooserActivity"
             android:label="@string/opml_import_label">
-        </activity>
-
-        <activity
-            android:name=".activity.VideoplayerActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="sensorLandscape">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity"/>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="file"/>
-                <data android:mimeType="video/*"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.DirectoryChooserActivity"
