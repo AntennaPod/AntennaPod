@@ -97,9 +97,9 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      */
     public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
-                String downloadUrl, boolean downloaded, FlattrStatus status, boolean paged, String nextPageLink,
+                String downloadUrl, int downloadStatus, FlattrStatus status, boolean paged, String nextPageLink,
                 String filter, boolean lastUpdateFailed) {
-        super(fileUrl, downloadUrl, downloaded);
+        super(fileUrl, downloadUrl, downloadStatus);
         this.id = id;
         this.feedTitle = title;
         this.customTitle = customTitle;
@@ -129,9 +129,9 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      */
     public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
-                String downloadUrl, boolean downloaded) {
+                String downloadUrl, int downloadStatus) {
         this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier, image,
-                fileUrl, downloadUrl, downloaded, new FlattrStatus(), false, null, null, false);
+                fileUrl, downloadUrl, downloadStatus, new FlattrStatus(), false, null, null, false);
     }
 
     /**
@@ -147,7 +147,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      * used if the title of the feed is already known.
      */
     public Feed(String url, String lastUpdate) {
-        super(null, url, false);
+        super(null, url, FeedFile.NOT_DOWNLOADED);
         this.lastUpdate = lastUpdate;
         this.flattrStatus = new FlattrStatus();
     }
@@ -207,7 +207,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
                 null,
                 cursor.getString(indexFileUrl),
                 cursor.getString(indexDownloadUrl),
-                cursor.getInt(indexDownloaded) > 0,
+                cursor.getInt(indexDownloaded),
                 new FlattrStatus(cursor.getLong(indexFlattrStatus)),
                 cursor.getInt(indexIsPaged) > 0,
                 cursor.getString(indexNextPageLink),
