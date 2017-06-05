@@ -1233,7 +1233,15 @@ public final class DBReader {
                              int numDownloadedItems,
                              LongIntMap feedIndicatorValues,
                              int reclaimableSpace) {
-            this.feeds = feeds;
+            this.feeds = new ArrayList<Feed>(feeds);
+            Collections.sort(this.feeds, new Comparator<Feed>() {
+                @Override
+                public int compare(Feed feed1, Feed feed2) {
+                    String name1 = feed1.getCustomTitle() != null ? feed1.getCustomTitle() : feed1.getFeedTitle();
+                    String name2 = feed2.getCustomTitle() != null ? feed2.getCustomTitle() : feed2.getFeedTitle();
+                    return name1.compareTo(name2);
+                }
+            });
             this.queueSize = queueSize;
             this.numNewItems = numNewItems;
             this.numDownloadedItems = numDownloadedItems;
