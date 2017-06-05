@@ -461,6 +461,7 @@ public abstract class PlaybackController {
                 checkMediaInfoLoaded();
                 postStatusMsg(R.string.player_ready_msg, false);
                 updatePlayButtonAppearance(playResource, playText);
+                onPositionObserverUpdate();
                 break;
             case SEEKING:
                 onPositionObserverUpdate();
