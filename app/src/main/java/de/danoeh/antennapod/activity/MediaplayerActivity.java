@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,7 +42,6 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.ShareUtils;
-import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.Supplier;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -84,11 +82,6 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
 
     private PlaybackController newPlaybackController() {
         return new PlaybackController(getActivity(), false) {
-
-            @Override
-            public void setupGUI() {
-                //MediaplayerActivity.this.setupGUI();
-            }
 
             @Override
             public void onPositionObserverUpdate() {
@@ -213,10 +206,8 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
 
         Log.d(TAG, "onCreate()");
-        StorageUtils.checkStorageAvailability(getActivity());
 
         orientation = getResources().getConfiguration().orientation;
         getActivity().getWindow().setFormat(PixelFormat.TRANSPARENT);
@@ -281,13 +272,13 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu,inflater);
-        inflater.inflate(R.menu.feedinfo, menu);
+        inflater.inflate(R.menu.mediaplayer, menu);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (controller == null || true) {
+        if (controller == null) {
             return;
         }
         Playable media = controller.getMedia();
@@ -464,7 +455,7 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
                             @Override
                             public void onStartTrackingTouch(SeekBar seekBar) {
                                 if(controller != null && !controller.canSetPlaybackSpeed()) {
-                                    VariableSpeedDialog.showGetPluginDialog(getActivity());
+                                    VariableSpeedDialog.showGetPluginDialog(getContext());
                                 }
                             }
 
@@ -573,7 +564,6 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
-        StorageUtils.checkStorageAvailability(getActivity());
         if(controller != null) {
             controller.init();
         }
@@ -693,20 +683,20 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
          * @param seconds Number of seconds to set the preference associated with the direction of the instance.
          * @param activity MediaplyerActivity that contains textview to update the display of the skip delta setting (or null if nothing to update)
          */
-        public void setPrefSkipSeconds(int seconds, @Nullable Activity activity) {
+        public void setPrefSkipSeconds(int seconds, @Nullable MediaplayerActivity activity) {
             setPrefSecsFn.call(seconds);
 
-            /*if (activity != null && activity instanceof  MediaplayerActivity)  {
-                TextView tv = getTextViewFn.call((MediaplayerActivity)activity);
+            if (activity != null)  {
+                TextView tv = getTextViewFn.call(activity);
                 if (tv != null) tv.setText(String.valueOf(seconds));
-            }*/
+            }
         }
         public int getTitleResourceID() {
             return titleResourceID;
         }
     }
 
-    static public void showSkipPreference(Activity activity, SkipDirection direction) {
+    static public void showSkipPreference(MediaplayerActivity activity, SkipDirection direction) {
         int checked = 0;
         int skipSecs = direction.getPrefSkipSeconds();
         final int[] values = activity.getResources().getIntArray(R.array.seek_delta_values);
@@ -718,7 +708,7 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
             choices[i] = String.valueOf(values[i]) + " " + activity.getString(R.string.time_seconds);
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity.getContext());
         builder.setTitle(direction.getTitleResourceID());
         builder.setSingleChoiceItems(choices, checked, null);
         builder.setNegativeButton(R.string.cancel_label, null);
@@ -789,7 +779,7 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
         if (butRev != null) {
             butRev.setOnClickListener(v -> onRewind());
             butRev.setOnLongClickListener(v -> {
-                showSkipPreference(getActivity(), SkipDirection.SKIP_REWIND);
+                showSkipPreference(MediaplayerActivity.this, SkipDirection.SKIP_REWIND);
                 return true;
             });
         }
@@ -799,7 +789,7 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
         if (butFF != null) {
             butFF.setOnClickListener(v -> onFastForward());
             butFF.setOnLongClickListener(v -> {
-                showSkipPreference(getActivity(), SkipDirection.SKIP_FORWARD);
+                showSkipPreference(MediaplayerActivity.this, SkipDirection.SKIP_FORWARD);
                 return false;
             });
         }
@@ -877,10 +867,6 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
         }
     }
 
-    public boolean isDrawerOpen() {
-        return false;
-    }
-
     private void checkFavorite() {
         Playable playable = controller.getMedia();
         if (playable != null && playable instanceof FeedMedia) {
@@ -899,6 +885,11 @@ public abstract class MediaplayerActivity extends Fragment implements OnSeekBarC
                         }, error -> Log.e(TAG, Log.getStackTraceString(error)));
             }
         }
+    }
+
+
+    public boolean onBackPressed() {
+        return false;
     }
 
 }

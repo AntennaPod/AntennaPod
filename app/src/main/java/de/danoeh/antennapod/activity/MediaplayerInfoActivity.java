@@ -21,7 +21,6 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
-import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -30,14 +29,11 @@ import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.fragment.ChaptersFragment;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-import de.greenrobot.event.EventBus;
-import rx.Subscription;
 
 /**
  * Activity for playing files that do not require a video surface.
  */
-public abstract class MediaplayerInfoActivity extends MediaplayerActivity implements NavDrawerActivity {
+public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
 
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
@@ -56,12 +52,9 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     private ViewPager pager;
     private MediaplayerInfoPagerAdapter pagerAdapter;
 
-    private Subscription subscription;
-
     @Override
     public void onPause() {
         super.onPause();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -70,9 +63,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         Log.d(TAG, "onStop()");
         if(pagerAdapter != null) {
             pagerAdapter.setController(null);
-        }
-        if(subscription != null) {
-            subscription.unsubscribe();
         }
         saveCurrentFragment();
     }
@@ -118,8 +108,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             pagerAdapter.setController(controller);
         }
         DBTasks.checkShouldRefreshFeeds(getActivity().getApplicationContext());
-
-        EventBus.getDefault().register(this);
     }
 /*
     @Override
@@ -232,34 +220,19 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     protected int getContentViewResourceId() {
         return R.layout.mediaplayerinfo_activity;
     }
-/*
+
     @Override
-    public void onBackPressed() {
-        if(isDrawerOpen()) {
-            drawerLayout.closeDrawer(navDrawer);
-        } else if (pager == null || pager.getCurrentItem() == 0) {
+    public boolean onBackPressed() {
+        if (pager == null || pager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
+            // Back button.
+            return false;
         } else {
             // Otherwise, select the previous step.
             pager.setCurrentItem(pager.getCurrentItem() - 1);
+            return true;
         }
     }
-*/
-
-    public void onEventMainThread(MessageEvent event) {
-        /*Log.d(TAG, "onEvent(" + event + ")");
-        View parentLayout = findViewById(R.id.drawer_layout);
-        Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);
-        if (event.action != null) {
-            snackbar.setAction(getString(R.string.undo), v -> {
-                event.action.run();
-            });
-        }
-        snackbar.show();*/
-    }
-
 
     public interface MediaplayerInfoContentFragment {
         void onMediaChanged(Playable media);

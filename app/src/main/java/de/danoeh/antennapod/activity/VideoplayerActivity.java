@@ -92,6 +92,32 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
     }*/
 
+    public void enterFullscreen() {
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+
+        if (Build.VERSION.SDK_INT >= 16) {
+            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        }
+        if (Build.VERSION.SDK_INT >= 14) {
+            videoOverlay.setFitsSystemWindows(true);
+        }
+    }
+
+    public void leaveFullscreen() {
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+
+        if (Build.VERSION.SDK_INT >= 16) {
+            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        }
+        if (Build.VERSION.SDK_INT >= 14) {
+            videoOverlay.setFitsSystemWindows(false);
+        }
+    }
+
     @Override
     public void onPause() {
         videoControlsHider.stop();
@@ -137,17 +163,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         videoview.getHolder().addCallback(surfaceHolderCallback);
         videoview.setOnTouchListener(onVideoviewTouched);
 
-        if (Build.VERSION.SDK_INT >= 16) {
-            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        }
-        if (Build.VERSION.SDK_INT >= 14) {
-            videoOverlay.setFitsSystemWindows(true);
-        }
-
         setupVideoControlsToggler();
-        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         return root;
     }
 
@@ -309,7 +325,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             controls.startAnimation(animation);
         }
         if (Build.VERSION.SDK_INT >= 14) {
-            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            //videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         }
     }
 
@@ -321,10 +337,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
             controls.startAnimation(animation);
         }
         if (Build.VERSION.SDK_INT >= 14) {
-            int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
-            getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | videoviewFlag);
-            videoOverlay.setFitsSystemWindows(true);
+            //int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
+            //getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN
+            //        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | videoviewFlag);
+            //videoOverlay.setFitsSystemWindows(true);
         }
         videoOverlay.setVisibility(View.GONE);
         controls.setVisibility(View.GONE);

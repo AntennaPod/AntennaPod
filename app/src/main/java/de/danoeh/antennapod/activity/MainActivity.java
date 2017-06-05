@@ -28,7 +28,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
@@ -118,7 +118,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private ListView navList;
     private NavListAdapter navAdapter;
     private int mPosition = -1;
-    private BottomSheetBehavior mBottomSheetBehavior;
+    private BottomSheetBehavior<LinearLayout> mBottomSheetBehavior;
     private MediaplayerActivity playerInfoFragment;
     private int closePlayerInfoFragmentStackSize = 0;
     private Fragment currentlyActiviatedFragment;
@@ -211,13 +211,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         transaction.replace(R.id.playerInfoFragment, playerInfoFragment, AudioplayerActivity.TAG);
         transaction.commit();
 
-
-        TypedValue typedValue = new TypedValue();
-        TypedArray a = obtainStyledAttributes(typedValue.data, new int[] { R.attr.actionBarSize });
+        TypedArray a = obtainStyledAttributes(new TypedValue().data, new int[] { R.attr.actionBarSize });
         int barSize = a.getDimensionPixelSize(0, 100);
         a.recycle();
 
-        View bottomSheet = findViewById( R.id.bottom_sheet );
+        LinearLayout bottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         mBottomSheetBehavior.setPeekHeight(barSize);
         mBottomSheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
@@ -240,22 +238,30 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         public void onStateChanged(@NotNull View bottomSheet, int newState) {
             if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                 currentlyActiviatedFragment.setHasOptionsMenu(false);
+                playerInfoFragment.setHasOptionsMenu(true);
                 final FragmentManager fragmentManager = getSupportFragmentManager();
                 closePlayerInfoFragmentStackSize = fragmentManager.getBackStackEntryCount();
-                fragmentManager.beginTransaction()
-                        .addToBackStack(MediaplayerActivity.TAG)
-                        .commit();
-                getSupportActionBar().setTitle("");
+                fragmentManager.beginTransaction().addToBackStack(MediaplayerActivity.TAG).commit();
+                getSupportActionBar().setTitle(playbackController.getMedia().getEpisodeTitle());
+
+                if (playerInfoFragment instanceof VideoplayerActivity) {
+                    ((VideoplayerActivity) playerInfoFragment).enterFullscreen();
+                }
             } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                 final FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.popBackStack();
                 currentlyActiviatedFragment.setHasOptionsMenu(true);
+                playerInfoFragment.setHasOptionsMenu(false);
                 getSupportActionBar().setTitle(currentTitle);
+
+                if (playerInfoFragment instanceof VideoplayerActivity) {
+                    ((VideoplayerActivity) playerInfoFragment).leaveFullscreen();
+                }
             }
         }
 
         @Override
-        public void onSlide(View bottomSheet, float slideOffset) {
+        public void onSlide(@NotNull View bottomSheet, float slideOffset) {
         }
     };
 
@@ -515,27 +521,16 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         RatingDialog.init(this);
     }
 
-    PlaybackController controller = new PlaybackController(this, true) {
-
-        @Override
-        public void onPositionObserverUpdate() {
-
-        }
-
-        @Override
-        public ImageButton getPlayButton() {
-            return null;
-        }
-
+    private PlaybackController playbackController = new PlaybackController(this, true) {
         @Override
         public boolean loadMediaInfo() {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            if(controller.getMedia() == null) {
+            if(playbackController.getMedia() == null) {
                 return false;
             }
 
-            if (controller.getMedia().getMediaType() == MediaType.AUDIO) {
+            if (playbackController.getMedia().getMediaType() == MediaType.AUDIO) {
                 playerInfoFragment = new AudioplayerActivity();
                 transaction.replace(R.id.playerInfoFragment, playerInfoFragment, AudioplayerActivity.TAG);
             } else {
@@ -546,28 +541,18 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             transaction.commit();
             return true;
         }
-
-        @Override
-        public void onShutdownNotification() {
-
-        }
-
-        @Override
-        public void onPlaybackEnd() {
-
-        }
     };
 
     @Override
     protected void onPause() {
         super.onPause();
-        controller.pause();
+        playbackController.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        controller.init();
+        playbackController.init();
 
         StorageUtils.checkStorageAvailability(this);
         DBTasks.checkShouldRefreshFeeds(getApplicationContext());
@@ -586,8 +571,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (controller != null) {
-            controller.release();
+        if (playbackController != null) {
+            playbackController.release();
         }
     }
 
@@ -735,7 +720,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public void onBackPressed() {
         if(isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
-        } else {
+        } else if(mBottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED || !playerInfoFragment.onBackPressed()) {
             super.onBackPressed();
         }
     }

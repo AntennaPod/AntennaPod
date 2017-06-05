@@ -338,12 +338,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 });
         ui.findPreference(PreferenceController.PREF_PLAYBACK_REWIND_DELTA_LAUNCHER)
                 .setOnPreferenceClickListener(preference -> {
-                    MediaplayerActivity.showSkipPreference(activity, MediaplayerActivity.SkipDirection.SKIP_REWIND);
+                    MediaplayerActivity.showSkipPreference(null, MediaplayerActivity.SkipDirection.SKIP_REWIND);
                     return true;
                 });
         ui.findPreference(PreferenceController.PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER)
                 .setOnPreferenceClickListener(preference -> {
-                    MediaplayerActivity.showSkipPreference(activity, MediaplayerActivity.SkipDirection.SKIP_FORWARD);
+                    MediaplayerActivity.showSkipPreference(null, MediaplayerActivity.SkipDirection.SKIP_FORWARD);
                     return true;
                 });
         ui.findPreference(PreferenceController.PREF_GPODNET_SETLOGIN_INFORMATION)
