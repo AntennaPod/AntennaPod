@@ -30,10 +30,6 @@ public class FeedTest extends AndroidTestCase {
         feedHasNotChanged();
     }
 
-    private void feedHasNotChanged() {
-        assertFalse(original.compareWithOther(changedFeed));
-    }
-
     public void testCompareWithOther_feedImageRemoved() throws Exception {
         feedImageRemoved();
 
@@ -63,6 +59,10 @@ public class FeedTest extends AndroidTestCase {
         original.updateFromOther(changedFeed);
 
         feedImageWasUpdated();
+    }
+
+    private void feedHasNotChanged() {
+        assertFalse(original.compareWithOther(changedFeed));
     }
 
     private void feedHadNoImage() {
