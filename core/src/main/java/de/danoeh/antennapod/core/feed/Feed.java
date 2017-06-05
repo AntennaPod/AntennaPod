@@ -266,6 +266,9 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     public void updateFromOther(Feed other) {
         // don't update feed's download_url, we do that manually if redirected
         // see AntennapodHttpClient
+        if (other.image != null) {
+            this.image = other.image;
+        }
         if (other.feedTitle != null) {
             feedTitle = other.feedTitle;
         }
@@ -300,6 +303,9 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
 
     public boolean compareWithOther(Feed other) {
         if (super.compareWithOther(other)) {
+            return true;
+        }
+        if(other.image != null && !TextUtils.equals(image.download_url, other.image.download_url)) {
             return true;
         }
         if (!TextUtils.equals(feedTitle, other.feedTitle)) {
