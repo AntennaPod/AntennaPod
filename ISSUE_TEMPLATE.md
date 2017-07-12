@@ -11,7 +11,7 @@ In particular, please not only tell us that you want something (*what*), but als
 
 **Android version**: 5.x [Please mention if you are using a custom rom!]
 
-**Devide model**:
+**Device model**:
 
 **Expected behaviour**:
 
