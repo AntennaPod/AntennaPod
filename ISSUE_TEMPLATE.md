@@ -7,7 +7,7 @@ In particular, please not only tell us that you want something (*what*), but als
 
 ---
 
-**App version:** 1.x (from Google Play/F-Store/Custom build)
+**App version:** 1.x (from Google Play/F-Droid/Custom build)
 
 **Android version**: 5.x [Please mention if you are using a custom rom!]
 
