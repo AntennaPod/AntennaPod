@@ -55,7 +55,7 @@ public class StorageErrorActivity extends AppCompatActivity {
                 openDirectoryChooser();
             }
         });
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int readPermission = ActivityCompat.checkSelfPermission(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE);
             int writePermission = ActivityCompat.checkSelfPermission(this,
