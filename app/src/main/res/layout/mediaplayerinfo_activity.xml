@@ -6,16 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.viewpagerindicator.CirclePageIndicator
-                android:id="@+id/page_indicator"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_margin="8dp"
-                android:background="@android:color/transparent"
-                app:fillColor="?android:attr/textColorSecondary"
-                app:strokeColor="?android:attr/textColorSecondary"
-                app:radius="4dp" />
-
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/playtime_layout"
@@ -197,5 +187,15 @@
             android:layout_alignParentTop="true"
             android:foreground="?android:windowContentOverlay"
             tools:background="@android:color/holo_orange_light" />
+
+        <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/page_indicator"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:background="@android:color/transparent"
+            app:fillColor="?android:attr/textColorSecondary"
+            app:strokeColor="?android:attr/textColorSecondary"
+            app:radius="4dp" />
 
     </RelativeLayout>

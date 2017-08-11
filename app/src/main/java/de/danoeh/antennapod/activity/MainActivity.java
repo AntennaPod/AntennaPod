@@ -524,12 +524,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private PlaybackController playbackController = new PlaybackController(this, true) {
         @Override
         public boolean loadMediaInfo() {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-            if(playbackController.getMedia() == null) {
+            if (playbackController.getMedia() == null) {
                 return false;
             }
 
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             if (playbackController.getMedia().getMediaType() == MediaType.AUDIO) {
                 playerInfoFragment = new AudioplayerActivity();
                 transaction.replace(R.id.playerInfoFragment, playerInfoFragment, AudioplayerActivity.TAG);
@@ -537,8 +536,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 playerInfoFragment = new VideoplayerActivity();
                 transaction.replace(R.id.playerInfoFragment, playerInfoFragment, VideoplayerActivity.TAG);
             }
-
-            transaction.commit();
+            transaction.commitAllowingStateLoss();
             return true;
         }
     };
