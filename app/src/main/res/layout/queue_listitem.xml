@@ -122,7 +122,7 @@
 
             <ProgressBar
                 android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
+                style="?attr/progressBarTheme"
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:layout_below="@id/txtvProgressLeft"
