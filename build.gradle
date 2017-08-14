@@ -65,6 +65,7 @@ project.ext {
 
     castCompanionLibVer = "2.8.3"
     playServicesVersion = "8.4.0"
+    wearableSupportVersion = "2.0.3"
 }
 
 task wrapper(type: Wrapper) {
