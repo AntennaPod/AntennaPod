@@ -542,44 +542,41 @@
     <string name="rating_later_label"> بعدا به من یادآوری شود </string>
     <string name="rating_now_label"> مطمئنا، اجازه دهید این کار را بکنید!</string>
 
-    <!-- کنترل های صوتی-->
-    <string name="audio_controls"> کنترل های صوتی </string>
-    <string name="playback_speed"> سرعت پخش </string>
-    <string name="volume"> حجم </string>
-    <string name="left_short"> L </string>
-    <string name="right_short"> R </string>
-    <string name="audio_effects"> جلوه های صوتی </string>
-    <string name="stereo_to_mono"> Downmix: Stereo to Mono </string>
-    <string name="sonic_only"> تنها صوتی </string>
+   <!-- کنترل های صوتی-->
+   <string name="audio_controls"> کنترل های صوتی </string>
+   <string name="playback_speed"> سرعت پخش </string>
+   <string name="volume">میزان صدا</string>
+   <string name="left_short"> L </string>
+   <string name="right_short"> R </string>
+   <string name="audio_effects"> جلوه های صوتی </string>
+   <string name="stereo_to_mono"> Downmix: Stereo to Mono </string>
+   <string name="sonic_only"> تنها صوتی </string>
 
-    <!-- تنظیمات پروکسی-->
-    <string name="proxy_type_label"> نوع </string>
-    <string name="host_label"> میزبان </string>
-    <string name="port_label"> پورت </string>
-    <string name="optional_hint"> (اختیاری) </string>
-    <string name="proxy_test_label"> تست </string>
-    <string name="proxy_checking"> بررسی &#8230;</string>
-    <string name="proxy_test_successful"> تست موفقیت آمیز </string>
-    <string name="proxy_test_failed"> تست انجام نشد </string>
-    <string name="proxy_host_empty_error"> میزبان نمی تواند خالی باشد </string>
-    <string name="proxy_host_invalid_error"> میزبان یک آدرس IP یا دامنه معتبر نیست </string>
-    <string name="proxy_port_invalid_error"> پورت نادرست است </string>
+   <!-- تنظیمات پروکسی-->
+   <string name="proxy_type_label"> نوع </string>
+   <string name="host_label"> میزبان </string>
+   <string name="port_label"> پورت </string>
+   <string name="optional_hint"> (اختیاری) </string>
+   <string name="proxy_test_label"> تست </string>
+   <string name="proxy_checking"> بررسی &#8230;</string>
+   <string name="proxy_test_successful"> تست موفقیت آمیز </string>
+   <string name="proxy_test_failed"> تست انجام نشد </string>
+   <string name="proxy_host_empty_error"> میزبان نمی تواند خالی باشد </string>
+   <string name="proxy_host_invalid_error"> میزبان یک آدرس IP یا دامنه معتبر نیست </string>
+   <string name="proxy_port_invalid_error"> پورت نادرست است </string>
 
-    <!-- ریخته گری-->
-    <string name="cast_media_route_menu_title"> پخش در &#8230;</string>
-    <string name="cast_disconnect_label"> قطع اتصال متنی </string>
-    <string name="cast_not_castable"> رسانه انتخاب شده با دستگاه ریخته گری سازگار نیست </string>
-    <string name="cast_failed_to_play"> شروع به پخش رسانه ها نشد </string>
-    <string name="cast_failed_to_stop"> پخش رسانه ها متوقف نشد </string>
-    <string name="cast_failed_to_pause"> پخش موزیک رسانه مکث نداشت </string>
+   <!-- Cast -->
+   <string name="cast_media_route_menu_title"> پخش در &#8230;</string>
+   <string name="cast_disconnect_label"> قطع اتصال متنی </string>
+   <string name="cast_not_castable">رسانه انتخاب شده با دستگاه   Cast  سازگار نیست </string>
+   <string name="cast_failed_to_play"> شروع به پخش رسانه ها نشد </string>
+   <string name="cast_failed_to_stop"> پخش رسانه ها متوقف نشد </string>
+   <string name="cast_failed_to_pause"> پخش موزیک رسانه مکث نداشت </string>
 
-    <!--<string name="cast_failed_to_connect"> نمیتوان به دستگاه متصل شد </string>-->
-    <string name="cast_failed_setting_volume"> نتوانست حجم را تنظیم کند </string>
-    <string name="cast_failed_no_connection"> هیچ ارتباطی با دستگاه بازیگران وجود ندارد </string>
-    <string name="cast_failed_no_connection_trans"> اتصال به دستگاه پخش شده از بین رفته است. برنامه در تلاش است که اتصال را دوباره برقرار کند، در صورت امکان. لطفا چند ثانیه صبر کنید و دوباره امتحان کنید. </string>
-    <string name="cast_failed_perform_action"> خطای اجرای </string> انجام نشد
-    <string name="cast_failed_status_request"> خطا با دستگاه بازیگران همگام نشد </string>
-    <string name="cast_failed_seek"> نتوانست به دنبال موقعیت جدیدی در دستگاه ریخته گری </string>
-    <string name="cast_failed_receiver_player_error"> بازیکن گیرنده با خطای شدید روبرو است </string>
-    <string name="cast_failed_media_error_skipping"> خطا در پخش رسانه ها. Skipping &#8230;</string>
+   <!--<string name="cast_failed_to_connect"> نمیتوان به دستگاه متصل شد </string>-->
+   <string name="cast_failed_setting_volume"> نتوانست حجم صدا را تنظیم کند </string>
+
+   <string name="cast_failed_perform_action">خطا ! اجرا انجام نشد.</string>
+
+   <string name="cast_failed_media_error_skipping"> خطا در پخش رسانه ها. Skipping &#8230;</string>
 </resources>
