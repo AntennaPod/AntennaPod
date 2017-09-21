@@ -83,6 +83,7 @@ public class UserPreferences {
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
+    public static final String PREF_ENABLE_AUTODL_ON_MOBILE = "prefEnableAutoDownloadOnMobile";
     public static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
     public static final String PREF_PROXY_TYPE = "prefProxyType";
     public static final String PREF_PROXY_HOST = "prefProxyHost";
@@ -395,6 +396,11 @@ public class UserPreferences {
     public static boolean isEnableAutodownloadWifiFilter() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
     }
+
+    public static boolean isEnableAutodownloadOnMobile() {
+        return prefs.getBoolean(PREF_ENABLE_AUTODL_ON_MOBILE, false);
+    }
+
 
     public static int getImageCacheSize() {
         String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE);
