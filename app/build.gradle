@@ -153,7 +153,7 @@ dependencies {
     compile "com.artemzin.rxjava:proguard-rules:$rxJavaRulesVersion"
     compile "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     compile "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
-    compile("com.github.afollestad.material-dialogs:commons:$materialDialogsVersion") {
+    compile("com.afollestad.material-dialogs:commons:$materialDialogsVersion") {
         transitive = true
     }
     compile "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
