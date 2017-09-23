@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter.itunes;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -69,7 +70,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
 
         //Set the title
         viewHolder.titleView.setText(podcast.title);
-        if(!podcast.feedUrl.contains("itunes.apple.com")) {
+        if(podcast.feedUrl != null && !podcast.feedUrl.contains("itunes.apple.com")) {
             viewHolder.urlView.setText(podcast.feedUrl);
             viewHolder.urlView.setVisibility(View.VISIBLE);
         } else {
@@ -102,14 +103,16 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         /**
          * URL of the podcast image
          */
+        @Nullable
         public final String imageUrl;
         /**
          * URL of the podcast feed
          */
+        @Nullable
         public final String feedUrl;
 
 
-        private Podcast(String title, String imageUrl, String feedUrl) {
+        private Podcast(String title, @Nullable String imageUrl, @Nullable String feedUrl) {
             this.title = title;
             this.imageUrl = imageUrl;
             this.feedUrl = feedUrl;
@@ -122,9 +125,9 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
          * @throws JSONException
          */
         public static Podcast fromSearch(JSONObject json) throws JSONException {
-            String title = json.getString("collectionName");
-            String imageUrl = json.getString("artworkUrl100");
-            String feedUrl = json.getString("feedUrl");
+            String title = json.optString("collectionName", "");
+            String imageUrl = json.optString("artworkUrl100", null);
+            String feedUrl = json.optString("feedUrl", null);
             return new Podcast(title, imageUrl, feedUrl);
         }
 
