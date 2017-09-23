@@ -43,8 +43,8 @@ project.ext {
     targetSdkVersion = 25
 
     supportVersion = "23.4.0"
-    commonsioVersion = "2.4"
-    commonslangVersion = "3.4"
+    commonsioVersion = "2.5"
+    commonslangVersion = "3.6"
     eventbusVersion = "2.4.0"
     flattr4jVersion = "2.14"
     glideVersion = "3.7.0"
