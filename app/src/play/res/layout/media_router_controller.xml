@@ -31,11 +31,11 @@
         <TextView android:id="@+id/mrc_control_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/mediaRouteControllerPrimaryTextStyle"/>
+            android:textAppearance="@style/TextAppearance.MediaRouter.PrimaryText"/>
         <TextView android:id="@+id/mrc_control_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/mediaRouteControllerSecondaryTextStyle"
+            android:textAppearance="@style/TextAppearance.MediaRouter.SecondaryText"
             android:singleLine="true" />
     </LinearLayout>
 </RelativeLayout>
