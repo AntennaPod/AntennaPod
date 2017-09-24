@@ -67,13 +67,11 @@ public class NetworkUtils {
 					}
 				}
 			} else {
-				if (!UserPreferences.isEnableAutodownloadOnMobile())
-				{
+				if (!UserPreferences.isEnableAutodownloadOnMobile()) {
 					Log.d(TAG, "Auto Download not enabled on Mobile");
 					return false;
 				}
-				if (networkInfo.isRoaming())
-				{
+				if (networkInfo.isRoaming()) {
 					Log.d(TAG, "Roaming on foreign network");
 					return false;
 				}
