@@ -759,7 +759,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             clearAutodownloadSelectedNetworsPreference();
         }
         // get configured networks
-        WifiManager wifiservice = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiservice = (WifiManager) activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         List<WifiConfiguration> networks = wifiservice.getConfiguredNetworks();
 
         if (networks != null) {
