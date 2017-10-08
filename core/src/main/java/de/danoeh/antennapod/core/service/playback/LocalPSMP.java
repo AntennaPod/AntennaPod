@@ -300,7 +300,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     /**
      * Called after media player has been prepared. This method is executed on the caller's thread.
      */
-    void onPrepared(final boolean startWhenPrepared) {
+    private void onPrepared(final boolean startWhenPrepared) {
         playerLock.lock();
 
         if (playerStatus != PlayerStatus.PREPARING) {
@@ -688,18 +688,22 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         media = playable;
     }
 
-    private IPlayer createMediaPlayer() {
+    private void createMediaPlayer() {
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-        if (media == null || media.getMediaType() == MediaType.VIDEO) {
+        if(media == null) {
+            mediaPlayer = null;
+            return;
+        }
+        if (media.getMediaType() == MediaType.VIDEO) {
             mediaPlayer = new VideoPlayer();
         } else {
             mediaPlayer = new AudioPlayer(context);
         }
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK);
-        return setMediaPlayerListeners(mediaPlayer);
+        setMediaPlayerListeners(mediaPlayer);
     }
 
     private final AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
@@ -855,14 +859,20 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if (mp == null || media == null) {
             return mp;
         }
-        if (media.getMediaType() == MediaType.VIDEO) {
+        if (mp instanceof VideoPlayer) {
+            if (media.getMediaType() != MediaType.VIDEO) {
+                Log.w(TAG, "video player, but media type is " + media.getMediaType());
+            }
             VideoPlayer vp = (VideoPlayer) mp;
             vp.setOnCompletionListener(videoCompletionListener);
             vp.setOnSeekCompleteListener(videoSeekCompleteListener);
             vp.setOnErrorListener(videoErrorListener);
             vp.setOnBufferingUpdateListener(videoBufferingUpdateListener);
             vp.setOnInfoListener(videoInfoListener);
-        } else {
+        } else if (mp instanceof AudioPlayer) {
+            if (media.getMediaType() != MediaType.AUDIO) {
+                Log.w(TAG, "audio player, but media type is " + media.getMediaType());
+            }
             AudioPlayer ap = (AudioPlayer) mp;
             ap.setOnCompletionListener(audioCompletionListener);
             ap.setOnSeekCompleteListener(audioSeekCompleteListener);
@@ -870,6 +880,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
             ap.setOnInfoListener(audioInfoListener);
             ap.setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
+        } else {
+            Log.w(TAG, "Unknown media player: " + mp);
         }
         return mp;
     }
