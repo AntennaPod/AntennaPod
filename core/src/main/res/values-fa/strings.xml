@@ -1,0 +1,582 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+ <!--
+ᗗɴᴛᴇɴɴᴀPᴏᴅ - Martin Fietz
+𝔸𝕟𝕥𝕖𝕟𝕟𝕒ℙ𝕠𝕕 - Translate to Persian
+ فعالیت ها و عناوین قطعه- Activitiy and fragment titles-->
+    <string name="feeds_label"> Feeds </string>
+    <string name="statistics_label"> Statistics </string>
+    <string name="add_feed_label"> افزودن پادکست </string>
+    <string name="episodes_label"> قسمتها </string>
+    <string name="all_episodes_short_label"> همه </string>
+    <string name="favorite_episodes_label"> مورد علاقه های شما </string>
+    <string name="new_label"> جدید </string>
+    <string name="settings_label"> تنظیمات </string>
+    <string name="add_new_feed_label"> افزودن پادکست </string>
+    <string name="downloads_label"> دانلود </string>
+    <string name="downloads_running_label"> در حال دانلود </string>
+    <string name="downloads_completed_label"> تکمیل شده </string>
+    <string name="downloads_log_label"> گزارش </string>
+    <string name="subscriptions_label"> اشتراک </string>
+    <string name="subscriptions_list_label"> لیست اشتراک </string>
+    <string name="cancel_download_label"> لغو \n بارگذاری </string>
+    <string name="playback_history_label"> تاریخچه پخش </string>
+    <string name="gpodnet_main_label"> gpodder.net </string>
+    <string name="gpodnet_auth_label"> gpodder.net ورود به سیستم </string>
+    <string name="free_space_label">  "%1$s"  free </string>
+    <string name="episode_cache_full_title"> حافظه پنهان پر شده است </string>
+    <string name="episode_cache_full_message">  حافظه پنهان به محدودیت رسیده است. شما می توانید اندازه حافظه پنهان را در تنظیمات افزایش دهید. </string>
+
+    <!-- بخش آمار-->
+    <string name="total_time_listened_to_podcasts"> مجموع زمان پخش پادکست ها: </string>
+    <string name="statistics_details_dialog">%1$d از قسمت%2$d شروع شده است. \n \n%3$s از%4$s اجرا شد. </string>
+
+    <!-- فعالیت اصلی-->
+    <string name="drawer_open"> منو باز </string>
+    <string name="drawer_close"> بستن منو </string>
+    <string name="drawer_preferences"> تنظیمات کشو </string>
+    <string name="drawer_feed_order_unplayed_episodes"> مرتب سازی بر اساس شمارنده </string>
+    <string name="drawer_feed_order_alphabetical"> مرتب سازی بر اساس حروف الفبا </string>
+    <string name="drawer_feed_order_last_update"> مرتب سازی بر اساس تاریخ انتشار </string>
+    <string name="drawer_feed_counter_new_unplayed"> تعداد قسمتهای جدید و پخش نشده </string>
+    <string name="drawer_feed_counter_new"> تعداد قسمتهای جدید </string>
+    <string name="drawer_feed_counter_unplayed"> تعداد قسمتهای پخش نشده </string>
+    <string name="drawer_feed_counter_none"> هیچ کدام </string>
+
+    <!-- اقدامات Webview-->
+    <string name="open_in_browser_label"> باز کردن در مرورگر </string>
+    <string name="copy_url_label"> کپی URL </string>
+    <string name="share_url_label"> URL را به اشتراک بگذارید </string>
+    <string name="copyed_url_msg"> URL در حافظه موقت کپی شد </string>
+    <string name="go_to_position_label"> برو به این موقعیت </string>
+
+    <!-- تاریخ پخش-->
+    <string name="clear_history_label"> پاک کردن تاریخچه </string>
+
+    <!-- دیگر-->
+    <string name="confirm_label"> تایید </string>
+    <string name="cancel_label"> لغو </string>
+    <string name="yes"> بله </string>
+    <string name="no"> خیر </string>
+    <string name="author_label"> نویسنده </string>
+    <string name="language_label"> زبان </string>
+    <string name="url_label"> URL </string>
+    <string name="podcast_settings_label"> تنظیمات </string>
+    <string name="cover_label"> تصویر </string>
+    <string name="error_label"> خطا </string>
+    <string name="error_msg_prefix"> خطایی رخ داد: </string>
+    <string name="refresh_label"> Refresh </string>
+    <string name="external_storage_error_msg"> هیچ ذخیره سازی خارجی موجود نیست لطفا مطمئن شوید که ذخیره سازی خارجی نصب شده است تا برنامه بتواند به درستی کار کند. </string>
+    <string name="chapters_label"> فصل </string>
+    <string name="showotes_label"> Shownotes </string>
+    <string name="description_label"> توضیحات </string>
+    <string name="most_recent_prefix"> آخرین قسمت: \0020 </string>
+    <string name="episodes_suffix"> اپیزود \0020 </string>
+    <string name="length_prefix"> طول: \0020 </string>
+    <string name="size_prefix"> اندازه: \0020 </string>
+    <string name="processing_label"> پردازش </string>
+    <string name="load_label"> بارگذاری &#8230;</string>
+    <string name="save_username_password_label"> ذخیره نام کاربری و رمز عبور </string>
+    <string name="close_label"> بستن </string>
+    <string name="retry_label"> دوباره امتحان کنید </string>
+    <string name="auto_download_label"> شامل در دانلود خودکار </string> باشد
+    <string name="auto_download_apply_to_items_title"> درخواست به قسمتهای قبلی </string>
+    <string name="auto_download_apply_to_items_message"> تنظیمات جدید <i> Auto Download </i> به طور خودکار به قسمت های جدید اعمال خواهد شد. \n آیا شما همچنین می خواهید آن را به قسمت های قبلا منتشر شده اعمال کنید؟</string>
+    <string name="auto_delete_label"> خودکار حذف قسمت </string>
+    <string name="parallel_downloads_suffix"> دانلود های پاراگراف </string>
+    <string name="feed_auto_download_global"> پیش فرض جهانی </string>
+    <string name="feed_auto_download_always"> همیشه </string>
+    <string name="feed_auto_download_never"> هرگز </string>
+    <string name="send_label"> ارسال &#8230;</string>
+    <string name="episode_cleanup_never"> هرگز </string>
+    <string name="episode_cleanup_queue_removal"> وقتی که در صف نیست </string>
+    <string name="episode_cleanup_after_listening"> پس از اتمام </string>
+
+    <!-- برچسب "اضافه کردن خوراک" Activity-->
+    <string name="feedurl_label"> URL Feed </string>
+    <string name="etxtFeedurlHint"> www.example.com/feed </string>
+    <string name="txtvfeedurl_label"> اضافه کردن پادکست توسط URL </string>
+    <string name="podcastdirectories_label"> یافتن پادکست در دایرکتوری </string>
+    <string name="podcastdirectories_descr"> شما می توانید پادکست های جدید را بر اساس نام، دسته یا محبوبیت در دایرکتوری gpodder.net جستجو کنید یا در فروشگاه iTunes جستجو کنید. </string>
+    <string name="browse_gpoddernet_label"> مرور gpodder.net </string>
+
+    <!-- اقدامات در خوردها-->
+    <string name="mark_all_read_label">علامت گذاری  همه بعنوان شنیده شده</string>
+    <string name="mark_all_read_msg">علامت گذاری همه اپیزودهای خوانده شده</string>
+    <string name="mark_all_read_confirmation_msg">لطفا تایید کنید که شما میخواهید تمام اپیزودها شنیده شده رو علامت گذاری کنید. </string>
+    <string name="mark_all_read_feed_confirmation_msg">. لطفا تایید کنید که شما میخواهید تمام اپیزودها ی این خوراک رو علامت گذاری کنید </string>
+    <string name="mark_all_seen_label"> علامت گذاری همه بعنوان دیده شده</string>
+    <string name="show_info_label"> نمایش اطلاعات</string>
+    <string name="remove_feed_label"> حذف پادکست</string>
+    <string name="share_label"> اشتراک گذاری</string>
+    <string name="share_link_label"> اشتراک گذاری لینک</string>
+    <string name="share_link_with_position_label">اشتراک گذاری لینک با موقعیت</string>
+    <string name="share_feed_url_label"> اشتراک گذاری لینک خوراک</string>
+    <string name="share_item_url_label">اشتراک گذاری لینک فایل اپیزود</string>
+    <string name="share_item_url_with_position_label"> اشتراک گذاری لینک فایل اپیزود با موقعیت</string>
+    <string name="feed_delete_confirmation_msg">. لطفا تایید کنید که شما میخواهید این خوراک و تمام اپیزودها ی دانلود شده آن را حذف کنید </string>
+    <string name="feed_remover_msg"> حذف خوراک </string>
+    <string name="load_complete_feed"> بروز رسانی مجدد خوراک</string>
+    <string name="hide_episodes_title"> پنهان کردن اپیزودها</string>
+    <string name="episode_actions"> اعمال درخواست</string>
+    <string name="hide_unplayed_episodes_label"> شنیده شده ها </string>
+    <string name="hide_paused_episodes_label"> متوقف </string>
+    <string name="hide_played_episodes_label"> شنیده نشده ها </string>
+    <string name="hide_queued_episodes_label"> در صف</string>
+    <string name="hide_not_queued_episodes_label"> خارج از صف</string>
+    <string name="hide_downloaded_episodes_label"> دانلود شده</string>
+    <string name="hide_not_downloaded_episodes_label"> دانلود نشده</string>
+    <string name="filtered_label"> قیلتر شده</string>
+    <string name="refresh_failed_msg"> {FA-علامت تعجب دایره} آخرین بازخوانی انجام نشد </string>
+    <string name="open_podcast">باز کردن پادکست</string>
+
+    <!-- اقدامات در feeditems-->
+    <string name="download_label"> دانلود </string>
+    <string name="play_label"> play </string>
+    <string name="pause_label"> pause </string>
+    <string name="stop_label"> stop </string>
+    <string name="stream_label"> stream </string>
+    <string name="remove_label"> حذف </string>
+    <string name="remove_episode_lable"> حذف قسمت </string>
+    <string name="mark_read_label"> علامت گذاری به عنوان شنیده شده</string>
+    <string name="marked_as_read_label"> علامت گذاری شده به عنوان شنیده شده</string>
+    <string name="mark_unread_label"> علامت گذاری به عنوان شنیده نشده </string>
+    <string name="add_to_queue_label"> اضافه کردن به صف </string>
+    <string name="added_to_queue_label"> اضافه شده به صف </string>
+    <string name="remove_from_queue_label"> حذف از صفر </string>
+    <string name="add_to_favorite_label"> افزودن به مورد علاقه های شما </string>
+    <string name="added_to_favorites"> اضافه شده به مورد علاقه های شما </string>
+    <string name="remove_from_favorite_label"> حذف از موارد دلخواه </string>
+    <string name="removed_from_favorites"> حذف شده از موارد دلخواه </string>
+    <string name="visit_website_label"> وب سایت </string> را ببینید
+    <string name="support_label"> Flattr این </string>
+    <string name="skip_episode_label"> Skip episode </string>
+    <string name="activate_auto_download"> فعالسازی دانلود خودکار </string>
+    <string name="deactivate_auto_download"> غیرفعال کردن دانلود خودکار </string>
+    <string name="reset_position"> بازنشانی وضعیت پخش </string>
+    <string name="removed_item"> مورد حذف شده است </string>
+
+    <!-- پیام ها و برچسب ها را دانلود کنید-->
+    <string name="download_successful">دانلود  شما با موفقیت انجام شد </string>
+    <string name="download_failed">دانلود  شما با شکست مواجه شد </string>
+    <string name="download_pending">در انتظار برای شروع دانلود...</string>
+    <string name="download_running">در حال دانلود شدن...</string>
+    <string name="download_error_device_not_found"> خطا! کارت حافظه پیدا نشد.</string>
+    <string name="download_error_insufficient_space"> خطا! کمبود فضای ذخیره سازی.</string>
+    <string name="download_error_file_error"> خطا! امکان ذخیره سازی این فایل وجود ندارد.</string>
+    <string name="download_error_http_data_error"> HTTP خطا داده خطا! مشکل در برقراری ارتباط با سرور.</string>
+    <string name="download_error_error_unknown"> خطا! ناشناخته. کد: 165 </string>
+    <string name="download_error_parser_exception"> تجزیه کننده کد استثنا: 166 </string>
+    <string name="download_error_unsupported_type"> خطا! ورودی نامعتبر میباشد.</string>
+    <string name="download_error_connection_error"> خطا در اتصال _ کد: 168</string>
+    <string name="download_error_unknown_host"> میزبان نامشخص_ کد: 169</string>
+    <string name="download_error_unauthorized"> خطا در احراز هویت_ کد: 170</string>
+    <string name="download_error_file_type_type"> نوع فایل خطا_ کد: 171</string>
+    <string name="download_error_forbidden"> ممنوعه_ کد: 172</string>
+    <string name="cancel_all_downloads_label"> لغو همه دانلودها</string>
+    <string name="download_canceled_msg">همه دانلودها لغو شدند</string>
+    <string name="download_canceled_autodownload_enabled_msg"> دانلود لغو \n غیرفعال <i> دانلود خودکار </i> برای این مورد </string>
+    <string name="download_report_title"> دانلود کامل با خطا (ها) </string>
+    <string name="download_report_content_title"> دانلود گزارش </string>
+    <string name="download_error_malformed_url"> در نشانی اینترنتی </string>
+    <string name="download_error_io_error"> خطا IO </string>
+    <string name="download_error_request_error"> درخواست پاسخ به خطا </string>
+    <string name="download_error_db_access"> دسترسی به پایگاه داده خطا </string>
+    <plurals name="downloads_left">
+        <item quantity="one">%d download left</item>
+        <item quantity="other">%d downloads left</item>
+    </plurals>
+    <string name="downloads_processing"> پردازش بارگیری </string>
+    <string name="download_notification_title"> دانلود داده های پادکست </string>
+    <string name="download_report_content">%1$d موفق شد%2$d شکست خورد </string>
+    <string name="download_log_title_unknown"> نام ناشناخته </string>
+    <string name="download_type_feed"> خوراک </string>
+    <string name="download_type_media"> فایل رسانه ای </string>
+    <string name="download_type_image"> تصویر </string>
+    <string name="download_request_error_dialog_message_prefix"> هنگام تلاش برای بارگیری فایل خطایی رخ داد: \0020 </string>
+    <string name="authentication_notification_title"> احراز هویت مورد نیاز </string>
+    <string name="authentication_notification_msg"> منابع مورد نظر شما نیاز به یک نام کاربری و رمز عبور </string> دارد
+    <string name="confirm_mobile_download_dialog_title"> تأیید دانلود موبایل </string>
+    <string name="confirm_mobile_download_dialog_message_not_in_queue"> دانلود اتصال بیش از داده های تلفن همراه در تنظیمات غیرفعال است. \n\n شما تنها می توانید قسمت ها را به صف اضافه کنید  همچنین  شما می توانید یک مجوز دانلود به طور موقت صادر  \n\nنمایید. <small> این مجوز بعد از 10 دقیقه باطل و وضعیت را به شما یاداوری میکند</small>   </string>
+    <string name="confirm_mobile_download_dialog_message"> بارگیری بیش از اتصال داده تلفن همراه در تنظیمات غیرفعال است. \n\n آیا میخواهید بارگیری را به طور موقت اجازه دهید؟\n\n <small> انتخاب شما بعد از 10 دقیقه یاداوری میشود. </small> </string>
+    <string name="confirm_mobile_download_dialog_only_add_to_queue"> Enqueue </string>
+    <string name="confirm_mobile_download_dialog_enable_temporarily"> اجازه دهید به طور موقت </string>
+
+    <!-- پیام های Mediaplayer-->
+    <string name="player_error_msg"> خطا!</string>
+    <string name="player_stopped_msg"> پخش رسانه ای </string> نیست
+    <string name="player_preparing_msg"> آماده سازی </string>
+    <string name="player_ready_msg"> آماده </string>
+    <string name="player_seeking_msg"> به دنبال </string>
+    <string name="playback_error_server_died"> ارتباط با سرور از بین رفته است </string>
+    <string name="playback_error_unknown"> خطای ناشناخته </string>
+    <string name="no_media_playing_label"> پخش رسانه ای </string> نیست
+    <string name="position_default_label" translate = "false"> 00:00:00 </string>
+    <string name="player_buffering_msg"> بافر </string>
+    <string name="playbackservice_notification_title"> پخش پادکست </string>
+    <string name="unknown_media_key"> AntennaPod - کلید رسانه ای ناشناخته:%1$d </string>
+
+    <!-- عملیات صف-->
+    <string name="lock_queue"> قفل صف </string>
+    <string name="unlock_queue"> باز کردن صف </string>
+    <string name="queue_locked"> صف بسته شده </string>
+    <string name="queue_unlocked"> صف باز شده </string>
+    <string name="clear_queue_label"> پاک کردن صف </string>
+    <string name="undo"> واگرد </string>
+    <string name="removed_from_queue"> مورد حذف شده </string>
+    <string name="move_to_top_label"> حرکت به بالا </string>
+    <string name="move_to_bottom_label"> حرکت به پایین </string>
+    <string name="sort"> مرتب سازی </string>
+    <string name="alpha"> بر اساس حروف الفبا </string>
+    <string name="date"> تاریخ </string>
+    <string name="duration"> مدت زمان </string>
+    <string name="صعودی"> صعودی </string>
+    <string name="نزولی"> نزولی </string>
+    <string name="clear_queue_confirmation_msg"> لطفا تأیید کنید که میخواهید صف ،همه قسمتهای آن را پاک کنید </string>
+
+    <!-- Flattr-->
+    <string name="flattr_auth_label"> ورود به سیستم Flattr </string>
+    <string name="flattr_auth_explanation"> برای شروع فرآیند احراز هویت، دکمه زیر را فشار دهید. شما در صفحه مرورگر خود به صفحه ورود به صفحه Flattr ارسال می شود و از شما خواسته می شود که AntennaPod اجازه دسترسی به مسائل Flattr را بدهید. پس از اینکه اجازه دادید، به صورت خودکار به این صفحه باز میگردید. </string>
+    <string name="authenticate_label"> تأیید اعتبار </string>
+    <string name="return_home_label"> بازگشت به صفحه اصلی </string>
+    <string name="flattr_auth_success"> تأیید اعتبار موفق شد! در حال حاضر می توانید همه چیز را در برنامه تطبیق دهید. </string>
+    <string name="no_flattr_token_title"> هیچ علامت Flattr یافت نشد </string>
+    <string name="no_flattr_token_notification_msg"> به نظر می رسد که حساب کاربری flattr شما به AntennaPod متصل نیست. برای تایید هویت اینجا ضربه بزنید. </string>
+    <string name="no_flattr_token_msg"> به نظر می رسد که حساب کاربری flattr شما به AntennaPod متصل نیست. شما می توانید حساب کاربری خود را به AntennaPod به چیزهای مسطح در برنامه متصل کنید یا می توانید از وبسایت چیزهایی که به آن مسطح می شود بازدید کنید. </string>
+    <string name="authenticate_now_label"> تأیید اعتبار </string>
+    <string name="action_forbidden_title"> اقدام ممنوعه </string>
+    <string name="action_forbidden_msg"> AntennaPod هیچ مجوزی برای این عمل ندارد. دلیل این امر می تواند این باشد که کد دسترسی AntennaPod به حساب شما لغو شده است. شما می توانید دوباره مجددا شناسایی کنید یا به جای آن وبسایت را ببینید. </string>
+    <string name="access_revoked_title"> دسترسی لغو شده </string>
+    <string name="access_revoked_info"> شما از طریق پروکسی دسترسی AntennaPod به حساب خود موفق شده اید. برای تکمیل فرایند، شما باید این برنامه را از لیست برنامه های تایید شده در تنظیمات حساب خود در وب سایت flatrait حذف کنید. </string>
+
+    <!-- Flattr-->
+
+    <!-- سرعت متغیر-->
+    <string name="download_plugin_label"> دانلود پلاگین </string>
+    <string name="no_playback_plugin_title"> پلاگین نصب نشده است </string>
+    <string name="no_playback_plugin_or_sonic_msg"> برای پخش سرعت متغیر به کار، ما توصیه می کنیم که Mediaplayer ساخته شده در Sonic mediaplayer [Android 4.1 +] را فعال کنید. \n \n پس از آن میتوانید پلاگین شخص ثالث را <i> PrestaSimo </i> از فروشگاه Play. \n هیچ مشکلی با Prestissimo مسئولیت AntennaPod نیست و باید به صاحب پلاگین گزارش شود </string>
+    <string name="set_playback_speed_label"> سرعت پخش </string>
+    <string name="enable_sonic"> Enable Sonic </string>
+
+    <!-- برچسب های لیست خالی-->
+    <string name="no_items_label"> هیچ موردی در این لیست وجود ندارد. </string>
+    <string name="no_feeds_label"> شما تا به حال هیچ یک از فید ها را قبول نکرده اید. </string>
+    <string name="no_chapters_label"> این قسمت هیچ فصل ندارد. </string>
+    <string name="no_shownotes_label"> این قسمت نمایش داده نشده است. </string>
+
+    <!-- تنظیمات-->
+    <string name="storage_pref"> ذخیره سازی </string>
+    <string name="project_pref"> پروژه </string>
+    <string name="other_pref"> دیگر </string>
+    <string name="about_pref"> درباره </string>
+    <string name="queue_label"> صف </string>
+    <string name="services_label"> خدمات </string>
+    <string name="flattr_label"> Flattr </string>
+    <string name="pref_episode_cleanup_title"> پاکسازی قسمت </string>
+    <string name="pref_episode_cleanup_summary"> قسمت هایی که در صف نیستند و مورد علاقه های هنری نیستند باید واجد شرایط حذف باشند اگر نسخه خودکار نیاز به فضای جدید برای قسمت های جدید </string>
+    <string name="pref_pauseOnDisconnect_sum"> مکث زمانی که هدفون یا بلوتوث قطع شوند </string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum"> بازخوانی پخش هنگام اتصال مجدد هدفون </string>
+    <string name="pref_unpauseOnBluetoothReconnect_sum"> اجرای بازیابی زمانی که بلوتوث دوباره متصل شود </string>
+    <string name="pref_hardwareForwardButtonSkips_title"> دکمه هدایت به جلو </string>
+    <string name="pref_hardwareForwardButtonSkips_sum"> هنگام فشار دادن یک دکمه پیش فرض سخت افزاری به جای انتقال سریع به قسمت بعدی، </string>
+    <string name="pref_followQueue_sum"> پرش به آیتم بعدی هنگامی که پخش کامل می شود </string>
+    <string name="pref_auto_delete_sum"> حذف قسمت زمانی که پخش انجام می شود </string>
+    <string name="pref_auto_delete_title"> حذف خودکار </string>
+    <string name="pref_smart_mark_as_played_sum"> قسمت های علامت گذاری شده را بازیابی کنید، حتی اگر کمتر از یک مقدار مشخصی از ثانیه زمان پخش هنوز هم باقی مانده </string>
+    <string name="pref_smart_mark_as_played_title"> علامت هوشمند به عنوان پخش</string>
+    <string name="pref_skip_keeps_episodes_sum"> قسمتهایی را که هنگام جست و خیز تمایل دارید نگه داشته شوند، نگهدارید </string>
+    <string name="pref_skip_keeps_episodes_title"> قسمت های Skipped Keep </string>
+    <string name="playback_pref"> پخش </string>
+    <string name="network_pref"> شبکه </string>
+    <string name="pref_autoUpdateIntervallOrTime_title"> فاصله زمانبندی یا زمان روز </string>
+    <string name="pref_autoUpdateIntervallOrTime_sum"> یک فاصله یا یک زمان خاص از روز را تعیین کنید تا فید ها را به طور خودکار بازخوانی کنید </string>
+    <string name="pref_autoUpdateIntervallOrTime_message"> شما می توانید <i> فاصله </i> را مانند \ "هر 2 ساعت \" تنظیم کنید، <i> زمان روز </i> خاص را مانند \ "7:00 AM \ "یا <i> غیر فعال کردن </i> به روز رسانی خودکار به طور کامل. \n\n <small> لطفا توجه داشته باشید: زمان به روز رسانی دقیق نیست. شما ممکن است با یک تاخیر کوتاه روبرو شوید. </small> </string>
+    <string name="pref_autoUpdateIntervallOrTime_Disable"> غیر فعال کردن </string>
+    <string name="pref_autoUpdateIntervallOrTime_Interval"> تنظیم فاصله </string>
+    <string name="pref_autoUpdateIntervallOrTime_TimeOfDay"> تنظیم زمان روز </string>
+    <string name="pref_autoUpdateIntervallOrTime_every"> هر  "%1$s"  </string>
+    <string name="pref_autoUpdateIntervallOrTime_at"> در  "%1$s"  </string>
+    <string name="pref_downloadMediaOnWifiOnly_sum"> دانلود فایلهای رسانه ای فقط از طریق فای </string>
+    <string name="pref_followQueue_title"> پخش پیوسته </string>
+    <string name="pref_downloadMediaOnWifiOnly_title"> دانلود فای رسانه </string>
+    <string name="pref_pauseOnHeadsetDisconnect_title"> هدفون ها را از هم جدا کنید </string>
+    <string name="pref_unpauseOnHeadsetReconnect_title"> اتصال مجدد هدفون </string>
+    <string name="pref_unpauseOnBluetoothReconnect_title"> بلوتوث مجدد اتصال </string>
+    <string name="pref_mobileUpdate_title"> به روز رسانی های موبایل </string>
+    <string name="pref_mobileUpdate_sum"> بهروزرسانیها بر روی اتصال داده تلفن همراه اجازه دهید </string>
+    <string name="refreshing_label"> بازخوانی </string>
+    <string name="flattr_settings_label"> تنظیمات Flattr </string>
+    <string name="pref_flattr_auth_title"> ورود به سیستم Flattr </string>
+    <string name="pref_flattr_auth_sum"> به حساب کاربری flattre خود وارد شوید تا چیزهای مسطح را مستقیما از برنامه وارد کنید. </string>
+    <string name="pref_flattr_this_app_title"> Flattr این برنامه </string>
+    <string name="pref_flattr_this_app_sum"> پشتیبانی از توسعه AntennaPod با استفاده از نرم افزار flattring آن. متشکریم!</string>
+    <string name="pref_revokeAccess_title"> لغو دسترسی </string>
+    <string name="pref_revokeAccess_sum"> اجازه دسترسی را به حساب کاربری flattr برای این برنامه لغو کنید. </string>
+    <string name="pref_auto_flattr_title"> Automatic Flattr </string>
+    <string name="pref_auto_flattr_sum"> پیکربندی اتوماتیک تطبیق </string>
+    <string name="user_interface_label"> رابط کاربری </string>
+    <string name="pref_set_theme_title"> تم را انتخاب کنید </string>
+    <string name="pref_nav_drawer_title"> سفارشی کردن نمایشگر کشویی </string>
+    <string name="pref_nav_drawer_sum"> سفارشی کردن ظاهر کشوۀ ناوبری </string>
+    <string name="pref_nav_drawer_items_title"> تنظیمات نمایش موارد کشویی </string>
+    <string name="pref_nav_drawer_items_sum"> تغییر مواردی که در کشوی ناوبری ظاهر می شوند. </string>
+    <string name="pref_nav_drawer_feed_order_title"> تنظیم سفارش اشتراک </string>
+    <string name="pref_nav_drawer_feed_order_sum"> تغییر سفارش اشتراک شما </string>
+    <string name="pref_nav_drawer_feed_counter_title"> تنظیم شمارنده اشتراک </string>
+    <string name="pref_nav_drawer_feed_counter_sum"> تغییر اطلاعات نمایش داده شده توسط شمارنده اشتراک </string>
+    <string name="pref_set_theme_sum"> ظاهر AntennaPod را تغییر دهید. </string>
+    <string name="pref_automatic_download_title"> دانلود خودکار </string>
+    <string name="pref_automatic_download_sum"> پیکربندی خودکار دانلود قسمتها. </string>
+    <string name="pref_autodl_wifi_filter_title"> فعال کردن فیلتر Wi-Fi </string>
+    <string name="pref_autodl_wifi_filter_sum"> اجازه دانلود خودکار فقط برای شبکه های Wi-Fi انتخاب شده. </string>
+    <string name="pref_automatic_download_on_battery_title"> بارگیری زمانی که شارژ نمی شود </string>
+    <string name="pref_automatic_download_on_battery_sum"> اجازه بارگیری خودکار زمانی که باتری شارژ نمی شود </string>
+    <string name="pref_parallel_downloads_title"> دانلود های موازی </string>
+    <string name="pref_episode_cache_title"> قسمت در حافظه پنهان </string>
+    <string name="pref_theme_title_light"> سفید/روشن </string>
+    <string name="pref_theme_title_dark"> سیاه/تیره </string>
+    <string name="pref_episode_cache_unlimited"> نامحدود </string>
+    <string name="pref_update_interval_hours_plural"> ساعت </string>
+    <string name="pref_update_interval_hours_singular"> hour </string>
+    <string name="pref_update_interval_hours_manual"> دستی </string>
+    <string name="pref_gpodnet_authenticate_title"> ورود </string>
+    <string name="pref_gpodnet_authenticate_sum"> برای همگام سازی اشتراک خود با حساب کاربری gpodder.net خود وارد شوید. </string>
+    <string name="pref_gpodnet_logout_title"> خروج </string>
+    <string name="pref_gpodnet_logout_toast"> خروج موفق شد </string>
+    <string name="pref_gpodnet_setlogin_information_title"> تغییر اطلاعات ورودی </string>
+    <string name="pref_gpodnet_setlogin_information_sum"> اطلاعات ورود را برای حساب gpodder.net خود تغییر دهید. </string>
+    <string name="pref_gpodnet_sync_title"> همگامسازی در حال حاضر </string>
+    <string name="pref_gpodnet_sync_sum"> همگام سازی اشتراک ها و حالت های قسمت با gpodder.net </string>
+    <string name="pref_gpodnet_sync_started"> همگام سازی آغاز شد </string>
+    <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
+    <string name="pref_playback_speed_title"> سرعت پخش </string>
+    <string name="pref_playback_speed_sum"> سرعت های موجود برای پخش صوتی با سرعت متغیر را سفارشی کنید </string>
+    <string name="pref_fast_forward"> سریع پیشفرض </string>
+    <string name="pref_rewind"> زمان بازنشستگی </string>
+    <string name="pref_gpodnet_sethostname_title"> تنظیم نام میزبان </string>
+    <string name="pref_gpodnet_sethostname_use_default_host"> استفاده از میزبان پیش فرض </string>
+    <string name="pref_expandNotify_title"> Expand Notification </string>
+    <string name="pref_persistsNotify_title"> کنترلهای پخش مداوم </string>
+    <string name="pref_persistsNotify_sum"> نگه داشتن اعلان ها و کنترل های قفل صفحه هنگامی که پخش متوقف شده است. </string>
+    <string name="pref_compact_notification_buttons_title"> تنظیم دکمه Lockscreen </string>
+    <string name="pref_compact_notification_buttons_sum"> دکمه های پخش روی صفحه قفل را تغییر دهید. دکمه پخش / مکث همواره گنجانده شده است. </string>
+    <string name="pref_compact_notification_buttons_dialog_title"> حداکثر%1$d موارد را انتخاب کنید </string>
+    <string name="pref_compact_notification_buttons_dialog_error"> شما تنها می توانید حداکثر%1$d موارد را انتخاب کنید. </string>
+    <string name="pref_show_subscriptions_in_drawer_title"> نمایش اشتراکها </string>
+    <string name="pref_show_subscriptions_in_drawer_sum"> نمایش فهرست اشتراک به طور مستقیم در کشوی ناوبری </string>
+    <string name="pref_lockscreen_background_title"> تنظیم سابقه فونت Lockscreen </string>
+    <string name="pref_lockscreen_background_sum"> پس زمینه قفل صفحه را به تصویر قسمت فعلی تنظیم کنید. به عنوان یک اثر جانبی، این نیز تصویر را در برنامه های شخص ثالث نشان می دهد. </string>
+    <string name="pref_showDownloadReport_title"> نمایش گزارش دانلود </string>
+    <string name="pref_showDownloadReport_sum"> اگر دانلود نشد، یک گزارش ارائه می دهد که جزئیات خرابی را نشان می دهد. </string>
+    <string name="pref_expand_notify_unsupport_toast"> نسخه های آندروید قبل از 4.1 از اطلاعیه های گسترده پشتیبانی نمی کند. </string>
+    <string name="pref_queueAddToFront_sum"> اضافه کردن قسمت های جدید به اول صف. </string>
+    <string name="pref_queueAddToFront_title"> Enqueue در جلو </string>
+    <string name="pref_smart_mark_as_played_disabled"> غیر فعال شده </string>
+    <string name="pref_image_cache_size_title"> اندازه حافظه تصاویر </string>
+    <string name="pref_image_cache_size_sum"> اندازه حافظه پنهان برای تصاویر. </string>
+    <string name="crash_report_title"> گزارش خرابی </string>
+    <string name="crash_report_sum"> ارسال آخرین گزارش خرابی از طریق ایمیل </string>
+    <string name="send_email"> ارسال ایمیل </string>
+    <string name="experimental_pref"> Experimental </string>
+    <string name="pref_sonic_title"> پخش رسانه صوتی </string>
+    <string name="pref_sonic_message"> از پخش کننده رسانه ای صوتی به عنوان جایگزین برای Mediaplayer بومی و Prestissimo </string> استفاده کنید.
+    <string name="pref_current_value"> مقدار فعلی:  "%1$s"  </string>
+    <string name="pref_proxy_title"> پروکسی </string>
+    <string name="pref_proxy_sum"> تنظیم پروکسی شبکه </string>
+    <string name="pref_faq"> FAQ </string>
+    <string name="pref_known_issues"> مسائل شناخته شده </string>
+    <string name="pref_no_browser_found"> ​​مرورگر وب یافت نشد. </string>
+    <string name="pref_cast_title"> پشتیبانی Chromecast </string>
+    <string name="pref_cast_message"> پشتیبانی از پخش رسانه ای از راه دور روی دستگاه های Cast (مانند Chromecast، بلندگوهای صوتی یا تلویزیون Android) را فعال کنید </string>
+
+    <!-- گفتگوی Auto Flattr-->
+
+    <!-- جستجو-->
+    <string name="search_hint"> جستجو برای خوردها یا قسمت ها </string>
+    <string name="found_in_shownotes_label"> در نشان داده شده </string> یافت می شود
+    <string name="found_in_chapters_label"> در قسمت ها </string> یافت می شود
+    <string name="search_status_no_results"> هیچ نتیجه ای یافت نشد </string>
+    <string name="search_label"> جستجو </string>
+    <string name="found_in_title_label"> در عنوان </string> یافت می شود
+
+    <!-- OPML واردات و صادرات-->
+    <string name="opml_import_txtv_button_lable"> فایل های OPML اجازه می دهد تا پادکست های خود را از یک podcatcher به یک دیگر انتقال دهید. </string>
+    <string name="opml_import_option"> گزینه%1$d </string>
+    <string name="opml_import_explanation_1"> یک مسیر فایل خاص را از سیستم فایل محلی انتخاب کنید. </string>
+    <string name="opml_import_explanation_2"> از یک برنامه خارجی مانند Dropbox، Google Drive یا مدیر فایل مورد علاقه خود برای باز کردن یک فایل OPML استفاده کنید. </string>
+    <string name="opml_import_explanation_3"> بسیاری از برنامه هایی مانند Google Mail، Dropbox، Google Drive و بیشتر مدیران فایل می توانند <i> باز </i> فایل های OPML <i> با </i> AntennaPod. </string>    <string name="start_import_label"> شروع واردات </string>
+    <string name="opml_import_label"> وارد کردن OPML </string>
+    <string name="opml_directory_error"> ERROR!</string>
+    <string name="reading_opml_label"> خواندن فایل OPML </string>
+    <string name="opml_reader_error"> هنگام خواندن سند OPML خطایی رخ داده است: </string>
+    <string name="opml_import_error_no_file"> هیچ پرونده ای انتخاب نشده است!</string>
+    <string name="select_all_label"> همه را انتخاب کنید </string>
+    <string name="deselect_all_label"> همه موارد </string> را حذف کنید
+    <string name="select_options_label"> انتخاب کنید &#8230;</string>
+    <string name="choose_file_from_filesystem"> از سیستم فایل محلی </string>
+    <string name="choose_file_from_external_application"> از برنامه خارجی </string> استفاده کنید
+    <string name="opml_export_label"> OPML export </string>
+    <string name="export_label"> استخراج &#8230;</string>
+    <string name="export_error_label"> خطای استخراج </string>
+    <string name="opml_export_success_title"> OPML استخراج موفق است. </string>
+    <string name="opml_export_success_sum"> فایل .opml به این آدرس نوشته شده است: \0020 </string>
+    <string name="opml_import_ask_read_permission"> دسترسی به ذخیره سازی خارجی مورد نیاز است برای خواندن فایل OPML </string>
+
+    <!-- تایمر خواب-->
+    <string name="set_sleeptimer_label"> تنظیم تایمر خواب </string>
+    <string name="disable_sleeptimer_label"> غیر فعال کردن تایمر خواب </string>
+    <string name="enter_time_here_label"> زمان را وارد کنید </string>
+    <string name="sleep_timer_label"> تایمر خواب </string>
+    <string name="time_left_label"> زمان باقی مانده: \0020 </string>
+    <string name="time_dialog_invalid_input"> ورودی نامعتبر، زمان باید یک عدد صحیح باشد </string>
+    <string name="timer_about_to_expire_label"> <b> هنگامی که تایمر به پایان می رسد: </b> </string>
+    <string name="shake_to_reset_label"> لرزش برای تنظیم مجدد تایمر </string>
+    <string name="timer_vibration_label"> ارتعاش </string>
+    <string name="time_seconds"> ثانیه </string>
+    <string name="time_minutes"> دقیقه </string>
+    <string name="time_hours"> ساعت </string>
+
+    <!-- gpodder.net-->
+    <string name="gpodnet_taglist_header"> CATEGORIES </string>
+    <string name="gpodnet_toplist_header"> TOP PODCASTS </string>
+    <string name="gpodnet_suggestions_header"> SUGGESTIONS </string>
+    <string name="gpodnet_search_hint"> جستجو gpodder.net </string>
+    <string name="gpodnetauth_login_title"> ورود </string>
+    <string name="gpodnetauth_login_descr"> به روند ورود به gpodder.net خوش آمدید. اول، اطلاعات ورود شما را تایپ کنید: </string>
+    <string name="gpodnetauth_login_butLabel"> ورود </string>
+    <string name="gpodnetauth_login_register"> اگر هنوز حساب کاربری ندارید، می توانید یکی را اینجا بسازید: \ \n  https://gpodder.net/register/ </string>
+    <string name="username_label"> نام کاربری </string>
+    <string name="password_label"> رمز عبور </string>
+    <string name="gpodnetauth_device_title"> انتخاب دستگاه </string>
+    <string name="gpodnetauth_device_descr"> یک دستگاه جدید برای استفاده برای حساب کاربری gpodder.net خود انتخاب کنید یا یک موجود را انتخاب کنید: </string>
+    <string name="gpodnetauth_device_deviceID"> شناسه دستگاه: \0020 </string>
+    <string name="gpodnetauth_device_caption"> عنوان </string>
+    <string name="gpodnetauth_device_butCreateNewDevice"> ایجاد دستگاه جدید </string>
+    <string name="gpodnetauth_device_chooseExistingDevice"> دستگاه موجود را انتخاب کنید: </string>
+    <string name="gpodnetauth_device_errorEmpty"> شناسه دستگاه نباید خالی باشد </string>
+    <string name="gpodnetauth_device_errorAlreadyUsed"> شناسه دستگاه در حال استفاده </string>
+    <string name="gpodnetauth_device_caption_errorEmpty"> عنوان نباید خالی باشد </string>
+
+    <string name="gpodnetauth_device_butChoose"> را انتخاب کنید </string>
+    <string name="gpodnetauth_finish_title"> ورود موفق باشید!</string>
+    <string name="gpodnetauth_finish_descr"> تبریک میگوییم حساب gpodder.net شما اکنون با دستگاه شما مرتبط است. AntennaPod از هم اکنون به طور خودکار با استفاده از حساب gpodder.net شما اشتراک ها را در دستگاه خود همگام سازی می کند. </string>
+    <string name="gpodnetauth_finish_butsyncnow"> شروع همگام سازی در حال حاضر </string>
+    <string name="gpodnetauth_finish_butgomainscreen"> رفتن به صفحه اصلی </string>
+
+    <string name="gpodnetsync_auth_error_title"> خطای احراز هویت gpodder.net </string>
+    <string name="gpodnetsync_auth_error_descr"> نام کاربری یا گذرواژه اشتباه است </string>
+    <string name="gpodnetsync_error_title"> خطای همگام سازی gpodder.net </string>
+    <string name="gpodnetsync_error_descr"> هنگام همگامسازی خطایی رخ داد: \0020 </string>
+
+    <!-- انتخابگر دایرکتوری-->
+    <string name="selected_folder_label"> پوشه انتخاب شده: </string>
+    <string name="create_folder_label"> ایجاد پوشه </string>
+    <string name="choose_data_directory"> پوشه داده را انتخاب کنید </string>
+    <string name="choose_data_directory_message"> لطفا پایه پوشه داده خود را انتخاب کنید. AntennaPod زیر شاخه های مناسب را ایجاد می کند. </string>
+    <string name="choose_data_directory_permission_rationale"> دسترسی به ذخیره سازی خارجی لازم است تا پوشه داده تغییر کند </string>
+    <string name="create_folder_msg"> ایجاد پوشه جدید با نام "  "%1$s" "؟</string>
+    <string name="create_folder_success"> ایجاد پوشه جدید </string>
+    <string name="create_folder_error_no_write_access"> نمیتوان به این پوشه نوشت </string>
+    <string name="create_folder_error_already_exists"> پوشه در حال حاضر موجود است </string>
+    <string name="create_folder_error"> پوشه </string> ایجاد نشد
+    <string name="folder_does_not_exist_error"> "  "%1$s" " وجود ندارد </string>
+    <string name="folder_not_readable_error"> "  "%1$s" " قابل خواندن نیست </string>
+    <string name="folder_not_writable_error"> "  "%1$s" " قابل نوشتن نیست </string>
+    <string name="folder_not_empty_dialog_title"> پوشه خالی نیست </string>
+    <string name="folder_not_empty_dialog_msg"> پوشه ای که انتخاب کرده اید خالی نیست. دریافت رسانه ها و سایر فایل ها به طور مستقیم در این پوشه قرار می گیرد. ادامه دادن به هر طریق؟</string>
+    <string name="set_to_default_folder"> پوشه پیش فرض </string> را انتخاب کنید
+    <string name="pref_pausePlaybackForFocusLoss_sum"> مکث پخش در عوض کاهش حجم، زمانی که برنامه دیگری میخواهد پخش کند </string>
+    <string name="pref_pausePlaybackForFocusLoss_title"> مکث برای وقفه </string>
+    <string name="pref_resumeAfterCall_sum"> بازخوانی پخش پس از پایان تماس تلفنی </string>
+    <string name="pref_resumeAfterCall_title"> رزومه پس از فراخوانی </string>
+    <string name="pref_restart_required"> AntennaPod باید دوباره شروع شود تا این تغییر تغییر کند. </string>
+
+    <!-- نمایش خوراک آنلاین-->
+    <string name="subscribe_label"> اشتراک </string>
+    <string name="subscribed_label"> مشترک </string>
+    <string name="downloading_label"> دانلود &#8230;</string>
+
+    <!-- توضیحات محتوا برای دکمه های تصویر-->
+    <string name="rewind_label"> عقب </string>
+    <string name="fast_forward_label"> سریع به جلو </string>
+    <string name="media_type_audio_label"> صوتی </string>
+    <string name="media_type_video_label"> ویدئو </string>
+    <string name="navigate_upwards_label"> حرکت به سمت بالا </string>
+    <string name="status_downloading_label">دانلود شروع شده است </string>
+    <string name="in_queue_label"> قسمت در صف </string> است
+    <string name="drag_handle_content_description"> کشیدن برای تغییر موقعیت این مورد </string>
+    <string name="load_next_page_label"> بار بعدی صفحه </string>
+
+    <!-- صفحه اطلاعات تغذیه-->
+    <string name="authentication_label"> تأیید اعتبار </string>
+    <string name="authentication_descr"> نام کاربری و رمز عبور خود را برای این پادکست و قسمت های آن تغییر دهید. </string>
+    <string name="auto_download_settings_label"> تنظیمات دانلود خودکار </string>
+    <string name="episode_filters_label"> Filter Episode </string>
+    <string name="episode_filters_description"> لیستی از اصطلاحات مورد استفاده برای تصمیم گیری در مورد اینکه آیا یک قسمت در هنگام بارگیری خودکار باید شامل شود یا حذف شود </string>
+    <string name="episode_filters_include"> شامل </string> باشد
+    <string name="episode_filters_exclude"> Exclude </string>
+    <string name="episode_filters_hint"> تک کلمات \n \ "چندین واژه" </string>
+    <string name="keep_updated"> به روز نگه دارید </string>
+
+    <!-- اطلاعات پیشرفت-->
+    <string name="progress_upgrading_database"> ارتقاء پایگاه داده </string>
+
+    <!-- AntennaPodSP-->
+    <string name="sp_apps_importing_feeds_msg"> وارد کردن اشتراک از برنامه های تک هدفمند </string>
+
+    <string name="search_itunes_label"> جستجو در iTunes </string>
+    <string name="filter"> فیلتر </string>
+
+    <!-- مرتب سازی-->
+    <string name="sort_title_a_z">Title (A \u2192 Z)</string>
+    <string name="sort_title_z_a">Title (Z \u2192 A)</string>
+    <string name="sort_date_new_old">Date (New \u2192 Old)</string>
+    <string name="sort_date_old_new">Date (Old \u2192 New)</string>
+    <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
+    <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
+
+    <!-- نمایش محتوا-->
+    <string name="rating_title"> مانند AntennaPod؟</string>
+    <string name="rating_message"> ما از آن زمان قدردانی میکنیم تا AntennaPod را رتبهبندی کنیم. </string>
+    <string name="rating_never_label"> ترک من تنها </string>
+    <string name="rating_later_label"> بعدا به من یادآوری شود </string>
+    <string name="rating_now_label"> مطمئنا، اجازه دهید این کار را بکنید!</string>
+
+   <!-- کنترل های صوتی-->
+   <string name="audio_controls"> کنترل های صوتی </string>
+   <string name="playback_speed"> سرعت پخش </string>
+   <string name="volume">میزان صدا</string>
+   <string name="left_short"> L </string>
+   <string name="right_short"> R </string>
+   <string name="audio_effects"> جلوه های صوتی </string>
+   <string name="stereo_to_mono"> Downmix: Stereo to Mono </string>
+   <string name="sonic_only"> تنها صوتی </string>
+
+   <!-- تنظیمات پروکسی-->
+   <string name="proxy_type_label"> نوع </string>
+   <string name="host_label"> میزبان </string>
+   <string name="port_label"> پورت </string>
+   <string name="optional_hint"> (اختیاری) </string>
+   <string name="proxy_test_label"> تست </string>
+   <string name="proxy_checking"> بررسی &#8230;</string>
+   <string name="proxy_test_successful"> تست موفقیت آمیز </string>
+   <string name="proxy_test_failed"> تست انجام نشد </string>
+   <string name="proxy_host_empty_error"> میزبان نمی تواند خالی باشد </string>
+   <string name="proxy_host_invalid_error"> میزبان یک آدرس IP یا دامنه معتبر نیست </string>
+   <string name="proxy_port_invalid_error"> پورت نادرست است </string>
+
+   <!-- Cast -->
+   <string name="cast_media_route_menu_title"> پخش در &#8230;</string>
+   <string name="cast_disconnect_label"> قطع اتصال متنی </string>
+   <string name="cast_not_castable">رسانه انتخاب شده با دستگاه   Cast  سازگار نیست </string>
+   <string name="cast_failed_to_play"> شروع به پخش رسانه ها نشد </string>
+   <string name="cast_failed_to_stop"> پخش رسانه ها متوقف نشد </string>
+   <string name="cast_failed_to_pause"> پخش موزیک رسانه مکث نداشت </string>
+
+   <!--<string name="cast_failed_to_connect"> نمیتوان به دستگاه متصل شد </string>-->
+   <string name="cast_failed_setting_volume"> نتوانست حجم صدا را تنظیم کند </string>
+
+   <string name="cast_failed_perform_action">خطا ! اجرا انجام نشد.</string>
+
+   <string name="cast_failed_media_error_skipping"> خطا در پخش رسانه ها. Skipping &#8230;</string>
+</resources>
