@@ -2,6 +2,8 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
 import android.support.annotation.StringRes;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 
 /**
  * Class intended to work along PlaybackService and provide support for different flavors.
@@ -40,5 +42,13 @@ public class PlaybackServiceFlavorHelper {
 
     boolean onSharedPreference(String key) {
         return false;
+    }
+
+    void sessionStateAddActionForWear(PlaybackStateCompat.Builder sessionState, String actionName, CharSequence name, int icon) {
+        // no-op
+    }
+
+    void mediaSessionSetExtraForWear(MediaSessionCompat mediaSession) {
+        // no-op
     }
 }

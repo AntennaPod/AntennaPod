@@ -133,6 +133,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     public static final String ACTION_RESUME_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.resumePlayCurrentEpisode";
 
+    /**
+     * Custom action used by Android Wear
+     */
+    private static final String CUSTOM_ACTION_FAST_FORWARD = "action.de.danoeh.antennapod.core.service.fastForward";
+    private static final String CUSTOM_ACTION_REWIND = "action.de.danoeh.antennapod.core.service.rewind";
+
 
     /**
      * Used in NOTIFICATION_TYPE_RELOAD.
@@ -1083,6 +1089,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         sessionState.setActions(capabilities);
+
+        flavorHelper.sessionStateAddActionForWear(sessionState,
+                CUSTOM_ACTION_REWIND, getString(R.string.rewind_label), android.R.drawable.ic_media_rew);
+        flavorHelper.sessionStateAddActionForWear(sessionState,
+                CUSTOM_ACTION_FAST_FORWARD, getString(R.string.fast_forward_label), android.R.drawable.ic_media_ff);
+
+        flavorHelper.mediaSessionSetExtraForWear(mediaSession);
+
         mediaSession.setPlaybackState(sessionState.build());
     }
 
@@ -1760,6 +1774,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             }
             return false;
+        }
+
+        @Override
+        public void onCustomAction(String action, Bundle extra) {
+            Log.d(TAG, "onCustomAction(" + action + ")");
+            if (CUSTOM_ACTION_FAST_FORWARD.equals(action)) {
+                onFastForward();
+            } else if (CUSTOM_ACTION_REWIND.equals(action)) {
+                onRewind();
+            }
         }
     };
 

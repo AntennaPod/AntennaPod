@@ -72,6 +72,7 @@ dependencies {
         playCompile "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
         compile "com.android.support:mediarouter-v7:$supportVersion"
         playCompile "com.google.android.gms:play-services-cast:$playServicesVersion"
+        compile "com.google.android.support:wearable:$wearableSupportVersion"
     } else {
         System.out.println("core: free build hack, skipping some dependencies")
     }
