@@ -907,7 +907,15 @@ public class DownloadService extends Service {
 
     }
 
+    /**
+     * Creates the destination file and writes FeedMedia File_url directly after starting download
+     * to make it possible to resume download after the service was killed by the system.
+     */
     private void writeFileUrl(DownloadRequest request) {
+        if (request.getFeedfileType() != FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            return;
+        }
+
         File dest = new File(request.getDestination());
         if (!dest.exists()) {
             try {
@@ -916,7 +924,8 @@ public class DownloadService extends Service {
                 Log.e(TAG, "Unable to create file");
             }
         }
-        if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+
+        if (dest.exists()) {
             Log.d(TAG, "Writing file url");
             FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
             if (media == null) {
