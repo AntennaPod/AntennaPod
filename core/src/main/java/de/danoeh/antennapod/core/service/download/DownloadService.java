@@ -917,7 +917,7 @@ public class DownloadService extends Service {
             }
         }
         if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-            Log.d(TAG, "File has been partially downloaded. Writing file url");
+            Log.d(TAG, "Writing file url");
             FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
             if (media == null) {
                 Log.d(TAG, "No media");
@@ -927,9 +927,9 @@ public class DownloadService extends Service {
             try {
                 DBWriter.setFeedMedia(media).get();
             } catch (InterruptedException e) {
-                Log.e(TAG, "FailedDownloadHandler was interrupted");
+                Log.e(TAG, "writeFileUrl was interrupted");
             } catch (ExecutionException e) {
-                Log.e(TAG, "ExecutionException in FailedDownloadHandler: " + e.getMessage());
+                Log.e(TAG, "ExecutionException in writeFileUrl: " + e.getMessage());
             }
         }
     }
