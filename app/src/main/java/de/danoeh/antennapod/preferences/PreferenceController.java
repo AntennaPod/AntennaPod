@@ -916,10 +916,14 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     private void showChooseDataFolderDialog() {
-        ChooseDataFolderDialog.showDialog(ui.getActivity(), (folder) -> {
-            UserPreferences.setDataFolder(folder);
-            setDataFolderText();
-        });
+        ChooseDataFolderDialog.showDialog(
+                ui.getActivity(), new ChooseDataFolderDialog.RunnableWithString() {
+                    @Override
+                    public void run(final String folder) {
+                        UserPreferences.setDataFolder(folder);
+                        setDataFolderText();
+                    }
+                });
     }
 
     // UPDATE TIME/INTERVAL DIALOG

@@ -113,10 +113,14 @@ public class StorageErrorActivity extends AppCompatActivity {
 
     // see PreferenceController.showChooseDataFolderDialog()
     private void showChooseDataFolderDialog() {
-        ChooseDataFolderDialog.showDialog(this, (folder) -> {
-            UserPreferences.setDataFolder(folder);
-            leaveErrorState();
-        });
+        ChooseDataFolderDialog.showDialog(
+                this, new ChooseDataFolderDialog.RunnableWithString() {
+                    @Override
+                    public void run(final String folder) {
+                        UserPreferences.setDataFolder(folder);
+                        leaveErrorState();
+                    }
+                });
     }
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

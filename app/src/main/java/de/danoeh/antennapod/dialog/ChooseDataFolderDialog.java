@@ -10,7 +10,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -19,9 +18,19 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 
 public class ChooseDataFolderDialog {
 
+    public static abstract class RunnableWithString implements Runnable {
+        public RunnableWithString() {
+            super();
+        }
+        public abstract void run(final String arg);
+        @Override public void run() {
+            throw new IllegalArgumentException("Expect one String parameter.");
+        }
+    }
+
     private ChooseDataFolderDialog() {}
 
-    public static void showDialog(final Context context, Consumer<String> handlerFunc) {
+    public static void showDialog(final Context context, RunnableWithString handlerFunc) {
         File dataFolder = UserPreferences.getDataFolder(null);
         if (dataFolder == null) {
             new MaterialDialog.Builder(context)
@@ -68,7 +77,7 @@ public class ChooseDataFolderDialog {
                 .items(choices)
                 .itemsCallbackSingleChoice(selectedIndex, (dialog1, itemView, which, text) -> {
                     String folder = folders.get(which);
-                    handlerFunc.accept(folder);
+                    handlerFunc.run(folder);
                     return true;
                 })
                 .negativeText(R.string.cancel_label)
@@ -79,10 +88,10 @@ public class ChooseDataFolderDialog {
 
     @SuppressWarnings("deprecation")
     private static CharSequence fromHtmlVersioned(final String html) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return Html.fromHtml(html);
         }
-        return Html.fromHtml(html);
+        return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
     }
 
 }
