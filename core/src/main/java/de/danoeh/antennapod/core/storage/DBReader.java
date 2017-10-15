@@ -905,6 +905,7 @@ public final class DBReader {
         Cursor cursor = adapter.getImageCursor(ids);
         int imageCount = cursor.getCount();
         if (imageCount == 0) {
+            cursor.close();
             return Collections.emptyMap();
         }
         Map<Long, FeedImage> result = new ArrayMap<>(imageCount);
