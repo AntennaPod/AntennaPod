@@ -1,45 +1,43 @@
-Easy-to-use, flexible and open-source podcast manager and player
+AntennaPod er en app til håndtering og afspilning af podcasts. Den giver dig øjeblikkelig adgang til millioner af gratis og betalte podcasts, fra uafhængige podcastere til store udgivere som BBC, NPR, CNN og DR. Tilføj, importer og eksporter deres feeds problemfrit ved hjælp af iTunes-podcastdatabasen, OPML-filer eller enkle RSS-webadresser. Spar kræfter, batteristrøm og mobilt dataforbrug med kraftfulde automatiske styringsværktøjer til at hente udsendelser (angiv tidspunkter, tidsintervaller og udvalgte wi-fi-netværk) og sletning af episoder (baseret på dine foretrukne udsendelser og forsinkelsesindstillinger).<br>
+Men vigtigst af alt: Hent, stream eller sæt udsendelser i kø og nyd dem på den måde du kan lide med justerbare hastigheder, kapitelunderstøttelse og en søvntimer. Du kan endda vise din påskønnelse over for indholdsskaberne med vores Flattr-integration.
 
-AntennaPod is a podcast manager and player that gives you instant access to millions of free and paid podcasts, from independent podcasters to large publishing houses such as the BBC, NPR and CNN. Add, import and export their feeds hassle-free using the iTunes podcast database, OPML files or simple RSS URLs. Save effort, battery power and mobile data usage with powerful automation controls for downloading episodes (episode filtering, specify times, intervals and WiFi networks) and deleting episodes (based your favorites and delay settings).<br>
-But most importantly: Download, stream or queue episodes and enjoy them the way you like with adjustable playback speeds, chapter support and a sleep timer. You can even show your love to the content creators  with our Flattr integration.
+AntennaPod er lavet af en podcast-entusiast og er gratis og fri i alle betydninger: open source, ingen udgifter, ingen reklamer.
 
-Made by podcast-enthousiast, AntennaPod is free in all senses of the word: open source, no costs, no ads.
+<b>Alle funktioner:</b><br>
+IMPORTER, ORGANISER OG AFSPIL<br>
+&#8226; Tilføj og importer feeds via iTunes- og gpodder.net-oversigterne, OPML-filer og RSS- eller Atom-links<br>
+&#8226; Håndter afspilning fra hvor som helst: widget på startskærmen, systemnotifikation, samt hovedtelefon- og bluetooth-styring<br>
+&#8226; Lyt på din egen måde med justerbar afspilningshastighed, kapitelunderstøttelse (MP3, VorbisComment og Podlove), erindring af afspilningsposition og en avanceret søvntimer (ryst for at nulstille, sænke lydstyrken og afspille langsommere)<br>
+&#8226; Tilgå feeds og udsendelser beskyttet med adgangskode<br>
+&#8226; Brug sideinddelte feeds (www.podlove.org/paged-feeds)
 
-<b>All features:</b><br>
-IMPORT, ORGANIZE AND PLAY<br>
-&#8226; Add and import feeds via the iTunes and gPodder.net directories, OPML files and RSS or Atom links<br>
-&#8226; Manage playback from anywhere: homescreen widget, system notification and earplug and bluetooth controls<br>
-&#8226; Enjoy listening your way with adjustable playback speed, chapter support (MP3, VorbisComment and Podlove), remembered playback position and an advanced sleep timer (shake to reset, lower volume and slow down playback)<br>
-&#8226; Access password-protected feeds and episodes<br>
-&#8226; Take advantage of paged feeds (www.podlove.org/paged-feeds)
+HOLD STYR PÅ, DEL OG ANERKEND<br>
+&#8226; Hold styr på det bedste af det bedste ved at markere udsendelser som foretrukne<br>
+&#8226; Find en bestemt udsendelse via afspilningshistorikken eller ved at søge (titler og beskrivelser)<br>
+&#8226; Del udsendelser og feeds via avancerede valgmuligheder for sociale medier, gpodder.net-tjenesterne og OPML-eksport<br>
+&#8226; Støt indholdsskabere med Flattr-integration, inklusive automatisk flattring
 
-KEEP TRACK, SHARE & APPRECIATE<br>
-&#8226; Keep track of the best of the best by marking episodes as favorites<br>
-&#8226; Find that one episode through the playback history or by searching (titles and shownotes)<br>
-&#8226; Share episodes and feeds through advanced social media and email options, the gPodder.net services and via OPML export<br>
-&#8226; Support content creators with Flattr integration including automatic flattring
+STYR SYSTEMET<br>
+&#8226; Tag styring over automatiseret hentning: vælg feeds, udeluk mobile netværk, vælg specifikke wi-fi-netvæk, kræv at telefonen oplader og indstil tidspunkter eller tidsintervaller
+&#8226; Håndter lagerforbruget ved at indstille antallet af udsendelser, der skal gemmes, smart sletning (baseret på dine foretrukne og afspilningsstatus) og ved at vælge den lagerplacering, du foretrækker<br>
+&#8226; Brug AntennaPod på dit eget sprog (EN, DE, DA, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
+&#8226; Tilpas appen til dit miljø med det lyse og mørke tema<br>
+&#8226; Sikkerhedskopier dine abonnementer med gpodder.net-integrationen og OPML-eksport
 
-CONTROL THE SYSTEM<br>
-&#8226; Take control over automated downloading: choose feeds, filter episodes based on keywords, exclude mobile networks, select specific WiFi networks, require the phone to be charging and set times or intervals<br>
-&#8226; Manage storage by setting the amount of cached episodes, smart deletion (based on your favorites and play status) and selecting your preferred location<br>
-&#8226; Use AntennaPod in your language (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
-&#8226; Adapt to your environment using the light and dark theme<br>
-&#8226; Back-up your subscriptions with the gPodder.net integration and OPML export
+<b>Bliv en del af AntennaPod-fællesskabet!</b><br>
+AntennaPod er under aktiv udvikling af frivillige. Du kan også bidrage, med kode eller kommentarer!
 
-<b>Join the AntennaPod community!</b>
-AntennaPod is under active development by volunteers. You can contribute too, with code or with comment!
+GitHub er stedet for forslag tli ny funktionalitet, fejlrapporter og kodebidrag:<br>
+https://www.github.com/AntennaPod/AntennaPod
 
-Ask your question or give feedback via Twitter:
-https://twitter.com/@AntennaPod
-
-Share your ideas, favorite podcasting moments and gratitude to all the volunteers in our Google group:
+Vores Google-gruppe er stedet til at dele dine ideer, foretrukne podcast-øjeblikke og taknemmelighed til alle de frivillige:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
-Help translate the app to your mother tongue on Transifex:
+Har du et spørgsmål eller vil du give os en tilbagemelding?
+https://twitter.com/@AntennaPod
+
+Transifex er stedet, hvis du vil hjælpe med oversættelser:<br>
 https://www.transifex.com/antennapod/antennapod
 
-Check out our Beta Testing programme to get the latest features first:
+Prøv vores beta-testprogram for at få de nyeste funktioner først:<br>
 https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
-
-Visit GitHub to submit feature requests, bug reports and code contributions:
-https://www.github.com/AntennaPod/AntennaPod

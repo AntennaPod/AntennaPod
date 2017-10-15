@@ -1,6 +1,4 @@
-Användarvänlig och flexibel podcasthanterare och spelare med öppen källkod
-
-AntennaPod är en podcasthanterare och spelare som ger dig omedelbar tillgång till miljoner av gratis och betalpodcasts, från oberoende podcastare till stora publiceringshus som BBC, NPR och CNN. Lägg till, importera och exportera deras flöden utan krångel med iTunes podcastdatabas, OPML-filer eller enkla RSS URL:er. Spara kraft, batteri och mobildata med kraftfulla automatiseringskontroller för nedladdning av episoder (episodfiltrering, ange tider, intervall och WiFi nätverk) och episodborttagning (med hänsyn till dina favoriter och fördröjningsinställningar).<br>
+AntennaPod är en podcasthanterare och spelare som ger dig omedelbar tillgång till millioner av gratis och betalda podcasts, allt ifrån oberoende podcasters till publiceringsjättar som BBC, NPR och CNN. Lägg till, importera och exportera enkelt deras flöden med hjälp av iTunes podcastdatabas, OPML filer eller enkla RSS URL:er. Spara tid, batterikraft och mobildata med kraftfull automatisering för nedladdning (specifiera tider, intervall och WiFi-nätverk) och borttagning av episoder (baserat på dina favoriter och fördröjningsinställningar).<br>
 Men viktigast: Ladda ner, strömma eller köa episoder och avnjut dem på ditt sätt med justerbar uppspelningshastighet, kapitelstöd och en sovtimer. Du kan till och med visa din uppskattning av innehållsskaparna med vår integrering av Flattr.
 
 Gjord av podcastenthusiaster, AntennaPod är fri i alla ordets bemärkelser: öppen källkod, inga kostnader, ingen reklam.
@@ -14,32 +12,32 @@ IMPORTERA, ORGANISERA OCH SPELA<br>
 &#8226; Dra nytta av siduppdelade flöden (www.podlove.ord/paged-feeds)
 
 SPÅRA, DELA & UPPSKATTA<br>
-&#8226; Håll ordning på de bästa av de bästa med favoritmarkering av episder<br>
+&#8226; Håll ordning på de bästa av de bästa med favoritmarkering av episoder<br>
 &#8226; Hitta just den där episoden i uppspelningshistoriken eller genom sökning (titel och shownotes)<br>
 &#8226;  Dela episoder och flöden med avancerade vald för social media och och email, tjänsten gPodder.net och via OPML export<br>
 &#8226; Stöd innehållsskaparna via integrering av Flattr och automatisk flattring
 
 KONTROLLERA SYSTEMET<br>
-&#8226; Ta kontrollen över automatisk nedladdning: välj flöden, filtrera episoder baserat på nyckelord, exkludera mobila nätverk, välj specifika WiFi nätverk, kräv att telefonen är på laddning och bestäm tider eller intervall<br> 
-&#8226; Hantera lagring med inställningar för antalet episoder i cachen, smart borttagning (med hänsyn till dina favoriter och uppspelningsstatus) och välj din föredragna plats<br>
+&#8226; Ta kontroll över automatisk nedladdning: välj flöden, exkludera mobilnätverk, välj specifika WiFi nätverk, kräv att telefonen är inkopplad för laddning och sätt tider eller intervall för körning<br>
+&#8226; Hantera lagringsutrymme genom att välja antalet cachade episoder, smart borttagning (baserat på dina favoriter och uppspelningsstatus) och välj den lagringsplats du föredrar<br>
 &#8226; Använd AntennaPod på ditt språk (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
 &#8226; Anpassa till din omgivning med det ljusa och mörka temat<br>
 &#8226; Ta backup av dina prenumerationer med integreringen av gPodder.net och OPML exportering
 
-<b>Gå med i AntennaPods gemenskap!</b>
+<b>Gå med i AntennaPods gemenskap!</b><br>
 AntennaPod är under aktiv utveckling av volontärer. Du kan också bidra, med kod eller kommentarer!
 
-Ställ dina frågor eller ge feedback via Twitter:
-https://twitter.com/@AntennaPod
+GitHub är platsen att gå till för att be om funktioner, skapa buggrapporter eller bidra med kod:<br>
+https://www.github.com/AntennaPod/AntennaPod
 
-Dela dina idéer, favorit-podcastögonblick och din tacksamhet med alla frivilliga i vår Google grupp:
+Vår Google Group är platsen för att dela idéer, dina favoritögonblick med podcasting och din uppskattning till volontärerna:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
-Hjälp till att översätta appen till ditt modersmål på Transifex:
+Har du frågor eller vill ge feedback?
+https://twitter.com/@AntennaPod
+
+Transifex är platsen att gå till för att hjälpa till med översättningen:<br>
 https://www.transifex.com/antennapod/antennapod
 
-Kolla in vårt Beta Test program för att få de senaste förbättringarna först:
+Kolla in vårat Beta Testing program för att få de senaste funktionerna först:<br>
 https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
-
-Besök GitHub för att skicka in funktionsförslag, buggrapporter och kodförbättringar:
-https://www.github.com/AntennaPod/AntennaPod

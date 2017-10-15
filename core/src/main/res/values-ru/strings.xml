@@ -26,6 +26,10 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Общее время прослушивания подкастов:</string>
   <string name="statistics_details_dialog">%1$d из %2$d выпусков начато.\n\nПрослушано %3$s из %4$s.</string>
+  <string name="statistics_mode">Режим подсчёта статистики</string>
+  <string name="statistics_mode_normal">Рассчитывать длительность воспроизведённого на самом деле. Повторное воспроизведение засчитывается, а отметка о прослушивании — нет</string>
+  <string name="statistics_mode_count_all">Прибавлять также все подкасты, отмеченные как прослушанные</string>
+  <string name="statistics_speed_not_counted">Замечание: Скорость воспроизведения не учитывается никогда.</string>
   <!--Main activity-->
   <string name="drawer_open">Открыть меню</string>
   <string name="drawer_close">Закрыть меню</string>
@@ -63,7 +67,7 @@
   <string name="refresh_label">Обновить</string>
   <string name="external_storage_error_msg">Внешний носитель недоступен. Убедитесь что внешний носитель установлен, иначе приложение не сможет нормально работать.</string>
   <string name="chapters_label">Главы</string>
-  <string name="chapter_duration">Продолжительность: %1$s</string>
+  <string name="chapter_duration">Длительность: %1$s</string>
   <string name="shownotes_label">Примечания к выпуску</string>
   <string name="description_label">Описание</string>
   <string name="most_recent_prefix">Последний выпуск:\u0020</string>
@@ -106,7 +110,7 @@
   <string name="mark_all_read_confirmation_msg">Подтвердите, что хотите пометить все эпизоды как прослушанные.</string>
   <string name="mark_all_read_feed_confirmation_msg">Подтвердите, что хотите пометить все эпизоды в этом канале как прослушанные.</string>
   <string name="mark_all_seen_label">Отметить все как просмотренное</string>
-  <string name="mark_all_seen_msg">Все эпизоды отмечены как просмотренные</string>
+  <string name="mark_all_seen_msg">Все выпуски отмечены как просмотренные</string>
   <string name="mark_all_seen_confirmation_msg">Пожалуйста, подтвердите намерение отметить все выпуски как просмотренные.</string>
   <string name="show_info_label">Показать информацию</string>
   <string name="rename_feed_label">Переименовать подкаст</string>
@@ -286,7 +290,8 @@
   <string name="pref_episode_cleanup_summary">Выпуски, которые не стоят в очереди и не отмечены как избранные могут быть удалены для освобождения места под Автозагрузку.</string>
   <string name="pref_pauseOnDisconnect_sum">Приостановить воспроизведение, когда наушники или bluetooth отключены</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Продолжать воспроизведение после подключения наушников</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">Продолжать воспроизведение после подключения наушников или восстановления bluetooth-соединения</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Продолжать воспроизведение после восстановления bluetooth-соединения</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Пропускать кнопкой перемотки вперёд</string>
   <string name="pref_hardwareForwardButtonSkips_sum">При нажатии на физическую кнопку перемотки вперёд переходить к следующему выпуску вместо перемотки</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">В начало кнопкой перемотки назад</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">При нажатии на физическую кнопку перемотки назад переходить к началу выпуска вместо перемотки назад</string>
@@ -294,6 +299,7 @@
   <string name="pref_auto_delete_sum">Удалять эпизод после завершения воспроизведения</string>
   <string name="pref_auto_delete_title">Автоматическое удаление</string>
   <string name="pref_smart_mark_as_played_sum">Отмечать выпуски как прослушанные, даже если до завершения остаётся некоторое время</string>
+  <string name="pref_smart_mark_as_played_title">Предварительная отметка \"прослушано\"</string>
   <string name="pref_skip_keeps_episodes_sum">Сохранять выпуски, помеченные как пропущенные</string>
   <string name="pref_skip_keeps_episodes_title">Сохранять пропущенные выпуски</string>
   <string name="playback_pref">Воспроизведение</string>
@@ -329,8 +335,8 @@
   <string name="pref_nav_drawer_title">Настроить боковую панель</string>
   <string name="pref_nav_drawer_sum">Настроить вид боковой панели</string>
   <string name="pref_nav_drawer_items_title">Выбрать пункты боковой панели</string>
-  <string name="pref_nav_drawer_items_sum">Изменение отображения пунктов в меню боковой панели</string>
-  <string name="pref_nav_drawer_feed_order_title">Порядок подписок</string>
+  <string name="pref_nav_drawer_items_sum">Изменение отображения пунктов меню боковой панели</string>
+  <string name="pref_nav_drawer_feed_order_title">Упорядочить подписки</string>
   <string name="pref_nav_drawer_feed_order_sum">Выбрать порядок отображения подписок</string>
   <string name="pref_nav_drawer_feed_counter_title">Выбрать счётчик подписок</string>
   <string name="pref_nav_drawer_feed_counter_sum">Выбрать какую информацию показывать в счётчике подписок</string>
@@ -367,6 +373,10 @@
   <string name="pref_gpodnet_notifications_sum">Не затрагивает ошибки авторизации.</string>
   <string name="pref_playback_speed_title">Скорость воспроизведения</string>
   <string name="pref_playback_speed_sum">Настроить скорости воспроизведения</string>
+  <string name="pref_fast_forward">Интервал быстрой перемотки вперед</string>
+  <string name="pref_fast_forward_sum">Настройте длину шага в секундах при нажатии кнопки перемотки вперёд</string>
+  <string name="pref_rewind">Интервал быстрой перемотки назад</string>
+  <string name="pref_rewind_sum">Настройте длину шага в секундах при нажатии кнопки перемотки назад</string>
   <string name="pref_gpodnet_sethostname_title">Задать имя узла</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Использовать узел по умолчанию</string>
   <string name="pref_expandNotify_title">Развёрнутое уведомление</string>
@@ -377,7 +387,7 @@
   <string name="pref_compact_notification_buttons_sum">Поменять кнопки управления на экране блокировки. Кнопка воспроизведения/паузы присутствует постоянно.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Выберите не более %1$d элементов</string>
   <string name="pref_compact_notification_buttons_dialog_error">Нельзя выбрать больше %1$d элементов.</string>
-  <string name="pref_lockscreen_background_title">Выбрать фон экрана блокировки</string>
+  <string name="pref_lockscreen_background_title">Менять фон экрана блокировки</string>
   <string name="pref_lockscreen_background_sum">Изменяет фон экрана блокировки на обложку выпуска. Кроме того показывает обложку в сторонних приложениях.</string>
   <string name="pref_showDownloadReport_title">Показывать отчёт о загрузках</string>
   <string name="pref_showDownloadReport_sum">Если загрузка не удаётся, показывать отчёт с подробностями об ошибке.</string>
@@ -391,6 +401,7 @@
   <string name="crash_report_sum">Отослать последний отчёт о сбое по e-mail</string>
   <string name="send_email">Отправить Email</string>
   <string name="experimental_pref">Экспериментальные настройки</string>
+  <string name="pref_sonic_title">Проигрывать через Sonic</string>
   <string name="pref_sonic_message">Задействовать встроенный медиа проигрыватель Sonic вместо стандартного из ОС Android и Prestissimo</string>
   <string name="pref_current_value">Текущее значение: %1$s</string>
   <string name="pref_proxy_title">Прокси</string>
@@ -401,6 +412,8 @@
   <string name="pref_cast_title">Поддержка Chromecast</string>
   <string name="pref_cast_message_play_flavor">Включить поддержку удалённого воспроизведения на устройствах с Google Cast (таких как Chromecast, динамики или ТВ на ОС Android)</string>
   <string name="pref_cast_message_free_flavor">Для работы Chromecast требуются собственнические библиотеки третьей стороны, которые не включены в данную версию AntennaPod</string>
+  <string name="pref_enqueue_downloaded_title">Добавлять загруженные в очередь</string>
+  <string name="pref_enqueue_downloaded_summary">Добавлять загруженные выпуски в очередь</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включить автоматическую поддержку через Flattr</string>
   <string name="auto_flattr_after_percent">Поддерживать через Flattr эпизоды, прослушанные на %d процентов</string>
@@ -524,9 +537,9 @@
   <string name="set_to_default_folder">Выберите папку по умолчанию</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Пауза вместо уменьшения громкости, когда другое приложение проигрывает звуки</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Пауза при прерывании</string>
-  <string name="pref_resumeAfterCall_sum">Продолжение воспроизведения после завершения звонка</string>
-  <string name="pref_resumeAfterCall_title">Включать после звонка</string>
-  <string name="pref_restart_required">AntennaPod нужно перезапустить для применения настроек.</string>
+  <string name="pref_resumeAfterCall_sum">Продолжать воспроизведение после завершения звонка</string>
+  <string name="pref_resumeAfterCall_title">Продолжать после вызова</string>
+  <string name="pref_restart_required">Следует перезапустить AntennaPod для применения настроек.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Подписаться</string>
   <string name="subscribed_label">Подписка оформлена</string>

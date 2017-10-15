@@ -26,6 +26,8 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tiempo total reproducido:</string>
   <string name="statistics_details_dialog">Empezados %1$d episodios de %2$d.\n\nReproducidos %3$s de %4$s.</string>
+  <string name="statistics_mode">Modo de estadísticas</string>
+  <string name="statistics_mode_count_all">Resumir todos los podcasts marcados como reproducidos</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
   <string name="drawer_close">Cerrar menú</string>
@@ -33,6 +35,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Ordenar por cuenta</string>
   <string name="drawer_feed_order_alphabetical">Ordenar alfabéticamente</string>
   <string name="drawer_feed_order_last_update">Ordenar por fecha de publicación</string>
+  <string name="drawer_feed_order_most_played">Ordenar por número de episodios reproducidos</string>
   <string name="drawer_feed_counter_new_unplayed">Cantidad de episodios nuevos y no escuchados</string>
   <string name="drawer_feed_counter_new">Cantidad de episodios nuevos</string>
   <string name="drawer_feed_counter_unplayed">Cantidad de episodios no escuchados</string>
@@ -62,6 +65,7 @@
   <string name="refresh_label">Actualizar</string>
   <string name="external_storage_error_msg">No se encuentra un almacenamiento externo. Asegúrese de que su almacenamiento externo esté montado para que la aplicación funcione correctamente.</string>
   <string name="chapters_label">Capítulos</string>
+  <string name="chapter_duration">Duración: %1$s</string>
   <string name="shownotes_label">Notas del programa</string>
   <string name="description_label">Descripción</string>
   <string name="most_recent_prefix">Episodio más reciente:\u0020</string>
@@ -384,6 +388,7 @@
   <string name="crash_report_sum">Enviar el último informe de fallo por e-mail</string>
   <string name="send_email">Enviar e-mail</string>
   <string name="experimental_pref">Experimental</string>
+  <string name="pref_sonic_title">Sonic media player</string>
   <string name="pref_sonic_message">Usar el reproductor Sonic Media incorporado en lugar del reproductor multimedia de Android y Prestissimo</string>
   <string name="pref_current_value">Valor actual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
@@ -394,6 +399,8 @@
   <string name="pref_cast_title">Soporte para Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar soporte para reproducción remota en dispositivos Cast (como Chromecast, altavoces o Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast requiere librerías propietarias de terceros que están deshabilitadas en esta versión de AntennaPod</string>
+  <string name="pref_enqueue_downloaded_title">Descargados en cola</string>
+  <string name="pref_enqueue_downloaded_summary">Agregar episodios descargados a la cola</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Hacer Flattr del episodio en cuanto se haya reproducido el %d por ciento</string>
@@ -403,6 +410,7 @@
   <string name="search_hint">Buscar episodios</string>
   <string name="found_in_shownotes_label">Encontrado en las notas del show</string>
   <string name="found_in_chapters_label">Encontrado en los capítulos</string>
+  <string name="found_in_authors_label">Encontrado en los autores</string>
   <string name="search_status_no_results">No se han encontrado resultados</string>
   <string name="search_label">Buscar</string>
   <string name="found_in_title_label">Encontrado en el título</string>
