@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:id="@+id/import_export_layout"
+    android:padding="8dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,15 +13,16 @@
         android:gravity="center_horizontal"/>
 
     <Button
-            android:text="@string/label_export"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_export"/>
+        android:text="@string/label_export"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_export"
+        android:layout_marginTop="24dp"/>
 
     <Button
-            android:text="@string/label_import"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_import"/>
+        android:text="@string/label_import"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_import"/>
 
 </LinearLayout>

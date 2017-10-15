@@ -2,48 +2,34 @@ package de.danoeh.antennapod.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AlertDialog;
+import android.os.ParcelFileDescriptor;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.StatisticsListAdapter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.Converter;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 
 /**
- * Displays the 'statistics' screen
+ * Displays the 'import/export' screen
  */
 public class ImportExportActivity extends AppCompatActivity {
-    private static final int READ_REQUEST_CODE = 41;
-    private static final int READ_REQUEST_CODE_DOCUMENT = 42;
+    private static final int READ_REQUEST_CODE = 42;
+    private static final int READ_REQUEST_CODE_DOCUMENT = 43;
+    private static final int WRITE_REQUEST_CODE_DOCUMENT = 44;
 
     private static final String TAG = ImportExportActivity.class.getSimpleName();
 
@@ -55,9 +41,8 @@ public class ImportExportActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.import_export_activity);
 
-
-        //backup();
-        //restore();
+        findViewById(R.id.button_export).setOnClickListener(view -> backup());
+        findViewById(R.id.button_import).setOnClickListener(view -> restore());
     }
 
     @Override
@@ -83,7 +68,7 @@ public class ImportExportActivity extends AppCompatActivity {
         } else {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("*/*");
-            startActivityForResult(Intent.createChooser(intent, "Select a File to import"), READ_REQUEST_CODE);
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.import_select_file)), READ_REQUEST_CODE);
         }
     }
 
@@ -103,6 +88,11 @@ public class ImportExportActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+            }
+        } else if (requestCode == WRITE_REQUEST_CODE_DOCUMENT && resultCode == RESULT_OK) {
+            if (resultData != null) {
+                Uri uri = resultData.getData();
+                writeBackupDocument(uri);
             }
         } else if(requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
             if (resultData != null) {
@@ -151,6 +141,8 @@ public class ImportExportActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 // Eat it
+            } finally {
+                cursor.close();
             }
         }
         else if ("file".equalsIgnoreCase(uri.getScheme())) {
@@ -161,23 +153,72 @@ public class ImportExportActivity extends AppCompatActivity {
     }
 
     private void backup() {
-        try {
-            File sd = Environment.getExternalStorageDirectory();
+        if (Build.VERSION.SDK_INT >= 19) {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .addCategory(Intent.CATEGORY_OPENABLE)
+                    .setType("application/x-sqlite3")
+                    .putExtra(Intent.EXTRA_TITLE, "AntennaPodBackup.db");
 
-            if (sd.canWrite()) {
-                File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
-                File backupDB = new File(sd, "AntennaPodBackup.db");
+            startActivityForResult(intent, WRITE_REQUEST_CODE_DOCUMENT);
+        } else {
+            try {
+                File sd = Environment.getExternalStorageDirectory();
 
-                if (currentDB.exists()) {
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                    dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
+                if (sd.canWrite()) {
+                    File backupDB = new File(sd, "AntennaPodBackup.db");
+                    writeBackup(new FileOutputStream(backupDB));
+                } else {
+                    Snackbar.make(findViewById(R.id.import_export_layout),
+                            "Can not write SD", Snackbar.LENGTH_SHORT).show();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                Snackbar.make(findViewById(R.id.import_export_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    void writeBackup(FileOutputStream outFileStream) {
+        try {
+            File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
+
+            if (currentDB.exists()) {
+                FileChannel src = new FileInputStream(currentDB).getChannel();
+                FileChannel dst = outFileStream.getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+
+                Snackbar.make(findViewById(R.id.import_export_layout),
+                        R.string.export_ok, Snackbar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(findViewById(R.id.import_export_layout),
+                        "Can not access current database", Snackbar.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
+
+            Snackbar.make(findViewById(R.id.import_export_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
         }
     }
+
+    private void writeBackupDocument(Uri uri) {
+        try {
+            ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "w");
+            FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
+            writeBackup(fileOutputStream);
+            fileOutputStream.close();
+            pfd.close();
+
+            Snackbar.make(findViewById(R.id.import_export_layout),
+                    R.string.export_ok, Snackbar.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            Snackbar.make(findViewById(R.id.import_export_layout),
+                    "Can not write SD", Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
 }
