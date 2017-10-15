@@ -892,7 +892,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     // isInQueue remains false
                 }
                 // Delete episode if enabled
-                if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
+                if (item.getFeed().getPreferences().getCurrentAutoDelete() &&
+                        !(item.isTagged(FeedItem.TAG_FAVORITE) && UserPreferences.shouldFavoriteKeepEpisode())) {
                     DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
                     Log.d(TAG, "Episode Deleted");
                 }

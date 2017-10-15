@@ -67,6 +67,7 @@ public class UserPreferences {
     public static final String PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS = "prefHardwarePreviousButtonRestarts";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
+    public static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     public static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
@@ -294,6 +295,10 @@ public class UserPreferences {
     }
 
     public static boolean shouldSkipKeepEpisode() { return prefs.getBoolean(PREF_SKIP_KEEPS_EPISODE, true); }
+
+    public static boolean shouldFavoriteKeepEpisode() {
+        return prefs.getBoolean(PREF_FAVORITE_KEEPS_EPISODE, true);
+    }
 
     public static boolean isAutoDelete() {
         return prefs.getBoolean(PREF_AUTO_DELETE, false);
