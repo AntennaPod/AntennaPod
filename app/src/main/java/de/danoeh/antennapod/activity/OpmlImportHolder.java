@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.activity;
 
-import de.danoeh.antennapod.core.opml.OpmlElement;
-
 import java.util.ArrayList;
+
+import de.danoeh.antennapod.core.export.opml.OpmlElement;
 
 /**
  * Hold infos gathered by Ompl-Import

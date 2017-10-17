@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.opml.OpmlElement;
+import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
@@ -23,10 +23,8 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
  * which feeds he wants to import.
  */
 public class OpmlFeedChooserActivity extends AppCompatActivity {
-    private static final String TAG = "OpmlFeedChooserActivity";
-
     public static final String EXTRA_SELECTED_ITEMS = "de.danoeh.antennapod.selectedItems";
-
+    private static final String TAG = "OpmlFeedChooserActivity";
     private Button butConfirm;
     private Button butCancel;
     private ListView feedlist;

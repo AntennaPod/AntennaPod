@@ -65,7 +65,7 @@ public abstract class PlaybackController {
     private static final int SCHED_EX_POOLSIZE = 1;
 
     private MediaPositionObserver positionObserver;
-    private ScheduledFuture positionObserverFuture;
+    private ScheduledFuture<?> positionObserverFuture;
 
     private boolean mediaInfoLoaded = false;
     private boolean released = false;
@@ -197,9 +197,7 @@ public abstract class PlaybackController {
                                 mConnection, 0);
                     }
                     Log.d(TAG, "Result for service binding: " + bound);
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     /**
@@ -218,7 +216,7 @@ public abstract class PlaybackController {
                 Intent serviceIntent = new Intent(activity, PlaybackService.class);
                 serviceIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
                 serviceIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, false);
-                serviceIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, false);
+                serviceIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, true);
                 boolean fileExists = media.localFileAvailable();
                 boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
                 if (!fileExists && !lastIsStream && media instanceof FeedMedia) {
@@ -463,6 +461,7 @@ public abstract class PlaybackController {
                 checkMediaInfoLoaded();
                 postStatusMsg(R.string.player_ready_msg, false);
                 updatePlayButtonAppearance(playResource, playText);
+                onPositionObserverUpdate();
                 break;
             case SEEKING:
                 onPositionObserverUpdate();

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/statistics_mode"
+        android:icon="?attr/ic_filter"
+        android:title="@string/statistics_mode"
+        custom:showAsAction="never">
+    </item>
+
+</menu>

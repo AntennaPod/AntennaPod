@@ -16,42 +16,47 @@ import java.util.TimeZone;
  * Parses several date formats.
  */
 public class DateUtils {
+
     private DateUtils(){}
-    
+
 	private static final String TAG = "DateUtils";
 
     private static final TimeZone defaultTimezone = TimeZone.getTimeZone("GMT");
 
     public static Date parse(final String input) {
-        if(input == null) {
+        if (input == null) {
             throw new IllegalArgumentException("Date must not be null");
         }
         String date = input.trim().replace('/', '-').replaceAll("( ){2,}+", " ");
 
+        // CEST is widely used but not in the "ISO 8601 Time zone" list. Let's hack around.
+        date = date.replaceAll("CEST$", "+02:00");
+        date = date.replaceAll("CET$", "+01:00");
+
         // if datetime is more precise than seconds, make sure the value is in ms
-        if(date.contains(".")) {
+        if (date.contains(".")) {
             int start = date.indexOf('.');
-            int current = start+1;
-            while(current < date.length() && Character.isDigit(date.charAt(current))) {
+            int current = start + 1;
+            while (current < date.length() && Character.isDigit(date.charAt(current))) {
                 current++;
             }
             // even more precise than microseconds: discard further decimal places
-            if(current - start > 4) {
-                if(current < date.length()-1) {
+            if (current - start > 4) {
+                if (current < date.length() - 1) {
                     date = date.substring(0, start + 4) + date.substring(current);
                 } else {
                     date = date.substring(0, start + 4);
                 }
-            // less than 4 decimal places: pad to have a consistent format for the parser
-            } else if(current - start < 4) {
-                if(current < date.length()-1) {
-                    date = date.substring(0, current) + StringUtils.repeat("0", 4-(current-start)) + date.substring(current);
+                // less than 4 decimal places: pad to have a consistent format for the parser
+            } else if (current - start < 4) {
+                if (current < date.length() - 1) {
+                    date = date.substring(0, current) + StringUtils.repeat("0", 4 - (current - start)) + date.substring(current);
                 } else {
-                    date = date.substring(0, current) + StringUtils.repeat("0", 4-(current-start));
+                    date = date.substring(0, current) + StringUtils.repeat("0", 4 - (current - start));
                 }
             }
         }
-        String[] patterns = {
+        final String[] patterns = {
                 "dd MMM yy HH:mm:ss Z",
                 "dd MMM yy HH:mm Z",
                 "EEE, dd MMM yyyy HH:mm:ss Z",
@@ -77,6 +82,7 @@ public class DateUtils {
                 "yyyy-MM-dd'T'HH:mm:ss.SSS",
                 "yyyy-MM-dd'T'HH:mm:ssZ",
                 "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                 "yyyy-MM-ddZ",
                 "yyyy-MM-dd"
         };
@@ -86,7 +92,7 @@ public class DateUtils {
         parser.setTimeZone(defaultTimezone);
 
         ParsePosition pos = new ParsePosition(0);
-        for(String pattern : patterns) {
+        for (String pattern : patterns) {
             parser.applyPattern(pattern);
             pos.setIndex(0);
             try {
@@ -94,9 +100,14 @@ public class DateUtils {
                 if (result != null && pos.getIndex() == date.length()) {
                     return result;
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
+        }
+
+        // if date string starts with a weekday, try parsing date string without it
+        if(date.matches("^\\w+, .*$")) {
+            return parse(date.substring(date.indexOf(',') + 1));
         }
 
         Log.d(TAG, "Could not parse date string \"" + input + "\" [" + date + "]");
@@ -144,7 +155,7 @@ public class DateUtils {
     }
 
     public static String formatAbbrev(final Context context, final Date date) {
-        if(date == null) {
+        if (date == null) {
             return "";
         }
         GregorianCalendar cal = new GregorianCalendar();
@@ -153,7 +164,7 @@ public class DateUtils {
         cal.add(GregorianCalendar.DAY_OF_MONTH, 10);
         boolean withinLastYear = date.after(cal.getTime());
         int format = android.text.format.DateUtils.FORMAT_ABBREV_ALL;
-        if(withinLastYear) {
+        if (withinLastYear) {
             format |= android.text.format.DateUtils.FORMAT_NO_YEAR;
         }
         return android.text.format.DateUtils.formatDateTime(context, date.getTime(), format);

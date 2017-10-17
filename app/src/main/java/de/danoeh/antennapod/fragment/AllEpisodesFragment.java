@@ -80,6 +80,7 @@ public class AllEpisodesFragment extends Fragment {
     private boolean viewsCreated = false;
 
     private boolean isUpdatingFeeds;
+    protected boolean isMenuInvalidationAllowed = false;
 
     protected Subscription subscription;
     private LinearLayoutManager layoutManager;
@@ -180,7 +181,7 @@ public class AllEpisodesFragment extends Fragment {
         }
         super.onCreateOptionsMenu(menu, inflater);
         if (itemsLoaded) {
-            inflater.inflate(R.menu.new_episodes, menu);
+            inflater.inflate(R.menu.episodes, menu);
 
             MenuItem searchItem = menu.findItem(R.id.action_search);
             final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -206,11 +207,13 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (itemsLoaded) {
-            MenuItem menuItem = menu.findItem(R.id.mark_all_read_item);
-            if (menuItem != null) {
-                menuItem.setVisible(episodes != null && !episodes.isEmpty());
-            }
+        MenuItem markAllRead = menu.findItem(R.id.mark_all_read_item);
+        if (markAllRead != null) {
+            markAllRead.setVisible(!showOnlyNewEpisodes() && episodes != null && !episodes.isEmpty());
+        }
+        MenuItem markAllSeen = menu.findItem(R.id.mark_all_seen_item);
+        if(markAllSeen != null) {
+            markAllSeen.setVisible(showOnlyNewEpisodes() && episodes != null && !episodes.isEmpty());
         }
     }
 
@@ -225,19 +228,32 @@ public class AllEpisodesFragment extends Fragment {
                     }
                     return true;
                 case R.id.mark_all_read_item:
-                    ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
+                    ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
                             R.string.mark_all_read_label,
                             R.string.mark_all_read_confirmation_msg) {
 
                         @Override
-                        public void onConfirmButtonPressed(
-                                DialogInterface dialog) {
+                        public void onConfirmButtonPressed(DialogInterface dialog) {
                             dialog.dismiss();
                             DBWriter.markAllItemsRead();
                             Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
                         }
                     };
-                    conDialog.createNewDialog().show();
+                    markAllReadConfirmationDialog.createNewDialog().show();
+                    return true;
+                case R.id.mark_all_seen_item:
+                    ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(getActivity(),
+                            R.string.mark_all_seen_label,
+                            R.string.mark_all_seen_confirmation_msg) {
+
+                        @Override
+                        public void onConfirmButtonPressed(DialogInterface dialog) {
+                            dialog.dismiss();
+                            DBWriter.markNewItemsSeen();
+                            Toast.makeText(getActivity(), R.string.mark_all_seen_msg, Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    markAllSeenConfirmationDialog.createNewDialog().show();
                     return true;
                 default:
                     return false;
@@ -378,6 +394,20 @@ public class AllEpisodesFragment extends Fragment {
             return item != null && item.isTagged(FeedItem.TAG_QUEUE);
         }
 
+        @Override
+        public LongList getQueueIds() {
+            LongList queueIds = new LongList();
+            if(episodes == null) {
+                return queueIds;
+            }
+            for(FeedItem item : episodes) {
+                if(item.isTagged(FeedItem.TAG_QUEUE)) {
+                    queueIds.add(item.getId());
+                }
+            }
+            return queueIds;
+        }
+
     };
 
     public void onEventMainThread(FeedItemEvent event) {
@@ -401,7 +431,7 @@ public class AllEpisodesFragment extends Fragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if (isUpdatingFeeds != update.feedIds.length > 0) {
+        if (isMenuInvalidationAllowed && isUpdatingFeeds != update.feedIds.length > 0) {
                 getActivity().supportInvalidateOptionsMenu();
         }
         if(listAdapter != null && update.mediaIds.length > 0) {
@@ -450,9 +480,7 @@ public class AllEpisodesFragment extends Fragment {
                             onFragmentLoaded();
                         }
                     }
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     protected List<FeedItem> loadData() {

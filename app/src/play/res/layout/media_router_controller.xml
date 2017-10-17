@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mrc_playback_control"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/media_router_controller_playback_control_vertical_padding"
+    android:paddingBottom="@dimen/media_router_controller_playback_control_vertical_padding"
+    android:paddingLeft="@dimen/media_router_controller_playback_control_start_padding"
+    android:paddingStart="@dimen/media_router_controller_playback_control_start_padding"
+    android:paddingRight="@dimen/media_router_controller_playback_control_horizontal_spacing"
+    android:paddingEnd="@dimen/media_router_controller_playback_control_horizontal_spacing">
+    <ImageButton android:id="@+id/mrc_control_play_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/media_router_controller_playback_control_horizontal_spacing"
+        android:layout_marginStart="@dimen/media_router_controller_playback_control_horizontal_spacing"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/mr_controller_play"
+        android:background="?attr/selectableItemBackgroundBorderless"/>
+
+    <LinearLayout android:id="@+id/mrc_control_title_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@id/mrc_control_play_pause"
+        android:layout_toStartOf="@id/mrc_control_play_pause"
+        android:layout_centerVertical="true">
+        <TextView android:id="@+id/mrc_control_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MediaRouter.PrimaryText"/>
+        <TextView android:id="@+id/mrc_control_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MediaRouter.SecondaryText"
+            android:singleLine="true" />
+    </LinearLayout>
+</RelativeLayout>

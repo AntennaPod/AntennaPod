@@ -95,9 +95,7 @@ public class VariableSpeedDialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.set_playback_speed_label);
         builder.setMultiChoiceItems(R.array.playback_speed_values,
-            speedChecked, (dialog, which, isChecked) -> {
-                speedChecked[which] = isChecked;
-            });
+            speedChecked, (dialog, which, isChecked) -> speedChecked[which] = isChecked);
         builder.setNegativeButton(android.R.string.cancel, null);
         builder.setPositiveButton(android.R.string.ok,
             (dialog, which) -> {

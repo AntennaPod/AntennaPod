@@ -69,16 +69,18 @@ public class ChaptersFragment extends ListFragment implements MediaplayerInfoCon
 
     @Override
     public void onMediaChanged(Playable media) {
-        if(this.media == media || adapter == null) {
+        if(this.media == media) {
             return;
         }
         this.media = media;
-        adapter.setMedia(media);
-        adapter.notifyDataSetChanged();
-        if(media == null || media.getChapters() == null || media.getChapters().size() == 0) {
-            setEmptyText(getString(R.string.no_items_label));
-        } else {
-            setEmptyText(null);
+        if (adapter != null) {
+            adapter.setMedia(media);
+            adapter.notifyDataSetChanged();
+            if(media == null || media.getChapters() == null || media.getChapters().size() == 0) {
+                setEmptyText(getString(R.string.no_items_label));
+            } else {
+                setEmptyText(null);
+            }
         }
     }
 

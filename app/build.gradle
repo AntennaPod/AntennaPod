@@ -2,48 +2,11 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "com.android.application"
 apply plugin: "me.tatarka.retrolambda"
+apply plugin: 'com.github.triplet.play'
 
 repositories {
     maven { url "https://jitpack.io" }
     mavenCentral()
-}
-
-dependencies {
-    compile project(":core")
-    compile "com.android.support:support-v4:$supportVersion"
-    compile "com.android.support:appcompat-v7:$supportVersion"
-    compile "com.android.support:design:$supportVersion"
-    compile "com.android.support:gridlayout-v7:$supportVersion"
-    compile "com.android.support:percent:$supportVersion"
-    compile "com.android.support:recyclerview-v7:$supportVersion"
-    compile "org.apache.commons:commons-lang3:$commonslangVersion"
-    compile("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
-        exclude group: "org.json", module: "json"
-    }
-    compile "commons-io:commons-io:$commonsioVersion"
-    compile "org.jsoup:jsoup:$jsoupVersion"
-    compile "com.github.bumptech.glide:glide:$glideVersion"
-    compile "com.squareup.okhttp:okhttp:$okhttpVersion"
-    compile "com.squareup.okhttp:okhttp-urlconnection:$okhttpVersion"
-    compile "com.squareup.okio:okio:$okioVersion"
-    compile "de.greenrobot:eventbus:$eventbusVersion"
-    compile "io.reactivex:rxandroid:$rxAndroidVersion"
-    compile "io.reactivex:rxjava:$rxJavaVersion"
-    // And ProGuard rules for RxJava!
-    compile "com.artemzin.rxjava:proguard-rules:$rxJavaRulesVersion"
-    compile "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
-    compile "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
-    compile("com.github.afollestad.material-dialogs:commons:$materialDialogsVersion") {
-        transitive = true
-    }
-    compile "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
-    compile("com.githang:viewpagerindicator:2.5@aar") {
-        exclude module: "support-v4"
-    }
-
-    compile "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
-
-    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 }
 
 def getMyVersionName() {
@@ -67,6 +30,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        multiDexEnabled true
         versionCode getMyVersionCode()
         versionName "${getMyVersionName()}"
         testApplicationId "de.test.antennapod"
@@ -137,6 +101,78 @@ android {
     aaptOptions {
         additionalParameters "--no-version-vectors"
     }
+
+    productFlavors {
+        free {
+        }
+        play {
+        }
+    }
+
+    dexOptions {
+        jumboMode true
+    }
+}
+
+configurations {
+    freeDebugCompile
+    freeReleaseCompile
+    playDebugCompile
+    playReleaseCompile
+}
+
+dependencies {
+    freeDebugCompile project(path: ":core", configuration: "freeDebug")
+    freeReleaseCompile project(path: ":core", configuration: "freeRelease")
+    // free build hack: skip some dependencies
+    if (!doFreeBuild()) {
+        playDebugCompile project(path: ":core", configuration: "playDebug")
+        playReleaseCompile project(path: ":core", configuration: "playRelease")
+    } else {
+        System.out.println("app: free build hack, skipping some dependencies")
+    }
+    compile 'com.android.support:multidex:1.0.1'
+    compile "com.android.support:support-v4:$supportVersion"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+    compile "com.android.support:gridlayout-v7:$supportVersion"
+    compile "com.android.support:percent:$supportVersion"
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    compile "org.apache.commons:commons-lang3:$commonslangVersion"
+    compile("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
+        exclude group: "org.json", module: "json"
+    }
+    compile "commons-io:commons-io:$commonsioVersion"
+    compile "org.jsoup:jsoup:$jsoupVersion"
+    compile "com.github.bumptech.glide:glide:$glideVersion"
+    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    compile "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
+    compile "com.squareup.okio:okio:$okioVersion"
+    compile "de.greenrobot:eventbus:$eventbusVersion"
+    compile "io.reactivex:rxandroid:$rxAndroidVersion"
+    compile "io.reactivex:rxjava:$rxJavaVersion"
+    // And ProGuard rules for RxJava!
+    compile "com.artemzin.rxjava:proguard-rules:$rxJavaRulesVersion"
+    compile "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
+    compile "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
+    compile("com.afollestad.material-dialogs:commons:$materialDialogsVersion") {
+        transitive = true
+    }
+    compile "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
+    compile("com.githang:viewpagerindicator:2.5@aar") {
+        exclude module: "support-v4"
+    }
+
+    compile "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
+
+    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
+
+    compile 'com.github.mfietz:fyydlin:v0.1'
+}
+
+play {
+    serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
+    pk12File = file('../serviceaccount-c3d7d0f61387.p12')
 }
 
 // about.html is templatized so that we can automatically insert
@@ -145,12 +181,13 @@ task filterAbout {
     inputs.files files(["src/main/templates/about.html",
                         "src/main/AndroidManifest.xml"])
     outputs.file "src/main/assets/about.html"
-} << {
+} doLast {
     copy {
         from "src/main/templates/about.html"
         into "src/main/assets"
         filter(ReplaceTokens, tokens: [versionname: android.defaultConfig.versionName,
-                                       commit     : "git rev-parse --short HEAD".execute().text])
+                                       commit     : "git rev-parse --short HEAD".execute().text,
+                                       year       : new Date().format('yyyy')])
     }
 }
 
@@ -164,3 +201,11 @@ task copyTextFiles(type: Copy) {
 }
 
 preBuild.dependsOn filterAbout, copyTextFiles
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint" << "-Xlint:-deprecation" << "-Xlint:-serial"
+        }
+    }
+}

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.util.Log;
 
@@ -16,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.ClientConfig;
@@ -27,20 +28,28 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 
+import static android.content.Context.MODE_PRIVATE;
+import static android.provider.Contacts.SettingsColumns.KEY;
+
 /**
  * Provides methods for doing common tasks that use DBReader and DBWriter.
  */
 public final class DBTasks {
     private static final String TAG = "DBTasks";
+
+    public static final String PREF_NAME = "dbtasks";
+    private static final String PREF_LAST_REFRESH = "last_refresh";
 
     /**
      * Executor service used by the autodownloadUndownloadedEpisodes method.
@@ -161,6 +170,9 @@ public final class DBTasks {
                         refreshFeeds(context, DBReader.getFeedList());
                     }
                     isRefreshing.set(false);
+
+                    SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                    prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
 
                     if (FlattrUtils.hasToken()) {
                         Log.d(TAG, "Flattring all pending things.");
@@ -311,6 +323,31 @@ public final class DBTasks {
         }
         f.setId(feed.getId());
         DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force);
+    }
+
+    /*
+     *  Checks if the app should refresh all feeds, i.e. if the last auto refresh failed.
+     *
+     *  The feeds are only refreshed if an update interval or time of day is set and the last
+     *  (successful) refresh was before the last interval or more than a day ago, respectively.
+     */
+    public static void checkShouldRefreshFeeds(Context context) {
+        long interval = 0;
+        if(UserPreferences.getUpdateInterval() > 0) {
+            interval = UserPreferences.getUpdateInterval();
+        } else if(UserPreferences.getUpdateTimeOfDay().length > 0){
+            interval = TimeUnit.DAYS.toMillis(1);
+        }
+        if(interval == 0) { // auto refresh is disabled
+            return;
+        }
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        long lastRefresh = prefs.getLong(PREF_LAST_REFRESH, 0);
+        Log.d(TAG, "last refresh: " + Converter.getDurationStringLocalized(context,
+                System.currentTimeMillis() - lastRefresh) + " ago");
+        if(lastRefresh <= System.currentTimeMillis() - interval) {
+            DBTasks.refreshAllFeeds(context, null);
+        }
     }
 
     /**
@@ -641,6 +678,54 @@ public final class DBTasks {
     }
 
     /**
+     * Searches the authors of FeedItems of a specific Feed for a given
+     * string.
+     *
+     * @param context Used for accessing the DB.
+     * @param feedID  The id of the feed whose items should be searched.
+     * @param query   The search string.
+     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
+     */
+    public static FutureTask<List<FeedItem>> searchFeedItemAuthor(final Context context,
+                                                                 final long feedID, final String query) {
+        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
+            @Override
+            public void execute(PodDBAdapter adapter) {
+                Cursor searchResult = adapter.searchItemAuthors(feedID,
+                        query);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadAdditionalFeedItemListData(items);
+                setResult(items);
+                searchResult.close();
+            }
+        });
+    }
+
+    /**
+     * Searches the feed identifiers of FeedItems of a specific Feed for a given
+     * string.
+     *
+     * @param context Used for accessing the DB.
+     * @param feedID  The id of the feed whose items should be searched.
+     * @param query   The search string.
+     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
+     */
+    public static FutureTask<List<FeedItem>> searchFeedItemFeedIdentifier(final Context context,
+                                                                 final long feedID, final String query) {
+        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
+            @Override
+            public void execute(PodDBAdapter adapter) {
+                Cursor searchResult = adapter.searchItemFeedIdentifiers(feedID,
+                        query);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadAdditionalFeedItemListData(items);
+                setResult(items);
+                searchResult.close();
+            }
+        });
+    }
+
+    /**
      * Searches the descriptions of FeedItems of a specific Feed for a given
      * string.
      *
@@ -717,7 +802,7 @@ public final class DBTasks {
      * This class automatically creates a PodDBAdapter object and closes it when
      * it is no longer in use.
      */
-    static abstract class QueryTask<T> implements Callable<T> {
+    abstract static class QueryTask<T> implements Callable<T> {
         private T result;
         private Context context;
 

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -10,31 +10,28 @@
         android:id="@+id/imgvCover"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:scaleType="centerCrop"
-        tools:src="@drawable/ic_launcher" />
+        tools:src="@drawable/ic_launcher">
+    </de.danoeh.antennapod.view.SquareImageView>
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/txtvTitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/light_gray"
         android:ellipsize="end"
         android:gravity="center"
-        android:background="@color/light_gray"
         tools:text="@string/app_name" />
 
     <jp.shts.android.library.TriangleLabelView
         android:id="@+id/triangleCountView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_gravity="right|top"
         app:backgroundColor="@color/antennapod_blue"
         app:corner="rightTop"
         app:primaryText="Test"
         app:primaryTextColor="@color/white"
-        app:primaryTextSize="12sp"
-        android:layout_gravity="right|top"/>
-
+        app:primaryTextSize="12sp">
+    </jp.shts.android.library.TriangleLabelView>
 </FrameLayout>

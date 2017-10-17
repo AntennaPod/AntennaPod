@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
-import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -54,9 +54,9 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     private long feedId;
 
     private int state;
-    public final static int NEW = -1;
-    public final static int UNPLAYED = 0;
-    public final static int PLAYED = 1;
+    public static final int NEW = -1;
+    public static final int UNPLAYED = 0;
+    public static final int PLAYED = 1;
 
     private String paymentLink;
     private FlattrStatus flattrStatus;
@@ -177,6 +177,9 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
 
     public void updateFromOther(FeedItem other) {
         super.updateFromOther(other);
+        if (other.image != null) {
+            this.image = other.image;
+        }
         if (other.title != null) {
             title = other.title;
         }
@@ -270,6 +273,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         }
     }
 
+    @Nullable
     public FeedMedia getMedia() {
         return media;
     }
@@ -374,13 +378,13 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     }
 
     @Override
-    public Uri getImageUri() {
+    public String getImageLocation() {
         if(media != null && media.hasEmbeddedPicture()) {
-            return media.getImageUri();
+            return media.getImageLocation();
         } else if (image != null) {
-           return image.getImageUri();
+           return image.getImageLocation();
         } else if (feed != null) {
-            return feed.getImageUri();
+            return feed.getImageLocation();
         } else {
             return null;
         }

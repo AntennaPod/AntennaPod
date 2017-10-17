@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Activitiy and fragment titles-->
+  <string name="feeds_label">ఫీడులు</string>
+  <string name="statistics_label">గణాంకాలు</string>
+  <string name="all_episodes_short_label">అన్నీ</string>
+  <string name="favorite_episodes_label">ఇష్టాలు</string>
+  <string name="new_label">కొత్తది</string>
+  <string name="settings_label">అమరికలు</string>
+  <string name="downloads_label">దింపుకోళ్ళు</string>
+  <string name="downloads_running_label">నడుస్తున్నవి</string>
+  <string name="downloads_completed_label">పూర్తయినవి</string>
+  <string name="downloads_log_label">చిట్టా</string>
+  <string name="subscriptions_label">చందాలు</string>
+  <string name="subscriptions_list_label">చందాల జాబితా</string>
+  <string name="free_space_label">%1$s ఖాళీ</string>
+  <!--Statistics fragment-->
+  <!--Main activity-->
+  <string name="drawer_feed_counter_none">ఏమీలేవు</string>
+  <!--Webview actions-->
+  <!--Playback history-->
+  <!--Other-->
+  <string name="cancel_label">రద్దుచేయి</string>
+  <string name="yes">అవును</string>
+  <string name="no">కాదు</string>
+  <string name="language_label">భాష</string>
+  <string name="podcast_settings_label">అమరికలు</string>
+  <string name="description_label">వివరణ</string>
+  <string name="length_prefix">నిడివి:\u0020</string>
+  <string name="loading_label">వస్తోంది…</string>
+  <string name="close_label">మూసివేయి</string>
+  <string name="feed_auto_download_always">ఎల్లప్పుడూ</string>
+  <string name="send_label">పంపించు…</string>
+  <!--'Add Feed' Activity labels-->
+  <!--Actions on feeds-->
+  <string name="share_label">పంచుకోండి…</string>
+  <!--actions on feeditems-->
+  <string name="play_label">ఆడించు</string>
+  <string name="pause_label">నిలుపు</string>
+  <string name="stop_label">ఆపివేయి</string>
+  <string name="delete_label">తొలగించు</string>
+  <!--Download messages and labels-->
+  <!--Mediaplayer messages-->
+  <!--Queue operations-->
+  <string name="date">తేదీ</string>
+  <string name="duration">నిడివి</string>
+  <string name="ascending">ఆరోహణ</string>
+  <string name="descending">అవరోహణ</string>
+  <!--Flattr-->
+  <!--Flattr-->
+  <!--Variable Speed-->
+  <!--Empty list labels-->
+  <!--Preferences-->
+  <string name="about_pref">గురించి</string>
+  <string name="services_label">సేవలు</string>
+  <string name="network_pref">నెట్‌వర్క్</string>
+  <string name="pref_update_interval_hours_plural">గంటలు</string>
+  <string name="pref_update_interval_hours_singular">గంట</string>
+  <string name="experimental_pref">ప్రయోగాత్మకం</string>
+  <string name="pref_proxy_title">ప్రాక్సీ</string>
+  <!--Auto-Flattr dialog-->
+  <!--Search-->
+  <!--OPML import and export-->
+  <string name="select_all_label">అన్నీ ఎంచుకోండి</string>
+  <!--Sleep timer-->
+  <string name="time_seconds">క్షణాలు</string>
+  <string name="time_minutes">నిమిషాలు</string>
+  <string name="time_hours">గంటలు</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="one">1 క్షణం</item>
+    <item quantity="other">%d క్షణాలు</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="one">1 నిమిషం</item>
+    <item quantity="other">%d నిమిషాలు</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="one">1 గంట</item>
+    <item quantity="other">%d గంటలు</item>
+  </plurals>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">వర్గాలు</string>
+  <string name="username_label">వాడుకరి పేరు</string>
+  <string name="password_label">సంకేతపదం</string>
+  <!--Directory chooser-->
+  <!--Online feed view-->
+  <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
+  <!--Progress information-->
+  <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <string name="all_label">అన్నీ</string>
+  <string name="none_label">ఏమీలేదు</string>
+  <!--Sort-->
+  <!--Rating dialog-->
+  <string name="rating_later_label">తర్వాత గుర్తుచేయి</string>
+  <!--Audio controls-->
+  <!--proxy settings-->
+  <string name="proxy_type_label">రకం</string>
+  <string name="optional_hint">(ఐచ్చికం)</string>
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+</resources>

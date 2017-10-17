@@ -185,8 +185,10 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
         super.onViewCreated(view, savedInstanceState);
         Bundle args = getArguments();
         if (args.containsKey(ARG_PLAYABLE)) {
-            media = args.getParcelable(ARG_PLAYABLE);
-            shownotesProvider = media;
+            if (media == null) {
+                media = args.getParcelable(ARG_PLAYABLE);
+                shownotesProvider = media;
+            }
             load();
         } else if (args.containsKey(ARG_FEEDITEM_ID)) {
             long id = getArguments().getLong(ARG_FEEDITEM_ID);
@@ -196,9 +198,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                     .subscribe(feedItem -> {
                         shownotesProvider = feedItem;
                         load();
-                    }, error -> {
-                        Log.e(TAG, Log.getStackTraceString(error));
-                    });
+                    }, error -> Log.e(TAG, Log.getStackTraceString(error)));
         }
     }
 
@@ -311,9 +311,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                     webvDescription.loadDataWithBaseURL(null, data, "text/html",
                             "utf-8", "about:blank");
                     Log.d(TAG, "Webview loaded");
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private String loadData() {
@@ -348,7 +346,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     }
 
     private boolean restoreFromPreference() {
-        if (!saveState) {
+        if (saveState) {
             Log.d(TAG, "Restoring from preferences");
             Activity activity = getActivity();
             if (activity != null) {
@@ -381,12 +379,14 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
 
     @Override
     public void onMediaChanged(Playable media) {
-        if(this.media == media || webvDescription == null) {
+        if(this.media == media) {
             return;
         }
         this.media = media;
         this.shownotesProvider = media;
-        load();
+        if (webvDescription != null) {
+            load();
+        }
     }
 
 }

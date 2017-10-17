@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +28,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -41,23 +45,29 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LangUtils;
+import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Displays information about a feed.
  */
-public class FeedInfoActivity extends ActionBarActivity {
-    private static final String TAG = "FeedInfoActivity";
-    private boolean autoDeleteChanged = false;
+public class FeedInfoActivity extends AppCompatActivity {
 
     public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
-
+    private static final String TAG = "FeedInfoActivity";
+    private boolean autoDeleteChanged = false;
     private Feed feed;
 
     private ImageView imgvCover;
     private TextView txtvTitle;
     private TextView txtvDescription;
+    private TextView lblLanguage;
     private TextView txtvLanguage;
+    private TextView lblAuthor;
     private TextView txtvAuthor;
     private TextView txtvUrl;
     private EditText etxtUsername;
@@ -69,6 +79,9 @@ public class FeedInfoActivity extends ActionBarActivity {
     private CheckBox cbxKeepUpdated;
     private Spinner spnAutoDelete;
     private boolean filterInclude = true;
+
+    private Subscription subscription;
+
 
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
         @Override
@@ -91,6 +104,40 @@ public class FeedInfoActivity extends ActionBarActivity {
         }
     };
 
+    private boolean authInfoChanged = false;
+
+    private TextWatcher authTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            authInfoChanged = true;
+        }
+    };
+
+    private boolean filterTextChanged = false;
+
+    private TextWatcher filterTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            filterTextChanged = true;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
@@ -102,7 +149,9 @@ public class FeedInfoActivity extends ActionBarActivity {
         imgvCover = (ImageView) findViewById(R.id.imgvCover);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
         txtvDescription = (TextView) findViewById(R.id.txtvDescription);
+        lblLanguage = (TextView) findViewById(R.id.lblLanguage);
         txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
+        lblAuthor = (TextView) findViewById(R.id.lblAuthor);
         txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
         txtvUrl = (TextView) findViewById(R.id.txtvUrl);
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
@@ -124,48 +173,62 @@ public class FeedInfoActivity extends ActionBarActivity {
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
-        AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>() {
-
-            @Override
-            protected Feed doInBackground(Long... params) {
-                return DBReader.getFeed(params[0]);
-            }
-
-            @Override
-            protected void onPostExecute(Feed result) {
-                if (result != null) {
+        subscription = Observable.fromCallable(()-> DBReader.getFeed(feedId))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result == null) {
+                        Log.e(TAG, "Activity was started with invalid arguments");
+                        finish();
+                    }
                     feed = result;
                     Log.d(TAG, "Language is " + feed.getLanguage());
                     Log.d(TAG, "Author is " + feed.getAuthor());
                     Log.d(TAG, "URL is " + feed.getDownload_url());
                     FeedPreferences prefs = feed.getPreferences();
-                    imgvCover.post(() -> Glide.with(FeedInfoActivity.this)
-                            .load(feed.getImageUri())
+                    Glide.with(FeedInfoActivity.this)
+                            .load(feed.getImageLocation())
                             .placeholder(R.color.light_gray)
                             .error(R.color.light_gray)
                             .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                             .fitCenter()
                             .dontAnimate()
-                            .into(imgvCover));
+                            .into(imgvCover);
 
                     txtvTitle.setText(feed.getTitle());
+
                     String description = feed.getDescription();
-                    txtvDescription.setText((description != null) ? description.trim() : "");
-                    if (feed.getAuthor() != null) {
-                        txtvAuthor.setText(feed.getAuthor());
+                    if(description != null) {
+                        if(Feed.TYPE_ATOM1.equals(feed.getType())) {
+                            HtmlToPlainText formatter = new HtmlToPlainText();
+                            Document feedDescription = Jsoup.parse(feed.getDescription());
+                            description = StringUtils.trim(formatter.getPlainText(feedDescription));
+                        }
+                    } else {
+                        description = "";
                     }
-                    if (feed.getLanguage() != null) {
-                        txtvLanguage.setText(LangUtils
-                                .getLanguageString(feed.getLanguage()));
+                    txtvDescription.setText(description);
+
+                    if (!TextUtils.isEmpty(feed.getAuthor())) {
+                        txtvAuthor.setText(feed.getAuthor());
+                    } else {
+                        lblAuthor.setVisibility(View.GONE);
+                        txtvAuthor.setVisibility(View.GONE);
+                    }
+                    if (!TextUtils.isEmpty(feed.getLanguage())) {
+                        txtvLanguage.setText(LangUtils.getLanguageString(feed.getLanguage()));
+                    } else {
+                        lblLanguage.setVisibility(View.GONE);
+                        txtvLanguage.setVisibility(View.GONE);
                     }
                     txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
-                            Iconify.addIcons(txtvUrl);
+                    Iconify.addIcons(txtvUrl);
 
                     cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
                     cbxAutoDownload.setChecked(prefs.getAutoDownload());
                     cbxAutoDownload.setOnCheckedChangeListener((compoundButton, checked) -> {
                         feed.getPreferences().setAutoDownload(checked);
-                        feed.savePreferences(FeedInfoActivity.this);
+                        feed.savePreferences();
                         updateAutoDownloadSettings();
                         ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(FeedInfoActivity.this,
                                 feed, checked);
@@ -174,7 +237,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                     cbxKeepUpdated.setChecked(prefs.getKeepUpdated());
                     cbxKeepUpdated.setOnCheckedChangeListener((compoundButton, checked) -> {
                         feed.getPreferences().setKeepUpdated(checked);
-                        feed.savePreferences(FeedInfoActivity.this);
+                        feed.savePreferences();
                     });
                     spnAutoDelete.setOnItemSelectedListener(new OnItemSelectedListener() {
                         @Override
@@ -184,15 +247,12 @@ public class FeedInfoActivity extends ActionBarActivity {
                                 case 0:
                                     auto_delete_action = FeedPreferences.AutoDeleteAction.GLOBAL;
                                     break;
-
                                 case 1:
                                     auto_delete_action = FeedPreferences.AutoDeleteAction.YES;
                                     break;
-
                                 case 2:
                                     auto_delete_action = FeedPreferences.AutoDeleteAction.NO;
                                     break;
-
                                 default: // TODO - add exceptions here
                                     return;
                             }
@@ -234,56 +294,11 @@ public class FeedInfoActivity extends ActionBarActivity {
 
                     supportInvalidateOptionsMenu();
                     updateAutoDownloadSettings();
-                } else {
-                    Log.e(TAG, "Activity was started with invalid arguments");
-                }
-            }
-        };
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, feedId);
-        } else {
-            loadTask.execute(feedId);
-        }
+                }, error -> {
+                    Log.d(TAG, Log.getStackTraceString(error));
+                    finish();
+                });
     }
-
-
-    private boolean authInfoChanged = false;
-
-    private TextWatcher authTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            authInfoChanged = true;
-        }
-    };
-
-    private boolean filterTextChanged = false;
-
-    private TextWatcher filterTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            filterTextChanged = true;
-        }
-    };
 
     @Override
     protected void onPause() {
@@ -313,6 +328,14 @@ public class FeedInfoActivity extends ActionBarActivity {
             authInfoChanged = false;
             autoDeleteChanged = false;
             filterTextChanged = false;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
     }
 
@@ -367,7 +390,7 @@ public class FeedInfoActivity extends ActionBarActivity {
         private final Feed feed;
         private final boolean autoDownload;
 
-        public ApplyToEpisodesDialog(Context context, Feed feed, boolean autoDownload) {
+        ApplyToEpisodesDialog(Context context, Feed feed, boolean autoDownload) {
             super(context, R.string.auto_download_apply_to_items_title,
                     R.string.auto_download_apply_to_items_message);
             this.feed = feed;

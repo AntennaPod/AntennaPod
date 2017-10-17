@@ -28,6 +28,7 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.LongList;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -251,6 +252,20 @@ public class PlaybackHistoryFragment extends ListFragment {
                 return null;
             }
         }
+
+        @Override
+        public LongList getQueueIds() {
+            LongList queueIds = new LongList();
+            if(playbackHistory == null) {
+                return queueIds;
+            }
+            for (FeedItem item : playbackHistory) {
+                if (item.isTagged(FeedItem.TAG_QUEUE)) {
+                    queueIds.add(item.getId());
+                }
+            }
+            return queueIds;
+        }
     };
 
     private void loadItems() {
@@ -268,9 +283,7 @@ public class PlaybackHistoryFragment extends ListFragment {
                             onFragmentLoaded();
                         }
                     }
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private List<FeedItem> loadData() {

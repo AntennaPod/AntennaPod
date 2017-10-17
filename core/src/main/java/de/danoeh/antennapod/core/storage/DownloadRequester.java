@@ -345,9 +345,7 @@ public class DownloadRequester {
         // Try to generate the filename by the item title
         if (media.getItem() != null && media.getItem().getTitle() != null) {
             String title = media.getItem().getTitle();
-            // Delete reserved characters
-            titleBaseFilename = title.replaceAll("[^a-zA-Z0-9 ._()-]", "");
-            titleBaseFilename = titleBaseFilename.trim();
+            titleBaseFilename = FileNameGenerator.generateFileName(title);
         }
 
         String URLBaseFilename = URLUtil.guessFileName(media.getDownload_url(),

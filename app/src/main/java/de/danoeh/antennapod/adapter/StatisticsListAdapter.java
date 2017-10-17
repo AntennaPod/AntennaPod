@@ -9,11 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -27,11 +25,15 @@ import de.danoeh.antennapod.core.util.Converter;
 public class StatisticsListAdapter extends BaseAdapter {
     private Context context;
     List<DBReader.StatisticsItem> feedTime = new ArrayList<>();
+    private boolean countAll = true;
 
     public StatisticsListAdapter(Context context) {
         this.context = context;
     }
 
+    public void setCountAll(boolean countAll) {
+        this.countAll = countAll;
+    }
 
     @Override
     public int getCount() {
@@ -69,7 +71,7 @@ public class StatisticsListAdapter extends BaseAdapter {
         }
 
         Glide.with(context)
-                .load(feed.getImageUri())
+                .load(feed.getImageLocation())
                 .placeholder(R.color.light_gray)
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
@@ -79,7 +81,8 @@ public class StatisticsListAdapter extends BaseAdapter {
 
         holder.title.setText(feed.getTitle());
         holder.time.setText(Converter.shortLocalizedDuration(context,
-                feedTime.get(position).timePlayed));
+                countAll ? feedTime.get(position).timePlayedCountAll
+                        : feedTime.get(position).timePlayed));
         return convertView;
     }
 

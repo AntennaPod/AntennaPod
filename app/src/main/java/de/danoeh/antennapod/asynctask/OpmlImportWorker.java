@@ -14,8 +14,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.opml.OpmlElement;
-import de.danoeh.antennapod.core.opml.OpmlReader;
+import de.danoeh.antennapod.core.export.opml.OpmlElement;
+import de.danoeh.antennapod.core.export.opml.OpmlReader;
 
 public class OpmlImportWorker extends
 		AsyncTask<Void, Void, ArrayList<OpmlElement>> {
@@ -75,9 +75,7 @@ public class OpmlImportWorker extends
 			alert.setTitle(R.string.error_label);
 			alert.setMessage(context.getString(R.string.opml_reader_error)
 					+ exception.getMessage());
-			alert.setNeutralButton(android.R.string.ok, (dialog, which) -> {
-                dialog.dismiss();
-            });
+			alert.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
 			alert.create().show();
 		}
 	}

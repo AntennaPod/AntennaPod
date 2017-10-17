@@ -26,11 +26,9 @@ import de.danoeh.antennapod.preferences.PreferenceController;
  */
 public class PreferenceActivity extends AppCompatActivity {
 
+    private static WeakReference<PreferenceActivity> instance;
     private PreferenceController preferenceController;
     private MainFragment prefFragment;
-    private static WeakReference<PreferenceActivity> instance;
-
-
     private final PreferenceController.PreferenceUI preferenceUI = new PreferenceController.PreferenceUI() {
         @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
@@ -103,6 +101,7 @@ public class PreferenceActivity extends AppCompatActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            setRetainInstance(true);
             addPreferencesFromResource(R.xml.preferences);
             PreferenceActivity activity = instance.get();
             if(activity != null && activity.preferenceController != null) {
@@ -117,6 +116,24 @@ public class PreferenceActivity extends AppCompatActivity {
             if(activity != null && activity.preferenceController != null) {
                 activity.preferenceController.onResume();
             }
+        }
+
+        @Override
+        public void onPause() {
+            PreferenceActivity activity = instance.get();
+            if(activity != null && activity.preferenceController != null) {
+                activity.preferenceController.onPause();
+            }
+            super.onPause();
+        }
+
+        @Override
+        public void onStop() {
+            PreferenceActivity activity = instance.get();
+            if(activity != null && activity.preferenceController != null) {
+                activity.preferenceController.onStop();
+            }
+            super.onStop();
         }
     }
 }

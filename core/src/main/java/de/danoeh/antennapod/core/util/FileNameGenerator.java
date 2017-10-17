@@ -1,18 +1,21 @@
 package de.danoeh.antennapod.core.util;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** Generates valid filenames for a given string. */
 public class FileNameGenerator {
 	
-	private static final char[] ILLEGAL_CHARACTERS = { '/', '\\', '?', '%',
-			'*', ':', '|', '"', '<', '>', '\n' };
-	static {
-		Arrays.sort(ILLEGAL_CHARACTERS);
-	}
+	private static final char[] validChars = (
+			"abcdefghijklmnopqrstuvwxyz" +
+			"ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+			"0123456789" +
+			" _-").toCharArray();
 	
 	private FileNameGenerator() {
-
 	}
 
 	/**
@@ -20,17 +23,17 @@ public class FileNameGenerator {
 	 * characters of the given string.
 	 */
 	public static String generateFileName(String string) {
-		StringBuilder builder = new StringBuilder();
+		StringBuilder buf = new StringBuilder();
 		for (int i = 0; i < string.length(); i++) {
 			char c = string.charAt(i);
-			if (Arrays.binarySearch(ILLEGAL_CHARACTERS, c) < 0) {
-				builder.append(c);
+			if(Character.isSpaceChar(c) && (buf.length() == 0 || Character.isSpaceChar(buf.charAt(buf.length()-1)))) {
+				continue;
+			}
+			if (ArrayUtils.contains(validChars, c)) {
+				buf.append(c);
 			}
 		}
-		return builder.toString().replaceFirst("  *$","");
+		return buf.toString().trim();
 	}
 
-	public static long generateLong(final String str) {
-		return str.hashCode();
-	}
 }

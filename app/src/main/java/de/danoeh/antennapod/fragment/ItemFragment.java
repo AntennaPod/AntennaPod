@@ -44,9 +44,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -60,7 +58,9 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -222,7 +222,8 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 return;
             }
             DefaultActionButtonCallback actionButtonCallback = new DefaultActionButtonCallback(getActivity());
-            actionButtonCallback.onActionButtonPressed(item);
+            actionButtonCallback.onActionButtonPressed(item, item.isTagged(FeedItem.TAG_QUEUE) ?
+                    LongList.of(item.getId()) : new LongList(0));
             FeedMedia media = item.getMedia();
             if (media != null && media.isDownloaded()) {
                 // playback was started, dialog should close itself
@@ -312,7 +313,10 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         if(!isAdded() || item == null) {
             return;
         }
-        ((CastEnabledActivity) getActivity()).requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        super.onCreateOptionsMenu(menu, inflater);
+        if (Flavors.FLAVOR == Flavors.PLAY) {
+            ((CastEnabledActivity) getActivity()).requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
         inflater.inflate(R.menu.feeditem_options, menu);
         popupMenu = menu;
         if (item.hasMedia()) {
@@ -374,7 +378,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
 
         Glide.with(getActivity())
-                .load(item.getImageUri())
+                .load(item.getImageLocation())
                 .placeholder(R.color.light_gray)
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
@@ -417,7 +421,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 butAction2Text = R.string.stream_label;
             } else {
                 butAction2Icon = "{md-delete 24sp}";
-                butAction2Text = R.string.remove_label;
+                butAction2Text = R.string.delete_label;
             }
             if (isDownloading) {
                 butAction1Icon = "{md-cancel 24sp}";
@@ -576,9 +580,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 item = result;
                 itemsLoaded = true;
                 onFragmentLoaded();
-            }, error -> {
-                Log.e(TAG, Log.getStackTraceString(error));
-            });
+            }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private FeedItem loadInBackground() {

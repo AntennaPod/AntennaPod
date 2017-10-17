@@ -42,3 +42,4 @@ libs
 src/de/danoeh/antennapod/util/flattr/FlattrConfig.java
 gradle.properties
 *.keystore
+*.p12

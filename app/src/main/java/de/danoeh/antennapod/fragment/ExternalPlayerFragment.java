@@ -163,7 +163,7 @@ public class ExternalPlayerFragment extends Fragment {
                         ((double) controller.getPosition() / controller.getDuration() * 100));
 
                 Glide.with(getActivity())
-                        .load(media.getImageUri())
+                        .load(media.getImageLocation())
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
                         .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)

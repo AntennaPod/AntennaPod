@@ -1,25 +1,30 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.MediaDescriptionCompat;
 
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import de.danoeh.antennapod.core.cast.RemoteMedia;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 public class FeedMedia extends FeedFile implements Playable {
@@ -48,6 +53,8 @@ public class FeedMedia extends FeedFile implements Playable {
     private String mime_type;
     @Nullable private volatile FeedItem item;
     private Date playbackCompletionDate;
+    private int startPosition = -1;
+    private int playedDurationWhenStarted;
 
     // if null: unknown, will be checked
     private Boolean hasEmbeddedPicture;
@@ -73,6 +80,7 @@ public class FeedMedia extends FeedFile implements Playable {
         this.duration = duration;
         this.position = position;
         this.played_duration = played_duration;
+        this.playedDurationWhenStarted = played_duration;
         this.size = size;
         this.mime_type = mime_type;
         this.playbackCompletionDate = playbackCompletionDate == null
@@ -147,6 +155,21 @@ public class FeedMedia extends FeedFile implements Playable {
         } else {
             return download_url;
         }
+    }
+
+    /**
+     * Returns a MediaItem representing the FeedMedia object.
+     * This is used by the MediaBrowserService
+     */
+    public MediaBrowserCompat.MediaItem getMediaItem() {
+        Playable p = this;
+        MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
+                .setMediaId(String.valueOf(id))
+                .setTitle(p.getEpisodeTitle())
+                .setDescription(p.getFeedTitle())
+                .setSubtitle(p.getFeedTitle())
+                .build();
+        return new MediaBrowserCompat.MediaItem(description, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
     }
 
     /**
@@ -321,12 +344,10 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public boolean hasEmbeddedPicture() {
-        return false;
-        // TODO: reenable!
-        //if(hasEmbeddedPicture == null) {
-        //    checkEmbeddedPicture();
-        //}
-        //return hasEmbeddedPicture;
+        if(hasEmbeddedPicture == null) {
+            checkEmbeddedPicture();
+        }
+        return hasEmbeddedPicture;
     }
 
     @Override
@@ -459,15 +480,59 @@ public class FeedMedia extends FeedFile implements Playable {
         }
         setPosition(newPosition);
         setLastPlayedTime(timeStamp);
+        if(startPosition>=0 && position > startPosition) {
+            setPlayedDuration(playedDurationWhenStarted + position - startPosition);
+        }
         DBWriter.setFeedMediaPlaybackInformation(this);
     }
 
     @Override
     public void onPlaybackStart() {
+        startPosition = (position > 0) ? position : 0;
+        playedDurationWhenStarted = played_duration;
     }
-    @Override
-    public void onPlaybackCompleted() {
 
+    @Override
+    public void onPlaybackPause(Context context) {
+        if (position > startPosition) {
+            played_duration = playedDurationWhenStarted + position - startPosition;
+            playedDurationWhenStarted = played_duration;
+        }
+        postPlaybackTasks(context, false);
+        startPosition = position;
+    }
+
+    @Override
+    public void onPlaybackCompleted(Context context) {
+        postPlaybackTasks(context, true);
+        startPosition = -1;
+    }
+
+    private void postPlaybackTasks(Context context, boolean completed) {
+        if (item != null) {
+            // gpodder play action
+            if (startPosition >= 0 && (completed || startPosition < position) &&
+                    GpodnetPreferences.loggedIn()) {
+                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.PLAY)
+                        .currentDeviceId()
+                        .currentTimestamp()
+                        .started(startPosition / 1000)
+                        .position((completed ? duration : position) / 1000)
+                        .total(duration / 1000)
+                        .build();
+                GpodnetPreferences.enqueueEpisodeAction(action);
+            }
+            // Auto flattr
+            float autoFlattrThreshold = UserPreferences.getAutoFlattrPlayedDurationThreshold();
+            if (FlattrUtils.hasToken() &&
+                    UserPreferences.isAutoFlattr() &&
+                    item.getPaymentLink() != null &&
+                    item.getFlattrStatus().getUnflattred() &&
+                    (completed && autoFlattrThreshold <= 1.0f ||
+                            played_duration >= autoFlattrThreshold * duration)) {
+                DBTasks.flattrItemIfLoggedIn(context, item);
+            }
+        }
     }
 
     @Override
@@ -514,20 +579,11 @@ public class FeedMedia extends FeedFile implements Playable {
     };
 
     @Override
-    public Uri getImageUri() {
+    public String getImageLocation() {
         if (hasEmbeddedPicture()) {
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme(SCHEME_MEDIA).encodedPath(getLocalMediaUrl());
-
-            if (item != null && item.getFeed() != null) {
-                final Uri feedImgUri = item.getFeed().getImageUri();
-                if (feedImgUri != null) {
-                    builder.appendQueryParameter(PARAM_FALLBACK, feedImgUri.toString());
-                }
-            }
-            return builder.build();
+            return getLocalMediaUrl();
         } else if(item != null) {
-            return item.getImageUri();
+            return item.getImageLocation();
         } else {
             return null;
         }
@@ -550,7 +606,7 @@ public class FeedMedia extends FeedFile implements Playable {
         super.setFile_url(file_url);
     }
 
-    private void checkEmbeddedPicture() {
+    public void checkEmbeddedPicture() {
         if (!localFileAvailable()) {
             hasEmbeddedPicture = Boolean.FALSE;
             return;
@@ -572,7 +628,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof RemoteMedia) {
+        if (FeedMediaFlavorHelper.instanceOfRemoteMedia(o)) {
             return o.equals(this);
         }
         return super.equals(o);

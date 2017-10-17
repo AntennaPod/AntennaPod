@@ -1,0 +1,43 @@
+AntennaPod is a podcast manager and player that gives you instant access to millions of free and paid podcasts, from independent podcasters to large publishing houses such as the BBC, NPR and CNN. Add, import and export their feeds hassle-free using the iTunes podcast database, OPML files or simple RSS URLs. Save effort, battery power and mobile data usage with powerful automation controls for downloading episodes (specify times, intervals and WiFi networks) and deleting episodes (based your favourites and delay settings).<br>
+Men viktigst av alt: Last ned, strøm eller legg episoder i kø og nyt dem slik du ønsker med regulerbar avspillingshasitghet, kapittelstøtte og en tidtaker for automatisk avslåing. Du kan til og med vise din takknemlighet til innholdets skapere med vår Flattr-integrasjon.
+
+Laget av podkast-entusiaster er AntennaPod gratis i ordets rette forstand: åpen kildekode, ingen kostnader, ingen reklame.
+
+<br>Alle funksjoner:</b></b>
+IMPORTER, ORGANISER OG SPILL AV<br>
+&#8226; Legg til og importer strømmer fra mapper fra iTunes og gPodder.net, OPML-filer og linker fra RSS og Atom<br>
+&#8226; Behandle avspillinger fra hvor som helst: widget på startskjerm, systemnotifikasjoner og ørepropp- og bluetoothkontroller<br>
+&#8226; Nyt det å høre på din måte med regulerbar avspillingshastighet, kapittelstøtte (MP3, VorbisComment og Podlove), husket avspillingsposisjon og en avansert tidtaker for automatisk avslåing (rist for å tilbakestille, senke volumet og sakke ned avspillingen)<br>
+&#8226; Støtte for passordbeskyttede strømmer og episoder<br>
+&#8226; Støtte for &#171;paged feeds&#187; (www.podlove.org/paged-feeds)
+
+FØLG MED, DEL OG SETT PRIS PÅ<br>
+&#8226; Keep track of the best of the best by marking episodes as favourites<br>
+&#8226; Find den ene episoden gjennom avspillingshistorien eller ved å søke (titler og shownotater)<br>
+&#8226; Del episoder og strømmer gjennom avanserte sosiale medier- og e-postinstillinger, gPodder.net-tjenester og via OPML-eksportering<br>
+&#8226; Støtt innholdsskapere med Flattr-integrasjon gjennom automatisk &#171;flattring&#187;
+
+KONTROLLER SYSTEMET<br>
+&#8226; Take control over automated downloading: choose feeds, exclude mobile networks, select specific WiFi networks, require the phone to be charging and set times or intervals<br>
+&#8226; Manage storage by setting the amount of cached episodes, smart deletion (based on your favourites and play status) and selecting your preferred location<br>
+&#8226; Bruk AntennaPod i ditt språk (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
+&#8226; Tilpass appens stil ved å bruke det mørke eller lyse temaet<br>
+&#8226; Lag back-up av dine abonnement med gPodder.net-integrasjon og OPML-eksport
+
+<b>Join the AntennaPod community!</b><br>
+AntennaPod er under aktiv utvikling av frivillige. Du kan også bidra, med kode eller kommentarer!
+
+GitHub is the place to go for feature requests, bug reports and code contributions:<br>
+https://www.github.com/AntennaPod/AntennaPod
+
+Our Google Group is the place to share your ideas, favourite podcasting moments and gratitude to all the volunteers:<br>
+https://groups.google.com/forum/#!forum/antennapod
+
+Have a question or want to give us feedback?
+https://twitter.com/@AntennaPod
+
+Transifex is the place to help with translations:<br>
+https://www.transifex.com/antennapod/antennapod
+
+Check out our Beta Testing programme to get the latest features first:<br>
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

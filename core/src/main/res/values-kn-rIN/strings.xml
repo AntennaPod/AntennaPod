@@ -28,7 +28,6 @@
   <string name="feedurl_label">ಫೀಡ್ ಯು.ಆರ್.ಎಲ್</string>
   <!--Actions on feeds-->
   <string name="show_info_label">ಮಾಹಿತಿ ತೋರಿಸು</string>
-  <string name="feed_delete_confirmation_msg">ನೀವು ಈ ಫೀಡ್ ಮತ್ತು ನೀವು ಡೌನ್ಲೋಡ್ ಮಾಡಿದ ಈ ಫೀಡ್ನ ಎಲ್ಲಾ ಕಂತುಗಳು ಅಳಿಸಲು ಬಯಸುತ್ತೀರಿ ಎಂಬುದನ್ನು ದಯವಿಟ್ಟು ದೃಢಪಡಿಸಿ.</string>
   <!--actions on feeditems-->
   <string name="download_label">ಡೌನ್ಲೋಡ್</string>
   <string name="play_label">ಚಾಲನೆಗೊಳಿಸು</string>
@@ -82,8 +81,6 @@
   <string name="user_interface_label">ಬಳಕೆದಾರ ಸಂಪರ್ಕಸಾಧನ</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
-  <string name="search_hint">ಫೀಡ್ಸ್ ಅಥವಾ ಸಂಚಿಕೆಗಳಿಗಾಗಿ ಹುಡುಕಿ</string>
-  <string name="found_in_shownotes_label">ಪ್ರದರ್ಶನ ಟಿಪ್ಪಣಿಗಳಲ್ಲಿ ಕಂಡುಬರುತ್ತವೆ</string>
   <string name="found_in_chapters_label">ಅಧ್ಯಾಯಗಳಲ್ಲಿ ಕಂಡುಬರುತ್ತವೆ</string>
   <string name="search_status_no_results">ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ</string>
   <string name="search_label">ಹುಡುಕು</string>

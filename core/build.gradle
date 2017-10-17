@@ -30,6 +30,14 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    publishNonDefault true
+    productFlavors {
+        free {
+        }
+        play {
+        }
+    }
+
 }
 
 repositories {
@@ -48,9 +56,9 @@ dependencies {
     compile "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     compile "org.jsoup:jsoup:$jsoupVersion"
     compile "com.github.bumptech.glide:glide:$glideVersion"
-    compile "com.github.bumptech.glide:okhttp-integration:$glideOkhttpIntegrationVersion"
-    compile "com.squareup.okhttp:okhttp:$okhttpVersion"
-    compile "com.squareup.okhttp:okhttp-urlconnection:$okhttpVersion"
+    compile "com.github.bumptech.glide:okhttp3-integration:$glideOkhttpIntegrationVersion@aar"
+    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    compile "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     compile "com.squareup.okio:okio:$okioVersion"
     compile "com.nineoldandroids:library:2.4.0"
     compile "de.greenrobot:eventbus:$eventbusVersion"
@@ -59,7 +67,21 @@ dependencies {
     compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     // Add casting features
-    compile "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
-    compile "com.android.support:mediarouter-v7:$supportVersion"
-    compile "com.google.android.gms:play-services-cast:$playServicesVersion"
+    // free build hack: skip some dependencies
+    if (!doFreeBuild()) {
+        playCompile "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
+        compile "com.android.support:mediarouter-v7:$supportVersion"
+        playCompile "com.google.android.gms:play-services-cast:$playServicesVersion"
+        compile "com.google.android.support:wearable:$wearableSupportVersion"
+    } else {
+        System.out.println("core: free build hack, skipping some dependencies")
+    }
+}
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint" << "-Xlint:-deprecation" << "-Xlint:-serial"
+        }
+    }
 }

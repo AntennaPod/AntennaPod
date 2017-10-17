@@ -45,6 +45,12 @@ public class TypeGetter {
 							case ATOM_ROOT:
 								feed.setType(Feed.TYPE_ATOM1);
 								Log.d(TAG, "Recognized type Atom");
+
+								String strLang = xpp.getAttributeValue("http://www.w3.org/XML/1998/namespace", "lang");
+								if (strLang != null) {
+									feed.setLanguage(strLang);
+								}
+
 								return Type.ATOM;
 							case RSS_ROOT:
 								String strVersion = xpp.getAttributeValue(null, "version");
@@ -78,9 +84,8 @@ public class TypeGetter {
                     }
                 } catch (IOException e1) {
                     e1.printStackTrace();
-                } finally {
-                    throw new UnsupportedFeedtypeException(Type.INVALID, rootElement);
                 }
+                throw new UnsupportedFeedtypeException(Type.INVALID, rootElement);
 
             } catch (IOException e) {
 				e.printStackTrace();

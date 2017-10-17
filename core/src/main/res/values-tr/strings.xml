@@ -1,31 +1,28 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Beslemeler</string>
+  <string name="statistics_label">İstatistikler</string>
   <string name="add_feed_label">Cep yayını ekle</string>
-  <string name="podcasts_label">CEP YAYINLARI</string>
   <string name="episodes_label">Bölümler</string>
-  <string name="new_episodes_label">Yeni bölümler</string>
-  <string name="all_episodes_label">Tüm bölümler</string>
   <string name="all_episodes_short_label">Tümü</string>
   <string name="favorite_episodes_label">Favoriler</string>
   <string name="new_label">Yeni</string>
-  <string name="waiting_list_label">Bekleme listesi</string>
   <string name="settings_label">Ayarlar</string>
   <string name="add_new_feed_label">Cep Yayını ekle</string>
   <string name="downloads_label">İndirilenler</string>
   <string name="downloads_running_label">Çalışıyor</string>
   <string name="downloads_completed_label">Tamamlandı</string>
   <string name="downloads_log_label">Günlük</string>
+  <string name="subscriptions_label">Abonelikler</string>
+  <string name="subscriptions_list_label">Abonelik Listesi</string>
   <string name="cancel_download_label">İndirmeyi İptal Et</string>
   <string name="playback_history_label">Çalma geçmişi</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net giriş</string>
-  <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Son yayınlananlar</string>
-  <string name="episode_filter_label">Sadece yeni bölümleri göster</string>
+  <string name="free_space_label">%1$s ücretsiz</string>
   <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Toplam cep yayını çalma zamanı:</string>
   <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
   <string name="drawer_close">Menüyü kapat</string>
@@ -36,6 +33,7 @@
   <string name="drawer_feed_counter_new_unplayed">Yeni ve çalınmamış bölümlerin sayısı</string>
   <string name="drawer_feed_counter_new">Yeni bölümlerin sayısı</string>
   <string name="drawer_feed_counter_unplayed">Çalınmamış bölümlerin sayısı</string>
+  <string name="drawer_feed_counter_downloaded">İndirilen bölümlerin sayısı</string>
   <string name="drawer_feed_counter_none">Hiçbiri</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Tarayıcıda aç</string>
@@ -50,6 +48,7 @@
   <string name="cancel_label">İptal</string>
   <string name="yes">Evet</string>
   <string name="no">Hayır</string>
+  <string name="reset">Sıfırla</string>
   <string name="author_label">Yayıncı</string>
   <string name="language_label">Dil</string>
   <string name="url_label">URL</string>
@@ -67,16 +66,18 @@
   <string name="length_prefix">Uzunluk:\u0020</string>
   <string name="size_prefix">Boyut:\u0020</string>
   <string name="processing_label">İşleniyor</string>
+  <string name="loading_label">Yükleniyor...</string>
   <string name="save_username_password_label">Kullanıcı adı ve şifreyi kaydet</string>
   <string name="close_label">Kapat</string>
   <string name="retry_label">Yeniden dene</string>
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
   <string name="auto_download_apply_to_items_title">Önceki Bölümlere Uygula</string>
-  <string name="auto_delete_label">Bölümü Otomatik Olarak Sil\n(genel varsayılanı yoksayar)</string>
+  <string name="auto_delete_label">Bölümü Otomatik Sil</string>
   <string name="parallel_downloads_suffix">\u0020paralel indirmeler</string>
-  <string name="feed_auto_download_global">Genel</string>
+  <string name="feed_auto_download_global">Varsayılan ayarlar</string>
   <string name="feed_auto_download_always">Her zaman</string>
   <string name="feed_auto_download_never">Hiçbir zaman</string>
+  <string name="send_label">Gönder...</string>
   <string name="episode_cleanup_never">Hiçbir zaman</string>
   <string name="episode_cleanup_queue_removal">Sırada değilse</string>
   <string name="episode_cleanup_after_listening">Bittikten sonra</string>
@@ -89,7 +90,6 @@
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">URL ile cep yayını ekle</string>
   <string name="podcastdirectories_label">Dizinde cep yayını bul</string>
-  <string name="podcastdirectories_descr">gdpodder.net dizininde yeni cep yayınlarını isme, kategoriye veya popülerliğe göre arayabilirsiniz veya iTunes mağazasında arama yapabilirsiniz.</string>
   <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Hepsini oynatıldı olarak işaretle</string>
@@ -97,14 +97,17 @@
   <string name="mark_all_read_confirmation_msg">Lütfen tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="mark_all_read_feed_confirmation_msg">Lütfen bu besleme içindeki tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="mark_all_seen_label">Hepsini görüldü olarak işaretle</string>
+  <string name="mark_all_seen_msg">Tüm bölümler görüldü olarak işaretlendi</string>
+  <string name="mark_all_seen_confirmation_msg">Lütfen tüm bölümleri görüldü olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="show_info_label">Bilgiyi göster</string>
+  <string name="rename_feed_label">Cep yayınını yeniden adlandır</string>
   <string name="remove_feed_label">Cep yayını kaldır</string>
+  <string name="share_label">Paylaş...</string>
   <string name="share_link_label">Link\'i paylaş</string>
   <string name="share_link_with_position_label">Link\'i Konumla birlikte paylaş</string>
   <string name="share_feed_url_label">Besleme Adresini Paylaş</string>
-  <string name="share_item_url_label">Bölüm Adresini Paylaş</string>
-  <string name="share_item_url_with_position_label">Bölüm Adresini Konumla birlikte paylaş</string>
-  <string name="feed_delete_confirmation_msg">Lütfen bu beslemeyi ve bu beslemeye ait indirilmiş BÜTÜN bölümleri silme isteğinizi onaylayın.</string>
+  <string name="share_item_url_label">Bölüm Dosyası Adresini Paylaş</string>
+  <string name="share_item_url_with_position_label">Bölüm Dosyası Adresini Konumla birlikte paylaş</string>
   <string name="feed_remover_msg">Besleme kaldırılıyor</string>
   <string name="load_complete_feed">Tüm beslemeyi yenile</string>
   <string name="hide_episodes_title">Bölümleri gizle</string>
@@ -116,8 +119,10 @@
   <string name="hide_not_queued_episodes_label">Kuyrukta değil</string>
   <string name="hide_downloaded_episodes_label">İndirildi</string>
   <string name="hide_not_downloaded_episodes_label">İndirilmedi</string>
+  <string name="hide_has_media_label">Medya var</string>
   <string name="filtered_label">Filtrelendi</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Son yenileme başarısız oldu</string>
+  <string name="open_podcast">Cep yayını aç</string>
   <!--actions on feeditems-->
   <string name="download_label">İndir</string>
   <string name="play_label">Oynat</string>
@@ -125,7 +130,9 @@
   <string name="stop_label">Durdur</string>
   <string name="stream_label">Akış</string>
   <string name="remove_label">Kaldır</string>
+  <string name="delete_label">Sil</string>
   <string name="remove_episode_lable">Bölümü kaldır</string>
+  <string name="marked_as_seen_label">Görüldü olarak işaretlendi</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>
   <string name="marked_as_read_label">Oynatıldı olarak işaretlendi</string>
   <string name="mark_unread_label">Oynatılmadı olarak işaretle</string>
@@ -133,11 +140,11 @@
   <string name="added_to_queue_label">Kuyruğa Eklendi</string>
   <string name="remove_from_queue_label">Kuyruktan Kaldır</string>
   <string name="add_to_favorite_label">Favorilere Ekle</string>
+  <string name="added_to_favorites">Favorilere Eklendi</string>
   <string name="remove_from_favorite_label">Favorilerden Kaldır</string>
+  <string name="removed_from_favorites">Favorilerden Kaldırıldı</string>
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
   <string name="support_label">Flattr ile destekle</string>
-  <string name="enqueue_all_new">Hepsini kuyruğa ekle</string>
-  <string name="download_all">Hepsini indir</string>
   <string name="skip_episode_label">Bölümü atla</string>
   <string name="activate_auto_download">Otomatik indirmeyi etkinleştir</string>
   <string name="deactivate_auto_download">Otomatik indirmeyi devre dışı bırak</string>
@@ -158,6 +165,8 @@
   <string name="download_error_connection_error">Baplantı hatası</string>
   <string name="download_error_unknown_host">Bilinmeyen sunucu</string>
   <string name="download_error_unauthorized">Yetkilendirme hatası</string>
+  <string name="download_error_file_type_type">Dosya Tipi Hatası</string>
+  <string name="download_error_forbidden">Yasak</string>
   <string name="cancel_all_downloads_label">Bütün indirmeleri iptal et</string>
   <string name="download_canceled_msg">İndirme iptal edildi</string>
   <string name="download_canceled_autodownload_enabled_msg">İndirme iptal edildi\nBu öğe için <i>Otomatik İndirme</i> devre dışı</string>
@@ -167,6 +176,10 @@
   <string name="download_error_io_error">G/Ç Hatası</string>
   <string name="download_error_request_error">İstek hatası</string>
   <string name="download_error_db_access">Veritabanı erişim hatası</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d indirme kaldı</item>
+    <item quantity="other">%d indirme kaldı</item>
+  </plurals>
   <string name="downloads_processing">İndirmeler işleniyor</string>
   <string name="download_notification_title">Cep yayını verileri indiriliyor</string>
   <string name="download_report_content">%1$d indirme başarılı, %2$d başarısız</string>
@@ -191,22 +204,24 @@
   <string name="playback_error_server_died">Sunucu geberdi</string>
   <string name="playback_error_unknown">Bilinmeyen Hata</string>
   <string name="no_media_playing_label">Çalınan medya yok</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Ara belleğe alınıyor</string>
   <string name="playbackservice_notification_title">Cep yayını çalınıyor</string>
   <string name="unknown_media_key">AntennaPod - Bilinmeyen medya anahtarı: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">Kuyruğu kilitle</string>
   <string name="unlock_queue">Kuyruğun kilidini aç</string>
+  <string name="queue_locked">Kuyruk kilitlendi</string>
+  <string name="queue_unlocked">Kuyruk kilidi açıldı</string>
   <string name="clear_queue_label">Kuyruğu temizle</string>
   <string name="undo">Geri al</string>
   <string name="removed_from_queue">Öge kaldırıldı</string>
   <string name="move_to_top_label">En üste taşı</string>
   <string name="move_to_bottom_label">En alta taşı</string>
   <string name="sort">Sırala</string>
-  <string name="alpha">Alfabetik olarak</string>
   <string name="date">Tarih</string>
   <string name="duration">Süre</string>
+  <string name="episode_title">Blüm başlığı</string>
+  <string name="feed_title">Besleme başlığı</string>
   <string name="ascending">Artan</string>
   <string name="descending">Azalan</string>
   <string name="clear_queue_confirmation_msg">Lütfen içerisindeki BÜTÜN ölümlerle birlikte kuyruğu temizleme isteğinizi onaylayın.</string>
@@ -245,6 +260,8 @@
   <string name="no_items_label">Bu listede hiç öge yok.</string>
   <string name="no_feeds_label">Henüz hiçbir beslemeye abone değilsiniz.</string>
   <!--Preferences-->
+  <string name="storage_pref">Depolama</string>
+  <string name="project_pref">Proje</string>
   <string name="other_pref">Diğer</string>
   <string name="about_pref">Hakkında</string>
   <string name="queue_label">Kuyruk</string>
@@ -312,8 +329,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net hesabınız için giriş bilgisini değiştirin.</string>
   <string name="pref_playback_speed_title">Çalma hızları</string>
   <string name="pref_playback_speed_sum">Değişken hızlı ses yürütmesi için kullanılabilir hızları özelleştirin</string>
-  <string name="pref_fast_forward">İleri sarma süresi</string>
-  <string name="pref_rewind">Geri sarma süresi</string>
   <string name="pref_gpodnet_sethostname_title">Sunucu ismini ayarla</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Varsayılan sunucuyu kullan</string>
   <string name="pref_expandNotify_title">Bildirimi Genişlet</string>
@@ -332,15 +347,13 @@
   <string name="crash_report_sum">En son çökme raporunu e-posta ile gönder</string>
   <string name="send_email">E-posta gönder</string>
   <string name="experimental_pref">Deneysel</string>
-  <string name="pref_sonic_title">Sonic ortam yürütücüsü</string>
+  <string name="pref_faq">SSS</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Otomatik Flattr\'lamayı etkinleştir</string>
   <string name="auto_flattr_after_percent">Bölümün yüzde %d kısmı oynatıldığında Flattr\'la</string>
   <string name="auto_flattr_ater_beginning">Oynatma başladığında bölümü Flattr\'la</string>
   <string name="auto_flattr_ater_end">Oynatma bittiğinde bölümü Flattr\'la</string>
   <!--Search-->
-  <string name="search_hint">Besleme veya Bölüm Ara</string>
-  <string name="found_in_shownotes_label">Nolarda bulundu</string>
   <string name="found_in_chapters_label">Kısımlarda bulundu</string>
   <string name="search_status_no_results">Sonuç bulunamadı</string>
   <string name="search_label">Ara</string>
@@ -357,6 +370,7 @@
   <string name="reading_opml_label">OPML dosyası okunuyor</string>
   <string name="select_all_label">Hepsini seç</string>
   <string name="deselect_all_label">Tüm seçimleri geri al</string>
+  <string name="select_options_label">Seç...</string>
   <string name="choose_file_from_filesystem">Yerel dosya sisteminden</string>
   <string name="choose_file_from_external_application">Harici uygulama kullan</string>
   <string name="opml_export_label">OPML dışa aktar</string>
@@ -440,33 +454,27 @@
   <!--Online feed view-->
   <string name="subscribe_label">Üye ol</string>
   <string name="subscribed_label">Üye olundu</string>
+  <string name="downloading_label">İndiriliyor...</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Kısımları göster</string>
-  <string name="show_shownotes_label">Notları göster</string>
-  <string name="show_cover_label">Resmi göster</string>
   <string name="rewind_label">Geri sar</string>
   <string name="fast_forward_label">İleri sar</string>
   <string name="media_type_audio_label">Ses</string>
   <string name="media_type_video_label">Vidyo</string>
   <string name="navigate_upwards_label">Yukarı çık</string>
-  <string name="butAction_label">Daha fazla eylem</string>
-  <string name="status_playing_label">Bölüm çalınıyor</string>
   <string name="status_downloading_label">Bölüm indiriliyor</string>
-  <string name="status_downloaded_label">Bölüm indirildi</string>
-  <string name="status_unread_label">Bu öğe yeni</string>
   <string name="in_queue_label">Bölüm kuyrukta</string>
-  <string name="new_episodes_count_label">Yeni bölümlerin sayısı</string>
-  <string name="in_progress_episodes_count_label">Dinlemeye başladığınız yeni bölümlerin sayısı</string>
   <string name="drag_handle_content_description">Bu öğenin pozisyonunu değiştirmek için sürükleyin</string>
   <string name="load_next_page_label">Sonraki sayfayı yükle</string>
   <!--Feed information screen-->
   <string name="authentication_label">Yetkilendirme</string>
   <string name="authentication_descr">Bu cep yayını ve içerdiği bölümler için kullanıcı adı şifreyi değiştir.</string>
+  <string name="auto_download_settings_label">Otomatik İndirme Seçenekleri</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Veritabanı yükseltiliyor</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <string name="search_itunes_label">iTunes\'da Arama</string>
+  <!--Episodes apply actions-->
   <string name="all_label">Tümü</string>
   <string name="selected_all_label">Tüm Bölümler Seçildi</string>
   <string name="none_label">Hiçbiri</string>
@@ -479,6 +487,7 @@
   <string name="selected_downloaded_label">İndirilen Bölümler Seçildi</string>
   <string name="not_downloaded_label">İndirilmeyen</string>
   <string name="selected_not_downloaded_label">İndirilmeyen Bölümler Seçildi</string>
+  <!--Sort-->
   <string name="sort_title_a_z">Başlık (A \u2192 Z)</string>
   <string name="sort_title_z_a">Başlık (Z \u2192 A)</string>
   <string name="sort_date_new_old">Tarih (Yeni \u2192 Eski)</string>
@@ -492,5 +501,11 @@
   <string name="rating_later_label">Daha sonra hatırlat</string>
   <string name="rating_now_label">Evet, şimdi yapalım!</string>
   <!--Audio controls-->
+  <string name="volume">Ses</string>
   <!--proxy settings-->
+  <string name="proxy_test_label">Test</string>
+  <string name="proxy_test_successful">Test başarılı</string>
+  <string name="proxy_test_failed">Test başarısız</string>
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

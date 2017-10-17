@@ -1,0 +1,43 @@
+AntennaPod é un xestor e repordutor de podcast que lle permite acceder a millóns de podcast gratuítos e de pago, desde emisións independentes a grandes produtores como BBC, NPR e CNN. Engadir, importar e exportar as súas fontes sen problemas utilizando a base de datos de iTunes, fiecheiros OPML o simples URLs de RSS. Aforre esforzos, consumo de batería e datos móbiles con un control total e automático das descargas de episodios (indique horarios, intervalos e redes WIFI) e eliminación de episodios (basándose nas preferencias de favoritos e retardo).<br>
+Mais o máis importante: Descargue, envíe ou poña na cola os episodios e disfrúteos do xeito en que máis lle conveña, axustando a velocidade de reprodución, xestión de capítulos e apagado automático. Poderá tamén mostrarlle aos creadores canto lle gustan os seus contidos gracias a integración con Flattr.
+
+Escrito por namorados dos podcast, AntennaPod é gratuíto e libre: open source, sen custos, sen publicidade.
+
+<b>Características:</b><br>
+IMPORTAR, ORGANIZAR E REPRODUCIR<br>
+&#8226; Engada e importe fontes a través dos directorios de iTunes e gPodder.net, ficheiros OPML e RSS ou ligazóns Atom<br>
+&#8226; Xestione as opcións de reprodución desde calquer lugar: widget na pantalla de inicio, barra de notificacións e tamén desde os controis de auriculares e bluetooth<br>
+&#8226; Goce escoitando ao seu xeito coa velocidade de reprodución axustable, soporte de capítulos (MP3, VorbisComment e Podlove), recordo da posición de reprodución e apagado configurable (axitar para reiniciar, baixar volume e diminuir velocidade de reprodución)<br>
+&#8226; Acceso protexido con contrasinal a episodios e fontes<br>
+&#8226; Benefíciese das fontes paxinadas (www.podlove.org/paged-feeds)
+
+SIGA, COMPARTA E VALORE <br>
+&#8226; Garde o melloriño de cada casa marcando episodios como favoritos<br>
+&#8226; Atope ese episodio especial no historial de reprodución ou buscando (títulos e notas do episodio)<br>
+&#8226; Comparta episodios e fontes a través das opcións de redes sociais e correro electrónico, os servizos de gPodder.net e exportando a OPML<br>
+&#8226; Axude aos creadores de contido coa integración con Flattr incluíndo o flattring automático
+
+CONTROL DO SISTEMA <br>
+&#8226; Tome control sobre as descargas automáticas: escolla fontes, exclúa redes móbiles, redes WIFI concretas, requerir que o móbil esté a cargar e horarios e intervalos<br>
+&#8226; Xestione o almacenamento establecendo o volume almacenado de episodios, borrado intelixente (baseándose nos favoritos e situación de reprodución) e selecionando a localización preferida<br>
+&#8226; Utilice AntennaPod no seu idioma (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH, GL)<br>
+&#8226; Adápteo a contorna utilizando o decorado claro ou oscuro<br>
+&#8226; Respalde as súas suscricións coa integración en gPodder.net e exportando a OPML
+
+<b>Únase a comunidade AntennaPod!</b><br>
+AntennaPod está baixo continuo desenvolvemento grazas a voluntarios. Vostede tamén pode contribuir, con código ou con comentarios!
+
+En GitHub pode solicitar novas características, informar de erros e contribuir ao código:<br>
+https://www.github.com/AntennaPod/AntennaPod
+
+No noso Google Group pode compartir ideas, momentos favoritos dos podcast e agradecer o traballo dos voluntarios:<br>
+https://groups.google.com/forum/#!forum/antennapod
+
+Ten algunha pregunta ou quere facernos algún comentario?
+https://twitter.com/@AntennaPod
+
+Para axudar na tradución vaia a Transifex:<br>
+https://www.transifex.com/antennapod/antennapod
+
+Mire o noso programa Beta de Probas para ter os últimos avances:<br>
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

@@ -36,20 +36,6 @@
 
         <menu>
             <item
-                android:id="@+id/queue_sort_alpha"
-                android:title="@string/alpha">
-
-                <menu>
-                    <item
-                        android:id="@+id/queue_sort_alpha_asc"
-                        android:title="@string/ascending"/>
-                    <item
-                        android:id="@+id/queue_sort_alpha_desc"
-                        android:title="@string/descending"/>
-                </menu>
-            </item>
-
-            <item
                 android:id="@+id/queue_sort_date"
                 android:title="@string/date">
 
@@ -77,6 +63,33 @@
                 </menu>
             </item>
 
+            <item
+                android:id="@+id/queue_sort_episode_title"
+                android:title="@string/episode_title">
+
+                <menu>
+                    <item
+                        android:id="@+id/queue_sort_episode_title_asc"
+                        android:title="@string/ascending"/>
+                    <item
+                        android:id="@+id/queue_sort_episode_title_desc"
+                        android:title="@string/descending"/>
+                </menu>
+            </item>
+
+            <item
+                android:id="@+id/queue_sort_feed_title"
+                android:title="@string/feed_title">
+
+                <menu>
+                    <item
+                        android:id="@+id/queue_sort_feed_title_asc"
+                        android:title="@string/ascending"/>
+                    <item
+                        android:id="@+id/queue_sort_feed_title_desc"
+                        android:title="@string/descending"/>
+                </menu>
+            </item>
         </menu>
     </item>
 

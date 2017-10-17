@@ -81,7 +81,6 @@
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Legg til en podcast via URL</string>
   <string name="podcastdirectories_label">Finn podcast i katalog</string>
-  <string name="podcastdirectories_descr">Du kan søke etter nye podcaster på navn, kategori eller popularitet i gpodder.nets katalog eller på iTunes.</string>
   <string name="browse_gpoddernet_label">Bla gjennom gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som avspilt</string>
@@ -94,7 +93,6 @@
   <string name="share_link_label">Del lenke</string>
   <string name="share_link_with_position_label">Del lenke med plassering</string>
   <string name="share_feed_url_label">Del strømmens URL</string>
-  <string name="feed_delete_confirmation_msg">Vil du virkelig slette denne strømmen og alle episodene av denne strømmen du har lastet ned?</string>
   <string name="feed_remover_msg">Fjerner strøm</string>
   <string name="load_complete_feed">Oppdater hele strømmen</string>
   <string name="hide_episodes_title">Skjul episoder</string>
@@ -191,7 +189,6 @@
   <string name="move_to_top_label">Gå til toppen</string>
   <string name="move_to_bottom_label">Gå til bunnen</string>
   <string name="sort">Sortér</string>
-  <string name="alpha">Alfabetisk</string>
   <string name="date">På dato</string>
   <string name="duration">På varighet</string>
   <string name="ascending">Økende</string>
@@ -241,13 +238,11 @@
   <string name="pref_pauseOnDisconnect_sum">Sett playback på pause når hodetelefoner eller bluetooth er frakoblet</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Gjenoppta avspilling når hodetelefoner gjeninnkoples</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsett avspilling når bluetooth er tilkoblet igjen</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Forover-knapp hopper</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Ved pressing av hardware forover-knapp hopp til neste episode istedenfor forover-spoling</string>
   <string name="pref_followQueue_sum">Hopp til neste element i køen når avspillingen er ferdig</string>
   <string name="pref_auto_delete_sum">Slett episode når avspillingen er ferdig</string>
   <string name="pref_auto_delete_title">Automatisk sletting</string>
   <string name="pref_smart_mark_as_played_sum">Marker episoder som avspilt selv om det er X antall sekunder igjen av avspillingen</string>
-  <string name="pref_smart_mark_as_played_title">Smart markering av avspilt</string>
   <string name="pref_skip_keeps_episodes_sum">Behold episoder når de hoppes over</string>
   <string name="pref_skip_keeps_episodes_title">Behold episoder som er hoppet over</string>
   <string name="playback_pref">Avspilling</string>
@@ -309,8 +304,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Endre innlogginsinformasjonen til din gpodder.net konto</string>
   <string name="pref_playback_speed_title">Avspillingshastigheter</string>
   <string name="pref_playback_speed_sum">Egendefiner hastighetene tilgjengelig for variabel avspillingshastighet</string>
-  <string name="pref_fast_forward">Spoling fremover</string>
-  <string name="pref_rewind">Spoling bakover</string>
   <string name="pref_gpodnet_sethostname_title">Sett vertsnavn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Bruk standard vert</string>
   <string name="pref_expandNotify_title">Utvid varsel</string>
@@ -331,15 +324,12 @@
   <string name="crash_report_sum">Send den siste kræsj-rapporten via e-post</string>
   <string name="send_email">Send e-post</string>
   <string name="experimental_pref">Eksperimentell</string>
-  <string name="pref_sonic_title">Sonic medieavspiller</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktiver automatisk flattring</string>
   <string name="auto_flattr_after_percent">Flattre episode så snart %d prosent er avspilt</string>
   <string name="auto_flattr_ater_beginning">Flattre episode når avspillingen starter</string>
   <string name="auto_flattr_ater_end">Flattre episode når avspillingen tar slutt</string>
   <!--Search-->
-  <string name="search_hint">Søk etter strømmer eller episoder</string>
-  <string name="found_in_shownotes_label">Funnet i shownotater</string>
   <string name="found_in_chapters_label">Funnet i kapitler</string>
   <string name="search_status_no_results">Ingen resultater ble funnet</string>
   <string name="search_label">Søk</string>

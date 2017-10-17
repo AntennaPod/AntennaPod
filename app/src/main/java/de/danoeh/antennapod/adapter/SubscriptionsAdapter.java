@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +30,8 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
     /** placeholder object that indicates item should be added */
     public static final Object ADD_ITEM_OBJ = new Object();
 
-    /** the position in the view that holds the add item */
-    private static final int ADD_POSITION = 0;
+    /** the position in the view that holds the add item; 0 is the first, -1 is the last position */
+    private static final int ADD_POSITION = -1;
     private static final String TAG = "SubscriptionsAdapter";
 
     private final WeakReference<MainActivity> mainActivityRef;
@@ -44,8 +42,16 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         this.itemAccess = itemAccess;
     }
 
+    private int getAddTilePosition() {
+        if(ADD_POSITION < 0) {
+            return ADD_POSITION + getCount();
+        }
+        return ADD_POSITION;
+    }
+
     private int getAdjustedPosition(int origPosition) {
-        return origPosition - 1;
+        assert(origPosition != getAddTilePosition());
+        return origPosition < getAddTilePosition() ? origPosition : origPosition - 1;
     }
 
     @Override
@@ -55,15 +61,20 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public Object getItem(int position) {
-        if (position == ADD_POSITION) {
+        if (position == getAddTilePosition()) {
             return ADD_ITEM_OBJ;
         }
         return itemAccess.getItem(getAdjustedPosition(position));
     }
 
     @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    @Override
     public long getItemId(int position) {
-        if (position == ADD_POSITION) {
+        if (position == getAddTilePosition()) {
             return 0;
         }
         return itemAccess.getItem(getAdjustedPosition(position)).getId();
@@ -89,13 +100,17 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             holder = (Holder) convertView.getTag();
         }
 
-        if (position == ADD_POSITION) {
+        if (position == getAddTilePosition()) {
             holder.feedTitle.setText("{md-add 500%}\n\n" + mainActivityRef.get().getString(R.string.add_feed_label));
                     holder.feedTitle.setVisibility(View.VISIBLE);
             // prevent any accidental re-use of old values (not sure how that would happen...)
             holder.count.setPrimaryText("");
             // make it go away, we don't need it for add feed
             holder.count.setVisibility(View.INVISIBLE);
+
+            // when this holder is reused, we could else end up with a cover image
+            Glide.clear(holder.imageView);
+
             return convertView;
         }
 
@@ -104,10 +119,15 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
         holder.feedTitle.setText(feed.getTitle());
         holder.feedTitle.setVisibility(View.VISIBLE);
-        holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
-        holder.count.setVisibility(View.VISIBLE);
+        int count = itemAccess.getFeedCounter(feed.getId());
+        if(count > 0) {
+            holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
+            holder.count.setVisibility(View.VISIBLE);
+        } else {
+            holder.count.setVisibility(View.GONE);
+        }
         Glide.with(mainActivityRef.get())
-                .load(feed.getImageUri())
+                .load(feed.getImageLocation())
                 .error(R.color.light_gray)
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
@@ -119,7 +139,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (position == ADD_POSITION) {
+        if (position == getAddTilePosition()) {
             mainActivityRef.get().loadChildFragment(new AddFeedFragment());
         } else {
             Fragment fragment = ItemlistFragment.newInstance(getItemId(position));

@@ -74,7 +74,6 @@
             android:key="prefQueueAddToFront"
             android:summary="@string/pref_queueAddToFront_sum"
             android:title="@string/pref_queueAddToFront_title"/>
-        />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_pref">
@@ -110,6 +109,20 @@
             android:key="prefHardwareForwardButtonSkips"
             android:summary="@string/pref_hardwareForwardButtonSkips_sum"
             android:title="@string/pref_hardwareForwardButtonSkips_title"/>
+        <Preference
+            android:key="prefPlaybackFastForwardDeltaLauncher"
+            android:summary="@string/pref_fast_forward_sum"
+            android:title="@string/pref_fast_forward" />
+        <Preference
+            android:key="prefPlaybackRewindDeltaLauncher"
+            android:summary="@string/pref_rewind_sum"
+            android:title="@string/pref_rewind" />
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefHardwarePreviousButtonRestarts"
+            android:summary="@string/pref_hardwarePreviousButtonRestarts_sum"
+            android:title="@string/pref_hardwarePreviousButtonRestarts_title"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"
@@ -122,6 +135,12 @@
             android:key="prefSkipKeepsEpisode"
             android:summary="@string/pref_skip_keeps_episodes_sum"
             android:title="@string/pref_skip_keeps_episodes_title"/>
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefFavoriteKeepsEpisode"
+            android:summary="@string/pref_favorite_keeps_episodes_sum"
+            android:title="@string/pref_favorite_keeps_episodes_title"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
@@ -140,7 +159,6 @@
             android:key="prefPlaybackSpeedLauncher"
             android:summary="@string/pref_playback_speed_sum"
             android:title="@string/pref_playback_speed_title" />
-
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
@@ -156,6 +174,12 @@
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref">
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefEnqueueDownloaded"
+            android:summary="@string/pref_enqueue_downloaded_summary"
+            android:title="@string/pref_enqueue_downloaded_title" />
         <Preference
             android:key="prefAutoUpdateIntervall"
             android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
@@ -201,6 +225,11 @@
                 android:summary="@string/pref_automatic_download_on_battery_sum"
                 android:defaultValue="true"/>
             <de.danoeh.antennapod.preferences.SwitchCompatPreference
+                android:key="prefEnableAutoDownloadOnMobile"
+                android:title="@string/pref_autodl_allow_on_mobile_title"
+                android:summary="@string/pref_autodl_allow_on_mobile_sum"
+                android:defaultValue="false"/>
+            <de.danoeh.antennapod.preferences.SwitchCompatPreference
                 android:key="prefEnableAutoDownloadWifiFilter"
                 android:title="@string/pref_autodl_wifi_filter_title"
                 android:summary="@string/pref_autodl_wifi_filter_sum"/>
@@ -233,7 +262,7 @@
                 android:title="@string/pref_revokeAccess_title"/>
         </PreferenceScreen>
         <PreferenceScreen
-            android:key="prefFlattrSettings"
+            android:key="prefGpodderSettings"
             android:title="@string/gpodnet_main_label">
 
             <PreferenceScreen
@@ -248,14 +277,23 @@
                 android:summary="@string/pref_gpodnet_setlogin_information_sum"/>
             <Preference
                 android:key="pref_gpodnet_sync"
-                android:title="@string/pref_gpodnet_sync_title"
-                android:summary="@string/pref_gpodnet_sync_sum"/>
+                android:title="@string/pref_gpodnet_sync_changes_title"
+                android:summary="@string/pref_gpodnet_sync_changes_sum"/>
+            <Preference
+                android:key="pref_gpodnet_force_full_sync"
+                android:title="@string/pref_gpodnet_full_sync_title"
+                android:summary="@string/pref_gpodnet_full_sync_sum"/>
             <Preference
                 android:key="pref_gpodnet_logout"
                 android:title="@string/pref_gpodnet_logout_title"/>
             <Preference
                 android:key="pref_gpodnet_hostname"
                 android:title="@string/pref_gpodnet_sethostname_title"/>
+            <de.danoeh.antennapod.preferences.SwitchCompatPreference
+                android:key="pref_gpodnet_notifications"
+                android:title="@string/pref_gpodnet_notifications_title"
+                android:summary="@string/pref_gpodnet_notifications_sum"
+                android:defaultValue="true"/>
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/storage_pref">
@@ -274,6 +312,9 @@
         <Preference
             android:key="prefOpmlExport"
             android:title="@string/opml_export_label"/>
+        <Preference
+            android:key="prefHtmlExport"
+            android:title="@string/html_export_label"/>
         <Preference
             android:key="statistics"
             android:title="@string/statistics_label"/>

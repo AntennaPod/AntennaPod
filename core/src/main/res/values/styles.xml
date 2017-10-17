@@ -239,6 +239,10 @@
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
     </style>
 
+    <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+    </style>
+
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
         <item name="windowActionBarOverlay">true</item>
     </style>
@@ -283,6 +287,16 @@
 
     <style name="Widget.AntennaPod.Button" parent="Widget.AppCompat.Button">
         <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
     </style>
 
     <style name="AntennaPod.Dialog.Light" parent="Theme.AppCompat.Light.Dialog">

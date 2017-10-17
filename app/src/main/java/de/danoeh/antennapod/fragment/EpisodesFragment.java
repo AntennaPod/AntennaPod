@@ -79,6 +79,11 @@ public class EpisodesFragment extends Fragment {
     public static class EpisodesPagerAdapter extends FragmentPagerAdapter {
 
         private final Resources resources;
+        private AllEpisodesFragment[] fragments = {
+                new NewEpisodesFragment(),
+                new AllEpisodesFragment(),
+                new FavoriteEpisodesFragment()
+        };
 
         public EpisodesPagerAdapter(FragmentManager fm, Resources resources) {
             super(fm);
@@ -87,15 +92,7 @@ public class EpisodesFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case POS_ALL_EPISODES:
-                    return new AllEpisodesFragment();
-                case POS_NEW_EPISODES:
-                    return new NewEpisodesFragment();
-                case POS_FAV_EPISODES:
-                    return new FavoriteEpisodesFragment();
-            }
-            return null;
+            return fragments[position];
         }
 
         @Override
@@ -114,6 +111,15 @@ public class EpisodesFragment extends Fragment {
                     return resources.getString(R.string.favorite_episodes_label);
                 default:
                     return super.getPageTitle(position);
+            }
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            super.setPrimaryItem(container, position, object);
+            for (int i = 0; i < TOTAL_COUNT; i++) {
+                // Invalidating the OptionsMenu is only allowed for the currently active fragment
+                fragments[i].isMenuInvalidationAllowed = (i == position);
             }
         }
     }

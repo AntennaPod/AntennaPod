@@ -26,7 +26,9 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -46,6 +48,7 @@ public class SubscriptionFragment extends Fragment {
 
     private int mPosition = -1;
 
+    private Subscription subscription;
 
     public SubscriptionFragment() {
     }
@@ -88,16 +91,25 @@ public class SubscriptionFragment extends Fragment {
         EventDistributor.getInstance().register(contentUpdate);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+    }
+
     private void loadSubscriptions() {
-        Observable.fromCallable(() -> DBReader.getNavDrawerData())
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
+        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     navDrawerData = result;
                     subscriptionAdapter.notifyDataSetChanged();
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Override
@@ -143,21 +155,18 @@ public class SubscriptionFragment extends Fragment {
                 Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> {
-                            loadSubscriptions();
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                        });
+                        .subscribe(result -> loadSubscriptions(),
+                                error -> Log.e(TAG, Log.getStackTraceString(error)));
                 return true;
             case R.id.mark_all_read_item:
                 Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> {
-                            loadSubscriptions();
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                        });
+                        .subscribe(result -> loadSubscriptions(),
+                                error -> Log.e(TAG, Log.getStackTraceString(error)));
+                return true;
+            case R.id.rename_item:
+                new RenameFeedDialog(getActivity(), feed).show();
                 return true;
             case R.id.remove_item:
                 final FeedRemover remover = new FeedRemover(getContext(), feed) {
@@ -169,7 +178,7 @@ public class SubscriptionFragment extends Fragment {
                 };
                 ConfirmationDialog conDialog = new ConfirmationDialog(getContext(),
                         R.string.remove_feed_label,
-                        R.string.feed_delete_confirmation_msg) {
+                        getString(R.string.feed_delete_confirmation_msg, feed.getTitle())) {
                     @Override
                     public void onConfirmButtonPressed(
                             DialogInterface dialog) {

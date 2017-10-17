@@ -1,0 +1,381 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Activitiy and fragment titles-->
+  <string name="feeds_label">Feeds</string>
+  <string name="statistics_label">Estadístiques</string>
+  <string name="add_feed_label">Amestar podcast</string>
+  <string name="episodes_label">Episodios</string>
+  <string name="all_episodes_short_label">Too</string>
+  <string name="favorite_episodes_label">Favoritos</string>
+  <string name="new_label">Nuevo</string>
+  <string name="settings_label">Axustes</string>
+  <string name="add_new_feed_label">Amestar podcast</string>
+  <string name="downloads_label">Descargues</string>
+  <string name="downloads_running_label">N\'execución</string>
+  <string name="downloads_completed_label">Completóse</string>
+  <string name="downloads_log_label">Rexistru</string>
+  <string name="subscriptions_label">Soscripciones</string>
+  <string name="subscriptions_list_label">Llistáu de soscripciones</string>
+  <string name="cancel_download_label">Encaboxar\ndescarga</string>
+  <string name="playback_history_label">Historial de reproducción</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">Aniciu de sesión de gpodder.net</string>
+  <string name="free_space_label">%1$s llibres</string>
+  <string name="episode_cache_full_title">Enllenóse la caché d\'episodios</string>
+  <string name="episode_cache_full_message">Algamóse la llende de la caché d\'episodios. Pues aumentar el tamañu de la caché n\'Axustes.</string>
+  <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Tiempu total de podcasts reproducíos.</string>
+  <string name="statistics_details_dialog">%1$d de %2$d episodios aniciaos.\n\nReproducíos %3$s de %4$s.</string>
+  <!--Main activity-->
+  <string name="drawer_open">Abrir menú</string>
+  <string name="drawer_close">Zarrar menú</string>
+  <string name="drawer_preferences">Preferencies del caxón</string>
+  <string name="drawer_feed_order_unplayed_episodes">Ordenar pel contador</string>
+  <string name="drawer_feed_order_alphabetical">Ordenar alfabéticamente</string>
+  <string name="drawer_feed_order_last_update">Ordenar pela data d\'espublización</string>
+  <string name="drawer_feed_counter_new_unplayed">Númberu de episodios nuevos ensin reproducir</string>
+  <string name="drawer_feed_counter_new">Númberu d\'episodios nuevos</string>
+  <string name="drawer_feed_counter_unplayed">Númberos d\'episodios ensin reproducir</string>
+  <string name="drawer_feed_counter_downloaded">Númberu d\'episodios baxaos</string>
+  <string name="drawer_feed_counter_none">Dengún</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">Abrir nel restolador</string>
+  <string name="copy_url_label">Copiar URL</string>
+  <string name="share_url_label">Compartir URL</string>
+  <string name="copied_url_msg">Copióse la URL al cartafueyu</string>
+  <string name="go_to_position_label">Dir a esta posición</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Llimpiar historial</string>
+  <!--Other-->
+  <string name="confirm_label">Confirmar</string>
+  <string name="cancel_label">Encaboxar</string>
+  <string name="yes">Sí</string>
+  <string name="no">Non</string>
+  <string name="reset">Reafitar</string>
+  <string name="author_label">Autor</string>
+  <string name="language_label">Llingua</string>
+  <string name="url_label">URL</string>
+  <string name="podcast_settings_label">Axustes</string>
+  <string name="cover_label">Semeya</string>
+  <string name="error_label">Fallu</string>
+  <string name="error_msg_prefix">Asocedió un fallu:</string>
+  <string name="refresh_label">Refrescar</string>
+  <string name="external_storage_error_msg">Nun hai disponible dengún almacenamientu esternu. Asegúrate que ta montáu pa que l\'aplicación puea furrular afayadizamente.</string>
+  <string name="chapters_label">Capítulos</string>
+  <string name="description_label">Descripción</string>
+  <string name="most_recent_prefix">Episodiu más recién:\u0020</string>
+  <string name="episodes_suffix">\u0020episodios</string>
+  <string name="length_prefix">Llargor:\u0020</string>
+  <string name="size_prefix">Tamañu:\u0020</string>
+  <string name="processing_label">Procesando</string>
+  <string name="loading_label">Cargando...</string>
+  <string name="save_username_password_label">Guardar nome d\'usuariu y contraseña</string>
+  <string name="close_label">Zarrar</string>
+  <string name="retry_label">Retentar</string>
+  <string name="auto_download_label">Incluyir en descargues automátiques</string>
+  <string name="auto_download_apply_to_items_title">Aplicar a episodios previos</string>
+  <string name="parallel_downloads_suffix">\u0020descargues paraleles</string>
+  <string name="feed_auto_download_always">Siempres</string>
+  <string name="feed_auto_download_never">Enxamás</string>
+  <string name="send_label">Unviar...</string>
+  <string name="episode_cleanup_never">Enxamás</string>
+  <string name="episode_cleanup_queue_removal">Al nun tar na cola</string>
+  <string name="episode_cleanup_after_listening">Dempués de finar</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">1 día dempués de finar</item>
+    <item quantity="other">%d díes dempués de finar</item>
+  </plurals>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">URL del feed</string>
+  <string name="etxtFeedurlHint">www.exemplu.com/feed</string>
+  <string name="txtvfeedurl_label">Amestar podcast pola URL</string>
+  <string name="podcastdirectories_label">Alcontrar podcast nel direutoriu</string>
+  <string name="podcastdirectories_descr">Pa podcasts nuevos, pues guetar n\'iTunes o fyyd, o restolar gpodder.net per nome, estaya o sonadía.</string>
+  <string name="browse_gpoddernet_label">Restolar gpodder.net</string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">Marcar too ccomo reproducío</string>
+  <string name="mark_all_read_msg">Conseñáronse tolos episodios como reproducíos</string>
+  <string name="mark_all_read_confirmation_msg">Confirma que quies conseñar tolos episodios como reproducíos, por favor.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Confirma que quies conseñar tolos episodios nesti feed como reproducíos, por favor.</string>
+  <string name="mark_all_seen_label">Conseñar too como visto</string>
+  <string name="mark_all_seen_msg">Conseñáronse tolos episodios como vistos</string>
+  <string name="mark_all_seen_confirmation_msg">Confirma que quies conseñar tolos episodios como vistos.</string>
+  <string name="show_info_label">Amosar información</string>
+  <string name="rename_feed_label">Renomar podcast</string>
+  <string name="remove_feed_label">Desaniciar podcast</string>
+  <string name="share_label">Compartir...</string>
+  <string name="share_link_label">Compartir enllaz</string>
+  <string name="share_feed_url_label">Compartir URL del feed</string>
+  <string name="share_item_url_label">Compatir URL del ficheru del episodiu</string>
+  <string name="feed_remover_msg">Desaniciando fees</string>
+  <string name="load_complete_feed">Completóse\'l refrescu\'l feed</string>
+  <string name="hide_episodes_title">Anubrir episodios</string>
+  <string name="episode_actions">Aplicar aiciones</string>
+  <string name="hide_unplayed_episodes_label">Ensin reproducir</string>
+  <string name="hide_paused_episodes_label">Posóse</string>
+  <string name="hide_played_episodes_label">Reprodúxose</string>
+  <string name="hide_queued_episodes_label">Na cola</string>
+  <string name="hide_downloaded_episodes_label">Baxóse</string>
+  <string name="hide_not_downloaded_episodes_label">Nun se baxó</string>
+  <string name="hide_has_media_label">Tien medios</string>
+  <string name="filtered_label">Peñéróse</string>
+  <string name="open_podcast">Abrir podcast</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Baxar</string>
+  <string name="play_label">Reproducir</string>
+  <string name="pause_label">Posar</string>
+  <string name="stop_label">Parar</string>
+  <string name="remove_label">Desaniciar</string>
+  <string name="delete_label">Desaniciar</string>
+  <string name="remove_episode_lable">Desaniciar episodiu</string>
+  <string name="marked_as_seen_label">Conseñóse como vistu</string>
+  <string name="mark_read_label">Conseñar como reproducíu</string>
+  <string name="marked_as_read_label">Conseñóse como reproducíu</string>
+  <string name="mark_unread_label">Conseñar como non reproducíu</string>
+  <string name="add_to_queue_label">Amestar a la cola</string>
+  <string name="added_to_queue_label">Amestóse a la cola</string>
+  <string name="remove_from_queue_label">Desaniciar de la cola</string>
+  <string name="add_to_favorite_label">Amestar a favoritos</string>
+  <string name="added_to_favorites">Amestóse a favoritos</string>
+  <string name="remove_from_favorite_label">Desaniciar de favoritos</string>
+  <string name="removed_from_favorites">Desanicióse de favoritos</string>
+  <string name="visit_website_label">Visitar sitiu web</string>
+  <string name="skip_episode_label">Saltar episodiu</string>
+  <string name="activate_auto_download">Activar descarga automática</string>
+  <string name="deactivate_auto_download">Desactivar descarga automática</string>
+  <string name="reset_position">Reaniciar posición de reproducción</string>
+  <string name="removed_item">Desanicióse l\'elementu</string>
+  <!--Download messages and labels-->
+  <string name="download_failed">falló</string>
+  <string name="download_pending">Descarga pendiente</string>
+  <string name="download_running">Descarga n\'execución</string>
+  <string name="download_error_device_not_found">Nun s\'alcontró\'l preséu d\'almacenamientu</string>
+  <string name="download_error_insufficient_space">Espaciu insuficiente</string>
+  <string name="download_error_file_error">Fallu de ficheru</string>
+  <string name="download_error_http_data_error">Fallu de datos HTTP</string>
+  <string name="download_error_error_unknown">Fallu desconocíu</string>
+  <string name="download_error_parser_exception">Esceición del analizador</string>
+  <string name="download_error_unsupported_type">Triba non sofitada de feed</string>
+  <string name="download_error_connection_error">Fallu de conexón</string>
+  <string name="download_error_unknown_host">Agospiu desconocíu</string>
+  <string name="download_error_unauthorized">Fallu d\'autenticación</string>
+  <string name="download_error_file_type_type">Fallu de triba de ficheru</string>
+  <string name="download_error_forbidden">Prohibío</string>
+  <string name="cancel_all_downloads_label">Encaboxar toles descargues</string>
+  <string name="download_canceled_msg">Encaboxóse la descarga</string>
+  <string name="download_canceled_autodownload_enabled_msg">Encaboxóse la descarga\nDesabilitóse la <i>auto-descarga</i> pa esti elementu</string>
+  <string name="download_report_title">Les descargues completáronse con fallos</string>
+  <string name="download_report_content_title">Informe de descarga</string>
+  <string name="download_error_malformed_url">URL mal formada</string>
+  <string name="download_error_io_error">Fallu d\'ES</string>
+  <string name="download_error_request_error">Fallu de solicitú</string>
+  <string name="download_error_db_access">Fallu d\'accesu a la base de datos</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d descarga restante</item>
+    <item quantity="other">%d descargues restantes</item>
+  </plurals>
+  <string name="downloads_processing">Procesando descargues</string>
+  <string name="download_notification_title">Baxando datos del podcast</string>
+  <string name="download_report_content">%1$d descargues esitoses, %2$d fallaron</string>
+  <string name="download_log_title_unknown">Títulu desconocíu</string>
+  <string name="download_type_feed">Feed</string>
+  <string name="download_type_media">Triba de mediu</string>
+  <string name="download_type_image">Imaxe</string>
+  <string name="download_request_error_dialog_message_prefix">Asocedió un fallu al tentar de baxar el ficheru:\u0020</string>
+  <string name="authentication_notification_title">Ríquese l\'autenticación</string>
+  <string name="authentication_notification_msg">El recursu que solicitesti rique un nome d\'usuariu y una contraseña</string>
+  <string name="confirm_mobile_download_dialog_title">Confirmar descarga móvil</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Deshabilitóse n\'axustes la descarga pente datos móviles.\n\nPues escoyer ente amestar l\'episodiu a la cola o permitir la descarga temporal.\n\n<small>La to escoyeta recordaráse 10 minutos</small></string>
+  <string name="confirm_mobile_download_dialog_message">Deshabilitóse n\'axustes la descarga pente datos móviles.\n\n¿Quies permitir la descarga temporal?\n\n<small>La to escoyeta recordaráse 10 minutos</small></string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">Poner na cola</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Pemitir temporalmente</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">¡Fallu!</string>
+  <string name="player_stopped_msg">Nun hai medios en reproducción</string>
+  <string name="player_preparing_msg">Tresnando</string>
+  <string name="player_ready_msg">Preparáu</string>
+  <string name="playback_error_server_died">Morrió\'l servidor</string>
+  <string name="playback_error_unknown">Fallu desconocíu</string>
+  <string name="no_media_playing_label">Nun hai medios en reproducción</string>
+  <string name="player_buffering_msg">Atroxando nel búfer</string>
+  <string name="playbackservice_notification_title">Reproduciendo podcast</string>
+  <string name="unknown_media_key">AntennaPod - Clave desconocida de medios: %1$d</string>
+  <!--Queue operations-->
+  <string name="lock_queue">Bloquiar cola</string>
+  <string name="unlock_queue">Desbloquiar cola</string>
+  <string name="queue_locked">Bloquióse la cola</string>
+  <string name="queue_unlocked">Desbloquióse la cola</string>
+  <string name="clear_queue_label">Llimpiar cola</string>
+  <string name="undo">Desfacer</string>
+  <string name="removed_from_queue">Desanicióse l\'elementu</string>
+  <string name="move_to_top_label">Xubir</string>
+  <string name="move_to_bottom_label">Baxar</string>
+  <string name="sort">Ordenar</string>
+  <string name="date">Data</string>
+  <string name="duration">Duración</string>
+  <string name="episode_title">Títulu d\'episodiu</string>
+  <string name="feed_title">Títulu del feed</string>
+  <string name="ascending">Ascendente</string>
+  <string name="descending">Descendente</string>
+  <string name="clear_queue_confirmation_msg">Confirma que quies llimpiar la tola de TOLO episodios nella, por favor.</string>
+  <!--Flattr-->
+  <string name="flattr_auth_label">Aniciu de sesión de Flattr</string>
+  <string name="flattr_auth_explanation">Primi\'l botón d\'embaxo pa entamar el procesu d\'autenticación. Amosaráse la pantalla d\'aniciu de sesión de Flattr y pidirásete que-y deas permisu a AntennaPod pa facer flattr a coses. Dempués d\'eso, volverás a esta pantalla automáticamente.</string>
+  <string name="authenticate_label">Autenticar</string>
+  <string name="return_home_label">Volver al aniciu</string>
+  <string name="flattr_auth_success">¡L\'autenticación tuvo ésitu! Agora pues facer flattr a coses dientro l\'aplicación.</string>
+  <string name="no_flattr_token_title">Nun s\'alcontró\'l pase de Flattr</string>
+  <string name="no_flattr_token_notification_msg">La to cuenta Flattr nun paez tar coneutada con AntennaPod. Calca equí p\'autenticar.</string>
+  <string name="no_flattr_token_msg">La to cuenta Flattr nun paez tar coneutada con AntennaPod. Pues o coneutar la cuenta con AntennaPod pa facer Flattr a coses dientro l\'aplicación, o pues visitar el sitiu web de la cosa a facer Flattr.</string>
+  <string name="authenticate_now_label">Autenticar</string>
+  <string name="action_forbidden_title">Torgóse la aición</string>
+  <string name="action_forbidden_msg">AntennaPod nun tien permisu pa esta aición. La razón quiciabes seya que se revocare\'l pase d\'accesu d\'AntennaPod a la to cuenta. Pues o reautenticate, o visitar el sitiu web de la cosa.</string>
+  <string name="access_revoked_title">Revocóse l\'accesu</string>
+  <string name="access_revoked_info">Revoquesti con ésitu\'l pase d\'accesu AntennaPod a la to cuenta. Pa completar el procesu, tienes de desaniciar esta aplicación del llistáu d\'aplicaciones aprobaes nos axustes de la to cuenta nel sitiu web de Flattr.</string>
+  <!--Flattr-->
+  <!--Variable Speed-->
+  <string name="download_plugin_label">Baxar complementu</string>
+  <string name="no_playback_plugin_title">Nun s\'instaló\'l complementu</string>
+  <string name="set_playback_speed_label">Velocidaes de reproducción</string>
+  <!--Empty list labels-->
+  <string name="no_items_label">Nun hai elementos nesti llistáu.</string>
+  <string name="no_feeds_label">Entá nun tas soscritu a feed dalu.</string>
+  <string name="no_chapters_label">Esti episodiu nun tien capítulos.</string>
+  <!--Preferences-->
+  <string name="storage_pref">Almacenamientu</string>
+  <string name="project_pref">Proyeutu</string>
+  <string name="services_label">Servicios</string>
+  <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Llimpieza d\'episodios</string>
+  <string name="pref_pauseOnDisconnect_sum">Posa la reproducción al desconeutase los auriculares o Bluetooth</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Sigue la reproducción al coneutar los auriculares</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Sigue la reproducción al reconeutar el Bluetooth</string>
+  <string name="pref_auto_delete_sum">Desanicia l\'episodiu al completase la reproducción</string>
+  <string name="pref_skip_keeps_episodes_sum">Caltién los episodios al saltalos</string>
+  <string name="pref_skip_keeps_episodes_title">Caltener episodios saltaos</string>
+  <string name="playback_pref">Reproducción</string>
+  <string name="network_pref">Rede</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Especifica un intervalu o una hora específica del día pa refrescar automáticamente los feeds</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Afitar intervalu</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">cada %1$s</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Baxa los ficheros de medios namái na WiFi</string>
+  <string name="pref_followQueue_title">Reproducción continua</string>
+  <string name="pref_mobileUpdate_sum">Permite los anovamientos pente la conexón de datos móviles</string>
+  <string name="refreshing_label">Refrescando</string>
+  <string name="flattr_settings_label">Axustes de Flattr</string>
+  <string name="pref_flattr_auth_title">Aniciu de sesión de Flattr</string>
+  <string name="pref_revokeAccess_sum">Revoca\'l permisu d\'accesu a la to cuenta Flatrr pa esta aplicación.</string>
+  <string name="pref_nav_drawer_sum">Personaliza l\'aspeutu del caxón de navegación.</string>
+  <string name="pref_nav_drawer_items_sum">Camuda qué elementos apaecen nel caxón de navegación.</string>
+  <string name="pref_nav_drawer_feed_order_sum">Camuda l\'orde de les tos soscripciones</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Camuda la información amosada pol contador de soscripciones</string>
+  <string name="pref_set_theme_sum">Camuda l\'aspeutu d\'AntennaPod</string>
+  <string name="pref_automatic_download_sum">Configura la descarga automática d\'episodios.</string>
+  <string name="pref_autodl_wifi_filter_sum">Permite la descarga namái dende les redes Wi-Fi esbillaes.</string>
+  <string name="pref_automatic_download_on_battery_sum">Permite la descarga automárica cuando la batería nun tea cargando.</string>
+  <string name="pref_episode_cache_title">Caché d\'episodios</string>
+  <string name="pref_update_interval_hours_plural">hores</string>
+  <string name="pref_update_interval_hours_singular">hora</string>
+  <string name="pref_update_interval_hours_manual">Manual</string>
+  <string name="pref_gpodnet_authenticate_sum">Anicia sesión cola to cuenta de gpodder.net pa sincronizar les tos soscripciones.</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Camuda la información d\'aniciu de sesión de la to cuenta de gpodder.net.</string>
+  <string name="pref_gpodnet_notifications_sum">Esti axuste nun s\'aplica a los fallos d\'autenticación.</string>
+  <string name="pref_playback_speed_title">Velocidaes de reproducción</string>
+  <string name="pref_expandNotify_title">Espander avisu</string>
+  <string name="pref_expandNotify_sum">Siempres espande l\'avisu p\'amosar los botones de reproducción.</string>
+  <string name="pref_showDownloadReport_title">Amosar informe de descarga</string>
+  <string name="pref_showDownloadReport_sum">SI falla la descarga, xenera un informe qu\'amuesa los detalles del fallu.</string>
+  <string name="pref_image_cache_size_sum">Tamañu del discu pa la caché d\'imáxenes.</string>
+  <string name="crash_report_title">Informe de casque</string>
+  <string name="experimental_pref">Esperimental</string>
+  <string name="pref_proxy_sum">Afita un proxy de rede</string>
+  <string name="pref_faq">FAQ</string>
+  <string name="pref_known_issues">Problemes conocíos</string>
+  <string name="pref_no_browser_found">Nun s\'alcontró un restolador web.</string>
+  <string name="pref_cast_title">Sofitu de Chromecast</string>
+  <!--Auto-Flattr dialog-->
+  <!--Search-->
+  <!--OPML import and export-->
+  <string name="start_import_label">Aniciar importación</string>
+  <string name="opml_import_label">Importación d\'OPML</string>
+  <string name="opml_directory_error">¡Fallu!</string>
+  <string name="reading_opml_label">Lleendo\'l ficheru OPML</string>
+  <string name="opml_reader_error">Asocedió un fallu entrín se lleía\'l documentu OPML:</string>
+  <string name="opml_import_error_no_file">¡Nun s\'esbillaron ficheros!</string>
+  <string name="select_all_label">Esbillar too</string>
+  <string name="deselect_all_label">Nun esbillar nada</string>
+  <string name="select_options_label">Esbillar...</string>
+  <string name="opml_export_label">Esportación d\'OPML</string>
+  <string name="html_export_label">Esportación de HTML</string>
+  <string name="exporting_label">Esportando...</string>
+  <string name="export_error_label">Fallu d\'esportación</string>
+  <string name="opml_import_ask_read_permission">Ríquese l\'accesu al almacenamientu internu pa lleer el ficheru OPML</string>
+  <!--Sleep timer-->
+  <string name="timer_vibration_label">Vibrar</string>
+  <string name="time_seconds">segundos</string>
+  <string name="time_minutes">minutos</string>
+  <string name="time_hours">hores</string>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">ESTAYES</string>
+  <string name="gpodnet_toplist_header">DESTACAO</string>
+  <string name="gpodnet_suggestions_header">SUXERENCIES</string>
+  <string name="username_label">Nome d\'usuariu</string>
+  <string name="password_label">Contraseña</string>
+  <string name="gpodnetauth_device_title">Esbilla de preséu</string>
+  <string name="gpodnetauth_device_descr">Crea un preséu nuevu pa usalu cola to cuente de gpodder.net o escueyi ún esistente:</string>
+  <string name="gpodnetauth_device_deviceID">ID de preséu:\u0020</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Crear preséu nuevu</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">Escoyer preséu esistente:</string>
+  <string name="gpodnetauth_device_errorEmpty">La ID del preséu nun ha tar balera</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">La ID del preséu yá ta n\'usu</string>
+  <string name="gpodnetauth_device_butChoose">Escoyer</string>
+  <string name="gpodnetauth_finish_butgomainscreen">Dir a la pantalla principal</string>
+  <string name="gpodnetsync_auth_error_title">Fallu d\'autenticación de gpodder.net</string>
+  <string name="gpodnetsync_error_descr">Asocedió un fallu na sincronización:\u0020</string>
+  <!--Directory chooser-->
+  <string name="selected_folder_label">Carpeta esbillada:</string>
+  <string name="create_folder_label">Crear carpeta</string>
+  <string name="choose_data_directory_permission_rationale">Ríquese l\'accesu al almacenamientu esternu pa camudar la carpeta de datos</string>
+  <string name="create_folder_msg">¿Crear carpeta nueva col nome «%1$s»?</string>
+  <string name="create_folder_success">Creóse la carpeta nueva</string>
+  <string name="create_folder_error_no_write_access">Nun pue escribise a esta carpeta</string>
+  <string name="create_folder_error_already_exists">Yá esiste la carpeta</string>
+  <string name="create_folder_error">Nun pudo crease la carpeta</string>
+  <string name="folder_not_empty_dialog_title">La carpeta nun ta balera</string>
+  <!--Online feed view-->
+  <string name="downloading_label">Baxando...</string>
+  <!--Content descriptions for image buttons-->
+  <string name="rewind_label">Rebobinar</string>
+  <string name="fast_forward_label">Avance rápidu</string>
+  <string name="media_type_audio_label">Audiu</string>
+  <string name="media_type_video_label">Videu</string>
+  <!--Feed information screen-->
+  <string name="authentication_label">Autenticación</string>
+  <!--Progress information-->
+  <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <string name="all_label">Too</string>
+  <string name="selected_all_label">Esbilláronse tolos episodios</string>
+  <!--Sort-->
+  <!--Rating dialog-->
+  <string name="rating_title">¿Préstate AntennaPod?</string>
+  <string name="rating_message">Agradeceriemos que valores a AntennaPod si pues y quies.</string>
+  <string name="rating_never_label">Dexáime solu</string>
+  <string name="rating_later_label">Recordáimelo más sero</string>
+  <string name="rating_now_label">¡Sí, vamos facelo!</string>
+  <!--Audio controls-->
+  <string name="audio_controls">Controles d\'audiu</string>
+  <string name="playback_speed">Velocidá de reproducción</string>
+  <string name="volume">Volume</string>
+  <string name="left_short">I</string>
+  <string name="right_short">D</string>
+  <string name="audio_effects">Efeutos d\'audiu</string>
+  <!--proxy settings-->
+  <string name="proxy_type_label">Triba</string>
+  <string name="host_label">Agospiu</string>
+  <string name="port_label">Puertu</string>
+  <string name="optional_hint">(Opcional)</string>
+  <string name="proxy_checking">Comprobando...</string>
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+</resources>

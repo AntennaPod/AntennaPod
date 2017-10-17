@@ -1,0 +1,43 @@
+AntennaPod jest programem katalogującym i odtwarzającym który daje możliwość natychmiastowego dostępu do milionów darmowych i płatnych podcastów. Od niezależych twórców po wielkich producentów takich jak BBC, NPR czy CNN. Dodawaj, importuj, eksportuj wątki bez przeszkód używając bazy iTunes, plików OPML czy po prostu przez linki RSS. Oszczędź wysiłek, baterię oraz pakiety danych mobilnych poprzez zaawansowaną kontrolę automatycznego pobierania (określone godziny, interwały czy sieci WiFi) oraz inteligentne usuwanie odcinków ( na podstawie ulubionych i ustawień opóźnień).<br>
+Najważniejsze: pobieraj , streamuj lub kolejkuj odcinki oraz rozkoszuj się nimi jak tylko chcesz z możliwością zmiany prędkości odtwarzania, wsparciem rozdziałów i wyłącznikiem czasowym. Możesz nawet pokazać jak bardzo doceniach twórców dzięki integracji z Flattr.
+
+Stworzone przez entuzjastów podcastów, AntennaPod jest darmowe w każdym słowa znaczeniu: otwarty kod, brak opłat i reklam.
+
+<b>Wszystkie funkcje:</b><br>
+ZAIMPORTUJ, ZORGANIZUJ I ODTWARZAJ<br>
+&#8226; Dodawaj i importuj kanały poprzez iTunes, gPodder.net, z plików OPML, RSS i linków Atom<br>
+&#8226; Zarządzaj odtwarzaniem zewsząd: widget na ekranie głównym, powiadomienia systemowe i kontrolery bluetooth<br>
+&#8226; Delektuj się słuchaniem po swojemu z: zmienną prędkością odtwarzania, wsparciem rozdziałów (MP3, VorbisComment i Podlove), zapamiętywaniem miejsca zakończenia słuchania i zaawansowanym wyłącznikiem czasowym (potrząśnij aby zrestartować, zmiejszanie głośności i zwalnianie odtwarzania) <br>
+&#8226; Dostęp do odcinków i kanałów chroniony hasłem<br>
+&#8226; Wykorzystaj zapisane kanały (www.podlove.org/paged-feeds)
+
+ŚLEDŹ, DZIEL SIĘ I DOCENIAJ<br>
+&#8226; Zapamiętywanie najlepszych z najlepszych poprzez dodawania odcinków do ulubionych<br>
+&#8226; Wyszukiwanie odcinów w historii odtwarzania lub poprzez tytuł/przypisy<br>
+&#8226; Dzial się odcinkami i wątkami poprzez zaawansowane opcje medii społecznych oraz emaila, serwisu gPodder.net lub poprzez eksport do OPML<br>
+&#8226; Wsparcie twórców poprzez integrację z Flattr, również poprzez automatyczne flattr-owanie
+
+Kontroluj system<br>
+&#8226; Ustaw automatyczne pobieranie zgodnie z własnymi preferencjami: wybieranie wątków, pobieranie tylko przez WiFi, wybór określonych sieci WiFi, wymaganie ładowania przy pobieraniu oraz ustawienie harmonogramu i interwałów<br>
+&#8226; Zarządanie pamięcią poprzez ustawienia liczby pobranych odcinków z pomocą inteligentnego kasowania( na podstawie ulubionych i statusu odtwarzania) oraz wyboru lokalizacji<br>
+&#8226; Używaj AntennaPod w swoim języku (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
+&#8226; Dostosowanie wyglądu jasną i ciemną skórką<br>
+&#8226; Twórz kopie bezpieczeństwa swoich subskrypcji z pomocą zintegrowanego gPoddder.net oraz plików OPML
+
+<b>Dołącz do społeczności AntennaPod</b><br>
+AntennaPod jest ciągle rozwijane przez ochotników. Ty też możesz pomóc, kodem lub komentarzem!
+
+Sugestie ulepszeń, raporty błędów oraz dodatki do kodu prosimy kierować poprzez GitHub<br>
+https://www.github.com/AntennaPod/AntennaPod
+
+Nasza grupa Google jest miejsce do dzielenia się pomysłami, ulubionymi momentami podcastów oraz miejscem gdzie można podziękować ochotnikom za ich pracę:<br>
+https://groups.google.com/forum/#!forum/antennapod
+
+Masz pytanie lub chcesz przekazać nam swoją opinię ?
+https://twitter.com/@AntennaPod
+
+Pomoc w tłumaczeniach na Transifex:<br>
+https://www.transifex.com/antennapod/antennapod
+
+Jeśli chcesz otrzymywać najnowsze ulepszenia wcześniej niż inni rozważ dołączenie do programu beta testów:<br>
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

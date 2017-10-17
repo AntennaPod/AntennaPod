@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.adapter.itunes;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.mfietz.fyydlin.SearchHit;
 
 public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
     /**
@@ -42,8 +45,9 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         //Current podcast
         Podcast podcast = data.get(position);
 
@@ -66,7 +70,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
 
         //Set the title
         viewHolder.titleView.setText(podcast.title);
-        if(!podcast.feedUrl.contains("itunes.apple.com")) {
+        if(podcast.feedUrl != null && !podcast.feedUrl.contains("itunes.apple.com")) {
             viewHolder.urlView.setText(podcast.feedUrl);
             viewHolder.urlView.setVisibility(View.VISIBLE);
         } else {
@@ -87,35 +91,6 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
     }
 
     /**
-     * View holder object for the GridView
-     */
-    class PodcastViewHolder {
-
-        /**
-         * ImageView holding the Podcast image
-         */
-        public final ImageView coverView;
-
-        /**
-         * TextView holding the Podcast title
-         */
-        public final TextView titleView;
-
-        public final TextView urlView;
-
-
-        /**
-         * Constructor
-         * @param view GridView cell
-         */
-        PodcastViewHolder(View view){
-            coverView = (ImageView) view.findViewById(R.id.imgvCover);
-            titleView = (TextView) view.findViewById(R.id.txtvTitle);
-            urlView = (TextView) view.findViewById(R.id.txtvUrl);
-        }
-    }
-
-    /**
      * Represents an individual podcast on the iTunes Store.
      */
     public static class Podcast { //TODO: Move this out eventually. Possibly to core.itunes.model
@@ -128,14 +103,16 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         /**
          * URL of the podcast image
          */
+        @Nullable
         public final String imageUrl;
         /**
          * URL of the podcast feed
          */
+        @Nullable
         public final String feedUrl;
 
 
-        private Podcast(String title, String imageUrl, String feedUrl) {
+        private Podcast(String title, @Nullable String imageUrl, @Nullable String feedUrl) {
             this.title = title;
             this.imageUrl = imageUrl;
             this.feedUrl = feedUrl;
@@ -148,10 +125,14 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
          * @throws JSONException
          */
         public static Podcast fromSearch(JSONObject json) throws JSONException {
-            String title = json.getString("collectionName");
-            String imageUrl = json.getString("artworkUrl100");
-            String feedUrl = json.getString("feedUrl");
+            String title = json.optString("collectionName", "");
+            String imageUrl = json.optString("artworkUrl100", null);
+            String feedUrl = json.optString("feedUrl", null);
             return new Podcast(title, imageUrl, feedUrl);
+        }
+
+        public static Podcast fromSearch(SearchHit searchHit) {
+            return new Podcast(searchHit.getTitle(), searchHit.getImageUrl(), searchHit.getXmlUrl());
         }
 
         /**
@@ -176,5 +157,34 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
             return new Podcast(title, imageUrl, feedUrl);
         }
 
+    }
+
+    /**
+     * View holder object for the GridView
+     */
+    class PodcastViewHolder {
+
+        /**
+         * ImageView holding the Podcast image
+         */
+        final ImageView coverView;
+
+        /**
+         * TextView holding the Podcast title
+         */
+        final TextView titleView;
+
+        final TextView urlView;
+
+
+        /**
+         * Constructor
+         * @param view GridView cell
+         */
+        PodcastViewHolder(View view){
+            coverView = (ImageView) view.findViewById(R.id.imgvCover);
+            titleView = (TextView) view.findViewById(R.id.txtvTitle);
+            urlView = (TextView) view.findViewById(R.id.txtvUrl);
+        }
     }
 }

@@ -1,18 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeduri</string>
-  <string name="podcasts_label">PODCASTURI</string>
   <string name="new_label">Nou</string>
-  <string name="waiting_list_label">Listă de așteptare</string>
   <string name="settings_label">Setări</string>
   <string name="downloads_label">Descărcări</string>
   <string name="cancel_download_label">Anulează descărcare</string>
   <string name="playback_history_label">Istorie ascultare</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">autentificare gpodder.net</string>
-  <!--New episodes fragment-->
   <!--Statistics fragment-->
   <!--Main activity-->
   <!--Webview actions-->
@@ -49,7 +45,6 @@
   <string name="mark_all_read_label">Marchează toate ca citite</string>
   <string name="show_info_label">Arată informații</string>
   <string name="share_link_label">Împarte adresă website</string>
-  <string name="feed_delete_confirmation_msg">Confirmați ștergerea feedului și a TUTUROR episoadelor pe care le-ați descărcat.</string>
   <!--actions on feeditems-->
   <string name="download_label">Descarcă</string>
   <string name="play_label">Play</string>
@@ -62,8 +57,6 @@
   <string name="remove_from_queue_label">Șterge din Coadă</string>
   <string name="visit_website_label">Vizitează Website</string>
   <string name="support_label">Flattr aceasta</string>
-  <string name="enqueue_all_new">Adaugă toate în coadă</string>
-  <string name="download_all">Descarcă toate</string>
   <string name="skip_episode_label">Sari peste episod</string>
   <!--Download messages and labels-->
   <string name="download_pending">Descărcare în așteptare</string>
@@ -99,7 +92,6 @@
   <string name="playback_error_server_died">Server mort</string>
   <string name="playback_error_unknown">Eroare necuonscută</string>
   <string name="no_media_playing_label">Nu se ascultă nimic</string>
-  <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffering</string>
   <string name="playbackservice_notification_title">Cântă podcast</string>
   <!--Queue operations-->
@@ -169,8 +161,6 @@
   <string name="pref_playback_speed_sum">Modifică vitezele disponibile pentru viteza de ascultare.</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
-  <string name="search_hint">Caută feeduri sau episoade</string>
-  <string name="found_in_shownotes_label">Găsit în notițe</string>
   <string name="found_in_chapters_label">Găsit în capitole</string>
   <string name="search_status_no_results">Nu s-a găsit nici un rezultat</string>
   <string name="search_label">Caută</string>
@@ -229,7 +219,11 @@
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

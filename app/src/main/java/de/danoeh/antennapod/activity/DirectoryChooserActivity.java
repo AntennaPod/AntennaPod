@@ -89,9 +89,7 @@ public class DirectoryChooserActivity extends AppCompatActivity {
                 adb.setTitle(R.string.folder_not_empty_dialog_title);
                 adb.setMessage(R.string.folder_not_empty_dialog_msg);
                 adb.setNegativeButton(R.string.cancel_label,
-                        (dialog, which) -> {
-                            dialog.dismiss();
-                        });
+                        (dialog, which) -> dialog.dismiss());
                 adb.setPositiveButton(R.string.confirm_label,
                         (dialog, which) -> {
                             dialog.dismiss();
@@ -291,9 +289,7 @@ public class DirectoryChooserActivity extends AppCompatActivity {
         builder.setMessage(String.format(getString(R.string.create_folder_msg),
                 CREATE_DIRECTORY_NAME));
         builder.setNegativeButton(R.string.cancel_label,
-                (dialog, which) -> {
-                    dialog.dismiss();
-                });
+                (dialog, which) -> dialog.dismiss());
         builder.setPositiveButton(R.string.confirm_label,
                 (dialog, which) -> {
                     dialog.dismiss();

@@ -20,6 +20,7 @@
   <string name="playback_history_label">Cronologia delle riproduzioni</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
+  <string name="free_space_label">%1$s disponibili</string>
   <string name="episode_cache_full_title">Cache degli episodi piena</string>
   <string name="episode_cache_full_message">Il limite della cache degli episodi è stato raggiunto. Puoi incrementare la dimensione della cache nelle Impostazioni.</string>
   <!--Statistics fragment-->
@@ -28,11 +29,13 @@
   <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
   <string name="drawer_close">Chiudi il menù</string>
+  <string name="drawer_preferences">Preferenze Cassetto</string>
   <string name="drawer_feed_order_alphabetical">Ordina alfabeticamente</string>
   <string name="drawer_feed_order_last_update">Ordina per data di pubblicazione</string>
   <string name="drawer_feed_counter_new_unplayed">Numero di episodi nuovi e non riprodotti</string>
   <string name="drawer_feed_counter_new">Numero di episodi nuovi</string>
   <string name="drawer_feed_counter_unplayed">Numero di episodi non riprodotti</string>
+  <string name="drawer_feed_counter_downloaded">Numero di episodi scaricati</string>
   <string name="drawer_feed_counter_none">Nessuno</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Apri nel browser</string>
@@ -70,6 +73,7 @@
   <string name="retry_label">Riprova</string>
   <string name="auto_download_label">Includi nei download automatici</string>
   <string name="auto_download_apply_to_items_title">Applica ai Precedenti Episodi</string>
+  <string name="auto_download_apply_to_items_message">La nuova funzione <i>Auto Download</i> sarà applicata automaticamente ai nuovi episodi.\nVuoi attivarla anche per gli episodi pubblicati precedentemente?</string>
   <string name="auto_delete_label">Elimina Episodi Automaticamente</string>
   <string name="parallel_downloads_suffix">\u0020download paralleli</string>
   <string name="feed_auto_download_always">Sempre</string>
@@ -86,7 +90,6 @@
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Aggiungi un Podcast tramite URL</string>
   <string name="podcastdirectories_label">Trova un podcast nella directory</string>
-  <string name="podcastdirectories_descr">Puoi cercare dei nuovi podcast in base al nome, alla categoria o alla popolarità nella directory di gpodder.net.</string>
   <string name="browse_gpoddernet_label">Esplora gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Segna tutti come riprodotti</string>
@@ -95,14 +98,14 @@
   <string name="mark_all_read_feed_confirmation_msg">Per favore conferma che vuoi segnare tutti gli episodi di questo feed come riprodotti.</string>
   <string name="mark_all_seen_label">Segna tutti come visti</string>
   <string name="show_info_label">Informazioni</string>
-  <string name="remove_feed_label">Rimuovi un podcast</string>
+  <string name="rename_feed_label">Rinomina Podcast</string>
+  <string name="remove_feed_label">Rimuovi podcast</string>
   <string name="share_label">Condividi...</string>
   <string name="share_link_label">Condividi il link al sito</string>
   <string name="share_link_with_position_label">Condividi il Link con la Posizione</string>
   <string name="share_feed_url_label">Condividi URL del Feed</string>
   <string name="share_item_url_label">Condividi URL del File dell\'episodio</string>
   <string name="share_item_url_with_position_label">Condividi l\'URL del File dell\'epsiodio con la Posizione</string>
-  <string name="feed_delete_confirmation_msg">Per favore conferma la cancellazione di questo feed e di TUTTI gli episodi collegati che sono stati precedentemente scaricati.</string>
   <string name="feed_remover_msg">Rimozione feed</string>
   <string name="load_complete_feed">Ricarica il feed completo</string>
   <string name="hide_episodes_title">Nascondi gli episodi</string>
@@ -124,7 +127,9 @@
   <string name="stop_label">Ferma</string>
   <string name="stream_label">Stream</string>
   <string name="remove_label">Rimuovi</string>
+  <string name="delete_label">Elimina</string>
   <string name="remove_episode_lable">Rimuovi l\'episodio</string>
+  <string name="marked_as_seen_label">Segna come visto</string>
   <string name="mark_read_label">Segna come riprodotto</string>
   <string name="marked_as_read_label">Segnato come riprodotto</string>
   <string name="mark_unread_label">Segna come non riprodotto</string>
@@ -207,11 +212,13 @@
   <string name="move_to_top_label">Sposta all\'inizio</string>
   <string name="move_to_bottom_label">Sposta in fondo</string>
   <string name="sort">Ordina</string>
-  <string name="alpha">Alfabeticamente</string>
   <string name="date">Per data</string>
   <string name="duration">Per durata</string>
+  <string name="episode_title">Titolo episodio</string>
+  <string name="feed_title">Titolo feed</string>
   <string name="ascending">In ordine crescente</string>
   <string name="descending">In ordine decrescente</string>
+  <string name="clear_queue_confirmation_msg">Per favore conferma che vuoi rimuovere dalla coda TUTTI gli episodi in essa presenti.</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Accesso a Flattr</string>
   <string name="flattr_auth_explanation">Premi il tasto seguente per iniziare il processo di autenticazione. Sarai trasferito alla pagina di login di flattr sul tuo browser e ti sarà richiesto di garantire ad AntennaPod il permesso di effettuare microdonazioni. Dopo la tua autorizzazione, sarai riportato alla seguente schermata in modo automatico.</string>
@@ -248,6 +255,7 @@
   <string name="no_feeds_label">Non sei ancora abbonato a nessun feed.</string>
   <string name="no_chapters_label">Questo episodio non ha capitoli.</string>
   <!--Preferences-->
+  <string name="storage_pref">Memoria</string>
   <string name="project_pref">Progetto</string>
   <string name="other_pref">Altro</string>
   <string name="about_pref">Informazioni</string>
@@ -258,6 +266,7 @@
   <string name="pref_followQueue_sum">Passa al prossimo episodio in coda quanto si completa una riproduzione</string>
   <string name="pref_auto_delete_sum">Elimina l\'episodio quando viene completata la riproduzione</string>
   <string name="pref_auto_delete_title">Elimina automaticamente</string>
+  <string name="pref_skip_keeps_episodes_title">Manteni gli Episodi Saltati</string>
   <string name="playback_pref">Riproduzione</string>
   <string name="network_pref">Rete</string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Disabilita</string>
@@ -269,6 +278,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">Download dei media su WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Disconnessione cuffie</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Riconnetti le cuffie</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Riconnessione Bluetooth</string>
   <string name="pref_mobileUpdate_title">Update su rete mobile</string>
   <string name="pref_mobileUpdate_sum">Permetti gli aggiornamenti tramite connessione dati mobile</string>
   <string name="refreshing_label">Aggiornamento</string>
@@ -283,6 +293,7 @@
   <string name="pref_auto_flattr_sum">Configura l\'esecuzione automatica di Flattr</string>
   <string name="user_interface_label">Interfaccia utente</string>
   <string name="pref_set_theme_title">Seleziona il tema</string>
+  <string name="pref_nav_drawer_feed_order_title">Imposta l\'ordine delle Iscrizioni</string>
   <string name="pref_set_theme_sum">Cambia l\'aspetto di AntennaPod</string>
   <string name="pref_automatic_download_title">Download automatico</string>
   <string name="pref_automatic_download_sum">Configura il download automatico degli episodi</string>
@@ -304,7 +315,6 @@
   <string name="pref_gpodnet_logout_toast">Logout effettuato</string>
   <string name="pref_gpodnet_setlogin_information_title">Cambia le informazioni di login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Cambia le informazioni di login per il tuo account gpodder.net.</string>
-  <string name="pref_gpodnet_sync_title">Sincronizza ora</string>
   <string name="pref_gpodnet_sync_started">Sincronizzazione avviata</string>
   <string name="pref_playback_speed_title">Velocità di riproduzione</string>
   <string name="pref_playback_speed_sum">Personalizza le velocità disponibili per la riproduzione audio a velocità variabile</string>
@@ -331,8 +341,6 @@
   <string name="auto_flattr_ater_beginning">Carica l\'episodio su Flattr appena comincia la riproduzione</string>
   <string name="auto_flattr_ater_end">Carica l\'episodio su Flattr appena finisce la riproduzione</string>
   <!--Search-->
-  <string name="search_hint">Cerca dei feed o degli episodi</string>
-  <string name="found_in_shownotes_label">Trovato nelle note dell\'episodio</string>
   <string name="found_in_chapters_label">Trovato nei capitoli</string>
   <string name="search_status_no_results">Nessun risultato trovato</string>
   <string name="search_label">Ricerca</string>
@@ -468,6 +476,8 @@
   <string name="rating_later_label">Ricordamelo più tardi</string>
   <!--Audio controls-->
   <string name="volume">Volume</string>
+  <string name="left_short">L</string>
+  <string name="right_short">R</string>
   <string name="audio_effects">Effetti Audio</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>

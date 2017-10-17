@@ -215,9 +215,7 @@ public class CompletedDownloadsFragment extends ListFragment {
                             onFragmentLoaded();
                         }
                     }
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error ->  Log.e(TAG, Log.getStackTraceString(error)));
     }
 
 }

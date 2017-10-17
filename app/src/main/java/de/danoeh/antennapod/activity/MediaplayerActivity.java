@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
@@ -9,6 +10,7 @@ import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
@@ -39,8 +41,10 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.Supplier;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -48,6 +52,8 @@ import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -177,6 +183,13 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         };
     }
 
+    protected static TextView getTxtvFFFromActivity(MediaplayerActivity activity) {
+        return activity.txtvFF;
+    }
+    protected static TextView getTxtvRevFromActivity(MediaplayerActivity activity) {
+        return activity.txtvRev;
+    }
+
     protected void onSetSpeedAbilityChanged() {
         Log.d(TAG, "onSetSpeedAbilityChanged()");
         updatePlaybackSpeedButton();
@@ -281,7 +294,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        if (Flavors.FLAVOR == Flavors.PLAY) {
+            requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.mediaplayer, menu);
         return true;
@@ -294,10 +309,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             return false;
         }
         Playable media = controller.getMedia();
+        boolean isFeedMedia = media != null && (media instanceof FeedMedia);
 
-        menu.findItem(R.id.support_item).setVisible(
-                media != null && media.getPaymentLink() != null &&
-                        (media instanceof FeedMedia) &&
+        menu.findItem(R.id.support_item).setVisible(isFeedMedia && media.getPaymentLink() != null &&
                         ((FeedMedia) media).getItem() != null &&
                         ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
         );
@@ -305,20 +319,21 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         boolean hasWebsiteLink = media != null && media.getWebsiteLink() != null;
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
-        boolean isItemAndHasLink = media != null && (media instanceof FeedMedia) &&
+        boolean isItemAndHasLink = isFeedMedia &&
                 ((FeedMedia) media).getItem() != null && ((FeedMedia) media).getItem().getLink() != null;
         menu.findItem(R.id.share_link_item).setVisible(isItemAndHasLink);
         menu.findItem(R.id.share_link_with_position_item).setVisible(isItemAndHasLink);
 
-        boolean isItemHasDownloadLink = media != null && (media instanceof FeedMedia) && ((FeedMedia) media).getDownload_url() != null;
+        boolean isItemHasDownloadLink = isFeedMedia && ((FeedMedia) media).getDownload_url() != null;
         menu.findItem(R.id.share_download_url_item).setVisible(isItemHasDownloadLink);
         menu.findItem(R.id.share_download_url_with_position_item).setVisible(isItemHasDownloadLink);
+        menu.findItem(R.id.share_file).setVisible(isFeedMedia && ((FeedMedia) media).fileExists());
 
         menu.findItem(R.id.share_item).setVisible(hasWebsiteLink || isItemAndHasLink || isItemHasDownloadLink);
 
         menu.findItem(R.id.add_to_favorites_item).setVisible(false);
         menu.findItem(R.id.remove_from_favorites_item).setVisible(false);
-        if(media != null && media instanceof FeedMedia) {
+        if (isFeedMedia) {
             menu.findItem(R.id.add_to_favorites_item).setVisible(!isFavorite);
             menu.findItem(R.id.remove_from_favorites_item).setVisible(isFavorite);
         }
@@ -559,6 +574,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem(), true);
                         }
                         break;
+                    case R.id.share_file:
+                        if (media instanceof FeedMedia) {
+                            ShareUtils.shareFeedItemFile(this, ((FeedMedia) media));
+                        }
+                        break;
                     default:
                         return false;
                 }
@@ -627,17 +647,16 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
      */
     protected boolean loadMediaInfo() {
         Log.d(TAG, "loadMediaInfo()");
+        if(controller == null || controller.getMedia() == null) {
+            return false;
+        }
         Playable media = controller.getMedia();
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
-        if (media != null) {
-            onPositionObserverUpdate();
-            checkFavorite();
-            updatePlaybackSpeedButton();
-            return true;
-        } else {
-            return false;
-        }
+        onPositionObserverUpdate();
+        checkFavorite();
+        updatePlaybackSpeedButton();
+        return true;
     }
 
     protected void updatePlaybackSpeedButton() {
@@ -648,6 +667,91 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         // Only meaningful on AudioplayerActivity, where it is overridden.
     }
 
+    /**
+     * Abstract directions to skip forward or back (rewind) and encapsulates behavior to get or set preference (including update of UI on the skip buttons).
+     */
+    static public enum SkipDirection {
+        SKIP_FORWARD(
+                UserPreferences::getFastForwardSecs,
+                MediaplayerActivity::getTxtvFFFromActivity,
+                UserPreferences::setFastForwardSecs,
+                R.string.pref_fast_forward),
+        SKIP_REWIND(UserPreferences::getRewindSecs,
+                MediaplayerActivity::getTxtvRevFromActivity,
+                UserPreferences::setRewindSecs,
+                R.string.pref_rewind);
+
+        private final Supplier<Integer> getPrefSecsFn;
+        private final Func1<MediaplayerActivity, TextView> getTextViewFn;
+        private final Action1<Integer> setPrefSecsFn;
+        private final int titleResourceID;
+
+        /**
+         *  Constructor for skip direction enum.  Stores references to  utility functions and resource
+         *  id's that vary dependending on the direction.
+         *
+         * @param getPrefSecsFn Handle to function that retrieves current seconds of the skip delta
+         * @param getTextViewFn Handle to function that gets the TextView which displays the current skip delta value
+         * @param setPrefSecsFn Handle to function that sets the preference (setting) for the skip delta value (and optionally updates the button label with the current values)
+         * @param titleResourceID ID of the resource string with the title for a view
+         */
+        SkipDirection(Supplier<Integer> getPrefSecsFn, Func1<MediaplayerActivity, TextView> getTextViewFn, Action1<Integer> setPrefSecsFn, int titleResourceID) {
+            this.getPrefSecsFn = getPrefSecsFn;
+            this.getTextViewFn = getTextViewFn;
+            this.setPrefSecsFn = setPrefSecsFn;
+            this.titleResourceID = titleResourceID;
+        }
+
+
+        public int getPrefSkipSeconds() {
+            return(getPrefSecsFn.get());
+        }
+
+        /**
+         * Updates preferences for a forward or backward skip depending on the direction of the instance, optionally updating the UI.
+         *
+         * @param seconds Number of seconds to set the preference associated with the direction of the instance.
+         * @param activity MediaplyerActivity that contains textview to update the display of the skip delta setting (or null if nothing to update)
+         */
+        public void setPrefSkipSeconds(int seconds, @Nullable Activity activity) {
+            setPrefSecsFn.call(seconds);
+
+            if (activity != null && activity instanceof  MediaplayerActivity)  {
+                TextView tv = getTextViewFn.call((MediaplayerActivity)activity);
+                if (tv != null) tv.setText(String.valueOf(seconds));
+            }
+        }
+        public int getTitleResourceID() {
+            return titleResourceID;
+        }
+    }
+
+    static public void showSkipPreference(Activity activity, SkipDirection direction) {
+        int checked = 0;
+        int skipSecs = direction.getPrefSkipSeconds();
+        final int[] values = activity.getResources().getIntArray(R.array.seek_delta_values);
+        final String[] choices = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            if (skipSecs == values[i]) {
+                checked = i;
+            }
+            choices[i] = String.valueOf(values[i]) + " " + activity.getString(R.string.time_seconds);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(direction.getTitleResourceID());
+        builder.setSingleChoiceItems(choices, checked, null);
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            int choice = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+            if (choice < 0 || choice >= values.length) {
+                System.err.printf("Choice in showSkipPreference is out of bounds %d", choice);
+            } else {
+                direction.setPrefSkipSeconds(values[choice], activity);
+            }
+        });
+        builder.create().show();
+    }
 
     protected void setupGUI() {
         setContentView(getContentViewResourceId());
@@ -690,7 +794,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         butFF = (ImageButton) findViewById(R.id.butFF);
         txtvFF = (TextView) findViewById(R.id.txtvFF);
         if (txtvFF != null) {
-            txtvFF.setText(String.valueOf(UserPreferences.getFastFowardSecs()));
+            txtvFF.setText(String.valueOf(UserPreferences.getFastForwardSecs()));
         }
         butSkip = (ImageButton) findViewById(R.id.butSkip);
 
@@ -702,39 +806,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
         if (butRev != null) {
             butRev.setOnClickListener(v -> onRewind());
-            butRev.setOnLongClickListener(new View.OnLongClickListener() {
-
-                int choice;
-
-                @Override
-                public boolean onLongClick(View v) {
-                    int checked = 0;
-                    int rewindSecs = UserPreferences.getRewindSecs();
-                    final int[] values = getResources().getIntArray(R.array.seek_delta_values);
-                    final String[] choices = new String[values.length];
-                    for (int i = 0; i < values.length; i++) {
-                        if (rewindSecs == values[i]) {
-                            checked = i;
-                        }
-                        choices[i] = String.valueOf(values[i]) + " " + getString(R.string.time_seconds);
-                    }
-                    choice = values[checked];
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
-                    builder.setTitle(R.string.pref_rewind);
-                    builder.setSingleChoiceItems(choices, checked,
-                            (dialog, which) -> {
-                                choice = values[which];
-                            });
-                    builder.setNegativeButton(R.string.cancel_label, null);
-                    builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-                        UserPreferences.setPrefRewindSecs(choice);
-                        if(txtvRev != null){
-                            txtvRev.setText(String.valueOf(choice));
-                        }
-                    });
-                    builder.create().show();
-                    return true;
-                }
+            butRev.setOnLongClickListener(v -> {
+                showSkipPreference(MediaplayerActivity.this, SkipDirection.SKIP_REWIND);
+                return true;
             });
         }
 
@@ -742,39 +816,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
         if (butFF != null) {
             butFF.setOnClickListener(v -> onFastForward());
-            butFF.setOnLongClickListener(new View.OnLongClickListener() {
-
-                int choice;
-
-                @Override
-                public boolean onLongClick(View v) {
-                    int checked = 0;
-                    int rewindSecs = UserPreferences.getFastFowardSecs();
-                    final int[] values = getResources().getIntArray(R.array.seek_delta_values);
-                    final String[] choices = new String[values.length];
-                    for (int i = 0; i < values.length; i++) {
-                        if (rewindSecs == values[i]) {
-                            checked = i;
-                        }
-                        choices[i] = String.valueOf(values[i]) + " " + getString(R.string.time_seconds);
-                    }
-                    choice = values[checked];
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
-                    builder.setTitle(R.string.pref_fast_forward);
-                    builder.setSingleChoiceItems(choices, checked,
-                            (dialog, which) -> {
-                                choice = values[which];
-                            });
-                    builder.setNegativeButton(R.string.cancel_label, null);
-                    builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-                        UserPreferences.setPrefFastForwardSecs(choice);
-                        if(txtvFF != null) {
-                            txtvFF.setText(String.valueOf(choice));
-                        }
-                    });
-                    builder.create().show();
-                    return true;
-                }
+            butFF.setOnLongClickListener(v -> {
+                showSkipPreference(MediaplayerActivity.this, SkipDirection.SKIP_FORWARD);
+                return false;
             });
         }
 
@@ -803,7 +847,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             return;
         }
         int curr = controller.getPosition();
-        controller.seekTo(curr + UserPreferences.getFastFowardSecs() * 1000);
+        controller.seekTo(curr + UserPreferences.getFastForwardSecs() * 1000);
     }
 
     protected abstract int getContentViewResourceId();
@@ -865,10 +909,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                                 isFavorite = isFav;
                                 invalidateOptionsMenu();
                             }
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                        }
-                    );
+                        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
             }
         }
     }

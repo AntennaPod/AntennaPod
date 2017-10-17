@@ -64,8 +64,10 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
+import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -98,6 +100,7 @@ public class ItemlistFragment extends ListFragment {
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
+    private boolean headerCreated = false;
 
     private List<Downloader> downloaderList;
 
@@ -105,7 +108,10 @@ public class ItemlistFragment extends ListFragment {
 
     private boolean isUpdatingFeed;
     
+    private TextView txtvTitle;
     private IconTextView txtvFailure;
+    private ImageView imgvBackground;
+    private ImageView imgvCover;
 
     private TextView txtvInformation;
 
@@ -247,6 +253,9 @@ public class ItemlistFragment extends ListFragment {
                                     .newInstance(feed.getItems());
                             ((MainActivity)getActivity()).loadChildFragment(fragment);
                             return true;
+                        case R.id.rename_item:
+                            new RenameFeedDialog(getActivity(), feed).show();
+                            return true;
                         case R.id.remove_item:
                             final FeedRemover remover = new FeedRemover(
                                     getActivity(), feed) {
@@ -258,7 +267,7 @@ public class ItemlistFragment extends ListFragment {
                             };
                             ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
                                     R.string.remove_feed_label,
-                                    R.string.feed_delete_confirmation_msg) {
+                                    getString(R.string.feed_delete_confirmation_msg, feed.getTitle())) {
 
                                 @Override
                                 public void onConfirmButtonPressed(
@@ -414,6 +423,7 @@ public class ItemlistFragment extends ListFragment {
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
                 Log.d(TAG, "Received contentUpdate Intent. arg " + arg);
+                refreshHeaderView();
                 loadItems();
                 updateProgressBarVisibility();
             }
@@ -459,15 +469,17 @@ public class ItemlistFragment extends ListFragment {
     }
 
     private void refreshHeaderView() {
-        if (getListView() == null || feed == null) {
-            Log.e(TAG, "Unable to setup listview: recyclerView = null or feed = null");
+        if (getListView() == null || feed == null || !headerCreated) {
+            Log.e(TAG, "Unable to refresh header view");
             return;
         }
+        loadFeedImage();
         if(feed.hasLastUpdateFailed()) {
             txtvFailure.setVisibility(View.VISIBLE);
         } else {
             txtvFailure.setVisibility(View.GONE);
         }
+        txtvTitle.setText(feed.getTitle());
         if(feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if(filter.getValues().length > 0) {
@@ -497,10 +509,10 @@ public class ItemlistFragment extends ListFragment {
         View header = inflater.inflate(R.layout.feeditemlist_header, lv, false);
         lv.addHeaderView(header);
 
-        TextView txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
+        txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
         TextView txtvAuthor = (TextView) header.findViewById(R.id.txtvAuthor);
-        ImageView imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
-        ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
+        imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
+        imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
         txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
@@ -512,23 +524,7 @@ public class ItemlistFragment extends ListFragment {
         // https://github.com/bumptech/glide/issues/529
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
-        Glide.with(getActivity())
-                .load(feed.getImageUri())
-                .placeholder(R.color.image_readability_tint)
-                .error(R.color.image_readability_tint)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .transform(new FastBlurTransformation(getActivity()))
-                .dontAnimate()
-                .into(imgvBackground);
-
-        Glide.with(getActivity())
-                .load(feed.getImageUri())
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
-                .into(imgvCover);
+        loadFeedImage();
 
         butShowInfo.setOnClickListener(v -> {
             if (viewsCreated && itemsLoaded) {
@@ -538,6 +534,27 @@ public class ItemlistFragment extends ListFragment {
                 startActivity(startIntent);
             }
         });
+        headerCreated = true;
+    }
+
+    private void loadFeedImage() {
+        Glide.with(getActivity())
+                .load(feed.getImageLocation())
+                .placeholder(R.color.image_readability_tint)
+                .error(R.color.image_readability_tint)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .transform(new FastBlurTransformation(getActivity()))
+                .dontAnimate()
+                .into(imgvBackground);
+
+        Glide.with(getActivity())
+                .load(feed.getImageLocation())
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate()
+                .into(imgvCover);
     }
 
 
@@ -578,6 +595,20 @@ public class ItemlistFragment extends ListFragment {
         }
 
         @Override
+        public LongList getQueueIds() {
+            LongList queueIds = new LongList();
+            if(feed == null) {
+                return queueIds;
+            }
+            for(FeedItem item : feed.getItems()) {
+                if(item.isTagged(FeedItem.TAG_QUEUE)) {
+                    queueIds.add(item.getId());
+                }
+            }
+            return queueIds;
+        }
+
+        @Override
         public int getCount() {
             return (feed != null) ? feed.getNumOfItems() : 0;
         }
@@ -612,9 +643,7 @@ public class ItemlistFragment extends ListFragment {
                             onFragmentLoaded();
                         }
                     }
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                });
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private Feed loadData() {

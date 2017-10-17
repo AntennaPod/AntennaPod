@@ -34,6 +34,16 @@ public class FilenameGeneratorTest extends AndroidTestCase {
 		createFiles(result);
 	}
 
+	public void testFeedTitleContainsApostrophe() {
+		String result = FileNameGenerator.generateFileName("Feed's Title ...");
+		assertEquals("Feeds Title", result);
+	}
+
+	public void testFeedTitleContainsDash() {
+		String result = FileNameGenerator.generateFileName("Left - Right");
+		assertEquals("Left Right", result);
+	}
+
 	/**
 	 * Tests if files can be created.
 	 * 

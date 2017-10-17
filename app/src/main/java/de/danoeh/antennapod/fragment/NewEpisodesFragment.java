@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -92,7 +94,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                     }
                 };
 
-                Snackbar snackbar = Snackbar.make(root, getString(R.string.marked_as_read_label),
+                Snackbar snackbar = Snackbar.make(root, getString(R.string.marked_as_seen_label),
                         Snackbar.LENGTH_LONG);
                 snackbar.setAction(getString(R.string.undo), v -> {
                     DBWriter.markItemPlayed(FeedItem.NEW, item.getId());

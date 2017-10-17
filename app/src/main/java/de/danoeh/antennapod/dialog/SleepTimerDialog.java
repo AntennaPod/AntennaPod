@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -16,36 +17,27 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import java.util.concurrent.TimeUnit;
-
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.greenrobot.event.EventBus;
 
 public abstract class SleepTimerDialog {
     
     private static final String TAG = SleepTimerDialog.class.getSimpleName();
 
-    private static final int DEFAULT_SPINNER_POSITION = 1;
-
     private Context context;
-    private String PREF_NAME = "SleepTimerDialog";
-    private String PREF_VALUE = "LastValue";
-    private String PREF_TIME_UNIT = "LastTimeUnit";
-    private String PREF_VIBRATE = "Vibrate";
-    private String PREF_SHAKE_TO_RESET = "ShakeToReset";
-    private SharedPreferences prefs;
 
     private MaterialDialog dialog;
     private EditText etxtTime;
     private Spinner spTimeUnit;
     private CheckBox cbShakeToReset;
     private CheckBox cbVibrate;
+    private CheckBox chAutoEnable;
 
 
-    private TimeUnit[] units = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
-
-    public SleepTimerDialog(Context context) {
+    protected SleepTimerDialog(Context context) {
         this.context = context;
-        prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
     public MaterialDialog createNewDialog() {
@@ -58,7 +50,7 @@ public abstract class SleepTimerDialog {
         builder.onPositive((dialog, which) -> {
                 try {
                     savePreferences();
-                    long input = readTimeMillis();
+                    long input = SleepTimerPreferences.timerMillis();
                     onTimerSet(input, cbShakeToReset.isChecked(), cbVibrate.isChecked());
                     dialog.dismiss();
                 } catch (NumberFormatException e) {
@@ -75,8 +67,9 @@ public abstract class SleepTimerDialog {
         spTimeUnit = (Spinner) view.findViewById(R.id.spTimeUnit);
         cbShakeToReset = (CheckBox) view.findViewById(R.id.cbShakeToReset);
         cbVibrate = (CheckBox) view.findViewById(R.id.cbVibrate);
+        chAutoEnable = (CheckBox) view.findViewById(R.id.chAutoEnable);
 
-        etxtTime.setText(prefs.getString(PREF_VALUE, "15"));
+        etxtTime.setText(SleepTimerPreferences.lastTimerValue());
         etxtTime.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -104,12 +97,17 @@ public abstract class SleepTimerDialog {
                 android.R.layout.simple_spinner_item, spinnerContent);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spTimeUnit.setAdapter(spinnerAdapter);
-        int selection = prefs.getInt(PREF_TIME_UNIT, DEFAULT_SPINNER_POSITION);
-        spTimeUnit.setSelection(selection);
+        spTimeUnit.setSelection(SleepTimerPreferences.lastTimerTimeUnit());
 
-        cbShakeToReset.setChecked(prefs.getBoolean(PREF_SHAKE_TO_RESET, true));
-        cbVibrate.setChecked(prefs.getBoolean(PREF_VIBRATE, true));
+        cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
+        cbVibrate.setChecked(SleepTimerPreferences.vibrate());
+        chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
 
+        chAutoEnable.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            SleepTimerPreferences.setAutoEnable(isChecked);
+            int messageString = isChecked ? R.string.sleep_timer_enabled_label : R.string.sleep_timer_disabled_label;
+            EventBus.getDefault().post(new MessageEvent(context.getString(messageString)));
+        });
         return dialog;
     }
 
@@ -125,19 +123,12 @@ public abstract class SleepTimerDialog {
 
     public abstract void onTimerSet(long millis, boolean shakeToReset, boolean vibrate);
 
-    private long readTimeMillis() {
-        TimeUnit selectedUnit = units[spTimeUnit.getSelectedItemPosition()];
-        long value = Long.parseLong(etxtTime.getText().toString());
-        return selectedUnit.toMillis(value);
-    }
-
     private void savePreferences() {
-        prefs.edit()
-                .putString(PREF_VALUE, etxtTime.getText().toString())
-                .putInt(PREF_TIME_UNIT, spTimeUnit.getSelectedItemPosition())
-                .putBoolean(PREF_SHAKE_TO_RESET, cbShakeToReset.isChecked())
-                .putBoolean(PREF_VIBRATE, cbVibrate.isChecked())
-                .apply();
+        SleepTimerPreferences.setLastTimer(etxtTime.getText().toString(),
+                spTimeUnit.getSelectedItemPosition());
+        SleepTimerPreferences.setShakeToReset(cbShakeToReset.isChecked());
+        SleepTimerPreferences.setVibrate(cbVibrate.isChecked());
+        SleepTimerPreferences.setAutoEnable(chAutoEnable.isChecked());
     }
 
 }
