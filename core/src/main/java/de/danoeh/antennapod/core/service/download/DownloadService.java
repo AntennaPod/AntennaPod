@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -156,7 +157,7 @@ public class DownloadService extends Service {
 
     private final IBinder mBinder = new LocalBinder();
 
-    public class LocalBinder extends Binder {
+    private class LocalBinder extends Binder {
         public DownloadService getService() {
             return DownloadService.this;
         }
@@ -345,8 +346,10 @@ public class DownloadService extends Service {
                 .setOngoing(true)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
                 .setLargeIcon(icon)
-                .setSmallIcon(R.drawable.stat_notify_sync)
-                .setVisibility(Notification.VISIBILITY_PUBLIC);
+                .setSmallIcon(R.drawable.stat_notify_sync);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            notificationCompatBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
+        }
 
         Log.d(TAG, "Notification set up");
     }
@@ -498,7 +501,7 @@ public class DownloadService extends Service {
         if (createReport) {
             Log.d(TAG, "Creating report");
             // create notification object
-            Notification notification = new NotificationCompat.Builder(this)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                     .setTicker(getString(R.string.download_report_title))
                     .setContentTitle(getString(R.string.download_report_content_title))
                     .setContentText(
@@ -514,11 +517,12 @@ public class DownloadService extends Service {
                     .setContentIntent(
                             ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(this)
                     )
-                    .setAutoCancel(true)
-                    .setVisibility(Notification.VISIBILITY_PUBLIC)
-                    .build();
+                    .setAutoCancel(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+            }
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.notify(REPORT_ID, notification);
+            nm.notify(REPORT_ID, builder.build());
         } else {
             Log.d(TAG, "No report is created");
         }
@@ -562,11 +566,12 @@ public class DownloadService extends Service {
                     .setSmallIcon(R.drawable.ic_stat_authentication)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_authentication))
                     .setAutoCancel(true)
-                    .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(DownloadService.this, downloadRequest))
-                    .setVisibility(Notification.VISIBILITY_PUBLIC);
-            Notification n = builder.build();
+                    .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(DownloadService.this, downloadRequest));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+            }
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.notify(downloadRequest.getSource().hashCode(), n);
+            nm.notify(downloadRequest.getSource().hashCode(), builder.build());
         });
     }
 
@@ -595,7 +600,7 @@ public class DownloadService extends Service {
      * Takes a single Feed, parses the corresponding file and refreshes
      * information in the manager
      */
-    class FeedSyncThread extends Thread {
+    private class FeedSyncThread extends Thread {
         private static final String TAG = "FeedSyncThread";
 
         private BlockingQueue<DownloadRequest> completedRequests = new LinkedBlockingDeque<>();
@@ -891,7 +896,7 @@ public class DownloadService extends Service {
             }
         }
 
-        public void submitCompletedDownload(DownloadRequest request) {
+        void submitCompletedDownload(DownloadRequest request) {
             completedRequests.offer(request);
             if (isCollectingRequests) {
                 interrupt();
@@ -908,7 +913,7 @@ public class DownloadService extends Service {
      * <p/>
      * Currently, this handler only handles FeedMedia objects, because Feeds and FeedImages are deleted if the download fails.
      */
-    class FailedDownloadHandler implements Runnable {
+    private class FailedDownloadHandler implements Runnable {
 
         private DownloadRequest request;
         private DownloadStatus status;
@@ -929,6 +934,9 @@ public class DownloadService extends Service {
                 if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                     Log.d(TAG, "File has been partially downloaded. Writing file url");
                     FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
+                    if (media == null) {
+                        return;
+                    }
                     media.setFile_url(request.getDestination());
                     try {
                         DBWriter.setFeedMedia(media).get();
@@ -945,13 +953,13 @@ public class DownloadService extends Service {
     /**
      * Handles a completed media download.
      */
-    class MediaHandlerThread implements Runnable {
+    private class MediaHandlerThread implements Runnable {
 
         private DownloadRequest request;
         private DownloadStatus status;
 
-        public MediaHandlerThread(@NonNull DownloadStatus status,
-                                  @NonNull DownloadRequest request) {
+        MediaHandlerThread(@NonNull DownloadStatus status,
+                           @NonNull DownloadRequest request) {
             this.status = status;
             this.request = request;
         }
@@ -980,7 +988,7 @@ public class DownloadService extends Service {
                 Log.d(TAG, "Duration of file is " + media.getDuration());
             } catch (NumberFormatException e) {
                 Log.d(TAG, "Invalid file duration: " + durationStr);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Log.e(TAG, "Get duration failed", e);
             } finally {
                 mmr.release();
@@ -1086,7 +1094,7 @@ public class DownloadService extends Service {
      */
     @VisibleForTesting
     public static void removeDuplicateImages(Feed feed) {
-        Set<String> known = new HashSet<String>();
+        Set<String> known = new HashSet<>();
         for (FeedItem item : feed.getItems()) {
             String url = item.hasItemImage() ? item.getImage().getDownload_url() : null;
             if (url != null) {
@@ -1123,6 +1131,6 @@ public class DownloadService extends Service {
             }
             lines.add(line.toString());
         }
-        return StringUtils.join(lines, '\n');
+        return TextUtils.join("\n", lines);
     }
 }
