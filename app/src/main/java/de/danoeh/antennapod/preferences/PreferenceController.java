@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.net.wifi.WifiConfiguration;
@@ -24,6 +25,7 @@ import android.preference.PreferenceScreen;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.Html;
@@ -59,6 +61,7 @@ import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.ExportWorker;
+import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.export.html.HtmlWriter;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
@@ -158,7 +161,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public void onCreate() {
         final Activity activity = ui.getActivity();
 
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             // disable expanded notification option on unsupported android versions
             ui.findPreference(PreferenceController.PREF_EXPANDED_NOTIFICATION).setEnabled(false);
             ui.findPreference(PreferenceController.PREF_EXPANDED_NOTIFICATION).setOnPreferenceClickListener(
@@ -230,8 +233,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
                             Intent i = new Intent(activity, MainActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                        | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            } else {
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            }
                             activity.finish();
                             activity.startActivity(i);
                             return true;
@@ -441,14 +448,25 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             return true;
         });
         ui.findPreference(PREF_SEND_CRASH_REPORT).setOnPreferenceClickListener(preference -> {
+            Context context = ui.getActivity().getApplicationContext();
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setType("text/plain");
             emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Martin.Fietz@gmail.com"});
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "AntennaPod Crash Report");
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Please describe what you were doing when the app crashed");
             // the attachment
-            emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(CrashReportWriter.getFile()));
+            Uri fileUri = FileProvider.getUriForFile(context, "de.danoeh.antennapod.provider",
+                    CrashReportWriter.getFile());
+            emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+            emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             String intentTitle = ui.getActivity().getString(R.string.send_email);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(emailIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolveInfo : resInfoList) {
+                    String packageName = resolveInfo.activityInfo.packageName;
+                    context.grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+            }
             ui.getActivity().startActivity(Intent.createChooser(emailIntent, intentTitle));
             return true;
         });
@@ -475,12 +493,21 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     String message = context.getString(R.string.opml_export_success_sum) + output.toString();
                     alert.setMessage(message);
                     alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
-                        Uri outputUri = Uri.fromFile(output);
+                        Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
+                                "de.danoeh.antennapod.provider", output);
                         Intent sendIntent = new Intent(Intent.ACTION_SEND);
                         sendIntent.putExtra(Intent.EXTRA_SUBJECT,
                                 context.getResources().getText(R.string.opml_export_label));
-                        sendIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
                         sendIntent.setType("text/plain");
+                        sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                            List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                            for (ResolveInfo resolveInfo : resInfoList) {
+                                String packageName = resolveInfo.activityInfo.packageName;
+                                context.grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            }
+                        }
                         context.startActivity(Intent.createChooser(sendIntent,
                                 context.getResources().getText(R.string.send_label)));
                     });
