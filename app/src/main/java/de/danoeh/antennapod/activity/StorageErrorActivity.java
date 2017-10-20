@@ -10,10 +10,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
@@ -21,13 +19,11 @@ import android.widget.Button;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
 
 /** Is show if there is now external storage available. */
 public class StorageErrorActivity extends AppCompatActivity {
@@ -117,65 +113,14 @@ public class StorageErrorActivity extends AppCompatActivity {
 
     // see PreferenceController.showChooseDataFolderDialog()
     private void showChooseDataFolderDialog() {
-        File dataFolder =  UserPreferences.getDataFolder(null);
-        if(dataFolder == null) {
-            new MaterialDialog.Builder(this)
-                    .title(R.string.error_label)
-                    .content(R.string.external_storage_error_msg)
-                    .neutralText(android.R.string.ok)
-                    .show();
-            return;
-        }
-        String dataFolderPath = dataFolder.getAbsolutePath();
-        int selectedIndex = -1;
-        File[] mediaDirs = ContextCompat.getExternalFilesDirs(this, null);
-        List<String> folders = new ArrayList<>(mediaDirs.length);
-        List<CharSequence> choices = new ArrayList<>(mediaDirs.length);
-        for(int i=0; i < mediaDirs.length; i++) {
-            File dir = mediaDirs[i];
-            if(dir == null || !dir.exists() || !dir.canRead() || !dir.canWrite()) {
-                continue;
-            }
-            String path = mediaDirs[i].getAbsolutePath();
-            folders.add(path);
-            if(dataFolderPath.equals(path)) {
-                selectedIndex = i;
-            }
-            int index = path.indexOf("Android");
-            String choice;
-            if(index >= 0) {
-                choice = path.substring(0, index);
-            } else {
-                choice = path;
-            }
-            long bytes = StorageUtils.getFreeSpaceAvailable(path);
-            String freeSpace = String.format(getString(R.string.free_space_label),
-                    Converter.byteToString(bytes));
-            choices.add(Html.fromHtml("<html><small>" + choice + " [" + freeSpace + "]"
-                    + "</small></html>"));
-        }
-        if(choices.size() == 0) {
-            new MaterialDialog.Builder(this)
-                    .title(R.string.error_label)
-                    .content(R.string.external_storage_error_msg)
-                    .neutralText(android.R.string.ok)
-                    .show();
-            return;
-        }
-        MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title(R.string.choose_data_directory)
-                .content(R.string.choose_data_directory_message)
-                .items(choices.toArray(new CharSequence[choices.size()]))
-                .itemsCallbackSingleChoice(selectedIndex, (dialog1, itemView, which, text) -> {
-                    String folder = folders.get(which);
-                    UserPreferences.setDataFolder(folder);
-                    leaveErrorState();
-                    return true;
-                })
-                .negativeText(R.string.cancel_label)
-                .cancelable(true)
-                .build();
-        dialog.show();
+        ChooseDataFolderDialog.showDialog(
+                this, new ChooseDataFolderDialog.RunnableWithString() {
+                    @Override
+                    public void run(final String folder) {
+                        UserPreferences.setDataFolder(folder);
+                        leaveErrorState();
+                    }
+                });
     }
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
