@@ -26,6 +26,10 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Totale duur van afgespeelde podcasts:</string>
   <string name="statistics_details_dialog">%1$d van de %2$d afleveringen gestart.\n\n%3$s van de %4$s afgespeeld.</string>
+  <string name="statistics_mode">Rekenmethode</string>
+  <string name="statistics_mode_normal">Bereken de daadwerkelijke speeltijd. Tweemaal afspelen wordt twee keer gerekend; als \'afgespeeld\' markeren wordt niet meegeteld.</string>
+  <string name="statistics_mode_count_all">Duur van de podcasts optelle die als \'afgespeeld\' zijn gemarkeerd.</string>
+  <string name="statistics_speed_not_counted">Let op: Met de afspeelsnelheid wordt geen rekening gehouden.</string>
   <!--Main activity-->
   <string name="drawer_open">Menu openen</string>
   <string name="drawer_close">Menu sluiten</string>
@@ -33,6 +37,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Op aantal afleveringen</string>
   <string name="drawer_feed_order_alphabetical">Op alfabetische volgorde</string>
   <string name="drawer_feed_order_last_update">Op datum van publicatie</string>
+  <string name="drawer_feed_order_most_played">Op aantal afgespeelde afleveringen</string>
   <string name="drawer_feed_counter_new_unplayed">Aantal nieuwe plus onbeluisterde afleveringen</string>
   <string name="drawer_feed_counter_new">Aantal nieuwe afleveringen</string>
   <string name="drawer_feed_counter_unplayed">Aantal onbeluisterde afleveringen</string>
@@ -62,6 +67,7 @@
   <string name="refresh_label">Verversen</string>
   <string name="external_storage_error_msg">Geen externe opslag beschikbaar. Zorg ervoor dat de externe opslag gemonteerd is, zodat de app goed kan werken.</string>
   <string name="chapters_label">Hoofdstukken</string>
+  <string name="chapter_duration">Duur: %1$s</string>
   <string name="shownotes_label">Shownotes</string>
   <string name="description_label">Beschrijving</string>
   <string name="most_recent_prefix">Meest recente aflevering:\u0020</string>
@@ -113,6 +119,7 @@
   <string name="share_feed_url_label">URL van de feed delen</string>
   <string name="share_item_url_label">URL van het mediabestand delen</string>
   <string name="share_item_url_with_position_label">URL van mediabestand met tijdstip delen</string>
+  <string name="feed_delete_confirmation_msg">Bevestig dat u de feed <i>%1$s</i> en ALLE (ook gedownloade) afleveringen van deze podcast wilt verwijderen.</string>
   <string name="feed_remover_msg">Feed verwijderen</string>
   <string name="load_complete_feed">Hele feed vernieuwen</string>
   <string name="hide_episodes_title">Afleveringen verbergen</string>
@@ -280,6 +287,7 @@
   <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren wanneer de koptelefoon wordt losgekoppeld of de bluetooth verbinding wordt verbroken</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten wanneer de koptelefoon opnieuw wordt aangesloten</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten wanneer de bluetooth verbinding hervat wordt</string>
+  <string name="pref_hardwareForwardButtonSkips_title">\'Volgende\' knop voor overslaan</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Aflevering overslaan ipv vooruitspoelen wanneer op een fysieke \'volgende\' knop wordt gedrukt</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Vorige voor opnieuw afspelen</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Aflevering afspelen vanaf het begin ipv terugspoelen wanneer op een fysieke \'vorige\' knop wordt gedrukt</string>
@@ -287,13 +295,14 @@
   <string name="pref_auto_delete_sum">Afleveringen verwijderen als ze zijn afgespeeld</string>
   <string name="pref_auto_delete_title">Automatisch verwijderen</string>
   <string name="pref_smart_mark_as_played_sum">Afleveringen als afgespeeld markeren wanneer deze nog maar een bepaald aantal seconden duurt</string>
+  <string name="pref_smart_mark_as_played_title">Slimme afgespeeld markering</string>
   <string name="pref_skip_keeps_episodes_sum">Afleveringen bewaren en in de wachtrij houden als u op \'overslaan\' klikt</string>
   <string name="pref_skip_keeps_episodes_title">Overgeslagen afleveringen bewaren</string>
   <string name="playback_pref">Afspelen</string>
   <string name="network_pref">Netwerk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Feed update interval of tijdstip</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Specificeer een interval of tijdstip waarop feeds automatisch vernieuwd moeten worden</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">U kunt een <i>interval</i> zoals \'elke twee uur\' of een specifiek <i>tijdstip</i> zoals \'07:00 uur\' instellen, of het automatisch verversen van feeds uitzetten.\n\n<small>Nota bene: tijdstippen voor updates zijn niet precies. Er kan een kleine vertraging plaatsvinden.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_message">U kunt een <i>interval</i> zoals \'elke twee uur\' of een specifiek <i>tijdstip</i> zoals \'07:00 uur\' instellen, of het automatisch verversen van feeds uitzetten.\n\n<small>Let op: tijdstippen voor updates zijn niet precies. Er kan een kleine vertraging plaatsvinden.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Uitschakelen</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Interval instellen</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Tijdstip instellen</string>
@@ -360,6 +369,10 @@
   <string name="pref_gpodnet_notifications_sum">Deze instelling is niet van toepassing op inlogfouten.</string>
   <string name="pref_playback_speed_title">Afspeelsnelheden</string>
   <string name="pref_playback_speed_sum">Pas de beschikbare snelheden aan voor de variabele audio afspeelsnelheid</string>
+  <string name="pref_fast_forward">Snelheid van vooruitspoelen</string>
+  <string name="pref_fast_forward_sum">Pas het aantal seconden aan waarmee wordt vooruitgespoeld per klik op de knop</string>
+  <string name="pref_rewind">Snelheid terugspoelen</string>
+  <string name="pref_rewind_sum">Pas het aantal seconden aan waarmee wordt teruggespoeld per klik op de knop</string>
   <string name="pref_gpodnet_sethostname_title">Definieer hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Gebruik standaard host</string>
   <string name="pref_expandNotify_title">Bedienen via melding</string>
@@ -384,6 +397,7 @@
   <string name="crash_report_sum">Verstuur laatste crashreport via email</string>
   <string name="send_email">Verstuur email</string>
   <string name="experimental_pref">Experimentele functie</string>
+  <string name="pref_sonic_title">Sonic mediaspeler</string>
   <string name="pref_sonic_message">Gebruik AntennaPod\'s ingebouwde Sonic mediaspeler als een alternatief voor Prestissimo en de mediaspeler van Android.</string>
   <string name="pref_current_value">Huidige instelling: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
@@ -394,6 +408,8 @@
   <string name="pref_cast_title">Chromecast</string>
   <string name="pref_cast_message_play_flavor">Ondersteuning activeren voor draadloos afspelen via Cast apparaten (zoals Chromecast, Audio speakers en Android TV)</string>
   <string name="pref_cast_message_free_flavor">Voor Chromecast is software van derden vereist die niet beschikbaar zijn in deze versie van AntennaPod</string>
+  <string name="pref_enqueue_downloaded_title">Downloads in de wachtrij</string>
+  <string name="pref_enqueue_downloaded_summary">Voeg gedownloade afleveringen toe aan de wachtrij</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisch flattr\'en aanzetten</string>
   <string name="auto_flattr_after_percent">Flattr een aflevering zodra %d procent is afgespeeld</string>
@@ -402,7 +418,9 @@
   <!--Search-->
   <string name="search_hint">Zoeken naar afleveringen</string>
   <string name="found_in_shownotes_label">Gevonden in de shownotes</string>
-  <string name="found_in_chapters_label">Gevonden in hoofdstukken</string>
+  <string name="found_in_chapters_label">Gevonden in de hoofdstukken</string>
+  <string name="found_in_authors_label">Gevonden in de makers</string>
+  <string name="found_in_feeds_label">Gevonden in de feeds</string>
   <string name="search_status_no_results">Er zijn geen resultaten gevonden</string>
   <string name="search_label">Zoeken</string>
   <string name="found_in_title_label">Gevonden in de titel</string>

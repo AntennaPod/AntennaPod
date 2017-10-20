@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.media.MediaRouter;
+import android.support.wearable.media.MediaControlConstants;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -254,5 +258,22 @@ public class PlaybackServiceFlavorHelper {
             return true;
         }
         return false;
+    }
+
+    void sessionStateAddActionForWear(PlaybackStateCompat.Builder sessionState, String actionName, CharSequence name, int icon) {
+        PlaybackStateCompat.CustomAction.Builder actionBuilder =
+            new PlaybackStateCompat.CustomAction.Builder(actionName, name, icon);
+        Bundle actionExtras = new Bundle();
+        actionExtras.putBoolean(MediaControlConstants.EXTRA_CUSTOM_ACTION_SHOW_ON_WEAR, true);
+        actionBuilder.setExtras(actionExtras);
+
+        sessionState.addCustomAction(actionBuilder.build());
+    }
+
+    void mediaSessionSetExtraForWear(MediaSessionCompat mediaSession) {
+        Bundle sessionExtras = new Bundle();
+        sessionExtras.putBoolean(MediaControlConstants.EXTRA_RESERVE_SLOT_SKIP_TO_PREVIOUS, true);
+        sessionExtras.putBoolean(MediaControlConstants.EXTRA_RESERVE_SLOT_SKIP_TO_NEXT, true);
+        mediaSession.setExtras(sessionExtras);
     }
 }

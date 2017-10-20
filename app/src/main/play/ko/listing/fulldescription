@@ -1,6 +1,4 @@
-사용하기 쉽고 유연하고 오픈소스인 팟캐스트 관리 및 플레이어
-
-AntennaPod is a podcast manager and player that gives you instant access to millions of free and paid podcasts, from independent podcasters to large publishing houses such as the BBC, NPR and CNN. Add, import and export their feeds hassle-free using the iTunes podcast database, OPML files or simple RSS URLs. Save effort, battery power and mobile data usage with powerful automation controls for downloading episodes (episode filtering, specify times, intervals and WiFi networks) and deleting episodes (based your favorites and delay settings).<br>
+안테나팟을 사용해 소규모 독립 제작자들부터 BBC, NPR, CNN 등의 대형 언론사까지 수많은 무료 및 유료 팟캐스트에 접근할 수 있습니다. iTunes 팟캐스트 데이터베이스, OPML 파일, RSS 주소를 사용해 팟캐스트 피드를 간편하게 추가하고 내보내고 가져올 수 있습니다. 강력한 자동 다운로드 제어(특정 시간 간격 및 Wi-Fi 네트워크 지정)와 삭제 제어(즐겨찾기 및 지연 설정에 기반한)를 통해 편리하게 배터리와 모바일 데이터 사용량을 줄이세요.<br>
 하지만 가장 중요한 기능은: 에피소드를 다운로드하거나 스트리밍하거나 대기열을 만들고, 재생 속도 조절, 챕터 지원, 취침 타이머를 통해 원하는대로 즐길 수 있다는 점입니다. 내장된 Flattr 지원을 통해 팟캐스트 제작자들에게 호응을 보낼 수도 있습니다.
 
 팟캐스트 애호가에 의해 만들어진, 안테나팟은 모든 면에서 자유롭습니다: 소스 코드가 공개되어 있고, 무료인데다가 광고도 없습니다.
@@ -14,32 +12,32 @@ AntennaPod is a podcast manager and player that gives you instant access to mill
 &#8226; 페이지로 구분된 피드 활용 (www.podlove.org/paged-feeds)
 
 기록하고, 공유하고, 호응하기<br>
-&#8226; Keep track of the best of the best by marking episodes as favorites<br>
+&#8226; 가장 좋아하는 팟캐스트 에피소드를 즐겨찾기로 저장<br>
 &#8226; 에피소드를 재생 기록 또는 검색(제목 및 노트)으로 찾기<br>
 &#8226; 에피소드와 피드를 SNS, 이메일, gPodder.net, OPML 내보내기로 공유<br>
 &#8226; 자동으로 Flattr하기 등의 Flattr 기능으로 팟캐스트 제작자 지원
 
 시스템 컨트롤
-&#8226; Take control over automated downloading: choose feeds, filter episodes based on keywords, exclude mobile networks, select specific WiFi networks, require the phone to be charging and set times or intervals<br>
-&#8226; Manage storage by setting the amount of cached episodes, smart deletion (based on your favorites and play status) and selecting your preferred location<br>
+&#8226; 자동 다운로드를 제어하세요: 피드를 고르고, 모바일 네트워크를 제외시키고, 특정 Wi-Fi 네트워크를 선택하고, 기기가 충전중일때만 다운로드하게 하고, 시간과 간격을 정하세요<br>
+&#8226; 에피소드 캐시 용량, 똑똑한 삭제(즐겨찾기와 재생 상태에 기반), 선호하는 저장 위치 등으로 저장소를 관리하세요<br>
 &#8226; 여러가지 언어로 안테나팟을 사용하세요 (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
 &#8226; 밝음 및 어두움 테마로 환경에 맞춰 사용하세요<br>
 &#8226; gPodder.net과 OPML 내보내기 기능으로 구독한 팟캐스트를 백업하세요
 
-<b>Join the AntennaPod community!</b>
+<b>안테나팟 커뮤니티에 참여하세요!</b><br>
 안테나팟은 지원자들에 의해 활발히 개발되고 있습니다. 당신도 제작을 돕거나 제안을 해서 참여할 수 있습니다!
 
-Ask your question or give feedback via Twitter:
-https://twitter.com/@AntennaPod
+GitHub에서 새로운 기능 제안, 버그 보고, 그리고 코드 기여를 할 수 있습니다.:<br>
+https://www.github.com/AntennaPod/AntennaPod
 
-Share your ideas, favorite podcasting moments and gratitude to all the volunteers in our Google group:
+구글 그룹에서 아이디어와 좋은 팟캐스트를 공유하고 모든 지원자들에게 감사할 수 있습니다:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
-Help translate the app to your mother tongue on Transifex:
+질문이 있으신가요? 아니면 의견이 있으신가요?
+https://twitter.com/@AntennaPod
+
+Transifex에서 번역을 도울 수 있습니다:<br>
 https://www.transifex.com/antennapod/antennapod
 
-Check out our Beta Testing programme to get the latest features first:
+베타 테스트 프로그램을 통해 최신 기능을 가장 먼저 확인해보세요:<br>
 https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
-
-Visit GitHub to submit feature requests, bug reports and code contributions:
-https://www.github.com/AntennaPod/AntennaPod

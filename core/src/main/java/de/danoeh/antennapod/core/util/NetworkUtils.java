@@ -66,6 +66,16 @@ public class NetworkUtils {
 						}
 					}
 				}
+			} else {
+				if (!UserPreferences.isEnableAutodownloadOnMobile()) {
+					Log.d(TAG, "Auto Download not enabled on Mobile");
+					return false;
+				}
+				if (networkInfo.isRoaming()) {
+					Log.d(TAG, "Roaming on foreign network");
+					return false;
+				}
+				return true;
 			}
 		}
 		Log.d(TAG, "Network for auto-dl is not available");

@@ -146,7 +146,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 || TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
             feedUrl = (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND))
                     ? getIntent().getStringExtra(Intent.EXTRA_TEXT) : getIntent().getDataString();
-            getSupportActionBar().setTitle(R.string.add_new_feed_label);
+            getSupportActionBar().setTitle(R.string.add_feed_label);
         } else {
             throw new IllegalArgumentException("Activity must be started with feedurl argument!");
         }

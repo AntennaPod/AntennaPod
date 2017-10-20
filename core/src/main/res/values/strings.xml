@@ -13,7 +13,6 @@
     <string name="favorite_episodes_label">Favorites</string>
     <string name="new_label">New</string>
     <string name="settings_label">Settings</string>
-    <string name="add_new_feed_label">Add Podcast</string>
     <string name="downloads_label">Downloads</string>
     <string name="downloads_running_label">Running</string>
     <string name="downloads_completed_label">Completed</string>
@@ -156,6 +155,7 @@
     <string name="stream_label">Stream</string>
     <string name="remove_label">Remove</string>
     <string name="delete_label">Delete</string>
+    <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
     <string name="remove_episode_lable">Remove Episode</string>
     <string name="marked_as_seen_label">Marked as seen</string>
     <string name="mark_read_label">Mark as played</string>
@@ -320,6 +320,8 @@
     <string name="pref_smart_mark_as_played_title">Smart Mark as Played</string>
     <string name="pref_skip_keeps_episodes_sum">Keep episodes when they are skipped</string>
     <string name="pref_skip_keeps_episodes_title">Keep Skipped Episodes</string>
+    <string name="pref_favorite_keeps_episodes_sum">Keep episodes when they are marked Favorite</string>
+    <string name="pref_favorite_keeps_episodes_title">Keep Favorite Episodes</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
     <string name="pref_autoUpdateIntervallOrTime_title">Update Interval or Time of Day</string>
@@ -363,6 +365,8 @@
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
+    <string name="pref_autodl_allow_on_mobile_title">Download on mobile connection</string>
+    <string name="pref_autodl_allow_on_mobile_sum">Allow automatic download over the mobile data connection.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
     <string name="pref_parallel_downloads_title">Parallel Downloads</string>
@@ -430,7 +434,7 @@
     <string name="pref_cast_title">Chromecast support</string>
     <string name="pref_cast_message_play_flavor">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
-    <string name="pref_enqueue_downloaded_title">Enqueue Dowloaded</string>
+    <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
 
     <!-- Auto-Flattr dialog -->

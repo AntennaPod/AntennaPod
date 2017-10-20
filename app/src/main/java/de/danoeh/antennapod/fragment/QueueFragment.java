@@ -400,6 +400,9 @@ public class QueueFragment extends Fragment {
                     int from = viewHolder.getAdapterPosition();
                     int to = target.getAdapterPosition();
                     Log.d(TAG, "move(" + from + ", " + to + ")");
+                    if(from >= queue.size() || to >= queue.size()) {
+                        return false;
+                    }
                     queue.add(to, queue.remove(from));
                     recyclerAdapter.notifyItemMoved(from, to);
                     DBWriter.moveQueueItem(from, to, true);

@@ -67,6 +67,7 @@ public class UserPreferences {
     public static final String PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS = "prefHardwarePreviousButtonRestarts";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
+    public static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     public static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
@@ -83,6 +84,7 @@ public class UserPreferences {
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
+    public static final String PREF_ENABLE_AUTODL_ON_MOBILE = "prefEnableAutoDownloadOnMobile";
     public static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
     public static final String PREF_PROXY_TYPE = "prefProxyType";
     public static final String PREF_PROXY_HOST = "prefProxyHost";
@@ -295,6 +297,10 @@ public class UserPreferences {
 
     public static boolean shouldSkipKeepEpisode() { return prefs.getBoolean(PREF_SKIP_KEEPS_EPISODE, true); }
 
+    public static boolean shouldFavoriteKeepEpisode() {
+        return prefs.getBoolean(PREF_FAVORITE_KEEPS_EPISODE, true);
+    }
+
     public static boolean isAutoDelete() {
         return prefs.getBoolean(PREF_AUTO_DELETE, false);
     }
@@ -395,6 +401,11 @@ public class UserPreferences {
     public static boolean isEnableAutodownloadWifiFilter() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
     }
+
+    public static boolean isEnableAutodownloadOnMobile() {
+        return prefs.getBoolean(PREF_ENABLE_AUTODL_ON_MOBILE, false);
+    }
+
 
     public static int getImageCacheSize() {
         String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE);

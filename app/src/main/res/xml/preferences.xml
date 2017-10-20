@@ -136,6 +136,12 @@
             android:summary="@string/pref_skip_keeps_episodes_sum"
             android:title="@string/pref_skip_keeps_episodes_title"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefFavoriteKeepsEpisode"
+            android:summary="@string/pref_favorite_keeps_episodes_sum"
+            android:title="@string/pref_favorite_keeps_episodes_title"/>
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefAutoDelete"
@@ -218,6 +224,11 @@
                 android:title="@string/pref_automatic_download_on_battery_title"
                 android:summary="@string/pref_automatic_download_on_battery_sum"
                 android:defaultValue="true"/>
+            <de.danoeh.antennapod.preferences.SwitchCompatPreference
+                android:key="prefEnableAutoDownloadOnMobile"
+                android:title="@string/pref_autodl_allow_on_mobile_title"
+                android:summary="@string/pref_autodl_allow_on_mobile_sum"
+                android:defaultValue="false"/>
             <de.danoeh.antennapod.preferences.SwitchCompatPreference
                 android:key="prefEnableAutoDownloadWifiFilter"
                 android:title="@string/pref_autodl_wifi_filter_title"

@@ -20,6 +20,9 @@ public class MediaButtonReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.d(TAG, "Received intent");
+		if (intent == null || intent.getExtras() == null) {
+			return;
+		}
 		KeyEvent event = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
 		if (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount()==0) {
 			ClientConfig.initialize(context);

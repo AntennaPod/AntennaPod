@@ -26,6 +26,10 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Całkowity czas trwania podcastów:</string>
   <string name="statistics_details_dialog">%1$d z %2$d odcinków rozpoczęto.\n\nZagrano %3$s z %4$s.</string>
+  <string name="statistics_mode">Tryb statystyk</string>
+  <string name="statistics_mode_normal">Oblicz łączny czas rzeczywistego odtwarzania. Dwukrotne odtworzenie będzie policzone ale zaznaczenie jako odtworzone nie będzie policzone.</string>
+  <string name="statistics_mode_count_all">Podsumuj wszystkie podcasty oznaczone jako odtworzone</string>
+  <string name="statistics_speed_not_counted">Powiadomienie: Prędkość odtwarzania nigdy nie jest uwzględniana.</string>
   <!--Main activity-->
   <string name="drawer_open">Otwórz menu</string>
   <string name="drawer_close">Zamknij menu</string>
@@ -33,6 +37,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Sortuj wg liczby</string>
   <string name="drawer_feed_order_alphabetical">Sortuj alfabetycznie</string>
   <string name="drawer_feed_order_last_update">Sortuj wg daty publikacji</string>
+  <string name="drawer_feed_order_most_played">Sortuj po liczbie odtworzonych odcinków</string>
   <string name="drawer_feed_counter_new_unplayed">Liczba nowych i nieodtworzonych odcinków</string>
   <string name="drawer_feed_counter_new">Liczba nowych odcinków</string>
   <string name="drawer_feed_counter_unplayed">Liczba nieodtworzonych odcinków</string>
@@ -62,6 +67,7 @@
   <string name="refresh_label">Odśwież</string>
   <string name="external_storage_error_msg">Brak zewnętrznej pamięci. Sprawdź czy jest ona podłączona żeby aplikacja mogła pracować poprawnie.</string>
   <string name="chapters_label">Rozdziały</string>
+  <string name="chapter_duration">Czas trwania: %1$s</string>
   <string name="shownotes_label">Opis odcinka</string>
   <string name="description_label">Opis</string>
   <string name="most_recent_prefix">Najnowszy odcinek:\u0020</string>
@@ -115,6 +121,7 @@
   <string name="share_feed_url_label">Udostępnij adres kanału</string>
   <string name="share_item_url_label">Udostępnij plik URL odcinka</string>
   <string name="share_item_url_with_position_label">Udostępnik plik URL odcinka z pozycją</string>
+  <string name="feed_delete_confirmation_msg">Potwierdź chęć usunięcia kanału \"%1$s\" wraz ze WSZYSTKIMI odcinkami, które zostały pobrane.</string>
   <string name="feed_remover_msg">Usuwanie kanału</string>
   <string name="load_complete_feed">Odśwież cały kanał</string>
   <string name="hide_episodes_title">Ukryj odcinki</string>
@@ -284,6 +291,7 @@
   <string name="pref_pauseOnDisconnect_sum">Wstrzymaj odtwarzanie po rozłączeniu słuchawek lub Bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wznów odtwarzanie kiedy słuchawki zostaną podłączone ponownie</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wznów odtwarzanie po przywróceniu połączenia Bluetooth</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Przycisk \'Do przodu\' pomija odcinek</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Przyciśnięcie fizycznego przycisku \'Do przodu\' przeskakuje do następnego odcinka zamiast przewijania</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Przycisk wstecz restartuje</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Podczas odtwarzania przycisk wstecz restartuje zamiast przewijać</string>
@@ -291,6 +299,7 @@
   <string name="pref_auto_delete_sum">Usuń odcinek kiedy jego odtwarzanie zostanie zakończone</string>
   <string name="pref_auto_delete_title">Automatyczne usuwanie</string>
   <string name="pref_smart_mark_as_played_sum">Oznacz odcinek jako odtworzony, jeśli do końca pozostało mniej niż określona ilość czasu</string>
+  <string name="pref_smart_mark_as_played_title">Inteligentnie oznacz jako odtworzone</string>
   <string name="pref_skip_keeps_episodes_sum">Zachowuje pominięte odcinki w kolejce</string>
   <string name="pref_skip_keeps_episodes_title">Zachowaj pominięte odcinki</string>
   <string name="playback_pref">Odtwarzanie</string>
@@ -364,6 +373,10 @@
   <string name="pref_gpodnet_notifications_sum">To ustawienie nie dotyczy błędów autoryzacji.</string>
   <string name="pref_playback_speed_title">Prędkość odtwarzania</string>
   <string name="pref_playback_speed_sum">Dostosuj prędkości dostępne dla odtwarzania audio o zmiennej prędkości</string>
+  <string name="pref_fast_forward">Szybkie przewijanie do przodu</string>
+  <string name="pref_fast_forward_sum">Dostosuj liczbę sekund do przeskoczenia przy kliknięciu szybkiego przewijania do przodu</string>
+  <string name="pref_rewind">Przewijanie do tyłu</string>
+  <string name="pref_rewind_sum">Dostosuj liczbę sekund do przeskoczenia przy kliknięciu przewijania do tyłu</string>
   <string name="pref_gpodnet_sethostname_title">Ustaw nazwę hosta</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Użyj domyślnego hosta</string>
   <string name="pref_expandNotify_title">Rozwiń Powiadomienia</string>
@@ -388,6 +401,7 @@
   <string name="crash_report_sum">Wyślij ostatni raport o błędach przez e-mail</string>
   <string name="send_email">Wyślij e-mail</string>
   <string name="experimental_pref">Eksperymentalne</string>
+  <string name="pref_sonic_title">Odtwarzacz mediów Sonic</string>
   <string name="pref_sonic_message">Użyj wbudowanego odtwarzacza Sonic jako oprogramowanie zastępcze do natywnego odtwarzacza Android i Prestissimo</string>
   <string name="pref_current_value">Aktualna wartość: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
@@ -398,6 +412,8 @@
   <string name="pref_cast_title">Obsługa Chromecast</string>
   <string name="pref_cast_message_play_flavor">Uruchom obsługę dla zdalnego odtwarzania mediów na innych urządzeniach (takich jak Chromecast, Audio Speakers albo Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast wymagadodatkowych bibliotek, które są zablokowane w tej wersji AntennaPod</string>
+  <string name="pref_enqueue_downloaded_title">Rzeczy z kolejki zostały pobrane</string>
+  <string name="pref_enqueue_downloaded_summary">Dodaj pobrane odcinki do kolejki</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Włącz automatyczne wspieranie na flattr.</string>
   <string name="auto_flattr_after_percent">Z-flattr-uj odcinki odegrane %d procentach.</string>
@@ -407,6 +423,8 @@
   <string name="search_hint">Szukaj odcinków</string>
   <string name="found_in_shownotes_label">Znalezione w notatkach dotyczących show</string>
   <string name="found_in_chapters_label">Znaleziono w rozdziałach</string>
+  <string name="found_in_authors_label">Znaleziono wśród autorów</string>
+  <string name="found_in_feeds_label">Znaleziono wśród kanałów</string>
   <string name="search_status_no_results">Brak wyników</string>
   <string name="search_label">Szukaj</string>
   <string name="found_in_title_label">Znaleziono w tytułach</string>

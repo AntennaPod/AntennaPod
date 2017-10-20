@@ -24,6 +24,7 @@
   <string name="drawer_close">סגור תפריט</string>
   <string name="drawer_feed_order_alphabetical">מיין בסדר אלפביתי</string>
   <string name="drawer_feed_order_last_update">מיין לפי תאריך פרסום</string>
+  <string name="drawer_feed_order_most_played">מיין לפי מספר פרקים שהושמעו </string>
   <!--Webview actions-->
   <string name="open_in_browser_label">פתח בדפדפן</string>
   <string name="copy_url_label">העתק כתובת אתר</string>
@@ -62,7 +63,13 @@
   <string name="parallel_downloads_suffix">\u0020הורדות במקביל</string>
   <string name="feed_auto_download_always">תמיד</string>
   <string name="feed_auto_download_never">אף פעם</string>
+  <string name="send_label">שלח...</string>
   <string name="episode_cleanup_never">אף פעם</string>
+  <string name="episode_cleanup_after_listening">אחרי סיום</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">יום אחרי סיום</item>
+    <item quantity="other">%d ימים לאחר סיום </item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">כתובת הזנה</string>
   <string name="etxtFeedurlHint">כתובת של הזנה או אתר אינטרנט</string>
@@ -74,11 +81,17 @@
   <string name="mark_all_read_msg">סמן את כל הפרקים כנקרא</string>
   <string name="mark_all_read_confirmation_msg">אנא אשר שאתה רוצה לסמן את כל פרקים כנקראים.</string>
   <string name="mark_all_read_feed_confirmation_msg">אנא אשר שאתה רוצה לסמן את כל פרקים בהזנה זו כנקראים.</string>
+  <string name="mark_all_seen_label">סמן את כולם כנראו</string>
+  <string name="mark_all_seen_msg">סמן את כל הפרקים כנראו</string>
+  <string name="mark_all_seen_confirmation_msg">אנא אשר שאתה רוצה לסמן את כל פרקים כנראו.</string>
   <string name="show_info_label">הצג מידע</string>
+  <string name="rename_feed_label">שנה שם פודקאסט</string>
   <string name="remove_feed_label">הסר פודקאסט</string>
+  <string name="share_label">שתף...</string>
   <string name="share_link_label">שתף קישור אתר</string>
   <string name="feed_remover_msg">הסר הזנה</string>
   <string name="load_complete_feed">רענן את כל ההזנה</string>
+  <string name="hide_episodes_title">הסתר פרקים</string>
   <!--actions on feeditems-->
   <string name="download_label">הורד</string>
   <string name="play_label">נגן</string>

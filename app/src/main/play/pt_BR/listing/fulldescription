@@ -1,45 +1,43 @@
-Easy-to-use, flexible and open-source podcast manager and player
+AntennaPod é um gerenciador e reprodutor de <i>podcasts</i> que te dá acesso instantâneo a milhões de <i>podcasts</i> gratuitos e pagos, desde <i>podcasters</i> independentes até grandes editores como BBC, NPR e CNN. Adicione, importe e exporte seus <i>feeds</i> sem complicações utilizando a base de dados do iTunes, arquivos OPML ou simples URLs RSS. Economize esforços, bateria e uso de dados móveis com poderosos controles de automação para baixar episódios (especifique horários, intervalos e redes WiFi) e excluir episódios (baseado nos seus favoritos e configurações de adiamento).<br>
+Mas o mais importante: Baixe, realize <i>streaming</i> ou enfilere episódios e desfrute deles da maneira que quiser com velocidades de reprodução ajustáveis, suporte para capítulos e cronômetro. Você pode até mostrar o seu apreço aos criadores de conteúdo com a integração com o Flattr.
 
-AntennaPod is a podcast manager and player that gives you instant access to millions of free and paid podcasts, from independent podcasters to large publishing houses such as the BBC, NPR and CNN. Add, import and export their feeds hassle-free using the iTunes podcast database, OPML files or simple RSS URLs. Save effort, battery power and mobile data usage with powerful automation controls for downloading episodes (episode filtering, specify times, intervals and WiFi networks) and deleting episodes (based your favorites and delay settings).<br>
-But most importantly: Download, stream or queue episodes and enjoy them the way you like with adjustable playback speeds, chapter support and a sleep timer. You can even show your love to the content creators  with our Flattr integration.
+Desenvolvido por fãs de podcasts, AntennaPod é livre em todos os sentidos da palavra; <i>open source</i>, sem custos, sem propagandas.
 
-Made by podcast-enthousiast, AntennaPod is free in all senses of the word: open source, no costs, no ads.
+<b>Recursos disponíveis:</b><br>
+IMPORTE, ORGANIZE E TOQUE <br>
+&#8226; Adicione and importe feeds pelo iTunes e diretorios gPodder.net, arquivos OPML e links RSS ou Atom<br>
+&#8226; Gerencie suas reproduções de qualquer lugar: widget da tela inicial, notificações de sistema e fone de ouvido e controles bluetooth<br>
+&#8226; Ouça do seu jeito com velocidade de reprodução ajustável, suporte a capítulos (MP3, VorbisComment e Podlove), marcador da posição de reprodução e um despertador avançado (chacoalhe para reiniciar, volume reduzido e reprodução desacelerada)<br>
+&#8226; Acesse feeds e episódios protegidos por senha
+&#8226; Faça uso de <i>feeds</i> paginados (www.podlove.org/paged-feeds)
 
-<b>All features:</b><br>
-IMPORT, ORGANIZE AND PLAY<br>
-&#8226; Add and import feeds via the iTunes and gPodder.net directories, OPML files and RSS or Atom links<br>
-&#8226; Manage playback from anywhere: homescreen widget, system notification and earplug and bluetooth controls<br>
-&#8226; Enjoy listening your way with adjustable playback speed, chapter support (MP3, VorbisComment and Podlove), remembered playback position and an advanced sleep timer (shake to reset, lower volume and slow down playback)<br>
-&#8226; Access password-protected feeds and episodes<br>
-&#8226; Take advantage of paged feeds (www.podlove.org/paged-feeds)
+MANTENHA-SE ATUALIZADO, COMPARTILHE E APRECIE<br>
+&#8226; Guarde o melhor do melhor marcando episódios como favoritos<br>
+&#8226; Encontre aquele episódio específico  através do histórico de execução ou pelo sistema de busca (através de títulos e anotações)<br>
+&#8226; Compartilhe episódios e <i>feeds</i> através de opções em redes sociais, email, os serviços da gPodder.net e exportação OPML<br>
+&#8226; Apoie os criadores de conteúdo com a integração com o Flattr
 
-KEEP TRACK, SHARE & APPRECIATE<br>
-&#8226; Keep track of the best of the best by marking episodes as favorites<br>
-&#8226; Find that one episode through the playback history or by searching (titles and shownotes)<br>
-&#8226; Share episodes and feeds through advanced social media and email options, the gPodder.net services and via OPML export<br>
-&#8226; Support content creators with Flattr integration including automatic flattring
+CONTROLE O SISTEMA
+&#8226; Tenha controle sobre  a automação dos <i>downloads</i>: escolha <i>feeds</i>, exclua redes móveis, selecione redes específicas de WiFi, exija que o telefone esteja sendo carregado e defina horários ou intervalos<br>
+&#8226; Gerencie o armazenamento configurando a quantidade de episódios em cache, exclusão inteligente dos episódios (baseada nos seus favoritos e status de reprodução)<br>
+&#8226; Use o AntennaPod no seu idioma (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
+&#8226; Adapte-se ao ambiente utilizando os temas claro ou escuro<br>
+&#8226; Faça <i>backup</i> das suas inscrições com a integração ao gPodder.net e exportação de OPML
 
-CONTROL THE SYSTEM<br>
-&#8226; Take control over automated downloading: choose feeds, filter episodes based on keywords, exclude mobile networks, select specific WiFi networks, require the phone to be charging and set times or intervals<br>
-&#8226; Manage storage by setting the amount of cached episodes, smart deletion (based on your favorites and play status) and selecting your preferred location<br>
-&#8226; Use AntennaPod in your language (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
-&#8226; Adapt to your environment using the light and dark theme<br>
-&#8226; Back-up your subscriptions with the gPodder.net integration and OPML export
+<b>Junte-se à comunidade AntennaPod!</b><br>
+O AntennaPod está sob constante desenvolvimento através de voluntários. Você também pode contribuir, com código ou um comentário!
 
-<b>Join the AntennaPod community!</b>
-AntennaPod is under active development by volunteers. You can contribute too, with code or with comment!
+Vá ao GitHub para solicitar funcionalidades, reportar bugs e contribuir com código:<br>
+https://www.github.com/AntennaPod/AntennaPod
 
-Ask your question or give feedback via Twitter:
-https://twitter.com/@AntennaPod
-
-Share your ideas, favorite podcasting moments and gratitude to all the volunteers in our Google group:
+Nosso grupo no Google é o lugar para compartilhar suas idéias, momentos de podcasts favoritos e agradecer aos voluntários:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
-Help translate the app to your mother tongue on Transifex:
+Tem uma dúvida ou um comentário?
+https://twitter.com/@AntennaPod
+
+Transifex é o lugar para ajudar com as traduções:<br>
 https://www.transifex.com/antennapod/antennapod
 
-Check out our Beta Testing programme to get the latest features first:
+Cheque nosso programa de beta testing para receber as atualizações mais recentes primeiro:<br>
 https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
-
-Visit GitHub to submit feature requests, bug reports and code contributions:
-https://www.github.com/AntennaPod/AntennaPod
