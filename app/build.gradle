@@ -167,7 +167,7 @@ dependencies {
 
     compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
-    compile 'com.github.mfietz:fyydlin:v0.1'
+    compile 'com.github.mfietz:fyydlin:v0.3'
 }
 
 play {
