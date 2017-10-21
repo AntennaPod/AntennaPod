@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.AntennaPod.Light" parent="Theme.AppCompat.Light">
+    <style name="Theme.AntennaPod.Light" parent="Theme.Base.AntennaPod.Light">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Light" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/primary_light</item>
         <item name="colorAccent">@color/holo_blue_light</item>
         <item name="progressBarTheme">@style/ProgressBarLight</item>
@@ -60,7 +64,11 @@
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
     </style>
 
-    <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
+    <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Dark" parent="Theme.AppCompat">
         <item name="colorAccent">@color/holo_blue_dark</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
@@ -119,7 +127,11 @@
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
     </style>
 
-    <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.Base.AntennaPod.Light.NoTitle">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="progressBarTheme">@style/ProgressBarLight</item>
@@ -179,7 +191,11 @@
         <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
     </style>
 
-    <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.Base.AntennaPod.Dark.NoTitle">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
