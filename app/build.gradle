@@ -72,6 +72,7 @@ android {
 
         debug {
             applicationIdSuffix ".debug"
+            resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
             buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
             buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
         }

@@ -454,7 +454,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "AntennaPod Crash Report");
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Please describe what you were doing when the app crashed");
             // the attachment
-            Uri fileUri = FileProvider.getUriForFile(context, "de.danoeh.antennapod.provider",
+            Uri fileUri = FileProvider.getUriForFile(context, context.getString(R.string.provider_authority),
                     CrashReportWriter.getFile());
             emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
             emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
