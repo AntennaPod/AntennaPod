@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,8 +59,15 @@ public class ExternalPlayerFragment extends Fragment {
             Log.d(TAG, "layoutInfo was clicked");
 
             if (controller != null && controller.getMedia() != null) {
-                startActivity(PlaybackService.getPlayerActivityIntent(
-                        getActivity(), controller.getMedia()));
+                Intent intent = PlaybackService.getPlayerActivityIntent(getActivity(), controller.getMedia());
+
+                if (Build.VERSION.SDK_INT >= 16) {
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(getActivity(), imgvCover, "coverTransition");
+                    startActivity(intent, options.toBundle());
+                } else {
+                    startActivity(intent);
+                }
             }
         });
         return root;
