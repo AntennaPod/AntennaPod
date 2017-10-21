@@ -668,6 +668,7 @@
     <string name="label_export">Export</string>
     <string name="import_select_file">Select file to import</string>
     <string name="export_ok">Export successful. The database was written to the sd card.</string>
+    <string name="import_ok">Success.\n\nPlease press OK to restart AntennaPod</string>
 
     <!-- Casting -->
     <string name="cast_media_route_menu_title">Play on&#8230;</string>

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.IntentCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import de.danoeh.antennapod.R;
@@ -74,20 +77,10 @@ public class ImportExportActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
-
         if (requestCode == READ_REQUEST_CODE_DOCUMENT && resultCode == RESULT_OK) {
             if (resultData != null) {
                 Uri uri = resultData.getData();
-
-                try {
-                    InputStream inputStream = getContentResolver().openInputStream(uri);
-                    copyInputStreamToFile(inputStream, currentDB);
-                    inputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+                writeDatabase(uri);
             }
         } else if (requestCode == WRITE_REQUEST_CODE_DOCUMENT && resultCode == RESULT_OK) {
             if (resultData != null) {
@@ -97,20 +90,31 @@ public class ImportExportActivity extends AppCompatActivity {
         } else if(requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
             if (resultData != null) {
                 Uri uri = resultData.getData();
-                try {
-                    File backupDB = new File(getPath(getBaseContext(), uri));
-
-                    if (backupDB.exists()) {
-                        FileChannel src = new FileInputStream(currentDB).getChannel();
-                        FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                        dst.transferFrom(src, 0, src.size());
-                        src.close();
-                        dst.close();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                writeDatabase(uri);
             }
+        }
+    }
+
+    private void writeDatabase(Uri inputUri) {
+        File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(inputUri);
+            copyInputStreamToFile(inputStream, currentDB);
+            inputStream.close();
+
+            AlertDialog.Builder d = new AlertDialog.Builder(ImportExportActivity.this);
+            d.setMessage(R.string.import_ok);
+            d.setCancelable(false);
+            d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+                ComponentName cn = intent.getComponent();
+                Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+                startActivity(mainIntent);
+            });
+            d.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Snackbar.make(findViewById(R.id.import_export_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -179,7 +183,7 @@ public class ImportExportActivity extends AppCompatActivity {
         }
     }
 
-    void writeBackup(FileOutputStream outFileStream) {
+    private void writeBackup(FileOutputStream outFileStream) {
         try {
             File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
 
