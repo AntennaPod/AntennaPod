@@ -14,7 +14,7 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.spa.SPAUtil;
 
 /** Main application class. */
-public class PodcastApp extends MultiDexApplication {
+public class PodcastApp extends Application {
 
     // make sure that ClientConfigurator executes its static code
     static {
