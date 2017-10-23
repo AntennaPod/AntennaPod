@@ -33,5 +33,5 @@ If you want to translate AntennaPod into another language, you can visit the [Tr
 
 ## Building AntennaPod
 
-Information on how to build AntennaPod can be found in the [Wiki](https://github.com/danieloeh/AntennaPod/wiki/Building-AntennaPod).
+Information on how to build AntennaPod can be found in the [Wiki](https://github.com/AntennaPod/AntennaPod/wiki/Building-AntennaPod).
 
