@@ -24,7 +24,10 @@ public class OpmlImportFromIntentActivity extends OpmlImportBaseActivity {
         if (uri != null && uri.toString().startsWith("/")) {
             uri = Uri.parse("file://" + uri.toString());
         } else {
-            uri = Uri.parse(getIntent().getStringExtra(Intent.EXTRA_TEXT));
+            String extraText = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+            if(extraText != null) {
+                uri = Uri.parse(extraText);
+            }
         }
         importUri(uri);
     }
