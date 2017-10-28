@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;

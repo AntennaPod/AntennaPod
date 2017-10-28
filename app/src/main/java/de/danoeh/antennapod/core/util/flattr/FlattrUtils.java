@@ -26,8 +26,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.TimeZone;
 
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.asynctask.FlattrTokenFetcher;
 import de.danoeh.antennapod.core.storage.DBWriter;
 

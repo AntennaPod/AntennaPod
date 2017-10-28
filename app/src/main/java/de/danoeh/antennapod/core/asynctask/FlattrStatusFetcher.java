@@ -9,7 +9,7 @@ import org.shredzone.flattr4j.model.Flattr;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 

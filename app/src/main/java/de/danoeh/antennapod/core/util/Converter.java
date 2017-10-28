@@ -5,7 +5,7 @@ import android.util.Log;
 
 import java.util.Locale;
 
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.R;
 
 /** Provides methods for converting various units. */
 public final class Converter {

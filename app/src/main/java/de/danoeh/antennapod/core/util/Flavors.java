@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
-import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.BuildConfig;
 
 /**
  * Helper class to handle the different build flavors.

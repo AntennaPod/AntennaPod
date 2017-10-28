@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 
-import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.BuildConfig;
 
 /** Reads OPML documents. */
 public class OpmlReader {

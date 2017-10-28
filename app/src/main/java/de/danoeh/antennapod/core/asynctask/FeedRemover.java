@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 
 import java.util.concurrent.ExecutionException;
 
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;

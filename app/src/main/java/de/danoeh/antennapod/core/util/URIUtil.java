@@ -7,7 +7,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.BuildConfig;
 
 /**
  * Utility methods for dealing with URL encoding.

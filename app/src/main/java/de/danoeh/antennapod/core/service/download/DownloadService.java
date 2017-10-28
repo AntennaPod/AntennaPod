@@ -51,8 +51,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.Feed;

@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.dialog;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.R;
 
 /** Creates Alert Dialogs if a DownloadRequestException has happened. */
 public class DownloadRequestErrorDialogCreator {

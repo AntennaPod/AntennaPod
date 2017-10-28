@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.util;
 import android.net.Uri;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.BuildConfig;
 
 /**
  * Provides methods for checking and editing a URL.

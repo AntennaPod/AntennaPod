@@ -16,8 +16,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;

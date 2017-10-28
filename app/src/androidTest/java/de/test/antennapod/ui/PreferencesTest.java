@@ -51,7 +51,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     public void testSwitchTheme() {
         final int theme = UserPreferences.getTheme();
         int otherTheme;
-        if(theme == de.danoeh.antennapod.core.R.style.Theme_AntennaPod_Light) {
+        if(theme == R.style.Theme_AntennaPod_Light) {
             otherTheme = R.string.pref_theme_title_dark;
         } else {
             otherTheme = R.string.pref_theme_title_light;
@@ -65,7 +65,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     public void testSwitchThemeBack() {
         final int theme = UserPreferences.getTheme();
         int otherTheme;
-        if(theme == de.danoeh.antennapod.core.R.style.Theme_AntennaPod_Light) {
+        if(theme == R.style.Theme_AntennaPod_Light) {
             otherTheme = R.string.pref_theme_title_dark;
         } else {
             otherTheme = R.string.pref_theme_title_light;

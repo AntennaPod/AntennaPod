@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
-import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.util.comparator.ChapterStartTimeComparator;
 import de.danoeh.antennapod.core.util.id3reader.ChapterReader;

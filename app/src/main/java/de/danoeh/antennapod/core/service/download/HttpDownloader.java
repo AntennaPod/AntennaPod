@@ -18,8 +18,8 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Date;
 
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.DateUtils;

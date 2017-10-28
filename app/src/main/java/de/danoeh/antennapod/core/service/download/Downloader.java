@@ -5,8 +5,8 @@ import android.net.wifi.WifiManager;
 
 import java.util.concurrent.Callable;
 
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.R;
 
 /**
  * Downloads files

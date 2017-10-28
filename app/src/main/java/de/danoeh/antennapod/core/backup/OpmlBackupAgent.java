@@ -27,7 +27,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.export.opml.OpmlReader;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;

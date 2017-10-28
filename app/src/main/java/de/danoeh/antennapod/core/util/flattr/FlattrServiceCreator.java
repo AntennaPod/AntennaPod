@@ -6,7 +6,7 @@ import org.shredzone.flattr4j.FlattrFactory;
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.oauth.AccessToken;
 
-import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.BuildConfig;
 
 /** Ensures that only one instance of the FlattrService class exists at a time */
 

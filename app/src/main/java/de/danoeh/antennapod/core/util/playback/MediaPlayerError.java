@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.util.playback;
 import android.content.Context;
 import android.media.MediaPlayer;
 
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.R;
 
 /** Utility class for MediaPlayer errors. */
 public class MediaPlayerError {

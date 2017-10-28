@@ -61,7 +61,6 @@ import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.ExportWorker;
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.export.html.HtmlWriter;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;

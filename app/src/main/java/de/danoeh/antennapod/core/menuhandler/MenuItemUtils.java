@@ -4,7 +4,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.R;
 
 /**
  * Utilities for menu items
