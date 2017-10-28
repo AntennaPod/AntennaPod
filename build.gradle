@@ -6,18 +6,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:2.3.3"
-        classpath "me.tatarka:gradle-retrolambda:3.7.0"
-        classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
-        classpath "com.github.triplet.gradle:play-publisher:1.1.4"
-        // Exclude the version that the android plugin depends on.
-        configurations.classpath.exclude group: "com.android.tools.external.lombok"
+        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath "com.github.triplet.gradle:play-publisher:1.2.0"
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        google()
     }
 }
 
@@ -37,12 +34,12 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 25
-    buildToolsVersion = "25.0.3"
-    minSdkVersion = 10
+    compileSdkVersion = 26
+    buildToolsVersion = "26.0.2"
+    minSdkVersion = 14
     targetSdkVersion = 25
 
-    supportVersion = "25.3.1"
+    supportVersion = "26.1.0"
     commonsioVersion = "2.5"
     commonslangVersion = "3.6"
     eventbusVersion = "2.4.0"
