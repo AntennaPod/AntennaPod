@@ -9,6 +9,7 @@ import android.util.Log;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
+import org.apache.commons.io.FilenameUtils;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -74,6 +75,57 @@ public class DBWriter {
     }
 
     /**
+     * Moves a downloaded FeedMedia file to the archives directory.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param mediaId ID of the FeedMedia object whose downloaded file should be archived.
+     */
+    public static Future<?> archiveFeedMediaOfItem(final Context context,
+                                                  final long mediaId) {
+        return dbExec.submit(() -> {
+            final FeedMedia media = DBReader.getFeedMedia(mediaId);
+            if (media != null) {
+                Log.i(TAG, String.format("Requested to archive FeedMedia [id=%d, title=%s, downloaded=%s",
+                        media.getId(), media.getEpisodeTitle(), String.valueOf(media.isDownloaded())));
+                boolean result = false;
+                if (media.isDownloaded()) {
+                    // archive downloaded media file
+                    File mediaFile = new File(media.getFile_url());
+                    if (mediaFile.exists()) {
+                        File dest = getNonExistingFile(UserPreferences.getArchiveFolder(media.getItem().getFeed().getTitle())
+                                + File.separator + mediaFile.getName());
+                        Log.i(TAG, "Archiving file to: " + dest);
+                        result = mediaFile.renameTo(dest);
+                    }
+                    cleanMediaFile(context, media);
+                }
+                Log.d(TAG, "Archiving file result: " + result);
+                EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
+                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            }
+        });
+    }
+
+    /**
+     * Gets a file that doesn't already exists on the filesystem, renames it if needed.
+     *
+     * @param filename Desired filename.
+     * @return a previously non existing file
+     */
+    private static File getNonExistingFile(final String filename) {
+        File dest = new File(filename);
+        if (dest.exists()) {
+            String basename = FilenameUtils.getBaseName(dest.getName());
+            String extension = FilenameUtils.getExtension(dest.getName());
+            for (int i = 1; i < Integer.MAX_VALUE && dest.exists(); ++i) {
+                dest = new File(dest.getParent() + File.separator
+                        + basename + "-" + i + FilenameUtils.EXTENSION_SEPARATOR + extension);
+            }
+        }
+        return dest;
+    }
+
+    /**
      * Deletes a downloaded FeedMedia file from the storage device.
      *
      * @param context A context that is used for opening a database connection.
@@ -94,48 +146,58 @@ public class DBWriter {
                         EventBus.getDefault().post(evt);
                         return;
                     }
-                    media.setDownloaded(false);
-                    media.setFile_url(null);
-                    media.setHasEmbeddedPicture(false);
-                    PodDBAdapter adapter = PodDBAdapter.getInstance();
-                    adapter.open();
-                    adapter.setMedia(media);
-                    adapter.close();
-
-                    // If media is currently being played, change playback
-                    // type to 'stream' and shutdown playback service
-                    SharedPreferences prefs = PreferenceManager
-                            .getDefaultSharedPreferences(context);
-                    if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
-                        if (media.getId() == PlaybackPreferences
-                                .getCurrentlyPlayingFeedMediaId()) {
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.putBoolean(
-                                    PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
-                                    true);
-                            editor.commit();
-                        }
-                        if (PlaybackPreferences
-                                .getCurrentlyPlayingFeedMediaId() == media
-                                .getId()) {
-                            context.sendBroadcast(new Intent(
-                                    PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-                        }
-                    }
-                    // Gpodder: queue delete action for synchronization
-                    if(GpodnetPreferences.loggedIn()) {
-                        FeedItem item = media.getItem();
-                        GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.DELETE)
-                                .currentDeviceId()
-                                .currentTimestamp()
-                                .build();
-                        GpodnetPreferences.enqueueEpisodeAction(action);
-                    }
+                    cleanMediaFile(context, media);
                 }
                 EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
         });
+    }
+
+    /**
+     * Cleans things after a downloaded FeedMedia file has been removed from its storage device location.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param media FeedMedia object whose downloaded file has been deleted.
+     */
+    private static void cleanMediaFile(final Context context, final FeedMedia media) {
+        media.setDownloaded(false);
+        media.setFile_url(null);
+        media.setHasEmbeddedPicture(false);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setMedia(media);
+        adapter.close();
+
+        // If media is currently being played, change playback
+        // type to 'stream' and shutdown playback service
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
+            if (media.getId() == PlaybackPreferences
+                    .getCurrentlyPlayingFeedMediaId()) {
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean(
+                        PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
+                        true);
+                editor.commit();
+            }
+            if (PlaybackPreferences
+                    .getCurrentlyPlayingFeedMediaId() == media
+                    .getId()) {
+                context.sendBroadcast(new Intent(
+                        PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+            }
+        }
+        // Gpodder: queue delete action for synchronization
+        if(GpodnetPreferences.loggedIn()) {
+            FeedItem item = media.getItem();
+            GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.DELETE)
+                    .currentDeviceId()
+                    .currentTimestamp()
+                    .build();
+            GpodnetPreferences.enqueueEpisodeAction(action);
+        }
     }
 
     /**

@@ -65,6 +65,7 @@ import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.export.html.HtmlWriter;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
@@ -470,6 +471,9 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             return true;
         });
         PreferenceControllerFlavorHelper.setupFlavoredUI(ui);
+        ui.findPreference(UserPreferences.PREF_PLAYED_ACTION).setOnPreferenceChangeListener(
+                (preference, o) -> setPlayedActionText(FeedPreferences.PlayedAction.values()[Integer.parseInt((String) o)])
+        );
         buildEpisodeCleanupPreference();
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
@@ -537,6 +541,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         setDataFolderText();
         GpodnetPreferences.registerOnSharedPreferenceChangeListener(gpoddernetListener);
         updateGpodnetPreferenceScreen();
+        setPlayedActionText(UserPreferences.getPlayedAction());
     }
 
     public void onPause() {
@@ -544,7 +549,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     public void onStop() {
-        if(subscription != null) {
+        if (subscription != null) {
             subscription.unsubscribe();
         }
     }
@@ -928,6 +933,33 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             UserPreferences.setCompactNotificationButtons(preferredButtons));
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
+    }
+
+    private boolean setPlayedActionText(FeedPreferences.PlayedAction played_action) {
+        boolean rc = true;
+        final Context context = ui.getActivity();
+        String val;
+        switch (played_action) {
+            case DELETE:
+                val = context.getString(R.string.feed_played_action_delete);
+                break;
+            case NONE:
+                val = context.getString(R.string.feed_played_action_none);
+                break;
+            case ARCHIVE:
+                val = context.getString(R.string.feed_played_action_archive) + "\n" +
+                        context.getString(R.string.to) + " " +
+                        UserPreferences.getArchiveFolder(null).toString();
+                break;
+            default:
+                Log.e(TAG, "setPlayedActionText: unhandled case = " + played_action);
+                val = "";
+                rc = false;
+        }
+        String summary = context.getString(R.string.pref_played_action_sum) + "\n"
+                + String.format(context.getString(R.string.pref_current_value), val);
+        ui.findPreference(UserPreferences.PREF_PLAYED_ACTION).setSummary(summary);
+        return rc;
     }
 
     // CHOOSE DATA FOLDER

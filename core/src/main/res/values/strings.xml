@@ -91,7 +91,7 @@
     <string name="auto_download_label">Include in auto downloads</string>
     <string name="auto_download_apply_to_items_title">Apply to Previous Episodes</string>
     <string name="auto_download_apply_to_items_message">The new <i>Auto Download</i> setting will automatically be applied to new episodes.\nDo you also want to apply it to previously published episodes?</string>
-    <string name="auto_delete_label">Auto Delete Episode</string>
+    <string name="played_action_label">Episode Played Action</string>
     <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
     <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>
@@ -104,6 +104,11 @@
         <item quantity="one">1 day after finishing</item>
         <item quantity="other">%d days after finishing</item>
     </plurals>
+    <string name="feed_played_action_global">Global default</string>
+    <string name="feed_played_action_delete">Delete</string>
+    <string name="feed_played_action_none">None</string>
+    <string name="feed_played_action_archive">Archive</string>
+    <string name="to">to</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
@@ -315,8 +320,8 @@
     <string name="pref_hardwarePreviousButtonRestarts_title">Previous button restarts</string>
     <string name="pref_hardwarePreviousButtonRestarts_sum">When pressing a hardware previous button restart playing the current episode instead of rewinding</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
-    <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
-    <string name="pref_auto_delete_title">Auto Delete</string>
+    <string name="pref_played_action_sum">Perform an action when playback completes</string>
+    <string name="pref_played_action_title">Played Action</string>
     <string name="pref_smart_mark_as_played_sum">Mark episodes as played even if less than a certain amount of seconds of playing time is still left</string>
     <string name="pref_smart_mark_as_played_title">Smart Mark as Played</string>
     <string name="pref_skip_keeps_episodes_sum">Keep episodes when they are skipped</string>

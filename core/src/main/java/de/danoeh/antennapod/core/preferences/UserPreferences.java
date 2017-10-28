@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
@@ -41,6 +42,7 @@ import de.danoeh.antennapod.core.util.Converter;
  */
 public class UserPreferences {
 
+    public static final String ARCHIVE_DIR = "archive";
     public static final String IMPORT_DIR = "import/";
 
     private static final String TAG = "UserPreferences";
@@ -68,7 +70,7 @@ public class UserPreferences {
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     public static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
-    public static final String PREF_AUTO_DELETE = "prefAutoDelete";
+    public static final String PREF_PLAYED_ACTION = "prefPlayedAction";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     public static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
@@ -301,8 +303,12 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_FAVORITE_KEEPS_EPISODE, true);
     }
 
-    public static boolean isAutoDelete() {
-        return prefs.getBoolean(PREF_AUTO_DELETE, false);
+    public static FeedPreferences.PlayedAction getPlayedAction() {
+        return FeedPreferences.PlayedAction.values()[Integer.parseInt(prefs.getString(PREF_PLAYED_ACTION, "2"))];
+    }
+
+    public static void setPlayedAction(FeedPreferences.PlayedAction played_action) {
+        prefs.edit().putString(PREF_PLAYED_ACTION, String.valueOf(played_action.ordinal())).apply();
     }
 
     public static int getSmartMarkAsPlayedSecs() {
@@ -838,5 +844,17 @@ public class UserPreferences {
      */
     public static boolean isCastEnabled() {
         return prefs.getBoolean(PREF_CAST_ENABLED, false);
+    }
+
+    /**
+     * Return the archive folder.
+     *
+     * @param type The name of the folder inside the archive folder. May be null
+     *             when accessing the root of the archive folder.
+     * @return The archive folder that has been requested or null if the folder
+     * could not be created.
+     */
+    public static File getArchiveFolder(String type) {
+        return getDataFolder(type == null ? ARCHIVE_DIR : ARCHIVE_DIR + File.separator + type);
     }
 }

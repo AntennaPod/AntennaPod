@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="spnAutoDeleteItems">
-        <item>@string/feed_auto_download_global</item>
-        <item>@string/feed_auto_download_always</item>
-        <item>@string/feed_auto_download_never</item>
+    <string-array name="spnFeedPlayedActionItems">
+        <item>@string/feed_played_action_global</item>
+        <item>@string/feed_played_action_delete</item>
+        <item>@string/feed_played_action_none</item>
+        <item>@string/feed_played_action_archive</item>
+    </string-array>
+
+    <string-array name="pref_played_action_entries">
+        <item>@string/feed_played_action_none</item>
+        <item>@string/feed_played_action_delete</item>
+        <item>@string/feed_played_action_archive</item>
+    </string-array>
+
+    <string-array name="pref_played_action_values">
+        <!-- map the values from FeedPreferences.PlayedAction
+             "GLOBAL" is omitted has it makes no sense here -->
+        <item>2</item>
+        <item>1</item>
+        <item>3</item>
     </string-array>
 
     <string-array name="smart_mark_as_played_values">
