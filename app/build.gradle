@@ -115,7 +115,7 @@ android {
 
     flavorDimensions "tier"
     productFlavors {
-        free {
+        fdroid {
             dimension "tier"
         }
         play {
@@ -130,8 +130,8 @@ android {
 
 //no clue why TODO remove, if it works
 //configurations {
-//    freeDebugCompile
-//    freeReleaseCompile
+//    fdroidDebugCompile
+//    fdroidReleaseCompile
 //    playDebugCompile
 //    playReleaseCompile
 //}
