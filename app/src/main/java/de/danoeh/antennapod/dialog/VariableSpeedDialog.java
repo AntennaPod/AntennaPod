@@ -8,16 +8,14 @@ import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-
-import java.util.Arrays;
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.IntentUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class VariableSpeedDialog {
 

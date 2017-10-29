@@ -5,13 +5,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
-import org.shredzone.flattr4j.oauth.AccessToken;
-
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.activity.FlattrAuthActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.FlattrCallbacks;
+import org.shredzone.flattr4j.oauth.AccessToken;
 
 public class FlattrCallbacksImpl implements FlattrCallbacks {
     private static final String TAG = "FlattrCallbacksImpl";

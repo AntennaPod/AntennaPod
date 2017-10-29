@@ -4,17 +4,15 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
-
 import com.afollestad.materialdialogs.MaterialDialog;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.StorageUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChooseDataFolderDialog {
 

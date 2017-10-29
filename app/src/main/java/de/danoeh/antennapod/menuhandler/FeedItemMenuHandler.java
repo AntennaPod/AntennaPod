@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;

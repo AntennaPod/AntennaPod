@@ -15,15 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
-
 import com.afollestad.materialdialogs.MaterialDialog;
-
-import java.io.File;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
+
+import java.io.File;
 
 /** Is show if there is now external storage available. */
 public class StorageErrorActivity extends AppCompatActivity {

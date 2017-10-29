@@ -6,16 +6,14 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
-import org.apache.commons.lang3.Validate;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import org.apache.commons.lang3.Validate;
+
+import java.util.List;
 
 /**
  * Performs a search on the gpodder.net directory and displays the results.

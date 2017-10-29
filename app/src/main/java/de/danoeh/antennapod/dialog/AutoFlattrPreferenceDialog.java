@@ -8,11 +8,9 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import org.apache.commons.lang3.Validate;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Creates a new AlertDialog that displays preferences for auto-flattring to the user.

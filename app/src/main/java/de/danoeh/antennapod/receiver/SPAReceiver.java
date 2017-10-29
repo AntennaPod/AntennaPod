@@ -6,14 +6,13 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-
-import java.util.Arrays;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+
+import java.util.Arrays;
 
 /**
  * Receives intents from AntennaPod Single Purpose apps

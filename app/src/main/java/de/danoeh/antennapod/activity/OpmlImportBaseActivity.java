@@ -9,20 +9,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
 import com.afollestad.materialdialogs.MaterialDialog;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.ArrayList;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
 import de.danoeh.antennapod.asynctask.OpmlImportWorker;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.util.LangUtils;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.ArrayList;
 
 /**
  * Base activity for Opml Import - e.g. with code what to do afterwards

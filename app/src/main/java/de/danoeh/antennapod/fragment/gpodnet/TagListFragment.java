@@ -12,9 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.gpodnet.TagListAdapter;
@@ -22,6 +19,8 @@ import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+
+import java.util.List;
 
 public class TagListFragment extends ListFragment {
 

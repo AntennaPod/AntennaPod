@@ -9,11 +9,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-
-import java.lang.ref.WeakReference;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -21,6 +17,8 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import jp.shts.android.library.TriangleLabelView;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Adapter for subscriptions

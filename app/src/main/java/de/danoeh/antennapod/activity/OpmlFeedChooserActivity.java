@@ -10,13 +10,12 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Displays the feeds that the OPML-Importer has read and lets the user choose

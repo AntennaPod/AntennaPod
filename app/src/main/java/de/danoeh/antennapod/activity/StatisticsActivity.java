@@ -9,12 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.TextView;
-
+import android.widget.*;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.StatisticsListAdapter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;

@@ -13,12 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
-import java.lang.ref.WeakReference;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.preferences.PreferenceController;
+
+import java.lang.ref.WeakReference;
 
 /**
  * PreferenceActivity for API 11+. In order to change the behavior of the preference UI, see

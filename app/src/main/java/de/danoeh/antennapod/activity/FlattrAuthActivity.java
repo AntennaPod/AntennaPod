@@ -11,14 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.shredzone.flattr4j.exception.FlattrException;
-
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.preferences.PreferenceController;
+import org.shredzone.flattr4j.exception.FlattrException;
 
 /** Guides the user through the authentication process */
 
