@@ -31,6 +31,9 @@ public class DateUtils {
         date = date.replaceAll("CEST$", "+02:00");
         date = date.replaceAll("CET$", "+01:00");
 
+        // some generators use "Sept" for September
+        date = date.replaceAll("\\bSept\\b", "Sep");
+
         // if datetime is more precise than seconds, make sure the value is in ms
         if (date.contains(".")) {
             int start = date.indexOf('.');
