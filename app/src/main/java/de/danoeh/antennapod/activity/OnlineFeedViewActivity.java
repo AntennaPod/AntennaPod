@@ -14,29 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.bumptech.glide.Glide;
-
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -65,11 +44,20 @@ import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.greenrobot.event.EventBus;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Downloads a feed from a feed URL and parses it. Subclasses can display the

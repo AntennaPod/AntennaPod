@@ -5,14 +5,13 @@ import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Activity for playing audio files.

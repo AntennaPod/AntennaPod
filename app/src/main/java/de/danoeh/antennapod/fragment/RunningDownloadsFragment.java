@@ -6,9 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
@@ -21,6 +18,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.greenrobot.event.EventBus;
+
+import java.util.List;
 
 /**
  * Displays all running downloads and provides actions to cancel them

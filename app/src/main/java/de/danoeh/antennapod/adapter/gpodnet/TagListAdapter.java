@@ -6,11 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
+
+import java.util.List;
 
 /**
  * Adapter for displaying a list of GPodnetPodcast-Objects.

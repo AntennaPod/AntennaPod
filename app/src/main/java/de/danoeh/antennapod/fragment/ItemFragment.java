@@ -13,31 +13,14 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -51,26 +34,20 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.Flavors;
-import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.ShareUtils;
+import de.danoeh.antennapod.core.storage.*;
+import de.danoeh.antennapod.core.util.*;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.OnSwipeGesture;
 import de.danoeh.antennapod.view.SwipeGestureDetector;
 import de.greenrobot.event.EventBus;
+import org.apache.commons.lang3.ArrayUtils;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import java.util.List;
 
 /**
  * Displays information about a FeedItem and actions.

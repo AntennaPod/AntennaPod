@@ -7,13 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
@@ -23,6 +18,8 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+
+import java.util.List;
 
 
 /**

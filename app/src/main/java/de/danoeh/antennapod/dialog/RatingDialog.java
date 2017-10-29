@@ -7,13 +7,11 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
 import com.afollestad.materialdialogs.MaterialDialog;
+import de.danoeh.antennapod.R;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
-
-import de.danoeh.antennapod.R;
 
 public class RatingDialog {
 

@@ -8,14 +8,12 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import org.apache.commons.lang3.Validate;
-
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Shows a username and a password text field.

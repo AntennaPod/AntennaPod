@@ -6,20 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
@@ -31,6 +22,9 @@ import de.mfietz.fyydlin.SearchHit;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static de.danoeh.antennapod.adapter.itunes.ItunesAdapter.Podcast;
 import static java.util.Collections.emptyList;

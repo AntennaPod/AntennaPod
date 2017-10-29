@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import org.apache.commons.lang3.Validate;
-
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.receiver.SPAReceiver;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Provides methods related to AntennaPodSP (https://github.com/danieloeh/AntennaPodSP)

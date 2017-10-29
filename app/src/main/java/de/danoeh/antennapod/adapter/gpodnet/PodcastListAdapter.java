@@ -7,16 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 /**
  * Adapter for displaying a list of GPodnetPodcast-Objects.

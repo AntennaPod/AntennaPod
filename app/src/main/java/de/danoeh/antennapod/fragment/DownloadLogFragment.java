@@ -10,9 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -23,6 +20,8 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import java.util.List;
 
 /**
  * Shows the download log

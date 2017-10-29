@@ -6,16 +6,14 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.export.opml.OpmlElement;
+import de.danoeh.antennapod.core.export.opml.OpmlReader;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
-
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.export.opml.OpmlElement;
-import de.danoeh.antennapod.core.export.opml.OpmlReader;
 
 public class OpmlImportWorker extends
 		AsyncTask<Void, Void, ArrayList<OpmlElement>> {

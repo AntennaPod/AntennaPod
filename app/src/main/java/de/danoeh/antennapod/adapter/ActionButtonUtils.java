@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.view.View;
 import android.widget.ImageButton;
-
-import org.apache.commons.lang3.Validate;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Utility methods for the action button that is displayed on the right hand side

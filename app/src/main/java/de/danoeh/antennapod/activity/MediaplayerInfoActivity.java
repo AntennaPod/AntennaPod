@@ -22,16 +22,8 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.Toast;
-
+import android.widget.*;
 import com.viewpagerindicator.CirclePageIndicator;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
@@ -50,15 +42,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
-import de.danoeh.antennapod.fragment.AddFeedFragment;
-import de.danoeh.antennapod.fragment.ChaptersFragment;
-import de.danoeh.antennapod.fragment.CoverFragment;
-import de.danoeh.antennapod.fragment.DownloadsFragment;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
-import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.danoeh.antennapod.fragment.*;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
@@ -66,6 +50,8 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import java.util.List;
 
 /**
  * Activity for playing files that do not require a video surface.

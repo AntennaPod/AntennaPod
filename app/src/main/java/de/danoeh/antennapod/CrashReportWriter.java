@@ -2,15 +2,13 @@ package de.danoeh.antennapod;
 
 import android.os.Build;
 import android.util.Log;
-
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
 

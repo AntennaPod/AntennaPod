@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;

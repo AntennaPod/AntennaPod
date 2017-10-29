@@ -16,15 +16,9 @@ import android.net.Uri;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
+import android.preference.*;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -36,32 +30,11 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.afollestad.materialdialogs.MaterialDialog;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AboutActivity;
-import de.danoeh.antennapod.activity.DirectoryChooserActivity;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
-import de.danoeh.antennapod.activity.StatisticsActivity;
+import de.danoeh.antennapod.activity.*;
 import de.danoeh.antennapod.asynctask.ExportWorker;
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.export.html.HtmlWriter;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
@@ -69,16 +42,16 @@ import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
-import de.danoeh.antennapod.dialog.AuthenticationDialog;
-import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
-import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
-import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
-import de.danoeh.antennapod.dialog.ProxyDialog;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import de.danoeh.antennapod.dialog.*;
+import org.apache.commons.lang3.ArrayUtils;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import java.io.File;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sets up a preference UI that lets the user change user preferences.

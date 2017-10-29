@@ -8,19 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.mfietz.fyydlin.SearchHit;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.mfietz.fyydlin.SearchHit;
 
 public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
     /**

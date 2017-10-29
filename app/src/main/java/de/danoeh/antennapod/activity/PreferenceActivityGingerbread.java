@@ -7,7 +7,6 @@ import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.preferences.PreferenceController;

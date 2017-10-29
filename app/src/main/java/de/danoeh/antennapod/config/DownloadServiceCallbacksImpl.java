@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import de.danoeh.antennapod.activity.DownloadAuthenticationActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.NavListAdapter;

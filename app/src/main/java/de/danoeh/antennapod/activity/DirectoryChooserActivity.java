@@ -14,21 +14,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
  * Let's the user choose a directory on the storage device. The selected folder
