@@ -128,12 +128,13 @@ android {
     }
 }
 
-configurations {
-    freeDebugCompile
-    freeReleaseCompile
-    playDebugCompile
-    playReleaseCompile
-}
+//no clue why TODO remove, if it works
+//configurations {
+//    freeDebugCompile
+//    freeReleaseCompile
+//    playDebugCompile
+//    playReleaseCompile
+//}
 
 dependencies {
     //Core ############
@@ -142,16 +143,11 @@ dependencies {
     implementation "com.nineoldandroids:library:2.4.0"
     implementation "io.reactivex:rxandroid:$rxAndroidVersion"
 
-    // Add casting features
-    // free build hack: skip some dependencies
-    if (!doFreeBuild()) { // TODO simplify, no need anymore
-        playImplementation "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
-        implementation "com.android.support:mediarouter-v7:$supportVersion"
-        playImplementation "com.google.android.gms:play-services-cast:$playServicesVersion"
-        implementation "com.google.android.support:wearable:$wearableSupportVersion"
-    } else {
-        System.out.println("free build hack, skipping some dependencies")
-    }
+    playImplementation "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
+    playImplementation "com.android.support:mediarouter-v7:$supportVersion"
+    playImplementation "com.google.android.gms:play-services-cast:$playServicesVersion"
+    playImplementation "com.google.android.support:wearable:$wearableSupportVersion"
+    provided "com.google.android.wearable:wearable:$wearableSupportVersion"
     // Core end ###########
 
     implementation "com.android.support:support-v4:$supportVersion"
