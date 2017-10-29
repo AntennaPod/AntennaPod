@@ -7,6 +7,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.lang.ref.WeakReference;
 
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
@@ -26,16 +27,16 @@ public class RenameFeedDialog {
             return;
         }
         new MaterialDialog.Builder(activity)
-                .title(de.danoeh.antennapod.core.R.string.rename_feed_label)
+                .title(R.string.rename_feed_label)
                 .inputType(InputType.TYPE_CLASS_TEXT)
                 .input(feed.getTitle(), feed.getTitle(), true, (dialog, input) -> {
                     feed.setCustomTitle(input.toString());
                     DBWriter.setFeedCustomTitle(feed);
                     dialog.dismiss();
                 })
-                .neutralText(de.danoeh.antennapod.core.R.string.reset)
+                .neutralText(R.string.reset)
                 .onNeutral((dialog, which) -> dialog.getInputEditText().setText(feed.getFeedTitle()))
-                .negativeText(de.danoeh.antennapod.core.R.string.cancel_label)
+                .negativeText(R.string.cancel_label)
                 .onNegative((dialog, which) -> dialog.dismiss())
                 .autoDismiss(false)
                 .show();

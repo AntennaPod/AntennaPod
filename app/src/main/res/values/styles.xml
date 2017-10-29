@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.AntennaPod.Light" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/primary_light</item>
+        <item name="colorAccent">@color/holo_blue_light</item>
+        <item name="progressBarTheme">@style/ProgressBarLight</item>
+        <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
+        <item name="progressBarTheme">@style/ProgressBarDark</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="progressBarTheme">@style/ProgressBarLight</item>
+        <item name="colorPrimary">@color/primary_light</item>
+        <item name="colorAccent">@color/holo_blue_light</item>
+        <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="progressBarTheme">@style/ProgressBarDark</item>
+        <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
+        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+    </style>
+
+    <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="AntennaPod.TextView.Heading" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:lines">2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AntennaPod.TextView.ListItemPrimaryTitle2" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AntennaPod.TextView.ListItemSecondaryTitle" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AntennaPod.Dialog.Title" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="AntennaPod.TextView.UnreadIndicator" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">@dimen/text_size_micro</item>
+        <item name="android:textColor">@color/new_indicator_green</item>
+        <item name="android:text">@string/new_label</item>
+    </style>
+
+    <style name="Widget.AntennaPod.Button" parent="Widget.AppCompat.Button">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
+    <style name="AntennaPod.Dialog.Light" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/holo_blue_light</item>
+    </style>
+
+    <style name="AntennaPod.Dialog.Dark" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/holo_blue_dark</item>
+    </style>
+
+    <style name="BigBlurryBackground">
+        <item name="android:scaleType">centerCrop</item>
+        <!-- <item name="android:tint">@color/image_readability_tint</item> -->
+        <!-- Reactivate when Glide's tinting has been fixed for Android 5.x
+             Remove color filter from ItemlistFragment -->
+
+    </style>
+
+    <style name="ProgressBarLight">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_light</item>
+    </style>
+
+    <style name="ProgressBarDark">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_dark</item>
+    </style>
+
+</resources>
