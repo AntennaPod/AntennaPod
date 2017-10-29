@@ -130,4 +130,12 @@ public class DateUtilsTest extends AndroidTestCase {
         Date actual = DateUtils.parse("Thu, 8 Oct 2014 09:00:00 GMT"); // actually a Wednesday
         assertEquals(expected, actual);
     }
+
+    public void testParseDateWithBadAbbreviation() {
+        GregorianCalendar exp1 = new GregorianCalendar(2014, 8, 8, 0, 0, 0);
+        exp1.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date expected = new Date(exp1.getTimeInMillis());
+        Date actual = DateUtils.parse("Mon, 8 Sept 2014 00:00:00 GMT"); // should be Sep
+        assertEquals(expected, actual);
+    }
 }
