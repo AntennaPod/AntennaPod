@@ -27,20 +27,20 @@ public class ChapterReader extends ID3Reader {
 	@Override
 	public int onStartTagHeader(TagHeader header) {
 		chapters = new ArrayList<>();
-		System.out.println(header.toString());
+		Log.d(TAG, "header: " + header);
 		return ID3Reader.ACTION_DONT_SKIP;
 	}
 
 	@Override
 	public int onStartFrameHeader(FrameHeader header, InputStream input)
 			throws IOException, ID3ReaderException {
-		System.out.println(header.toString());
+		Log.d(TAG, "header: " + header);
 		switch (header.getId()) {
 			case FRAME_ID_CHAPTER:
 				if (currentChapter != null) {
 					if (!hasId3Chapter(currentChapter)) {
 						chapters.add(currentChapter);
-						if (BuildConfig.DEBUG) Log.d(TAG, "Found chapter: " + currentChapter);
+						Log.d(TAG, "Found chapter: " + currentChapter);
 						currentChapter = null;
 					}
 				}
@@ -59,7 +59,7 @@ public class ChapterReader extends ID3Reader {
 					readString(title, input, header.getSize());
 					currentChapter
 							.setTitle(title.toString());
-					if (BuildConfig.DEBUG) Log.d(TAG, "Found title: " + currentChapter.getTitle());
+					Log.d(TAG, "Found title: " + currentChapter.getTitle());
 
 					return ID3Reader.ACTION_DONT_SKIP;
 				}
@@ -74,7 +74,7 @@ public class ChapterReader extends ID3Reader {
 
 					currentChapter.setLink(decodedLink);
 
-					if (BuildConfig.DEBUG) Log.d(TAG, "Found link: " + currentChapter.getLink());
+					Log.d(TAG, "Found link: " + currentChapter.getLink());
 					return ID3Reader.ACTION_DONT_SKIP;
 				}
 				break;
@@ -102,17 +102,17 @@ public class ChapterReader extends ID3Reader {
 				chapters.add(currentChapter);
 			}
 		}
-		System.out.println("Reached end of tag");
+		Log.d(TAG, "Reached end of tag");
 		if (chapters != null) {
 			for (Chapter c : chapters) {
-				System.out.println(c.toString());
+				Log.d(TAG, "chapter: " + c);
 			}
 		}
 	}
 
 	@Override
 	public void onNoTagHeaderFound() {
-		System.out.println("No tag header found");
+		Log.d(TAG, "No tag header found");
 		super.onNoTagHeaderFound();
 	}
 

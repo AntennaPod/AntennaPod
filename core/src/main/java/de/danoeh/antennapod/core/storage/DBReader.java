@@ -811,31 +811,8 @@ public final class DBReader {
             }
             item.setChapters(new ArrayList<>(chaptersCount));
             while (cursor.moveToNext()) {
-                int indexType = cursor.getColumnIndex(PodDBAdapter.KEY_CHAPTER_TYPE);
-                int indexStart = cursor.getColumnIndex(PodDBAdapter.KEY_START);
-                int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
-                int indexLink = cursor.getColumnIndex(PodDBAdapter.KEY_LINK);
-
-                int chapterType = cursor.getInt(indexType);
-                Chapter chapter = null;
-                long start = cursor.getLong(indexStart);
-                String title = cursor.getString(indexTitle);
-                String link = cursor.getString(indexLink);
-
-                switch (chapterType) {
-                    case SimpleChapter.CHAPTERTYPE_SIMPLECHAPTER:
-                        chapter = new SimpleChapter(start, title, item, link);
-                        break;
-                    case ID3Chapter.CHAPTERTYPE_ID3CHAPTER:
-                        chapter = new ID3Chapter(start, title, item, link);
-                        break;
-                    case VorbisCommentChapter.CHAPTERTYPE_VORBISCOMMENT_CHAPTER:
-                        chapter = new VorbisCommentChapter(start, title, item, link);
-                        break;
-                }
+                Chapter chapter = Chapter.fromCursor(cursor, item);
                 if (chapter != null) {
-                    int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
-                    chapter.setId(cursor.getLong(indexId));
                     item.getChapters().add(chapter);
                 }
             }

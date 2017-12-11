@@ -976,7 +976,9 @@ public class DownloadService extends Service {
             media.checkEmbeddedPicture(); // enforce check
 
             // check if file has chapters
-            ChapterUtils.loadChaptersFromFileUrl(media);
+            if(media.getItem() != null && !media.getItem().hasChapters()) {
+                ChapterUtils.loadChaptersFromFileUrl(media);
+            }
 
             // Get duration
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
