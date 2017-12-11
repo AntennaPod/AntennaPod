@@ -51,11 +51,10 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         int nextOption = 1;
         String optionLabel = getString(R.string.opml_import_option);
         intentPickAction = new Intent(Intent.ACTION_PICK);
-        intentPickAction.setData(Uri.parse("file://"));
 
         if(!IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
             intentPickAction.setData(null);
-            if(false == IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
+            if(!IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
                 txtvHeaderExplanation1.setVisibility(View.GONE);
                 txtvExplanation1.setVisibility(View.GONE);
                 findViewById(R.id.divider1).setVisibility(View.GONE);
