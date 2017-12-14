@@ -3,10 +3,9 @@ package de.danoeh.antennapod.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import android.view.ViewGroup;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 
 /**
@@ -15,15 +14,13 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 public class CastplayerActivity extends MediaplayerInfoActivity {
     public static final String TAG = "CastPlayerActivity";
 
-    private AtomicBoolean isSetup = new AtomicBoolean(false);
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!PlaybackService.isCasting()) {
-            Intent intent = PlaybackService.getPlayerActivityIntent(this);
+            Intent intent = PlaybackService.getPlayerActivityIntent(getContext());
             if (!intent.getComponent().getClassName().equals(CastplayerActivity.class.getName())) {
-                finish();
+                getActivity().finish();
                 startActivity(intent);
             }
         }
@@ -34,35 +31,30 @@ public class CastplayerActivity extends MediaplayerInfoActivity {
         if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
             Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
             saveCurrentFragment();
-            finish();
-            startActivity(new Intent(this, AudioplayerActivity.class));
+            getActivity().finish();
+            startActivity(new Intent(getContext(), AudioplayerActivity.class));
         } else {
             super.onReloadNotification(notificationCode);
         }
     }
 
     @Override
-    protected void setupGUI() {
-        if(isSetup.getAndSet(true)) {
-            return;
-        }
-        super.setupGUI();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
         if (butPlaybackSpeed != null) {
             butPlaybackSpeed.setVisibility(View.GONE);
         }
-//        if (butCastDisconnect != null) {
-//            butCastDisconnect.setOnClickListener(v -> castManager.disconnect());
-//            butCastDisconnect.setVisibility(View.VISIBLE);
-//        }
+        return root;
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         if (!PlaybackService.isCasting()) {
-            Intent intent = PlaybackService.getPlayerActivityIntent(this);
+            Intent intent = PlaybackService.getPlayerActivityIntent(getContext());
             if (!intent.getComponent().getClassName().equals(CastplayerActivity.class.getName())) {
                 saveCurrentFragment();
-                finish();
+                getActivity().finish();
                 startActivity(intent);
             }
         }

@@ -27,7 +27,6 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MediaplayerInfoActivity;
 import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -37,7 +36,6 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import rx.Observable;
 import rx.Subscription;
@@ -369,12 +367,12 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
 
     private void onTimecodeLinkSelected(String link) {
         int time = Timeline.getTimecodeLinkTime(link);
-        if (getActivity() != null && getActivity() instanceof MediaplayerInfoActivity) {
+        /*if (getActivity() != null && getActivity() instanceof MediaplayerInfoActivity) {
             PlaybackController pc = ((MediaplayerInfoActivity) getActivity()).getPlaybackController();
             if (pc != null) {
                 pc.seekTo(time);
             }
-        }
+        }*/
     }
 
     @Override

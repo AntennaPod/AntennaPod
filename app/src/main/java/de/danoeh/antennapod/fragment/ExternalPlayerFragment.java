@@ -33,6 +33,7 @@ public class ExternalPlayerFragment extends Fragment {
     private ImageButton butPlay;
     private TextView mFeedName;
     private ProgressBar mProgressBar;
+    private View.OnClickListener clickListener;
 
     private PlaybackController controller;
 
@@ -52,14 +53,7 @@ public class ExternalPlayerFragment extends Fragment {
         mFeedName = (TextView) root.findViewById(R.id.txtvAuthor);
         mProgressBar = (ProgressBar) root.findViewById(R.id.episodeProgress);
 
-        fragmentLayout.setOnClickListener(v -> {
-            Log.d(TAG, "layoutInfo was clicked");
-
-            if (controller != null && controller.getMedia() != null) {
-                startActivity(PlaybackService.getPlayerActivityIntent(
-                        getActivity(), controller.getMedia()));
-            }
-        });
+        fragmentLayout.setOnClickListener(v -> clickListener.onClick(v));
         return root;
     }
 
@@ -186,6 +180,10 @@ public class ExternalPlayerFragment extends Fragment {
             Log.w(TAG, "loadMediaInfo was called while playbackService was null!");
             return false;
         }
+    }
+
+    public void setOnClickListener(View.OnClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
     private String getPositionString(int position, int duration) {

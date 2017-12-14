@@ -55,7 +55,6 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     }
 
     @Override
-    @CallSuper
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.cast_enabled, menu);
@@ -64,7 +63,6 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     }
 
     @Override
-    @CallSuper
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem mediaRouteButton = menu.findItem(R.id.media_route_menu_item);
@@ -136,6 +134,10 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         castButtonVisibilityManager.requestCastButton(showAsAction);
     }
 
+    public CastManager getCastManager() {
+        return castManager;
+    }
+
     private class CastButtonVisibilityManager {
         private volatile boolean prefEnabled = false;
         private volatile boolean viewRequested = false;
@@ -143,6 +145,7 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         private volatile boolean connected = false;
         private volatile int showAsAction = MenuItem.SHOW_AS_ACTION_IF_ROOM;
         private Menu menu;
+        private CastManager castManager;
 
         public synchronized void setPrefEnabled(boolean newValue) {
             if (prefEnabled != newValue && resumed && (viewRequested || connected)) {

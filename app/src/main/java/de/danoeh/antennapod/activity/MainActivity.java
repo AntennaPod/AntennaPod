@@ -6,10 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,10 +28,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -66,6 +71,7 @@ import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
+import org.jetbrains.annotations.NotNull;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -112,6 +118,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private ListView navList;
     private NavListAdapter navAdapter;
     private int mPosition = -1;
+    private BottomSheetBehavior<LinearLayout> mBottomSheetBehavior;
+    private MediaplayerActivity playerInfoFragment;
+    private int closePlayerInfoFragmentStackSize = 0;
+    private Fragment currentlyActiviatedFragment;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -151,9 +161,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
         drawerLayout.setDrawerListener(drawerToggle);
 
-        final FragmentManager fm = getSupportFragmentManager();
 
-        fm.addOnBackStackChangedListener(() -> drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0));
+        final FragmentManager fm = getSupportFragmentManager();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -197,11 +206,64 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             }
         }
         externalPlayerFragment = new ExternalPlayerFragment();
+        playerInfoFragment = new AudioplayerActivity();
         transaction.replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG);
+        transaction.replace(R.id.playerInfoFragment, playerInfoFragment, AudioplayerActivity.TAG);
         transaction.commit();
+
+        TypedArray a = obtainStyledAttributes(new TypedValue().data, new int[] { R.attr.actionBarSize });
+        int barSize = a.getDimensionPixelSize(0, 100);
+        a.recycle();
+
+        LinearLayout bottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        mBottomSheetBehavior.setPeekHeight(barSize);
+        mBottomSheetBehavior.setBottomSheetCallback(mBottomSheetBehaviorCallback);
+
+        externalPlayerFragment.setOnClickListener((v) ->
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED));
+
+        fm.addOnBackStackChangedListener(() -> {
+            if (fm.getBackStackEntryCount() == closePlayerInfoFragmentStackSize) {
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+            drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0);
+        });
 
         checkFirstLaunch();
     }
+
+    private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
+        @Override
+        public void onStateChanged(@NotNull View bottomSheet, int newState) {
+            if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                currentlyActiviatedFragment.setHasOptionsMenu(false);
+                playerInfoFragment.setHasOptionsMenu(true);
+                final FragmentManager fragmentManager = getSupportFragmentManager();
+                closePlayerInfoFragmentStackSize = fragmentManager.getBackStackEntryCount();
+                fragmentManager.beginTransaction().addToBackStack(MediaplayerActivity.TAG).commit();
+                getSupportActionBar().setTitle(playbackController.getMedia().getEpisodeTitle());
+
+                if (playerInfoFragment instanceof VideoplayerActivity) {
+                    ((VideoplayerActivity) playerInfoFragment).enterFullscreen();
+                }
+            } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                final FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.popBackStack();
+                currentlyActiviatedFragment.setHasOptionsMenu(true);
+                playerInfoFragment.setHasOptionsMenu(false);
+                getSupportActionBar().setTitle(currentTitle);
+
+                if (playerInfoFragment instanceof VideoplayerActivity) {
+                    ((VideoplayerActivity) playerInfoFragment).leaveFullscreen();
+                }
+            }
+        }
+
+        @Override
+        public void onSlide(@NotNull View bottomSheet, float slideOffset) {
+        }
+    };
 
     private void saveLastNavFragment(String tag) {
         Log.d(TAG, "saveLastNavFragment(tag: " + tag +")");
@@ -358,6 +420,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         if (navAdapter != null) {
             navAdapter.notifyDataSetChanged();
         }
+        currentlyActiviatedFragment = fragment;
     }
 
     public void loadChildFragment(Fragment fragment) {
@@ -458,14 +521,37 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         RatingDialog.init(this);
     }
 
+    private PlaybackController playbackController = new PlaybackController(this, true) {
+        @Override
+        public boolean loadMediaInfo() {
+            if (playbackController.getMedia() == null) {
+                return false;
+            }
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            if (playbackController.getMedia().getMediaType() == MediaType.AUDIO) {
+                playerInfoFragment = new AudioplayerActivity();
+                transaction.replace(R.id.playerInfoFragment, playerInfoFragment, AudioplayerActivity.TAG);
+            } else {
+                playerInfoFragment = new VideoplayerActivity();
+                transaction.replace(R.id.playerInfoFragment, playerInfoFragment, VideoplayerActivity.TAG);
+            }
+            transaction.commitAllowingStateLoss();
+            return true;
+        }
+    };
+
     @Override
     protected void onPause() {
         super.onPause();
+        playbackController.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        playbackController.init();
+
         StorageUtils.checkStorageAvailability(this);
         DBTasks.checkShouldRefreshFeeds(getApplicationContext());
 
@@ -477,6 +563,15 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
         loadData();
         RatingDialog.check();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (playbackController != null) {
+            playbackController.release();
+        }
     }
 
     @Override
@@ -623,7 +718,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public void onBackPressed() {
         if(isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
-        } else {
+        } else if(mBottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED || !playerInfoFragment.onBackPressed()) {
             super.onBackPressed();
         }
     }
