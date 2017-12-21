@@ -483,8 +483,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     /**
      * Handles media button events
+     * return: keycode was handled
      */
-    private void handleKeycode(int keycode, int source) {
+    private boolean handleKeycode(int keycode, int source) {
         Log.d(TAG, "Handling keycode: " + keycode);
         final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         final PlayerStatus status = info.playerStatus;
@@ -501,7 +502,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     mediaPlayer.setStartWhenPrepared(true);
                     mediaPlayer.prepare();
                 }
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
@@ -509,13 +510,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     mediaPlayer.setStartWhenPrepared(true);
                     mediaPlayer.prepare();
                 }
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
                 }
 
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
                 if(source == InputDevice.SOURCE_CLASS_NONE ||
                         UserPreferences.shouldHardwareButtonSkip()) {
@@ -527,10 +528,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     // user actually wants to fast-forward
                     seekDelta(UserPreferences.getFastForwardSecs() * 1000);
                 }
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 mediaPlayer.seekDelta(UserPreferences.getFastForwardSecs() * 1000);
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
                 if(UserPreferences.shouldHardwarePreviousButtonRestart()) {
                     // user wants to restart current episode
@@ -539,10 +540,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     //  user wants to rewind current episode
                     mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
                 }
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
-                break;
+                return true;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(true, true);
@@ -550,15 +551,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
 
                 stopForeground(true); // gets rid of persistent notification
-                break;
+                return true;
             default:
                 Log.d(TAG, "Unhandled key code: " + keycode);
                 if (info.playable != null && info.playerStatus == PlayerStatus.PLAYING) {   // only notify the user about an unknown key event if it is actually doing something
                     String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
                 }
-                break;
         }
+        return false;
     }
 
     /**
@@ -1774,7 +1775,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (keyEvent != null &&
                         keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getRepeatCount() == 0){
-                    handleKeycode(keyEvent.getKeyCode(), keyEvent.getSource());
+                    return handleKeycode(keyEvent.getKeyCode(), keyEvent.getSource());
                 }
             }
             return false;
