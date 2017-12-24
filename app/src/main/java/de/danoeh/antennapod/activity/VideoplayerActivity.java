@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -376,6 +377,12 @@ public class VideoplayerActivity extends MediaplayerActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        //TODO
     }
 
     private static class VideoControlsHider extends Handler {
