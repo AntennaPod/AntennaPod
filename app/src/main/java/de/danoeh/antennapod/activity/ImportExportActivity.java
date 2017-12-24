@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,12 +28,8 @@ import java.nio.channels.FileChannel;
  * Displays the 'import/export' screen
  */
 public class ImportExportActivity extends AppCompatActivity {
-    private static final int READ_REQUEST_CODE = 42;
-    private static final int READ_REQUEST_CODE_DOCUMENT = 43;
-    private static final int WRITE_REQUEST_CODE_DOCUMENT = 44;
-
-    private static final String TAG = ImportExportActivity.class.getSimpleName();
-
+    private static final int REQUEST_CODE_RESTORE = 43;
+    private static final int REQUEST_CODE_BACKUP_DOCUMENT = 44;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,99 +57,6 @@ public class ImportExportActivity extends AppCompatActivity {
         }
     }
 
-    private void restore() {
-        if(Build.VERSION.SDK_INT >= 19) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.setType("*/*");
-            startActivityForResult(intent, READ_REQUEST_CODE_DOCUMENT);
-        } else {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("*/*");
-            startActivityForResult(Intent.createChooser(intent, getString(R.string.import_select_file)), READ_REQUEST_CODE);
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        if (requestCode == READ_REQUEST_CODE_DOCUMENT && resultCode == RESULT_OK) {
-            if (resultData != null) {
-                Uri uri = resultData.getData();
-                writeDatabase(uri);
-            }
-        } else if (requestCode == WRITE_REQUEST_CODE_DOCUMENT && resultCode == RESULT_OK) {
-            if (resultData != null) {
-                Uri uri = resultData.getData();
-                writeBackupDocument(uri);
-            }
-        } else if(requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (resultData != null) {
-                Uri uri = resultData.getData();
-                writeDatabase(uri);
-            }
-        }
-    }
-
-    private void writeDatabase(Uri inputUri) {
-        File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
-        try {
-            InputStream inputStream = getContentResolver().openInputStream(inputUri);
-            copyInputStreamToFile(inputStream, currentDB);
-            inputStream.close();
-
-            AlertDialog.Builder d = new AlertDialog.Builder(ImportExportActivity.this);
-            d.setMessage(R.string.import_ok);
-            d.setCancelable(false);
-            d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
-                Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
-                ComponentName cn = intent.getComponent();
-                Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
-                startActivity(mainIntent);
-            });
-            d.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Snackbar.make(findViewById(R.id.import_export_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
-        }
-    }
-
-    private void copyInputStreamToFile(InputStream in, File file) {
-        try {
-            OutputStream out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while((len=in.read(buf))>0){
-                out.write(buf,0,len);
-            }
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static String getPath(Context context, Uri uri) {
-        if ("content".equalsIgnoreCase(uri.getScheme())) {
-            String[] projection = { "_data" };
-            Cursor cursor = null;
-
-            try {
-                cursor = context.getContentResolver().query(uri, projection, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow("_data");
-                if (cursor.moveToFirst()) {
-                    return cursor.getString(column_index);
-                }
-            } catch (Exception e) {
-                // Eat it
-            } finally {
-                cursor.close();
-            }
-        }
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-
-        return null;
-    }
-
     private void backup() {
         if (Build.VERSION.SDK_INT >= 19) {
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
@@ -163,27 +64,102 @@ public class ImportExportActivity extends AppCompatActivity {
                     .setType("application/x-sqlite3")
                     .putExtra(Intent.EXTRA_TITLE, "AntennaPodBackup.db");
 
-            startActivityForResult(intent, WRITE_REQUEST_CODE_DOCUMENT);
+            startActivityForResult(intent, REQUEST_CODE_BACKUP_DOCUMENT);
         } else {
             try {
                 File sd = Environment.getExternalStorageDirectory();
-
-                if (sd.canWrite()) {
-                    File backupDB = new File(sd, "AntennaPodBackup.db");
-                    writeBackup(new FileOutputStream(backupDB));
-                } else {
-                    Snackbar.make(findViewById(R.id.import_export_layout),
-                            "Can not write SD", Snackbar.LENGTH_SHORT).show();
-                }
+                File backupDB = new File(sd, "AntennaPodBackup.db");
+                writeBackupTo(new FileOutputStream(backupDB));
             } catch (Exception e) {
                 e.printStackTrace();
-
                 Snackbar.make(findViewById(R.id.import_export_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void writeBackup(FileOutputStream outFileStream) {
+    private void restore() {
+        if(Build.VERSION.SDK_INT >= 19) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("*/*");
+            startActivityForResult(intent, REQUEST_CODE_RESTORE);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            startActivityForResult(Intent.createChooser(intent,
+                    getString(R.string.import_select_file)), REQUEST_CODE_RESTORE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        if (requestCode == REQUEST_CODE_RESTORE && resultCode == RESULT_OK && resultData != null) {
+            Uri uri = resultData.getData();
+            restoreFrom(uri);
+        } else if (requestCode == REQUEST_CODE_BACKUP_DOCUMENT && resultCode == RESULT_OK && resultData != null) {
+            Uri uri = resultData.getData();
+            backupToDocument(uri);
+        }
+    }
+
+    private void restoreFrom(Uri inputUri) {
+        File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(inputUri);
+            copyInputStreamToFile(inputStream, currentDB);
+            inputStream.close();
+            displayImportSuccessDialog();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Snackbar.make(findViewById(R.id.import_export_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    private void displayImportSuccessDialog() {
+        AlertDialog.Builder d = new AlertDialog.Builder(ImportExportActivity.this);
+        d.setMessage(R.string.import_ok);
+        d.setCancelable(false);
+        d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+            Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+            ComponentName cn = intent.getComponent();
+            Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+            startActivity(mainIntent);
+        });
+        d.show();
+    }
+
+    private void copyInputStreamToFile(InputStream in, File file) {
+        try {
+            OutputStream out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0){
+                out.write(buf, 0, len);
+            }
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void backupToDocument(Uri uri) {
+        try {
+            ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "w");
+            FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
+            writeBackupTo(fileOutputStream);
+            fileOutputStream.close();
+            pfd.close();
+
+            Snackbar.make(findViewById(R.id.import_export_layout),
+                    R.string.export_ok, Snackbar.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            Snackbar.make(findViewById(R.id.import_export_layout),
+                    "Can not write SD", Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    private void writeBackupTo(FileOutputStream outFileStream) {
         try {
             File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
 
@@ -204,24 +180,6 @@ public class ImportExportActivity extends AppCompatActivity {
             e.printStackTrace();
 
             Snackbar.make(findViewById(R.id.import_export_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
-        }
-    }
-
-    private void writeBackupDocument(Uri uri) {
-        try {
-            ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "w");
-            FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
-            writeBackup(fileOutputStream);
-            fileOutputStream.close();
-            pfd.close();
-
-            Snackbar.make(findViewById(R.id.import_export_layout),
-                    R.string.export_ok, Snackbar.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            Snackbar.make(findViewById(R.id.import_export_layout),
-                    "Can not write SD", Snackbar.LENGTH_SHORT).show();
         }
     }
 
