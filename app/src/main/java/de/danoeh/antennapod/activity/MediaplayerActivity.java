@@ -38,6 +38,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -225,9 +226,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     @Override
     protected void onPause() {
-        if(controller != null) {
-            controller.reinitServiceIfPaused();
-            controller.pause();
+        if (Build.VERSION.SDK_INT < 26 || !isInPictureInPictureMode()) {
+            if (controller != null) {
+                controller.reinitServiceIfPaused();
+                controller.pause();
+            }
         }
         super.onPause();
     }

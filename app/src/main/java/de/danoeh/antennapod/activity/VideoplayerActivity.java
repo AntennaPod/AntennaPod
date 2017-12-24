@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.support.v4.view.WindowCompat;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -96,9 +98,12 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onPause() {
-        videoControlsHider.stop();
-        if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
-            controller.pause();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
+                || !isInPictureInPictureMode()) {
+            videoControlsHider.stop();
+            if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
+                controller.pause();
+            }
         }
         super.onPause();
     }
@@ -175,6 +180,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                    && isInPictureInPictureMode()) {
+                return true;
+            }
             videoControlsHider.stop();
             toggleVideoControlsVisibility();
             if (videoControlsShowing) {
@@ -347,6 +356,26 @@ public class VideoplayerActivity extends MediaplayerActivity {
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            menu.findItem(R.id.player_go_to_picture_in_picture).setVisible(true);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.player_go_to_picture_in_picture) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                enterPictureInPictureMode();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private static class VideoControlsHider extends Handler {
