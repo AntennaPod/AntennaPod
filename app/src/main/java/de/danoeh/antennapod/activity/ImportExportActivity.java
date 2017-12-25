@@ -30,6 +30,7 @@ import java.nio.channels.FileChannel;
 public class ImportExportActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_RESTORE = 43;
     private static final int REQUEST_CODE_BACKUP_DOCUMENT = 44;
+    private static final String EXPORT_FILENAME = "AntennaPodBackup.db";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +63,13 @@ public class ImportExportActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
                     .addCategory(Intent.CATEGORY_OPENABLE)
                     .setType("application/x-sqlite3")
-                    .putExtra(Intent.EXTRA_TITLE, "AntennaPodBackup.db");
+                    .putExtra(Intent.EXTRA_TITLE, EXPORT_FILENAME);
 
             startActivityForResult(intent, REQUEST_CODE_BACKUP_DOCUMENT);
         } else {
             try {
                 File sd = Environment.getExternalStorageDirectory();
-                File backupDB = new File(sd, "AntennaPodBackup.db");
+                File backupDB = new File(sd, EXPORT_FILENAME);
                 writeBackupTo(new FileOutputStream(backupDB));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -78,7 +79,7 @@ public class ImportExportActivity extends AppCompatActivity {
     }
 
     private void restore() {
-        if(Build.VERSION.SDK_INT >= 19) {
+        if (Build.VERSION.SDK_INT >= 19) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("*/*");
             startActivityForResult(intent, REQUEST_CODE_RESTORE);
