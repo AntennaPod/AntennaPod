@@ -446,7 +446,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "OnStartCommand called");
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
         final boolean castDisconnect = intent.getBooleanExtra(EXTRA_CAST_DISCONNECT, false);
-        final Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
+        Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
         if (keycode == -1 && playable == null && !castDisconnect) {
             Log.e(TAG, "PlaybackService was started with no arguments");
             stopSelf();
@@ -471,6 +471,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
                 //If the user asks to play External Media, the casting session, if on, should end.
                 flavorHelper.castDisconnect(playable instanceof ExternalMedia);
+                if(playable instanceof FeedMedia){
+                    playable = (Playable) DBReader.getFeedMedia(((FeedMedia)playable).getId());
+                }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
         }
@@ -893,7 +896,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 // Delete episode if enabled
                 if (item.getFeed().getPreferences().getCurrentAutoDelete() &&
-                        !(item.isTagged(FeedItem.TAG_FAVORITE) && UserPreferences.shouldFavoriteKeepEpisode())) {
+                        (!item.isTagged(FeedItem.TAG_FAVORITE) || !UserPreferences.shouldFavoriteKeepEpisode())) {
                     DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
                     Log.d(TAG, "Episode Deleted");
                 }

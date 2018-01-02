@@ -68,11 +68,10 @@ import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
-import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
+import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
 import de.danoeh.antennapod.dialog.ProxyDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
@@ -455,7 +454,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "AntennaPod Crash Report");
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Please describe what you were doing when the app crashed");
             // the attachment
-            Uri fileUri = FileProvider.getUriForFile(context, "de.danoeh.antennapod.provider",
+            Uri fileUri = FileProvider.getUriForFile(context, context.getString(R.string.provider_authority),
                     CrashReportWriter.getFile());
             emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
             emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -945,67 +944,14 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     private void showChooseDataFolderDialog() {
-        Context context = ui.getActivity();
-        File dataFolder =  UserPreferences.getDataFolder(null);
-        if(dataFolder == null) {
-            new MaterialDialog.Builder(ui.getActivity())
-                    .title(R.string.error_label)
-                    .content(R.string.external_storage_error_msg)
-                    .neutralText(android.R.string.ok)
-                    .show();
-            return;
-        }
-        String dataFolderPath = dataFolder.getAbsolutePath();
-        int selectedIndex = -1;
-        File[] mediaDirs = ContextCompat.getExternalFilesDirs(context, null);
-        List<String> folders = new ArrayList<>(mediaDirs.length);
-        List<CharSequence> choices = new ArrayList<>(mediaDirs.length);
-        for(int i=0; i < mediaDirs.length; i++) {
-            File dir = mediaDirs[i];
-            if(dir == null || !dir.exists() || !dir.canRead() || !dir.canWrite()) {
-                continue;
-            }
-            String path = mediaDirs[i].getAbsolutePath();
-            folders.add(path);
-            if(dataFolderPath.equals(path)) {
-                selectedIndex = i;
-            }
-            int index = path.indexOf("Android");
-            String choice;
-            if(index >= 0) {
-                choice = path.substring(0, index);
-            } else {
-                choice = path;
-            }
-            long bytes = StorageUtils.getFreeSpaceAvailable(path);
-            String freeSpace = String.format(context.getString(R.string.free_space_label),
-                    Converter.byteToString(bytes));
-            choices.add(Html.fromHtml("<html><small>" + choice
-                    + " [" + freeSpace + "]" + "</small></html>"));
-        }
-        if(choices.size() == 0) {
-            new MaterialDialog.Builder(ui.getActivity())
-                    .title(R.string.error_label)
-                    .content(R.string.external_storage_error_msg)
-                    .neutralText(android.R.string.ok)
-                    .show();
-            return;
-        }
-        MaterialDialog dialog = new MaterialDialog.Builder(ui.getActivity())
-                .title(R.string.choose_data_directory)
-                .content(R.string.choose_data_directory_message)
-                .items(choices.toArray(new CharSequence[choices.size()]))
-                .itemsCallbackSingleChoice(selectedIndex, (dialog1, itemView, which, text) -> {
-                    String folder = folders.get(which);
-                    Log.d(TAG, "data folder: " + folder);
-                    UserPreferences.setDataFolder(folder);
-                    setDataFolderText();
-                    return true;
-                })
-                .negativeText(R.string.cancel_label)
-                .cancelable(true)
-                .build();
-        dialog.show();
+        ChooseDataFolderDialog.showDialog(
+                ui.getActivity(), new ChooseDataFolderDialog.RunnableWithString() {
+                    @Override
+                    public void run(final String folder) {
+                        UserPreferences.setDataFolder(folder);
+                        setDataFolderText();
+                    }
+                });
     }
 
     // UPDATE TIME/INTERVAL DIALOG

@@ -3,10 +3,20 @@ import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: "com.android.application"
 apply plugin: "me.tatarka.retrolambda"
 apply plugin: 'com.github.triplet.play'
+apply plugin: 'com.getkeepsafe.dexcount'
 
 repositories {
     maven { url "https://jitpack.io" }
     mavenCentral()
+}
+
+buildscript {
+    repositories {
+       jcenter()
+    }
+    dependencies {
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.1'
+    }
 }
 
 def getMyVersionName() {
@@ -72,6 +82,7 @@ android {
 
         debug {
             applicationIdSuffix ".debug"
+            resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
             buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
             buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
         }
@@ -131,7 +142,6 @@ dependencies {
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
-    compile 'com.android.support:multidex:1.0.1'
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
@@ -167,7 +177,7 @@ dependencies {
 
     compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
-    compile 'com.github.mfietz:fyydlin:v0.1'
+    compile 'com.github.mfietz:fyydlin:v0.3'
 }
 
 play {

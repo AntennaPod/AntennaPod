@@ -72,7 +72,7 @@ public class ShareUtils {
 	public static void shareFeedItemFile(Context context, FeedMedia media) {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType(media.getMime_type());
-		Uri fileUri = FileProvider.getUriForFile(context, "de.danoeh.antennapod.provider",
+		Uri fileUri = FileProvider.getUriForFile(context, context.getString(R.string.provider_authority),
 				new File(media.getLocalMediaUrl()));
 		i.putExtra(Intent.EXTRA_STREAM,  fileUri);
 		i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -84,6 +84,6 @@ public class ShareUtils {
 			}
 		}
 		context.startActivity(Intent.createChooser(i, context.getString(R.string.share_file_label)));
-		Log.e(TAG, "Foo");
+		Log.e(TAG, "shareFeedItemFile called");
 	}
 }
