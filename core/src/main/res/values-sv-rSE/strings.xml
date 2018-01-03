@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favoriter</string>
   <string name="new_label">Nya</string>
   <string name="settings_label">Inställningar</string>
-  <string name="add_new_feed_label">Lägg till Podcast</string>
   <string name="downloads_label">Nedladdningar</string>
   <string name="downloads_running_label">Pågående</string>
   <string name="downloads_completed_label">Färdiga</string>
@@ -115,6 +114,7 @@
   <string name="remove_feed_label">Ta bort Podcast</string>
   <string name="share_label">Dela…</string>
   <string name="share_link_label">Dela Länk</string>
+  <string name="share_file_label">Dela Fil</string>
   <string name="share_link_with_position_label">Dela Länk med Position</string>
   <string name="share_feed_url_label">Dela Flödets URL</string>
   <string name="share_item_url_label">Dela Episoden Fil-URL</string>
@@ -143,6 +143,7 @@
   <string name="stream_label">Strömma</string>
   <string name="remove_label">Ta bort</string>
   <string name="delete_label">Ta bort</string>
+  <string name="delete_failed">Kunde inte ta bort filen. Testa att starta om enheten.</string>
   <string name="remove_episode_lable">Ta bort Episod</string>
   <string name="marked_as_seen_label">Markera som sedd</string>
   <string name="mark_read_label">Markera som spelad</string>
@@ -298,6 +299,8 @@
   <string name="pref_smart_mark_as_played_title">Smart markera som spelad</string>
   <string name="pref_skip_keeps_episodes_sum">Ta inte bort episoder när de hoppas över</string>
   <string name="pref_skip_keeps_episodes_title">Behåll Överhoppade Episoder</string>
+  <string name="pref_favorite_keeps_episodes_sum">Behåll episoder när de är favoritmarkerade</string>
+  <string name="pref_favorite_keeps_episodes_title">Behåll Favoritepisoder</string>
   <string name="playback_pref">Uppspelning</string>
   <string name="network_pref">Nätverk </string>
   <string name="pref_autoUpdateIntervallOrTime_title">Uppdateringsintervall eller Tid på Dagen</string>
@@ -341,6 +344,8 @@
   <string name="pref_automatic_download_sum">Konfigurera automatisk nedladdning av episoder.</string>
   <string name="pref_autodl_wifi_filter_title">Aktivera WiFi filtrering</string>
   <string name="pref_autodl_wifi_filter_sum">Tillåt automatisk nedladdning endast för utvalda WiFi-nätverk.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Ladda ner på mobilanslutning</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Tillåt automatiska nedladdningar över en mobil dataanslutning.</string>
   <string name="pref_automatic_download_on_battery_title">Nedladdning vid batteridrift</string>
   <string name="pref_automatic_download_on_battery_sum">Tillåt automatisk nedladdning när batteriet inte laddas</string>
   <string name="pref_parallel_downloads_title">Parallella Nedladdningar</string>
@@ -408,7 +413,7 @@
   <string name="pref_cast_title">Chromecast-stöd</string>
   <string name="pref_cast_message_play_flavor">Aktivera stöd för fjärruppspelning av media på Cast-enheter (såsom Chromecast, Ljudanläggningar eller Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast kräver propretiära tredjepartsbibliotek som inte är inkluderade i denna version av AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Lägg nedladdade i kön</string>
+  <string name="pref_enqueue_downloaded_title">Köa Nedladdade</string>
   <string name="pref_enqueue_downloaded_summary">Lägg nedladdade episoder i uppspelningskön</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>

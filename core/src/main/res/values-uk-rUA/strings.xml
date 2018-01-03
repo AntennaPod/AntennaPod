@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Улюблені</string>
   <string name="new_label">Нові</string>
   <string name="settings_label">Налаштування</string>
-  <string name="add_new_feed_label">Додати подкаст</string>
   <string name="downloads_label">Завантаження</string>
   <string name="downloads_running_label">В процесі</string>
   <string name="downloads_completed_label">Завершено</string>
@@ -116,6 +115,7 @@
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_label">Поділитися…</string>
   <string name="share_link_label">Поділитися URL сайту</string>
+  <string name="share_file_label">Поділитись файлом</string>
   <string name="share_link_with_position_label">Поділитись посиланням на позицію</string>
   <string name="share_feed_url_label">Поділитись посиланням на канал</string>
   <string name="share_item_url_label">Поділитись посиланням на файл епізода</string>
@@ -144,6 +144,7 @@
   <string name="stream_label">Прослухати без завантаження</string>
   <string name="remove_label">Видалити</string>
   <string name="delete_label">Видалити</string>
+  <string name="delete_failed">Файл не видалено. Можливо, перезавантаження пристрою допоможе.</string>
   <string name="remove_episode_lable">Видалити епізод</string>
   <string name="marked_as_seen_label">Позначено як переглянутий</string>
   <string name="mark_read_label">Позначити як граний</string>
@@ -300,6 +301,8 @@
   <string name="pref_smart_mark_as_played_title">Розумне позначення прослуханих епізодів</string>
   <string name="pref_skip_keeps_episodes_sum">Зберігати епізоди що пропущені при програванні  </string>
   <string name="pref_skip_keeps_episodes_title">Зберігати пропущені при програванні епізоди </string>
+  <string name="pref_favorite_keeps_episodes_sum">Зберігати епізоди що помічені як улюблені</string>
+  <string name="pref_favorite_keeps_episodes_title">Зберігати улюблені епізоди</string>
   <string name="playback_pref">Відтворення</string>
   <string name="network_pref">Мережа</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Частота оновлень або оновлення в зазначений час</string>
@@ -343,6 +346,8 @@
   <string name="pref_automatic_download_sum">Налаштування автозавантаження епізодів</string>
   <string name="pref_autodl_wifi_filter_title">Увімкнути фільтр Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Дозволити автозавантаження тільки в цих Wi-Fi мережах</string>
+  <string name="pref_autodl_allow_on_mobile_title">Завантажувати через мобільне з’єднання</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Дозволити автоматичне завантаження через мобільне з’єднання.</string>
   <string name="pref_automatic_download_on_battery_title">Завантаження без зарядного пристрою</string>
   <string name="pref_automatic_download_on_battery_sum">Дозволити автозавантаження коли зарядний пристрій не підключено</string>
   <string name="pref_parallel_downloads_title">Паралельні завантаження</string>
@@ -410,7 +415,7 @@
   <string name="pref_cast_title">Підтримка для Chromecast</string>
   <string name="pref_cast_message_play_flavor">Включити підтримку програвання на таких пристроях як Chromecast або Android TV</string>
   <string name="pref_cast_message_free_flavor">Для підтримки Chromecast потрібні бібліотеки які не включені в цю версію AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Додавати до черги завантажене</string>
+  <string name="pref_enqueue_downloaded_title">Додати завантаження до черги</string>
   <string name="pref_enqueue_downloaded_summary">Додавати завантажені епізоди до черги</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
