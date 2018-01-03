@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
@@ -110,6 +111,12 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     protected void onPause() {
         super.onPause();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        supportPostponeEnterTransition();
     }
 
     @Override
@@ -277,6 +284,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         pageIndicator.setViewPager(pager);
         loadLastFragment();
         pager.onSaveInstanceState();
+
+        navList.post(this::supportStartPostponedEnterTransition);
     }
 
     @Override
