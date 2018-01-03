@@ -450,7 +450,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (keycode == -1 && playable == null && !castDisconnect) {
             Log.e(TAG, "PlaybackService was started with no arguments");
             stopSelf();
-            return Service.START_REDELIVER_INTENT;
+            return Service.START_NOT_STICKY;
         }
 
         if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
@@ -462,7 +462,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Log.d(TAG, "Received media button event");
                 handleKeycode(keycode, intent.getIntExtra(MediaButtonReceiver.EXTRA_SOURCE,
                         InputDeviceCompat.SOURCE_CLASS_NONE));
-            } else if (!flavorHelper.castDisconnect(castDisconnect)) {
+            } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
                 started = true;
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
                         true);
@@ -472,13 +472,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 //If the user asks to play External Media, the casting session, if on, should end.
                 flavorHelper.castDisconnect(playable instanceof ExternalMedia);
                 if(playable instanceof FeedMedia){
-                    playable = (Playable) DBReader.getFeedMedia(((FeedMedia)playable).getId());
+                    playable = DBReader.getFeedMedia(((FeedMedia)playable).getId());
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
         }
 
-        return Service.START_REDELIVER_INTENT;
+        return Service.START_NOT_STICKY;
     }
 
     /**
