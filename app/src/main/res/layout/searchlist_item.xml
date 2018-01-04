@@ -2,8 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/listitem_threeline_height"
-                tools:background="@android:color/darker_gray">
+                android:layout_height="wrap_content"
+                tools:background="@android:color/darker_gray"
+                android:paddingTop="@dimen/listitem_threeline_verticalpadding"
+                android:paddingBottom="@dimen/listitem_threeline_verticalpadding">
 
     <ImageView
         android:id="@+id/imgvFeedimage"
@@ -11,9 +13,7 @@
         android:layout_height="@dimen/thumbnail_length_itemlist"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
-        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
         android:contentDescription="@string/cover_label"
         android:scaleType="centerCrop"
         tools:src="@drawable/ic_stat_antenna_default"
@@ -24,7 +24,6 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/listitem_iconwithtext_textleftpadding"
         android:layout_marginRight="@dimen/listitem_threeline_verticalpadding"
-        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
         android:layout_toRightOf="@id/imgvFeedimage"
         android:orientation="vertical"
         tools:background="@android:color/holo_red_dark">

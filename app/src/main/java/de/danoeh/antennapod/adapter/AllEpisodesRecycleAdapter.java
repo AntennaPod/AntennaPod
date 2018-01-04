@@ -174,7 +174,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                     holder.progress.setVisibility(View.VISIBLE);
                 }
             } else {
-                holder.progress.setVisibility(View.GONE);
+                holder.progress.setVisibility(View.INVISIBLE);
             }
 
             if(media.isCurrentlyPlaying()) {
@@ -183,7 +183,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 holder.container.setBackgroundColor(normalBackGroundColor);
             }
         } else {
-            holder.progress.setVisibility(View.GONE);
+            holder.progress.setVisibility(View.INVISIBLE);
             holder.txtvDuration.setVisibility(View.GONE);
         }
 

@@ -10,10 +10,11 @@
 <LinearLayout
     android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/listitem_threeline_height"
+    android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    tools:background="@android:color/darker_gray">
+    tools:background="@android:color/darker_gray"
+    android:gravity="center_vertical">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -48,7 +49,7 @@
 
     <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
         android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
         android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
@@ -120,11 +121,10 @@
 
             <ProgressBar
                 android:id="@+id/pbar_progress"
-                style="?android:attr/progressBarStyleHorizontal"
+                style="?attr/progressBarTheme"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="4dp"
                 android:layout_below="@id/txtvDuration"
-                android:layout_marginTop="-2dp"
                 android:max="100" />
 
         </RelativeLayout>

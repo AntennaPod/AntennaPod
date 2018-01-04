@@ -280,7 +280,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                         progressLeft.setText("");
                     }
                     progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 if(media.isCurrentlyPlaying()) {

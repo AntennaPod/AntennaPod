@@ -20,11 +20,10 @@
     <dimen name="listview_secondary_button_width">48dp</dimen>
     <dimen name="drawer_width">280dp</dimen>
     <dimen name="listitem_iconwithtext_height">48dp</dimen>
-    <dimen name="listitem_iconwithtext_textleftpadding">14dp</dimen>
+    <dimen name="listitem_iconwithtext_textleftpadding">16dp</dimen>
     <dimen name="listitem_iconwithtext_textverticalpadding">16dp</dimen>
 
-    <dimen name="listitem_threeline_height">96dp</dimen>
-    <dimen name="listitem_threeline_textleftpadding">14dp</dimen>
+    <dimen name="listitem_threeline_textleftpadding">16dp</dimen>
     <dimen name="listitem_threeline_textrightpadding">8dp</dimen>
     <dimen name="listitem_threeline_verticalpadding">16dp</dimen>
     <dimen name="listitem_threeline_horizontalpadding">16dp</dimen>

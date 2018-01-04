@@ -152,6 +152,7 @@
                     android:src="?attr/av_fast_forward"
                     android:textSize="@dimen/text_size_medium"
                     android:textAllCaps="false"
+                    android:maxLines="1"
                     tools:visibility="gone"
                     tools:background="@android:color/holo_green_dark" />
 
