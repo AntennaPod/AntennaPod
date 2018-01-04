@@ -424,6 +424,8 @@ public class DownloadService extends Service {
                     "ACTION_ENQUEUE_DOWNLOAD intent needs request extra");
         }
 
+        writeFileUrl(request);
+
         Downloader downloader = getDownloader(request);
         if (downloader != null) {
             numberOfDownloads.incrementAndGet();
@@ -906,6 +908,42 @@ public class DownloadService extends Service {
     }
 
     /**
+     * Creates the destination file and writes FeedMedia File_url directly after starting download
+     * to make it possible to resume download after the service was killed by the system.
+     */
+    private void writeFileUrl(DownloadRequest request) {
+        if (request.getFeedfileType() != FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            return;
+        }
+
+        File dest = new File(request.getDestination());
+        if (!dest.exists()) {
+            try {
+                dest.createNewFile();
+            } catch (IOException e) {
+                Log.e(TAG, "Unable to create file");
+            }
+        }
+
+        if (dest.exists()) {
+            Log.d(TAG, "Writing file url");
+            FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
+            if (media == null) {
+                Log.d(TAG, "No media");
+                return;
+            }
+            media.setFile_url(request.getDestination());
+            try {
+                DBWriter.setFeedMedia(media).get();
+            } catch (InterruptedException e) {
+                Log.e(TAG, "writeFileUrl was interrupted");
+            } catch (ExecutionException e) {
+                Log.e(TAG, "ExecutionException in writeFileUrl: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
      * Handles failed downloads.
      * <p/>
      * If the file has been partially downloaded, this handler will set the file_url of the FeedFile to the location
@@ -929,23 +967,6 @@ public class DownloadService extends Service {
                 DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
             } else if (request.isDeleteOnFailure()) {
                 Log.d(TAG, "Ignoring failed download, deleteOnFailure=true");
-            } else {
-                File dest = new File(request.getDestination());
-                if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                    Log.d(TAG, "File has been partially downloaded. Writing file url");
-                    FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
-                    if (media == null) {
-                        return;
-                    }
-                    media.setFile_url(request.getDestination());
-                    try {
-                        DBWriter.setFeedMedia(media).get();
-                    } catch (InterruptedException e) {
-                        Log.e(TAG, "FailedDownloadHandler was interrupted");
-                    } catch (ExecutionException e) {
-                        Log.e(TAG, "ExecutionException in FailedDownloadHandler: " + e.getMessage());
-                    }
-                }
             }
         }
     }
