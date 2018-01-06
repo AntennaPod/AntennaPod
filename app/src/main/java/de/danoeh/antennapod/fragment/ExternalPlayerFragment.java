@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
@@ -61,7 +62,7 @@ public class ExternalPlayerFragment extends Fragment {
             if (controller != null && controller.getMedia() != null) {
                 Intent intent = PlaybackService.getPlayerActivityIntent(getActivity(), controller.getMedia());
 
-                if (Build.VERSION.SDK_INT >= 16) {
+                if (Build.VERSION.SDK_INT >= 16 && controller.getMedia().getMediaType() == MediaType.AUDIO) {
                     ActivityOptionsCompat options = ActivityOptionsCompat.
                             makeSceneTransitionAnimation(getActivity(), imgvCover, "coverTransition");
                     startActivity(intent, options.toBundle());
