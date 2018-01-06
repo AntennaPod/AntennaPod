@@ -8,8 +8,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.WindowCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -382,7 +384,14 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        //TODO
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
+            // This is only relevant for picture in picture
+            DisplayMetrics dm = getResources().getDisplayMetrics();
+            float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newConfig.screenWidthDp, dm);
+            float py = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newConfig.screenHeightDp, dm);
+            videoview.setAvailableSize(px, py);
+        }
     }
 
     private static class VideoControlsHider extends Handler {
