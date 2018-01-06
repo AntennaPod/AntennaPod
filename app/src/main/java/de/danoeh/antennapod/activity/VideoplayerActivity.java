@@ -144,7 +144,8 @@ public class VideoplayerActivity extends MediaplayerActivity {
         videoview = (AspectRatioVideoView) findViewById(R.id.videoview);
         progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
         videoview.getHolder().addCallback(surfaceHolderCallback);
-        videoview.setOnTouchListener(onVideoviewTouched);
+        findViewById(R.id.videoframe).setOnTouchListener(onVideoviewTouched);
+        videoOverlay.setOnTouchListener((view, motionEvent) -> true); // To suppress touches directly below the slider
 
         if (Build.VERSION.SDK_INT >= 16) {
             videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
@@ -181,7 +182,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         progressIndicator.setVisibility(View.INVISIBLE);
     }
 
-    View.OnTouchListener onVideoviewTouched = (v, event) -> {
+    private View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
                     && isInPictureInPictureMode()) {
