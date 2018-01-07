@@ -94,12 +94,11 @@ public class ImportExportActivity extends AppCompatActivity {
         if (resultCode != RESULT_OK || resultData == null) {
             return;
         }
+        Uri uri = resultData.getData();
 
         if (requestCode == REQUEST_CODE_RESTORE) {
-            Uri uri = resultData.getData();
             restoreFrom(uri);
         } else if (requestCode == REQUEST_CODE_BACKUP_DOCUMENT) {
-            Uri uri = resultData.getData();
             backupToDocument(uri);
         }
     }
