@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -105,14 +106,16 @@ public class ImportExportActivity extends AppCompatActivity {
 
     private void restoreFrom(Uri inputUri) {
         File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
+        InputStream inputStream = null;
         try {
-            InputStream inputStream = getContentResolver().openInputStream(inputUri);
+            inputStream = getContentResolver().openInputStream(inputUri);
             copyInputStreamToFile(inputStream, currentDB);
-            inputStream.close();
             displayImportSuccessDialog();
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             Snackbar.make(findViewById(R.id.import_export_layout), e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+        } finally {
+            IOUtils.closeQuietly(inputStream);
         }
     }
 
@@ -130,46 +133,58 @@ public class ImportExportActivity extends AppCompatActivity {
     }
 
     private void copyInputStreamToFile(InputStream in, File file) {
+        OutputStream out = null;
         try {
-            OutputStream out = new FileOutputStream(file);
+            out = new FileOutputStream(file);
             byte[] buf = new byte[1024];
             int len;
             while ((len = in.read(buf)) > 0){
                 out.write(buf, 0, len);
             }
-            out.close();
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             Snackbar.make(findViewById(R.id.import_export_layout), e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+        } finally {
+            IOUtils.closeQuietly(out);
         }
     }
 
     private void backupToDocument(Uri uri) {
+        ParcelFileDescriptor pfd = null;
+        FileOutputStream fileOutputStream = null;
         try {
-            ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "w");
-            FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
+            pfd = getContentResolver().openFileDescriptor(uri, "w");
+            fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
             writeBackupTo(fileOutputStream);
-            fileOutputStream.close();
-            pfd.close();
 
             Snackbar.make(findViewById(R.id.import_export_layout),
                     R.string.export_ok, Snackbar.LENGTH_SHORT).show();
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             Snackbar.make(findViewById(R.id.import_export_layout), e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+        } finally {
+            IOUtils.closeQuietly(fileOutputStream);
+
+            if (pfd != null) {
+                try {
+                    pfd.close();
+                } catch (IOException e) {
+                    Log.d(TAG, "Unable to close ParcelFileDescriptor");
+                }
+            }
         }
     }
 
     private void writeBackupTo(FileOutputStream outFileStream) {
+        FileChannel src = null;
+        FileChannel dst = null;
         try {
             File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
 
             if (currentDB.exists()) {
-                FileChannel src = new FileInputStream(currentDB).getChannel();
-                FileChannel dst = outFileStream.getChannel();
+                src = new FileInputStream(currentDB).getChannel();
+                dst = outFileStream.getChannel();
                 dst.transferFrom(src, 0, src.size());
-                src.close();
-                dst.close();
 
                 Snackbar.make(findViewById(R.id.import_export_layout),
                         R.string.export_ok, Snackbar.LENGTH_SHORT).show();
@@ -180,6 +195,9 @@ public class ImportExportActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             Snackbar.make(findViewById(R.id.import_export_layout), e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
+        } finally {
+            IOUtils.closeQuietly(src);
+            IOUtils.closeQuietly(dst);
         }
     }
 }
