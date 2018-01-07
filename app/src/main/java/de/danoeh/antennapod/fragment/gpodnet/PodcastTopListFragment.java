@@ -1,10 +1,10 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
+import java.util.List;
+
 import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
-
-import java.util.List;
 
 /**
  *

@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.core.util.comparator;
 
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-
 import java.util.Comparator;
+
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
 
 /** Compares the completion date of two Downloadstatus objects. */
 public class DownloadStatusComparator implements Comparator<DownloadStatus> {

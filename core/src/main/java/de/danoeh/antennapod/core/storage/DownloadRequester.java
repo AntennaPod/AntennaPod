@@ -11,10 +11,8 @@ import android.webkit.URLUtil;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.Feed;

@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;

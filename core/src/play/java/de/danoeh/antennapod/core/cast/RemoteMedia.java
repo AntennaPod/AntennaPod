@@ -12,6 +12,8 @@ import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -25,8 +27,6 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
-
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Playable implementation for media on a Cast Device for which a local version of

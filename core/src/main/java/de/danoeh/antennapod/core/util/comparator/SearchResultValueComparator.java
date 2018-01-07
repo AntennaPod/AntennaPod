@@ -1,9 +1,9 @@
 package de.danoeh.antennapod.core.util.comparator;
 
+import java.util.Comparator;
+
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
-
-import java.util.Comparator;
 
 public class SearchResultValueComparator implements Comparator<SearchResult> {
 

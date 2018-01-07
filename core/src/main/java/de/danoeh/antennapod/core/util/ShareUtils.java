@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.util;
 
 import android.content.Context;
 import android.content.Intent;
-
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -10,13 +9,13 @@ import android.os.Build;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
+import java.io.File;
+import java.util.List;
+
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-
-import java.io.File;
-import java.util.List;
 
 /** Utility methods for sharing data */
 public class ShareUtils {

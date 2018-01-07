@@ -1,6 +1,7 @@
 package de.test.antennapod.util;
 
 import android.test.AndroidTestCase;
+
 import de.danoeh.antennapod.core.util.URLChecker;
 
 /**
