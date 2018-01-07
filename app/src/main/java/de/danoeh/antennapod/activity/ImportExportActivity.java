@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -23,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 
 /**
@@ -109,7 +109,7 @@ public class ImportExportActivity extends AppCompatActivity {
         InputStream inputStream = null;
         try {
             inputStream = getContentResolver().openInputStream(inputUri);
-            copyInputStreamToFile(inputStream, currentDB);
+            FileUtils.copyInputStreamToFile(inputStream, currentDB);
             displayImportSuccessDialog();
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -130,23 +130,6 @@ public class ImportExportActivity extends AppCompatActivity {
             startActivity(mainIntent);
         });
         d.show();
-    }
-
-    private void copyInputStreamToFile(InputStream in, File file) {
-        OutputStream out = null;
-        try {
-            out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0){
-                out.write(buf, 0, len);
-            }
-        } catch (IOException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-            Snackbar.make(findViewById(R.id.import_export_layout), e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
-        } finally {
-            IOUtils.closeQuietly(out);
-        }
     }
 
     private void backupToDocument(Uri uri) {
