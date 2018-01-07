@@ -83,7 +83,7 @@ public class GpodnetSyncService extends Service {
         } else {
             Log.e(TAG, "Received invalid intent: action argument is null");
         }
-        return START_FLAG_REDELIVERY;
+        return START_STICKY;
     }
 
     @Override
