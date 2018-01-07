@@ -313,13 +313,11 @@
                 <RadioButton android:id="@+id/radio_filter_include"
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="@string/episode_filters_include"
-                             android:onClick="onRadioButtonClicked"/>
+                             android:text="@string/episode_filters_include" />
                 <RadioButton android:id="@+id/radio_filter_exclude"
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="@string/episode_filters_exclude"
-                             android:onClick="onRadioButtonClicked"/>
+                             android:text="@string/episode_filters_exclude" />
             </RadioGroup>
 
             <EditText
