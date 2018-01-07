@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -31,6 +32,7 @@ public class ImportExportActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_RESTORE = 43;
     private static final int REQUEST_CODE_BACKUP_DOCUMENT = 44;
     private static final String EXPORT_FILENAME = "AntennaPodBackup.db";
+    private static final String TAG = ImportExportActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +43,6 @@ public class ImportExportActivity extends AppCompatActivity {
 
         findViewById(R.id.button_export).setOnClickListener(view -> backup());
         findViewById(R.id.button_import).setOnClickListener(view -> restore());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -71,9 +68,9 @@ public class ImportExportActivity extends AppCompatActivity {
                 File sd = Environment.getExternalStorageDirectory();
                 File backupDB = new File(sd, EXPORT_FILENAME);
                 writeBackupTo(new FileOutputStream(backupDB));
-            } catch (Exception e) {
-                e.printStackTrace();
-                Snackbar.make(findViewById(R.id.import_export_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+                Snackbar.make(findViewById(R.id.import_export_layout), e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -93,10 +90,14 @@ public class ImportExportActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        if (requestCode == REQUEST_CODE_RESTORE && resultCode == RESULT_OK && resultData != null) {
+        if (resultCode != RESULT_OK || resultData == null) {
+            return;
+        }
+
+        if (requestCode == REQUEST_CODE_RESTORE) {
             Uri uri = resultData.getData();
             restoreFrom(uri);
-        } else if (requestCode == REQUEST_CODE_BACKUP_DOCUMENT && resultCode == RESULT_OK && resultData != null) {
+        } else if (requestCode == REQUEST_CODE_BACKUP_DOCUMENT) {
             Uri uri = resultData.getData();
             backupToDocument(uri);
         }
@@ -109,9 +110,9 @@ public class ImportExportActivity extends AppCompatActivity {
             copyInputStreamToFile(inputStream, currentDB);
             inputStream.close();
             displayImportSuccessDialog();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Snackbar.make(findViewById(R.id.import_export_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            Snackbar.make(findViewById(R.id.import_export_layout), e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -137,8 +138,9 @@ public class ImportExportActivity extends AppCompatActivity {
                 out.write(buf, 0, len);
             }
             out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            Snackbar.make(findViewById(R.id.import_export_layout), e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -153,10 +155,8 @@ public class ImportExportActivity extends AppCompatActivity {
             Snackbar.make(findViewById(R.id.import_export_layout),
                     R.string.export_ok, Snackbar.LENGTH_SHORT).show();
         } catch (IOException e) {
-            e.printStackTrace();
-
-            Snackbar.make(findViewById(R.id.import_export_layout),
-                    "Can not write SD", Snackbar.LENGTH_SHORT).show();
+            Log.e(TAG, Log.getStackTraceString(e));
+            Snackbar.make(findViewById(R.id.import_export_layout), e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -177,11 +177,9 @@ public class ImportExportActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.import_export_layout),
                         "Can not access current database", Snackbar.LENGTH_SHORT).show();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            Snackbar.make(findViewById(R.id.import_export_layout), e.getMessage(), Snackbar.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            Snackbar.make(findViewById(R.id.import_export_layout), e.getLocalizedMessage(), Snackbar.LENGTH_SHORT).show();
         }
     }
-
 }
