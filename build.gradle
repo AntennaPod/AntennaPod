@@ -50,7 +50,7 @@ project.ext {
     glideVersion = "3.8.0"
     glideOkhttpIntegrationVersion = "1.5.0"
     iconifyVersion = "2.2.2"
-    jsoupVersion = "1.10.3"
+    jsoupVersion = "1.11.2"
     materialDialogsVersion = "0.9.0.2"
     okhttpVersion = "3.9.0"
     okioVersion = "1.13.0"
