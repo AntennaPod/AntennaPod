@@ -3,7 +3,6 @@ package de.test.antennapod.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;

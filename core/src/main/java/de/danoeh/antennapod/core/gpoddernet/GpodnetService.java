@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.gpoddernet;
 
 import android.support.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

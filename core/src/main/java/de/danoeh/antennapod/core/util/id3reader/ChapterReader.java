@@ -8,7 +8,6 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.ID3Chapter;
 import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;

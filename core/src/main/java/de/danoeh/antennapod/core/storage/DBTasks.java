@@ -40,7 +40,6 @@ import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.provider.Contacts.SettingsColumns.KEY;
 
 /**
  * Provides methods for doing common tasks that use DBReader and DBWriter.

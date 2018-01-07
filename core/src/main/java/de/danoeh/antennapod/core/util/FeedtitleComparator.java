@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.core.util;
 
-import de.danoeh.antennapod.core.feed.Feed;
-
 import java.util.Comparator;
+
+import de.danoeh.antennapod.core.feed.Feed;
 
 /** Compares the title of two feeds for sorting. */
 public class FeedtitleComparator implements Comparator<Feed> {

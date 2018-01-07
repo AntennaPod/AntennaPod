@@ -1,13 +1,15 @@
 package de.test.antennapod.util.syndication;
 
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Map;
+
+import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 
 /**
  * Test class for FeedDiscoverer
