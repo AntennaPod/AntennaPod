@@ -767,61 +767,61 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         WifiManager wifiservice = (WifiManager) activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         List<WifiConfiguration> networks = wifiservice.getConfiguredNetworks();
 
-        if (networks != null) {
-            Collections.sort(networks, new Comparator<WifiConfiguration>() {
-                @Override
-                public int compare(WifiConfiguration x, WifiConfiguration y) {
-                    return x.SSID.compareTo(y.SSID);
-                }
-            });
-            selectedNetworks = new CheckBoxPreference[networks.size()];
-            List<String> prefValues = Arrays.asList(UserPreferences
-                    .getAutodownloadSelectedNetworks());
-            PreferenceScreen prefScreen = (PreferenceScreen) ui.findPreference(PreferenceController.AUTO_DL_PREF_SCREEN);
-            Preference.OnPreferenceClickListener clickListener = preference -> {
-                if (preference instanceof CheckBoxPreference) {
-                    String key = preference.getKey();
-                    List<String> prefValuesList = new ArrayList<>(
-                            Arrays.asList(UserPreferences
-                                    .getAutodownloadSelectedNetworks())
-                    );
-                    boolean newValue = ((CheckBoxPreference) preference)
-                            .isChecked();
-                    Log.d(TAG, "Selected network " + key + ". New state: " + newValue);
-
-                    int index = prefValuesList.indexOf(key);
-                    if (index >= 0 && !newValue) {
-                        // remove network
-                        prefValuesList.remove(index);
-                    } else if (index < 0 && newValue) {
-                        prefValuesList.add(key);
-                    }
-
-                    UserPreferences.setAutodownloadSelectedNetworks(
-                            prefValuesList.toArray(new String[prefValuesList.size()])
-                    );
-                    return true;
-                } else {
-                    return false;
-                }
-            };
-            // create preference for each known network. attach listener and set
-            // value
-            for (int i = 0; i < networks.size(); i++) {
-                WifiConfiguration config = networks.get(i);
-
-                CheckBoxPreference pref = new CheckBoxPreference(activity);
-                String key = Integer.toString(config.networkId);
-                pref.setTitle(config.SSID);
-                pref.setKey(key);
-                pref.setOnPreferenceClickListener(clickListener);
-                pref.setPersistent(false);
-                pref.setChecked(prefValues.contains(key));
-                selectedNetworks[i] = pref;
-                prefScreen.addPreference(pref);
-            }
-        } else {
+        if (networks == null) {
             Log.e(TAG, "Couldn't get list of configure Wi-Fi networks");
+            return;
+        }
+        Collections.sort(networks, new Comparator<WifiConfiguration>() {
+            @Override
+            public int compare(WifiConfiguration x, WifiConfiguration y) {
+                return x.SSID.compareTo(y.SSID);
+            }
+        });
+        selectedNetworks = new CheckBoxPreference[networks.size()];
+        List<String> prefValues = Arrays.asList(UserPreferences
+                .getAutodownloadSelectedNetworks());
+        PreferenceScreen prefScreen = (PreferenceScreen) ui.findPreference(PreferenceController.AUTO_DL_PREF_SCREEN);
+        Preference.OnPreferenceClickListener clickListener = preference -> {
+            if (preference instanceof CheckBoxPreference) {
+                String key = preference.getKey();
+                List<String> prefValuesList = new ArrayList<>(
+                        Arrays.asList(UserPreferences
+                                .getAutodownloadSelectedNetworks())
+                );
+                boolean newValue = ((CheckBoxPreference) preference)
+                        .isChecked();
+                Log.d(TAG, "Selected network " + key + ". New state: " + newValue);
+
+                int index = prefValuesList.indexOf(key);
+                if (index >= 0 && !newValue) {
+                    // remove network
+                    prefValuesList.remove(index);
+                } else if (index < 0 && newValue) {
+                    prefValuesList.add(key);
+                }
+
+                UserPreferences.setAutodownloadSelectedNetworks(
+                        prefValuesList.toArray(new String[prefValuesList.size()])
+                );
+                return true;
+            } else {
+                return false;
+            }
+        };
+        // create preference for each known network. attach listener and set
+        // value
+        for (int i = 0; i < networks.size(); i++) {
+            WifiConfiguration config = networks.get(i);
+
+            CheckBoxPreference pref = new CheckBoxPreference(activity);
+            String key = Integer.toString(config.networkId);
+            pref.setTitle(config.SSID);
+            pref.setKey(key);
+            pref.setOnPreferenceClickListener(clickListener);
+            pref.setPersistent(false);
+            pref.setChecked(prefValues.contains(key));
+            selectedNetworks[i] = pref;
+            prefScreen.addPreference(pref);
         }
     }
 
