@@ -331,11 +331,13 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @SuppressLint("NewApi")
-    private void hideVideoControls() {
-        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-        if (animation != null) {
-            videoOverlay.startAnimation(animation);
-            controls.startAnimation(animation);
+    private void hideVideoControls(boolean showAnimation) {
+        if (showAnimation) {
+            final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+            if (animation != null) {
+                videoOverlay.startAnimation(animation);
+                controls.startAnimation(animation);
+            }
         }
         if (Build.VERSION.SDK_INT >= 14) {
             int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
@@ -345,6 +347,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
         videoOverlay.setVisibility(View.GONE);
         controls.setVisibility(View.GONE);
+    }
+
+    private void hideVideoControls() {
+        hideVideoControls(true);
     }
 
     @Override
@@ -375,6 +381,8 @@ public class VideoplayerActivity extends MediaplayerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.player_go_to_picture_in_picture) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                getSupportActionBar().hide();
+                hideVideoControls(false);
                 enterPictureInPictureMode();
             }
             return true;
