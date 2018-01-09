@@ -494,7 +494,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     alert.setTitle(R.string.export_error_label);
                     alert.setMessage(error.getMessage());
                     alert.show();
-                }, () -> progressDialog.dismiss());
+                }, progressDialog::dismiss);
         return true;
     }
 
