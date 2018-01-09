@@ -150,9 +150,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         if (Build.VERSION.SDK_INT >= 16) {
             videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         }
-        if (Build.VERSION.SDK_INT >= 14) {
-            videoOverlay.setFitsSystemWindows(true);
-        }
+        videoOverlay.setFitsSystemWindows(true);
 
         setupVideoControlsToggler();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -325,9 +323,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             videoOverlay.startAnimation(animation);
             controls.startAnimation(animation);
         }
-        if (Build.VERSION.SDK_INT >= 14) {
-            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-        }
+        videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
     }
 
     @SuppressLint("NewApi")
@@ -339,12 +335,11 @@ public class VideoplayerActivity extends MediaplayerActivity {
                 controls.startAnimation(animation);
             }
         }
-        if (Build.VERSION.SDK_INT >= 14) {
-            int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | videoviewFlag);
-            videoOverlay.setFitsSystemWindows(true);
-        }
+        int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | videoviewFlag);
+        videoOverlay.setFitsSystemWindows(true);
+
         videoOverlay.setVisibility(View.GONE);
         controls.setVisibility(View.GONE);
     }
@@ -394,13 +389,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB_MR2) {
-            // This is only relevant for picture in picture
-            DisplayMetrics dm = getResources().getDisplayMetrics();
-            float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newConfig.screenWidthDp, dm);
-            float py = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newConfig.screenHeightDp, dm);
-            videoview.setAvailableSize(px, py);
-        }
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newConfig.screenWidthDp, dm);
+        float py = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newConfig.screenHeightDp, dm);
+        videoview.setAvailableSize(px, py);
     }
 
     private static class VideoControlsHider extends Handler {
