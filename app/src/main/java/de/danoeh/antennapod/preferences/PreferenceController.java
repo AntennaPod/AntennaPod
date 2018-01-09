@@ -771,12 +771,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             Log.e(TAG, "Couldn't get list of configure Wi-Fi networks");
             return;
         }
-        Collections.sort(networks, new Comparator<WifiConfiguration>() {
-            @Override
-            public int compare(WifiConfiguration x, WifiConfiguration y) {
-                return x.SSID.compareTo(y.SSID);
-            }
-        });
+        Collections.sort(networks, (x, y) -> x.SSID.compareTo(y.SSID));
         selectedNetworks = new CheckBoxPreference[networks.size()];
         List<String> prefValues = Arrays.asList(UserPreferences
                 .getAutodownloadSelectedNetworks());
