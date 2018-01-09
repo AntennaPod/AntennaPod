@@ -109,6 +109,7 @@ public class AspectRatioVideoView extends VideoView {
     public void setAvailableSize(float width, float height) {
         mAvailableWidth = width;
         mAvailableHeight = height;
+        requestLayout();
     }
 
 }

@@ -17,9 +17,11 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -56,6 +58,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     private LinearLayout videoOverlay;
     private AspectRatioVideoView videoview;
     private ProgressBar progressIndicator;
+    private FrameLayout videoframe;
 
     @Override
     protected void chooseTheme() {
@@ -142,9 +145,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
         controls = (LinearLayout) findViewById(R.id.controls);
         videoOverlay = (LinearLayout) findViewById(R.id.overlay);
         videoview = (AspectRatioVideoView) findViewById(R.id.videoview);
+        videoframe = (FrameLayout) findViewById(R.id.videoframe);
         progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
         videoview.getHolder().addCallback(surfaceHolderCallback);
-        findViewById(R.id.videoframe).setOnTouchListener(onVideoviewTouched);
+        videoframe.setOnTouchListener(onVideoviewTouched);
         videoOverlay.setOnTouchListener((view, motionEvent) -> true); // To suppress touches directly below the slider
 
         if (Build.VERSION.SDK_INT >= 16) {
@@ -155,6 +159,9 @@ public class VideoplayerActivity extends MediaplayerActivity {
         setupVideoControlsToggler();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        videoframe.getViewTreeObserver().addOnGlobalLayoutListener(() ->
+                videoview.setAvailableSize(videoframe.getWidth(), videoframe.getHeight()));
     }
 
     @Override
@@ -388,11 +395,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newConfig.screenWidthDp, dm);
-        float py = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newConfig.screenHeightDp, dm);
-        videoview.setAvailableSize(px, py);
+        videoframe.requestLayout();
     }
 
     private static class VideoControlsHider extends Handler {
