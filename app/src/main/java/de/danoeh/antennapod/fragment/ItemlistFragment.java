@@ -350,16 +350,6 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
-
-    @Override
-    public void setListAdapter(ListAdapter adapter) {
-        // This workaround prevents the ListFragment from setting a list adapter when its state is restored.
-        // This is only necessary on API 10 because addFooterView throws an internal exception in this case.
-        if (Build.VERSION.SDK_INT > 10 || insideOnFragmentLoaded) {
-            super.setListAdapter(adapter);
-        }
-    }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

@@ -88,16 +88,10 @@ public class FeedInfoActivity extends AppCompatActivity {
         public void onClick(View v) {
             if(feed != null && feed.getDownload_url() != null) {
                 String url = feed.getDownload_url();
-                if (android.os.Build.VERSION.SDK_INT >= 11) {
-                    ClipData clipData = ClipData.newPlainText(url, url);
-                    android.content.ClipboardManager cm = (android.content.ClipboardManager) FeedInfoActivity.this
-                            .getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setPrimaryClip(clipData);
-                } else {
-                    android.text.ClipboardManager cm = (android.text.ClipboardManager) FeedInfoActivity.this
-                            .getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setText(url);
-                }
+                ClipData clipData = ClipData.newPlainText(url, url);
+                android.content.ClipboardManager cm = (android.content.ClipboardManager) FeedInfoActivity.this
+                        .getSystemService(Context.CLIPBOARD_SERVICE);
+                cm.setPrimaryClip(clipData);
                 Toast t = Toast.makeText(FeedInfoActivity.this, R.string.copied_url_msg, Toast.LENGTH_SHORT);
                 t.show();
             }

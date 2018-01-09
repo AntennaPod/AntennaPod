@@ -230,12 +230,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
                             Intent i = new Intent(activity, MainActivity.class);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                        | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            } else {
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            }
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    | Intent.FLAG_ACTIVITY_NEW_TASK);
                             activity.finish();
                             activity.startActivity(i);
                             return true;

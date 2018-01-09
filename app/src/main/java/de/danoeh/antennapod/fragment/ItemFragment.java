@@ -184,8 +184,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
         webvDescription = (WebView) layout.findViewById(R.id.webvDescription);
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            if (Build.VERSION.SDK_INT >= 11
-                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
             webvDescription.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
@@ -483,17 +482,11 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                     ShareUtils.shareLink(getActivity(), selectedURL);
                     break;
                 case R.id.copy_url_item:
-                    if (android.os.Build.VERSION.SDK_INT >= 11) {
-                        ClipData clipData = ClipData.newPlainText(selectedURL,
-                                selectedURL);
-                        android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
-                                .getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setPrimaryClip(clipData);
-                    } else {
-                        android.text.ClipboardManager cm = (android.text.ClipboardManager) getActivity()
-                                .getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setText(selectedURL);
-                    }
+                    ClipData clipData = ClipData.newPlainText(selectedURL,
+                            selectedURL);
+                    android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
+                            .getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setPrimaryClip(clipData);
                     Toast t = Toast.makeText(getActivity(),
                             R.string.copied_url_msg, Toast.LENGTH_SHORT);
                     t.show();
