@@ -104,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/txtvLength"
                 android:layout_toRightOf="@+id/txtvPosition"
+                android:layout_centerInParent="true"
                 android:max="500" />
 
         </RelativeLayout>
