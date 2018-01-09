@@ -3,7 +3,7 @@ package de.danoeh.antennapod.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +23,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
  * Other arguments are optional.
  * The activity's result will be the same DownloadRequest with the entered username and password.
  */
-public class DownloadAuthenticationActivity extends ActionBarActivity {
+public class DownloadAuthenticationActivity extends AppCompatActivity {
     private static final String TAG = "DownloadAuthenticationActivity";
 
     /**

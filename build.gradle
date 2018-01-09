@@ -18,6 +18,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
     }
 }
 
@@ -37,12 +40,12 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 25
-    buildToolsVersion = "25.0.3"
+    compileSdkVersion = 27
+    buildToolsVersion = "27.0.2"
     minSdkVersion = 14
-    targetSdkVersion = 25
+    targetSdkVersion = 27
 
-    supportVersion = "25.3.1"
+    supportVersion = "27.0.2"
     commonsioVersion = "2.5"
     commonslangVersion = "3.6"
     eventbusVersion = "2.4.0"
