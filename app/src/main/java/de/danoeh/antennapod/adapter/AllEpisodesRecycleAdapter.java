@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
-import com.nineoldandroids.view.ViewHelper;
 
 import java.lang.ref.WeakReference;
 
@@ -129,9 +128,9 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             holder.statusUnread.setVisibility(View.VISIBLE);
         }
         if(item.isPlayed()) {
-            ViewHelper.setAlpha(holder.content, 0.5f);
+            holder.content.setAlpha(0.5f);
         } else {
-            ViewHelper.setAlpha(holder.content, 1.0f);
+            holder.content.setAlpha(1.0f);
         }
 
         FeedMedia media = item.getMedia();
@@ -272,12 +271,12 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
         @Override
         public void onItemSelected() {
-            ViewHelper.setAlpha(itemView, 0.5f);
+            itemView.setAlpha(0.5f);
         }
 
         @Override
         public void onItemClear() {
-            ViewHelper.setAlpha(itemView, 1.0f);
+            itemView.setAlpha(1.0f);
         }
 
         public FeedItem getFeedItem() { return item; }
