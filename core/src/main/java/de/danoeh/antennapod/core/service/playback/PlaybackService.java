@@ -31,7 +31,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v4.view.InputDeviceCompat;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -1293,7 +1293,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                     PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
                             KeyEvent.KEYCODE_MEDIA_STOP, numActions);
-                    notificationBuilder.setStyle(new android.support.v7.app.NotificationCompat.MediaStyle()
+                    notificationBuilder.setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
                             .setMediaSession(mediaSession.getSessionToken())
                             .setShowActionsInCompactView(compactActionList.toArray())
                             .setShowCancelButton(true)
