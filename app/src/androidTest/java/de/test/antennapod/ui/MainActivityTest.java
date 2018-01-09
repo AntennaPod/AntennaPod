@@ -15,6 +15,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
+import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -22,7 +23,6 @@ import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.preferences.PreferenceController;
 
 /**
  * User interface tests for MainActivity
@@ -155,7 +155,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testGoToPreferences() {
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.settings_label));
-        solo.waitForActivity(PreferenceController.getPreferenceActivity());
+        solo.waitForActivity(PreferenceActivity.class);
     }
 
     public void testDrawerPreferencesHideSomeElements() {

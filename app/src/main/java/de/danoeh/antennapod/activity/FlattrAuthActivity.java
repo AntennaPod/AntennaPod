@@ -18,7 +18,6 @@ import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
-import de.danoeh.antennapod.preferences.PreferenceController;
 
 /** Guides the user through the authentication process */
 
@@ -104,7 +103,7 @@ public class FlattrAuthActivity extends ActionBarActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			if (authSuccessful) {
-				Intent intent = new Intent(this, PreferenceController.getPreferenceActivity());
+				Intent intent = new Intent(this, PreferenceActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			} else {

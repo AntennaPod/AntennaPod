@@ -64,7 +64,6 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -173,7 +172,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         findViewById(R.id.nav_settings).setOnClickListener(v -> {
             drawerLayout.closeDrawer(navDrawer);
-            startActivity(new Intent(MainActivity.this, PreferenceController.getPreferenceActivity()));
+            startActivity(new Intent(MainActivity.this, PreferenceActivity.class));
         });
 
         FragmentTransaction transaction = fm.beginTransaction();

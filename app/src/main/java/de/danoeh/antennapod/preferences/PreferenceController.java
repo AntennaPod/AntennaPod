@@ -56,8 +56,6 @@ import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
@@ -97,8 +95,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
     private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
-    public static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
-    public static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
+    private static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
+    private static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
     private static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
     private static final String PREF_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
     private static final String PREF_GPODNET_SYNC = "pref_gpodnet_sync";
@@ -130,19 +128,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         this.ui = ui;
         PreferenceManager.getDefaultSharedPreferences(ui.getActivity().getApplicationContext())
             .registerOnSharedPreferenceChangeListener(this);
-    }
-
-    /**
-     * Returns the preference activity that should be used on this device.
-     *
-     * @return PreferenceActivity if the API level is greater than 10, PreferenceActivityGingerbread otherwise.
-     */
-    public static Class<? extends Activity> getPreferenceActivity() {
-        if (Build.VERSION.SDK_INT > 10) {
-            return PreferenceActivity.class;
-        } else {
-            return PreferenceActivityGingerbread.class;
-        }
     }
 
     @Override
@@ -230,12 +215,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
                             Intent i = new Intent(activity, MainActivity.class);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                        | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            } else {
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            }
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    | Intent.FLAG_ACTIVITY_NEW_TASK);
                             activity.finish();
                             activity.startActivity(i);
                             return true;
