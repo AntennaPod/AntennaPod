@@ -286,6 +286,13 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onReloadNotification(int notificationCode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode()) {
+            if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO
+                    || notificationCode == PlaybackService.EXTRA_CODE_CAST) {
+                finish();
+            }
+            return;
+        }
         if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
             Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
             destroyingDueToReload = true;
