@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.activity;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -30,7 +28,6 @@ public class PreferenceActivity extends AppCompatActivity {
     private PreferenceController preferenceController;
     private MainFragment prefFragment;
     private final PreferenceController.PreferenceUI preferenceUI = new PreferenceController.PreferenceUI() {
-        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
         public Preference findPreference(CharSequence key) {
             return prefFragment.findPreference(key);
@@ -42,7 +39,6 @@ public class PreferenceActivity extends AppCompatActivity {
         }
     };
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // This must be the FIRST thing we do, otherwise other code may not have the
@@ -95,7 +91,6 @@ public class PreferenceActivity extends AppCompatActivity {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class MainFragment extends PreferenceFragment {
 
         @Override
