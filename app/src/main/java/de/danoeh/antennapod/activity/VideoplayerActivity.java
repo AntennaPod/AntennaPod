@@ -2,22 +2,18 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.WindowCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,10 +21,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
-
-import java.lang.ref.WeakReference;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -36,6 +28,9 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.view.AspectRatioVideoView;
+
+import java.lang.ref.WeakReference;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Activity for playing video files.
@@ -137,7 +132,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void setupGUI() {
-        if(isSetup.getAndSet(true)) {
+        if (isSetup.getAndSet(true)) {
             return;
         }
         super.setupGUI();
@@ -399,12 +394,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        videoframe.requestLayout();
-    }
-
     private static class VideoControlsHider extends Handler {
 
         private static final int DELAY = 2500;
@@ -417,7 +406,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
         private final Runnable hideVideoControls = () -> {
             VideoplayerActivity vpa = activity.get();
-            if(vpa == null) {
+            if (vpa == null) {
                 return;
             }
             if (vpa.videoControlsShowing) {
