@@ -24,7 +24,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
  * The activity's result will be the same DownloadRequest with the entered username and password.
  */
 public class DownloadAuthenticationActivity extends ActionBarActivity {
-    private static final String TAG = "DownloadAuthenticationActivity";
 
     /**
      * The download request object that contains information about the resource that requires a username and a password
@@ -87,7 +86,6 @@ public class DownloadAuthenticationActivity extends ActionBarActivity {
             setResult(Activity.RESULT_OK, result);
 
             if (sendToDownloadRequester) {
-               if (BuildConfig.DEBUG) Log.d(TAG, "Sending request to DownloadRequester");
                 DownloadRequester.getInstance().download(DownloadAuthenticationActivity.this, request);
             }
             finish();
