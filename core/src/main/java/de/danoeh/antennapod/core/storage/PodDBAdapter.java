@@ -350,9 +350,7 @@ public class PodDBAdapter {
         SQLiteDatabase newDb = null;
         try {
             newDb = dbHelper.getWritableDatabase();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                newDb.enableWriteAheadLogging();
-            }
+            newDb.enableWriteAheadLogging();
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
             newDb = dbHelper.getReadableDatabase();
@@ -473,11 +471,7 @@ public class PodDBAdapter {
 
         try {
             if (!db.inTransaction()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    db.beginTransactionNonExclusive();
-                } else {
-                    db.beginTransaction();
-                }
+                db.beginTransactionNonExclusive();
                 startedTransaction = true;
             }
 
@@ -580,11 +574,7 @@ public class PodDBAdapter {
      */
     public void setCompleteFeed(Feed... feeds) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                db.beginTransactionNonExclusive();
-            } else {
-                db.beginTransaction();
-            }
+            db.beginTransactionNonExclusive();
             for (Feed feed : feeds) {
                 setFeed(feed);
                 if (feed.getItems() != null) {
@@ -665,11 +655,7 @@ public class PodDBAdapter {
 
     public void setFeedItemlist(List<FeedItem> items) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                db.beginTransactionNonExclusive();
-            } else {
-                db.beginTransaction();
-            }
+            db.beginTransactionNonExclusive();
             for (FeedItem item : items) {
                 setFeedItem(item, true);
             }
@@ -684,11 +670,7 @@ public class PodDBAdapter {
     public long setSingleFeedItem(FeedItem item) {
         long result = 0;
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                db.beginTransactionNonExclusive();
-            } else {
-                db.beginTransaction();
-            }
+            db.beginTransactionNonExclusive();
             result = setFeedItem(item, true);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -814,11 +796,7 @@ public class PodDBAdapter {
     public void setFeedItemRead(int played, long itemId, long mediaId,
                                 boolean resetMediaPosition) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                db.beginTransactionNonExclusive();
-            } else {
-                db.beginTransaction();
-            }
+            db.beginTransactionNonExclusive();
             ContentValues values = new ContentValues();
 
             values.put(KEY_READ, played);
@@ -846,11 +824,7 @@ public class PodDBAdapter {
      */
     public void setFeedItemRead(int read, long... itemIds) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                db.beginTransactionNonExclusive();
-            } else {
-                db.beginTransaction();
-            }
+            db.beginTransactionNonExclusive();
             ContentValues values = new ContentValues();
             for (long id : itemIds) {
                 values.clear();
@@ -933,11 +907,7 @@ public class PodDBAdapter {
     public void setFavorites(List<FeedItem> favorites) {
         ContentValues values = new ContentValues();
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                db.beginTransactionNonExclusive();
-            } else {
-                db.beginTransaction();
-            }
+            db.beginTransactionNonExclusive();
             db.delete(TABLE_NAME_FAVORITES, null, null);
             for (int i = 0; i < favorites.size(); i++) {
                 FeedItem item = favorites.get(i);
@@ -1000,11 +970,7 @@ public class PodDBAdapter {
     public void setQueue(List<FeedItem> queue) {
         ContentValues values = new ContentValues();
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                db.beginTransactionNonExclusive();
-            } else {
-                db.beginTransaction();
-            }
+            db.beginTransactionNonExclusive();
             db.delete(TABLE_NAME_QUEUE, null, null);
             for (int i = 0; i < queue.size(); i++) {
                 FeedItem item = queue.get(i);
@@ -1066,11 +1032,7 @@ public class PodDBAdapter {
      */
     public void removeFeed(Feed feed) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                db.beginTransactionNonExclusive();
-            } else {
-                db.beginTransaction();
-            }
+            db.beginTransactionNonExclusive();
             if (feed.getImage() != null) {
                 removeFeedImage(feed.getImage());
             }

@@ -112,9 +112,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                              Bundle savedInstanceState) {
         Log.d(TAG, "Creating view");
         webvDescription = new WebView(getActivity().getApplicationContext());
-        if (Build.VERSION.SDK_INT >= 11) {
-            webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
+        webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         TypedArray ta = getActivity().getTheme().obtainStyledAttributes(new int[]
                 {android.R.attr.colorBackground});
         int backgroundColor = ta.getColor(0, UserPreferences.getTheme() ==
@@ -238,17 +236,11 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                     ShareUtils.shareLink(getActivity(), selectedURL);
                     break;
                 case R.id.copy_url_item:
-                    if (android.os.Build.VERSION.SDK_INT >= 11) {
-                        ClipData clipData = ClipData.newPlainText(selectedURL,
-                                selectedURL);
-                        android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
-                                .getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setPrimaryClip(clipData);
-                    } else {
-                        android.text.ClipboardManager cm = (android.text.ClipboardManager) getActivity()
-                                .getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setText(selectedURL);
-                    }
+                    ClipData clipData = ClipData.newPlainText(selectedURL,
+                            selectedURL);
+                    android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
+                            .getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setPrimaryClip(clipData);
                     Toast t = Toast.makeText(getActivity(),
                             R.string.copied_url_msg, Toast.LENGTH_SHORT);
                     t.show();

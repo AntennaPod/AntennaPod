@@ -269,10 +269,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(
                 ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            registerReceiver(bluetoothStateUpdated, new IntentFilter(
-                    BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
-        }
+        registerReceiver(bluetoothStateUpdated, new IntentFilter(
+                BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
@@ -342,9 +340,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(autoStateUpdated);
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            unregisterReceiver(bluetoothStateUpdated);
-        }
+        unregisterReceiver(bluetoothStateUpdated);
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
@@ -1196,21 +1192,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             @Override
             public void run() {
                 Log.d(TAG, "Starting background work");
-                if (android.os.Build.VERSION.SDK_INT >= 11) {
-                    if (info.playable != null) {
-                        int iconSize = getResources().getDimensionPixelSize(
-                                android.R.dimen.notification_large_icon_width);
-                        try {
-                            icon = Glide.with(PlaybackService.this)
-                                    .load(info.playable.getImageLocation())
-                                    .asBitmap()
-                                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                    .centerCrop()
-                                    .into(iconSize, iconSize)
-                                    .get();
-                        } catch (Throwable tr) {
-                            Log.e(TAG, "Error loading the media icon for the notification", tr);
-                        }
+                if (info.playable != null) {
+                    int iconSize = getResources().getDimensionPixelSize(
+                            android.R.dimen.notification_large_icon_width);
+                    try {
+                        icon = Glide.with(PlaybackService.this)
+                                .load(info.playable.getImageLocation())
+                                .asBitmap()
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .centerCrop()
+                                .into(iconSize, iconSize)
+                                .get();
+                    } catch (Throwable tr) {
+                        Log.e(TAG, "Error loading the media icon for the notification", tr);
                     }
                 }
                 if (icon == null) {
@@ -1471,13 +1465,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                if (TextUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
-                    int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
-                    if (state == BluetoothA2dp.STATE_CONNECTED) {
-                        Log.d(TAG, "Received bluetooth connection intent");
-                        unpauseIfPauseOnDisconnect(true);
-                    }
+            if (TextUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
+                int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
+                if (state == BluetoothA2dp.STATE_CONNECTED) {
+                    Log.d(TAG, "Received bluetooth connection intent");
+                    unpauseIfPauseOnDisconnect(true);
                 }
             }
         }
