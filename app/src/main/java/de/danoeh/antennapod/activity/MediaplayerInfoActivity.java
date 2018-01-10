@@ -61,7 +61,6 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -270,7 +269,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
         findViewById(R.id.nav_settings).setOnClickListener(v -> {
             drawerLayout.closeDrawer(navDrawer);
-            startActivity(new Intent(MediaplayerInfoActivity.this, PreferenceController.getPreferenceActivity()));
+            startActivity(new Intent(MediaplayerInfoActivity.this, PreferenceActivity.class));
         });
 
         butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
