@@ -22,6 +22,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.webkit.URLUtil;
 
+import de.danoeh.antennapod.core.util.NotificationUtils;
 import org.apache.commons.io.FileUtils;
 import org.xml.sax.SAXException;
 
@@ -341,7 +342,8 @@ public class DownloadService extends Service {
     private void setupNotificationBuilders() {
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.stat_notify_sync);
 
-        notificationCompatBuilder = new NotificationCompat.Builder(this)
+        NotificationUtils.createChannelDownloading(this);
+        notificationCompatBuilder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setOngoing(true)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
                 .setLargeIcon(icon)
@@ -502,7 +504,8 @@ public class DownloadService extends Service {
         if (createReport) {
             Log.d(TAG, "Creating report");
             // create notification object
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+            NotificationUtils.createChannelError(this);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_ERROR)
                     .setTicker(getString(R.string.download_report_title))
                     .setContentTitle(getString(R.string.download_report_content_title))
                     .setContentText(
@@ -558,7 +561,8 @@ public class DownloadService extends Service {
             final String resourceTitle = (downloadRequest.getTitle() != null) ?
                     downloadRequest.getTitle() : downloadRequest.getSource();
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(DownloadService.this);
+            NotificationUtils.createChannelUserAction(DownloadService.this);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(DownloadService.this, NotificationUtils.CHANNEL_ID_USER_ACTION);
             builder.setTicker(getText(R.string.authentication_notification_title))
                     .setContentTitle(getText(R.string.authentication_notification_title))
                     .setContentText(getText(R.string.authentication_notification_msg))
