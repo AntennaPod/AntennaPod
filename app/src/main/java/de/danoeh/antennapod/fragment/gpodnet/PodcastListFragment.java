@@ -160,10 +160,6 @@ public abstract class PodcastListFragment extends Fragment {
             }
         };
 
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            loaderTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            loaderTask.execute();
-        }
+        loaderTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
