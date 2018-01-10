@@ -286,6 +286,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (status == null) {
             Log.wtf(TAG, "DownloadStatus returned by Downloader was null");
             finish();
+            return;
         }
         if (status.isCancelled()) {
             return;
@@ -300,7 +301,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
         } else {
             String errorMsg = status.getReason().getErrorString(OnlineFeedViewActivity.this);
-            if (errorMsg != null && status.getReasonDetailed() != null) {
+            if (status.getReasonDetailed() != null) {
                 errorMsg += " (" + status.getReasonDetailed() + ")";
             }
             showErrorDialog(errorMsg);
