@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.annotation.UiThread;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -508,8 +509,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         return 0;
     }
 
+    @UiThread
     private void showErrorDialog(String errorMsg) {
-        assert(Looper.myLooper() == Looper.getMainLooper()); // run on UI thread
         if (!isFinishing() && !isPaused) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.error_label);

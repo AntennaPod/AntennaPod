@@ -159,7 +159,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         int indexAutoDownload = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD);
 
         long id = cursor.getInt(indexId);
-        assert(id > 0);
         String title = cursor.getString(indexTitle);
         String link = cursor.getString(indexLink);
         Date pubDate = new Date(cursor.getLong(indexPubDate));

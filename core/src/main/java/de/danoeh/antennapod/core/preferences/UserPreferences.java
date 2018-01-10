@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
@@ -513,9 +514,8 @@ public class UserPreferences {
              .apply();
     }
 
-    public static void setVolume(int leftVolume, int rightVolume) {
-        assert(0 <= leftVolume && leftVolume <= 100);
-        assert(0 <= rightVolume && rightVolume <= 100);
+    public static void setVolume(@IntRange(from = 0, to = 100) int leftVolume,
+                                 @IntRange(from = 0, to = 100) int rightVolume) {
         prefs.edit()
              .putInt(PREF_LEFT_VOLUME, leftVolume)
              .putInt(PREF_RIGHT_VOLUME, rightVolume)
