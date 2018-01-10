@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.UiThread;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -113,9 +114,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                                 feeds -> {
                                     OnlineFeedViewActivity.this.feeds = feeds;
                                     setSubscribeButtonState(feed);
-                                }, error -> {
-                                    Log.e(TAG, Log.getStackTraceString(error));
-                                }
+                                }, error -> Log.e(TAG, Log.getStackTraceString(error))
                         );
             } else if ((arg & EVENTS) != 0) {
                 setSubscribeButtonState(feed);
@@ -132,10 +131,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
-        if (getIntent() != null && getIntent().hasExtra(ARG_TITLE)) {
-            getSupportActionBar().setTitle(getIntent().getStringExtra(ARG_TITLE));
+        if (actionBar != null && getIntent() != null && getIntent().hasExtra(ARG_TITLE)) {
+            actionBar.setTitle(getIntent().getStringExtra(ARG_TITLE));
         }
 
         StorageUtils.checkStorageAvailability(this);
@@ -147,7 +149,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 || TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
             feedUrl = (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND))
                     ? getIntent().getStringExtra(Intent.EXTRA_TEXT) : getIntent().getDataString();
-            getSupportActionBar().setTitle(R.string.add_feed_label);
+            if(actionBar != null) {
+                actionBar.setTitle(R.string.add_feed_label);
+            }
         } else {
             throw new IllegalArgumentException("Activity must be started with feedurl argument!");
         }
