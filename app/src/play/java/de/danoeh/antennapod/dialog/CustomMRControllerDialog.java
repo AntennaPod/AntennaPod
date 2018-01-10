@@ -69,7 +69,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         this(context, 0);
     }
 
-    public CustomMRControllerDialog(Context context, int theme) {
+    private CustomMRControllerDialog(Context context, int theme) {
         super(context, theme);
         mediaRouter = MediaRouter.getInstance(getContext());
         token = mediaRouter.getMediaSessionToken();
