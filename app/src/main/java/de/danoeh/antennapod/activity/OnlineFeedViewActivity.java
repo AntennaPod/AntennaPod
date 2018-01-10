@@ -270,16 +270,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password,
                 true, null);
 
-        download = Observable.create(new Observable.OnSubscribe<DownloadStatus>() {
-                    @Override
-                    public void call(Subscriber<? super DownloadStatus> subscriber) {
+        download = Observable.fromCallable(() -> {
                         feeds = DBReader.getFeedList();
                         downloader = new HttpDownloader(request);
                         downloader.call();
-                        Log.d(TAG, "Download was completed");
-                        subscriber.onNext(downloader.getResult());
-                        subscriber.onCompleted();
-                    }
+                        return downloader.getResult();
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
