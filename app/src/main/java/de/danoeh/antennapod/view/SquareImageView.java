@@ -1,13 +1,14 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
  * From http://stackoverflow.com/a/19449488/6839
  */
-public class SquareImageView extends ImageView {
+public class SquareImageView extends AppCompatImageView {
 
     public SquareImageView(Context context) {
         super(context);
