@@ -60,7 +60,6 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
     compile "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     compile "com.squareup.okio:okio:$okioVersion"
-    compile "com.nineoldandroids:library:2.4.0"
     compile "de.greenrobot:eventbus:$eventbusVersion"
     compile "io.reactivex:rxandroid:$rxAndroidVersion"
 

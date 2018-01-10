@@ -24,7 +24,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
-import com.nineoldandroids.view.ViewHelper;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -198,12 +197,12 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
         @Override
         public void onItemSelected() {
-            ViewHelper.setAlpha(itemView, 0.5f);
+            itemView.setAlpha(0.5f);
         }
 
         @Override
         public void onItemClear() {
-            ViewHelper.setAlpha(itemView, 1.0f);
+            itemView.setAlpha(1.0f);
         }
 
         public void bind(FeedItem item) {
