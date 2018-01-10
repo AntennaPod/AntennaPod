@@ -37,6 +37,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.NotificationUtils;
 
 /**
  * Synchronizes local subscriptions with gpodder.net service. The service should be started with ACTION_SYNC as an action argument.
@@ -319,7 +320,7 @@ public class GpodnetSyncService extends Service {
         }
 
         PendingIntent activityIntent = ClientConfig.gpodnetCallbacks.getGpodnetSyncServiceErrorNotificationPendingIntent(this);
-        Notification notification = new NotificationCompat.Builder(this)
+        Notification notification = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_ERROR)
                 .setContentTitle(title)
                 .setContentText(description)
                 .setContentIntent(activityIntent)

@@ -709,4 +709,14 @@
     <string name="cast_failed_seek">Failed to seek to the new position on the cast device</string>
     <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>
     <string name="cast_failed_media_error_skipping">Error playing media. Skipping&#8230;</string>
+
+    <!-- Notification channels -->
+    <string name="notification_channel_user_action">Action required</string>
+    <string name="notification_channel_user_action_description">Shown if your action is required</string>
+    <string name="notification_channel_downloading">Downloading</string>
+    <string name="notification_channel_downloading_description">Shown while currently downloading</string>
+    <string name="notification_channel_playing">Currently playing</string>
+    <string name="notification_channel_playing_description">Allows to control playback</string>
+    <string name="notification_channel_error">Errors</string>
+    <string name="notification_channel_error_description">Shown if something went wrong</string>
 </resources>

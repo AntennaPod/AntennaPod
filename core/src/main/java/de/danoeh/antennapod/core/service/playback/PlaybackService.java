@@ -65,6 +65,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.IntList;
+import de.danoeh.antennapod.core.util.NotificationUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -1216,8 +1217,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     Notification notification;
 
                     // Builder is v7, even if some not overwritten methods return its parent's v4 interface
-                    NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(
-                            PlaybackService.this)
+                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
+                            PlaybackService.this, NotificationUtils.CHANNEL_ID_PLAYING)
                             .setContentTitle(contentTitle)
                             .setContentText(contentText)
                             .setOngoing(false)
