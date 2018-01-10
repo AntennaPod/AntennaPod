@@ -28,6 +28,9 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         super.onResume();
         if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
             Intent intent = getIntent();
+            if (intent.getData() == null) {
+                return;
+            }
             Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
             ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
                     MediaType.AUDIO);
@@ -41,7 +44,8 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             startService(launchIntent);
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
-            if (!intent.getComponent().getClassName().equals(AudioplayerActivity.class.getName())) {
+            if (intent.getComponent() != null &&
+                    !intent.getComponent().getClassName().equals(AudioplayerActivity.class.getName())) {
                 saveCurrentFragment();
                 finish();
                 startActivity(intent);
