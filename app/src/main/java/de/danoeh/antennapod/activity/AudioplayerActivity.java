@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -95,7 +96,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                 UserPreferences.setPlaybackSpeed(String.valueOf(speed));
             }
         }
-        String speedStr = String.format("%.2fx", speed);
+        String speedStr = new DecimalFormat("0.00x").format(speed);
         butPlaybackSpeed.setText(speedStr);
     }
 
