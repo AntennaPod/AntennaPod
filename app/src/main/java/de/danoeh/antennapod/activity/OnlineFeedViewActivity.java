@@ -271,10 +271,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 true, null);
 
         download = Observable.fromCallable(() -> {
-                        feeds = DBReader.getFeedList();
-                        downloader = new HttpDownloader(request);
-                        downloader.call();
-                        return downloader.getResult();
+                    feeds = DBReader.getFeedList();
+                    downloader = new HttpDownloader(request);
+                    downloader.call();
+                    return downloader.getResult();
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -314,35 +314,33 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
         Log.d(TAG, "Parsing feed");
 
-        parser = Observable.create(new Observable.OnSubscribe<FeedHandlerResult>() {
-            @Override
-            public void call(Subscriber<? super FeedHandlerResult> subscriber) {
-                        FeedHandler handler = new FeedHandler();
-                        try {
-                            FeedHandlerResult result = handler.parseFeed(feed);
-                            subscriber.onNext(result);
-                        } catch (UnsupportedFeedtypeException e) {
-                            Log.d(TAG, "Unsupported feed type detected");
-                            if (TextUtils.equals("html", e.getRootElement().toLowerCase())) {
-                                showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
-                            } else {
-                                subscriber.onError(e);
-                            }
-                        } catch (Exception e) {
-                            Log.e(TAG, Log.getStackTraceString(e));
-                            subscriber.onError(e);
-                        } finally {
-                            boolean rc = new File(feed.getFile_url()).delete();
-                            Log.d(TAG, "Deleted feed source file. Result: " + rc);
-                            subscriber.onCompleted();
+        parser = Observable.fromCallable(() -> {
+                    FeedHandler handler = new FeedHandler();
+                    try {
+                        return handler.parseFeed(feed);
+                    } catch (UnsupportedFeedtypeException e) {
+                        Log.d(TAG, "Unsupported feed type detected");
+                        if (TextUtils.equals("html", e.getRootElement().toLowerCase())) {
+                            showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
+                            return null;
+                        } else {
+                            throw e;
                         }
+                    } catch (Exception e) {
+                        Log.e(TAG, Log.getStackTraceString(e));
+                        throw e;
+                    } finally {
+                        boolean rc = new File(feed.getFile_url()).delete();
+                        Log.d(TAG, "Deleted feed source file. Result: " + rc);
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    beforeShowFeedInformation(result.feed);
-                    showFeedInformation(result.feed, result.alternateFeedUrls);
+                    if(result != null) {
+                        beforeShowFeedInformation(result.feed);
+                        showFeedInformation(result.feed, result.alternateFeedUrls);
+                    }
                 }, error -> {
                     String errorMsg = DownloadError.ERROR_PARSER_EXCEPTION.getErrorString(
                             OnlineFeedViewActivity.this) + " (" + error.getMessage() + ")";
