@@ -413,7 +413,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         description.setText(feed.getDescription());
 
         subscribeButton.setOnClickListener(v -> {
-            if(feed != null && feedInFeedlist(feed)) {
+            if(feedInFeedlist(feed)) {
                 Intent intent = new Intent(OnlineFeedViewActivity.this, MainActivity.class);
                 // feed.getId() is always 0, we have to retrieve the id from the feed list from
                 // the database
