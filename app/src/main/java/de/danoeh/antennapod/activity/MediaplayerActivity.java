@@ -382,6 +382,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             } else {
                 startActivity(intent);
             }
+            finish();
             return true;
         } else {
             if (media != null) {
