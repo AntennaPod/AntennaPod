@@ -69,7 +69,7 @@ project.ext {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "4.2"
+    gradleVersion = "4.4.1"
 }
 
 // free build hack: common functions
