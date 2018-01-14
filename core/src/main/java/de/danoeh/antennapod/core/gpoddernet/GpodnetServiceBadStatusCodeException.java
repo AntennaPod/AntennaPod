@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.gpoddernet;
 
 class GpodnetServiceBadStatusCodeException extends GpodnetServiceException {
-    private int statusCode;
+    private final int statusCode;
 
     public GpodnetServiceBadStatusCodeException(String message, int statusCode) {
         super(message);

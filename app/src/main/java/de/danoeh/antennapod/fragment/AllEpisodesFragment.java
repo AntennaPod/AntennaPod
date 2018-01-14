@@ -346,7 +346,7 @@ public class AllEpisodesFragment extends Fragment {
         updateShowOnlyEpisodesListViewState();
     }
 
-    private AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
+    private final AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
 
         @Override
         public int getCount() {
@@ -444,7 +444,7 @@ public class AllEpisodesFragment extends Fragment {
         }
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {

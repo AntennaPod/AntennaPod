@@ -2,8 +2,8 @@ package de.danoeh.antennapod.core.syndication.namespace;
 
 /** Defines a XML Element that is pushed on the tagstack */
 public class SyndElement {
-	private String name;
-	private Namespace namespace;
+	private final String name;
+	private final Namespace namespace;
 	
 	public SyndElement(String name, Namespace namespace) {
 		this.name = name;

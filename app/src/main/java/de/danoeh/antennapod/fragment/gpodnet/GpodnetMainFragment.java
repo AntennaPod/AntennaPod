@@ -71,7 +71,7 @@ public class GpodnetMainFragment extends Fragment {
         private static final int POS_TAGS = 1;
         private static final int POS_SUGGESTIONS = 2;
 
-        Resources resources;
+        final Resources resources;
 
         public GpodnetPagerAdapter(FragmentManager fm, Resources resources) {
             super(fm);

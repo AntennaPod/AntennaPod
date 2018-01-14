@@ -37,7 +37,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     public static class Factory implements ModelLoaderFactory<String, InputStream> {
 
         private static volatile OkHttpClient internalClient;
-        private OkHttpClient client;
+        private final OkHttpClient client;
 
         private static OkHttpClient getInternalClient() {
             if (internalClient == null) {

@@ -15,7 +15,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 public class CastplayerActivity extends MediaplayerInfoActivity {
     private static final String TAG = "CastPlayerActivity";
 
-    private AtomicBoolean isSetup = new AtomicBoolean(false);
+    private final AtomicBoolean isSetup = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

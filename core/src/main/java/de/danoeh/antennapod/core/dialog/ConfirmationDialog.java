@@ -15,9 +15,9 @@ public abstract class ConfirmationDialog {
 
 	private static final String TAG = ConfirmationDialog.class.getSimpleName();
 
-	private Context context;
-	private int titleId;
-	private String message;
+	private final Context context;
+	private final int titleId;
+	private final String message;
 
 	private int positiveText;
 	private int negativeText;

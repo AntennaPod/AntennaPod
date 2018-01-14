@@ -13,8 +13,8 @@ class ShakeListener implements SensorEventListener
 
     private Sensor mAccelerometer;
     private SensorManager mSensorMgr;
-    private PlaybackServiceTaskManager.SleepTimer mSleepTimer;
-    private Context mContext;
+    private final PlaybackServiceTaskManager.SleepTimer mSleepTimer;
+    private final Context mContext;
 
     public ShakeListener(Context context, PlaybackServiceTaskManager.SleepTimer sleepTimer) {
         mContext = context;

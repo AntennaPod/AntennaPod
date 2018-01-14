@@ -49,7 +49,7 @@ public class FyydSearchFragment extends Fragment {
     private Button butRetry;
     private TextView txtvEmpty;
 
-    private FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
+    private final FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
 
     /**
      * List of podcasts retreived from the search

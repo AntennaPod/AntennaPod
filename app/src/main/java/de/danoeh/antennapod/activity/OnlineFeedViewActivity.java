@@ -100,7 +100,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Subscription download;
     private Subscription parser;
     private Subscription updater;
-    private EventDistributor.EventListener listener = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener listener = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EventDistributor.FEED_LIST_UPDATE) != 0) {
@@ -581,7 +581,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private class FeedViewAuthenticationDialog extends AuthenticationDialog {
 
-        private String feedUrl;
+        private final String feedUrl;
 
         FeedViewAuthenticationDialog(Context context, int titleRes, String feedUrl) {
             super(context, titleRes, true, false, null, null);

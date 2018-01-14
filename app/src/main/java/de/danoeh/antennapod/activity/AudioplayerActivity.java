@@ -21,7 +21,7 @@ import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 public class AudioplayerActivity extends MediaplayerInfoActivity {
     private static final String TAG = "AudioPlayerActivity";
 
-    private AtomicBoolean isSetup = new AtomicBoolean(false);
+    private final AtomicBoolean isSetup = new AtomicBoolean(false);
 
     @Override
     protected void onResume() {

@@ -10,7 +10,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
  */
 class PlaybackServiceFlavorHelper {
 
-    private PlaybackService.FlavorHelperCallback callback;
+    private final PlaybackService.FlavorHelperCallback callback;
 
     PlaybackServiceFlavorHelper(Context context, PlaybackService.FlavorHelperCallback callback) {
         this.callback = callback;

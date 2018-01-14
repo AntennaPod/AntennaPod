@@ -333,7 +333,7 @@ public class GpodnetSyncService extends Service {
         nm.notify(id, notification);
     }
 
-    private WaiterThread syncWaiterThread = new WaiterThread(WAIT_INTERVAL) {
+    private final WaiterThread syncWaiterThread = new WaiterThread(WAIT_INTERVAL) {
         @Override
         public void onWaitCompleted() {
             sync();
@@ -341,7 +341,7 @@ public class GpodnetSyncService extends Service {
     };
 
     private abstract class WaiterThread {
-        private long waitInterval;
+        private final long waitInterval;
         private Thread thread;
 
         private WaiterThread(long waitInterval) {

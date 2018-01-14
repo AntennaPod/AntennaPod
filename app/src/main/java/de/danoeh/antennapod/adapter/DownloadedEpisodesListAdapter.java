@@ -110,7 +110,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
+    private final View.OnClickListener secondaryActionListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();

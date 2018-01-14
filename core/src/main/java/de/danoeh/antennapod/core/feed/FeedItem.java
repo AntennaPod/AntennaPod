@@ -59,7 +59,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     public static final int PLAYED = 1;
 
     private String paymentLink;
-    private FlattrStatus flattrStatus;
+    private final FlattrStatus flattrStatus;
 
     /**
      * Is true if the database contains any chapters that belong to this item. This attribute is only
@@ -87,7 +87,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     /**
      * Any tags assigned to this item
      */
-    private Set<String> tags = new HashSet<>();
+    private final Set<String> tags = new HashSet<>();
 
     public FeedItem() {
         this.state = UNPLAYED;

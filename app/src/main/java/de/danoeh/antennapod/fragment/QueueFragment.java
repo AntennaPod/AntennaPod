@@ -519,7 +519,7 @@ public class QueueFragment extends Fragment {
         infoBar.setText(info);
     }
 
-    private QueueRecyclerAdapter.ItemAccess itemAccess = new QueueRecyclerAdapter.ItemAccess() {
+    private final QueueRecyclerAdapter.ItemAccess itemAccess = new QueueRecyclerAdapter.ItemAccess() {
         @Override
         public int getCount() {
             return queue != null ? queue.size() : 0;
@@ -579,7 +579,7 @@ public class QueueFragment extends Fragment {
         }
     };
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {

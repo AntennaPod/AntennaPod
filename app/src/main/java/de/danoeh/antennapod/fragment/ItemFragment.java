@@ -449,7 +449,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
     }
 
-    private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
+    private final View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {
@@ -551,7 +551,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {

@@ -21,7 +21,7 @@ import de.danoeh.antennapod.core.syndication.namespace.atom.NSAtom;
 class SyndHandler extends DefaultHandler {
 	private static final String TAG = "SyndHandler";
 	private static final String DEFAULT_PREFIX = "";
-	HandlerState state;
+	final HandlerState state;
 
 	public SyndHandler(Feed feed, TypeGetter.Type type) {
 		state = new HandlerState(feed);

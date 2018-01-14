@@ -42,7 +42,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
     private volatile boolean stream;
     private volatile MediaType mediaType;
-    private volatile AtomicBoolean startWhenPrepared;
+    private final AtomicBoolean startWhenPrepared;
     private volatile boolean pausedBecauseOfTransientAudiofocusLoss;
     private volatile Pair<Integer, Integer> videoSize;
 

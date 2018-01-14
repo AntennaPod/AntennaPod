@@ -2,8 +2,8 @@ package de.danoeh.antennapod.core.util.id3reader.model;
 
 public abstract class Header {
 
-	String id;
-	int size;
+	final String id;
+	final int size;
 
 	Header(String id, int size) {
 		super();

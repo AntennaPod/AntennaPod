@@ -25,7 +25,7 @@ public class DownloadStatus {
 	 * identify the download. Should be the title of the item/feed/media or the
 	 * URL if the download has no other title.
 	 */
-    private String title;
+    private final String title;
 	private DownloadError reason;
 	/**
 	 * A message which can be presented to the user to give more information.
@@ -34,13 +34,13 @@ public class DownloadStatus {
     private String reasonDetailed;
 	private boolean successful;
 	private Date completionDate;
-	private long feedfileId;
+	private final long feedfileId;
 	/**
 	 * Is used to determine the type of the feedfile even if the feedfile does
 	 * not exist anymore. The value should be FEEDFILETYPE_FEED,
 	 * FEEDFILETYPE_FEEDIMAGE or FEEDFILETYPE_FEEDMEDIA
 	 */
-    private int feedfileType;
+    private final int feedfileType;
 
 	// ------------------------------------ NOT STORED IN DB
     private boolean done;

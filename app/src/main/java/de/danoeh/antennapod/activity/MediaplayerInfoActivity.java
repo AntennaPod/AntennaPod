@@ -496,7 +496,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         snackbar.show();
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {

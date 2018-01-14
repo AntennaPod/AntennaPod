@@ -193,7 +193,7 @@ public class PlayerWidgetService extends Service {
         }
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private final ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             Log.d(TAG, "Connection to service established");
             synchronized (psLock) {
@@ -223,7 +223,7 @@ public class PlayerWidgetService extends Service {
 
     class ViewUpdater extends Thread {
         private static final String THREAD_NAME = "ViewUpdater";
-        private PlayerWidgetService service;
+        private final PlayerWidgetService service;
 
         public ViewUpdater(PlayerWidgetService service) {
             super();

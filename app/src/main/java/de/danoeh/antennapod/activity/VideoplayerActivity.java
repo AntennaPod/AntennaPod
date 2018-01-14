@@ -45,7 +45,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     private VideoControlsHider videoControlsHider = new VideoControlsHider(this);
 
-    private AtomicBoolean isSetup = new AtomicBoolean(false);
+    private final AtomicBoolean isSetup = new AtomicBoolean(false);
 
     private LinearLayout controls;
     private LinearLayout videoOverlay;
@@ -173,7 +173,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         progressIndicator.setVisibility(View.INVISIBLE);
     }
 
-    private View.OnTouchListener onVideoviewTouched = (v, event) -> {
+    private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             videoControlsHider.stop();
             toggleVideoControlsVisibility();
@@ -353,7 +353,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
         private static final int DELAY = 2500;
 
-        private WeakReference<VideoplayerActivity> activity;
+        private final WeakReference<VideoplayerActivity> activity;
 
         public VideoControlsHider(VideoplayerActivity activity) {
             this.activity = new WeakReference<>(activity);

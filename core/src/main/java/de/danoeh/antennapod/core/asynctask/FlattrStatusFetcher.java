@@ -19,7 +19,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 
 public class FlattrStatusFetcher extends Thread {
     private static final String TAG = "FlattrStatusFetcher";
-    private Context context;
+    private final Context context;
 
     public FlattrStatusFetcher(Context context) {
         super();

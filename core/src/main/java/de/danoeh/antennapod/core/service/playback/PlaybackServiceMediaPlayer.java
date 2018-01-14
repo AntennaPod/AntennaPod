@@ -365,9 +365,9 @@ public abstract class PlaybackServiceMediaPlayer {
      * Holds information about a PSMP object.
      */
     public static class PSMPInfo {
-        public PlayerStatus oldPlayerStatus;
-        public PlayerStatus playerStatus;
-        public Playable playable;
+        public final PlayerStatus oldPlayerStatus;
+        public final PlayerStatus playerStatus;
+        public final Playable playable;
 
         PSMPInfo(PlayerStatus oldPlayerStatus, PlayerStatus playerStatus, Playable playable) {
             this.oldPlayerStatus = oldPlayerStatus;

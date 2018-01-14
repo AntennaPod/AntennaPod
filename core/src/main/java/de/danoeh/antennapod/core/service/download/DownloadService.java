@@ -127,8 +127,8 @@ public class DownloadService extends Service {
 
 
     private NotificationCompat.Builder notificationCompatBuilder;
-    private int NOTIFICATION_ID = 2;
-    private int REPORT_ID = 3;
+    private final int NOTIFICATION_ID = 2;
+    private final int REPORT_ID = 3;
 
     /**
      * Currently running downloads.
@@ -152,7 +152,7 @@ public class DownloadService extends Service {
     private static final int SCHED_EX_POOL_SIZE = 1;
     private ScheduledThreadPoolExecutor schedExecutor;
 
-    private Handler postHandler = new Handler();
+    private final Handler postHandler = new Handler();
 
     private final IBinder mBinder = new LocalBinder();
 
@@ -162,7 +162,7 @@ public class DownloadService extends Service {
         }
     }
 
-    private Thread downloadCompletionThread = new Thread() {
+    private final Thread downloadCompletionThread = new Thread() {
         private static final String TAG = "downloadCompletionThd";
 
         @Override
@@ -384,7 +384,7 @@ public class DownloadService extends Service {
         return null;
     }
 
-    private BroadcastReceiver cancelDownloadReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver cancelDownloadReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -604,9 +604,9 @@ public class DownloadService extends Service {
     private class FeedSyncThread extends Thread {
         private static final String TAG = "FeedSyncThread";
 
-        private BlockingQueue<DownloadRequest> completedRequests = new LinkedBlockingDeque<>();
-        private CompletionService<Pair<DownloadRequest, FeedHandlerResult>> parserService = new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
-        private ExecutorService dbService = Executors.newSingleThreadExecutor();
+        private final BlockingQueue<DownloadRequest> completedRequests = new LinkedBlockingDeque<>();
+        private final CompletionService<Pair<DownloadRequest, FeedHandlerResult>> parserService = new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
+        private final ExecutorService dbService = Executors.newSingleThreadExecutor();
         private Future<?> dbUpdateFuture;
         private volatile boolean isActive = true;
         private volatile boolean isCollectingRequests = false;
@@ -766,7 +766,7 @@ public class DownloadService extends Service {
 
         private class FeedParserTask implements Callable<Pair<DownloadRequest, FeedHandlerResult>> {
 
-            private DownloadRequest request;
+            private final DownloadRequest request;
 
             private FeedParserTask(DownloadRequest request) {
                 this.request = request;
@@ -952,8 +952,8 @@ public class DownloadService extends Service {
      */
     private class FailedDownloadHandler implements Runnable {
 
-        private DownloadRequest request;
-        private DownloadStatus status;
+        private final DownloadRequest request;
+        private final DownloadStatus status;
 
         FailedDownloadHandler(DownloadStatus status, DownloadRequest request) {
             this.request = request;
@@ -975,7 +975,7 @@ public class DownloadService extends Service {
      */
     private class MediaHandlerThread implements Runnable {
 
-        private DownloadRequest request;
+        private final DownloadRequest request;
         private DownloadStatus status;
 
         MediaHandlerThread(@NonNull DownloadStatus status,

@@ -22,10 +22,10 @@ import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 
 public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
     private static final String TAG = "FlattrTokenFetcher";
-    private Context context;
-    private AndroidAuthenticator auth;
+    private final Context context;
+    private final AndroidAuthenticator auth;
     private AccessToken token;
-    private Uri uri;
+    private final Uri uri;
     private ProgressDialog dialog;
     private FlattrException exception;
 

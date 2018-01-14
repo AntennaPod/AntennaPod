@@ -23,7 +23,7 @@ import de.danoeh.antennapod.core.util.Converter;
  * Adapter for the statistics list
  */
 public class StatisticsListAdapter extends BaseAdapter {
-    private Context context;
+    private final Context context;
     private List<DBReader.StatisticsItem> feedTime = new ArrayList<>();
     private boolean countAll = true;
 

@@ -23,8 +23,8 @@ public class ExportWorker {
     private static final String TAG = "ExportWorker";
     private static final String DEFAULT_OUTPUT_NAME = "antennapod-feeds";
 
-    private ExportWriter exportWriter;
-    private File output;
+    private final ExportWriter exportWriter;
+    private final File output;
 
     public ExportWorker(ExportWriter exportWriter) {
         this(exportWriter, new File(UserPreferences.getDataFolder(EXPORT_DIR),

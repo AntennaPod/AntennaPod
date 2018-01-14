@@ -1784,7 +1784,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     };
 
-    private SharedPreferences.OnSharedPreferenceChangeListener prefListener =
+    private final SharedPreferences.OnSharedPreferenceChangeListener prefListener =
             (sharedPreferences, key) -> {
                 if (UserPreferences.PREF_LOCKSCREEN_BACKGROUND.equals(key)) {
                     updateMediaSessionMetadata(getPlayable());
@@ -1806,7 +1806,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         void unregisterReceiver(BroadcastReceiver receiver);
     }
 
-    private FlavorHelperCallback flavorHelperCallback = new FlavorHelperCallback() {
+    private final FlavorHelperCallback flavorHelperCallback = new FlavorHelperCallback() {
         @Override
         public PlaybackServiceMediaPlayer.PSMPCallback getMediaPlayerCallback() {
             return PlaybackService.this.mediaPlayerCallback;

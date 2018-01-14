@@ -43,7 +43,7 @@ public class ProxyDialog {
 
     private static final String TAG = "ProxyDialog";
 
-    private Context context;
+    private final Context context;
 
     private MaterialDialog dialog;
 

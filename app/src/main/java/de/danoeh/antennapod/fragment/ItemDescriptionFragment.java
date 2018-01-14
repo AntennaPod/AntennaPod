@@ -200,7 +200,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     }
 
 
-    private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
+    private final View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 class OggInputStream extends InputStream {
-	private InputStream input;
+	private final InputStream input;
 
 	/** True if OggInputStream is currently inside an Ogg page. */
 	private boolean isInPage;

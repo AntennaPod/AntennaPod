@@ -48,7 +48,7 @@ public class DownloadRequester {
 
     private static DownloadRequester downloader;
 
-    private Map<String, DownloadRequest> downloads;
+    private final Map<String, DownloadRequest> downloads;
 
     private DownloadRequester() {
         downloads = new ConcurrentHashMap<>();

@@ -80,7 +80,7 @@ public class DownloadsFragment extends Fragment {
 
     public class DownloadsPagerAdapter extends FragmentPagerAdapter {
 
-        Resources resources;
+        final Resources resources;
 
         public DownloadsPagerAdapter(FragmentManager fm, Resources resources) {
             super(fm);

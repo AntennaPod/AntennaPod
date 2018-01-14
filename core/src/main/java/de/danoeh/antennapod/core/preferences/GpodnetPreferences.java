@@ -46,7 +46,7 @@ public class GpodnetPreferences {
     private static String deviceID;
     private static String hostname;
 
-    private static ReentrantLock feedListLock = new ReentrantLock();
+    private static final ReentrantLock feedListLock = new ReentrantLock();
     private static Set<String> addedFeeds;
     private static Set<String> removedFeeds;
 

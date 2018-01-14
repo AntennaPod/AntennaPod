@@ -48,13 +48,13 @@ class UITestUtils {
     private static final String TEST_FILE_NAME = "3sec.mp3";
 
 
-    private Context context;
-    private HTTPBin server = new HTTPBin();
+    private final Context context;
+    private final HTTPBin server = new HTTPBin();
     private File destDir;
     private File hostedFeedDir;
     private File hostedMediaDir;
 
-    public List<Feed> hostedFeeds = new ArrayList<>();
+    public final List<Feed> hostedFeeds = new ArrayList<>();
 
     public UITestUtils(Context context) {
         this.context = context;

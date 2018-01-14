@@ -1023,14 +1023,14 @@ public final class DBReader {
         /**
          * Simply sums up time of podcasts that are marked as played
          */
-        public long totalTimeCountAll;
+        public final long totalTimeCountAll;
 
         /**
          * Respects speed, listening twice, ...
          */
-        public long totalTime;
+        public final long totalTime;
 
-        public List<StatisticsItem> feedTime;
+        public final List<StatisticsItem> feedTime;
 
         public StatisticsData(long totalTime, long totalTimeCountAll, List<StatisticsItem> feedTime) {
             this.totalTime = totalTime;
@@ -1040,26 +1040,26 @@ public final class DBReader {
     }
 
     public static class StatisticsItem {
-        public Feed feed;
-        public long time;
+        public final Feed feed;
+        public final long time;
 
         /**
          * Respects speed, listening twice, ...
          */
-        public long timePlayed;
+        public final long timePlayed;
         /**
          * Simply sums up time of podcasts that are marked as played
          */
-        public long timePlayedCountAll;
-        public long episodes;
+        public final long timePlayedCountAll;
+        public final long episodes;
         /**
          * Episodes that are actually played
          */
-        public long episodesStarted;
+        public final long episodesStarted;
         /**
          * All episodes that are marked as played (or have position != 0)
          */
-        public long episodesStartedIncludingMarked;
+        public final long episodesStartedIncludingMarked;
 
         public StatisticsItem(Feed feed, long time, long timePlayed, long timePlayedCountAll,
                               long episodes, long episodesStarted, long episodesStartedIncludingMarked) {
@@ -1195,12 +1195,12 @@ public final class DBReader {
     }
 
     public static class NavDrawerData {
-        public List<Feed> feeds;
-        public int queueSize;
-        public int numNewItems;
-        public int numDownloadedItems;
-        public LongIntMap feedCounters;
-        public int reclaimableSpace;
+        public final List<Feed> feeds;
+        public final int queueSize;
+        public final int numNewItems;
+        public final int numDownloadedItems;
+        public final LongIntMap feedCounters;
+        public final int reclaimableSpace;
 
         public NavDrawerData(List<Feed> feeds,
                              int queueSize,

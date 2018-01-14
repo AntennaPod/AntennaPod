@@ -62,8 +62,8 @@ public class NavListAdapter extends BaseAdapter
     private static List<String> tags;
     private static String[] titles;
 
-    private ItemAccess itemAccess;
-    private WeakReference<Activity> activity;
+    private final ItemAccess itemAccess;
+    private final WeakReference<Activity> activity;
     private boolean showSubscriptionList = true;
 
     public NavListAdapter(ItemAccess itemAccess, Activity context) {

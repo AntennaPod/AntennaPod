@@ -15,9 +15,9 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 /** Queues items for download in the background. */
 public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {
-	private Context context;
+	private final Context context;
 	private ProgressDialog progDialog;
-	private int[] selection;
+	private final int[] selection;
 
 	public OpmlFeedQueuer(Context context, int[] selection) {
 		super();

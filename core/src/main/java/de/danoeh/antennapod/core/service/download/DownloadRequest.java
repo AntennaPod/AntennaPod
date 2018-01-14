@@ -17,7 +17,7 @@ public class DownloadRequest implements Parcelable {
     private String username;
     private String password;
     private String lastModified;
-    private boolean deleteOnFailure;
+    private final boolean deleteOnFailure;
     private final long feedfileId;
     private final int feedfileType;
     private final Bundle arguments;
@@ -254,15 +254,15 @@ public class DownloadRequest implements Parcelable {
     }
 
     public static class Builder {
-        private String destination;
-        private String source;
-        private String title;
+        private final String destination;
+        private final String source;
+        private final String title;
         private String username;
         private String password;
         private String lastModified;
         private boolean deleteOnFailure = false;
-        private long feedfileId;
-        private int feedfileType;
+        private final long feedfileId;
+        private final int feedfileType;
         private Bundle arguments;
 
         public Builder(@NonNull String destination, @NonNull FeedFile item) {

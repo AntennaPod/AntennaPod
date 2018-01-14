@@ -18,8 +18,8 @@ public abstract class Downloader implements Callable<Downloader> {
 
     volatile boolean cancelled;
 
-    DownloadRequest request;
-    DownloadStatus result;
+    final DownloadRequest request;
+    final DownloadStatus result;
 
     Downloader(DownloadRequest request) {
         super();

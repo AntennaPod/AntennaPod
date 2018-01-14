@@ -398,7 +398,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
-    private AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
+    private final AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int viewType = parent.getAdapter().getItemViewType(position);
@@ -409,7 +409,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     };
 
-    private AdapterView.OnItemLongClickListener newListLongClickListener = new AdapterView.OnItemLongClickListener() {
+    private final AdapterView.OnItemLongClickListener newListLongClickListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             if(position < navAdapter.getTags().size()) {
@@ -630,7 +630,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private DBReader.NavDrawerData navDrawerData;
     private int selectedNavListIndex = 0;
 
-    private NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
+    private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override
         public int getCount() {
             if (navDrawerData != null) {
@@ -748,7 +748,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         snackbar.show();
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {

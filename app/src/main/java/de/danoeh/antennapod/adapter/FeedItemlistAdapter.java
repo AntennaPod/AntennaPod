@@ -32,13 +32,13 @@ import de.danoeh.antennapod.core.util.ThemeUtils;
  */
 public class FeedItemlistAdapter extends BaseAdapter {
 
-    private ActionButtonCallback callback;
+    private final ActionButtonCallback callback;
     private final ItemAccess itemAccess;
     private final Context context;
-    private boolean showFeedtitle;
-    private int selectedItemIndex;
+    private final boolean showFeedtitle;
+    private final int selectedItemIndex;
     /** true if played items should be made partially transparent */
-    private boolean makePlayedItemsTransparent;
+    private final boolean makePlayedItemsTransparent;
     private final ActionButtonUtils actionButtonUtils;
 
     private static final int SELECTION_NONE = -1;

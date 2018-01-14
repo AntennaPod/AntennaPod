@@ -11,7 +11,7 @@ public class AtomText extends SyndElement {
 	private static final String TYPE_HTML = "html";
 	private static final String TYPE_XHTML = "xhtml";
 
-	private String type;
+	private final String type;
 	private String content;
 
 	public AtomText(String name, Namespace namespace, String type) {

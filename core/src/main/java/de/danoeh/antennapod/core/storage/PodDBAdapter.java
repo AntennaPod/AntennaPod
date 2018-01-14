@@ -309,8 +309,8 @@ public class PodDBAdapter {
     private static PodDBHelper dbHelper;
 
     private static volatile SQLiteDatabase db;
-    private static Lock dbLock = new ReentrantLock();
-    private static AtomicInteger counter = new AtomicInteger(0);
+    private static final Lock dbLock = new ReentrantLock();
+    private static final AtomicInteger counter = new AtomicInteger(0);
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
@@ -1666,7 +1666,7 @@ public class PodDBAdapter {
 
         private static final int VERSION = 1060200;
 
-        private Context context;
+        private final Context context;
 
         /**
          * Constructor.
