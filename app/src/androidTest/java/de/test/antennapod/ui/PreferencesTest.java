@@ -96,10 +96,10 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         solo.clickOnText(solo.getString(R.string.pref_compact_notification_buttons_title));
         solo.waitForDialogToOpen(1000);
         // First uncheck every checkbox
-        for (int i=0; i<buttons.length; i++) {
-            assertTrue(solo.searchText(buttons[i]));
-            if (solo.isTextChecked(buttons[i])) {
-                solo.clickOnText(buttons[i]);
+        for (String button : buttons) {
+            assertTrue(solo.searchText(button));
+            if (solo.isTextChecked(button)) {
+                solo.clickOnText(button);
             }
         }
         // Now try to check all checkboxes

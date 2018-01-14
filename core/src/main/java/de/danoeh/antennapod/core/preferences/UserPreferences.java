@@ -183,8 +183,8 @@ public class UserPreferences {
                         String.valueOf(NOTIFICATION_BUTTON_SKIP)),
                 ",");
         List<Integer> notificationButtons = new ArrayList<>();
-        for (int i=0; i<buttons.length; i++) {
-            notificationButtons.add(Integer.parseInt(buttons[i]));
+        for (String button : buttons) {
+            notificationButtons.add(Integer.parseInt(button));
         }
         return notificationButtons;
     }
