@@ -38,7 +38,7 @@ public class PlayerWidgetService extends Service {
     /**
      * Controls write access to playbackservice reference
      */
-    private Object psLock;
+    private final Object psLock = new Object();
 
     /**
      * True while service is updating the widget
@@ -53,7 +53,6 @@ public class PlayerWidgetService extends Service {
         super.onCreate();
         Log.d(TAG, "Service created");
         isUpdating = false;
-        psLock = new Object();
     }
 
     @Override
