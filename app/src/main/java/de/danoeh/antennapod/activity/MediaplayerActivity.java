@@ -680,7 +680,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     /**
      * Abstract directions to skip forward or back (rewind) and encapsulates behavior to get or set preference (including update of UI on the skip buttons).
      */
-    static public enum SkipDirection {
+    public enum SkipDirection {
         SKIP_FORWARD(
                 UserPreferences::getFastForwardSecs,
                 MediaplayerActivity::getTxtvFFFromActivity,
