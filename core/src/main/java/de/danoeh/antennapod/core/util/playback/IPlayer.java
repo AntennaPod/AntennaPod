@@ -67,7 +67,7 @@ public interface IPlayer {
 
 	void stop();
 
-    public void setVideoScalingMode(int mode);
+    void setVideoScalingMode(int mode);
 
-    public void setWakeMode(Context context, int mode);
+    void setWakeMode(Context context, int mode);
 }
