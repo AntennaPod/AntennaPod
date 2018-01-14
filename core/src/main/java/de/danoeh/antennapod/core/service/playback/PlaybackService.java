@@ -910,7 +910,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         taskManager.setSleepTimer(waitingTime, shakeToReset, vibrate);
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
-                () -> disableSleepTimer()));
+                this::disableSleepTimer));
     }
 
     public void disableSleepTimer() {

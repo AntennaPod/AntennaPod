@@ -110,8 +110,8 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(!solo.isTextChecked(buttons[2]));
         solo.clickOnText(solo.getString(R.string.confirm_label));
         solo.waitForDialogToClose(1000);
-        assertTrue(solo.waitForCondition(() -> UserPreferences.showRewindOnCompactNotification(), Timeout.getLargeTimeout()));
-        assertTrue(solo.waitForCondition(() -> UserPreferences.showFastForwardOnCompactNotification(), Timeout.getLargeTimeout()));
+        assertTrue(solo.waitForCondition(UserPreferences::showRewindOnCompactNotification, Timeout.getLargeTimeout()));
+        assertTrue(solo.waitForCondition(UserPreferences::showFastForwardOnCompactNotification, Timeout.getLargeTimeout()));
         assertTrue(solo.waitForCondition(() -> !UserPreferences.showSkipOnCompactNotification(), Timeout.getLargeTimeout()));
     }
 
@@ -134,7 +134,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     public void testHeadPhonesReconnect() {
         if(UserPreferences.isPauseOnHeadsetDisconnect() == false) {
             solo.clickOnText(solo.getString(R.string.pref_pauseOnHeadsetDisconnect_title));
-            assertTrue(solo.waitForCondition(() -> UserPreferences.isPauseOnHeadsetDisconnect(), Timeout.getLargeTimeout()));
+            assertTrue(solo.waitForCondition(UserPreferences::isPauseOnHeadsetDisconnect, Timeout.getLargeTimeout()));
         }
         final boolean unpauseOnHeadsetReconnect = UserPreferences.isUnpauseOnHeadsetReconnect();
         solo.clickOnText(solo.getString(R.string.pref_unpauseOnHeadsetReconnect_title));
@@ -146,7 +146,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     public void testBluetoothReconnect() {
         if(UserPreferences.isPauseOnHeadsetDisconnect() == false) {
             solo.clickOnText(solo.getString(R.string.pref_pauseOnHeadsetDisconnect_title));
-            assertTrue(solo.waitForCondition(() -> UserPreferences.isPauseOnHeadsetDisconnect(), Timeout.getLargeTimeout()));
+            assertTrue(solo.waitForCondition(UserPreferences::isPauseOnHeadsetDisconnect, Timeout.getLargeTimeout()));
         }
         final boolean unpauseOnBluetoothReconnect = UserPreferences.isUnpauseOnBluetoothReconnect();
         solo.clickOnText(solo.getString(R.string.pref_unpauseOnBluetoothReconnect_title));
