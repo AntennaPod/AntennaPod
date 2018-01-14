@@ -86,9 +86,7 @@ public class NavListAdapter extends BaseAdapter
     private void loadItems() {
         List<String> newTags = new ArrayList<>(Arrays.asList(MainActivity.NAV_DRAWER_TAGS));
         List<String> hiddenFragments = UserPreferences.getHiddenDrawerItems();
-        for(String hidden : hiddenFragments) {
-            newTags.remove(hidden);
-        }
+        newTags.removeAll(hiddenFragments);
 
         if (newTags.contains(SUBSCRIPTION_LIST_TAG)) {
             // we never want SUBSCRIPTION_LIST_TAG to be in 'tags'
