@@ -491,9 +491,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         View parentLayout = findViewById(R.id.drawer_layout);
         Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);
         if (event.action != null) {
-            snackbar.setAction(getString(R.string.undo), v -> {
-                event.action.run();
-            });
+            snackbar.setAction(getString(R.string.undo), v -> event.action.run());
         }
         snackbar.show();
     }
