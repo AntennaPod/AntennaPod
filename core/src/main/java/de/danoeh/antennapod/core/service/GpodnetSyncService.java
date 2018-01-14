@@ -229,7 +229,7 @@ public class GpodnetSyncService extends Service {
 
 
     private synchronized void processEpisodeActions(List<GpodnetEpisodeAction> localActions,
-                                                    List<GpodnetEpisodeAction> remoteActions) throws DownloadRequestException {
+                                                    List<GpodnetEpisodeAction> remoteActions) {
         if(remoteActions.size() == 0) {
             return;
         }

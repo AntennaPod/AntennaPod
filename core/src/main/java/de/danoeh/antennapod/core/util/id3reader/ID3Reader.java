@@ -192,7 +192,7 @@ public class ID3Reader {
 	}
 
 	int readISOString(StringBuffer buffer, InputStream input, int max)
-			throws IOException, ID3ReaderException {
+			throws IOException {
 
 		int bytesRead = 0;
 		char c;
@@ -205,7 +205,7 @@ public class ID3Reader {
 	}
 
 	private int readUnicodeString(StringBuffer strBuffer, InputStream input, int max, Charset charset)
-			throws IOException, ID3ReaderException {
+			throws IOException {
 		byte[] buffer = new byte[max];
         int c, cZero = -1;
         int i = 0;

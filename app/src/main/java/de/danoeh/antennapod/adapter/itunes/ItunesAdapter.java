@@ -124,7 +124,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
          * @param json object holding the podcast information
          * @throws JSONException
          */
-        public static Podcast fromSearch(JSONObject json) throws JSONException {
+        public static Podcast fromSearch(JSONObject json) {
             String title = json.optString("collectionName", "");
             String imageUrl = json.optString("artworkUrl100", null);
             String feedUrl = json.optString("feedUrl", null);

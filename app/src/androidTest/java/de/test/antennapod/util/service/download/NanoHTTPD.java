@@ -442,9 +442,9 @@ public abstract class NanoHTTPD {
      * themselves up when no longer needed.</p>
      */
     public interface TempFile {
-        OutputStream open() throws Exception;
+        OutputStream open();
 
-        void delete() throws Exception;
+        void delete();
 
         String getName();
     }
@@ -522,12 +522,12 @@ public abstract class NanoHTTPD {
         }
 
         @Override
-        public OutputStream open() throws Exception {
+        public OutputStream open() {
             return fstream;
         }
 
         @Override
-        public void delete() throws Exception {
+        public void delete() {
             safeClose(fstream);
             file.delete();
         }
