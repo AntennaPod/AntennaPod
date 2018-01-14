@@ -382,8 +382,8 @@ public class DBWriter {
                                 // add item to either front ot back of queue
                                 boolean addToFront = UserPreferences.enqueueAtFront();
                                 if (addToFront) {
-                                    queue.add(0 + i, item);
-                                    events.add(QueueEvent.added(item, 0 + i));
+                                    queue.add(i, item);
+                                    events.add(QueueEvent.added(item, i));
                                 } else {
                                     queue.add(item);
                                     events.add(QueueEvent.added(item, queue.size() - 1));
