@@ -93,7 +93,7 @@ public class NetworkUtils {
 		return UserPreferences.isAllowMobileUpdate() || !NetworkUtils.isNetworkMetered();
 	}
 
-	public static boolean isNetworkMetered() {
+	private static boolean isNetworkMetered() {
 		ConnectivityManager connManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
         return ConnectivityManagerCompat.isActiveNetworkMetered(connManager);

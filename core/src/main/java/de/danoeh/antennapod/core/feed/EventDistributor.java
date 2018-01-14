@@ -52,7 +52,7 @@ public class EventDistributor extends Observable {
 		deleteObserver(el);
 	}
 
-	public void addEvent(Integer i) {
+	private void addEvent(Integer i) {
 		events.offer(i);
 		handler.post(EventDistributor.this::processEventQueue);
 	}

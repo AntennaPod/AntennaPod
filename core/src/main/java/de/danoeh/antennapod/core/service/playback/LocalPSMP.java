@@ -32,7 +32,7 @@ import de.danoeh.antennapod.core.util.playback.VideoPlayer;
  * Manages the MediaPlayer object of the PlaybackService.
  */
 public class LocalPSMP extends PlaybackServiceMediaPlayer {
-    public static final String TAG = "LclPlaybackSvcMPlayer";
+    private static final String TAG = "LclPlaybackSvcMPlayer";
 
     private final AudioManager audioManager;
 

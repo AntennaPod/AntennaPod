@@ -82,7 +82,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
-    public static final String PREF_LAST_FRAGMENT_TAG = "prefMainActivityLastFragmentTag";
+    private static final String PREF_LAST_FRAGMENT_TAG = "prefMainActivityLastFragmentTag";
 
     public static final String EXTRA_NAV_TYPE = "nav_type";
     public static final String EXTRA_NAV_INDEX = "nav_index";
@@ -90,8 +90,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
 
-    public static final String SAVE_BACKSTACK_COUNT = "backstackCount";
-    public static final String SAVE_TITLE = "title";
+    private static final String SAVE_BACKSTACK_COUNT = "backstackCount";
+    private static final String SAVE_TITLE = "title";
 
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
@@ -235,7 +235,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
-    public void showDrawerPreferencesDialog() {
+    private void showDrawerPreferencesDialog() {
         final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         String[] navLabels = new String[NAV_DRAWER_TAGS.length];
         final boolean[] checked = new boolean[NAV_DRAWER_TAGS.length];
@@ -269,7 +269,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         return (navDrawerData != null) ? navDrawerData.feeds : null;
     }
 
-    public void loadFragment(int index, Bundle args) {
+    private void loadFragment(int index, Bundle args) {
         Log.d(TAG, "loadFragment(index: " + index + ", args: " + args + ")");
         if (index < navAdapter.getSubscriptionOffset()) {
             String tag = navAdapter.getTags().get(index);

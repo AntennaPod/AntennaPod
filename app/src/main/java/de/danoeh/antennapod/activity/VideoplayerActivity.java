@@ -173,7 +173,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         progressIndicator.setVisibility(View.INVISIBLE);
     }
 
-    View.OnTouchListener onVideoviewTouched = (v, event) -> {
+    private View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             videoControlsHider.stop();
             toggleVideoControlsVisibility();
@@ -187,7 +187,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     };
 
     @SuppressLint("NewApi")
-    void setupVideoControlsToggler() {
+    private void setupVideoControlsToggler() {
         videoControlsHider.stop();
         videoControlsHider.start();
     }

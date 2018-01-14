@@ -99,7 +99,7 @@ public class FlattrUtils {
         cachedToken = token;
     }
 
-    public static void deleteToken() {
+    private static void deleteToken() {
         Log.d(TAG, "Deleting flattr token");
         storeToken(null);
     }
@@ -172,7 +172,7 @@ public class FlattrUtils {
 
     // ------------------------------------------------ DIALOGS
 
-    public static void showRevokeDialog(final Context context) {
+    private static void showRevokeDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.access_revoked_title);
         builder.setMessage(R.string.access_revoked_info);

@@ -20,29 +20,29 @@ public class HandlerState {
     /**
      * Feed that the Handler is currently processing.
      */
-    protected Feed feed;
+    Feed feed;
     /**
      * Contains links to related feeds, e.g. feeds with enclosures in other formats. The key of the map is the
      * URL of the feed, the value is the title
      */
-    protected Map<String, String> alternateUrls;
-    protected ArrayList<FeedItem> items;
-    protected FeedItem currentItem;
-    protected Stack<SyndElement> tagstack;
+    Map<String, String> alternateUrls;
+    private ArrayList<FeedItem> items;
+    private FeedItem currentItem;
+    Stack<SyndElement> tagstack;
     /**
      * Namespaces that have been defined so far.
      */
-    protected Map<String, Namespace> namespaces;
-    protected Stack<Namespace> defaultNamespaces;
+    Map<String, Namespace> namespaces;
+    Stack<Namespace> defaultNamespaces;
     /**
      * Buffer for saving characters.
      */
-    protected StringBuffer contentBuf;
+    StringBuffer contentBuf;
 
     /**
      * Temporarily saved objects.
      */
-    protected Map<String, Object> tempObjects;
+    private Map<String, Object> tempObjects;
 
     public HandlerState(Feed feed) {
         this.feed = feed;

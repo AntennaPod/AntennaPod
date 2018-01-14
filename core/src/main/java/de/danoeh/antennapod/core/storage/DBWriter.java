@@ -838,9 +838,9 @@ public class DBWriter {
      *
      * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
      */
-    public static Future<?> setFeedItemFlattrStatus(final Context context,
-                                                    final FeedItem item,
-                                                    final boolean startFlattrClickWorker) {
+    private static Future<?> setFeedItemFlattrStatus(final Context context,
+                                                     final FeedItem item,
+                                                     final boolean startFlattrClickWorker) {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();

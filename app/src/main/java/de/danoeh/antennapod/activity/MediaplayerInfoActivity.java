@@ -77,11 +77,11 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
 
-    final String TAG = "MediaplayerInfoActivity";
+    private final String TAG = "MediaplayerInfoActivity";
     private static final String PREFS = "AudioPlayerActivityPreferences";
     private static final String PREF_KEY_SELECTED_FRAGMENT_POSITION = "selectedFragmentPosition";
 
-    public static final String[] NAV_DRAWER_TAGS = {
+    private static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
             EpisodesFragment.TAG,
             SubscriptionFragment.TAG,
@@ -91,8 +91,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
-    protected Button butPlaybackSpeed;
-    protected ImageButton butCastDisconnect;
+    Button butPlaybackSpeed;
+    ImageButton butCastDisconnect;
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
     private ListView navList;
@@ -151,7 +151,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         setTheme(UserPreferences.getNoTitleTheme());
     }
 
-    protected void saveCurrentFragment() {
+    void saveCurrentFragment() {
         if(pager == null) {
             return;
         }
@@ -305,7 +305,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         return true;
     }
 
-    public void notifyMediaPositionChanged() {
+    private void notifyMediaPositionChanged() {
         if(pagerAdapter == null) {
             return;
         }
@@ -446,7 +446,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         }
     }
 
-    public void showDrawerPreferencesDialog() {
+    private void showDrawerPreferencesDialog() {
         final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         String[] navLabels = new String[NAV_DRAWER_TAGS.length];
         final boolean[] checked = new boolean[NAV_DRAWER_TAGS.length];

@@ -20,7 +20,7 @@ import de.danoeh.antennapod.R;
  */
 public class GpodnetMainFragment extends Fragment {
 
-    public static final String TAG = "GpodnetMainFragment";
+    private static final String TAG = "GpodnetMainFragment";
 
     private static final String PREF_LAST_TAB_POSITION = "tab_position";
     private TabLayout tabLayout;

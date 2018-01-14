@@ -131,7 +131,7 @@ public class GpodnetEpisodeAction {
         return this.action;
     }
 
-    public String getActionString() {
+    private String getActionString() {
         return this.action.name().toLowerCase();
     }
 

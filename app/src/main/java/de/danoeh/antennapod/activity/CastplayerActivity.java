@@ -13,7 +13,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
  * Activity for controlling the remote playback on a Cast device.
  */
 public class CastplayerActivity extends MediaplayerInfoActivity {
-    public static final String TAG = "CastPlayerActivity";
+    private static final String TAG = "CastPlayerActivity";
 
     private AtomicBoolean isSetup = new AtomicBoolean(false);
 

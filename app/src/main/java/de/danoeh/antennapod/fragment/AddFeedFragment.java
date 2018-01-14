@@ -25,7 +25,7 @@ public class AddFeedFragment extends Fragment {
     /**
      * Preset value for url text field.
      */
-    public static final String ARG_FEED_URL = "feedurl";
+    private static final String ARG_FEED_URL = "feedurl";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

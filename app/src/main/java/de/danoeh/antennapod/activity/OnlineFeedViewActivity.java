@@ -83,7 +83,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     public static final String ARG_FEEDURL = "arg.feedurl";
     // Optional argument: specify a title for the actionbar.
     public static final String ARG_TITLE = "title";
-    public static final int RESULT_ERROR = 2;
+    private static final int RESULT_ERROR = 2;
     private static final String TAG = "OnlineFeedViewActivity";
     private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
     private volatile List<Feed> feeds;

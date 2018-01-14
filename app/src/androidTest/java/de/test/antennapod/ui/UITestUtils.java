@@ -36,16 +36,16 @@ import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
  * Utility methods for UI tests.
  * Starts a web server that hosts feeds, episodes and images.
  */
-public class UITestUtils {
+class UITestUtils {
 
     private static final String TAG = UITestUtils.class.getSimpleName();
 
     private static final String DATA_FOLDER = "test/UITestUtils";
 
-    public static final int NUM_FEEDS = 5;
-    public static final int NUM_ITEMS_PER_FEED = 10;
+    private static final int NUM_FEEDS = 5;
+    private static final int NUM_ITEMS_PER_FEED = 10;
 
-    public static final String TEST_FILE_NAME = "3sec.mp3";
+    private static final String TEST_FILE_NAME = "3sec.mp3";
 
 
     private Context context;

@@ -14,14 +14,14 @@ import de.danoeh.antennapod.core.R;
 public abstract class Downloader implements Callable<Downloader> {
     private static final String TAG = "Downloader";
 
-    protected volatile boolean finished;
+    private volatile boolean finished;
 
-    protected volatile boolean cancelled;
+    volatile boolean cancelled;
 
-    protected DownloadRequest request;
-    protected DownloadStatus result;
+    DownloadRequest request;
+    DownloadStatus result;
 
-    public Downloader(DownloadRequest request) {
+    Downloader(DownloadRequest request) {
         super();
         this.request = request;
         this.request.setStatusMsg(R.string.download_pending);

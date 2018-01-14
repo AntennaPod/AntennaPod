@@ -24,14 +24,14 @@ import de.danoeh.antennapod.core.util.playback.Playable;
  * and remote (cast devices) playback.
  */
 public abstract class PlaybackServiceMediaPlayer {
-    public static final String TAG = "PlaybackSvcMediaPlayer";
+    private static final String TAG = "PlaybackSvcMediaPlayer";
 
     /**
      * Return value of some PSMP methods if the method call failed.
      */
     static final int INVALID_TIME = -1;
 
-    volatile PlayerStatus oldPlayerStatus;
+    private volatile PlayerStatus oldPlayerStatus;
     volatile PlayerStatus playerStatus;
 
     /**
@@ -39,8 +39,8 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     private WifiManager.WifiLock wifiLock;
 
-    protected final PSMPCallback callback;
-    protected final Context context;
+    final PSMPCallback callback;
+    final Context context;
 
     PlaybackServiceMediaPlayer(@NonNull Context context,
                                @NonNull PSMPCallback callback){

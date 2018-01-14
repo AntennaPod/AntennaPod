@@ -8,7 +8,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 /**
  * Class intended to work along PlaybackService and provide support for different flavors.
  */
-public class PlaybackServiceFlavorHelper {
+class PlaybackServiceFlavorHelper {
 
     private PlaybackService.FlavorHelperCallback callback;
 

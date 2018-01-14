@@ -26,7 +26,7 @@ public class FeedItemStatistics {
      * @param lastUpdate              pubDate of the latest episode. A lastUpdate value of 0 will be interpreted as DATE_UNKOWN if
      *                                numberOfItems is 0.
      */
-    public FeedItemStatistics(long feedID, int numberOfItems, int numberOfNewItems, int numberOfInProgressItems, Date lastUpdate) {
+    private FeedItemStatistics(long feedID, int numberOfItems, int numberOfNewItems, int numberOfInProgressItems, Date lastUpdate) {
         this.feedID = feedID;
         this.numberOfItems = numberOfItems;
         this.numberOfNewItems = numberOfNewItems;

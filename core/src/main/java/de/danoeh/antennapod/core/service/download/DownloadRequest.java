@@ -22,10 +22,10 @@ public class DownloadRequest implements Parcelable {
     private final int feedfileType;
     private final Bundle arguments;
 
-    protected int progressPercent;
-    protected long soFar;
-    protected long size;
-    protected int statusMsg;
+    private int progressPercent;
+    private long soFar;
+    private long size;
+    private int statusMsg;
 
     public DownloadRequest(@NonNull String destination,
                            @NonNull String source,
@@ -53,7 +53,7 @@ public class DownloadRequest implements Parcelable {
         this(destination, source, title, feedfileId, feedfileType, null, null, true, null);
     }
 
-    public DownloadRequest(Builder builder) {
+    private DownloadRequest(Builder builder) {
         this.destination = builder.destination;
         this.source = builder.source;
         this.title = builder.title;

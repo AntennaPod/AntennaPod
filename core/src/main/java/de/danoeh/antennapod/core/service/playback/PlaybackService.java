@@ -88,7 +88,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * True if cast session should disconnect.
      */
-    public static final String EXTRA_CAST_DISCONNECT = "extra.de.danoeh.antennapod.core.service.castDisconnect";
+    private static final String EXTRA_CAST_DISCONNECT = "extra.de.danoeh.antennapod.core.service.castDisconnect";
     /**
      * True if media should be streamed.
      */
@@ -198,7 +198,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * Is true if the service was running, but paused due to headphone disconnect
      */
-    public static boolean transientPause = false;
+    private static boolean transientPause = false;
     /**
      * Is true if a Cast Device is connected to the service.
      */
@@ -1630,7 +1630,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
 
-    public void seekDelta(final int d) {
+    private void seekDelta(final int d) {
         mediaPlayer.seekDelta(d);
     }
 

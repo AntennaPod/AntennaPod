@@ -1,5 +1,5 @@
 package de.danoeh.antennapod.core.util.vorbiscommentreader;
-public class VorbisCommentHeader {
+class VorbisCommentHeader {
 	private String vendorString;
 	private long userCommentLength;
 

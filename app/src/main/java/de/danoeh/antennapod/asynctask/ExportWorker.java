@@ -31,7 +31,7 @@ public class ExportWorker {
                 DEFAULT_OUTPUT_NAME + "." + exportWriter.fileExtension()));
     }
 
-    public ExportWorker(ExportWriter exportWriter, @NonNull File output) {
+    private ExportWorker(ExportWriter exportWriter, @NonNull File output) {
         this.exportWriter = exportWriter;
         this.output = output;
     }

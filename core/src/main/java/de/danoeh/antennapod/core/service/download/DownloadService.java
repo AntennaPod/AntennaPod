@@ -534,14 +534,14 @@ public class DownloadService extends Service {
      * Calls query downloads on the services main thread. This method should be used instead of queryDownloads if it is
      * used from a thread other than the main thread.
      */
-    void queryDownloadsAsync() {
+    private void queryDownloadsAsync() {
         handler.post(DownloadService.this::queryDownloads);
     }
 
     /**
      * Check if there's something else to download, otherwise stop
      */
-    void queryDownloads() {
+    private void queryDownloads() {
         Log.d(TAG, numberOfDownloads.get() + " downloads left");
 
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
@@ -1091,7 +1091,7 @@ public class DownloadService extends Service {
 
     private long lastPost = 0;
 
-    final Runnable postDownloaderTask = new Runnable() {
+    private final Runnable postDownloaderTask = new Runnable() {
         @Override
         public void run() {
             List<Downloader> list = Collections.unmodifiableList(downloads);

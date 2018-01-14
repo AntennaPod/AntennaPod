@@ -19,7 +19,7 @@ import de.danoeh.antennapod.dialog.VariableSpeedDialog;
  * Activity for playing audio files.
  */
 public class AudioplayerActivity extends MediaplayerInfoActivity {
-    public static final String TAG = "AudioPlayerActivity";
+    private static final String TAG = "AudioPlayerActivity";
 
     private AtomicBoolean isSetup = new AtomicBoolean(false);
 

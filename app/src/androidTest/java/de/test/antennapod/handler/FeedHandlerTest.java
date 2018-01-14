@@ -32,8 +32,8 @@ import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 public class FeedHandlerTest extends InstrumentationTestCase {
     private static final String FEEDS_DIR = "testfeeds";
 
-    File file = null;
-    OutputStream outputStream = null;
+    private File file = null;
+    private OutputStream outputStream = null;
 
     protected void setUp() throws Exception {
         super.setUp();

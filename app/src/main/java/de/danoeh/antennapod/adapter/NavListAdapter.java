@@ -48,10 +48,10 @@ import de.danoeh.antennapod.fragment.SubscriptionFragment;
 public class NavListAdapter extends BaseAdapter
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public static final int VIEW_TYPE_COUNT = 3;
+    private static final int VIEW_TYPE_COUNT = 3;
     public static final int VIEW_TYPE_NAV = 0;
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
-    public static final int VIEW_TYPE_SUBSCRIPTION = 2;
+    private static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
     /**
      * a tag used as a placeholder to indicate if the subscription list should be displayed or not

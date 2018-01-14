@@ -19,7 +19,7 @@ import de.danoeh.antennapod.core.util.ThemeUtils;
 
 public class DownloadlistAdapter extends BaseAdapter {
 
-    public static final int SELECTION_NONE = -1;
+    private static final int SELECTION_NONE = -1;
 
     private int selectedItemIndex;
     private ItemAccess itemAccess;

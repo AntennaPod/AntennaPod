@@ -44,7 +44,7 @@ public final class DBReader {
     /**
      * Maximum size of the list returned by {@link #getDownloadLog()}.
      */
-    public static final int DOWNLOAD_LOG_SIZE = 200;
+    private static final int DOWNLOAD_LOG_SIZE = 200;
 
 
     private DBReader() {
@@ -120,7 +120,7 @@ public final class DBReader {
         loadFeedDataOfFeedItemList(items);
     }
 
-    public static void loadTagsOfFeedItemList(List<FeedItem> items) {
+    private static void loadTagsOfFeedItemList(List<FeedItem> items) {
         LongList favoriteIds = getFavoriteIDList();
         LongList queueIds = getQueueIDList();
 
@@ -141,7 +141,7 @@ public final class DBReader {
      *
      * @param items The FeedItems whose Feed-objects should be loaded.
      */
-    public static void loadFeedDataOfFeedItemList(List<FeedItem> items) {
+    private static void loadFeedDataOfFeedItemList(List<FeedItem> items) {
         List<Feed> feeds = getFeedList();
 
         Map<Long, Feed> feedIndex = new ArrayMap<>(feeds.size());
@@ -412,7 +412,7 @@ public final class DBReader {
         }
     }
 
-    public static LongList getFavoriteIDList() {
+    private static LongList getFavoriteIDList() {
         Log.d(TAG, "getFavoriteIDList() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -663,7 +663,7 @@ public final class DBReader {
         }
     }
 
-    static FeedItem getFeedItem(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
+    private static FeedItem getFeedItem(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
         Log.d(TAG, "Loading feeditem with podcast url " + podcastUrl + " and episode url " + episodeUrl);
         Cursor cursor = null;
         try {
@@ -797,7 +797,7 @@ public final class DBReader {
         }
     }
 
-    static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
+    private static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
         Cursor cursor = null;
         try {
             cursor = adapter.getSimpleChaptersOfFeedItemCursor(item);

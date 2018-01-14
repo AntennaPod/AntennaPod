@@ -87,9 +87,9 @@ public class ItemlistFragment extends ListFragment {
             | EventDistributor.PLAYER_STATUS_UPDATE;
 
     public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
-    public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
+    private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
-    protected FeedItemlistAdapter adapter;
+    private FeedItemlistAdapter adapter;
     private ContextMenu contextMenu;
     private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 

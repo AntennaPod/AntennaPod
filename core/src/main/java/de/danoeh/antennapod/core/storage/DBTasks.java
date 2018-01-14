@@ -47,7 +47,7 @@ import static android.content.Context.MODE_PRIVATE;
 public final class DBTasks {
     private static final String TAG = "DBTasks";
 
-    public static final String PREF_NAME = "dbtasks";
+    private static final String PREF_NAME = "dbtasks";
     private static final String PREF_LAST_REFRESH = "last_refresh";
 
     /**
@@ -292,7 +292,7 @@ public final class DBTasks {
      * @param context Used for requesting the download.
      * @param feed    The Feed object.
      */
-    public static void refreshFeed(Context context, Feed feed)
+    private static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
         Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() +")");
         refreshFeed(context, feed, false, false);
@@ -820,7 +820,7 @@ public final class DBTasks {
 
         public abstract void execute(PodDBAdapter adapter);
 
-        protected void setResult(T result) {
+        void setResult(T result) {
             this.result = result;
         }
     }

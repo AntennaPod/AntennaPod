@@ -47,11 +47,11 @@ public class GpodnetSyncService extends Service {
 
     private static final long WAIT_INTERVAL = 5000L;
 
-    public static final String ARG_ACTION = "action";
+    private static final String ARG_ACTION = "action";
 
-    public static final String ACTION_SYNC = "de.danoeh.antennapod.intent.action.sync";
-    public static final String ACTION_SYNC_SUBSCRIPTIONS = "de.danoeh.antennapod.intent.action.sync_subscriptions";
-    public static final String ACTION_SYNC_ACTIONS = "de.danoeh.antennapod.intent.action.sync_ACTIONS";
+    private static final String ACTION_SYNC = "de.danoeh.antennapod.intent.action.sync";
+    private static final String ACTION_SYNC_SUBSCRIPTIONS = "de.danoeh.antennapod.intent.action.sync_subscriptions";
+    private static final String ACTION_SYNC_ACTIONS = "de.danoeh.antennapod.intent.action.sync_ACTIONS";
 
     private GpodnetService service;
 

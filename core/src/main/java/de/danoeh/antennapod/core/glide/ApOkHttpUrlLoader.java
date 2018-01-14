@@ -27,7 +27,7 @@ import okhttp3.Response;
 /**
  * @see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
  */
-public class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
+class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
     private static final String TAG = ApOkHttpUrlLoader.class.getSimpleName();
 
@@ -80,7 +80,7 @@ public class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
     private final OkHttpClient client;
 
-    public ApOkHttpUrlLoader(OkHttpClient client) {
+    private ApOkHttpUrlLoader(OkHttpClient client) {
         this.client = client;
     }
 

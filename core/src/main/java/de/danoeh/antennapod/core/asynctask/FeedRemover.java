@@ -14,9 +14,9 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 
 /** Removes a feed in the background. */
 public class FeedRemover extends AsyncTask<Void, Void, Void> {
-	Context context;
-	ProgressDialog dialog;
-	Feed feed;
+	private Context context;
+	private ProgressDialog dialog;
+	private Feed feed;
 	public boolean skipOnCompletion = false;
 
 	public FeedRemover(Context context, Feed feed) {
