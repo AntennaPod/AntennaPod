@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.asynctask;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
