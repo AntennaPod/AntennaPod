@@ -138,7 +138,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         image.setOwner(feed);
         feed.setImage(image);
 
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed, true);
@@ -151,7 +151,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", true, null, 0, 0);
             item.setMedia(media);
 
-            item.setChapters(new ArrayList<Chapter>());
+            item.setChapters(new ArrayList<>());
             item.getChapters().add(new SimpleChapter(0, "item " + i, item, "example.com"));
         }
 
@@ -207,7 +207,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
         feed.setImage(null);
 
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
@@ -418,7 +418,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         image.setOwner(feed);
         feed.setImage(image);
 
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
@@ -444,7 +444,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         }
 
 
-        List<FeedItem> queue = new ArrayList<FeedItem>();
+        List<FeedItem> queue = new ArrayList<>();
         queue.addAll(feed.getItems());
         adapter.open();
         adapter.setQueue(queue);
@@ -482,7 +482,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertNotNull(destFolder);
 
         Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
 
         // create Feed image
         File imgFile = new File(destFolder, "image");
@@ -490,7 +490,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         image.setOwner(feed);
         feed.setImage(image);
 
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
@@ -539,7 +539,7 @@ public class DBWriterTest extends InstrumentationTestCase {
     private FeedMedia playbackHistorySetup(Date playbackCompletionDate) {
         final Context context = getInstrumentation().getTargetContext();
         Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
         FeedMedia media = new FeedMedia(0, item, 10, 0, 1, "mime", null, "url", false, playbackCompletionDate, 0, 0);
         feed.getItems().add(item);
@@ -598,7 +598,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         for (FeedItem item : feed.getItems()) {
             assertTrue(item.getId() != 0);
         }
-        List<Future<?>> futures = new ArrayList<Future<?>>();
+        List<Future<?>> futures = new ArrayList<>();
         for (FeedItem item : feed.getItems()) {
             futures.add(DBWriter.addQueueItem(context, item));
         }
@@ -791,7 +791,7 @@ public class DBWriterTest extends InstrumentationTestCase {
     public void testMarkFeedRead() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
         Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.UNPLAYED, feed);
             feed.getItems().add(item);

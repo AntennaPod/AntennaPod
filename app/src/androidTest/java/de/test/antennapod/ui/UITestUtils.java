@@ -57,7 +57,7 @@ public class UITestUtils {
     private File hostedFeedDir;
     private File hostedMediaDir;
 
-    public List<Feed> hostedFeeds = new ArrayList<Feed>();
+    public List<Feed> hostedFeeds = new ArrayList<>();
 
     public UITestUtils(Context context) {
         this.context = context;
@@ -147,7 +147,7 @@ public class UITestUtils {
             image.setOwner(feed);
 
             // create items
-            List<FeedItem> items = new ArrayList<FeedItem>();
+            List<FeedItem> items = new ArrayList<>();
             for (int j = 0; j < NUM_ITEMS_PER_FEED; j++) {
                 FeedItem item = new FeedItem(j, "Feed " + (i+1) + ": Item " + (j+1), "item" + j,
                         "http://example.com/feed" + i + "/item/" + j, new Date(), FeedItem.UNPLAYED, feed);

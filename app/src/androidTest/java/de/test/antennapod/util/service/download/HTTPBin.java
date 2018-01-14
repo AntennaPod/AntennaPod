@@ -49,7 +49,7 @@ public class HTTPBin extends NanoHTTPD {
 
     public HTTPBin() {
         super(PORT);
-        this.servedFiles = new ArrayList<File>();
+        this.servedFiles = new ArrayList<>();
     }
 
     /**
