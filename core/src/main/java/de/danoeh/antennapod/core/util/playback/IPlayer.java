@@ -30,7 +30,7 @@ public interface IPlayer {
 
 	void pause();
 
-	void prepare() throws IllegalStateException;
+	void prepare() throws IllegalStateException, IOException;
 
 	void prepareAsync();
 
@@ -44,7 +44,7 @@ public interface IPlayer {
 
 	void setScreenOnWhilePlaying(boolean screenOn);
 
-	void setDataSource(String path) throws IllegalStateException,
+	void setDataSource(String path) throws IllegalStateException, IOException,
             IllegalArgumentException, SecurityException;
 
 	void setDisplay(SurfaceHolder sh);
