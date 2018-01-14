@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -316,9 +317,7 @@ public class GpodnetPreferences {
 
     private static Set<String> readListFromString(String s) {
         Set<String> result = new HashSet<>();
-        for (String item : s.split(" ")) {
-            result.add(item);
-        }
+        Collections.addAll(result, s.split(" "));
         return result;
     }
 
