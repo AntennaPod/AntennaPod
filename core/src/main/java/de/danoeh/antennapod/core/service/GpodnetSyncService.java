@@ -222,8 +222,6 @@ public class GpodnetSyncService extends Service {
         } catch (GpodnetServiceException e) {
             e.printStackTrace();
             updateErrorNotification(e);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
         }
     }
 

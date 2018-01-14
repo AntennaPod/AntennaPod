@@ -363,13 +363,7 @@ public class QueueFragment extends Fragment {
                 DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
                 return true;
             default:
-                try {
-                    return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    return true;
-                }
+                return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
         }
     }
 

@@ -334,13 +334,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 openPodcast();
                 return true;
             default:
-                try {
-                    return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    return true;
-                }
+                return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
         }
     }
 

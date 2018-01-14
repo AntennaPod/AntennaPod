@@ -340,12 +340,7 @@ public class ItemlistFragment extends ListFragment {
             return super.onContextItemSelected(item);
         }
 
-        try {
-            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
-        } catch (DownloadRequestException e) {
-            // context menu doesn't contain download functionality
-            return true;
-        }
+        return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
     }
 
     @Override
