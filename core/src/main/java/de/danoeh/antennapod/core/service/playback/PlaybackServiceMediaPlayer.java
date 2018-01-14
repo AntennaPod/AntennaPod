@@ -279,7 +279,7 @@ public abstract class PlaybackServiceMediaPlayer {
     final synchronized void acquireWifiLockIfNecessary() {
         if (shouldLockWifi()) {
             if (wifiLock == null) {
-                wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
+                wifiLock = ((WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE))
                         .createWifiLock(WifiManager.WIFI_MODE_FULL, TAG);
                 wifiLock.setReferenceCounted(false);
             }

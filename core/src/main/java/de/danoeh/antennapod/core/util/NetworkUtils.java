@@ -54,7 +54,7 @@ public class NetworkUtils {
 						Log.d(TAG, "Auto-dl filter is disabled");
 						return true;
 					} else {
-						WifiManager wm = (WifiManager) context
+						WifiManager wm = (WifiManager) context.getApplicationContext()
 								.getSystemService(Context.WIFI_SERVICE);
 						WifiInfo wifiInfo = wm.getConnectionInfo();
 						List<String> selectedNetworks = Arrays
@@ -103,7 +103,7 @@ public class NetworkUtils {
      * Returns the SSID of the wifi connection, or <code>null</code> if there is no wifi.
      */
     public static String getWifiSsid() {
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         if (wifiInfo != null) {
             return wifiInfo.getSSID();

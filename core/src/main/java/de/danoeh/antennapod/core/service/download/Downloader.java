@@ -33,7 +33,7 @@ public abstract class Downloader implements Callable<Downloader> {
 
     public final Downloader call() {
         WifiManager wifiManager = (WifiManager)
-                ClientConfig.applicationCallbacks.getApplicationInstance().getSystemService(Context.WIFI_SERVICE);
+                ClientConfig.applicationCallbacks.getApplicationInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiManager.WifiLock wifiLock = null;
         if (wifiManager != null) {
             wifiLock = wifiManager.createWifiLock(TAG);
