@@ -18,6 +18,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
+import static java.util.Collections.singletonList;
+
 /**
  * Test class for DBTasks
  */
@@ -125,7 +127,7 @@ public class DBTasksTest extends InstrumentationTestCase {
     public void testUpdateFeedMediaUrlResetState() {
         final Feed feed = new Feed("url", null, "title");
         FeedItem item = new FeedItem(0, "item", "id", "link", new Date(), FeedItem.PLAYED, feed);
-        feed.setItems(Arrays.asList(item));
+        feed.setItems(singletonList(item));
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -138,7 +140,7 @@ public class DBTasksTest extends InstrumentationTestCase {
 
         FeedMedia media = new FeedMedia(item, "url", 1024, "mime/type");
         item.setMedia(media);
-        feed.setItems(Arrays.asList(item));
+        feed.setItems(singletonList(item));
 
         final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
         assertTrue(feed != newFeed);
