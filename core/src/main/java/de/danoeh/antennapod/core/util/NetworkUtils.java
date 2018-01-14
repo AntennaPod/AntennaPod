@@ -112,63 +112,60 @@ public class NetworkUtils {
     }
 
 	public static Observable<Long> getFeedMediaSizeObservable(FeedMedia media) {
-        return Observable.create(new Observable.OnSubscribe<Long>() {
-            @Override
-            public void call(Subscriber<? super Long> subscriber) {
-                if (!NetworkUtils.isDownloadAllowed()) {
+        return Observable.create((Observable.OnSubscribe<Long>) subscriber -> {
+            if (!NetworkUtils.isDownloadAllowed()) {
+                subscriber.onNext(0L);
+                subscriber.onCompleted();
+                return;
+            }
+            long size = Integer.MIN_VALUE;
+            if (media.isDownloaded()) {
+                File mediaFile = new File(media.getLocalMediaUrl());
+                if (mediaFile.exists()) {
+                    size = mediaFile.length();
+                }
+            } else if (!media.checkedOnSizeButUnknown()) {
+                // only query the network if we haven't already checked
+
+                String url = media.getDownload_url();
+                if(TextUtils.isEmpty(url)) {
                     subscriber.onNext(0L);
                     subscriber.onCompleted();
                     return;
                 }
-                long size = Integer.MIN_VALUE;
-                if (media.isDownloaded()) {
-                    File mediaFile = new File(media.getLocalMediaUrl());
-                    if (mediaFile.exists()) {
-                        size = mediaFile.length();
-                    }
-                } else if (!media.checkedOnSizeButUnknown()) {
-                    // only query the network if we haven't already checked
 
-                    String url = media.getDownload_url();
-                    if(TextUtils.isEmpty(url)) {
-                        subscriber.onNext(0L);
-                        subscriber.onCompleted();
-                        return;
-                    }
-
-                    OkHttpClient client = AntennapodHttpClient.getHttpClient();
-                    Request.Builder httpReq = new Request.Builder()
-                            .url(url)
-                            .header("Accept-Encoding", "identity")
-                            .head();
-                    try {
-                        Response response = client.newCall(httpReq.build()).execute();
-                        if (response.isSuccessful()) {
-                            String contentLength = response.header("Content-Length");
-                            try {
-                                size = Integer.parseInt(contentLength);
-                            } catch (NumberFormatException e) {
-                                Log.e(TAG, Log.getStackTraceString(e));
-                            }
+                OkHttpClient client = AntennapodHttpClient.getHttpClient();
+                Request.Builder httpReq = new Request.Builder()
+                        .url(url)
+                        .header("Accept-Encoding", "identity")
+                        .head();
+                try {
+                    Response response = client.newCall(httpReq.build()).execute();
+                    if (response.isSuccessful()) {
+                        String contentLength = response.header("Content-Length");
+                        try {
+                            size = Integer.parseInt(contentLength);
+                        } catch (NumberFormatException e) {
+                            Log.e(TAG, Log.getStackTraceString(e));
                         }
-                    } catch (IOException e) {
-                        subscriber.onNext(0L);
-                        subscriber.onCompleted();
-                        Log.e(TAG, Log.getStackTraceString(e));
-                        return; // better luck next time
                     }
+                } catch (IOException e) {
+                    subscriber.onNext(0L);
+                    subscriber.onCompleted();
+                    Log.e(TAG, Log.getStackTraceString(e));
+                    return; // better luck next time
                 }
-                Log.d(TAG, "new size: " + size);
-                if (size <= 0) {
-                    // they didn't tell us the size, but we don't want to keep querying on it
-                    media.setCheckedOnSizeButUnknown();
-                } else {
-                    media.setSize(size);
-                }
-                subscriber.onNext(size);
-                subscriber.onCompleted();
-                DBWriter.setFeedMedia(media);
             }
+            Log.d(TAG, "new size: " + size);
+            if (size <= 0) {
+                // they didn't tell us the size, but we don't want to keep querying on it
+                media.setCheckedOnSizeButUnknown();
+            } else {
+                media.setSize(size);
+            }
+            subscriber.onNext(size);
+            subscriber.onCompleted();
+            DBWriter.setFeedMedia(media);
         })
                 .subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread());

@@ -75,53 +75,50 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void loadAsset(String filename) {
-        subscription = Observable.create(new Observable.OnSubscribe<String>() {
-                    @Override
-                    public void call(Subscriber<? super String> subscriber) {
-                        InputStream input = null;
-                        try {
-                            TypedArray res = AboutActivity.this.getTheme().obtainStyledAttributes(
-                                    new int[] { android.R.attr.textColorPrimary });
-                            int colorResource = res.getColor(0, 0);
-                            String colorString = String.format("#%06X", 0xFFFFFF & colorResource);
-                            res.recycle();
-                            input = getAssets().open(filename);
-                            String webViewData = IOUtils.toString(input, Charset.defaultCharset());
-                            if(!webViewData.startsWith("<!DOCTYPE html>")) {
-                                //webViewData = webViewData.replace("\n\n", "</p><p>");
-                                webViewData = webViewData.replace("%", "&#37;");
-                                webViewData =
-                                        "<!DOCTYPE html>" +
-                                        "<html>" +
-                                        "<head>" +
-                                        "    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\">" +
-                                        "    <style type=\"text/css\">" +
-                                        "        @font-face {" +
-                                        "        font-family: 'Roboto-Light';" +
-                                        "           src: url('file:///android_asset/Roboto-Light.ttf');" +
-                                        "        }" +
-                                        "        * {" +
-                                        "           color: %s;" +
-                                        "           font-family: roboto-Light;" +
-                                        "           font-size: 8pt;" +
-                                        "        }" +
-                                        "    </style>" +
-                                        "</head><body><p>" + webViewData + "</p></body></html>";
-                                webViewData = webViewData.replace("\n", "<br/>");
-                                depth++;
-                            } else {
-                                depth = 0;
-                            }
-                            webViewData = String.format(webViewData, colorString);
-                            subscriber.onNext(webViewData);
-                        } catch (IOException e) {
-                            subscriber.onError(e);
-                        } finally {
-                            IOUtils.closeQuietly(input);
-                        }
-                        subscriber.onCompleted();
-                    }
-                })
+        subscription = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+            InputStream input = null;
+            try {
+                TypedArray res = AboutActivity.this.getTheme().obtainStyledAttributes(
+                        new int[] { android.R.attr.textColorPrimary });
+                int colorResource = res.getColor(0, 0);
+                String colorString = String.format("#%06X", 0xFFFFFF & colorResource);
+                res.recycle();
+                input = getAssets().open(filename);
+                String webViewData = IOUtils.toString(input, Charset.defaultCharset());
+                if(!webViewData.startsWith("<!DOCTYPE html>")) {
+                    //webViewData = webViewData.replace("\n\n", "</p><p>");
+                    webViewData = webViewData.replace("%", "&#37;");
+                    webViewData =
+                            "<!DOCTYPE html>" +
+                            "<html>" +
+                            "<head>" +
+                            "    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\">" +
+                            "    <style type=\"text/css\">" +
+                            "        @font-face {" +
+                            "        font-family: 'Roboto-Light';" +
+                            "           src: url('file:///android_asset/Roboto-Light.ttf');" +
+                            "        }" +
+                            "        * {" +
+                            "           color: %s;" +
+                            "           font-family: roboto-Light;" +
+                            "           font-size: 8pt;" +
+                            "        }" +
+                            "    </style>" +
+                            "</head><body><p>" + webViewData + "</p></body></html>";
+                    webViewData = webViewData.replace("\n", "<br/>");
+                    depth++;
+                } else {
+                    depth = 0;
+                }
+                webViewData = String.format(webViewData, colorString);
+                subscriber.onNext(webViewData);
+            } catch (IOException e) {
+                subscriber.onError(e);
+            } finally {
+                IOUtils.closeQuietly(input);
+            }
+            subscriber.onCompleted();
+        })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
