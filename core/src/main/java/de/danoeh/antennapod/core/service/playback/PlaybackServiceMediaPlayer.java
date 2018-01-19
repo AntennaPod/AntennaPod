@@ -366,8 +366,8 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     public static class PSMPInfo {
         public final PlayerStatus oldPlayerStatus;
-        public final PlayerStatus playerStatus;
-        public final Playable playable;
+        public PlayerStatus playerStatus;
+        public Playable playable;
 
         PSMPInfo(PlayerStatus oldPlayerStatus, PlayerStatus playerStatus, Playable playable) {
             this.oldPlayerStatus = oldPlayerStatus;
