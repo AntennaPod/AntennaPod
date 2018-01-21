@@ -160,7 +160,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         prefs.edit()
                 .putInt(PREF_KEY_SELECTED_FRAGMENT_POSITION, pager.getCurrentItem())
-                .commit();
+                .apply();
     }
 
     @Override
@@ -242,7 +242,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerToggle.setDrawerIndicatorEnabled(false);
-        drawerLayout.setDrawerListener(drawerToggle);
+        drawerLayout.addDrawerListener(drawerToggle);
 
         navAdapter = new NavListAdapter(itemAccess, this);
         navList.setAdapter(navAdapter);
@@ -396,12 +396,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 new RenameFeedDialog(this, feed).show();
                 return true;
             case R.id.remove_item:
-                final FeedRemover remover = new FeedRemover(this, feed) {
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        super.onPostExecute(result);
-                    }
-                };
+                final FeedRemover remover = new FeedRemover(this, feed);
                 ConfirmationDialog conDialog = new ConfirmationDialog(this,
                         R.string.remove_feed_label,
                         getString(R.string.feed_delete_confirmation_msg, feed.getTitle())) {
@@ -413,7 +408,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                             Playable playable = controller.getMedia();
                             if (playable != null && playable instanceof FeedMedia) {
                                 FeedMedia media = (FeedMedia) playable;
-                                if (media.getItem().getFeed().getId() == feed.getId()) {
+                                if (media.getItem() != null && media.getItem().getFeed() != null &&
+                                        media.getItem().getFeed().getId() == feed.getId()) {
                                     Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
                                     remover.skipOnCompletion = true;
                                     if(controller.getStatus() == PlayerStatus.PLAYING) {
