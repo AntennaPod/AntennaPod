@@ -1158,7 +1158,8 @@ public abstract class NanoHTTPD {
                             int offset = stripMultipartHeaders(fbuf, bpositions[boundarycount - 2]);
                             String path = saveTmpFile(fbuf, offset, bpositions[boundarycount - 1] - offset - 4);
                             files.put(pname, path);
-                            value = disposition.get("filename").substring(1, value.length() - 1);
+                            value = disposition.get("filename");
+                            value = value.substring(1, value.length() - 1);
                             do {
                                 mpline = in.readLine();
                             } while (mpline != null && !mpline.contains(boundary));
