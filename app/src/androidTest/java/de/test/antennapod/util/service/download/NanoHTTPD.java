@@ -1138,17 +1138,19 @@ public abstract class NanoHTTPD {
 
                         String value = "";
                         if (item.get("content-type") == null) {
+                            StringBuilder tmp = new StringBuilder();
                             while (mpline != null && !mpline.contains(boundary)) {
                                 mpline = in.readLine();
                                 if (mpline != null) {
                                     int d = mpline.indexOf(boundary);
                                     if (d == -1) {
-                                        value += mpline;
+                                        tmp.append(mpline);
                                     } else {
-                                        value += mpline.substring(0, d - 2);
+                                        tmp.append(mpline.substring(0, d - 2));
                                     }
                                 }
                             }
+                            value = tmp.toString();
                         } else {
                             if (boundarycount > bpositions.length) {
                                 throw new ResponseException(Response.Status.INTERNAL_ERROR, "Error processing request");
@@ -1156,8 +1158,7 @@ public abstract class NanoHTTPD {
                             int offset = stripMultipartHeaders(fbuf, bpositions[boundarycount - 2]);
                             String path = saveTmpFile(fbuf, offset, bpositions[boundarycount - 1] - offset - 4);
                             files.put(pname, path);
-                            value = disposition.get("filename");
-                            value = value.substring(1, value.length() - 1);
+                            value = disposition.get("filename").substring(1, value.length() - 1);
                             do {
                                 mpline = in.readLine();
                             } while (mpline != null && !mpline.contains(boundary));
