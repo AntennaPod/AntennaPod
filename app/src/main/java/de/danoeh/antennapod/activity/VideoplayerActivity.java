@@ -368,7 +368,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             if (vpa.videoControlsShowing) {
                 Log.d(TAG, "Hiding video controls");
                 ActionBar actionBar = vpa.getSupportActionBar();
-                if(actionBar != null) {
+                if (actionBar != null) {
                     actionBar.hide();
                 }
                 vpa.hideVideoControls();

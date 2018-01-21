@@ -129,7 +129,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -146,7 +146,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 || TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
             feedUrl = (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND))
                     ? getIntent().getStringExtra(Intent.EXTRA_TEXT) : getIntent().getDataString();
-            if(actionBar != null) {
+            if (actionBar != null) {
                 actionBar.setTitle(R.string.add_feed_label);
             }
         } else {

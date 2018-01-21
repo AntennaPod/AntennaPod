@@ -44,7 +44,7 @@ public class DownloadAuthenticationActivity extends AppCompatActivity {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.hide();
         }
 
