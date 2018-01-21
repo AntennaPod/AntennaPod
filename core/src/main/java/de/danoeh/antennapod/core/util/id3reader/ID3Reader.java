@@ -170,7 +170,7 @@ public class ID3Reader {
         return out;
     }
 
-	protected int readString(StringBuffer buffer, InputStream input, int max) throws IOException,
+	protected int readString(StringBuilder buffer, InputStream input, int max) throws IOException,
 			ID3ReaderException {
 		if (max > 0) {
 			char[] encoding = readBytes(input, 1);
@@ -191,7 +191,7 @@ public class ID3Reader {
 		}
 	}
 
-	protected int readISOString(StringBuffer buffer, InputStream input, int max)
+	protected int readISOString(StringBuilder buffer, InputStream input, int max)
 			throws IOException, ID3ReaderException {
 
 		int bytesRead = 0;
@@ -204,7 +204,7 @@ public class ID3Reader {
 		return bytesRead;
 	}
 
-	private int readUnicodeString(StringBuffer strBuffer, InputStream input, int max, Charset charset)
+	private int readUnicodeString(StringBuilder strBuffer, InputStream input, int max, Charset charset)
 			throws IOException, ID3ReaderException {
 		byte[] buffer = new byte[max];
         int c, cZero = -1;
