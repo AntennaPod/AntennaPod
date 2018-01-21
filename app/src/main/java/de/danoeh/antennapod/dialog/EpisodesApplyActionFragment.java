@@ -32,7 +32,7 @@ import de.danoeh.antennapod.core.util.LongList;
 
 public class EpisodesApplyActionFragment extends Fragment {
 
-    public String TAG = "EpisodeActionFragment";
+    public static final String TAG = "EpisodeActionFragment";
 
     public static final int ACTION_QUEUE = 1;
     public static final int ACTION_MARK_PLAYED = 2;
