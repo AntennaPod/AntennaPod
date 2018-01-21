@@ -950,7 +950,7 @@ public class DownloadService extends Service {
      * <p/>
      * Currently, this handler only handles FeedMedia objects, because Feeds and FeedImages are deleted if the download fails.
      */
-    private class FailedDownloadHandler implements Runnable {
+    private static class FailedDownloadHandler implements Runnable {
 
         private DownloadRequest request;
         private DownloadStatus status;
