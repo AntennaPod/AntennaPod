@@ -77,7 +77,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
 
-    final String TAG = "MediaplayerInfoActivity";
+    final static String TAG = "MediaplayerInfoActivity";
     private static final String PREFS = "AudioPlayerActivityPreferences";
     private static final String PREF_KEY_SELECTED_FRAGMENT_POSITION = "selectedFragmentPosition";
 
