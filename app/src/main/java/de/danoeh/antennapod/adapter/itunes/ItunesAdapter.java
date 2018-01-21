@@ -162,7 +162,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
     /**
      * View holder object for the GridView
      */
-    class PodcastViewHolder {
+    static class PodcastViewHolder {
 
         /**
          * ImageView holding the Podcast image
