@@ -47,11 +47,11 @@ public class GpodnetSyncService extends Service {
 
     private static final long WAIT_INTERVAL = 5000L;
 
-    public static final String ARG_ACTION = "action";
+    private static final String ARG_ACTION = "action";
 
-    public static final String ACTION_SYNC = "de.danoeh.antennapod.intent.action.sync";
-    public static final String ACTION_SYNC_SUBSCRIPTIONS = "de.danoeh.antennapod.intent.action.sync_subscriptions";
-    public static final String ACTION_SYNC_ACTIONS = "de.danoeh.antennapod.intent.action.sync_ACTIONS";
+    private static final String ACTION_SYNC = "de.danoeh.antennapod.intent.action.sync";
+    private static final String ACTION_SYNC_SUBSCRIPTIONS = "de.danoeh.antennapod.intent.action.sync_subscriptions";
+    private static final String ACTION_SYNC_ACTIONS = "de.danoeh.antennapod.intent.action.sync_ACTIONS";
 
     private GpodnetService service;
 
@@ -222,14 +222,12 @@ public class GpodnetSyncService extends Service {
         } catch (GpodnetServiceException e) {
             e.printStackTrace();
             updateErrorNotification(e);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
         }
     }
 
 
     private synchronized void processEpisodeActions(List<GpodnetEpisodeAction> localActions,
-                                                    List<GpodnetEpisodeAction> remoteActions) throws DownloadRequestException {
+                                                    List<GpodnetEpisodeAction> remoteActions) {
         if(remoteActions.size() == 0) {
             return;
         }
@@ -333,7 +331,7 @@ public class GpodnetSyncService extends Service {
         nm.notify(id, notification);
     }
 
-    private WaiterThread syncWaiterThread = new WaiterThread(WAIT_INTERVAL) {
+    private final WaiterThread syncWaiterThread = new WaiterThread(WAIT_INTERVAL) {
         @Override
         public void onWaitCompleted() {
             sync();
@@ -341,7 +339,7 @@ public class GpodnetSyncService extends Service {
     };
 
     private abstract class WaiterThread {
-        private long waitInterval;
+        private final long waitInterval;
         private Thread thread;
 
         private WaiterThread(long waitInterval) {

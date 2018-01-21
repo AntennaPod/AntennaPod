@@ -17,8 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.nineoldandroids.view.ViewHelper;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -34,16 +32,16 @@ import de.danoeh.antennapod.core.util.ThemeUtils;
  */
 public class FeedItemlistAdapter extends BaseAdapter {
 
-    private ActionButtonCallback callback;
+    private final ActionButtonCallback callback;
     private final ItemAccess itemAccess;
     private final Context context;
-    private boolean showFeedtitle;
-    private int selectedItemIndex;
+    private final boolean showFeedtitle;
+    private final int selectedItemIndex;
     /** true if played items should be made partially transparent */
-    private boolean makePlayedItemsTransparent;
+    private final boolean makePlayedItemsTransparent;
     private final ActionButtonUtils actionButtonUtils;
 
-    public static final int SELECTION_NONE = -1;
+    private static final int SELECTION_NONE = -1;
 
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
@@ -145,9 +143,9 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 holder.statusUnread.setVisibility(View.INVISIBLE);
             }
             if(item.isPlayed() && makePlayedItemsTransparent) {
-                ViewHelper.setAlpha(convertView, 0.5f);
+                convertView.setAlpha(0.5f);
             } else {
-                ViewHelper.setAlpha(convertView, 1.0f);
+                convertView.setAlpha(1.0f);
             }
 
             String pubDateStr = DateUtils.formatAbbrev(context, item.getPubDate());

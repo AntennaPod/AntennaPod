@@ -88,7 +88,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * True if cast session should disconnect.
      */
-    public static final String EXTRA_CAST_DISCONNECT = "extra.de.danoeh.antennapod.core.service.castDisconnect";
+    private static final String EXTRA_CAST_DISCONNECT = "extra.de.danoeh.antennapod.core.service.castDisconnect";
     /**
      * True if media should be streamed.
      */
@@ -198,7 +198,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * Is true if the service was running, but paused due to headphone disconnect
      */
-    public static boolean transientPause = false;
+    private static boolean transientPause = false;
     /**
      * Is true if a Cast Device is connected to the service.
      */
@@ -269,10 +269,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(
                 ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            registerReceiver(bluetoothStateUpdated, new IntentFilter(
-                    BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
-        }
+        registerReceiver(bluetoothStateUpdated, new IntentFilter(
+                BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
@@ -342,9 +340,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(autoStateUpdated);
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            unregisterReceiver(bluetoothStateUpdated);
-        }
+        unregisterReceiver(bluetoothStateUpdated);
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
@@ -914,7 +910,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         taskManager.setSleepTimer(waitingTime, shakeToReset, vibrate);
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
-                () -> disableSleepTimer()));
+                this::disableSleepTimer));
     }
 
     public void disableSleepTimer() {
@@ -1196,21 +1192,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             @Override
             public void run() {
                 Log.d(TAG, "Starting background work");
-                if (android.os.Build.VERSION.SDK_INT >= 11) {
-                    if (info.playable != null) {
-                        int iconSize = getResources().getDimensionPixelSize(
-                                android.R.dimen.notification_large_icon_width);
-                        try {
-                            icon = Glide.with(PlaybackService.this)
-                                    .load(info.playable.getImageLocation())
-                                    .asBitmap()
-                                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                    .centerCrop()
-                                    .into(iconSize, iconSize)
-                                    .get();
-                        } catch (Throwable tr) {
-                            Log.e(TAG, "Error loading the media icon for the notification", tr);
-                        }
+                if (info.playable != null) {
+                    int iconSize = getResources().getDimensionPixelSize(
+                            android.R.dimen.notification_large_icon_width);
+                    try {
+                        icon = Glide.with(PlaybackService.this)
+                                .load(info.playable.getImageLocation())
+                                .asBitmap()
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .centerCrop()
+                                .into(iconSize, iconSize)
+                                .get();
+                    } catch (Throwable tr) {
+                        Log.e(TAG, "Error loading the media icon for the notification", tr);
                     }
                 }
                 if (icon == null) {
@@ -1471,13 +1465,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                if (TextUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
-                    int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
-                    if (state == BluetoothA2dp.STATE_CONNECTED) {
-                        Log.d(TAG, "Received bluetooth connection intent");
-                        unpauseIfPauseOnDisconnect(true);
-                    }
+            if (TextUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
+                int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
+                if (state == BluetoothA2dp.STATE_CONNECTED) {
+                    Log.d(TAG, "Received bluetooth connection intent");
+                    unpauseIfPauseOnDisconnect(true);
                 }
             }
         }
@@ -1638,7 +1630,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
 
-    public void seekDelta(final int d) {
+    private void seekDelta(final int d) {
         mediaPlayer.seekDelta(d);
     }
 
@@ -1792,7 +1784,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     };
 
-    private SharedPreferences.OnSharedPreferenceChangeListener prefListener =
+    private final SharedPreferences.OnSharedPreferenceChangeListener prefListener =
             (sharedPreferences, key) -> {
                 if (UserPreferences.PREF_LOCKSCREEN_BACKGROUND.equals(key)) {
                     updateMediaSessionMetadata(getPlayable());
@@ -1814,7 +1806,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         void unregisterReceiver(BroadcastReceiver receiver);
     }
 
-    private FlavorHelperCallback flavorHelperCallback = new FlavorHelperCallback() {
+    private final FlavorHelperCallback flavorHelperCallback = new FlavorHelperCallback() {
         @Override
         public PlaybackServiceMediaPlayer.PSMPCallback getMediaPlayerCallback() {
             return PlaybackService.this.mediaPlayerCallback;

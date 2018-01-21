@@ -8,7 +8,7 @@ import android.support.v4.content.AsyncTaskLoader;
  * This class will provide a useful default implementation that would otherwise always be necessary when interacting
  * with the DB*-classes with an AsyncTaskLoader.
  */
-public abstract class DBTaskLoader<D> extends AsyncTaskLoader<D> {
+abstract class DBTaskLoader<D> extends AsyncTaskLoader<D> {
 
     public DBTaskLoader(Context context) {
         super(context);

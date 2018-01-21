@@ -34,7 +34,7 @@ public class FeedMedia extends FeedFile implements Playable {
     public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
 
     public static final String PREF_MEDIA_ID = "FeedMedia.PrefMediaId";
-    public static final String PREF_FEED_ID = "FeedMedia.PrefFeedId";
+    private static final String PREF_FEED_ID = "FeedMedia.PrefFeedId";
 
     /**
      * Indicates we've checked on the size of the item via the network
@@ -88,10 +88,10 @@ public class FeedMedia extends FeedFile implements Playable {
         this.lastPlayedTime = lastPlayedTime;
     }
 
-    public FeedMedia(long id, FeedItem item, int duration, int position,
-                     long size, String mime_type, String file_url, String download_url,
-                     boolean downloaded, Date playbackCompletionDate, int played_duration,
-                     Boolean hasEmbeddedPicture, long lastPlayedTime) {
+    private FeedMedia(long id, FeedItem item, int duration, int position,
+                      long size, String mime_type, String file_url, String download_url,
+                      boolean downloaded, Date playbackCompletionDate, int played_duration,
+                      Boolean hasEmbeddedPicture, long lastPlayedTime) {
         this(id, item, duration, position, size, mime_type, file_url, download_url, downloaded,
                 playbackCompletionDate, played_duration, lastPlayedTime);
         this.hasEmbeddedPicture = hasEmbeddedPicture;

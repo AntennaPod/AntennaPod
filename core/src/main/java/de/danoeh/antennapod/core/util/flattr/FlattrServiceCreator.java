@@ -10,8 +10,8 @@ import de.danoeh.antennapod.core.BuildConfig;
 
 /** Ensures that only one instance of the FlattrService class exists at a time */
 
-public class FlattrServiceCreator {
-	public static final String TAG = "FlattrServiceCreator";
+class FlattrServiceCreator {
+	private static final String TAG = "FlattrServiceCreator";
 	
 	private static volatile FlattrService flattrService;
 	

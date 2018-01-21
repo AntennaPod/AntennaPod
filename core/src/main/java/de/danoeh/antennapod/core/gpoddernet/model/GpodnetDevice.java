@@ -4,10 +4,10 @@ import android.support.annotation.NonNull;
 
 public class GpodnetDevice {
 
-    private String id;
-    private String caption;
-    private DeviceType type;
-    private int subscriptions;
+    private final String id;
+    private final String caption;
+    private final DeviceType type;
+    private final int subscriptions;
 
     public GpodnetDevice(@NonNull String id,
                          String caption,

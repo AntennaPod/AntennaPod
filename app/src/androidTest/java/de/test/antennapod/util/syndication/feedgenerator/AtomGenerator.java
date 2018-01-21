@@ -19,7 +19,7 @@ public class AtomGenerator implements FeedGenerator{
 
     private static final String NS_ATOM = "http://www.w3.org/2005/Atom";
 
-    public static final long FEATURE_USE_RFC3339LOCAL = 1;
+    private static final long FEATURE_USE_RFC3339LOCAL = 1;
 
     @Override
     public void writeFeed(Feed feed, OutputStream outputStream, String encoding, long flags) throws IOException {

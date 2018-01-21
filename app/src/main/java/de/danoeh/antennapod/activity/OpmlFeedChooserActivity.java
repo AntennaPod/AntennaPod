@@ -97,7 +97,7 @@ public class OpmlFeedChooserActivity extends AppCompatActivity {
     }
 
     private List<String> getTitleList() {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         if (OpmlImportHolder.getReadElements() != null) {
             for (OpmlElement element : OpmlImportHolder.getReadElements()) {
                 result.add(element.getText());

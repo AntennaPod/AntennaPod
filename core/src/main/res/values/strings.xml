@@ -662,6 +662,15 @@
     <string name="proxy_host_invalid_error">Host is not a valid IP address or domain</string>
     <string name="proxy_port_invalid_error">Port not valid</string>
 
+    <!-- Database import/export -->
+    <string name="import_export">Database import/export</string>
+    <string name="import_export_warning">This experimental function can be used to transfer your subscriptions and played episodes to another device.\n\nExported databases can only be imported when using the same version of AntennaPod. Otherwise, this function will lead to unexpected behavior.\n\nAfter importing, episodes might be displayed as downloaded even though they are not. Just press the play button of the episodes to make AntennaPod detect this.</string>
+    <string name="label_import">Import</string>
+    <string name="label_export">Export</string>
+    <string name="import_select_file">Select file to import</string>
+    <string name="export_ok">Export successful. The database was written to the SD card.</string>
+    <string name="import_ok">Import successful.\n\nPlease press OK to restart AntennaPod</string>
+
     <!-- Casting -->
     <string name="cast_media_route_menu_title">Play on&#8230;</string>
     <string name="cast_disconnect_label">Disconnect the cast session</string>

@@ -208,7 +208,7 @@ public class ExternalPlayerFragment extends Fragment {
         return controller;
     }
 
-    public void onPositionObserverUpdate() {
+    private void onPositionObserverUpdate() {
         mProgressBar.setProgress((int)
                 ((double) controller.getPosition() / controller.getDuration() * 100));
     }

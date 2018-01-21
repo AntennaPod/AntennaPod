@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.asynctask;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -39,7 +38,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
  * to flattr something, a notification will be displayed.
  */
 public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorker.ExitCode> {
-    protected static final String TAG = "FlattrClickWorker";
+    private static final String TAG = "FlattrClickWorker";
 
     private static final int NOTIFICATION_ID = 4;
 
@@ -225,12 +224,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
     /**
      * Starts the FlattrClickWorker as an AsyncTask.
      */
-    @TargetApi(11)
     public void executeAsync() {
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            execute();
-        }
+        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

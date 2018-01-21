@@ -316,6 +316,9 @@
             android:key="prefHtmlExport"
             android:title="@string/html_export_label"/>
         <Preference
+            android:key="importExport"
+            android:title="@string/import_export"/>
+        <Preference
             android:key="statistics"
             android:title="@string/statistics_label"/>
     </PreferenceCategory>

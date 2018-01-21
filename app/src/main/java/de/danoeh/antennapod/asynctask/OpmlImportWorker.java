@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.asynctask;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -21,12 +20,12 @@ public class OpmlImportWorker extends
 		AsyncTask<Void, Void, ArrayList<OpmlElement>> {
 	private static final String TAG = "OpmlImportWorker";
 
-	private Context context;
+	private final Context context;
 	private Exception exception;
 
 	private ProgressDialog progDialog;
 
-    private Reader mReader;
+    private final Reader mReader;
 
     public OpmlImportWorker(Context context, Reader reader) {
         super();
@@ -93,13 +92,8 @@ public class OpmlImportWorker extends
 		return exception != null;
 	}
 	
-	@SuppressLint("NewApi")
 	public void executeAsync() {
-		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-			executeOnExecutor(THREAD_POOL_EXECUTOR);
-		} else {
-			execute();
-		}
+		executeOnExecutor(THREAD_POOL_EXECUTOR);
 	}
 
 }

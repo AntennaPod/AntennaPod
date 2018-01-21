@@ -18,10 +18,10 @@ import de.danoeh.antennapod.core.syndication.namespace.SyndElement;
 import de.danoeh.antennapod.core.syndication.namespace.atom.NSAtom;
 
 /** Superclass for all SAX Handlers which process Syndication formats */
-public class SyndHandler extends DefaultHandler {
+class SyndHandler extends DefaultHandler {
 	private static final String TAG = "SyndHandler";
 	private static final String DEFAULT_PREFIX = "";
-	protected HandlerState state;
+	final HandlerState state;
 
 	public SyndHandler(Feed feed, TypeGetter.Type type) {
 		state = new HandlerState(feed);

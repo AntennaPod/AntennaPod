@@ -1,9 +1,7 @@
 package de.test.antennapod.ui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.util.Log;
 
 import junit.framework.Assert;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -39,27 +36,25 @@ import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
  * Utility methods for UI tests.
  * Starts a web server that hosts feeds, episodes and images.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class UITestUtils {
+class UITestUtils {
 
     private static final String TAG = UITestUtils.class.getSimpleName();
 
     private static final String DATA_FOLDER = "test/UITestUtils";
 
-    public static final int NUM_FEEDS = 5;
-    public static final int NUM_ITEMS_PER_FEED = 10;
+    private static final int NUM_FEEDS = 5;
+    private static final int NUM_ITEMS_PER_FEED = 10;
 
-    public static final int HOME_VIEW = (Build.VERSION.SDK_INT >= 11) ? android.R.id.home : R.id.home;
-    public static final String TEST_FILE_NAME = "3sec.mp3";
+    private static final String TEST_FILE_NAME = "3sec.mp3";
 
 
-    private Context context;
-    private HTTPBin server = new HTTPBin();
+    private final Context context;
+    private final HTTPBin server = new HTTPBin();
     private File destDir;
     private File hostedFeedDir;
     private File hostedMediaDir;
 
-    public List<Feed> hostedFeeds = new ArrayList<Feed>();
+    public final List<Feed> hostedFeeds = new ArrayList<>();
 
     public UITestUtils(Context context) {
         this.context = context;
@@ -149,7 +144,7 @@ public class UITestUtils {
             image.setOwner(feed);
 
             // create items
-            List<FeedItem> items = new ArrayList<FeedItem>();
+            List<FeedItem> items = new ArrayList<>();
             for (int j = 0; j < NUM_ITEMS_PER_FEED; j++) {
                 FeedItem item = new FeedItem(j, "Feed " + (i+1) + ": Item " + (j+1), "item" + j,
                         "http://example.com/feed" + i + "/item/" + j, new Date(), FeedItem.UNPLAYED, feed);

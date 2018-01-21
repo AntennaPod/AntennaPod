@@ -3,13 +3,13 @@ package de.danoeh.antennapod.core.gpoddernet.model;
 import android.support.annotation.NonNull;
 
 public class GpodnetPodcast {
-    private String url;
-    private String title;
-    private String description;
-    private int subscribers;
-    private String logoUrl;
-    private String website;
-    private String mygpoLink;
+    private final String url;
+    private final String title;
+    private final String description;
+    private final int subscribers;
+    private final String logoUrl;
+    private final String website;
+    private final String mygpoLink;
 
     public GpodnetPodcast(@NonNull String url,
                           @NonNull String title,

@@ -75,7 +75,7 @@ public class RunningDownloadsFragment extends ListFragment {
     }
 
 
-    private DownloadlistAdapter.ItemAccess itemAccess = new DownloadlistAdapter.ItemAccess() {
+    private final DownloadlistAdapter.ItemAccess itemAccess = new DownloadlistAdapter.ItemAccess() {
         @Override
         public int getCount() {
             return (downloaderList != null) ? downloaderList.size() : 0;

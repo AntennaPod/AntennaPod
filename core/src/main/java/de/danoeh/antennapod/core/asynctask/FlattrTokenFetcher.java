@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.asynctask;
 
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
@@ -23,12 +22,12 @@ import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 
 public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
     private static final String TAG = "FlattrTokenFetcher";
-    Context context;
-    AndroidAuthenticator auth;
-    AccessToken token;
-    Uri uri;
-    ProgressDialog dialog;
-    FlattrException exception;
+    private final Context context;
+    private final AndroidAuthenticator auth;
+    private AccessToken token;
+    private final Uri uri;
+    private ProgressDialog dialog;
+    private FlattrException exception;
 
     public FlattrTokenFetcher(Context context, AndroidAuthenticator auth, Uri uri) {
         super();
@@ -80,13 +79,8 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
         }
     }
 
-    @SuppressLint("NewApi")
     public void executeAsync() {
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            execute();
-        }
+        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 }

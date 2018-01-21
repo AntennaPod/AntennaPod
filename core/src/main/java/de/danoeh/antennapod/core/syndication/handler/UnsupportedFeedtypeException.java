@@ -4,7 +4,7 @@ import de.danoeh.antennapod.core.syndication.handler.TypeGetter.Type;
 
 public class UnsupportedFeedtypeException extends Exception {
 	private static final long serialVersionUID = 9105878964928170669L;
-	private TypeGetter.Type type;
+	private final TypeGetter.Type type;
     private String rootElement;
 	
 	public UnsupportedFeedtypeException(Type type) {

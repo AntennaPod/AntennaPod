@@ -8,11 +8,11 @@ import java.util.Date;
  * Contains information about a feed's items.
  */
 public class FeedItemStatistics {
-    private long feedID;
-    private int numberOfItems;
-    private int numberOfNewItems;
-    private int numberOfInProgressItems;
-    private Date lastUpdate;
+    private final long feedID;
+    private final int numberOfItems;
+    private final int numberOfNewItems;
+    private final int numberOfInProgressItems;
+    private final Date lastUpdate;
     private static final Date UNKNOWN_DATE = new Date(0);
 
 
@@ -26,7 +26,7 @@ public class FeedItemStatistics {
      * @param lastUpdate              pubDate of the latest episode. A lastUpdate value of 0 will be interpreted as DATE_UNKOWN if
      *                                numberOfItems is 0.
      */
-    public FeedItemStatistics(long feedID, int numberOfItems, int numberOfNewItems, int numberOfInProgressItems, Date lastUpdate) {
+    private FeedItemStatistics(long feedID, int numberOfItems, int numberOfNewItems, int numberOfInProgressItems, Date lastUpdate) {
         this.feedID = feedID;
         this.numberOfItems = numberOfItems;
         this.numberOfNewItems = numberOfNewItems;
