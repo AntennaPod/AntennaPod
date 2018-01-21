@@ -47,13 +47,13 @@ import static android.content.Context.MODE_PRIVATE;
 public final class DBTasks {
     private static final String TAG = "DBTasks";
 
-    public static final String PREF_NAME = "dbtasks";
+    private static final String PREF_NAME = "dbtasks";
     private static final String PREF_LAST_REFRESH = "last_refresh";
 
     /**
      * Executor service used by the autodownloadUndownloadedEpisodes method.
      */
-    private static ExecutorService autodownloadExec;
+    private static final ExecutorService autodownloadExec;
 
     static {
         autodownloadExec = Executors.newSingleThreadExecutor(r -> {
@@ -149,7 +149,7 @@ public final class DBTasks {
         }
     }
 
-    private static AtomicBoolean isRefreshing = new AtomicBoolean(false);
+    private static final AtomicBoolean isRefreshing = new AtomicBoolean(false);
 
     /**
      * Refreshes a given list of Feeds in a separate Thread. This method might ignore subsequent calls if it is still
@@ -292,7 +292,7 @@ public final class DBTasks {
      * @param context Used for requesting the download.
      * @param feed    The Feed object.
      */
-    public static void refreshFeed(Context context, Feed feed)
+    private static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
         Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() +")");
         refreshFeed(context, feed, false, false);
@@ -803,7 +803,7 @@ public final class DBTasks {
      */
     abstract static class QueryTask<T> implements Callable<T> {
         private T result;
-        private Context context;
+        private final Context context;
 
         public QueryTask(Context context) {
             this.context = context;
@@ -820,7 +820,7 @@ public final class DBTasks {
 
         public abstract void execute(PodDBAdapter adapter);
 
-        protected void setResult(T result) {
+        void setResult(T result) {
             this.result = result;
         }
     }

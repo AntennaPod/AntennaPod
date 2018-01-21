@@ -21,8 +21,8 @@ public class NSITunes extends Namespace {
 
     private static final String AUTHOR = "author";
     public static final String DURATION = "duration";
-    public static final String SUBTITLE = "subtitle";
-    public static final String SUMMARY = "summary";
+    private static final String SUBTITLE = "subtitle";
+    private static final String SUMMARY = "summary";
 
 
     @Override

@@ -19,37 +19,37 @@ public class DownloadStatus {
 
 	// ----------------------------------- ATTRIBUTES STORED IN DB
 	/** Unique id for storing the object in database. */
-	protected long id;
+    private long id;
 	/**
 	 * A human-readable string which is shown to the user so that he can
 	 * identify the download. Should be the title of the item/feed/media or the
 	 * URL if the download has no other title.
 	 */
-	protected String title;
-	protected DownloadError reason;
+    private final String title;
+	private DownloadError reason;
 	/**
 	 * A message which can be presented to the user to give more information.
 	 * Should be null if Download was successful.
 	 */
-	protected String reasonDetailed;
-	protected boolean successful;
-	protected Date completionDate;
-	protected long feedfileId;
+    private String reasonDetailed;
+	private boolean successful;
+	private Date completionDate;
+	private final long feedfileId;
 	/**
 	 * Is used to determine the type of the feedfile even if the feedfile does
 	 * not exist anymore. The value should be FEEDFILETYPE_FEED,
 	 * FEEDFILETYPE_FEEDIMAGE or FEEDFILETYPE_FEEDMEDIA
 	 */
-	protected int feedfileType;
+    private final int feedfileType;
 
 	// ------------------------------------ NOT STORED IN DB
-	protected boolean done;
-	protected boolean cancelled;
+    private boolean done;
+	private boolean cancelled;
 
 	/** Constructor for restoring Download status entries from DB. */
-	public DownloadStatus(long id, String title, long feedfileId,
-			int feedfileType, boolean successful, DownloadError reason,
-			Date completionDate, String reasonDetailed) {
+    private DownloadStatus(long id, String title, long feedfileId,
+                           int feedfileType, boolean successful, DownloadError reason,
+                           Date completionDate, String reasonDetailed) {
 		this.id = id;
 		this.title = title;
 		this.done = true;

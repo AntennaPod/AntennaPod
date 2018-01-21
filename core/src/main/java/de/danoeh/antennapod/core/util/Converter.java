@@ -71,8 +71,8 @@ public final class Converter {
     	int m = rest / MINUTES_MIL;
     	rest -= m * MINUTES_MIL;
     	int s = rest / SECONDS_MIL;
-    	
-    	return String.format("%02d:%02d:%02d", h, m, s);
+
+    	return String.format(Locale.getDefault(), "%02d:%02d:%02d", h, m, s);
     }
     
     /** Converts milliseconds to a string containing hours and minutes */
@@ -81,7 +81,7 @@ public final class Converter {
     	int rest = duration - h * HOURS_MIL;
     	int m = rest / MINUTES_MIL;
     	
-    	return String.format("%02d:%02d", h, m);
+    	return String.format(Locale.getDefault(), "%02d:%02d", h, m);
     }
 
     /** Converts long duration string (HH:MM:SS) to milliseconds. */

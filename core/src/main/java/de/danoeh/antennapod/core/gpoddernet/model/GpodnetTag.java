@@ -16,7 +16,7 @@ public class GpodnetTag implements Parcelable  {
         this.usage = usage;
     }
 
-    protected GpodnetTag(Parcel in) {
+    private GpodnetTag(Parcel in) {
         title = in.readString();
         tag = in.readString();
         usage = in.readInt();

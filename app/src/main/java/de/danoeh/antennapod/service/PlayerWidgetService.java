@@ -38,7 +38,7 @@ public class PlayerWidgetService extends Service {
     /**
      * Controls write access to playbackservice reference
      */
-    private Object psLock;
+    private final Object psLock = new Object();
 
     /**
      * True while service is updating the widget
@@ -53,7 +53,6 @@ public class PlayerWidgetService extends Service {
         super.onCreate();
         Log.d(TAG, "Service created");
         isUpdating = false;
-        psLock = new Object();
     }
 
     @Override
@@ -194,7 +193,7 @@ public class PlayerWidgetService extends Service {
         }
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private final ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             Log.d(TAG, "Connection to service established");
             synchronized (psLock) {
@@ -224,7 +223,7 @@ public class PlayerWidgetService extends Service {
 
     class ViewUpdater extends Thread {
         private static final String THREAD_NAME = "ViewUpdater";
-        private PlayerWidgetService service;
+        private final PlayerWidgetService service;
 
         public ViewUpdater(PlayerWidgetService service) {
             super();

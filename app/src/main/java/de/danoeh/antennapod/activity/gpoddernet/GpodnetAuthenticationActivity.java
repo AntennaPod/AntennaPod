@@ -61,7 +61,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
     private volatile String password;
     private volatile GpodnetDevice selectedDevice;
 
-    View[] views;
+    private View[] views;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

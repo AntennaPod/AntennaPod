@@ -7,14 +7,14 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
-public class ShakeListener implements SensorEventListener
+class ShakeListener implements SensorEventListener
 {
     private static final String TAG = ShakeListener.class.getSimpleName();
 
     private Sensor mAccelerometer;
     private SensorManager mSensorMgr;
-    private PlaybackServiceTaskManager.SleepTimer mSleepTimer;
-    private Context mContext;
+    private final PlaybackServiceTaskManager.SleepTimer mSleepTimer;
+    private final Context mContext;
 
     public ShakeListener(Context context, PlaybackServiceTaskManager.SleepTimer sleepTimer) {
         mContext = context;
@@ -22,7 +22,7 @@ public class ShakeListener implements SensorEventListener
         resume();
     }
 
-    public void resume() {
+    private void resume() {
         // only a precaution, the user should actually not be able to activate shake to reset
         // when the accelerometer is not available
         mSensorMgr = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);

@@ -44,7 +44,7 @@ public final class DBReader {
     /**
      * Maximum size of the list returned by {@link #getDownloadLog()}.
      */
-    public static final int DOWNLOAD_LOG_SIZE = 200;
+    private static final int DOWNLOAD_LOG_SIZE = 200;
 
 
     private DBReader() {
@@ -120,7 +120,7 @@ public final class DBReader {
         loadFeedDataOfFeedItemList(items);
     }
 
-    public static void loadTagsOfFeedItemList(List<FeedItem> items) {
+    private static void loadTagsOfFeedItemList(List<FeedItem> items) {
         LongList favoriteIds = getFavoriteIDList();
         LongList queueIds = getQueueIDList();
 
@@ -141,7 +141,7 @@ public final class DBReader {
      *
      * @param items The FeedItems whose Feed-objects should be loaded.
      */
-    public static void loadFeedDataOfFeedItemList(List<FeedItem> items) {
+    private static void loadFeedDataOfFeedItemList(List<FeedItem> items) {
         List<Feed> feeds = getFeedList();
 
         Map<Long, Feed> feedIndex = new ArrayMap<>(feeds.size());
@@ -412,7 +412,7 @@ public final class DBReader {
         }
     }
 
-    public static LongList getFavoriteIDList() {
+    private static LongList getFavoriteIDList() {
         Log.d(TAG, "getFavoriteIDList() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -663,7 +663,7 @@ public final class DBReader {
         }
     }
 
-    static FeedItem getFeedItem(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
+    private static FeedItem getFeedItem(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
         Log.d(TAG, "Loading feeditem with podcast url " + podcastUrl + " and episode url " + episodeUrl);
         Cursor cursor = null;
         try {
@@ -797,7 +797,7 @@ public final class DBReader {
         }
     }
 
-    static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
+    private static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
         Cursor cursor = null;
         try {
             cursor = adapter.getSimpleChaptersOfFeedItemCursor(item);
@@ -1023,14 +1023,14 @@ public final class DBReader {
         /**
          * Simply sums up time of podcasts that are marked as played
          */
-        public long totalTimeCountAll;
+        public final long totalTimeCountAll;
 
         /**
          * Respects speed, listening twice, ...
          */
-        public long totalTime;
+        public final long totalTime;
 
-        public List<StatisticsItem> feedTime;
+        public final List<StatisticsItem> feedTime;
 
         public StatisticsData(long totalTime, long totalTimeCountAll, List<StatisticsItem> feedTime) {
             this.totalTime = totalTime;
@@ -1040,26 +1040,26 @@ public final class DBReader {
     }
 
     public static class StatisticsItem {
-        public Feed feed;
-        public long time;
+        public final Feed feed;
+        public final long time;
 
         /**
          * Respects speed, listening twice, ...
          */
-        public long timePlayed;
+        public final long timePlayed;
         /**
          * Simply sums up time of podcasts that are marked as played
          */
-        public long timePlayedCountAll;
-        public long episodes;
+        public final long timePlayedCountAll;
+        public final long episodes;
         /**
          * Episodes that are actually played
          */
-        public long episodesStarted;
+        public final long episodesStarted;
         /**
          * All episodes that are marked as played (or have position != 0)
          */
-        public long episodesStartedIncludingMarked;
+        public final long episodesStartedIncludingMarked;
 
         public StatisticsItem(Feed feed, long time, long timePlayed, long timePlayedCountAll,
                               long episodes, long episodesStarted, long episodesStartedIncludingMarked) {
@@ -1195,12 +1195,12 @@ public final class DBReader {
     }
 
     public static class NavDrawerData {
-        public List<Feed> feeds;
-        public int queueSize;
-        public int numNewItems;
-        public int numDownloadedItems;
-        public LongIntMap feedCounters;
-        public int reclaimableSpace;
+        public final List<Feed> feeds;
+        public final int queueSize;
+        public final int numNewItems;
+        public final int numDownloadedItems;
+        public final LongIntMap feedCounters;
+        public final int reclaimableSpace;
 
         public NavDrawerData(List<Feed> feeds,
                              int queueSize,

@@ -96,7 +96,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testClickNavDrawer() throws Exception {
         uiTestUtils.addLocalFeedData(false);
 
-        UserPreferences.setHiddenDrawerItems(new ArrayList<String>());
+        UserPreferences.setHiddenDrawerItems(new ArrayList<>());
 
         // queue
         openNavDrawer();
@@ -159,7 +159,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     public void testDrawerPreferencesHideSomeElements() {
-        UserPreferences.setHiddenDrawerItems(new ArrayList<String>());
+        UserPreferences.setHiddenDrawerItems(new ArrayList<>());
         openNavDrawer();
         solo.clickLongOnText(solo.getString(R.string.queue_label));
         solo.waitForDialogToOpen();
@@ -190,7 +190,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     public void testDrawerPreferencesHideAllElements() {
-        UserPreferences.setHiddenDrawerItems(new ArrayList<String>());
+        UserPreferences.setHiddenDrawerItems(new ArrayList<>());
         String[] titles = getInstrumentation().getTargetContext().getResources().getStringArray(R.array.nav_drawer_titles);
 
         openNavDrawer();
@@ -209,7 +209,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     public void testDrawerPreferencesHideCurrentElement() {
-        UserPreferences.setHiddenDrawerItems(new ArrayList<String>());
+        UserPreferences.setHiddenDrawerItems(new ArrayList<>());
 
         openNavDrawer();
         String downloads = solo.getString(R.string.downloads_label);

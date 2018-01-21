@@ -15,9 +15,9 @@ public abstract class ConfirmationDialog {
 
 	private static final String TAG = ConfirmationDialog.class.getSimpleName();
 
-	protected Context context;
-	private int titleId;
-	private String message;
+	private final Context context;
+	private final int titleId;
+	private final String message;
 
 	private int positiveText;
 	private int negativeText;
@@ -32,7 +32,7 @@ public abstract class ConfirmationDialog {
 		this.message = message;
 	}
 
-	public void onCancelButtonPressed(DialogInterface dialog) {
+	private void onCancelButtonPressed(DialogInterface dialog) {
 		Log.d(TAG, "Dialog was cancelled");
 		dialog.dismiss();
 	}

@@ -100,7 +100,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.txtvDuration = (TextView) view.findViewById(R.id.txtvDuration);
         holder.item = null;
         holder.mainActivityRef = mainActivityRef;
-        holder.position = -1;
         // so we can grab this later
         view.setTag(holder);
 
@@ -112,11 +111,10 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         final FeedItem item = itemAccess.getItem(position);
         if (item == null) return;
         holder.itemView.setOnLongClickListener(v -> {
-            this.position = position;
+            this.position = holder.getAdapterPosition();
             return false;
         });
         holder.item = item;
-        holder.position = position;
         holder.placeholder.setVisibility(View.VISIBLE);
         holder.placeholder.setText(item.getFeed().getTitle());
         holder.title.setText(item.getTitle());
@@ -227,7 +225,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         return pos;
     }
 
-    private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
+    private final View.OnClickListener secondaryActionListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();
@@ -252,7 +250,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         ImageButton butSecondary;
         FeedItem item;
         WeakReference<MainActivity> mainActivityRef;
-        int position;
 
         public Holder(View itemView) {
             super(itemView);
@@ -265,7 +262,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             MainActivity mainActivity = mainActivityRef.get();
             if (mainActivity != null) {
                 long[] ids = itemAccess.getItemsIds().toArray();
-                mainActivity.loadChildFragment(ItemFragment.newInstance(ids, position));
+                mainActivity.loadChildFragment(ItemFragment.newInstance(ids, getAdapterPosition()));
             }
         }
 

@@ -75,7 +75,7 @@ public class ItunesSearchFragment extends Fragment {
      * Replace adapter data with provided search results from SearchTask.
      * @param result List of Podcast objects containing search results
      */
-    void updateData(List<Podcast> result) {
+    private void updateData(List<Podcast> result) {
         this.searchResults = result;
         adapter.clear();
         if (result != null && result.size() > 0) {

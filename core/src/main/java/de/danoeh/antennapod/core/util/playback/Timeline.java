@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,22 +43,22 @@ public class Timeline {
     private final int pageMargin;
 
     public Timeline(Context context, ShownotesProvider shownotesProvider) {
-        if (shownotesProvider == null) throw new IllegalArgumentException("shownotesProvider = null");
+        if (shownotesProvider == null) {
+            throw new IllegalArgumentException("shownotesProvider = null");
+        }
         this.shownotesProvider = shownotesProvider;
 
         noShownotesLabel = context.getString(R.string.no_shownotes_label);
 
-        TypedArray res = context.getTheme().obtainStyledAttributes(
-                new int[]{ android.R.attr.textColorPrimary});
+        TypedArray res = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.textColorPrimary});
         @ColorInt int col = res.getColor(0, 0);
         colorPrimaryString = "rgba(" + Color.red(col) + "," + Color.green(col) + "," +
-                Color.blue(col) + "," + (Color.alpha(col)/256.0) + ")";
+                Color.blue(col) + "," + (Color.alpha(col) / 255.0) + ")";
         res.recycle();
-        res = context.getTheme().obtainStyledAttributes(
-                new int[]{android.R.attr.textColorSecondary});
+        res = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.textColorSecondary});
         col = res.getColor(0, 0);
         colorSecondaryString = "rgba(" + Color.red(col) + "," + Color.green(col) + "," +
-                Color.blue(col) + "," + (Color.alpha(col)/256.0) + ")";
+                Color.blue(col) + "," + (Color.alpha(col) / 255.0) + ")";
         res.recycle();
 
         pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
@@ -93,9 +94,9 @@ public class Timeline {
             return null;
         }
 
-        if(TextUtils.isEmpty(shownotes)) {
+        if (TextUtils.isEmpty(shownotes)) {
             Log.d(TAG, "shownotesProvider contained no shownotes. Returning 'no shownotes' message");
-            shownotes ="<html>" +
+            shownotes = "<html>" +
                     "<head>" +
                     "<style type='text/css'>" +
                     "html, body { margin: 0; padding: 0; width: 100%; height: 100%; } " +
@@ -113,15 +114,15 @@ public class Timeline {
         }
 
         // replace ASCII line breaks with HTML ones if shownotes don't contain HTML line breaks already
-        if(!LINE_BREAK_REGEX.matcher(shownotes).find() && !shownotes.contains("<p>")) {
+        if (!LINE_BREAK_REGEX.matcher(shownotes).find() && !shownotes.contains("<p>")) {
             shownotes = shownotes.replace("\n", "<br />");
         }
 
         Document document = Jsoup.parse(shownotes);
 
         // apply style
-        String styleStr = String.format(WEBVIEW_STYLE, colorPrimaryString, "100%", pageMargin,
-                pageMargin, pageMargin, pageMargin);
+        String styleStr = String.format(Locale.getDefault(), WEBVIEW_STYLE, colorPrimaryString, "100%",
+                pageMargin, pageMargin, pageMargin, pageMargin);
         document.head().appendElement("style").attr("type", "text/css").text(styleStr);
 
         // apply timecode links
@@ -139,7 +140,7 @@ public class Timeline {
 
                     String rep;
                     if (playable == null || playable.getDuration() > time) {
-                        rep = String.format(TIMECODE_LINK, time, group);
+                        rep = String.format(Locale.getDefault(), TIMECODE_LINK, time, group);
                     } else {
                         rep = group;
                     }
@@ -150,7 +151,7 @@ public class Timeline {
                 element.html(buffer.toString());
             }
         }
-        
+
         return document.toString();
     }
 

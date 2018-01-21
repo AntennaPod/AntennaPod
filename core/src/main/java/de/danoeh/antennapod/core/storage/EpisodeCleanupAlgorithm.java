@@ -15,7 +15,7 @@ public abstract class EpisodeCleanupAlgorithm {
      *                    or getPerformCleanupParameter.
      * @return The number of episodes that were deleted.
      */
-    public abstract int performCleanup(Context context, int numToRemove);
+    protected abstract int performCleanup(Context context, int numToRemove);
 
     public int performCleanup(Context context) {
         return performCleanup(context, getDefaultCleanupParameter());
@@ -26,7 +26,7 @@ public abstract class EpisodeCleanupAlgorithm {
      * space to free to satisfy the episode cache conditions. If the conditions are already satisfied, this
      * method should not have any effects.
      */
-    public abstract int getDefaultCleanupParameter();
+    protected abstract int getDefaultCleanupParameter();
 
     /**
      * Cleans up just enough episodes to make room for the requested number
@@ -48,7 +48,7 @@ public abstract class EpisodeCleanupAlgorithm {
      * @param amountOfRoomNeeded the number of episodes we want to download
      * @return the number of episodes to delete in order to make room
      */
-    protected int getNumEpisodesToCleanup(final int amountOfRoomNeeded) {
+    int getNumEpisodesToCleanup(final int amountOfRoomNeeded) {
         if (amountOfRoomNeeded >= 0
                 && UserPreferences.getEpisodeCacheSize() != UserPreferences
                 .getEpisodeCacheSizeUnlimited()) {

@@ -9,8 +9,8 @@ public class FeedFilter {
 
     private static final String TAG = "FeedFilter";
 
-    private String includeFilter;
-    private String excludeFilter;
+    private final String includeFilter;
+    private final String excludeFilter;
 
     public FeedFilter() {
         this("", "");

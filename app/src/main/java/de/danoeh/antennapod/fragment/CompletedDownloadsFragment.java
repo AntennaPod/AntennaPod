@@ -168,7 +168,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
     }
 
-    private DownloadedEpisodesListAdapter.ItemAccess itemAccess = new DownloadedEpisodesListAdapter.ItemAccess() {
+    private final DownloadedEpisodesListAdapter.ItemAccess itemAccess = new DownloadedEpisodesListAdapter.ItemAccess() {
         @Override
         public int getCount() {
             return (items != null) ? items.size() : 0;
@@ -189,7 +189,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
     };
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
