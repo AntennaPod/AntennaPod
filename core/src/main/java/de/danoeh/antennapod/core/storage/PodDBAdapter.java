@@ -1331,10 +1331,7 @@ public class PodDBAdapter {
         if (size == 1) {
             return "(?)";
         }
-        String builder = "(" +
-                TextUtils.join(",", Collections.nCopies(size, "?")) +
-                ")";
-        return builder;
+        return "(" + TextUtils.join(",", Collections.nCopies(size, "?")) + ")";
     }
 
     public final Cursor getFeedCursor(final long id) {
