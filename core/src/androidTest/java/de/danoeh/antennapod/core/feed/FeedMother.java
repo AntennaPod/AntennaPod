@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.feed;
 
 import static de.danoeh.antennapod.core.feed.FeedImageMother.anyFeedImage;
 
-public class FeedMother {
+class FeedMother {
 
     public static Feed anyFeed() {
         FeedImage image = anyFeedImage();

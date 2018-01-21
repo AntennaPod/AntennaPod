@@ -382,8 +382,8 @@ public class DBWriter {
                                 // add item to either front ot back of queue
                                 boolean addToFront = UserPreferences.enqueueAtFront();
                                 if (addToFront) {
-                                    queue.add(0 + i, item);
-                                    events.add(QueueEvent.added(item, 0 + i));
+                                    queue.add(i, item);
+                                    events.add(QueueEvent.added(item, i));
                                 } else {
                                     queue.add(item);
                                     events.add(QueueEvent.added(item, queue.size() - 1));
@@ -838,9 +838,9 @@ public class DBWriter {
      *
      * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
      */
-    public static Future<?> setFeedItemFlattrStatus(final Context context,
-                                                    final FeedItem item,
-                                                    final boolean startFlattrClickWorker) {
+    private static Future<?> setFeedItemFlattrStatus(final Context context,
+                                                     final FeedItem item,
+                                                     final boolean startFlattrClickWorker) {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();

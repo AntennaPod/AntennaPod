@@ -17,7 +17,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.ShareUtils;
@@ -155,7 +154,7 @@ public class FeedItemMenuHandler {
     }
 
     public static boolean onMenuItemClicked(Context context, int menuItemId,
-                                            FeedItem selectedItem) throws DownloadRequestException {
+                                            FeedItem selectedItem) {
         switch (menuItemId) {
             case R.id.skip_episode_item:
                 context.sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));

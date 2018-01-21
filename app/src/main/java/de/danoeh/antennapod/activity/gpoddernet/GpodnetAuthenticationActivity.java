@@ -61,7 +61,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
     private volatile String password;
     private volatile GpodnetDevice selectedDevice;
 
-    View[] views;
+    private View[] views;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,11 +171,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
                         return null;
                     }
                 };
-                if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-                    authTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, service);
-                } else {
-                    authTask.execute();
-                }
+                authTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, service);
             }
         });
     }

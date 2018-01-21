@@ -64,8 +64,8 @@ public class NSAtom extends Namespace {
     private static final String isText = TITLE + "|" + CONTENT + "|"
             + SUBTITLE + "|" + SUMMARY;
 
-    public static final String isFeed = FEED + "|" + NSRSS20.CHANNEL;
-    public static final String isFeedItem = ENTRY + "|" + NSRSS20.ITEM;
+    private static final String isFeed = FEED + "|" + NSRSS20.CHANNEL;
+    private static final String isFeedItem = ENTRY + "|" + NSRSS20.ITEM;
 
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,

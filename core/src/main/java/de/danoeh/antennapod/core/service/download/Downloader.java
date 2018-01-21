@@ -14,14 +14,14 @@ import de.danoeh.antennapod.core.R;
 public abstract class Downloader implements Callable<Downloader> {
     private static final String TAG = "Downloader";
 
-    protected volatile boolean finished;
+    private volatile boolean finished;
 
-    protected volatile boolean cancelled;
+    volatile boolean cancelled;
 
-    protected DownloadRequest request;
-    protected DownloadStatus result;
+    final DownloadRequest request;
+    final DownloadStatus result;
 
-    public Downloader(DownloadRequest request) {
+    Downloader(DownloadRequest request) {
         super();
         this.request = request;
         this.request.setStatusMsg(R.string.download_pending);
@@ -33,7 +33,7 @@ public abstract class Downloader implements Callable<Downloader> {
 
     public final Downloader call() {
         WifiManager wifiManager = (WifiManager)
-                ClientConfig.applicationCallbacks.getApplicationInstance().getSystemService(Context.WIFI_SERVICE);
+                ClientConfig.applicationCallbacks.getApplicationInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiManager.WifiLock wifiLock = null;
         if (wifiManager != null) {
             wifiLock = wifiManager.createWifiLock(TAG);

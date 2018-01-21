@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -18,15 +19,18 @@ import de.danoeh.antennapod.dialog.VariableSpeedDialog;
  * Activity for playing audio files.
  */
 public class AudioplayerActivity extends MediaplayerInfoActivity {
-    public static final String TAG = "AudioPlayerActivity";
+    private static final String TAG = "AudioPlayerActivity";
 
-    private AtomicBoolean isSetup = new AtomicBoolean(false);
+    private final AtomicBoolean isSetup = new AtomicBoolean(false);
 
     @Override
     protected void onResume() {
         super.onResume();
         if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
             Intent intent = getIntent();
+            if (intent.getData() == null) {
+                return;
+            }
             Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
             ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
                     MediaType.AUDIO);
@@ -40,7 +44,8 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             startService(launchIntent);
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
-            if (!intent.getComponent().getClassName().equals(AudioplayerActivity.class.getName())) {
+            if (intent.getComponent() != null &&
+                    !intent.getComponent().getClassName().equals(AudioplayerActivity.class.getName())) {
                 saveCurrentFragment();
                 finish();
                 startActivity(intent);
@@ -95,7 +100,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                 UserPreferences.setPlaybackSpeed(String.valueOf(speed));
             }
         }
-        String speedStr = String.format("%.2fx", speed);
+        String speedStr = new DecimalFormat("0.00x").format(speed);
         butPlaybackSpeed.setText(speedStr);
     }
 

@@ -8,7 +8,7 @@ import java.util.Arrays;
 public final class IntList {
 
     private int[] values;
-    protected int size;
+    private int size;
 
     /**
      * Constructs an empty instance with a default initial capacity.
@@ -22,7 +22,7 @@ public final class IntList {
      *
      * @param initialCapacity {@code >= 0;} initial capacity of the list
      */
-    public IntList(int initialCapacity) {
+    private IntList(int initialCapacity) {
         if(initialCapacity < 0) {
             throw new IllegalArgumentException("initial capacity must be 0 or higher");
         }
@@ -200,7 +200,7 @@ public final class IntList {
      * @param value value to find
      * @return index of value or -1
      */
-    public int indexOf(int value) {
+    private int indexOf(int value) {
         for (int i = 0; i < size; i++) {
             if (values[i] == value) {
                 return i;

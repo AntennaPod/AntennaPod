@@ -61,7 +61,6 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -73,16 +72,17 @@ import rx.schedulers.Schedulers;
  */
 public abstract class MediaplayerInfoActivity extends MediaplayerActivity implements NavDrawerActivity {
 
+    private static final String TAG = "MediaplayerInfoActivity";
+
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
 
-    final String TAG = "MediaplayerInfoActivity";
     private static final String PREFS = "AudioPlayerActivityPreferences";
     private static final String PREF_KEY_SELECTED_FRAGMENT_POSITION = "selectedFragmentPosition";
 
-    public static final String[] NAV_DRAWER_TAGS = {
+    private static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
             EpisodesFragment.TAG,
             SubscriptionFragment.TAG,
@@ -92,8 +92,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
-    protected Button butPlaybackSpeed;
-    protected ImageButton butCastDisconnect;
+    Button butPlaybackSpeed;
+    ImageButton butCastDisconnect;
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
     private ListView navList;
@@ -152,7 +152,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         setTheme(UserPreferences.getNoTitleTheme());
     }
 
-    protected void saveCurrentFragment() {
+    void saveCurrentFragment() {
         if(pager == null) {
             return;
         }
@@ -160,7 +160,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         prefs.edit()
                 .putInt(PREF_KEY_SELECTED_FRAGMENT_POSITION, pager.getCurrentItem())
-                .commit();
+                .apply();
     }
 
     @Override
@@ -242,7 +242,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerToggle.setDrawerIndicatorEnabled(false);
-        drawerLayout.setDrawerListener(drawerToggle);
+        drawerLayout.addDrawerListener(drawerToggle);
 
         navAdapter = new NavListAdapter(itemAccess, this);
         navList.setAdapter(navAdapter);
@@ -270,7 +270,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
         findViewById(R.id.nav_settings).setOnClickListener(v -> {
             drawerLayout.closeDrawer(navDrawer);
-            startActivity(new Intent(MediaplayerInfoActivity.this, PreferenceController.getPreferenceActivity()));
+            startActivity(new Intent(MediaplayerInfoActivity.this, PreferenceActivity.class));
         });
 
         butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
@@ -306,7 +306,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         return true;
     }
 
-    public void notifyMediaPositionChanged() {
+    private void notifyMediaPositionChanged() {
         if(pagerAdapter == null) {
             return;
         }
@@ -396,12 +396,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 new RenameFeedDialog(this, feed).show();
                 return true;
             case R.id.remove_item:
-                final FeedRemover remover = new FeedRemover(this, feed) {
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        super.onPostExecute(result);
-                    }
-                };
+                final FeedRemover remover = new FeedRemover(this, feed);
                 ConfirmationDialog conDialog = new ConfirmationDialog(this,
                         R.string.remove_feed_label,
                         getString(R.string.feed_delete_confirmation_msg, feed.getTitle())) {
@@ -413,7 +408,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                             Playable playable = controller.getMedia();
                             if (playable != null && playable instanceof FeedMedia) {
                                 FeedMedia media = (FeedMedia) playable;
-                                if (media.getItem().getFeed().getId() == feed.getId()) {
+                                if (media.getItem() != null && media.getItem().getFeed() != null &&
+                                        media.getItem().getFeed().getId() == feed.getId()) {
                                     Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
                                     remover.skipOnCompletion = true;
                                     if(controller.getStatus() == PlayerStatus.PLAYING) {
@@ -447,7 +443,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         }
     }
 
-    public void showDrawerPreferencesDialog() {
+    private void showDrawerPreferencesDialog() {
         final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         String[] navLabels = new String[NAV_DRAWER_TAGS.length];
         final boolean[] checked = new boolean[NAV_DRAWER_TAGS.length];
@@ -492,14 +488,12 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         View parentLayout = findViewById(R.id.drawer_layout);
         Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);
         if (event.action != null) {
-            snackbar.setAction(getString(R.string.undo), v -> {
-                event.action.run();
-            });
+            snackbar.setAction(getString(R.string.undo), v -> event.action.run());
         }
         snackbar.show();
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {

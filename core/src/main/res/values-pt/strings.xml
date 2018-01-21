@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Novos</string>
   <string name="settings_label">Definições</string>
-  <string name="add_new_feed_label">Adicionar podcast</string>
   <string name="downloads_label">Descargas</string>
   <string name="downloads_running_label">Em curso</string>
   <string name="downloads_completed_label">Terminada</string>
@@ -115,6 +114,7 @@
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_label">Partilhar...</string>
   <string name="share_link_label">Partilhar ligação</string>
+  <string name="share_file_label">Partilhar ficheiro</string>
   <string name="share_link_with_position_label">Partilhar ligação com posição</string>
   <string name="share_feed_url_label">Partilhar URL da fonte</string>
   <string name="share_item_url_label">Partilhar URL do episódio</string>
@@ -143,6 +143,7 @@
   <string name="stream_label">Emitir</string>
   <string name="remove_label">Remover</string>
   <string name="delete_label">Apagar</string>
+  <string name="delete_failed">Episódio não apagado. Experimente reiniciar o dispositivo.</string>
   <string name="remove_episode_lable">Remover episódio</string>
   <string name="marked_as_seen_label">Marcar como visto</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
@@ -266,7 +267,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Descarregar extra</string>
   <string name="no_playback_plugin_title">Extra não instalado</string>
-  <string name="no_playback_plugin_or_sonic_msg">Para que a velocidade variável de reprodução funcione, recomendamos que ative o Sonic Media Player incorporado [Android 4.1+].\n\nEm alternativa, pode transferir o extra <i>Prestissimo</i>, disponível na Google Play.\nQuaisquer problemas que ocorram com o Prestissimo não são da responsabilidade dos programadores do AntennaPod e devem ser reportados ao dono do extra.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Para que a velocidade variável de reprodução funcione, recomendamos que ative o Sonic Media Player incorporado [Android 4.1+].\n\nEm alternativa, pode descarregar o extra <i>Prestissimo</i>, disponível na Google Play.\nQuaisquer problemas que ocorram com o Prestissimo não são da responsabilidade dos programadores do AntennaPod e devem ser reportados ao dono do extra.</string>
   <string name="set_playback_speed_label">Velocidades de reprodução</string>
   <string name="enable_sonic">Ativar Sonic</string>
   <!--Empty list labels-->
@@ -298,6 +299,8 @@
   <string name="pref_smart_mark_as_played_title">Marcar como reproduzido (inteligente)</string>
   <string name="pref_skip_keeps_episodes_sum">Manter episódios mesmo que tenham sido ignorados</string>
   <string name="pref_skip_keeps_episodes_title">Manter episódios ignorados</string>
+  <string name="pref_favorite_keeps_episodes_sum">Manter episódios se forem assinalados como favoritos</string>
+  <string name="pref_favorite_keeps_episodes_title">Manter episódios favoritos</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalo de atualização ou hora do dia</string>
@@ -341,6 +344,8 @@
   <string name="pref_automatic_download_sum">Configurar a descarga automática dos episódios</string>
   <string name="pref_autodl_wifi_filter_title">Ativar filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Apenas permitir descargas automáticas através de redes sem fios</string>
+  <string name="pref_autodl_allow_on_mobile_title">Descarregar através de dados móveis</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Permitir descargas automáticas através de ligações de dados móveis.</string>
   <string name="pref_automatic_download_on_battery_title">Descarregar se não estiver a carregar</string>
   <string name="pref_automatic_download_on_battery_sum">Permitir descarga automática se a bateria não estiver a ser carregada</string>
   <string name="pref_parallel_downloads_title">Descargas simultâneas</string>
@@ -408,7 +413,7 @@
   <string name="pref_cast_title">Suporte Chromecast</string>
   <string name="pref_cast_message_play_flavor">Ativar suporte a reprodução multimédia em dispositivos Cast (tais como Chromecast, Android TV...)</string>
   <string name="pref_cast_message_free_flavor">O Chromecast necessita de bibliotecas proprietárias de terceiros que estão desativadas nesta versão do AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Colocar descarregados na fila</string>
+  <string name="pref_enqueue_downloaded_title">Colocar descargas na fila</string>
   <string name="pref_enqueue_downloaded_summary">Adicionar à fila os episódios descarregados</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>

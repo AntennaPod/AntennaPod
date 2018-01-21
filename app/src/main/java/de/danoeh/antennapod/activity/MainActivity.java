@@ -64,7 +64,6 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Subscription;
@@ -83,7 +82,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
-    public static final String PREF_LAST_FRAGMENT_TAG = "prefMainActivityLastFragmentTag";
+    private static final String PREF_LAST_FRAGMENT_TAG = "prefMainActivityLastFragmentTag";
 
     public static final String EXTRA_NAV_TYPE = "nav_type";
     public static final String EXTRA_NAV_INDEX = "nav_index";
@@ -91,8 +90,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
 
-    public static final String SAVE_BACKSTACK_COUNT = "backstackCount";
-    public static final String SAVE_TITLE = "title";
+    private static final String SAVE_BACKSTACK_COUNT = "backstackCount";
+    private static final String SAVE_TITLE = "title";
 
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
@@ -173,7 +172,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         findViewById(R.id.nav_settings).setOnClickListener(v -> {
             drawerLayout.closeDrawer(navDrawer);
-            startActivity(new Intent(MainActivity.this, PreferenceController.getPreferenceActivity()));
+            startActivity(new Intent(MainActivity.this, PreferenceActivity.class));
         });
 
         FragmentTransaction transaction = fm.beginTransaction();
@@ -236,7 +235,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
-    public void showDrawerPreferencesDialog() {
+    private void showDrawerPreferencesDialog() {
         final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         String[] navLabels = new String[NAV_DRAWER_TAGS.length];
         final boolean[] checked = new boolean[NAV_DRAWER_TAGS.length];
@@ -270,7 +269,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         return (navDrawerData != null) ? navDrawerData.feeds : null;
     }
 
-    public void loadFragment(int index, Bundle args) {
+    private void loadFragment(int index, Bundle args) {
         Log.d(TAG, "loadFragment(index: " + index + ", args: " + args + ")");
         if (index < navAdapter.getSubscriptionOffset()) {
             String tag = navAdapter.getTags().get(index);
@@ -399,7 +398,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
-    private AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
+    private final AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int viewType = parent.getAdapter().getItemViewType(position);
@@ -410,7 +409,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     };
 
-    private AdapterView.OnItemLongClickListener newListLongClickListener = new AdapterView.OnItemLongClickListener() {
+    private final AdapterView.OnItemLongClickListener newListLongClickListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             if(position < navAdapter.getTags().size()) {
@@ -631,7 +630,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private DBReader.NavDrawerData navDrawerData;
     private int selectedNavListIndex = 0;
 
-    private NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
+    private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override
         public int getCount() {
             if (navDrawerData != null) {
@@ -744,14 +743,12 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         View parentLayout = findViewById(R.id.drawer_layout);
         Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);
         if(event.action != null) {
-            snackbar.setAction(getString(R.string.undo), v -> {
-                event.action.run();
-            });
+            snackbar.setAction(getString(R.string.undo), v -> event.action.run());
         }
         snackbar.show();
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {

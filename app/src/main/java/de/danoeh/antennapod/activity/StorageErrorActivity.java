@@ -164,7 +164,7 @@ public class StorageErrorActivity extends AppCompatActivity {
 		startActivity(new Intent(this, MainActivity.class));
 	}
 
-	private BroadcastReceiver mediaUpdate = new BroadcastReceiver() {
+	private final BroadcastReceiver mediaUpdate = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {

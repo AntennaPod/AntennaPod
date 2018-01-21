@@ -54,7 +54,7 @@ public class RatingDialog {
         }
     }
 
-    public static void rateNow() {
+    private static void rateNow() {
         Context context = mContext.get();
         if(context == null) {
             return;
@@ -67,11 +67,11 @@ public class RatingDialog {
         saveRated();
     }
 
-    public static boolean rated() {
+    private static boolean rated() {
         return mPreferences.getBoolean(KEY_RATED, false);
     }
 
-    public static void saveRated() {
+    private static void saveRated() {
         mPreferences
                 .edit()
                 .putBoolean(KEY_RATED, true)

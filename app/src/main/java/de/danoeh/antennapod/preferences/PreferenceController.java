@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import de.danoeh.antennapod.activity.ImportExportActivity;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -45,7 +46,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -56,8 +56,6 @@ import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
@@ -93,12 +91,13 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
     private static final String PREF_HTML_EXPORT = "prefHtmlExport";
     private static final String STATISTICS = "statistics";
+    private static final String IMPORT_EXPORT = "importExport";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
     private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
-    public static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
-    public static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
+    private static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
+    private static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
     private static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
     private static final String PREF_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
     private static final String PREF_GPODNET_SYNC = "pref_gpodnet_sync";
@@ -130,19 +129,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         this.ui = ui;
         PreferenceManager.getDefaultSharedPreferences(ui.getActivity().getApplicationContext())
             .registerOnSharedPreferenceChangeListener(this);
-    }
-
-    /**
-     * Returns the preference activity that should be used on this device.
-     *
-     * @return PreferenceActivity if the API level is greater than 10, PreferenceActivityGingerbread otherwise.
-     */
-    public static Class<? extends Activity> getPreferenceActivity() {
-        if (Build.VERSION.SDK_INT > 10) {
-            return PreferenceActivity.class;
-        } else {
-            return PreferenceActivityGingerbread.class;
-        }
     }
 
     @Override
@@ -189,6 +175,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     return true;
                 }
         );
+        ui.findPreference(PreferenceController.IMPORT_EXPORT).setOnPreferenceClickListener(
+                preference -> {
+                    activity.startActivity(new Intent(activity, ImportExportActivity.class));
+                    return true;
+                }
+        );
         ui.findPreference(PreferenceController.PREF_OPML_EXPORT).setOnPreferenceClickListener(
                 preference -> export(new OpmlWriter()));
         ui.findPreference(PreferenceController.PREF_HTML_EXPORT).setOnPreferenceClickListener(
@@ -230,12 +222,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
                             Intent i = new Intent(activity, MainActivity.class);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                        | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            } else {
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            }
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    | Intent.FLAG_ACTIVITY_NEW_TASK);
                             activity.finish();
                             activity.startActivity(i);
                             return true;
@@ -513,7 +501,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     alert.setTitle(R.string.export_error_label);
                     alert.setMessage(error.getMessage());
                     alert.show();
-                }, () -> progressDialog.dismiss());
+                }, progressDialog::dismiss);
         return true;
     }
 
@@ -786,61 +774,56 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         WifiManager wifiservice = (WifiManager) activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         List<WifiConfiguration> networks = wifiservice.getConfiguredNetworks();
 
-        if (networks != null) {
-            Collections.sort(networks, new Comparator<WifiConfiguration>() {
-                @Override
-                public int compare(WifiConfiguration x, WifiConfiguration y) {
-                    return x.SSID.compareTo(y.SSID);
-                }
-            });
-            selectedNetworks = new CheckBoxPreference[networks.size()];
-            List<String> prefValues = Arrays.asList(UserPreferences
-                    .getAutodownloadSelectedNetworks());
-            PreferenceScreen prefScreen = (PreferenceScreen) ui.findPreference(PreferenceController.AUTO_DL_PREF_SCREEN);
-            Preference.OnPreferenceClickListener clickListener = preference -> {
-                if (preference instanceof CheckBoxPreference) {
-                    String key = preference.getKey();
-                    List<String> prefValuesList = new ArrayList<>(
-                            Arrays.asList(UserPreferences
-                                    .getAutodownloadSelectedNetworks())
-                    );
-                    boolean newValue = ((CheckBoxPreference) preference)
-                            .isChecked();
-                    Log.d(TAG, "Selected network " + key + ". New state: " + newValue);
-
-                    int index = prefValuesList.indexOf(key);
-                    if (index >= 0 && !newValue) {
-                        // remove network
-                        prefValuesList.remove(index);
-                    } else if (index < 0 && newValue) {
-                        prefValuesList.add(key);
-                    }
-
-                    UserPreferences.setAutodownloadSelectedNetworks(
-                            prefValuesList.toArray(new String[prefValuesList.size()])
-                    );
-                    return true;
-                } else {
-                    return false;
-                }
-            };
-            // create preference for each known network. attach listener and set
-            // value
-            for (int i = 0; i < networks.size(); i++) {
-                WifiConfiguration config = networks.get(i);
-
-                CheckBoxPreference pref = new CheckBoxPreference(activity);
-                String key = Integer.toString(config.networkId);
-                pref.setTitle(config.SSID);
-                pref.setKey(key);
-                pref.setOnPreferenceClickListener(clickListener);
-                pref.setPersistent(false);
-                pref.setChecked(prefValues.contains(key));
-                selectedNetworks[i] = pref;
-                prefScreen.addPreference(pref);
-            }
-        } else {
+        if (networks == null) {
             Log.e(TAG, "Couldn't get list of configure Wi-Fi networks");
+            return;
+        }
+        Collections.sort(networks, (x, y) -> x.SSID.compareTo(y.SSID));
+        selectedNetworks = new CheckBoxPreference[networks.size()];
+        List<String> prefValues = Arrays.asList(UserPreferences
+                .getAutodownloadSelectedNetworks());
+        PreferenceScreen prefScreen = (PreferenceScreen) ui.findPreference(PreferenceController.AUTO_DL_PREF_SCREEN);
+        Preference.OnPreferenceClickListener clickListener = preference -> {
+            if (preference instanceof CheckBoxPreference) {
+                String key = preference.getKey();
+                List<String> prefValuesList = new ArrayList<>(
+                        Arrays.asList(UserPreferences
+                                .getAutodownloadSelectedNetworks())
+                );
+                boolean newValue = ((CheckBoxPreference) preference)
+                        .isChecked();
+                Log.d(TAG, "Selected network " + key + ". New state: " + newValue);
+
+                int index = prefValuesList.indexOf(key);
+                if (index >= 0 && !newValue) {
+                    // remove network
+                    prefValuesList.remove(index);
+                } else if (index < 0 && newValue) {
+                    prefValuesList.add(key);
+                }
+
+                UserPreferences.setAutodownloadSelectedNetworks(
+                        prefValuesList.toArray(new String[prefValuesList.size()])
+                );
+                return true;
+            } else {
+                return false;
+            }
+        };
+        // create preference for each known network. attach listener and set
+        // value
+        for (int i = 0; i < networks.size(); i++) {
+            WifiConfiguration config = networks.get(i);
+
+            CheckBoxPreference pref = new CheckBoxPreference(activity);
+            String key = Integer.toString(config.networkId);
+            pref.setTitle(config.SSID);
+            pref.setKey(key);
+            pref.setOnPreferenceClickListener(clickListener);
+            pref.setPersistent(false);
+            pref.setChecked(prefValues.contains(key));
+            selectedNetworks[i] = pref;
+            prefScreen.addPreference(pref);
         }
     }
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 
-public class EpisodeFilter {
+class EpisodeFilter {
 
 	private EpisodeFilter() {
 

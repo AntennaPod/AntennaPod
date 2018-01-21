@@ -11,8 +11,8 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
 public class FeedImage extends FeedFile implements ImageResource {
 	public static final int FEEDFILETYPE_FEEDIMAGE = 1;
 
-	protected String title;
-	protected FeedComponent owner;
+	private String title;
+	private FeedComponent owner;
 
 	public FeedImage(FeedComponent owner, String download_url, String title) {
 		super(null, download_url, false);

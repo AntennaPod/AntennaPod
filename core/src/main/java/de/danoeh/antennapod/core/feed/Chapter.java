@@ -7,19 +7,19 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
 public abstract class Chapter extends FeedComponent {
 
 	/** Defines starting point in milliseconds. */
-	protected long start;
-	protected String title;
-	protected String link;
+    long start;
+	String title;
+	String link;
 
-	public Chapter() {
+	Chapter() {
 	}
 	
-	public Chapter(long start) {
+	Chapter(long start) {
 		super();
 		this.start = start;
 	}
 
-	public Chapter(long start, String title, FeedItem item, String link) {
+	Chapter(long start, String title, FeedItem item, String link) {
 		super();
 		this.start = start;
 		this.title = title;

@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.nineoldandroids.view.ViewHelper;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -87,9 +86,9 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
                 .into(holder.imageView);
 
         if(item.isPlayed()) {
-            ViewHelper.setAlpha(convertView, 0.5f);
+            convertView.setAlpha(0.5f);
         } else {
-            ViewHelper.setAlpha(convertView, 1.0f);
+            convertView.setAlpha(1.0f);
         }
 
         holder.title.setText(item.getTitle());
@@ -111,7 +110,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
+    private final View.OnClickListener secondaryActionListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();

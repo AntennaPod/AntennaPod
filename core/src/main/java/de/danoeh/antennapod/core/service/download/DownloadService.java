@@ -128,8 +128,8 @@ public class DownloadService extends Service {
 
 
     private NotificationCompat.Builder notificationCompatBuilder;
-    private int NOTIFICATION_ID = 2;
-    private int REPORT_ID = 3;
+    private static final int NOTIFICATION_ID = 2;
+    private static final int REPORT_ID = 3;
 
     /**
      * Currently running downloads.
@@ -153,7 +153,7 @@ public class DownloadService extends Service {
     private static final int SCHED_EX_POOL_SIZE = 1;
     private ScheduledThreadPoolExecutor schedExecutor;
 
-    private Handler postHandler = new Handler();
+    private final Handler postHandler = new Handler();
 
     private final IBinder mBinder = new LocalBinder();
 
@@ -163,7 +163,7 @@ public class DownloadService extends Service {
         }
     }
 
-    private Thread downloadCompletionThread = new Thread() {
+    private final Thread downloadCompletionThread = new Thread() {
         private static final String TAG = "downloadCompletionThd";
 
         @Override
@@ -386,7 +386,7 @@ public class DownloadService extends Service {
         return null;
     }
 
-    private BroadcastReceiver cancelDownloadReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver cancelDownloadReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -537,14 +537,14 @@ public class DownloadService extends Service {
      * Calls query downloads on the services main thread. This method should be used instead of queryDownloads if it is
      * used from a thread other than the main thread.
      */
-    void queryDownloadsAsync() {
+    private void queryDownloadsAsync() {
         handler.post(DownloadService.this::queryDownloads);
     }
 
     /**
      * Check if there's something else to download, otherwise stop
      */
-    void queryDownloads() {
+    private void queryDownloads() {
         Log.d(TAG, numberOfDownloads.get() + " downloads left");
 
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
@@ -608,14 +608,14 @@ public class DownloadService extends Service {
     private class FeedSyncThread extends Thread {
         private static final String TAG = "FeedSyncThread";
 
-        private BlockingQueue<DownloadRequest> completedRequests = new LinkedBlockingDeque<>();
-        private CompletionService<Pair<DownloadRequest, FeedHandlerResult>> parserService = new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
-        private ExecutorService dbService = Executors.newSingleThreadExecutor();
+        private final BlockingQueue<DownloadRequest> completedRequests = new LinkedBlockingDeque<>();
+        private final CompletionService<Pair<DownloadRequest, FeedHandlerResult>> parserService = new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
+        private final ExecutorService dbService = Executors.newSingleThreadExecutor();
         private Future<?> dbUpdateFuture;
         private volatile boolean isActive = true;
         private volatile boolean isCollectingRequests = false;
 
-        private final long WAIT_TIMEOUT = 3000;
+        private static final long WAIT_TIMEOUT = 3000;
 
 
         /**
@@ -770,7 +770,7 @@ public class DownloadService extends Service {
 
         private class FeedParserTask implements Callable<Pair<DownloadRequest, FeedHandlerResult>> {
 
-            private DownloadRequest request;
+            private final DownloadRequest request;
 
             private FeedParserTask(DownloadRequest request) {
                 this.request = request;
@@ -954,10 +954,10 @@ public class DownloadService extends Service {
      * <p/>
      * Currently, this handler only handles FeedMedia objects, because Feeds and FeedImages are deleted if the download fails.
      */
-    private class FailedDownloadHandler implements Runnable {
+    private static class FailedDownloadHandler implements Runnable {
 
-        private DownloadRequest request;
-        private DownloadStatus status;
+        private final DownloadRequest request;
+        private final DownloadStatus status;
 
         FailedDownloadHandler(DownloadStatus status, DownloadRequest request) {
             this.request = request;
@@ -979,7 +979,7 @@ public class DownloadService extends Service {
      */
     private class MediaHandlerThread implements Runnable {
 
-        private DownloadRequest request;
+        private final DownloadRequest request;
         private DownloadStatus status;
 
         MediaHandlerThread(@NonNull DownloadStatus status,
@@ -1095,7 +1095,7 @@ public class DownloadService extends Service {
 
     private long lastPost = 0;
 
-    final Runnable postDownloaderTask = new Runnable() {
+    private final Runnable postDownloaderTask = new Runnable() {
         @Override
         public void run() {
             List<Downloader> list = Collections.unmodifiableList(downloads);

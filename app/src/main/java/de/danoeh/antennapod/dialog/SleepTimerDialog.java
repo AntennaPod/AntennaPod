@@ -24,7 +24,7 @@ public abstract class SleepTimerDialog {
     
     private static final String TAG = SleepTimerDialog.class.getSimpleName();
 
-    private Context context;
+    private final Context context;
 
     private MaterialDialog dialog;
     private EditText etxtTime;
