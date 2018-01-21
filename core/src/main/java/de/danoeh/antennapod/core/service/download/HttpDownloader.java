@@ -314,7 +314,7 @@ public class HttpDownloader extends Downloader {
         }
     }
 
-    private class BasicAuthorizationInterceptor implements Interceptor {
+    private static class BasicAuthorizationInterceptor implements Interceptor {
 
         private final DownloadRequest downloadRequest;
 

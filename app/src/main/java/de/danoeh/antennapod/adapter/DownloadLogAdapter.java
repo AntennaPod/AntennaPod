@@ -29,7 +29,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 /** Displays a list of DownloadStatus entries. */
 public class DownloadLogAdapter extends BaseAdapter {
 
-	private final String TAG = "DownloadLogAdapter";
+	private static final String TAG = "DownloadLogAdapter";
 
 	private final Context context;
 

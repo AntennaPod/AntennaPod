@@ -127,8 +127,8 @@ public class DownloadService extends Service {
 
 
     private NotificationCompat.Builder notificationCompatBuilder;
-    private final int NOTIFICATION_ID = 2;
-    private final int REPORT_ID = 3;
+    private static final int NOTIFICATION_ID = 2;
+    private static final int REPORT_ID = 3;
 
     /**
      * Currently running downloads.
@@ -611,7 +611,7 @@ public class DownloadService extends Service {
         private volatile boolean isActive = true;
         private volatile boolean isCollectingRequests = false;
 
-        private final long WAIT_TIMEOUT = 3000;
+        private static final long WAIT_TIMEOUT = 3000;
 
 
         /**
@@ -950,7 +950,7 @@ public class DownloadService extends Service {
      * <p/>
      * Currently, this handler only handles FeedMedia objects, because Feeds and FeedImages are deleted if the download fails.
      */
-    private class FailedDownloadHandler implements Runnable {
+    private static class FailedDownloadHandler implements Runnable {
 
         private final DownloadRequest request;
         private final DownloadStatus status;

@@ -78,7 +78,7 @@ public class DownloadsFragment extends Fragment {
         viewPager.setCurrentItem(lastPosition);
     }
 
-    public class DownloadsPagerAdapter extends FragmentPagerAdapter {
+    public static class DownloadsPagerAdapter extends FragmentPagerAdapter {
 
         final Resources resources;
 

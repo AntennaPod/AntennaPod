@@ -44,7 +44,7 @@ import de.greenrobot.event.EventBus;
 public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
-    private static final String DATABASE_NAME = "Antennapod.db";
+    public static final String DATABASE_NAME = "Antennapod.db";
 
     /**
      * Maximum number of arguments for IN-operator.

@@ -40,7 +40,7 @@ public class HtmlToPlainText {
     }
 
     // the formatting rules, implemented in a breadth-first DOM traverse
-    private class FormattingVisitor implements NodeVisitor {
+    private static class FormattingVisitor implements NodeVisitor {
 
         private final StringBuilder accum = new StringBuilder(); // holds the accumulated text
 

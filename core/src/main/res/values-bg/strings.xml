@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Activitiy and fragment titles-->
+  <string name="feeds_label">Емисии</string>
+  <string name="statistics_label">Статистика</string>
+  <string name="add_feed_label">Добавяне на подкаст</string>
+  <string name="episodes_label">Епизоди</string>
+  <string name="all_episodes_short_label">Всички</string>
+  <string name="favorite_episodes_label">Любими</string>
+  <string name="new_label">Нови</string>
+  <string name="settings_label">Настройки</string>
+  <string name="downloads_label">Изтеглени</string>
+  <string name="downloads_running_label">Текущи</string>
+  <string name="downloads_completed_label">Завършени</string>
+  <string name="downloads_log_label">Дневник</string>
+  <string name="subscriptions_label">Абонаменти</string>
+  <string name="subscriptions_list_label">Списък с абонаменти</string>
+  <string name="cancel_download_label">Отказ\nИзтегляне</string>
+  <string name="playback_history_label">История</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net Вход</string>
+  <string name="free_space_label">%1$s свободни</string>
+  <string name="episode_cache_full_title">Пълен кеш на епизодите</string>
+  <string name="episode_cache_full_message">Ограничението на кеша на епизодите е достигнато. Можете да увеличите размера на кеша в настройките.</string>
+  <!--Statistics fragment-->
+  <!--Main activity-->
+  <string name="drawer_feed_counter_new_unplayed">Брой нови и непускани епизоди</string>
+  <string name="drawer_feed_counter_new">Брой нови епизоди</string>
+  <string name="drawer_feed_counter_unplayed">Брой непускани епизоди</string>
+  <string name="drawer_feed_counter_downloaded">Брой изтеглени епизоди</string>
+  <string name="drawer_feed_counter_none">Никакви</string>
+  <!--Webview actions-->
+  <string name="copy_url_label">Копирай URL адрес</string>
+  <string name="share_url_label">Сподели URL адрес</string>
+  <string name="copied_url_msg">Адресът е копиран</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Изтриване на историята</string>
+  <!--Other-->
+  <string name="confirm_label">Потвърди</string>
+  <string name="cancel_label">Отказ</string>
+  <string name="yes">Да</string>
+  <string name="no">Не</string>
+  <string name="author_label">Автор</string>
+  <string name="language_label">Език</string>
+  <string name="url_label">URL</string>
+  <string name="podcast_settings_label">Настройки</string>
+  <string name="cover_label">Снимка</string>
+  <string name="error_label">Грешка</string>
+  <string name="error_msg_prefix">Възникна грешка:</string>
+  <string name="external_storage_error_msg">Няма налична външна памет. Уверете се, че външната памет е монтирана, за да може приложението да работи правилно.</string>
+  <string name="description_label">Описание</string>
+  <string name="most_recent_prefix">Най-нов епизод:\u0020</string>
+  <string name="size_prefix">Размер:\u0020</string>
+  <string name="loading_label">Зареждане…</string>
+  <string name="feed_auto_download_always">Винаги</string>
+  <string name="feed_auto_download_never">Никога</string>
+  <string name="episode_cleanup_never">Никога</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">URL адрес на емисията</string>
+  <string name="etxtFeedurlHint">www.primer.com/emisiq</string>
+  <string name="txtvfeedurl_label">Добавяне на подкаст по URL адрес</string>
+  <string name="podcastdirectories_label">Намиране на подкаст в директория</string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">Маркирай всички като слушани</string>
+  <string name="mark_all_read_msg">Всички епизоди са маркирани като слушани</string>
+  <string name="mark_all_read_confirmation_msg">Моля, потвърдете, че искате да маркирате всички епизоди като слушани.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Моля, потвърдете, че искате да маркирате всички епизоди в тази емисия като слушани.</string>
+  <string name="mark_all_seen_label">Маркирай всички като прегледани</string>
+  <string name="mark_all_seen_msg">Всички епизоди са маркирани като прегледани</string>
+  <string name="mark_all_seen_confirmation_msg">Моля, потвърдете, че искате да маркирате всички епизоди като прегледани.</string>
+  <string name="show_info_label">Покажи информация</string>
+  <string name="rename_feed_label">Преименуване на подкаст</string>
+  <string name="remove_feed_label">Премахване на подкаст</string>
+  <string name="share_label">Споделяне...</string>
+  <string name="share_link_label">Сподели връзка</string>
+  <string name="share_file_label">Сподели файл</string>
+  <string name="share_link_with_position_label">Сподели връзка с позиция</string>
+  <string name="share_feed_url_label">Сподели URL адрес на емисията</string>
+  <string name="share_item_url_label">Сподели URL адрес на епизода</string>
+  <string name="share_item_url_with_position_label">Сподели URL адрес на епизода с позиция</string>
+  <string name="feed_remover_msg">Премахване на емисията</string>
+  <!--actions on feeditems-->
+  <string name="stream_label">Стрийм</string>
+  <string name="marked_as_seen_label">Маркиран като прегледан</string>
+  <string name="mark_read_label">Маркирай като слушан</string>
+  <string name="marked_as_read_label">Маркиран като слушан</string>
+  <string name="mark_unread_label">Маркирай като неслушан</string>
+  <string name="add_to_queue_label">Добави в опашката</string>
+  <string name="added_to_queue_label">Добавен в опашката</string>
+  <string name="remove_from_queue_label">Премахни от опашката</string>
+  <!--Download messages and labels-->
+  <string name="download_type_feed">Емисия</string>
+  <string name="authentication_notification_title">Необходимо удостоверяване</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Разреши временно</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">Грешка!</string>
+  <!--Queue operations-->
+  <string name="lock_queue">Заключване на опашката</string>
+  <string name="unlock_queue">Отключване на опашката</string>
+  <string name="queue_locked">Опашката е заключена</string>
+  <string name="queue_unlocked">Опашката е отключена</string>
+  <string name="clear_queue_label">Изчистване на опашката</string>
+  <string name="clear_queue_confirmation_msg">Моля, потвърдете, че искате да изчистите ВСИЧКИ епизоди в опашката</string>
+  <!--Flattr-->
+  <!--Flattr-->
+  <!--Variable Speed-->
+  <!--Empty list labels-->
+  <!--Preferences-->
+  <string name="storage_pref">Съхранение</string>
+  <string name="project_pref">Проект</string>
+  <string name="other_pref">Други</string>
+  <string name="about_pref">Относно</string>
+  <string name="queue_label">Опашка</string>
+  <string name="services_label">Услуги</string>
+  <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Почистване на епизодите</string>
+  <string name="pref_episode_cleanup_summary">Епизодите, които не са в опашката и не са в любими, отговарят на условията за премахване, ако автоматичното изтегляне се нуждае от място за нови епизоди</string>
+  <string name="pref_pauseOnDisconnect_sum">Пауза на възпроизвеждането, когато слушалките или Bluetooth прекъснат връзка</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Възстановане на възпроизвеждането, когато слушалките се свържат отново</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Възстановане на възпроизвеждането, когато Bluetooth се свърже отново</string>
+  <string name="pref_followQueue_sum">Преминаване към следващия епизод в опашката след завършване на възпроизвеждането</string>
+  <string name="pref_auto_delete_sum">Изтриване на епизода, когато възпроизвеждането завърши</string>
+  <string name="pref_auto_delete_title">Автоматично изтриване</string>
+  <string name="pref_smart_mark_as_played_sum">Маркиране на епизодите като слушани, дори когато остават определени секунди от времето за възпроизвеждане</string>
+  <string name="playback_pref">Възпроизвеждане</string>
+  <string name="network_pref">Мрежа</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">Актуализиране през интервал или час на деня</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Задайте интервал или конкретно време от деня, за да опресните автоматично емисиите</string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Можете да зададете <i>интервал</i> като \"на всеки 2 часа\", да зададете конкретно <i>време от деня</i> като \"7:00 ч.\", или да изберете <i>деактивиране</i> на всички автоматични актуализации.\n\n<small>Моля, обърнете внимание: Времето за актуализиране е неточно. Може да срещнете кратко забавяне.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_Disable">Деактивиране</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Задай интервал</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Задай време от деня</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">на всеки %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">в %1$s</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Изтегляне на медийни файлове само през WiFi</string>
+  <string name="pref_followQueue_title">Непрекъснато възпроизвеждане</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">Изтегляне през WiFi</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Прекъсване на слушалки</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Повторно свързване на слушалки</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Повторно свързване на Bluetooth</string>
+  <string name="pref_mobileUpdate_title">Мобилни актуализации</string>
+  <string name="pref_mobileUpdate_sum">Разрешаване на актуализации чрез мобилната връзка за данни</string>
+  <string name="flattr_settings_label">Flattr настройки</string>
+  <string name="pref_flattr_auth_title">Flattr вход</string>
+  <string name="user_interface_label">Потребителски интерфейс</string>
+  <string name="pref_set_theme_title">Избор на тема</string>
+  <string name="pref_nav_drawer_feed_order_title">Задайте ред на абонаментите</string>
+  <string name="pref_nav_drawer_feed_order_sum">Променете реда на абонаментите си</string>
+  <string name="pref_nav_drawer_feed_counter_title">Задайте брояча на абонаментите</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Променете информацията, показвана от брояча на абонаментите</string>
+  <string name="pref_set_theme_sum">Променете външния вид на AntennaPod.</string>
+  <string name="pref_automatic_download_title">Автоматично изтегляне</string>
+  <string name="pref_automatic_download_sum">Конфигуриране на автоматично изтегляне на епизоди.</string>
+  <string name="pref_autodl_wifi_filter_title">Активиране на Wi-Fi филтър</string>
+  <string name="pref_autodl_wifi_filter_sum">Позволява автоматично изтегляне само за избрани Wi-Fi мрежи.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Изтегляне чрез мобилна връзка</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Позволява автоматично изтегляне чрез мобилната връзка за данни.</string>
+  <string name="pref_automatic_download_on_battery_title">Изтегляне, когато не се зарежда</string>
+  <string name="pref_automatic_download_on_battery_sum">Позволява автоматично изтегляне, когато батерията не се зарежда</string>
+  <string name="pref_parallel_downloads_title">Паралелни файлове за изтегляне</string>
+  <string name="pref_episode_cache_title">Кеш на епизодите</string>
+  <string name="pref_theme_title_light">Светла</string>
+  <string name="pref_theme_title_dark">Тъмна</string>
+  <string name="pref_episode_cache_unlimited">Неограничен</string>
+  <string name="pref_update_interval_hours_plural">часа</string>
+  <string name="pref_update_interval_hours_singular">час</string>
+  <string name="pref_update_interval_hours_manual">Ръчно</string>
+  <string name="pref_gpodnet_authenticate_title">Вход</string>
+  <string name="pref_gpodnet_authenticate_sum">Влезте с профила си в gpodder.net, за да синхронизирате абонаментите си.</string>
+  <string name="pref_gpodnet_logout_title">Изход</string>
+  <string name="pref_gpodnet_logout_toast">Успешен изход</string>
+  <string name="pref_image_cache_size_title">Кеш на изображенията</string>
+  <string name="pref_image_cache_size_sum">Размер на кеша за изображения.</string>
+  <string name="crash_report_title">Доклад за срив</string>
+  <string name="crash_report_sum">Изпратете най-новия доклад за срив чрез имейл</string>
+  <string name="send_email">Изпращане на имейл</string>
+  <string name="experimental_pref">Експериментални</string>
+  <string name="pref_proxy_title">Прокси</string>
+  <string name="pref_faq">Често задавани въпроси</string>
+  <string name="pref_known_issues">Известни проблеми</string>
+  <!--Auto-Flattr dialog-->
+  <!--Search-->
+  <string name="search_status_no_results">Няма намерени резултати</string>
+  <string name="search_label">Търсене</string>
+  <string name="no_results_for_query">Няма намерени резултати за \"%1$s\"</string>
+  <!--OPML import and export-->
+  <string name="opml_import_option">Опция %1$d</string>
+  <string name="opml_import_label">OPML импортиране</string>
+  <string name="opml_directory_error">ГРЕШКА!</string>
+  <string name="opml_import_error_no_file">Не е избран файл!</string>
+  <string name="select_all_label">Избери всички</string>
+  <string name="opml_export_label">OPML експортиране</string>
+  <string name="html_export_label">HTML експортиране</string>
+  <string name="exporting_label">Експортиране...</string>
+  <string name="export_error_label">Грешка при експортиране</string>
+  <string name="opml_export_success_title">Успешно OPML експортиране.</string>
+  <string name="opml_export_success_sum">.opml файлът беше записан в:\u0020</string>
+  <string name="opml_import_ask_read_permission">Необходим е достъп до външната памет за прочитане на OPML файла</string>
+  <!--Sleep timer-->
+  <string name="time_seconds">секунди</string>
+  <string name="time_minutes">минути</string>
+  <string name="time_hours">часа</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="one">1 секунда</item>
+    <item quantity="other">%d секунди</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="one">1 минута</item>
+    <item quantity="other">%d минути</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="one">1 час</item>
+    <item quantity="other">%d часа</item>
+  </plurals>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">КАТЕГОРИИ</string>
+  <string name="gpodnet_toplist_header">ТОП ПОДКАСТИ</string>
+  <string name="gpodnet_suggestions_header">ПРЕДЛОЖЕНИЯ</string>
+  <string name="gpodnetauth_login_title">Вход</string>
+  <string name="gpodnetauth_login_butLabel">Вход</string>
+  <string name="username_label">Потребителско име</string>
+  <string name="password_label">Парола</string>
+  <!--Directory chooser-->
+  <string name="choose_data_directory">Изберете папка с данни</string>
+  <string name="choose_data_directory_permission_rationale">Необходим е достъп до външната памет за промяна на папката с данни</string>
+  <!--Online feed view-->
+  <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
+  <!--Progress information-->
+  <!--AntennaPodSP-->
+  <string name="filter">Филтър</string>
+  <!--Episodes apply actions-->
+  <!--Sort-->
+  <!--Rating dialog-->
+  <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+</resources>

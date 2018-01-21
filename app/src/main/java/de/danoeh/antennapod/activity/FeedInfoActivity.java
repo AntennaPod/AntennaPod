@@ -379,7 +379,7 @@ public class FeedInfoActivity extends AppCompatActivity {
         }
     }
 
-    private class ApplyToEpisodesDialog extends ConfirmationDialog {
+    private static class ApplyToEpisodesDialog extends ConfirmationDialog {
 
         private final Feed feed;
         private final boolean autoDownload;

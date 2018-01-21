@@ -72,12 +72,13 @@ import rx.schedulers.Schedulers;
  */
 public abstract class MediaplayerInfoActivity extends MediaplayerActivity implements NavDrawerActivity {
 
+    private static final String TAG = "MediaplayerInfoActivity";
+
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
 
-    private final String TAG = "MediaplayerInfoActivity";
     private static final String PREFS = "AudioPlayerActivityPreferences";
     private static final String PREF_KEY_SELECTED_FRAGMENT_POSITION = "selectedFragmentPosition";
 
