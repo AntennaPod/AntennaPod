@@ -31,9 +31,9 @@ public class DownloadLogAdapter extends BaseAdapter {
 
 	private static final String TAG = "DownloadLogAdapter";
 
-	private Context context;
+	private final Context context;
 
-    private ItemAccess itemAccess;
+    private final ItemAccess itemAccess;
 
 	public DownloadLogAdapter(Context context, ItemAccess itemAccess) {
 		super();

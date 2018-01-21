@@ -17,7 +17,8 @@ public class FeedItemEvent {
         UPDATE, DELETE_MEDIA
     }
 
-    @NonNull public final Action action;
+    @NonNull
+    private final Action action;
     @NonNull public final List<FeedItem> items;
 
     private FeedItemEvent(Action action, List<FeedItem> items) {

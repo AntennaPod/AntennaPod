@@ -68,7 +68,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
 		}
 	}
 
-	protected void importUri(@Nullable Uri uri) {
+	void importUri(@Nullable Uri uri) {
         if(uri == null) {
             new MaterialDialog.Builder(this)
                     .content(R.string.opml_import_error_no_file)
@@ -114,7 +114,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
 	}
 
     /** Starts the import process. */
-    protected void startImport() {
+    private void startImport() {
         try {
             Reader mReader = new InputStreamReader(getContentResolver().openInputStream(uri), LangUtils.UTF_8);
             importWorker = new OpmlImportWorker(this, mReader) {
@@ -144,7 +144,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
         }
     }
 
-    protected boolean finishWhenCanceled() {
+    boolean finishWhenCanceled() {
         return false;
     }
 

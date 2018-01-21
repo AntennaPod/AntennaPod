@@ -295,7 +295,7 @@ public class PlaybackServiceTaskManager {
     /**
      * Sleeps for a given time and then pauses playback.
      */
-    protected class SleepTimer implements Runnable {
+    class SleepTimer implements Runnable {
         private static final String TAG = "SleepTimer";
         private static final long UPDATE_INTERVAL = 1000L;
         private static final long NOTIFICATION_THRESHOLD = 10000;

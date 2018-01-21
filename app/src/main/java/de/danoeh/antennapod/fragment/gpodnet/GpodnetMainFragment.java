@@ -20,7 +20,7 @@ import de.danoeh.antennapod.R;
  */
 public class GpodnetMainFragment extends Fragment {
 
-    public static final String TAG = "GpodnetMainFragment";
+    private static final String TAG = "GpodnetMainFragment";
 
     private static final String PREF_LAST_TAB_POSITION = "tab_position";
     private TabLayout tabLayout;
@@ -71,7 +71,7 @@ public class GpodnetMainFragment extends Fragment {
         private static final int POS_TAGS = 1;
         private static final int POS_SUGGESTIONS = 2;
 
-        Resources resources;
+        final Resources resources;
 
         public GpodnetPagerAdapter(FragmentManager fm, Resources resources) {
             super(fm);

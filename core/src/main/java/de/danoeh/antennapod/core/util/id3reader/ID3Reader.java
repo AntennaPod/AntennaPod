@@ -19,10 +19,10 @@ public class ID3Reader {
 	private static final int ID3_LENGTH = 3;
 	private static final int FRAME_ID_LENGTH = 4;
 
-	protected static final int ACTION_SKIP = 1;
-	protected static final int ACTION_DONT_SKIP = 2;
+	private static final int ACTION_SKIP = 1;
+	static final int ACTION_DONT_SKIP = 2;
 
-	protected int readerPosition;
+	private int readerPosition;
 
 	private static final byte ENCODING_UTF16_WITH_BOM = 1;
     private static final byte ENCODING_UTF16_WITHOUT_BOM = 2;
@@ -30,7 +30,7 @@ public class ID3Reader {
 
     private TagHeader tagHeader;
 
-	public ID3Reader() {
+	ID3Reader() {
 	}
 
 	public final void readInputStream(InputStream input) throws IOException,
@@ -92,7 +92,7 @@ public class ID3Reader {
 	 * Read a certain number of bytes from the given input stream. This method
 	 * changes the readerPosition-attribute.
 	 */
-	protected char[] readBytes(InputStream input, int number)
+    char[] readBytes(InputStream input, int number)
 			throws IOException, ID3ReaderException {
 		char[] header = new char[number];
 		for (int i = 0; i < number; i++) {
@@ -111,7 +111,7 @@ public class ID3Reader {
 	 * Skip a certain number of bytes on the given input stream. This method
 	 * changes the readerPosition-attribute.
 	 */
-	protected void skipBytes(InputStream input, int number) throws IOException {
+    void skipBytes(InputStream input, int number) throws IOException {
 		if (number <= 0) {
 			number = 1;
 		}
@@ -170,7 +170,7 @@ public class ID3Reader {
         return out;
     }
 
-	protected int readString(StringBuffer buffer, InputStream input, int max) throws IOException,
+	int readString(StringBuffer buffer, InputStream input, int max) throws IOException,
 			ID3ReaderException {
 		if (max > 0) {
 			char[] encoding = readBytes(input, 1);
@@ -191,8 +191,8 @@ public class ID3Reader {
 		}
 	}
 
-	protected int readISOString(StringBuffer buffer, InputStream input, int max)
-			throws IOException, ID3ReaderException {
+	int readISOString(StringBuffer buffer, InputStream input, int max)
+			throws IOException {
 
 		int bytesRead = 0;
 		char c;
@@ -205,7 +205,7 @@ public class ID3Reader {
 	}
 
 	private int readUnicodeString(StringBuffer strBuffer, InputStream input, int max, Charset charset)
-			throws IOException, ID3ReaderException {
+			throws IOException {
 		byte[] buffer = new byte[max];
         int c, cZero = -1;
         int i = 0;
@@ -231,20 +231,20 @@ public class ID3Reader {
         return i;
 	}
 
-	public int onStartTagHeader(TagHeader header) {
+	int onStartTagHeader(TagHeader header) {
 		return ACTION_SKIP;
 	}
 
-	public int onStartFrameHeader(FrameHeader header, InputStream input)
+	int onStartFrameHeader(FrameHeader header, InputStream input)
 			throws IOException, ID3ReaderException {
 		return ACTION_SKIP;
 	}
 
-	public void onEndTag() {
+	void onEndTag() {
 
 	}
 
-	public void onNoTagHeaderFound() {
+	void onNoTagHeaderFound() {
 
 	}
 

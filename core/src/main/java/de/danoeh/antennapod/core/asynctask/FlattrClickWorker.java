@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.asynctask;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -39,7 +38,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
  * to flattr something, a notification will be displayed.
  */
 public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorker.ExitCode> {
-    protected static final String TAG = "FlattrClickWorker";
+    private static final String TAG = "FlattrClickWorker";
 
     private static final int NOTIFICATION_ID = 4;
 

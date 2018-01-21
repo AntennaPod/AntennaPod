@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.asynctask;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +14,9 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 
 /** Removes a feed in the background. */
 public class FeedRemover extends AsyncTask<Void, Void, Void> {
-	Context context;
-	ProgressDialog dialog;
-	Feed feed;
+	private final Context context;
+	private ProgressDialog dialog;
+	private final Feed feed;
 	public boolean skipOnCompletion = false;
 
 	public FeedRemover(Context context, Feed feed) {

@@ -69,24 +69,24 @@ public class AllEpisodesFragment extends Fragment {
     private static final String PREF_SCROLL_POSITION = "scroll_position";
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
-    protected RecyclerView recyclerView;
-    protected AllEpisodesRecycleAdapter listAdapter;
+    RecyclerView recyclerView;
+    AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
 
-    protected List<FeedItem> episodes;
+    List<FeedItem> episodes;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
 
     private boolean isUpdatingFeeds;
-    protected boolean isMenuInvalidationAllowed = false;
+    boolean isMenuInvalidationAllowed = false;
 
-    protected Subscription subscription;
+    Subscription subscription;
     private LinearLayoutManager layoutManager;
 
-    protected boolean showOnlyNewEpisodes() { return false; }
-    protected String getPrefName() { return DEFAULT_PREF_NAME; }
+    boolean showOnlyNewEpisodes() { return false; }
+    String getPrefName() { return DEFAULT_PREF_NAME; }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -165,7 +165,7 @@ public class AllEpisodesFragment extends Fragment {
         }
     }
 
-    protected void resetViewState() {
+    void resetViewState() {
         viewsCreated = false;
         listAdapter = null;
     }
@@ -284,13 +284,7 @@ public class AllEpisodesFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
 
-        try {
-            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-            return true;
-        }
+        return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
     }
 
     @Override
@@ -299,10 +293,10 @@ public class AllEpisodesFragment extends Fragment {
                 R.layout.all_episodes_fragment);
     }
 
-    protected View onCreateViewHelper(LayoutInflater inflater,
-                                      ViewGroup container,
-                                      Bundle savedInstanceState,
-                                      int fragmentResource) {
+    View onCreateViewHelper(LayoutInflater inflater,
+                            ViewGroup container,
+                            Bundle savedInstanceState,
+                            int fragmentResource) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View root = inflater.inflate(fragmentResource, container, false);
@@ -346,7 +340,7 @@ public class AllEpisodesFragment extends Fragment {
         updateShowOnlyEpisodesListViewState();
     }
 
-    protected AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
+    private final AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
 
         @Override
         public int getCount() {
@@ -444,7 +438,7 @@ public class AllEpisodesFragment extends Fragment {
         }
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
@@ -459,7 +453,7 @@ public class AllEpisodesFragment extends Fragment {
     private void updateShowOnlyEpisodesListViewState() {
     }
 
-    protected void loadItems() {
+    void loadItems() {
         if(subscription != null) {
             subscription.unsubscribe();
         }
@@ -483,7 +477,7 @@ public class AllEpisodesFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    protected List<FeedItem> loadData() {
+    List<FeedItem> loadData() {
         return DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
     }
 

@@ -334,13 +334,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 openPodcast();
                 return true;
             default:
-                try {
-                    return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    return true;
-                }
+                return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
         }
     }
 
@@ -449,7 +443,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
     }
 
-    private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
+    private final View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {
@@ -551,7 +545,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {

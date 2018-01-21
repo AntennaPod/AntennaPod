@@ -100,7 +100,7 @@ public class FeedInfoActivity extends AppCompatActivity {
 
     private boolean authInfoChanged = false;
 
-    private TextWatcher authTextWatcher = new TextWatcher() {
+    private final TextWatcher authTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -117,7 +117,7 @@ public class FeedInfoActivity extends AppCompatActivity {
 
     private boolean filterTextChanged = false;
 
-    private TextWatcher filterTextWatcher = new TextWatcher() {
+    private final TextWatcher filterTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }

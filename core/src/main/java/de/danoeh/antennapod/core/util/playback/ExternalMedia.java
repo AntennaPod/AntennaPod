@@ -23,7 +23,7 @@ public class ExternalMedia implements Playable {
 	public static final String PREF_MEDIA_TYPE = "ExternalMedia.PrefMediaType";
 	public static final String PREF_LAST_PLAYED_TIME = "ExternalMedia.PrefLastPlayedTime";
 
-	private String source;
+	private final String source;
 
 	private String episodeTitle;
 	private String feedTitle;

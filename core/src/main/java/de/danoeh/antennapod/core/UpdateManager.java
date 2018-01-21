@@ -23,9 +23,9 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 /*
  * This class's job is do perform maintenance tasks whenever the app has been updated
  */
-public class UpdateManager {
+class UpdateManager {
 
-    public static final String TAG = UpdateManager.class.getSimpleName();
+    private static final String TAG = UpdateManager.class.getSimpleName();
 
     private static final String PREF_NAME = "app_version";
     private static final String KEY_VERSION_CODE = "version_code";
@@ -55,11 +55,11 @@ public class UpdateManager {
         }
     }
 
-    public static int getStoredVersionCode() {
+    private static int getStoredVersionCode() {
         return prefs.getInt(KEY_VERSION_CODE, -1);
     }
 
-    public static void setCurrentVersionCode() {
+    private static void setCurrentVersionCode() {
         prefs.edit().putInt(KEY_VERSION_CODE, currentVersionCode).apply();
     }
 

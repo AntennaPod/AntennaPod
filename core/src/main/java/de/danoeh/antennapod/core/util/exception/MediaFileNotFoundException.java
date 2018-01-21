@@ -5,7 +5,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 public class MediaFileNotFoundException extends Exception {
 	private static final long serialVersionUID = 1L;
 
-	private FeedMedia media;
+	private final FeedMedia media;
 
 	public MediaFileNotFoundException(String msg, FeedMedia media) {
 		super(msg);

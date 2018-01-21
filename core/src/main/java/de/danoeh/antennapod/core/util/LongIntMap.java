@@ -88,7 +88,7 @@ public class LongIntMap {
     /**
      * Removes the mapping at the given index.
      */
-    public void removeAt(int index) {
+    private void removeAt(int index) {
         System.arraycopy(keys, index + 1, keys, index, size - (index + 1));
         System.arraycopy(values, index + 1, values, index, size - (index + 1));
         size--;
@@ -130,7 +130,7 @@ public class LongIntMap {
      * smallest key and <code>keyAt(size()-1)</code> will return the largest
      * key.</p>
      */
-    public long keyAt(int index) {
+    private long keyAt(int index) {
         if (index >= size) {
             throw new IndexOutOfBoundsException("n >= size()");
         } else if(index < 0) {
@@ -150,7 +150,7 @@ public class LongIntMap {
      * smallest key and <code>valueAt(size()-1)</code> will return the value
      * associated with the largest key.</p>
      */
-    public int valueAt(int index) {
+    private int valueAt(int index) {
         if (index >= size) {
             throw new IndexOutOfBoundsException("n >= size()");
         } else if(index < 0) {

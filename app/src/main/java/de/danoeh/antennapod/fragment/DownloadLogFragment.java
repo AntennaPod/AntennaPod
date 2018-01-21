@@ -82,7 +82,7 @@ public class DownloadLogFragment extends ListFragment {
         getActivity().supportInvalidateOptionsMenu();
     }
 
-    private DownloadLogAdapter.ItemAccess itemAccess = new DownloadLogAdapter.ItemAccess() {
+    private final DownloadLogAdapter.ItemAccess itemAccess = new DownloadLogAdapter.ItemAccess() {
 
         @Override
         public int getCount() {
@@ -99,7 +99,7 @@ public class DownloadLogFragment extends ListFragment {
         }
     };
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {

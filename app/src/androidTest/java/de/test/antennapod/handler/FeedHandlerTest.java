@@ -32,8 +32,8 @@ import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 public class FeedHandlerTest extends InstrumentationTestCase {
     private static final String FEEDS_DIR = "testfeeds";
 
-    File file = null;
-    OutputStream outputStream = null;
+    private File file = null;
+    private OutputStream outputStream = null;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -165,7 +165,7 @@ public class FeedHandlerTest extends InstrumentationTestCase {
         Feed feed = new Feed(0, null, "title", "http://example.com", "This is the description",
                 "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed", image, file.getAbsolutePath(),
                 "http://example.com/feed", true);
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
 
         for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "item-" + i, "http://example.com/item-" + i,

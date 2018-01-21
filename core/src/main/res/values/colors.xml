@@ -21,9 +21,8 @@
     <color name="new_indicator_green">#669900</color>
     <color name="image_readability_tint">#80000000</color>
 
-    <!-- Use Gingerbread-orange -->
-    <color name="selection_background_color_dark">#FEBB20</color>
-    <color name="selection_background_color_light">#FEBB20</color>
+    <color name="selection_background_color_dark">#286E8A</color>
+    <color name="selection_background_color_light">#81CFEA</color>
 
     <!-- Theme colors -->
     <color name="primary_light">#FFFFFF</color>

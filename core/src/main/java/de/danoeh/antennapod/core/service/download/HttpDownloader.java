@@ -316,7 +316,7 @@ public class HttpDownloader extends Downloader {
 
     private static class BasicAuthorizationInterceptor implements Interceptor {
 
-        private DownloadRequest downloadRequest;
+        private final DownloadRequest downloadRequest;
 
         public BasicAuthorizationInterceptor(DownloadRequest downloadRequest) {
             this.downloadRequest = downloadRequest;
