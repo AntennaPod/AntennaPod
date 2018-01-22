@@ -309,8 +309,7 @@ public class PodDBAdapter {
     private static PodDBHelper dbHelper;
 
     private static volatile SQLiteDatabase db;
-    private static final Lock dbLock = new ReentrantLock();
-    private static final AtomicInteger counter = new AtomicInteger(0);
+    private static int counter = 0;
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
@@ -328,25 +327,18 @@ public class PodDBAdapter {
     private PodDBAdapter() {
     }
 
-    public PodDBAdapter open() {
-        int adapters = counter.incrementAndGet();
-        Log.v(TAG, "Opening DB #" + adapters);
+    public synchronized PodDBAdapter open() {
+        counter++;
+        Log.v(TAG, "Opening DB #" + counter);
 
-        if ((db == null) || (!db.isOpen()) || (db.isReadOnly())) {
-            try {
-                dbLock.lock();
-                if ((db == null) || (!db.isOpen()) || (db.isReadOnly())) {
-                    db = openDb();
-                }
-            } finally {
-                dbLock.unlock();
-            }
+        if (db == null || !db.isOpen() || db.isReadOnly()) {
+            db = openDb();
         }
         return this;
     }
 
     private SQLiteDatabase openDb() {
-        SQLiteDatabase newDb = null;
+        SQLiteDatabase newDb;
         try {
             newDb = dbHelper.getWritableDatabase();
             newDb.enableWriteAheadLogging();
@@ -357,19 +349,14 @@ public class PodDBAdapter {
         return newDb;
     }
 
-    public void close() {
-        int adapters = counter.decrementAndGet();
-        Log.v(TAG, "Closing DB #" + adapters);
+    public synchronized void close() {
+        counter--;
+        Log.v(TAG, "Closing DB #" + counter);
 
-        if (adapters == 0) {
+        if (counter == 0) {
             Log.v(TAG, "Closing DB, really");
-            try {
-                dbLock.lock();
-                db.close();
-                db = null;
-            } finally {
-                dbLock.unlock();
-            }
+            db.close();
+            db = null;
         }
     }
 
