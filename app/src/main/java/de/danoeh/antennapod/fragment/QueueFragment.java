@@ -109,7 +109,6 @@ public class QueueFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        recyclerView.setAdapter(recyclerAdapter);
         loadItems(true);
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().registerSticky(this);
