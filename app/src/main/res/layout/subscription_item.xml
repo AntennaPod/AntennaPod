@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scaleType="centerCrop"
-        tools:src="@drawable/ic_launcher">
+        tools:src="@mipmap/ic_launcher_round">
     </de.danoeh.antennapod.view.SquareImageView>
 
     <com.joanzapata.iconify.widget.IconTextView
