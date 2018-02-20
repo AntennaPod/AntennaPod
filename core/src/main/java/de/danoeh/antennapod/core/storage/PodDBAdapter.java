@@ -559,8 +559,14 @@ public class PodDBAdapter {
      * transaction
      */
     public void setCompleteFeed(Feed... feeds) {
+        boolean startedTransaction = false;
+
         try {
-            db.beginTransactionNonExclusive();
+            if (!db.inTransaction()) {
+                db.beginTransactionNonExclusive();
+                startedTransaction = true;
+            }
+
             for (Feed feed : feeds) {
                 setFeed(feed);
                 if (feed.getItems() != null) {
@@ -576,7 +582,9 @@ public class PodDBAdapter {
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
-            db.endTransaction();
+            if (startedTransaction) {
+                db.endTransaction();
+            }
         }
     }
 
@@ -640,8 +648,13 @@ public class PodDBAdapter {
     }
 
     public void setFeedItemlist(List<FeedItem> items) {
+        boolean startedTransaction = false;
+
         try {
-            db.beginTransactionNonExclusive();
+            if (!db.inTransaction()) {
+                db.beginTransactionNonExclusive();
+                startedTransaction = true;
+            }
             for (FeedItem item : items) {
                 setFeedItem(item, true);
             }
@@ -649,20 +662,29 @@ public class PodDBAdapter {
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
-            db.endTransaction();
+            if (startedTransaction) {
+                db.endTransaction();
+            }
         }
     }
 
     public long setSingleFeedItem(FeedItem item) {
+        boolean startedTransaction = false;
         long result = 0;
+
         try {
-            db.beginTransactionNonExclusive();
+            if (!db.inTransaction()) {
+                db.beginTransactionNonExclusive();
+                startedTransaction = true;
+            }
             result = setFeedItem(item, true);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
-            db.endTransaction();
+            if (startedTransaction) {
+                db.endTransaction();
+            }
         }
         return result;
     }
@@ -781,8 +803,13 @@ public class PodDBAdapter {
 
     public void setFeedItemRead(int played, long itemId, long mediaId,
                                 boolean resetMediaPosition) {
+        boolean startedTransaction = false;
+
         try {
-            db.beginTransactionNonExclusive();
+            if (!db.inTransaction()) {
+                db.beginTransactionNonExclusive();
+                startedTransaction = true;
+            }
             ContentValues values = new ContentValues();
 
             values.put(KEY_READ, played);
@@ -798,7 +825,9 @@ public class PodDBAdapter {
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
-            db.endTransaction();
+            if (startedTransaction) {
+                db.endTransaction();
+            }
         }
     }
 
@@ -809,8 +838,12 @@ public class PodDBAdapter {
      * @param itemIds items to change the value of
      */
     public void setFeedItemRead(int read, long... itemIds) {
+        boolean startedTransaction = false;
         try {
-            db.beginTransactionNonExclusive();
+            if (!db.inTransaction()) {
+                db.beginTransactionNonExclusive();
+                startedTransaction = true;
+            }
             ContentValues values = new ContentValues();
             for (long id : itemIds) {
                 values.clear();
@@ -821,7 +854,9 @@ public class PodDBAdapter {
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
-            db.endTransaction();
+            if (startedTransaction) {
+                db.endTransaction();
+            }
         }
     }
 
@@ -891,9 +926,13 @@ public class PodDBAdapter {
     }
 
     public void setFavorites(List<FeedItem> favorites) {
+        boolean startedTransaction = false;
         ContentValues values = new ContentValues();
         try {
-            db.beginTransactionNonExclusive();
+            if (!db.inTransaction()) {
+                db.beginTransactionNonExclusive();
+                startedTransaction = true;
+            }
             db.delete(TABLE_NAME_FAVORITES, null, null);
             for (int i = 0; i < favorites.size(); i++) {
                 FeedItem item = favorites.get(i);
@@ -906,7 +945,9 @@ public class PodDBAdapter {
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
-            db.endTransaction();
+            if (startedTransaction) {
+                db.endTransaction();
+            }
         }
     }
 
@@ -954,9 +995,13 @@ public class PodDBAdapter {
     }
 
     public void setQueue(List<FeedItem> queue) {
+        boolean startedTransaction = false;
         ContentValues values = new ContentValues();
         try {
-            db.beginTransactionNonExclusive();
+            if (!db.inTransaction()) {
+                db.beginTransactionNonExclusive();
+                startedTransaction = true;
+            }
             db.delete(TABLE_NAME_QUEUE, null, null);
             for (int i = 0; i < queue.size(); i++) {
                 FeedItem item = queue.get(i);
@@ -969,7 +1014,9 @@ public class PodDBAdapter {
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
-            db.endTransaction();
+            if (startedTransaction) {
+                db.endTransaction();
+            }
         }
     }
 
@@ -1017,8 +1064,12 @@ public class PodDBAdapter {
      * Remove a feed with all its FeedItems and Media entries.
      */
     public void removeFeed(Feed feed) {
+        boolean startedTransaction = false;
         try {
-            db.beginTransactionNonExclusive();
+            if (!db.inTransaction()) {
+                db.beginTransactionNonExclusive();
+                startedTransaction = true;
+            }
             if (feed.getImage() != null) {
                 removeFeedImage(feed.getImage());
             }
@@ -1037,7 +1088,9 @@ public class PodDBAdapter {
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
-            db.endTransaction();
+            if (startedTransaction) {
+                db.endTransaction();
+            }
         }
     }
 
