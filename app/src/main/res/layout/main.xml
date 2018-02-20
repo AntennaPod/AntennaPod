@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="?attr/colorPrimary"
             tools:layout_height="64dp"
             tools:background="@android:color/holo_green_light" />
 
@@ -42,6 +41,7 @@
             android:layout_height="0px"
             android:layout_above="@id/playerFragment"
             android:layout_below="@id/toolbar"
+            android:foreground="?android:windowContentOverlay"
             tools:background="@android:color/holo_red_dark" />
 
     </RelativeLayout>
