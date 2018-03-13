@@ -1,7 +1,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "com.android.application"
-apply plugin: "me.tatarka.retrolambda"
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.getkeepsafe.dexcount'
 
@@ -113,10 +112,13 @@ android {
         additionalParameters "--no-version-vectors"
     }
 
+    flavorDimensions "market"
     productFlavors {
         free {
+            dimension "market"
         }
         play {
+            dimension "market"
         }
     }
 
@@ -133,12 +135,14 @@ configurations {
 }
 
 dependencies {
-    freeDebugCompile project(path: ":core", configuration: "freeDebug")
-    freeReleaseCompile project(path: ":core", configuration: "freeRelease")
+    ///freeDebugCompile project(path: ":core", configuration: "freeDebug")
+    ///freeReleaseCompile project(path: ":core", configuration: "freeRelease")
+    freeCompile project(":core")
     // free build hack: skip some dependencies
     if (!doFreeBuild()) {
-        playDebugCompile project(path: ":core", configuration: "playDebug")
-        playReleaseCompile project(path: ":core", configuration: "playRelease")
+        ///playDebugCompile project(path: ":core", configuration: "playDebug")
+        ///playReleaseCompile project(path: ":core", configuration: "playRelease")
+        playCompile project(":core")
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
