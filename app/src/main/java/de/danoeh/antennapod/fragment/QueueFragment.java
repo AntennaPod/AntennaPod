@@ -389,17 +389,29 @@ public class QueueFragment extends Fragment {
         itemTouchHelper = new ItemTouchHelper(
             new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
 
+                // Position tracking whilst dragging
+                int dragFrom = -1;
+                int dragTo = -1;
+
                 @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    int fromPosition = viewHolder.getAdapterPosition();
+                    int toPosition = target.getAdapterPosition();
+
+                    // Update tracked position
+                    if(dragFrom == -1) {
+                        dragFrom =  fromPosition;
+                    }
+                    dragTo = toPosition;
+
                     int from = viewHolder.getAdapterPosition();
                     int to = target.getAdapterPosition();
-                    Log.d(TAG, "move(" + from + ", " + to + ")");
+                    Log.d(TAG, "move(" + from + ", " + to + ") in memory");
                     if(from >= queue.size() || to >= queue.size()) {
                         return false;
                     }
                     queue.add(to, queue.remove(from));
                     recyclerAdapter.notifyItemMoved(from, to);
-                    DBWriter.moveQueueItem(from, to, true);
                     return true;
                 }
 
@@ -453,11 +465,24 @@ public class QueueFragment extends Fragment {
                                       RecyclerView.ViewHolder viewHolder) {
                     super.clearView(recyclerView, viewHolder);
 
+                    // Check if drag finished
+                    if(dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+                        reallyMoved(dragFrom, dragTo);
+                    }
+
+                    dragFrom = dragTo = -1;
+
                     if (viewHolder instanceof QueueRecyclerAdapter.ItemTouchHelperViewHolder) {
                         QueueRecyclerAdapter.ItemTouchHelperViewHolder itemViewHolder =
                                 (QueueRecyclerAdapter.ItemTouchHelperViewHolder) viewHolder;
                         itemViewHolder.onItemClear();
                     }
+                }
+
+                private void reallyMoved(int from, int to) {
+                    // Write drag operation to database
+                    Log.d(TAG, "Write to database move(" + dragFrom + ", " + dragTo + ")");
+                    DBWriter.moveQueueItem(dragFrom, dragTo, true);
                 }
             }
         );
