@@ -18,5 +18,5 @@ dependencies:
 
 test:
   override:
-    - ./gradlew assembleDebug -PpreDexEnable=false -Pandroid.threadPoolSize=1 -Dorg.gradle.parallel=false -Dorg.gradle.jvmargs="-Xms512m -Xmx2048m" -Dorg.gradle.daemon=false
+    - ./gradlew assembleDebug -Pandroid.threadPoolSize=1 -Dorg.gradle.parallel=false -Dorg.gradle.jvmargs="-Xms512m -Xmx2048m" -Dorg.gradle.daemon=false -PdisablePreDex:
         timeout: 1800
