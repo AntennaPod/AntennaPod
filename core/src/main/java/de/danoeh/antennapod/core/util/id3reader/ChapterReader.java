@@ -43,7 +43,7 @@ public class ChapterReader extends ID3Reader {
 						currentChapter = null;
 					}
 				}
-				StringBuffer elementId = new StringBuffer();
+				StringBuilder elementId = new StringBuilder();
 				readISOString(elementId, input, Integer.MAX_VALUE);
 				char[] startTimeSource = readBytes(input, 4);
 				long startTime = ((int) startTimeSource[0] << 24)
@@ -54,7 +54,7 @@ public class ChapterReader extends ID3Reader {
 				return ID3Reader.ACTION_DONT_SKIP;
 			case FRAME_ID_TITLE:
 				if (currentChapter != null && currentChapter.getTitle() == null) {
-					StringBuffer title = new StringBuffer();
+					StringBuilder title = new StringBuilder();
 					readString(title, input, header.getSize());
 					currentChapter
 							.setTitle(title.toString());
@@ -67,7 +67,7 @@ public class ChapterReader extends ID3Reader {
 				if (currentChapter != null) {
 					// skip description
 					int descriptionLength = readString(null, input, header.getSize());
-					StringBuffer link = new StringBuffer();
+					StringBuilder link = new StringBuilder();
 					readISOString(link, input, header.getSize() - descriptionLength);
 					String decodedLink = URLDecoder.decode(link.toString(), "UTF-8");
 

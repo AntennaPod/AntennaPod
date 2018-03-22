@@ -3,7 +3,9 @@ package de.danoeh.antennapod.core.storage;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseErrorHandler;
 import android.database.DatabaseUtils;
+import android.database.DefaultDatabaseErrorHandler;
 import android.database.MergeCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,13 +15,12 @@ import android.media.MediaMetadataRetriever;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.ProgressEvent;
@@ -35,6 +36,7 @@ import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.greenrobot.event.EventBus;
+import org.apache.commons.io.FileUtils;
 
 // TODO Remove media column from feeditem table
 
@@ -309,8 +311,7 @@ public class PodDBAdapter {
     private static PodDBHelper dbHelper;
 
     private static volatile SQLiteDatabase db;
-    private static final Lock dbLock = new ReentrantLock();
-    private static final AtomicInteger counter = new AtomicInteger(0);
+    private static int counter = 0;
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
@@ -328,25 +329,18 @@ public class PodDBAdapter {
     private PodDBAdapter() {
     }
 
-    public PodDBAdapter open() {
-        int adapters = counter.incrementAndGet();
-        Log.v(TAG, "Opening DB #" + adapters);
+    public synchronized PodDBAdapter open() {
+        counter++;
+        Log.v(TAG, "Opening DB #" + counter);
 
-        if ((db == null) || (!db.isOpen()) || (db.isReadOnly())) {
-            try {
-                dbLock.lock();
-                if ((db == null) || (!db.isOpen()) || (db.isReadOnly())) {
-                    db = openDb();
-                }
-            } finally {
-                dbLock.unlock();
-            }
+        if (db == null || !db.isOpen() || db.isReadOnly()) {
+            db = openDb();
         }
         return this;
     }
 
     private SQLiteDatabase openDb() {
-        SQLiteDatabase newDb = null;
+        SQLiteDatabase newDb;
         try {
             newDb = dbHelper.getWritableDatabase();
             newDb.enableWriteAheadLogging();
@@ -357,19 +351,14 @@ public class PodDBAdapter {
         return newDb;
     }
 
-    public void close() {
-        int adapters = counter.decrementAndGet();
-        Log.v(TAG, "Closing DB #" + adapters);
+    public synchronized void close() {
+        counter--;
+        Log.v(TAG, "Closing DB #" + counter);
 
-        if (adapters == 0) {
+        if (counter == 0) {
             Log.v(TAG, "Closing DB, really");
-            try {
-                dbLock.lock();
-                db.close();
-                db = null;
-            } finally {
-                dbLock.unlock();
-            }
+            db.close();
+            db = null;
         }
     }
 
@@ -1657,6 +1646,28 @@ public class PodDBAdapter {
     }
 
     /**
+     * Called when a database corruption happens
+     */
+    public static class PodDbErrorHandler implements DatabaseErrorHandler {
+        @Override
+        public void onCorruption(SQLiteDatabase db) {
+            Log.e(TAG, "Database corrupted: " + db.getPath());
+
+            File dbPath = new File(db.getPath());
+            File backupFolder = PodDBAdapter.context.getExternalFilesDir(null);
+            File backupFile = new File(backupFolder, "CorruptedDatabaseBackup.db");
+            try {
+                FileUtils.copyFile(dbPath, backupFile);
+                Log.d(TAG, "Dumped database to " + backupFile.getPath());
+            } catch (IOException e) {
+                Log.d(TAG, Log.getStackTraceString(e));
+            }
+
+            new DefaultDatabaseErrorHandler().onCorruption(db); // This deletes the database
+        }
+    }
+
+    /**
      * Helper class for opening the Antennapod database.
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
@@ -1674,7 +1685,7 @@ public class PodDBAdapter {
          */
         public PodDBHelper(final Context context, final String name,
                            final CursorFactory factory) {
-            super(context, name, factory, VERSION);
+            super(context, name, factory, VERSION, new PodDbErrorHandler());
             this.context = context;
         }
 

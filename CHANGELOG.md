@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.6.4
+-------------
+
+* Fixes issues on Android Oreo
+* Avoids duplicate chapters
+* Beta: Database import & export
+
 Version 1.6.3
 -------------
 

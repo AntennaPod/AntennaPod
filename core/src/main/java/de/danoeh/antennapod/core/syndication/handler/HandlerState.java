@@ -37,7 +37,7 @@ public class HandlerState {
     /**
      * Buffer for saving characters.
      */
-    StringBuffer contentBuf;
+    protected StringBuilder contentBuf;
 
     /**
      * Temporarily saved objects.
@@ -97,7 +97,7 @@ public class HandlerState {
         return third;
     }
 
-    public StringBuffer getContentBuf() {
+    public StringBuilder getContentBuf() {
         return contentBuf;
     }
 

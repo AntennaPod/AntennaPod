@@ -340,13 +340,10 @@ public class DownloadService extends Service {
     }
 
     private void setupNotificationBuilders() {
-        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.stat_notify_sync);
-
         NotificationUtils.createChannelDownloading(this);
         notificationCompatBuilder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setOngoing(true)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
-                .setLargeIcon(icon)
                 .setSmallIcon(R.drawable.stat_notify_sync);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationCompatBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
@@ -514,10 +511,6 @@ public class DownloadService extends Service {
                                     successfulDownloads, failedDownloads)
                     )
                     .setSmallIcon(R.drawable.stat_notify_sync_error)
-                    .setLargeIcon(
-                            BitmapFactory.decodeResource(getResources(),
-                                    R.drawable.stat_notify_sync_error)
-                    )
                     .setContentIntent(
                             ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(this)
                     )
@@ -569,7 +562,6 @@ public class DownloadService extends Service {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(getText(R.string.authentication_notification_msg)
                             + ": " + resourceTitle))
                     .setSmallIcon(R.drawable.ic_stat_authentication)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_authentication))
                     .setAutoCancel(true)
                     .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(DownloadService.this, downloadRequest));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
