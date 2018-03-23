@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.feed;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 
+import android.text.TextUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -372,7 +373,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
             if (contentEncoded == null || description == null) {
                 DBReader.loadExtraInformationOfFeedItem(FeedItem.this);
             }
-            return (contentEncoded != null) ? contentEncoded : description;
+            return (!TextUtils.isEmpty(contentEncoded)) ? contentEncoded : description;
         };
     }
 
