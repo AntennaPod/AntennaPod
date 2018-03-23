@@ -377,12 +377,10 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
                 return description;
             } else if (TextUtils.isEmpty(description)) {
                 return contentEncoded;
+            } else if (description.length() > 1.25 * contentEncoded.length()) {
+                return description;
             } else {
-                if (description.length() > 1.25 * contentEncoded.length()) {
-                    return description;
-                } else {
-                    return contentEncoded;
-                }
+                return contentEncoded;
             }
         };
     }
