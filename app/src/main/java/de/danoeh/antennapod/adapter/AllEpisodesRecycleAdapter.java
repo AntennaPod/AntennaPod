@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 
+import org.shredzone.flattr4j.model.User;
+
 import java.lang.ref.WeakReference;
 
 import de.danoeh.antennapod.R;
@@ -69,6 +71,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
             playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_dark);
+        } else if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack){
+            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_trueblack);
         } else {
             playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_light);
         }

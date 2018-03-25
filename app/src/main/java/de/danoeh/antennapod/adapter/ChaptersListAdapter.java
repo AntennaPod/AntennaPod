@@ -143,8 +143,15 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
         Chapter current = ChapterUtils.getCurrentChapter(media);
         if (current == sc) {
-            boolean darkTheme = UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark;
-            int highlight = darkTheme ? R.color.highlight_dark : R.color.highlight_light;
+            int theme = UserPreferences.getTheme();
+            int highlight = R.color.highlight_light;
+            if (theme == R.style.Theme_AntennaPod_Dark) {
+                highlight = R.color.highlight_dark;
+            }else if (theme == R.style.Theme_AntennaPod_TrueBlack){
+                highlight = R.color.highlight_trueblack;
+            } else if (theme == R.style.Theme_AntennaPod_Light) {
+                highlight = R.color.highlight_light;
+            }
             int playingBackGroundColor = ContextCompat.getColor(getContext(), highlight);
             holder.view.setBackgroundColor(playingBackGroundColor);
         } else {
