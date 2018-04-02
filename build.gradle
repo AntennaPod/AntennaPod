@@ -4,12 +4,11 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        google()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:2.3.3"
-        classpath "me.tatarka:gradle-retrolambda:3.7.0"
-        classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
-        classpath "com.github.triplet.gradle:play-publisher:1.1.4"
+        classpath "com.android.tools.build:gradle:3.0.1"
+        classpath "com.github.triplet.gradle:play-publisher:1.2.0"
         // Exclude the version that the android plugin depends on.
         configurations.classpath.exclude group: "com.android.tools.external.lombok"
     }
@@ -18,6 +17,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        google()
     }
 }
 
@@ -38,7 +38,7 @@ subprojects {
 
 project.ext {
     compileSdkVersion = 25
-    buildToolsVersion = "25.0.3"
+    buildToolsVersion = "27.0.3"
     minSdkVersion = 14
     targetSdkVersion = 25
 
