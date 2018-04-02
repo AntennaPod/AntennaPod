@@ -689,7 +689,7 @@
 
     <!-- Notification channels -->
     <string name="notification_channel_user_action">Action required</string>
-    <string name="notification_channel_user_action_description">Shown if your is required</string>
+    <string name="notification_channel_user_action_description">Shown if your action is required</string>
     <string name="notification_channel_downloading">Downloading</string>
     <string name="notification_channel_downloading_description">Shown while currently downloading</string>
     <string name="notification_channel_playing">Currently playing</string>
