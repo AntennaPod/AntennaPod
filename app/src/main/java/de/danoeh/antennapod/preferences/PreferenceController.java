@@ -764,6 +764,10 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         }
     }
 
+    private static String blankIfNull(String val) {
+        return val == null ? "" : val;
+    }
+
     private void buildAutodownloadSelectedNetworsPreference() {
         final Activity activity = ui.getActivity();
 
@@ -778,7 +782,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             Log.e(TAG, "Couldn't get list of configure Wi-Fi networks");
             return;
         }
-        Collections.sort(networks, (x, y) -> x.SSID.compareTo(y.SSID));
+        Collections.sort(networks, (x, y) ->
+                blankIfNull(x.SSID).compareTo(blankIfNull(y.SSID)));
         selectedNetworks = new CheckBoxPreference[networks.size()];
         List<String> prefValues = Arrays.asList(UserPreferences
                 .getAutodownloadSelectedNetworks());

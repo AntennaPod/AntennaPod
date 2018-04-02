@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 
 import org.antennapod.audio.MediaPlayer;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
@@ -165,8 +166,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             callback.onMediaChanged(false);
             if (stream) {
                 mediaPlayer.setDataSource(media.getStreamUrl());
-            } else {
+            } else if (new File(media.getLocalMediaUrl()).canRead()) {
                 mediaPlayer.setDataSource(media.getLocalMediaUrl());
+            } else {
+                throw new IOException("Unable to read local file " + media.getLocalMediaUrl());
             }
             setPlayerStatus(PlayerStatus.INITIALIZED, media);
 

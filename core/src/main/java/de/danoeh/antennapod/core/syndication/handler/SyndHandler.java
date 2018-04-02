@@ -33,7 +33,7 @@ class SyndHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		state.contentBuf = new StringBuffer();
+		state.contentBuf = new StringBuilder();
 		Namespace handler = getHandlingNamespace(uri, qName);
 		if (handler != null) {
 			SyndElement element = handler.handleElementStart(localName, state,
