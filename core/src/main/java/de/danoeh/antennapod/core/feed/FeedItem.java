@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -372,7 +373,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
             if (contentEncoded == null || description == null) {
                 DBReader.loadExtraInformationOfFeedItem(FeedItem.this);
             }
-            return (contentEncoded != null) ? contentEncoded : description;
+            return !StringUtils.isEmpty(contentEncoded) ? contentEncoded : description;
         };
     }
 
