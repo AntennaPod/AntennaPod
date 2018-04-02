@@ -99,10 +99,16 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @Override
-    protected void onPause() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
-                || !isInPictureInPictureMode()) {
+    protected void onStop() {
+        super.onStop();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !isInPictureInPictureMode()) {
             videoControlsHider.stop();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !isInPictureInPictureMode()) {
             if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
                 controller.pause();
             }
@@ -185,8 +191,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
-                    && isInPictureInPictureMode()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode()) {
                 return true;
             }
             videoControlsHider.stop();
