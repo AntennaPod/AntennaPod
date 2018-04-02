@@ -29,7 +29,7 @@ public class NotificationUtils {
         }
         NotificationManager mNotificationManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_DOWNLOADING,
-                c.getString(R.string.notification_channel_downloading), NotificationManager.IMPORTANCE_DEFAULT);
+                c.getString(R.string.notification_channel_downloading), NotificationManager.IMPORTANCE_LOW);
         mChannel.setDescription(c.getString(R.string.notification_channel_downloading_description));
         mNotificationManager.createNotificationChannel(mChannel);
     }
@@ -40,7 +40,7 @@ public class NotificationUtils {
         }
         NotificationManager mNotificationManager = (NotificationManager) c.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_PLAYING,
-                c.getString(R.string.notification_channel_playing), NotificationManager.IMPORTANCE_DEFAULT);
+                c.getString(R.string.notification_channel_playing), NotificationManager.IMPORTANCE_LOW);
         mChannel.setDescription(c.getString(R.string.notification_channel_playing_description));
         mNotificationManager.createNotificationChannel(mChannel);
     }
