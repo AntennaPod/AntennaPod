@@ -319,7 +319,6 @@ public class GpodnetSyncService extends Service {
             }
         }
 
-        NotificationUtils.createChannelError(this);
         PendingIntent activityIntent = ClientConfig.gpodnetCallbacks.getGpodnetSyncServiceErrorNotificationPendingIntent(this);
         Notification notification = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_ERROR)
                 .setContentTitle(title)

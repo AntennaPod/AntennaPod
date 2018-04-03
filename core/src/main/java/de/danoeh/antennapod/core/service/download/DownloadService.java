@@ -340,7 +340,6 @@ public class DownloadService extends Service {
     }
 
     private void setupNotificationBuilders() {
-        NotificationUtils.createChannelDownloading(this);
         notificationCompatBuilder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setOngoing(true)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
@@ -501,7 +500,6 @@ public class DownloadService extends Service {
         if (createReport) {
             Log.d(TAG, "Creating report");
             // create notification object
-            NotificationUtils.createChannelError(this);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_ERROR)
                     .setTicker(getString(R.string.download_report_title))
                     .setContentTitle(getString(R.string.download_report_content_title))
@@ -554,7 +552,6 @@ public class DownloadService extends Service {
             final String resourceTitle = (downloadRequest.getTitle() != null) ?
                     downloadRequest.getTitle() : downloadRequest.getSource();
 
-            NotificationUtils.createChannelUserAction(DownloadService.this);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(DownloadService.this, NotificationUtils.CHANNEL_ID_USER_ACTION);
             builder.setTicker(getText(R.string.authentication_notification_title))
                     .setContentTitle(getText(R.string.authentication_notification_title))

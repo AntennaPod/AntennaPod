@@ -30,6 +30,7 @@ import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.core.util.NotificationUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -200,6 +201,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         transaction.commit();
 
         checkFirstLaunch();
+        NotificationUtils.createChannels(this);
     }
 
     private void saveLastNavFragment(String tag) {

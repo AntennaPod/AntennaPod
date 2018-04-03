@@ -1225,7 +1225,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     Notification notification;
 
                     // Builder is v7, even if some not overwritten methods return its parent's v4 interface
-                    NotificationUtils.createChannelPlaying(PlaybackService.this);
                     NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
                             PlaybackService.this, NotificationUtils.CHANNEL_ID_PLAYING)
                             .setContentTitle(contentTitle)

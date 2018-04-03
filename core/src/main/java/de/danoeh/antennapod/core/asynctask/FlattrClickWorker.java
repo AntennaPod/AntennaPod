@@ -176,7 +176,6 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
                 ClientConfig.flattrCallbacks.getFlattrAuthenticationActivityIntent(context), 0);
 
-        NotificationUtils.createChannelError(context);
         Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_ERROR)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.no_flattr_token_notification_msg)))
                 .setContentIntent(contentIntent)
@@ -210,7 +209,6 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
                     + context.getString(R.string.flattr_click_failure_count, failed);
         }
 
-        NotificationUtils.createChannelError(context);
         Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_ERROR)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(subtext))
                 .setContentIntent(contentIntent)
