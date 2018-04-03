@@ -40,7 +40,7 @@ project.ext {
     compileSdkVersion = 27
     buildToolsVersion = "27.0.3"
     minSdkVersion = 14
-    targetSdkVersion = 27
+    targetSdkVersion = 25
 
     supportVersion = "27.0.2"
     commonsioVersion = "2.5"
