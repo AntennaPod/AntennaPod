@@ -163,7 +163,7 @@ dependencies {
         transitive = true
     }
     implementation "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
-    implementation("com.githang:viewpagerindicator:2.5@aar") {
+    implementation("com.githang:viewpagerindicator:2.5.1@aar") {
         exclude module: "support-v4"
     }
 
