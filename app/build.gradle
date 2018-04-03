@@ -128,13 +128,6 @@ android {
     }
 }
 
-configurations {
-    freeDebugImplementation
-    freeReleaseImplementation
-    playDebugImplementation
-    playReleaseImplementation
-}
-
 dependencies {
     freeImplementation project(":core")
     // free build hack: skip some dependencies
