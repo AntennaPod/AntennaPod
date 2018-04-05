@@ -33,6 +33,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -118,6 +119,10 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                 R.style.Theme_AntennaPod_Dark ? Color.BLACK : Color.WHITE);
         ta.recycle();
         webvDescription.setBackgroundColor(backgroundColor);
+        if (!NetworkUtils.networkAvailable()) {
+            webvDescription.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            // Use cached resources, even if they have expired
+        }
         webvDescription.getSettings().setUseWideViewPort(false);
         webvDescription.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webvDescription.getSettings().setLoadWithOverviewMode(true);

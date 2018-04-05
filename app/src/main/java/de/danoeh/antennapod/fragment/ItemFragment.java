@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
 
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
@@ -188,6 +189,10 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
             webvDescription.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
+        }
+        if (!NetworkUtils.networkAvailable()) {
+            webvDescription.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            // Use cached resources, even if they have expired
         }
         webvDescription.getSettings().setUseWideViewPort(false);
         webvDescription.getSettings().setLayoutAlgorithm(
