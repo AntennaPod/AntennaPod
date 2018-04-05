@@ -474,8 +474,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         subscription = observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(output -> {
-                    alert.setTitle(R.string.opml_export_success_title);
-                    String message = context.getString(R.string.opml_export_success_sum) + output.toString();
+                    alert.setTitle(R.string.export_success_title);
+                    String message = context.getString(R.string.export_success_sum, output.toString());
                     alert.setMessage(message);
                     alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
