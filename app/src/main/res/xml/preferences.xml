@@ -313,6 +313,9 @@
             android:key="prefOpmlExport"
             android:title="@string/opml_export_label"/>
         <Preference
+            android:key="prefOpmlImport"
+            android:title="@string/opml_import_label"/>
+        <Preference
             android:key="prefHtmlExport"
             android:title="@string/html_export_label"/>
         <Preference
