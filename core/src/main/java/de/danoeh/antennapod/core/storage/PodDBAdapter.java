@@ -312,6 +312,7 @@ public class PodDBAdapter {
 
     private static volatile SQLiteDatabase db;
     private static int counter = 0;
+    private static PodDBAdapter instance;
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
@@ -322,8 +323,11 @@ public class PodDBAdapter {
     }
 
     public static PodDBAdapter getInstance() {
+        if (instance == null) {
+            instance = new PodDBAdapter();
+        }
         dbHelper = PodDBHelperholder.dbHelper;
-        return new PodDBAdapter();
+        return instance;
     }
 
     private PodDBAdapter() {
