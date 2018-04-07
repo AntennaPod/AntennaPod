@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Nuevos</string>
   <string name="settings_label">Ajustes</string>
-  <string name="add_new_feed_label">Añadir podcast</string>
   <string name="downloads_label">Descargas</string>
   <string name="downloads_running_label">En curso</string>
   <string name="downloads_completed_label">Completadas</string>
@@ -27,7 +26,9 @@
   <string name="total_time_listened_to_podcasts">Tiempo total reproducido:</string>
   <string name="statistics_details_dialog">Empezados %1$d episodios de %2$d.\n\nReproducidos %3$s de %4$s.</string>
   <string name="statistics_mode">Modo de estadísticas</string>
+  <string name="statistics_mode_normal">Calcula la duración real reproducida. Reproducir dos veces cuenta doble, y marcar como leído no cuenta como reproducido</string>
   <string name="statistics_mode_count_all">Resumir todos los podcasts marcados como reproducidos</string>
+  <string name="statistics_speed_not_counted">Aviso: La velocidad de reproducción nunca se tiene en cuenta.</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
   <string name="drawer_close">Cerrar menú</string>
@@ -113,10 +114,12 @@
   <string name="remove_feed_label">Eliminar podcast</string>
   <string name="share_label">Compartir…</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
+  <string name="share_file_label">Compartir archivo</string>
   <string name="share_link_with_position_label">Compartir enlace con posición</string>
   <string name="share_feed_url_label">Compartir URL del canal</string>
   <string name="share_item_url_label">Compartir URL del archivo del episodio</string>
   <string name="share_item_url_with_position_label">Compartir URL del episodio con posición</string>
+  <string name="feed_delete_confirmation_msg">Por favor, confirma que quieres borrar el feed \"%1$s\" y TODOS los episodios descargados de dicho feed.</string>
   <string name="feed_remover_msg">Quitando el canal</string>
   <string name="load_complete_feed">Actualizar el canal completo</string>
   <string name="hide_episodes_title">Ocultar episodios</string>
@@ -140,6 +143,7 @@
   <string name="stream_label">Transmitir</string>
   <string name="remove_label">Quitar</string>
   <string name="delete_label">Borrar</string>
+  <string name="delete_failed">No se puede borrar el fichero. Reiniciar el dispositivo podría ayudar.</string>
   <string name="remove_episode_lable">Quitar episodio</string>
   <string name="marked_as_seen_label">Marcar como visto</string>
   <string name="mark_read_label">Marcar como escuchado</string>
@@ -284,6 +288,7 @@
   <string name="pref_pauseOnDisconnect_sum">Pausar la reproducción al desconectar los auriculares o el bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reanudar reproducción cuando se reconecten los auriculares</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reanudar reproducción cuando se reconecte el bluetooth</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Saltar episodio con botón avance</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Al pulsar el botón físico de avanzar se saltará al siguiente episodio en lugar de sólo avanzar</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Botón anterior reinicia</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Al pulsar el botón físico de retroceder se comenzará el episodio de nuevo, en lugar de rebobinar</string>
@@ -291,8 +296,11 @@
   <string name="pref_auto_delete_sum">Borrar episodio cuando finalice la reproducción</string>
   <string name="pref_auto_delete_title">Eliminar automáticamente</string>
   <string name="pref_smart_mark_as_played_sum">Marcar episodios como escuchados incluso si todavía quedan unos segundos por escuchar</string>
+  <string name="pref_smart_mark_as_played_title">Marcar como terminado inteligente</string>
   <string name="pref_skip_keeps_episodes_sum">Conservar episodios al saltarlos</string>
   <string name="pref_skip_keeps_episodes_title">Conservar episodios saltados</string>
+  <string name="pref_favorite_keeps_episodes_sum">Conservar los episodios cuando se marcan como favoritos</string>
+  <string name="pref_favorite_keeps_episodes_title">Conservar los episodios favoritos</string>
   <string name="playback_pref">Reproducción</string>
   <string name="network_pref">Red</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalo de actualización u hora del día</string>
@@ -336,6 +344,8 @@
   <string name="pref_automatic_download_sum">Configurar la descarga automática de episodios.</string>
   <string name="pref_autodl_wifi_filter_title">Activar el filtro WiFi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir la descarga automática sólo para las redes WiFi marcadas.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Descargar bajo conexión móvil</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Permite descarga automática sobre la red de Internet del móvil.</string>
   <string name="pref_automatic_download_on_battery_title">Descargar cuando no se está cargando</string>
   <string name="pref_automatic_download_on_battery_sum">Permitir la descarga automática cuando la batería no está cargando</string>
   <string name="pref_parallel_downloads_title">Descargas paralelas</string>
@@ -364,6 +374,10 @@
   <string name="pref_gpodnet_notifications_sum">Este ajuste no afecta a errores de autenticación.</string>
   <string name="pref_playback_speed_title">Velocidades de reproducción</string>
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles para la reproducción de audio a velocidad variable</string>
+  <string name="pref_fast_forward">Intervalo de avance</string>
+  <string name="pref_fast_forward_sum">Personaliza el número de segundos a avanzar cuando se pulsa el botón de avance rápido</string>
+  <string name="pref_rewind">Intervalo de retroceso</string>
+  <string name="pref_rewind_sum">Personaliza el número de segundos a retroceder cuando se pulsa el botón de retroceder</string>
   <string name="pref_gpodnet_sethostname_title">Definir nombre de equipo</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usar nombre de equipo por defecto</string>
   <string name="pref_expandNotify_title">Expandir Notificación</string>
@@ -399,7 +413,7 @@
   <string name="pref_cast_title">Soporte para Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar soporte para reproducción remota en dispositivos Cast (como Chromecast, altavoces o Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast requiere librerías propietarias de terceros que están deshabilitadas en esta versión de AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Descargados en cola</string>
+  <string name="pref_enqueue_downloaded_title">Poner descargados en cola</string>
   <string name="pref_enqueue_downloaded_summary">Agregar episodios descargados a la cola</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
@@ -411,6 +425,7 @@
   <string name="found_in_shownotes_label">Encontrado en las notas del show</string>
   <string name="found_in_chapters_label">Encontrado en los capítulos</string>
   <string name="found_in_authors_label">Encontrado en los autores</string>
+  <string name="found_in_feeds_label">Encontrado en los feeds</string>
   <string name="search_status_no_results">No se han encontrado resultados</string>
   <string name="search_label">Buscar</string>
   <string name="found_in_title_label">Encontrado en el título</string>
@@ -604,6 +619,14 @@
   <string name="proxy_host_empty_error">El host no puede estar en blanco</string>
   <string name="proxy_host_invalid_error">El host no es una IP ni un host válido</string>
   <string name="proxy_port_invalid_error">Puerto inválido</string>
+  <!--Database import/export-->
+  <string name="import_export">Importar/Exportar base de datos</string>
+  <string name="import_export_warning">Esta función experimental se puede usar para transferir tus suscripciones y episodios reproducidos a otro dispositivo.\n\nLas base de datos exportadas solo se pueden importar cuando se usa la misma versión de AntennaPod. En otro caso, esta función podría provocar comportamiento inesperado.\n\nDespués de importar, los episodios podrían mostrarse como descargados cuando no lo están. Reproduce estos episodios para que AntennaPod lo detecte.</string>
+  <string name="label_import">Importar</string>
+  <string name="label_export">Exportar</string>
+  <string name="import_select_file">Seleccionar firchero a importar</string>
+  <string name="export_ok">Exportación exitosa. La base de datos se guardó en la tarjeta SD.</string>
+  <string name="import_ok">Importación exitosa.\n\nPor favor, pulse OK para reiniciar AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Reproducir en...</string>
   <string name="cast_disconnect_label">Desconectar la sesión Cast</string>

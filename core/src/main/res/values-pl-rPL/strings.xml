@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Ulubione</string>
   <string name="new_label">Nowy</string>
   <string name="settings_label">Ustawienia</string>
-  <string name="add_new_feed_label">Dodaj podcast</string>
   <string name="downloads_label">Pobrane</string>
   <string name="downloads_running_label">W toku</string>
   <string name="downloads_completed_label">Ukończone</string>
@@ -412,7 +411,6 @@
   <string name="pref_cast_title">Obsługa Chromecast</string>
   <string name="pref_cast_message_play_flavor">Uruchom obsługę dla zdalnego odtwarzania mediów na innych urządzeniach (takich jak Chromecast, Audio Speakers albo Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast wymagadodatkowych bibliotek, które są zablokowane w tej wersji AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Rzeczy z kolejki zostały pobrane</string>
   <string name="pref_enqueue_downloaded_summary">Dodaj pobrane odcinki do kolejki</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Włącz automatyczne wspieranie na flattr.</string>
@@ -625,6 +623,7 @@ https://gpodder.net/register/</string>
   <string name="proxy_host_empty_error">Host nie może być pusty!</string>
   <string name="proxy_host_invalid_error">Host nie jest prawidłowym adresem IP albo domeną</string>
   <string name="proxy_port_invalid_error">Błędny port</string>
+  <!--Database import/export-->
   <!--Casting-->
   <string name="cast_media_route_menu_title">Odtwarzaj na...</string>
   <string name="cast_disconnect_label">Rozłącz sesję</string>

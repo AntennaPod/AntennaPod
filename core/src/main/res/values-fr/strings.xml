@@ -9,15 +9,14 @@
   <string name="favorite_episodes_label">Favoris</string>
   <string name="new_label">Nouveau</string>
   <string name="settings_label">Préférences</string>
-  <string name="add_new_feed_label">Ajouter un podcast</string>
   <string name="downloads_label">Téléchargements</string>
   <string name="downloads_running_label">En cours</string>
   <string name="downloads_completed_label">Terminé</string>
-  <string name="downloads_log_label">Journal d\'activités</string>
+  <string name="downloads_log_label">Journal d\'activité</string>
   <string name="subscriptions_label">Abonnements</string>
   <string name="subscriptions_list_label">Liste des abonnements</string>
   <string name="cancel_download_label">Annuler les téléchargements</string>
-  <string name="playback_history_label">Journal des lectures</string>
+  <string name="playback_history_label">Journal de lecture</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Identifiants gpodder.net</string>
   <string name="free_space_label">%1$s d\'espace libre</string>
@@ -115,6 +114,7 @@
   <string name="remove_feed_label">Supprimer le podcast</string>
   <string name="share_label">Partager...</string>
   <string name="share_link_label">Partager un lien vers le site</string>
+  <string name="share_file_label">Partager le fichier</string>
   <string name="share_link_with_position_label">Partager lien avec position</string>
   <string name="share_feed_url_label">Partager lien du flux</string>
   <string name="share_item_url_label">Partager le lien de l\'épisode</string>
@@ -143,6 +143,7 @@
   <string name="stream_label">Lire en ligne</string>
   <string name="remove_label">Supprimer</string>
   <string name="delete_label">Effacer</string>
+  <string name="delete_failed">Suppression du fichier impossible. Redémarrer pourrait aider.</string>
   <string name="remove_episode_lable">Supprimer cet épisode</string>
   <string name="marked_as_seen_label">Marqué comme vu</string>
   <string name="mark_read_label">Marquer comme lu</string>
@@ -203,8 +204,8 @@
   <string name="authentication_notification_title">Authentification requise</string>
   <string name="authentication_notification_msg">La ressource que vous avez demandé nécessite un nom d\'utilisateur et un mot de passe</string>
   <string name="confirm_mobile_download_dialog_title">Confirmer le téléchargement mobile</string>
-  <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d\'ajouter seulement l\'épisode à la liste de lecture ou vous pouvez autoriser temporairement le téléchargement.\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
-  <string name="confirm_mobile_download_dialog_message">Le téléchargement sur la connexion mobile est désactivé dans les options.\n\nVoulez-vous autoriser temporairement le téléchargement?\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement avec la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d\'ajouter seulement l\'épisode à la liste de lecture ou vous pouvez autoriser temporairement le téléchargement.\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
+  <string name="confirm_mobile_download_dialog_message">Le téléchargement avec la connexion mobile est désactivé dans les options.\n\nVoulez-vous autoriser temporairement le téléchargement?\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Rajouter à la liste de lecture</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Autoriser temporairement</string>
   <!--Mediaplayer messages-->
@@ -298,6 +299,8 @@
   <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligemment</string>
   <string name="pref_skip_keeps_episodes_sum">Garder les épisodes quand ils sont passés</string>
   <string name="pref_skip_keeps_episodes_title">Garder les épisodes passés</string>
+  <string name="pref_favorite_keeps_episodes_sum">Garder les épisodes marqués comme favoris</string>
+  <string name="pref_favorite_keeps_episodes_title">Garder les épisodes favoris</string>
   <string name="playback_pref">Lecture</string>
   <string name="network_pref">Réseau</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Mettre à jour l’intervalle ou l\'heure</string>
@@ -315,7 +318,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Reconnexion du casque</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Reconnexion Bluetooth</string>
   <string name="pref_mobileUpdate_title">Mises à jour mobile</string>
-  <string name="pref_mobileUpdate_sum">Autoriser les mises à jour à travers la connexion de données mobile</string>
+  <string name="pref_mobileUpdate_sum">Autoriser les mises à jour avec la connexion mobile</string>
   <string name="refreshing_label">Mise à jour en cours</string>
   <string name="flattr_settings_label">Paramètres Flattr</string>
   <string name="pref_flattr_auth_title">Connexion à Flattr</string>
@@ -341,6 +344,8 @@
   <string name="pref_automatic_download_sum">Configurer le téléchargement automatique des épisodes.</string>
   <string name="pref_autodl_wifi_filter_title">Activer le filtre Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Autoriser le téléchargement automatique uniquement sur les réseaux Wi-Fi sélectionnés.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Télécharger avec la connexion mobile</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Autoriser le téléchargement automatique avec la connexion mobile</string>
   <string name="pref_automatic_download_on_battery_title">Télécharger lorsque l\'appareil n\'est pas en charge</string>
   <string name="pref_automatic_download_on_battery_sum">Autoriser le téléchargement automatique quand l\'appareil n\'est pas en train de charger</string>
   <string name="pref_parallel_downloads_title">Téléchargements simultanés</string>
@@ -614,6 +619,14 @@
   <string name="proxy_host_empty_error">Hôte ne peut pas être vide</string>
   <string name="proxy_host_invalid_error">L\'hôte n\'est pas une adresse IP ou un domaine valide</string>
   <string name="proxy_port_invalid_error">Port non valide</string>
+  <!--Database import/export-->
+  <string name="import_export">Importer/Exporter la base de données</string>
+  <string name="import_export_warning">Cette fonction expérimentale peut-être utilisée pour transférer vos abonnements et épisodes joués sur un autre appareil.\n\nLes bases de données exportées peuvent uniquement être importées sur la même version d\'AntennaPod. Dans le cas contraire, des dysfonctionnements peuvent survenir.\n\nAprès import, il est possible que des épisodes apparaissent téléchargés alors qu\'ils ne le sont pas. Appuyer sur le bouton de lecture pour qu\'AntennaPod le détecte.</string>
+  <string name="label_import">Importer</string>
+  <string name="label_export">Exporter</string>
+  <string name="import_select_file">Sélectionner le fichier à importer</string>
+  <string name="export_ok">Export réussi. La base de données a été écrite sur la carte SD.</string>
+  <string name="import_ok">Import réussi.\n\nAppuyer sur OK pour redémarrer AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Lire sur...</string>
   <string name="cast_disconnect_label">Déconnecter la session cast</string>

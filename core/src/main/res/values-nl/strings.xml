@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favorieten</string>
   <string name="new_label">Nieuw</string>
   <string name="settings_label">Instellingen</string>
-  <string name="add_new_feed_label">Podcast toevoegen</string>
   <string name="downloads_label">Downloads</string>
   <string name="downloads_running_label">Bezig</string>
   <string name="downloads_completed_label">Voltooid</string>
@@ -115,6 +114,7 @@
   <string name="remove_feed_label">Podcast verwijderen</string>
   <string name="share_label">Delen…</string>
   <string name="share_link_label">Link van de aflevering delen</string>
+  <string name="share_file_label">Deel bestand</string>
   <string name="share_link_with_position_label">Link van de aflevering met tijdstip delen</string>
   <string name="share_feed_url_label">URL van de feed delen</string>
   <string name="share_item_url_label">URL van het mediabestand delen</string>
@@ -143,6 +143,7 @@
   <string name="stream_label">Stream</string>
   <string name="remove_label">Verwijderen</string>
   <string name="delete_label">Verwijderen</string>
+  <string name="delete_failed">Kan bestand niet verwijderen. Het kan misschien helpen om je apparaat opnieuw op te starten.</string>
   <string name="remove_episode_lable">Aflevering(en) verwijderen</string>
   <string name="marked_as_seen_label">Verwijder \'nieuw\' label</string>
   <string name="mark_read_label">Als afgespeeld markeren</string>
@@ -298,6 +299,8 @@
   <string name="pref_smart_mark_as_played_title">Slimme afgespeeld markering</string>
   <string name="pref_skip_keeps_episodes_sum">Afleveringen bewaren en in de wachtrij houden als u op \'overslaan\' klikt</string>
   <string name="pref_skip_keeps_episodes_title">Overgeslagen afleveringen bewaren</string>
+  <string name="pref_favorite_keeps_episodes_sum">Afleveringen bewaren als ze als favoriet gemarkeerd zijn</string>
+  <string name="pref_favorite_keeps_episodes_title">Favoriete afleveringen bewaren</string>
   <string name="playback_pref">Afspelen</string>
   <string name="network_pref">Netwerk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Feed update interval of tijdstip</string>
@@ -341,6 +344,8 @@
   <string name="pref_automatic_download_sum">Configureer het automatisch downloaden van afleveringen.</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi filter inschakelen</string>
   <string name="pref_autodl_wifi_filter_sum">Automatisch downloaden alleen toestaan voor geselecteerde Wi-Fi-netwerken.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Downloaden via mobiele verbinding</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Het automatisch downloaden van afleveringen via een mobiele internetverbinding toestaan.</string>
   <string name="pref_automatic_download_on_battery_title">Downloaden zonder opladen</string>
   <string name="pref_automatic_download_on_battery_sum">Downloaden toestaan als het apparaat niet wordt opgeladen</string>
   <string name="pref_parallel_downloads_title">Gelijktijdige downloads</string>
@@ -396,7 +401,7 @@
   <string name="crash_report_title">Crashreport</string>
   <string name="crash_report_sum">Verstuur laatste crashreport via email</string>
   <string name="send_email">Verstuur email</string>
-  <string name="experimental_pref">Experimentele functie</string>
+  <string name="experimental_pref">Experimentele functie(s)</string>
   <string name="pref_sonic_title">Sonic mediaspeler</string>
   <string name="pref_sonic_message">Gebruik AntennaPod\'s ingebouwde Sonic mediaspeler als een alternatief voor Prestissimo en de mediaspeler van Android.</string>
   <string name="pref_current_value">Huidige instelling: %1$s</string>
@@ -408,7 +413,7 @@
   <string name="pref_cast_title">Chromecast</string>
   <string name="pref_cast_message_play_flavor">Ondersteuning activeren voor draadloos afspelen via Cast apparaten (zoals Chromecast, Audio speakers en Android TV)</string>
   <string name="pref_cast_message_free_flavor">Voor Chromecast is software van derden vereist die niet beschikbaar zijn in deze versie van AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Downloads in de wachtrij</string>
+  <string name="pref_enqueue_downloaded_title">Gedownloade afleveringen in wachtrij</string>
   <string name="pref_enqueue_downloaded_summary">Voeg gedownloade afleveringen toe aan de wachtrij</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisch flattr\'en aanzetten</string>
@@ -614,6 +619,14 @@
   <string name="proxy_host_empty_error">Host kan niet leeg zijn</string>
   <string name="proxy_host_invalid_error">Host is geen geldig IP-adres of domein</string>
   <string name="proxy_port_invalid_error">Poortnummer ongeldig</string>
+  <!--Database import/export-->
+  <string name="import_export">Database im-/exporteren</string>
+  <string name="import_export_warning">Hiermee kun je de podcasts waarop je geabonneerd bent en de afgespeelde afleveringen naar een ander apparaat kopiëren\n\nGeëxporteerde databases kunnen alleen geïmporteerd worden in dezelfde versie van AntennaPod (zie \'Over AntennaPod\' in de instellingen). Het importeren naar een andere versie kan onverwachte problemen opleveren.\n\nNa het importeren kunnen afleveringen als \'gedownload\' aangemerkt zijn, terwijl dit niet het geval is. Druk op de afspeelknop naast de afleveringen om AntennaPod dit te laten detecteren.</string>
+  <string name="label_import">Importeren</string>
+  <string name="label_export">Exporteren</string>
+  <string name="import_select_file">Selecteer bestand om te importeren</string>
+  <string name="export_ok">Succesvol geëxporteerd. De database is naar de SD-kaart geschreven.</string>
+  <string name="import_ok">Succesvol geïmporteerd\n\nDruk op OK om AntennaPod te herstarten.</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Afspelen op…</string>
   <string name="cast_disconnect_label">Cast loskoppelen</string>

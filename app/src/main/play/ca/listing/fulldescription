@@ -1,43 +1,43 @@
-AntennaPod is a podcast manager and player that gives you instant access to millions of free and paid podcasts, from independent podcasters to large publishing houses such as the BBC, NPR and CNN. Add, import and export their feeds hassle-free using the iTunes podcast database, OPML files or simple RSS URLs. Save effort, battery power and mobile data usage with powerful automation controls for downloading episodes (specify times, intervals and WiFi networks) and deleting episodes (based your favourites and delay settings).<br>
-But most importantly: Download, stream or queue episodes and enjoy them the way you like with adjustable playback speeds, chapter support and a sleep timer. You can even show your love to the content creators  with our Flattr integration.
+L'AntennaPod és un gestor i reproductor de podcasts que us dóna accés instantani a milions de podcasts gratuïts i de pagament, fets per podcasters independents o grans emissores com la BBC, l'NPR i la CNN. Afegiu, importeu i exporteu les seves subscripcions sense complicacions utilitzant la base de dades de podcasts de l'iTunes, fitxers OPML o enllaços RSS. Estalvieu esforços, bateria i consum de dades al mòbil amb potents controls d'automatització per a baixar episodis (especifiqueu hores, intervals i xarxes WiFi) i esborrar-los (basats en la vostra configuració sobre favorits i demores).<br>
+Però el més important: baixeu, transmeteu o afegiu episodis a la cua i gaudiu-ne a la vostra manera amb velocitats de reproducció ajustables, capacitat per a usar capítols i un temporitzador per a dormir. Fins i tot podeu demostrar la vostra estima pels creadors de continguts amb la nostra integració de Flattr.
 
-Made by podcast-enthousiast, AntennaPod is free in all senses of the word: open source, no costs, no ads.
+Fet per entusiastes del podcàsting, l'AntennaPod és lliure en tots els sentits del terme: codi obert, sense cost ni anuncis.
 
-<b>All features:</b><br>
-IMPORT, ORGANIZE AND PLAY<br>
-&#8226; Add and import feeds via the iTunes and gPodder.net directories, OPML files and RSS or Atom links<br>
-&#8226; Manage playback from anywhere: homescreen widget, system notification and earplug and bluetooth controls<br>
-&#8226; Enjoy listening your way with adjustable playback speed, chapter support (MP3, VorbisComment and Podlove), remembered playback position and an advanced sleep timer (shake to reset, lower volume and slow down playback)<br>
-&#8226; Access password-protected feeds and episodes<br>
-&#8226; Take advantage of paged feeds (www.podlove.org/paged-feeds)
+<b>Totes les funcions:</b><br>
+IMPORTA, ORGANITZA I REPRODUEIX<br>
+&#8226; Afegeix i importa canals mitjançant els directoris iTunes i gPodder.net, fitxers OPML i enllaços RSS o Atom<br>
+&#8226; Gestiona la reproducció des de qualsevol banda: giny de la pantalla d'inici, notificacions del sistema i controls d'auriculars i Bluetooth.<br>
+&#8226; Gaudiu escoltant a la vostra manera amb velocitat de reproducció ajustable, capacitat per a usar capítols (MP3, VorbisComment i Podlove), record de la posició de reproducció i un temporitzador per a dormir avançat (agiteu per a reiniciar, abaixar el volum i reduir la velocitat de reproducció).<br>
+&#8226; Accediu a subscripcions i episodis protegits per contrasenya.<br>
+&#8226; Aprofiteu les subscripcions paginades (www.podlove.org/paged-feeds).
 
-KEEP TRACK, SHARE & APPRECIATE<br>
-&#8226; Keep track of the best of the best by marking episodes as favourites<br>
-&#8226; Find that one episode through the playback history or by searching (titles and shownotes)<br>
-&#8226; Share episodes and feeds through advanced social media and email options, the gPodder.net services and via OPML export<br>
-&#8226; Support content creators with Flattr integration including automatic flattring
+FEU SEGUIMENT, COMPARTIU I AGRAÏU<br>
+&#8226; Seguiu el millor del millor marcant episodis com a favorits.<br>
+&#8226; Trobeu l'episodi que busqueu mitjançant l'historial de reproducció o la cerca (de títols i descripcions).<br>
+&#8226; Compartiu episodis i subscripcions mitjançant xarxes socials i correu electrònic, els serveis de gPodder.net i exportant a OPML.<br>
+&#8226; Recolzeu els creadors de continguts amb la integració de Flattr, fins i tot de forma automàtica.
 
-CONTROL THE SYSTEM<br>
-&#8226; Take control over automated downloading: choose feeds, exclude mobile networks, select specific WiFi networks, require the phone to be charging and set times or intervals<br>
-&#8226; Manage storage by setting the amount of cached episodes, smart deletion (based on your favourites and play status) and selecting your preferred location<br>
-&#8226; Use AntennaPod in your language (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
-&#8226; Adapt to your environment using the light and dark theme<br>
-&#8226; Back-up your subscriptions with the gPodder.net integration and OPML export
+CONTROLEU EL SISTEMA<br>
+&#8226; Prengueu el control de les baixades automàtiques: trieu les subscripcions, exclogueu xarxes mòbils, trieu xarxes WiFi específiques, requeriu que el telèfon s'estigui carregat i establiu les hores o intervals.<br>
+&#8226; Gestioneu l'emmagatzematge ajustant la quantitat d'episodis en emmagatzematge temporal, l'esborrat intel·ligent (basat en els vostres favorits i l'estat de reproducció) i triant la vostra ubicació preferida.<br>
+&#8226; Feu servir l'AntennaPod en la vostra llengua (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH).<br>
+&#8226; Adapteu-vos al vostre entorn fent servir el tema clar o el fosc.<br>
+&#8226; Feu còpies de seguretat de les vostres subscripcions amb la integració amb gPodder.net i l'exportació a OPML.
 
-<b>Join the AntennaPod community!</b><br>
-AntennaPod is under active development by volunteers. You can contribute too, with code or with comment!
+<b>Uniu-vos a la comunitat d'AntennaPod!</b><br>
+L'AntennaPod el desenvolupen voluntaris. Podeu col·laborar, amb codi o comentaris.
 
-GitHub is the place to go for feature requests, bug reports and code contributions:<br>
+Podeu proposar noves característiques, informar d'errors i aportar codi a GitHub:<br>
 https://www.github.com/AntennaPod/AntennaPod
 
-Our Google Group is the place to share your ideas, favourite podcasting moments and gratitude to all the volunteers:<br>
+Podeu compartir les vostres idees, els vostres moments de podcàsting favorits i la gratitud amb tots els voluntaris al nostre grup de Google:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
-Have a question or want to give us feedback?
+Teniu preguntes o voleu comentar-nos alguna cosa?
 https://twitter.com/@AntennaPod
 
-Transifex is the place to help with translations:<br>
+Ens podeu ajudar amb les traduccions a Transifex:<br>
 https://www.transifex.com/antennapod/antennapod
 
-Check out our Beta Testing programme to get the latest features first:<br>
+Consulteu el nostre programa de proves beta per a obtenir els primers<br> les últimes característiques:
 https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
