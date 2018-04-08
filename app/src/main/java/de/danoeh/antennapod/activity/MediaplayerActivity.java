@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -225,7 +226,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     @Override
     protected void onPause() {
-        if (Build.VERSION.SDK_INT < 26 || !isInPictureInPictureMode()) {
+        if (!supportsAndisInPictureInPictureMode()) {
             if (controller != null) {
                 controller.reinitServiceIfPaused();
                 controller.pause();
@@ -904,6 +905,23 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (controller != null) {
             controller.onSeekBarStopTrackingTouch(seekBar, prog);
+        }
+    }
+
+    /* package */ boolean supportsPictureInPicture() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            PackageManager packageManager = getApplicationContext().getPackageManager();
+            return packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
+        } else {
+            return false;
+        }
+    }
+
+    /* package */ boolean supportsAndisInPictureInPictureMode() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && supportsPictureInPicture()) {
+            return isInPictureInPictureMode();
+        } else {
+            return false;
         }
     }
 

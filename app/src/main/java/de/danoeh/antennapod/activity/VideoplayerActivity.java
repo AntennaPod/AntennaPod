@@ -101,14 +101,14 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !isInPictureInPictureMode()) {
+        if (!supportsAndisInPictureInPictureMode()) {
             videoControlsHider.stop();
         }
     }
 
     @Override
     protected void onPause() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !isInPictureInPictureMode()) {
+        if (!supportsAndisInPictureInPictureMode()) {
             if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
                 controller.pause();
             }
@@ -191,7 +191,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode()) {
+            if (supportsAndisInPictureInPictureMode()) {
                 return true;
             }
             videoControlsHider.stop();
@@ -381,7 +381,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (supportsPictureInPicture()) {
             menu.findItem(R.id.player_go_to_picture_in_picture).setVisible(true);
         }
         return true;
@@ -390,7 +390,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.player_go_to_picture_in_picture) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (supportsPictureInPicture() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 getSupportActionBar().hide();
                 hideVideoControls(false);
                 enterPictureInPictureMode();
