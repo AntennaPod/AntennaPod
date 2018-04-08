@@ -1,12 +1,18 @@
 Change Log
 ==========
 
+Version 1.6.5
+-------------
+
+* Fix database corruption
+* Improvements to Feed parsing
+
 Version 1.6.4
 -------------
 
 * Fixes issues on Android Oreo
 * Avoids duplicate chapters
-* Beta: Database import & export
+* Experimental: Database import & export
 
 Version 1.6.3
 -------------

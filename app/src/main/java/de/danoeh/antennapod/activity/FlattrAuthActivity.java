@@ -4,7 +4,7 @@ package de.danoeh.antennapod.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +21,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 
 /** Guides the user through the authentication process */
 
-public class FlattrAuthActivity extends ActionBarActivity {
+public class FlattrAuthActivity extends AppCompatActivity {
 	private static final String TAG = "FlattrAuthActivity";
 
 	private TextView txtvExplanation;

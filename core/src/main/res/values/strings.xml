@@ -182,6 +182,8 @@
     <string name="download_failed">failed</string>
     <string name="download_pending">Download pending</string>
     <string name="download_running">Download running</string>
+    <string name="download_error_details">Details</string>
+    <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
     <string name="download_error_device_not_found">Storage Device not found</string>
     <string name="download_error_insufficient_space">Insufficient Space</string>
     <string name="download_error_file_error">File Error</string>
@@ -476,8 +478,8 @@
     <string name="html_export_label">HTML export</string>
     <string name="exporting_label">Exporting&#8230;</string>
     <string name="export_error_label">Export error</string>
-    <string name="opml_export_success_title">OPML Export successful.</string>
-    <string name="opml_export_success_sum">The .opml file was written to:\u0020</string>
+    <string name="export_success_title">Export successful</string>
+    <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
 
     <!-- Sleep timer -->

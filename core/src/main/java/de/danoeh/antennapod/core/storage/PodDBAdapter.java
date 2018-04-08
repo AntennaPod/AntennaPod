@@ -308,7 +308,6 @@ public class PodDBAdapter {
             KEY_CONTENT_ENCODED, KEY_FEED};
 
     private static Context context;
-    private static PodDBHelper dbHelper;
 
     private static volatile SQLiteDatabase db;
     private static int counter = 0;
@@ -317,13 +316,14 @@ public class PodDBAdapter {
         PodDBAdapter.context = context.getApplicationContext();
     }
 
-    private static class PodDBHelperholder {
-        public static final PodDBHelper dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
+    // Bill Pugh Singleton Implementation
+    private static class SingletonHolder {
+        private static final PodDBHelper dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
+        private static final PodDBAdapter dbAdapter = new PodDBAdapter();
     }
 
     public static PodDBAdapter getInstance() {
-        dbHelper = PodDBHelperholder.dbHelper;
-        return new PodDBAdapter();
+        return SingletonHolder.dbAdapter;
     }
 
     private PodDBAdapter() {
@@ -342,11 +342,11 @@ public class PodDBAdapter {
     private SQLiteDatabase openDb() {
         SQLiteDatabase newDb;
         try {
-            newDb = dbHelper.getWritableDatabase();
+            newDb = SingletonHolder.dbHelper.getWritableDatabase();
             newDb.enableWriteAheadLogging();
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
-            newDb = dbHelper.getReadableDatabase();
+            newDb = SingletonHolder.dbHelper.getReadableDatabase();
         }
         return newDb;
     }

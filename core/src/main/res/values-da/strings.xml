@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Foretrukne</string>
   <string name="new_label">Ny(e)</string>
   <string name="settings_label">Indstillinger</string>
-  <string name="add_new_feed_label">Tilføj podcast</string>
   <string name="downloads_label">Overførsler</string>
   <string name="downloads_running_label">I gang</string>
   <string name="downloads_completed_label">Færdige</string>
@@ -22,7 +21,7 @@
   <string name="gpodnet_auth_label">Login til gpodder.net</string>
   <string name="free_space_label">%1$s ledig</string>
   <string name="episode_cache_full_title">Mellemlageret for udsendelser er fuldt</string>
-  <string name="episode_cache_full_message">Grænsen for størrelsen på udsendelsesmellemlageret er nået. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
+  <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret for udsendelser. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Samlet varighed for afspillede podcasts:</string>
   <string name="statistics_details_dialog">%1$d af %2$d udsendelser startet.\n\nAfspillet %3$s af %4$s.</string>
@@ -115,6 +114,7 @@
   <string name="remove_feed_label">Fjern podcast</string>
   <string name="share_label">Del…</string>
   <string name="share_link_label">Del link</string>
+  <string name="share_file_label">Del fil</string>
   <string name="share_link_with_position_label">Del link med position</string>
   <string name="share_feed_url_label">Del webadresse for feedet</string>
   <string name="share_item_url_label">Del webadresse for udsendelsen</string>
@@ -143,6 +143,7 @@
   <string name="stream_label">Stream</string>
   <string name="remove_label">Fjern</string>
   <string name="delete_label">Slet</string>
+  <string name="delete_failed">Kan ikke slette fil. En genstart af enheden vil sandsynligvis hjælpe.</string>
   <string name="remove_episode_lable">Fjern udsendelse</string>
   <string name="marked_as_seen_label">Markeret som set</string>
   <string name="mark_read_label">Marker som læst</string>
@@ -298,6 +299,8 @@
   <string name="pref_smart_mark_as_played_title">Smart markering af afspillet</string>
   <string name="pref_skip_keeps_episodes_sum">Behold udsendelser når de bliver sprunget over</string>
   <string name="pref_skip_keeps_episodes_title">Behold oversprungne udsendelser</string>
+  <string name="pref_favorite_keeps_episodes_sum">Behold udsendelser, som er markeret som foretrukne</string>
+  <string name="pref_favorite_keeps_episodes_title">Behold foretrukne udsendelser</string>
   <string name="playback_pref">Afspilning</string>
   <string name="network_pref">Netværk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Opdateringsinterval eller -klokkeslæt</string>
@@ -341,6 +344,8 @@
   <string name="pref_automatic_download_sum">Konfigurer automatisk overførsel af udsendelser</string>
   <string name="pref_autodl_wifi_filter_title">Slå wi-fi-filter til</string>
   <string name="pref_autodl_wifi_filter_sum">Tillad automatisk overførsel kun på de valgte wi-fi-netværk</string>
+  <string name="pref_autodl_allow_on_mobile_title">Hent på mobilt netværk</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Tillad automatisk overførsel på den mobile dataforbindelse</string>
   <string name="pref_automatic_download_on_battery_title">Tillad overførsel ved batteridrift</string>
   <string name="pref_automatic_download_on_battery_sum">Tillad automatisk overførsel, når batteriet ikke oplades</string>
   <string name="pref_parallel_downloads_title">Parallelle overførsler</string>
@@ -615,6 +620,7 @@
   <string name="proxy_host_empty_error">Vært kan ikke være tom</string>
   <string name="proxy_host_invalid_error">Vært er ikke en gyldig IP-adresse eller et gyldigt domæne</string>
   <string name="proxy_port_invalid_error">Port ikke gyldig</string>
+  <!--Database import/export-->
   <!--Casting-->
   <string name="cast_media_route_menu_title">Afspil på …</string>
   <string name="cast_disconnect_label">Afbryd cast-sessionen</string>

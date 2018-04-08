@@ -14,7 +14,7 @@ buildscript {
        jcenter()
     }
     dependencies {
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.1'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'
     }
 }
 
@@ -86,6 +86,7 @@ android {
             buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
         }
         release {
+            resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
             minifyEnabled true
             proguardFile "proguard.cfg"
             signingConfig signingConfigs.releaseConfig
@@ -127,13 +128,6 @@ android {
     }
 }
 
-configurations {
-    freeDebugImplementation
-    freeReleaseImplementation
-    playDebugImplementation
-    playReleaseImplementation
-}
-
 dependencies {
     freeImplementation project(":core")
     // free build hack: skip some dependencies
@@ -169,7 +163,7 @@ dependencies {
         transitive = true
     }
     implementation "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
-    implementation("com.githang:viewpagerindicator:2.5@aar") {
+    implementation("com.githang:viewpagerindicator:2.5.1@aar") {
         exclude module: "support-v4"
     }
 

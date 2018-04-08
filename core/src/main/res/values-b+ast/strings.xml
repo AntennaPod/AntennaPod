@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Nuevo</string>
   <string name="settings_label">Axustes</string>
-  <string name="add_new_feed_label">Amestar podcast</string>
   <string name="downloads_label">Descargues</string>
   <string name="downloads_running_label">N\'execución</string>
   <string name="downloads_completed_label">Completóse</string>
@@ -376,6 +375,7 @@
   <string name="port_label">Puertu</string>
   <string name="optional_hint">(Opcional)</string>
   <string name="proxy_checking">Comprobando...</string>
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

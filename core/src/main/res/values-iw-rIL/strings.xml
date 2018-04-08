@@ -9,16 +9,22 @@
   <string name="favorite_episodes_label">מועדפים</string>
   <string name="new_label">חדש</string>
   <string name="settings_label">הגדרות</string>
-  <string name="add_new_feed_label">הוסף פודקאסט</string>
   <string name="downloads_label">הורדות</string>
   <string name="downloads_running_label">פועל</string>
   <string name="downloads_completed_label">סיים</string>
   <string name="downloads_log_label">יומן</string>
+  <string name="subscriptions_label">פודקאסטים</string>
+  <string name="subscriptions_list_label">רשימת פודקאסטים</string>
   <string name="cancel_download_label">בטל הורדה</string>
   <string name="playback_history_label">היסטוריית ניגון</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">התחברות אל gpodder.net</string>
+  <string name="free_space_label">%1$s חינם</string>
+  <string name="episode_cache_full_title">זכרון -המטמון של פרקים מלא</string>
+  <string name="episode_cache_full_message">זכרון-המטמון של פרקים הגיע לגבול שלו. אפשר להגדיל את גודל המטמון בהגדרות.</string>
   <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">סה\"כ זמן ניגון של פודקאסטים:</string>
+  <string name="statistics_mode_normal">חשב זמן שנוגן בפועל. פרק שנוגן פעמיים נספר פעמיים, לעומת פרק שרק סומן כנוגן - שלא נספר.</string>
   <!--Main activity-->
   <string name="drawer_open">פתח תפריט</string>
   <string name="drawer_close">סגור תפריט</string>
@@ -361,8 +367,13 @@
   <!--Episodes apply actions-->
   <!--Sort-->
   <!--Rating dialog-->
+  <string name="rating_title">אוהבים את האפליקציה?</string>
+  <string name="rating_never_label">לא תודה</string>
+  <string name="rating_later_label">פעם אחרת</string>
+  <string name="rating_now_label">בטח!</string>
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

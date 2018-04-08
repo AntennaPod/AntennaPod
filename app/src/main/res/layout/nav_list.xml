@@ -15,7 +15,8 @@
         android:layout_alignParentBottom="true"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/settings_label"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:focusable="true">
 
         <ImageView
             android:id="@+id/imgvCover"

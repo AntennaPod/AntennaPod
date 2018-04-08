@@ -39,6 +39,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import de.danoeh.antennapod.activity.ImportExportActivity;
+import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -89,6 +90,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
     private static final String PREF_AUTO_FLATTR_PREFS = "prefAutoFlattrPrefs";
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
+    private static final String PREF_OPML_IMPORT = "prefOpmlImport";
     private static final String PREF_HTML_EXPORT = "prefHtmlExport";
     private static final String STATISTICS = "statistics";
     private static final String IMPORT_EXPORT = "importExport";
@@ -185,6 +187,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 preference -> export(new OpmlWriter()));
         ui.findPreference(PreferenceController.PREF_HTML_EXPORT).setOnPreferenceClickListener(
                 preference -> export(new HtmlWriter()));
+        ui.findPreference(PreferenceController.PREF_OPML_IMPORT).setOnPreferenceClickListener(
+                preference -> {
+                    activity.startActivity(new Intent(activity, OpmlImportFromPathActivity.class));
+                    return true;
+                });
         ui.findPreference(PreferenceController.PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(
                 preference -> {
                     if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT &&
@@ -474,8 +481,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         subscription = observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(output -> {
-                    alert.setTitle(R.string.opml_export_success_title);
-                    String message = context.getString(R.string.opml_export_success_sum) + output.toString();
+                    alert.setTitle(R.string.export_success_title);
+                    String message = context.getString(R.string.export_success_sum, output.toString());
                     alert.setMessage(message);
                     alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),

@@ -38,6 +38,7 @@
             android:maxLines="2"
             android:ellipsize="end"
             android:text="Podcast"
+            android:textIsSelectable="true"
             android:textColor="?android:attr/textColorSecondary" />
 
     </LinearLayout>
@@ -61,6 +62,7 @@
             android:maxLines="2"
             android:ellipsize="end"
             android:text="Episode"
+            android:textIsSelectable="true"
             android:textColor="?android:attr/textColorPrimary" />
 
     </LinearLayout>

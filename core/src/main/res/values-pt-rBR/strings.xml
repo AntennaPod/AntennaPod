@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Novo</string>
   <string name="settings_label">Configurações</string>
-  <string name="add_new_feed_label">Adicionar podcast</string>
   <string name="downloads_label">Downloads</string>
   <string name="downloads_running_label">Rodando</string>
   <string name="downloads_completed_label">Finalizado</string>
@@ -408,7 +407,6 @@
   <string name="pref_cast_title">Suporte ao Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar o suporte para reprodução remota de mídia em dispositivos Cast (como Chromecast, Caixa de som ou Android TV)</string>
   <string name="pref_cast_message_free_flavor">O Chromecast necessita de bibliotecas proprietárias de terceiros que estão desativadas nesta versão do AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Adicionar baixado à fila</string>
   <string name="pref_enqueue_downloaded_summary">Adicionar episódios baixados à fila</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Abilitar automaticamente o flattr</string>
@@ -614,6 +612,7 @@
   <string name="proxy_host_empty_error">Host não pode ser vazio</string>
   <string name="proxy_host_invalid_error">Host não possui um endereço de IP ou domínio válidos</string>
   <string name="proxy_port_invalid_error">Porta inválida</string>
+  <!--Database import/export-->
   <!--Casting-->
   <string name="cast_media_route_menu_title">Reproduzir em...</string>
   <string name="cast_disconnect_label">Desconectar a sessão do cast</string>
