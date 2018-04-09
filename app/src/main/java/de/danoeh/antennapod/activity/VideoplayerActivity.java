@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
@@ -101,14 +102,22 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (!supportsAndisInPictureInPictureMode()) {
+        if (!compatIsInPictureInPictureMode()) {
             videoControlsHider.stop();
         }
     }
 
     @Override
+    public void onUserLeaveHint () {
+        if (!compatIsInPictureInPictureMode() && UserPreferences.getVideoBackgroundBehavior()
+                == UserPreferences.VideoBackgroundBehavior.PICTURE_IN_PICTURE) {
+            compatEnterPictureInPicture();
+        }
+    }
+
+    @Override
     protected void onPause() {
-        if (!supportsAndisInPictureInPictureMode()) {
+        if (!compatIsInPictureInPictureMode()) {
             if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
                 controller.pause();
             }
@@ -191,7 +200,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (supportsAndisInPictureInPictureMode()) {
+            if (compatIsInPictureInPictureMode()) {
                 return true;
             }
             videoControlsHider.stop();
@@ -390,14 +399,18 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.player_go_to_picture_in_picture) {
-            if (supportsPictureInPicture() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                getSupportActionBar().hide();
-                hideVideoControls(false);
-                enterPictureInPictureMode();
-            }
+            compatEnterPictureInPicture();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void compatEnterPictureInPicture() {
+        if (supportsPictureInPicture() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            getSupportActionBar().hide();
+            hideVideoControls(false);
+            enterPictureInPictureMode();
+        }
     }
 
     private static class VideoControlsHider extends Handler {

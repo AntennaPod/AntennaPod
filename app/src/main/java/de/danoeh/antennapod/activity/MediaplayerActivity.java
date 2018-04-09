@@ -226,7 +226,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     @Override
     protected void onPause() {
-        if (!supportsAndisInPictureInPictureMode()) {
+        if (!compatIsInPictureInPictureMode()) {
             if (controller != null) {
                 controller.reinitServiceIfPaused();
                 controller.pause();
@@ -917,7 +917,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
-    /* package */ boolean supportsAndisInPictureInPictureMode() {
+    /* package */ boolean compatIsInPictureInPictureMode() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && supportsPictureInPicture()) {
             return isInPictureInPictureMode();
         } else {

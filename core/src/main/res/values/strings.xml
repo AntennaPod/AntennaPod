@@ -440,6 +440,9 @@
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
+    <string name="pref_videoBehavior_title">Video behavior</string>
+    <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
+    <string name="stop_playback">Stop playback</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
