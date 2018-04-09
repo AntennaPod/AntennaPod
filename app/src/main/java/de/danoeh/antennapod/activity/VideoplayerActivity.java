@@ -297,7 +297,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onReloadNotification(int notificationCode) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isInPictureInPictureMode()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && PictureInPictureUtil.isInPictureInPictureMode(this)) {
             if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO
                     || notificationCode == PlaybackService.EXTRA_CODE_CAST) {
                 finish();
