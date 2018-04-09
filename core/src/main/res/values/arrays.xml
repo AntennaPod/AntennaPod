@@ -234,4 +234,12 @@
         <item>stop</item>
         <item>pip</item>
     </string-array>
+
+    <string-array name="video_background_behavior_options_without_pip">
+        <item>@string/stop_playback</item>
+    </string-array>
+
+    <string-array name="video_background_behavior_values_without_pip">
+        <item>stop</item>
+    </string-array>
 </resources>

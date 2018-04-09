@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -47,6 +46,7 @@ import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.Supplier;
+import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -226,7 +226,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     @Override
     protected void onPause() {
-        if (!compatIsInPictureInPictureMode()) {
+        if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
             if (controller != null) {
                 controller.reinitServiceIfPaused();
                 controller.pause();
@@ -905,23 +905,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (controller != null) {
             controller.onSeekBarStopTrackingTouch(seekBar, prog);
-        }
-    }
-
-    /* package */ boolean supportsPictureInPicture() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            PackageManager packageManager = getApplicationContext().getPackageManager();
-            return packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE);
-        } else {
-            return false;
-        }
-    }
-
-    /* package */ boolean compatIsInPictureInPictureMode() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && supportsPictureInPicture()) {
-            return isInPictureInPictureMode();
-        } else {
-            return false;
         }
     }
 

@@ -27,6 +27,7 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
+import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.view.AspectRatioVideoView;
@@ -102,14 +103,14 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (!compatIsInPictureInPictureMode()) {
+        if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
             videoControlsHider.stop();
         }
     }
 
     @Override
     public void onUserLeaveHint () {
-        if (!compatIsInPictureInPictureMode() && UserPreferences.getVideoBackgroundBehavior()
+        if (!PictureInPictureUtil.isInPictureInPictureMode(this) && UserPreferences.getVideoBackgroundBehavior()
                 == UserPreferences.VideoBackgroundBehavior.PICTURE_IN_PICTURE) {
             compatEnterPictureInPicture();
         }
@@ -117,7 +118,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onPause() {
-        if (!compatIsInPictureInPictureMode()) {
+        if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
             if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
                 controller.pause();
             }
@@ -200,7 +201,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (compatIsInPictureInPictureMode()) {
+            if (PictureInPictureUtil.isInPictureInPictureMode(this)) {
                 return true;
             }
             videoControlsHider.stop();
@@ -390,7 +391,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (supportsPictureInPicture()) {
+        if (PictureInPictureUtil.supportsPictureInPicture(this)) {
             menu.findItem(R.id.player_go_to_picture_in_picture).setVisible(true);
         }
         return true;
@@ -406,7 +407,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     private void compatEnterPictureInPicture() {
-        if (supportsPictureInPicture() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (PictureInPictureUtil.supportsPictureInPicture(this) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             getSupportActionBar().hide();
             hideVideoControls(false);
             enterPictureInPictureMode();
