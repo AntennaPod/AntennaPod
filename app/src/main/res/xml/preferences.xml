@@ -28,9 +28,9 @@
             android:icon="@drawable/ic_filter_grey600_24dp" />
 
     <Preference
-            android:key="prefScreenMiscellaneous"
-            android:title="@string/miscellaneous_pref"
-            android:icon="@drawable/ic_cast_disconnect_grey600_36dp" />
+            android:key="statistics"
+            android:title="@string/statistics_label"
+            android:icon="@drawable/stat_notify_sync" />
 
     <PreferenceCategory android:title="@string/project_pref">
         <Preference

@@ -143,8 +143,6 @@ public class PreferenceActivity extends AppCompatActivity {
                     return R.string.user_interface_label;
                 case R.xml.preferences_services:
                     return R.string.services_label;
-                case R.xml.preferences_miscellaneous:
-                    return R.string.miscellaneous_pref;
                 default:
                     return R.string.settings_label;
             }

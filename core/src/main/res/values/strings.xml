@@ -309,7 +309,6 @@
     <string name="services_label">Services</string>
     <string name="flattr_label">Flattr</string>
     <string name="flattr_summary">Micropayment service</string>
-    <string name="miscellaneous_pref">Miscellaneous</string>
     <string name="data_usage">Data usage</string>
     <string name="download_pref_details">Details</string>
     <string name="import_export_pref">Import/Export</string>
