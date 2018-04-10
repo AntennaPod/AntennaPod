@@ -14,7 +14,7 @@
             android:summary="@string/pref_image_cache_size_sum"
             android:defaultValue="100"/>
 
-    <PreferenceCategory android:title="Import/Export">
+    <PreferenceCategory android:title="@string/import_export_pref">
         <Preference
             android:key="prefOpmlExport"
             android:title="@string/opml_export_label"/>

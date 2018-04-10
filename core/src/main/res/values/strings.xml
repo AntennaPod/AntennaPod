@@ -307,6 +307,8 @@
     <string name="queue_label">Queue</string>
     <string name="services_label">Services</string>
     <string name="flattr_label">Flattr</string>
+    <string name="various_pref">Various</string>
+    <string name="import_export_pref">Import/Export</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
     <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>

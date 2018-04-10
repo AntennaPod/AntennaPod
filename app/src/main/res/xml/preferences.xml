@@ -29,7 +29,7 @@
 
     <Preference
             android:key="prefScreenVarious"
-            android:title="Various"
+            android:title="@string/various_pref"
             android:icon="@drawable/ic_cast_disconnect_grey600_36dp" />
 
     <PreferenceCategory android:title="@string/project_pref">
