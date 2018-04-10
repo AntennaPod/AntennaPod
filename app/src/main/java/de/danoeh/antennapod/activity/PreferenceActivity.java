@@ -163,7 +163,7 @@ public class PreferenceActivity extends AppCompatActivity {
             PreferenceActivity activity = instance.get();
             if(activity != null && activity.preferenceController != null) {
                 activity.preferenceUI.setFragment(this);
-                activity.preferenceController.onStop(getArguments().getInt(PARAM_RESOURCE));
+                activity.preferenceController.onStop();
             }
             super.onStop();
         }
