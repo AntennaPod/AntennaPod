@@ -79,7 +79,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_SCREEN_DOWNLOADS = "prefScreenDownloads";
     private static final String PREF_SCREEN_SERVICES = "prefScreenServices";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
-    private static final String PREF_SCREEN_VARIOUS = "prefScreenVarious";
+    private static final String PREF_SCREEN_MISCELLANEOUS = "prefScreenMiscellaneous";
 
     private static final String PREF_FLATTR_SETTINGS = "prefFlattrSettings";
     private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
@@ -155,8 +155,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     openScreen(R.xml.preferences_services, activity));
             ui.findPreference(PREF_SCREEN_STORAGE).setOnPreferenceClickListener(preference ->
                     openScreen(R.xml.preferences_storage, activity));
-            ui.findPreference(PREF_SCREEN_VARIOUS).setOnPreferenceClickListener(preference ->
-                    openScreen(R.xml.preferences_various, activity));
+            ui.findPreference(PREF_SCREEN_MISCELLANEOUS).setOnPreferenceClickListener(preference ->
+                    openScreen(R.xml.preferences_miscellaneous, activity));
         }
 /*
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {

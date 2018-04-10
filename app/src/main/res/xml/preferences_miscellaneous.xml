@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+            android:key="statistics"
+            android:title="@string/statistics_label"/>
+
+    <PreferenceCategory android:title="@string/experimental_pref">
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefCast"
+                android:summary="@string/pref_cast_message"
+                android:title="@string/pref_cast_title"/>
+
+        <Preference
+                android:key="importExport"
+                android:title="@string/import_export"/>
+    </PreferenceCategory>
+</PreferenceScreen>
