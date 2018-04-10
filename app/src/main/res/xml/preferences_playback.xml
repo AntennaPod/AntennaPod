@@ -67,17 +67,17 @@
 
     <PreferenceCategory android:title="@string/queue_label">
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefQueueAddToFront"
-                android:summary="@string/pref_queueAddToFront_sum"
-                android:title="@string/pref_queueAddToFront_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefEnqueueDownloaded"
                 android:summary="@string/pref_enqueue_downloaded_summary"
                 android:title="@string/pref_enqueue_downloaded_title" />
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefQueueAddToFront"
+                android:summary="@string/pref_queueAddToFront_sum"
+                android:title="@string/pref_queueAddToFront_title"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
                 android:defaultValue="true"
                 android:enabled="true"
