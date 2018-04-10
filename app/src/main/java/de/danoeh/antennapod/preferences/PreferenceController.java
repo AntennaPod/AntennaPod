@@ -170,7 +170,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 break;
             case R.xml.preferences_playback:
                 setupPlaybackScreen();
-                PreferenceControllerFlavorHelper.setupCastUI(ui);
+                PreferenceControllerFlavorHelper.setupFlavoredUI(ui);
                 buildSmartMarkAsPlayedPreference();
                 break;
             case R.xml.preferences_services:

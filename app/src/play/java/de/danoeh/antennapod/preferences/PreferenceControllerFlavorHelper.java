@@ -10,7 +10,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
  */
 public class PreferenceControllerFlavorHelper {
 
-    static void setupCastUI(PreferenceController.PreferenceUI ui) {
+    static void setupFlavoredUI(PreferenceController.PreferenceUI ui) {
         //checks whether Google Play Services is installed on the device (condition necessary for Cast support)
         ui.findPreference(UserPreferences.PREF_CAST_ENABLED).setOnPreferenceChangeListener((preference, o) -> {
             if (o instanceof Boolean && ((Boolean) o)) {
