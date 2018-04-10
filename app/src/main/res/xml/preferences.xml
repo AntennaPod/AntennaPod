@@ -25,12 +25,12 @@
     <Preference
             android:key="prefScreenStorage"
             android:title="@string/storage_pref"
-            android:icon="@drawable/ic_filter_grey600_24dp" />
+            android:icon="@drawable/ic_sd_grey600_24dp" />
 
     <Preference
             android:key="statistics"
             android:title="@string/statistics_label"
-            android:icon="@drawable/stat_notify_sync" />
+            android:icon="@drawable/ic_poll_box_grey600_24dp" />
 
     <PreferenceCategory android:title="@string/project_pref">
         <Preference
