@@ -3,6 +3,7 @@ package de.danoeh.antennapod.preferences;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
@@ -16,30 +17,27 @@ import android.net.Uri;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
 import android.text.Html;
-import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import de.danoeh.antennapod.activity.ImportExportActivity;
-import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.activity.PreferenceActivity;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -53,29 +51,20 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
-import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
-import de.danoeh.antennapod.core.export.html.HtmlWriter;
-import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
-import de.danoeh.antennapod.dialog.AuthenticationDialog;
-import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
-import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
-import de.danoeh.antennapod.dialog.ProxyDialog;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static de.danoeh.antennapod.activity.PreferenceActivity.PARAM_RESOURCE;
 
 /**
  * Sets up a preference UI that lets the user change user preferences.
@@ -84,6 +73,13 @@ import rx.schedulers.Schedulers;
 public class PreferenceController implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "PreferenceController";
+
+    private static final String PREF_SCREEN_USER_INTERFACE = "prefScreenInterface";
+    private static final String PREF_SCREEN_PLAYBACK = "prefScreenPlayback";
+    private static final String PREF_SCREEN_DOWNLOADS = "prefScreenDownloads";
+    private static final String PREF_SCREEN_SERVICES = "prefScreenServices";
+    private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
+    private static final String PREF_SCREEN_VARIOUS = "prefScreenVarious";
 
     private static final String PREF_FLATTR_SETTINGS = "prefFlattrSettings";
     private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
@@ -143,9 +139,26 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         }
     }
 
-    public void onCreate() {
+
+
+    public void onCreate(int screen) {
         final Activity activity = ui.getActivity();
 
+        if (screen == R.xml.preferences) {
+            ui.findPreference(PREF_SCREEN_USER_INTERFACE).setOnPreferenceClickListener(preference ->
+                    openScreen(R.xml.preferences_user_interface, activity));
+            ui.findPreference(PREF_SCREEN_PLAYBACK).setOnPreferenceClickListener(preference ->
+                    openScreen(R.xml.preferences_playback, activity));
+            ui.findPreference(PREF_SCREEN_DOWNLOADS).setOnPreferenceClickListener(preference ->
+                    openScreen(R.xml.preferences_downloads, activity));
+            ui.findPreference(PREF_SCREEN_SERVICES).setOnPreferenceClickListener(preference ->
+                    openScreen(R.xml.preferences_services, activity));
+            ui.findPreference(PREF_SCREEN_STORAGE).setOnPreferenceClickListener(preference ->
+                    openScreen(R.xml.preferences_storage, activity));
+            ui.findPreference(PREF_SCREEN_VARIOUS).setOnPreferenceClickListener(preference ->
+                    openScreen(R.xml.preferences_various, activity));
+        }
+/*
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             // disable expanded notification option on unsupported android versions
             ui.findPreference(PreferenceController.PREF_EXPANDED_NOTIFICATION).setEnabled(false);
@@ -466,7 +479,18 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         buildEpisodeCleanupPreference();
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
-        setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
+        setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());*/
+    }
+
+    private boolean openScreen(int preferences, Activity activity) {
+        Fragment prefFragment = new PreferenceActivity.MainFragment();
+        Bundle args = new Bundle();
+        args.putInt(PARAM_RESOURCE, preferences);
+        prefFragment.setArguments(args);
+        activity.getFragmentManager().beginTransaction()
+                .replace(R.id.content, prefFragment)
+                .addToBackStack(TAG).commit();
+        return true;
     }
 
     private boolean export(ExportWriter exportWriter) {
@@ -522,21 +546,21 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         }
     }
 
-    public void onResume() {
-        checkItemVisibility();
+    public void onResume(int screen) {
+        /*checkItemVisibility();
         setUpdateIntervalText();
         setParallelDownloadsText(UserPreferences.getParallelDownloads());
         setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
         setDataFolderText();
         GpodnetPreferences.registerOnSharedPreferenceChangeListener(gpoddernetListener);
-        updateGpodnetPreferenceScreen();
+        updateGpodnetPreferenceScreen();*/
     }
 
-    public void onPause() {
-        GpodnetPreferences.unregisterOnSharedPreferenceChangeListener(gpoddernetListener);
+    public void onPause(int screen) {
+        /*GpodnetPreferences.unregisterOnSharedPreferenceChangeListener(gpoddernetListener);*/
     }
 
-    public void onStop() {
+    public void onStop(int screen) {
         if(subscription != null) {
             subscription.unsubscribe();
         }
@@ -1005,6 +1029,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
 
     public interface PreferenceUI {
+
+        void setFragment(PreferenceFragment fragment);
 
         /**
          * Finds a preference based on its key.

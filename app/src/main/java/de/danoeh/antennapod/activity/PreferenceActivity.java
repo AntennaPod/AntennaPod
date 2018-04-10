@@ -24,13 +24,20 @@ import de.danoeh.antennapod.preferences.PreferenceController;
  */
 public class PreferenceActivity extends AppCompatActivity {
 
+    public static final String PARAM_RESOURCE = "resource";
     private static WeakReference<PreferenceActivity> instance;
     private PreferenceController preferenceController;
-    private MainFragment prefFragment;
     private final PreferenceController.PreferenceUI preferenceUI = new PreferenceController.PreferenceUI() {
+        private PreferenceFragment fragment;
+
+        @Override
+        public void setFragment(PreferenceFragment fragment) {
+            this.fragment = fragment;
+        }
+
         @Override
         public Preference findPreference(CharSequence key) {
-            return prefFragment.findPreference(key);
+            return fragment.findPreference(key);
         }
 
         @Override
@@ -64,7 +71,11 @@ public class PreferenceActivity extends AppCompatActivity {
         // since the MainFragment depends on the preferenceController already being created
         preferenceController = new PreferenceController(preferenceUI);
 
-        prefFragment = new MainFragment();
+        PreferenceFragment prefFragment = new MainFragment();
+        preferenceUI.setFragment(prefFragment);
+        Bundle args = new Bundle();
+        args.putInt(PARAM_RESOURCE, R.xml.preferences);
+        prefFragment.setArguments(args);
         getFragmentManager().beginTransaction().replace(R.id.content, prefFragment).commit();
     }
 
@@ -84,7 +95,11 @@ public class PreferenceActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                if (getFragmentManager().getBackStackEntryCount() == 0) {
+                    finish();
+                } else {
+                    getFragmentManager().popBackStack();
+                }
                 return true;
             default:
                 return false;
@@ -97,10 +112,11 @@ public class PreferenceActivity extends AppCompatActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
-            addPreferencesFromResource(R.xml.preferences);
+            addPreferencesFromResource(getArguments().getInt(PARAM_RESOURCE));
             PreferenceActivity activity = instance.get();
-            if(activity != null && activity.preferenceController != null) {
-                activity.preferenceController.onCreate();
+            if (activity != null && activity.preferenceController != null) {
+                activity.preferenceUI.setFragment(this);
+                activity.preferenceController.onCreate(getArguments().getInt(PARAM_RESOURCE));
             }
         }
 
@@ -109,7 +125,26 @@ public class PreferenceActivity extends AppCompatActivity {
             super.onResume();
             PreferenceActivity activity = instance.get();
             if(activity != null && activity.preferenceController != null) {
-                activity.preferenceController.onResume();
+                activity.setTitle(getTitle(getArguments().getInt(PARAM_RESOURCE)));
+                activity.preferenceUI.setFragment(this);
+                activity.preferenceController.onResume(getArguments().getInt(PARAM_RESOURCE));
+            }
+        }
+
+        private int getTitle(int preferences) {
+            switch (preferences) {
+                case R.xml.preferences_downloads:
+                    return R.string.downloads_label;
+                case R.xml.preferences_playback:
+                    return R.string.playback_pref;
+                case R.xml.preferences_storage:
+                    return R.string.storage_pref;
+                case R.xml.preferences_user_interface:
+                    return R.string.user_interface_label;
+                case R.xml.preferences_services:
+                    return R.string.services_label;
+                default:
+                    return R.string.settings_label;
             }
         }
 
@@ -117,7 +152,8 @@ public class PreferenceActivity extends AppCompatActivity {
         public void onPause() {
             PreferenceActivity activity = instance.get();
             if(activity != null && activity.preferenceController != null) {
-                activity.preferenceController.onPause();
+                activity.preferenceUI.setFragment(this);
+                activity.preferenceController.onPause(getArguments().getInt(PARAM_RESOURCE));
             }
             super.onPause();
         }
@@ -126,7 +162,8 @@ public class PreferenceActivity extends AppCompatActivity {
         public void onStop() {
             PreferenceActivity activity = instance.get();
             if(activity != null && activity.preferenceController != null) {
-                activity.preferenceController.onStop();
+                activity.preferenceUI.setFragment(this);
+                activity.preferenceController.onStop(getArguments().getInt(PARAM_RESOURCE));
             }
             super.onStop();
         }
