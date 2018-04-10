@@ -2,7 +2,6 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:entryValues="@array/theme_values"
             android:entries="@array/theme_options"
@@ -11,31 +10,26 @@
             android:summary="@string/pref_set_theme_sum"
             android:defaultValue="0"
             app:useStockLayout="true"/>
-        <PreferenceScreen
-            android:key="prefDrawerSettings"
-            android:summary="@string/pref_nav_drawer_sum"
-            android:title="@string/pref_nav_drawer_title">
-            <Preference
-                android:key="prefHiddenDrawerItems"
-                android:summary="@string/pref_nav_drawer_items_sum"
-                android:title="@string/pref_nav_drawer_items_title" />
-            <com.afollestad.materialdialogs.prefs.MaterialListPreference
-                android:entryValues="@array/nav_drawer_feed_order_values"
-                android:entries="@array/nav_drawer_feed_order_options"
-                android:title="@string/pref_nav_drawer_feed_order_title"
-                android:key="prefDrawerFeedOrder"
-                android:summary="@string/pref_nav_drawer_feed_order_sum"
-                android:defaultValue="0"
-                app:useStockLayout="true"/>
-            <com.afollestad.materialdialogs.prefs.MaterialListPreference
-                android:entryValues="@array/nav_drawer_feed_counter_values"
-                android:entries="@array/nav_drawer_feed_counter_options"
-                android:title="@string/pref_nav_drawer_feed_counter_title"
-                android:key="prefDrawerFeedIndicator"
-                android:summary="@string/pref_nav_drawer_feed_counter_sum"
-                android:defaultValue="0"
-                app:useStockLayout="true"/>
-        </PreferenceScreen>
+        <Preference
+            android:key="prefHiddenDrawerItems"
+            android:summary="@string/pref_nav_drawer_items_sum"
+            android:title="@string/pref_nav_drawer_items_title" />
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:entryValues="@array/nav_drawer_feed_order_values"
+            android:entries="@array/nav_drawer_feed_order_options"
+            android:title="@string/pref_nav_drawer_feed_order_title"
+            android:key="prefDrawerFeedOrder"
+            android:summary="@string/pref_nav_drawer_feed_order_sum"
+            android:defaultValue="0"
+            app:useStockLayout="true"/>
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:entryValues="@array/nav_drawer_feed_counter_values"
+            android:entries="@array/nav_drawer_feed_counter_options"
+            android:title="@string/pref_nav_drawer_feed_counter_title"
+            android:key="prefDrawerFeedIndicator"
+            android:summary="@string/pref_nav_drawer_feed_counter_sum"
+            android:defaultValue="0"
+            app:useStockLayout="true"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="false"
             android:enabled="true"
