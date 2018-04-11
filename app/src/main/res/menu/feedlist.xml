@@ -12,7 +12,8 @@
     <item
         android:id="@+id/episode_actions"
         android:menuCategory="container"
-        android:title="@string/episode_actions"
+        android:icon="?attr/checkbox_multiple"
+        android:title="@string/batch_edit"
         custom:showAsAction="always">
     </item>
     <item

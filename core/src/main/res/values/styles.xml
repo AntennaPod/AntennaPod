@@ -13,6 +13,7 @@
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
         <item type="attr" name="action_bar_icon_color">@color/grey600</item>
         <item type="attr" name="action_about">@drawable/ic_info_grey600_24dp</item>
+        <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_grey600_24dp</item>
         <item type="attr" name="action_search">@drawable/ic_search_grey600_24dp</item>
         <item type="attr" name="action_stream">@drawable/ic_settings_input_antenna_grey600_24dp</item>
         <item type="attr" name="av_download">@drawable/ic_file_download_grey600_24dp</item>
@@ -75,7 +76,8 @@
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
         <item type="attr" name="action_bar_icon_color">@color/white</item>
-        <item type="attr" name="action_about">@drawable/ic_info_white_24dp</item>g
+        <item type="attr" name="action_about">@drawable/ic_info_white_24dp</item>
+        <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_white_24dp</item>
         <item type="attr" name="action_search">@drawable/ic_search_white_24dp</item>
         <item type="attr" name="action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
         <item type="attr" name="av_download">@drawable/ic_file_download_white_24dp</item>
@@ -140,6 +142,7 @@
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
         <item type="attr" name="action_about">@drawable/ic_info_grey600_24dp</item>
+        <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_grey600_24dp</item>
         <item type="attr" name="action_search">@drawable/ic_search_grey600_24dp</item>
         <item type="attr" name="action_stream">@drawable/ic_settings_input_antenna_grey600_24dp</item>
         <item type="attr" name="av_download">@drawable/ic_file_download_grey600_24dp</item>
@@ -204,6 +207,7 @@
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
         <item type="attr" name="action_about">@drawable/ic_info_white_24dp</item>
+        <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_white_24dp</item>
         <item type="attr" name="action_search">@drawable/ic_search_white_24dp</item>
         <item type="attr" name="action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
         <item type="attr" name="av_download">@drawable/ic_file_download_white_24dp</item>

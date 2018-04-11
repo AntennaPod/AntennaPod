@@ -221,13 +221,6 @@ public class ItemlistFragment extends ListFragment {
                 menu.findItem(R.id.share_link_item).setVisible(false);
                 menu.findItem(R.id.visit_website_item).setVisible(false);
             }
-            int[] attrs = { R.attr.action_bar_icon_color };
-            TypedArray ta = getActivity().obtainStyledAttributes(UserPreferences.getTheme(), attrs);
-            int textColor = ta.getColor(0, Color.GRAY);
-            ta.recycle();
-
-            menu.findItem(R.id.episode_actions).setIcon(new IconDrawable(getActivity(),
-                    FontAwesomeIcons.fa_gears).color(textColor).actionBarSize());
 
             isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
