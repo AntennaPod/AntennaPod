@@ -75,7 +75,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void loadAsset(String filename) {
-        subscription = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+        subscription = Observable.fromCallable(()-> {
             InputStream input = null;
             try {
                 TypedArray res = AboutActivity.this.getTheme().obtainStyledAttributes(
@@ -85,8 +85,7 @@ public class AboutActivity extends AppCompatActivity {
                 res.recycle();
                 input = getAssets().open(filename);
                 String webViewData = IOUtils.toString(input, Charset.defaultCharset());
-                if(!webViewData.startsWith("<!DOCTYPE html>")) {
-                    //webViewData = webViewData.replace("\n\n", "</p><p>");
+                if (!webViewData.startsWith("<!DOCTYPE html>")) {
                     webViewData = webViewData.replace("%", "&#37;");
                     webViewData =
                             "<!DOCTYPE html>" +
@@ -111,13 +110,13 @@ public class AboutActivity extends AppCompatActivity {
                     depth = 0;
                 }
                 webViewData = String.format(webViewData, colorString);
-                subscriber.onNext(webViewData);
+                return webViewData;
             } catch (IOException e) {
-                subscriber.onError(e);
+                Log.e(TAG, Log.getStackTraceString(e));
+                throw e;
             } finally {
                 IOUtils.closeQuietly(input);
             }
-            subscriber.onCompleted();
         })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
