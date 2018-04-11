@@ -666,6 +666,7 @@ public class UserPreferences {
         switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "stop")) {
             case "stop": return VideoBackgroundBehavior.STOP;
             case "pip": return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
+            case "continue": return VideoBackgroundBehavior.CONTINUE_PLAYING;
             default: return VideoBackgroundBehavior.STOP;
         }
     }
@@ -849,6 +850,6 @@ public class UserPreferences {
     }
 
     public enum VideoBackgroundBehavior {
-        STOP, PICTURE_IN_PICTURE
+        STOP, PICTURE_IN_PICTURE, CONTINUE_PLAYING
     }
 }

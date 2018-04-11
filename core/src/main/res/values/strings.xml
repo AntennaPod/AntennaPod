@@ -443,6 +443,7 @@
     <string name="pref_videoBehavior_title">Video behavior</string>
     <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
     <string name="stop_playback">Stop playback</string>
+    <string name="continue_playback">Continue playback</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>

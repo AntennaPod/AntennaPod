@@ -288,7 +288,9 @@ public class VideoplayerActivity extends MediaplayerActivity {
         public void surfaceDestroyed(SurfaceHolder holder) {
             Log.d(TAG, "Videosurface was destroyed");
             videoSurfaceCreated = false;
-            if (controller != null && !destroyingDueToReload) {
+            if (controller != null && !destroyingDueToReload
+                    && UserPreferences.getVideoBackgroundBehavior()
+                    != UserPreferences.VideoBackgroundBehavior.CONTINUE_PLAYING) {
                 controller.notifyVideoSurfaceAbandoned();
             }
         }
