@@ -34,8 +34,8 @@ public class AboutActivity extends AppCompatActivity {
 
     private static final String TAG = AboutActivity.class.getSimpleName();
 
-    private WebView webview;
-    private LinearLayout webviewContainer;
+    private WebView webView;
+    private LinearLayout webViewContainer;
     private Subscription subscription;
 
     @Override
@@ -44,16 +44,16 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.about);
-        webviewContainer = (LinearLayout) findViewById(R.id.webvContainer);
-        webview = (WebView) findViewById(R.id.webvAbout);
-        webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webViewContainer = (LinearLayout) findViewById(R.id.webViewContainer);
+        webView = (WebView) findViewById(R.id.webViewAbout);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
-            webview.setBackgroundColor(Color.TRANSPARENT);
+            webView.setBackgroundColor(Color.TRANSPARENT);
         }
-        webview.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -114,15 +114,15 @@ public class AboutActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         webviewData ->
-                                webview.loadDataWithBaseURL("file:///android_asset/", webviewData, "text/html", "utf-8", "about:blank"),
+                                webView.loadDataWithBaseURL("file:///android_asset/", webviewData, "text/html", "utf-8", "about:blank"),
                         error -> Log.e(TAG, Log.getStackTraceString(error))
                 );
     }
 
     @Override
     public void onBackPressed() {
-        if (webview.canGoBack()) {
-            webview.goBack();
+        if (webView.canGoBack()) {
+            webView.goBack();
         } else {
             super.onBackPressed();
         }
@@ -144,9 +144,9 @@ public class AboutActivity extends AppCompatActivity {
         if(subscription != null) {
             subscription.unsubscribe();
         }
-        if (webviewContainer != null && webview != null) {
-            webviewContainer.removeAllViews();
-            webview.destroy();
+        if (webViewContainer != null && webView != null) {
+            webViewContainer.removeAllViews();
+            webView.destroy();
         }
     }
 }
