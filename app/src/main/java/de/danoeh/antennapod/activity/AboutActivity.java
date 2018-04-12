@@ -48,8 +48,7 @@ public class AboutActivity extends AppCompatActivity {
         webview = (WebView) findViewById(R.id.webvAbout);
         webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            if (Build.VERSION.SDK_INT >= 11
-                    && Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
             webview.setBackgroundColor(Color.TRANSPARENT);
