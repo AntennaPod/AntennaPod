@@ -37,12 +37,12 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 27
+    compileSdkVersion = 26
     buildToolsVersion = "27.0.3"
     minSdkVersion = 14
     targetSdkVersion = 25
 
-    supportVersion = "27.0.2"
+    supportVersion = "26.0.2"
     commonsioVersion = "2.5"
     commonslangVersion = "3.6"
     eventbusVersion = "2.4.0"
@@ -65,7 +65,7 @@ project.ext {
 
     castCompanionLibVer = "2.9.1"
     playServicesVersion = "8.4.0"
-    wearableSupportVersion = "2.0.3"
+    wearableSupportVersion = "2.2.0"
 }
 
 task wrapper(type: Wrapper) {
