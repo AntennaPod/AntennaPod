@@ -31,6 +31,7 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.widget.IconTextView;
 
+import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
@@ -497,6 +498,7 @@ public class ItemlistFragment extends ListFragment {
         imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
         imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
+        ImageButton butShowSettings = (ImageButton) header.findViewById(R.id.butShowSettings);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
         txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
 
@@ -509,15 +511,26 @@ public class ItemlistFragment extends ListFragment {
 
         loadFeedImage();
 
-        butShowInfo.setOnClickListener(v -> {
+        butShowInfo.setOnClickListener(v -> showFeedInfo());
+        imgvCover.setOnClickListener(v -> showFeedInfo());
+        butShowSettings.setOnClickListener(v -> {
             if (viewsCreated && itemsLoaded) {
-                Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
-                startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
+                Intent startIntent = new Intent(getActivity(), FeedSettingsActivity.class);
+                startIntent.putExtra(FeedSettingsActivity.EXTRA_FEED_ID,
                         feed.getId());
                 startActivity(startIntent);
             }
         });
         headerCreated = true;
+    }
+
+    private void showFeedInfo() {
+        if (viewsCreated && itemsLoaded) {
+            Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
+            startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
+                    feed.getId());
+            startActivity(startIntent);
+        }
     }
 
     private void loadFeedImage() {

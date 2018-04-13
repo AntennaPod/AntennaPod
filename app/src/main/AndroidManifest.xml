@@ -105,7 +105,12 @@
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
         </activity>
 
-        <activity android:name=".activity.FeedInfoActivity">
+        <activity android:name=".activity.FeedInfoActivity"
+                android:label="@string/feed_info_label">
+        </activity>
+
+        <activity android:name=".activity.FeedSettingsActivity"
+                android:label="@string/feed_settings_label">
         </activity>
 
         <service

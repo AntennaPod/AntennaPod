@@ -42,6 +42,18 @@
         android:src="@drawable/ic_info_white_24dp"
         tools:background="@android:color/holo_green_dark"/>
 
+    <ImageButton
+        android:id="@+id/butShowSettings"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/show_feed_settings_label"
+        android:src="@drawable/ic_settings_white_24dp"
+        tools:background="@android:color/holo_green_dark"
+        android:layout_below="@+id/butShowInfo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
     <TextView
         android:id="@+id/txtvTitle"
         style="@style/AntennaPod.TextView.Heading"
