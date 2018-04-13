@@ -49,6 +49,7 @@
                     android:id="@+id/txtvDetailsAuthor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     app:layout_row="0"
                     app:layout_column="1"
                     tools:text="Daniel Oeh"
@@ -71,6 +72,7 @@
                     android:id="@+id/txtvLanguage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textIsSelectable="true"
                     app:layout_row="1"
                     app:layout_column="1"
                     tools:text="English"
@@ -93,6 +95,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
+                    android:background="?attr/selectableItemBackground"
                     app:layout_row="2"
                     app:layout_column="1"
                     app:layout_gravity="fill"
@@ -114,6 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:textIsSelectable="true"
                 android:text="@string/design_time_lorem_ipsum"
                 tools:background="@android:color/holo_green_dark"/>
 
