@@ -4,10 +4,12 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -31,6 +33,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -126,6 +129,13 @@ public class FeedSettingsActivity extends AppCompatActivity {
 
         imgvCover = (ImageView) findViewById(R.id.imgvCover);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
+        TextView txtvAuthorHeader = (TextView) findViewById(R.id.txtvAuthor);
+        ImageView imgvBackground = (ImageView) findViewById(R.id.imgvBackground);
+        findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
+        findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
+        // https://github.com/bumptech/glide/issues/529
+        imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
+
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
         cbxKeepUpdated = (CheckBox) findViewById(R.id.cbxKeepUpdated);
         spnAutoDelete = (Spinner) findViewById(R.id.spnAutoDelete);
@@ -161,8 +171,20 @@ public class FeedSettingsActivity extends AppCompatActivity {
                             .fitCenter()
                             .dontAnimate()
                             .into(imgvCover);
+                    Glide.with(FeedSettingsActivity.this)
+                            .load(feed.getImageLocation())
+                            .placeholder(R.color.image_readability_tint)
+                            .error(R.color.image_readability_tint)
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .transform(new FastBlurTransformation(FeedSettingsActivity.this))
+                            .dontAnimate()
+                            .into(imgvBackground);
 
                     txtvTitle.setText(feed.getTitle());
+
+                    if (!TextUtils.isEmpty(feed.getAuthor())) {
+                        txtvAuthorHeader.setText(feed.getAuthor());
+                    }
 
                     cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
                     cbxAutoDownload.setChecked(prefs.getAutoDownload());

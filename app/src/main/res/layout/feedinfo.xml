@@ -6,48 +6,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/header"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp">
-
-        <ImageView
-            android:id="@+id/imgvCover"
-            android:contentDescription="@string/cover_label"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            tools:src="@drawable/ic_stat_antenna_default"
-            tools:background="@android:color/holo_green_dark"/>
-
-        <TextView
-            android:id="@+id/txtvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:layout_alignTop="@id/imgvCover"
-            android:layout_toRightOf="@id/imgvCover"
-            android:layout_alignBottom="@id/imgvCover"
-            style="@style/AntennaPod.TextView.Heading"
-            tools:text="Feed title"
-            tools:background="@android:color/holo_green_dark"/>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/imgvCover"
-            android:layout_marginTop="8dp"
-            android:background="@color/holo_blue_light"/>
-    </RelativeLayout>
+    <include layout="@layout/feeditemlist_header" />
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -57,7 +16,8 @@
         android:scrollbarStyle="outsideOverlay"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,7 +46,7 @@
                     tools:background="@android:color/holo_red_light"/>
 
                 <TextView
-                    android:id="@+id/txtvAuthor"
+                    android:id="@+id/txtvDetailsAuthor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_row="0"

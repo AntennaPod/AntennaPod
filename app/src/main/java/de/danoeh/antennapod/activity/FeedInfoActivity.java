@@ -3,6 +3,7 @@ package de.danoeh.antennapod.activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
@@ -82,13 +84,20 @@ public class FeedInfoActivity extends AppCompatActivity {
 
         imgvCover = (ImageView) findViewById(R.id.imgvCover);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
+        TextView txtvAuthorHeader = (TextView) findViewById(R.id.txtvAuthor);
+        ImageView imgvBackground = (ImageView) findViewById(R.id.imgvBackground);
+        findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
+        findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
+        // https://github.com/bumptech/glide/issues/529
+        imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
+
+
         txtvDescription = (TextView) findViewById(R.id.txtvDescription);
         lblLanguage = (TextView) findViewById(R.id.lblLanguage);
         txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
         lblAuthor = (TextView) findViewById(R.id.lblAuthor);
-        txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
+        txtvAuthor = (TextView) findViewById(R.id.txtvDetailsAuthor);
         txtvUrl = (TextView) findViewById(R.id.txtvUrl);
-
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
@@ -112,6 +121,14 @@ public class FeedInfoActivity extends AppCompatActivity {
                             .fitCenter()
                             .dontAnimate()
                             .into(imgvCover);
+                    Glide.with(FeedInfoActivity.this)
+                            .load(feed.getImageLocation())
+                            .placeholder(R.color.image_readability_tint)
+                            .error(R.color.image_readability_tint)
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .transform(new FastBlurTransformation(FeedInfoActivity.this))
+                            .dontAnimate()
+                            .into(imgvBackground);
 
                     txtvTitle.setText(feed.getTitle());
 
@@ -129,6 +146,7 @@ public class FeedInfoActivity extends AppCompatActivity {
 
                     if (!TextUtils.isEmpty(feed.getAuthor())) {
                         txtvAuthor.setText(feed.getAuthor());
+                        txtvAuthorHeader.setText(feed.getAuthor());
                     } else {
                         lblAuthor.setVisibility(View.GONE);
                         txtvAuthor.setVisibility(View.GONE);
