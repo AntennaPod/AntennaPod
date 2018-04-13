@@ -21,7 +21,7 @@ import java.nio.charset.Charset;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import rx.Observable;
+import rx.Single;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -69,7 +69,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void loadAsset(String filename) {
-        subscription = Observable.fromCallable(()-> {
+        subscription = Single.create(subscriber -> {
             InputStream input = null;
             try {
                 TypedArray res = AboutActivity.this.getTheme().obtainStyledAttributes(
@@ -101,10 +101,10 @@ public class AboutActivity extends AppCompatActivity {
                     webViewData = webViewData.replace("\n", "<br/>");
                 }
                 webViewData = String.format(webViewData, colorString);
-                return webViewData;
+                subscriber.onSuccess(webViewData);
             } catch (IOException e) {
                 Log.e(TAG, Log.getStackTraceString(e));
-                throw e;
+                subscriber.onError(e);
             } finally {
                 IOUtils.closeQuietly(input);
             }
@@ -112,8 +112,8 @@ public class AboutActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        webviewData ->
-                                webView.loadDataWithBaseURL("file:///android_asset/", webviewData, "text/html", "utf-8", "about:blank"),
+                        webViewData ->
+                                webView.loadDataWithBaseURL("file:///android_asset/", webViewData.toString(), "text/html", "utf-8", "about:blank"),
                         error -> Log.e(TAG, Log.getStackTraceString(error))
                 );
     }
