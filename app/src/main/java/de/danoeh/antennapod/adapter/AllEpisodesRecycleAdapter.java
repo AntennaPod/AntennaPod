@@ -22,8 +22,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 
-import org.shredzone.flattr4j.model.User;
-
 import java.lang.ref.WeakReference;
 
 import de.danoeh.antennapod.R;
