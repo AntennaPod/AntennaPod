@@ -114,8 +114,11 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
         webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         TypedArray ta = getActivity().getTheme().obtainStyledAttributes(new int[]
                 {android.R.attr.colorBackground});
-        int backgroundColor = ta.getColor(0, UserPreferences.getTheme() ==
-                R.style.Theme_AntennaPod_Dark ? Color.BLACK : Color.WHITE);
+        int backgroundColor = ta.getColor(0,
+                (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark ||
+                        UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack)?
+                        Color.BLACK : Color.WHITE
+        );
         ta.recycle();
         webvDescription.setBackgroundColor(backgroundColor);
         webvDescription.getSettings().setUseWideViewPort(false);
