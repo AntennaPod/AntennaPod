@@ -881,9 +881,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             ap.setOnCompletionListener(audioCompletionListener);
             ap.setOnSeekCompleteListener(audioSeekCompleteListener);
             ap.setOnErrorListener(audioErrorListener);
-            ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
-            ap.setOnInfoListener(audioInfoListener);
-            ap.setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
         } else {
             Log.w(TAG, "Unknown media player: " + mp);
         }

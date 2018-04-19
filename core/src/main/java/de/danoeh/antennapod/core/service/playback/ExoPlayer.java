@@ -4,44 +4,97 @@ import android.content.Context;
 import android.net.Uri;
 import android.view.SurfaceHolder;
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SeekParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import org.antennapod.audio.MediaPlayer;
 
-import java.io.File;
-import java.io.IOException;
 
-/**
- * @author Hans-Peter Lehmann
- * @version 1.0
- */
 public class ExoPlayer implements IPlayer {
     private final Context mContext;
     private SimpleExoPlayer mExoPlayer;
     private MediaSource mediaSource;
     private MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener;
+    private MediaPlayer.OnCompletionListener audioCompletionListener;
+    private MediaPlayer.OnErrorListener audioErrorListener;
 
-    public ExoPlayer(Context context) {
+    ExoPlayer(Context context) {
         mContext = context;
         mExoPlayer = createPlayer();
     }
 
     private SimpleExoPlayer createPlayer() {
-        SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(
-                mContext, new DefaultTrackSelector(), new DefaultLoadControl());
+        SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(mContext),
+                new DefaultTrackSelector(), new DefaultLoadControl());
         p.setSeekParameters(SeekParameters.PREVIOUS_SYNC);
+        p.addListener(new Player.EventListener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (playbackState == Player.STATE_ENDED) {
+                    audioCompletionListener.onCompletion(null);
+                }
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+
+            }
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+                audioErrorListener.onError(null, 0, 0);
+            }
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {
+
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+            }
+
+            @Override
+            public void onSeekProcessed() {
+
+            }
+        });
         return p;
     }
 
@@ -136,7 +189,12 @@ public class ExoPlayer implements IPlayer {
 
     @Override
     public void setAudioStreamType(int i) {
-        mExoPlayer.setAudioStreamType(i);
+        AudioAttributes a = mExoPlayer.getAudioAttributes();
+        AudioAttributes.Builder b = new AudioAttributes.Builder();
+        b.setContentType(i);
+        b.setFlags(a.flags);
+        b.setUsage(a.usage);
+        mExoPlayer.setAudioAttributes(b.build());
     }
 
     @Override
@@ -145,14 +203,11 @@ public class ExoPlayer implements IPlayer {
     }
 
     @Override
-    public void setDataSource(String s) throws IllegalArgumentException, IllegalStateException, IOException {
+    public void setDataSource(String s) throws IllegalArgumentException, IllegalStateException {
         DataSource.Factory dataSourceFactory =
-                new DefaultDataSourceFactory(
-                        mContext, Util.getUserAgent(mContext, "uamp"), null);
-        // Produces Extractor instances for parsing the media data.
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        mediaSource = new ExtractorMediaSource(
-                Uri.parse(s), dataSourceFactory, extractorsFactory, null, null);
+                new DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, mContext.getPackageName()), null);
+        ExtractorMediaSource.Factory f = new ExtractorMediaSource.Factory(dataSourceFactory);
+        mediaSource = f.createMediaSource(Uri.parse(s));
     }
 
     @Override
@@ -217,33 +272,26 @@ public class ExoPlayer implements IPlayer {
         mExoPlayer.setVideoScalingMode(mode);
     }
 
-    public void setOnCompletionListener(MediaPlayer.OnCompletionListener audioCompletionListener) {
+    void setOnCompletionListener(MediaPlayer.OnCompletionListener audioCompletionListener) {
+        this.audioCompletionListener = audioCompletionListener;
     }
 
-    public void setOnSeekCompleteListener(MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener) {
+    void setOnSeekCompleteListener(MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener) {
         this.audioSeekCompleteListener = audioSeekCompleteListener;
     }
 
-    public void setOnErrorListener(MediaPlayer.OnErrorListener audioErrorListener) {
+    void setOnErrorListener(MediaPlayer.OnErrorListener audioErrorListener) {
+        this.audioErrorListener = audioErrorListener;
     }
 
-    public void setOnBufferingUpdateListener(MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener) {
-    }
-
-    public void setOnInfoListener(MediaPlayer.OnInfoListener audioInfoListener) {
-    }
-
-    public void setOnSpeedAdjustmentAvailableChangedListener(MediaPlayer.OnSpeedAdjustmentAvailableChangedListener audioSetSpeedAbilityListener) {
-    }
-
-    public int getVideoWidth() {
+    int getVideoWidth() {
         if (mExoPlayer.getVideoFormat() == null) {
             return 0;
         }
         return mExoPlayer.getVideoFormat().width;
     }
 
-    public int getVideoHeight() {
+    int getVideoHeight() {
         if (mExoPlayer.getVideoFormat() == null) {
             return 0;
         }
