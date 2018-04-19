@@ -314,7 +314,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         Log.d(TAG, "Resource prepared");
 
         if (mediaType == MediaType.VIDEO) {
-            VideoPlayer vp = (VideoPlayer) mediaPlayer;
+            ExoPlayer vp = (ExoPlayer) mediaPlayer;
             videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
         }
 
@@ -667,7 +667,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if (mediaPlayer == null || playerStatus == PlayerStatus.ERROR || mediaType != MediaType.VIDEO) {
             res = null;
         } else {
-            VideoPlayer vp = (VideoPlayer) mediaPlayer;
+            ExoPlayer vp = (ExoPlayer) mediaPlayer;
             videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
             res = videoSize;
         }
@@ -699,11 +699,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mediaPlayer = null;
             return;
         }
-        if (media.getMediaType() == MediaType.VIDEO) {
-            mediaPlayer = new VideoPlayer();
-        } else {
-            mediaPlayer = new AudioPlayer(context);
-        }
+        mediaPlayer = new ExoPlayer(context);
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK);
         setMediaPlayerListeners(mediaPlayer);
@@ -874,6 +870,14 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.w(TAG, "audio player, but media type is " + media.getMediaType());
             }
             AudioPlayer ap = (AudioPlayer) mp;
+            ap.setOnCompletionListener(audioCompletionListener);
+            ap.setOnSeekCompleteListener(audioSeekCompleteListener);
+            ap.setOnErrorListener(audioErrorListener);
+            ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
+            ap.setOnInfoListener(audioInfoListener);
+            ap.setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
+        } else if (mp instanceof ExoPlayer) {
+            ExoPlayer ap = (ExoPlayer) mp;
             ap.setOnCompletionListener(audioCompletionListener);
             ap.setOnSeekCompleteListener(audioSeekCompleteListener);
             ap.setOnErrorListener(audioErrorListener);
