@@ -152,7 +152,7 @@ public class ExoPlayer implements IPlayer {
         // Produces Extractor instances for parsing the media data.
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         mediaSource = new ExtractorMediaSource(
-                Uri.fromFile(new File(s)), dataSourceFactory, extractorsFactory, null, null);
+                Uri.parse(s), dataSourceFactory, extractorsFactory, null, null);
     }
 
     @Override
