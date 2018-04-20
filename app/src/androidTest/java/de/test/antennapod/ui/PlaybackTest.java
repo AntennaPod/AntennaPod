@@ -14,6 +14,7 @@ import com.robotium.solo.Timeout;
 
 import java.util.List;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -76,7 +77,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
         // shut down playback service
         skipEpisode();
-        context.sendBroadcast(new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+        context.sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX + PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 
         super.tearDown();
     }
@@ -91,7 +92,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     }
 
     private void skipEpisode() {
-        Intent skipIntent = new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
+        Intent skipIntent = new Intent(BuildConfig.BROADCAST_PREFIX + PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
         context.sendBroadcast(skipIntent);
     }
 

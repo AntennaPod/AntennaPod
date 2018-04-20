@@ -20,6 +20,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.asynctask.FlattrStatusFetcher;
@@ -142,7 +143,7 @@ public final class DBTasks {
         } catch (MediaFileNotFoundException e) {
             e.printStackTrace();
             if (media.isPlaying()) {
-                context.sendBroadcast(new Intent(
+                context.sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX +
                         PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
             }
             notifyMissingFeedMediaFile(context, media);

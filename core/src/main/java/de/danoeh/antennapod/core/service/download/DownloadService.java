@@ -92,12 +92,12 @@ public class DownloadService extends Service {
      * Cancels one download. The intent MUST have an EXTRA_DOWNLOAD_URL extra that contains the download URL of the
      * object whose download should be cancelled.
      */
-    public static final String ACTION_CANCEL_DOWNLOAD = "action.de.danoeh.antennapod.core.service.cancelDownload";
+    public static final String ACTION_CANCEL_DOWNLOAD = "core.service.cancelDownload";
 
     /**
      * Cancels all running downloads.
      */
-    public static final String ACTION_CANCEL_ALL_DOWNLOADS = "action.de.danoeh.antennapod.core.service.cancelAllDownloads";
+    public static final String ACTION_CANCEL_ALL_DOWNLOADS = "core.service.cancelAllDownloads";
 
     /**
      * Extra for ACTION_CANCEL_DOWNLOAD

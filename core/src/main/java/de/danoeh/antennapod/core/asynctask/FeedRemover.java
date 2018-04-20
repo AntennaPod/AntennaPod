@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import java.util.concurrent.ExecutionException;
 
+import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -41,7 +42,7 @@ public class FeedRemover extends AsyncTask<Void, Void, Void> {
             dialog.dismiss();
         }
 		if(skipOnCompletion) {
-			context.sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
+			context.sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX +PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
 		}
 	}
 

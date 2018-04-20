@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SubscriptionsAdapter;
@@ -190,7 +191,7 @@ public class SubscriptionFragment extends Fragment {
                             remover.skipOnCompletion = true;
                             int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
                             if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                                getActivity().sendBroadcast(new Intent(
+                                getActivity().sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX +
                                         PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
                             }
                         }

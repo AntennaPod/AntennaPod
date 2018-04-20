@@ -33,6 +33,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.List;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
@@ -413,7 +414,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                                     Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
                                     remover.skipOnCompletion = true;
                                     if(controller.getStatus() == PlayerStatus.PLAYING) {
-                                        sendBroadcast(new Intent(
+                                        sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX +
                                                 PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
                                     }
                                 }

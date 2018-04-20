@@ -13,9 +13,15 @@ android {
         testInstrumentationRunner "de.danoeh.antennapod.core.tests.AntennaPodTestRunner"
     }
     buildTypes {
+        def STRING = "String"
+        def BROADCAST_PREFIX = "BROADCAST_PREFIX"
+        debug {
+            buildConfigField STRING, BROADCAST_PREFIX, '"action.de.danoeh.antennapod.debug."'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            buildConfigField STRING, BROADCAST_PREFIX, '"action.de.danoeh.antennapod."'
         }
     }
 

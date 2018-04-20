@@ -28,6 +28,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -96,13 +97,13 @@ public abstract class PlaybackController {
      * activity's onResume() method.
      */
     public void init() {
-        activity.registerReceiver(statusUpdate, new IntentFilter(
-            PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
+        activity.registerReceiver(statusUpdate, new IntentFilter(BuildConfig.BROADCAST_PREFIX +
+                PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
 
-        activity.registerReceiver(notificationReceiver, new IntentFilter(
-            PlaybackService.ACTION_PLAYER_NOTIFICATION));
+        activity.registerReceiver(notificationReceiver, new IntentFilter(BuildConfig.BROADCAST_PREFIX +
+                PlaybackService.ACTION_PLAYER_NOTIFICATION));
 
-        activity.registerReceiver(shutdownReceiver, new IntentFilter(
+        activity.registerReceiver(shutdownReceiver, new IntentFilter(BuildConfig.BROADCAST_PREFIX +
                 PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 
         if (!released) {

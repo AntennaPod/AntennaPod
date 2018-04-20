@@ -45,6 +45,7 @@ android {
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "de.test.antennapod.AntennaPodTestRunner"
         generatedDensities = []
+        manifestPlaceholders = [broadcastPrefix:""]
     }
 
     signingConfigs {
@@ -76,6 +77,7 @@ android {
         def STRING = "String"
         def FLATTR_APP_KEY = "FLATTR_APP_KEY"
         def FLATTR_APP_SECRET = "FLATTR_APP_SECRET"
+        def BROADCAST_PREFIX = "BROADCAST_PREFIX"
         def mFlattrAppKey = (project.hasProperty("flattrAppKey")) ? flattrAppKey : "\"\""
         def mFlattrAppSecret = (project.hasProperty("flattrAppSecret")) ? flattrAppSecret : "\"\""
 
@@ -84,6 +86,8 @@ android {
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
             buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
             buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
+            buildConfigField STRING, BROADCAST_PREFIX, '"action.de.danoeh.antennapod.debug."'
+            manifestPlaceholders.broadcastPrefix = "action.de.danoeh.antennapod.debug."
         }
         release {
             resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
@@ -92,6 +96,8 @@ android {
             signingConfig signingConfigs.releaseConfig
             buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
             buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
+            buildConfigField STRING, BROADCAST_PREFIX, '"action.de.danoeh.antennapod."'
+            manifestPlaceholders.broadcastPrefix = "action.de.danoeh.antennapod."
         }
     }
 

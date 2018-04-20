@@ -46,6 +46,7 @@ import com.bumptech.glide.request.target.Target;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
@@ -74,8 +75,8 @@ import de.greenrobot.event.EventBus;
  * Controls the MediaPlayer that plays a FeedMedia-file
  */
 public class PlaybackService extends MediaBrowserServiceCompat {
-    public static final String FORCE_WIDGET_UPDATE = "de.danoeh.antennapod.FORCE_WIDGET_UPDATE";
-    public static final String STOP_WIDGET_UPDATE = "de.danoeh.antennapod.STOP_WIDGET_UPDATE";
+    public static final String FORCE_WIDGET_UPDATE = "FORCE_WIDGET_UPDATE";
+    public static final String STOP_WIDGET_UPDATE = "STOP_WIDGET_UPDATE";
     /**
      * Logging tag
      */
@@ -101,12 +102,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public static final String EXTRA_PREPARE_IMMEDIATELY = "extra.de.danoeh.antennapod.core.service.prepareImmediately";
 
-    public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.core.service.playerStatusChanged";
+    public static final String ACTION_PLAYER_STATUS_CHANGED = "core.service.playerStatusChanged";
     public static final String EXTRA_NEW_PLAYER_STATUS = "extra.de.danoeh.antennapod.service.playerStatusChanged.newStatus";
     private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
     private static final String AVRCP_ACTION_META_CHANGED = "com.android.music.metachanged";
 
-    public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.core.service.playerNotification";
+    public static final String ACTION_PLAYER_NOTIFICATION = "core.service.playerNotification";
     public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.core.service.notificationCode";
     public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.danoeh.antennapod.core.service.notificationType";
 
@@ -114,30 +115,30 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * If the PlaybackService receives this action, it will stop playback and
      * try to shutdown.
      */
-    public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE = "action.de.danoeh.antennapod.core.service.actionShutdownPlaybackService";
+    public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE = "core.service.actionShutdownPlaybackService";
 
     /**
      * If the PlaybackService receives this action, it will end playback of the
      * current episode and load the next episode if there is one available.
      */
-    public static final String ACTION_SKIP_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.skipCurrentEpisode";
+    public static final String ACTION_SKIP_CURRENT_EPISODE = "core.service.skipCurrentEpisode";
 
     /**
      * If the PlaybackService receives this action, it will pause playback.
      */
-    public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
+    public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "core.service.pausePlayCurrentEpisode";
 
 
     /**
      * If the PlaybackService receives this action, it will resume playback.
      */
-    public static final String ACTION_RESUME_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.resumePlayCurrentEpisode";
+    public static final String ACTION_RESUME_PLAY_CURRENT_EPISODE = "core.service.resumePlayCurrentEpisode";
 
     /**
      * Custom action used by Android Wear
      */
-    private static final String CUSTOM_ACTION_FAST_FORWARD = "action.de.danoeh.antennapod.core.service.fastForward";
-    private static final String CUSTOM_ACTION_REWIND = "action.de.danoeh.antennapod.core.service.rewind";
+    private static final String CUSTOM_ACTION_FAST_FORWARD = "core.service.fastForward";
+    private static final String CUSTOM_ACTION_REWIND = "core.service.rewind";
 
 
     /**
@@ -265,12 +266,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         registerReceiver(autoStateUpdated, new IntentFilter("com.google.android.gms.car.media.STATUS"));
         registerReceiver(headsetDisconnected, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
-        registerReceiver(shutdownReceiver, new IntentFilter(ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+        registerReceiver(shutdownReceiver, new IntentFilter(BuildConfig.BROADCAST_PREFIX + ACTION_SHUTDOWN_PLAYBACK_SERVICE));
         registerReceiver(bluetoothStateUpdated, new IntentFilter(BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
-        registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
-        registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(ACTION_PAUSE_PLAY_CURRENT_EPISODE));
-        registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(ACTION_RESUME_PLAY_CURRENT_EPISODE));
+        registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(BuildConfig.BROADCAST_PREFIX + ACTION_SKIP_CURRENT_EPISODE));
+        registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(BuildConfig.BROADCAST_PREFIX + ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+        registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(BuildConfig.BROADCAST_PREFIX + ACTION_RESUME_PLAY_CURRENT_EPISODE));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
         flavorHelper = new PlaybackServiceFlavorHelper(PlaybackService.this, flavorHelperCallback);
@@ -661,7 +662,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             }
 
-            Intent statusUpdate = new Intent(ACTION_PLAYER_STATUS_CHANGED);
+            Intent statusUpdate = new Intent(BuildConfig.BROADCAST_PREFIX + ACTION_PLAYER_STATUS_CHANGED);
             // statusUpdate.putExtra(EXTRA_NEW_PLAYER_STATUS, newInfo.playerStatus.ordinal());
             sendBroadcast(statusUpdate);
             updateWidget();
@@ -1009,11 +1010,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Send ACTION_PLAYER_STATUS_CHANGED without changing the status attribute.
      */
     private void postStatusUpdateIntent() {
-        sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
+        sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX + ACTION_PLAYER_STATUS_CHANGED));
     }
 
     private void sendNotificationBroadcast(int type, int code) {
-        Intent intent = new Intent(ACTION_PLAYER_NOTIFICATION);
+        Intent intent = new Intent(BuildConfig.BROADCAST_PREFIX + ACTION_PLAYER_NOTIFICATION);
         intent.putExtra(EXTRA_NOTIFICATION_TYPE, type);
         intent.putExtra(EXTRA_NOTIFICATION_CODE, code);
         sendBroadcast(intent);
@@ -1084,9 +1085,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         sessionState.setActions(capabilities);
 
         flavorHelper.sessionStateAddActionForWear(sessionState,
-                CUSTOM_ACTION_REWIND, getString(R.string.rewind_label), android.R.drawable.ic_media_rew);
+                BuildConfig.BROADCAST_PREFIX + CUSTOM_ACTION_REWIND, getString(R.string.rewind_label), android.R.drawable.ic_media_rew);
         flavorHelper.sessionStateAddActionForWear(sessionState,
-                CUSTOM_ACTION_FAST_FORWARD, getString(R.string.fast_forward_label), android.R.drawable.ic_media_ff);
+                BuildConfig.BROADCAST_PREFIX + CUSTOM_ACTION_FAST_FORWARD, getString(R.string.fast_forward_label), android.R.drawable.ic_media_ff);
 
         flavorHelper.mediaSessionSetExtraForWear(mediaSession);
 
@@ -1362,11 +1363,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void stopWidgetUpdater() {
         taskManager.cancelWidgetUpdater();
-        sendBroadcast(new Intent(STOP_WIDGET_UPDATE));
+        sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX + STOP_WIDGET_UPDATE));
     }
 
     private void updateWidget() {
-        PlaybackService.this.sendBroadcast(new Intent(
+        PlaybackService.this.sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX +
                 FORCE_WIDGET_UPDATE));
     }
 
@@ -1513,7 +1514,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
+            if (TextUtils.equals(intent.getAction(), BuildConfig.BROADCAST_PREFIX + ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
                 stopSelf();
             }
         }
@@ -1523,7 +1524,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
+            if (TextUtils.equals(intent.getAction(), BuildConfig.BROADCAST_PREFIX + ACTION_SKIP_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
                 mediaPlayer.skip();
             }
@@ -1533,7 +1534,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final BroadcastReceiver pauseResumeCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_RESUME_PLAY_CURRENT_EPISODE)) {
+            if (TextUtils.equals(intent.getAction(), BuildConfig.BROADCAST_PREFIX + ACTION_RESUME_PLAY_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received RESUME_PLAY_CURRENT_EPISODE intent");
                 mediaPlayer.resume();
             }
@@ -1543,7 +1544,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final BroadcastReceiver pausePlayCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
+            if (TextUtils.equals(intent.getAction(), BuildConfig.BROADCAST_PREFIX + ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received PAUSE_PLAY_CURRENT_EPISODE intent");
                 mediaPlayer.pause(false, false);
             }
@@ -1769,9 +1770,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onCustomAction(String action, Bundle extra) {
             Log.d(TAG, "onCustomAction(" + action + ")");
-            if (CUSTOM_ACTION_FAST_FORWARD.equals(action)) {
+            if ((BuildConfig.BROADCAST_PREFIX + CUSTOM_ACTION_FAST_FORWARD).equals(action)) {
                 onFastForward();
-            } else if (CUSTOM_ACTION_REWIND.equals(action)) {
+            } else if ((BuildConfig.BROADCAST_PREFIX + CUSTOM_ACTION_REWIND).equals(action)) {
                 onRewind();
             }
         }

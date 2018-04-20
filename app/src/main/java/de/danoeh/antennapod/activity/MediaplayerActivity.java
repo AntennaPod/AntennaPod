@@ -33,6 +33,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.util.Locale;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -833,7 +834,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
 
         if (butSkip != null) {
-            butSkip.setOnClickListener(v -> sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE)));
+            butSkip.setOnClickListener(v -> sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX + PlaybackService.ACTION_SKIP_CURRENT_EPISODE)));
         }
     }
 
