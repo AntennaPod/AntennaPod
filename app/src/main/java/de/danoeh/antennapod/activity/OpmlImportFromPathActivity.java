@@ -50,31 +50,31 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
 
         int nextOption = 1;
         String optionLabel = getString(R.string.opml_import_option);
-        intentPickAction = new Intent(Intent.ACTION_PICK);
-
-        if(!IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
-            intentPickAction.setData(null);
-            if(!IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
-                txtvHeaderExplanation1.setVisibility(View.GONE);
-                txtvExplanation1.setVisibility(View.GONE);
-                findViewById(R.id.divider1).setVisibility(View.GONE);
-                butChooseFilesystem.setVisibility(View.GONE);
-            }
-        }
-        if(txtvExplanation1.getVisibility() == View.VISIBLE) {
-            txtvHeaderExplanation1.setText(String.format(optionLabel, nextOption));
-            nextOption++;
-        }
 
         intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
         intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
         intentGetContentAction.setType("*/*");
-        if(!IntentUtils.isCallable(getApplicationContext(), intentGetContentAction)) {
-            txtvHeaderExplanation2.setVisibility(View.GONE);
-            txtvExplanation2.setVisibility(View.GONE);
-            findViewById(R.id.divider2).setVisibility(View.GONE);
-            butChooseExternal.setVisibility(View.GONE);
+        if (!IntentUtils.isCallable(getApplicationContext(), intentGetContentAction)) {
+            txtvHeaderExplanation1.setVisibility(View.GONE);
+            txtvExplanation1.setVisibility(View.GONE);
+            findViewById(R.id.divider1).setVisibility(View.GONE);
+            butChooseFilesystem.setVisibility(View.GONE);
         } else {
+            txtvHeaderExplanation1.setText(String.format(optionLabel, nextOption));
+            nextOption++;
+        }
+
+        intentPickAction = new Intent(Intent.ACTION_PICK);
+        if (!IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
+            intentPickAction.setData(null);
+            if (!IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
+                txtvHeaderExplanation2.setVisibility(View.GONE);
+                txtvExplanation2.setVisibility(View.GONE);
+                findViewById(R.id.divider2).setVisibility(View.GONE);
+                butChooseExternal.setVisibility(View.GONE);
+            }
+        }
+        if (txtvExplanation2.getVisibility() == View.VISIBLE) {
             txtvHeaderExplanation2.setText(String.format(optionLabel, nextOption));
             nextOption++;
         }
@@ -87,7 +87,6 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,7 +111,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
      */
     private void chooseFileFromFilesystem() {
         try {
-            startActivityForResult(intentPickAction, CHOOSE_OPML_FILE);
+            startActivityForResult(intentGetContentAction, CHOOSE_OPML_FILE);
         } catch (ActivityNotFoundException e) {
             Log.e(TAG, "No activity found. Should never happen...");
         }
@@ -120,7 +119,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
 
     private void chooseFileFromExternal() {
         try {
-            startActivityForResult(intentGetContentAction, CHOOSE_OPML_FILE);
+            startActivityForResult(intentPickAction, CHOOSE_OPML_FILE);
         } catch (ActivityNotFoundException e) {
             Log.e(TAG, "No activity found. Should never happen...");
         }
@@ -134,7 +133,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == CHOOSE_OPML_FILE) {
             Uri uri = data.getData();
-            if(uri != null && uri.toString().startsWith("/")) {
+            if (uri != null && uri.toString().startsWith("/")) {
                 uri = Uri.parse("file://" + uri.toString());
             }
             importUri(uri);
