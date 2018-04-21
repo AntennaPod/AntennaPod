@@ -103,6 +103,7 @@ public class UserPreferences {
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
 
     // Mediaplayer
+    public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
@@ -113,7 +114,6 @@ public class UserPreferences {
     private static final String PREF_RIGHT_VOLUME = "prefRightVolume";
 
     // Experimental
-    public static final String PREF_SONIC = "prefSonic";
     private static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
     public static final String PREF_NORMALIZER = "prefNormalizer";
     public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
@@ -642,13 +642,15 @@ public class UserPreferences {
     }
 
     public static boolean useSonic() {
-        return prefs.getBoolean(PREF_SONIC, false);
+        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals("sonic");
     }
 
-    public static void enableSonic(boolean enable) {
-        prefs.edit()
-            .putBoolean(PREF_SONIC, enable)
-            .apply();
+    public static boolean useExoplayer() {
+        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals("exoplayer");
+    }
+
+    public static void enableSonic() {
+        prefs.edit().putString(PREF_MEDIA_PLAYER, "sonic").apply();
     }
 
     public static boolean stereoToMono() {

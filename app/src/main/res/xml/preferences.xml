@@ -77,12 +77,14 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_pref">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="false"
-            android:key="prefSonic"
-            android:summary="@string/pref_sonic_message"
-            android:title="@string/pref_sonic_title"/>
+    <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:defaultValue="sonic"
+            android:entries="@array/media_player_options"
+            android:key="prefMediaPlayer"
+            android:title="@string/pref_media_player_title"
+            android:summary="@string/pref_media_player_message"
+            android:entryValues="@array/media_player_values"
+            app:useStockLayout="true"/>
         <de.danoeh.antennapod.preferences.SwitchCompatPreference
             android:defaultValue="true"
             android:enabled="true"

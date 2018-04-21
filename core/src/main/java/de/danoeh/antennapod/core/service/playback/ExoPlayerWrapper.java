@@ -25,7 +25,7 @@ import de.danoeh.antennapod.core.util.playback.IPlayer;
 import org.antennapod.audio.MediaPlayer;
 
 
-public class ExoPlayer implements IPlayer {
+public class ExoPlayerWrapper implements IPlayer {
     private final Context mContext;
     private SimpleExoPlayer mExoPlayer;
     private MediaSource mediaSource;
@@ -33,7 +33,7 @@ public class ExoPlayer implements IPlayer {
     private MediaPlayer.OnCompletionListener audioCompletionListener;
     private MediaPlayer.OnErrorListener audioErrorListener;
 
-    ExoPlayer(Context context) {
+    ExoPlayerWrapper(Context context) {
         mContext = context;
         mExoPlayer = createPlayer();
     }

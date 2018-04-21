@@ -52,7 +52,7 @@ public class VariableSpeedDialog {
         builder.neutralText(R.string.close_label);
         builder.onPositive((dialog, which) -> {
             if (Build.VERSION.SDK_INT >= 16) { // just to be safe
-                UserPreferences.enableSonic(true);
+                UserPreferences.enableSonic();
                 if(showSpeedSelector) {
                     showSpeedSelectorDialog(context);
                 }

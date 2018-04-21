@@ -181,6 +181,28 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="media_player_options">
+        <item>@string/media_player_builtin</item>
+        <item>@string/media_player_sonic</item>
+        <item>@string/media_player_exoplayer</item>
+    </string-array>
+
+    <string-array name="media_player_values">
+        <item>builtin</item>
+        <item>sonic</item>
+        <item>exoplayer</item>
+    </string-array>
+
+    <string-array name="media_player_options_no_sonic">
+        <item>@string/media_player_builtin</item>
+        <item>@string/media_player_exoplayer</item>
+    </string-array>
+
+    <string-array name="media_player_values_no_sonic">
+        <item>builtin</item>
+        <item>exoplayer</item>
+    </string-array>
+
     <string-array name="episode_filter_options">
         <item>@string/hide_unplayed_episodes_label</item>
         <item>@string/hide_paused_episodes_label</item>

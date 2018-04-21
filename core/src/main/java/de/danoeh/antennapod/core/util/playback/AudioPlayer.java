@@ -21,7 +21,7 @@ public class AudioPlayer extends MediaPlayer implements IPlayer {
 
 	private final SharedPreferences.OnSharedPreferenceChangeListener sonicListener =
 			(sharedPreferences, key) -> {
-				if (key.equals(UserPreferences.PREF_SONIC)) {
+				if (key.equals(UserPreferences.PREF_MEDIA_PLAYER)) {
 					checkMpi();
 				}
 			};
