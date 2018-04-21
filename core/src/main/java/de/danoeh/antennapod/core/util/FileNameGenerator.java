@@ -39,7 +39,7 @@ public class FileNameGenerator {
 					.withinRange('0', 'z')
 					.filteredBy(Character::isLetterOrDigit)
 					.build()
-                    .generate(8);
+					.generate(8);
 		}
 		return filename;
 	}
