@@ -92,15 +92,10 @@ public class ExoPlayerWrapper implements IPlayer {
 
             @Override
             public void onSeekProcessed() {
-
+                audioSeekCompleteListener.onSeekComplete(null);
             }
         });
         return p;
-    }
-
-    @Override
-    public boolean canSetPitch() {
-        return true;
     }
 
     @Override
@@ -114,38 +109,18 @@ public class ExoPlayerWrapper implements IPlayer {
     }
 
     @Override
-    public float getCurrentPitchStepsAdjustment() {
-        return 0;
-    }
-
-    @Override
     public int getCurrentPosition() {
         return (int) mExoPlayer.getCurrentPosition();
     }
 
     @Override
     public float getCurrentSpeedMultiplier() {
-        return 0;
+        return mExoPlayer.getPlaybackParameters().speed;
     }
 
     @Override
     public int getDuration() {
         return (int) mExoPlayer.getDuration();
-    }
-
-    @Override
-    public float getMaxSpeedMultiplier() {
-        return 0;
-    }
-
-    @Override
-    public float getMinSpeedMultiplier() {
-        return 0;
-    }
-
-    @Override
-    public boolean isLooping() {
-        return mExoPlayer.getRepeatMode() == Player.REPEAT_MODE_ONE;
     }
 
     @Override
@@ -164,15 +139,13 @@ public class ExoPlayerWrapper implements IPlayer {
     }
 
     @Override
-    public void prepareAsync() {
-        mExoPlayer.prepare(mediaSource);
-    }
-
-    @Override
     public void release() {
         if (mExoPlayer != null) {
             mExoPlayer.release();
         }
+        audioSeekCompleteListener = null;
+        audioCompletionListener = null;
+        audioErrorListener = null;
     }
 
     @Override
@@ -184,7 +157,6 @@ public class ExoPlayerWrapper implements IPlayer {
     @Override
     public void seekTo(int i) throws IllegalStateException {
         mExoPlayer.seekTo(i);
-        audioSeekCompleteListener.onSeekComplete(null);
     }
 
     @Override
@@ -198,11 +170,6 @@ public class ExoPlayerWrapper implements IPlayer {
     }
 
     @Override
-    public void setScreenOnWhilePlaying(boolean screenOn) {
-
-    }
-
-    @Override
     public void setDataSource(String s) throws IllegalArgumentException, IllegalStateException {
         DataSource.Factory dataSourceFactory =
                 new DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, mContext.getPackageName()), null);
@@ -213,27 +180,6 @@ public class ExoPlayerWrapper implements IPlayer {
     @Override
     public void setDisplay(SurfaceHolder sh) {
         mExoPlayer.setVideoSurfaceHolder(sh);
-    }
-
-    @Override
-    public void setEnableSpeedAdjustment(boolean b) {
-
-    }
-
-    @Override
-    public void setLooping(boolean b) {
-        mExoPlayer.setRepeatMode(b ? Player.REPEAT_MODE_ONE : Player.REPEAT_MODE_OFF);
-    }
-
-    @Override
-    public void setPitchStepsAdjustment(float v) {
-
-    }
-
-    @Override
-    public void setPlaybackPitch(float v) {
-        PlaybackParameters params = mExoPlayer.getPlaybackParameters();
-        mExoPlayer.setPlaybackParameters(new PlaybackParameters(params.speed, v));
     }
 
     @Override
@@ -265,11 +211,6 @@ public class ExoPlayerWrapper implements IPlayer {
     @Override
     public void stop() {
         mExoPlayer.stop();
-    }
-
-    @Override
-    public void setVideoScalingMode(int mode) {
-        mExoPlayer.setVideoScalingMode(mode);
     }
 
     void setOnCompletionListener(MediaPlayer.OnCompletionListener audioCompletionListener) {
