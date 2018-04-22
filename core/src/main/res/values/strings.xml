@@ -311,10 +311,9 @@
     <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
-    <string name="services_label">Services</string>
+    <string name="integrations_label">Integrations</string>
     <string name="flattr_label">Flattr</string>
     <string name="flattr_summary">Micropayment service</string>
-    <string name="data_usage">Data usage</string>
     <string name="automation">Automation</string>
     <string name="download_pref_details">Details</string>
     <string name="import_export_pref">Import/Export</string>

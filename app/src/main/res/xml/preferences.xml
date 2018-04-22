@@ -17,8 +17,8 @@
             android:icon="?attr/ic_swap" />
 
     <Preference
-            android:key="prefScreenServices"
-            android:title="@string/services_label"
+            android:key="prefScreenIntegrations"
+            android:title="@string/integrations_label"
             android:icon="?attr/ic_unfav" />
 
     <Preference

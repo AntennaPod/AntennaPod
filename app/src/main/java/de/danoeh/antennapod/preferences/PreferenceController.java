@@ -96,7 +96,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_SCREEN_USER_INTERFACE = "prefScreenInterface";
     private static final String PREF_SCREEN_PLAYBACK = "prefScreenPlayback";
     private static final String PREF_SCREEN_NETWORK = "prefScreenNetwork";
-    private static final String PREF_SCREEN_SERVICES = "prefScreenServices";
+    private static final String PREF_SCREEN_INTEGRATIONS = "prefScreenIntegrations";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
     private static final String PREF_SCREEN_AUTODL = "prefAutoDownloadSettings";
 
@@ -178,8 +178,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 PreferenceControllerFlavorHelper.setupFlavoredUI(ui);
                 buildSmartMarkAsPlayedPreference();
                 break;
-            case R.xml.preferences_services:
-                setupServicesScreen();
+            case R.xml.preferences_integrations:
+                setupIntegrationsScreen();
                 break;
             case R.xml.preferences_storage:
                 setupStorageScreen();
@@ -299,7 +299,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         );
     }
 
-    private void setupServicesScreen() {
+    private void setupIntegrationsScreen() {
         final Activity activity = ui.getActivity();
 
         ui.findPreference(PreferenceController.PREF_FLATTR_REVOKE).setOnPreferenceClickListener(
@@ -500,8 +500,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 openScreen(R.xml.preferences_playback, activity));
         ui.findPreference(PREF_SCREEN_NETWORK).setOnPreferenceClickListener(preference ->
                 openScreen(R.xml.preferences_network, activity));
-        ui.findPreference(PREF_SCREEN_SERVICES).setOnPreferenceClickListener(preference ->
-                openScreen(R.xml.preferences_services, activity));
+        ui.findPreference(PREF_SCREEN_INTEGRATIONS).setOnPreferenceClickListener(preference ->
+                openScreen(R.xml.preferences_integrations, activity));
         ui.findPreference(PREF_SCREEN_STORAGE).setOnPreferenceClickListener(preference ->
                 openScreen(R.xml.preferences_storage, activity));
 
@@ -627,7 +627,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             case R.xml.preferences_storage:
                 setDataFolderText();
                 break;
-            case R.xml.preferences_services:
+            case R.xml.preferences_integrations:
                 GpodnetPreferences.registerOnSharedPreferenceChangeListener(gpoddernetListener);
                 updateGpodnetPreferenceScreen();
                 checkFlattrItemVisibility();
@@ -639,7 +639,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     public void onPause(int screen) {
-        if (screen == R.xml.preferences_services) {
+        if (screen == R.xml.preferences_integrations) {
             GpodnetPreferences.unregisterOnSharedPreferenceChangeListener(gpoddernetListener);
         }
     }
