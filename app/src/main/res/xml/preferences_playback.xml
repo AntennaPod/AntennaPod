@@ -36,6 +36,14 @@
                 android:key="prefResumeAfterCall"
                 android:summary="@string/pref_resumeAfterCall_sum"
                 android:title="@string/pref_resumeAfterCall_title"/>
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+                android:defaultValue="stop"
+                android:entries="@array/video_background_behavior_options"
+                android:entryValues="@array/video_background_behavior_values"
+                android:key="prefVideoBehavior"
+                android:summary="@string/pref_videoBehavior_sum"
+                android:title="@string/pref_videoBehavior_title"
+                app:useStockLayout="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/buttons">

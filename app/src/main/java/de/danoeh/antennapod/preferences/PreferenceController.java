@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import de.danoeh.antennapod.activity.AboutActivity;
+import com.afollestad.materialdialogs.prefs.MaterialListPreference;
 import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
@@ -55,6 +56,7 @@ import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
 import de.danoeh.antennapod.dialog.ProxyDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -389,6 +391,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     MediaplayerActivity.showSkipPreference(activity, MediaplayerActivity.SkipDirection.SKIP_FORWARD);
                     return true;
                 });
+        if (!PictureInPictureUtil.supportsPictureInPicture(activity)) {
+            MaterialListPreference behaviour = (MaterialListPreference) ui.findPreference(UserPreferences.PREF_VIDEO_BEHAVIOR);
+            behaviour.setEntries(R.array.video_background_behavior_options_without_pip);
+            behaviour.setEntryValues(R.array.video_background_behavior_values_without_pip);
+        }
     }
 
     private void setupDownloadsScreen() {

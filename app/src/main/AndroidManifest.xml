@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
     android:installLocation="auto"
-    android:versionCode="1060501"
-    android:versionName="1.6.5-RC1">
+    android:versionCode="1060595"
+    android:versionName="1.6.5">
     <!--
       Version code schema:
       "1.2.3-SNAPSHOT" -> 1020300
@@ -105,7 +105,15 @@
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
         </activity>
 
-        <activity android:name=".activity.FeedInfoActivity">
+        <activity
+                android:name=".activity.FeedInfoActivity"
+                android:label="@string/feed_info_label">
+        </activity>
+
+        <activity
+                android:name=".activity.FeedSettingsActivity"
+                android:windowSoftInputMode="stateHidden"
+                android:label="@string/feed_settings_label">
         </activity>
 
         <service
@@ -222,7 +230,8 @@
 
         <activity
             android:name=".activity.VideoplayerActivity"
-            android:configChanges="keyboardHidden|orientation"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:supportsPictureInPicture="true"
             android:screenOrientation="sensorLandscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

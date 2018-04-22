@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/videoframe">
 
     <de.danoeh.antennapod.view.AspectRatioVideoView
         android:id="@+id/videoview"
@@ -103,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/txtvLength"
                 android:layout_toRightOf="@+id/txtvPosition"
+                android:layout_centerInParent="true"
                 android:max="500" />
 
         </RelativeLayout>
