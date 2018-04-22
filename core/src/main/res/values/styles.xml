@@ -83,6 +83,7 @@
         <item type="attr" name="storage">@drawable/ic_sd_white_24dp</item>
         <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_white_24dp</item>
         <item type="attr" name="statistics">@drawable/ic_poll_box_white_24dp</item>
+        <item type="attr" name="action_about">@drawable/ic_info_white_24dp</item>
         <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_white_24dp</item>
         <item type="attr" name="action_search">@drawable/ic_search_white_24dp</item>
         <item type="attr" name="action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
