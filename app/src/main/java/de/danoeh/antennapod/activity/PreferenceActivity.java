@@ -113,16 +113,18 @@ public class PreferenceActivity extends AppCompatActivity {
     }
 
     public static class MainFragment extends PreferenceFragment {
+        private int screen;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
-            addPreferencesFromResource(getArguments().getInt(PARAM_RESOURCE));
+            screen = getArguments().getInt(PARAM_RESOURCE);
+            addPreferencesFromResource(screen);
             PreferenceActivity activity = instance.get();
             if (activity != null && activity.preferenceController != null) {
                 activity.preferenceUI.setFragment(this);
-                activity.preferenceController.onCreate(getArguments().getInt(PARAM_RESOURCE));
+                activity.preferenceController.onCreate(screen);
             }
         }
 
@@ -131,9 +133,9 @@ public class PreferenceActivity extends AppCompatActivity {
             super.onResume();
             PreferenceActivity activity = instance.get();
             if(activity != null && activity.preferenceController != null) {
-                activity.setTitle(getTitle(getArguments().getInt(PARAM_RESOURCE)));
+                activity.setTitle(getTitle(screen));
                 activity.preferenceUI.setFragment(this);
-                activity.preferenceController.onResume(getArguments().getInt(PARAM_RESOURCE));
+                activity.preferenceController.onResume(screen);
             }
         }
 
@@ -159,9 +161,8 @@ public class PreferenceActivity extends AppCompatActivity {
         @Override
         public void onPause() {
             PreferenceActivity activity = instance.get();
-            if(activity != null && activity.preferenceController != null) {
-                activity.preferenceUI.setFragment(this);
-                activity.preferenceController.onPause(getArguments().getInt(PARAM_RESOURCE));
+            if (screen == R.xml.preferences_integrations) {
+                activity.preferenceController.unregisterGpodnet();
             }
             super.onPause();
         }
@@ -169,9 +170,8 @@ public class PreferenceActivity extends AppCompatActivity {
         @Override
         public void onStop() {
             PreferenceActivity activity = instance.get();
-            if(activity != null && activity.preferenceController != null) {
-                activity.preferenceUI.setFragment(this);
-                activity.preferenceController.onStop();
+            if (screen == R.xml.preferences_storage) {
+                activity.preferenceController.unsubscribeExportSubscription();
             }
             super.onStop();
         }
