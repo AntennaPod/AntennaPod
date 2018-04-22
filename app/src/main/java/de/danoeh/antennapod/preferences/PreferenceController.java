@@ -22,7 +22,6 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
@@ -99,6 +98,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_SCREEN_DOWNLOADS = "prefScreenDownloads";
     private static final String PREF_SCREEN_SERVICES = "prefScreenServices";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
+    private static final String PREF_SCREEN_AUTODL = "prefAutoDownloadSettings";
 
     private static final String PREF_FLATTR_SETTINGS = "prefFlattrSettings";
     private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
@@ -111,7 +111,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String IMPORT_EXPORT = "importExport";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
-    private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
     private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
     private static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
     private static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
@@ -406,11 +405,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL).setOnPreferenceChangeListener(
                 (preference, newValue) -> {
                     if (newValue instanceof Boolean) {
-                        boolean enabled = (Boolean) newValue;
-                        ui.findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setEnabled(enabled);
-                        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY).setEnabled(enabled);
-                        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled(enabled);
-                        setSelectedNetworksEnabled(enabled && UserPreferences.isEnableAutodownloadWifiFilter());
+                        checkAutodownloadItemVisibility((Boolean) newValue);
                     }
                     return true;
                 });
@@ -438,7 +433,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     private void setupDownloadsScreen() {
         final Activity activity = ui.getActivity();
-        ui.findPreference(AUTO_DL_PREF_SCREEN).setOnPreferenceClickListener(preference ->
+        ui.findPreference(PREF_SCREEN_AUTODL).setOnPreferenceClickListener(preference ->
                 openScreen(R.xml.preferences_autodownload, activity));
         ui.findPreference(UserPreferences.PREF_UPDATE_INTERVAL)
                 .setOnPreferenceClickListener(preference -> {
@@ -627,7 +622,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 break;
             case R.xml.preferences_autodownload:
                 setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
-                checkAutodownloadItemVisibility();
+                checkAutodownloadItemVisibility(UserPreferences.isEnableAutodownload());
                 break;
             case R.xml.preferences_storage:
                 setDataFolderText();
@@ -813,11 +808,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(PreferenceController.PREF_AUTO_FLATTR_PREFS).setEnabled(hasFlattrToken);
     }
 
-    private void checkAutodownloadItemVisibility() {
-        boolean autoDownload = UserPreferences.isEnableAutodownload();
+    private void checkAutodownloadItemVisibility(boolean autoDownload) {
         ui.findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setEnabled(autoDownload);
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY).setEnabled(autoDownload);
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled(autoDownload);
+        ui.findPreference(UserPreferences.PREF_EPISODE_CLEANUP).setEnabled(autoDownload);
+        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_MOBILE).setEnabled(autoDownload);
         setSelectedNetworksEnabled(autoDownload && UserPreferences.isEnableAutodownloadWifiFilter());
     }
 
