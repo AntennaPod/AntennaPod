@@ -633,13 +633,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         }
     }
 
-    public void onPause(int screen) {
-        if (screen == R.xml.preferences_integrations) {
-            GpodnetPreferences.unregisterOnSharedPreferenceChangeListener(gpoddernetListener);
-        }
+    public void unregisterGpodnet() {
+        GpodnetPreferences.unregisterOnSharedPreferenceChangeListener(gpoddernetListener);
     }
 
-    public void onStop() {
+    public void unsubscribeExportSubscription() {
         if (subscription != null) {
             subscription.unsubscribe();
         }
