@@ -24,6 +24,7 @@
     <string name="cancel_download_label">Cancel\nDownload</string>
     <string name="playback_history_label">Playback History</string>
     <string name="gpodnet_main_label">gpodder.net</string>
+    <string name="gpodnet_summary">Synchronize with other devices</string>
     <string name="gpodnet_auth_label">gpodder.net Login</string>
     <string name="free_space_label">%1$s free</string>
     <string name="episode_cache_full_title">Episode cache full</string>
@@ -310,8 +311,17 @@
     <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
-    <string name="services_label">Services</string>
+    <string name="integrations_label">Integrations</string>
     <string name="flattr_label">Flattr</string>
+    <string name="flattr_summary">Micropayment service</string>
+    <string name="automation">Automation</string>
+    <string name="download_pref_details">Details</string>
+    <string name="import_export_pref">Import/Export</string>
+    <string name="appearance">Appearance</string>
+    <string name="external_elements">External elements</string>
+    <string name="interruptions">Interruptions</string>
+    <string name="buttons">Buttons</string>
+    <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
     <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
