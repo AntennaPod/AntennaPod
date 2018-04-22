@@ -46,6 +46,7 @@ import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.Supplier;
+import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -225,9 +226,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     @Override
     protected void onPause() {
-        if(controller != null) {
-            controller.reinitServiceIfPaused();
-            controller.pause();
+        if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
+            if (controller != null) {
+                controller.reinitServiceIfPaused();
+                controller.pause();
+            }
         }
         super.onPause();
     }
@@ -379,6 +382,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             } else {
                 startActivity(intent);
             }
+            finish();
             return true;
         } else {
             if (media != null) {

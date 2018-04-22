@@ -237,6 +237,7 @@
     <string name="no_media_playing_label">No media playing</string>
     <string name="position_default_label" translate="false">00:00:00</string>
     <string name="player_buffering_msg">Buffering</string>
+    <string name="player_go_to_picture_in_picture">Picture-in-picture mode</string>
     <string name="playbackservice_notification_title">Playing podcast</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
 
@@ -440,6 +441,10 @@
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
+    <string name="pref_videoBehavior_title">Video behavior</string>
+    <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
+    <string name="stop_playback">Stop playback</string>
+    <string name="continue_playback">Continue playback</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
