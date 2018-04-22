@@ -95,7 +95,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     private static final String PREF_SCREEN_USER_INTERFACE = "prefScreenInterface";
     private static final String PREF_SCREEN_PLAYBACK = "prefScreenPlayback";
-    private static final String PREF_SCREEN_DOWNLOADS = "prefScreenDownloads";
+    private static final String PREF_SCREEN_NETWORK = "prefScreenNetwork";
     private static final String PREF_SCREEN_SERVICES = "prefScreenServices";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
     private static final String PREF_SCREEN_AUTODL = "prefAutoDownloadSettings";
@@ -164,8 +164,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             case R.xml.preferences:
                 setupMainScreen();
                 break;
-            case R.xml.preferences_downloads:
-                setupDownloadsScreen();
+            case R.xml.preferences_network:
+                setupNetworkScreen();
                 break;
             case R.xml.preferences_autodownload:
                 setupAutoDownloadScreen();
@@ -431,7 +431,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 );
     }
 
-    private void setupDownloadsScreen() {
+    private void setupNetworkScreen() {
         final Activity activity = ui.getActivity();
         ui.findPreference(PREF_SCREEN_AUTODL).setOnPreferenceClickListener(preference ->
                 openScreen(R.xml.preferences_autodownload, activity));
@@ -498,8 +498,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 openScreen(R.xml.preferences_user_interface, activity));
         ui.findPreference(PREF_SCREEN_PLAYBACK).setOnPreferenceClickListener(preference ->
                 openScreen(R.xml.preferences_playback, activity));
-        ui.findPreference(PREF_SCREEN_DOWNLOADS).setOnPreferenceClickListener(preference ->
-                openScreen(R.xml.preferences_downloads, activity));
+        ui.findPreference(PREF_SCREEN_NETWORK).setOnPreferenceClickListener(preference ->
+                openScreen(R.xml.preferences_network, activity));
         ui.findPreference(PREF_SCREEN_SERVICES).setOnPreferenceClickListener(preference ->
                 openScreen(R.xml.preferences_services, activity));
         ui.findPreference(PREF_SCREEN_STORAGE).setOnPreferenceClickListener(preference ->
@@ -616,7 +616,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     public void onResume(int screen) {
         switch (screen) {
-            case R.xml.preferences_downloads:
+            case R.xml.preferences_network:
                 setUpdateIntervalText();
                 setParallelDownloadsText(UserPreferences.getParallelDownloads());
                 break;

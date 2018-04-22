@@ -12,7 +12,7 @@
             android:icon="?attr/av_play" />
 
     <Preference
-            android:key="prefScreenDownloads"
+            android:key="prefScreenNetwork"
             android:title="@string/network_pref"
             android:icon="?attr/av_download" />
 

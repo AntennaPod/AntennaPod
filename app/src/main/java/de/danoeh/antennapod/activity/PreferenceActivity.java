@@ -139,8 +139,8 @@ public class PreferenceActivity extends AppCompatActivity {
 
         private int getTitle(int preferences) {
             switch (preferences) {
-                case R.xml.preferences_downloads:
-                    return R.string.downloads_label;
+                case R.xml.preferences_network:
+                    return R.string.network_pref;
                 case R.xml.preferences_autodownload:
                     return R.string.pref_automatic_download_title;
                 case R.xml.preferences_playback:
