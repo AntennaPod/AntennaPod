@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Αγαπημένα</string>
   <string name="new_label">Νέα</string>
   <string name="settings_label">Ρυθμίσεις</string>
-  <string name="add_new_feed_label">Προσθήκη Podcast</string>
   <string name="downloads_label">Λήψεις</string>
   <string name="downloads_running_label">Εκτέλεση</string>
   <string name="downloads_completed_label">Ολοκληρώθηκε</string>
@@ -339,6 +338,7 @@
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

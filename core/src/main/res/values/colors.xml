@@ -33,4 +33,7 @@
 
     <color name="antennapod_blue">#147BAF</color>
 
+    <color name="master_switch_background_light">#DDDDDD</color>
+    <color name="master_switch_background_dark">#191919</color>
+
 </resources>

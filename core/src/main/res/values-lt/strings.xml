@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Mėgiami</string>
   <string name="new_label">Nauji</string>
   <string name="settings_label">Nustatymai</string>
-  <string name="add_new_feed_label">Pridėti tinklalaidę</string>
   <string name="downloads_label">Atsiuntimai</string>
   <string name="downloads_running_label">Vykdomi</string>
   <string name="downloads_completed_label">Užbaigti</string>
@@ -116,6 +115,7 @@
   <string name="remove_feed_label">Pašalinti tinklalaidę</string>
   <string name="share_label">Dalintis...</string>
   <string name="share_link_label">Dalintis nuoroda</string>
+  <string name="share_file_label">Dalintis failu</string>
   <string name="share_link_with_position_label">Dalintis nuoroda su pozicija</string>
   <string name="share_feed_url_label">Dalintis sklaidos kanalo URL</string>
   <string name="share_item_url_label">Dalintis epizodo failo URL</string>
@@ -144,6 +144,7 @@
   <string name="stream_label">Klausytis tiesiogiai</string>
   <string name="remove_label">Pašalinti</string>
   <string name="delete_label">Ištrinti</string>
+  <string name="delete_failed">Nepavyksta ištrinti failo. Įrenginio paleidimas iš naujo gali padėti.</string>
   <string name="remove_episode_lable">Pašalinti epizodą</string>
   <string name="marked_as_seen_label">Pažymėtas kaip matytas</string>
   <string name="mark_read_label">Pažymėti kaip perklausytą</string>
@@ -300,6 +301,8 @@
   <string name="pref_smart_mark_as_played_title">Išmanus perklausų žymėjimas</string>
   <string name="pref_skip_keeps_episodes_sum">Palikti epizodus, kai šie praleidžiami</string>
   <string name="pref_skip_keeps_episodes_title">Palikti praleistus epizodus</string>
+  <string name="pref_favorite_keeps_episodes_sum">Palikti epizodus, kurie yra pažymėti kaip mėgiami</string>
+  <string name="pref_favorite_keeps_episodes_title">Palikti mėgiamus epizodus</string>
   <string name="playback_pref">Atkūrimas</string>
   <string name="network_pref">Tinklas</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Atnaujinimų intervalas ar dienos metas</string>
@@ -343,6 +346,8 @@
   <string name="pref_automatic_download_sum">Konfigūruoti automatinį epizodų atsiuntimą.</string>
   <string name="pref_autodl_wifi_filter_title">Įjungti belaidžių tinklų filtrą</string>
   <string name="pref_autodl_wifi_filter_sum">Leisti automatinį atsiuntimą tik prisijungus prie nurodytų belaidžių tinklų.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Leisti atsiuntimus mobiliuoju internetu</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Leisti automatinį atsiuntimą naudojantis mobiliuoju internetu.</string>
   <string name="pref_automatic_download_on_battery_title">Atsiuntimas ne įkrovimo metu</string>
   <string name="pref_automatic_download_on_battery_sum">Leisti automatinį atsiuntimą kai baterija nėra įkraunama</string>
   <string name="pref_parallel_downloads_title">Lygiagretūs atsiuntimai</string>
@@ -619,6 +624,20 @@
   <string name="proxy_host_empty_error">Serverio laukelis negali būti tuščias</string>
   <string name="proxy_host_invalid_error">Serverio laukelyje nurodytas netaisyklingas IP adresas ar sritis</string>
   <string name="proxy_port_invalid_error">Netinkamas prievadas</string>
+  <!--Database import/export-->
+  <string name="import_export">Duomenų bazės importas/eksportas</string>
+  <string name="import_export_warning">Šis eksperimentinė funkcija leidžia perkelti jūsų prenumeratas bei duomenis apie perklausytus epizodus į kitą įrenginį.
+
+Eksportuota duomenų bazė gali būti importuota tik naudojantis ta pačia „AntennaPod“ versija. Kitu atveju, šios funkcijos naudojimas gali turėti netikėtų padarinių.
+
+Po importavimo, epizodai gali būti per klaidą pažymėti kaip atsisiųsti. Tiesiog spustelėkite atkūrimo mygtuką ir „AntennaPod“ aptiks šią klaidą. </string>
+  <string name="label_import">Importuoti</string>
+  <string name="label_export">Eksportuoti</string>
+  <string name="import_select_file">Pasirinkite failą, kurį norite importuoti</string>
+  <string name="export_ok">Eksportas sėkmingas. Duomenų bazė išsaugota SD kortelėje.</string>
+  <string name="import_ok">Importuota sėkmingai.
+
+Spauskite „OK“, kad paleisti „AntennaPod“ iš naujo.</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Atkurti naudojant...</string>
   <string name="cast_disconnect_label">Atjungti „Chromecast“ sesiją</string>

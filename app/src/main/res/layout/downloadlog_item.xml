@@ -8,6 +8,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="8dp"
+    android:descendantFocusability="blocksDescendants"
     tools:background="@android:color/darker_gray">
 
     <com.joanzapata.iconify.widget.IconTextView

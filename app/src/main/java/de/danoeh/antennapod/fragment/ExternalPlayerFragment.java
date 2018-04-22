@@ -124,8 +124,7 @@ public class ExternalPlayerFragment extends Fragment {
     public void onResume() {
         super.onResume();
         controller.init();
-        mProgressBar.setProgress((int)
-                ((double) controller.getPosition() / controller.getDuration() * 100));
+        onPositionObserverUpdate();
     }
 
     @Override
@@ -209,6 +208,10 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     private void onPositionObserverUpdate() {
+        if (controller.getPosition() == PlaybackService.INVALID_TIME
+                || controller.getDuration() == PlaybackService.INVALID_TIME) {
+            return;
+        }
         mProgressBar.setProgress((int)
                 ((double) controller.getPosition() / controller.getDuration() * 100));
     }

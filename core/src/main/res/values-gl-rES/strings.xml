@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Novo</string>
   <string name="settings_label">Axustes</string>
-  <string name="add_new_feed_label">Engadir Podcast</string>
   <string name="downloads_label">Descargas</string>
   <string name="downloads_running_label">Descargando</string>
   <string name="downloads_completed_label">Completado</string>
@@ -20,7 +19,7 @@
   <string name="playback_history_label">Historial de reprodución</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net Conexión</string>
-  <string name="free_space_label">%1$s gratis</string>
+  <string name="free_space_label">%1$s libre</string>
   <string name="episode_cache_full_title">Caché de episodios chea</string>
   <string name="episode_cache_full_message">Acadouse o límite de espazo na caché de episodios. Pode incrementalo nos Axustes do tamaño da caché.</string>
   <!--Statistics fragment-->
@@ -115,6 +114,7 @@
   <string name="remove_feed_label">Quitar podcast</string>
   <string name="share_label">Compartir...</string>
   <string name="share_link_label">Compartir ligazón</string>
+  <string name="share_file_label">Compartir ficheiro</string>
   <string name="share_link_with_position_label">Compartir ligazón con posición</string>
   <string name="share_feed_url_label">Compartir URL da fonte</string>
   <string name="share_item_url_label">Compartir a URL do ficheiro do episodio</string>
@@ -143,6 +143,7 @@
   <string name="stream_label">Enviar</string>
   <string name="remove_label">Eliminar</string>
   <string name="delete_label">Borrar</string>
+  <string name="delete_failed">Non se puido eliminar o ficheiro. Reiniciar o dispositivo podería axudar.</string>
   <string name="remove_episode_lable">Eliminar episodio</string>
   <string name="marked_as_seen_label">Marcar como visto</string>
   <string name="mark_read_label">Marcar como reproducido</string>
@@ -194,7 +195,7 @@
   </plurals>
   <string name="downloads_processing">Procesando as descargas</string>
   <string name="download_notification_title">Descargando datos do podcast</string>
-  <string name="download_report_content">%1$ddescargas exitosas, %2$d fallaron</string>
+  <string name="download_report_content">%1$d descargas con éxito, %2$d fallaron</string>
   <string name="download_log_title_unknown">Título descoñecido</string>
   <string name="download_type_feed">Fonte</string>
   <string name="download_type_media">Ficheiro de medios</string>
@@ -298,6 +299,8 @@
   <string name="pref_smart_mark_as_played_title">Marcar como Reproducido automático</string>
   <string name="pref_skip_keeps_episodes_sum">Manter os episodios cando son saltados</string>
   <string name="pref_skip_keeps_episodes_title">Manter episodios saltados</string>
+  <string name="pref_favorite_keeps_episodes_sum">Manter os episodios cando son marcados como Favoritos</string>
+  <string name="pref_favorite_keeps_episodes_title">Manter os episodios favoritos</string>
   <string name="playback_pref">Reprodución</string>
   <string name="network_pref">Rede</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalo de actualización ou Hora do día</string>
@@ -341,6 +344,8 @@
   <string name="pref_automatic_download_sum">Axuste a descarga automática de episodios.</string>
   <string name="pref_autodl_wifi_filter_title">Habilitar o filtro WiFi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir a descarga automática só en redes WiFi selecionadas.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Descargar baixo conexión móbil</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Permitir a descarga automática estando conectado a rede de datos móbil.</string>
   <string name="pref_automatic_download_on_battery_title">Descargar elementos cando non esté cargando</string>
   <string name="pref_automatic_download_on_battery_sum">Permitir a descarga automática cando a batería non está a cargar</string>
   <string name="pref_parallel_downloads_title">Descargas simultáneas</string>
@@ -408,7 +413,7 @@
   <string name="pref_cast_title">Soporte Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar o soporte de reprodución remota nun dispositivo Cast (como o Chromecast, Altofalantes ou Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast precisa software propietario de terceiras partes que están deshabilitadas en esta versión de AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Descargas engadidas a cola</string>
+  <string name="pref_enqueue_downloaded_title">Foron descargados os elementos da cola</string>
   <string name="pref_enqueue_downloaded_summary">Engadir os episodios descargados a cola</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Hablitar o flattring automático</string>
@@ -614,6 +619,14 @@
   <string name="proxy_host_empty_error">Servidor non pode quedar baldeiro</string>
   <string name="proxy_host_invalid_error">O servidor indicado non é un dominio ou IP válidos</string>
   <string name="proxy_port_invalid_error">Porto non válido</string>
+  <!--Database import/export-->
+  <string name="import_export">Importar/Exportar base de datos</string>
+  <string name="import_export_warning">Esta función experimental utilízase para transferir as súas suscricións e episodios reproducidos en outro dispositivo.\n\nAs bases de datos exportadas só se poden importar si utiliza a misma versión de AntennaPod. De todos xeitos, esta función pode comportarse de xeito raro.\n\nDespois de importar, os episodios poderían ser mostrados como descargados sin telo sido. Simplemente pulse o botón de reprodución dos episodios para que AntennaPod detecte esto.</string>
+  <string name="label_import">Importar</string>
+  <string name="label_export">Exportar</string>
+  <string name="import_select_file">Escolla o ficheiro a importar</string>
+  <string name="export_ok">Exportouse correctamente. A base de datos escribeuse na tarxeta SD.</string>
+  <string name="import_ok">Importación correcta.\n\nPulse OK para reiniciar AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Reproducir en...</string>
   <string name="cast_disconnect_label">Desconectar a sesión de emisión</string>

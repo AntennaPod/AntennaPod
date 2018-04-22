@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">お気に入り</string>
   <string name="new_label">新</string>
   <string name="settings_label">設定</string>
-  <string name="add_new_feed_label">フィードを追加</string>
   <string name="downloads_label">ダウンロード</string>
   <string name="downloads_running_label">実行中</string>
   <string name="downloads_completed_label">完了</string>
@@ -114,6 +113,7 @@
   <string name="remove_feed_label">ポッドキャストを削除</string>
   <string name="share_label">共有…</string>
   <string name="share_link_label">Webサイトのリンクを共有</string>
+  <string name="share_file_label">ファイルを共有</string>
   <string name="share_link_with_position_label">場所とリンクを共有</string>
   <string name="share_feed_url_label">フィード URLを共有</string>
   <string name="share_item_url_label">エピソードファイル URLを共有</string>
@@ -142,6 +142,7 @@
   <string name="stream_label">ストリーム</string>
   <string name="remove_label">削除</string>
   <string name="delete_label">削除</string>
+  <string name="delete_failed">ファイルを削除できません。デバイスを再起動してみてください。</string>
   <string name="remove_episode_lable">エピソードを削除</string>
   <string name="marked_as_seen_label">参照済としてマーク</string>
   <string name="mark_read_label">再生済としてマーク</string>
@@ -296,6 +297,8 @@
   <string name="pref_smart_mark_as_played_title">再生済としてスマートマーク</string>
   <string name="pref_skip_keeps_episodes_sum">エピソードをスキップした時に残しておきます</string>
   <string name="pref_skip_keeps_episodes_title">エピソードのスキップ時に残す</string>
+  <string name="pref_favorite_keeps_episodes_sum">エピソードをお気に入りに追加した時に残しておきます</string>
+  <string name="pref_favorite_keeps_episodes_title">お気に入りのエピソードを残す</string>
   <string name="playback_pref">再生</string>
   <string name="network_pref">ネットワーク</string>
   <string name="pref_autoUpdateIntervallOrTime_title">間隔または時間を更新</string>
@@ -339,6 +342,8 @@
   <string name="pref_automatic_download_sum">エピソードの自動ダウンロードを構成します。</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fiフィルターを有効にする</string>
   <string name="pref_autodl_wifi_filter_sum">選択したWi-Fiネットワークに対してのみ自動ダウンロードを許可します。</string>
+  <string name="pref_autodl_allow_on_mobile_title">モバイルデータ接続時にダウンロード</string>
+  <string name="pref_autodl_allow_on_mobile_sum">モバイルデータ接続時にダウンロードを許可します</string>
   <string name="pref_automatic_download_on_battery_title">充電中以外の時にダウンロード</string>
   <string name="pref_automatic_download_on_battery_sum">バッテリーを充電していない時に自動ダウンロードを許可します</string>
   <string name="pref_parallel_downloads_title">パラレル ダウンロード</string>
@@ -406,7 +411,7 @@
   <string name="pref_cast_title">Chromecast サポート</string>
   <string name="pref_cast_message_play_flavor">(Chromecast、オーディオスピーカー、Android TV など) キャストデバイス上でリモートメディア再生のサポートを有効にします</string>
   <string name="pref_cast_message_free_flavor">Chromecast は AntennaPod のこのバージョンで無効になっているサードパーティ独自のライブラリーが必要です</string>
-  <string name="pref_enqueue_downloaded_title">ダウンロード済みをキューに入れる</string>
+  <string name="pref_enqueue_downloaded_title">ダウンロードのキューに入れる</string>
   <string name="pref_enqueue_downloaded_summary">ダウンロードしたエピソードをキューに追加します</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">自動Flattrを有効にする</string>
@@ -609,6 +614,14 @@
   <string name="proxy_host_empty_error">ホストは空にできません</string>
   <string name="proxy_host_invalid_error">ホストが有効なIPアドレスやドメインではありません</string>
   <string name="proxy_port_invalid_error">ポートが正しくありません</string>
+  <!--Database import/export-->
+  <string name="import_export">データベースのインポート/エクスポート</string>
+  <string name="import_export_warning">この実験的な機能を使用すると、サブスクリプションと再生したエピソードを別のデバイスに転送できます。\n\nエクスポートされたデータベースは、同じバージョンのAntennaPodを使用する場合にのみインポートできます。 それ以外の場合、この機能は予期しない動作につながります。\n\nインポートした後、エピソードはダウンロードされたものとして表示されることがあります。 エピソードの再生ボタンを押すだけで、AntennaPodがこれを検出します。</string>
+  <string name="label_import">インポート</string>
+  <string name="label_export">エクスポート</string>
+  <string name="import_select_file">インポートするファイルを選択してください</string>
+  <string name="export_ok">エクスポートが成功しました。データベースはSDカードに書き込まれました。</string>
+  <string name="import_ok">インポートが成功しました。\n\nOKを押してAntennaPodを再起動してください。</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">…で再生</string>
   <string name="cast_disconnect_label">キャストセッションを切断</string>

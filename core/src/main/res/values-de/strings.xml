@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favoriten</string>
   <string name="new_label">Neu</string>
   <string name="settings_label">Einstellungen</string>
-  <string name="add_new_feed_label">Podcast hinzufügen</string>
   <string name="downloads_label">Downloads</string>
   <string name="downloads_running_label">Aktiv</string>
   <string name="downloads_completed_label">Beendet</string>
@@ -115,6 +114,7 @@
   <string name="remove_feed_label">Podcast entfernen</string>
   <string name="share_label">Teilen…</string>
   <string name="share_link_label">Teile Link</string>
+  <string name="share_file_label">Teile Datei</string>
   <string name="share_link_with_position_label">Teile Link mit Zeitmarke</string>
   <string name="share_feed_url_label">Teile URL des Podcasts</string>
   <string name="share_item_url_label">Teile URL der Episode</string>
@@ -143,6 +143,7 @@
   <string name="stream_label">Streamen</string>
   <string name="remove_label">Entfernen</string>
   <string name="delete_label">Löschen</string>
+  <string name="delete_failed">Die Datei kann nicht gelöscht werden. Eventuell hilft es, das Gerät neu zu starten.</string>
   <string name="remove_episode_lable">Episode entfernen</string>
   <string name="marked_as_seen_label">Als gesehen markiert</string>
   <string name="mark_read_label">Als gespielt markieren</string>
@@ -295,9 +296,11 @@
   <string name="pref_auto_delete_sum">Episode löschen, wenn die Wiedergabe endet</string>
   <string name="pref_auto_delete_title">Automatisches Löschen</string>
   <string name="pref_smart_mark_as_played_sum">Episoden werden bereits als gespielt markiert, wenn weniger als eine bestimmte Anzahl Sekunden Restspielzeit übrig sind</string>
-  <string name="pref_smart_mark_as_played_title">Schlau als gespielt markieren</string>
+  <string name="pref_smart_mark_as_played_title">Schlaues \"als gespielt markieren\"</string>
   <string name="pref_skip_keeps_episodes_sum">Behalte Episoden beim Überspringen</string>
   <string name="pref_skip_keeps_episodes_title">Behalte übersprungene Episoden</string>
+  <string name="pref_favorite_keeps_episodes_sum">Lösche Episoden nicht, wenn sie als Favorit markiert wurden.</string>
+  <string name="pref_favorite_keeps_episodes_title">Favorisierte Episoden nicht löschen</string>
   <string name="playback_pref">Wiedergabe</string>
   <string name="network_pref">Netzwerk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Aktualisierungsintervall oder -tageszeit</string>
@@ -341,6 +344,8 @@
   <string name="pref_automatic_download_sum">Konfiguriere das automatische Herunterladen von Episoden.</string>
   <string name="pref_autodl_wifi_filter_title">W-LAN-Filter aktivieren</string>
   <string name="pref_autodl_wifi_filter_sum">Erlaube das automatische Herunterladen nur in ausgewählten W-LAN Netzwerken.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Download bei Mobilfunk-Verbindung</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Erlaube einen automatischen Download bei einer Mobilfunk-Verbindung.</string>
   <string name="pref_automatic_download_on_battery_title">Automatischer Download im Batterie Modus</string>
   <string name="pref_automatic_download_on_battery_sum">Automatische Downloads auch erlauben, wenn die Batterie nicht geladen wird</string>
   <string name="pref_parallel_downloads_title">Parallele Downloads</string>
@@ -408,7 +413,7 @@
   <string name="pref_cast_title">Chromecast-Unterstützung</string>
   <string name="pref_cast_message_play_flavor">Aktiviere die Unterstützung von Cast-Geräten (Chromecast, Lautsprecher oder Android TV) zum entfernten Abspielen</string>
   <string name="pref_cast_message_free_flavor">Chromecast benötigt proprietäre Bibliotheken von Drittanbietern, die in dieser Version von AntennaPod deaktiviert sind</string>
-  <string name="pref_enqueue_downloaded_title">Downloads zur Abspielliste hinzufügen</string>
+  <string name="pref_enqueue_downloaded_title">Downloads einreihen</string>
   <string name="pref_enqueue_downloaded_summary">Füge heruntergeladene Episoden zur Abspielliste hinzu</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
@@ -614,6 +619,14 @@
   <string name="proxy_host_empty_error">Host darf nicht leer sein</string>
   <string name="proxy_host_invalid_error">Host ist keine gültige IP oder Domain</string>
   <string name="proxy_port_invalid_error">Port ungültig</string>
+  <!--Database import/export-->
+  <string name="import_export">Datenbankimport/-export</string>
+  <string name="import_export_warning">Diese experimentelle Funktion kann dazu benutzt werden, deine Abonnements und abgespielten Episoden auf ein anderes Gerät zu übertragen.\n\nExportierte Datenbanken können nur mit der gleichen AntennaPod-Version wieder importiert werden, andernfalls kann dies zu unerwartetem Verhalten führen.\n\nNach dem Importieren können Episoden als heruntergeladen angezeigt werden, obwohl sie dies nicht sind. Einfach den Abspielknopf der Episoden drücken, damit AntennaPod das erkennt.</string>
+  <string name="label_import">Import</string>
+  <string name="label_export">Export</string>
+  <string name="import_select_file">Zu importierende Datei auswählen</string>
+  <string name="export_ok">Export erfolgreich. Die Datenbank wurde auf die SD-Karte geschrieben.</string>
+  <string name="import_ok">Import erfolgreich.\n\nBitte OK drücken, um AntennaPod neuzustarten</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Abspielen auf...</string>
   <string name="cast_disconnect_label">Chromecast-Sitzung trennen</string>

@@ -1,0 +1,43 @@
+AntennaPod е подкаст мениджър и плейър, който ви дава незабавен достъп до милиони безплатни и платени подкасти, от независими подкасти до големи издателства като BBC, NPR и CNN. Добавете, импортирайте и експортирайте своите емисии безпроблемно, като използвате базата данни на iTunes, OPML файлове или обикновени URL адреси. Спестете усилие, захранване на батерията и мобилни данни чрез мощни контролни механизми за автоматизиране на изтеглянето на епизоди (задайте часове, интервали и WiFi мрежи) и изтриването на епизоди (базирани на предпочитаните от вас и настройките за отлагане).<br>
+But most importantly: Download, stream or queue episodes and enjoy them the way you like with adjustable playback speeds, chapter support and a sleep timer. You can even show your love to the content creators  with our Flattr integration.
+
+Made by podcast-enthousiast, AntennaPod is free in all senses of the word: open source, no costs, no ads.
+
+<b>Всички функции:</b><br>
+IMPORT, ORGANIZE AND PLAY<br>
+&#8226; Add and import feeds via the iTunes and gPodder.net directories, OPML files and RSS or Atom links<br>
+&#8226; Manage playback from anywhere: homescreen widget, system notification and earplug and bluetooth controls<br>
+&#8226; Enjoy listening your way with adjustable playback speed, chapter support (MP3, VorbisComment and Podlove), remembered playback position and an advanced sleep timer (shake to reset, lower volume and slow down playback)<br>
+&#8226; Access password-protected feeds and episodes<br>
+&#8226; Take advantage of paged feeds (www.podlove.org/paged-feeds)
+
+KEEP TRACK, SHARE & APPRECIATE<br>
+&#8226; Keep track of the best of the best by marking episodes as favourites<br>
+&#8226; Find that one episode through the playback history or by searching (titles and shownotes)<br>
+&#8226; Share episodes and feeds through advanced social media and email options, the gPodder.net services and via OPML export<br>
+&#8226; Support content creators with Flattr integration including automatic flattring
+
+CONTROL THE SYSTEM<br>
+&#8226; Take control over automated downloading: choose feeds, exclude mobile networks, select specific WiFi networks, require the phone to be charging and set times or intervals<br>
+&#8226; Manage storage by setting the amount of cached episodes, smart deletion (based on your favourites and play status) and selecting your preferred location<br>
+&#8226; Use AntennaPod in your language (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
+&#8226; Adapt to your environment using the light and dark theme<br>
+&#8226; Back-up your subscriptions with the gPodder.net integration and OPML export
+
+<b>Присъединете се към общността на AntennaPod!</b><br>
+AntennaPod се разработва активно от доброволци. Можете да допринесете с код или с коментар!
+
+GitHub е мястото за заявки за функции, отчети за грешки и участие:<br>
+https://www.github.com/AntennaPod/AntennaPod
+
+Our Google Group is the place to share your ideas, favourite podcasting moments and gratitude to all the volunteers:<br>
+https://groups.google.com/forum/#!forum/antennapod
+
+Имате въпрос или искате да дадете отзиви?
+https://twitter.com/@AntennaPod
+
+Transifex е мястото за помощ при преводите:<br>
+https://www.transifex.com/antennapod/antennapod
+
+Check out our Beta Testing programme to get the latest features first:<br>
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

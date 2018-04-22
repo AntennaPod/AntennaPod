@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favoriler</string>
   <string name="new_label">Yeni</string>
   <string name="settings_label">Ayarlar</string>
-  <string name="add_new_feed_label">Cep Yayını ekle</string>
   <string name="downloads_label">İndirilenler</string>
   <string name="downloads_running_label">Çalışıyor</string>
   <string name="downloads_completed_label">Tamamlandı</string>
@@ -506,6 +505,7 @@
   <string name="proxy_test_label">Test</string>
   <string name="proxy_test_successful">Test başarılı</string>
   <string name="proxy_test_failed">Test başarısız</string>
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
 </resources>

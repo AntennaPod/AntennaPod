@@ -11,6 +11,7 @@
     <string name="add_feed_label">Add Podcast</string>
     <string name="episodes_label">Episodes</string>
     <string name="all_episodes_short_label">All</string>
+    <string name="new_episodes_label">New</string>
     <string name="favorite_episodes_label">Favorites</string>
     <string name="new_label">New</string>
     <string name="settings_label">Settings</string>
@@ -23,6 +24,7 @@
     <string name="cancel_download_label">Cancel\nDownload</string>
     <string name="playback_history_label">Playback History</string>
     <string name="gpodnet_main_label">gpodder.net</string>
+    <string name="gpodnet_summary">Synchronize with other devices</string>
     <string name="gpodnet_auth_label">gpodder.net Login</string>
     <string name="free_space_label">%1$s free</string>
     <string name="episode_cache_full_title">Episode cache full</string>
@@ -122,6 +124,9 @@
     <string name="mark_all_seen_msg">Marked all Episodes as seen</string>
     <string name="mark_all_seen_confirmation_msg">Please confirm that you want to mark all episodes as seen.</string>
     <string name="show_info_label">Show information</string>
+    <string name="show_feed_settings_label">Show feed settings</string>
+    <string name="feed_info_label">Feed info</string>
+    <string name="feed_settings_label">Feed settings</string>
     <string name="rename_feed_label">Rename Podcast</string>
     <string name="remove_feed_label">Remove Podcast</string>
     <string name="share_label">Share&#8230;</string>
@@ -135,7 +140,7 @@
     <string name="feed_remover_msg">Removing Feed</string>
     <string name="load_complete_feed">Refresh complete Feed</string>
     <string name="hide_episodes_title">Hide Episodes</string>
-    <string name="episode_actions">Apply actions</string>
+    <string name="batch_edit">Batch edit</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
     <string name="hide_paused_episodes_label">Paused</string>
     <string name="hide_played_episodes_label">Played</string>
@@ -182,6 +187,8 @@
     <string name="download_failed">failed</string>
     <string name="download_pending">Download pending</string>
     <string name="download_running">Download running</string>
+    <string name="download_error_details">Details</string>
+    <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
     <string name="download_error_device_not_found">Storage Device not found</string>
     <string name="download_error_insufficient_space">Insufficient Space</string>
     <string name="download_error_file_error">File Error</string>
@@ -234,6 +241,7 @@
     <string name="no_media_playing_label">No media playing</string>
     <string name="position_default_label" translate="false">00:00:00</string>
     <string name="player_buffering_msg">Buffering</string>
+    <string name="player_go_to_picture_in_picture">Picture-in-picture mode</string>
     <string name="playbackservice_notification_title">Playing podcast</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
 
@@ -303,8 +311,17 @@
     <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
-    <string name="services_label">Services</string>
+    <string name="integrations_label">Integrations</string>
     <string name="flattr_label">Flattr</string>
+    <string name="flattr_summary">Micropayment service</string>
+    <string name="automation">Automation</string>
+    <string name="download_pref_details">Details</string>
+    <string name="import_export_pref">Import/Export</string>
+    <string name="appearance">Appearance</string>
+    <string name="external_elements">External elements</string>
+    <string name="interruptions">Interruptions</string>
+    <string name="buttons">Buttons</string>
+    <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
     <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
@@ -437,6 +454,10 @@
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
+    <string name="pref_videoBehavior_title">Video behavior</string>
+    <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
+    <string name="stop_playback">Stop playback</string>
+    <string name="continue_playback">Continue playback</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -475,8 +496,8 @@
     <string name="html_export_label">HTML export</string>
     <string name="exporting_label">Exporting&#8230;</string>
     <string name="export_error_label">Export error</string>
-    <string name="opml_export_success_title">OPML Export successful.</string>
-    <string name="opml_export_success_sum">The .opml file was written to:\u0020</string>
+    <string name="export_success_title">Export successful</string>
+    <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
 
     <!-- Sleep timer -->

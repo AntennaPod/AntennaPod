@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">즐겨찾기</string>
   <string name="new_label">신규</string>
   <string name="settings_label">설정</string>
-  <string name="add_new_feed_label">팟캐스트 추가</string>
   <string name="downloads_label">다운로드</string>
   <string name="downloads_running_label">실행 중</string>
   <string name="downloads_completed_label">마침</string>
@@ -114,6 +113,7 @@
   <string name="remove_feed_label">팟캐스트 제거</string>
   <string name="share_label">공유…</string>
   <string name="share_link_label">홈페이지 링크 공유</string>
+  <string name="share_file_label">파일 공유</string>
   <string name="share_link_with_position_label">위치와 같이 링크 공유</string>
   <string name="share_feed_url_label">피드 URL 공유</string>
   <string name="share_item_url_label">에피소드 파일 URL 공유</string>
@@ -142,6 +142,7 @@
   <string name="stream_label">스트리밍</string>
   <string name="remove_label">제거</string>
   <string name="delete_label">삭제</string>
+  <string name="delete_failed">파일을 삭제할 수 없습니다. 장치를 재부팅하면 동작할 수도 있습니다.</string>
   <string name="remove_episode_lable">에피소드 제거</string>
   <string name="marked_as_seen_label">봤다고 표시했습니다</string>
   <string name="mark_read_label">재생했다고 표시</string>
@@ -296,6 +297,8 @@
   <string name="pref_smart_mark_as_played_title">똑똑하게 재생한 것으로 표시</string>
   <string name="pref_skip_keeps_episodes_sum">에피소드를 넘겼을 경우에도 유지합니다.</string>
   <string name="pref_skip_keeps_episodes_title">넘긴 에피소드 유지 보관</string>
+  <string name="pref_favorite_keeps_episodes_sum">즐겨찾기로 표시하면 에피소드를 유지합니다</string>
+  <string name="pref_favorite_keeps_episodes_title">즐겨찾기 에피소드 유지</string>
   <string name="playback_pref">재생</string>
   <string name="network_pref">네트워크</string>
   <string name="pref_autoUpdateIntervallOrTime_title">업데이트 주기 또는 하루 중 시각</string>
@@ -339,6 +342,8 @@
   <string name="pref_automatic_download_sum">에피소드 자동 다운로드를 설정합니다.</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi 필터 사용</string>
   <string name="pref_autodl_wifi_filter_sum">선택한 Wi-Fi 네트워크에 대해서만 자동 다운로드를 허용합니다.</string>
+  <string name="pref_autodl_allow_on_mobile_title">휴대전화 연결에서 다운로드</string>
+  <string name="pref_autodl_allow_on_mobile_sum">휴대전화 데이터 연결을 통해 자동 다운로드를 허용합니다.</string>
   <string name="pref_automatic_download_on_battery_title">충전하지 않을 때 다운로드</string>
   <string name="pref_automatic_download_on_battery_sum">배터리 충전 중이 아닐 때 자동 다운로드 허용</string>
   <string name="pref_parallel_downloads_title">동시 다운로드</string>
@@ -406,7 +411,7 @@
   <string name="pref_cast_title">크롬캐스트 지원</string>
   <string name="pref_cast_message_play_flavor">캐스트 장치의 원격 미디어 재생 기능 사용 (예: 크롬캐스트, 안드로이드 TV의 오디오 스피커)</string>
   <string name="pref_cast_message_free_flavor">크롬캐스트는 서드파티 라이브러리가 필요하지만, 이 버전의 안테나팟에서는 사용하지 않게 되어 있습니다.</string>
-  <string name="pref_enqueue_downloaded_title">다운로드 항목 대기열 넣기</string>
+  <string name="pref_enqueue_downloaded_title">다운로드한 항목 대기열에 추가</string>
   <string name="pref_enqueue_downloaded_summary">다운로드한 에피소드를 대기열에 추가</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">자동 flattr 사용</string>
@@ -609,6 +614,7 @@
   <string name="proxy_host_empty_error">호스트가 비어 있으면 안 됩니다</string>
   <string name="proxy_host_invalid_error">호스트가 올바른 IP 주소 또는 도메인이 아닙니다</string>
   <string name="proxy_port_invalid_error">포트가 올바르지 않습니다</string>
+  <!--Database import/export-->
   <!--Casting-->
   <string name="cast_media_route_menu_title">다른 장치에서 재생...</string>
   <string name="cast_disconnect_label">캐스트 세션 연결 끊기</string>
