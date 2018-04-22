@@ -37,7 +37,6 @@ public class ExternalPlayerFragment extends Fragment {
     private ImageButton butPlay;
     private TextView mFeedName;
     private ProgressBar mProgressBar;
-
     private PlaybackController controller;
 
     public ExternalPlayerFragment() {
@@ -83,6 +82,11 @@ public class ExternalPlayerFragment extends Fragment {
                 controller.playPause();
             }
         });
+        loadMediaInfo();
+    }
+
+    public void connectToPlaybackService() {
+        controller.init();
     }
 
     private PlaybackController setupPlaybackController() {
@@ -123,7 +127,11 @@ public class ExternalPlayerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        controller.init();
+        if (PlaybackService.isRunning) {
+            controller.init();
+        } else {
+            controller.resumeServiceNotRunning();
+        }
         onPositionObserverUpdate();
     }
 
@@ -164,13 +172,12 @@ public class ExternalPlayerFragment extends Fragment {
 
     private boolean loadMediaInfo() {
         Log.d(TAG, "Loading media info");
-        if (controller != null && controller.serviceAvailable()) {
+        if (controller != null) {
             Playable media = controller.getMedia();
             if (media != null) {
                 txtvTitle.setText(media.getEpisodeTitle());
                 mFeedName.setText(media.getFeedTitle());
-                mProgressBar.setProgress((int)
-                        ((double) controller.getPosition() / controller.getDuration() * 100));
+                onPositionObserverUpdate();
 
                 Glide.with(getActivity())
                         .load(media.getImageLocation())

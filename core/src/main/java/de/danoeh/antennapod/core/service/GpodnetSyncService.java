@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.util.Pair;
@@ -58,6 +59,18 @@ public class GpodnetSyncService extends Service {
 
     private boolean syncSubscriptions = false;
     private boolean syncActions = false;
+    private static final int NOTIFICATION_ID = 2;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        startForeground(NOTIFICATION_ID,
+                new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_GPODNET)
+                        .setSmallIcon(R.drawable.stat_notify_sync)
+                        .setContentTitle(getString(R.string.gpodnet_main_label))
+                        .setContentText(getString(R.string.synchronizing))
+                        .build());
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -110,6 +123,7 @@ public class GpodnetSyncService extends Service {
 
     private synchronized void sync() {
         if (!GpodnetPreferences.loggedIn() || !NetworkUtils.networkAvailable()) {
+            stopForeground(true);
             stopSelf();
             return;
         }
@@ -126,6 +140,7 @@ public class GpodnetSyncService extends Service {
             }
             syncActions = false;
         }
+        stopForeground(true);
         stopSelf();
     }
 
@@ -394,7 +409,7 @@ public class GpodnetSyncService extends Service {
         if (GpodnetPreferences.loggedIn()) {
             Intent intent = new Intent(context, GpodnetSyncService.class);
             intent.putExtra(ARG_ACTION, ACTION_SYNC);
-            context.startService(intent);
+            ContextCompat.startForegroundService(context, intent);
         }
     }
 
@@ -402,7 +417,7 @@ public class GpodnetSyncService extends Service {
         if (GpodnetPreferences.loggedIn()) {
             Intent intent = new Intent(context, GpodnetSyncService.class);
             intent.putExtra(ARG_ACTION, ACTION_SYNC_SUBSCRIPTIONS);
-            context.startService(intent);
+            ContextCompat.startForegroundService(context, intent);
         }
     }
 
@@ -410,7 +425,7 @@ public class GpodnetSyncService extends Service {
         if (GpodnetPreferences.loggedIn()) {
             Intent intent = new Intent(context, GpodnetSyncService.class);
             intent.putExtra(ARG_ACTION, ACTION_SYNC_ACTIONS);
-            context.startService(intent);
+            ContextCompat.startForegroundService(context, intent);
         }
     }
 }

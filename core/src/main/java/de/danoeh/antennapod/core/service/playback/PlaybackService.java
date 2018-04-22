@@ -24,6 +24,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -49,6 +50,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -314,6 +316,34 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         flavorHelper.initializeMediaPlayer(PlaybackService.this);
 
         mediaSession.setActive(true);
+
+        NotificationCompat.Builder notificationBuilder = createBasicNotification();
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
+        EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_STARTED));
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMedia();
+        Playable lastPlayable = Playable.PlayableUtils.createInstanceFromPreferences(
+                getApplicationContext(), (int) currentlyPlayingMedia, prefs);
+        setupNotification(lastPlayable);
+    }
+
+    private NotificationCompat.Builder createBasicNotification() {
+        final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
+
+        final PendingIntent pIntent = PendingIntent.getActivity(this, 0,
+                PlaybackService.getPlayerActivityIntent(this),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        return new NotificationCompat.Builder(
+                this, NotificationUtils.CHANNEL_ID_PLAYING)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText("Service is running") // Just in case the notification is not updated (should not occur)
+                .setOngoing(false)
+                .setContentIntent(pIntent)
+                .setWhen(0) // we don't need the time
+                .setSmallIcon(smallIcon)
+                .setPriority(NotificationCompat.PRIORITY_MIN);
     }
 
     @Override
@@ -568,8 +598,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void notifyVideoSurfaceAbandoned() {
-        stopForeground(!UserPreferences.isPersistNotify());
+        mediaPlayer.pause(true, false);
         mediaPlayer.resetVideoSurface();
+        setupNotification(getPlayable());
+        stopForeground(!UserPreferences.isPersistNotify());
     }
 
     private final PlaybackServiceTaskManager.PSTMCallback taskManagerCallback = new PlaybackServiceTaskManager.PSTMCallback() {
@@ -762,6 +794,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             PlaybackService.this.onPlaybackEnded(mediaType, stopPlaying);
         }
     };
+
+    public static void startService(final Context context, final Playable media, boolean startWhenPrepared, boolean shouldStream) {
+        Intent launchIntent = new Intent(context, PlaybackService.class);
+        launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
+        launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, startWhenPrepared);
+        launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, shouldStream);
+        launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, true);
+        ContextCompat.startForegroundService(context, launchIntent);
+    }
 
     private Playable getNextInQueue(final Playable currentMedia) {
         if (!(currentMedia instanceof FeedMedia)) {
@@ -1172,10 +1213,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Prepares notification and starts the service in the foreground.
      */
     private void setupNotification(final PlaybackServiceMediaPlayer.PSMPInfo info) {
-        final PendingIntent pIntent = PendingIntent.getActivity(this, 0,
-                PlaybackService.getPlayerActivityIntent(this),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        setupNotification(info.playable);
+    }
 
+    private synchronized void setupNotification(final Playable playable) {
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
         }
@@ -1185,12 +1226,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             @Override
             public void run() {
                 Log.d(TAG, "Starting background work");
-                if (info.playable != null) {
+                if (playable != null) {
                     int iconSize = getResources().getDimensionPixelSize(
                             android.R.dimen.notification_large_icon_width);
                     try {
                         icon = Glide.with(PlaybackService.this)
-                                .load(info.playable.getImageLocation())
+                                .load(playable.getImageLocation())
                                 .asBitmap()
                                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .centerCrop()
@@ -1209,24 +1250,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return;
                 }
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-                final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
 
-                if (!Thread.currentThread().isInterrupted() && started && info.playable != null) {
-                    String contentText = info.playable.getEpisodeTitle();
-                    String contentTitle = info.playable.getFeedTitle();
+                if (!Thread.currentThread().isInterrupted() && started && playable != null) {
+                    String contentText = playable.getEpisodeTitle();
+                    String contentTitle = playable.getFeedTitle();
                     Notification notification;
 
                     // Builder is v7, even if some not overwritten methods return its parent's v4 interface
-                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
-                            PlaybackService.this, NotificationUtils.CHANNEL_ID_PLAYING)
-                            .setContentTitle(contentTitle)
+                    NotificationCompat.Builder notificationBuilder = createBasicNotification();
+                    notificationBuilder.setContentTitle(contentTitle)
                             .setContentText(contentText)
-                            .setOngoing(false)
-                            .setContentIntent(pIntent)
-                            .setLargeIcon(icon)
-                            .setSmallIcon(smallIcon)
-                            .setWhen(0) // we don't need the time
-                            .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
+                            .setPriority(UserPreferences.getNotifyPriority())
+                            .setLargeIcon(icon); // set notification priority
                     IntList compactActionList = new IntList();
 
                     int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
