@@ -22,6 +22,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
@@ -166,6 +167,9 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 break;
             case R.xml.preferences_downloads:
                 setupDownloadsScreen();
+                break;
+            case R.xml.preferences_autodownload:
+                setupAutoDownloadScreen();
                 buildAutodownloadSelectedNetworsPreference();
                 setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
                 buildEpisodeCleanupPreference();
@@ -398,12 +402,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         }
     }
 
-    private void setupDownloadsScreen() {
-        ui.findPreference(UserPreferences.PREF_UPDATE_INTERVAL)
-                .setOnPreferenceClickListener(preference -> {
-                    showUpdateIntervalTimePreferencesDialog();
-                    return true;
-                });
+    private void setupAutoDownloadScreen() {
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL).setOnPreferenceChangeListener(
                 (preference, newValue) -> {
                     if (newValue instanceof Boolean) {
@@ -426,6 +425,26 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                             }
                         }
                 );
+        ui.findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE)
+                .setOnPreferenceChangeListener(
+                        (preference, o) -> {
+                            if (o instanceof String) {
+                                setEpisodeCacheSizeText(UserPreferences.readEpisodeCacheSize((String) o));
+                            }
+                            return true;
+                        }
+                );
+    }
+
+    private void setupDownloadsScreen() {
+        final Activity activity = ui.getActivity();
+        ui.findPreference(AUTO_DL_PREF_SCREEN).setOnPreferenceClickListener(preference ->
+                openScreen(R.xml.preferences_autodownload, activity));
+        ui.findPreference(UserPreferences.PREF_UPDATE_INTERVAL)
+                .setOnPreferenceClickListener(preference -> {
+                    showUpdateIntervalTimePreferencesDialog();
+                    return true;
+                });
         ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)
                 .setOnPreferenceChangeListener(
                         (preference, o) -> {
@@ -471,15 +490,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 }
             }
         });
-        ui.findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE)
-                .setOnPreferenceChangeListener(
-                        (preference, o) -> {
-                            if (o instanceof String) {
-                                setEpisodeCacheSizeText(UserPreferences.readEpisodeCacheSize((String) o));
-                            }
-                            return true;
-                        }
-                );
         ui.findPreference(PREF_PROXY).setOnPreferenceClickListener(preference -> {
             ProxyDialog dialog = new ProxyDialog(ui.getActivity());
             dialog.createDialog().show();
@@ -614,6 +624,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             case R.xml.preferences_downloads:
                 setUpdateIntervalText();
                 setParallelDownloadsText(UserPreferences.getParallelDownloads());
+                break;
+            case R.xml.preferences_autodownload:
                 setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
                 checkAutodownloadItemVisibility();
                 break;
@@ -897,7 +909,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         selectedNetworks = new CheckBoxPreference[networks.size()];
         List<String> prefValues = Arrays.asList(UserPreferences
                 .getAutodownloadSelectedNetworks());
-        PreferenceScreen prefScreen = (PreferenceScreen) ui.findPreference(PreferenceController.AUTO_DL_PREF_SCREEN);
+        PreferenceScreen prefScreen = ui.getPreferenceScreen();
         Preference.OnPreferenceClickListener clickListener = preference -> {
             if (preference instanceof CheckBoxPreference) {
                 String key = preference.getKey();
@@ -944,7 +956,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     private void clearAutodownloadSelectedNetworsPreference() {
         if (selectedNetworks != null) {
-            PreferenceScreen prefScreen = (PreferenceScreen) ui.findPreference(PreferenceController.AUTO_DL_PREF_SCREEN);
+            PreferenceScreen prefScreen = ui.getPreferenceScreen();
 
             for (CheckBoxPreference network : selectedNetworks) {
                 if (network != null) {
@@ -1115,6 +1127,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
          * Finds a preference based on its key.
          */
         Preference findPreference(CharSequence key);
+
+        PreferenceScreen getPreferenceScreen();
 
         Activity getActivity();
     }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -38,6 +39,11 @@ public class PreferenceActivity extends AppCompatActivity {
         @Override
         public Preference findPreference(CharSequence key) {
             return fragment.findPreference(key);
+        }
+
+        @Override
+        public PreferenceScreen getPreferenceScreen() {
+            return fragment.getPreferenceScreen();
         }
 
         @Override
@@ -135,6 +141,8 @@ public class PreferenceActivity extends AppCompatActivity {
             switch (preferences) {
                 case R.xml.preferences_downloads:
                     return R.string.downloads_label;
+                case R.xml.preferences_autodownload:
+                    return R.string.pref_automatic_download_title;
                 case R.xml.preferences_playback:
                     return R.string.playback_pref;
                 case R.xml.preferences_storage:
