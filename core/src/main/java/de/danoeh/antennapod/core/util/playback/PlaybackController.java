@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -167,7 +168,7 @@ public abstract class PlaybackController {
      */
     private void bindToService() {
         Log.d(TAG, "Trying to connect to service");
-        if(serviceBinder != null) {
+        if (serviceBinder != null) {
             serviceBinder.unsubscribe();
         }
         serviceBinder = Observable.fromCallable(this::getPlayLastPlayedMediaIntent)
@@ -178,7 +179,7 @@ public abstract class PlaybackController {
                     if (!PlaybackService.started) {
                         if (intent != null) {
                             Log.d(TAG, "Calling start service");
-                            activity.startService(intent);
+                            ContextCompat.startForegroundService(activity, intent);
                             bound = activity.bindService(intent, mConnection, 0);
                         } else {
                             status = PlayerStatus.STOPPED;

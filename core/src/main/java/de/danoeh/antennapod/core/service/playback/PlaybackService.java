@@ -314,6 +314,28 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         flavorHelper.initializeMediaPlayer(PlaybackService.this);
 
         mediaSession.setActive(true);
+
+        if (Build.VERSION.SDK_INT >= 26) {
+            NotificationCompat.Builder notificationBuilder = createBasicNotification();
+            startForeground(NOTIFICATION_ID, notificationBuilder.build());
+        }
+    }
+
+    private NotificationCompat.Builder createBasicNotification() {
+        final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
+
+        final PendingIntent pIntent = PendingIntent.getActivity(this, 0,
+                PlaybackService.getPlayerActivityIntent(this),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        return new NotificationCompat.Builder(
+                this, NotificationUtils.CHANNEL_ID_PLAYING)
+                .setContentTitle(getString(R.string.app_name))
+                .setOngoing(false)
+                .setContentIntent(pIntent)
+                .setWhen(0) // we don't need the time
+                .setSmallIcon(smallIcon)
+                .setPriority(NotificationCompat.PRIORITY_MIN);
     }
 
     @Override
@@ -1172,9 +1194,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Prepares notification and starts the service in the foreground.
      */
     private void setupNotification(final PlaybackServiceMediaPlayer.PSMPInfo info) {
-        final PendingIntent pIntent = PendingIntent.getActivity(this, 0,
-                PlaybackService.getPlayerActivityIntent(this),
-                PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
@@ -1209,7 +1228,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return;
                 }
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-                final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
 
                 if (!Thread.currentThread().isInterrupted() && started && info.playable != null) {
                     String contentText = info.playable.getEpisodeTitle();
@@ -1217,16 +1235,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     Notification notification;
 
                     // Builder is v7, even if some not overwritten methods return its parent's v4 interface
-                    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
-                            PlaybackService.this, NotificationUtils.CHANNEL_ID_PLAYING)
-                            .setContentTitle(contentTitle)
+                    NotificationCompat.Builder notificationBuilder = createBasicNotification();
+                    notificationBuilder.setContentTitle(contentTitle)
                             .setContentText(contentText)
-                            .setOngoing(false)
-                            .setContentIntent(pIntent)
-                            .setLargeIcon(icon)
-                            .setSmallIcon(smallIcon)
-                            .setWhen(0) // we don't need the time
-                            .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
+                            .setPriority(UserPreferences.getNotifyPriority())
+                            .setLargeIcon(icon); // set notification priority
                     IntList compactActionList = new IntList();
 
                     int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
