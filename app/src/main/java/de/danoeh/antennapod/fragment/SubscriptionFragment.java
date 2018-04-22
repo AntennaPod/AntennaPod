@@ -152,18 +152,39 @@ public class SubscriptionFragment extends Fragment {
         Feed feed = (Feed)selectedObject;
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
-                Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> loadSubscriptions(),
-                                error -> Log.e(TAG, Log.getStackTraceString(error)));
+                ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(getActivity(),
+                        R.string.mark_all_seen_label,
+                        R.string.mark_all_seen_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+
+                        Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
+                                .subscribeOn(Schedulers.newThread())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result -> loadSubscriptions(),
+                                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+                    }
+                };
+                markAllSeenConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.mark_all_read_item:
-                Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> loadSubscriptions(),
-                                error -> Log.e(TAG, Log.getStackTraceString(error)));
+                ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
+                        R.string.mark_all_read_label,
+                        R.string.mark_all_read_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
+                                .subscribeOn(Schedulers.newThread())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result -> loadSubscriptions(),
+                                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+                    }
+                };
+                markAllReadConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.rename_item:
                 new RenameFeedDialog(getActivity(), feed).show();
