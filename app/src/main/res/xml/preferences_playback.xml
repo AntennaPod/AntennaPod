@@ -113,7 +113,7 @@
                 android:defaultValue="sonic"
                 android:entries="@array/media_player_options"
                 android:key="prefMediaPlayer"
-                android:title="@string/pref_media_player_title"
+                android:title="@string/media_player"
                 android:summary="@string/pref_media_player_message"
                 android:entryValues="@array/media_player_values"
                 app:useStockLayout="true"/>
