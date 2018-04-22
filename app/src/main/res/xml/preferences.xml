@@ -14,7 +14,7 @@
     <Preference
             android:key="prefScreenNetwork"
             android:title="@string/network_pref"
-            android:icon="?attr/av_download" />
+            android:icon="?attr/ic_swap" />
 
     <Preference
             android:key="prefScreenServices"
