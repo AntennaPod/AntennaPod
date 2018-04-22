@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="@string/automation">
+        <Preference
+                android:key="prefAutoUpdateIntervall"
+                android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
+                android:title="@string/pref_autoUpdateIntervallOrTime_title"/>
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefMobileUpdate"
+                android:summary="@string/pref_mobileUpdate_sum"
+                android:title="@string/pref_mobileUpdate_title"/>
+        <Preference
+                android:summary="@string/pref_automatic_download_sum"
+                android:key="prefAutoDownloadSettings"
+                android:title="@string/pref_automatic_download_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/download_pref_details">
+        <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+                android:defaultValue="4"
+                android:inputType="number"
+                android:key="prefParallelDownloads"
+                android:title="@string/pref_parallel_downloads_title"
+                app:useStockLayout="true"/>
+        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefShowDownloadReport"
+                android:summary="@string/pref_showDownloadReport_sum"
+                android:title="@string/pref_showDownloadReport_title"/>
+        <Preference
+                android:key="prefProxy"
+                android:summary="@string/pref_proxy_sum"
+                android:title="@string/pref_proxy_title"/>
+    </PreferenceCategory>
+</PreferenceScreen>

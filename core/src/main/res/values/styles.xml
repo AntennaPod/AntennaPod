@@ -12,6 +12,9 @@
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
         <item type="attr" name="action_bar_icon_color">@color/grey600</item>
+        <item type="attr" name="storage">@drawable/ic_sd_grey600_24dp</item>
+        <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_grey600_24dp</item>
+        <item type="attr" name="statistics">@drawable/ic_poll_box_grey600_24dp</item>
         <item type="attr" name="action_about">@drawable/ic_info_grey600_24dp</item>
         <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_grey600_24dp</item>
         <item type="attr" name="action_search">@drawable/ic_search_grey600_24dp</item>
@@ -63,6 +66,7 @@
         <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
+        <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -76,6 +80,9 @@
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
         <item type="attr" name="action_bar_icon_color">@color/white</item>
+        <item type="attr" name="storage">@drawable/ic_sd_white_24dp</item>
+        <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_white_24dp</item>
+        <item type="attr" name="statistics">@drawable/ic_poll_box_white_24dp</item>
         <item type="attr" name="action_about">@drawable/ic_info_white_24dp</item>
         <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_white_24dp</item>
         <item type="attr" name="action_search">@drawable/ic_search_white_24dp</item>
@@ -127,6 +134,7 @@
         <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
+        <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.Base.AntennaPod.Light.NoTitle">
@@ -141,6 +149,9 @@
         <item name="colorAccent">@color/holo_blue_light</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
+        <item type="attr" name="storage">@drawable/ic_sd_grey600_24dp</item>
+        <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_grey600_24dp</item>
+        <item type="attr" name="statistics">@drawable/ic_poll_box_grey600_24dp</item>
         <item type="attr" name="action_about">@drawable/ic_info_grey600_24dp</item>
         <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_grey600_24dp</item>
         <item type="attr" name="action_search">@drawable/ic_search_grey600_24dp</item>
@@ -192,6 +203,7 @@
         <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
+        <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.Base.AntennaPod.Dark.NoTitle">
@@ -206,6 +218,9 @@
         <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
+        <item type="attr" name="storage">@drawable/ic_sd_white_24dp</item>
+        <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_white_24dp</item>
+        <item type="attr" name="statistics">@drawable/ic_poll_box_white_24dp</item>
         <item type="attr" name="action_about">@drawable/ic_info_white_24dp</item>
         <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_white_24dp</item>
         <item type="attr" name="action_search">@drawable/ic_search_white_24dp</item>
@@ -257,6 +272,7 @@
         <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
+        <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">

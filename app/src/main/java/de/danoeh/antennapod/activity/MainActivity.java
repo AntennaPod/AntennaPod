@@ -572,10 +572,29 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
-                DBWriter.markFeedSeen(feed.getId());
+                ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(this,
+                        R.string.mark_all_seen_label,
+                        R.string.mark_all_seen_confirmation_msg) {
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        DBWriter.markFeedSeen(feed.getId());
+                    }
+                };
+                markAllSeenConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.mark_all_read_item:
-                DBWriter.markFeedRead(feed.getId());
+                ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(this,
+                        R.string.mark_all_read_label,
+                        R.string.mark_all_read_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        DBWriter.markFeedRead(feed.getId());
+                    }
+                };
+                markAllReadConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.rename_item:
                 new RenameFeedDialog(this, feed).show();
