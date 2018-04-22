@@ -450,7 +450,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
             retVal = mediaPlayer.getDuration();
-        } else if (media != null && media.getDuration() > 0) {
+        }
+        if (retVal <= 0 && media != null && media.getDuration() > 0) {
             retVal = media.getDuration();
         }
 

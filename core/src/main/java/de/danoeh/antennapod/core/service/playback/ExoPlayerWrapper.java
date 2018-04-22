@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.service.playback;
 import android.content.Context;
 import android.net.Uri;
 import android.view.SurfaceHolder;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -120,6 +121,9 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public int getDuration() {
+        if (mExoPlayer.getDuration() == C.TIME_UNSET) {
+            return PlaybackServiceMediaPlayer.INVALID_TIME;
+        }
         return (int) mExoPlayer.getDuration();
     }
 
