@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <de.danoeh.antennapod.preferences.SwitchCompatPreference
+    <de.danoeh.antennapod.preferences.MasterSwitchPreference
             android:key="prefEnableAutoDl"
             android:title="@string/pref_automatic_download_title"
             android:defaultValue="false"/>
