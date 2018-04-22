@@ -13,7 +13,7 @@
 
     <Preference
             android:key="prefScreenDownloads"
-            android:title="@string/downloads_label"
+            android:title="@string/network_pref"
             android:icon="?attr/av_download" />
 
     <Preference
