@@ -136,7 +136,7 @@
     <string name="feed_remover_msg">Removing Feed</string>
     <string name="load_complete_feed">Refresh complete Feed</string>
     <string name="hide_episodes_title">Hide Episodes</string>
-    <string name="episode_actions">Apply actions</string>
+    <string name="batch_edit">Batch edit</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
     <string name="hide_paused_episodes_label">Paused</string>
     <string name="hide_played_episodes_label">Played</string>
