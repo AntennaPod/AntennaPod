@@ -1436,6 +1436,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (isInitialStickyBroadcast ()) {
+                // Don't pause playback after we just started, just because the receiver
+                // delivers the current headset state (instead of a change)
+                return;
+            }
+
             if (TextUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);
                 if (state != -1) {

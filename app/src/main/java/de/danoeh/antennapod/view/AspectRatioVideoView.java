@@ -25,6 +25,8 @@ public class AspectRatioVideoView extends VideoView {
 
     private int mVideoWidth;
     private int mVideoHeight;
+    private float mAvailableWidth = -1;
+    private float mAvailableHeight = -1;
 
     public AspectRatioVideoView(Context context) {
         this(context, null);
@@ -48,8 +50,13 @@ public class AspectRatioVideoView extends VideoView {
             return;
         }
 
-        float heightRatio = (float) mVideoHeight / (float) getHeight();
-        float widthRatio = (float) mVideoWidth / (float) getWidth();
+        if (mAvailableWidth < 0 || mAvailableHeight < 0) {
+            mAvailableWidth = getWidth();
+            mAvailableHeight = getHeight();
+        }
+
+        float heightRatio = (float) mVideoHeight / mAvailableHeight;
+        float widthRatio = (float) mVideoWidth / mAvailableWidth;
 
         int scaledHeight;
         int scaledWidth;
@@ -92,6 +99,17 @@ public class AspectRatioVideoView extends VideoView {
 
         requestLayout();
         invalidate();
+    }
+
+    /**
+     * Sets the maximum size that the view might expand to
+     * @param width
+     * @param height
+     */
+    public void setAvailableSize(float width, float height) {
+        mAvailableWidth = width;
+        mAvailableHeight = height;
+        requestLayout();
     }
 
 }

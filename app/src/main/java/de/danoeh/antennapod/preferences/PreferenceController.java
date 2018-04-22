@@ -41,6 +41,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.prefs.MaterialListPreference;
 import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -422,6 +423,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     return false;
                 }
         );
+        if (!PictureInPictureUtil.supportsPictureInPicture(activity)) {
+            MaterialListPreference behaviour = (MaterialListPreference) ui.findPreference(UserPreferences.PREF_VIDEO_BEHAVIOR);
+            behaviour.setEntries(R.array.video_background_behavior_options_without_pip);
+            behaviour.setEntryValues(R.array.video_background_behavior_values_without_pip);
+        }
         ui.findPreference(PREF_PROXY).setOnPreferenceClickListener(preference -> {
             ProxyDialog dialog = new ProxyDialog(ui.getActivity());
             dialog.createDialog().show();
