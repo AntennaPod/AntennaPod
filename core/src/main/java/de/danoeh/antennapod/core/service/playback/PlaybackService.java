@@ -332,6 +332,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return new NotificationCompat.Builder(
                 this, NotificationUtils.CHANNEL_ID_PLAYING)
                 .setContentTitle(getString(R.string.app_name))
+                .setContentText("Service is running") // Just in case the notification is not updated (should not occur)
                 .setOngoing(false)
                 .setContentIntent(pIntent)
                 .setWhen(0) // we don't need the time
