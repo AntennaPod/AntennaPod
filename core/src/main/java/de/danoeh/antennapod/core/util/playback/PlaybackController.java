@@ -60,7 +60,7 @@ public abstract class PlaybackController {
 
     private PlaybackService playbackService;
     private Playable media;
-    private PlayerStatus status;
+    private PlayerStatus status = PlayerStatus.STOPPED;
 
     private final ScheduledThreadPoolExecutor schedExecutor;
     private static final int SCHED_EX_POOLSIZE = 1;
@@ -70,6 +70,7 @@ public abstract class PlaybackController {
 
     private boolean mediaInfoLoaded = false;
     private boolean released = false;
+    private boolean initialized = false;
 
     private Subscription serviceBinder;
 
@@ -93,10 +94,14 @@ public abstract class PlaybackController {
     }
 
     /**
-     * Creates a new connection to the playbackService. Should be called in the
-     * activity's onResume() method.
+     * Creates a new connection to the playbackService.
      */
-    public void init() {
+    public synchronized void init() {
+        if (initialized) {
+            return;
+        }
+        initialized = true;
+
         activity.registerReceiver(statusUpdate, new IntentFilter(
             PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
 
@@ -195,32 +200,37 @@ public abstract class PlaybackController {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    private Playable getMediaFromPreferences() {
+        long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMedia();
+        if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
+                    activity.getApplicationContext());
+            return PlayableUtils.createInstanceFromPreferences(activity,
+                    (int) currentlyPlayingMedia, prefs);
+        }
+        return null;
+    }
+
     /**
      * Returns an intent that starts the PlaybackService and plays the last
      * played media or null if no last played media could be found.
      */
     private Intent getPlayLastPlayedMediaIntent() {
         Log.d(TAG, "Trying to restore last played media");
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
-                activity.getApplicationContext());
-        long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMedia();
-        if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
-            Playable media = PlayableUtils.createInstanceFromPreferences(activity,
-                    (int) currentlyPlayingMedia, prefs);
-            if (media != null) {
-                Intent serviceIntent = new Intent(activity, PlaybackService.class);
-                serviceIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
-                serviceIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, false);
-                serviceIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, true);
-                boolean fileExists = media.localFileAvailable();
-                boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
-                if (!fileExists && !lastIsStream && media instanceof FeedMedia) {
-                    DBTasks.notifyMissingFeedMediaFile(activity, (FeedMedia) media);
-                }
-                serviceIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
-                        lastIsStream || !fileExists);
-                return serviceIntent;
+        Playable media = getMediaFromPreferences();
+        if (media != null) {
+            Intent serviceIntent = new Intent(activity, PlaybackService.class);
+            serviceIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
+            serviceIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, false);
+            serviceIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, true);
+            boolean fileExists = media.localFileAvailable();
+            boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
+            if (!fileExists && !lastIsStream && media instanceof FeedMedia) {
+                DBTasks.notifyMissingFeedMediaFile(activity, (FeedMedia) media);
             }
+            serviceIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
+                    lastIsStream || !fileExists);
+            return serviceIntent;
         }
         Log.d(TAG, "No last played media found");
         return null;
@@ -577,6 +587,7 @@ public abstract class PlaybackController {
 
     public void playPause() {
         if (playbackService == null) {
+            PlaybackService.startService(activity, media, true, false);
             Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
             return;
         }
@@ -610,6 +621,8 @@ public abstract class PlaybackController {
     public int getPosition() {
         if (playbackService != null) {
             return playbackService.getCurrentPosition();
+        } else if (media != null) {
+            return media.getPosition();
         } else {
             return PlaybackService.INVALID_TIME;
         }
@@ -618,12 +631,17 @@ public abstract class PlaybackController {
     public int getDuration() {
         if (playbackService != null) {
             return playbackService.getDuration();
+        } else if (media != null) {
+            return media.getDuration();
         } else {
             return PlaybackService.INVALID_TIME;
         }
     }
 
     public Playable getMedia() {
+        if (media == null) {
+            media = getMediaFromPreferences();
+        }
         return media;
     }
 
@@ -715,8 +733,13 @@ public abstract class PlaybackController {
     }
 
     public boolean isPlayingVideoLocally() {
-        return playbackService != null && PlaybackService.getCurrentMediaType() == MediaType.VIDEO
-                && !PlaybackService.isCasting();
+        if (PlaybackService.isCasting()) {
+            return false;
+        } else if (playbackService != null) {
+            return PlaybackService.getCurrentMediaType() == MediaType.VIDEO;
+        } else {
+            return getMedia() != null && getMedia().getMediaType() == MediaType.VIDEO;
+        }
     }
 
     public Pair<Integer, Integer> getVideoSize() {

@@ -24,6 +24,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -49,6 +50,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -315,10 +317,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         mediaSession.setActive(true);
 
-        if (Build.VERSION.SDK_INT >= 26) {
-            NotificationCompat.Builder notificationBuilder = createBasicNotification();
-            startForeground(NOTIFICATION_ID, notificationBuilder.build());
-        }
+        NotificationCompat.Builder notificationBuilder = createBasicNotification();
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
+        EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_STARTED));
     }
 
     private NotificationCompat.Builder createBasicNotification() {
@@ -784,6 +785,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             PlaybackService.this.onPlaybackEnded(mediaType, stopPlaying);
         }
     };
+
+    public static void startService(final Context context, final Playable media, boolean startWhenPrepared, boolean shouldStream) {
+        Intent launchIntent = new Intent(context, PlaybackService.class);
+        launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
+        launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, startWhenPrepared);
+        launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, shouldStream);
+        launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, true);
+        ContextCompat.startForegroundService(context, launchIntent);
+    }
 
     private Playable getNextInQueue(final Playable currentMedia) {
         if (!(currentMedia instanceof FeedMedia)) {
