@@ -101,9 +101,7 @@ public class AboutActivity extends AppCompatActivity {
                             "    </style>" +
                             "</head><body><p>" + webViewData + "</p></body></html>";
                     webViewData = webViewData.replace("\n", "<br/>");
-                }
-                else
-                {
+                } else {
                     depth = 0;
                 }
                 webViewData = String.format(webViewData, colorString);
