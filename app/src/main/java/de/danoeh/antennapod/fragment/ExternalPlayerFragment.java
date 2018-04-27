@@ -129,6 +129,8 @@ public class ExternalPlayerFragment extends Fragment {
         super.onResume();
         if (PlaybackService.isRunning) {
             controller.init();
+        } else {
+            controller.resumeServiceNotRunning();
         }
         onPositionObserverUpdate();
     }

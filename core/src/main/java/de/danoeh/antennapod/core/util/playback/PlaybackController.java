@@ -779,6 +779,14 @@ public abstract class PlaybackController {
         }
     }
 
+    public void resumeServiceNotRunning() {
+        TypedArray res = activity.obtainStyledAttributes(new int[]{
+                de.danoeh.antennapod.core.R.attr.av_play_big});
+        getPlayButton().setImageResource(
+                res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_play_arrow_grey600_36dp));
+        res.recycle();
+    }
+
     /**
      * Refreshes the current position of the media file that is playing.
      */
