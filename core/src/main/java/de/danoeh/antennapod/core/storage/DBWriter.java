@@ -43,6 +43,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.core.util.Permutor;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
@@ -986,6 +987,32 @@ public class DBWriter {
                 }
             } else {
                 Log.e(TAG, "sortQueue: Could not load queue");
+            }
+            adapter.close();
+        });
+    }
+
+    /**
+     * Similar to sortQueue, but allows more complex reordering by providing whole-queue context.
+     * @param permutor        Encapsulates whole-Queue reordering logic.
+     * @param broadcastUpdate <code>true</code> if this operation should trigger a
+     *                        QueueUpdateBroadcast. This option should be set to <code>false</code>
+     *                        if the caller wants to avoid unexpected updates of the GUI.
+     */
+    public static Future<?> reorderQueue(final Permutor<FeedItem> permutor, final boolean broadcastUpdate) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            final List<FeedItem> queue = DBReader.getQueue(adapter);
+
+            if (queue != null) {
+                permutor.reorder(queue);
+                adapter.setQueue(queue);
+                if (broadcastUpdate) {
+                    EventBus.getDefault().post(QueueEvent.sorted(queue));
+                }
+            } else {
+                Log.e(TAG, "reorderQueue: Could not load queue");
             }
             adapter.close();
         });
