@@ -324,7 +324,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
         boolean isItemAndHasLink = isFeedMedia &&
-                ((FeedMedia) media).getItem() != null && ((FeedMedia) media).getItem().getLink() != null;
+                ShareUtils.hasLinkToShare(((FeedMedia) media).getItem());
         menu.findItem(R.id.share_link_item).setVisible(isItemAndHasLink);
         menu.findItem(R.id.share_link_with_position_item).setVisible(isItemAndHasLink);
 
