@@ -81,10 +81,10 @@ public class QueueSorter {
                 permutor = Collections::shuffle;
                 break;
             case SMART_SHUFFLE_ASC:
-                permutor = (queue) -> SmartShuffle(queue, true);
+                permutor = (queue) -> smartShuffle(queue, true);
                 break;
             case SMART_SHUFFLE_DESC:
-                permutor = (queue) -> SmartShuffle(queue, false);
+                permutor = (queue) -> smartShuffle(queue, false);
                 break;
             default:
         }
@@ -131,7 +131,7 @@ public class QueueSorter {
      * @param ascending {@code true} to use ascending pubdate in the reordering;
      *                  {@code false} for descending.
      */
-    private static void SmartShuffle(List<FeedItem> queue, boolean ascending) {
+    private static void smartShuffle(List<FeedItem> queue, boolean ascending) {
 
         // Divide FeedItems into lists by feed
 
@@ -140,8 +140,9 @@ public class QueueSorter {
         while (!queue.isEmpty()) {
             FeedItem item = queue.remove(0);
             Long id = item.getFeedId();
-            if (!map.containsKey(id))
+            if (!map.containsKey(id)) {
                 map.put(id, new ArrayList<>());
+            }
             map.get(id).add(item);
         }
 
@@ -151,8 +152,9 @@ public class QueueSorter {
             ? (f1, f2) -> f1.getPubDate().compareTo(f2.getPubDate())
             : (f1, f2) -> f2.getPubDate().compareTo(f1.getPubDate());
 
-        for (Long id : map.keySet())
+        for (Long id : map.keySet()) {
             Collections.sort(map.get(id), itemComparator);
+        }
 
         // Create a list of the individual FeedItems lists, and sort it by feed title (ascending).
         // Doing this ensures that the feed order we use is predictable/deterministic.
@@ -174,8 +176,9 @@ public class QueueSorter {
                 queue.add(items.remove(0));
                 // Removed the last item in this particular feed? Then remove this feed from the
                 // list of feeds.
-                if (items.isEmpty())
+                if (items.isEmpty()) {
                     feeds.remove(i);
+                }
             }
         }
     }
