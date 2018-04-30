@@ -81,13 +81,16 @@ public class FeedItemUtil {
      * use the feed's link if the named feed item has no link.
      */
     public static String getLinkWithFallback(FeedItem item) {
-	    String link = item.getLink();
-	    if (link == null) {
-	        Feed feed = item.getFeed();
-	        if (feed != null) {
-	            link = feed.getLink();
+	    String link = null;
+	    if (item != null) {
+            link = item.getLink();
+            if (link == null) {
+                Feed feed = item.getFeed();
+                if (feed != null) {
+                    link = feed.getLink();
+                }
             }
-        }
+        } // else null item, can only return null
         return link;
     }
 }

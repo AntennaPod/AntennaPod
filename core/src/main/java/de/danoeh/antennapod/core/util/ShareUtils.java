@@ -51,7 +51,7 @@ public class ShareUtils {
 	}
 
     public static boolean hasLinkToShare(FeedItem item) {
-	    return ( item != null && FeedItemUtil.getLinkWithFallback(item) != null );
+	    return FeedItemUtil.getLinkWithFallback(item) != null;
     }
 
 	public static void shareFeedItemLink(Context context, FeedItem item, boolean withPosition) {
