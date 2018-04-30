@@ -86,7 +86,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.add_to_queue_item, false);
         }
 
-        if (!showExtendedMenu || selectedItem.getLink() == null) {
+        if (!showExtendedMenu || !ShareUtils.hasLinkToShare(selectedItem)) {
             mi.setItemVisibility(R.id.visit_website_item, false);
             mi.setItemVisibility(R.id.share_link_item, false);
             mi.setItemVisibility(R.id.share_link_with_position_item, false);
