@@ -42,6 +42,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -320,7 +321,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
         );
 
-        boolean hasWebsiteLink = media != null && media.getWebsiteLink() != null;
+        boolean hasWebsiteLink = ( getWebsiteLinkWithFallback(media) != null );
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
         boolean isItemAndHasLink = isFeedMedia &&
@@ -560,7 +561,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         });
                         break;
                     case R.id.visit_website_item:
-                        Uri uri = Uri.parse(media.getWebsiteLink());
+                        Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));
                         break;
                     case R.id.support_item:
@@ -601,6 +602,19 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                 return false;
             }
         }
+    }
+
+    private static String getWebsiteLinkWithFallback(Playable media) {
+        String link = null;
+        if (media != null) {
+            link = media.getWebsiteLink();
+            if (link == null) {
+                if (media instanceof FeedMedia) {
+                    link = FeedItemUtil.getLinkWithFallback(((FeedMedia)media).getItem());
+                } // else case not a FeedMedia, return null
+            }
+        } // else no media, return null
+        return link;
     }
 
     @Override

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.util;
 
 import java.util.List;
 
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 
 public class FeedItemUtil {
@@ -75,4 +76,18 @@ public class FeedItemUtil {
         return false;
     }
 
+    /**
+     * Get the link for the feed item for the purpose of Share. It fallbacks to
+     * use the feed's link if the named feed item has no link.
+     */
+    public static String getLinkWithFallback(FeedItem item) {
+	    String link = item.getLink();
+	    if (link == null) {
+	        Feed feed = item.getFeed();
+	        if (feed != null) {
+	            link = feed.getLink();
+            }
+        }
+        return link;
+    }
 }

@@ -50,27 +50,12 @@ public class ShareUtils {
 		return item.getFeed().getTitle() + ": " + item.getTitle();
 	}
 
-    /**
-     * Get the link for the feed item for the purpose of Share. It fallbacks to
-     * use the feed's link if the named feed item has no link.
-     */
-    private static String getItemShareLink(FeedItem item) {
-	    String link = item.getLink();
-	    if (link == null) {
-	        Feed feed = item.getFeed();
-	        if (feed != null) {
-	            link = feed.getLink();
-            }
-        }
-        return link;
-    }
-
     public static boolean hasLinkToShare(FeedItem item) {
-	    return ( item != null && getItemShareLink(item) != null );
+	    return ( item != null && FeedItemUtil.getLinkWithFallback(item) != null );
     }
 
 	public static void shareFeedItemLink(Context context, FeedItem item, boolean withPosition) {
-		String text = getItemShareText(item) + " " + getItemShareLink(item);
+		String text = getItemShareText(item) + " " + FeedItemUtil.getLinkWithFallback(item);
 		if(withPosition) {
 			int pos = item.getMedia().getPosition();
 			text += " [" + Converter.getDurationStringLong(pos) + "]";
