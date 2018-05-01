@@ -327,6 +327,15 @@ public class QueueFragment extends Fragment {
                 case R.id.queue_sort_feed_title_desc:
                     QueueSorter.sort(getActivity(), QueueSorter.Rule.FEED_TITLE_DESC, true);
                     return true;
+                case R.id.queue_sort_random:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.RANDOM, true);
+                    return true;
+                case R.id.queue_sort_smart_shuffle_asc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.SMART_SHUFFLE_ASC, true);
+                    return true;
+                case R.id.queue_sort_smart_shuffle_desc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.SMART_SHUFFLE_DESC, true);
+                    return true;
                 default:
                     return false;
             }

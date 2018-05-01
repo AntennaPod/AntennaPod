@@ -260,6 +260,8 @@
     <string name="duration">Duration</string>
     <string name="episode_title">Episode title</string>
     <string name="feed_title">Feed title</string>
+    <string name="random">Random</string>
+    <string name="smart_shuffle">Smart Shuffle</string>
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
     <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
