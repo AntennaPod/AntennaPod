@@ -66,7 +66,7 @@ public class GpodnetSyncService extends Service {
         super.onCreate();
         startForeground(NOTIFICATION_ID,
                 new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_GPODNET)
-                        .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                        .setSmallIcon(R.drawable.stat_notify_sync)
                         .setContentTitle(getString(R.string.gpodnet_main_label))
                         .setContentText(getString(R.string.pref_gpodnet_sync_started))
                         .build());
