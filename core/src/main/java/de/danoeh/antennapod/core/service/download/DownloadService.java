@@ -22,6 +22,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.webkit.URLUtil;
 
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import org.apache.commons.io.FileUtils;
 import org.xml.sax.SAXException;
 
@@ -258,6 +259,7 @@ public class DownloadService extends Service {
     public void onCreate() {
         Log.d(TAG, "Service started");
         isRunning = true;
+        PodDBAdapter.getInstance().open(); // Prevent thrashing the database by opening and closing rapidly
         handler = new Handler();
         reportQueue = Collections.synchronizedList(new ArrayList<>());
         downloads = Collections.synchronizedList(new ArrayList<>());
@@ -336,6 +338,7 @@ public class DownloadService extends Service {
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
+        PodDBAdapter.getInstance().close();
     }
 
     private void setupNotificationBuilders() {
