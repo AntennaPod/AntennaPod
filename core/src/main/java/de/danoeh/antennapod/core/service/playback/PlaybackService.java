@@ -320,6 +320,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         NotificationCompat.Builder notificationBuilder = createBasicNotification();
         startForeground(NOTIFICATION_ID, notificationBuilder.build());
         EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_STARTED));
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMedia();
+        Playable lastPlayable = Playable.PlayableUtils.createInstanceFromPreferences(
+                getApplicationContext(), (int) currentlyPlayingMedia, prefs);
+        setupNotification(lastPlayable);
     }
 
     private NotificationCompat.Builder createBasicNotification() {
@@ -1205,7 +1211,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Prepares notification and starts the service in the foreground.
      */
     private void setupNotification(final PlaybackServiceMediaPlayer.PSMPInfo info) {
+        setupNotification(info.playable);
+    }
 
+    private synchronized void setupNotification(final Playable playable) {
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
         }
@@ -1215,12 +1224,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             @Override
             public void run() {
                 Log.d(TAG, "Starting background work");
-                if (info.playable != null) {
+                if (playable != null) {
                     int iconSize = getResources().getDimensionPixelSize(
                             android.R.dimen.notification_large_icon_width);
                     try {
                         icon = Glide.with(PlaybackService.this)
-                                .load(info.playable.getImageLocation())
+                                .load(playable.getImageLocation())
                                 .asBitmap()
                                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .centerCrop()
@@ -1240,9 +1249,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
 
-                if (!Thread.currentThread().isInterrupted() && started && info.playable != null) {
-                    String contentText = info.playable.getEpisodeTitle();
-                    String contentTitle = info.playable.getFeedTitle();
+                if (!Thread.currentThread().isInterrupted() && started && playable != null) {
+                    String contentText = playable.getEpisodeTitle();
+                    String contentTitle = playable.getFeedTitle();
                     Notification notification;
 
                     // Builder is v7, even if some not overwritten methods return its parent's v4 interface
