@@ -605,16 +605,14 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     }
 
     private static String getWebsiteLinkWithFallback(Playable media) {
-        String link = null;
-        if (media != null) {
-            link = media.getWebsiteLink();
-            if (link == null) {
-                if (media instanceof FeedMedia) {
-                    link = FeedItemUtil.getLinkWithFallback(((FeedMedia)media).getItem());
-                } // else case not a FeedMedia, return null
-            }
-        } // else no media, return null
-        return link;
+        if (media == null) {
+            return null;
+        } else if (media.getWebsiteLink() != null) {
+            return media.getWebsiteLink();
+        } else if (media instanceof FeedMedia) {
+            return FeedItemUtil.getLinkWithFallback(((FeedMedia)media).getItem());
+        }
+        return null;
     }
 
     @Override
