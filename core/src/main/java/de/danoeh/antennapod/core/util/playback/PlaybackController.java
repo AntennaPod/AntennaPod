@@ -522,7 +522,7 @@ public abstract class PlaybackController {
                         "PlaybackService has no media object. Trying to restore last played media.");
                 Intent serviceIntent = getPlayLastPlayedMediaIntent();
                 if (serviceIntent != null) {
-                    activity.startService(serviceIntent);
+			        ContextCompat.startForegroundService(activity, serviceIntent);
                 }
             }
             */

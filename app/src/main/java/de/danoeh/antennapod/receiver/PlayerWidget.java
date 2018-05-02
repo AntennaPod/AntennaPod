@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -60,7 +61,7 @@ public class PlayerWidget extends AppWidgetProvider {
 
     private void startUpdate(Context context) {
         Log.d(TAG, "startUpdate() called with: " + "context = [" + context + "]");
-        context.startService(new Intent(context, PlayerWidgetService.class));
+        ContextCompat.startForegroundService(context, new Intent(context, PlayerWidgetService.class));
     }
 
     private void stopUpdate(Context context) {

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -41,7 +42,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, false);
             launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
                     true);
-            startService(launchIntent);
+            ContextCompat.startForegroundService(this, launchIntent);
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (intent.getComponent() != null &&
