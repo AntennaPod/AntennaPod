@@ -59,6 +59,18 @@ public class GpodnetSyncService extends Service {
 
     private boolean syncSubscriptions = false;
     private boolean syncActions = false;
+    private static final int NOTIFICATION_ID = 2;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        startForeground(NOTIFICATION_ID,
+                new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_GPODNET)
+                        .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                        .setContentTitle(getString(R.string.gpodnet_main_label))
+                        .setContentText(getString(R.string.pref_gpodnet_sync_started))
+                        .build());
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -111,6 +123,7 @@ public class GpodnetSyncService extends Service {
 
     private synchronized void sync() {
         if (!GpodnetPreferences.loggedIn() || !NetworkUtils.networkAvailable()) {
+            stopForeground(true);
             stopSelf();
             return;
         }
@@ -127,6 +140,7 @@ public class GpodnetSyncService extends Service {
             }
             syncActions = false;
         }
+        stopForeground(true);
         stopSelf();
     }
 

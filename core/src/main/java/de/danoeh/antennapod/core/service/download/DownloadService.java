@@ -296,6 +296,7 @@ public class DownloadService extends Service {
 
         setupNotificationBuilders();
         requester = DownloadRequester.getInstance();
+        startForeground(NOTIFICATION_ID, updateNotifications());
     }
 
     @Override
@@ -353,7 +354,7 @@ public class DownloadService extends Service {
 
     /**
      * Updates the contents of the service's notifications. Should be called
-     * before setupNotificationBuilders.
+     * after setupNotificationBuilders.
      */
     private Notification updateNotifications() {
         if (notificationCompatBuilder == null) {
