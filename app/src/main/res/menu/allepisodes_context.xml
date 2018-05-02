@@ -7,6 +7,12 @@
         android:menuCategory="container"
         android:title="@string/skip_episode_label" />
 
+
+    <item
+        android:id="@+id/mark_as_seen_item"
+        android:menuCategory="container"
+        android:title="@string/mark_as_seen_label" />
+
     <item
         android:id="@+id/mark_read_item"
         android:menuCategory="container"
