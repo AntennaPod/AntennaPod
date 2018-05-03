@@ -34,6 +34,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -270,6 +271,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             controller.release();
         }
         controller = newPlaybackController();
+        setupGUI();
+        loadMediaInfo();
+        onPositionObserverUpdate();
     }
 
     @Override
@@ -608,8 +612,23 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         super.onResume();
         Log.d(TAG, "onResume()");
         StorageUtils.checkStorageAvailability(this);
-        if(controller != null) {
-            controller.init();
+        if (controller != null) {
+            if (PlaybackService.isRunning) {
+                controller.init();
+            } else {
+                controller.resumeServiceNotRunning();
+            }
+        }
+    }
+
+    public void onEventMainThread(ServiceEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        switch(event.action) {
+            case SERVICE_STARTED:
+                if (controller != null) {
+                    controller.init();
+                }
+                break;
         }
     }
 
@@ -853,6 +872,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if(controller == null) {
             return;
         }
+        controller.init();
         controller.playPause();
     }
 

@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.WindowCompat;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -30,6 +31,7 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.service.PlayerWidgetService;
 import de.danoeh.antennapod.view.AspectRatioVideoView;
 
 import java.lang.ref.WeakReference;
@@ -89,7 +91,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, false);
             launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
                     true);
-            startService(launchIntent);
+            ContextCompat.startForegroundService(this, launchIntent);
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {

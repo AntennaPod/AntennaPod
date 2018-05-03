@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -123,16 +124,7 @@ public final class DBTasks {
                             media);
                 }
             }
-            // Start playback Service
-            Intent launchIntent = new Intent(context, PlaybackService.class);
-            launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
-            launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
-                    startWhenPrepared);
-            launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
-                    shouldStream);
-            launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
-                    true);
-            context.startService(launchIntent);
+            PlaybackService.startService(context, media, startWhenPrepared, shouldStream);
             if (showPlayer) {
                 // Launch media player
                 context.startActivity(PlaybackService.getPlayerActivityIntent(

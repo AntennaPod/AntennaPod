@@ -55,6 +55,12 @@
         <receiver android:name=".receiver.FeedUpdateReceiver">
         </receiver>
 
+        <service
+                android:name=".service.FeedUpdateJobService"
+                android:permission="android.permission.BIND_JOB_SERVICE" >
+
+        </service>
+
     </application>
 
 </manifest>

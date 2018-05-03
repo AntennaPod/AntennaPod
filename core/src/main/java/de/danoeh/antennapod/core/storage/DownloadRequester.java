@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.URLUtil;
@@ -81,7 +82,7 @@ public class DownloadRequester {
 
         Intent launchIntent = new Intent(context, DownloadService.class);
         launchIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
-        context.startService(launchIntent);
+        ContextCompat.startForegroundService(context, launchIntent);
 
         return true;
     }
