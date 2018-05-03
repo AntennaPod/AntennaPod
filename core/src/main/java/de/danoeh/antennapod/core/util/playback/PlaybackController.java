@@ -780,11 +780,15 @@ public abstract class PlaybackController {
     }
 
     public void resumeServiceNotRunning() {
-        TypedArray res = activity.obtainStyledAttributes(new int[]{
-                de.danoeh.antennapod.core.R.attr.av_play_big});
-        getPlayButton().setImageResource(
-                res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_play_arrow_grey600_36dp));
-        res.recycle();
+        if (getMedia().getMediaType() == MediaType.AUDIO) {
+            TypedArray res = activity.obtainStyledAttributes(new int[]{
+                    de.danoeh.antennapod.core.R.attr.av_play_big});
+            getPlayButton().setImageResource(
+                    res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_play_arrow_grey600_36dp));
+            res.recycle();
+        } else {
+            getPlayButton().setImageResource(R.drawable.ic_av_play_circle_outline_80dp);
+        }
     }
 
     /**
