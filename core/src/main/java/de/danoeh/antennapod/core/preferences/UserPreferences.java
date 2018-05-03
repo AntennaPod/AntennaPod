@@ -2,17 +2,23 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.service.FeedUpdateJobService;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -102,6 +108,10 @@ public class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
+
+    // JobScheduler
+    private static final int JOB_ID_FEED_UPDATE = 42;
+    private static final float JOB_SCHEDULER_TIME_VARIATION = 1.5f;
 
     // Mediaplayer
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
@@ -797,18 +807,31 @@ public class UserPreferences {
      */
     private static void restartUpdateIntervalAlarm(long triggerAtMillis, long intervalMillis) {
         Log.d(TAG, "Restarting update alarm.");
+
+        if (intervalMillis <= 0) {
+            Log.d(TAG, "Automatic update was deactivated");
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            JobInfo.Builder builder = getFeedUpdateJobBuilder();
+            builder.setOverrideDeadline((long) (triggerAtMillis * JOB_SCHEDULER_TIME_VARIATION));
+            JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
+            if (jobScheduler != null) {
+                jobScheduler.schedule(builder.build());
+                Log.d(TAG, "JobScheduler was set for " + triggerAtMillis);
+            }
+            return;
+        }
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, FeedUpdateReceiver.class);
         PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmManager.cancel(updateIntent);
-        if (intervalMillis > 0) {
-            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + triggerAtMillis,
-                    updateIntent);
-            Log.d(TAG, "Changed alarm to new interval " + TimeUnit.MILLISECONDS.toHours(intervalMillis) + " h");
-        } else {
-            Log.d(TAG, "Automatic update was deactivated");
-        }
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + triggerAtMillis,
+                updateIntent);
+        Log.d(TAG, "Changed alarm to new interval " + TimeUnit.MILLISECONDS.toHours(intervalMillis) + " h");
     }
 
     /**
@@ -816,10 +839,6 @@ public class UserPreferences {
      */
     private static void restartUpdateTimeOfDayAlarm(int hoursOfDay, int minute) {
         Log.d(TAG, "Restarting update alarm.");
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
-                new Intent(context, FeedUpdateReceiver.class), 0);
-        alarmManager.cancel(updateIntent);
 
         Calendar now = Calendar.getInstance();
         Calendar alarm = (Calendar)now.clone();
@@ -828,11 +847,38 @@ public class UserPreferences {
         if (alarm.before(now) || alarm.equals(now)) {
             alarm.add(Calendar.DATE, 1);
         }
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            JobInfo.Builder builder = getFeedUpdateJobBuilder();
+            long triggerAtMillis = alarm.getTimeInMillis() - now.getTimeInMillis();
+            builder.setOverrideDeadline((long) (triggerAtMillis * JOB_SCHEDULER_TIME_VARIATION));
+            JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
+            if (jobScheduler != null) {
+                jobScheduler.schedule(builder.build());
+                Log.d(TAG, "JobScheduler was set for " + triggerAtMillis);
+            }
+            return;
+        }
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
+                new Intent(context, FeedUpdateReceiver.class), 0);
+        alarmManager.cancel(updateIntent);
+
         Log.d(TAG, "Alarm set for: " + alarm.toString() + " : " + alarm.getTimeInMillis());
         alarmManager.set(AlarmManager.RTC_WAKEUP,
                 alarm.getTimeInMillis(),
                 updateIntent);
         Log.d(TAG, "Changed alarm to new time of day " + hoursOfDay + ":" + minute);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private static JobInfo.Builder getFeedUpdateJobBuilder() {
+        ComponentName serviceComponent = new ComponentName(context, FeedUpdateJobService.class);
+        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID_FEED_UPDATE, serviceComponent);
+        builder.setMinimumLatency(15 * 60 * 1000);
+        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
+        return builder;
     }
 
     /**

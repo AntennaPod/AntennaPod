@@ -203,6 +203,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         checkFirstLaunch();
         NotificationUtils.createChannels(this);
+        UserPreferences.restartUpdateAlarm(false);
     }
 
     private void saveLastNavFragment(String tag) {
