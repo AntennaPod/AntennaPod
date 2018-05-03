@@ -598,8 +598,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void notifyVideoSurfaceAbandoned() {
-        stopForeground(!UserPreferences.isPersistNotify());
+        mediaPlayer.pause(true, false);
         mediaPlayer.resetVideoSurface();
+        setupNotification(getPlayable());
+        stopForeground(!UserPreferences.isPersistNotify());
     }
 
     private final PlaybackServiceTaskManager.PSTMCallback taskManagerCallback = new PlaybackServiceTaskManager.PSTMCallback() {
