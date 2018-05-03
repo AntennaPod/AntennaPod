@@ -780,6 +780,9 @@ public abstract class PlaybackController {
     }
 
     public void resumeServiceNotRunning() {
+        if (getMedia() == null) {
+            return;
+        }
         if (getMedia().getMediaType() == MediaType.AUDIO) {
             TypedArray res = activity.obtainStyledAttributes(new int[]{
                     de.danoeh.antennapod.core.R.attr.av_play_big});
