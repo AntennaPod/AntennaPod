@@ -53,7 +53,7 @@
         <Preference
                 android:key="pref_gpodnet_hostname"
                 android:title="@string/pref_gpodnet_sethostname_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:key="pref_gpodnet_notifications"
                 android:title="@string/pref_gpodnet_notifications_title"
                 android:summary="@string/pref_gpodnet_notifications_sum"

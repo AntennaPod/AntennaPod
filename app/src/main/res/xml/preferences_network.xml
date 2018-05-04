@@ -7,7 +7,7 @@
                 android:key="prefAutoUpdateIntervall"
                 android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
                 android:title="@string/pref_autoUpdateIntervallOrTime_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefMobileUpdate"
@@ -20,13 +20,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">
-        <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+        <EditTextPreference
                 android:defaultValue="4"
                 android:inputType="number"
                 android:key="prefParallelDownloads"
                 android:title="@string/pref_parallel_downloads_title"
                 app:useStockLayout="true"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefShowDownloadReport"

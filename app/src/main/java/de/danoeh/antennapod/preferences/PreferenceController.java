@@ -3,7 +3,6 @@ package de.danoeh.antennapod.preferences;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
@@ -18,31 +17,27 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.CheckBoxPreference;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
+import android.support.v7.preference.PreferenceScreen;
 import android.text.Html;
-import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import de.danoeh.antennapod.activity.AboutActivity;
-import com.afollestad.materialdialogs.prefs.MaterialListPreference;
 import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
@@ -395,7 +390,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     return true;
                 });
         if (!PictureInPictureUtil.supportsPictureInPicture(activity)) {
-            MaterialListPreference behaviour = (MaterialListPreference) ui.findPreference(UserPreferences.PREF_VIDEO_BEHAVIOR);
+            ListPreference behaviour = (ListPreference) ui.findPreference(UserPreferences.PREF_VIDEO_BEHAVIOR);
             behaviour.setEntries(R.array.video_background_behavior_options_without_pip);
             behaviour.setEntryValues(R.array.video_background_behavior_values_without_pip);
         }
@@ -432,9 +427,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     private void setupNetworkScreen() {
-        final Activity activity = ui.getActivity();
-        ui.findPreference(PREF_SCREEN_AUTODL).setOnPreferenceClickListener(preference ->
-                openScreen(R.xml.preferences_autodownload, activity));
+        final AppCompatActivity activity = ui.getActivity();
+        ui.findPreference(PREF_SCREEN_AUTODL).setOnPreferenceClickListener(preference -> {
+            openScreen(R.xml.preferences_autodownload, activity);
+            return true;
+        });
         ui.findPreference(UserPreferences.PREF_UPDATE_INTERVAL)
                 .setOnPreferenceClickListener(preference -> {
                     showUpdateIntervalTimePreferencesDialog();
@@ -458,33 +455,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                         }
                 );
         // validate and set correct value: number of downloads between 1 and 50 (inclusive)
-        final EditText ev = ((EditTextPreference) ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)).getEditText();
-        ev.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    try {
-                        int value = Integer.parseInt(s.toString());
-                        if (value <= 0) {
-                            ev.setText("1");
-                        } else if (value > 50) {
-                            ev.setText("50");
-                        }
-                    } catch (NumberFormatException e) {
-                        ev.setText("6");
-                    }
-                    ev.setSelection(ev.getText().length());
-                }
-            }
-        });
         ui.findPreference(PREF_PROXY).setOnPreferenceClickListener(preference -> {
             ProxyDialog dialog = new ProxyDialog(ui.getActivity());
             dialog.createDialog().show();
@@ -493,17 +463,27 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     private void setupMainScreen() {
-        final Activity activity = ui.getActivity();
-        ui.findPreference(PREF_SCREEN_USER_INTERFACE).setOnPreferenceClickListener(preference ->
-                openScreen(R.xml.preferences_user_interface, activity));
-        ui.findPreference(PREF_SCREEN_PLAYBACK).setOnPreferenceClickListener(preference ->
-                openScreen(R.xml.preferences_playback, activity));
-        ui.findPreference(PREF_SCREEN_NETWORK).setOnPreferenceClickListener(preference ->
-                openScreen(R.xml.preferences_network, activity));
-        ui.findPreference(PREF_SCREEN_INTEGRATIONS).setOnPreferenceClickListener(preference ->
-                openScreen(R.xml.preferences_integrations, activity));
-        ui.findPreference(PREF_SCREEN_STORAGE).setOnPreferenceClickListener(preference ->
-                openScreen(R.xml.preferences_storage, activity));
+        final AppCompatActivity activity = ui.getActivity();
+        ui.findPreference(PREF_SCREEN_USER_INTERFACE).setOnPreferenceClickListener(preference -> {
+            openScreen(R.xml.preferences_user_interface, activity);
+            return true;
+        });
+        ui.findPreference(PREF_SCREEN_PLAYBACK).setOnPreferenceClickListener(preference -> {
+            openScreen(R.xml.preferences_playback, activity);
+            return true;
+        });
+        ui.findPreference(PREF_SCREEN_NETWORK).setOnPreferenceClickListener(preference -> {
+            openScreen(R.xml.preferences_network, activity);
+            return true;
+        });
+        ui.findPreference(PREF_SCREEN_INTEGRATIONS).setOnPreferenceClickListener(preference -> {
+            openScreen(R.xml.preferences_integrations, activity);
+            return true;
+        });
+        ui.findPreference(PREF_SCREEN_STORAGE).setOnPreferenceClickListener(preference -> {
+            openScreen(R.xml.preferences_storage, activity);
+            return true;
+        });
 
         ui.findPreference(PreferenceController.PREF_ABOUT).setOnPreferenceClickListener(
                 preference -> {
@@ -550,15 +530,34 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         });
     }
 
-    private boolean openScreen(int preferences, Activity activity) {
-        Fragment prefFragment = new PreferenceActivity.MainFragment();
+    public PreferenceFragmentCompat openScreen(int preferences, AppCompatActivity activity) {
+        PreferenceFragmentCompat prefFragment = new PreferenceActivity.MainFragment();
         Bundle args = new Bundle();
         args.putInt(PARAM_RESOURCE, preferences);
         prefFragment.setArguments(args);
-        activity.getFragmentManager().beginTransaction()
+        activity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, prefFragment)
                 .addToBackStack(TAG).commit();
-        return true;
+        return prefFragment;
+    }
+
+    public int getTitleOfPage(int preferences) {
+        switch (preferences) {
+            case R.xml.preferences_network:
+                return R.string.network_pref;
+            case R.xml.preferences_autodownload:
+                return R.string.pref_automatic_download_title;
+            case R.xml.preferences_playback:
+                return R.string.playback_pref;
+            case R.xml.preferences_storage:
+                return R.string.storage_pref;
+            case R.xml.preferences_user_interface:
+                return R.string.user_interface_label;
+            case R.xml.preferences_integrations:
+                return R.string.integrations_label;
+            default:
+                return R.string.settings_label;
+        }
     }
 
     private boolean export(ExportWriter exportWriter) {
@@ -1115,7 +1114,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     public interface PreferenceUI {
 
-        void setFragment(PreferenceFragment fragment);
+        void setFragment(PreferenceFragmentCompat fragment);
 
         /**
          * Finds a preference based on its key.
@@ -1124,6 +1123,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
         PreferenceScreen getPreferenceScreen();
 
-        Activity getActivity();
+        AppCompatActivity getActivity();
     }
 }

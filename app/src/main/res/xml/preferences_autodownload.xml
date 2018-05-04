@@ -7,14 +7,14 @@
             android:key="prefEnableAutoDl"
             android:title="@string/pref_automatic_download_title"
             android:defaultValue="false"/>
-    <com.afollestad.materialdialogs.prefs.MaterialListPreference
+    <ListPreference
             android:defaultValue="25"
             android:entries="@array/episode_cache_size_entries"
             android:key="prefEpisodeCacheSize"
             android:title="@string/pref_episode_cache_title"
             android:entryValues="@array/episode_cache_size_values"
             app:useStockLayout="true"/>
-    <com.afollestad.materialdialogs.prefs.MaterialListPreference
+    <ListPreference
             android:defaultValue="-1"
             android:entries="@array/episode_cleanup_entries"
             android:key="prefEpisodeCleanup"
@@ -22,17 +22,17 @@
             android:summary="@string/pref_episode_cleanup_summary"
             android:entryValues="@array/episode_cleanup_values"
             app:useStockLayout="true"/>
-    <de.danoeh.antennapod.preferences.SwitchCompatPreference
+    <SwitchPreference
             android:key="prefEnableAutoDownloadOnBattery"
             android:title="@string/pref_automatic_download_on_battery_title"
             android:summary="@string/pref_automatic_download_on_battery_sum"
             android:defaultValue="true"/>
-    <de.danoeh.antennapod.preferences.SwitchCompatPreference
+    <SwitchPreference
             android:key="prefEnableAutoDownloadOnMobile"
             android:title="@string/pref_autodl_allow_on_mobile_title"
             android:summary="@string/pref_autodl_allow_on_mobile_sum"
             android:defaultValue="false"/>
-    <de.danoeh.antennapod.preferences.SwitchCompatPreference
+    <SwitchPreference
             android:key="prefEnableAutoDownloadWifiFilter"
             android:title="@string/pref_autodl_wifi_filter_title"
             android:summary="@string/pref_autodl_wifi_filter_sum"/>
