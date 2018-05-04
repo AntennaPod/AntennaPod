@@ -42,6 +42,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -320,11 +321,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
         );
 
-        boolean hasWebsiteLink = media != null && media.getWebsiteLink() != null;
+        boolean hasWebsiteLink = ( getWebsiteLinkWithFallback(media) != null );
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
         boolean isItemAndHasLink = isFeedMedia &&
-                ((FeedMedia) media).getItem() != null && ((FeedMedia) media).getItem().getLink() != null;
+                ShareUtils.hasLinkToShare(((FeedMedia) media).getItem());
         menu.findItem(R.id.share_link_item).setVisible(isItemAndHasLink);
         menu.findItem(R.id.share_link_with_position_item).setVisible(isItemAndHasLink);
 
@@ -560,7 +561,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         });
                         break;
                     case R.id.visit_website_item:
-                        Uri uri = Uri.parse(media.getWebsiteLink());
+                        Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));
                         break;
                     case R.id.support_item:
@@ -601,6 +602,17 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                 return false;
             }
         }
+    }
+
+    private static String getWebsiteLinkWithFallback(Playable media) {
+        if (media == null) {
+            return null;
+        } else if (media.getWebsiteLink() != null) {
+            return media.getWebsiteLink();
+        } else if (media instanceof FeedMedia) {
+            return FeedItemUtil.getLinkWithFallback(((FeedMedia)media).getItem());
+        }
+        return null;
     }
 
     @Override
