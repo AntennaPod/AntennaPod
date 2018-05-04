@@ -890,6 +890,7 @@ public class UserPreferences {
         ComponentName serviceComponent = new ComponentName(context, FeedUpdateJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(JOB_ID_FEED_UPDATE, serviceComponent);
         builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
+        builder.setPersisted(true);
         return builder;
     }
 
