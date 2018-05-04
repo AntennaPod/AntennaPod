@@ -11,9 +11,13 @@ public class FeedUpdateUtils {
 
     }
 
-    public static void startAutoUpdate(Context context) {
+    public static void startAutoUpdate(Context context, boolean synchronously) {
         if (NetworkUtils.networkAvailable() && NetworkUtils.isDownloadAllowed()) {
-            DBTasks.refreshAllFeeds(context, null);
+            if (synchronously) {
+                DBTasks.refreshAllFeedsSynchronously(context, null);
+            } else {
+                DBTasks.refreshAllFeeds(context, null);
+            }
         } else {
             Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
         }

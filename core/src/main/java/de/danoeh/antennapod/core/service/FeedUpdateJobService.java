@@ -17,8 +17,13 @@ public class FeedUpdateJobService extends JobService {
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "Job started");
         ClientConfig.initialize(getApplicationContext());
-        FeedUpdateUtils.startAutoUpdate(getApplicationContext());
-        UserPreferences.restartUpdateAlarm(false);
+
+        new Thread(() -> {
+            FeedUpdateUtils.startAutoUpdate(getApplicationContext(), true);
+            UserPreferences.restartUpdateAlarm(false);
+            jobFinished(params, false); // needsReschedule = false
+        }).start();
+
         return true;
     }
 

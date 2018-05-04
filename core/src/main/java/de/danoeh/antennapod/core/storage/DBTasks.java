@@ -151,36 +151,42 @@ public final class DBTasks {
      * @param context Might be used for accessing the database
      * @param feeds   List of Feeds that should be refreshed.
      */
-    public static void refreshAllFeeds(final Context context,
-                                       final List<Feed> feeds) {
+    public static void refreshAllFeeds(final Context context, final List<Feed> feeds) {
+        new Thread(() -> refreshAllFeedsSynchronously(context, feeds)).start();
+    }
+
+    /**
+     * Refreshes a given list of Feeds in the current Thread. This method might ignore subsequent calls if it is still
+     * enqueuing Feeds for download from a previous call. MUST NOT be executed from main thread.
+     *
+     * @param context Might be used for accessing the database
+     * @param feeds   List of Feeds that should be refreshed.
+     */
+    public static void refreshAllFeedsSynchronously(final Context context, final List<Feed> feeds) {
         if (isRefreshing.compareAndSet(false, true)) {
-            new Thread() {
-                public void run() {
-                    if (feeds != null) {
-                        refreshFeeds(context, feeds);
-                    } else {
-                        refreshFeeds(context, DBReader.getFeedList());
-                    }
-                    isRefreshing.set(false);
+            if (feeds != null) {
+                refreshFeeds(context, feeds);
+            } else {
+                refreshFeeds(context, DBReader.getFeedList());
+            }
+            isRefreshing.set(false);
 
-                    SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-                    prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
+            SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
 
-                    if (FlattrUtils.hasToken()) {
-                        Log.d(TAG, "Flattring all pending things.");
-                        new FlattrClickWorker(context).executeAsync(); // flattr pending things
+            if (FlattrUtils.hasToken()) {
+                Log.d(TAG, "Flattring all pending things.");
+                new FlattrClickWorker(context).executeAsync(); // flattr pending things
 
-                        Log.d(TAG, "Fetching flattr status.");
-                        new FlattrStatusFetcher(context).start();
+                Log.d(TAG, "Fetching flattr status.");
+                new FlattrStatusFetcher(context).start();
 
-                    }
-                    if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
-                        GpodnetSyncService.sendSyncIntent(context);
-                    }
-                    Log.d(TAG, "refreshAllFeeds autodownload");
-                    autodownloadUndownloadedItems(context);
-                }
-            }.start();
+            }
+            if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
+                GpodnetSyncService.sendSyncIntent(context);
+            }
+            Log.d(TAG, "refreshAllFeeds autodownload");
+            autodownloadUndownloadedItems(context);
         } else {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
         }
