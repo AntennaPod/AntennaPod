@@ -7,7 +7,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.util.FeedUpdateUtils;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class FeedUpdateJobService extends JobService {
@@ -17,7 +17,7 @@ public class FeedUpdateJobService extends JobService {
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "Job started");
         ClientConfig.initialize(getApplicationContext());
-        DBTasks.refreshAllFeeds(getApplicationContext(), null);
+        FeedUpdateUtils.startAutoUpdate(getApplicationContext());
         UserPreferences.restartUpdateAlarm(false);
         return true;
     }

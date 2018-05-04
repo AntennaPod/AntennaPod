@@ -807,11 +807,6 @@ public class UserPreferences {
     private static void restartUpdateIntervalAlarm(long triggerAtMillis, long intervalMillis) {
         Log.d(TAG, "Restarting update alarm.");
 
-        if (intervalMillis <= 0) {
-            Log.d(TAG, "Automatic update was deactivated");
-            return;
-        }
-
         if (Build.VERSION.SDK_INT >= 24) {
             JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
             if (jobScheduler != null) {
@@ -820,6 +815,12 @@ public class UserPreferences {
                     JobInfo.Builder builder = getFeedUpdateJobBuilder();
                     builder.setPeriodic(intervalMillis);
                     jobScheduler.cancel(JOB_ID_FEED_UPDATE);
+
+                    if (intervalMillis <= 0) {
+                        Log.d(TAG, "Automatic update was deactivated");
+                        return;
+                    }
+
                     jobScheduler.schedule(builder.build());
                     Log.d(TAG, "JobScheduler was set at interval " + intervalMillis);
                 } else {
@@ -833,6 +834,12 @@ public class UserPreferences {
         Intent intent = new Intent(context, FeedUpdateReceiver.class);
         PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmManager.cancel(updateIntent);
+
+        if (intervalMillis <= 0) {
+            Log.d(TAG, "Automatic update was deactivated");
+            return;
+        }
+
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + triggerAtMillis,
                 updateIntent);

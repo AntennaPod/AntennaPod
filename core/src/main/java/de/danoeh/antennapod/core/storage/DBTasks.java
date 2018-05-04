@@ -124,6 +124,7 @@ public final class DBTasks {
                             media);
                 }
             }
+            // Needs to be called even if the service is already running to deliver the new media intent
             PlaybackService.startService(context, media, startWhenPrepared, shouldStream);
             if (showPlayer) {
                 // Launch media player
