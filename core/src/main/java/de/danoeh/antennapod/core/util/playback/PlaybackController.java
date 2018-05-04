@@ -96,7 +96,15 @@ public abstract class PlaybackController {
     /**
      * Creates a new connection to the playbackService.
      */
-    public synchronized void init() {
+    public void init() {
+        if (PlaybackService.isRunning) {
+            initServiceRunning();
+        } else {
+            initServiceNotRunning();
+        }
+    }
+
+    private synchronized void initServiceRunning() {
         if (initialized) {
             return;
         }
@@ -779,7 +787,7 @@ public abstract class PlaybackController {
         }
     }
 
-    public void resumeServiceNotRunning() {
+    private void initServiceNotRunning() {
         if (getMedia() == null) {
             return;
         }

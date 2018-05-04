@@ -613,11 +613,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         Log.d(TAG, "onResume()");
         StorageUtils.checkStorageAvailability(this);
         if (controller != null) {
-            if (PlaybackService.isRunning) {
-                controller.init();
-            } else {
-                controller.resumeServiceNotRunning();
-            }
+            controller.init();
         }
     }
 

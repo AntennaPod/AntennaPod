@@ -795,6 +795,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     };
 
+    public static void startIfNotRunning(final Context context, final Playable media, boolean startWhenPrepared, boolean shouldStream) {
+        if (!isRunning) {
+            startService(context, media, startWhenPrepared, shouldStream);
+        }
+    }
+
     public static void startService(final Context context, final Playable media, boolean startWhenPrepared, boolean shouldStream) {
         Intent launchIntent = new Intent(context, PlaybackService.class);
         launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);

@@ -81,15 +81,11 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                 }
             } else { // media is downloaded
                 if (item.hasMedia() && item.getMedia().isCurrentlyPlaying()) {
-                    if (!PlaybackService.isRunning) {
-                        PlaybackService.startService(context, media, true, false);
-                    }
+                    PlaybackService.startIfNotRunning(context, media, true, false);
                     context.sendBroadcast(new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
                 }
                 else if (item.hasMedia() && item.getMedia().isCurrentlyPaused()) {
-                    if (!PlaybackService.isRunning) {
-                        PlaybackService.startService(context, media, true, false);
-                    }
+                    PlaybackService.startIfNotRunning(context, media, true, false);
                     context.sendBroadcast(new Intent(PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE));
                 }
                 else {

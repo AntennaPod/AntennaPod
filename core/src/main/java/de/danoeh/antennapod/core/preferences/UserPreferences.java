@@ -111,7 +111,6 @@ public class UserPreferences {
 
     // JobScheduler
     private static final int JOB_ID_FEED_UPDATE = 42;
-    private static final float JOB_SCHEDULER_TIME_VARIATION = 1.5f;
 
     // Mediaplayer
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
@@ -813,13 +812,19 @@ public class UserPreferences {
             return;
         }
 
-        if (Build.VERSION.SDK_INT >= 23) {
-            JobInfo.Builder builder = getFeedUpdateJobBuilder();
-            builder.setOverrideDeadline((long) (triggerAtMillis * JOB_SCHEDULER_TIME_VARIATION));
+        if (Build.VERSION.SDK_INT >= 24) {
             JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
             if (jobScheduler != null) {
-                jobScheduler.schedule(builder.build());
-                Log.d(TAG, "JobScheduler was set for " + triggerAtMillis);
+                JobInfo oldJob = jobScheduler.getPendingJob(JOB_ID_FEED_UPDATE);
+                if (oldJob == null || oldJob.getIntervalMillis() != intervalMillis) {
+                    JobInfo.Builder builder = getFeedUpdateJobBuilder();
+                    builder.setPeriodic(intervalMillis);
+                    jobScheduler.cancel(JOB_ID_FEED_UPDATE);
+                    jobScheduler.schedule(builder.build());
+                    Log.d(TAG, "JobScheduler was set at interval " + intervalMillis);
+                } else {
+                    Log.d(TAG, "JobScheduler was already set at interval " + intervalMillis + ", ignoring.");
+                }
             }
             return;
         }
@@ -848,12 +853,13 @@ public class UserPreferences {
             alarm.add(Calendar.DATE, 1);
         }
 
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= 24) {
             JobInfo.Builder builder = getFeedUpdateJobBuilder();
             long triggerAtMillis = alarm.getTimeInMillis() - now.getTimeInMillis();
-            builder.setOverrideDeadline((long) (triggerAtMillis * JOB_SCHEDULER_TIME_VARIATION));
+            builder.setMinimumLatency(triggerAtMillis);
             JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
             if (jobScheduler != null) {
+                jobScheduler.cancel(JOB_ID_FEED_UPDATE);
                 jobScheduler.schedule(builder.build());
                 Log.d(TAG, "JobScheduler was set for " + triggerAtMillis);
             }
@@ -876,7 +882,6 @@ public class UserPreferences {
     private static JobInfo.Builder getFeedUpdateJobBuilder() {
         ComponentName serviceComponent = new ComponentName(context, FeedUpdateJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(JOB_ID_FEED_UPDATE, serviceComponent);
-        builder.setMinimumLatency(15 * 60 * 1000);
         builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
         return builder;
     }
