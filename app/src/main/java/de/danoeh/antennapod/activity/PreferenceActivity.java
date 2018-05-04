@@ -145,7 +145,7 @@ public class PreferenceActivity extends AppCompatActivity {
         @Override
         public void onPause() {
             PreferenceActivity activity = instance.get();
-            if (screen == R.xml.preferences_integrations) {
+            if (screen == R.xml.preferences_gpodder) {
                 activity.preferenceController.unregisterGpodnet();
             }
             super.onPause();

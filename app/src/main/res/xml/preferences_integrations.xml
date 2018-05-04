@@ -3,61 +3,14 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceScreen
+    <Preference
             android:key="prefFlattrSettings"
             android:title="@string/flattr_label"
-            android:summary="@string/flattr_summary">
-        <PreferenceScreen
-                android:key="pref_flattr_authenticate"
-                android:summary="@string/pref_flattr_auth_sum"
-                android:title="@string/pref_flattr_auth_title">
-            <intent android:action=".activities.FlattrAuthActivity"/>
-        </PreferenceScreen>
+            android:summary="@string/flattr_summary" />
 
-        <Preference
-                android:key="prefAutoFlattrPrefs"
-                android:summary="@string/pref_auto_flattr_sum"
-                android:title="@string/pref_auto_flattr_title"/>
-        <Preference
-                android:key="prefRevokeAccess"
-                android:summary="@string/pref_revokeAccess_sum"
-                android:title="@string/pref_revokeAccess_title"/>
-    </PreferenceScreen>
-
-    <PreferenceScreen
+    <Preference
             android:key="prefGpodderSettings"
             android:title="@string/gpodnet_main_label"
-            android:summary="@string/gpodnet_summary">
-
-        <PreferenceScreen
-                android:key="pref_gpodnet_authenticate"
-                android:title="@string/pref_gpodnet_authenticate_title"
-                android:summary="@string/pref_gpodnet_authenticate_sum">
-            <intent android:action=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
-        </PreferenceScreen>
-        <Preference
-                android:key="pref_gpodnet_setlogin_information"
-                android:title="@string/pref_gpodnet_setlogin_information_title"
-                android:summary="@string/pref_gpodnet_setlogin_information_sum"/>
-        <Preference
-                android:key="pref_gpodnet_sync"
-                android:title="@string/pref_gpodnet_sync_changes_title"
-                android:summary="@string/pref_gpodnet_sync_changes_sum"/>
-        <Preference
-                android:key="pref_gpodnet_force_full_sync"
-                android:title="@string/pref_gpodnet_full_sync_title"
-                android:summary="@string/pref_gpodnet_full_sync_sum"/>
-        <Preference
-                android:key="pref_gpodnet_logout"
-                android:title="@string/pref_gpodnet_logout_title"/>
-        <Preference
-                android:key="pref_gpodnet_hostname"
-                android:title="@string/pref_gpodnet_sethostname_title"/>
-        <SwitchPreference
-                android:key="pref_gpodnet_notifications"
-                android:title="@string/pref_gpodnet_notifications_title"
-                android:summary="@string/pref_gpodnet_notifications_sum"
-                android:defaultValue="true"/>
-    </PreferenceScreen>
+            android:summary="@string/gpodnet_summary" />
 
 </PreferenceScreen>

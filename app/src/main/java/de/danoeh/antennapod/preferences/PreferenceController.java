@@ -94,8 +94,9 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     private static final String PREF_SCREEN_INTEGRATIONS = "prefScreenIntegrations";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
     private static final String PREF_SCREEN_AUTODL = "prefAutoDownloadSettings";
+    private static final String PREF_SCREEN_FLATTR = "prefFlattrSettings";
+    private static final String PREF_SCREEN_GPODDER = "prefGpodderSettings";
 
-    private static final String PREF_FLATTR_SETTINGS = "prefFlattrSettings";
     private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
     private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
     private static final String PREF_AUTO_FLATTR_PREFS = "prefAutoFlattrPrefs";
@@ -175,6 +176,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 break;
             case R.xml.preferences_integrations:
                 setupIntegrationsScreen();
+                break;
+            case R.xml.preferences_flattr:
+                setupFlattrScreen();
+                break;
+            case R.xml.preferences_gpodder:
+                setupGpodderScreen();
                 break;
             case R.xml.preferences_storage:
                 setupStorageScreen();
@@ -295,7 +302,20 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     private void setupIntegrationsScreen() {
-        final Activity activity = ui.getActivity();
+        final AppCompatActivity activity = ui.getActivity();
+
+        ui.findPreference(PREF_SCREEN_FLATTR).setOnPreferenceClickListener(preference -> {
+            openScreen(R.xml.preferences_flattr, activity);
+            return true;
+        });
+        ui.findPreference(PREF_SCREEN_GPODDER).setOnPreferenceClickListener(preference -> {
+            openScreen(R.xml.preferences_gpodder, activity);
+            return true;
+        });
+    }
+
+    private void setupFlattrScreen() {
+        final AppCompatActivity activity = ui.getActivity();
 
         ui.findPreference(PreferenceController.PREF_FLATTR_REVOKE).setOnPreferenceClickListener(
                 preference -> {
@@ -304,6 +324,29 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     return true;
                 }
         );
+
+        ui.findPreference(PreferenceController.PREF_AUTO_FLATTR_PREFS)
+                .setOnPreferenceClickListener(preference -> {
+                    AutoFlattrPreferenceDialog.newAutoFlattrPreferenceDialog(activity,
+                            new AutoFlattrPreferenceDialog.AutoFlattrPreferenceDialogInterface() {
+                                @Override
+                                public void onCancelled() {
+
+                                }
+
+                                @Override
+                                public void onConfirmed(boolean autoFlattrEnabled, float autoFlattrValue) {
+                                    UserPreferences.setAutoFlattrSettings(autoFlattrEnabled, autoFlattrValue);
+                                    checkFlattrItemVisibility();
+                                }
+                            });
+                    return true;
+                });
+    }
+
+    private void setupGpodderScreen() {
+        final AppCompatActivity activity = ui.getActivity();
+
         ui.findPreference(PreferenceController.PREF_GPODNET_SETLOGIN_INFORMATION)
                 .setOnPreferenceClickListener(preference -> {
                     AuthenticationDialog dialog = new AuthenticationDialog(activity,
@@ -349,24 +392,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(PreferenceController.PREF_GPODNET_HOSTNAME).setOnPreferenceClickListener(
                 preference -> {
                     GpodnetSetHostnameDialog.createDialog(activity).setOnDismissListener(dialog -> updateGpodnetPreferenceScreen());
-                    return true;
-                });
-
-        ui.findPreference(PreferenceController.PREF_AUTO_FLATTR_PREFS)
-                .setOnPreferenceClickListener(preference -> {
-                    AutoFlattrPreferenceDialog.newAutoFlattrPreferenceDialog(activity,
-                            new AutoFlattrPreferenceDialog.AutoFlattrPreferenceDialogInterface() {
-                                @Override
-                                public void onCancelled() {
-
-                                }
-
-                                @Override
-                                public void onConfirmed(boolean autoFlattrEnabled, float autoFlattrValue) {
-                                    UserPreferences.setAutoFlattrSettings(autoFlattrEnabled, autoFlattrValue);
-                                    checkFlattrItemVisibility();
-                                }
-                            });
                     return true;
                 });
     }
@@ -555,6 +580,10 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 return R.string.user_interface_label;
             case R.xml.preferences_integrations:
                 return R.string.integrations_label;
+            case R.xml.preferences_flattr:
+                return R.string.flattr_label;
+            case R.xml.preferences_gpodder:
+                return R.string.gpodnet_main_label;
             default:
                 return R.string.settings_label;
         }
@@ -627,9 +656,14 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 setDataFolderText();
                 break;
             case R.xml.preferences_integrations:
+                setIntegrationsItemVisibility();
+                return;
+            case R.xml.preferences_flattr:
+                checkFlattrItemVisibility();
+                break;
+            case R.xml.preferences_gpodder:
                 GpodnetPreferences.registerOnSharedPreferenceChangeListener(gpoddernetListener);
                 updateGpodnetPreferenceScreen();
-                checkFlattrItemVisibility();
                 break;
             case R.xml.preferences_playback:
                 checkSonicItemVisibility();
@@ -796,10 +830,13 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         }
     }
 
+    private void setIntegrationsItemVisibility() {
+        ui.findPreference(PreferenceController.PREF_SCREEN_FLATTR).setEnabled(FlattrUtils.hasAPICredentials());
+    }
+
     @SuppressWarnings("deprecation")
     private void checkFlattrItemVisibility() {
         boolean hasFlattrToken = FlattrUtils.hasToken();
-        ui.findPreference(PreferenceController.PREF_FLATTR_SETTINGS).setEnabled(FlattrUtils.hasAPICredentials());
         ui.findPreference(PreferenceController.PREF_FLATTR_AUTH).setEnabled(!hasFlattrToken);
         ui.findPreference(PreferenceController.PREF_FLATTR_REVOKE).setEnabled(hasFlattrToken);
         ui.findPreference(PreferenceController.PREF_AUTO_FLATTR_PREFS).setEnabled(hasFlattrToken);
