@@ -62,6 +62,7 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -630,7 +631,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onWidgetUpdaterTick() {
-            //PlayerWidgetJobService.updateWidget(getBaseContext()); // TODO: Not accessible from core module
+            PlayerWidgetJobService.updateWidget(getBaseContext());
         }
 
         @Override
@@ -692,7 +693,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Intent statusUpdate = new Intent(ACTION_PLAYER_STATUS_CHANGED);
             // statusUpdate.putExtra(EXTRA_NEW_PLAYER_STATUS, newInfo.playerStatus.ordinal());
             sendBroadcast(statusUpdate);
-            //PlayerWidgetJobService.updateWidget(getBaseContext()); // TODO: Not accessible from core module
+            PlayerWidgetJobService.updateWidget(getBaseContext());
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_PLAYER_STATUS_CHANGED);
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_META_CHANGED);
         }

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.service;
+package de.danoeh.antennapod.core.service;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -14,15 +14,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RemoteViews;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.receiver.PlayerWidget;
+import de.danoeh.antennapod.core.receiver.PlayerWidget;
 
 /**
  * Updates the state of the player widget
@@ -78,10 +76,9 @@ public class PlayerWidgetJobService extends JobIntentService {
         PendingIntent startMediaplayer = PendingIntent.getActivity(this, 0,
                 PlaybackService.getPlayerActivityIntent(this), 0);
 
-        Intent startApp = new Intent(getBaseContext(), MainActivity.class);
-        startApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startApp.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, QueueFragment.TAG);
-        PendingIntent startAppPending = PendingIntent.getActivity(getBaseContext(), 0, startApp, PendingIntent.FLAG_UPDATE_CURRENT);
+        final PendingIntent startAppPending = PendingIntent.getActivity(this, 0,
+                PlaybackService.getPlayerActivityIntent(this),
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         boolean nothingPlaying = false;
         Playable media;

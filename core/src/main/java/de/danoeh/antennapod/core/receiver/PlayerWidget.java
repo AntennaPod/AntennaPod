@@ -1,17 +1,15 @@
-package de.danoeh.antennapod.receiver;
+package de.danoeh.antennapod.core.receiver;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 import android.util.Log;
+import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
 
 import java.util.Arrays;
 
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.service.PlayerWidgetJobService;
 
 public class PlayerWidget extends AppWidgetProvider {
     private static final String TAG = "PlayerWidget";
