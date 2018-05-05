@@ -100,8 +100,10 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         FeedItem.State state = item.getState();
         if (state == FeedItem.State.PLAYING) {
             holder.butSecondary.setEnabled(false);
+            holder.butSecondary.setAlpha(0.5f);
         } else {
             holder.butSecondary.setEnabled(true);
+            holder.butSecondary.setAlpha(1.0f);
         }
         holder.butSecondary.setFocusable(false);
         holder.butSecondary.setTag(item);
