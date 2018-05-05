@@ -36,7 +36,6 @@ public class AboutActivity extends AppCompatActivity {
     private WebView webView;
     private LinearLayout webViewContainer;
     private Subscription subscription;
-    private int depth = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,6 @@ public class AboutActivity extends AppCompatActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                depth++;
                 if (!url.startsWith("http")) {
                     url = url.replace("file:///android_asset/", "");
                     loadAsset(url);
@@ -101,8 +99,6 @@ public class AboutActivity extends AppCompatActivity {
                             "    </style>" +
                             "</head><body><p>" + webViewData + "</p></body></html>";
                     webViewData = webViewData.replace("\n", "<br/>");
-                } else {
-                    depth = 0;
                 }
                 webViewData = String.format(webViewData, colorString);
                 subscriber.onSuccess(webViewData);
@@ -117,16 +113,15 @@ public class AboutActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         webViewData ->
-                                webView.loadDataWithBaseURL("file:///android_asset/", webViewData.toString(), "text/html", "utf-8", "about:blank"),
+                                webView.loadDataWithBaseURL("file:///android_asset/", webViewData.toString(), "text/html", "utf-8", "file:///android_asset/" + webViewData.toString()),
                         error -> Log.e(TAG, Log.getStackTraceString(error))
                 );
     }
 
     @Override
     public void onBackPressed() {
-        if (depth != 0) {
+        if (webView.canGoBack()) {
             webView.goBack();
-            depth--;
         } else {
             super.onBackPressed();
         }
