@@ -515,6 +515,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else if (status == PlayerStatus.INITIALIZED) {
                     mediaPlayer.setStartWhenPrepared(true);
                     mediaPlayer.prepare();
+                } else if (mediaPlayer.getPlayable() == null) {
+                    startPlayingFromPreferences();
                 }
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
@@ -523,6 +525,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else if (status == PlayerStatus.INITIALIZED) {
                     mediaPlayer.setStartWhenPrepared(true);
                     mediaPlayer.prepare();
+                } else if (mediaPlayer.getPlayable() == null) {
+                    startPlayingFromPreferences();
                 }
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
@@ -574,6 +578,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
         }
         return false;
+    }
+
+    private void startPlayingFromPreferences() {
+        Playable playable = Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext());
+        if (playable != null) {
+            mediaPlayer.playMediaObject(playable, false, true, true);
+            started = true;
+            PlaybackService.this.updateMediaSessionMetadata(playable);
+        }
     }
 
     /**
