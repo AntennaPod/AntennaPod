@@ -77,8 +77,6 @@ import de.greenrobot.event.EventBus;
  * Controls the MediaPlayer that plays a FeedMedia-file
  */
 public class PlaybackService extends MediaBrowserServiceCompat {
-    public static final String FORCE_WIDGET_UPDATE = "de.danoeh.antennapod.FORCE_WIDGET_UPDATE";
-    public static final String STOP_WIDGET_UPDATE = "de.danoeh.antennapod.STOP_WIDGET_UPDATE";
     /**
      * Logging tag
      */
@@ -321,11 +319,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         startForeground(NOTIFICATION_ID, notificationBuilder.build());
         EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_STARTED));
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMedia();
-        Playable lastPlayable = Playable.PlayableUtils.createInstanceFromPreferences(
-                getApplicationContext(), (int) currentlyPlayingMedia, prefs);
-        setupNotification(lastPlayable);
+
+        setupNotification(Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext()));
     }
 
     private NotificationCompat.Builder createBasicNotification() {
@@ -635,7 +630,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onWidgetUpdaterTick() {
-            updateWidget();
+            //PlayerWidgetJobService.updateWidget(getBaseContext()); // TODO: Not accessible from core module
         }
 
         @Override
@@ -697,7 +692,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Intent statusUpdate = new Intent(ACTION_PLAYER_STATUS_CHANGED);
             // statusUpdate.putExtra(EXTRA_NEW_PLAYER_STATUS, newInfo.playerStatus.ordinal());
             sendBroadcast(statusUpdate);
-            updateWidget();
+            //PlayerWidgetJobService.updateWidget(getBaseContext()); // TODO: Not accessible from core module
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_PLAYER_STATUS_CHANGED);
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_META_CHANGED);
         }
@@ -855,7 +850,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (!isCasting) {
                 stopForeground(true);
             }
-            stopWidgetUpdater();
         }
         if (mediaType == null) {
             sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
@@ -1400,16 +1394,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     position,
                     System.currentTimeMillis());
         }
-    }
-
-    private void stopWidgetUpdater() {
-        taskManager.cancelWidgetUpdater();
-        sendBroadcast(new Intent(STOP_WIDGET_UPDATE));
-    }
-
-    private void updateWidget() {
-        PlaybackService.this.sendBroadcast(new Intent(
-                FORCE_WIDGET_UPDATE));
     }
 
     public boolean sleepTimerActive() {

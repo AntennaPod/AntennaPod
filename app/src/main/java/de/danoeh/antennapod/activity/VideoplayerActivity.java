@@ -31,7 +31,6 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.service.PlayerWidgetService;
 import de.danoeh.antennapod.view.AspectRatioVideoView;
 
 import java.lang.ref.WeakReference;

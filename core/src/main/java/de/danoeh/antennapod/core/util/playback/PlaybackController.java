@@ -208,24 +208,13 @@ public abstract class PlaybackController {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private Playable getMediaFromPreferences() {
-        long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMedia();
-        if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
-                    activity.getApplicationContext());
-            return PlayableUtils.createInstanceFromPreferences(activity,
-                    (int) currentlyPlayingMedia, prefs);
-        }
-        return null;
-    }
-
     /**
      * Returns an intent that starts the PlaybackService and plays the last
      * played media or null if no last played media could be found.
      */
     private Intent getPlayLastPlayedMediaIntent() {
         Log.d(TAG, "Trying to restore last played media");
-        Playable media = getMediaFromPreferences();
+        Playable media = PlayableUtils.createInstanceFromPreferences(activity);
         if (media != null) {
             Intent serviceIntent = new Intent(activity, PlaybackService.class);
             serviceIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
@@ -648,7 +637,7 @@ public abstract class PlaybackController {
 
     public Playable getMedia() {
         if (media == null) {
-            media = getMediaFromPreferences();
+            media = PlayableUtils.createInstanceFromPreferences(activity);
         }
         return media;
     }

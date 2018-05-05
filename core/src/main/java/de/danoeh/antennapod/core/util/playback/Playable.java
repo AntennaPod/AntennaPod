@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.util.playback;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 
@@ -174,6 +176,22 @@ public interface Playable extends Parcelable,
      */
     class PlayableUtils {
         private static final String TAG = "PlayableUtils";
+
+        /**
+         * Restores a playable object from a sharedPreferences file. This method might load data from the database,
+         * depending on the type of playable that was restored.
+         *
+         * @return The restored Playable object
+         */
+        public static Playable createInstanceFromPreferences(Context context) {
+            long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMedia();
+            if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+                return PlayableUtils.createInstanceFromPreferences(context,
+                        (int) currentlyPlayingMedia, prefs);
+            }
+            return null;
+        }
 
         /**
          * Restores a playable object from a sharedPreferences file. This method might load data from the database,
