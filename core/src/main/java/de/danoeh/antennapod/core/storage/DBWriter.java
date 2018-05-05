@@ -188,6 +188,9 @@ public class DBWriter {
                     if(queue.remove(item)) {
                         removed.add(item);
                     }
+                    if (item.getState() == FeedItem.State.PLAYING && PlaybackService.isRunning) {
+                        context.stopService(new Intent(context, PlaybackService.class));
+                    }
                     if (item.getMedia() != null
                             && item.getMedia().isDownloaded()) {
                         File mediaFile = new File(item.getMedia()
