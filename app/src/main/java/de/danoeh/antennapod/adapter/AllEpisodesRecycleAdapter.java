@@ -300,9 +300,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             };
             FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
 
-            // Currently, Mark as seen only available on Episodes screen.
-            // Hence it is not added to the more generic FeedItemMenuHandler.onPrepareMenu
-            // see AllEpisodesFragment for the actual logic
             contextMenuInterface.setItemVisibility(R.id.mark_as_seen_item, item.isNew());
         }
 
