@@ -3,10 +3,10 @@ package de.danoeh.antennapod.core.service;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
@@ -16,6 +16,7 @@ import android.util.Pair;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -44,7 +45,7 @@ import de.danoeh.antennapod.core.util.NotificationUtils;
  * Synchronizes local subscriptions with gpodder.net service. The service should be started with ACTION_SYNC as an action argument.
  * This class also provides static methods for starting the GpodnetSyncService.
  */
-public class GpodnetSyncService extends Service {
+public class GpodnetSyncService extends JobIntentService {
     private static final String TAG = "GpodnetSyncService";
 
     private static final long WAIT_INTERVAL = 5000L;
@@ -55,26 +56,19 @@ public class GpodnetSyncService extends Service {
     private static final String ACTION_SYNC_SUBSCRIPTIONS = "de.danoeh.antennapod.intent.action.sync_subscriptions";
     private static final String ACTION_SYNC_ACTIONS = "de.danoeh.antennapod.intent.action.sync_ACTIONS";
 
-    private GpodnetService service;
+    private static final AtomicInteger syncActionCount = new AtomicInteger(0);
 
+    private GpodnetService service;
     private boolean syncSubscriptions = false;
     private boolean syncActions = false;
-    private static final int NOTIFICATION_ID = 2;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        startForeground(NOTIFICATION_ID,
-                new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_GPODNET)
-                        .setSmallIcon(R.drawable.stat_notify_sync)
-                        .setContentTitle(getString(R.string.gpodnet_main_label))
-                        .setContentText(getString(R.string.synchronizing))
-                        .build());
+    public static void enqueueWork(Context context, Intent intent) {
+        enqueueWork(context, GpodnetSyncService.class, 0, intent);
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        final String action = (intent != null) ? intent.getStringExtra(ARG_ACTION) : null;
+    protected void onHandleWork(@NonNull Intent intent) {
+        final String action = intent.getStringExtra(ARG_ACTION);
         if (action != null) {
             switch(action) {
                 case ACTION_SYNC:
@@ -92,24 +86,20 @@ public class GpodnetSyncService extends Service {
             }
             if(syncSubscriptions || syncActions) {
                 Log.d(TAG, String.format("Waiting %d milliseconds before uploading changes", WAIT_INTERVAL));
-                syncWaiterThread.restart();
+                int syncActionId = syncActionCount.incrementAndGet();
+                try {
+                    Thread.sleep(WAIT_INTERVAL);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (syncActionId == syncActionCount.get()) {
+                    // onHandleWork was not called again in the meantime
+                    sync();
+                }
             }
         } else {
             Log.e(TAG, "Received invalid intent: action argument is null");
         }
-        return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
-        syncWaiterThread.interrupt();
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     private synchronized GpodnetService tryLogin() throws GpodnetServiceException {
@@ -140,8 +130,6 @@ public class GpodnetSyncService extends Service {
             }
             syncActions = false;
         }
-        stopForeground(true);
-        stopSelf();
     }
 
     private synchronized void syncSubscriptionChanges() {
@@ -347,69 +335,11 @@ public class GpodnetSyncService extends Service {
         nm.notify(id, notification);
     }
 
-    private final WaiterThread syncWaiterThread = new WaiterThread(WAIT_INTERVAL) {
-        @Override
-        public void onWaitCompleted() {
-            sync();
-        }
-    };
-
-    private abstract class WaiterThread {
-        private final long waitInterval;
-        private Thread thread;
-
-        private WaiterThread(long waitInterval) {
-            this.waitInterval = waitInterval;
-            reinit();
-        }
-
-        public abstract void onWaitCompleted();
-
-        public void exec() {
-            if (!thread.isAlive()) {
-                thread.start();
-            }
-        }
-
-        private void reinit() {
-            if (thread != null && thread.isAlive()) {
-            Log.d(TAG, "Interrupting waiter thread");
-                thread.interrupt();
-            }
-            thread = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(waitInterval);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if (!isInterrupted()) {
-                        synchronized (this) {
-                            onWaitCompleted();
-                        }
-                    }
-                }
-            };
-        }
-
-        public void restart() {
-            reinit();
-            exec();
-        }
-
-        public void interrupt() {
-            if (thread != null && thread.isAlive()) {
-                thread.interrupt();
-            }
-        }
-    }
-
     public static void sendSyncIntent(Context context) {
         if (GpodnetPreferences.loggedIn()) {
             Intent intent = new Intent(context, GpodnetSyncService.class);
             intent.putExtra(ARG_ACTION, ACTION_SYNC);
-            ContextCompat.startForegroundService(context, intent);
+            enqueueWork(context, intent);
         }
     }
 
@@ -417,7 +347,7 @@ public class GpodnetSyncService extends Service {
         if (GpodnetPreferences.loggedIn()) {
             Intent intent = new Intent(context, GpodnetSyncService.class);
             intent.putExtra(ARG_ACTION, ACTION_SYNC_SUBSCRIPTIONS);
-            ContextCompat.startForegroundService(context, intent);
+            enqueueWork(context, intent);
         }
     }
 
@@ -425,7 +355,7 @@ public class GpodnetSyncService extends Service {
         if (GpodnetPreferences.loggedIn()) {
             Intent intent = new Intent(context, GpodnetSyncService.class);
             intent.putExtra(ARG_ACTION, ACTION_SYNC_ACTIONS);
-            ContextCompat.startForegroundService(context, intent);
+            enqueueWork(context, intent);
         }
     }
 }
