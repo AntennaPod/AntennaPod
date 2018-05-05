@@ -30,6 +30,7 @@ import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.BuildConfig;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -623,7 +624,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                             remover.skipOnCompletion = true;
                             int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
                             if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                                sendBroadcast(new Intent(
+                                sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX +
                                         PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
                             }
                         }

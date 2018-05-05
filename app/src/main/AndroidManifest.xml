@@ -128,7 +128,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="de.danoeh.antennapod.FORCE_WIDGET_UPDATE"/>
+                <action android:name="${broadcastPrefix}FORCE_WIDGET_UPDATE"/>
             </intent-filter>
 
             <meta-data
@@ -136,7 +136,7 @@
                 android:resource="@xml/player_widget_info"/>
 
             <intent-filter>
-                <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
+                <action android:name="${broadcastPrefix}STOP_WIDGET_UPDATE"/>
             </intent-filter>
         </receiver>
 

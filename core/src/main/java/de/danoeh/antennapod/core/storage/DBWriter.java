@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.BuildConfig;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -119,7 +120,7 @@ public class DBWriter {
                         if (PlaybackPreferences
                                 .getCurrentlyPlayingFeedMediaId() == media
                                 .getId()) {
-                            context.sendBroadcast(new Intent(
+                            context.sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX +
                                     PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
                         }
                     }
@@ -157,7 +158,7 @@ public class DBWriter {
                 if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
                         && PlaybackPreferences.getLastPlayedFeedId() == feed
                         .getId()) {
-                    context.sendBroadcast(new Intent(
+                    context.sendBroadcast(new Intent(BuildConfig.BROADCAST_PREFIX +
                             PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putLong(
