@@ -244,7 +244,6 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             if (item.hasMedia()) {
                 FeedMedia media = item.getMedia();
                 if (!media.isDownloaded()) {
-                    PlaybackService.startIfNotRunning(getActivity(), media, true, false);
                     DBTasks.playMedia(getActivity(), media, true, true, true);
                     ((MainActivity) getActivity()).dismissChildFragment();
                 } else {

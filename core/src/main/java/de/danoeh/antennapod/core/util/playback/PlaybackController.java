@@ -221,18 +221,16 @@ public abstract class PlaybackController {
             return null;
         }
 
-        Intent serviceIntent = new Intent(activity, PlaybackService.class);
-        serviceIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
-        serviceIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, false);
-        serviceIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, true);
         boolean fileExists = media.localFileAvailable();
         boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
         if (!fileExists && !lastIsStream && media instanceof FeedMedia) {
             DBTasks.notifyMissingFeedMediaFile(activity, (FeedMedia) media);
         }
-        serviceIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
-                lastIsStream || !fileExists);
-        return serviceIntent;
+
+        return new PlaybackServiceStarter(activity, media)
+                .startWhenPrepared(false)
+                .shouldStream(lastIsStream || !fileExists)
+                .getIntent();
     }
 
 
@@ -586,7 +584,10 @@ public abstract class PlaybackController {
 
     public void playPause() {
         if (playbackService == null) {
-            PlaybackService.startService(activity, media, true, false);
+            new PlaybackServiceStarter(activity, media)
+                    .startWhenPrepared(true)
+                    .streamIfLastWasStream()
+                    .start();
             Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
             return;
         }

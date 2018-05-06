@@ -40,6 +40,7 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -125,8 +126,13 @@ public final class DBTasks {
                             media);
                 }
             }
-            // Needs to be called even if the service is already running to deliver the new media intent
-            PlaybackService.startService(context, media, startWhenPrepared, shouldStream);
+
+            new PlaybackServiceStarter(context, media)
+                    .callEvenIfRunning(true)
+                    .startWhenPrepared(startWhenPrepared)
+                    .shouldStream(shouldStream)
+                    .start();
+
             if (showPlayer) {
                 // Launch media player
                 context.startActivity(PlaybackService.getPlayerActivityIntent(
