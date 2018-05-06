@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -150,42 +151,43 @@ public final class DBTasks {
      *
      * @param context  Might be used for accessing the database
      * @param feeds    List of Feeds that should be refreshed.
-     * @param callback Called after everything was added enqueued for download
+     * @param callback Called after everything was added enqueued for download. Might be null.
      */
-    public static void refreshAllFeeds(final Context context, final List<Feed> feeds, Runnable callback) {
-        if (isRefreshing.compareAndSet(false, true)) {
-            new Thread(() -> {
-                if (feeds != null) {
-                    refreshFeeds(context, feeds);
-                } else {
-                    refreshFeeds(context, DBReader.getFeedList());
-                }
-                isRefreshing.set(false);
-
-                SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-                prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
-
-                if (FlattrUtils.hasToken()) {
-                    Log.d(TAG, "Flattring all pending things.");
-                    new FlattrClickWorker(context).executeAsync(); // flattr pending things
-
-                    Log.d(TAG, "Fetching flattr status.");
-                    new FlattrStatusFetcher(context).start();
-
-                }
-                if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
-                    GpodnetSyncService.sendSyncIntent(context);
-                }
-                Log.d(TAG, "refreshAllFeeds autodownload");
-                autodownloadUndownloadedItems(context);
-
-                if (callback != null) {
-                    callback.run();
-                }
-            }).start();
-        } else {
+    public static void refreshAllFeeds(final Context context, final List<Feed> feeds, @Nullable Runnable callback) {
+        if (!isRefreshing.compareAndSet(false, true)) {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
+            return;
         }
+
+        new Thread(() -> {
+            if (feeds != null) {
+                refreshFeeds(context, feeds);
+            } else {
+                refreshFeeds(context, DBReader.getFeedList());
+            }
+            isRefreshing.set(false);
+
+            SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
+
+            if (FlattrUtils.hasToken()) {
+                Log.d(TAG, "Flattring all pending things.");
+                new FlattrClickWorker(context).executeAsync(); // flattr pending things
+
+                Log.d(TAG, "Fetching flattr status.");
+                new FlattrStatusFetcher(context).start();
+
+            }
+            if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
+                GpodnetSyncService.sendSyncIntent(context);
+            }
+            Log.d(TAG, "refreshAllFeeds autodownload");
+            autodownloadUndownloadedItems(context);
+
+            if (callback != null) {
+                callback.run();
+            }
+        }).start();
     }
 
     /**

@@ -80,15 +80,13 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                     Toast.makeText(context, R.string.download_canceled_msg, Toast.LENGTH_LONG).show();
                 }
             } else { // media is downloaded
-                if (item.hasMedia() && item.getMedia().isCurrentlyPlaying()) {
+                if (media.isCurrentlyPlaying()) {
                     PlaybackService.startIfNotRunning(context, media, true, false);
                     context.sendBroadcast(new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
-                }
-                else if (item.hasMedia() && item.getMedia().isCurrentlyPaused()) {
+                } else if (media.isCurrentlyPaused()) {
                     PlaybackService.startIfNotRunning(context, media, true, false);
                     context.sendBroadcast(new Intent(PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE));
-                }
-                else {
+                } else {
                     DBTasks.playMedia(context, media, false, true, false);
                 }
             }

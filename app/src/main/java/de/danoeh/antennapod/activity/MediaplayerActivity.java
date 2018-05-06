@@ -619,12 +619,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     public void onEventMainThread(ServiceEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        switch(event.action) {
-            case SERVICE_STARTED:
-                if (controller != null) {
-                    controller.init();
-                }
-                break;
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
+            if (controller != null) {
+                controller.init();
+            }
+
         }
     }
 

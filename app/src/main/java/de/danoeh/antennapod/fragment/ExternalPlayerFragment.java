@@ -168,35 +168,35 @@ public class ExternalPlayerFragment extends Fragment {
 
     private boolean loadMediaInfo() {
         Log.d(TAG, "Loading media info");
-        if (controller != null) {
-            Playable media = controller.getMedia();
-            if (media != null) {
-                txtvTitle.setText(media.getEpisodeTitle());
-                mFeedName.setText(media.getFeedTitle());
-                onPositionObserverUpdate();
+        if (controller == null) {
+            Log.w(TAG, "loadMediaInfo was called while PlaybackController was null!");
+            return false;
+        }
 
-                Glide.with(getActivity())
-                        .load(media.getImageLocation())
-                        .placeholder(R.color.light_gray)
-                        .error(R.color.light_gray)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
-                        .dontAnimate()
-                        .into(imgvCover);
+        Playable media = controller.getMedia();
+        if (media != null) {
+            txtvTitle.setText(media.getEpisodeTitle());
+            mFeedName.setText(media.getFeedTitle());
+            onPositionObserverUpdate();
 
-                fragmentLayout.setVisibility(View.VISIBLE);
-                if (controller.isPlayingVideoLocally()) {
-                    butPlay.setVisibility(View.GONE);
-                } else {
-                    butPlay.setVisibility(View.VISIBLE);
-                }
-                return true;
+            Glide.with(getActivity())
+                    .load(media.getImageLocation())
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate()
+                    .into(imgvCover);
+
+            fragmentLayout.setVisibility(View.VISIBLE);
+            if (controller.isPlayingVideoLocally()) {
+                butPlay.setVisibility(View.GONE);
             } else {
-                Log.w(TAG,  "loadMediaInfo was called while the media object of playbackService was null!");
-                return false;
+                butPlay.setVisibility(View.VISIBLE);
             }
+            return true;
         } else {
-            Log.w(TAG, "loadMediaInfo was called while playbackService was null!");
+            Log.w(TAG,  "loadMediaInfo was called while the media object of playbackService was null!");
             return false;
         }
     }

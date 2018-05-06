@@ -31,9 +31,6 @@ public class PlayerWidgetJobService extends JobIntentService {
     private PlaybackService playbackService;
     private final Object waitForService = new Object();
 
-    public PlayerWidgetJobService() {
-    }
-
     public static void updateWidget(Context context) {
         enqueueWork(context, PlayerWidgetJobService.class, 0, new Intent(context, PlayerWidgetJobService.class));
     }
