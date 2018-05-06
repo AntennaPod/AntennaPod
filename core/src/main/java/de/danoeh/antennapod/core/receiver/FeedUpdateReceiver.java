@@ -20,7 +20,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Received intent");
         ClientConfig.initialize(context);
-        FeedUpdateUtils.startAutoUpdate(context, false);
+        FeedUpdateUtils.startAutoUpdate(context, null);
         UserPreferences.restartUpdateAlarm(false);
     }
 

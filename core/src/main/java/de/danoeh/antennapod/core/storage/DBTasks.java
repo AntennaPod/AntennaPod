@@ -148,45 +148,41 @@ public final class DBTasks {
      * Refreshes a given list of Feeds in a separate Thread. This method might ignore subsequent calls if it is still
      * enqueuing Feeds for download from a previous call
      *
-     * @param context Might be used for accessing the database
-     * @param feeds   List of Feeds that should be refreshed.
+     * @param context  Might be used for accessing the database
+     * @param feeds    List of Feeds that should be refreshed.
+     * @param callback Called after everything was added enqueued for download
      */
-    public static void refreshAllFeeds(final Context context, final List<Feed> feeds) {
-        new Thread(() -> refreshAllFeedsSynchronously(context, feeds)).start();
-    }
-
-    /**
-     * Refreshes a given list of Feeds in the current Thread. This method might ignore subsequent calls if it is still
-     * enqueuing Feeds for download from a previous call. MUST NOT be executed from main thread.
-     *
-     * @param context Might be used for accessing the database
-     * @param feeds   List of Feeds that should be refreshed.
-     */
-    public static void refreshAllFeedsSynchronously(final Context context, final List<Feed> feeds) {
+    public static void refreshAllFeeds(final Context context, final List<Feed> feeds, Runnable callback) {
         if (isRefreshing.compareAndSet(false, true)) {
-            if (feeds != null) {
-                refreshFeeds(context, feeds);
-            } else {
-                refreshFeeds(context, DBReader.getFeedList());
-            }
-            isRefreshing.set(false);
+            new Thread(() -> {
+                if (feeds != null) {
+                    refreshFeeds(context, feeds);
+                } else {
+                    refreshFeeds(context, DBReader.getFeedList());
+                }
+                isRefreshing.set(false);
 
-            SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-            prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
+                SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
 
-            if (FlattrUtils.hasToken()) {
-                Log.d(TAG, "Flattring all pending things.");
-                new FlattrClickWorker(context).executeAsync(); // flattr pending things
+                if (FlattrUtils.hasToken()) {
+                    Log.d(TAG, "Flattring all pending things.");
+                    new FlattrClickWorker(context).executeAsync(); // flattr pending things
 
-                Log.d(TAG, "Fetching flattr status.");
-                new FlattrStatusFetcher(context).start();
+                    Log.d(TAG, "Fetching flattr status.");
+                    new FlattrStatusFetcher(context).start();
 
-            }
-            if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
-                GpodnetSyncService.sendSyncIntent(context);
-            }
-            Log.d(TAG, "refreshAllFeeds autodownload");
-            autodownloadUndownloadedItems(context);
+                }
+                if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
+                    GpodnetSyncService.sendSyncIntent(context);
+                }
+                Log.d(TAG, "refreshAllFeeds autodownload");
+                autodownloadUndownloadedItems(context);
+
+                if (callback != null) {
+                    callback.run();
+                }
+            }).start();
         } else {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
         }
@@ -344,7 +340,7 @@ public final class DBTasks {
         Log.d(TAG, "last refresh: " + Converter.getDurationStringLocalized(context,
                 System.currentTimeMillis() - lastRefresh) + " ago");
         if(lastRefresh <= System.currentTimeMillis() - interval) {
-            DBTasks.refreshAllFeeds(context, null);
+            DBTasks.refreshAllFeeds(context, null, null);
         }
     }
 
