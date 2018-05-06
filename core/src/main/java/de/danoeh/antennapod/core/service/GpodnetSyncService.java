@@ -56,13 +56,13 @@ public class GpodnetSyncService extends JobIntentService {
     private static final String ACTION_SYNC_SUBSCRIPTIONS = "de.danoeh.antennapod.intent.action.sync_subscriptions";
     private static final String ACTION_SYNC_ACTIONS = "de.danoeh.antennapod.intent.action.sync_ACTIONS";
 
-    private static final AtomicInteger syncActionCount = new AtomicInteger(0);
-
     private GpodnetService service;
-    private boolean syncSubscriptions = false;
-    private boolean syncActions = false;
 
-    public static void enqueueWork(Context context, Intent intent) {
+    private static final AtomicInteger syncActionCount = new AtomicInteger(0);
+    private static boolean syncSubscriptions = false;
+    private static boolean syncActions = false;
+
+    private static void enqueueWork(Context context, Intent intent) {
         enqueueWork(context, GpodnetSyncService.class, 0, intent);
     }
 
