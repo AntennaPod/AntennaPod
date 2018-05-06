@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import com.bytehamster.lib.preferencesearch.SearchPreference;
 import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
@@ -489,6 +490,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     private void setupMainScreen() {
         final AppCompatActivity activity = ui.getActivity();
+        setupSearch();
         ui.findPreference(PREF_SCREEN_USER_INTERFACE).setOnPreferenceClickListener(preference -> {
             openScreen(R.xml.preferences_user_interface, activity);
             return true;
@@ -555,6 +557,25 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         });
     }
 
+    private void setupSearch() {
+        final AppCompatActivity activity = ui.getActivity();
+
+        SearchPreference searchPreference = (SearchPreference) ui.findPreference("searchPreference");
+        searchPreference.setActivity(activity);
+        searchPreference.setFragmentContainerViewId(R.id.content);
+        searchPreference.setBreadcrumbsEnabled(true);
+
+        searchPreference.addResourceFileToIndex(R.xml.preferences_user_interface, getTitleOfPage(R.xml.preferences_user_interface));
+        searchPreference.addResourceFileToIndex(R.xml.preferences_playback, getTitleOfPage(R.xml.preferences_playback));
+        searchPreference.addResourceFileToIndex(R.xml.preferences_network, getTitleOfPage(R.xml.preferences_network));
+        searchPreference.addResourceFileToIndex(R.xml.preferences_storage, getTitleOfPage(R.xml.preferences_storage));
+        String integrations = activity.getString(getTitleOfPage(R.xml.preferences_integrations));
+        String flattr = activity.getString(getTitleOfPage(R.xml.preferences_flattr));
+        String gpodder = activity.getString(getTitleOfPage(R.xml.preferences_gpodder));
+        searchPreference.addResourceFileToIndex(R.xml.preferences_flattr, integrations + " > " + flattr);
+        searchPreference.addResourceFileToIndex(R.xml.preferences_gpodder, integrations + " > " + gpodder);
+    }
+
     public PreferenceFragmentCompat openScreen(int preferences, AppCompatActivity activity) {
         PreferenceFragmentCompat prefFragment = new PreferenceActivity.MainFragment();
         Bundle args = new Bundle();
@@ -566,7 +587,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         return prefFragment;
     }
 
-    public int getTitleOfPage(int preferences) {
+    public static int getTitleOfPage(int preferences) {
         switch (preferences) {
             case R.xml.preferences_network:
                 return R.string.network_pref;
@@ -1152,6 +1173,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public interface PreferenceUI {
 
         void setFragment(PreferenceFragmentCompat fragment);
+        PreferenceFragmentCompat getFragment();
 
         /**
          * Finds a preference based on its key.
