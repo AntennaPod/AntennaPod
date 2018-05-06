@@ -1,24 +1,22 @@
 package de.danoeh.antennapod.core.preferences;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
-
-import de.danoeh.antennapod.core.service.FeedUpdateJobService;
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.service.download.ProxyConfig;
+import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -30,15 +28,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
-import de.danoeh.antennapod.core.service.download.ProxyConfig;
-import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.util.Converter;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -108,9 +97,6 @@ public class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
-
-    // JobScheduler
-    private static final int JOB_ID_FEED_UPDATE = 42;
 
     // Mediaplayer
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
@@ -808,42 +794,10 @@ public class UserPreferences {
         Log.d(TAG, "Restarting update alarm.");
 
         if (Build.VERSION.SDK_INT >= 24) {
-            JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-            if (jobScheduler != null) {
-                JobInfo oldJob = jobScheduler.getPendingJob(JOB_ID_FEED_UPDATE);
-                if (oldJob == null || oldJob.getIntervalMillis() != intervalMillis) {
-                    JobInfo.Builder builder = getFeedUpdateJobBuilder();
-                    builder.setPeriodic(intervalMillis);
-                    jobScheduler.cancel(JOB_ID_FEED_UPDATE);
-
-                    if (intervalMillis <= 0) {
-                        Log.d(TAG, "Automatic update was deactivated");
-                        return;
-                    }
-
-                    jobScheduler.schedule(builder.build());
-                    Log.d(TAG, "JobScheduler was set at interval " + intervalMillis);
-                } else {
-                    Log.d(TAG, "JobScheduler was already set at interval " + intervalMillis + ", ignoring.");
-                }
-            }
-            return;
+            AutoUpdateManager.restartJobServiceInterval(context, intervalMillis);
+        } else {
+            AutoUpdateManager.restartAlarmManagerInterval(context, triggerAtMillis, intervalMillis);
         }
-
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, FeedUpdateReceiver.class);
-        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        alarmManager.cancel(updateIntent);
-
-        if (intervalMillis <= 0) {
-            Log.d(TAG, "Automatic update was deactivated");
-            return;
-        }
-
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + triggerAtMillis,
-                updateIntent);
-        Log.d(TAG, "Changed alarm to new interval " + TimeUnit.MILLISECONDS.toHours(intervalMillis) + " h");
     }
 
     /**
@@ -861,37 +815,11 @@ public class UserPreferences {
         }
 
         if (Build.VERSION.SDK_INT >= 24) {
-            JobInfo.Builder builder = getFeedUpdateJobBuilder();
             long triggerAtMillis = alarm.getTimeInMillis() - now.getTimeInMillis();
-            builder.setMinimumLatency(triggerAtMillis);
-            JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-            if (jobScheduler != null) {
-                jobScheduler.cancel(JOB_ID_FEED_UPDATE);
-                jobScheduler.schedule(builder.build());
-                Log.d(TAG, "JobScheduler was set for " + triggerAtMillis);
-            }
-            return;
+            AutoUpdateManager.restartJobServiceTriggerAt(context, triggerAtMillis);
+        } else {
+            AutoUpdateManager.restartAlarmManagerTimeOfDay(context, alarm);
         }
-
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
-                new Intent(context, FeedUpdateReceiver.class), 0);
-        alarmManager.cancel(updateIntent);
-
-        Log.d(TAG, "Alarm set for: " + alarm.toString() + " : " + alarm.getTimeInMillis());
-        alarmManager.set(AlarmManager.RTC_WAKEUP,
-                alarm.getTimeInMillis(),
-                updateIntent);
-        Log.d(TAG, "Changed alarm to new time of day " + hoursOfDay + ":" + minute);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private static JobInfo.Builder getFeedUpdateJobBuilder() {
-        ComponentName serviceComponent = new ComponentName(context, FeedUpdateJobService.class);
-        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID_FEED_UPDATE, serviceComponent);
-        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
-        builder.setPersisted(true);
-        return builder;
     }
 
     /**
