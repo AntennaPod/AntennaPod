@@ -172,6 +172,7 @@ dependencies {
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     implementation 'com.github.mfietz:fyydlin:v0.3'
+    implementation 'com.github.faruktoptas:FancyShowCaseView:1.0.0'
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
 }

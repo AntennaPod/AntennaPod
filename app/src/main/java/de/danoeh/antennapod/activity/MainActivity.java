@@ -9,7 +9,6 @@ import android.content.res.Configuration;
 import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +29,7 @@ import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.dialog.ShowCaseHelper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -224,14 +224,40 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private void checkFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
-            new Handler().postDelayed(() -> drawerLayout.openDrawer(navDrawer), 1500);
-
             // for backward compatibility, we only change defaults for fresh installs
             UserPreferences.setUpdateInterval(12);
 
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
             edit.commit();
+
+
+            if (UserPreferences.shouldShowOnboarding("MainActivity")) {
+                drawerLayout.postDelayed(() -> {
+                    drawerLayout.openDrawer(navDrawer);
+
+                    View addPodcastButton = navList.getChildAt(navAdapter.getTags().indexOf(AddFeedFragment.TAG));
+                    if (addPodcastButton == null) {
+                        return;
+                    }
+                    int width = addPodcastButton.getWidth();
+                    int height = addPodcastButton.getHeight();
+                    int posX = width / 2; // We need to use this because the drawer might still be moving
+                    int posY = (int) addPodcastButton.getY() + height/2;
+
+                    ShowCaseHelper.brandedShowcase(this, R.string.onboarding_welcome)
+                            .focusRectAtPosition(posX, posY, width, height)
+                            .dismissListener(new ShowCaseHelper.DismissListener() {
+                                @Override
+                                public void onDismiss(String id) {
+                                    loadFragment(AddFeedFragment.TAG, null);
+                                    drawerLayout.closeDrawer(navDrawer);
+                                }
+                            })
+                            .build()
+                            .show();
+                }, 1000);
+            }
         }
     }
 
