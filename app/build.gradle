@@ -139,6 +139,7 @@ dependencies {
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
+    implementation "com.android.support:preference-v14:$supportVersion"
     implementation "com.android.support:gridlayout-v7:$supportVersion"
     implementation "com.android.support:percent:$supportVersion"
     implementation "com.android.support:recyclerview-v7:$supportVersion"

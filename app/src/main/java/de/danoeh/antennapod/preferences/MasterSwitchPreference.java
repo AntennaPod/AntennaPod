@@ -4,13 +4,14 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.v14.preference.SwitchPreference;
+import android.support.v7.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
 
-public class MasterSwitchPreference extends SwitchCompatPreference {
+public class MasterSwitchPreference extends SwitchPreference {
 
     public MasterSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -29,15 +30,16 @@ public class MasterSwitchPreference extends SwitchCompatPreference {
         super(context);
     }
 
+
     @Override
-    protected void onBindView(View view) {
-        super.onBindView(view);
+    public void onBindViewHolder(PreferenceViewHolder holder) {
+        super.onBindViewHolder(holder);
 
         TypedValue typedValue = new TypedValue();
         getContext().getTheme().resolveAttribute(R.attr.master_switch_background, typedValue, true);
-        view.setBackgroundColor(typedValue.data);
+        holder.itemView.setBackgroundColor(typedValue.data);
 
-        TextView title = (TextView) view.findViewById(android.R.id.title);
+        TextView title = (TextView) holder.findViewById(android.R.id.title);
         if (title != null) {
             title.setTypeface(title.getTypeface(), Typeface.BOLD);
         }

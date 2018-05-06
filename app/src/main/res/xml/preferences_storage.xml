@@ -13,13 +13,13 @@
             android:key="prefImageCacheSize"
             android:summary="@string/pref_image_cache_size_sum"
             android:defaultValue="100"/>
-    <de.danoeh.antennapod.preferences.SwitchCompatPreference
+    <SwitchPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefAutoDelete"
             android:summary="@string/pref_auto_delete_sum"
             android:title="@string/pref_auto_delete_title"/>
-    <de.danoeh.antennapod.preferences.SwitchCompatPreference
+    <SwitchPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefFavoriteKeepsEpisode"
