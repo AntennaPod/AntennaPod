@@ -447,8 +447,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             if (keycode != -1) {
                 Log.d(TAG, "Received media button event");
-                handleKeycode(keycode, intent.getIntExtra(MediaButtonReceiver.EXTRA_SOURCE,
-                        InputDeviceCompat.SOURCE_CLASS_NONE));
+                handleKeycode(keycode, true);
             } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
                 started = true;
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
@@ -472,7 +471,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Handles media button events
      * return: keycode was handled
      */
-    private boolean handleKeycode(int keycode, int source) {
+    private boolean handleKeycode(int keycode, boolean notificationButton) {
         Log.d(TAG, "Handling keycode: " + keycode);
         final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         final PlayerStatus status = info.playerStatus;
@@ -505,7 +504,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 return true;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                if (source == InputDevice.SOURCE_CLASS_NONE ||
+                if (notificationButton ||
                         UserPreferences.shouldHardwareButtonSkip()) {
                     // assume the skip command comes from a notification or the lockscreen
                     // a >| skip button should actually skip
@@ -1762,11 +1761,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public boolean onMediaButtonEvent(final Intent mediaButton) {
             Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
             if (mediaButton != null) {
-                KeyEvent keyEvent = (KeyEvent) mediaButton.getExtras().get(Intent.EXTRA_KEY_EVENT);
+                KeyEvent keyEvent = (KeyEvent) mediaButton.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
                 if (keyEvent != null &&
                         keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getRepeatCount() == 0) {
-                    return handleKeycode(keyEvent.getKeyCode(), keyEvent.getSource());
+                    return handleKeycode(keyEvent.getKeyCode(), false);
                 }
             }
             return false;
