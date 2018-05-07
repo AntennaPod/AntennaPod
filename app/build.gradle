@@ -173,6 +173,7 @@ dependencies {
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     implementation 'com.github.mfietz:fyydlin:v0.3'
+    implementation 'com.github.ByteHamster:SearchPreference:v1.0.3'
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
 }

@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import com.bytehamster.lib.preferencesearch.SearchPreference;
 import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
@@ -489,6 +490,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     private void setupMainScreen() {
         final AppCompatActivity activity = ui.getActivity();
+        setupSearch();
         ui.findPreference(PREF_SCREEN_USER_INTERFACE).setOnPreferenceClickListener(preference -> {
             openScreen(R.xml.preferences_user_interface, activity);
             return true;
@@ -555,6 +557,41 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         });
     }
 
+    private void setupSearch() {
+        final AppCompatActivity activity = ui.getActivity();
+
+        SearchPreference searchPreference = (SearchPreference) ui.findPreference("searchPreference");
+        searchPreference.setActivity(activity);
+        searchPreference.setFragmentContainerViewId(R.id.content);
+        searchPreference.setBreadcrumbsEnabled(true);
+
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_user_interface))
+                .addFile(R.xml.preferences_user_interface);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_playback))
+                .addFile(R.xml.preferences_playback);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
+                .addFile(R.xml.preferences_network);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_storage))
+                .addFile(R.xml.preferences_storage);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
+                .addBreadcrumb(R.string.automation)
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_autodownload))
+                .addFile(R.xml.preferences_autodownload);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_gpodder))
+                .addFile(R.xml.preferences_gpodder);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr))
+                .addFile(R.xml.preferences_flattr);
+    }
+
     public PreferenceFragmentCompat openScreen(int preferences, AppCompatActivity activity) {
         PreferenceFragmentCompat prefFragment = new PreferenceActivity.MainFragment();
         Bundle args = new Bundle();
@@ -566,7 +603,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         return prefFragment;
     }
 
-    public int getTitleOfPage(int preferences) {
+    public static int getTitleOfPage(int preferences) {
         switch (preferences) {
             case R.xml.preferences_network:
                 return R.string.network_pref;
@@ -1152,6 +1189,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     public interface PreferenceUI {
 
         void setFragment(PreferenceFragmentCompat fragment);
+        PreferenceFragmentCompat getFragment();
 
         /**
          * Finds a preference based on its key.

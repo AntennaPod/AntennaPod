@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.bytehamster.lib.preferencesearch.SearchPreference
+            android:key="searchPreference" />
+
     <Preference
-        android:key="prefScreenInterface"
-        android:title="@string/user_interface_label"
-        android:icon="?attr/type_video" />
+            android:key="prefScreenInterface"
+            android:title="@string/user_interface_label"
+            android:icon="?attr/type_video" />
 
     <Preference
             android:key="prefScreenPlayback"

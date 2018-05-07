@@ -14,6 +14,9 @@ import android.widget.FrameLayout;
 
 import java.lang.ref.WeakReference;
 
+import com.bytehamster.lib.preferencesearch.SearchPreference;
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.preferences.PreferenceController;
@@ -22,7 +25,7 @@ import de.danoeh.antennapod.preferences.PreferenceController;
  * PreferenceActivity for API 11+. In order to change the behavior of the preference UI, see
  * PreferenceController.
  */
-public class PreferenceActivity extends AppCompatActivity {
+public class PreferenceActivity extends AppCompatActivity implements SearchPreferenceResultListener {
 
     public static final String PARAM_RESOURCE = "resource";
     private static WeakReference<PreferenceActivity> instance;
@@ -33,6 +36,11 @@ public class PreferenceActivity extends AppCompatActivity {
         @Override
         public void setFragment(PreferenceFragmentCompat fragment) {
             this.fragment = fragment;
+        }
+
+        @Override
+        public PreferenceFragmentCompat getFragment() {
+            return fragment;
         }
 
         @Override
@@ -76,12 +84,21 @@ public class PreferenceActivity extends AppCompatActivity {
         // since the MainFragment depends on the preferenceController already being created
         preferenceController = new PreferenceController(preferenceUI);
 
+        showPreferenceScreen(R.xml.preferences, false);
+    }
+
+    private void showPreferenceScreen(int screen, boolean addHistory) {
         PreferenceFragmentCompat prefFragment = new MainFragment();
         preferenceUI.setFragment(prefFragment);
         Bundle args = new Bundle();
-        args.putInt(PARAM_RESOURCE, R.xml.preferences);
+        args.putInt(PARAM_RESOURCE, screen);
         prefFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.content, prefFragment).commit();
+        if (addHistory) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, prefFragment)
+                    .addToBackStack(getString(PreferenceController.getTitleOfPage(screen))).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, prefFragment).commit();
+        }
     }
 
     @Override
@@ -111,6 +128,12 @@ public class PreferenceActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onSearchResultClicked(SearchPreferenceResult result) {
+        showPreferenceScreen(result.getResourceFile(), true);
+        result.highlight(preferenceUI.getFragment());
+    }
+
     public static class MainFragment extends PreferenceFragmentCompat {
         private int screen;
 
@@ -136,7 +159,7 @@ public class PreferenceActivity extends AppCompatActivity {
             super.onResume();
             PreferenceActivity activity = instance.get();
             if(activity != null && activity.preferenceController != null) {
-                activity.setTitle(activity.preferenceController.getTitleOfPage(screen));
+                activity.setTitle(PreferenceController.getTitleOfPage(screen));
                 activity.preferenceUI.setFragment(this);
                 activity.preferenceController.onResume(screen);
             }
