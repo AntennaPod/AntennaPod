@@ -709,4 +709,8 @@
     <string name="cast_failed_seek">Failed to seek to the new position on the cast device</string>
     <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>
     <string name="cast_failed_media_error_skipping">Error playing media. Skipping&#8230;</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome">Welcome to AntennaPod!\nLet\'s add your first podcast.</string>
+    <string name="onboarding_search_podcast">Find a podcast that you like</string>
 </resources>

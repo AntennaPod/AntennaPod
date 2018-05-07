@@ -13,6 +13,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.dialog.ShowCaseHelper;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
 
 /**
@@ -27,6 +29,8 @@ public class AddFeedFragment extends Fragment {
      */
     private static final String ARG_FEED_URL = "feedurl";
 
+    private Button butSearchITunes;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -39,7 +43,7 @@ public class AddFeedFragment extends Fragment {
             etxtFeedurl.setText(args.getString(ARG_FEED_URL));
         }
 
-        Button butSearchITunes = (Button) root.findViewById(R.id.butSearchItunes);
+        butSearchITunes = (Button) root.findViewById(R.id.butSearchItunes);
         Button butBrowserGpoddernet = (Button) root.findViewById(R.id.butBrowseGpoddernet);
         Button butSearchFyyd = (Button) root.findViewById(R.id.butSearchFyyd);
         Button butOpmlImport = (Button) root.findViewById(R.id.butOpmlImport);
@@ -65,5 +69,25 @@ public class AddFeedFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (UserPreferences.shouldShowOnboarding("AddFeedFragment")) {
+            final MainActivity activity = (MainActivity) getActivity();
+
+            ShowCaseHelper.brandedShowcase(getActivity(), R.string.onboarding_search_podcast)
+                    .focusOn(butSearchITunes)
+                    .dismissListener(new ShowCaseHelper.DismissListener() {
+                        @Override
+                        public void onDismiss(String id) {
+                            activity.loadChildFragment(new ItunesSearchFragment());
+                        }
+                    })
+                    .build()
+                    .show();
+        }
     }
 }

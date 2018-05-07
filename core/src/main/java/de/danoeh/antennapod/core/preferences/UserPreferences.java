@@ -551,6 +551,16 @@ public class UserPreferences {
         restartUpdateAlarm(false);
     }
 
+    public static boolean shouldShowOnboarding(String location) {
+        String key = "onboarding_" + location;
+        if (prefs.getBoolean(key, true)) {
+            prefs.edit().putBoolean(key, false).apply();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Change the auto-flattr settings
      *
