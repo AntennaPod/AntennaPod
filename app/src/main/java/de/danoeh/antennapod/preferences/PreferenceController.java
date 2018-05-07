@@ -565,15 +565,33 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         searchPreference.setFragmentContainerViewId(R.id.content);
         searchPreference.setBreadcrumbsEnabled(true);
 
-        searchPreference.addResourceFileToIndex(R.xml.preferences_user_interface, getTitleOfPage(R.xml.preferences_user_interface));
-        searchPreference.addResourceFileToIndex(R.xml.preferences_playback, getTitleOfPage(R.xml.preferences_playback));
-        searchPreference.addResourceFileToIndex(R.xml.preferences_network, getTitleOfPage(R.xml.preferences_network));
-        searchPreference.addResourceFileToIndex(R.xml.preferences_storage, getTitleOfPage(R.xml.preferences_storage));
-        String integrations = activity.getString(getTitleOfPage(R.xml.preferences_integrations));
-        String flattr = activity.getString(getTitleOfPage(R.xml.preferences_flattr));
-        String gpodder = activity.getString(getTitleOfPage(R.xml.preferences_gpodder));
-        searchPreference.addResourceFileToIndex(R.xml.preferences_flattr, integrations + " > " + flattr);
-        searchPreference.addResourceFileToIndex(R.xml.preferences_gpodder, integrations + " > " + gpodder);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_user_interface))
+                .addFile(R.xml.preferences_user_interface);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_playback))
+                .addFile(R.xml.preferences_playback);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
+                .addFile(R.xml.preferences_network);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_storage))
+                .addFile(R.xml.preferences_storage);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
+                .addBreadcrumb(R.string.automation)
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_autodownload))
+                .addFile(R.xml.preferences_autodownload);
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_gpodder))
+                .addFile(R.xml.preferences_gpodder);
+        if (FlattrUtils.hasToken()) {
+            searchPreference.index()
+                    .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
+                    .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr))
+                    .addFile(R.xml.preferences_flattr);
+        }
     }
 
     public PreferenceFragmentCompat openScreen(int preferences, AppCompatActivity activity) {
