@@ -586,12 +586,10 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_gpodder))
                 .addFile(R.xml.preferences_gpodder);
-        if (FlattrUtils.hasToken()) {
-            searchPreference.index()
-                    .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
-                    .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr))
-                    .addFile(R.xml.preferences_flattr);
-        }
+        searchPreference.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr))
+                .addFile(R.xml.preferences_flattr);
     }
 
     public PreferenceFragmentCompat openScreen(int preferences, AppCompatActivity activity) {
