@@ -68,6 +68,7 @@
     <string-array name="episode_cleanup_values">
         <item>-1</item>
         <item>0</item>
+        <item>0.5</item> <!-- 12 hours -->
         <item>1</item>
         <item>3</item>
         <item>5</item>

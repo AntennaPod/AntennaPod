@@ -67,6 +67,7 @@ import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
+import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
@@ -839,15 +840,19 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 R.array.episode_cleanup_values);
         String[] entries = new String[values.length];
         for (int x = 0; x < values.length; x++) {
-            int v = Integer.parseInt(values[x]);
+            float v = Float.parseFloat(values[x]);
             if (v == UserPreferences.EPISODE_CLEANUP_QUEUE) {
                 entries[x] = res.getString(R.string.episode_cleanup_queue_removal);
             } else if (v == UserPreferences.EPISODE_CLEANUP_NULL){
                 entries[x] = res.getString(R.string.episode_cleanup_never);
             } else if (v == 0) {
                 entries[x] = res.getString(R.string.episode_cleanup_after_listening);
+            } else if (v > 0 && v < 1) {
+                int numHours = Converter.numberOfDaysFloatToNumberOfHours(v);
+                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_hours_after_listening, numHours, numHours);
             } else {
-                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, v, v);
+                int vInt = (int)v;
+                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, vInt, vInt);
             }
         }
         pref.setEntries(entries);
