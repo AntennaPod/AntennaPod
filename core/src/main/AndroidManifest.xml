@@ -52,7 +52,8 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.FeedUpdateReceiver">
+        <receiver android:name=".receiver.FeedUpdateReceiver"
+            android:exported="true"> <!-- allow feeds update to be triggered by external apps -->
         </receiver>
 
     </application>
