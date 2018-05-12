@@ -110,6 +110,7 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         return getNumEpisodesToCleanup(0);
     }
 
+    @VisibleForTesting
     public float getNumberOfDaysAfterPlayback() { return numberOfDaysAfterPlayback; }
 
     private static Date minusDays(Date baseDate, float numberOfDays) {
