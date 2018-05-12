@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -109,6 +110,7 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         return getNumEpisodesToCleanup(0);
     }
 
+    @VisibleForTesting
     public float getNumberOfDaysAfterPlayback() { return numberOfDaysAfterPlayback; }
 
     private static Date minusDays(Date baseDate, float numberOfDays) {
