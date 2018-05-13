@@ -2,9 +2,11 @@ package de.danoeh.antennapod.core.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.support.v4.net.ConnectivityManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,7 +24,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -84,12 +85,44 @@ public class NetworkUtils {
 	}
 
     public static boolean networkAvailable() {
+	    // Note: the method name networkAvailable() is inconsistent with terminology used by
+        // underlying ConnectivityManager. For ConnectivityManager, a network can be available but
+        // not connected.
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
         return info != null && info.isConnected();
     }
 
-	public static boolean isDownloadAllowed() {
+    /**
+     * Workaround for issue #2691: Intermittently, some devices seem to incorrectly report that a
+     * connected network as a blocked one. This method returns true for such cases.
+     */
+    public static boolean networkProbablyConnected() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        { // detailed logging of network status for debugging
+            StringBuilder dbgMsgSB = new StringBuilder()
+                    .append("networkProbablyConnected() - info: ")
+                    .append(info);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+                if (capabilities != null) {
+                    dbgMsgSB.append(" , internet-capable: ")
+                            .append(capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET));
+                    dbgMsgSB.append(" , capabilities: ")
+                            .append(capabilities);
+                }
+            }
+            Log.d(TAG, dbgMsgSB.toString());
+        }
+        return info != null &&
+                info.isAvailable() &&
+                info.getDetailedState() == NetworkInfo.DetailedState.BLOCKED &&
+                info.getType() == ConnectivityManager.TYPE_WIFI;  // Might want to other non mobile type
+    }
+
+
+    public static boolean isDownloadAllowed() {
 		return UserPreferences.isAllowMobileUpdate() || !NetworkUtils.isNetworkMetered();
 	}
 
