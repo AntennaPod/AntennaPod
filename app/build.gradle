@@ -89,7 +89,9 @@ android {
                 // in gradle.properties file or via -P command line argument.
                 if (project.hasProperty("enableDexcountInDebug")) {
                     runOnEachPackage enableDexcountInDebug.toBoolean()
-                } // else default to true
+                } else { // default to not running dexcount
+                    runOnEachPackage false                 
+                }
             }
         }
         release {
