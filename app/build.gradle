@@ -85,8 +85,6 @@ android {
             buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
             buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret            
             dexcount {
-                // Optionally, can disable Dexcount by setting the property
-                // in gradle.properties file or via -P command line argument.
                 if (project.hasProperty("enableDexcountInDebug")) {
                     runOnEachPackage enableDexcountInDebug.toBoolean()
                 } else { // default to not running dexcount
