@@ -83,7 +83,14 @@ android {
             applicationIdSuffix ".debug"
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
             buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
-            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
+            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret            
+            dexcount {
+                if (project.hasProperty("enableDexcountInDebug")) {
+                    runOnEachPackage enableDexcountInDebug.toBoolean()
+                } else { // default to not running dexcount
+                    runOnEachPackage false                 
+                }
+            }
         }
         release {
             resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
