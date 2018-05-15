@@ -53,6 +53,7 @@
         </receiver>
 
         <receiver android:name=".receiver.FeedUpdateReceiver"
+            android:label="@string/feed_update_receiver_name"
             android:exported="true"> <!-- allow feeds update to be triggered by external apps -->
         </receiver>
 
