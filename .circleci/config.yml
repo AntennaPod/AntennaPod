@@ -9,7 +9,7 @@ jobs:
 
     environment:
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1536m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError"'
-      _JAVA_OPTIONS: "-Xms256m -Xmx1280m -XX:MaxPermSize=350m"
+      _JAVA_OPTIONS: "-Xms256m -Xmx1280m"
 
     steps:
       - checkout
