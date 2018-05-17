@@ -30,5 +30,6 @@ jobs:
       - save_cache:
           paths:
             - ~/.android
+            - ~/.gradle
             - ~/android
           key: v1-android-{{ checksum "build.gradle" }}
