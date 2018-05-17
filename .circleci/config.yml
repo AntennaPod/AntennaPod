@@ -26,6 +26,7 @@ jobs:
       
       - store_artifacts:
           path: app/build/outputs/apk
+          destination: apks
 
       - save_cache:
           paths:
