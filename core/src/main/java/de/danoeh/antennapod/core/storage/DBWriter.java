@@ -90,10 +90,14 @@ public class DBWriter {
                 if (media.isDownloaded()) {
                     // delete downloaded media file
                     File mediaFile = new File(media.getFile_url());
+                    File parentDir = mediaFile.getParentFile();
                     if (mediaFile.exists() && !mediaFile.delete()) {
                         MessageEvent evt = new MessageEvent(context.getString(R.string.delete_failed));
                         EventBus.getDefault().post(evt);
                         return;
+                    }
+                    if (parentDir != null && parentDir.exists() && parentDir.list().length == 0) {
+                        parentDir.delete();
                     }
                     media.setDownloaded(false);
                     media.setFile_url(null);
