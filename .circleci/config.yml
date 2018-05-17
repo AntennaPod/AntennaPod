@@ -1,0 +1,36 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk
+
+    working_directory: ~/AntennaPod
+
+    environment:
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1536m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError"'
+      _JAVA_OPTIONS: "-Xms256m -Xmx1280m -XX:MaxPermSize=350m"
+
+    steps:
+      - checkout
+      
+      - restore_cache:
+          keys:
+            - v1-android-{{ checksum "build.gradle" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-android-
+
+      - run: echo y | android update sdk --no-ui --all --filter "tool,extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository,android-26"
+      - run: echo y | android update sdk --no-ui --all --filter "build-tools-27.0.3"
+
+      - run: ./gradlew assembleDebug -PdisablePreDex
+          no_output_timeout: 1800
+      
+      - store_artifacts:
+          - app/build/outputs/apk
+
+      - save_cache:
+          paths:
+            - ~/.android
+            - ~/android
+          key: v1-android-{{ checksum "build.gradle" }}
