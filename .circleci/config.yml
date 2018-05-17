@@ -20,9 +20,6 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-android-
 
-      - run: echo y | android update sdk --no-ui --all --filter "tool,extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository,android-26"
-      - run: echo y | android update sdk --no-ui --all --filter "build-tools-27.0.3"
-
       - run:
           command: ./gradlew assembleDebug -PdisablePreDex
           no_output_timeout: 1800
