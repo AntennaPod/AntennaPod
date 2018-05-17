@@ -28,7 +28,7 @@ jobs:
           no_output_timeout: 1800
       
       - store_artifacts:
-          - app/build/outputs/apk
+          path: app/build/outputs/apk
 
       - save_cache:
           paths:
