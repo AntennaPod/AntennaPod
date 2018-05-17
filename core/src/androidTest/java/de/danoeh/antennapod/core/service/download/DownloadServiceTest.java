@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.tests.util.service.download;
+package de.danoeh.antennapod.core.service.download;
 
 import android.test.AndroidTestCase;
 
@@ -8,7 +8,6 @@ import java.util.List;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 
 public class DownloadServiceTest extends AndroidTestCase {
 
