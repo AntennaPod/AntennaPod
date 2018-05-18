@@ -10,6 +10,7 @@ import android.util.Log;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -97,7 +98,12 @@ public class DBWriter {
                         return;
                     }
                     if (parentDir != null && parentDir.exists() && parentDir.list().length == 0) {
-                        parentDir.delete();
+                        try {
+                            parentDir.delete();
+                        } catch (IOException | SecurityException) {
+                            Log.d(TAG, String.format(
+                                    "Unable to delete folder %s", parentDir.getAbsolutePath()));
+                        }
                     }
                     media.setDownloaded(false);
                     media.setFile_url(null);
