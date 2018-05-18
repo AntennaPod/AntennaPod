@@ -79,6 +79,9 @@ dependencies {
     } else {
         System.out.println("core: free build hack, skipping some dependencies")
     }
+
+    testImplementation 'junit:junit:4.12'
+
 }
 
 allprojects {

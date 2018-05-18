@@ -1,9 +1,12 @@
 package de.danoeh.antennapod.core.util;
 
-import android.test.AndroidTestCase;
+import org.junit.Test;
 
-public class LongLongMapTest extends AndroidTestCase {
+import static org.junit.Assert.assertEquals;
 
+public class LongLongMapTest {
+
+    @Test
     public void testEmptyMap() {
         LongIntMap map = new LongIntMap();
         assertEquals(0, map.size());
@@ -16,6 +19,7 @@ public class LongLongMapTest extends AndroidTestCase {
         assertEquals(1, map.hashCode());
     }
 
+    @Test
     public void testSingleElement() {
         LongIntMap map = new LongIntMap();
         map.put(17, 42);
@@ -28,6 +32,7 @@ public class LongLongMapTest extends AndroidTestCase {
         assertEquals(true, map.delete(17));
     }
 
+    @Test
     public void testAddAndDelete() {
         LongIntMap map = new LongIntMap();
         for(int i=0; i < 100; i++) {
@@ -44,6 +49,7 @@ public class LongLongMapTest extends AndroidTestCase {
         }
     }
 
+    @Test
     public void testOverwrite() {
         LongIntMap map = new LongIntMap();
         map.put(17, 42);
