@@ -7,8 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.os.Binder;
 import android.os.Build;
@@ -1107,7 +1105,7 @@ public class DownloadService extends Service {
      * that every image reference is unique.
      */
     @VisibleForTesting
-    public static void removeDuplicateImages(Feed feed) {
+    static void removeDuplicateImages(Feed feed) {
         Set<String> known = new HashSet<>();
         for (FeedItem item : feed.getItems()) {
             String url = item.hasItemImage() ? item.getImage().getDownload_url() : null;
