@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
@@ -324,21 +325,21 @@ public class DBWriter {
                     LongList markAsUnplayedIds = new LongList();
                     List<QueueEvent> events = new ArrayList<>();
                     List<FeedItem> updatedItems = new ArrayList<>();
+                    ItemEnqueuePositionCalculator positionCalculator =
+                            new ItemEnqueuePositionCalculator(
+                                    new ItemEnqueuePositionCalculator.Options()
+                                            .setEnqueueAtFront(UserPreferences.enqueueAtFront()));
+
                     for (int i = 0; i < itemIds.length; i++) {
                         if (!itemListContains(queue, itemIds[i])) {
                             final FeedItem item = DBReader.getFeedItem(itemIds[i]);
 
 
                             if (item != null) {
-                                // add item to either front ot back of queue
-                                boolean addToFront = UserPreferences.enqueueAtFront();
-                                if (addToFront) {
-                                    queue.add(i, item);
-                                    events.add(QueueEvent.added(item, i));
-                                } else {
-                                    queue.add(item);
-                                    events.add(QueueEvent.added(item, queue.size() - 1));
-                                }
+                                int insertPosition = positionCalculator.calcPosition(i, item, queue);
+                                queue.add(insertPosition, item);
+                                events.add(QueueEvent.added(item, insertPosition));
+
                                 item.addTag(FeedItem.TAG_QUEUE);
                                 updatedItems.add(item);
                                 queueModified = true;
@@ -393,6 +394,50 @@ public class DBWriter {
         // Replace ADDED events by a single SORTED event
         events.clear();
         events.add(QueueEvent.sorted(queue));
+    }
+
+    @VisibleForTesting
+    static class ItemEnqueuePositionCalculator {
+
+        public static class Options {
+            private boolean enqueueAtFront = false;
+
+            public boolean isEnqueueAtFront() {
+                return enqueueAtFront;
+            }
+
+            public Options setEnqueueAtFront(boolean enqueueAtFront) {
+                this.enqueueAtFront = enqueueAtFront;
+                return this;
+            }
+        }
+
+        private final @NonNull Options options;
+
+        public ItemEnqueuePositionCalculator(@NonNull Options options) {
+            this.options = options;
+        }
+
+        /**
+         *
+         * @param positionAmongToAdd Typically, the callers has a list of items to be inserted to
+         *                           the queue. This parameter indicates the position (0-based) of
+         *                           the item among the one to inserted. E.g., it is needed for
+         *                           enqueue at front option.
+         *
+         * @param item the item to be inserted
+         * @param curQueue the queue to which the item is to be inserted
+         * @return the position (0-based) the item should be inserted to the named queu
+         */
+        public int calcPosition(int positionAmongToAdd, FeedItem item, List<FeedItem> curQueue) {
+            if (options.isEnqueueAtFront()) {
+                // NOT 0, so that when a list of items are inserted, the items inserted
+                // keep the same order. Returning 0 will reverse the order
+                return positionAmongToAdd;
+            } else {
+                return curQueue.size();
+            }
+        }
     }
 
     /**
