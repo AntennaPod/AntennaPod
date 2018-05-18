@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.ImportExportActivity;
@@ -561,32 +562,33 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         final AppCompatActivity activity = ui.getActivity();
 
         SearchPreference searchPreference = (SearchPreference) ui.findPreference("searchPreference");
-        searchPreference.setActivity(activity);
-        searchPreference.setFragmentContainerViewId(R.id.content);
-        searchPreference.setBreadcrumbsEnabled(true);
+        SearchConfiguration config = searchPreference.getSearchConfiguration();
+        config.setActivity(activity);
+        config.setFragmentContainerViewId(R.id.content);
+        config.setBreadcrumbsEnabled(true);
 
-        searchPreference.index()
+        config.index()
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_user_interface))
                 .addFile(R.xml.preferences_user_interface);
-        searchPreference.index()
+        config.index()
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_playback))
                 .addFile(R.xml.preferences_playback);
-        searchPreference.index()
+        config.index()
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
                 .addFile(R.xml.preferences_network);
-        searchPreference.index()
+        config.index()
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_storage))
                 .addFile(R.xml.preferences_storage);
-        searchPreference.index()
+        config.index()
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
                 .addBreadcrumb(R.string.automation)
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_autodownload))
                 .addFile(R.xml.preferences_autodownload);
-        searchPreference.index()
+        config.index()
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_gpodder))
                 .addFile(R.xml.preferences_gpodder);
-        searchPreference.index()
+        config.index()
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr))
                 .addFile(R.xml.preferences_flattr);
