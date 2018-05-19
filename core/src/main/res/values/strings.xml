@@ -456,6 +456,8 @@
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
     <string name="pref_queueAddToFront_sum">Add new episodes to the front of the queue.</string>
     <string name="pref_queueAddToFront_title">Enqueue at Front</string>
+    <string name="pref_queueKeepInProgressAtFront_title">Keep In-progress Episode at Front</string>
+    <string name="pref_queueKeepInProgressAtFront_sum">If the episode at front is in-progress, i.e., you have listened to part of it, keep it at the front of the queue.</string>
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
     <string name="pref_image_cache_size_title">Image Cache Size</string>
     <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>

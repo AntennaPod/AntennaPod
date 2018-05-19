@@ -329,7 +329,7 @@ public class DBWriter {
                             new ItemEnqueuePositionCalculator(
                                     new ItemEnqueuePositionCalculator.Options()
                                             .setEnqueueAtFront(UserPreferences.enqueueAtFront())
-                                            .setKeepInProgressAtFront(true) // TODO: to expose with preference
+                                            .setKeepInProgressAtFront(UserPreferences.keepInProgressAtFront())
                                             );
 
                     for (int i = 0; i < itemIds.length; i++) {

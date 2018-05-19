@@ -63,6 +63,20 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
             behaviour.setEntries(R.array.video_background_behavior_options_without_pip);
             behaviour.setEntryValues(R.array.video_background_behavior_values_without_pip);
         }
+
+        findPreference(UserPreferences.PREF_QUEUE_ADD_TO_FRONT).setOnPreferenceChangeListener(
+                (preference, newValue) -> {
+                    if (newValue instanceof Boolean) {
+                        boolean enableKeepInProgressAtFront = ((Boolean) newValue);
+                        checkKeepInProgressAtFrontItemVisibility(enableKeepInProgressAtFront);
+                    }
+                    return true;
+                });
+        checkKeepInProgressAtFrontItemVisibility(UserPreferences.enqueueAtFront());
+    }
+
+    private void checkKeepInProgressAtFrontItemVisibility(boolean enabled) {
+        findPreference(UserPreferences.PREF_QUEUE_KEEP_IN_PROGESS_AT_FRONT).setEnabled(enabled);
     }
 
     private void buildSmartMarkAsPlayedPreference() {

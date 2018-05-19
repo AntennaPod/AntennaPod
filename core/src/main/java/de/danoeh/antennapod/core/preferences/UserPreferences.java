@@ -62,7 +62,8 @@ public class UserPreferences {
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
 
     // Queue
-    private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
+    public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
+    public static final String PREF_QUEUE_KEEP_IN_PROGESS_AT_FRONT = "prefQueueKeepInProgressAtFront";
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
@@ -286,6 +287,16 @@ public class UserPreferences {
 
     public static boolean enqueueAtFront() {
         return prefs.getBoolean(PREF_QUEUE_ADD_TO_FRONT, false);
+    }
+
+    /**
+     *
+     * @return {@code true} if in enqueuing items/podcast episodes, when the existing front item is
+     * in-progress, i.e., the user has played part of it, such item remains at the front of the
+     * queue; {@code false} otherwise.
+     */
+    public static boolean keepInProgressAtFront() {
+        return prefs.getBoolean(PREF_QUEUE_KEEP_IN_PROGESS_AT_FRONT, false);
     }
 
     public static boolean isPauseOnHeadsetDisconnect() {
