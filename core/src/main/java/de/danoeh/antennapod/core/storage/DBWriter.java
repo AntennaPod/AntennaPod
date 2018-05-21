@@ -10,7 +10,6 @@ import android.util.Log;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -43,6 +42,7 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
@@ -76,6 +76,24 @@ public class DBWriter {
     }
 
     /**
+     * Deletes a folder if it is empty, logging any exceptions
+     * @param folder A folder we want to delete (only if empty)
+     */
+    private static void deleteFolderIfEmpty(File folder) {
+        if (folder == null) {
+            return;
+        }
+        if (folder != null && folder.exists() && folder.list().length == 0) {
+            try {
+                folder.delete();
+            } catch (Exception exc) {
+                Log.d(TAG, String.format(
+                        "Unable to delete folder %s", folder.getAbsolutePath()));
+            }
+        }
+    }
+
+    /**
      * Deletes a downloaded FeedMedia file from the storage device.
      *
      * @param context A context that is used for opening a database connection.
@@ -97,14 +115,7 @@ public class DBWriter {
                         EventBus.getDefault().post(evt);
                         return;
                     }
-                    if (parentDir != null && parentDir.exists() && parentDir.list().length == 0) {
-                        try {
-                            parentDir.delete();
-                        } catch (IOException | SecurityException) {
-                            Log.d(TAG, String.format(
-                                    "Unable to delete folder %s", parentDir.getAbsolutePath()));
-                        }
-                    }
+                    deleteFolderIfEmpty(parentDir);
                     media.setDownloaded(false);
                     media.setFile_url(null);
                     media.setHasEmbeddedPicture(false);
@@ -221,6 +232,12 @@ public class DBWriter {
                         }
                     }
                 }
+
+                // Delete the feed folder if it is empty
+                String feedRelPath = "media/" + FileNameGenerator.generateFileName(feed.getTitle());
+                deleteFolderIfEmpty(UserPreferences.getDataFolder(feedRelPath));
+
+                // Delete feed from the DB
                 PodDBAdapter adapter = PodDBAdapter.getInstance();
                 adapter.open();
                 if (removed.size() > 0) {
