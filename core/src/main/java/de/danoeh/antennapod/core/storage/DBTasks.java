@@ -329,6 +329,10 @@ public final class DBTasks {
 
             }.start();
         }
+        // #2448: First, add to-download items to the queue before actual download
+        // so that the resulting queue order is the same as when download is clicked
+        DBWriter.addQueueItem(context, items);
+        // Then, download them
         for (FeedItem item : items) {
             if (item.getMedia() != null
                     && !requester.isDownloadingFile(item.getMedia())

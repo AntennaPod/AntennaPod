@@ -3,21 +3,21 @@ package de.danoeh.antennapod.core.service.download.handler;
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
+
+import java.util.concurrent.ExecutionException;
+
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * Handles a completed media download.
@@ -81,11 +81,6 @@ public class MediaDownloadedHandler implements Runnable {
                 // so we do it after the enclosing media has been updated above,
                 // to ensure subscribers will get the updated FeedMedia as well
                 DBWriter.setFeedItem(item).get();
-            }
-
-            if (item != null && UserPreferences.enqueueDownloadedEpisodes()
-                    && !DBTasks.isInQueue(context, item.getId())) {
-                DBWriter.addQueueItem(context, item).get();
             }
         } catch (InterruptedException e) {
             Log.e(TAG, "MediaHandlerThread was interrupted");

@@ -31,7 +31,7 @@ import de.danoeh.antennapod.core.util.URLChecker;
  * Sends download requests to the DownloadService. This class should always be used for starting downloads,
  * otherwise they won't work correctly.
  */
-public class DownloadRequester {
+public class DownloadRequester implements FeedFileDownloadStatusRequesterInterface {
     private static final String TAG = "DownloadRequester";
 
     private static final String FEED_DOWNLOADPATH = "cache/";
