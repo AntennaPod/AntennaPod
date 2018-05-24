@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -13,10 +14,13 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.bumptech.glide.Glide;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -127,6 +131,22 @@ public class PlayerWidgetService extends Service {
                 PlayerStatus status = playbackService.getStatus();
                 views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
 
+                try {
+                    Bitmap icon = null;
+                    int iconSize = getResources().getDimensionPixelSize(
+                            android.R.dimen.app_icon_size);
+                    icon = Glide.with(PlayerWidgetService.this)
+                            .load(media.getImageLocation())
+                            .asBitmap()
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .centerCrop()
+                            .into(iconSize, iconSize)
+                            .get();
+                    views.setImageViewBitmap(R.id.imgvCover, icon);
+                } catch (Throwable tr) {
+                    Log.e(TAG, "Error loading the media icon for the widget", tr);
+                }
+
                 views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
 
                 String progressString = getProgressString();
@@ -160,6 +180,7 @@ public class PlayerWidgetService extends Service {
             views.setOnClickPendingIntent(R.id.layout_left, startAppPending);
             views.setOnClickPendingIntent(R.id.butPlay, startAppPending);
             views.setViewVisibility(R.id.txtvProgress, View.INVISIBLE);
+            views.setImageViewResource(R.id.imgvCover, R.drawable.ic_stat_antenna_default);
             views.setTextViewText(R.id.txtvTitle,
                     this.getString(R.string.no_media_playing_label));
             views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
