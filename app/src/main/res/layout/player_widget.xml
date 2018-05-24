@@ -49,7 +49,7 @@
                     android:id="@+id/txtvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginVertical="8dp"
                     android:maxLines="1"
                     android:text="@string/no_media_playing_label"
                     android:textColor="@color/white"
@@ -60,7 +60,7 @@
                     android:id="@+id/txtvProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginVertical="8dp"
                     android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
