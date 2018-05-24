@@ -86,11 +86,10 @@ public class DBWriterTest {
 
                 // shallow copy to which the test will add items
                 List<FeedItem> queue = new ArrayList<>(curQueue);
-
                 FeedItem tFI = tFI(TFI_ID);
-                int posActual = calculator.calcPosition(posAmongAdded, tFI, queue);
-                queue.add(posActual, tFI);
-                assertEquals(message, idsExpected, toIDs(queue));
+                doAddToQueueAndAssertResult(message,
+                        calculator, posAmongAdded, tFI, queue,
+                        idsExpected);
             }
 
         }
@@ -201,32 +200,27 @@ public class DBWriterTest {
 
                 // User clicks download on feed item 101
                 FeedItem tFI101 = tFI_isDownloading(101, mockDownloadRequester);
-
-                int pos101Actual = calculator.calcPosition(0, tFI101, queue);
-                queue.add(pos101Actual, tFI101);
-                assertEquals(message + " (1st download)",
-                        idsExpectedAfter101, toIDs(queue));
+                doAddToQueueAndAssertResult(message + " (1st download)",
+                        calculator, 0, tFI101, queue,
+                        idsExpectedAfter101);
 
                 // Then user clicks download on feed item 102
                 FeedItem tFI102 = tFI_isDownloading(102, mockDownloadRequester);
-                int pos102Actual = calculator.calcPosition(0, tFI102, queue);
-                queue.add(pos102Actual, tFI102);
-                assertEquals(message + " (2nd download, it should preserve order of download)",
-                        idsExpectedAfter102, toIDs(queue));
+                doAddToQueueAndAssertResult(message + " (2nd download, it should preserve order of download)",
+                        calculator, 0, tFI102, queue,
+                        idsExpectedAfter102);
 
                 // Items 201 and 202 are added as part of a single DBWriter.addQueueItem() calls
 
                 FeedItem tFI201 = tFI_isDownloading(201, mockDownloadRequester);
-                int pos201Actual = calculator.calcPosition(0, tFI201, queue);
-                queue.add(pos201Actual, tFI201);
-                assertEquals(message + " (bulk insertion, 1st item)",
-                        idsExpectedAfter201, toIDs(queue));
+                doAddToQueueAndAssertResult(message + " (bulk insertion, 1st item)",
+                        calculator, 0, tFI201, queue,
+                        idsExpectedAfter201);
 
                 FeedItem tFI202 = tFI_isDownloading(202, mockDownloadRequester);
-                int pos202Actual = calculator.calcPosition(1, tFI202, queue);
-                queue.add(pos202Actual, tFI202);
-                assertEquals(message + " (bulk insertion, 2nd item)",
-                        idsExpectedAfter202, toIDs(queue));
+                doAddToQueueAndAssertResult(message + " (bulk insertion, 2nd item)",
+                        calculator, 0, tFI202, queue,
+                        idsExpectedAfter202);
 
                 // TODO: simulate download failure cases.
             }
@@ -266,6 +260,17 @@ public class DBWriterTest {
         // Common helpers:
         // - common queue (of items) for tests
         // - construct FeedItems for tests
+
+        static void doAddToQueueAndAssertResult(String message,
+                                                ItemEnqueuePositionCalculator calculator,
+                                                int positionAmongAdd,
+                                                FeedItem itemToAdd,
+                                                List<FeedItem> queue,
+                                                List<Long> idsExpected) {
+            int posActual = calculator.calcPosition(positionAmongAdd, itemToAdd, queue);
+            queue.add(posActual, itemToAdd);
+            assertEquals(message, idsExpected, toIDs(queue));
+        }
 
         static final List<FeedItem> QUEUE_EMPTY = Collections.unmodifiableList(Arrays.asList());
 
