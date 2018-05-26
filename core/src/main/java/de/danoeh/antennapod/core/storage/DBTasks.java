@@ -157,6 +157,17 @@ public final class DBTasks {
      *
      * @param context  Might be used for accessing the database
      * @param feeds    List of Feeds that should be refreshed.
+     */
+    public static void refreshAllFeeds(final Context context, final List<Feed> feeds) {
+        refreshAllFeeds(context, feeds, null);
+    }
+
+    /**
+     * Refreshes a given list of Feeds in a separate Thread. This method might ignore subsequent calls if it is still
+     * enqueuing Feeds for download from a previous call
+     *
+     * @param context  Might be used for accessing the database
+     * @param feeds    List of Feeds that should be refreshed.
      * @param callback Called after everything was added enqueued for download. Might be null.
      */
     public static void refreshAllFeeds(final Context context, final List<Feed> feeds, @Nullable Runnable callback) {
@@ -348,7 +359,7 @@ public final class DBTasks {
         Log.d(TAG, "last refresh: " + Converter.getDurationStringLocalized(context,
                 System.currentTimeMillis() - lastRefresh) + " ago");
         if(lastRefresh <= System.currentTimeMillis() - interval) {
-            DBTasks.refreshAllFeeds(context, null, null);
+            DBTasks.refreshAllFeeds(context, null);
         }
     }
 

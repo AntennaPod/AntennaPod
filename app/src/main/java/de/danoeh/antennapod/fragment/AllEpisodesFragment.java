@@ -224,7 +224,7 @@ public class AllEpisodesFragment extends Fragment {
                 case R.id.refresh_item:
                     List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
                     if (feeds != null) {
-                        DBTasks.refreshAllFeeds(getActivity(), feeds, null);
+                        DBTasks.refreshAllFeeds(getActivity(), feeds);
                     }
                     return true;
                 case R.id.mark_all_read_item:
