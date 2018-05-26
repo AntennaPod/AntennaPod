@@ -713,11 +713,11 @@
 
     <!-- Notification channels -->
     <string name="notification_channel_user_action">Action required</string>
-    <string name="notification_channel_user_action_description">Shown if your action is required</string>
+    <string name="notification_channel_user_action_description">Shown if your action is required, for example if you need to enter a password.</string>
     <string name="notification_channel_downloading">Downloading</string>
-    <string name="notification_channel_downloading_description">Shown while currently downloading</string>
+    <string name="notification_channel_downloading_description">Shown while currently downloading.</string>
     <string name="notification_channel_playing">Currently playing</string>
-    <string name="notification_channel_playing_description">Allows to control playback</string>
+    <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
     <string name="notification_channel_error">Errors</string>
-    <string name="notification_channel_error_description">Shown if something went wrong</string>
+    <string name="notification_channel_error_description">Shown if something went wrong, for example if download or gpodder sync fails.</string>
 </resources>
