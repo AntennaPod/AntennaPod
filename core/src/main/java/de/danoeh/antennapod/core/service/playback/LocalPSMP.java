@@ -613,6 +613,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     public void shutdown() {
         executor.shutdown();
         if (mediaPlayer != null) {
+            try {
+                mediaPlayer.stop();
+            } catch (Exception ignore) { }
             mediaPlayer.release();
         }
         releaseWifiLockIfNecessary();

@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 import java.util.LinkedList;
@@ -175,7 +176,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
                 ClientConfig.flattrCallbacks.getFlattrAuthenticationActivityIntent(context), 0);
 
-        Notification notification = new NotificationCompat.Builder(context)
+        Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_ERROR)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.no_flattr_token_notification_msg)))
                 .setContentIntent(contentIntent)
                 .setContentTitle(context.getString(R.string.no_flattr_token_title))
@@ -208,7 +209,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
                     + context.getString(R.string.flattr_click_failure_count, failed);
         }
 
-        Notification notification = new NotificationCompat.Builder(context)
+        Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_ERROR)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(subtext))
                 .setContentIntent(contentIntent)
                 .setContentTitle(title)

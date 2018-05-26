@@ -6,6 +6,7 @@
     <!-- Activitiy and fragment titles -->
     <string name="app_name" translate="false">AntennaPod</string>
     <string name="provider_authority" translate="false">de.danoeh.antennapod.provider</string>
+    <string name="feed_update_receiver_name">Update Subscriptions</string>
     <string name="feeds_label">Feeds</string>
     <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
@@ -29,6 +30,7 @@
     <string name="free_space_label">%1$s free</string>
     <string name="episode_cache_full_title">Episode cache full</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
+    <string name="synchronizing">Synchronizing…</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of podcasts played:</string>
@@ -260,6 +262,8 @@
     <string name="duration">Duration</string>
     <string name="episode_title">Episode title</string>
     <string name="feed_title">Feed title</string>
+    <string name="random">Random</string>
+    <string name="smart_shuffle">Smart Shuffle</string>
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
     <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
@@ -709,4 +713,14 @@
     <string name="cast_failed_seek">Failed to seek to the new position on the cast device</string>
     <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>
     <string name="cast_failed_media_error_skipping">Error playing media. Skipping&#8230;</string>
+
+    <!-- Notification channels -->
+    <string name="notification_channel_user_action">Action required</string>
+    <string name="notification_channel_user_action_description">Shown if your action is required, for example if you need to enter a password.</string>
+    <string name="notification_channel_downloading">Downloading</string>
+    <string name="notification_channel_downloading_description">Shown while currently downloading.</string>
+    <string name="notification_channel_playing">Currently playing</string>
+    <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
+    <string name="notification_channel_error">Errors</string>
+    <string name="notification_channel_error_description">Shown if something went wrong, for example if download or gpodder sync fails.</string>
 </resources>
