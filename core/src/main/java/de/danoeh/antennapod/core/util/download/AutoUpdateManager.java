@@ -37,24 +37,28 @@ public class AutoUpdateManager {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void restartJobServiceInterval(Context context, long intervalMillis) {
         JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-        if (jobScheduler != null) {
-            JobInfo oldJob = jobScheduler.getPendingJob(JOB_ID_FEED_UPDATE);
-            if (oldJob == null || oldJob.getIntervalMillis() != intervalMillis) {
-                JobInfo.Builder builder = getFeedUpdateJobBuilder(context);
-                builder.setPeriodic(intervalMillis);
-                jobScheduler.cancel(JOB_ID_FEED_UPDATE);
-
-                if (intervalMillis <= 0) {
-                    Log.d(TAG, "Automatic update was deactivated");
-                    return;
-                }
-
-                jobScheduler.schedule(builder.build());
-                Log.d(TAG, "JobScheduler was set at interval " + intervalMillis);
-            } else {
-                Log.d(TAG, "JobScheduler was already set at interval " + intervalMillis + ", ignoring.");
-            }
+        if (jobScheduler == null) {
+            Log.d(TAG, "JobScheduler was null.");
+            return;
         }
+
+        JobInfo oldJob = jobScheduler.getPendingJob(JOB_ID_FEED_UPDATE);
+        if (oldJob != null && oldJob.getIntervalMillis() == intervalMillis) {
+            Log.d(TAG, "JobScheduler was already set at interval " + intervalMillis + ", ignoring.");
+            return;
+        }
+
+        JobInfo.Builder builder = getFeedUpdateJobBuilder(context);
+        builder.setPeriodic(intervalMillis);
+        jobScheduler.cancel(JOB_ID_FEED_UPDATE);
+
+        if (intervalMillis <= 0) {
+            Log.d(TAG, "Automatic update was deactivated");
+            return;
+        }
+
+        jobScheduler.schedule(builder.build());
+        Log.d(TAG, "JobScheduler was set at interval " + intervalMillis);
     }
 
     public static void restartAlarmManagerInterval(Context context, long triggerAtMillis, long intervalMillis) {
@@ -65,8 +69,8 @@ public class AutoUpdateManager {
             return;
         }
 
-        Intent intent = new Intent(context, FeedUpdateReceiver.class);
-        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
+                new Intent(context, FeedUpdateReceiver.class), 0);
         alarmManager.cancel(updateIntent);
 
         if (intervalMillis <= 0) {
@@ -82,26 +86,29 @@ public class AutoUpdateManager {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void restartJobServiceTriggerAt(Context context, long triggerAtMillis) {
+        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
+        if (jobScheduler == null) {
+            Log.d(TAG, "JobScheduler was null.");
+            return;
+        }
+
         JobInfo.Builder builder = getFeedUpdateJobBuilder(context);
         builder.setMinimumLatency(triggerAtMillis);
-        JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
-        if (jobScheduler != null) {
-            jobScheduler.cancel(JOB_ID_FEED_UPDATE);
-            jobScheduler.schedule(builder.build());
-            Log.d(TAG, "JobScheduler was set for " + triggerAtMillis);
-        }
+        jobScheduler.cancel(JOB_ID_FEED_UPDATE);
+        jobScheduler.schedule(builder.build());
+        Log.d(TAG, "JobScheduler was set for " + triggerAtMillis);
     }
 
     public static void restartAlarmManagerTimeOfDay(Context context, Calendar alarm) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
-                new Intent(context, FeedUpdateReceiver.class), 0);
 
         if (alarmManager == null) {
             Log.d(TAG, "AlarmManager was null");
             return;
         }
 
+        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
+                new Intent(context, FeedUpdateReceiver.class), 0);
         alarmManager.cancel(updateIntent);
 
         Log.d(TAG, "Alarm set for: " + alarm.toString() + " : " + alarm.getTimeInMillis());
