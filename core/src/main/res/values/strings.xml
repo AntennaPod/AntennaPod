@@ -720,6 +720,4 @@
     <string name="notification_channel_playing_description">Allows to control playback</string>
     <string name="notification_channel_error">Errors</string>
     <string name="notification_channel_error_description">Shown if something went wrong</string>
-    <string name="notification_channel_gpodnet">gpodder.net</string>
-    <string name="notification_channel_gpodnet_description">Shown while currently synchronizing</string>
 </resources>
