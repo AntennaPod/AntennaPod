@@ -13,6 +13,7 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 
 /**
@@ -34,14 +35,13 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
             ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
                     MediaType.AUDIO);
-            Intent launchIntent = new Intent(this, PlaybackService.class);
-            launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
-            launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
-                    true);
-            launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, false);
-            launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
-                    true);
-            startService(launchIntent);
+
+            new PlaybackServiceStarter(this, media)
+                    .startWhenPrepared(true)
+                    .shouldStream(false)
+                    .prepareImmediately(true)
+                    .start();
+
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (intent.getComponent() != null &&

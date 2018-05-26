@@ -1,18 +1,21 @@
 package de.danoeh.antennapod.core.preferences;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
-
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.service.download.ProxyConfig;
+import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -21,18 +24,8 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
-import de.danoeh.antennapod.core.service.download.ProxyConfig;
-import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.util.Converter;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -781,58 +774,15 @@ public class UserPreferences {
         int[] timeOfDay = getUpdateTimeOfDay();
         Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
         if (timeOfDay.length == 2) {
-            restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
+            AutoUpdateManager.restartUpdateTimeOfDayAlarm(context, timeOfDay[0], timeOfDay[1]);
         } else {
             long milliseconds = getUpdateInterval();
             long startTrigger = milliseconds;
             if (now) {
                 startTrigger = TimeUnit.SECONDS.toMillis(10);
             }
-            restartUpdateIntervalAlarm(startTrigger, milliseconds);
+            AutoUpdateManager.restartUpdateIntervalAlarm(context, startTrigger, milliseconds);
         }
-    }
-
-    /**
-     * Sets the interval in which the feeds are refreshed automatically
-     */
-    private static void restartUpdateIntervalAlarm(long triggerAtMillis, long intervalMillis) {
-        Log.d(TAG, "Restarting update alarm.");
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, FeedUpdateReceiver.class);
-        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        alarmManager.cancel(updateIntent);
-        if (intervalMillis > 0) {
-            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + triggerAtMillis,
-                    updateIntent);
-            Log.d(TAG, "Changed alarm to new interval " + TimeUnit.MILLISECONDS.toHours(intervalMillis) + " h");
-        } else {
-            Log.d(TAG, "Automatic update was deactivated");
-        }
-    }
-
-    /**
-     * Sets time of day the feeds are refreshed automatically
-     */
-    private static void restartUpdateTimeOfDayAlarm(int hoursOfDay, int minute) {
-        Log.d(TAG, "Restarting update alarm.");
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
-                new Intent(context, FeedUpdateReceiver.class), 0);
-        alarmManager.cancel(updateIntent);
-
-        Calendar now = Calendar.getInstance();
-        Calendar alarm = (Calendar)now.clone();
-        alarm.set(Calendar.HOUR_OF_DAY, hoursOfDay);
-        alarm.set(Calendar.MINUTE, minute);
-        if (alarm.before(now) || alarm.equals(now)) {
-            alarm.add(Calendar.DATE, 1);
-        }
-        Log.d(TAG, "Alarm set for: " + alarm.toString() + " : " + alarm.getTimeInMillis());
-        alarmManager.set(AlarmManager.RTC_WAKEUP,
-                alarm.getTimeInMillis(),
-                updateIntent);
-        Log.d(TAG, "Changed alarm to new time of day " + hoursOfDay + ":" + minute);
     }
 
     /**

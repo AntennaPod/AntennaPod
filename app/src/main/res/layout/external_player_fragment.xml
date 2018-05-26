@@ -44,6 +44,7 @@
         android:layout_centerVertical="true"
         android:contentDescription="@string/pause_label"
         android:background="?attr/selectableItemBackground"
+        android:src="?attr/av_play_big"
         tools:src="@drawable/ic_play_arrow_white_36dp"/>
 
     <TextView

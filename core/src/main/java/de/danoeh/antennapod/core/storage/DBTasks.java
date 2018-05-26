@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -123,16 +126,13 @@ public final class DBTasks {
                             media);
                 }
             }
-            // Start playback Service
-            Intent launchIntent = new Intent(context, PlaybackService.class);
-            launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
-            launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
-                    startWhenPrepared);
-            launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
-                    shouldStream);
-            launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
-                    true);
-            context.startService(launchIntent);
+
+            new PlaybackServiceStarter(context, media)
+                    .callEvenIfRunning(true)
+                    .startWhenPrepared(startWhenPrepared)
+                    .shouldStream(shouldStream)
+                    .start();
+
             if (showPlayer) {
                 // Launch media player
                 context.startActivity(PlaybackService.getPlayerActivityIntent(
@@ -155,42 +155,56 @@ public final class DBTasks {
      * Refreshes a given list of Feeds in a separate Thread. This method might ignore subsequent calls if it is still
      * enqueuing Feeds for download from a previous call
      *
-     * @param context Might be used for accessing the database
-     * @param feeds   List of Feeds that should be refreshed.
+     * @param context  Might be used for accessing the database
+     * @param feeds    List of Feeds that should be refreshed.
      */
-    public static void refreshAllFeeds(final Context context,
-                                       final List<Feed> feeds) {
-        if (isRefreshing.compareAndSet(false, true)) {
-            new Thread() {
-                public void run() {
-                    if (feeds != null) {
-                        refreshFeeds(context, feeds);
-                    } else {
-                        refreshFeeds(context, DBReader.getFeedList());
-                    }
-                    isRefreshing.set(false);
+    public static void refreshAllFeeds(final Context context, final List<Feed> feeds) {
+        refreshAllFeeds(context, feeds, null);
+    }
 
-                    SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-                    prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
-
-                    if (FlattrUtils.hasToken()) {
-                        Log.d(TAG, "Flattring all pending things.");
-                        new FlattrClickWorker(context).executeAsync(); // flattr pending things
-
-                        Log.d(TAG, "Fetching flattr status.");
-                        new FlattrStatusFetcher(context).start();
-
-                    }
-                    if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
-                        GpodnetSyncService.sendSyncIntent(context);
-                    }
-                    Log.d(TAG, "refreshAllFeeds autodownload");
-                    autodownloadUndownloadedItems(context);
-                }
-            }.start();
-        } else {
+    /**
+     * Refreshes a given list of Feeds in a separate Thread. This method might ignore subsequent calls if it is still
+     * enqueuing Feeds for download from a previous call
+     *
+     * @param context  Might be used for accessing the database
+     * @param feeds    List of Feeds that should be refreshed.
+     * @param callback Called after everything was added enqueued for download. Might be null.
+     */
+    public static void refreshAllFeeds(final Context context, final List<Feed> feeds, @Nullable Runnable callback) {
+        if (!isRefreshing.compareAndSet(false, true)) {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
+            return;
         }
+
+        new Thread(() -> {
+            if (feeds != null) {
+                refreshFeeds(context, feeds);
+            } else {
+                refreshFeeds(context, DBReader.getFeedList());
+            }
+            isRefreshing.set(false);
+
+            SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
+
+            if (FlattrUtils.hasToken()) {
+                Log.d(TAG, "Flattring all pending things.");
+                new FlattrClickWorker(context).executeAsync(); // flattr pending things
+
+                Log.d(TAG, "Fetching flattr status.");
+                new FlattrStatusFetcher(context).start();
+
+            }
+            if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
+                GpodnetSyncService.sendSyncIntent(context);
+            }
+            Log.d(TAG, "refreshAllFeeds autodownload");
+            autodownloadUndownloadedItems(context);
+
+            if (callback != null) {
+                callback.run();
+            }
+        }).start();
     }
 
     /**

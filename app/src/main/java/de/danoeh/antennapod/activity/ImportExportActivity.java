@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.IntentCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -39,7 +39,10 @@ public class ImportExportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
         setContentView(R.layout.import_export_activity);
 
         findViewById(R.id.button_export).setOnClickListener(view -> backup());
@@ -125,7 +128,7 @@ public class ImportExportActivity extends AppCompatActivity {
         d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
             Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
             ComponentName cn = intent.getComponent();
-            Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+            Intent mainIntent = Intent.makeRestartActivityTask(cn);
             startActivity(mainIntent);
         });
         d.show();
