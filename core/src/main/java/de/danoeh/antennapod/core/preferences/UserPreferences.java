@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -25,7 +24,6 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -776,49 +774,14 @@ public class UserPreferences {
         int[] timeOfDay = getUpdateTimeOfDay();
         Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
         if (timeOfDay.length == 2) {
-            restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
+            AutoUpdateManager.restartUpdateTimeOfDayAlarm(context, timeOfDay[0], timeOfDay[1]);
         } else {
             long milliseconds = getUpdateInterval();
             long startTrigger = milliseconds;
             if (now) {
                 startTrigger = TimeUnit.SECONDS.toMillis(10);
             }
-            restartUpdateIntervalAlarm(startTrigger, milliseconds);
-        }
-    }
-
-    /**
-     * Sets the interval in which the feeds are refreshed automatically
-     */
-    private static void restartUpdateIntervalAlarm(long triggerAtMillis, long intervalMillis) {
-        Log.d(TAG, "Restarting update alarm.");
-
-        if (Build.VERSION.SDK_INT >= 24) {
-            AutoUpdateManager.restartJobServiceInterval(context, intervalMillis);
-        } else {
-            AutoUpdateManager.restartAlarmManagerInterval(context, triggerAtMillis, intervalMillis);
-        }
-    }
-
-    /**
-     * Sets time of day the feeds are refreshed automatically
-     */
-    private static void restartUpdateTimeOfDayAlarm(int hoursOfDay, int minute) {
-        Log.d(TAG, "Restarting update alarm.");
-
-        Calendar now = Calendar.getInstance();
-        Calendar alarm = (Calendar)now.clone();
-        alarm.set(Calendar.HOUR_OF_DAY, hoursOfDay);
-        alarm.set(Calendar.MINUTE, minute);
-        if (alarm.before(now) || alarm.equals(now)) {
-            alarm.add(Calendar.DATE, 1);
-        }
-
-        if (Build.VERSION.SDK_INT >= 24) {
-            long triggerAtMillis = alarm.getTimeInMillis() - now.getTimeInMillis();
-            AutoUpdateManager.restartJobServiceTriggerAt(context, triggerAtMillis);
-        } else {
-            AutoUpdateManager.restartAlarmManagerTimeOfDay(context, alarm);
+            AutoUpdateManager.restartUpdateIntervalAlarm(context, startTrigger, milliseconds);
         }
     }
 

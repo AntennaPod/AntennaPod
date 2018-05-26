@@ -25,6 +25,41 @@ public class AutoUpdateManager {
 
     }
 
+    /**
+     * Sets the interval in which the feeds are refreshed automatically
+     */
+    public static void restartUpdateIntervalAlarm(Context context, long triggerAtMillis, long intervalMillis) {
+        Log.d(TAG, "Restarting update alarm.");
+
+        if (Build.VERSION.SDK_INT >= 24) {
+            restartJobServiceInterval(context, intervalMillis);
+        } else {
+            restartAlarmManagerInterval(context, triggerAtMillis, intervalMillis);
+        }
+    }
+
+    /**
+     * Sets time of day the feeds are refreshed automatically
+     */
+    public static void restartUpdateTimeOfDayAlarm(Context context, int hoursOfDay, int minute) {
+        Log.d(TAG, "Restarting update alarm.");
+
+        Calendar now = Calendar.getInstance();
+        Calendar alarm = (Calendar)now.clone();
+        alarm.set(Calendar.HOUR_OF_DAY, hoursOfDay);
+        alarm.set(Calendar.MINUTE, minute);
+        if (alarm.before(now) || alarm.equals(now)) {
+            alarm.add(Calendar.DATE, 1);
+        }
+
+        if (Build.VERSION.SDK_INT >= 24) {
+            long triggerAtMillis = alarm.getTimeInMillis() - now.getTimeInMillis();
+            restartJobServiceTriggerAt(context, triggerAtMillis);
+        } else {
+            restartAlarmManagerTimeOfDay(context, alarm);
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static JobInfo.Builder getFeedUpdateJobBuilder(Context context) {
         ComponentName serviceComponent = new ComponentName(context, FeedUpdateJobService.class);
@@ -35,7 +70,7 @@ public class AutoUpdateManager {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void restartJobServiceInterval(Context context, long intervalMillis) {
+    private static void restartJobServiceInterval(Context context, long intervalMillis) {
         JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
         if (jobScheduler == null) {
             Log.d(TAG, "JobScheduler was null.");
@@ -61,7 +96,7 @@ public class AutoUpdateManager {
         Log.d(TAG, "JobScheduler was set at interval " + intervalMillis);
     }
 
-    public static void restartAlarmManagerInterval(Context context, long triggerAtMillis, long intervalMillis) {
+    private static void restartAlarmManagerInterval(Context context, long triggerAtMillis, long intervalMillis) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (alarmManager == null) {
@@ -85,7 +120,7 @@ public class AutoUpdateManager {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void restartJobServiceTriggerAt(Context context, long triggerAtMillis) {
+    private static void restartJobServiceTriggerAt(Context context, long triggerAtMillis) {
         JobScheduler jobScheduler = context.getSystemService(JobScheduler.class);
         if (jobScheduler == null) {
             Log.d(TAG, "JobScheduler was null.");
@@ -99,7 +134,7 @@ public class AutoUpdateManager {
         Log.d(TAG, "JobScheduler was set for " + triggerAtMillis);
     }
 
-    public static void restartAlarmManagerTimeOfDay(Context context, Calendar alarm) {
+    private static void restartAlarmManagerTimeOfDay(Context context, Calendar alarm) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (alarmManager == null) {
