@@ -7,8 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.os.Binder;
 import android.os.Build;
@@ -22,7 +20,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.webkit.URLUtil;
 
-import de.danoeh.antennapod.core.util.NotificationUtils;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.apache.commons.io.FileUtils;
 import org.xml.sax.SAXException;
 

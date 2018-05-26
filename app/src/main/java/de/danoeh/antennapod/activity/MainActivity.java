@@ -31,7 +31,7 @@ import android.widget.ListView;
 import com.bumptech.glide.Glide;
 
 import de.danoeh.antennapod.core.event.ServiceEvent;
-import de.danoeh.antennapod.core.util.NotificationUtils;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 

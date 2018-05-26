@@ -10,7 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import de.danoeh.antennapod.core.util.NotificationUtils;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 import java.util.LinkedList;
