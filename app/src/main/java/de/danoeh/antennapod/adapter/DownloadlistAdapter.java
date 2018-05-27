@@ -121,15 +121,6 @@ public class DownloadlistAdapter extends BaseAdapter {
         ImageButton butSecondary;
     }
 
-    public int getSelectedItemIndex() {
-        return selectedItemIndex;
-    }
-
-    public void setSelectedItemIndex(int selectedItemIndex) {
-        this.selectedItemIndex = selectedItemIndex;
-        notifyDataSetChanged();
-    }
-
     public interface ItemAccess {
         int getCount();
 

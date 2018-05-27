@@ -237,27 +237,6 @@ public final class DBTasks {
     }
 
     /**
-     * Downloads all pages of the given feed.
-     *
-     * @param context Used for requesting the download.
-     * @param feed    The Feed object.
-     */
-    public static void refreshCompleteFeed(final Context context, final Feed feed) {
-        try {
-            refreshFeed(context, feed, true, false);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DBWriter.addDownloadStatus(
-                    new DownloadStatus(feed, feed
-                            .getHumanReadableIdentifier(),
-                            DownloadError.ERROR_REQUEST_ERROR, false, e
-                            .getMessage()
-                    )
-            );
-        }
-    }
-
-    /**
      * Downloads all pages of the given feed even if feed has not been modified since last refresh
      *
      * @param context Used for requesting the download.
@@ -375,27 +354,6 @@ public final class DBTasks {
         media.setFile_url(null);
         DBWriter.setFeedMedia(media);
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
-    }
-
-    /**
-     * Request the download of all objects in the queue. from a separate Thread.
-     *
-     * @param context Used for requesting the download an accessing the database.
-     */
-    public static void downloadAllItemsInQueue(final Context context) {
-        new Thread() {
-            public void run() {
-                List<FeedItem> queue = DBReader.getQueue();
-                if (!queue.isEmpty()) {
-                    try {
-                        downloadFeedItems(context,
-                                queue.toArray(new FeedItem[queue.size()]));
-                    } catch (DownloadRequestException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
     }
 
     /**

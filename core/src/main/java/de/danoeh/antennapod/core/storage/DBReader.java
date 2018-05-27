@@ -844,23 +844,6 @@ public final class DBReader {
      * @param imageId The id of the object
      * @return The found object
      */
-    public static FeedImage getFeedImage(final long imageId) {
-        Log.d(TAG, "getFeedImage() called with: " + "imageId = [" + imageId + "]");
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        try {
-            return getFeedImage(adapter, imageId);
-        } finally {
-            adapter.close();
-        }
-    }
-
-    /**
-     * Searches the DB for a FeedImage of the given id.
-     *
-     * @param imageId The id of the object
-     * @return The found object
-     */
     private static FeedImage getFeedImage(PodDBAdapter adapter, final long imageId) {
         return getFeedImages(adapter, imageId).get(imageId);
     }

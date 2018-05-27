@@ -58,19 +58,4 @@ public abstract class QueueAccess {
         };
     }
 
-    public static QueueAccess NotInQueueAccess() {
-        return new QueueAccess() {
-            @Override
-            public boolean contains(long id) {
-                return false;
-            }
-
-            @Override
-            public boolean remove(long id) {
-                return false;
-            }
-        };
-
-    }
-
 }
