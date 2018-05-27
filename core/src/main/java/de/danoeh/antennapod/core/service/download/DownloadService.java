@@ -1107,7 +1107,7 @@ public class DownloadService extends Service {
      * that every image reference is unique.
      */
     @VisibleForTesting
-    public static void removeDuplicateImages(Feed feed) {
+    static void removeDuplicateImages(Feed feed) {
         Set<String> known = new HashSet<>();
         for (FeedItem item : feed.getItems()) {
             String url = item.hasItemImage() ? item.getImage().getDownload_url() : null;
