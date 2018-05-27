@@ -78,7 +78,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     }
 
     public void testExpandNotification() {
-        solo.clickOnText(solo.getString(R.string.playback_pref));
+        solo.clickOnText(solo.getString(R.string.user_interface_label));
         final int priority = UserPreferences.getNotifyPriority();
         solo.clickOnText(solo.getString(R.string.pref_expandNotify_title));
         assertTrue(solo.waitForCondition(() -> priority != UserPreferences.getNotifyPriority(), Timeout.getLargeTimeout()));
@@ -89,6 +89,8 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     public void testEnablePersistentPlaybackControls() {
         solo.clickOnText(solo.getString(R.string.user_interface_label));
         final boolean persistNotify = UserPreferences.isPersistNotify();
+        solo.scrollDown();
+        solo.scrollDown();
         solo.clickOnText(solo.getString(R.string.pref_persistNotify_title));
         assertTrue(solo.waitForCondition(() -> persistNotify != UserPreferences.isPersistNotify(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_persistNotify_title));
@@ -96,7 +98,8 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     }
 
     public void testSetLockscreenButtons() {
-        solo.clickOnText(solo.getString(R.string.playback_pref));
+        solo.clickOnText(solo.getString(R.string.user_interface_label));
+        solo.scrollDown();
         String[] buttons = res.getStringArray(R.array.compact_notification_buttons_options);
         solo.clickOnText(solo.getString(R.string.pref_compact_notification_buttons_title));
         solo.waitForDialogToOpen(1000);
@@ -123,6 +126,8 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     public void testEnqueueAtFront() {
         solo.clickOnText(solo.getString(R.string.playback_pref));
         final boolean enqueueAtFront = UserPreferences.enqueueAtFront();
+        solo.scrollDown();
+        solo.scrollDown();
         solo.clickOnText(solo.getString(R.string.pref_queueAddToFront_title));
         assertTrue(solo.waitForCondition(() -> enqueueAtFront != UserPreferences.enqueueAtFront(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_queueAddToFront_title));
@@ -167,6 +172,8 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     public void testContinuousPlayback() {
         solo.clickOnText(solo.getString(R.string.playback_pref));
         final boolean continuousPlayback = UserPreferences.isFollowQueue();
+        solo.scrollDown();
+        solo.scrollDown();
         solo.clickOnText(solo.getString(R.string.pref_followQueue_title));
         assertTrue(solo.waitForCondition(() -> continuousPlayback != UserPreferences.isFollowQueue(), Timeout.getLargeTimeout()));
         solo.clickOnText(solo.getString(R.string.pref_followQueue_title));
@@ -184,6 +191,8 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
 
     public void testPlaybackSpeeds() {
         solo.clickOnText(solo.getString(R.string.playback_pref));
+        solo.scrollDown();
+        solo.scrollDown();
         solo.clickOnText(solo.getString(R.string.pref_playback_speed_title));
         solo.waitForDialogToOpen(1000);
         assertTrue(solo.searchText(res.getStringArray(R.array.playback_speed_values)[0]));
@@ -400,6 +409,8 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         int deltas[] = res.getIntArray(R.array.seek_delta_values);
 
         solo.clickOnText(solo.getString(R.string.playback_pref));
+        solo.scrollDown();
+        solo.scrollDown();
         solo.clickOnText(solo.getString(R.string.pref_rewind));
         solo.waitForDialogToOpen();
 
@@ -419,6 +430,8 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
 
     public void testFastForwardChange() {
         solo.clickOnText(solo.getString(R.string.playback_pref));
+        solo.scrollDown();
+        solo.scrollDown();
         for (int i = 2; i > 0; i--) { // repeat twice to catch any error where fastforward is tracking rewind
             int seconds = UserPreferences.getFastForwardSecs();
             int deltas[] = res.getIntArray(R.array.seek_delta_values);
