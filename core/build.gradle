@@ -84,6 +84,15 @@ dependencies {
 
 }
 
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "skipped", "passed", "failed"
+        showStandardStreams true
+        displayGranularity 2
+    }
+}
+
 allprojects {
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
