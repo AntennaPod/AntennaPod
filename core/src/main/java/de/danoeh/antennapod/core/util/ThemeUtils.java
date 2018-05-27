@@ -12,6 +12,8 @@ public class ThemeUtils {
         int theme = UserPreferences.getTheme();
         if (theme == R.style.Theme_AntennaPod_Dark) {
             return R.color.selection_background_color_dark;
+        }else if (theme == R.style.Theme_AntennaPod_TrueBlack){
+            return R.color.selection_background_color_trueblack;
         } else if (theme == R.style.Theme_AntennaPod_Light) {
             return R.color.selection_background_color_light;
         } else {

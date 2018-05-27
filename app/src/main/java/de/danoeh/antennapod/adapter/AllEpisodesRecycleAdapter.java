@@ -69,6 +69,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
             playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_dark);
+        } else if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack){
+            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_trueblack);
         } else {
             playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_light);
         }

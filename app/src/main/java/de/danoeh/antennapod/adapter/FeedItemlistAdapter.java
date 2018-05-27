@@ -62,6 +62,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
         if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
             playingBackGroundColor = ContextCompat.getColor(context, R.color.highlight_dark);
+        } else if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack) {
+            playingBackGroundColor = ContextCompat.getColor(context, R.color.highlight_trueblack);
         } else {
             playingBackGroundColor = ContextCompat.getColor(context, R.color.highlight_light);
         }
