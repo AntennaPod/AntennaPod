@@ -219,7 +219,7 @@ public class DBWriterTest {
 
                 FeedItem tFI202 = tFI_isDownloading(202, mockDownloadRequester);
                 doAddToQueueAndAssertResult(message + " (bulk insertion, 2nd item)",
-                        calculator, 0, tFI202, queue,
+                        calculator, 1, tFI202, queue,
                         idsExpectedAfter202);
 
                 // TODO: simulate download failure cases.
