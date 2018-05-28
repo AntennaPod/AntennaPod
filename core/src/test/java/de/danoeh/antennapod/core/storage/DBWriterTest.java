@@ -137,7 +137,7 @@ public class DBWriterTest {
         @RunWith(Parameterized.class)
         public static class ItemEnqueuePositionCalculatorPreserveDownloadOrderTest {
 
-            @Parameters(name = "{index}: case<{0}>, expected:{1}")
+            @Parameters(name = "{index}: case<{0}>")
             public static Iterable<Object[]> data() {
                 Options optDefault = new Options();
                 Options optEnqAtFront = new Options().setEnqueueAtFront(true);
