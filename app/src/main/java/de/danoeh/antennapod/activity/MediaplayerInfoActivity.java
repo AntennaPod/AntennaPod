@@ -414,7 +414,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                                     remover.skipOnCompletion = true;
                                     if(controller.getStatus() == PlayerStatus.PLAYING) {
                                         sendBroadcast(new Intent(
-                                                PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                                                PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE)
+                                                .setPackage(getPackageName()));
                                     }
                                 }
                             }

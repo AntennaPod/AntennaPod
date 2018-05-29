@@ -701,6 +701,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             Intent statusUpdate = new Intent(ACTION_PLAYER_STATUS_CHANGED);
             // statusUpdate.putExtra(EXTRA_NEW_PLAYER_STATUS, newInfo.playerStatus.ordinal());
+            statusUpdate.setPackage(getPackageName());
             sendBroadcast(statusUpdate);
             PlayerWidgetJobService.updateWidget(getBaseContext());
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_PLAYER_STATUS_CHANGED);
@@ -1042,17 +1043,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         editor.commit();
     }
 
-    /**
-     * Send ACTION_PLAYER_STATUS_CHANGED without changing the status attribute.
-     */
-    private void postStatusUpdateIntent() {
-        sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
-    }
-
     private void sendNotificationBroadcast(int type, int code) {
         Intent intent = new Intent(ACTION_PLAYER_NOTIFICATION);
         intent.putExtra(EXTRA_NOTIFICATION_TYPE, type);
         intent.putExtra(EXTRA_NOTIFICATION_CODE, code);
+        intent.setPackage(getPackageName());
         sendBroadcast(intent);
     }
 

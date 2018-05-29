@@ -242,6 +242,7 @@ public class DownloadRequester {
             Log.d(TAG, "Cancelling download with url " + downloadUrl);
         Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
         cancelIntent.putExtra(DownloadService.EXTRA_DOWNLOAD_URL, downloadUrl);
+        cancelIntent.setPackage(context.getPackageName());
         context.sendBroadcast(cancelIntent);
     }
 
@@ -251,7 +252,8 @@ public class DownloadRequester {
     public synchronized void cancelAllDownloads(Context context) {
         Log.d(TAG, "Cancelling all running downloads");
         context.sendBroadcast(new Intent(
-                DownloadService.ACTION_CANCEL_ALL_DOWNLOADS));
+                DownloadService.ACTION_CANCEL_ALL_DOWNLOADS)
+                .setPackage(context.getPackageName()));
     }
 
     /**

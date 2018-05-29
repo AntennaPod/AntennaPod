@@ -143,7 +143,8 @@ public final class DBTasks {
             e.printStackTrace();
             if (media.isPlaying()) {
                 context.sendBroadcast(new Intent(
-                        PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+                        PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)
+                        .setPackage(context.getPackageName()));
             }
             notifyMissingFeedMediaFile(context, media);
         }

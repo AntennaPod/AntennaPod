@@ -863,7 +863,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
 
         if (butSkip != null) {
-            butSkip.setOnClickListener(v -> sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE)));
+            butSkip.setOnClickListener(v -> sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE)
+                    .setPackage(getPackageName())));
         }
     }
 

@@ -628,7 +628,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                             int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
                             if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                                 sendBroadcast(new Intent(
-                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE)
+                                        .setPackage(getPackageName()));
                             }
                         }
                         remover.executeAsync();

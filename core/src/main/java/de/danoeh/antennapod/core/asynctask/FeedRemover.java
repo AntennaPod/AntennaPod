@@ -41,7 +41,8 @@ public class FeedRemover extends AsyncTask<Void, Void, Void> {
             dialog.dismiss();
         }
 		if(skipOnCompletion) {
-			context.sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
+			context.sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE)
+					.setPackage(context.getPackageName()));
 		}
 	}
 

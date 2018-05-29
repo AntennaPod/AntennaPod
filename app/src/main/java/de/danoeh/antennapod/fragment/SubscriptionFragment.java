@@ -212,7 +212,8 @@ public class SubscriptionFragment extends Fragment {
                             int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
                             if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                                 getActivity().sendBroadcast(new Intent(
-                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE)
+                                        .setPackage(getContext().getPackageName()));
                             }
                         }
                         remover.executeAsync();

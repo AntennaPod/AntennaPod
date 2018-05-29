@@ -41,7 +41,8 @@ public class SPAUtil {
         }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
         if (!prefs.getBoolean(PREF_HAS_QUERIED_SP_APPS, false)) {
-            appContext.sendBroadcast(new Intent(SPAReceiver.ACTION_SP_APPS_QUERY_FEEDS));
+            appContext.sendBroadcast(new Intent(SPAReceiver.ACTION_SP_APPS_QUERY_FEEDS)
+                    .setPackage(context.getPackageName()));
             if (BuildConfig.DEBUG) Log.d(TAG, "Sending SP_APPS_QUERY_FEEDS intent");
 
             SharedPreferences.Editor editor = prefs.edit();

@@ -120,7 +120,8 @@ public class DBWriter {
                                 .getCurrentlyPlayingFeedMediaId() == media
                                 .getId()) {
                             context.sendBroadcast(new Intent(
-                                    PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+                                    PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)
+                                    .setPackage(context.getPackageName()));
                         }
                     }
                     // Gpodder: queue delete action for synchronization
@@ -158,7 +159,8 @@ public class DBWriter {
                         && PlaybackPreferences.getLastPlayedFeedId() == feed
                         .getId()) {
                     context.sendBroadcast(new Intent(
-                            PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+                            PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)
+                            .setPackage(context.getPackageName()));
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putLong(
                             PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,

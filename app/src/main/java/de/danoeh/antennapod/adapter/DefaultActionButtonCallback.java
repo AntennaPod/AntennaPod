@@ -86,13 +86,15 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                             .startWhenPrepared(true)
                             .shouldStream(false)
                             .start();
-                    context.sendBroadcast(new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                    context.sendBroadcast(new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE)
+                            .setPackage(context.getPackageName()));
                 } else if (media.isCurrentlyPaused()) {
                     new PlaybackServiceStarter(context, media)
                             .startWhenPrepared(true)
                             .shouldStream(false)
                             .start();
-                    context.sendBroadcast(new Intent(PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE));
+                    context.sendBroadcast(new Intent(PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE)
+                            .setPackage(context.getPackageName()));
                 } else {
                     DBTasks.playMedia(context, media, false, true, false);
                 }
