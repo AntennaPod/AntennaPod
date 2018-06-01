@@ -7,8 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.os.Binder;
 import android.os.Build;
@@ -22,6 +20,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.webkit.URLUtil;
 
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.apache.commons.io.FileUtils;
 import org.xml.sax.SAXException;
 
@@ -295,6 +294,7 @@ public class DownloadService extends Service {
 
         setupNotificationBuilders();
         requester = DownloadRequester.getInstance();
+        startForeground(NOTIFICATION_ID, updateNotifications());
     }
 
     @Override
@@ -339,7 +339,7 @@ public class DownloadService extends Service {
     }
 
     private void setupNotificationBuilders() {
-        notificationCompatBuilder = new NotificationCompat.Builder(this)
+        notificationCompatBuilder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setOngoing(true)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
                 .setSmallIcon(R.drawable.stat_notify_sync);
@@ -352,7 +352,7 @@ public class DownloadService extends Service {
 
     /**
      * Updates the contents of the service's notifications. Should be called
-     * before setupNotificationBuilders.
+     * after setupNotificationBuilders.
      */
     private Notification updateNotifications() {
         if (notificationCompatBuilder == null) {
@@ -499,7 +499,7 @@ public class DownloadService extends Service {
         if (createReport) {
             Log.d(TAG, "Creating report");
             // create notification object
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_ERROR)
                     .setTicker(getString(R.string.download_report_title))
                     .setContentTitle(getString(R.string.download_report_content_title))
                     .setContentText(
@@ -551,7 +551,7 @@ public class DownloadService extends Service {
             final String resourceTitle = (downloadRequest.getTitle() != null) ?
                     downloadRequest.getTitle() : downloadRequest.getSource();
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(DownloadService.this);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(DownloadService.this, NotificationUtils.CHANNEL_ID_USER_ACTION);
             builder.setTicker(getText(R.string.authentication_notification_title))
                     .setContentTitle(getText(R.string.authentication_notification_title))
                     .setContentText(getText(R.string.authentication_notification_msg))
@@ -1107,7 +1107,7 @@ public class DownloadService extends Service {
      * that every image reference is unique.
      */
     @VisibleForTesting
-    public static void removeDuplicateImages(Feed feed) {
+    static void removeDuplicateImages(Feed feed) {
         Set<String> known = new HashSet<>();
         for (FeedItem item : feed.getItems()) {
             String url = item.hasItemImage() ? item.getImage().getDownload_url() : null;

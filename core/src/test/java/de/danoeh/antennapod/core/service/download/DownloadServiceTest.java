@@ -1,6 +1,7 @@
-package de.danoeh.antennapod.core.tests.util.service.download;
+package de.danoeh.antennapod.core.service.download;
 
-import android.test.AndroidTestCase;
+
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +9,12 @@ import java.util.List;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 
-public class DownloadServiceTest extends AndroidTestCase {
+import static org.junit.Assert.assertEquals;
 
+public class DownloadServiceTest  {
+
+    @Test
     public void testRemoveDuplicateImages() {
         List<FeedItem> items = new ArrayList<>();
         for (int i = 0; i < 50; i++) {

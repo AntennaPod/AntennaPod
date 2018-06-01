@@ -1,22 +1,26 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.test.AndroidTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import static de.danoeh.antennapod.core.feed.FeedItemMother.anyFeedItemWithImage;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class FeedItemTest extends AndroidTestCase {
+public class FeedItemTest {
 
     private FeedItem original;
     private FeedImage originalImage;
     private FeedItem changedFeedItem;
 
-    @Override
-    protected void setUp() {
+    @Before
+    public void setUp() {
         original = anyFeedItemWithImage();
         originalImage = original.getImage();
         changedFeedItem = anyFeedItemWithImage();
     }
 
+    @Test
     public void testUpdateFromOther_feedItemImageDownloadUrlChanged() throws Exception {
         setNewFeedItemImageDownloadUrl();
 
@@ -25,6 +29,7 @@ public class FeedItemTest extends AndroidTestCase {
         feedItemImageWasUpdated();
     }
 
+    @Test
     public void testUpdateFromOther_feedItemImageRemoved() throws Exception {
         feedItemImageRemoved();
 
@@ -33,6 +38,7 @@ public class FeedItemTest extends AndroidTestCase {
         feedItemImageWasNotUpdated();
     }
 
+    @Test
     public void testUpdateFromOther_feedItemImageAdded() throws Exception {
         feedItemHadNoImage();
         setNewFeedItemImageDownloadUrl();
