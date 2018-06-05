@@ -200,14 +200,9 @@ public final class DBReader {
     private static List<FeedItem> extractItemlistFromCursor(PodDBAdapter adapter, Cursor cursor) {
         List<FeedItem> result = new ArrayList<>(cursor.getCount());
 
-        LongList imageIds = new LongList(cursor.getCount());
         LongList itemIds = new LongList(cursor.getCount());
         if (cursor.moveToFirst()) {
             do {
-                int indexImage = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE);
-                long imageId = cursor.getLong(indexImage);
-                imageIds.add(imageId);
-
                 FeedItem item = FeedItem.fromCursor(cursor);
                 result.add(item);
                 itemIds.add(item.getId());
