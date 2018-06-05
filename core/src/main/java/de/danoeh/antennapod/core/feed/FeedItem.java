@@ -158,6 +158,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         int indexRead = cursor.getColumnIndex(PodDBAdapter.KEY_READ);
         int indexItemIdentifier = cursor.getColumnIndex(PodDBAdapter.KEY_ITEM_IDENTIFIER);
         int indexAutoDownload = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD);
+        int indexImageUrl = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE_URL);
 
         long id = cursor.getInt(indexId);
         String title = cursor.getString(indexTitle);
@@ -170,9 +171,10 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         int state = cursor.getInt(indexRead);
         String itemIdentifier = cursor.getString(indexItemIdentifier);
         long autoDownload = cursor.getLong(indexAutoDownload);
+        String imageUrl = cursor.getString(indexImageUrl);
 
         return new FeedItem(id, title, link, pubDate, paymentLink, feedId, flattrStatus,
-                hasChapters, null, state, itemIdentifier, autoDownload);
+                hasChapters, imageUrl, state, itemIdentifier, autoDownload);
     }
 
     public void updateFromOther(FeedItem other) {

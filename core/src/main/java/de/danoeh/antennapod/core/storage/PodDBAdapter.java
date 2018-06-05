@@ -378,7 +378,7 @@ public class PodDBAdapter {
         values.put(KEY_PAYMENT_LINK, feed.getPaymentLink());
         values.put(KEY_AUTHOR, feed.getAuthor());
         values.put(KEY_LANGUAGE, feed.getLanguage());
-        //TODO values.put(KEY_IMAGE_URL, feed.getImageUrl());
+        values.put(KEY_IMAGE_URL, feed.getImageUrl());
 
         values.put(KEY_FILE_URL, feed.getFile_url());
         values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());

@@ -191,6 +191,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         int indexNextPageLink = cursor.getColumnIndex(PodDBAdapter.KEY_NEXT_PAGE_LINK);
         int indexHide = cursor.getColumnIndex(PodDBAdapter.KEY_HIDE);
         int indexLastUpdateFailed = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_UPDATE_FAILED);
+        int indexImageUrl = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE_URL);
 
         Feed feed = new Feed(
                 cursor.getLong(indexId),
@@ -204,7 +205,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
                 cursor.getString(indexLanguage),
                 cursor.getString(indexType),
                 cursor.getString(indexFeedIdentifier),
-                null,
+                cursor.getString(indexImageUrl),
                 cursor.getString(indexFileUrl),
                 cursor.getString(indexDownloadUrl),
                 cursor.getInt(indexDownloaded) > 0,
