@@ -7,7 +7,6 @@ import org.xml.sax.Attributes;
 
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 
 public class NSITunes extends Namespace {
@@ -16,7 +15,6 @@ public class NSITunes extends Namespace {
     public static final String NSURI = "http://www.itunes.com/dtds/podcast-1.0.dtd";
 
     private static final String IMAGE = "image";
-    private static final String IMAGE_TITLE = "image";
     private static final String IMAGE_HREF = "href";
 
     private static final String AUTHOR = "author";
@@ -29,21 +27,15 @@ public class NSITunes extends Namespace {
     public SyndElement handleElementStart(String localName, HandlerState state,
                                           Attributes attributes) {
         if (IMAGE.equals(localName)) {
-            FeedImage image = new FeedImage();
-            image.setTitle(IMAGE_TITLE);
-            image.setDownload_url(attributes.getValue(IMAGE_HREF));
+            String url = attributes.getValue(IMAGE_HREF);
 
             if (state.getCurrentItem() != null) {
-                // this is an items image
-                image.setTitle(state.getCurrentItem().getTitle() + IMAGE_TITLE);
-                image.setOwner(state.getCurrentItem());
-                state.getCurrentItem().setImage(image);
+                state.getCurrentItem().setImageUrl(url);
             } else {
                 // this is the feed image
                 // prefer to all other images
-                if (!TextUtils.isEmpty(image.getDownload_url())) {
-                    image.setOwner(state.getFeed());
-                    state.getFeed().setImage(image);
+                if (!TextUtils.isEmpty(url)) {
+                    state.getFeed().setImageUrl(url);
                 }
             }
         }

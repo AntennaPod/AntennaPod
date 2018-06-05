@@ -27,7 +27,6 @@ import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -74,6 +73,7 @@ public class PodDBAdapter {
     public static final String KEY_SIZE = "filesize";
     public static final String KEY_MIME_TYPE = "mime_type";
     public static final String KEY_IMAGE = "image";
+    public static final String KEY_IMAGE_URL = "image_url";
     public static final String KEY_FEED = "feed";
     private static final String KEY_MEDIA = "media";
     public static final String KEY_DOWNLOADED = "downloaded";
@@ -388,12 +388,7 @@ public class PodDBAdapter {
         values.put(KEY_PAYMENT_LINK, feed.getPaymentLink());
         values.put(KEY_AUTHOR, feed.getAuthor());
         values.put(KEY_LANGUAGE, feed.getLanguage());
-        if (feed.getImage() != null) {
-            if (feed.getImage().getId() == 0) {
-                setImage(feed.getImage());
-            }
-            values.put(KEY_IMAGE, feed.getImage().getId());
-        }
+        //TODO values.put(KEY_IMAGE_URL, feed.getImageUrl());
 
         values.put(KEY_FILE_URL, feed.getFile_url());
         values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
@@ -450,54 +445,7 @@ public class PodDBAdapter {
     }
 
     /**
-     * Inserts or updates an image entry
-     *
-     * @return the id of the entry
-     */
-    public long setImage(FeedImage image) {
-        boolean startedTransaction = false;
-
-        try {
-            if (!db.inTransaction()) {
-                db.beginTransactionNonExclusive();
-                startedTransaction = true;
-            }
-
-            ContentValues values = new ContentValues();
-            values.put(KEY_TITLE, image.getTitle());
-            values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
-            values.put(KEY_DOWNLOADED, image.isDownloaded());
-            values.put(KEY_FILE_URL, image.getFile_url());
-            if (image.getId() == 0) {
-                image.setId(db.insert(TABLE_NAME_FEED_IMAGES, null, values));
-            } else {
-                db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID + "=?",
-                        new String[]{String.valueOf(image.getId())});
-            }
-
-            final FeedComponent owner = image.getOwner();
-            if (owner != null && owner.getId() != 0) {
-                values.clear();
-                values.put(KEY_IMAGE, image.getId());
-                if (owner instanceof Feed) {
-                    db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(image.getOwner().getId())});
-                }
-            }
-            if (startedTransaction) {
-                db.setTransactionSuccessful();
-            }
-        } catch (SQLException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-        } finally {
-            if (startedTransaction) {
-                db.endTransaction();
-            }
-        }
-        return image.getId();
-    }
-
-    /**
-     * Inserts or updates an image entry
+     * Inserts or updates a media entry
      *
      * @return the id of the entry
      */
@@ -759,12 +707,7 @@ public class PodDBAdapter {
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
         values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
         values.put(KEY_AUTO_DOWNLOAD, item.getAutoDownload());
-        if (item.hasItemImage()) {
-            if (item.getImage().getId() == 0) {
-                setImage(item.getImage());
-            }
-            values.put(KEY_IMAGE, item.getImage().getId());
-        }
+        values.put(KEY_IMAGE_URL, item.getImageUrl());
 
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
@@ -993,11 +936,6 @@ public class PodDBAdapter {
                 new String[]{String.valueOf(item.getId())});
     }
 
-    private void removeFeedImage(FeedImage image) {
-        db.delete(TABLE_NAME_FEED_IMAGES, KEY_ID + "=?",
-                new String[]{String.valueOf(image.getId())});
-    }
-
     /**
      * Remove a FeedItem and its FeedMedia entry.
      */
@@ -1007,9 +945,6 @@ public class PodDBAdapter {
         }
         if (item.hasChapters() || item.getChapters() != null) {
             removeChaptersOfItem(item);
-        }
-        if (item.hasItemImage()) {
-            removeFeedImage(item.getImage());
         }
         db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?",
                 new String[]{String.valueOf(item.getId())});
@@ -1021,9 +956,6 @@ public class PodDBAdapter {
     public void removeFeed(Feed feed) {
         try {
             db.beginTransactionNonExclusive();
-            if (feed.getImage() != null) {
-                removeFeedImage(feed.getImage());
-            }
             if (feed.getItems() != null) {
                 for (FeedItem item : feed.getItems()) {
                     removeFeedItem(item);
