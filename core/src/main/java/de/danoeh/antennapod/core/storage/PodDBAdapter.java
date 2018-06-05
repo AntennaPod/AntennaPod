@@ -133,7 +133,7 @@ public class PodDBAdapter {
             + KEY_DOWNLOADED + " INTEGER," + KEY_LINK + " TEXT,"
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
-            + " TEXT," + KEY_IMAGE + " INTEGER," + KEY_TYPE + " TEXT,"
+            + " TEXT," + KEY_IMAGE_URL + " TEXT," + KEY_TYPE + " TEXT,"
             + KEY_FEED_IDENTIFIER + " TEXT," + KEY_AUTO_DOWNLOAD + " INTEGER DEFAULT 1,"
             + KEY_FLATTR_STATUS + " INTEGER,"
             + KEY_USERNAME + " TEXT,"
@@ -155,13 +155,8 @@ public class PodDBAdapter {
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
             + KEY_FLATTR_STATUS + " INTEGER,"
-            + KEY_IMAGE + " INTEGER,"
+            + KEY_IMAGE_URL + " TEXT,"
             + KEY_AUTO_DOWNLOAD + " INTEGER)";
-
-    private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
-            + TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
-            + KEY_DOWNLOADED + " INTEGER)";
 
     private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
             + TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
@@ -194,10 +189,6 @@ public class PodDBAdapter {
     private static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_FEED + ")";
-
-    private static final String CREATE_INDEX_FEEDITEMS_IMAGE = "CREATE INDEX "
-            + TABLE_NAME_FEED_ITEMS + "_" + KEY_IMAGE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
-            + KEY_IMAGE + ")";
 
     private static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX IF NOT EXISTS "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_PUBDATE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
@@ -240,7 +231,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_LASTUPDATE,
             TABLE_NAME_FEEDS + "." + KEY_LANGUAGE,
             TABLE_NAME_FEEDS + "." + KEY_AUTHOR,
-            TABLE_NAME_FEEDS + "." + KEY_IMAGE,
+            TABLE_NAME_FEEDS + "." + KEY_IMAGE_URL,
             TABLE_NAME_FEEDS + "." + KEY_TYPE,
             TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD,
@@ -273,7 +264,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS,
             TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER,
             TABLE_NAME_FEED_ITEMS + "." + KEY_FLATTR_STATUS,
-            TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE,
+            TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE_URL,
             TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD
     };
 
@@ -283,7 +274,6 @@ public class PodDBAdapter {
     private static final String[] ALL_TABLES = {
             TABLE_NAME_FEEDS,
             TABLE_NAME_FEED_ITEMS,
-            TABLE_NAME_FEED_IMAGES,
             TABLE_NAME_FEED_MEDIA,
             TABLE_NAME_DOWNLOAD_LOG,
             TABLE_NAME_QUEUE,
@@ -1604,7 +1594,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private static final int VERSION = 1060200;
+        private static final int VERSION = 1060596;
 
         private final Context context;
 
@@ -1625,7 +1615,6 @@ public class PodDBAdapter {
         public void onCreate(final SQLiteDatabase db) {
             db.execSQL(CREATE_TABLE_FEEDS);
             db.execSQL(CREATE_TABLE_FEED_ITEMS);
-            db.execSQL(CREATE_TABLE_FEED_IMAGES);
             db.execSQL(CREATE_TABLE_FEED_MEDIA);
             db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
             db.execSQL(CREATE_TABLE_QUEUE);
@@ -1633,7 +1622,6 @@ public class PodDBAdapter {
             db.execSQL(CREATE_TABLE_FAVORITES);
 
             db.execSQL(CREATE_INDEX_FEEDITEMS_FEED);
-            db.execSQL(CREATE_INDEX_FEEDITEMS_IMAGE);
             db.execSQL(CREATE_INDEX_FEEDITEMS_PUBDATE);
             db.execSQL(CREATE_INDEX_FEEDITEMS_READ);
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
@@ -1770,7 +1758,6 @@ public class PodDBAdapter {
 
                 // create indexes
                 db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_FEED);
-                db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_IMAGE);
                 db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDMEDIA_FEEDITEM);
                 db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_FEEDITEM);
                 db.execSQL(PodDBAdapter.CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
@@ -1903,6 +1890,13 @@ public class PodDBAdapter {
             if (oldVersion < 1060200) {
                 db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                         + " ADD COLUMN " + PodDBAdapter.KEY_CUSTOM_TITLE + " TEXT");
+            }
+            if (oldVersion < 1060596) {
+                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + PodDBAdapter.KEY_IMAGE_URL + " TEXT");
+                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                        + " ADD COLUMN " + PodDBAdapter.KEY_IMAGE_URL + " TEXT");
+                db.execSQL("DROP TABLE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES);
             }
 
             EventBus.getDefault().post(ProgressEvent.end());
