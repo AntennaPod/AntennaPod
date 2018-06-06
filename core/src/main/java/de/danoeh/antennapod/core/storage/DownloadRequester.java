@@ -9,6 +9,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.URLUtil;
 
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -251,9 +253,7 @@ public class DownloadRequester {
      */
     public synchronized void cancelAllDownloads(Context context) {
         Log.d(TAG, "Cancelling all running downloads");
-        context.sendBroadcast(new Intent(
-                DownloadService.ACTION_CANCEL_ALL_DOWNLOADS)
-                .setPackage(context.getPackageName()));
+        IntentUtils.sendLocalBroadcast(context, DownloadService.ACTION_CANCEL_ALL_DOWNLOADS);
     }
 
     /**
