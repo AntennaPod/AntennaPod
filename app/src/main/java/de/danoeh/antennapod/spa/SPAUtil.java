@@ -6,9 +6,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import de.danoeh.antennapod.activity.MediaplayerInfoActivity;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.IntentUtils;
 import org.apache.commons.lang3.Validate;
 
 import de.danoeh.antennapod.BuildConfig;
@@ -45,7 +42,6 @@ public class SPAUtil {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(appContext);
         if (!prefs.getBoolean(PREF_HAS_QUERIED_SP_APPS, false)) {
             appContext.sendBroadcast(new Intent(SPAReceiver.ACTION_SP_APPS_QUERY_FEEDS));
-
             if (BuildConfig.DEBUG) Log.d(TAG, "Sending SP_APPS_QUERY_FEEDS intent");
 
             SharedPreferences.Editor editor = prefs.edit();
