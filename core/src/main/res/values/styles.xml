@@ -67,6 +67,7 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
@@ -136,6 +137,7 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
@@ -227,6 +229,7 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
@@ -297,6 +300,7 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
@@ -312,6 +316,7 @@
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item type="attr" name="dragview_float_background">@color/black</item>
         <item type="attr" name="nav_drawer_background">@color/black</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:color">@color/white</item>
         <item name="android:windowBackground">@color/black</item>

@@ -19,9 +19,9 @@ import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
@@ -143,16 +143,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
         Chapter current = ChapterUtils.getCurrentChapter(media);
         if (current == sc) {
-            int theme = UserPreferences.getTheme();
-            int highlight = R.color.highlight_light;
-            if (theme == R.style.Theme_AntennaPod_Dark) {
-                highlight = R.color.highlight_dark;
-            }else if (theme == R.style.Theme_AntennaPod_TrueBlack){
-                highlight = R.color.highlight_trueblack;
-            } else if (theme == R.style.Theme_AntennaPod_Light) {
-                highlight = R.color.highlight_light;
-            }
-            int playingBackGroundColor = ContextCompat.getColor(getContext(), highlight);
+            int playingBackGroundColor = ThemeUtils.getColorFromAttr(getContext(), R.attr.currently_playing_background);
             holder.view.setBackgroundColor(playingBackGroundColor);
         } else {
             holder.view.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
