@@ -677,11 +677,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     writePlayerStatusPlaybackPreferences();
                     break;
 
-                case STOPPED:
-                    //setCurrentlyPlayingMedia(PlaybackPreferences.NO_MEDIA_PLAYING);
-                    //stopSelf();
-                    break;
-
                 case PLAYING:
                     writePlayerStatusPlaybackPreferences();
                     setupNotification(newInfo);
@@ -694,8 +689,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     }
                     break;
 
-                case ERROR:
+                case ERROR: case STOPPED:
                     writePlaybackPreferencesNoMediaPlaying();
+                    stopSelf();
                     break;
 
             }
