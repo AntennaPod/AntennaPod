@@ -14,19 +14,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.media.MediaMetadataRetriever;
 import android.text.TextUtils;
 import android.util.Log;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -36,6 +27,13 @@ import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.greenrobot.event.EventBus;
 import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 // TODO Remove media column from feeditem table
 
@@ -1285,17 +1283,10 @@ public class PodDBAdapter {
     public Cursor getImageAuthenticationCursor(final String imageUrl) {
         String downloadUrl = DatabaseUtils.sqlEscapeString(imageUrl);
         final String query = ""
-                + "SELECT " + KEY_USERNAME + "," + KEY_PASSWORD + " FROM " + TABLE_NAME_FEED_IMAGES
+                + "SELECT " + KEY_USERNAME + "," + KEY_PASSWORD + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " INNER JOIN " + TABLE_NAME_FEEDS
-                + " ON " + TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" + TABLE_NAME_FEEDS + "." + KEY_IMAGE
-                + " WHERE " + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "=" + downloadUrl
-                + " UNION SELECT " + KEY_USERNAME + "," + KEY_PASSWORD
-                + " FROM " + TABLE_NAME_FEED_IMAGES
-                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
-                + " ON " + TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE
-                + " INNER JOIN " + TABLE_NAME_FEEDS
-                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                + " WHERE " + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "=" + downloadUrl;
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + " = " + TABLE_NAME_FEEDS + "." + KEY_ID
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE_URL + "=" + downloadUrl;
         return db.rawQuery(query, null);
     }
 
