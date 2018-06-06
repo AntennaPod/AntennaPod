@@ -75,7 +75,7 @@ public class PodDBAdapter {
     public static final String KEY_MIME_TYPE = "mime_type";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_FEED = "feed";
-    private static final String KEY_MEDIA = "media";
+    public static final String KEY_MEDIA = "media";
     public static final String KEY_DOWNLOADED = "downloaded";
     public static final String KEY_LASTUPDATE = "last_update";
     public static final String KEY_FEEDFILE = "feedfile";
@@ -114,14 +114,14 @@ public class PodDBAdapter {
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
 
     // Table names
-    private static final String TABLE_NAME_FEEDS = "Feeds";
-    private static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
-    private static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
-    private static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
-    private static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
-    private static final String TABLE_NAME_QUEUE = "Queue";
-    private static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
-    private static final String TABLE_NAME_FAVORITES = "Favorites";
+    static final String TABLE_NAME_FEEDS = "Feeds";
+    static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
+    static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
+    static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
+    static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
+    static final String TABLE_NAME_QUEUE = "Queue";
+    static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
+    static final String TABLE_NAME_FAVORITES = "Favorites";
 
     // SQL Statements for creating new tables
     private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -191,36 +191,36 @@ public class PodDBAdapter {
             + KEY_LINK + " TEXT," + KEY_CHAPTER_TYPE + " INTEGER)";
 
     // SQL Statements for creating indexes
-    private static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
+    static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_FEED + ")";
 
-    private static final String CREATE_INDEX_FEEDITEMS_IMAGE = "CREATE INDEX "
+    static final String CREATE_INDEX_FEEDITEMS_IMAGE = "CREATE INDEX "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_IMAGE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_IMAGE + ")";
 
-    private static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX IF NOT EXISTS "
+    static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX IF NOT EXISTS "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_PUBDATE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_PUBDATE + ")";
 
-    private static final String CREATE_INDEX_FEEDITEMS_READ = "CREATE INDEX IF NOT EXISTS "
+    static final String CREATE_INDEX_FEEDITEMS_READ = "CREATE INDEX IF NOT EXISTS "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_READ + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_READ + ")";
 
 
-    private static final String CREATE_INDEX_QUEUE_FEEDITEM = "CREATE INDEX "
+    static final String CREATE_INDEX_QUEUE_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_QUEUE + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_QUEUE + " ("
             + KEY_FEEDITEM + ")";
 
-    private static final String CREATE_INDEX_FEEDMEDIA_FEEDITEM = "CREATE INDEX "
+    static final String CREATE_INDEX_FEEDMEDIA_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_FEED_MEDIA + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_FEED_MEDIA + " ("
             + KEY_FEEDITEM + ")";
 
-    private static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = "CREATE INDEX "
+    static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_SIMPLECHAPTERS + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_SIMPLECHAPTERS + " ("
             + KEY_FEEDITEM + ")";
 
-    private static final String CREATE_TABLE_FAVORITES = "CREATE TABLE "
+    static final String CREATE_TABLE_FAVORITES = "CREATE TABLE "
             + TABLE_NAME_FAVORITES + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
 
@@ -1716,263 +1716,7 @@ public class PodDBAdapter {
             EventBus.getDefault().post(ProgressEvent.start(context.getString(R.string.progress_upgrading_database)));
             Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
                     + newVersion + ".");
-            if (oldVersion <= 1) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS + " ADD COLUMN "
-                        + KEY_TYPE + " TEXT");
-            }
-            if (oldVersion <= 2) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_SIMPLECHAPTERS
-                        + " ADD COLUMN " + KEY_LINK + " TEXT");
-            }
-            if (oldVersion <= 3) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                        + " ADD COLUMN " + KEY_ITEM_IDENTIFIER + " TEXT");
-            }
-            if (oldVersion <= 4) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS + " ADD COLUMN "
-                        + KEY_FEED_IDENTIFIER + " TEXT");
-            }
-            if (oldVersion <= 5) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_DOWNLOAD_LOG
-                        + " ADD COLUMN " + KEY_REASON_DETAILED + " TEXT");
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_DOWNLOAD_LOG
-                        + " ADD COLUMN " + KEY_DOWNLOADSTATUS_TITLE + " TEXT");
-            }
-            if (oldVersion <= 6) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_SIMPLECHAPTERS
-                        + " ADD COLUMN " + KEY_CHAPTER_TYPE + " INTEGER");
-            }
-            if (oldVersion <= 7) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                        + " ADD COLUMN " + KEY_PLAYBACK_COMPLETION_DATE
-                        + " INTEGER");
-            }
-            if (oldVersion <= 8) {
-                final int KEY_ID_POSITION = 0;
-                final int KEY_MEDIA_POSITION = 1;
-
-                // Add feeditem column to feedmedia table
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                        + " ADD COLUMN " + KEY_FEEDITEM
-                        + " INTEGER");
-                Cursor feeditemCursor = db.query(PodDBAdapter.TABLE_NAME_FEED_ITEMS,
-                        new String[]{KEY_ID, KEY_MEDIA}, "? > 0",
-                        new String[]{KEY_MEDIA}, null, null, null);
-                if (feeditemCursor.moveToFirst()) {
-                    db.beginTransaction();
-                    ContentValues contentValues = new ContentValues();
-                    do {
-                        long mediaId = feeditemCursor.getLong(KEY_MEDIA_POSITION);
-                        contentValues.put(KEY_FEEDITEM, feeditemCursor.getLong(KEY_ID_POSITION));
-                        db.update(PodDBAdapter.TABLE_NAME_FEED_MEDIA, contentValues, KEY_ID + "=?", new String[]{String.valueOf(mediaId)});
-                        contentValues.clear();
-                    } while (feeditemCursor.moveToNext());
-                    db.setTransactionSuccessful();
-                    db.endTransaction();
-                }
-                feeditemCursor.close();
-            }
-            if (oldVersion <= 9) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + KEY_AUTO_DOWNLOAD
-                        + " INTEGER DEFAULT 1");
-            }
-            if (oldVersion <= 10) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + KEY_FLATTR_STATUS
-                        + " INTEGER");
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                        + " ADD COLUMN " + KEY_FLATTR_STATUS
-                        + " INTEGER");
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                        + " ADD COLUMN " + KEY_PLAYED_DURATION
-                        + " INTEGER");
-            }
-            if (oldVersion <= 11) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + KEY_USERNAME
-                        + " TEXT");
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + KEY_PASSWORD
-                        + " TEXT");
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                        + " ADD COLUMN " + KEY_IMAGE
-                        + " INTEGER");
-            }
-            if (oldVersion <= 12) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + KEY_IS_PAGED + " INTEGER DEFAULT 0");
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + KEY_NEXT_PAGE_LINK + " TEXT");
-            }
-            if (oldVersion <= 13) {
-                // remove duplicate rows in "Chapters" table that were created because of a bug.
-                db.execSQL(String.format("DELETE FROM %s WHERE %s NOT IN " +
-                                "(SELECT MIN(%s) as %s FROM %s GROUP BY %s,%s,%s,%s,%s)",
-                        PodDBAdapter.TABLE_NAME_SIMPLECHAPTERS,
-                        KEY_ID,
-                        KEY_ID,
-                        KEY_ID,
-                        PodDBAdapter.TABLE_NAME_SIMPLECHAPTERS,
-                        KEY_TITLE,
-                        KEY_START,
-                        KEY_FEEDITEM,
-                        KEY_LINK,
-                        KEY_CHAPTER_TYPE));
-            }
-            if (oldVersion <= 14) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                        + " ADD COLUMN " + KEY_AUTO_DOWNLOAD + " INTEGER");
-                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                        + " SET " + KEY_AUTO_DOWNLOAD + " = "
-                        + "(SELECT " + KEY_AUTO_DOWNLOAD
-                        + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " WHERE " + PodDBAdapter.TABLE_NAME_FEEDS + "." + KEY_ID
-                        + " = " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + ")");
-
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + KEY_HIDE + " TEXT");
-
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0");
-
-                // create indexes
-                db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_FEED);
-                db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_IMAGE);
-                db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDMEDIA_FEEDITEM);
-                db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_FEEDITEM);
-                db.execSQL(PodDBAdapter.CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
-            }
-            if (oldVersion <= 15) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                        + " ADD COLUMN " + KEY_HAS_EMBEDDED_PICTURE + " INTEGER DEFAULT -1");
-                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                        + " SET " + KEY_HAS_EMBEDDED_PICTURE + "=0"
-                        + " WHERE " + KEY_DOWNLOADED + "=0");
-                Cursor c = db.rawQuery("SELECT " + KEY_FILE_URL
-                        + " FROM " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                        + " WHERE " + KEY_DOWNLOADED + "=1 "
-                        + " AND " + KEY_HAS_EMBEDDED_PICTURE + "=-1", null);
-                if (c.moveToFirst()) {
-                    MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-                    do {
-                        String fileUrl = c.getString(0);
-                        try {
-                            mmr.setDataSource(fileUrl);
-                            byte[] image = mmr.getEmbeddedPicture();
-                            if (image != null) {
-                                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                                        + " SET " + KEY_HAS_EMBEDDED_PICTURE + "=1"
-                                        + " WHERE " + KEY_FILE_URL + "='" + fileUrl + "'");
-                            } else {
-                                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                                        + " SET " + KEY_HAS_EMBEDDED_PICTURE + "=0"
-                                        + " WHERE " + KEY_FILE_URL + "='" + fileUrl + "'");
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } while (c.moveToNext());
-                }
-                c.close();
-            }
-            if (oldVersion <= 16) {
-                String selectNew = "SELECT " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + KEY_ID
-                        + " FROM " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                        + " INNER JOIN " + PodDBAdapter.TABLE_NAME_FEED_MEDIA + " ON "
-                        + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                        + PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
-                        + " LEFT OUTER JOIN " + PodDBAdapter.TABLE_NAME_QUEUE + " ON "
-                        + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                        + PodDBAdapter.TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
-                        + " WHERE "
-                        + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " = 0 AND " // unplayed
-                        + PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " = 0 AND " // undownloaded
-                        + PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + " = 0 AND " // not partially played
-                        + PodDBAdapter.TABLE_NAME_QUEUE + "." + KEY_ID + " IS NULL"; // not in queue
-                String sql = "UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                        + " SET " + KEY_READ + "=" + FeedItem.NEW
-                        + " WHERE " + KEY_ID + " IN (" + selectNew + ")";
-                Log.d("Migration", "SQL: " + sql);
-                db.execSQL(sql);
-            }
-            if (oldVersion <= 17) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + PodDBAdapter.KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0");
-            }
-            if (oldVersion < 1030005) {
-                db.execSQL("UPDATE FeedItems SET auto_download=0 WHERE " +
-                        "(read=1 OR id IN (SELECT feeditem FROM FeedMedia WHERE position>0 OR downloaded=1)) " +
-                        "AND id NOT IN (SELECT feeditem FROM Queue)");
-            }
-            if (oldVersion < 1040001) {
-                db.execSQL(CREATE_TABLE_FAVORITES);
-            }
-            if (oldVersion < 1040002) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                        + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYED_TIME + " INTEGER DEFAULT 0");
-            }
-            if (oldVersion < 1040013) {
-                db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_PUBDATE);
-                db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_READ);
-            }
-            if (oldVersion < 1050003) {
-                // Migrates feed list filter data
-
-                db.beginTransaction();
-
-                // Change to intermediate values to avoid overwriting in the following find/replace
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
-                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'unplayed', 'noplay')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
-                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'not_queued', 'noqueue')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
-                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'not_downloaded', 'nodl')");
-
-                // Replace played, queued, and downloaded with their opposites
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
-                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'played', 'unplayed')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
-                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'queued', 'not_queued')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
-                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'downloaded', 'not_downloaded')");
-
-                // Now replace intermediates for unplayed, not queued, etc. with their opposites
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
-                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'noplay', 'played')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
-                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'noqueue', 'queued')");
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
-                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'nodl', 'downloaded')");
-
-                // Paused doesn't have an opposite, so unplayed is the next best option
-                db.execSQL("UPDATE " + TABLE_NAME_FEEDS + "\n" +
-                        "SET " + KEY_HIDE + " = replace(" + KEY_HIDE + ", 'paused', 'unplayed')");
-
-                db.setTransactionSuccessful();
-                db.endTransaction();
-
-                // and now get ready for autodownload filters
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + PodDBAdapter.KEY_INCLUDE_FILTER + " TEXT DEFAULT ''");
-
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + PodDBAdapter.KEY_EXCLUDE_FILTER + " TEXT DEFAULT ''");
-
-                // and now auto refresh
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + PodDBAdapter.KEY_KEEP_UPDATED + " INTEGER DEFAULT 1");
-            }
-            if (oldVersion < 1050004) {
-                // prevent old timestamps to be misinterpreted as ETags
-                db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " SET " + PodDBAdapter.KEY_LASTUPDATE + "=NULL");
-            }
-            if (oldVersion < 1060200) {
-                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                        + " ADD COLUMN " + PodDBAdapter.KEY_CUSTOM_TITLE + " TEXT");
-            }
-
+            DBUpgrader.upgrade(db, oldVersion, newVersion);
             EventBus.getDefault().post(ProgressEvent.end());
         }
     }
