@@ -272,6 +272,19 @@ class DBUpgrader {
                     + " ADD COLUMN " + PodDBAdapter.KEY_IMAGE_URL + " TEXT");
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
                     + " ADD COLUMN " + PodDBAdapter.KEY_IMAGE_URL + " TEXT");
+
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + " SET " + PodDBAdapter.KEY_IMAGE_URL + "  = ("
+                    + " SELECT " + PodDBAdapter.KEY_DOWNLOAD_URL
+                    + " FROM " + PodDBAdapter.TABLE_NAME_FEED_IMAGES
+                    + " WHERE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES + "." + PodDBAdapter.KEY_ID
+                    + " = " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_IMAGE + ")");
+
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS + " SET " + PodDBAdapter.KEY_IMAGE_URL + " = ("
+                    + " SELECT " + PodDBAdapter.KEY_DOWNLOAD_URL
+                    + " FROM " + PodDBAdapter.TABLE_NAME_FEED_IMAGES
+                    + " WHERE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES + "." + PodDBAdapter.KEY_ID
+                    + " = " + PodDBAdapter.TABLE_NAME_FEEDS + "." + PodDBAdapter.KEY_IMAGE + ")");
+
             db.execSQL("DROP TABLE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES);
         }
     }
