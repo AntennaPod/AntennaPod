@@ -5,7 +5,6 @@ import android.util.Log;
 
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
@@ -210,10 +209,10 @@ public class NSAtom extends Namespace {
                 state.getCurrentItem().setPubDate(DateUtils.parse(content));
             } else if (PUBLISHED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null) {
                 state.getCurrentItem().setPubDate(DateUtils.parse(content));
-            } else if (IMAGE_LOGO.equals(top) && state.getFeed() != null && state.getFeed().getImage() == null) {
-                state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
+            } else if (IMAGE_LOGO.equals(top) && state.getFeed() != null && state.getFeed().getImageUrl() == null) {
+                state.getFeed().setImageUrl(content);
             } else if (IMAGE_ICON.equals(top) && state.getFeed() != null) {
-                state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
+                state.getFeed().setImageUrl(content);
             } else if (AUTHOR_NAME.equals(top) && AUTHOR.equals(second) &&
                     state.getFeed() != null && state.getCurrentItem() == null) {
                 String currentName = state.getFeed().getAuthor();

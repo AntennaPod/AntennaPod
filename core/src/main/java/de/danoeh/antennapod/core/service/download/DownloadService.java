@@ -55,7 +55,6 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -489,9 +488,7 @@ public class DownloadService extends Service {
             if (status.isSuccessful()) {
                 successfulDownloads++;
             } else if (!status.isCancelled()) {
-                if (status.getFeedfileType() != FeedImage.FEEDFILETYPE_FEEDIMAGE) {
-                    createReport = true;
-                }
+                createReport = true;
                 failedDownloads++;
             }
         }
@@ -687,10 +684,6 @@ public class DownloadService extends Service {
                 }
 
                 Log.d(TAG, "Bundling " + results.size() + " feeds");
-
-                for (Pair<DownloadRequest, FeedHandlerResult> result : results) {
-                    removeDuplicateImages(result.second.feed); // duplicate images have to removed because the DownloadRequester does not accept two downloads with the same download URL yet.
-                }
 
                 // Save information of feed in DB
                 if (dbUpdateFuture != null) {
@@ -1098,26 +1091,6 @@ public class DownloadService extends Service {
             postHandler.removeCallbacks(postDownloaderTask);
             postDownloaderTask.run();
             lastPost = now;
-        }
-    }
-
-    /**
-     * Checks if the FeedItems of this feed have images that point to the same URL. If two FeedItems
-     * have an image that points to the same URL, the reference of the second item is removed, so
-     * that every image reference is unique.
-     */
-    @VisibleForTesting
-    static void removeDuplicateImages(Feed feed) {
-        Set<String> known = new HashSet<>();
-        for (FeedItem item : feed.getItems()) {
-            String url = item.hasItemImage() ? item.getImage().getDownload_url() : null;
-            if (url != null) {
-                if (known.contains(url)) {
-                    item.setImage(null);
-                } else {
-                    known.add(url);
-                }
-            }
         }
     }
 
