@@ -34,6 +34,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -42,6 +43,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -270,6 +272,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             controller.release();
         }
         controller = newPlaybackController();
+        setupGUI();
+        loadMediaInfo();
+        onPositionObserverUpdate();
     }
 
     @Override
@@ -320,11 +325,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
         );
 
-        boolean hasWebsiteLink = media != null && media.getWebsiteLink() != null;
+        boolean hasWebsiteLink = ( getWebsiteLinkWithFallback(media) != null );
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
         boolean isItemAndHasLink = isFeedMedia &&
-                ((FeedMedia) media).getItem() != null && ((FeedMedia) media).getItem().getLink() != null;
+                ShareUtils.hasLinkToShare(((FeedMedia) media).getItem());
         menu.findItem(R.id.share_link_item).setVisible(isItemAndHasLink);
         menu.findItem(R.id.share_link_with_position_item).setVisible(isItemAndHasLink);
 
@@ -560,7 +565,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         });
                         break;
                     case R.id.visit_website_item:
-                        Uri uri = Uri.parse(media.getWebsiteLink());
+                        Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));
                         break;
                     case R.id.support_item:
@@ -603,13 +608,34 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
+    private static String getWebsiteLinkWithFallback(Playable media) {
+        if (media == null) {
+            return null;
+        } else if (media.getWebsiteLink() != null) {
+            return media.getWebsiteLink();
+        } else if (media instanceof FeedMedia) {
+            return FeedItemUtil.getLinkWithFallback(((FeedMedia)media).getItem());
+        }
+        return null;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
         StorageUtils.checkStorageAvailability(this);
-        if(controller != null) {
+        if (controller != null) {
             controller.init();
+        }
+    }
+
+    public void onEventMainThread(ServiceEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
+            if (controller != null) {
+                controller.init();
+            }
+
         }
     }
 
@@ -853,6 +879,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if(controller == null) {
             return;
         }
+        controller.init();
         controller.playPause();
     }
 

@@ -10,7 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testApplicationId "de.danoeh.antennapod.core.tests"
-        testInstrumentationRunner "de.danoeh.antennapod.core.tests.AntennaPodTestRunner"
+        testInstrumentationRunner "de.danoeh.antennapod.core.AntennaPodTestRunner"
     }
     buildTypes {
         release {
@@ -49,6 +49,8 @@ repositories {
 dependencies {
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation "com.android.support:preference-v14:$supportVersion"
+    implementation "com.android.support:percent:$supportVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "org.apache.commons:commons-text:$commonstextVersion"
     implementation ("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
@@ -76,6 +78,18 @@ dependencies {
         api "com.google.android.support:wearable:$wearableSupportVersion"
     } else {
         System.out.println("core: free build hack, skipping some dependencies")
+    }
+
+    testImplementation 'junit:junit:4.12'
+
+}
+
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "skipped", "passed", "failed"
+        showStandardStreams true
+        displayGranularity 2
     }
 }
 

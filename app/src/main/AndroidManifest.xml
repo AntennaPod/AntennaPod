@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
     android:installLocation="auto"
-    android:versionCode="1060595"
+    android:versionCode="1060596"
     android:versionName="1.6.5">
     <!--
       Version code schema:
@@ -118,12 +118,13 @@
         </activity>
 
         <service
-            android:name=".service.PlayerWidgetService"
+            android:name=".core.service.PlayerWidgetJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:enabled="true"
             android:exported="false">
         </service>
 
-        <receiver android:name=".receiver.PlayerWidget">
+        <receiver android:name=".core.receiver.PlayerWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>

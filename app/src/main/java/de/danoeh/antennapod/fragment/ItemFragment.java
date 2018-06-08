@@ -34,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
 
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -184,7 +185,8 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
         }
         webvDescription = (WebView) layout.findViewById(R.id.webvDescription);
-        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
+        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark ||
+                UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
@@ -432,6 +434,16 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 butAction1Text = R.string.download_label;
             }
         }
+
+        FeedItem.State state = item.getState();
+        if (butAction2Text == R.string.delete_label && state == FeedItem.State.PLAYING) {
+            butAction2.setEnabled(false);
+            butAction2.setAlpha(0.5f);
+        } else {
+            butAction2.setEnabled(true);
+            butAction2.setAlpha(1.0f);
+        }
+
         if(butAction1Icon != null && butAction1Text != 0) {
             butAction1.setText(butAction1Icon +"\u0020\u0020" + getActivity().getString(butAction1Text));
             Iconify.addIcons(butAction1);

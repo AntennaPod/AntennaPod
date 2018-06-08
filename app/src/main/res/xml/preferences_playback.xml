@@ -4,39 +4,39 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/interruptions">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefPauseOnHeadsetDisconnect"
                 android:summary="@string/pref_pauseOnDisconnect_sum"
                 android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
                 android:dependency="prefPauseOnHeadsetDisconnect"
                 android:key="prefUnpauseOnHeadsetReconnect"
                 android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
                 android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
                 android:dependency="prefPauseOnHeadsetDisconnect"
                 android:key="prefUnpauseOnBluetoothReconnect"
                 android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
                 android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefPauseForFocusLoss"
                 android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
                 android:title="@string/pref_pausePlaybackForFocusLoss_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefResumeAfterCall"
                 android:summary="@string/pref_resumeAfterCall_sum"
                 android:title="@string/pref_resumeAfterCall_title"/>
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        <ListPreference
                 android:defaultValue="stop"
                 android:entries="@array/video_background_behavior_options"
                 android:entryValues="@array/video_background_behavior_values"
@@ -47,13 +47,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/buttons">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefHardwareForwardButtonSkips"
                 android:summary="@string/pref_hardwareForwardButtonSkips_sum"
                 android:title="@string/pref_hardwareForwardButtonSkips_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefHardwarePreviousButtonRestarts"
@@ -74,25 +74,25 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefEnqueueDownloaded"
                 android:summary="@string/pref_enqueue_downloaded_summary"
                 android:title="@string/pref_enqueue_downloaded_title" />
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefQueueAddToFront"
                 android:summary="@string/pref_queueAddToFront_sum"
                 android:title="@string/pref_queueAddToFront_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefFollowQueue"
                 android:summary="@string/pref_followQueue_sum"
                 android:title="@string/pref_followQueue_title"/>
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        <ListPreference
                 android:defaultValue="30"
                 android:entries="@array/smart_mark_as_played_values"
                 android:entryValues="@array/smart_mark_as_played_values"
@@ -100,7 +100,7 @@
                 android:summary="@string/pref_smart_mark_as_played_sum"
                 android:title="@string/pref_smart_mark_as_played_title"
                 app:useStockLayout="true"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefSkipKeepsEpisode"
@@ -109,7 +109,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/media_player">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="false"
                 android:key="prefSonic"
@@ -118,7 +118,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/experimental_pref">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefCast"

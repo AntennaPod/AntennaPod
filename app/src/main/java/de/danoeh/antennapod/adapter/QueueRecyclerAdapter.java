@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -75,11 +76,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         this.itemTouchHelper = itemTouchHelper;
         locked = UserPreferences.isQueueLocked();
 
-        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_dark);
-        } else {
-            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_light);
-        }
+        playingBackGroundColor = ThemeUtils.getColorFromAttr(mainActivity, R.attr.currently_playing_background);
         normalBackGroundColor = ContextCompat.getColor(mainActivity, android.R.color.transparent);
     }
 

@@ -534,14 +534,15 @@ public class QueueFragment extends Fragment {
     private void refreshInfoBar() {
         String info = queue.size() + getString(R.string.episodes_suffix);
         if(queue.size() > 0) {
-            long duration = 0;
+            long timeLeft = 0;
             for(FeedItem item : queue) {
                 if(item.getMedia() != null) {
-                    duration += item.getMedia().getDuration();
+                    timeLeft += item.getMedia().getDuration() - item.getMedia().getPosition();
                 }
             }
             info += " \u2022 ";
-            info += Converter.getDurationStringLocalized(getActivity(), duration);
+            info += getString(R.string.time_left_label);
+            info += Converter.getDurationStringLocalized(getActivity(), timeLeft);
         }
         infoBar.setText(info);
     }

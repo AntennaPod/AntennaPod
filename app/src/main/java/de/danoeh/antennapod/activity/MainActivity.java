@@ -30,6 +30,8 @@ import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -200,6 +202,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         transaction.commit();
 
         checkFirstLaunch();
+        NotificationUtils.createChannels(this);
+        UserPreferences.restartUpdateAlarm(false);
     }
 
     private void saveLastNavFragment(String tag) {
@@ -737,6 +741,15 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             return;
         }
         loadData();
+    }
+
+    public void onEventMainThread(ServiceEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        switch(event.action) {
+            case SERVICE_STARTED:
+                externalPlayerFragment.connectToPlaybackService();
+                break;
+        }
     }
 
     public void onEventMainThread(ProgressEvent event) {

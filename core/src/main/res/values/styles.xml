@@ -67,6 +67,8 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_light</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -135,7 +137,30 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_dark</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
+
+    <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.Dark">
+        <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
+        <item type="attr" name="non_transparent_background">@color/black</item>
+        <item type="attr" name="overlay_background">@color/overlay_dark</item>
+        <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark</item>
+        <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
+        <item type="attr" name="dragview_float_background">@color/black</item>
+        <item type="attr" name="nav_drawer_background">@color/black</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:windowBackground">@color/black</item>
+        <item name="android:actionBarStyle">@color/black</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+    </style>
+
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.Base.AntennaPod.Light.NoTitle">
         <!-- Room for API dependent attributes -->
@@ -204,6 +229,8 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_light</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.Base.AntennaPod.Dark.NoTitle">
@@ -273,7 +300,31 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_dark</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
+
+    <style name="Theme.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.TrueBlack.NoTitle">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.Dark.NoTitle">
+        <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
+        <item type="attr" name="non_transparent_background">@color/black</item>
+        <item type="attr" name="overlay_background">@color/black</item>
+        <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark</item>
+        <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
+        <item type="attr" name="dragview_float_background">@color/black</item>
+        <item type="attr" name="nav_drawer_background">@color/black</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_trueblack</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:windowBackground">@color/black</item>
+        <item name="android:actionBarStyle">@color/black</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+    </style>
+
 
     <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
@@ -360,6 +411,11 @@
     <style name="ProgressBarDark">
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/progress_bar_horizontal_dark</item>
+    </style>
+
+    <style name="ProgressBarTrueBlack">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_trueblack</item>
     </style>
 
 </resources>

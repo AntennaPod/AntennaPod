@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/appearance">
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        <ListPreference
                 android:entryValues="@array/theme_values"
                 android:entries="@array/theme_options"
                 android:title="@string/pref_set_theme_title"
@@ -16,7 +16,7 @@
                 android:key="prefHiddenDrawerItems"
                 android:summary="@string/pref_nav_drawer_items_sum"
                 android:title="@string/pref_nav_drawer_items_title"/>
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        <ListPreference
                 android:entryValues="@array/nav_drawer_feed_order_values"
                 android:entries="@array/nav_drawer_feed_order_options"
                 android:title="@string/pref_nav_drawer_feed_order_title"
@@ -24,7 +24,7 @@
                 android:summary="@string/pref_nav_drawer_feed_order_sum"
                 android:defaultValue="0"
                 app:useStockLayout="true"/>
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        <ListPreference
                 android:entryValues="@array/nav_drawer_feed_counter_values"
                 android:entries="@array/nav_drawer_feed_counter_options"
                 android:title="@string/pref_nav_drawer_feed_counter_title"
@@ -34,13 +34,13 @@
                 app:useStockLayout="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefExpandNotify"
                 android:summary="@string/pref_expandNotify_sum"
                 android:title="@string/pref_expandNotify_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefPersistNotify"
@@ -50,7 +50,7 @@
                 android:key="prefCompactNotificationButtons"
                 android:summary="@string/pref_compact_notification_buttons_sum"
                 android:title="@string/pref_compact_notification_buttons_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
+        <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefLockscreenBackground"

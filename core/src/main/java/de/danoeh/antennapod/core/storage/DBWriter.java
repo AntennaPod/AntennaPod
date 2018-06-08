@@ -32,7 +32,6 @@ import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -166,17 +165,6 @@ public class DBWriter {
                     editor.commit();
                 }
 
-                // delete image file
-                if (feed.getImage() != null) {
-                    if (feed.getImage().isDownloaded()
-                            && feed.getImage().getFile_url() != null) {
-                        File imageFile = new File(feed.getImage()
-                                .getFile_url());
-                        imageFile.delete();
-                    } else if (requester.isDownloadingFile(feed.getImage())) {
-                        requester.cancelDownload(context, feed.getImage());
-                    }
-                }
                 // delete stored media files and mark them as read
                 List<FeedItem> queue = DBReader.getQueue();
                 List<FeedItem> removed = new ArrayList<>();
@@ -188,6 +176,9 @@ public class DBWriter {
                     if(queue.remove(item)) {
                         removed.add(item);
                     }
+                    if (item.getState() == FeedItem.State.PLAYING && PlaybackService.isRunning) {
+                        context.stopService(new Intent(context, PlaybackService.class));
+                    }
                     if (item.getMedia() != null
                             && item.getMedia().isDownloaded()) {
                         File mediaFile = new File(item.getMedia()
@@ -196,16 +187,6 @@ public class DBWriter {
                     } else if (item.getMedia() != null
                             && requester.isDownloadingFile(item.getMedia())) {
                         requester.cancelDownload(context, item.getMedia());
-                    }
-
-                    if (item.hasItemImage()) {
-                        FeedImage image = item.getImage();
-                        if (image.isDownloaded() && image.getFile_url() != null) {
-                            File imgFile = new File(image.getFile_url());
-                            imgFile.delete();
-                        } else if (requester.isDownloadingFile(image)) {
-                            requester.cancelDownload(context, item.getImage());
-                        }
                     }
                 }
                 PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -779,21 +760,6 @@ public class DBWriter {
             adapter.setSingleFeedItem(item);
             adapter.close();
             EventBus.getDefault().post(FeedItemEvent.updated(item));
-        });
-    }
-
-    /**
-     * Saves a FeedImage object in the database. This method will save all attributes of the FeedImage object. The
-     * contents of FeedComponent-attributes (e.g. the FeedImages's 'feed'-attribute) will not be saved.
-     *
-     * @param image   The FeedImage object.
-     */
-    public static Future<?> setFeedImage(final FeedImage image) {
-        return dbExec.submit(() -> {
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setImage(image);
-            adapter.close();
         });
     }
 

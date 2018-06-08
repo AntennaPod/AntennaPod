@@ -27,6 +27,7 @@
         </service>
         <service
             android:name=".service.GpodnetSyncService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:enabled="true" />
 
         <receiver
@@ -52,8 +53,16 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.FeedUpdateReceiver">
+        <receiver android:name=".receiver.FeedUpdateReceiver"
+            android:label="@string/feed_update_receiver_name"
+            android:exported="true"> <!-- allow feeds update to be triggered by external apps -->
         </receiver>
+
+        <service
+                android:name=".service.FeedUpdateJobService"
+                android:permission="android.permission.BIND_JOB_SERVICE" >
+
+        </service>
 
     </application>
 
