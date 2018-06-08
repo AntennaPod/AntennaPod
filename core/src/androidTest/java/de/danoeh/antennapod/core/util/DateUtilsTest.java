@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.tests.util;
+package de.danoeh.antennapod.core.util;
 
 
 import android.test.AndroidTestCase;
@@ -7,8 +7,14 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import de.danoeh.antennapod.core.util.DateUtils;
-
+/**
+ * Unit test for {@link DateUtils}.
+ *
+ * Note: It NEEDS to be run in android devices, i.e., it cannot be run in standard JDK, because
+ * the test invokes some android platform-specific behavior in the underlying
+ * {@link java.text.SimpleDateFormat} used by {@link DateUtils}.
+ *
+ */
 public class DateUtilsTest extends AndroidTestCase {
 
     public void testParseDateWithMicroseconds() throws Exception {
@@ -101,6 +107,12 @@ public class DateUtilsTest extends AndroidTestCase {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Requires Android platform.
+     *
+     * Reason: Standard JDK cannot parse timezone <code>-08:00</code> (ISO 8601 format). It only accepts
+     * <code>-0800</code> (RFC 822 format)
+     */
     public void testParseDateWithNoTimezonePadding() throws Exception {
         GregorianCalendar exp = new GregorianCalendar(2017, 1, 22, 22, 28, 0);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -109,6 +121,12 @@ public class DateUtilsTest extends AndroidTestCase {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Requires Android platform. Root cause: {@link DateUtils} implementation makes
+     * use of ISO 8601 time zone, which does not work on standard JDK.
+     *
+     * @see #testParseDateWithNoTimezonePadding()
+     */
     public void testParseDateWithForCest() throws Exception {
         GregorianCalendar exp1 = new GregorianCalendar(2017, 0, 28, 22, 0, 0);
         exp1.setTimeZone(TimeZone.getTimeZone("UTC"));

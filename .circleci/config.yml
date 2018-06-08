@@ -21,7 +21,7 @@ jobs:
             - v1-android-
 
       - run:
-          command: ./gradlew assembleDebug -PdisablePreDex
+          command: ./gradlew assembleDebug :core:testPlayDebugUnitTest -PdisablePreDex
           no_output_timeout: 1800
       
       - store_artifacts:

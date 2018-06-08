@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
     android:installLocation="auto"
-    android:versionCode="1060595"
+    android:versionCode="1060596"
     android:versionName="1.6.5">
     <!--
       Version code schema:

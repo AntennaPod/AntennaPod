@@ -161,6 +161,8 @@ public class UserPreferences {
         int theme = getTheme();
         if (theme == R.style.Theme_AntennaPod_Dark) {
             return R.style.Theme_AntennaPod_Dark_NoTitle;
+        } else if (theme == R.style.Theme_AntennaPod_TrueBlack) {
+            return R.style.Theme_AntennaPod_TrueBlack_NoTitle;
         } else {
             return R.style.Theme_AntennaPod_Light_NoTitle;
         }
@@ -597,6 +599,8 @@ public class UserPreferences {
                 return R.style.Theme_AntennaPod_Light;
             case 1:
                 return R.style.Theme_AntennaPod_Dark;
+            case 2:
+                return R.style.Theme_AntennaPod_TrueBlack;
             default:
                 return R.style.Theme_AntennaPod_Light;
         }
