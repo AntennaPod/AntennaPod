@@ -14,20 +14,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.media.MediaMetadataRetriever;
 import android.text.TextUtils;
 import android.util.Log;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedComponent;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -37,6 +27,13 @@ import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.greenrobot.event.EventBus;
 import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 // TODO Remove media column from feeditem table
 
@@ -74,6 +71,7 @@ public class PodDBAdapter {
     public static final String KEY_SIZE = "filesize";
     public static final String KEY_MIME_TYPE = "mime_type";
     public static final String KEY_IMAGE = "image";
+    public static final String KEY_IMAGE_URL = "image_url";
     public static final String KEY_FEED = "feed";
     public static final String KEY_MEDIA = "media";
     public static final String KEY_DOWNLOADED = "downloaded";
@@ -133,7 +131,7 @@ public class PodDBAdapter {
             + KEY_DOWNLOADED + " INTEGER," + KEY_LINK + " TEXT,"
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
-            + " TEXT," + KEY_IMAGE + " INTEGER," + KEY_TYPE + " TEXT,"
+            + " TEXT," + KEY_IMAGE_URL + " TEXT," + KEY_TYPE + " TEXT,"
             + KEY_FEED_IDENTIFIER + " TEXT," + KEY_AUTO_DOWNLOAD + " INTEGER DEFAULT 1,"
             + KEY_FLATTR_STATUS + " INTEGER,"
             + KEY_USERNAME + " TEXT,"
@@ -155,13 +153,8 @@ public class PodDBAdapter {
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
             + KEY_FLATTR_STATUS + " INTEGER,"
-            + KEY_IMAGE + " INTEGER,"
+            + KEY_IMAGE_URL + " TEXT,"
             + KEY_AUTO_DOWNLOAD + " INTEGER)";
-
-    private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
-            + TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
-            + KEY_DOWNLOADED + " INTEGER)";
 
     private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
             + TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
@@ -195,10 +188,6 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_FEED + ")";
 
-    static final String CREATE_INDEX_FEEDITEMS_IMAGE = "CREATE INDEX "
-            + TABLE_NAME_FEED_ITEMS + "_" + KEY_IMAGE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
-            + KEY_IMAGE + ")";
-
     static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX IF NOT EXISTS "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_PUBDATE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_PUBDATE + ")";
@@ -206,7 +195,6 @@ public class PodDBAdapter {
     static final String CREATE_INDEX_FEEDITEMS_READ = "CREATE INDEX IF NOT EXISTS "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_READ + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_READ + ")";
-
 
     static final String CREATE_INDEX_QUEUE_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_QUEUE + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_QUEUE + " ("
@@ -240,7 +228,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_LASTUPDATE,
             TABLE_NAME_FEEDS + "." + KEY_LANGUAGE,
             TABLE_NAME_FEEDS + "." + KEY_AUTHOR,
-            TABLE_NAME_FEEDS + "." + KEY_IMAGE,
+            TABLE_NAME_FEEDS + "." + KEY_IMAGE_URL,
             TABLE_NAME_FEEDS + "." + KEY_TYPE,
             TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD,
@@ -273,7 +261,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS,
             TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER,
             TABLE_NAME_FEED_ITEMS + "." + KEY_FLATTR_STATUS,
-            TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE,
+            TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE_URL,
             TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD
     };
 
@@ -283,7 +271,6 @@ public class PodDBAdapter {
     private static final String[] ALL_TABLES = {
             TABLE_NAME_FEEDS,
             TABLE_NAME_FEED_ITEMS,
-            TABLE_NAME_FEED_IMAGES,
             TABLE_NAME_FEED_MEDIA,
             TABLE_NAME_DOWNLOAD_LOG,
             TABLE_NAME_QUEUE,
@@ -388,12 +375,7 @@ public class PodDBAdapter {
         values.put(KEY_PAYMENT_LINK, feed.getPaymentLink());
         values.put(KEY_AUTHOR, feed.getAuthor());
         values.put(KEY_LANGUAGE, feed.getLanguage());
-        if (feed.getImage() != null) {
-            if (feed.getImage().getId() == 0) {
-                setImage(feed.getImage());
-            }
-            values.put(KEY_IMAGE, feed.getImage().getId());
-        }
+        values.put(KEY_IMAGE_URL, feed.getImageUrl());
 
         values.put(KEY_FILE_URL, feed.getFile_url());
         values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
@@ -450,54 +432,7 @@ public class PodDBAdapter {
     }
 
     /**
-     * Inserts or updates an image entry
-     *
-     * @return the id of the entry
-     */
-    public long setImage(FeedImage image) {
-        boolean startedTransaction = false;
-
-        try {
-            if (!db.inTransaction()) {
-                db.beginTransactionNonExclusive();
-                startedTransaction = true;
-            }
-
-            ContentValues values = new ContentValues();
-            values.put(KEY_TITLE, image.getTitle());
-            values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
-            values.put(KEY_DOWNLOADED, image.isDownloaded());
-            values.put(KEY_FILE_URL, image.getFile_url());
-            if (image.getId() == 0) {
-                image.setId(db.insert(TABLE_NAME_FEED_IMAGES, null, values));
-            } else {
-                db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID + "=?",
-                        new String[]{String.valueOf(image.getId())});
-            }
-
-            final FeedComponent owner = image.getOwner();
-            if (owner != null && owner.getId() != 0) {
-                values.clear();
-                values.put(KEY_IMAGE, image.getId());
-                if (owner instanceof Feed) {
-                    db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(image.getOwner().getId())});
-                }
-            }
-            if (startedTransaction) {
-                db.setTransactionSuccessful();
-            }
-        } catch (SQLException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-        } finally {
-            if (startedTransaction) {
-                db.endTransaction();
-            }
-        }
-        return image.getId();
-    }
-
-    /**
-     * Inserts or updates an image entry
+     * Inserts or updates a media entry
      *
      * @return the id of the entry
      */
@@ -759,12 +694,7 @@ public class PodDBAdapter {
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
         values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
         values.put(KEY_AUTO_DOWNLOAD, item.getAutoDownload());
-        if (item.hasItemImage()) {
-            if (item.getImage().getId() == 0) {
-                setImage(item.getImage());
-            }
-            values.put(KEY_IMAGE, item.getImage().getId());
-        }
+        values.put(KEY_IMAGE_URL, item.getImageUrl());
 
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
@@ -993,11 +923,6 @@ public class PodDBAdapter {
                 new String[]{String.valueOf(item.getId())});
     }
 
-    private void removeFeedImage(FeedImage image) {
-        db.delete(TABLE_NAME_FEED_IMAGES, KEY_ID + "=?",
-                new String[]{String.valueOf(image.getId())});
-    }
-
     /**
      * Remove a FeedItem and its FeedMedia entry.
      */
@@ -1007,9 +932,6 @@ public class PodDBAdapter {
         }
         if (item.hasChapters() || item.getChapters() != null) {
             removeChaptersOfItem(item);
-        }
-        if (item.hasItemImage()) {
-            removeFeedImage(item.getImage());
         }
         db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?",
                 new String[]{String.valueOf(item.getId())});
@@ -1021,9 +943,6 @@ public class PodDBAdapter {
     public void removeFeed(Feed feed) {
         try {
             db.beginTransactionNonExclusive();
-            if (feed.getImage() != null) {
-                removeFeedImage(feed.getImage());
-            }
             if (feed.getItems() != null) {
                 for (FeedItem item : feed.getItems()) {
                     removeFeedItem(item);
@@ -1363,17 +1282,12 @@ public class PodDBAdapter {
     public Cursor getImageAuthenticationCursor(final String imageUrl) {
         String downloadUrl = DatabaseUtils.sqlEscapeString(imageUrl);
         final String query = ""
-                + "SELECT " + KEY_USERNAME + "," + KEY_PASSWORD + " FROM " + TABLE_NAME_FEED_IMAGES
+                + "SELECT " + KEY_USERNAME + "," + KEY_PASSWORD + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " INNER JOIN " + TABLE_NAME_FEEDS
-                + " ON " + TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" + TABLE_NAME_FEEDS + "." + KEY_IMAGE
-                + " WHERE " + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "=" + downloadUrl
-                + " UNION SELECT " + KEY_USERNAME + "," + KEY_PASSWORD
-                + " FROM " + TABLE_NAME_FEED_IMAGES
-                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
-                + " ON " + TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE
-                + " INNER JOIN " + TABLE_NAME_FEEDS
-                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                + " WHERE " + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "=" + downloadUrl;
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + " = " + TABLE_NAME_FEEDS + "." + KEY_ID
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE_URL + "=" + downloadUrl
+                + " UNION SELECT " + KEY_USERNAME + "," + KEY_PASSWORD + " FROM " + TABLE_NAME_FEEDS
+                + " WHERE " + TABLE_NAME_FEEDS + "." + KEY_IMAGE_URL + "=" + downloadUrl;
         return db.rawQuery(query, null);
     }
 
@@ -1672,7 +1586,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private static final int VERSION = 1060200;
+        private static final int VERSION = 1060596;
 
         private final Context context;
 
@@ -1693,7 +1607,6 @@ public class PodDBAdapter {
         public void onCreate(final SQLiteDatabase db) {
             db.execSQL(CREATE_TABLE_FEEDS);
             db.execSQL(CREATE_TABLE_FEED_ITEMS);
-            db.execSQL(CREATE_TABLE_FEED_IMAGES);
             db.execSQL(CREATE_TABLE_FEED_MEDIA);
             db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
             db.execSQL(CREATE_TABLE_QUEUE);
@@ -1701,7 +1614,6 @@ public class PodDBAdapter {
             db.execSQL(CREATE_TABLE_FAVORITES);
 
             db.execSQL(CREATE_INDEX_FEEDITEMS_FEED);
-            db.execSQL(CREATE_INDEX_FEEDITEMS_IMAGE);
             db.execSQL(CREATE_INDEX_FEEDITEMS_PUBDATE);
             db.execSQL(CREATE_INDEX_FEEDITEMS_READ);
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);

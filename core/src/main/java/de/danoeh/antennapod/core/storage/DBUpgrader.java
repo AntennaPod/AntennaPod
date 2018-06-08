@@ -134,7 +134,6 @@ class DBUpgrader {
 
             // create indexes
             db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_FEED);
-            db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_IMAGE);
             db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(PodDBAdapter.CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
@@ -267,6 +266,26 @@ class DBUpgrader {
         if (oldVersion < 1060200) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_CUSTOM_TITLE + " TEXT");
+        }
+        if (oldVersion < 1060596) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_IMAGE_URL + " TEXT");
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_IMAGE_URL + " TEXT");
+
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + " SET " + PodDBAdapter.KEY_IMAGE_URL + "  = ("
+                    + " SELECT " + PodDBAdapter.KEY_DOWNLOAD_URL
+                    + " FROM " + PodDBAdapter.TABLE_NAME_FEED_IMAGES
+                    + " WHERE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES + "." + PodDBAdapter.KEY_ID
+                    + " = " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_IMAGE + ")");
+
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS + " SET " + PodDBAdapter.KEY_IMAGE_URL + " = ("
+                    + " SELECT " + PodDBAdapter.KEY_DOWNLOAD_URL
+                    + " FROM " + PodDBAdapter.TABLE_NAME_FEED_IMAGES
+                    + " WHERE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES + "." + PodDBAdapter.KEY_ID
+                    + " = " + PodDBAdapter.TABLE_NAME_FEEDS + "." + PodDBAdapter.KEY_IMAGE + ")");
+
+            db.execSQL("DROP TABLE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES);
         }
     }
 

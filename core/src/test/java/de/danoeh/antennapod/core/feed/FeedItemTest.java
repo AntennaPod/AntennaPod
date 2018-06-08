@@ -5,67 +5,56 @@ import org.junit.Test;
 
 import static de.danoeh.antennapod.core.feed.FeedItemMother.anyFeedItemWithImage;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 public class FeedItemTest {
 
     private FeedItem original;
-    private FeedImage originalImage;
     private FeedItem changedFeedItem;
 
     @Before
     public void setUp() {
         original = anyFeedItemWithImage();
-        originalImage = original.getImage();
         changedFeedItem = anyFeedItemWithImage();
     }
 
     @Test
     public void testUpdateFromOther_feedItemImageDownloadUrlChanged() throws Exception {
         setNewFeedItemImageDownloadUrl();
-
         original.updateFromOther(changedFeedItem);
-
-        feedItemImageWasUpdated();
+        assertFeedItemImageWasUpdated();
     }
 
     @Test
     public void testUpdateFromOther_feedItemImageRemoved() throws Exception {
         feedItemImageRemoved();
-
         original.updateFromOther(changedFeedItem);
-
-        feedItemImageWasNotUpdated();
+        assertFeedItemImageWasNotUpdated();
     }
 
     @Test
     public void testUpdateFromOther_feedItemImageAdded() throws Exception {
-        feedItemHadNoImage();
+        original.setImageUrl(null);
         setNewFeedItemImageDownloadUrl();
-
         original.updateFromOther(changedFeedItem);
-
-        feedItemImageWasUpdated();
-    }
-
-    private void feedItemHadNoImage() {
-        original.setImage(null);
+        assertFeedItemImageWasUpdated();
     }
 
     private void setNewFeedItemImageDownloadUrl() {
-        changedFeedItem.getImage().setDownload_url("http://example.com/new_picture");
+        changedFeedItem.setImageUrl("http://example.com/new_picture");
     }
 
     private void feedItemImageRemoved() {
-        changedFeedItem.setImage(null);
+        changedFeedItem.setImageUrl(null);
     }
 
-    private void feedItemImageWasUpdated() {
-        assertEquals(original.getImage().getDownload_url(), changedFeedItem.getImage().getDownload_url());
+    private void assertFeedItemImageWasUpdated() {
+        assertEquals(original.getImageUrl(), changedFeedItem.getImageUrl());
     }
 
-    private void feedItemImageWasNotUpdated() {
-        assertTrue(originalImage == original.getImage());
+    private void assertFeedItemImageWasNotUpdated() {
+        assertEquals(anyFeedItemWithImage().getImageUrl(), original.getImageUrl());
     }
 
 }
