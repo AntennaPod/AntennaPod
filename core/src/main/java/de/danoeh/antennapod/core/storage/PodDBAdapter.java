@@ -543,31 +543,6 @@ public class PodDBAdapter {
     }
 
     /**
-     * Counts feeds and feed items in the flattr queue
-     */
-    public int getFlattrQueueSize() {
-        int res = 0;
-        Cursor c = db.rawQuery(String.format("SELECT count(*) FROM %s WHERE %s=%s",
-                TABLE_NAME_FEEDS, KEY_FLATTR_STATUS, String.valueOf(FlattrStatus.STATUS_QUEUE)), null);
-        if (c.moveToFirst()) {
-            res = c.getInt(0);
-            c.close();
-        } else {
-            Log.e(TAG, "Unable to determine size of flattr queue: Could not count number of feeds");
-        }
-        c = db.rawQuery(String.format("SELECT count(*) FROM %s WHERE %s=%s",
-                TABLE_NAME_FEED_ITEMS, KEY_FLATTR_STATUS, String.valueOf(FlattrStatus.STATUS_QUEUE)), null);
-        if (c.moveToFirst()) {
-            res += c.getInt(0);
-            c.close();
-        } else {
-            Log.e(TAG, "Unable to determine size of flattr queue: Could not count number of feed items");
-        }
-
-        return res;
-    }
-
-    /**
      * Updates the download URL of a Feed.
      */
     public void setFeedDownloadUrl(String original, String updated) {
@@ -874,17 +849,6 @@ public class PodDBAdapter {
         return count > 0;
     }
 
-    public long getDownloadLogSize() {
-        final String query = String.format("SELECT COUNT(%s) FROM %s", KEY_ID, TABLE_NAME_DOWNLOAD_LOG);
-        Cursor result = db.rawQuery(query, null);
-        long count = 0;
-        if (result.moveToFirst()) {
-            count = result.getLong(0);
-        }
-        result.close();
-        return count;
-    }
-
     public void setQueue(List<FeedItem> queue) {
         ContentValues values = new ContentValues();
         try {
@@ -1010,18 +974,6 @@ public class PodDBAdapter {
                 .query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_ID + "=?",
                         new String[]{String.valueOf(item.getId())}, null,
                         null, null);
-    }
-
-    /**
-     * Returns a cursor for a DB query in the FeedMedia table for a given ID.
-     *
-     * @param item The item you want to get the FeedMedia from
-     * @return The cursor of the query
-     */
-    public final Cursor getFeedMediaOfItemCursor(final FeedItem item) {
-        return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?",
-                new String[]{String.valueOf(item.getMedia().getId())}, null,
-                null, null);
     }
 
     /**

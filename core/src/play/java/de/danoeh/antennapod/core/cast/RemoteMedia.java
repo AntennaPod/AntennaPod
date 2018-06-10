@@ -131,14 +131,6 @@ public class RemoteMedia implements Playable {
         return feedUrl;
     }
 
-    public FeedMedia lookForFeedMedia() {
-        FeedItem feedItem = DBReader.getFeedItem(feedUrl, itemIdentifier);
-        if (feedItem == null) {
-            return null;
-        }
-        return feedItem.getMedia();
-    }
-
     @Override
     public void writeToPreferences(SharedPreferences.Editor prefEditor) {
         //it seems pointless to do it, since the session should be kept by the remote device.
