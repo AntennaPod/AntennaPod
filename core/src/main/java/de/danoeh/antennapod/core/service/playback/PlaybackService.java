@@ -678,8 +678,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
 
                 case STOPPED:
-                    writePlaybackPreferencesNoMediaPlaying();
-                    stopSelf();
+                    //writePlaybackPreferencesNoMediaPlaying();
+                    //stopSelf();
                     break;
 
                 case PLAYING:
@@ -1219,6 +1219,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         if (playable == null) {
             Log.d(TAG, "setupNotification: playable is null");
+            if (!started) {
+                stopSelf();
+            }
             return;
         }
         Runnable notificationSetupTask = new Runnable() {
@@ -1230,6 +1233,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 if (mediaPlayer == null) {
                     Log.d(TAG, "notificationSetupTask: mediaPlayer is null");
+                    if (!started) {
+                        stopSelf();
+                    }
                     return;
                 }
 
