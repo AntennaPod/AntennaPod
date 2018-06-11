@@ -22,7 +22,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -136,12 +135,9 @@ class UITestUtils {
     public void addHostedFeedData() throws IOException {
         if (feedDataHosted) throw new IllegalStateException("addHostedFeedData was called twice on the same instance");
         for (int i = 0; i < NUM_FEEDS; i++) {
-            File bitmapFile = newBitmapFile("image" + i);
-            FeedImage image = new FeedImage(0, "image " + i, null, hostFile(bitmapFile), false);
             Feed feed = new Feed(0, null, "Title " + i, "http://example.com/" + i, "Description of feed " + i,
-                    "http://example.com/pay/feed" + i, "author " + i, "en", Feed.TYPE_RSS2, "feed" + i, image, null,
+                    "http://example.com/pay/feed" + i, "author " + i, "en", Feed.TYPE_RSS2, "feed" + i, null, null,
                     "http://example.com/feed/src/" + i, false);
-            image.setOwner(feed);
 
             // create items
             List<FeedItem> items = new ArrayList<>();
@@ -187,12 +183,6 @@ class UITestUtils {
         List<FeedItem> queue = new ArrayList<>();
         for (Feed feed : hostedFeeds) {
             feed.setDownloaded(true);
-            if (feed.getImage() != null) {
-                FeedImage image = feed.getImage();
-                int fileId = Integer.parseInt(StringUtils.substringAfter(image.getDownload_url(), "files/"));
-                image.setFile_url(server.accessFile(fileId).getAbsolutePath());
-                image.setDownloaded(true);
-            }
             if (downloadEpisodes) {
                 for (FeedItem item : feed.getItems()) {
                     if (item.hasMedia()) {

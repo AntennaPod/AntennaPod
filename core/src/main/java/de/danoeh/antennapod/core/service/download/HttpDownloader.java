@@ -20,7 +20,6 @@ import java.util.Date;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
@@ -50,13 +49,8 @@ public class HttpDownloader extends Downloader {
 
         if (request.isDeleteOnFailure() && fileExists) {
             Log.w(TAG, "File already exists");
-            if (request.getFeedfileType() != FeedImage.FEEDFILETYPE_FEEDIMAGE) {
-                onFail(DownloadError.ERROR_FILE_EXISTS, null);
-                return;
-            } else {
-                onSuccess();
-                return;
-            }
+            onSuccess();
+            return;
         }
 
         OkHttpClient.Builder httpClientBuilder = AntennapodHttpClient.newBuilder();

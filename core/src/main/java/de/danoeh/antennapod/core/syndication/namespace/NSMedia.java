@@ -7,7 +7,6 @@ import org.xml.sax.Attributes;
 
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import de.danoeh.antennapod.core.syndication.namespace.atom.AtomText;
@@ -94,25 +93,16 @@ public class NSMedia extends Namespace {
 				}
 				state.getCurrentItem().setMedia(media);
 			} else if (state.getCurrentItem() != null && url != null && validTypeImage) {
-				FeedImage image = new FeedImage();
-				image.setDownload_url(url);
-				image.setOwner(state.getCurrentItem());
-
-				state.getCurrentItem().setImage(image);
+				state.getCurrentItem().setImageUrl(url);
 			}
 		} else if (IMAGE.equals(localName)) {
 			String url = attributes.getValue(IMAGE_URL);
 			if (url != null) {
-				FeedImage image = new FeedImage();
-				image.setDownload_url(url);
-
 				if (state.getCurrentItem() != null) {
-					image.setOwner(state.getCurrentItem());
-					state.getCurrentItem().setImage(image);
+					state.getCurrentItem().setImageUrl(url);
 				} else {
-					if (state.getFeed().getImage() == null) {
-						image.setOwner(state.getFeed());
-						state.getFeed().setImage(image);
+					if (state.getFeed().getImageUrl() == null) {
+						state.getFeed().setImageUrl(url);
 					}
 				}
 			}

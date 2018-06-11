@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.URLUtil;
@@ -81,7 +82,7 @@ public class DownloadRequester {
 
         Intent launchIntent = new Intent(context, DownloadService.class);
         launchIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
-        context.startService(launchIntent);
+        ContextCompat.startForegroundService(context, launchIntent);
 
         return true;
     }
@@ -176,8 +177,8 @@ public class DownloadRequester {
             args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
             args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
 
-            download(context, feed, null, new File(getFeedfilePath(context),
-                    getFeedfileName(feed)), true, username, password, lastModified, true, args);
+            download(context, feed, null, new File(getFeedfilePath(), getFeedfileName(feed)),
+                    true, username, password, lastModified, true, args);
         }
     }
 
@@ -203,8 +204,7 @@ public class DownloadRequester {
             if (feedmedia.getFile_url() != null) {
                 dest = new File(feedmedia.getFile_url());
             } else {
-                dest = new File(getMediafilePath(context, feedmedia),
-                        getMediafilename(feedmedia));
+                dest = new File(getMediafilePath(feedmedia), getMediafilename(feedmedia));
             }
             download(context, feedmedia, feed,
                     dest, false, username, password, null, false, null);
@@ -305,10 +305,8 @@ public class DownloadRequester {
         return downloads.size();
     }
 
-    private synchronized String getFeedfilePath(Context context)
-            throws DownloadRequestException {
-        return getExternalFilesDirOrThrowException(context, FEED_DOWNLOADPATH)
-                .toString() + "/";
+    private synchronized String getFeedfilePath() throws DownloadRequestException {
+        return getExternalFilesDirOrThrowException(FEED_DOWNLOADPATH).toString() + "/";
     }
 
     private synchronized String getFeedfileName(Feed feed) {
@@ -319,10 +317,8 @@ public class DownloadRequester {
         return "feed-" + FileNameGenerator.generateFileName(filename);
     }
 
-    private synchronized String getMediafilePath(Context context, FeedMedia media)
-            throws DownloadRequestException {
+    private synchronized String getMediafilePath(FeedMedia media) throws DownloadRequestException {
         File externalStorage = getExternalFilesDirOrThrowException(
-                context,
                 MEDIA_DOWNLOADPATH
                         + FileNameGenerator.generateFileName(media.getItem()
                         .getFeed().getTitle()) + "/"
@@ -330,8 +326,7 @@ public class DownloadRequester {
         return externalStorage.toString();
     }
 
-    private File getExternalFilesDirOrThrowException(Context context,
-                                                     String type) throws DownloadRequestException {
+    private File getExternalFilesDirOrThrowException(String type) throws DownloadRequestException {
         File result = UserPreferences.getDataFolder(type);
         if (result == null) {
             throw new DownloadRequestException(

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
     <PreferenceCategory android:title="@string/automation">
         <Preference
                 android:key="prefAutoUpdateIntervall"
@@ -16,7 +17,8 @@
         <Preference
                 android:summary="@string/pref_automatic_download_sum"
                 android:key="prefAutoDownloadSettings"
-                android:title="@string/pref_automatic_download_title" />
+                android:title="@string/pref_automatic_download_title"
+                search:ignore="true" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">

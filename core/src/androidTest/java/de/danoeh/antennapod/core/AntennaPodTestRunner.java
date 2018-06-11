@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.tests;
+package de.danoeh.antennapod.core;
 
 import android.test.InstrumentationTestRunner;
 import android.test.suitebuilder.TestSuiteBuilder;
