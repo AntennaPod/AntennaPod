@@ -48,6 +48,7 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
@@ -413,8 +414,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                                     Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
                                     remover.skipOnCompletion = true;
                                     if(controller.getStatus() == PlayerStatus.PLAYING) {
-                                        sendBroadcast(new Intent(
-                                                PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                                        IntentUtils.sendLocalBroadcast(MediaplayerInfoActivity.this, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
                                     }
                                 }
                             }
