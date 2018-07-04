@@ -109,7 +109,6 @@ public class UserPreferences {
 
     // Experimental
     private static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
-    public static final String PREF_NORMALIZER = "prefNormalizer";
     public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
@@ -122,7 +121,6 @@ public class UserPreferences {
     private static final int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static final int FEED_ORDER_COUNTER = 0;
     public static final int FEED_ORDER_ALPHABETICAL = 1;
-    public static final int FEED_ORDER_LAST_UPDATE = 2;
     public static final int FEED_ORDER_MOST_PLAYED = 3;
     public static final int FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM = 0;
     public static final int FEED_COUNTER_SHOW_NEW = 1;

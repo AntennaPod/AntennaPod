@@ -9,8 +9,10 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.IntentUtils;
 
 /** Removes a feed in the background. */
 public class FeedRemover extends AsyncTask<Void, Void, Void> {
@@ -41,7 +43,7 @@ public class FeedRemover extends AsyncTask<Void, Void, Void> {
             dialog.dismiss();
         }
 		if(skipOnCompletion) {
-			context.sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
+			IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
 		}
 	}
 

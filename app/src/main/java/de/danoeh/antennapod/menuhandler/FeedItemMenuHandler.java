@@ -158,7 +158,7 @@ public class FeedItemMenuHandler {
                                             FeedItem selectedItem) {
         switch (menuItemId) {
             case R.id.skip_episode_item:
-                context.sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
+                IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
                 break;
             case R.id.remove_item:
                 DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());

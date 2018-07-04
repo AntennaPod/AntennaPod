@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "title": "FLOSS Weekly 482: PyPI",
+      "status_label": "NEW",
+      "duration": "00:52:40",
+      "published_at": "2. May"
+    },
+    {
+      "title": "FLOSS Weekly 479: Pidgin",
+      "status_label": " ",
+      "duration": "01:08:08",
+      "published_at": "11. Apr"
+    },
+    {
+      "title": "Linux Outlaws 370 - Stay Free, Stay Open Source",
+      "status_label": "NEW",
+      "duration": "02:52:51",
+      "published_at": "29. Dec 2014"
+    },
+    {
+      "title": "Linux Outlaws 368 - The Dark Ages of Free Software",
+      "status_label": " ",
+      "duration": "02:26:54",
+      "published_at": "14. Dec 2014"
+    },
+    {
+      "title": "Linux Outlaws 365 - Last Stand",
+      "status_label": " ",
+      "duration": "00:39:59",
+      "published_at": "3. Nov 2014"
+    }
+  ]
+}
