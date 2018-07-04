@@ -631,6 +631,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         } else if (mediaPlayer instanceof AudioPlayer) {
             AudioPlayer ap = (AudioPlayer) mediaPlayer;
             ap.setOnErrorListener((mediaPlayer, i, i1) -> true);
+        } else if (mediaPlayer instanceof ExoPlayerWrapper) {
+            ExoPlayerWrapper ap = (ExoPlayerWrapper) mediaPlayer;
+            ap.setOnErrorListener((mediaPlayer, i, i1) -> true);
         }
     }
 
