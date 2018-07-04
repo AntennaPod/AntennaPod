@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import org.apache.commons.lang3.Validate;
 
@@ -86,13 +87,13 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                             .startWhenPrepared(true)
                             .shouldStream(false)
                             .start();
-                    context.sendBroadcast(new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
                 } else if (media.isCurrentlyPaused()) {
                     new PlaybackServiceStarter(context, media)
                             .startWhenPrepared(true)
                             .shouldStream(false)
                             .start();
-                    context.sendBroadcast(new Intent(PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE));
+                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE);
                 } else {
                     DBTasks.playMedia(context, media, false, true, false);
                 }

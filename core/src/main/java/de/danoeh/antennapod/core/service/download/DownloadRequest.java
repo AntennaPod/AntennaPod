@@ -211,10 +211,6 @@ public class DownloadRequest implements Parcelable {
         this.size = size;
     }
 
-    public int getStatusMsg() {
-        return statusMsg;
-    }
-
     public void setStatusMsg(int statusMsg) {
         this.statusMsg = statusMsg;
     }

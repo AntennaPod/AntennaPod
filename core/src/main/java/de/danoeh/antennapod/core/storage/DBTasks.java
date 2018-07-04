@@ -36,6 +36,7 @@ import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
@@ -142,8 +143,7 @@ public final class DBTasks {
         } catch (MediaFileNotFoundException e) {
             e.printStackTrace();
             if (media.isPlaying()) {
-                context.sendBroadcast(new Intent(
-                        PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+                IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
             }
             notifyMissingFeedMediaFile(context, media);
         }
@@ -234,27 +234,6 @@ public final class DBTasks {
             }
         }
 
-    }
-
-    /**
-     * Downloads all pages of the given feed.
-     *
-     * @param context Used for requesting the download.
-     * @param feed    The Feed object.
-     */
-    public static void refreshCompleteFeed(final Context context, final Feed feed) {
-        try {
-            refreshFeed(context, feed, true, false);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            DBWriter.addDownloadStatus(
-                    new DownloadStatus(feed, feed
-                            .getHumanReadableIdentifier(),
-                            DownloadError.ERROR_REQUEST_ERROR, false, e
-                            .getMessage()
-                    )
-            );
-        }
     }
 
     /**
@@ -375,27 +354,6 @@ public final class DBTasks {
         media.setFile_url(null);
         DBWriter.setFeedMedia(media);
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
-    }
-
-    /**
-     * Request the download of all objects in the queue. from a separate Thread.
-     *
-     * @param context Used for requesting the download an accessing the database.
-     */
-    public static void downloadAllItemsInQueue(final Context context) {
-        new Thread() {
-            public void run() {
-                List<FeedItem> queue = DBReader.getQueue();
-                if (!queue.isEmpty()) {
-                    try {
-                        downloadFeedItems(context,
-                                queue.toArray(new FeedItem[queue.size()]));
-                    } catch (DownloadRequestException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
     }
 
     /**

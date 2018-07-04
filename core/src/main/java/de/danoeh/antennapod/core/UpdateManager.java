@@ -14,7 +14,6 @@ import java.io.File;
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -64,29 +63,6 @@ class UpdateManager {
     }
 
     private static void onUpgrade(final int oldVersionCode, final int newVersionCode) {
-        if(oldVersionCode < 1030099) {
-            // delete the now obsolete image cache
-            // from now on, Glide will handle caching images
-            new Thread() {
-                public void run() {
-                    List<Feed> feeds = DBReader.getFeedList();
-                    for (Feed podcast : feeds) {
-                        List<FeedItem> episodes = DBReader.getFeedItemList(podcast);
-                        for (FeedItem episode : episodes) {
-                            FeedImage image = episode.getImage();
-                            if (image != null && image.isDownloaded() && image.getFile_url() != null) {
-                                File imageFile = new File(image.getFile_url());
-                                if (imageFile.exists()) {
-                                    imageFile.delete();
-                                }
-                                image.setFile_url(null); // calls setDownloaded(false)
-                                DBWriter.setFeedImage(image);
-                            }
-                        }
-                    }
-                }
-            }.start();
-        }
         if(oldVersionCode < 1050004) {
             if(MediaPlayer.isPrestoLibraryInstalled(context) && Build.VERSION.SDK_INT >= 16) {
                 UserPreferences.enableSonic(true);

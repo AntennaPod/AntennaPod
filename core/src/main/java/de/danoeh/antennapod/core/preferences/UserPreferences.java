@@ -109,7 +109,6 @@ public class UserPreferences {
     // Experimental
     public static final String PREF_SONIC = "prefSonic";
     private static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
-    public static final String PREF_NORMALIZER = "prefNormalizer";
     public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
@@ -122,7 +121,6 @@ public class UserPreferences {
     private static final int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static final int FEED_ORDER_COUNTER = 0;
     public static final int FEED_ORDER_ALPHABETICAL = 1;
-    public static final int FEED_ORDER_LAST_UPDATE = 2;
     public static final int FEED_ORDER_MOST_PLAYED = 3;
     public static final int FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM = 0;
     public static final int FEED_COUNTER_SHOW_NEW = 1;
@@ -161,6 +159,8 @@ public class UserPreferences {
         int theme = getTheme();
         if (theme == R.style.Theme_AntennaPod_Dark) {
             return R.style.Theme_AntennaPod_Dark_NoTitle;
+        } else if (theme == R.style.Theme_AntennaPod_TrueBlack) {
+            return R.style.Theme_AntennaPod_TrueBlack_NoTitle;
         } else {
             return R.style.Theme_AntennaPod_Light_NoTitle;
         }
@@ -597,6 +597,8 @@ public class UserPreferences {
                 return R.style.Theme_AntennaPod_Light;
             case 1:
                 return R.style.Theme_AntennaPod_Dark;
+            case 2:
+                return R.style.Theme_AntennaPod_TrueBlack;
             default:
                 return R.style.Theme_AntennaPod_Light;
         }

@@ -65,6 +65,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.IntList;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
@@ -701,9 +702,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             }
 
-            Intent statusUpdate = new Intent(ACTION_PLAYER_STATUS_CHANGED);
-            // statusUpdate.putExtra(EXTRA_NEW_PLAYER_STATUS, newInfo.playerStatus.ordinal());
-            sendBroadcast(statusUpdate);
+            IntentUtils.sendLocalBroadcast(getApplicationContext(), ACTION_PLAYER_STATUS_CHANGED);
             PlayerWidgetJobService.updateWidget(getBaseContext());
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_PLAYER_STATUS_CHANGED);
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_META_CHANGED);
@@ -1044,17 +1043,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         editor.commit();
     }
 
-    /**
-     * Send ACTION_PLAYER_STATUS_CHANGED without changing the status attribute.
-     */
-    private void postStatusUpdateIntent() {
-        sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
-    }
-
     private void sendNotificationBroadcast(int type, int code) {
         Intent intent = new Intent(ACTION_PLAYER_NOTIFICATION);
         intent.putExtra(EXTRA_NOTIFICATION_TYPE, type);
         intent.putExtra(EXTRA_NOTIFICATION_CODE, code);
+        intent.setPackage(getPackageName());
         sendBroadcast(intent);
     }
 
