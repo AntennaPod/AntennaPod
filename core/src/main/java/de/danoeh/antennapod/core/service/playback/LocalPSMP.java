@@ -610,11 +610,24 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         executor.shutdown();
         if (mediaPlayer != null) {
             try {
-                mediaPlayer.stop();
+                removeMediaPlayerErrorListener();
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                }
             } catch (Exception ignore) { }
             mediaPlayer.release();
         }
         releaseWifiLockIfNecessary();
+    }
+
+    private void removeMediaPlayerErrorListener() {
+        if (mediaPlayer instanceof VideoPlayer) {
+            VideoPlayer vp = (VideoPlayer) mediaPlayer;
+            vp.setOnErrorListener((mp, what, extra) -> true);
+        } else if (mediaPlayer instanceof AudioPlayer) {
+            AudioPlayer ap = (AudioPlayer) mediaPlayer;
+            ap.setOnErrorListener((mediaPlayer, i, i1) -> true);
+        }
     }
 
     /**

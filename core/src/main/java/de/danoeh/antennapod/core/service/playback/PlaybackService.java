@@ -317,9 +317,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         NotificationCompat.Builder notificationBuilder = createBasicNotification();
         startForeground(NOTIFICATION_ID, notificationBuilder.build());
         EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_STARTED));
-
-
-        setupNotification(Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext()));
     }
 
     private NotificationCompat.Builder createBasicNotification() {
@@ -469,10 +466,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
             stopForeground(true);
         } else {
-
             if (keycode != -1) {
                 Log.d(TAG, "Received media button event");
-                handleKeycode(keycode, true);
+                boolean handled = handleKeycode(keycode, true);
+                if (!handled) {
+                    stopSelf();
+                    return Service.START_NOT_STICKY;
+                }
             } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
                 started = true;
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
@@ -487,6 +487,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
+            setupNotification(playable);
         }
 
         return Service.START_NOT_STICKY;
@@ -678,7 +679,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
 
                 case STOPPED:
-                    //setCurrentlyPlayingMedia(PlaybackPreferences.NO_MEDIA_PLAYING);
+                    //writePlaybackPreferencesNoMediaPlaying();
                     //stopSelf();
                     break;
 
@@ -696,6 +697,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 case ERROR:
                     writePlaybackPreferencesNoMediaPlaying();
+                    stopSelf();
                     break;
 
             }
@@ -1208,38 +1210,50 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
         }
+        if (playable == null) {
+            Log.d(TAG, "setupNotification: playable is null");
+            if (!started) {
+                stopSelf();
+            }
+            return;
+        }
         Runnable notificationSetupTask = new Runnable() {
             Bitmap icon = null;
 
             @Override
             public void run() {
                 Log.d(TAG, "Starting background work");
-                if (playable != null) {
-                    int iconSize = getResources().getDimensionPixelSize(
-                            android.R.dimen.notification_large_icon_width);
-                    try {
-                        icon = Glide.with(PlaybackService.this)
-                                .load(playable.getImageLocation())
-                                .asBitmap()
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .centerCrop()
-                                .into(iconSize, iconSize)
-                                .get();
-                    } catch (Throwable tr) {
-                        Log.e(TAG, "Error loading the media icon for the notification", tr);
+
+                if (mediaPlayer == null) {
+                    Log.d(TAG, "notificationSetupTask: mediaPlayer is null");
+                    if (!started) {
+                        stopSelf();
                     }
+                    return;
                 }
+
+                int iconSize = getResources().getDimensionPixelSize(
+                        android.R.dimen.notification_large_icon_width);
+                try {
+                    icon = Glide.with(PlaybackService.this)
+                            .load(playable.getImageLocation())
+                            .asBitmap()
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .centerCrop()
+                            .into(iconSize, iconSize)
+                            .get();
+                } catch (Throwable tr) {
+                    Log.e(TAG, "Error loading the media icon for the notification", tr);
+                }
+
                 if (icon == null) {
                     icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
                             ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext()));
                 }
 
-                if (mediaPlayer == null) {
-                    return;
-                }
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
 
-                if (!Thread.currentThread().isInterrupted() && started && playable != null) {
+                if (!Thread.currentThread().isInterrupted() && started) {
                     String contentText = playable.getEpisodeTitle();
                     String contentTitle = playable.getFeedTitle();
                     Notification notification;
