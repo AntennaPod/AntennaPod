@@ -64,8 +64,9 @@ public class TypeGetter {
 										Log.d(TAG, "Recognized type RSS 0.91/0.92");
 										return Type.RSS091;
 									}
+									throw new UnsupportedFeedtypeException("Unsupported rss version");
 								}
-								throw new UnsupportedFeedtypeException(Type.INVALID);
+								throw new UnsupportedFeedtypeException("No rss version attribute found");
 							default:
 								Log.d(TAG, "Type is invalid");
 								throw new UnsupportedFeedtypeException(Type.INVALID, tag);
