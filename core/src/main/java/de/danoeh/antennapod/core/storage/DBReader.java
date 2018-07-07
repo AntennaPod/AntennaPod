@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.storage;
 
 import android.database.Cursor;
 import android.support.v4.util.ArrayMap;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -688,7 +689,7 @@ public final class DBReader {
             if (cursor.moveToFirst()) {
                 String username = cursor.getString(0);
                 String password = cursor.getString(1);
-                if (username != null && password != null) {
+                if (!TextUtils.isEmpty(username) && password != null) {
                     credentials = username + ":" + password;
                 } else {
                     credentials = "";
