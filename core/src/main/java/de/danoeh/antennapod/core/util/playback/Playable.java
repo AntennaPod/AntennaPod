@@ -36,8 +36,9 @@ public interface Playable extends Parcelable,
      * Playable objects should load their metadata in this method. This method
      * should execute as quickly as possible and NOT load chapter marks if no
      * local file is available.
+     * @param context
      */
-    void loadMetadata() throws PlayableException;
+    void loadMetadata(Context context) throws PlayableException;
 
     /**
      * This method is called from a separate thread by the PlaybackService.

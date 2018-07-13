@@ -9,6 +9,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
+import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
@@ -46,6 +47,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private final AtomicBoolean startWhenPrepared;
     private volatile boolean pausedBecauseOfTransientAudiofocusLoss;
     private volatile Pair<Integer, Integer> videoSize;
+    private Context context;
 
     /**
      * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
@@ -59,6 +61,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     public LocalPSMP(@NonNull Context context,
                      @NonNull PSMPCallback callback) {
         super(context, callback);
+        this.context = context;
 
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new ReentrantLock();
@@ -162,12 +165,14 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         LocalPSMP.this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
-            media.loadMetadata();
+            media.loadMetadata(context);
             callback.onMediaChanged(false);
             if (stream) {
                 mediaPlayer.setDataSource(media.getStreamUrl());
             } else if (new File(media.getLocalMediaUrl()).canRead()) {
                 mediaPlayer.setDataSource(media.getLocalMediaUrl());
+            } else if (media instanceof ExternalMedia) {
+                mediaPlayer.setDataSource(context, ((ExternalMedia) media).getUri());
             } else {
                 throw new IOException("Unable to read local file " + media.getLocalMediaUrl());
             }

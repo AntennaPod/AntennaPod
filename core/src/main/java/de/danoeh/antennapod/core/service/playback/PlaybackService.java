@@ -813,7 +813,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "getNextInQueue()");
         FeedMedia media = (FeedMedia) currentMedia;
         try {
-            media.loadMetadata();
+            media.loadMetadata(getBaseContext());
         } catch (Playable.PlayableException e) {
             Log.e(TAG, "Unable to load metadata to get next in queue", e);
             return null;

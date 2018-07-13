@@ -43,6 +43,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     public static final int CAST_ERROR_PRIORITY_HIGH = 3005;
 
     private final CastManager castMgr;
+    @NonNull
+    private final Context context;
 
     private volatile Playable media;
     private volatile MediaType mediaType;
@@ -55,6 +57,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
 
     public RemotePSMP(@NonNull Context context, @NonNull PSMPCallback callback) {
         super(context, callback);
+        this.context = context;
 
         castMgr = CastManager.getInstance();
         media = null;
@@ -149,7 +152,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         if (CastUtils.matches(info, media)) {
             return media;
         }
-        return CastUtils.getPlayable(info, true);
+        return CastUtils.getPlayable(context, info, true);
     }
 
     private MediaInfo remoteVersion(Playable playable) {
@@ -160,7 +163,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             return remoteMedia;
         }
         if (playable instanceof FeedMedia) {
-            return CastUtils.convertFromFeedMedia((FeedMedia) playable);
+            return CastUtils.convertFromFeedMedia(context, (FeedMedia) playable);
         }
         if (playable instanceof RemoteMedia) {
             return ((RemoteMedia) playable).extractMediaInfo();
@@ -348,7 +351,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
-            media.loadMetadata();
+            media.loadMetadata(context);
             callback.onMediaChanged(true);
             setPlayerStatus(PlayerStatus.INITIALIZED, media);
             if (prepareImmediately) {

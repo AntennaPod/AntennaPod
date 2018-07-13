@@ -379,7 +379,7 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void loadMetadata() throws PlayableException {
+    public void loadMetadata(Context context) throws PlayableException {
         if (item == null && itemID != 0) {
             item = DBReader.getFeedItem(itemID);
         }

@@ -77,11 +77,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     protected void onResume() {
         super.onResume();
         if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
-            Intent intent = getIntent();
-            if (intent.getData() == null) {
-                return;
-            }
-            playExternalMedia(intent.getData().getPath(), MediaType.VIDEO);
+            playExternalMedia(getIntent(), MediaType.VIDEO);
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {

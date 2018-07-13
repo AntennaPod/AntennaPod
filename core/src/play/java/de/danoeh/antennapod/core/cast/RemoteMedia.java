@@ -24,7 +24,6 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -137,7 +136,7 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public void loadMetadata() throws PlayableException {
+    public void loadMetadata(Context context) throws PlayableException {
         //Already loaded
     }
 
