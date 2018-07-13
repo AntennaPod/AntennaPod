@@ -54,18 +54,19 @@ public class TypeGetter {
 								return Type.ATOM;
 							case RSS_ROOT:
 								String strVersion = xpp.getAttributeValue(null, "version");
-								if (strVersion != null) {
-									if (strVersion.equals("2.0")) {
-										feed.setType(Feed.TYPE_RSS2);
-										Log.d(TAG, "Recognized type RSS 2.0");
-										return Type.RSS20;
-									} else if (strVersion.equals("0.91")
-											|| strVersion.equals("0.92")) {
-										Log.d(TAG, "Recognized type RSS 0.91/0.92");
-										return Type.RSS091;
-									}
+								if (strVersion == null) {
+									feed.setType(Feed.TYPE_RSS2);
+									Log.d(TAG, "Assuming type RSS 2.0");
+									return Type.RSS20;
+								} else if (strVersion.equals("2.0")) {
+									feed.setType(Feed.TYPE_RSS2);
+									Log.d(TAG, "Recognized type RSS 2.0");
+									return Type.RSS20;
+								} else if (strVersion.equals("0.91") || strVersion.equals("0.92")) {
+									Log.d(TAG, "Recognized type RSS 0.91/0.92");
+									return Type.RSS091;
 								}
-								throw new UnsupportedFeedtypeException(Type.INVALID);
+								throw new UnsupportedFeedtypeException("Unsupported rss version");
 							default:
 								Log.d(TAG, "Type is invalid");
 								throw new UnsupportedFeedtypeException(Type.INVALID, tag);

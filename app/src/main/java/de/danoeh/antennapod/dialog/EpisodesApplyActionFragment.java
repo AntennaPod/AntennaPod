@@ -34,7 +34,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     public static final String TAG = "EpisodeActionFragment";
 
-    private static final int ACTION_QUEUE = 1;
+    public static final int ACTION_QUEUE = 1;
     private static final int ACTION_MARK_PLAYED = 2;
     private static final int ACTION_MARK_UNPLAYED = 4;
     private static final int ACTION_DOWNLOAD = 8;
