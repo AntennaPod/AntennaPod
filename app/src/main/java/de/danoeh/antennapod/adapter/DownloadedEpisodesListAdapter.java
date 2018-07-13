@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 
@@ -98,7 +99,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         holder.pubDate.setText(pubDateStr);
 
         FeedItem.State state = item.getState();
-        if (state == FeedItem.State.PLAYING) {
+        if (state == FeedItem.State.PLAYING && PlaybackService.isRunning) {
             holder.butSecondary.setEnabled(false);
             holder.butSecondary.setAlpha(0.5f);
         } else {
