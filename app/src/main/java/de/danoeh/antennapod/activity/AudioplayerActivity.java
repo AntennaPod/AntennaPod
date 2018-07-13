@@ -12,8 +12,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
-import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 
 /**
@@ -32,15 +30,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             if (intent.getData() == null) {
                 return;
             }
-            Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
-            ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
-                    MediaType.AUDIO);
-
-            new PlaybackServiceStarter(this, media)
-                    .startWhenPrepared(true)
-                    .shouldStream(false)
-                    .prepareImmediately(true)
-                    .start();
+            playExternalMedia(intent.getData().getPath(), MediaType.AUDIO);
 
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
