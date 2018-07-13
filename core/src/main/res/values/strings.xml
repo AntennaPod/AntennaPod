@@ -459,8 +459,8 @@
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
     <string name="media_player_builtin">Built-in Android player</string>
-    <string name="media_player_sonic">Sonic Media Player</string>
-    <string name="media_player_exoplayer">Exoplayer</string>
+    <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
+    <string name="media_player_exoplayer" translatable="false">Exoplayer</string>
     <string name="pref_videoBehavior_title">Video behavior</string>
     <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
     <string name="stop_playback">Stop playback</string>
