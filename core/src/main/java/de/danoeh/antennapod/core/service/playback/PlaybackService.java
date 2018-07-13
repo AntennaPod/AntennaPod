@@ -341,6 +341,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Service is about to be destroyed");
+        stopForeground(true);
         isRunning = false;
         started = false;
         currentMediaType = MediaType.UNKNOWN;
@@ -362,6 +363,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         flavorHelper.unregisterWifiBroadcastReceiver();
         mediaPlayer.shutdown();
         taskManager.shutdown();
+    }
+    
+    private void stopService() {
+        stopForeground(true);
+        stopSelf();
     }
 
     @Override
@@ -458,7 +464,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
         if (keycode == -1 && playable == null && !castDisconnect) {
             Log.e(TAG, "PlaybackService was started with no arguments");
-            stopSelf();
+            stopService();
             return Service.START_NOT_STICKY;
         }
 
@@ -470,7 +476,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Log.d(TAG, "Received media button event");
                 boolean handled = handleKeycode(keycode, true);
                 if (!handled) {
-                    stopSelf();
+                    stopService();
                     return Service.START_NOT_STICKY;
                 }
             } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
@@ -680,7 +686,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 case STOPPED:
                     //writePlaybackPreferencesNoMediaPlaying();
-                    //stopSelf();
+                    //stopService();
                     break;
 
                 case PLAYING:
@@ -697,7 +703,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 case ERROR:
                     writePlaybackPreferencesNoMediaPlaying();
-                    stopSelf();
+                    stopService();
                     break;
 
             }
@@ -710,7 +716,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void shouldStop() {
-            stopSelf();
+            stopService();
         }
 
         @Override
@@ -759,7 +765,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
             sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
             writePlaybackPreferencesNoMediaPlaying();
-            stopSelf();
+            stopService();
             return true;
         }
 
@@ -1213,7 +1219,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (playable == null) {
             Log.d(TAG, "setupNotification: playable is null");
             if (!started) {
-                stopSelf();
+                stopService();
             }
             return;
         }
@@ -1227,7 +1233,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (mediaPlayer == null) {
                     Log.d(TAG, "notificationSetupTask: mediaPlayer is null");
                     if (!started) {
-                        stopSelf();
+                        stopService();
                     }
                     return;
                 }
@@ -1548,7 +1554,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
-                stopSelf();
+                stopService();
             }
         }
 
