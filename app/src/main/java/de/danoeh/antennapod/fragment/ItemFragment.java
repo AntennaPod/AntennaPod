@@ -436,7 +436,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
 
         FeedItem.State state = item.getState();
-        if (butAction2Text == R.string.delete_label && state == FeedItem.State.PLAYING) {
+        if (butAction2Text == R.string.delete_label && state == FeedItem.State.PLAYING && PlaybackService.isRunning) {
             butAction2.setEnabled(false);
             butAction2.setAlpha(0.5f);
         } else {
