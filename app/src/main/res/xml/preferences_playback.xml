@@ -109,12 +109,14 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/media_player">
-        <SwitchPreference
-                android:defaultValue="true"
-                android:enabled="false"
-                android:key="prefSonic"
-                android:summary="@string/pref_sonic_message"
-                android:title="@string/pref_sonic_title"/>
+        <ListPreference
+                android:defaultValue="sonic"
+                android:entries="@array/media_player_options"
+                android:key="prefMediaPlayer"
+                android:title="@string/media_player"
+                android:summary="@string/pref_media_player_message"
+                android:entryValues="@array/media_player_values"
+                app:useStockLayout="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/experimental_pref">

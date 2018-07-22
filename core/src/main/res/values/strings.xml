@@ -446,8 +446,7 @@
     <string name="crash_report_sum">Send the latest crash report via e-mail</string>
     <string name="send_email">Send e-mail</string>
     <string name="experimental_pref">Experimental</string>
-    <string name="pref_sonic_title">Sonic Media Player</string>
-    <string name="pref_sonic_message">Use built-in sonic media player as a replacement for Android\'s native mediaplayer and Prestissimo</string>
+    <string name="pref_media_player_message">Select which media player to use to play files</string>
     <string name="pref_current_value">Current value: %1$s</string>
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Set a network proxy</string>
@@ -459,6 +458,9 @@
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
+    <string name="media_player_builtin">Built-in Android player</string>
+    <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
+    <string name="media_player_exoplayer" translatable="false">Exoplayer</string>
     <string name="pref_videoBehavior_title">Video behavior</string>
     <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
     <string name="stop_playback">Stop playback</string>

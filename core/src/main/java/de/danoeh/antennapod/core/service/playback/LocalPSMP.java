@@ -313,7 +313,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         Log.d(TAG, "Resource prepared");
 
-        if (mediaType == MediaType.VIDEO) {
+        if (mediaType == MediaType.VIDEO && mediaPlayer instanceof ExoPlayerWrapper) {
+            ExoPlayerWrapper vp = (ExoPlayerWrapper) mediaPlayer;
+            videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
+        } else if(mediaType == MediaType.VIDEO && mediaPlayer instanceof VideoPlayer) {
             VideoPlayer vp = (VideoPlayer) mediaPlayer;
             videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
         }
@@ -447,7 +450,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
             retVal = mediaPlayer.getDuration();
-        } else if (media != null && media.getDuration() > 0) {
+        }
+        if (retVal <= 0 && media != null && media.getDuration() > 0) {
             retVal = media.getDuration();
         }
 
@@ -627,6 +631,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         } else if (mediaPlayer instanceof AudioPlayer) {
             AudioPlayer ap = (AudioPlayer) mediaPlayer;
             ap.setOnErrorListener((mediaPlayer, i, i1) -> true);
+        } else if (mediaPlayer instanceof ExoPlayerWrapper) {
+            ExoPlayerWrapper ap = (ExoPlayerWrapper) mediaPlayer;
+            ap.setOnErrorListener((mediaPlayer, i, i1) -> true);
         }
     }
 
@@ -682,6 +689,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         Pair<Integer, Integer> res;
         if (mediaPlayer == null || playerStatus == PlayerStatus.ERROR || mediaType != MediaType.VIDEO) {
             res = null;
+        } else if (mediaPlayer instanceof ExoPlayerWrapper) {
+            ExoPlayerWrapper vp = (ExoPlayerWrapper) mediaPlayer;
+            videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
+            res = videoSize;
         } else {
             VideoPlayer vp = (VideoPlayer) mediaPlayer;
             videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
@@ -711,15 +722,19 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-        if(media == null) {
+        if (media == null) {
             mediaPlayer = null;
             return;
         }
-        if (media.getMediaType() == MediaType.VIDEO) {
+
+        if (UserPreferences.useExoplayer()) {
+            mediaPlayer = new ExoPlayerWrapper(context);
+        } else if (media.getMediaType() == MediaType.VIDEO) {
             mediaPlayer = new VideoPlayer();
         } else {
             mediaPlayer = new AudioPlayer(context);
         }
+
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK);
         setMediaPlayerListeners(mediaPlayer);
@@ -896,6 +911,11 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
             ap.setOnInfoListener(audioInfoListener);
             ap.setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
+        } else if (mp instanceof ExoPlayerWrapper) {
+            ExoPlayerWrapper ap = (ExoPlayerWrapper) mp;
+            ap.setOnCompletionListener(audioCompletionListener);
+            ap.setOnSeekCompleteListener(audioSeekCompleteListener);
+            ap.setOnErrorListener(audioErrorListener);
         } else {
             Log.w(TAG, "Unknown media player: " + mp);
         }

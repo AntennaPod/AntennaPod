@@ -147,12 +147,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(UserPreferences.PREF_SONIC)) {
-            CheckBoxPreference prefSonic = (CheckBoxPreference) ui.findPreference(UserPreferences.PREF_SONIC);
-            if(prefSonic != null) {
-                prefSonic.setChecked(sharedPreferences.getBoolean(UserPreferences.PREF_SONIC, false));
-            }
-        }
+
     }
 
 
@@ -891,11 +886,10 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     private void checkSonicItemVisibility() {
-        if (Build.VERSION.SDK_INT >= 16) {
-            ui.findPreference(UserPreferences.PREF_SONIC).setEnabled(true);
-        } else {
-            Preference prefSonic = ui.findPreference(UserPreferences.PREF_SONIC);
-            prefSonic.setSummary("[Android 4.1+]\n" + prefSonic.getSummary());
+        if (Build.VERSION.SDK_INT < 16) {
+            ListPreference p = (ListPreference) ui.findPreference(UserPreferences.PREF_MEDIA_PLAYER);
+            p.setEntries(R.array.media_player_options_no_sonic);
+            p.setEntryValues(R.array.media_player_values_no_sonic);
         }
     }
 

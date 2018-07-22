@@ -65,7 +65,7 @@ class UpdateManager {
     private static void onUpgrade(final int oldVersionCode, final int newVersionCode) {
         if(oldVersionCode < 1050004) {
             if(MediaPlayer.isPrestoLibraryInstalled(context) && Build.VERSION.SDK_INT >= 16) {
-                UserPreferences.enableSonic(true);
+                UserPreferences.enableSonic();
             }
         }
     }
