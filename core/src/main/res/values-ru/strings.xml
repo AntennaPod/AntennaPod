@@ -170,6 +170,11 @@
   <string name="download_failed">не удалось</string>
   <string name="download_pending">Загрузка в ожидании</string>
   <string name="download_running">Загрузка в процессе</string>
+  <string name="download_error_details">Подробнее</string>
+  <string name="download_error_details_message">%1$s
+
+URL файла:
+%2$s</string>
   <string name="download_error_device_not_found">Устройство хранения не найдено</string>
   <string name="download_error_insufficient_space">Недостаточно места</string>
   <string name="download_error_file_error">Ошибка файла</string>
@@ -455,8 +460,10 @@
   <string name="html_export_label">Экспорт в HTML</string>
   <string name="exporting_label">Экспортируется...</string>
   <string name="export_error_label">Ошибка экспорта</string>
-  <string name="opml_export_success_title">OPML успешно экспортирован.</string>
-  <string name="opml_export_success_sum">Файл OPML был записан в:\u0020</string>
+  <string name="export_success_title">Экспорт завершён успешно</string>
+  <string name="export_success_sum">Экспорт осуществлён в файл:
+
+%1$s</string>
   <string name="opml_import_ask_read_permission">Для чтения файла OPML необходим доступ к внешнему хранилищу</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Установить таймер сна</string>
@@ -635,7 +642,7 @@
   <string name="label_import">Импорт</string>
   <string name="label_export">Экспорт</string>
   <string name="import_select_file">Выберите импортируемый файл</string>
-  <string name="export_ok">Успешно экспортировано. База данных была записана на карту памяти.</string>
+  <string name="export_ok">Успешно экспортировано.</string>
   <string name="import_ok">Успешно импортировано.\n\nПожалуйста, нажмите OK, чтобы перезапустить AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Воспроизвести на…</string>

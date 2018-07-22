@@ -121,6 +121,7 @@
   <string name="share_item_url_with_position_label">Condividi l\'URL del File dell\'epsiodio con la Posizione</string>
   <string name="feed_delete_confirmation_msg">Conferma che desideri cancellare il feed \"%1$s\" e TUTTI i suoi episodi scaricati.</string>
   <string name="feed_remover_msg">Rimozione del Feed in corso</string>
+  <string name="load_complete_feed">Aggiorna il feed completo</string>
   <string name="hide_episodes_title">Nascondi gli episodi</string>
   <string name="episode_actions">Applica le azioni</string>
   <string name="hide_unplayed_episodes_label">Non riprodotti</string>
@@ -141,6 +142,7 @@
   <string name="stream_label">Stream</string>
   <string name="remove_label">Rimuovi</string>
   <string name="delete_label">Elimina</string>
+  <string name="delete_failed">Impossibile eliminare il file. Il riavvio del dispositivo potrebbe aiutare.</string>
   <string name="remove_episode_lable">Rimuovi l\'episodio</string>
   <string name="marked_as_seen_label">Segna come visto</string>
   <string name="mark_read_label">Segna come riprodotto</string>
@@ -165,6 +167,7 @@
   <string name="download_failed">fallito</string>
   <string name="download_pending">Download in attesa</string>
   <string name="download_running">Download in corso</string>
+  <string name="download_error_details">Dettagli</string>
   <string name="download_error_device_not_found">Spazio di archiviazione non trovato</string>
   <string name="download_error_insufficient_space">Spazio Insufficiente</string>
   <string name="download_error_file_error">Errore del file</string>
@@ -277,10 +280,15 @@
   <string name="queue_label">Coda</string>
   <string name="services_label">Servizi</string>
   <string name="flattr_label">Flattr</string>
+  <string name="pref_episode_cleanup_title">Pulizia dell\'episodio</string>
+  <string name="pref_episode_cleanup_summary">Gli episodi che non sono in coda e non sono preferiti dovrebbero essere idonei alla rimozione se Auto Download richiede spazio per nuovi episodi</string>
+  <string name="pref_pauseOnDisconnect_sum">Sospendi la riproduzione quando le cuffie o il bluetooth sono disconnessi</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Riprendi la riproduzione quando le cuffie vengono ricollegate</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendi la riproduzione quando le cuffie o il bluetooth sono disconnessi</string>
   <string name="pref_followQueue_sum">Passa al prossimo episodio in coda al termine della riproduzione</string>
   <string name="pref_auto_delete_sum">Elimina l\'episodio al termine della riproduzione</string>
   <string name="pref_auto_delete_title">Elimina Automaticamente</string>
+  <string name="pref_smart_mark_as_played_sum">Contrassegna gli episodi come riprodotti anche se rimane meno di un certo numero di secondi di tempo di riproduzione</string>
   <string name="pref_skip_keeps_episodes_title">Manteni gli Episodi Saltati</string>
   <string name="playback_pref">Riproduzione</string>
   <string name="network_pref">Rete</string>
@@ -376,8 +384,6 @@
   <string name="choose_file_from_external_application">Usa un\'applicazione esterna</string>
   <string name="opml_export_label">Esportazione OPML</string>
   <string name="export_error_label">Errore di esportazione</string>
-  <string name="opml_export_success_title">Esportazione OPML avvenuta con successo.</string>
-  <string name="opml_export_success_sum">Il file .opml è stato scritto su:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Imposta timer di spegnimento</string>
   <string name="disable_sleeptimer_label">Disabilita il timer di spegnimento</string>
@@ -499,7 +505,9 @@
   <string name="sort_duration_long_short">Durata (Lunghi \u2192 Corti)</string>
   <!--Rating dialog-->
   <string name="rating_title">Ti piace AntennaPod?</string>
+  <string name="rating_never_label">Lasciami solo</string>
   <string name="rating_later_label">Ricordamelo più tardi</string>
+  <string name="rating_now_label">Certo, facciamolo!</string>
   <!--Audio controls-->
   <string name="audio_controls">Controlli audio</string>
   <string name="playback_speed">Velocità di riproduzione</string>
@@ -516,8 +524,11 @@
   <string name="proxy_checking">Controllo in corso...</string>
   <string name="proxy_test_successful">Test avvenuto con successo</string>
   <string name="proxy_test_failed">Test fallito</string>
+  <string name="proxy_host_empty_error">Host non può essere vuoto</string>
   <string name="proxy_port_invalid_error">Porta non valida</string>
   <!--Database import/export-->
+  <string name="import_select_file">Seleziona il file da importare</string>
+  <string name="export_ok">Esportato con successo.</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Riproduci su...</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->

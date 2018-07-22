@@ -168,6 +168,8 @@
   <string name="download_failed">mislukt</string>
   <string name="download_pending">Download in afwachting</string>
   <string name="download_running">Aan het downloaden</string>
+  <string name="download_error_details">Details</string>
+  <string name="download_error_details_message">%1$s \n\nURL bestand:\n%2$s</string>
   <string name="download_error_device_not_found">Opslagmedium niet gevonden</string>
   <string name="download_error_insufficient_space">Onvoldoende ruimte</string>
   <string name="download_error_file_error">Bestandsfout</string>
@@ -451,8 +453,8 @@
   <string name="html_export_label">HTML export</string>
   <string name="exporting_label">Exporteren…</string>
   <string name="export_error_label">Export fout</string>
-  <string name="opml_export_success_title">OPML bestand succesvol geëxporteerd.</string>
-  <string name="opml_export_success_sum"> Het OPML-bestand is in \u0020 geplaatst</string>
+  <string name="export_success_title">Export succesvol</string>
+  <string name="export_success_sum">Het geëxporteerde bestand is hier opgeslagen:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Toegang tot externe locaties is nodig om het OPML-bestand te kunnen lezen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Slaap timer instellen</string>
@@ -625,7 +627,7 @@
   <string name="label_import">Importeren</string>
   <string name="label_export">Exporteren</string>
   <string name="import_select_file">Selecteer bestand om te importeren</string>
-  <string name="export_ok">Succesvol geëxporteerd. De database is naar de SD-kaart geschreven.</string>
+  <string name="export_ok">Export succesvol.</string>
   <string name="import_ok">Succesvol geïmporteerd\n\nDruk op OK om AntennaPod te herstarten.</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Afspelen op…</string>

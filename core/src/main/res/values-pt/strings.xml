@@ -168,6 +168,8 @@
   <string name="download_failed">falha</string>
   <string name="download_pending">Descarga pendente</string>
   <string name="download_running">Descarga atual</string>
+  <string name="download_error_details">Detalhes</string>
+  <string name="download_error_details_message">%1$s \n\Ficheiro URL:\n%2$s</string>
   <string name="download_error_device_not_found">Cartão SD não encontrado</string>
   <string name="download_error_insufficient_space">Espaço insuficiente</string>
   <string name="download_error_file_error">Erro no ficheiro</string>
@@ -451,8 +453,8 @@
   <string name="html_export_label">Exportação HTML</string>
   <string name="exporting_label">A exportar...</string>
   <string name="export_error_label">Erro de exportação</string>
-  <string name="opml_export_success_title">Exportação efetuada</string>
-  <string name="opml_export_success_sum">O ficheiro .opml foi guardado em:\u0020</string>
+  <string name="export_success_title">Exportação com sucesso</string>
+  <string name="export_success_sum">O ficheiro exportado foi guardado em:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Requer acesso ao armazenamento externo para ler o ficheiro OPML</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Definir temporizador</string>
@@ -619,6 +621,14 @@
   <string name="proxy_host_empty_error">Servidor não pode estar vazio</string>
   <string name="proxy_host_invalid_error">O servidor não tem um endereço ou domínio válido</string>
   <string name="proxy_port_invalid_error">Porta inválido</string>
+  <!--Database import/export-->
+  <string name="import_export">Importação/exportação da base de dados</string>
+  <string name="import_export_warning">Esta função experimental  pode ser usada para transferir as suas subscrições e episódios para outros dispositivos.\n\nAs bases de dados exportadas apenas podem ser importadas se usar a mesma versão do AntennaPod. Caso contrário, esta função poderá produzir efeitos inesperados.\n\nDepois da importação, os episódios poderão ser apresentados como tendo sido descarregados mesmo que não seja verdade. Prima o botão de reprodução dos episódios para que o AntennaPod detete a situação.</string>
+  <string name="label_import">Importar</string>
+  <string name="label_export">Exportar</string>
+  <string name="import_select_file">Selecione o ficheiro a importar</string>
+  <string name="export_ok">Exportação com sucesso.</string>
+  <string name="import_ok">Importação bem sucedida.\n\nPor favor prima OK para reiniciar o AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Reproduzir em...</string>
   <string name="cast_disconnect_label">Desligar da última sessão</string>

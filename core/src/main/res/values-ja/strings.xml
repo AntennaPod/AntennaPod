@@ -167,6 +167,8 @@
   <string name="download_failed">失敗</string>
   <string name="download_pending">ダウンロードは保留中</string>
   <string name="download_running">ダウンロード実行中</string>
+  <string name="download_error_details">詳細</string>
+  <string name="download_error_details_message">%1$s \n\nファイル URL:\n%2$s</string>
   <string name="download_error_device_not_found">ストレージ デバイスが見つかりません</string>
   <string name="download_error_insufficient_space">スペースが不足しています</string>
   <string name="download_error_file_error">ファイルエラー</string>
@@ -449,8 +451,8 @@
   <string name="html_export_label">HTML エクスポート</string>
   <string name="exporting_label">エクスポート中…</string>
   <string name="export_error_label">エクスポートエラー</string>
-  <string name="opml_export_success_title">OPMLをエクスポートしました。</string>
-  <string name="opml_export_success_sum">.opml ファイルを書き込みました:\u0020</string>
+  <string name="export_success_title">エクスポートしました</string>
+  <string name="export_success_sum">エクスポートしたファイルを書き込みました:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">OPML ファイルを読み込むために、外部ストレージへのアクセスが必要です</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">スリープタイマーをセット</string>
@@ -620,7 +622,7 @@
   <string name="label_import">インポート</string>
   <string name="label_export">エクスポート</string>
   <string name="import_select_file">インポートするファイルを選択してください</string>
-  <string name="export_ok">エクスポートが成功しました。データベースはSDカードに書き込まれました。</string>
+  <string name="export_ok">エクスポートしました。</string>
   <string name="import_ok">インポートが成功しました。\n\nOKを押してAntennaPodを再起動してください。</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">…で再生</string>

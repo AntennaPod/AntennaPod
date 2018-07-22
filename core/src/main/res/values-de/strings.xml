@@ -168,6 +168,8 @@
   <string name="download_failed">fehlgeschlagen</string>
   <string name="download_pending">Download anstehend</string>
   <string name="download_running">Download läuft</string>
+  <string name="download_error_details">Details</string>
+  <string name="download_error_details_message">%1$s \n\nDatei-URL:\n%2$s</string>
   <string name="download_error_device_not_found">Speichermedium nicht gefunden</string>
   <string name="download_error_insufficient_space">Zu wenig Speicherplatz</string>
   <string name="download_error_file_error">Dateifehler</string>
@@ -451,8 +453,8 @@
   <string name="html_export_label">HTML Export</string>
   <string name="exporting_label">Exportiere…</string>
   <string name="export_error_label">Exportfehler</string>
-  <string name="opml_export_success_title">OPML Export erfolgreich</string>
-  <string name="opml_export_success_sum">Die OPML Datei wurde unter dem folgenden Pfad gespeichert:\u0020</string>
+  <string name="export_success_title">Export erfolgreich</string>
+  <string name="export_success_sum">Die exportierte Datei wurde geschrieben nach:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Zugriff auf externen Speicher wird benötigt, um die OPML Datei zu lesen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Timer einstellen</string>
@@ -625,7 +627,7 @@
   <string name="label_import">Import</string>
   <string name="label_export">Export</string>
   <string name="import_select_file">Zu importierende Datei auswählen</string>
-  <string name="export_ok">Export erfolgreich. Die Datenbank wurde auf die SD-Karte geschrieben.</string>
+  <string name="export_ok">Export erfolgreich.</string>
   <string name="import_ok">Import erfolgreich.\n\nBitte OK drücken, um AntennaPod neuzustarten</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Abspielen auf...</string>

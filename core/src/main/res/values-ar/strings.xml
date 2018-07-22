@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feeds_label">Feeds</string>
   <string name="all_episodes_short_label">الكل</string>
   <string name="favorite_episodes_label">المفضلات</string>
   <string name="new_label">جديد</string>

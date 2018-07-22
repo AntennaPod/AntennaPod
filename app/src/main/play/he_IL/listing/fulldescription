@@ -1,43 +1,43 @@
-AntennaPod is a podcast manager and player that gives you instant access to millions of free and paid podcasts, from independent podcasters to large publishing houses such as the BBC, NPR and CNN. Add, import and export their feeds hassle-free using the iTunes podcast database, OPML files or simple RSS URLs. Save effort, battery power and mobile data usage with powerful automation controls for downloading episodes (specify times, intervals and WiFi networks) and deleting episodes (based your favourites and delay settings).<br>
-But most importantly: Download, stream or queue episodes and enjoy them the way you like with adjustable playback speeds, chapter support and a sleep timer. You can even show your love to the content creators  with our Flattr integration.
+היישומון אנטנה־פּוֹד הוא נגן ומנהל פודקאסטים שמעניק לך גישה ישירה למיליונים של פודקאסטים בחינם ובתשלום, החל ממגישי פודקאסטים עצמאיים ועד למפיצים גדולים כגון BBC,‏ NPR ו־CNN. ניתן להוסיף, לייבא ולייצא את ההזנות שלהם בקלות יחסית באמצעות מסד נתוני הפודקאסטים של iTunes, קובצי OPML או כתובות של RSS. מאפשר לך לחסוך במאמץ, סוללה ותקשורת נתונים עם פקדי אוטומציה להורדה של פרקים (לפי זמנים, הפרשי זמן ורשתות אלחוטיות) ומחיקה של פרקים (על בסיס הגדרות המועדפים וההשהיה שלך).<br>
+אבל הכי חשוב: ניתן להוריד, להזרים או לסדר רשימות של פרקים וליהנות מהם בכל דרך שמתאימה לך עם מהירויות נגינה משתנות, תמיכה במקטעים ומתזמן שינה. ניתן אפילו להביע את חיבתך ליוצרי התוכן עם שילוב של Flattr ביישומון.
 
 מיוצרת על ידי חובבי פודקאסטים, אנטנהפוד הינה תוכנה חינמית בכל מובן המילה: קוד פתוח, ללא עלות וללא פרסומות.
 
-<b>All features:</b><br>
-IMPORT, ORGANIZE AND PLAY<br>
-&#8226; Add and import feeds via the iTunes and gPodder.net directories, OPML files and RSS or Atom links<br>
-&#8226; Manage playback from anywhere: homescreen widget, system notification and earplug and bluetooth controls<br>
-&#8226; Enjoy listening your way with adjustable playback speed, chapter support (MP3, VorbisComment and Podlove), remembered playback position and an advanced sleep timer (shake to reset, lower volume and slow down playback)<br>
-&#8226; Access password-protected feeds and episodes<br>
-&#8226; Take advantage of paged feeds (www.podlove.org/paged-feeds)
+<b>כל התכונות:</b><br>
+ייבוא, ארגון ונגינה<br>
+&#8226; ניתן להוסיף ולייבא הזנות דרך הספריות של iTunes ושל gPodder.net, קובצי OPML וקישורי RSS או Atom<br>
+&#8226; ניתן לנהל את הנגינה מכל מקום: וידג׳ט על מסך הבית, התרעות המערכת ופקדי שקע אוזניות ובלוטות׳<br>
+&#8226; פשוט ליהנות בדרך שלך עם מהירות נגינה משתנה, תמיכה במקטעים (MP3, VorbisComment ו־Podlove), שמירת מיקום הנגינה ומתזמן שינה מתקדם (ניתן לנער כדי לאפס, להנמיך את עצמך השמע ולהאט את מהירות הנגינה)<br>
+&#8226; גישה להזנות ולפרקים המוגנים בססמה<br>
+&#8226; ניתן להשתמש בעימודי ההזנות שלנו (www.podlove.org/paged-feeds)
 
-KEEP TRACK, SHARE & APPRECIATE<br>
-&#8226; Keep track of the best of the best by marking episodes as favourites<br>
-&#8226; Find that one episode through the playback history or by searching (titles and shownotes)<br>
-&#8226; Share episodes and feeds through advanced social media and email options, the gPodder.net services and via OPML export<br>
-&#8226; Support content creators with Flattr integration including automatic flattring
+מעקב, שיתוף והבעת הערכה<br>
+&#8226; מעקב אחר הטובים שבטובים על ידי סימון פרקים כמועדפים<br>
+&#8226; ניתן לאתר פרק אחד דרך היסטוריית הנגינה או על ידי חיפוש (כותרות והערות פרק)<br>
+&#8226; ניתן לשתף פרקים והזנות דרך אפשרויות מתקדמות ברשתות חברתיות ודוא״ל, שירותי gPodder.net ודרך ייצוא OPML<br>
+&#8226; ניתן לתמוך בעורכי תוכן עם שילוב של Flattr לתוך המערכת לרבות תרומה אוטומטית
 
-CONTROL THE SYSTEM<br>
-&#8226; Take control over automated downloading: choose feeds, exclude mobile networks, select specific WiFi networks, require the phone to be charging and set times or intervals<br>
-&#8226; Manage storage by setting the amount of cached episodes, smart deletion (based on your favourites and play status) and selecting your preferred location<br>
-&#8226; Use AntennaPod in your language (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
-&#8226; Adapt to your environment using the light and dark theme<br>
-&#8226; Back-up your subscriptions with the gPodder.net integration and OPML export
+שליטה במערכת<br>
+&#8226; ניתן לשלוט על הורדה אוטומטית: לבחור הזנות, להחריג רשתות סלולריות, לבחור רשתות אלחוטיות מסוימות, לדרוש מהטלפון להיות בטעינה ולהגדיר מועדים או מרווחי זמן<br>
+&#8226; ניתן לנהל את האחסון על ידי הגדרת כמות הפרקים שנשמרים במטמון, מחיקה חכמה (בהתבסס על המועדפים ומצב הנגינה שלך) ובחירת המיקום המועדף עליך<br>
+&#8226; ניתן להשתמש באנטנה־פּוֹד בשפה שלך (HE, EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
+&#8226; התאמה לסביבה שלך באמצעות ערכות עיצוב בהירה וכהה<br>
+&#8226; גיבוי התמיכה שלך עם שילוב מול gPodder.net וייצוא של OPML
 
-<b>Join the AntennaPod community!</b><br>
-AntennaPod is under active development by volunteers. You can contribute too, with code or with comment!
+<b>מזמינים אותך להצטרף לקהילת אנטנה־פּוֹד!</b><br>
+את תהליכי הפיתוח הפעילים של אנטנה־פּוֹד מובילים מתנדבים. ניתן לתרום גם כן, עם קוד או עם הערה!
 
-GitHub is the place to go for feature requests, bug reports and code contributions:<br>
+GitHub הוא המקום בו אנו מרכזים את בקשות התכונות, דיווחי התקלות ותרומות הקוד:<br>
 https://www.github.com/AntennaPod/AntennaPod
 
-Our Google Group is the place to share your ideas, favourite podcasting moments and gratitude to all the volunteers:<br>
+הקבוצה שלנו ב־Google היא המקום לשתף את הרעיונות שלך, רגעי הפודקאסט המועדפים עליך ואת הערכתך לכל המתנדבים:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
-Have a question or want to give us feedback?
+יש לך שאלה או שמעניין אותך לתת לנו משוב?
 https://twitter.com/@AntennaPod
 
-Transifex is the place to help with translations:<br>
+Transifex הוא המקום לסייע בתרגומים:<br>
 https://www.transifex.com/antennapod/antennapod
 
-Check out our Beta Testing programme to get the latest features first:<br>
+מזמינים אותך לחקור את תכנית הבדיקות שלנו כדי לקבל את התכונות העדכניות ביותר לפני כולם:<br>
 https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

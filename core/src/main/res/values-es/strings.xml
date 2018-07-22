@@ -168,6 +168,8 @@
   <string name="download_failed">fallido</string>
   <string name="download_pending">Descarga pendiente</string>
   <string name="download_running">Descarga en curso</string>
+  <string name="download_error_details">Detalles</string>
+  <string name="download_error_details_message">%1$s \n\nURL de archivo:\n%2$s</string>
   <string name="download_error_device_not_found">No se ha encontrado un dispositivo de almacenamiento</string>
   <string name="download_error_insufficient_space">Espacio insuficiente</string>
   <string name="download_error_file_error">Error de archivo</string>
@@ -451,8 +453,8 @@
   <string name="html_export_label">Exportar a HTML</string>
   <string name="exporting_label">Exportando…</string>
   <string name="export_error_label">Error en la exportación</string>
-  <string name="opml_export_success_title">Exportación a OPML exitosa</string>
-  <string name="opml_export_success_sum">El archivo OPML se ha escrito en:\u0020</string>
+  <string name="export_success_title">Exportación exitosa</string>
+  <string name="export_success_sum">El archivo exportado fué grabado en::\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Es necesario el acceso al almacenamiento externo para leer archivos OPML</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Establecer un temporizador</string>
@@ -625,7 +627,7 @@
   <string name="label_import">Importar</string>
   <string name="label_export">Exportar</string>
   <string name="import_select_file">Seleccionar firchero a importar</string>
-  <string name="export_ok">Exportación exitosa. La base de datos se guardó en la tarjeta SD.</string>
+  <string name="export_ok">Exportación exitosa.</string>
   <string name="import_ok">Importación exitosa.\n\nPor favor, pulse OK para reiniciar AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Reproducir en...</string>

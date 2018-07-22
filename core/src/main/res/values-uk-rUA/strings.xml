@@ -93,6 +93,7 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 день після закінчення</item>
     <item quantity="few">%d дні після закінчення</item>
+    <item quantity="many">%d днів після закінчення</item>
     <item quantity="other">%d днів після закінчення</item>
   </plurals>
   <!--'Add Feed' Activity labels-->
@@ -169,6 +170,8 @@
   <string name="download_failed">з помилками</string>
   <string name="download_pending">Потрібно завантажити</string>
   <string name="download_running">Завантаження</string>
+  <string name="download_error_details">Докладно</string>
+  <string name="download_error_details_message">%1$s \n\nПосилання на файл:\n%2$s</string>
   <string name="download_error_device_not_found">Немає куди зберігати</string>
   <string name="download_error_insufficient_space">Мало місця</string>
   <string name="download_error_file_error">Помилка файлу</string>
@@ -193,6 +196,7 @@
   <plurals name="downloads_left">
     <item quantity="one">%d завантаження залишилось</item>
     <item quantity="few">%d завантаження залишилось</item>
+    <item quantity="many">%d завантажень залишилось</item>
     <item quantity="other">%d завантажень залишилось</item>
   </plurals>
   <string name="downloads_processing">Обробка завантаженого</string>
@@ -453,8 +457,8 @@
   <string name="html_export_label">Експорт до HTML</string>
   <string name="exporting_label">Експортується…</string>
   <string name="export_error_label">Помилка експорту</string>
-  <string name="opml_export_success_title">OPML експорт успішний</string>
-  <string name="opml_export_success_sum">OPML файл записаний в:\u0020</string>
+  <string name="export_success_title">Успішний експорт</string>
+  <string name="export_success_sum">Файл було записано в:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Щоб прочитати файл OPML потрібен доступ до зовнішньої пам’яти</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Таймер сну</string>
@@ -472,16 +476,19 @@
   <plurals name="time_seconds_quantified">
     <item quantity="one">1 секунда</item>
     <item quantity="few">%d секунди</item>
+    <item quantity="many">%d секунд</item>
     <item quantity="other">%d секунд</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">1 хвилина</item>
     <item quantity="few">%d хвилини</item>
+    <item quantity="many">%d хвилин</item>
     <item quantity="other">%d хвилин</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="one">1 година</item>
     <item quantity="few">%d години</item>
+    <item quantity="many">%d годин</item>
     <item quantity="other">%d годин</item>
   </plurals>
   <string name="auto_enable_label">Увімкнути автоматично</string>
@@ -624,6 +631,14 @@
   <string name="proxy_host_empty_error">Хост не може бути пустим</string>
   <string name="proxy_host_invalid_error">Хост не є правильною IP-адресою або доменним ім’ям</string>
   <string name="proxy_port_invalid_error">Неправильний порт</string>
+  <!--Database import/export-->
+  <string name="import_export">Імпортувати/Експортувати базу данних</string>
+  <string name="import_export_warning">Ця експериментальна функція може бути використана щоб перенести ваші підпискаи то вже прослухані епізоди до іншого пристрою.\n\nЕкспортована база данних може тільки бути імпортована використоваючи ту саму версію AntennaPod. В противному випадку результат може бути непердбаченним.\n\nПисля импортування, епізоди можут бути відображенним як завантажені, коли на справді воне такими не є. Просто натисніть кнопку грати на цих епізодах щоб видалати іх.</string>
+  <string name="label_import">Імпортувати</string>
+  <string name="label_export">Експортувати</string>
+  <string name="import_select_file">Обрати файл для імпорту</string>
+  <string name="export_ok">Успішний експорт</string>
+  <string name="import_ok">Імпорт пройшов успішно.\n\nБудь ласка натисніть ОК щоб перезапустити AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Грати на…</string>
   <string name="cast_disconnect_label">Від’єднатись від пристроя програвання</string>

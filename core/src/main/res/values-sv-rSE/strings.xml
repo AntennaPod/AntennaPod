@@ -168,6 +168,8 @@
   <string name="download_failed">misslyckades</string>
   <string name="download_pending">Avvaktar nedladdning</string>
   <string name="download_running">Nedladdning pågår</string>
+  <string name="download_error_details">Detaljer</string>
+  <string name="download_error_details_message">%1$s \n\nFil-URL:\n%2$s</string>
   <string name="download_error_device_not_found">Hittade ingen lagringsenhet</string>
   <string name="download_error_insufficient_space">Otillräckligt Utrymme</string>
   <string name="download_error_file_error">Filfel</string>
@@ -451,8 +453,8 @@
   <string name="html_export_label">HTML export</string>
   <string name="exporting_label">Exporterar…</string>
   <string name="export_error_label">Exporteringsfel</string>
-  <string name="opml_export_success_title">OPML Exportering lyckades.</string>
-  <string name="opml_export_success_sum">.opml filen skrevs till:\u0020</string>
+  <string name="export_success_title">Exporten lyckades</string>
+  <string name="export_success_sum">Den exporterade filen skrevs till:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Tillgång till extern lagring krävs för att läsa OPML-filen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Ställ in sömntimer</string>
@@ -619,6 +621,14 @@
   <string name="proxy_host_empty_error">Värd måste fyllas i</string>
   <string name="proxy_host_invalid_error">Värd är inte en giltig IP adress eller domän</string>
   <string name="proxy_port_invalid_error">Porten är inte giltig</string>
+  <!--Database import/export-->
+  <string name="import_export">Databas-Import/Export</string>
+  <string name="import_export_warning">Denna experimentella funktion kan användas för att föra över dina prenumerationer och spelade episoder till en annan enhet.\n\nExporterade databaser kan bara importeras med samma version av AntennaPod. Annars kommer en import att leda till oförutsägbara konsekvenser.\n\nEfter en import kan episoder visas som nedladdade även om de inte är det. Tryck bara på uppspelningsknappen på episoden för att AntennaPod ska kolla det igen.</string>
+  <string name="label_import">Import</string>
+  <string name="label_export">Export</string>
+  <string name="import_select_file">Välj fil att importera</string>
+  <string name="export_ok">Exporten lyckades.</string>
+  <string name="import_ok">Importen lyckades.\n\nTryck OK för att starta om AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Spela på...</string>
   <string name="cast_disconnect_label">Koppla loss castningen</string>
