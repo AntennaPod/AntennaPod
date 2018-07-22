@@ -47,6 +47,9 @@ public class NSITunes extends Namespace {
         if(state.getContentBuf() == null) {
             return;
         }
+        SyndElement secondElement = state.getSecondTag();
+        String second = secondElement.getName();
+
         if (AUTHOR.equals(localName)) {
             if (state.getFeed() != null) {
                 String author = state.getContentBuf().toString();
@@ -95,10 +98,9 @@ public class NSITunes extends Namespace {
             }
             if (state.getCurrentItem() != null &&
                     (TextUtils.isEmpty(state.getCurrentItem().getDescription()) ||
-                            state.getCurrentItem().getDescription().length() * 1.25 < summary.length())
-            ) {
+                            state.getCurrentItem().getDescription().length() * 1.25 < summary.length())) {
                 state.getCurrentItem().setDescription(summary);
-            } else if (state.getFeed() != null) {
+            } else if (NSRSS20.CHANNEL.equals(second) && state.getFeed() != null) {
                 state.getFeed().setDescription(summary);
             }
         }
