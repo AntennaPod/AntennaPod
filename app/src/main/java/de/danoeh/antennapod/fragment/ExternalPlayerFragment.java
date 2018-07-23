@@ -82,7 +82,7 @@ public class ExternalPlayerFragment extends Fragment {
                 controller.playPause();
             }
         });
-        loadMediaInfo();
+        loadMediaInfoAsync();
     }
 
     public void connectToPlaybackService() {
@@ -166,6 +166,19 @@ public class ExternalPlayerFragment extends Fragment {
         controller.init();
     }
 
+    private void loadMediaInfoAsync() {
+        Log.d(TAG, "Loading media info");
+        if (controller == null) {
+            Log.w(TAG, "loadMediaInfo was called while PlaybackController was null!");
+            return;
+        }
+
+        new Thread(() -> {
+            Playable media = controller.getMedia();
+            getActivity().runOnUiThread(() -> updateUi(media));
+        }).start();
+    }
+
     private boolean loadMediaInfo() {
         Log.d(TAG, "Loading media info");
         if (controller == null) {
@@ -174,6 +187,10 @@ public class ExternalPlayerFragment extends Fragment {
         }
 
         Playable media = controller.getMedia();
+        return updateUi(media);
+    }
+
+    private boolean updateUi(Playable media) {
         if (media != null) {
             txtvTitle.setText(media.getEpisodeTitle());
             mFeedName.setText(media.getFeedTitle());
