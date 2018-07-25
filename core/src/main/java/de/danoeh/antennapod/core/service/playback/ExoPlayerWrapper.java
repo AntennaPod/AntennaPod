@@ -78,7 +78,9 @@ public class ExoPlayerWrapper implements IPlayer {
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                audioErrorListener.onError(null, 0, 0);
+                if (audioErrorListener != null) {
+                    audioErrorListener.onError(null, 0, 0);
+                }
             }
 
             @Override
