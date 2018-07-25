@@ -92,7 +92,7 @@ public class AboutActivity extends AppCompatActivity {
                             "           src: url('file:///android_asset/Roboto-Light.ttf');" +
                             "        }" +
                             "        * {" +
-                            "           color: %s;" +
+                            "           color: @fontcolor@;" +
                             "           font-family: roboto-Light;" +
                             "           font-size: 8pt;" +
                             "        }" +
@@ -100,7 +100,7 @@ public class AboutActivity extends AppCompatActivity {
                             "</head><body><p>" + webViewData + "</p></body></html>";
                     webViewData = webViewData.replace("\n", "<br/>");
                 }
-                webViewData = String.format(webViewData, colorString);
+                webViewData = webViewData.replace("@fontcolor@", colorString);
                 subscriber.onSuccess(webViewData);
             } catch (IOException e) {
                 Log.e(TAG, Log.getStackTraceString(e));
