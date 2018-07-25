@@ -964,7 +964,10 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
-    void playExternalMedia(String path, MediaType type) {
+    void playExternalMedia(Intent intent, MediaType type) {
+        if (intent == null || intent.getData() == null) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= 23
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -978,8 +981,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             return;
         }
 
-        Log.d(TAG, "Received VIEW intent: " + path);
-        ExternalMedia media = new ExternalMedia(path, type);
+        Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
+        ExternalMedia media = new ExternalMedia(intent.getData().getPath(), type);
 
         new PlaybackServiceStarter(this, media)
                 .startWhenPrepared(true)

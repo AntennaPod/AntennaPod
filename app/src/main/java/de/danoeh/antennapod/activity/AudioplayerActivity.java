@@ -26,12 +26,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
     protected void onResume() {
         super.onResume();
         if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
-            Intent intent = getIntent();
-            if (intent.getData() == null) {
-                return;
-            }
-            playExternalMedia(intent.getData().getPath(), MediaType.AUDIO);
-
+            playExternalMedia(getIntent(), MediaType.AUDIO);
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (intent.getComponent() != null &&
