@@ -66,4 +66,15 @@ public class AddFeedFragment extends Fragment {
 
         return root;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+        // So, we certainly *don't* have an options menu,
+        // but unless we say we do, old options menus sometimes
+        // persist.  mfietz thinks this causes the ActionBar to be invalidated
+        setHasOptionsMenu(true);
+    }
 }
