@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.WindowCompat;
 import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
@@ -28,9 +29,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.view.AspectRatioVideoView;
 
 import java.lang.ref.WeakReference;
@@ -77,18 +76,8 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent().getAction() != null
-                && getIntent().getAction().equals(Intent.ACTION_VIEW)) {
-            Intent intent = getIntent();
-            Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
-            ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
-                    MediaType.VIDEO);
-
-            new PlaybackServiceStarter(this, media)
-                    .startWhenPrepared(true)
-                    .shouldStream(false)
-                    .prepareImmediately(true)
-                    .start();
+        if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
+            playExternalMedia(getIntent(), MediaType.VIDEO);
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {

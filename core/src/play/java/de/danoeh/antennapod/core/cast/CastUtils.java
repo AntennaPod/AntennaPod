@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.cast;
 
+import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -73,19 +74,19 @@ public class CastUtils {
      * Before using this method, one should make sure {@link #isCastable(Playable)} returns
      * {@code true}.
      *
-     * Unless media.{@link FeedMedia#loadMetadata() loadMetadata()} has already been called,
+     * Unless media.{@link Playable#loadMetadata(android.content.Context) loadMetadata()} has already been called,
      * this method should not run on the main thread.
      *
      * @param media The {@link FeedMedia} object to be converted.
      * @return {@link MediaInfo} object in a format proper for casting.
      */
-    public static MediaInfo convertFromFeedMedia(FeedMedia media){
+    public static MediaInfo convertFromFeedMedia(Context context, FeedMedia media){
         if(media == null) {
             return null;
         }
         MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
         try{
-            media.loadMetadata();
+            media.loadMetadata(context);
         } catch (Playable.PlayableException e) {
             Log.e(TAG, "Unable to load FeedMedia metadata", e);
         }
@@ -167,7 +168,7 @@ public class CastUtils {
      *              {@link FeedMedia} instance that matches {@param media}.
      * @return {@link Playable} object in a format proper for casting.
      */
-    public static Playable getPlayable(MediaInfo media, boolean searchFeedMedia) {
+    public static Playable getPlayable(Context context, MediaInfo media, boolean searchFeedMedia) {
         Log.d(TAG, "getPlayable called with searchFeedMedia=" + searchFeedMedia);
         if (media == null) {
             Log.d(TAG, "MediaInfo object provided is null, not converting to any Playable instance");
@@ -188,7 +189,7 @@ public class CastUtils {
                 FeedMedia fMedia = DBReader.getFeedMedia(mediaId);
                 if (fMedia != null) {
                     try {
-                        fMedia.loadMetadata();
+                        fMedia.loadMetadata(context);
                         if (matches(media, fMedia)) {
                             result = fMedia;
                             Log.d(TAG, "FeedMedia object obtained matches the MediaInfo provided. id=" + mediaId);

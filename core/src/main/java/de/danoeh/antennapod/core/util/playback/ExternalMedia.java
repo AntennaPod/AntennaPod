@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -23,7 +24,7 @@ public class ExternalMedia implements Playable {
 	public static final String PREF_MEDIA_TYPE = "ExternalMedia.PrefMediaType";
 	public static final String PREF_LAST_PLAYED_TIME = "ExternalMedia.PrefLastPlayedTime";
 
-	private final String source;
+	private final Uri source;
 
 	private String episodeTitle;
 	private String feedTitle;
@@ -33,17 +34,25 @@ public class ExternalMedia implements Playable {
 	private int position;
 	private long lastPlayedTime;
 
-	public ExternalMedia(String source, MediaType mediaType) {
+	public ExternalMedia(Uri source, MediaType mediaType) {
 		super();
 		this.source = source;
 		this.mediaType = mediaType;
 	}
 
-	public ExternalMedia(String source, MediaType mediaType, int position, long lastPlayedTime) {
+	public ExternalMedia(String source, MediaType mediaType) {
+		this(Uri.parse(source), mediaType);
+	}
+
+	public ExternalMedia(Uri source, MediaType mediaType, int position, long lastPlayedTime) {
 		this(source, mediaType);
 		this.position = position;
 		this.lastPlayedTime = lastPlayedTime;
 	}
+
+    public ExternalMedia(String source, MediaType mediaType, int position, long lastPlayedTime) {
+	    this(Uri.parse(source), mediaType, position, lastPlayedTime);
+    }
 
 	@Override
 	public int describeContents() {
@@ -52,7 +61,7 @@ public class ExternalMedia implements Playable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(source);
+		dest.writeString(source.toString());
 		dest.writeString(mediaType.toString());
 		dest.writeInt(position);
 		dest.writeLong(lastPlayedTime);
@@ -60,17 +69,21 @@ public class ExternalMedia implements Playable {
 
 	@Override
 	public void writeToPreferences(Editor prefEditor) {
-		prefEditor.putString(PREF_SOURCE_URL, source);
+		prefEditor.putString(PREF_SOURCE_URL, source.toString());
 		prefEditor.putString(PREF_MEDIA_TYPE, mediaType.toString());
 		prefEditor.putInt(PREF_POSITION, position);
 		prefEditor.putLong(PREF_LAST_PLAYED_TIME, lastPlayedTime);
 	}
 
 	@Override
-	public void loadMetadata() throws PlayableException {
+	public void loadMetadata(Context context) throws PlayableException {
 		MediaMetadataRetriever mmr = new MediaMetadataRetriever();
 		try {
-			mmr.setDataSource(source);
+		    if (source.getScheme().equals("content")) {
+                mmr.setDataSource(context, source);
+            } else {
+                mmr.setDataSource(source.getPath());
+            }
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			throw new PlayableException(
@@ -157,7 +170,7 @@ public class ExternalMedia implements Playable {
 
 	@Override
 	public String getLocalMediaUrl() {
-		return source;
+		return source.toString();
 	}
 
 	@Override
@@ -227,7 +240,8 @@ public class ExternalMedia implements Playable {
 
 	public static final Parcelable.Creator<ExternalMedia> CREATOR = new Parcelable.Creator<ExternalMedia>() {
 		public ExternalMedia createFromParcel(Parcel in) {
-			String source = in.readString();
+			String sourceString = in.readString();
+			Uri source = Uri.parse(sourceString);
 			MediaType type = MediaType.valueOf(in.readString());
 			int position = 0;
 			if (in.dataAvail() > 0) {
@@ -254,4 +268,8 @@ public class ExternalMedia implements Playable {
             return null;
         }
     }
+
+	public Uri getUri() {
+    	return source;
+	}
 }

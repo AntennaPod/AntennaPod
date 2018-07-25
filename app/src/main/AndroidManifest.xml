@@ -84,6 +84,15 @@
                 <data android:scheme="file"/>
                 <data android:mimeType="audio/*"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="content"/>
+                <data android:mimeType="audio/*"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.CastplayerActivity"
@@ -245,6 +254,15 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data android:scheme="file"/>
+                <data android:mimeType="video/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="content"/>
                 <data android:mimeType="video/*"/>
             </intent-filter>
         </activity>
