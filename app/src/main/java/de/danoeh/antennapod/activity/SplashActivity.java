@@ -4,20 +4,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 /**
- * Creator: vbarad
- * Date: 2016-12-03
- * Project: AntennaPod
+ * Shows the AntennaPod logo while waiting for the main activity to start
  */
-
 public class SplashActivity extends AppCompatActivity {
-  @Override
-  protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    Intent intent = new Intent(this, MainActivity.class);
-    startActivity(intent);
-    finish();
-  }
+        new Thread(() -> {
+            // Trigger schema updates
+            PodDBAdapter.getInstance().open();
+            PodDBAdapter.getInstance().close();
+
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }).start();
+    }
 }
