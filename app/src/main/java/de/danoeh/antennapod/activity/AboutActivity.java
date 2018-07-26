@@ -73,9 +73,12 @@ public class AboutActivity extends AppCompatActivity {
             InputStream input = null;
             try {
                 TypedArray res = AboutActivity.this.getTheme().obtainStyledAttributes(
-                        new int[] { android.R.attr.textColorPrimary });
-                int colorResource = res.getColor(0, 0);
-                String colorString = String.format("#%06X", 0xFFFFFF & colorResource);
+                        new int[] { R.attr.about_screen_font_color, R.attr.about_screen_background,
+                        R.attr.about_screen_card_background, R.attr.about_screen_card_border});
+                String fontColor = String.format("#%06X", 0xFFFFFF & res.getColor(0, 0));
+                String backgroundColor = String.format("#%06X", 0xFFFFFF & res.getColor(1, 0));
+                String cardBackground = String.format("#%06X", 0xFFFFFF & res.getColor(2, 0));
+                String cardBorder = String.format("#%06X", 0xFFFFFF & res.getColor(3, 0));
                 res.recycle();
                 input = getAssets().open(filename);
                 String webViewData = IOUtils.toString(input, Charset.defaultCharset());
@@ -92,7 +95,7 @@ public class AboutActivity extends AppCompatActivity {
                             "           src: url('file:///android_asset/Roboto-Light.ttf');" +
                             "        }" +
                             "        * {" +
-                            "           color: %s;" +
+                            "           color: @fontcolor@;" +
                             "           font-family: roboto-Light;" +
                             "           font-size: 8pt;" +
                             "        }" +
@@ -100,7 +103,10 @@ public class AboutActivity extends AppCompatActivity {
                             "</head><body><p>" + webViewData + "</p></body></html>";
                     webViewData = webViewData.replace("\n", "<br/>");
                 }
-                webViewData = String.format(webViewData, colorString);
+                webViewData = webViewData.replace("@fontcolor@", fontColor);
+                webViewData = webViewData.replace("@background@", backgroundColor);
+                webViewData = webViewData.replace("@card_background@", cardBackground);
+                webViewData = webViewData.replace("@card_border@", cardBorder);
                 subscriber.onSuccess(webViewData);
             } catch (IOException e) {
                 Log.e(TAG, Log.getStackTraceString(e));

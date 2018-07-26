@@ -69,6 +69,11 @@
         <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
         <item type="attr" name="currently_playing_background">@color/highlight_light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+
+        <item type="attr" name="about_screen_background">#e5e5e5</item>
+        <item type="attr" name="about_screen_card_background">#ffffff</item>
+        <item type="attr" name="about_screen_card_border">#d2d2d2</item>
+        <item type="attr" name="about_screen_font_color">#000000</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -139,6 +144,11 @@
         <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
         <item type="attr" name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+
+        <item type="attr" name="about_screen_background">#303030</item>
+        <item type="attr" name="about_screen_card_background">#424242</item>
+        <item type="attr" name="about_screen_card_border">#262626</item>
+        <item type="attr" name="about_screen_font_color">#ffffff</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
@@ -231,6 +241,11 @@
         <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
         <item type="attr" name="currently_playing_background">@color/highlight_light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+
+        <item type="attr" name="about_screen_background">#e5e5e5</item>
+        <item type="attr" name="about_screen_card_background">#ffffff</item>
+        <item type="attr" name="about_screen_card_border">#d2d2d2</item>
+        <item type="attr" name="about_screen_font_color">#000000</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.Base.AntennaPod.Dark.NoTitle">
@@ -302,6 +317,11 @@
         <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
         <item type="attr" name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+
+        <item type="attr" name="about_screen_background">#303030</item>
+        <item type="attr" name="about_screen_card_background">#424242</item>
+        <item type="attr" name="about_screen_card_border">#262626</item>
+        <item type="attr" name="about_screen_font_color">#ffffff</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.TrueBlack.NoTitle">
