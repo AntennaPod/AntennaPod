@@ -127,8 +127,8 @@ public class ExternalPlayerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        controller.init();
         onPositionObserverUpdate();
+        new Thread(() -> controller.init()).start();
     }
 
     @Override
@@ -173,7 +173,14 @@ public class ExternalPlayerFragment extends Fragment {
             return false;
         }
 
-        Playable media = controller.getMedia();
+        new Thread(() -> {
+            Playable media = controller.getMedia();
+            getActivity().runOnUiThread(() -> updateUi(media));
+        }).start();
+        return true;
+    }
+
+    private void updateUi(Playable media) {
         if (media != null) {
             txtvTitle.setText(media.getEpisodeTitle());
             mFeedName.setText(media.getFeedTitle());
@@ -194,10 +201,8 @@ public class ExternalPlayerFragment extends Fragment {
             } else {
                 butPlay.setVisibility(View.VISIBLE);
             }
-            return true;
         } else {
             Log.w(TAG,  "loadMediaInfo was called while the media object of playbackService was null!");
-            return false;
         }
     }
 
