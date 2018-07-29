@@ -8,12 +8,6 @@
                 android:key="prefAutoUpdateIntervall"
                 android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
                 android:title="@string/pref_autoUpdateIntervallOrTime_title"/>
-        <SwitchPreference
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefMobileUpdate"
-                android:summary="@string/pref_mobileUpdate_sum"
-                android:title="@string/pref_mobileUpdate_title"/>
         <Preference
                 android:summary="@string/pref_automatic_download_sum"
                 android:key="prefAutoDownloadSettings"
@@ -28,6 +22,12 @@
                 android:key="prefParallelDownloads"
                 android:title="@string/pref_parallel_downloads_title"
                 app:useStockLayout="true"/>
+        <SwitchPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefMobileUpdate"
+                android:summary="@string/pref_mobileUpdate_sum"
+                android:title="@string/pref_mobileUpdate_title"/>
         <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
