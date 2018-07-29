@@ -122,14 +122,14 @@
     <string name="mark_all_read_label">Mark all as played</string>
     <string name="mark_all_read_msg">Marked all Episodes as played</string>
     <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
-    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being played.</string>
+    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this podcast as being played.</string>
     <string name="mark_all_seen_label">Mark all as seen</string>
     <string name="mark_all_seen_msg">Marked all Episodes as seen</string>
     <string name="mark_all_seen_confirmation_msg">Please confirm that you want to mark all episodes as seen.</string>
     <string name="show_info_label">Show information</string>
-    <string name="show_feed_settings_label">Show feed settings</string>
-    <string name="feed_info_label">Feed info</string>
-    <string name="feed_settings_label">Feed settings</string>
+    <string name="show_feed_settings_label">Show podcast settings</string>
+    <string name="feed_info_label">Podcast info</string>
+    <string name="feed_settings_label">Podcast settings</string>
     <string name="rename_feed_label">Rename Podcast</string>
     <string name="remove_feed_label">Remove Podcast</string>
     <string name="share_label">Share&#8230;</string>
@@ -139,9 +139,9 @@
     <string name="share_feed_url_label">Share Feed URL</string>
     <string name="share_item_url_label">Share Media File URL</string>
     <string name="share_item_url_with_position_label">Share Media File URL with Position</string>
-    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the feed \"%1$s\" and ALL episodes of this feed that you have downloaded.</string>
-    <string name="feed_remover_msg">Removing Feed</string>
-    <string name="load_complete_feed">Refresh complete Feed</string>
+    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the Podcast \"%1$s\" and ALL episodes of this feed that you have downloaded.</string>
+    <string name="feed_remover_msg">Removing Podcast</string>
+    <string name="load_complete_feed">Refresh complete Podcast</string>
     <string name="hide_episodes_title">Hide Episodes</string>
     <string name="batch_edit">Batch edit</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
@@ -262,7 +262,7 @@
     <string name="date">Date</string>
     <string name="duration">Duration</string>
     <string name="episode_title">Episode title</string>
-    <string name="feed_title">Feed title</string>
+    <string name="feed_title">Podcast title</string>
     <string name="random">Random</string>
     <string name="smart_shuffle">Smart Shuffle</string>
     <string name="ascending">Ascending</string>
@@ -306,7 +306,7 @@
 
     <!-- Empty list labels -->
     <string name="no_items_label">There are no items in this list.</string>
-    <string name="no_feeds_label">You haven\'t subscribed to any feeds yet.</string>
+    <string name="no_feeds_label">You haven\'t subscribed to any podcasts yet.</string>
     <string name="no_chapters_label">This episode has no chapters.</string>
     <string name="no_shownotes_label">This episode has no shownotes.</string>
 
@@ -465,7 +465,7 @@
     <string name="pref_videoBehavior_title">Upon exiting video</string>
     <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
     <string name="stop_playback">Stop playback</string>
-    <string name="continue_playback">Continue playback</string>
+    <string name="continue_playback">Continue audio playback</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -478,7 +478,7 @@
     <string name="found_in_shownotes_label">Found in show notes</string>
     <string name="found_in_chapters_label">Found in chapters</string>
     <string name="found_in_authors_label">Found in authors</string>
-    <string name="found_in_feeds_label">Found in feeds</string>
+    <string name="found_in_feeds_label">Found in podcasts</string>
     <string name="search_status_no_results">No results were found</string>
     <string name="search_label">Search</string>
     <string name="found_in_title_label">Found in title</string>
