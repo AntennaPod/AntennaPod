@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -9,9 +10,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ProgressBar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import org.apache.commons.io.IOUtils;
+import rx.Completable;
+import rx.Single;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  * Shows the AntennaPod logo while waiting for the main activity to start
@@ -31,14 +42,18 @@ public class SplashActivity extends AppCompatActivity {
             progressBar.getIndeterminateDrawable().setColorFilter(0xffffffff, PorterDuff.Mode.SRC_IN);
         }
 
-        new Thread(() -> {
+        Completable.create(subscriber -> {
             // Trigger schema updates
             PodDBAdapter.getInstance().open();
             PodDBAdapter.getInstance().close();
-
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }).start();
+            subscriber.onCompleted();
+        })
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(() -> {
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            });
     }
 }
