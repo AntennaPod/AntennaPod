@@ -23,6 +23,8 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import rx.Completable;
+import rx.Observable;
 import rx.Single;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -131,7 +133,13 @@ public class ExternalPlayerFragment extends Fragment {
     public void onResume() {
         super.onResume();
         onPositionObserverUpdate();
-        new Thread(() -> controller.init()).start();
+
+        Completable.create(subscriber -> {
+            controller.init();
+            subscriber.onCompleted();
+        })
+            .subscribeOn(Schedulers.newThread())
+            .subscribe(() -> {});
     }
 
     @Override
