@@ -16,18 +16,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">
-        <EditTextPreference
-                android:defaultValue="4"
-                android:inputType="number"
-                android:key="prefParallelDownloads"
-                android:title="@string/pref_parallel_downloads_title"
-                app:useStockLayout="true"/>
         <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefMobileUpdate"
                 android:summary="@string/pref_mobileUpdate_sum"
                 android:title="@string/pref_mobileUpdate_title"/>
+        <EditTextPreference
+                android:defaultValue="4"
+                android:inputType="number"
+                android:key="prefParallelDownloads"
+                android:title="@string/pref_parallel_downloads_title"
+                app:useStockLayout="true"/>
         <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
