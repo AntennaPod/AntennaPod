@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -109,7 +110,7 @@ public class QueueFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadItems(true);
+        new Handler().post(() -> loadItems(true));
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().registerSticky(this);
     }

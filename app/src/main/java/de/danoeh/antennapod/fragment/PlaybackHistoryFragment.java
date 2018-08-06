@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
@@ -88,7 +89,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         EventBus.getDefault().registerSticky(this);
-        loadItems();
+        new Handler().post(this::loadItems);
     }
 
     @Override

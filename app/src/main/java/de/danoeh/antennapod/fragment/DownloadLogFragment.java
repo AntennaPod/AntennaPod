@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
@@ -48,7 +49,7 @@ public class DownloadLogFragment extends ListFragment {
         super.onStart();
         setHasOptionsMenu(true);
         EventDistributor.getInstance().register(contentUpdate);
-        loadItems();
+        new Handler().post(this::loadItems);
     }
 
     @Override

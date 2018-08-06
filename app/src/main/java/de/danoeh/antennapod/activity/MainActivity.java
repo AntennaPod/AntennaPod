@@ -479,7 +479,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                         (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG)))) {
             handleNavIntent();
         }
-        loadData();
+        new Handler().post(this::loadData);
         RatingDialog.check();
     }
 

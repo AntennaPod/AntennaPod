@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -107,7 +108,7 @@ public class AllEpisodesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         EventBus.getDefault().registerSticky(this);
-        loadItems();
+        new Handler().post(this::loadItems);
         registerForContextMenu(recyclerView);
     }
 

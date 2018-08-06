@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -157,7 +158,7 @@ public class ItemlistFragment extends ListFragment {
         EventBus.getDefault().registerSticky(this);
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
         updateProgressBarVisibility();
-        loadItems();
+        new Handler().post(this::loadItems);
     }
 
     @Override
