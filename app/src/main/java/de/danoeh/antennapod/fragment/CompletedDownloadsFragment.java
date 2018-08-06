@@ -55,7 +55,9 @@ public class CompletedDownloadsFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        new Handler().post(this::loadItems);
+
+        // See https://github.com/AntennaPod/AntennaPod/issues/2793 why this is necessary
+        new Handler().postDelayed(this::loadItems, 50);
     }
 
     @Override

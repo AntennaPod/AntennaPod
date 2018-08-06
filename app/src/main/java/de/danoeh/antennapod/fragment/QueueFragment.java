@@ -110,9 +110,11 @@ public class QueueFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        new Handler().post(() -> loadItems(true));
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().registerSticky(this);
+
+        // See https://github.com/AntennaPod/AntennaPod/issues/2793 why this is necessary
+        new Handler().postDelayed(() -> loadItems(true), 50);
     }
 
     @Override

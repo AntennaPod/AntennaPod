@@ -86,7 +86,9 @@ public class ExternalPlayerFragment extends Fragment {
                 controller.playPause();
             }
         });
-        new Handler().post(this::loadMediaInfo);
+
+        // See https://github.com/AntennaPod/AntennaPod/issues/2793 why this is necessary
+        new Handler().postDelayed(this::loadMediaInfo, 50);
     }
 
     public void connectToPlaybackService() {

@@ -49,7 +49,9 @@ public class DownloadLogFragment extends ListFragment {
         super.onStart();
         setHasOptionsMenu(true);
         EventDistributor.getInstance().register(contentUpdate);
-        new Handler().post(this::loadItems);
+
+        // See https://github.com/AntennaPod/AntennaPod/issues/2793 why this is necessary
+        new Handler().postDelayed(this::loadItems, 50);
     }
 
     @Override

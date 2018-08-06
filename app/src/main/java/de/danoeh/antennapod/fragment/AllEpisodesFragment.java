@@ -108,8 +108,10 @@ public class AllEpisodesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         EventBus.getDefault().registerSticky(this);
-        new Handler().post(this::loadItems);
         registerForContextMenu(recyclerView);
+
+        // See https://github.com/AntennaPod/AntennaPod/issues/2793 why this is necessary
+        new Handler().postDelayed(this::loadItems, 50);
     }
 
     @Override

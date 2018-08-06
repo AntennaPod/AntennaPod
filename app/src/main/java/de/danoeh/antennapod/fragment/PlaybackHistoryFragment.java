@@ -89,7 +89,9 @@ public class PlaybackHistoryFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         EventBus.getDefault().registerSticky(this);
-        new Handler().post(this::loadItems);
+
+        // See https://github.com/AntennaPod/AntennaPod/issues/2793 why this is necessary
+        new Handler().postDelayed(this::loadItems, 50);
     }
 
     @Override

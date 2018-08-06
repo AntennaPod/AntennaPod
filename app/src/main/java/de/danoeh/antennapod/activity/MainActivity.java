@@ -479,8 +479,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                         (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG)))) {
             handleNavIntent();
         }
-        new Handler().post(this::loadData);
         RatingDialog.check();
+
+        // See https://github.com/AntennaPod/AntennaPod/issues/2793 why this is necessary
+        new Handler().postDelayed(this::loadData, 50);
     }
 
     @Override

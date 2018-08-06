@@ -158,7 +158,9 @@ public class ItemlistFragment extends ListFragment {
         EventBus.getDefault().registerSticky(this);
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
         updateProgressBarVisibility();
-        new Handler().post(this::loadItems);
+
+        // See https://github.com/AntennaPod/AntennaPod/issues/2793 why this is necessary
+        new Handler().postDelayed(this::loadItems, 50);
     }
 
     @Override
