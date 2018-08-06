@@ -263,6 +263,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Service created.");
         isRunning = true;
 
+        NotificationCompat.Builder notificationBuilder = createBasicNotification();
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
+
         registerReceiver(autoStateUpdated, new IntentFilter("com.google.android.gms.car.media.STATUS"));
         registerReceiver(headsetDisconnected, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(ACTION_SHUTDOWN_PLAYBACK_SERVICE));
@@ -311,11 +314,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         flavorHelper.initializeMediaPlayer(PlaybackService.this);
-
         mediaSession.setActive(true);
 
-        NotificationCompat.Builder notificationBuilder = createBasicNotification();
-        startForeground(NOTIFICATION_ID, notificationBuilder.build());
         EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_STARTED));
     }
 

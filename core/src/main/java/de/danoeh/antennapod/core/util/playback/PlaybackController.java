@@ -42,9 +42,12 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
+import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.observers.Subscribers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -780,18 +783,24 @@ public abstract class PlaybackController {
     }
 
     private void initServiceNotRunning() {
-        if (getMedia() == null) {
-            return;
-        }
-        if (getMedia().getMediaType() == MediaType.AUDIO) {
-            TypedArray res = activity.obtainStyledAttributes(new int[]{
-                    de.danoeh.antennapod.core.R.attr.av_play_big});
-            getPlayButton().setImageResource(
-                    res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_play_arrow_grey600_36dp));
-            res.recycle();
-        } else {
-            getPlayButton().setImageResource(R.drawable.ic_av_play_circle_outline_80dp);
-        }
+        Single.create(subscriber -> subscriber.onSuccess(getMedia()))
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe((Object media) -> {
+                if (media == null) {
+                    return;
+                }
+
+                if (((Playable) media).getMediaType() == MediaType.AUDIO) {
+                    TypedArray res = activity.obtainStyledAttributes(new int[]{
+                            de.danoeh.antennapod.core.R.attr.av_play_big});
+                    getPlayButton().setImageResource(
+                            res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_play_arrow_grey600_36dp));
+                    res.recycle();
+                } else {
+                    getPlayButton().setImageResource(R.drawable.ic_av_play_circle_outline_80dp);
+                }
+            });
     }
 
     /**

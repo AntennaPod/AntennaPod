@@ -23,6 +23,9 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import rx.Single;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
@@ -127,8 +130,9 @@ public class ExternalPlayerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        controller.init();
         onPositionObserverUpdate();
+
+        controller.init();
     }
 
     @Override
@@ -173,7 +177,14 @@ public class ExternalPlayerFragment extends Fragment {
             return false;
         }
 
-        Playable media = controller.getMedia();
+        Single.create(subscriber -> subscriber.onSuccess(controller.getMedia()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> updateUi((Playable) media));
+        return true;
+    }
+
+    private void updateUi(Playable media) {
         if (media != null) {
             txtvTitle.setText(media.getEpisodeTitle());
             mFeedName.setText(media.getFeedTitle());
@@ -194,10 +205,8 @@ public class ExternalPlayerFragment extends Fragment {
             } else {
                 butPlay.setVisibility(View.VISIBLE);
             }
-            return true;
         } else {
             Log.w(TAG,  "loadMediaInfo was called while the media object of playbackService was null!");
-            return false;
         }
     }
 
