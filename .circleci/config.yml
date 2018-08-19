@@ -61,16 +61,3 @@ jobs:
             - ~/.gradle
             - ~/android
           key: v1-android-{{ checksum "build.gradle" }}
-
-workflows:
-   version: 2
-   nightly:
-     triggers:
-       - schedule:
-           cron: "0 * * * *"
-           filters:
-             branches:
-               only:
-                 - develop
-     jobs:
-       - nightly
