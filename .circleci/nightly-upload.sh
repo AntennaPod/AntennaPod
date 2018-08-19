@@ -9,7 +9,7 @@ shortrev=${rev:0:8}
 date=`date +%Y-%m-%d-%H-%M-%S`
 nightlyFolder="/AntennaPodNightlies"
 filename="$nightlyFolder/nightly-$date-$shortrev.apk"
-localFilename="../app/build/outputs/apk/play/debug/app-play-debug.apk"
+localFilename="./app/build/outputs/apk/play/debug/app-play-debug.apk"
 filesToKeep="6" # This needs to be one more than the number of files to actually keep
 
 echo "Uploading apk to Dropbox..."
