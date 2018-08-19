@@ -63,15 +63,15 @@ jobs:
           key: v1-android-{{ checksum "build.gradle" }}
 
 workflows:
-   version: 2
-   nightly:
-     triggers:
-       - schedule:
-           cron: "0 0 * * *"
-           filters:
-             branches:
-               only:
-                 - master
-                 - beta
-     jobs:
-       - build
+  version: 2
+  nightlyA:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+                - beta
+    jobs:
+      - build
