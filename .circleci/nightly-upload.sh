@@ -2,7 +2,7 @@
 
 # The token you get here seems to work just fine:
 # https://dropbox.github.io/dropbox-api-v2-explorer/#files_list_folder
-accessToken=""
+accessToken="$DROPBOX_TOKEN"
 
 rev=`git rev-parse HEAD`
 shortrev=${rev:0:8}

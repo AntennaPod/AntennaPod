@@ -67,10 +67,10 @@ workflows:
    commit:
      jobs:
        - build
-   nightlyA:
+   nightly:
      triggers:
        - schedule:
-           cron: "30 * * * *"
+           cron: "33 * * * *"
            filters:
              branches:
                only:
