@@ -64,6 +64,9 @@ jobs:
 
 workflows:
    version: 2
+   commit:
+     jobs:
+       - build
    nightlyA:
      triggers:
        - schedule:
