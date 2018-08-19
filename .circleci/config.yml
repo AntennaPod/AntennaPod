@@ -70,11 +70,11 @@ workflows:
    nightlyA:
      triggers:
        - schedule:
-           cron: "0 0 * * *"
+           cron: "35 * * * *"
            filters:
              branches:
                only:
                  - develop
-                 - master
+                 - circleci-nightly
      jobs:
-       - build
+       - nightly
