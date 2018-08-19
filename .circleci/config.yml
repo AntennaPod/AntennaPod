@@ -71,7 +71,7 @@ workflows:
           filters:
             branches:
               only:
+                - develop
                 - master
-                - beta
     jobs:
       - build
