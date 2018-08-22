@@ -61,6 +61,8 @@ project.ext {
     rxJavaVersion = "1.3.8"
     rxJavaRulesVersion = "1.3.3.0"
     triangleLabelViewVersion = "1.1.2"
+    mockitoVersion = "2.21.0"
+    hamcrestVersion = "1.3"
 
     exoPlayerVersion = "2.7.3"
     audioPlayerVersion = "v1.0.17"

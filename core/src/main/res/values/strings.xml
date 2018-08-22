@@ -109,6 +109,7 @@
         <item quantity="one">1 day after finishing</item>
         <item quantity="other">%d days after finishing</item>
     </plurals>
+    <string name="episode_cleanup_keep_5_latest">Keep 5 latest</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>

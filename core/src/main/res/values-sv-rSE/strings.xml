@@ -645,4 +645,5 @@
   <string name="cast_failed_seek">Misslyckades att söka till den nya positionen på cast-enheten</string>
   <string name="cast_failed_receiver_player_error">Mottagande uppspelaren har stött på ett allvarligt fel</string>
   <string name="cast_failed_media_error_skipping">Fel vid uppspelning av media. Hoppar över...</string>
+  <string name="episode_cleanup_keep_5_latest">Behåll 5 senaste</string>
 </resources>

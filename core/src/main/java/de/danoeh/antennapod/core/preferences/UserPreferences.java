@@ -13,7 +13,11 @@ import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APKeepNNewestCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APDownloadAlgorithm;
+import de.danoeh.antennapod.core.storage.APKeepNNewestDownloadAlgorithm;
+import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import org.json.JSONArray;
@@ -110,9 +114,10 @@ public class UserPreferences {
     // Experimental
     private static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
     public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
+    public static final int EPISODE_CLEANUP_DEFAULT = 0;
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
-    public static final int EPISODE_CLEANUP_DEFAULT = 0;
+    public static final int EPISODE_CLEANUP_KEEP_5_LATEST = -5;
 
     // Constants
     private static final int NOTIFICATION_BUTTON_REWIND = 0;
@@ -668,13 +673,27 @@ public class UserPreferences {
         }
     }
 
+    public static AutomaticDownloadAlgorithm getAutomaticDownloadAlgorithm() {
+        int cleanupValue = Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+        switch (cleanupValue) {
+        case EPISODE_CLEANUP_KEEP_5_LATEST:
+            return new APKeepNNewestDownloadAlgorithm(5);
+        default:
+            return new APDownloadAlgorithm();
+        }
+    }
+
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
         int cleanupValue = Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
-        if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
+
+        switch (cleanupValue) {
+        case EPISODE_CLEANUP_QUEUE:
             return new APQueueCleanupAlgorithm();
-        } else if (cleanupValue == EPISODE_CLEANUP_NULL) {
+        case EPISODE_CLEANUP_NULL:
             return new APNullCleanupAlgorithm();
-        } else {
+        case EPISODE_CLEANUP_KEEP_5_LATEST:
+            return new APKeepNNewestCleanupAlgorithm(5);
+        default:
             return new APCleanupAlgorithm(cleanupValue);
         }
     }

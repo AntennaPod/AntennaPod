@@ -825,6 +825,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 entries[x] = res.getString(R.string.episode_cleanup_queue_removal);
             } else if (v == UserPreferences.EPISODE_CLEANUP_NULL){
                 entries[x] = res.getString(R.string.episode_cleanup_never);
+            } else if (v == UserPreferences.EPISODE_CLEANUP_KEEP_5_LATEST) {
+                entries[x] = res.getString(R.string.episode_cleanup_keep_5_latest);
             } else if (v == 0) {
                 entries[x] = res.getString(R.string.episode_cleanup_after_listening);
             } else {

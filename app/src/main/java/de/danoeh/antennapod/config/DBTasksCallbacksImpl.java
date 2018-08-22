@@ -10,7 +10,7 @@ public class DBTasksCallbacksImpl implements DBTasksCallbacks {
 
     @Override
     public AutomaticDownloadAlgorithm getAutomaticDownloadAlgorithm() {
-        return new APDownloadAlgorithm();
+        return UserPreferences.getAutomaticDownloadAlgorithm();
     }
 
     @Override
