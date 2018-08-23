@@ -59,7 +59,6 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
                 .clear()
                 .putBoolean(UserPreferences.PREF_UNPAUSE_ON_HEADSET_RECONNECT, false)
                 .putBoolean(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT, false)
-                .putBoolean(UserPreferences.PREF_SONIC, true)
                 .commit();
 
         solo = new Solo(getInstrumentation(), getActivity());
