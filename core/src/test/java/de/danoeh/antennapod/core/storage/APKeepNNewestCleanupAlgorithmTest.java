@@ -6,6 +6,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,7 @@ import static org.mockito.BDDMockito.never;
 import static org.mockito.BDDMockito.spy;
 import static org.mockito.BDDMockito.times;
 import static org.mockito.BDDMockito.verify;
+import static org.mockito.Mockito.inOrder;
 
 
 public class APKeepNNewestCleanupAlgorithmTest {
@@ -221,11 +223,77 @@ public class APKeepNNewestCleanupAlgorithmTest {
         verify(algorithm, times(1)).deleteFeedMediaOfItem(any(), anyLong());
     }
 
-    /*
-      Tests to add:
-      Manually downloaded items should not be immediately deleted again
-Episode cache should be respected?
-     */
+    @Test
+    public void cleansInSmartOrder() {
+        final int feedCount = 3;
+        final int itemCount = keepCount + 10;
+        given()
+                .feeds(feedCount)
+                .itemsPerFeed(itemCount, (feed, item) -> {
+                    long uniqueId = 1000 * feed.getId() + item.getId();
+                    FeedMedia media = item.getMedia();
+                    doReturn(uniqueId).when(media).getId();
+                })
+                .then();
+
+        int reclaimable = algorithm.getReclaimableItems();
+
+        assertThat(reclaimable, is(equalTo(30)));
+
+        final int toDelete = 6;
+        assertThat(algorithm.performCleanup(mock(Context.class), toDelete), is(equalTo(toDelete)));
+
+        InOrder inOrder = inOrder(algorithm);
+
+        // Last is oldest
+        for (long i = itemCount - 1; i > itemCount - 3; i--) {
+            for (long feedId = feedCount - 1; feedId >= 0; feedId--) {
+                long mediaId = 1000 * feedId + i;
+                inOrder.verify(algorithm).deleteFeedMediaOfItem(any(), eq(mediaId));
+            }
+        }
+    }
+
+    @Test
+    public void cleansClumpInSmartOrderFirst() {
+        final int feedCount = 3;
+        final int itemCount = keepCount + 10;
+        given()
+                .feeds(feedCount)
+                .itemsPerFeed(itemCount)
+                .then();
+
+        // And also a clump of additional older items in one of the feeds
+        List<FeedItem> firstItems = algorithm.getFeedItemList(algorithm.getFeedList().get(0));
+        for (long i = 5000; i < 5004; i++) {
+            FeedMedia media = mock(FeedMedia.class);
+            doReturn(i).when(media).getId();
+            doReturn(true).when(media).isDownloaded();
+
+            Date date = new Date(i);
+
+            FeedItem item = mock(FeedItem.class);
+
+            doReturn(i).when(item).getId();
+            doReturn(media).when(item).getMedia();
+            doReturn(true).when(item).isAutoDownloadable();
+            doReturn(date).when(item).getPubDate();
+
+            firstItems.add(item);
+        }
+
+        int reclaimable = algorithm.getReclaimableItems();
+
+        assertThat(reclaimable, is(equalTo(34)));
+
+        assertThat(algorithm.performCleanup(mock(Context.class), 4), is(equalTo(4)));
+
+        InOrder inOrder = inOrder(algorithm);
+
+        for (long i = 5000; i < 5004; i++) {
+            inOrder.verify(algorithm).deleteFeedMediaOfItem(any(), eq(i));
+        }
+    }
 
     SetupBuilder given() {
         return new SetupBuilder();

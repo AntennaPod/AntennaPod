@@ -14,6 +14,7 @@ import java.util.concurrent.Future;
 
 import static de.danoeh.antennapod.core.feed.FeedItem.TAG_FAVORITE;
 import static de.danoeh.antennapod.core.storage.APKeepNNewestDownloadAlgorithm.feedItemComparator;
+import static de.danoeh.antennapod.core.util.QueueSorter.smartShuffle;
 
 /**
  * A cleanup algorithm that keeps the N newest episodes for each feed.
@@ -77,17 +78,25 @@ public class APKeepNNewestCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         for (Feed feed : getFeedList()) {
             List<FeedItem> items = getFeedItemList(feed);
             Collections.sort(items, feedItemComparator);
+            candidates.addAll(items.subList(Math.min(keepCount, items.size()), items.size()));
+        }
 
-            for (FeedItem item: items.subList(Math.min(keepCount, items.size()), items.size())) {
-                if (item.isTagged((TAG_FAVORITE))
-                        || item.getMedia() == null
-                        || !item.getMedia().isDownloaded()
-                        || item.getMedia().isPlaying()) {
-                    continue;
-                }
-                candidates.add(item);
+        smartShuffle(candidates, false);
+
+        int i = 0;
+        while (i < candidates.size()) {
+            FeedItem item = candidates.get(i);
+            if (item.isTagged((TAG_FAVORITE))
+                    || item.getMedia() == null
+                    || !item.getMedia().isDownloaded()
+                    || item.getMedia().isPlaying()) {
+                candidates.remove(item);
+            } else {
+                i++;
             }
         }
+
+        Collections.reverse(candidates);
 
         return candidates;
     }

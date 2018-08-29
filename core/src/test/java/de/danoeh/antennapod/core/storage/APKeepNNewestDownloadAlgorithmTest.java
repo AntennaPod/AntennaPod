@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -324,13 +323,6 @@ public class APKeepNNewestDownloadAlgorithmTest {
         assertThat(downloadedItems.size(), is(equalTo(feedCount * keepCount)));
     }
 
-    /*
-    Tests to add:
-
-    - Downloads everything in the Queue before the new stuff?
-
-     */
-
     SetupBuilder given() {
         return new SetupBuilder();
     }
@@ -342,7 +334,6 @@ public class APKeepNNewestDownloadAlgorithmTest {
         };
         BiConsumer<Feed, FeedItem> itemConsumer = (f, i) -> {
         };
-        ArrayList<Feed> feeds = new ArrayList<>();
 
         SetupBuilder() {
         }

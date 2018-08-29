@@ -131,7 +131,7 @@ public class QueueSorter {
      * @param ascending {@code true} to use ascending pubdate in the reordering;
      *                  {@code false} for descending.
      */
-    private static void smartShuffle(List<FeedItem> queue, boolean ascending) {
+    public static void smartShuffle(List<FeedItem> queue, boolean ascending) {
 
         // Divide FeedItems into lists by feed
 
