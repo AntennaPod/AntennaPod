@@ -70,7 +70,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="reset">Reset</string>
-    <string name="author_label">Author</string>
+    <string name="author_label">Author(s)</string>
     <string name="language_label">Language</string>
     <string name="url_label">URL</string>
     <string name="podcast_settings_label">Settings</string>
@@ -122,26 +122,26 @@
     <string name="mark_all_read_label">Mark all as played</string>
     <string name="mark_all_read_msg">Marked all Episodes as played</string>
     <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
-    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being played.</string>
+    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this podcast as being played.</string>
     <string name="mark_all_seen_label">Mark all as seen</string>
-    <string name="mark_all_seen_msg">Marked all Episodes as seen</string>
+    <string name="mark_all_seen_msg">Marked all episodes as seen</string>
     <string name="mark_all_seen_confirmation_msg">Please confirm that you want to mark all episodes as seen.</string>
     <string name="show_info_label">Show information</string>
-    <string name="show_feed_settings_label">Show feed settings</string>
-    <string name="feed_info_label">Feed info</string>
-    <string name="feed_settings_label">Feed settings</string>
-    <string name="rename_feed_label">Rename Podcast</string>
-    <string name="remove_feed_label">Remove Podcast</string>
+    <string name="show_feed_settings_label">Show podcast settings</string>
+    <string name="feed_info_label">Podcast info</string>
+    <string name="feed_settings_label">Podcast settings</string>
+    <string name="rename_feed_label">Rename podcast</string>
+    <string name="remove_feed_label">Remove podcast</string>
     <string name="share_label">Share&#8230;</string>
-    <string name="share_link_label">Share Link</string>
+    <string name="share_link_label">Share Episode URL</string>
+    <string name="share_link_with_position_label">Share Episode URL with Position</string>
     <string name="share_file_label">Share File</string>
-    <string name="share_link_with_position_label">Share Link with Position</string>
     <string name="share_feed_url_label">Share Feed URL</string>
-    <string name="share_item_url_label">Share Episode File URL</string>
-    <string name="share_item_url_with_position_label">Share Episode File URL with Position</string>
-    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the feed \"%1$s\" and ALL episodes of this feed that you have downloaded.</string>
-    <string name="feed_remover_msg">Removing Feed</string>
-    <string name="load_complete_feed">Refresh complete Feed</string>
+    <string name="share_item_url_label">Share Media File URL</string>
+    <string name="share_item_url_with_position_label">Share Media File URL with Position</string>
+    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
+    <string name="feed_remover_msg">Removing podcast</string>
+    <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="hide_episodes_title">Hide Episodes</string>
     <string name="batch_edit">Batch edit</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
@@ -262,7 +262,7 @@
     <string name="date">Date</string>
     <string name="duration">Duration</string>
     <string name="episode_title">Episode title</string>
-    <string name="feed_title">Feed title</string>
+    <string name="feed_title">Podcast title</string>
     <string name="random">Random</string>
     <string name="smart_shuffle">Smart Shuffle</string>
     <string name="ascending">Ascending</string>
@@ -306,7 +306,7 @@
 
     <!-- Empty list labels -->
     <string name="no_items_label">There are no items in this list.</string>
-    <string name="no_feeds_label">You haven\'t subscribed to any feeds yet.</string>
+    <string name="no_feeds_label">You haven\'t subscribed to any podcasts yet.</string>
     <string name="no_chapters_label">This episode has no chapters.</string>
     <string name="no_shownotes_label">This episode has no shownotes.</string>
 
@@ -325,7 +325,7 @@
     <string name="appearance">Appearance</string>
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
-    <string name="buttons">Buttons</string>
+    <string name="buttons">Playback control buttons</string>
     <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
     <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>
@@ -382,7 +382,7 @@
     <string name="pref_nav_drawer_feed_order_title">Set Subscription Order</string>
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
     <string name="pref_nav_drawer_feed_counter_title">Set Subscription Counter</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter</string>
+    <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
     <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
     <string name="pref_automatic_download_title">Automatic Download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
@@ -396,7 +396,7 @@
     <string name="pref_episode_cache_title">Episode Cache</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
-    <string name="pref_theme_title_trueblack">True Black</string>
+    <string name="pref_theme_title_trueblack">Black (AMOLED ready)</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
     <string name="pref_update_interval_hours_plural">hours</string>
     <string name="pref_update_interval_hours_singular">hour</string>
@@ -461,11 +461,11 @@
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
     <string name="media_player_builtin">Built-in Android player</string>
     <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
-    <string name="media_player_exoplayer" translatable="false">Exoplayer</string>
-    <string name="pref_videoBehavior_title">Video behavior</string>
+    <string name="media_player_exoplayer" translatable="false">ExoPlayer</string>
+    <string name="pref_videoBehavior_title">Upon exiting video</string>
     <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
     <string name="stop_playback">Stop playback</string>
-    <string name="continue_playback">Continue playback</string>
+    <string name="continue_playback">Continue audio playback</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -477,8 +477,8 @@
     <string name="search_hint">Search for episodes</string>
     <string name="found_in_shownotes_label">Found in show notes</string>
     <string name="found_in_chapters_label">Found in chapters</string>
-    <string name="found_in_authors_label">Found in authors</string>
-    <string name="found_in_feeds_label">Found in feeds</string>
+    <string name="found_in_authors_label">Found in author(s)</string>
+    <string name="found_in_feeds_label">Found in podcast</string>
     <string name="search_status_no_results">No results were found</string>
     <string name="search_label">Search</string>
     <string name="found_in_title_label">Found in title</string>

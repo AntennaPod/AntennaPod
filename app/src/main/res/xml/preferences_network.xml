@@ -8,12 +8,6 @@
                 android:key="prefAutoUpdateIntervall"
                 android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
                 android:title="@string/pref_autoUpdateIntervallOrTime_title"/>
-        <SwitchPreference
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefMobileUpdate"
-                android:summary="@string/pref_mobileUpdate_sum"
-                android:title="@string/pref_mobileUpdate_title"/>
         <Preference
                 android:summary="@string/pref_automatic_download_sum"
                 android:key="prefAutoDownloadSettings"
@@ -22,6 +16,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">
+        <SwitchPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefMobileUpdate"
+                android:summary="@string/pref_mobileUpdate_sum"
+                android:title="@string/pref_mobileUpdate_title"/>
         <EditTextPreference
                 android:defaultValue="4"
                 android:inputType="number"
