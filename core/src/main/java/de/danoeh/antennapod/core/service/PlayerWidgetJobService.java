@@ -26,13 +26,16 @@ import de.danoeh.antennapod.core.receiver.PlayerWidget;
  * Updates the state of the player widget
  */
 public class PlayerWidgetJobService extends JobIntentService {
+
     private static final String TAG = "PlayerWidgetJobService";
 
     private PlaybackService playbackService;
     private final Object waitForService = new Object();
 
+    private static final int JOB_ID = -17001;
+
     public static void updateWidget(Context context) {
-        enqueueWork(context, PlayerWidgetJobService.class, 0, new Intent(context, PlayerWidgetJobService.class));
+        enqueueWork(context, PlayerWidgetJobService.class, JOB_ID, new Intent(context, PlayerWidgetJobService.class));
     }
 
     @Override

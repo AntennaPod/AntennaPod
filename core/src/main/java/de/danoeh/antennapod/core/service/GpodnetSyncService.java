@@ -45,6 +45,7 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
  * This class also provides static methods for starting the GpodnetSyncService.
  */
 public class GpodnetSyncService extends JobIntentService {
+
     private static final String TAG = "GpodnetSyncService";
 
     private static final long WAIT_INTERVAL = 5000L;
@@ -61,8 +62,10 @@ public class GpodnetSyncService extends JobIntentService {
     private static boolean syncSubscriptions = false;
     private static boolean syncActions = false;
 
+    private static final int JOB_ID = -17000;
+
     private static void enqueueWork(Context context, Intent intent) {
-        enqueueWork(context, GpodnetSyncService.class, 0, intent);
+        enqueueWork(context, GpodnetSyncService.class, JOB_ID, intent);
     }
 
     @Override
