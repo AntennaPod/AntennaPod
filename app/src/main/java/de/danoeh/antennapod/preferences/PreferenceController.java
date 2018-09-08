@@ -162,7 +162,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 break;
             case R.xml.preferences_autodownload:
                 setupAutoDownloadScreen();
-                buildAutodownloadSelectedNetworsPreference();
+                buildAutodownloadSelectedNetworksPreference();
                 setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
                 buildEpisodeCleanupPreference();
                 break;
@@ -953,7 +953,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         return val == null ? "" : val;
     }
 
-    private void buildAutodownloadSelectedNetworsPreference() {
+    private void buildAutodownloadSelectedNetworksPreference() {
         final Activity activity = ui.getActivity();
 
         if (selectedNetworks != null) {
