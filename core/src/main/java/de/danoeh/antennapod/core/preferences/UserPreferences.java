@@ -11,13 +11,12 @@ import android.util.Log;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APDownloadAlgorithm;
+import de.danoeh.antennapod.core.storage.APKeepNNewestCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APKeepNNewestCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APDownloadAlgorithm;
-import de.danoeh.antennapod.core.storage.APKeepNNewestDownloadAlgorithm;
 import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import org.json.JSONArray;
@@ -674,13 +673,7 @@ public class UserPreferences {
     }
 
     public static AutomaticDownloadAlgorithm getAutomaticDownloadAlgorithm() {
-        int cleanupValue = Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
-        switch (cleanupValue) {
-        case EPISODE_CLEANUP_KEEP_5_LATEST:
-            return new APKeepNNewestDownloadAlgorithm(5);
-        default:
-            return new APDownloadAlgorithm();
-        }
+        return new APDownloadAlgorithm();
     }
 
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {

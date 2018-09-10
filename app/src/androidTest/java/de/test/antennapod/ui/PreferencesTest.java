@@ -3,24 +3,21 @@ package de.test.antennapod.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.test.ActivityInstrumentationTestCase2;
-
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
-
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APDownloadAlgorithm;
+import de.danoeh.antennapod.core.storage.APKeepNNewestCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APKeepNNewestCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APDownloadAlgorithm;
-import de.danoeh.antennapod.core.storage.APKeepNNewestDownloadAlgorithm;
 import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class PreferencesTest extends ActivityInstrumentationTestCase2<PreferenceActivity>  {
 
@@ -350,6 +347,11 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     public void testEpisodeCleanupKeep5Latest() {
         solo.clickOnText(solo.getString(R.string.network_pref));
         solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+
+        if(!UserPreferences.isEnableAutodownload()) {
+            solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        }
+
         solo.clickOnText(solo.getString(R.string.pref_episode_cleanup_title));
         solo.waitForText(solo.getString(R.string.episode_cleanup_keep_5_latest));
         solo.clickOnText(solo.getString(R.string.episode_cleanup_keep_5_latest));
@@ -360,7 +362,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
                 Timeout.getLargeTimeout()));
         assertTrue(solo.waitForCondition(() -> {
                     AutomaticDownloadAlgorithm alg = UserPreferences.getAutomaticDownloadAlgorithm();
-                    return alg instanceof APKeepNNewestDownloadAlgorithm;
+                    return alg instanceof APDownloadAlgorithm;
                 },
                 Timeout.getLargeTimeout()));
     }

@@ -8,12 +8,13 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static de.danoeh.antennapod.core.feed.FeedItem.TAG_FAVORITE;
-import static de.danoeh.antennapod.core.storage.APKeepNNewestDownloadAlgorithm.feedItemComparator;
 import static de.danoeh.antennapod.core.util.QueueSorter.smartShuffle;
 
 /**
@@ -139,4 +140,19 @@ public class APKeepNNewestCleanupAlgorithm extends EpisodeCleanupAlgorithm {
                                               final long mediaId) {
         return DBWriter.deleteFeedMediaOfItem(context, mediaId);
     }
+
+    public static final Comparator<FeedItem> feedItemComparator = (lhs, rhs) -> {
+        Date l = lhs.getPubDate();
+        Date r = rhs.getPubDate();
+
+        if (l == null && r == null) {
+            return 0;
+        } else if (l == null) {
+            return 1;
+        } else if (r == null) {
+            return -1;
+        } else {
+            return r.compareTo(l);
+        }
+    };
 }
