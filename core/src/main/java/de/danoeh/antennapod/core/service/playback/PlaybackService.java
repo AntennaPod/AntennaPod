@@ -660,7 +660,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final PlaybackServiceMediaPlayer.PSMPCallback mediaPlayerCallback = new PlaybackServiceMediaPlayer.PSMPCallback() {
         @Override
         public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
-            currentMediaType = mediaPlayer.getCurrentMediaType();
+            if (mediaPlayer != null) {
+                currentMediaType = mediaPlayer.getCurrentMediaType();
+            } else {
+                currentMediaType = MediaType.UNKNOWN;
+            }
+
             updateMediaSession(newInfo.playerStatus);
             switch (newInfo.playerStatus) {
                 case INITIALIZED:
