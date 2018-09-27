@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,12 +38,12 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
@@ -284,6 +286,16 @@ public class AllEpisodesFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
 
+        // Mark as seen contains UI logic specific to All/New/FavoriteSegments,
+        // e.g., Undo with Snackbar,
+        // and is handled by this class rather than the generic FeedItemMenuHandler
+        // Undo is useful for Mark as seen, given there is no UI to undo it otherwise,
+        // i.e., there is context menu item for Mark as new
+        if (R.id.mark_as_seen_item == item.getItemId()) {
+            markItemAsSeenWithUndo(selectedItem);
+            return true;
+        }
+
         return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
     }
 
@@ -479,6 +491,38 @@ public class AllEpisodesFragment extends Fragment {
 
     List<FeedItem> loadData() {
         return DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
+    }
+
+    void markItemAsSeenWithUndo(FeedItem item) {
+        if (item == null) {
+            return;
+        }
+
+        Log.d(TAG, "markItemAsSeenWithUndo(" + item.getId() + ")");
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
+        // we're marking it as unplayed since the user didn't actually play it
+        // but they don't want it considered 'NEW' anymore
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+
+        final Handler h = new Handler(getActivity().getMainLooper());
+        final Runnable r  = () -> {
+            FeedMedia media = item.getMedia();
+            if (media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
+                DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
+            }
+        };
+
+        Snackbar snackbar = Snackbar.make(getView(), getString(R.string.marked_as_seen_label),
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(getString(R.string.undo), v -> {
+            DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
+            // don't forget to cancel the thing that's going to remove the media
+            h.removeCallbacks(r);
+        });
+        snackbar.show();
+        h.postDelayed(r, (int)Math.ceil(snackbar.getDuration() * 1.05f));
     }
 
 }
