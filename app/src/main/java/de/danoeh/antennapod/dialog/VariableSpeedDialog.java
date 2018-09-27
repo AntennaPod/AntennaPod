@@ -66,7 +66,6 @@ public class VariableSpeedDialog {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
         });
-        builder.forceStacking(true);
         MaterialDialog dialog = builder.show();
         if (Build.VERSION.SDK_INT < 16) {
             View pos = dialog.getActionButton(DialogAction.POSITIVE);

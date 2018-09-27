@@ -1,5 +1,3 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
@@ -7,17 +5,22 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
-        classpath "com.github.triplet.gradle:play-publisher:1.2.0"
-        // Exclude the version that the android plugin depends on.
-        configurations.classpath.exclude group: "com.android.tools.external.lombok"
+        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath "com.github.triplet.gradle:play-publisher:1.2.2"
     }
+}
+
+plugins {
+    // ./gradlew dependencyUpdates
+    id 'com.github.ben-manes.versions' version '0.20.0'
 }
 
 allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -37,23 +40,22 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 26
-    buildToolsVersion = "27.0.3"
+    compileSdkVersion = 28
     minSdkVersion = 14
-    targetSdkVersion = 26
+    targetSdkVersion = 28
 
-    supportVersion = "26.1.0"
-    commonsioVersion = "2.5"
-    commonslangVersion = "3.6"
-    commonstextVersion = "1.3"
+    supportVersion = "28.0.0"
+    commonsioVersion = "2.6"
+    commonslangVersion = "3.7"
+    commonstextVersion = "1.4"
     eventbusVersion = "2.4.0"
     flattr4jVersion = "2.14"
     glideVersion = "3.8.0"
     glideOkhttpIntegrationVersion = "1.5.0"
     iconifyVersion = "2.2.2"
-    jsoupVersion = "1.11.2"
-    materialDialogsVersion = "0.9.0.2"
-    okhttpVersion = "3.9.0"
+    jsoupVersion = "1.11.3"
+    materialDialogsVersion = "0.9.6.0"
+    okhttpVersion = "3.11.0"
     okioVersion = "1.14.0"
     recyclerviewFlexibledividerVersion = "1.4.0"
     robotiumSoloVersion = "5.6.3"
@@ -62,12 +64,12 @@ project.ext {
     rxJavaRulesVersion = "1.3.3.0"
     triangleLabelViewVersion = "1.1.2"
 
-    exoPlayerVersion = "2.7.3"
+    exoPlayerVersion = "2.8.2"
     audioPlayerVersion = "v1.0.17"
 
     castCompanionLibVer = "2.9.1"
     playServicesVersion = "8.4.0"
-    wearableSupportVersion = "2.2.0"
+    wearableSupportVersion = "2.3.0"
 }
 
 wrapper {
