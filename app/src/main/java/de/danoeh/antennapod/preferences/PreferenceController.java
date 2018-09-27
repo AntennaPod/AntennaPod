@@ -462,18 +462,10 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)
                 .setOnPreferenceChangeListener(
                         (preference, o) -> {
-                            if (o instanceof String) {
-                                try {
-                                    int value = Integer.parseInt((String) o);
-                                    if (1 <= value && value <= 50) {
-                                        setParallelDownloadsText(value);
-                                        return true;
-                                    }
-                                } catch (NumberFormatException e) {
-                                    return false;
-                                }
+                            if (o instanceof Integer) {
+                                setParallelDownloadsText((Integer) o);
                             }
-                            return false;
+                            return true;
                         }
                 );
         // validate and set correct value: number of downloads between 1 and 50 (inclusive)
