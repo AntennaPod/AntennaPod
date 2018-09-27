@@ -44,8 +44,8 @@ public class PlayerWidgetJobService extends JobIntentService {
             return;
         }
 
-        if (PlaybackService.isRunning && playbackService == null) {
-            synchronized (waitForService) {
+        synchronized (waitForService) {
+            if (PlaybackService.isRunning && playbackService == null) {
                 bindService(new Intent(this, PlaybackService.class), mConnection, 0);
                 while (playbackService == null) {
                     try {

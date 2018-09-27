@@ -1685,6 +1685,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * an invalid state.
      */
     public int getDuration() {
+        if (mediaPlayer == null) {
+            return INVALID_TIME;
+        }
         return mediaPlayer.getDuration();
     }
 
@@ -1693,6 +1696,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * is in an invalid state.
      */
     public int getCurrentPosition() {
+        if (mediaPlayer == null) {
+            return INVALID_TIME;
+        }
         return mediaPlayer.getPosition();
     }
 
