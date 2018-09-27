@@ -214,6 +214,7 @@
         <item>@string/hide_downloaded_episodes_label</item>
         <item>@string/hide_not_downloaded_episodes_label</item>
         <item>@string/hide_has_media_label</item>
+        <item>@string/hide_is_favorite_label</item>
     </string-array>
 
     <string-array name="episode_filter_values">
@@ -225,6 +226,7 @@
         <item>downloaded</item>
         <item>not_downloaded</item>
         <item>has_media</item>
+        <item>is_favorite</item>
     </string-array>
 
     <string-array name="image_cache_size_options">
