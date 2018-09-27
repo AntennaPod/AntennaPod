@@ -70,8 +70,8 @@ project.ext {
     wearableSupportVersion = "2.2.0"
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = "4.4.1"
+wrapper {
+    gradleVersion = "4.10.2"
 }
 
 // free build hack: common functions
