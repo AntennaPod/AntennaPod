@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.storage.DBTasks;
 
-import static org.awaitility.Awaitility.await;
 import static org.awaitility.Awaitility.with;
 
 public class FeedUpdateUtils {
