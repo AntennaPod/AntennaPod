@@ -198,8 +198,10 @@ public final class DBTasks {
             if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
                 GpodnetSyncService.sendSyncIntent(context);
             }
-            Log.d(TAG, "refreshAllFeeds autodownload");
-            autodownloadUndownloadedItems(context);
+            // Note: automatic download of episodes will be done but not here.
+            // Instead it is done after all feeds have been refreshed (asynchronously),
+            // in DownloadService.onDestroy()
+            // See Issue #2577 for the details of the rationale
 
             if (callback != null) {
                 callback.run();
