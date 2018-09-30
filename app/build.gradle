@@ -161,10 +161,9 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "com.squareup.okio:okio:$okioVersion"
     implementation "de.greenrobot:eventbus:$eventbusVersion"
-    implementation "io.reactivex:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex:rxjava:$rxJavaVersion"
-    // And ProGuard rules for RxJava!
-    implementation "com.artemzin.rxjava:proguard-rules:$rxJavaRulesVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
     implementation("com.afollestad.material-dialogs:commons:$materialDialogsVersion") {
@@ -179,7 +178,7 @@ dependencies {
 
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
-    implementation 'com.github.mfietz:fyydlin:v0.3'
+    implementation 'com.github.mfietz:fyydlin:v0.4'
     implementation 'com.github.ByteHamster:SearchPreference:v1.0.8'
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"

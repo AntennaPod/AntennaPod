@@ -62,8 +62,8 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
                 AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder)viewHolder;
                 Log.d(TAG, "remove(" + holder.getItemId() + ")");
 
-                if (subscription != null) {
-                    subscription.unsubscribe();
+                if (disposable != null) {
+                    disposable.dispose();
                 }
                 FeedItem item = holder.getFeedItem();
                 if (item != null) {

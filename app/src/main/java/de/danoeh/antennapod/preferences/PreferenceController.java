@@ -36,24 +36,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
-import de.danoeh.antennapod.activity.AboutActivity;
-import de.danoeh.antennapod.activity.ImportExportActivity;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
-import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.activity.StatisticsActivity;
-import de.danoeh.antennapod.core.export.html.HtmlWriter;
-import de.danoeh.antennapod.core.export.opml.OpmlWriter;
-import de.danoeh.antennapod.core.service.GpodnetSyncService;
-import de.danoeh.antennapod.dialog.AuthenticationDialog;
-import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
-import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
-import de.danoeh.antennapod.dialog.ProxyDialog;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -67,18 +52,33 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
+import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.activity.MediaplayerActivity;
+import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
+import de.danoeh.antennapod.core.export.html.HtmlWriter;
+import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
+import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
+import de.danoeh.antennapod.dialog.ProxyDialog;
+import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static de.danoeh.antennapod.activity.PreferenceActivity.PARAM_RESOURCE;
 
@@ -137,7 +137,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 }
             };
     private CheckBoxPreference[] selectedNetworks;
-    private Subscription subscription;
+    private Disposable disposable;
 
     public PreferenceController(PreferenceUI ui) {
         this.ui = ui;
@@ -624,7 +624,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         final AlertDialog.Builder alert = new AlertDialog.Builder(context)
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         Observable<File> observable = new ExportWorker(exportWriter).exportObservable();
-        subscription = observable.subscribeOn(Schedulers.newThread())
+        disposable = observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(output -> {
                     alert.setTitle(R.string.export_success_title);
@@ -702,8 +702,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     public void unsubscribeExportSubscription() {
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 

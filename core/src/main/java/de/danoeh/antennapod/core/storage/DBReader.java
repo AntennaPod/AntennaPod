@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
@@ -574,6 +575,7 @@ public final class DBReader {
         }
     }
 
+    @Nullable
     static Feed getFeed(final long feedId, PodDBAdapter adapter) {
         Feed feed = null;
         Cursor cursor = null;

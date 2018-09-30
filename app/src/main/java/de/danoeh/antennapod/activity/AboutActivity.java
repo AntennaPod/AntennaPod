@@ -21,10 +21,10 @@ import java.nio.charset.Charset;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import rx.Single;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays the 'about' screen
@@ -35,7 +35,7 @@ public class AboutActivity extends AppCompatActivity {
 
     private WebView webView;
     private LinearLayout webViewContainer;
-    private Subscription subscription;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void loadAsset(String filename) {
-        subscription = Single.create(subscriber -> {
+        disposable = Single.create(subscriber -> {
             InputStream input = null;
             try {
                 TypedArray res = AboutActivity.this.getTheme().obtainStyledAttributes(
@@ -115,7 +115,7 @@ public class AboutActivity extends AppCompatActivity {
                 IOUtils.closeQuietly(input);
             }
         })
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         webViewData ->
@@ -146,8 +146,8 @@ public class AboutActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
         if (webViewContainer != null && webView != null) {
             webViewContainer.removeAllViews();

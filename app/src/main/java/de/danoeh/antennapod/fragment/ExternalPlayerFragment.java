@@ -23,9 +23,10 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import rx.Single;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
@@ -41,6 +42,7 @@ public class ExternalPlayerFragment extends Fragment {
     private TextView mFeedName;
     private ProgressBar mProgressBar;
     private PlaybackController controller;
+    private Disposable disposable;
 
     public ExternalPlayerFragment() {
         super();
@@ -177,10 +179,18 @@ public class ExternalPlayerFragment extends Fragment {
             return false;
         }
 
-        Single.create(subscriber -> subscriber.onSuccess(controller.getMedia()))
-                .subscribeOn(Schedulers.newThread())
+        disposable = Maybe.create(emitter -> {
+                    Playable media = controller.getMedia();
+                    if(media != null) {
+                        emitter.onSuccess(media);
+                    } else {
+                        emitter.onComplete();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(media -> updateUi((Playable) media));
+                .subscribe(media -> updateUi((Playable) media),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
         return true;
     }
 

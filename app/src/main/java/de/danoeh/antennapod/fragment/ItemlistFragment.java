@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -26,18 +24,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
+import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
@@ -55,7 +51,6 @@ import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -71,10 +66,10 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays a list of FeedItems.
@@ -114,7 +109,7 @@ public class ItemlistFragment extends ListFragment {
 
     private TextView txtvInformation;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -165,8 +160,8 @@ public class ItemlistFragment extends ListFragment {
         super.onPause();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -618,11 +613,11 @@ public class ItemlistFragment extends ListFragment {
 
 
     private void loadItems() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
-        subscription = Observable.fromCallable(this::loadData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(this::loadData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {
