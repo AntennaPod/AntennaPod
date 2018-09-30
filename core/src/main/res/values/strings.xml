@@ -152,6 +152,7 @@
     <string name="hide_downloaded_episodes_label">Downloaded</string>
     <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
     <string name="hide_has_media_label">Has media</string>
+    <string name="hide_is_favorite_label">Is favorite</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
     <string name="open_podcast">Open Podcast</string>
