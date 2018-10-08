@@ -109,7 +109,7 @@ public class ItunesSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
-        gridView = (GridView) root.findViewById(R.id.gridView);
+        gridView = root.findViewById(R.id.gridView);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
@@ -170,10 +170,10 @@ public class ItunesSearchFragment extends Fragment {
                         });
             }
         });
-        progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
-        txtvError = (TextView) root.findViewById(R.id.txtvError);
-        butRetry = (Button) root.findViewById(R.id.butRetry);
-        txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
+        progressBar = root.findViewById(R.id.progressBar);
+        txtvError = root.findViewById(R.id.txtvError);
+        butRetry = root.findViewById(R.id.butRetry);
+        txtvEmpty = root.findViewById(android.R.id.empty);
 
         loadToplist();
 

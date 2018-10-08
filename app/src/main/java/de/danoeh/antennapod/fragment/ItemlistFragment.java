@@ -475,14 +475,14 @@ public class ItemlistFragment extends ListFragment {
         View header = inflater.inflate(R.layout.feeditemlist_header, lv, false);
         lv.addHeaderView(header);
 
-        txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
-        TextView txtvAuthor = (TextView) header.findViewById(R.id.txtvAuthor);
-        imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
-        imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
-        ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
-        ImageButton butShowSettings = (ImageButton) header.findViewById(R.id.butShowSettings);
-        txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
-        txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
+        txtvTitle = header.findViewById(R.id.txtvTitle);
+        TextView txtvAuthor = header.findViewById(R.id.txtvAuthor);
+        imgvBackground = header.findViewById(R.id.imgvBackground);
+        imgvCover = header.findViewById(R.id.imgvCover);
+        ImageButton butShowInfo = header.findViewById(R.id.butShowInfo);
+        ImageButton butShowSettings = header.findViewById(R.id.butShowSettings);
+        txtvInformation = header.findViewById(R.id.txtvInformation);
+        txtvFailure = header.findViewById(R.id.txtvFailure);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());

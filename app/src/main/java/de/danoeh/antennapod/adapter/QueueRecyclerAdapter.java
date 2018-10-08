@@ -134,19 +134,19 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
         public ViewHolder(View v) {
             super(v);
-            container = (FrameLayout) v.findViewById(R.id.container);
-            dragHandle = (ImageView) v.findViewById(R.id.drag_handle);
-            placeholder = (TextView) v.findViewById(R.id.txtvPlaceholder);
-            cover = (ImageView) v.findViewById(R.id.imgvCover);
-            title = (TextView) v.findViewById(R.id.txtvTitle);
+            container = v.findViewById(R.id.container);
+            dragHandle = v.findViewById(R.id.drag_handle);
+            placeholder = v.findViewById(R.id.txtvPlaceholder);
+            cover = v.findViewById(R.id.imgvCover);
+            title = v.findViewById(R.id.txtvTitle);
             if(Build.VERSION.SDK_INT >= 23) {
                 title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
             }
-            pubDate = (TextView) v.findViewById(R.id.txtvPubDate);
-            progressLeft = (TextView) v.findViewById(R.id.txtvProgressLeft);
-            progressRight = (TextView) v.findViewById(R.id.txtvProgressRight);
-            butSecondary = (ImageButton) v.findViewById(R.id.butSecondaryAction);
-            progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+            pubDate = v.findViewById(R.id.txtvPubDate);
+            progressLeft = v.findViewById(R.id.txtvProgressLeft);
+            progressRight = v.findViewById(R.id.txtvProgressRight);
+            butSecondary = v.findViewById(R.id.butSecondaryAction);
+            progressBar = v.findViewById(R.id.progressBar);
             v.setTag(this);
             v.setOnClickListener(this);
             v.setOnCreateContextMenuListener(this);

@@ -113,27 +113,27 @@ public class FeedSettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         long feedId = getIntent().getLongExtra(EXTRA_FEED_ID, -1);
 
-        imgvCover = (ImageView) findViewById(R.id.imgvCover);
-        txtvTitle = (TextView) findViewById(R.id.txtvTitle);
-        TextView txtvAuthorHeader = (TextView) findViewById(R.id.txtvAuthor);
-        ImageView imgvBackground = (ImageView) findViewById(R.id.imgvBackground);
+        imgvCover = findViewById(R.id.imgvCover);
+        txtvTitle = findViewById(R.id.txtvTitle);
+        TextView txtvAuthorHeader = findViewById(R.id.txtvAuthor);
+        ImageView imgvBackground = findViewById(R.id.imgvBackground);
         findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
         findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
         // https://github.com/bumptech/glide/issues/529
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
-        cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
-        cbxKeepUpdated = (CheckBox) findViewById(R.id.cbxKeepUpdated);
-        spnAutoDelete = (Spinner) findViewById(R.id.spnAutoDelete);
-        etxtUsername = (EditText) findViewById(R.id.etxtUsername);
-        etxtPassword = (EditText) findViewById(R.id.etxtPassword);
-        etxtFilterText = (EditText) findViewById(R.id.etxtEpisodeFilterText);
-        rdoFilterInclude = (RadioButton) findViewById(R.id.radio_filter_include);
+        cbxAutoDownload = findViewById(R.id.cbxAutoDownload);
+        cbxKeepUpdated = findViewById(R.id.cbxKeepUpdated);
+        spnAutoDelete = findViewById(R.id.spnAutoDelete);
+        etxtUsername = findViewById(R.id.etxtUsername);
+        etxtPassword = findViewById(R.id.etxtPassword);
+        etxtFilterText = findViewById(R.id.etxtEpisodeFilterText);
+        rdoFilterInclude = findViewById(R.id.radio_filter_include);
         rdoFilterInclude.setOnClickListener(v -> {
             filterInclude = true;
             filterTextChanged = true;
         });
-        rdoFilterExclude = (RadioButton) findViewById(R.id.radio_filter_exclude);
+        rdoFilterExclude = findViewById(R.id.radio_filter_exclude);
         rdoFilterExclude.setOnClickListener(v -> {
             filterInclude = false;
             filterTextChanged = true;

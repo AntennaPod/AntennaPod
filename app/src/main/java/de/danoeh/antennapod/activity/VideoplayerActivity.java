@@ -143,11 +143,11 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
         super.setupGUI();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        controls = (LinearLayout) findViewById(R.id.controls);
-        videoOverlay = (LinearLayout) findViewById(R.id.overlay);
-        videoview = (AspectRatioVideoView) findViewById(R.id.videoview);
-        videoframe = (FrameLayout) findViewById(R.id.videoframe);
-        progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
+        controls = findViewById(R.id.controls);
+        videoOverlay = findViewById(R.id.overlay);
+        videoview = findViewById(R.id.videoview);
+        videoframe = findViewById(R.id.videoframe);
+        progressIndicator = findViewById(R.id.progressIndicator);
         videoview.getHolder().addCallback(surfaceHolderCallback);
         videoframe.setOnTouchListener(onVideoviewTouched);
         videoOverlay.setOnTouchListener((view, motionEvent) -> true); // To suppress touches directly below the slider

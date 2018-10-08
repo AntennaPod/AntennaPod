@@ -1799,7 +1799,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public boolean onMediaButtonEvent(final Intent mediaButton) {
             Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
             if (mediaButton != null) {
-                KeyEvent keyEvent = (KeyEvent) mediaButton.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+                KeyEvent keyEvent = mediaButton.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
                 if (keyEvent != null &&
                         keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getRepeatCount() == 0) {
