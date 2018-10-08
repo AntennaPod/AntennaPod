@@ -51,15 +51,15 @@ public class DownloadLogAdapter extends BaseAdapter {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.downloadlog_item, parent, false);
-			holder.icon = (IconTextView) convertView.findViewById(R.id.txtvIcon);
-			holder.retry = (IconButton) convertView.findViewById(R.id.btnRetry);
-			holder.date = (TextView) convertView.findViewById(R.id.txtvDate);
-			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+			holder.icon = convertView.findViewById(R.id.txtvIcon);
+			holder.retry = convertView.findViewById(R.id.btnRetry);
+			holder.date = convertView.findViewById(R.id.txtvDate);
+			holder.title = convertView.findViewById(R.id.txtvTitle);
 			if(Build.VERSION.SDK_INT >= 23) {
 				holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
 			}
-			holder.type = (TextView) convertView.findViewById(R.id.txtvType);
-			holder.reason = (TextView) convertView.findViewById(R.id.txtvReason);
+			holder.type = convertView.findViewById(R.id.txtvType);
+			holder.reason = convertView.findViewById(R.id.txtvReason);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();

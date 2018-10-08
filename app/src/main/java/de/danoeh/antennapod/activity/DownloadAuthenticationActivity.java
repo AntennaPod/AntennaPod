@@ -51,11 +51,11 @@ public class DownloadAuthenticationActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.download_authentication_activity);
-        TextView txtvDescription = (TextView) findViewById(R.id.txtvDescription);
-        etxtUsername = (EditText) findViewById(R.id.etxtUsername);
-        etxtPassword = (EditText) findViewById(R.id.etxtPassword);
-        Button butConfirm = (Button) findViewById(R.id.butConfirm);
-        Button butCancel = (Button) findViewById(R.id.butCancel);
+        TextView txtvDescription = findViewById(R.id.txtvDescription);
+        etxtUsername = findViewById(R.id.etxtUsername);
+        etxtPassword = findViewById(R.id.etxtPassword);
+        Button butConfirm = findViewById(R.id.butConfirm);
+        Button butCancel = findViewById(R.id.butCancel);
 
         Validate.isTrue(getIntent().hasExtra(ARG_DOWNLOAD_REQUEST), "Download request missing");
         DownloadRequest request = getIntent().getParcelableExtra(ARG_DOWNLOAD_REQUEST);

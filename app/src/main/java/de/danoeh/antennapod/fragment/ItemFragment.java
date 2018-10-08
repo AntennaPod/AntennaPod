@@ -169,25 +169,25 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.feeditem_fragment, container, false);
 
-        root = (ViewGroup) layout.findViewById(R.id.content_root);
+        root = layout.findViewById(R.id.content_root);
 
-        LinearLayout header = (LinearLayout) root.findViewById(R.id.header);
+        LinearLayout header = root.findViewById(R.id.header);
         if(feedItems.length > 0) {
             header.setOnTouchListener((v, event) -> headerGestureDetector.onTouchEvent(event));
         }
 
-        txtvPodcast = (TextView) layout.findViewById(R.id.txtvPodcast);
+        txtvPodcast = layout.findViewById(R.id.txtvPodcast);
         txtvPodcast.setOnClickListener(v -> openPodcast());
-        txtvTitle = (TextView) layout.findViewById(R.id.txtvTitle);
+        txtvTitle = layout.findViewById(R.id.txtvTitle);
         if(Build.VERSION.SDK_INT >= 23) {
             txtvTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         }
-        txtvDuration = (TextView) layout.findViewById(R.id.txtvDuration);
-        txtvPublished = (TextView) layout.findViewById(R.id.txtvPublished);
+        txtvDuration = layout.findViewById(R.id.txtvDuration);
+        txtvPublished = layout.findViewById(R.id.txtvPublished);
         if (Build.VERSION.SDK_INT >= 14) { // ellipsize is causing problems on old versions, see #448
             txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
         }
-        webvDescription = (WebView) layout.findViewById(R.id.webvDescription);
+        webvDescription = layout.findViewById(R.id.webvDescription);
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark ||
                 UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
@@ -219,12 +219,12 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         });
         registerForContextMenu(webvDescription);
 
-        imgvCover = (ImageView) layout.findViewById(R.id.imgvCover);
+        imgvCover = layout.findViewById(R.id.imgvCover);
         imgvCover.setOnClickListener(v -> openPodcast());
-        progbarDownload = (ProgressBar) layout.findViewById(R.id.progbarDownload);
-        progbarLoading = (ProgressBar) layout.findViewById(R.id.progbarLoading);
-        butAction1 = (IconButton) layout.findViewById(R.id.butAction1);
-        butAction2 = (IconButton) layout.findViewById(R.id.butAction2);
+        progbarDownload = layout.findViewById(R.id.progbarDownload);
+        progbarLoading = layout.findViewById(R.id.progbarLoading);
+        butAction1 = layout.findViewById(R.id.butAction1);
+        butAction2 = layout.findViewById(R.id.butAction2);
 
         butAction1.setOnClickListener(v -> {
             if (item == null) {

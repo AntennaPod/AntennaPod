@@ -71,7 +71,7 @@ public class SubscriptionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_subscriptions, container, false);
-        subscriptionGridLayout = (GridView) root.findViewById(R.id.subscriptions_grid);
+        subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
         registerForContextMenu(subscriptionGridLayout);
         return root;
     }

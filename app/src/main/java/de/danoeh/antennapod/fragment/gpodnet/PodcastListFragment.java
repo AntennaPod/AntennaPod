@@ -80,10 +80,10 @@ public abstract class PodcastListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.gpodnet_podcast_list, container, false);
 
-        gridView = (GridView) root.findViewById(R.id.gridView);
-        progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
-        txtvError = (TextView) root.findViewById(R.id.txtvError);
-        butRetry = (Button) root.findViewById(R.id.butRetry);
+        gridView = root.findViewById(R.id.gridView);
+        progressBar = root.findViewById(R.id.progressBar);
+        txtvError = root.findViewById(R.id.txtvError);
+        butRetry = root.findViewById(R.id.butRetry);
 
         gridView.setOnItemClickListener((parent, view, position, id) ->
                 onPodcastSelected((GpodnetPodcast) gridView.getAdapter().getItem(position)));

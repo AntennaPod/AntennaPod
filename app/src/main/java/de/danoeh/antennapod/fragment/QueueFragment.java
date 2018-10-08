@@ -384,8 +384,8 @@ public class QueueFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.queue_label);
 
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
-        infoBar = (TextView) root.findViewById(R.id.info_bar);
-        recyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
+        infoBar = root.findViewById(R.id.info_bar);
+        recyclerView = root.findViewById(R.id.recyclerView);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
@@ -498,9 +498,9 @@ public class QueueFragment extends Fragment {
         );
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
+        txtvEmpty = root.findViewById(android.R.id.empty);
         txtvEmpty.setVisibility(View.GONE);
-        progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
+        progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
 
         return root;

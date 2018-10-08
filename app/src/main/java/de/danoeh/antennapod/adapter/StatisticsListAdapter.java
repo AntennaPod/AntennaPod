@@ -64,9 +64,9 @@ public class StatisticsListAdapter extends BaseAdapter {
 
             convertView = inflater.inflate(R.layout.statistics_listitem, parent, false);
 
-            holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.time = (TextView) convertView.findViewById(R.id.txtvTime);
+            holder.image = convertView.findViewById(R.id.imgvCover);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
+            holder.time = convertView.findViewById(R.id.txtvTime);
             convertView.setTag(holder);
         } else {
             holder = (StatisticsHolder) convertView.getTag();

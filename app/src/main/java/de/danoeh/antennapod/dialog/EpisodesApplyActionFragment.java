@@ -87,7 +87,7 @@ public class EpisodesApplyActionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.episodes_apply_action_fragment, container, false);
 
-        mListView = (ListView) view.findViewById(android.R.id.list);
+        mListView = view.findViewById(android.R.id.list);
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         mListView.setOnItemClickListener((ListView, view1, position, rowId) -> {
             long id = episodes.get(position).getId();
@@ -109,7 +109,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         checkAll();
 
         int lastVisibleDiv = 0;
-        btnAddToQueue = (Button) view.findViewById(R.id.btnAddToQueue);
+        btnAddToQueue = view.findViewById(R.id.btnAddToQueue);
         if((actions & ACTION_QUEUE) != 0) {
             btnAddToQueue.setOnClickListener(v -> queueChecked());
             lastVisibleDiv = R.id.divider1;
@@ -117,7 +117,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             btnAddToQueue.setVisibility(View.GONE);
             view.findViewById(R.id.divider1).setVisibility(View.GONE);
         }
-        btnMarkAsPlayed = (Button) view.findViewById(R.id.btnMarkAsPlayed);
+        btnMarkAsPlayed = view.findViewById(R.id.btnMarkAsPlayed);
         if((actions & ACTION_MARK_PLAYED) != 0) {
             btnMarkAsPlayed.setOnClickListener(v -> markedCheckedPlayed());
             lastVisibleDiv = R.id.divider2;
@@ -125,7 +125,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             btnMarkAsPlayed.setVisibility(View.GONE);
             view.findViewById(R.id.divider2).setVisibility(View.GONE);
         }
-        btnMarkAsUnplayed = (Button) view.findViewById(R.id.btnMarkAsUnplayed);
+        btnMarkAsUnplayed = view.findViewById(R.id.btnMarkAsUnplayed);
         if((actions & ACTION_MARK_UNPLAYED) != 0) {
             btnMarkAsUnplayed.setOnClickListener(v -> markedCheckedUnplayed());
             lastVisibleDiv = R.id.divider3;
@@ -133,7 +133,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             btnMarkAsUnplayed.setVisibility(View.GONE);
             view.findViewById(R.id.divider3).setVisibility(View.GONE);
         }
-        btnDownload = (Button) view.findViewById(R.id.btnDownload);
+        btnDownload = view.findViewById(R.id.btnDownload);
         if((actions & ACTION_DOWNLOAD) != 0) {
             btnDownload.setOnClickListener(v -> downloadChecked());
             lastVisibleDiv = R.id.divider4;
@@ -141,7 +141,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             btnDownload.setVisibility(View.GONE);
             view.findViewById(R.id.divider4).setVisibility(View.GONE);
         }
-        btnDelete = (Button) view.findViewById(R.id.btnDelete);
+        btnDelete = view.findViewById(R.id.btnDelete);
         if((actions & ACTION_REMOVE) != 0) {
             btnDelete.setOnClickListener(v -> deleteChecked());
         } else {

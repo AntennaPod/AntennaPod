@@ -37,16 +37,16 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.opml_import);
 
-        final TextView txtvHeaderExplanation1 = (TextView) findViewById(R.id.txtvHeadingExplanation1);
-        final TextView txtvExplanation1 = (TextView) findViewById(R.id.txtvExplanation1);
-        final TextView txtvHeaderExplanation2 = (TextView) findViewById(R.id.txtvHeadingExplanation2);
-        final TextView txtvExplanation2 = (TextView) findViewById(R.id.txtvExplanation2);
-        final TextView txtvHeaderExplanation3 = (TextView) findViewById(R.id.txtvHeadingExplanation3);
+        final TextView txtvHeaderExplanation1 = findViewById(R.id.txtvHeadingExplanation1);
+        final TextView txtvExplanation1 = findViewById(R.id.txtvExplanation1);
+        final TextView txtvHeaderExplanation2 = findViewById(R.id.txtvHeadingExplanation2);
+        final TextView txtvExplanation2 = findViewById(R.id.txtvExplanation2);
+        final TextView txtvHeaderExplanation3 = findViewById(R.id.txtvHeadingExplanation3);
 
-        Button butChooseFilesystem = (Button) findViewById(R.id.butChooseFileFromFilesystem);
+        Button butChooseFilesystem = findViewById(R.id.butChooseFileFromFilesystem);
         butChooseFilesystem.setOnClickListener(v -> chooseFileFromFilesystem());
 
-        Button butChooseExternal = (Button) findViewById(R.id.butChooseFileFromExternal);
+        Button butChooseExternal = findViewById(R.id.butChooseFileFromExternal);
         butChooseExternal.setOnClickListener(v -> chooseFileFromExternal());
 
         int nextOption = 1;

@@ -383,20 +383,20 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
         EventDistributor.getInstance().register(listener);
-        ListView listView = (ListView) findViewById(R.id.listview);
+        ListView listView = findViewById(R.id.listview);
         LayoutInflater inflater = LayoutInflater.from(this);
         View header = inflater.inflate(R.layout.onlinefeedview_header, listView, false);
         listView.addHeaderView(header);
 
         listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
-        ImageView cover = (ImageView) header.findViewById(R.id.imgvCover);
-        TextView title = (TextView) header.findViewById(R.id.txtvTitle);
-        TextView author = (TextView) header.findViewById(R.id.txtvAuthor);
-        TextView description = (TextView) header.findViewById(R.id.txtvDescription);
-        Spinner spAlternateUrls = (Spinner) header.findViewById(R.id.spinnerAlternateUrls);
+        ImageView cover = header.findViewById(R.id.imgvCover);
+        TextView title = header.findViewById(R.id.txtvTitle);
+        TextView author = header.findViewById(R.id.txtvAuthor);
+        TextView description = header.findViewById(R.id.txtvDescription);
+        Spinner spAlternateUrls = header.findViewById(R.id.spinnerAlternateUrls);
 
-        subscribeButton = (Button) header.findViewById(R.id.butSubscribe);
+        subscribeButton = header.findViewById(R.id.butSubscribe);
 
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)

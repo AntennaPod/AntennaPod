@@ -42,9 +42,9 @@ public class FlattrAuthActivity extends AppCompatActivity {
 		if (BuildConfig.DEBUG) Log.d(TAG, "Activity created");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.flattr_auth);
-		txtvExplanation = (TextView) findViewById(R.id.txtvExplanation);
-		butAuthenticate = (Button) findViewById(R.id.but_authenticate);
-		butReturn = (Button) findViewById(R.id.but_return_home);
+		txtvExplanation = findViewById(R.id.txtvExplanation);
+		butAuthenticate = findViewById(R.id.but_authenticate);
+		butReturn = findViewById(R.id.but_return_home);
 
 		butReturn.setOnClickListener(v -> {
             Intent intent = new Intent(FlattrAuthActivity.this, MainActivity.class);

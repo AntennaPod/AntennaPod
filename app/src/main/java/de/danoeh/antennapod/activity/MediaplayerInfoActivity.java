@@ -235,18 +235,18 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     @Override
     protected void setupGUI() {
         super.setupGUI();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             findViewById(R.id.shadow).setVisibility(View.GONE);
-            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBar);
+            AppBarLayout appBarLayout = findViewById(R.id.appBar);
             float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
             appBarLayout.setElevation(px);
         }
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navList = (ListView) findViewById(R.id.nav_list);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navList = findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
@@ -282,14 +282,14 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             startActivity(new Intent(MediaplayerInfoActivity.this, PreferenceActivity.class));
         });
 
-        butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
-        butCastDisconnect = (ImageButton) findViewById(R.id.butCastDisconnect);
+        butPlaybackSpeed = findViewById(R.id.butPlaybackSpeed);
+        butCastDisconnect = findViewById(R.id.butCastDisconnect);
 
-        pager = (ViewPager) findViewById(R.id.pager);
+        pager = findViewById(R.id.pager);
         pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager(), media);
         pagerAdapter.setController(controller);
         pager.setAdapter(pagerAdapter);
-        CirclePageIndicator pageIndicator = (CirclePageIndicator) findViewById(R.id.page_indicator);
+        CirclePageIndicator pageIndicator = findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
         loadLastFragment();
         pager.onSaveInstanceState();

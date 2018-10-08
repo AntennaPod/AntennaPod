@@ -36,8 +36,8 @@ public class TagListAdapter extends ArrayAdapter<GpodnetTag> {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             convertView = inflater.inflate(R.layout.gpodnet_tag_listitem, parent, false);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.usage = (TextView) convertView.findViewById(R.id.txtvUsage);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
+            holder.usage = convertView.findViewById(R.id.txtvUsage);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();

@@ -44,8 +44,8 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.about);
-        webViewContainer = (LinearLayout) findViewById(R.id.webViewContainer);
-        webView = (WebView) findViewById(R.id.webViewAbout);
+        webViewContainer = findViewById(R.id.webViewContainer);
+        webView = findViewById(R.id.webViewAbout);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {

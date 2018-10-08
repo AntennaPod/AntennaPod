@@ -62,11 +62,11 @@ public abstract class SleepTimerDialog {
         dialog = builder.build();
         
         View view = dialog.getView();
-        etxtTime = (EditText) view.findViewById(R.id.etxtTime);
-        spTimeUnit = (Spinner) view.findViewById(R.id.spTimeUnit);
-        cbShakeToReset = (CheckBox) view.findViewById(R.id.cbShakeToReset);
-        cbVibrate = (CheckBox) view.findViewById(R.id.cbVibrate);
-        chAutoEnable = (CheckBox) view.findViewById(R.id.chAutoEnable);
+        etxtTime = view.findViewById(R.id.etxtTime);
+        spTimeUnit = view.findViewById(R.id.spTimeUnit);
+        cbShakeToReset = view.findViewById(R.id.cbShakeToReset);
+        cbVibrate = view.findViewById(R.id.cbVibrate);
+        chAutoEnable = view.findViewById(R.id.chAutoEnable);
 
         etxtTime.setText(SleepTimerPreferences.lastTimerValue());
         etxtTime.addTextChangedListener(new TextWatcher() {

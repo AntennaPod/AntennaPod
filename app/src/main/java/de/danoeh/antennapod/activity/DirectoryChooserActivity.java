@@ -69,11 +69,11 @@ public class DirectoryChooserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.directory_chooser);
-        butConfirm = (Button) findViewById(R.id.butConfirm);
-        butCancel = (Button) findViewById(R.id.butCancel);
-        butNavUp = (ImageButton) findViewById(R.id.butNavUp);
-        txtvSelectedFolder = (TextView) findViewById(R.id.txtvSelectedFolder);
-        listDirectories = (ListView) findViewById(R.id.directory_list);
+        butConfirm = findViewById(R.id.butConfirm);
+        butCancel = findViewById(R.id.butCancel);
+        butNavUp = findViewById(R.id.butNavUp);
+        txtvSelectedFolder = findViewById(R.id.txtvSelectedFolder);
+        listDirectories = findViewById(R.id.directory_list);
 
         butConfirm.setOnClickListener(new OnClickListener() {
 

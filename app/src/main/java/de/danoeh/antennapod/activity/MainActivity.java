@@ -133,7 +133,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -145,8 +145,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         currentTitle = getTitle();
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navList = (ListView) findViewById(R.id.nav_list);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navList = findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);

@@ -47,11 +47,11 @@ public class EpisodesFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.episodes_label);
 
         View rootView = inflater.inflate(R.layout.pager_fragment, container, false);
-        viewPager = (ViewPager)rootView.findViewById(R.id.viewpager);
+        viewPager = rootView.findViewById(R.id.viewpager);
         viewPager.setAdapter(new EpisodesPagerAdapter(getChildFragmentManager(), getResources()));
 
         // Give the TabLayout the ViewPager
-        tabLayout = (TabLayout) rootView.findViewById(R.id.sliding_tabs);
+        tabLayout = rootView.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         return rootView;
