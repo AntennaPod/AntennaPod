@@ -1,16 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Ανανέωση Συνδρομών</string>
   <string name="feeds_label">Ροές</string>
   <string name="statistics_label">Στατιστικά</string>
   <string name="add_feed_label">Προσθήκη Podcast</string>
   <string name="episodes_label">Επεισόδια</string>
   <string name="all_episodes_short_label">Όλα</string>
+  <string name="new_episodes_label">Νέα</string>
   <string name="favorite_episodes_label">Αγαπημένα</string>
   <string name="new_label">Νέα</string>
   <string name="settings_label">Ρυθμίσεις</string>
   <string name="downloads_label">Λήψεις</string>
-  <string name="downloads_running_label">Εκτέλεση</string>
+  <string name="downloads_running_label">Εκτέλείται</string>
   <string name="downloads_completed_label">Ολοκληρώθηκε</string>
   <string name="downloads_log_label">Είσοδος</string>
   <string name="subscriptions_label">Συνδρομές</string>
@@ -18,43 +20,59 @@
   <string name="cancel_download_label">Ακύρωση\nΛήψης</string>
   <string name="playback_history_label">Ιστορικό Αναπαραγωγής</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Συγχρονισμός με άλλες συσκευές</string>
   <string name="gpodnet_auth_label">gpodder.net Σύνδεση</string>
+  <string name="synchronizing">Εκτελείται συγχρονισμός</string>
   <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">Συνολικός χρόνος εκτελεσμένων podcasts:</string>
   <!--Main activity-->
   <string name="drawer_open">Άνοιγμα μενού</string>
   <string name="drawer_close">Κλείσιμο μενού</string>
   <string name="drawer_feed_order_alphabetical">Ταξινόμηση αλφαβητικά</string>
   <string name="drawer_feed_order_last_update">Ταξινόμηση κατά ημερομηνία δημοσίευσης</string>
+  <string name="drawer_feed_order_most_played">Ταξινόμηση κατά αριθμό εκτελεσμένων επεισοδίων</string>
+  <string name="drawer_feed_counter_new_unplayed">Αριθμός νέων  επεισοδίων και αριθμός μη εκτελεσμένων επεισοδίων</string>
   <string name="drawer_feed_counter_new">Αριθμός νέων επεισοδίων</string>
+  <string name="drawer_feed_counter_unplayed">Αριθμός μη εκτελεσμένων επεισοδίων</string>
+  <string name="drawer_feed_counter_downloaded">Αριθμός ληφθέντων επεισοδίων</string>
+  <string name="drawer_feed_counter_none">Κενό</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Άνοιγμα στον Περιηγητή</string>
   <string name="copy_url_label">Αντιγραφή διεύθυνσης URL</string>
-  <string name="share_url_label">Μοιρασμα URL</string>
+  <string name="share_url_label">Μοίρασμα URL</string>
   <string name="copied_url_msg">Αντιγραφή URL στο Πρόχειρο</string>
+  <string name="go_to_position_label">Μετάβαση σε αυτή τη θέση</string>
   <!--Playback history-->
   <string name="clear_history_label">Εκκαθάριση Ιστορικού</string>
   <!--Other-->
   <string name="confirm_label">Επιβεβαίωση</string>
   <string name="cancel_label">Ακύρωση</string>
-  <string name="author_label">Δημιουργος</string>
-  <string name="language_label">Γλωσσα</string>
-  <string name="podcast_settings_label">Ρυθμισεις</string>
-  <string name="cover_label">Εικονα</string>
-  <string name="error_label">Σφαλμα</string>
+  <string name="yes">Ναι</string>
+  <string name="no">Όχι</string>
+  <string name="author_label">Δημιουργός</string>
+  <string name="language_label">Γλώσσα</string>
+  <string name="url_label">URL</string>
+  <string name="podcast_settings_label">Ρυθμίσεις</string>
+  <string name="cover_label">Εικόνα</string>
+  <string name="error_label">Σφάλμα</string>
   <string name="error_msg_prefix">Παρουσιάστηκε ένα σφάλμα:</string>
   <string name="refresh_label">Ανανέωση</string>
   <string name="external_storage_error_msg">Καμία εξωτερική αποθήκευση είναι διαθέσιμη. Παρακαλώ βεβαιωθείτε ότι η εξωτερική αποθήκευση έχει τοποθετηθεί έτσι ώστε η εφαρμογή να μπορεί να λειτουργήσει σωστά.</string>
   <string name="chapters_label">Κεφάλαια</string>
+  <string name="chapter_duration">Διάρκεια: %1$s</string>
   <string name="shownotes_label">Εμφάνιση Σημειώσεων</string>
   <string name="description_label">Περιγραφή</string>
-  <string name="episodes_suffix">\u0020επεισοδια</string>
+  <string name="most_recent_prefix">Πιο πρόσφατο επεισόδιο:\u0020</string>
+  <string name="episodes_suffix">\u0020επεισόδια</string>
   <string name="length_prefix">Μήκος:\u0020</string>
   <string name="size_prefix">Μέγεθος:\u0020</string>
   <string name="processing_label">Επεξεργασία</string>
-  <string name="save_username_password_label">Αποθήκευση του όνοματος χρήστη και του κωδικόυ πρόσβασης</string>
+  <string name="save_username_password_label">Αποθήκευση του ονόματος χρήστη και του κωδικού πρόσβασης</string>
   <string name="close_label">Κλείσιμο</string>
-  <string name="retry_label">Επανάληψη</string>
+  <string name="retry_label">Επαναπροσπάθεια</string>
   <string name="auto_download_label">Συμπερίληψη στην αυτόματη λήψη</string>
+  <string name="auto_download_apply_to_items_title">Εφαρμογή σε προηγούμενα επεισόδια</string>
+  <string name="auto_delete_label">Αυτόματη διαγραφή επεισοδίου</string>
   <string name="parallel_downloads_suffix">\u0020παράλληλες λήψεις</string>
   <string name="feed_auto_download_always">Πάντα</string>
   <string name="feed_auto_download_never">Ποτέ</string>
@@ -63,9 +81,13 @@
   <string name="feedurl_label">URL της Ροής</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Προσθήκη Podcast με τη διεύθυνση URL</string>
+  <string name="podcastdirectories_label">Εύρεση Podcast στο Φάκελο</string>
   <string name="browse_gpoddernet_label">Περιήγηση στο gpodder.net</string>
   <!--Actions on feeds-->
   <string name="show_info_label">Εμφάνιση πληροφοριών</string>
+  <string name="feed_info_label">Πληροφορίες Ροής</string>
+  <string name="feed_settings_label">Ρυθμίσεις Ροής</string>
+  <string name="rename_feed_label">Μετονομασία podcast</string>
   <string name="remove_feed_label">Κατάργηση Podcast</string>
   <string name="hide_episodes_title">Απόκρυψη Επεισοδίων</string>
   <string name="hide_downloaded_episodes_label">Ειλημμένα</string>
@@ -180,7 +202,6 @@
   <string name="other_pref">Άλλα</string>
   <string name="about_pref">Σχετικά με</string>
   <string name="queue_label">Σειρά αναμονής</string>
-  <string name="services_label">Υπηρεσίες</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Συνέχιση της αναπαραγωγής, όταν τα ακουστικά επανασυνδέονται</string>
   <string name="pref_followQueue_sum">Μετάβαση στο επόμενο στοιχείο σειράς αναμονής όταν η αναπαραγωγή ολοκληρωθεί</string>
@@ -255,8 +276,6 @@
   <string name="choose_file_from_external_application">Χρησιμοποιήστε εξωτερική εφαρμογή</string>
   <string name="opml_export_label">OPML εξαγωγή</string>
   <string name="export_error_label">Σφάλμα κατά την εξαγωγή</string>
-  <string name="opml_export_success_title">Η Εξαγωγή OPML είναι επιτυχής</string>
-  <string name="opml_export_success_sum">Το αρχείο .opml συντάχθηκε για:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Ρύθμιση του χρονοδιακόπτη ύπνου</string>
   <string name="disable_sleeptimer_label">Απενεργοποίηση χρονοδιακόπτη ύπνου</string>
@@ -341,4 +360,7 @@
   <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
+  <string name="notification_channel_downloading">Λήψη</string>
+  <string name="notification_channel_error">Σφάλματα</string>
 </resources>

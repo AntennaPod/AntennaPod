@@ -22,6 +22,7 @@
   <string name="free_space_label">%1$s wolnego miejsca</string>
   <string name="episode_cache_full_title">Pełna pamięć cache</string>
   <string name="episode_cache_full_message">Limit pamięci cache został osiągnięty. Możesz zwiększyć pojemność cache w ustawieniach aplikacji.</string>
+  <string name="synchronizing">Synchronizowanie...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Całkowity czas trwania podcastów:</string>
   <string name="statistics_details_dialog">%1$d z %2$d odcinków rozpoczęto.\n\nZagrano %3$s z %4$s.</string>
@@ -125,7 +126,6 @@
   <string name="feed_remover_msg">Usuwanie kanału</string>
   <string name="load_complete_feed">Odśwież cały kanał</string>
   <string name="hide_episodes_title">Ukryj odcinki</string>
-  <string name="episode_actions">Zatwierdź czynności</string>
   <string name="hide_unplayed_episodes_label">Nieodtworzone</string>
   <string name="hide_paused_episodes_label">Zatrzymane</string>
   <string name="hide_played_episodes_label">Odtworzone</string>
@@ -288,7 +288,6 @@
   <string name="other_pref">Inne</string>
   <string name="about_pref">O...</string>
   <string name="queue_label">Kolejka</string>
-  <string name="services_label">Usługi</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Usuwanie odcinków</string>
   <string name="pref_episode_cleanup_summary">Odcinki niebędące w kolejce i niebędące na liście ulubiobych powinny nadawać się do usunięcia, jeśli Automatyczne Pobieranie potrzebuje miejsca na nowe odcinki.</string>
@@ -409,8 +408,6 @@
   <string name="crash_report_sum">Wyślij ostatni raport o błędach przez e-mail</string>
   <string name="send_email">Wyślij e-mail</string>
   <string name="experimental_pref">Eksperymentalne</string>
-  <string name="pref_sonic_title">Odtwarzacz mediów Sonic</string>
-  <string name="pref_sonic_message">Użyj wbudowanego odtwarzacza Sonic jako oprogramowanie zastępcze do natywnego odtwarzacza Android i Prestissimo</string>
   <string name="pref_current_value">Aktualna wartość: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Ustaw proxy sieciowe</string>
@@ -657,4 +654,5 @@ https://gpodder.net/register/</string>
   <string name="cast_failed_seek">Wystąpił błąd podczas szukania nowej pozycji na urządzeniu nadającym.</string>
   <string name="cast_failed_receiver_player_error">Urządzenie odbierające napotkało poważny problem</string>
   <string name="cast_failed_media_error_skipping">Błąd podczas odtwarzania, pomijanie...</string>
+  <!--Notification channels-->
 </resources>

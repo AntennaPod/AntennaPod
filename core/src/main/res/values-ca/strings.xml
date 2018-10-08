@@ -123,7 +123,6 @@
   <string name="feed_remover_msg">S\'està esborrant el canal</string>
   <string name="load_complete_feed">S\'ha actualitzat el canal</string>
   <string name="hide_episodes_title">Amaga Episodis</string>
-  <string name="episode_actions">Aplica accions</string>
   <string name="hide_unplayed_episodes_label">Per reproduir</string>
   <string name="hide_paused_episodes_label">Pausat</string>
   <string name="hide_played_episodes_label">Reproduit</string>
@@ -281,7 +280,6 @@
   <string name="other_pref">Altres</string>
   <string name="about_pref">Quant a</string>
   <string name="queue_label">Cua</string>
-  <string name="services_label">Serveis</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Neteja l\'episodi</string>
   <string name="pref_episode_cleanup_summary">Els episodis que no es troben a la cua i no són favorits haurien de ser candidats a ser esborrats si l\'Auto Descàrrega necessita espai per a nous episodis</string>
@@ -402,8 +400,6 @@
   <string name="crash_report_sum">Envia l\'últim informe de tancament abrupte per e-mail</string>
   <string name="send_email">Envia e-mail</string>
   <string name="experimental_pref">Experimental</string>
-  <string name="pref_sonic_title">Reproductor Sonic Media Player</string>
-  <string name="pref_sonic_message">Fes servir el reproductor Sonic Media Player integrat en comptes del reproductor natiu d\'Android i Prestissimo</string>
   <string name="pref_current_value">Valor actual: %1$s</string>
   <string name="pref_proxy_title">Servidor intermediari</string>
   <string name="pref_proxy_sum">Estableix un servidor intermediari</string>
@@ -451,8 +447,6 @@
   <string name="html_export_label">Exporta HTML</string>
   <string name="exporting_label">Exportant...</string>
   <string name="export_error_label">Error d\'exportació</string>
-  <string name="opml_export_success_title">S\'ha exportat l\'OPML correctament.</string>
-  <string name="opml_export_success_sum">El fitxer OPML s\'ha escrit a:\u0020</string>
   <string name="opml_import_ask_read_permission">Per llegir arxius OPML és necessari accés a la memòria externa</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Defineix un temporitzador</string>
@@ -625,7 +619,6 @@
   <string name="label_import">Importa</string>
   <string name="label_export">Exporta</string>
   <string name="import_select_file">Tria un fitxer per a importar</string>
-  <string name="export_ok">S\'ha exportat amb èxit. S\'ha escrit la base de dades a la targeta SD.</string>
   <string name="import_ok">S\'ha importat amb èxit.\n\nPremeu D\'acord per a reiniciar l\'AntennaPod.</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Reproduir a...</string>
@@ -643,4 +636,5 @@
   <string name="cast_failed_seek">No s\'ha pogut cercar la nova posició al dispositiu de difusió</string>
   <string name="cast_failed_receiver_player_error">El reproductor receptor ha trobat un error greu</string>
   <string name="cast_failed_media_error_skipping">Error en la reproducció. Saltant...</string>
+  <!--Notification channels-->
 </resources>

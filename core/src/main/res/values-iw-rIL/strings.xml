@@ -125,7 +125,6 @@
   <string name="feed_remover_msg">ההזנה נמחקת</string>
   <string name="load_complete_feed">רענון אלו שהסתיימו בהזנה</string>
   <string name="hide_episodes_title">הסתרת פרקים</string>
-  <string name="episode_actions">החלת פעולות</string>
   <string name="hide_unplayed_episodes_label">לא נוגן</string>
   <string name="hide_paused_episodes_label">מושהה</string>
   <string name="hide_played_episodes_label">נוגן</string>
@@ -287,7 +286,6 @@
   <string name="other_pref">אחר</string>
   <string name="about_pref">על אודות</string>
   <string name="queue_label">תור</string>
-  <string name="services_label">שירותים</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">ניקוי פרקים</string>
   <string name="pref_episode_cleanup_summary">פרקים שאינם בתור ואינם במועדפים אמורים לענות לתנאים של הסרה במקרה שההורדה האוטומטית זקוקה למקום לפרקים חדשים</string>
@@ -408,8 +406,6 @@
   <string name="crash_report_sum">שליחת דיווח הקריסה העדכני ביותר דרך דוא״ל</string>
   <string name="send_email">שליחת דוא״ל</string>
   <string name="experimental_pref">ניסיוני</string>
-  <string name="pref_sonic_title">נגן המדיה Sonic</string>
-  <string name="pref_sonic_message">שימוש בנגן Sonic המובנה כחלופה לנגן המדיה המובנה של Android ו־Prestissimo</string>
   <string name="pref_current_value">ערך נוכחי: %1$s</string>
   <string name="pref_proxy_title">מתווך</string>
   <string name="pref_proxy_sum">הגדרת מתווך רשת</string>
@@ -655,4 +651,5 @@
   <string name="cast_failed_seek">ההקפצה למיקום נגינה אחר בהתקן השידור נכשלה</string>
   <string name="cast_failed_receiver_player_error">הנגן המקבל נתקל בשגיאה חמורה</string>
   <string name="cast_failed_media_error_skipping">שגיאה בנגינת המדיה. מתבצע דילוג…</string>
+  <!--Notification channels-->
 </resources>

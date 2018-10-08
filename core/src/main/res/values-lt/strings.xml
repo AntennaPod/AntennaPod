@@ -93,6 +93,7 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">Praėjus 1 dienai nuo perklausymo</item>
     <item quantity="few">Praėjus %d dienoms nuo perklausymo</item>
+    <item quantity="many">Praėjus %d dienų nuo perklausymo</item>
     <item quantity="other">Praėjus %d dienų nuo perklausymo</item>
   </plurals>
   <!--'Add Feed' Activity labels-->
@@ -124,7 +125,6 @@
   <string name="feed_remover_msg">Šalinamas sklaidos kanalas</string>
   <string name="load_complete_feed">Atnaujinti visą sklaidos kanalą</string>
   <string name="hide_episodes_title">Slėpti epizodus</string>
-  <string name="episode_actions">Pritaikyti veiksmus</string>
   <string name="hide_unplayed_episodes_label">Neperklausyti</string>
   <string name="hide_paused_episodes_label">Pristabdyti</string>
   <string name="hide_played_episodes_label">Perklausyti</string>
@@ -193,6 +193,7 @@
   <plurals name="downloads_left">
     <item quantity="one">Liko %d atsiuntimas</item>
     <item quantity="few">Liko %d atsiuntimai</item>
+    <item quantity="many">Liko %d atsiuntimų</item>
     <item quantity="other">Liko %d atsiuntimų</item>
   </plurals>
   <string name="downloads_processing">Apdorojami atsiuntimai</string>
@@ -283,7 +284,6 @@
   <string name="other_pref">Kita</string>
   <string name="about_pref">Apie</string>
   <string name="queue_label">Eilė</string>
-  <string name="services_label">Paslaugos</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Epizodų valymas</string>
   <string name="pref_episode_cleanup_summary">Epizodai, nesantys eilėje ar tarp mėgiamųjų, gali būti ištrinti automatinio atsiuntimo metu pritrūkus laisvos vietos naujiems epizodams </string>
@@ -404,8 +404,6 @@
   <string name="crash_report_sum">Siųsti paskiausios strigties pranešimą el. paštu</string>
   <string name="send_email">Siųsti el. laišką</string>
   <string name="experimental_pref">Eksperimentinis</string>
-  <string name="pref_sonic_title">„Sonic“ medijos leistuvė</string>
-  <string name="pref_sonic_message">Naudoti įtaisytąją „Sonic“ medijos leistuvę vietoje savosios „Android“ medijos leistuvės ir „Prestissimo“ </string>
   <string name="pref_current_value">Dabartinė reikšmė: %1$s</string>
   <string name="pref_proxy_title">Įgaliotasis serveris</string>
   <string name="pref_proxy_sum">Nustatyti įgaliotąjį tinklo serverį</string>
@@ -453,8 +451,6 @@
   <string name="html_export_label">HTML eksportas</string>
   <string name="exporting_label">Eksportuojama...</string>
   <string name="export_error_label">Eksporto klaida</string>
-  <string name="opml_export_success_title">OPML eksportas sėkmingas.</string>
-  <string name="opml_export_success_sum">.opml failas išsaugotas į:\u0020</string>
   <string name="opml_import_ask_read_permission">Norint nuskaityti OPML failą reikalinga prieiga prie nešiojamos atmintinės</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Nustatyti miego laikmatį</string>
@@ -472,16 +468,19 @@
   <plurals name="time_seconds_quantified">
     <item quantity="one">1 sekundė</item>
     <item quantity="few">%d sekundės</item>
+    <item quantity="many">%d sekundžių</item>
     <item quantity="other">%d sekundžių</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">1 minutė</item>
     <item quantity="few">%d minutės</item>
+    <item quantity="many">%d minučių</item>
     <item quantity="other">%d minučių</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="one">1 valanda</item>
     <item quantity="few">%d valandos</item>
+    <item quantity="many">%d valandų</item>
     <item quantity="other">%d valandų</item>
   </plurals>
   <string name="auto_enable_label">Įjungti automatiškai</string>
@@ -634,7 +633,6 @@ Po importavimo, epizodai gali būti per klaidą pažymėti kaip atsisiųsti. Tie
   <string name="label_import">Importuoti</string>
   <string name="label_export">Eksportuoti</string>
   <string name="import_select_file">Pasirinkite failą, kurį norite importuoti</string>
-  <string name="export_ok">Eksportas sėkmingas. Duomenų bazė išsaugota SD kortelėje.</string>
   <string name="import_ok">Importuota sėkmingai.
 
 Spauskite „OK“, kad paleisti „AntennaPod“ iš naujo.</string>
@@ -654,4 +652,5 @@ Spauskite „OK“, kad paleisti „AntennaPod“ iš naujo.</string>
   <string name="cast_failed_seek">Peršokti į naują poziciją „Chromecast“ įrenginyje nepavyko</string>
   <string name="cast_failed_receiver_player_error">Imtuvo leistuvę ištiko rimta klaida</string>
   <string name="cast_failed_media_error_skipping">Įvyko medijos atkūrimo klaida. Praleidžiama...</string>
+  <!--Notification channels-->
 </resources>

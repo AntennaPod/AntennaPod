@@ -119,7 +119,6 @@
   <string name="feed_remover_msg">Idővonal eltávolítása</string>
   <string name="load_complete_feed">Teljes idővonal frissítése</string>
   <string name="hide_episodes_title">Epizódok elrejtése</string>
-  <string name="episode_actions">Műveletek alkalmazása</string>
   <string name="hide_unplayed_episodes_label">Nem lejátszott</string>
   <string name="hide_paused_episodes_label">Szüneteltetett</string>
   <string name="hide_played_episodes_label">Lejátszott</string>
@@ -295,7 +294,6 @@
   <string name="pref_image_cache_size_sum">Kép gyorsítótár méretének a lemezen</string>
   <string name="crash_report_title">Hibajelentés</string>
   <string name="experimental_pref">Kísérleti</string>
-  <string name="pref_sonic_title">Sonic Media Player</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Hálózati proxy beállítása</string>
   <string name="pref_faq">GYIK</string>
@@ -387,4 +385,5 @@
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Hiba a hangerő beállítása közben</string>
   <string name="cast_failed_media_error_skipping">Hiba a lejátszás közben. Átugrás...</string>
+  <!--Notification channels-->
 </resources>

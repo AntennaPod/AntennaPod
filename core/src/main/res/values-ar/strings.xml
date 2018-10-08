@@ -1,17 +1,34 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="feeds_label">Feeds</string>
+  <string name="feed_update_receiver_name">تحديث التسجيل</string>
+  <string name="feeds_label">مغذيات</string>
+  <string name="statistics_label">إحصائيات</string>
+  <string name="add_feed_label">إضافة بودكاست</string>
+  <string name="episodes_label">حلقات</string>
   <string name="all_episodes_short_label">الكل</string>
+  <string name="new_episodes_label">جديد</string>
   <string name="favorite_episodes_label">المفضلات</string>
   <string name="new_label">جديد</string>
-  <string name="settings_label">اعدادات</string>
+  <string name="settings_label">إعدادات</string>
   <string name="downloads_label">تنزيل</string>
   <string name="downloads_running_label">جارى التشغيل</string>
   <string name="downloads_completed_label">اكتمل</string>
   <string name="downloads_log_label">سجل</string>
+  <string name="subscriptions_label">تسجيلات</string>
+  <string name="subscriptions_list_label">لائحة التسجيلات</string>
   <string name="cancel_download_label">الغاء التنزيل</string>
+  <string name="playback_history_label">أرشيف التشغيل</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">تزامن مع أجهزة أخرى</string>
+  <string name="gpodnet_auth_label">تسجيل الدخول لموقع gpodder</string>
+  <string name="free_space_label"> %1$s مجانا</string>
+  <string name="episode_cache_full_title">ذاكرة تخزين الحلقات ممتلئة</string>
+  <string name="episode_cache_full_message">لقد تم تجاوز الحد الأقصى لتخزين الحلقات. المرجو الرفع من قيمة التخزين في قائمة الإعدادات.</string>
+  <string name="synchronizing">المزامنة...</string>
   <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">مجموع وقت تشغيل البودكاستات:</string>
+  <string name="statistics_mode">نمط الإحصائيات</string>
   <!--Main activity-->
   <string name="drawer_open">قائمة الفتح</string>
   <string name="drawer_close">قائمة الاغلاف</string>
@@ -27,11 +44,13 @@
   <string name="copied_url_msg">تم نسخ الرابط للحافظة</string>
   <string name="go_to_position_label">اذهب لهذا الموقع</string>
   <!--Playback history-->
+  <string name="clear_history_label">مسح الأرشيف</string>
   <!--Other-->
   <string name="confirm_label">تأكيد</string>
   <string name="cancel_label">الغاء</string>
   <string name="yes">نعم</string>
   <string name="no">لا</string>
+  <string name="reset">إعادة التعيين</string>
   <string name="author_label">المؤلف</string>
   <string name="language_label">لغة</string>
   <string name="url_label">عنوان الموقع</string>
@@ -61,7 +80,6 @@
   <string name="show_info_label">اظهار المعلومات</string>
   <string name="share_label">مشاركة</string>
   <string name="share_link_label">مشاركة الرابط</string>
-  <string name="episode_actions">تطبيق الاجراء</string>
   <string name="hide_unplayed_episodes_label">لم يتم تشغيله</string>
   <string name="hide_paused_episodes_label">ايقاف مؤقت</string>
   <string name="hide_downloaded_episodes_label">تم التنزيل</string>
@@ -106,24 +124,73 @@
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <!--OPML import and export-->
+  <string name="opml_import_error_no_file">لم يتم اختيار أي ملف</string>
+  <string name="select_all_label">اختر الكل</string>
+  <string name="deselect_all_label">ألغ اختيار الكل</string>
+  <string name="select_options_label">اختر...</string>
+  <string name="choose_file_from_filesystem">عبر ملف نظام داخلي </string>
+  <string name="choose_file_from_external_application">إستخدام تطبيق خارجي</string>
+  <string name="opml_export_label">تصدير بصيغة OPML</string>
+  <string name="html_export_label">تصدير بصيغة HTML</string>
+  <string name="exporting_label">جار التصدير ...</string>
+  <string name="export_error_label">حدث خطأ أثناء التصدير</string>
+  <string name="export_success_title">تم التصدير بنجاح</string>
   <!--Sleep timer-->
+  <string name="enter_time_here_label">أدخل التوقيت</string>
+  <string name="timer_vibration_label">تشغيل الهزاز</string>
+  <string name="time_seconds">ثواني</string>
+  <string name="time_minutes">دقائق</string>
+  <string name="time_hours">ساعات</string>
   <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">الفئات</string>
+  <string name="gpodnet_toplist_header">أقوى البودكاستات</string>
+  <string name="gpodnet_suggestions_header">إقتراحات</string>
+  <string name="gpodnetauth_login_title">تسجيل الدخول</string>
+  <string name="gpodnetauth_login_butLabel">تسجيل الدخول</string>
+  <string name="username_label">إسم المستخدم</string>
+  <string name="password_label">كلمة المرور</string>
+  <string name="gpodnetauth_device_title">اختيار الأجهزة:</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">أدخل جهازا جديدا</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">اختر جهازا من القائمة: </string>
+  <string name="gpodnetauth_device_butChoose">إختر</string>
+  <string name="gpodnetauth_finish_title">لقد تم تسجيل الدخول بنجاح!</string>
+  <string name="gpodnetauth_finish_butgomainscreen">إذهب إلى الصفحة الرئيسية</string>
+  <string name="gpodnetsync_auth_error_descr">خطأ في إسم المستخدم أو كلمة المرور</string>
+  <string name="gpodnetsync_pref_report_successful">تم بنجاح</string>
   <!--Directory chooser-->
+  <string name="selected_folder_label">إختيار المستند:</string>
+  <string name="create_folder_label">أنشأ مستندا جديدا</string>
+  <string name="choose_data_directory">إختيار مستند البيانات</string>
   <!--Online feed view-->
+  <string name="downloading_label">تحميل ...</string>
   <!--Content descriptions for image buttons-->
+  <string name="media_type_audio_label">صوت</string>
+  <string name="media_type_video_label">فيديو</string>
+  <string name="load_next_page_label">تحميل الصفحة التالية</string>
   <!--Feed information screen-->
+  <string name="authentication_label">تسجيل الدخول</string>
   <!--Progress information-->
   <!--AntennaPodSP-->
   <!--Episodes apply actions-->
   <string name="all_label">الكل</string>
+  <string name="selected_all_label">إختيار كل الحلقات</string>
   <string name="unplayed_label">لم يتم تشغيله</string>
   <string name="downloaded_label">تم التنزيل</string>
   <string name="not_downloaded_label">لم يتم التنزيل</string>
   <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
+  <string name="volume">مستوى الصوت</string>
   <!--proxy settings-->
+  <string name="proxy_type_label">النوع</string>
   <!--Database import/export-->
+  <string name="label_import">استيراد</string>
+  <string name="label_export">تصدير</string>
+  <string name="export_ok">تم التصدير بنجاح</string>
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
+  <string name="notification_channel_downloading">تحميل</string>
+  <string name="notification_channel_playing">يشغل حاليا</string>
+  <string name="notification_channel_error">الأخطاء</string>
 </resources>
