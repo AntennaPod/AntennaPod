@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.Locale;
@@ -106,7 +107,7 @@ public final class Converter {
     }
 
     /** Converts milliseconds to a localized string containing hours and minutes */
-    public static String getDurationStringLocalized(Context context, long duration) {
+    public static String getDurationStringLocalized(@NonNull Context context, long duration) {
         int h = (int)(duration / HOURS_MIL);
         int rest = (int)(duration - h * HOURS_MIL);
         int m = rest / MINUTES_MIL;

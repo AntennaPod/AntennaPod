@@ -8,6 +8,8 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -90,8 +92,10 @@ public class ItemlistFragment extends ListFragment {
     public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
+    @Nullable
     private FeedItemlistAdapter adapter;
     private ContextMenu contextMenu;
+    @Nullable
     private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 
     private long feedID;
@@ -103,6 +107,7 @@ public class ItemlistFragment extends ListFragment {
 
     private List<Downloader> downloaderList;
 
+    @Nullable
     private MoreContentListFooterUtil listFooter;
 
     private boolean isUpdatingFeed;
@@ -123,6 +128,7 @@ public class ItemlistFragment extends ListFragment {
      * @param feedId The id of the feed to show
      * @return the newly created instance of an ItemlistFragment
      */
+    @NonNull
     public static ItemlistFragment newInstance(long feedId) {
         ItemlistFragment i = new ItemlistFragment();
         Bundle b = new Bundle();
@@ -190,7 +196,7 @@ public class ItemlistFragment extends ListFragment {
     };
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if(!isAdded()) {
             return;
         }
@@ -235,7 +241,7 @@ public class ItemlistFragment extends ListFragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             try {
                 if (!FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed)) {
@@ -287,6 +293,7 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
+    @Nullable
     private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
         @Override
         public void setItemVisibility(int id, boolean visible) {
@@ -301,7 +308,7 @@ public class ItemlistFragment extends ListFragment {
     };
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
@@ -321,7 +328,7 @@ public class ItemlistFragment extends ListFragment {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         if(menuInfo == null) {
             menuInfo = lastMenuInfo;
@@ -350,7 +357,7 @@ public class ItemlistFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, View v, int position, long id) {
         if(adapter == null) {
             return;
         }
@@ -361,14 +368,14 @@ public class ItemlistFragment extends ListFragment {
         activity.getSupportActionBar().setTitle(feed.getTitle());
     }
 
-    public void onEvent(FeedEvent event) {
+    public void onEvent(@NonNull FeedEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         if(event.feedId == feedID) {
             loadItems();
         }
     }
 
-    public void onEventMainThread(FeedItemEvent event) {
+    public void onEventMainThread(@NonNull FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if(feed == null || feed.getItems() == null || adapter == null) {
             return;
@@ -382,7 +389,7 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
-    public void onEventMainThread(DownloadEvent event) {
+    public void onEventMainThread(@NonNull DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
@@ -572,6 +579,7 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
+    @Nullable
     private final FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
 
         @Override
@@ -583,6 +591,7 @@ public class ItemlistFragment extends ListFragment {
             }
         }
 
+        @NonNull
         @Override
         public LongList getQueueIds() {
             LongList queueIds = new LongList();
@@ -603,7 +612,7 @@ public class ItemlistFragment extends ListFragment {
         }
 
         @Override
-        public int getItemDownloadProgressPercent(FeedItem item) {
+        public int getItemDownloadProgressPercent(@NonNull FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
                     if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA

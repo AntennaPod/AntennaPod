@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.glide;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
@@ -18,14 +19,14 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 public class ApGlideModule implements GlideModule {
 
     @Override
-    public void applyOptions(Context context, GlideBuilder builder) {
+    public void applyOptions(Context context, @NonNull GlideBuilder builder) {
         builder.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
         builder.setDiskCache(new InternalCacheDiskCacheFactory(context,
                 UserPreferences.getImageCacheSize()));
     }
 
     @Override
-    public void registerComponents(Context context, Glide glide) {
+    public void registerComponents(Context context, @NonNull Glide glide) {
         glide.register(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory());
     }
 

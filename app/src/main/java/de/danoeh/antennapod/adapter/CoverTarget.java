@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,12 +18,16 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
 class CoverTarget extends GlideDrawableImageViewTarget {
 
+    @NonNull
     private final WeakReference<String> fallback;
+    @NonNull
     private final WeakReference<TextView> placeholder;
+    @NonNull
     private final WeakReference<ImageView> cover;
+    @NonNull
     private final WeakReference<MainActivity> mainActivity;
 
-    public CoverTarget(String fallbackUri, TextView txtvPlaceholder, ImageView imgvCover, MainActivity activity) {
+    public CoverTarget(String fallbackUri, TextView txtvPlaceholder, @NonNull ImageView imgvCover, MainActivity activity) {
         super(imgvCover);
         fallback = new WeakReference<>(fallbackUri);
         placeholder = new WeakReference<>(txtvPlaceholder);

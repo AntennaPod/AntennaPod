@@ -7,6 +7,7 @@ import java.util.List;
 
 public class GpodnetEpisodeActionGetResponse {
 
+    @NonNull
     private final List<GpodnetEpisodeAction> episodeActions;
     private final long timestamp;
 
@@ -16,6 +17,7 @@ public class GpodnetEpisodeActionGetResponse {
         this.timestamp = timestamp;
     }
 
+    @NonNull
     public List<GpodnetEpisodeAction> getEpisodeActions() {
         return this.episodeActions;
     }
@@ -24,6 +26,7 @@ public class GpodnetEpisodeActionGetResponse {
         return this.timestamp;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "GpodnetEpisodeActionGetResponse{" +

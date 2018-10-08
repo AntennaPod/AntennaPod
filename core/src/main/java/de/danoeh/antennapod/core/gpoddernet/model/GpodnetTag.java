@@ -22,6 +22,7 @@ public class GpodnetTag implements Parcelable  {
         usage = in.readInt();
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "GpodnetTag [title="+title+", tag=" + tag + ", usage=" + usage + "]";
@@ -45,7 +46,7 @@ public class GpodnetTag implements Parcelable  {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(title);
         dest.writeString(tag);
         dest.writeInt(usage);
@@ -53,7 +54,7 @@ public class GpodnetTag implements Parcelable  {
 
     public static final Creator<GpodnetTag> CREATOR = new Creator<GpodnetTag>() {
         @Override
-        public GpodnetTag createFromParcel(Parcel in) {
+        public GpodnetTag createFromParcel(@NonNull Parcel in) {
             return new GpodnetTag(in);
         }
 

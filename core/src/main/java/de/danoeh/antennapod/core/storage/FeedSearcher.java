@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +34,7 @@ public class FeedSearcher {
      * @param selectedFeed feed to search, 0 to search through all feeds
      * @return list of episodes containing the query
      */
+    @NonNull
     public static List<SearchResult> performSearch(final Context context,
                                                    final String query, final long selectedFeed) {
         final int values[] = {2, 1, 0, 0, 0, 0};
@@ -69,7 +71,7 @@ public class FeedSearcher {
                     }
                 }
             }
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (@NonNull InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         Collections.sort(result, new SearchResultValueComparator());

@@ -54,7 +54,7 @@ public class ChapterUtils {
         return current;
     }
 
-    public static void loadChaptersFromStreamUrl(Playable media) {
+    public static void loadChaptersFromStreamUrl(@NonNull Playable media) {
         ChapterUtils.readID3ChaptersFromPlayableStreamUrl(media);
         if (media.getChapters() == null) {
             ChapterUtils.readOggChaptersFromPlayableStreamUrl(media);
@@ -76,7 +76,7 @@ public class ChapterUtils {
      * Uses the download URL of a media object of a feeditem to read its ID3
      * chapters.
      */
-    private static void readID3ChaptersFromPlayableStreamUrl(Playable p) {
+    private static void readID3ChaptersFromPlayableStreamUrl(@Nullable Playable p) {
         if (p == null || p.getStreamUrl() == null) {
             Log.e(TAG, "Unable to read ID3 chapters: media or download URL was null");
             return;
@@ -92,7 +92,7 @@ public class ChapterUtils {
                 p.setChapters(chapters);
             }
             Log.i(TAG, "Chapters loaded");
-        } catch (IOException | ID3ReaderException e) {
+        } catch (@NonNull IOException | ID3ReaderException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             IOUtils.closeQuietly(in);
@@ -103,7 +103,7 @@ public class ChapterUtils {
      * Uses the file URL of a media object of a feeditem to read its ID3
      * chapters.
      */
-    private static void readID3ChaptersFromPlayableFileUrl(Playable p) {
+    private static void readID3ChaptersFromPlayableFileUrl(@Nullable Playable p) {
         if (p == null || !p.localFileAvailable() || p.getLocalMediaUrl() == null) {
             return;
         }
@@ -122,7 +122,7 @@ public class ChapterUtils {
                 p.setChapters(chapters);
             }
             Log.i(TAG, "Chapters loaded");
-        } catch (IOException | ID3ReaderException e) {
+        } catch (@NonNull IOException | ID3ReaderException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             IOUtils.closeQuietly(in);
@@ -130,7 +130,7 @@ public class ChapterUtils {
     }
 
     @NonNull
-    private static List<Chapter> readChaptersFrom(InputStream in) throws IOException, ID3ReaderException {
+    private static List<Chapter> readChaptersFrom(@NonNull InputStream in) throws IOException, ID3ReaderException {
         ChapterReader reader = new ChapterReader();
         reader.readInputStream(in);
         List<Chapter> chapters = reader.getChapters();
@@ -148,7 +148,7 @@ public class ChapterUtils {
         return chapters;
     }
 
-    private static void readOggChaptersFromPlayableStreamUrl(Playable media) {
+    private static void readOggChaptersFromPlayableStreamUrl(@Nullable Playable media) {
         if (media == null || !media.streamAvailable()) {
             return;
         }
@@ -166,7 +166,7 @@ public class ChapterUtils {
         }
     }
 
-    private static void readOggChaptersFromPlayableFileUrl(Playable media) {
+    private static void readOggChaptersFromPlayableFileUrl(@Nullable Playable media) {
         if (media == null || media.getLocalMediaUrl() == null) {
             return;
         }

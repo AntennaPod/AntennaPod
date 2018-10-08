@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
+import android.support.annotation.NonNull;
+
 import org.apache.commons.io.input.XmlStreamReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -16,7 +18,8 @@ import de.danoeh.antennapod.core.feed.Feed;
 
 public class FeedHandler {
 
-	public FeedHandlerResult parseFeed(Feed feed) throws SAXException, IOException,
+	@NonNull
+    public FeedHandlerResult parseFeed(@NonNull Feed feed) throws SAXException, IOException,
 			ParserConfigurationException, UnsupportedFeedtypeException {
 		TypeGetter tg = new TypeGetter();
 		TypeGetter.Type type = tg.getType(feed);

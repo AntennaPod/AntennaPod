@@ -24,9 +24,10 @@ public class ExportWorker {
     private static final String DEFAULT_OUTPUT_NAME = "antennapod-feeds";
 
     private final ExportWriter exportWriter;
+    @NonNull
     private final File output;
 
-    public ExportWorker(ExportWriter exportWriter) {
+    public ExportWorker(@NonNull ExportWriter exportWriter) {
         this(exportWriter, new File(UserPreferences.getDataFolder(EXPORT_DIR),
                 DEFAULT_OUTPUT_NAME + "." + exportWriter.fileExtension()));
     }
@@ -36,6 +37,7 @@ public class ExportWorker {
         this.output = output;
     }
 
+    @NonNull
     public Observable<File> exportObservable() {
         if (output.exists()) {
             Log.w(TAG, "Overwriting previously exported file.");

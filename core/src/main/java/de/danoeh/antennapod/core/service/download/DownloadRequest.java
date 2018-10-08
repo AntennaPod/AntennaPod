@@ -14,12 +14,16 @@ public class DownloadRequest implements Parcelable {
     private final String destination;
     private final String source;
     private final String title;
+    @Nullable
     private String username;
+    @Nullable
     private String password;
+    @Nullable
     private String lastModified;
     private final boolean deleteOnFailure;
     private final long feedfileId;
     private final int feedfileType;
+    @Nullable
     private final Bundle arguments;
 
     private int progressPercent;
@@ -35,7 +39,7 @@ public class DownloadRequest implements Parcelable {
                            String username,
                            String password,
                            boolean deleteOnFailure,
-                           Bundle arguments) {
+                           @Nullable Bundle arguments) {
 
         this.destination = destination;
         this.source = source;
@@ -48,7 +52,7 @@ public class DownloadRequest implements Parcelable {
         this.arguments = (arguments != null) ? arguments : new Bundle();
     }
 
-    public DownloadRequest(String destination, String source, String title,
+    public DownloadRequest(@NonNull String destination, @NonNull String source, @NonNull String title,
                            long feedfileId, int feedfileType) {
         this(destination, source, title, feedfileId, feedfileType, null, null, true, null);
     }
@@ -93,7 +97,7 @@ public class DownloadRequest implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(destination);
         dest.writeString(source);
         dest.writeString(title);
@@ -111,7 +115,7 @@ public class DownloadRequest implements Parcelable {
     }
 
     public static final Parcelable.Creator<DownloadRequest> CREATOR = new Parcelable.Creator<DownloadRequest>() {
-        public DownloadRequest createFromParcel(Parcel in) {
+        public DownloadRequest createFromParcel(@NonNull Parcel in) {
             return new DownloadRequest(in);
         }
 
@@ -122,7 +126,7 @@ public class DownloadRequest implements Parcelable {
 
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -215,10 +219,12 @@ public class DownloadRequest implements Parcelable {
         this.statusMsg = statusMsg;
     }
 
+    @Nullable
     public String getUsername() {
         return username;
     }
 
+    @Nullable
     public String getPassword() {
         return password;
     }
@@ -231,6 +237,7 @@ public class DownloadRequest implements Parcelable {
         this.password = password;
     }
 
+    @NonNull
     public DownloadRequest setLastModified(@Nullable String lastModified) {
         this.lastModified = lastModified;
         return this;
@@ -245,11 +252,13 @@ public class DownloadRequest implements Parcelable {
         return deleteOnFailure;
     }
 
+    @Nullable
     public Bundle getArguments() {
         return arguments;
     }
 
     public static class Builder {
+        @NonNull
         private final String destination;
         private final String source;
         private final String title;
@@ -269,26 +278,31 @@ public class DownloadRequest implements Parcelable {
             this.feedfileType = item.getTypeAsInt();
         }
 
+        @NonNull
         public Builder deleteOnFailure(boolean deleteOnFailure) {
             this.deleteOnFailure = deleteOnFailure;
             return this;
         }
 
+        @NonNull
         public Builder lastModified(String lastModified) {
             this.lastModified = lastModified;
             return this;
         }
 
+        @NonNull
         public Builder withAuthentication(String username, String password) {
             this.username = username;
             this.password = password;
             return this;
         }
 
+        @NonNull
         public DownloadRequest build() {
             return new DownloadRequest(this);
         }
 
+        @NonNull
         public Builder withArguments(Bundle args) {
             this.arguments = args;
             return this;

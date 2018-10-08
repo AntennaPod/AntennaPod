@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +30,7 @@ public class VariableSpeedDialog {
     private VariableSpeedDialog() {
     }
 
-    public static void showDialog(final Context context) {
+    public static void showDialog(@NonNull final Context context) {
         if (org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(context)
                 || UserPreferences.useSonic()
                 || Build.VERSION.SDK_INT >= 23) {
@@ -39,11 +40,11 @@ public class VariableSpeedDialog {
         }
     }
 
-    public static void showGetPluginDialog(final Context context) {
+    public static void showGetPluginDialog(@NonNull final Context context) {
         showGetPluginDialog(context, false);
     }
 
-    private static void showGetPluginDialog(final Context context, boolean showSpeedSelector) {
+    private static void showGetPluginDialog(@NonNull final Context context, boolean showSpeedSelector) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
         builder.title(R.string.no_playback_plugin_title);
         builder.content(R.string.no_playback_plugin_or_sonic_msg);

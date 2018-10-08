@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
@@ -95,15 +96,22 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
     Button butPlaybackSpeed;
     ImageButton butCastDisconnect;
+    @Nullable
     private DrawerLayout drawerLayout;
+    @Nullable
     private NavListAdapter navAdapter;
+    @Nullable
     private ListView navList;
+    @Nullable
     private View navDrawer;
+    @Nullable
     private ActionBarDrawerToggle drawerToggle;
     private int mPosition = -1;
 
     private Playable media;
+    @Nullable
     private ViewPager pager;
+    @Nullable
     private MediaplayerInfoPagerAdapter pagerAdapter;
 
     private Subscription subscription;
@@ -340,6 +348,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         clearStatusMsg();
     }
 
+    @Nullable
     public PlaybackController getPlaybackController() {
         return controller;
     }
@@ -356,12 +365,12 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return drawerToggle != null && drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         if(v.getId() != R.id.nav_list) {
             return;
@@ -379,7 +388,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         final int position = mPosition;
         mPosition = -1; // reset
         if(position < 0) {
@@ -483,7 +492,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    public void onEventMainThread(MessageEvent event) {
+    public void onEventMainThread(@NonNull MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         View parentLayout = findViewById(R.id.drawer_layout);
         Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);
@@ -504,6 +513,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         }
     };
 
+    @Nullable
     private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override
         public int getCount() {
@@ -574,6 +584,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
         private static final String TAG = "MPInfoPagerAdapter";
 
+        @Nullable
         private Playable media;
         private PlaybackController controller;
 
@@ -586,7 +597,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         private ItemDescriptionFragment itemDescriptionFragment;
         private ChaptersFragment chaptersFragment;
 
-        public void onMediaChanged(Playable media) {
+        public void onMediaChanged(@Nullable Playable media) {
             Log.d(TAG, "media changing to " + ((media != null) ? media.getEpisodeTitle() : "null"));
             this.media = media;
             if(coverFragment != null) {
@@ -612,6 +623,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             return chaptersFragment;
         }
 
+        @Nullable
         @Override
         public Fragment getItem(int position) {
             Log.d(TAG, "getItem(" + position + ")");

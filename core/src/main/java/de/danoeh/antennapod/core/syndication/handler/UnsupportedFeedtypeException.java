@@ -1,12 +1,15 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
+import android.support.annotation.Nullable;
+
 import de.danoeh.antennapod.core.syndication.handler.TypeGetter.Type;
 
 public class UnsupportedFeedtypeException extends Exception {
 	private static final long serialVersionUID = 9105878964928170669L;
 	private final TypeGetter.Type type;
 	private String rootElement;
-	private String message = null;
+	@Nullable
+    private String message = null;
 	
 	public UnsupportedFeedtypeException(Type type) {
 		super();
@@ -31,6 +34,7 @@ public class UnsupportedFeedtypeException extends Exception {
         return rootElement;
     }
 
+    @Nullable
     @Override
 	public String getMessage() {
 		if (message != null) {

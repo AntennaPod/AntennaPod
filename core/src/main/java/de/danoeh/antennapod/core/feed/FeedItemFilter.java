@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import de.danoeh.antennapod.core.util.LongList;
 import static de.danoeh.antennapod.core.feed.FeedItem.TAG_FAVORITE;
 
 public class FeedItemFilter {
+    @NonNull
     private final String[] mProperties;
 
     private boolean showPlayed = false;
@@ -66,7 +68,8 @@ public class FeedItemFilter {
     /**
      * Run a list of feed items through the filter.
      */
-    public List<FeedItem> filter(List<FeedItem> items) {
+    @NonNull
+    public List<FeedItem> filter(@NonNull List<FeedItem> items) {
         if(mProperties.length == 0) return items;
 
         List<FeedItem> result = new ArrayList<>();

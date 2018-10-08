@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -25,6 +26,7 @@ public class SearchListFragment extends PodcastListFragment {
 
     private String query;
 
+    @NonNull
     public static SearchListFragment newInstance(String query) {
         SearchListFragment fragment = new SearchListFragment();
         Bundle args = new Bundle();
@@ -45,7 +47,7 @@ public class SearchListFragment extends PodcastListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         // parent already inflated menu
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -69,7 +71,7 @@ public class SearchListFragment extends PodcastListFragment {
     }
 
     @Override
-    protected List<GpodnetPodcast> loadPodcastData(GpodnetService service) throws GpodnetServiceException {
+    protected List<GpodnetPodcast> loadPodcastData(@NonNull GpodnetService service) throws GpodnetServiceException {
         return service.searchPodcasts(query, 0);
     }
 

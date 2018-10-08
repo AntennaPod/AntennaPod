@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.asynctask;
 
+import android.support.annotation.Nullable;
+
 /**
  * Classes that implement this interface provide access to an image resource that can
  * be loaded by the Picasso library.
@@ -11,5 +13,6 @@ public interface ImageResource {
      * <p/>
      * The location can either be an URL or a local path
      */
+    @Nullable
     String getImageLocation();
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -57,6 +58,7 @@ public final class DBTasks {
     /**
      * Executor service used by the autodownloadUndownloadedEpisodes method.
      */
+    @NonNull
     private static final ExecutorService autodownloadExec;
 
     static {
@@ -94,7 +96,7 @@ public final class DBTasks {
         if (feedID != 0) {
             try {
                 DBWriter.deleteFeed(context, feedID).get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (@NonNull InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         } else {
@@ -117,7 +119,7 @@ public final class DBTasks {
      *                          found, the PlaybackService will shutdown and the database entry of the FeedMedia object will be
      *                          corrected.
      */
-    public static void playMedia(final Context context, final FeedMedia media,
+    public static void playMedia(@NonNull final Context context, @NonNull final FeedMedia media,
                                  boolean showPlayer, boolean startWhenPrepared, boolean shouldStream) {
         try {
             if (!shouldStream) {
@@ -158,7 +160,7 @@ public final class DBTasks {
      * @param context  Might be used for accessing the database
      * @param feeds    List of Feeds that should be refreshed.
      */
-    public static void refreshAllFeeds(final Context context, final List<Feed> feeds) {
+    public static void refreshAllFeeds(@NonNull final Context context, final List<Feed> feeds) {
         refreshAllFeeds(context, feeds, null);
     }
 
@@ -170,7 +172,7 @@ public final class DBTasks {
      * @param feeds    List of Feeds that should be refreshed.
      * @param callback Called after everything was added enqueued for download. Might be null.
      */
-    public static void refreshAllFeeds(final Context context, final List<Feed> feeds, @Nullable Runnable callback) {
+    public static void refreshAllFeeds(@NonNull final Context context, @Nullable final List<Feed> feeds, @Nullable Runnable callback) {
         if (!isRefreshing.compareAndSet(false, true)) {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
             return;
@@ -244,7 +246,7 @@ public final class DBTasks {
      * @param context Used for requesting the download.
      * @param feed    The Feed object.
      */
-    public static void forceRefreshCompleteFeed(final Context context, final Feed feed) {
+    public static void forceRefreshCompleteFeed(final Context context, @NonNull final Feed feed) {
         try {
             refreshFeed(context, feed, true, true);
         } catch (DownloadRequestException e) {
@@ -325,7 +327,7 @@ public final class DBTasks {
      *  The feeds are only refreshed if an update interval or time of day is set and the last
      *  (successful) refresh was before the last interval or more than a day ago, respectively.
      */
-    public static void checkShouldRefreshFeeds(Context context) {
+    public static void checkShouldRefreshFeeds(@NonNull Context context) {
         long interval = 0;
         if(UserPreferences.getUpdateInterval() > 0) {
             interval = UserPreferences.getUpdateInterval();
@@ -370,7 +372,7 @@ public final class DBTasks {
     }
 
     static void downloadFeedItems(boolean performAutoCleanup,
-                                  final Context context, final FeedItem... items)
+                                  final Context context, @NonNull final FeedItem... items)
             throws DownloadRequestException {
         final DownloadRequester requester = DownloadRequester.getInstance();
 
@@ -447,7 +449,8 @@ public final class DBTasks {
      *                the queue from the database in the same thread.
      * @return Successor of the FeedItem or null if the FeedItem is not in the queue or has no successor.
      */
-    public static FeedItem getQueueSuccessorOfItem(final long itemId, List<FeedItem> queue) {
+    @Nullable
+    public static FeedItem getQueueSuccessorOfItem(final long itemId, @Nullable List<FeedItem> queue) {
         FeedItem result = null;
         if (queue == null) {
             queue = DBReader.getQueue();
@@ -479,7 +482,7 @@ public final class DBTasks {
         return queue.contains(feedItemId);
     }
 
-    private static Feed searchFeedByIdentifyingValueOrID(PodDBAdapter adapter,
+    private static Feed searchFeedByIdentifyingValueOrID(@NonNull PodDBAdapter adapter,
                                                          Feed feed) {
         if (feed.getId() != 0) {
             return DBReader.getFeed(feed.getId(), adapter);
@@ -521,6 +524,7 @@ public final class DBTasks {
      * @param newFeeds The new Feed objects.
      * @return The updated Feeds from the database if it already existed, or the new Feed from the parameters otherwise.
      */
+    @NonNull
     public static synchronized Feed[] updateFeed(final Context context,
                                                  final Feed... newFeeds) {
         List<Feed> newFeedsList = new ArrayList<>();
@@ -617,7 +621,7 @@ public final class DBTasks {
         try {
             DBWriter.addNewFeed(context, newFeedsList.toArray(new Feed[newFeedsList.size()])).get();
             DBWriter.setCompleteFeed(updatedFeedsList.toArray(new Feed[updatedFeedsList.size()])).get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (@NonNull InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -639,7 +643,7 @@ public final class DBTasks {
                                                                  final long feedID, final String query) {
         return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
-            public void execute(PodDBAdapter adapter) {
+            public void execute(@NonNull PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemTitles(feedID,
                         query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
@@ -663,7 +667,7 @@ public final class DBTasks {
                                                                  final long feedID, final String query) {
         return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
-            public void execute(PodDBAdapter adapter) {
+            public void execute(@NonNull PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemAuthors(feedID,
                         query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
@@ -687,7 +691,7 @@ public final class DBTasks {
                                                                  final long feedID, final String query) {
         return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
-            public void execute(PodDBAdapter adapter) {
+            public void execute(@NonNull PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemFeedIdentifiers(feedID,
                         query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
@@ -711,7 +715,7 @@ public final class DBTasks {
                                                                        final long feedID, final String query) {
         return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
-            public void execute(PodDBAdapter adapter) {
+            public void execute(@NonNull PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemDescriptions(feedID,
                         query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
@@ -735,7 +739,7 @@ public final class DBTasks {
                                                                           final long feedID, final String query) {
         return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
-            public void execute(PodDBAdapter adapter) {
+            public void execute(@NonNull PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemContentEncoded(feedID,
                         query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
@@ -758,7 +762,7 @@ public final class DBTasks {
                                                                     final long feedID, final String query) {
         return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
-            public void execute(PodDBAdapter adapter) {
+            public void execute(@NonNull PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemChapters(feedID,
                         query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
@@ -806,7 +810,7 @@ public final class DBTasks {
      * @param context
      * @param item
      */
-    public static void flattrItemIfLoggedIn(Context context, FeedItem item) {
+    public static void flattrItemIfLoggedIn(@NonNull Context context, @NonNull FeedItem item) {
         if (FlattrUtils.hasToken()) {
             item.getFlattrStatus().setFlattrQueue();
             DBWriter.setFlattredStatus(context, item, true);
@@ -822,7 +826,7 @@ public final class DBTasks {
      * @param context
      * @param feed
      */
-    public static void flattrFeedIfLoggedIn(Context context, Feed feed) {
+    public static void flattrFeedIfLoggedIn(@NonNull Context context, @NonNull Feed feed) {
         if (FlattrUtils.hasToken()) {
             feed.getFlattrStatus().setFlattrQueue();
             DBWriter.setFlattredStatus(context, feed, true);

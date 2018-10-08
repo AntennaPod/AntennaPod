@@ -1,5 +1,7 @@
 package de.test.antennapod.storage;
 
+import android.support.annotation.NonNull;
+
 import junit.framework.Assert;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ class DBTestUtils {
     /**
      * Use this method when tests don't involve chapters.
      */
+    @NonNull
     public static List<Feed> saveFeedlist(int numFeeds, int numItems, boolean withMedia) {
         return saveFeedlist(numFeeds, numItems, withMedia, false, 0);
     }
@@ -31,6 +34,7 @@ class DBTestUtils {
     /**
      * Use this method when tests involve chapters.
      */
+    @NonNull
     public static List<Feed> saveFeedlist(int numFeeds, int numItems, boolean withMedia,
                                           boolean withChapters, int numChapters) {
         if (numFeeds <= 0) {

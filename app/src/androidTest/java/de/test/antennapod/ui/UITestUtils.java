@@ -2,6 +2,7 @@ package de.test.antennapod.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import junit.framework.Assert;
@@ -101,7 +102,8 @@ class UITestUtils {
         return String.format("%s/files/%d", HTTPBin.BASE_URL, id);
     }
 
-    private File newBitmapFile(String name) throws IOException {
+    @NonNull
+    private File newBitmapFile(@NonNull String name) throws IOException {
         File imgFile = new File(destDir, name);
         Bitmap bitmap = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
         FileOutputStream out = new FileOutputStream(imgFile);
@@ -110,7 +112,8 @@ class UITestUtils {
         return imgFile;
     }
 
-    private File newMediaFile(String name) throws IOException {
+    @NonNull
+    private File newMediaFile(@NonNull String name) throws IOException {
         File mediaFile = new File(hostedMediaDir, name);
         if(mediaFile.exists()) {
             mediaFile.delete();
@@ -208,12 +211,13 @@ class UITestUtils {
         EventBus.getDefault().post(QueueEvent.setQueue(queue));
     }
 
-    public PlaybackController getPlaybackController(MainActivity mainActivity) {
+    public PlaybackController getPlaybackController(@NonNull MainActivity mainActivity) {
         ExternalPlayerFragment fragment = (ExternalPlayerFragment)mainActivity.getSupportFragmentManager().findFragmentByTag(ExternalPlayerFragment.TAG);
         return fragment.getPlaybackControllerTestingOnly();
     }
 
-    public FeedMedia getCurrentMedia(MainActivity mainActivity) {
+    @NonNull
+    public FeedMedia getCurrentMedia(@NonNull MainActivity mainActivity) {
         return (FeedMedia)getPlaybackController(mainActivity).getMedia();
     }
 }

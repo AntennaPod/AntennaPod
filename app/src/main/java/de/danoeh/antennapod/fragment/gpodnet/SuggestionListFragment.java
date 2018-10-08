@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
+import android.support.annotation.NonNull;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class SuggestionListFragment extends PodcastListFragment {
     private static final int SUGGESTIONS_COUNT = 50;
 
     @Override
-    protected List<GpodnetPodcast> loadPodcastData(GpodnetService service) throws GpodnetServiceException {
+    protected List<GpodnetPodcast> loadPodcastData(@NonNull GpodnetService service) throws GpodnetServiceException {
         if (GpodnetPreferences.loggedIn()) {
             service.authenticate(GpodnetPreferences.getUsername(), GpodnetPreferences.getPassword());
             return service.getSuggestions(SUGGESTIONS_COUNT);

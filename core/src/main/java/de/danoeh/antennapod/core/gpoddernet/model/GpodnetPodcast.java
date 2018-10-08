@@ -3,8 +3,11 @@ package de.danoeh.antennapod.core.gpoddernet.model;
 import android.support.annotation.NonNull;
 
 public class GpodnetPodcast {
+    @NonNull
     private final String url;
+    @NonNull
     private final String title;
+    @NonNull
     private final String description;
     private final int subscribers;
     private final String logoUrl;
@@ -27,6 +30,7 @@ public class GpodnetPodcast {
         this.mygpoLink = mygpoLink;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "GpodnetPodcast [url=" + url + ", title=" + title
@@ -35,14 +39,17 @@ public class GpodnetPodcast {
                 + ", mygpoLink=" + mygpoLink + "]";
     }
 
+    @NonNull
     public String getUrl() {
         return url;
     }
 
+    @NonNull
     public String getTitle() {
         return title;
     }
 
+    @NonNull
     public String getDescription() {
         return description;
     }

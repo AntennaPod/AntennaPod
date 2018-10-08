@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -50,7 +52,7 @@ public class ImportExportActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
@@ -93,7 +95,7 @@ public class ImportExportActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent resultData) {
         if (resultCode != RESULT_OK || resultData == null) {
             return;
         }
@@ -160,7 +162,7 @@ public class ImportExportActivity extends AppCompatActivity {
         }
     }
 
-    private void writeBackupTo(FileOutputStream outFileStream) {
+    private void writeBackupTo(@NonNull FileOutputStream outFileStream) {
         FileChannel src = null;
         FileChannel dst = null;
         try {

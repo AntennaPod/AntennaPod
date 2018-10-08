@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import de.danoeh.antennapod.core.R;
 
@@ -34,7 +35,8 @@ public enum DownloadError {
 	}
 
 	/** Return DownloadError from its associated code. */
-	public static DownloadError fromCode(int code) {
+	@NonNull
+    public static DownloadError fromCode(int code) {
 		for (DownloadError reason : values()) {
 			if (reason.getCode() == code) {
 				return reason;

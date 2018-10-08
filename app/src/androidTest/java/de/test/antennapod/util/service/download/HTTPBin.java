@@ -1,5 +1,7 @@
 package de.test.antennapod.util.service.download;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
 
@@ -45,6 +47,7 @@ public class HTTPBin extends NanoHTTPD {
     private static final String MIME_HTML = "text/html";
     private static final String MIME_PLAIN = "text/plain";
 
+    @NonNull
     private final List<File> servedFiles;
 
     public HTTPBin() {
@@ -57,7 +60,7 @@ public class HTTPBin extends NanoHTTPD {
      *
      * @return The ID of the file or -1 if the file could not be added to the server.
      */
-    public synchronized int serveFile(File file) {
+    public synchronized int serveFile(@Nullable File file) {
         if (file == null) throw new IllegalArgumentException("file = null");
         if (!file.exists()) {
             return -1;
@@ -85,6 +88,7 @@ public class HTTPBin extends NanoHTTPD {
         }
     }
 
+    @Nullable
     public synchronized File accessFile(int id) {
         if (id < 0 || id >= servedFiles.size()) {
             return null;
@@ -93,8 +97,9 @@ public class HTTPBin extends NanoHTTPD {
         }
     }
 
+    @Nullable
     @Override
-    public Response serve(IHTTPSession session) {
+    public Response serve(@NonNull IHTTPSession session) {
 
         if (BuildConfig.DEBUG) Log.d(TAG, "Requested url: " + session.getUri());
 
@@ -205,7 +210,8 @@ public class HTTPBin extends NanoHTTPD {
         return get404Error();
     }
 
-    private synchronized Response getFileAccessResponse(int id, Map<String, String> header) {
+    @Nullable
+    private synchronized Response getFileAccessResponse(int id, @NonNull Map<String, String> header) {
         File file = accessFile(id);
         if (file == null || !file.exists()) {
             Log.w(TAG, "File not found: " + id);
@@ -275,6 +281,7 @@ public class HTTPBin extends NanoHTTPD {
         return response;
     }
 
+    @NonNull
     private Response getGzippedResponse(int size) throws IOException {
         try {
             Thread.sleep(200);
@@ -315,6 +322,7 @@ public class HTTPBin extends NanoHTTPD {
                                                                                                         return code;
                                                                                                     }
 
+                                                                                                    @NonNull
                                                                                                     @Override
                                                                                                     public String getDescription() {
                                                                                                         return "Unknown";
@@ -324,6 +332,7 @@ public class HTTPBin extends NanoHTTPD {
 
     }
 
+    @NonNull
     private Response getRedirectResponse(int times) {
         if (times > 0) {
             Response response = new Response(Response.Status.REDIRECT, MIME_HTML, "This resource has been moved permanently");
@@ -336,6 +345,7 @@ public class HTTPBin extends NanoHTTPD {
         }
     }
 
+    @NonNull
     private Response getUnauthorizedResponse() {
         Response response = new Response(Response.Status.UNAUTHORIZED, MIME_HTML, "");
         response.addHeader("WWW-Authenticate", "Basic realm=\"Test Realm\"");

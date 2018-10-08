@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
@@ -36,6 +38,7 @@ public class DownloadLogFragment extends ListFragment {
     private static final String TAG = "DownloadLogFragment";
 
     private List<DownloadStatus> downloadLog;
+    @Nullable
     private DownloadLogAdapter adapter;
 
     private boolean viewsCreated = false;
@@ -109,6 +112,7 @@ public class DownloadLogFragment extends ListFragment {
         ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
     }
 
+    @Nullable
     private final DownloadLogAdapter.ItemAccess itemAccess = new DownloadLogAdapter.ItemAccess() {
 
         @Override
@@ -137,7 +141,7 @@ public class DownloadLogFragment extends ListFragment {
     };
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         if(!isAdded()) {
             return;
         }
@@ -152,7 +156,7 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         if (itemsLoaded) {
             MenuItem menuItem = menu.findItem(R.id.clear_history_item);
@@ -163,7 +167,7 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.clear_history_item:

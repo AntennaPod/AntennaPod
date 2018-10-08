@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
+import android.support.annotation.Nullable;
+
 import java.util.concurrent.Callable;
 
 /**
@@ -11,6 +13,7 @@ public interface ShownotesProvider {
      * database, it should be done in a separate thread. After the shownotes
      * have been loaded, callback.onShownotesLoaded should be called.
      */
+    @Nullable
     Callable<String> loadShownotes();
 
 }

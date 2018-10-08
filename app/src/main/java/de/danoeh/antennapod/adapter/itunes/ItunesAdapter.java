@@ -47,7 +47,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         //Current podcast
         Podcast podcast = data.get(position);
 
@@ -167,13 +167,16 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         /**
          * ImageView holding the Podcast image
          */
+        @NonNull
         final ImageView coverView;
 
         /**
          * TextView holding the Podcast title
          */
+        @NonNull
         final TextView titleView;
 
+        @NonNull
         final TextView urlView;
 
 

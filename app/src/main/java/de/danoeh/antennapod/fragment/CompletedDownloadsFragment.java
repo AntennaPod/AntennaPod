@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.Menu;
@@ -44,6 +46,7 @@ public class CompletedDownloadsFragment extends ListFragment {
             EventDistributor.UNREAD_ITEMS_UPDATE;
 
     private List<FeedItem> items;
+    @Nullable
     private DownloadedEpisodesListAdapter listAdapter;
 
     private boolean viewCreated = false;
@@ -115,7 +118,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         position -= l.getHeaderViewsCount();
         long[] ids = FeedItemUtil.getIds(items);
@@ -133,7 +136,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if(!isAdded()) {
             return;
         }
@@ -145,7 +148,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.episode_actions:
                 EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
@@ -157,6 +160,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
     }
 
+    @Nullable
     private final DownloadedEpisodesListAdapter.ItemAccess itemAccess = new DownloadedEpisodesListAdapter.ItemAccess() {
         @Override
         public int getCount() {

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -35,7 +36,7 @@ public class ClientConfig {
 
     private static boolean initialized = false;
 
-    public static synchronized void initialize(Context context) {
+    public static synchronized void initialize(@NonNull Context context) {
         if(initialized) {
             return;
         }

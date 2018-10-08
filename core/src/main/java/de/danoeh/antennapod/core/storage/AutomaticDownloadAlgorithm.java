@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 public interface AutomaticDownloadAlgorithm {
 
@@ -14,5 +15,6 @@ public interface AutomaticDownloadAlgorithm {
      * @param context  Used for accessing the DB.
      * @return A Runnable that will be submitted to an ExecutorService.
      */
+    @NonNull
     Runnable autoDownloadUndownloadedItems(Context context);
 }

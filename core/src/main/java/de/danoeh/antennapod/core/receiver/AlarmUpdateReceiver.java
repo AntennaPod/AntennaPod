@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -15,7 +16,7 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
 	private static final String TAG = "AlarmUpdateReceiver";
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
+	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
 		Log.d(TAG, "Received intent");
 		if (TextUtils.equals(intent.getAction(), Intent.ACTION_BOOT_COMPLETED)) {
 			Log.d(TAG, "Resetting update alarm after reboot");

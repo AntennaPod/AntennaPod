@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -33,6 +34,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     @Override
     protected boolean showOnlyNewEpisodes() { return true; }
 
+    @NonNull
     @Override
     protected String getPrefName() { return PREF_NAME; }
 
@@ -47,7 +49,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
 

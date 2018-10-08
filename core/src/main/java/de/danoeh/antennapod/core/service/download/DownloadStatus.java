@@ -123,7 +123,8 @@ public class DownloadStatus {
 				reasonDetailed);
 	}
 
-	@Override
+	@NonNull
+    @Override
 	public String toString() {
 		return "DownloadStatus [id=" + id + ", title=" + title + ", reason="
 				+ reason + ", reasonDetailed=" + reasonDetailed
@@ -153,6 +154,7 @@ public class DownloadStatus {
         return successful;
     }
 
+    @NonNull
     public Date getCompletionDate() {
         return (Date) completionDate.clone();
     }
@@ -193,7 +195,7 @@ public class DownloadStatus {
         this.cancelled = true;
     }
 
-    public void setCompletionDate(Date completionDate) {
+    public void setCompletionDate(@NonNull Date completionDate) {
         this.completionDate = (Date) completionDate.clone();
     }
 

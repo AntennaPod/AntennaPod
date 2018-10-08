@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -95,7 +97,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -201,7 +203,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onPostExecute(List<GpodnetDevice> gpodnetDevices) {
+            protected void onPostExecute(@Nullable List<GpodnetDevice> gpodnetDevices) {
                 super.onPostExecute(gpodnetDevices);
                 if (gpodnetDevices != null) {
                     List<String> deviceNames = new ArrayList<>();
@@ -220,6 +222,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
                 }
             }
 
+            @Nullable
             @Override
             protected List<GpodnetDevice> doInBackground(GpodnetService... params) {
                 try {
@@ -268,6 +271,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
                             }
                         }
 
+                        @Nullable
                         @Override
                         protected GpodnetDevice doInBackground(GpodnetService... params) {
                             try {
@@ -310,7 +314,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
         return id;
     }
 
-    private boolean isDeviceWithIdInList(String id, List<GpodnetDevice> gpodnetDevices) {
+    private boolean isDeviceWithIdInList(String id, @Nullable List<GpodnetDevice> gpodnetDevices) {
         if (gpodnetDevices == null) {
             return false;
         }
@@ -322,7 +326,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean checkDeviceIDText(EditText deviceID, EditText caption, TextView txtvError, List<GpodnetDevice> devices) {
+    private boolean checkDeviceIDText(EditText deviceID, @NonNull EditText caption, @NonNull TextView txtvError, @Nullable List<GpodnetDevice> devices) {
         String text = deviceID.getText().toString();
         if (text.length() == 0) {
             txtvError.setText(R.string.gpodnetauth_device_errorEmpty);

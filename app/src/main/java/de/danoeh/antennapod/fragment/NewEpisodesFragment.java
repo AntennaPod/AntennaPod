@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     @Override
     protected boolean showOnlyNewEpisodes() { return true; }
 
+    @NonNull
     @Override
     protected String getPrefName() { return PREF_NAME; }
 
@@ -41,7 +43,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     }
 
     @Override
-    public void onEventMainThread(FeedItemEvent event) {
+    public void onEventMainThread(@NonNull FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if(episodes == null) {
             return;
@@ -56,7 +58,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
 

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.dialog;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.text.InputType;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -12,6 +13,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 
 public class RenameFeedDialog {
 
+    @NonNull
     private final WeakReference<Activity> activityRef;
     private final Feed feed;
 

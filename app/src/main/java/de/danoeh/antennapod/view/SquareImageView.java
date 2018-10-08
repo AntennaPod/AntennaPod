@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
@@ -9,15 +10,15 @@ import android.util.AttributeSet;
  */
 public class SquareImageView extends AppCompatImageView {
 
-    public SquareImageView(Context context) {
+    public SquareImageView(@NonNull Context context) {
         super(context);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs) {
+    public SquareImageView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs, int defStyle) {
+    public SquareImageView(@NonNull Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

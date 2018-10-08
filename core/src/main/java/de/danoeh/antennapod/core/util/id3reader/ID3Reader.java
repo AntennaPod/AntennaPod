@@ -1,5 +1,8 @@
 package de.danoeh.antennapod.core.util.id3reader;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -28,12 +31,13 @@ public class ID3Reader {
     private static final byte ENCODING_UTF16_WITHOUT_BOM = 2;
     private static final byte ENCODING_UTF8 = 3;
 
+    @Nullable
     private TagHeader tagHeader;
 
 	ID3Reader() {
 	}
 
-	public final void readInputStream(InputStream input) throws IOException,
+	public final void readInputStream(@NonNull InputStream input) throws IOException,
 			ID3ReaderException {
 		int rc;
 		readerPosition = 0;
@@ -92,7 +96,8 @@ public class ID3Reader {
 	 * Read a certain number of bytes from the given input stream. This method
 	 * changes the readerPosition-attribute.
 	 */
-    char[] readBytes(InputStream input, int number)
+    @NonNull
+    char[] readBytes(@NonNull InputStream input, int number)
 			throws IOException, ID3ReaderException {
 		char[] header = new char[number];
 		for (int i = 0; i < number; i++) {
@@ -170,7 +175,7 @@ public class ID3Reader {
         return out;
     }
 
-	protected int readString(StringBuilder buffer, InputStream input, int max) throws IOException,
+	protected int readString(@Nullable StringBuilder buffer, @NonNull InputStream input, int max) throws IOException,
 			ID3ReaderException {
 		if (max > 0) {
 			char[] encoding = readBytes(input, 1);
@@ -191,7 +196,7 @@ public class ID3Reader {
 		}
 	}
 
-	protected int readISOString(StringBuilder buffer, InputStream input, int max)
+	protected int readISOString(@Nullable StringBuilder buffer, @NonNull InputStream input, int max)
 			throws IOException, ID3ReaderException {
 		int bytesRead = 0;
 		char c;
@@ -203,7 +208,7 @@ public class ID3Reader {
 		return bytesRead;
 	}
 
-	private int readUnicodeString(StringBuilder strBuffer, InputStream input, int max, Charset charset)
+	private int readUnicodeString(@Nullable StringBuilder strBuffer, @NonNull InputStream input, int max, @NonNull Charset charset)
 			throws IOException, ID3ReaderException {
 		byte[] buffer = new byte[max];
         int c, cZero = -1;

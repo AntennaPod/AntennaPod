@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
+import android.support.annotation.NonNull;
+
 import org.xml.sax.Attributes;
 
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
@@ -10,14 +12,15 @@ public class NSContent extends Namespace {
 	
 	private static final String ENCODED = "encoded";
 	
-	@Override
+	@NonNull
+    @Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
 		return new SyndElement(localName, this);
 	}
 
 	@Override
-	public void handleElementEnd(String localName, HandlerState state) {
+	public void handleElementEnd(String localName, @NonNull HandlerState state) {
 		if (ENCODED.equals(localName) && state.getCurrentItem() != null &&
 			state.getContentBuf() != null) {
 			state.getCurrentItem().setContentEncoded(state.getContentBuf().toString());

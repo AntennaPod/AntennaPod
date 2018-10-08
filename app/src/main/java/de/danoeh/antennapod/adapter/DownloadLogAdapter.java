@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.format.DateUtils;
@@ -40,8 +41,9 @@ public class DownloadLogAdapter extends BaseAdapter {
 		this.context = context;
 	}
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	@Nullable
+    @Override
+	public View getView(int position, @Nullable View convertView, ViewGroup parent) {
 		Holder holder;
 		DownloadStatus status = getItem(position);
 		if (convertView == null) {
@@ -113,7 +115,8 @@ public class DownloadLogAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private final View.OnClickListener clickListener = new View.OnClickListener() {
+	@Nullable
+    private final View.OnClickListener clickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			ButtonHolder holder = (ButtonHolder) v.getTag();
@@ -176,7 +179,8 @@ public class DownloadLogAdapter extends BaseAdapter {
         return itemAccess.getCount();
 	}
 
-	@Override
+	@Nullable
+    @Override
 	public DownloadStatus getItem(int position) {
         return itemAccess.getItem(position);
 	}
@@ -188,7 +192,8 @@ public class DownloadLogAdapter extends BaseAdapter {
 
     public interface ItemAccess {
 		int getCount();
-		DownloadStatus getItem(int position);
+		@Nullable
+        DownloadStatus getItem(int position);
     }
 
 }

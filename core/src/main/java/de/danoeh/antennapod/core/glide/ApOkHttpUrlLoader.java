@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.glide;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -67,6 +69,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
             this.client = client;
         }
 
+        @NonNull
         @Override
         public ModelLoader<String, InputStream> build(Context context, GenericLoaderFactory factories) {
             return new ApOkHttpUrlLoader(client);
@@ -84,8 +87,9 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
         this.client = client;
     }
 
+    @Nullable
     @Override
-    public DataFetcher<InputStream> getResourceFetcher(String model, int width, int height) {
+    public DataFetcher<InputStream> getResourceFetcher(@NonNull String model, int width, int height) {
         Log.d(TAG, "getResourceFetcher() called with: " + "model = [" + model + "], width = ["
                 + width + "], height = [" + height + "]");
         if(TextUtils.isEmpty(model)) {
@@ -100,8 +104,9 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
     private static class NetworkAllowanceInterceptor implements Interceptor {
 
+        @Nullable
         @Override
-        public Response intercept(Chain chain) throws IOException {
+        public Response intercept(@NonNull Chain chain) throws IOException {
             if (NetworkUtils.isDownloadAllowed()) {
                 return chain.proceed(chain.request());
             } else {
@@ -114,7 +119,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     private static class BasicAuthenticationInterceptor implements Interceptor {
 
         @Override
-        public Response intercept(Chain chain) throws IOException {
+        public Response intercept(@NonNull Chain chain) throws IOException {
             Request request = chain.request();
             String url = request.url().toString();
             String authentication = DBReader.getImageAuthentication(url);

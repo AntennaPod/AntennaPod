@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 public class GpodnetSubscriptionChange {
+    @NonNull
     private final List<String> added;
+    @NonNull
     private final List<String> removed;
     private final long timestamp;
 
@@ -17,6 +19,7 @@ public class GpodnetSubscriptionChange {
         this.timestamp = timestamp;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "GpodnetSubscriptionChange [added=" + added.toString()
@@ -24,10 +27,12 @@ public class GpodnetSubscriptionChange {
                 + timestamp + "]";
     }
 
+    @NonNull
     public List<String> getAdded() {
         return added;
     }
 
+    @NonNull
     public List<String> getRemoved() {
         return removed;
     }

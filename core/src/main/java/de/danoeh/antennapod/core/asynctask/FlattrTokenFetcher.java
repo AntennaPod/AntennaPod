@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.shredzone.flattr4j.exception.FlattrException;
@@ -37,7 +38,7 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
     }
 
     @Override
-    protected void onPostExecute(AccessToken result) {
+    protected void onPostExecute(@Nullable AccessToken result) {
         if (result != null) {
             FlattrUtils.storeToken(result);
         }
@@ -61,6 +62,7 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
     }
 
 
+    @Nullable
     @Override
     protected AccessToken doInBackground(Void... params) {
         try {

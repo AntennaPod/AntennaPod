@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
@@ -22,7 +23,7 @@ public abstract class ConfirmationDialog {
 	private int positiveText;
 	private int negativeText;
 
-	public ConfirmationDialog(Context context, int titleId, int messageId) {
+	public ConfirmationDialog(@NonNull Context context, int titleId, int messageId) {
 		this(context, titleId, context.getString(messageId));
 	}
 

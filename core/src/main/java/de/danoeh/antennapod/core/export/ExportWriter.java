@@ -13,6 +13,8 @@
  */
 package de.danoeh.antennapod.core.export;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
@@ -24,6 +26,7 @@ public interface ExportWriter {
 	void writeDocument(List<Feed> feeds, Writer writer)
 			throws IllegalArgumentException, IllegalStateException, IOException;
 
-	String fileExtension();
+	@NonNull
+    String fileExtension();
 
 }

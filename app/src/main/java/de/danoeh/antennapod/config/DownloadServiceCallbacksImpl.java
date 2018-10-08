@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import de.danoeh.antennapod.activity.DownloadAuthenticationActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -30,7 +31,7 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     }
 
     @Override
-    public PendingIntent getAuthentificationNotificationContentIntent(Context context, DownloadRequest request) {
+    public PendingIntent getAuthentificationNotificationContentIntent(@NonNull Context context, DownloadRequest request) {
         final Intent activityIntent = new Intent(context.getApplicationContext(), DownloadAuthenticationActivity.class);
         activityIntent.putExtra(DownloadAuthenticationActivity.ARG_DOWNLOAD_REQUEST, request);
         activityIntent.putExtra(DownloadAuthenticationActivity.ARG_SEND_TO_DOWNLOAD_REQUESTER_BOOL, true);

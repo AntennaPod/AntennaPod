@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -22,7 +23,8 @@ public class FileNameGenerator {
 	 * This method will return a new string that doesn't contain any illegal
 	 * characters of the given string.
 	 */
-	public static String generateFileName(String string) {
+	@NonNull
+    public static String generateFileName(String string) {
 		StringBuilder buf = new StringBuilder();
 		for (int i = 0; i < string.length(); i++) {
 			char c = string.charAt(i);

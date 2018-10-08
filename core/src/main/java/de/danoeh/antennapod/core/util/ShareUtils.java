@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -30,19 +31,19 @@ public class ShareUtils {
 		context.startActivity(Intent.createChooser(i, context.getString(R.string.share_url_label)));
 	}
 
-	public static void shareFeedlink(Context context, Feed feed) {
+	public static void shareFeedlink(@NonNull Context context, Feed feed) {
 		shareLink(context, feed.getTitle() + ": " + feed.getLink());
 	}
 	
-	public static void shareFeedDownloadLink(Context context, Feed feed) {
+	public static void shareFeedDownloadLink(@NonNull Context context, Feed feed) {
 		shareLink(context, feed.getTitle() + ": " + feed.getDownload_url());
 	}
 
-	public static void shareFeedItemLink(Context context, FeedItem item) {
+	public static void shareFeedItemLink(@NonNull Context context, @NonNull FeedItem item) {
 		shareFeedItemLink(context, item, false);
 	}
 
-	public static void shareFeedItemDownloadLink(Context context, FeedItem item) {
+	public static void shareFeedItemDownloadLink(@NonNull Context context, @NonNull FeedItem item) {
 		shareFeedItemDownloadLink(context, item, false);
 	}
 
@@ -54,7 +55,7 @@ public class ShareUtils {
 	    return FeedItemUtil.getLinkWithFallback(item) != null;
     }
 
-	public static void shareFeedItemLink(Context context, FeedItem item, boolean withPosition) {
+	public static void shareFeedItemLink(@NonNull Context context, @NonNull FeedItem item, boolean withPosition) {
 		String text = getItemShareText(item) + " " + FeedItemUtil.getLinkWithFallback(item);
 		if(withPosition) {
 			int pos = item.getMedia().getPosition();
@@ -63,7 +64,7 @@ public class ShareUtils {
 		shareLink(context, text);
 	}
 
-	public static void shareFeedItemDownloadLink(Context context, FeedItem item, boolean withPosition) {
+	public static void shareFeedItemDownloadLink(@NonNull Context context, @NonNull FeedItem item, boolean withPosition) {
 		String text = getItemShareText(item) + " " + item.getMedia().getDownload_url();
 		if(withPosition) {
 			int pos = item.getMedia().getPosition();
@@ -72,7 +73,7 @@ public class ShareUtils {
 		shareLink(context, text);
 	}
 
-	public static void shareFeedItemFile(Context context, FeedMedia media) {
+	public static void shareFeedItemFile(@NonNull Context context, FeedMedia media) {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType(media.getMime_type());
 		Uri fileUri = FileProvider.getUriForFile(context, context.getString(R.string.provider_authority),

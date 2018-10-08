@@ -1,6 +1,8 @@
 package de.test.antennapod.handler;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.test.InstrumentationTestCase;
 
 import org.xml.sax.SAXException;
@@ -31,7 +33,9 @@ import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 public class FeedHandlerTest extends InstrumentationTestCase {
     private static final String FEEDS_DIR = "testfeeds";
 
+    @Nullable
     private File file = null;
+    @Nullable
     private OutputStream outputStream = null;
 
     protected void setUp() throws Exception {
@@ -60,7 +64,8 @@ public class FeedHandlerTest extends InstrumentationTestCase {
         outputStream = null;
     }
 
-    private Feed runFeedTest(Feed feed, FeedGenerator g, String encoding, long flags) throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
+    @NonNull
+    private Feed runFeedTest(@NonNull Feed feed, FeedGenerator g, String encoding, long flags) throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
         g.writeFeed(feed, outputStream, encoding, flags);
         FeedHandler handler = new FeedHandler();
         Feed parsedFeed = new Feed(feed.getDownload_url(), feed.getLastUpdate());
@@ -141,6 +146,7 @@ public class FeedHandlerTest extends InstrumentationTestCase {
         feedValid(f1, f2, Feed.TYPE_ATOM1);
     }
 
+    @NonNull
     private Feed createTestFeed(int numItems, boolean withImage, boolean withFeedMedia, boolean withChapters) {
         Feed feed = new Feed(0, null, "title", "http://example.com", "This is the description",
                 "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed", "http://example.com/picture", file.getAbsolutePath(),

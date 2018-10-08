@@ -3,6 +3,8 @@ package de.danoeh.antennapod.asynctask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.Arrays;
 
@@ -17,9 +19,10 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {
 	private final Context context;
 	private ProgressDialog progDialog;
-	private final int[] selection;
+	@NonNull
+    private final int[] selection;
 
-	public OpmlFeedQueuer(Context context, int[] selection) {
+	public OpmlFeedQueuer(Context context, @NonNull int[] selection) {
 		super();
 		this.context = context;
 		this.selection = Arrays.copyOf(selection, selection.length);
@@ -39,7 +42,8 @@ public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {
 		progDialog.show();
 	}
 
-	@Override
+	@Nullable
+    @Override
 	protected Void doInBackground(Void... params) {
 		DownloadRequester requester = DownloadRequester.getInstance();
 		for (int selected : selection) {

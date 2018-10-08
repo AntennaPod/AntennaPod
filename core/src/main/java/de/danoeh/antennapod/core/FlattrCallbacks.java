@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import org.shredzone.flattr4j.oauth.AccessToken;
 
@@ -24,6 +25,7 @@ public interface FlattrCallbacks {
      * @return The intent that starts the authentication activity or null
      * if flattr integration is disabled (i.e. flattrEnabled() == false).
      */
+    @NonNull
     Intent getFlattrAuthenticationActivityIntent(Context context);
 
     PendingIntent getFlattrFailedNotificationContentIntent(Context context);

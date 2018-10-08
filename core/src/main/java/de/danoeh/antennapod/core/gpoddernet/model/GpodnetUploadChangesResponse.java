@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.gpoddernet.model;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
 import org.json.JSONArray;
@@ -47,6 +48,7 @@ public class GpodnetUploadChangesResponse {
         return new GpodnetUploadChangesResponse(timestamp, updatedUrls);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "GpodnetUploadChangesResponse{" +

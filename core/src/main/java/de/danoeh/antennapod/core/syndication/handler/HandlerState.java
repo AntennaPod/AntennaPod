@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 
 import java.util.ArrayList;
@@ -25,23 +27,30 @@ public class HandlerState {
      * Contains links to related feeds, e.g. feeds with enclosures in other formats. The key of the map is the
      * URL of the feed, the value is the title
      */
+    @NonNull
     final Map<String, String> alternateUrls;
+    @NonNull
     private final ArrayList<FeedItem> items;
     private FeedItem currentItem;
+    @NonNull
     final Stack<SyndElement> tagstack;
     /**
      * Namespaces that have been defined so far.
      */
+    @NonNull
     final Map<String, Namespace> namespaces;
+    @NonNull
     final Stack<Namespace> defaultNamespaces;
     /**
      * Buffer for saving characters.
      */
+    @Nullable
     protected StringBuilder contentBuf;
 
     /**
      * Temporarily saved objects.
      */
+    @NonNull
     private final Map<String, Object> tempObjects;
 
     public HandlerState(Feed feed) {
@@ -58,6 +67,7 @@ public class HandlerState {
         return feed;
     }
 
+    @NonNull
     public ArrayList<FeedItem> getItems() {
         return items;
     }
@@ -66,6 +76,7 @@ public class HandlerState {
         return currentItem;
     }
 
+    @NonNull
     public Stack<SyndElement> getTagstack() {
         return tagstack;
     }
@@ -97,6 +108,7 @@ public class HandlerState {
         return third;
     }
 
+    @Nullable
     public StringBuilder getContentBuf() {
         return contentBuf;
     }
@@ -105,6 +117,7 @@ public class HandlerState {
         alternateUrls.put(url, title);
     }
 
+    @NonNull
     public Map<String, Object> getTempObjects() {
         return tempObjects;
     }

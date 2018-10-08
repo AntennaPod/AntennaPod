@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.event;
 
+import android.support.annotation.NonNull;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,18 +13,21 @@ import de.danoeh.antennapod.core.util.LongList;
 public class DownloaderUpdate {
 
     /* Downloaders that are currently running */
+    @NonNull
     public final List<Downloader> downloaders;
 
     /**
      * IDs of feeds that are currently being downloaded
      * Often used to show some progress wheel in the action bar
      */
+    @NonNull
     public final long[] feedIds;
 
     /**
      * IDs of feed media that are currently being downloaded
      * Can be used to show and update download progress bars
      */
+    @NonNull
     public final long[] mediaIds;
 
     public DownloaderUpdate(List<Downloader> downloaders) {
@@ -42,6 +47,7 @@ public class DownloaderUpdate {
         this.mediaIds = mediaIds1.toArray();
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "DownloaderUpdate{" +

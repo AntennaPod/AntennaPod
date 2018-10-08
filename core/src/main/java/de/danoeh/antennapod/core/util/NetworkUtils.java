@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.support.annotation.NonNull;
 import android.support.v4.net.ConnectivityManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -111,7 +112,7 @@ public class NetworkUtils {
         return null;
     }
 
-	public static Observable<Long> getFeedMediaSizeObservable(FeedMedia media) {
+	public static Observable<Long> getFeedMediaSizeObservable(@NonNull FeedMedia media) {
         return Observable.create((Observable.OnSubscribe<Long>) subscriber -> {
             if (!NetworkUtils.isDownloadAllowed()) {
                 subscriber.onNext(0L);

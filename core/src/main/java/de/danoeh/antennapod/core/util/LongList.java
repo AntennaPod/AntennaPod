@@ -1,5 +1,8 @@
 package de.danoeh.antennapod.core.util;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.util.Arrays;
 
 /**
@@ -30,7 +33,8 @@ public final class LongList {
         size = 0;
     }
 
-    public static LongList of(long... values) {
+    @NonNull
+    public static LongList of(@Nullable long... values) {
         if(values == null || values.length == 0) {
             return new LongList(0);
         }

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
 
     private static final String TAG = "OpmlImportBaseActivity";
 	private static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 5;
+    @Nullable
     private OpmlImportWorker importWorker;
 	@Nullable private Uri uri;
 
@@ -39,7 +41,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
 	 * starts the OpmlFeedQueuer if necessary.
 	 */
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
 		Log.d(TAG, "Received result");
 		if (resultCode == RESULT_CANCELED) {
 			Log.d(TAG, "Activity was cancelled");
@@ -120,7 +122,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
             importWorker = new OpmlImportWorker(this, mReader) {
 
                 @Override
-                protected void onPostExecute(ArrayList<OpmlElement> result) {
+                protected void onPostExecute(@Nullable ArrayList<OpmlElement> result) {
                     super.onPostExecute(result);
                     if (result != null) {
                         Log.d(TAG, "Parsing was successful");

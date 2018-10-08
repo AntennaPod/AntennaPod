@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 
 import java.util.Date;
 
@@ -12,6 +13,7 @@ public class FeedItemStatistics {
     private final int numberOfItems;
     private final int numberOfNewItems;
     private final int numberOfInProgressItems;
+    @Nullable
     private final Date lastUpdate;
     private static final Date UNKNOWN_DATE = new Date(0);
 
@@ -26,7 +28,7 @@ public class FeedItemStatistics {
      * @param lastUpdate              pubDate of the latest episode. A lastUpdate value of 0 will be interpreted as DATE_UNKOWN if
      *                                numberOfItems is 0.
      */
-    private FeedItemStatistics(long feedID, int numberOfItems, int numberOfNewItems, int numberOfInProgressItems, Date lastUpdate) {
+    private FeedItemStatistics(long feedID, int numberOfItems, int numberOfNewItems, int numberOfInProgressItems, @Nullable Date lastUpdate) {
         this.feedID = feedID;
         this.numberOfItems = numberOfItems;
         this.numberOfNewItems = numberOfNewItems;
@@ -67,6 +69,7 @@ public class FeedItemStatistics {
      * Returns the pubDate of the latest item in the feed. Users of this method
      * should check if this value is unkown or not by calling lastUpdateKnown() first.
      */
+    @Nullable
     public Date getLastUpdate() {
         return (lastUpdate != null) ? (Date) lastUpdate.clone() : null;
     }

@@ -4,6 +4,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -55,7 +56,7 @@ public class AboutActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient() {
 
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            public boolean shouldOverrideUrlLoading(WebView view, @NonNull String url) {
                 if (!url.startsWith("http")) {
                     url = url.replace("file:///android_asset/", "");
                     loadAsset(url);
@@ -68,7 +69,7 @@ public class AboutActivity extends AppCompatActivity {
         loadAsset("about.html");
     }
 
-    private void loadAsset(String filename) {
+    private void loadAsset(@NonNull String filename) {
         subscription = Single.create(subscriber -> {
             InputStream input = null;
             try {
@@ -134,7 +135,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;

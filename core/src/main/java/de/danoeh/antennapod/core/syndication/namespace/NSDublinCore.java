@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
+import android.support.annotation.NonNull;
+
 import org.xml.sax.Attributes;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -14,6 +16,7 @@ public class NSDublinCore extends Namespace {
     private static final String ITEM = "item";
     private static final String DATE = "date";
 
+    @NonNull
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
                                           Attributes attributes) {
@@ -21,7 +24,7 @@ public class NSDublinCore extends Namespace {
     }
 
     @Override
-    public void handleElementEnd(String localName, HandlerState state) {
+    public void handleElementEnd(String localName, @NonNull HandlerState state) {
         if (state.getCurrentItem() != null && state.getContentBuf() != null &&
             state.getTagstack() != null && state.getTagstack().size() >= 2) {
             FeedItem currentItem = state.getCurrentItem();

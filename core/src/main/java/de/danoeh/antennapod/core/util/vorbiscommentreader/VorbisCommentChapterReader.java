@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util.vorbiscommentreader;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -27,18 +28,18 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 	}
 
 	@Override
-	public void onVorbisCommentHeaderFound(VorbisCommentHeader header) {
+	public void onVorbisCommentHeaderFound(@NonNull VorbisCommentHeader header) {
 		chapters = new ArrayList<>();
 		System.out.println(header.toString());
 	}
 
 	@Override
-	public boolean onContentVectorKey(String content) {
+	public boolean onContentVectorKey(@NonNull String content) {
 		return content.matches(CHAPTER_KEY);
 	}
 
 	@Override
-	public void onContentVectorValue(String key, String value)
+	public void onContentVectorValue(@NonNull String key, @NonNull String value)
 			throws VorbisCommentReaderException {
 		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Key: " + key + ", value: " + value);
@@ -82,7 +83,7 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 	}
 
 	@Override
-	public void onError(VorbisCommentReaderException exception) {
+	public void onError(@NonNull VorbisCommentReaderException exception) {
 		exception.printStackTrace();
 	}
 

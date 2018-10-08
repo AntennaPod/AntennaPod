@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -22,13 +23,14 @@ public class RatingDialog {
 
     private static WeakReference<Context> mContext;
     private static SharedPreferences mPreferences;
+    @Nullable
     private static Dialog mDialog;
 
     private static final String PREFS_NAME = "RatingPrefs";
     private static final String KEY_RATED = "KEY_WAS_RATED";
     private static final String KEY_FIRST_START_DATE = "KEY_FIRST_HIT_DATE";
 
-    public static void init(Context context) {
+    public static void init(@NonNull Context context) {
         mContext = new WeakReference<>(context);
         mPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 

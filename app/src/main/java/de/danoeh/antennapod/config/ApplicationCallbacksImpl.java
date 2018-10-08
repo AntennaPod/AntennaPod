@@ -4,6 +4,7 @@ package de.danoeh.antennapod.config;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.activity.StorageErrorActivity;
@@ -16,6 +17,7 @@ public class ApplicationCallbacksImpl implements ApplicationCallbacks {
         return PodcastApp.getInstance();
     }
 
+    @NonNull
     @Override
     public Intent getStorageErrorActivity(Context context) {
         return new Intent(context, StorageErrorActivity.class);

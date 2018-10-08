@@ -7,6 +7,7 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
@@ -38,25 +39,33 @@ import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private static final String TAG = "LclPlaybackSvcMPlayer";
 
+    @NonNull
     private final AudioManager audioManager;
 
+    @Nullable
     private volatile PlayerStatus statusBeforeSeeking;
+    @Nullable
     private volatile IPlayer mediaPlayer;
+    @Nullable
     private volatile Playable media;
 
     private volatile boolean stream;
     private volatile MediaType mediaType;
+    @NonNull
     private final AtomicBoolean startWhenPrepared;
     private volatile boolean pausedBecauseOfTransientAudiofocusLoss;
+    @Nullable
     private volatile Pair<Integer, Integer> videoSize;
 
     /**
      * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
      * have to wait until these operations have finished.
      */
+    @NonNull
     private final ReentrantLock playerLock;
     private CountDownLatch seekLatch;
 
+    @NonNull
     private final ThreadPoolExecutor executor;
 
     public LocalPSMP(@NonNull Context context,
@@ -182,7 +191,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 onPrepared(startWhenPrepared);
             }
 
-        } catch (Playable.PlayableException | IOException | IllegalStateException e) {
+        } catch (@NonNull Playable.PlayableException | IOException | IllegalStateException e) {
             e.printStackTrace();
             setPlayerStatus(PlayerStatus.ERROR, null);
         }
@@ -706,6 +715,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * return an invalid non-null value if the getVideoWidth() and getVideoHeight() methods of the media player return
      * invalid values.
      */
+    @Nullable
     @Override
     public Pair<Integer, Integer> getVideoSize() {
         if (!playerLock.tryLock()) {
@@ -734,6 +744,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * could result in nonsensical results (like a status of PLAYING, but a null playable)
      * @return the current media. May be null
      */
+    @Nullable
     @Override
     public Playable getPlayable() {
         return media;
@@ -818,6 +829,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     };
 
 
+    @NonNull
     @Override
     protected Future<?> endPlayback(final boolean hasEnded, final boolean wasSkipped,
                                     final boolean shouldContinue, final boolean toStoppedState) {
@@ -919,7 +931,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         return stream;
     }
 
-    private IPlayer setMediaPlayerListeners(IPlayer mp) {
+    @Nullable
+    private IPlayer setMediaPlayerListeners(@Nullable IPlayer mp) {
         if (mp == null || media == null) {
             return mp;
         }

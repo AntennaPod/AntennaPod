@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -17,7 +18,7 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
 	private static final String TAG = "ConnectivityActionRecvr";
 
 	@Override
-	public void onReceive(final Context context, Intent intent) {
+	public void onReceive(@NonNull final Context context, @NonNull Intent intent) {
 		if (TextUtils.equals(intent.getAction(), ConnectivityManager.CONNECTIVITY_ACTION)) {
 			Log.d(TAG, "Received intent");
 

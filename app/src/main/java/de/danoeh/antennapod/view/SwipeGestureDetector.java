@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.view;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -24,7 +25,7 @@ public class SwipeGestureDetector extends GestureDetector.SimpleOnGestureListene
     }
 
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+    public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
         try {
             if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
                 return false;

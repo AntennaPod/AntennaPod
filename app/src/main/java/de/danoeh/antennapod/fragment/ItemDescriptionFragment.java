@@ -11,6 +11,8 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -71,6 +73,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     /**
      * URL that was selected via long-press.
      */
+    @Nullable
     private String selectedURL;
 
     /**
@@ -84,6 +87,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
      */
     private boolean highlightTimecodes;
 
+    @NonNull
     public static ItemDescriptionFragment newInstance(Playable media,
                                                       boolean saveState,
                                                       boolean highlightTimecodes) {
@@ -96,6 +100,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
         return f;
     }
 
+    @NonNull
     public static ItemDescriptionFragment newInstance(FeedItem item, boolean saveState, boolean highlightTimecodes) {
         ItemDescriptionFragment f = new ItemDescriptionFragment();
         Bundle args = new Bundle();
@@ -149,7 +154,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
             }
 
             @Override
-            public void onPageFinished(WebView view, String url) {
+            public void onPageFinished(@NonNull WebView view, String url) {
                 super.onPageFinished(view, url);
                 Log.d(TAG, "Page finished");
                 // Restoring the scroll position might not always work
@@ -208,6 +213,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     }
 
 
+    @Nullable
     private final View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
 
         @Override
@@ -228,7 +234,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         boolean handled = selectedURL != null;
         if (selectedURL != null) {
             switch (item.getItemId()) {
@@ -271,7 +277,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
+    public void onCreateContextMenu(@NonNull ContextMenu menu, View v,
                                     ContextMenuInfo menuInfo) {
         if (selectedURL != null) {
             super.onCreateContextMenu(menu, v, menuInfo);

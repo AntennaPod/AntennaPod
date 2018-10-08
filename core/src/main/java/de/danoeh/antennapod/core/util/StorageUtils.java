@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.util;
 import android.app.Activity;
 import android.os.Build;
 import android.os.StatFs;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.File;
@@ -35,7 +36,7 @@ public class StorageUtils {
      *                 available
      * @return true if external storage is available
      */
-    public static boolean checkStorageAvailability(Activity activity) {
+    public static boolean checkStorageAvailability(@NonNull Activity activity) {
         boolean storageAvailable = storageAvailable();
         if (!storageAvailable) {
             activity.finish();

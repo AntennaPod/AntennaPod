@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.event;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class DownloadEvent {
         return new DownloadEvent(update);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "DownloadEvent{" +

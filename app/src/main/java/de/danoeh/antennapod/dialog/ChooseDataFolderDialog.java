@@ -2,6 +2,7 @@ package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 
@@ -30,7 +31,7 @@ public class ChooseDataFolderDialog {
 
     private ChooseDataFolderDialog() {}
 
-    public static void showDialog(final Context context, RunnableWithString handlerFunc) {
+    public static void showDialog(@NonNull final Context context, @NonNull RunnableWithString handlerFunc) {
         File dataFolder = UserPreferences.getDataFolder(null);
         if (dataFolder == null) {
             new MaterialDialog.Builder(context)

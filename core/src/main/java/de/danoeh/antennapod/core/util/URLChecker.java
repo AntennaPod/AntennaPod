@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.BuildConfig;
@@ -63,7 +64,7 @@ public final class URLChecker {
      *             the result of prepareURL(url) is returned instead.
      * @return The prepared url
      */
-    public static String prepareURL(String url, String base) {
+    public static String prepareURL(String url, @Nullable String base) {
         if (base == null) {
             return prepareURL(url);
         }

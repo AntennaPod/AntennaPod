@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.support.annotation.NonNull;
+
 public class SimpleChapter extends Chapter {
 	public static final int CHAPTERTYPE_SIMPLECHAPTER = 0;
 	
@@ -12,7 +14,7 @@ public class SimpleChapter extends Chapter {
 		return CHAPTERTYPE_SIMPLECHAPTER;
 	}
 
-	public void updateFromOther(SimpleChapter other) {
+	public void updateFromOther(@NonNull SimpleChapter other) {
 		super.updateFromOther(other);
 		start = other.start;
 		if (other.title != null) {

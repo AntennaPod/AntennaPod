@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import de.danoeh.antennapod.core.R;
 
@@ -14,7 +15,7 @@ public class NotificationUtils {
     public static final String CHANNEL_ID_PLAYING = "playing";
     public static final String CHANNEL_ID_ERROR = "error";
 
-    public static void createChannels(Context context) {
+    public static void createChannels(@NonNull Context context) {
         if (android.os.Build.VERSION.SDK_INT < 26) {
             return;
         }
@@ -28,6 +29,7 @@ public class NotificationUtils {
         }
     }
 
+    @NonNull
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static NotificationChannel createChannelUserAction(Context c) {
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_USER_ACTION,
@@ -36,6 +38,7 @@ public class NotificationUtils {
         return mChannel;
     }
 
+    @NonNull
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static NotificationChannel createChannelDownloading(Context c) {
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_DOWNLOADING,
@@ -45,6 +48,7 @@ public class NotificationUtils {
         return mChannel;
     }
 
+    @NonNull
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static NotificationChannel createChannelPlaying(Context c) {
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_PLAYING,
@@ -54,6 +58,7 @@ public class NotificationUtils {
         return mChannel;
     }
 
+    @NonNull
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static NotificationChannel createChannelError(Context c) {
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_ERROR,

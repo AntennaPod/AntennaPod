@@ -3,6 +3,8 @@ package de.danoeh.antennapod.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -46,6 +48,7 @@ public class SubscriptionFragment extends Fragment {
 
     private GridView subscriptionGridLayout;
     private DBReader.NavDrawerData navDrawerData;
+    @Nullable
     private SubscriptionsAdapter subscriptionAdapter;
 
     private int mPosition = -1;
@@ -67,7 +70,7 @@ public class SubscriptionFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_subscriptions, container, false);
         subscriptionGridLayout = (GridView) root.findViewById(R.id.subscriptions_grid);
@@ -115,7 +118,7 @@ public class SubscriptionFragment extends Fragment {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         int position = adapterInfo.position;
@@ -137,7 +140,7 @@ public class SubscriptionFragment extends Fragment {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
 
         final int position = mPosition;
         mPosition = -1; // reset
@@ -243,6 +246,7 @@ public class SubscriptionFragment extends Fragment {
         }
     };
 
+    @Nullable
     private final SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
         @Override
         public int getCount() {

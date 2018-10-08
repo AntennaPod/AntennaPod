@@ -5,6 +5,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 class ShakeListener implements SensorEventListener
@@ -12,6 +14,7 @@ class ShakeListener implements SensorEventListener
     private static final String TAG = ShakeListener.class.getSimpleName();
 
     private Sensor mAccelerometer;
+    @Nullable
     private SensorManager mSensorMgr;
     private final PlaybackServiceTaskManager.SleepTimer mSleepTimer;
     private final Context mContext;
@@ -44,7 +47,7 @@ class ShakeListener implements SensorEventListener
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
+    public void onSensorChanged(@NonNull SensorEvent event) {
         float gX = event.values[0] / SensorManager.GRAVITY_EARTH;
         float gY = event.values[1] / SensorManager.GRAVITY_EARTH;
         float gZ = event.values[2] / SensorManager.GRAVITY_EARTH;

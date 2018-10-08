@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -35,14 +36,17 @@ public class Timeline {
     private static final String WEBVIEW_STYLE = "@font-face { font-family: 'Roboto-Light'; src: url('file:///android_asset/Roboto-Light.ttf'); } * { color: %s; font-family: roboto-Light; font-size: 13pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; } a.timecode { color: #669900; } img { display: block; margin: 10 auto; max-width: %s; height: auto; } body { margin: %dpx %dpx %dpx %dpx; }";
 
 
+    @Nullable
     private ShownotesProvider shownotesProvider;
 
     private final String noShownotesLabel;
+    @NonNull
     private final String colorPrimaryString;
+    @NonNull
     private final String colorSecondaryString;
     private final int pageMargin;
 
-    public Timeline(Context context, ShownotesProvider shownotesProvider) {
+    public Timeline(@NonNull Context context, @Nullable ShownotesProvider shownotesProvider) {
         if (shownotesProvider == null) {
             throw new IllegalArgumentException("shownotesProvider = null");
         }
@@ -81,6 +85,7 @@ public class Timeline {
      * @param addTimecodes True if this method should add timecode links
      * @return The processed HTML string.
      */
+    @Nullable
     public String processShownotes(final boolean addTimecodes) {
         final Playable playable = (shownotesProvider instanceof Playable) ? (Playable) shownotesProvider : null;
 
@@ -159,7 +164,7 @@ public class Timeline {
     /**
      * Returns true if the given link is a timecode link.
      */
-    public static boolean isTimecodeLink(String link) {
+    public static boolean isTimecodeLink(@Nullable String link) {
         return link != null && link.matches(TIMECODE_LINK_REGEX.pattern());
     }
 
@@ -167,7 +172,7 @@ public class Timeline {
      * Returns the time in milliseconds that is attached to this link or -1
      * if the link is no valid timecode link.
      */
-    public static int getTimecodeLinkTime(String link) {
+    public static int getTimecodeLinkTime(@NonNull String link) {
         if (isTimecodeLink(link)) {
             Matcher m = TIMECODE_LINK_REGEX.matcher(link);
 

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.export.html;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
@@ -29,7 +30,7 @@ public class HtmlWriter implements ExportWriter {
      * @throws IllegalArgumentException
      */
     @Override
-    public void writeDocument(List<Feed> feeds, Writer writer)
+    public void writeDocument(@NonNull List<Feed> feeds, Writer writer)
             throws IllegalArgumentException, IllegalStateException, IOException {
         Log.d(TAG, "Starting to write document");
         XmlSerializer xs = Xml.newSerializer();
@@ -75,6 +76,7 @@ public class HtmlWriter implements ExportWriter {
         Log.d(TAG, "Finished writing document");
     }
 
+    @NonNull
     public String fileExtension() {
         return "html";
     }

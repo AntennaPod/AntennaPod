@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -23,9 +24,10 @@ public class NSITunes extends Namespace {
     private static final String SUMMARY = "summary";
 
 
+    @NonNull
     @Override
-    public SyndElement handleElementStart(String localName, HandlerState state,
-                                          Attributes attributes) {
+    public SyndElement handleElementStart(String localName, @NonNull HandlerState state,
+                                          @NonNull Attributes attributes) {
         if (IMAGE.equals(localName)) {
             String url = attributes.getValue(IMAGE_HREF);
 
@@ -43,7 +45,7 @@ public class NSITunes extends Namespace {
     }
 
     @Override
-    public void handleElementEnd(String localName, HandlerState state) {
+    public void handleElementEnd(String localName, @NonNull HandlerState state) {
         if(state.getContentBuf() == null) {
             return;
         }

@@ -16,8 +16,10 @@ public class QueueEvent {
     }
 
     public final Action action;
+    @Nullable
     public final FeedItem item;
     public final int position;
+    @Nullable
     public final List<FeedItem> items;
 
 

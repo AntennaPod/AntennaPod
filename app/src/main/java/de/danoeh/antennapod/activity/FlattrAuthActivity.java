@@ -4,6 +4,7 @@ package de.danoeh.antennapod.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -99,7 +100,7 @@ public class FlattrAuthActivity extends AppCompatActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			if (authSuccessful) {

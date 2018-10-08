@@ -3,6 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
@@ -59,11 +60,13 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private MenuItem mSelectToggle;
 
-    public static EpisodesApplyActionFragment newInstance(List<FeedItem> items) {
+    @NonNull
+    public static EpisodesApplyActionFragment newInstance(@NonNull List<FeedItem> items) {
         return newInstance(items, ACTION_ALL);
     }
 
-    public static EpisodesApplyActionFragment newInstance(List<FeedItem> items, int actions) {
+    @NonNull
+    public static EpisodesApplyActionFragment newInstance(@NonNull List<FeedItem> items, int actions) {
         EpisodesApplyActionFragment f = new EpisodesApplyActionFragment();
         f.episodes.addAll(items);
         for(FeedItem episode : items) {
@@ -80,7 +83,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.episodes_apply_action_fragment, container, false);
 
@@ -152,7 +155,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.episodes_apply_action_options, menu);
 
@@ -188,7 +191,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int resId = 0;
         switch(item.getItemId()) {
             case R.id.select_options:

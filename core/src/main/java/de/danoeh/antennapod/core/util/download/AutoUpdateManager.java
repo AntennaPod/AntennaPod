@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
@@ -28,7 +29,7 @@ public class AutoUpdateManager {
     /**
      * Sets the interval in which the feeds are refreshed automatically
      */
-    public static void restartUpdateIntervalAlarm(Context context, long triggerAtMillis, long intervalMillis) {
+    public static void restartUpdateIntervalAlarm(@NonNull Context context, long triggerAtMillis, long intervalMillis) {
         Log.d(TAG, "Restarting update alarm.");
 
         if (Build.VERSION.SDK_INT >= 24) {
@@ -41,7 +42,7 @@ public class AutoUpdateManager {
     /**
      * Sets time of day the feeds are refreshed automatically
      */
-    public static void restartUpdateTimeOfDayAlarm(Context context, int hoursOfDay, int minute) {
+    public static void restartUpdateTimeOfDayAlarm(@NonNull Context context, int hoursOfDay, int minute) {
         Log.d(TAG, "Restarting update alarm.");
 
         Calendar now = Calendar.getInstance();
@@ -60,6 +61,7 @@ public class AutoUpdateManager {
         }
     }
 
+    @NonNull
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static JobInfo.Builder getFeedUpdateJobBuilder(Context context) {
         ComponentName serviceComponent = new ComponentName(context, FeedUpdateJobService.class);
@@ -134,7 +136,7 @@ public class AutoUpdateManager {
         Log.d(TAG, "JobScheduler was set for " + triggerAtMillis);
     }
 
-    private static void restartAlarmManagerTimeOfDay(Context context, Calendar alarm) {
+    private static void restartAlarmManagerTimeOfDay(Context context, @NonNull Calendar alarm) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (alarmManager == null) {

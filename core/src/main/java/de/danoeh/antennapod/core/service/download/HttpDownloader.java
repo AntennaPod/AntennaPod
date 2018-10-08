@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -38,7 +39,7 @@ public class HttpDownloader extends Downloader {
 
     private static final int BUFFER_SIZE = 8 * 1024;
 
-    public HttpDownloader(DownloadRequest request) {
+    public HttpDownloader(@NonNull DownloadRequest request) {
         super(request);
     }
 
@@ -297,7 +298,7 @@ public class HttpDownloader extends Downloader {
         }
     }
 
-    public static String encodeCredentials(String username, String password, String charset) {
+    public static String encodeCredentials(String username, String password, @NonNull String charset) {
         try {
             String credentials = username + ":" + password;
             byte[] bytes = credentials.getBytes(charset);
@@ -317,7 +318,7 @@ public class HttpDownloader extends Downloader {
         }
 
         @Override
-        public Response intercept(Chain chain) throws IOException {
+        public Response intercept(@NonNull Chain chain) throws IOException {
             Request request = chain.request();
             String userInfo = URIUtil.getURIFromRequestUrl(downloadRequest.getSource()).getUserInfo();
 

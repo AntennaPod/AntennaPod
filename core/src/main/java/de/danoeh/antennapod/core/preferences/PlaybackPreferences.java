@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 
 import de.danoeh.antennapod.core.feed.EventDistributor;
 
@@ -81,7 +82,7 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         prefs.registerOnSharedPreferenceChangeListener(instance);
     }
 
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @NonNull String key) {
         if (key.equals(PREF_CURRENT_PLAYER_STATUS)) {
             EventDistributor.getInstance().sendPlayerStatusUpdateBroadcast();
         }

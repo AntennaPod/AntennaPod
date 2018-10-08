@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.net.MalformedURLException;
@@ -17,7 +18,7 @@ public class URIUtil {
 
     private URIUtil() {}
 
-    public static URI getURIFromRequestUrl(String source) {
+    public static URI getURIFromRequestUrl(@NonNull String source) {
         // try without encoding the URI
         try {
             return new URI(source);
@@ -27,7 +28,7 @@ public class URIUtil {
         try {
             URL url = new URL(source);
             return new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
-        } catch (MalformedURLException | URISyntaxException e) {
+        } catch (@NonNull MalformedURLException | URISyntaxException e) {
             throw new IllegalArgumentException(e);
         }
     }

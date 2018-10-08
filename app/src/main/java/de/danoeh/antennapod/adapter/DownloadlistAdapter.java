@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,7 @@ public class DownloadlistAdapter extends BaseAdapter {
         return itemAccess.getCount();
     }
 
+    @Nullable
     @Override
     public Downloader getItem(int position) {
         return itemAccess.getItem(position);
@@ -48,8 +50,9 @@ public class DownloadlistAdapter extends BaseAdapter {
         return position;
     }
 
+    @Nullable
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, @Nullable View convertView, ViewGroup parent) {
         Holder holder;
         Downloader downloader = getItem(position);
         DownloadRequest request = downloader.getDownloadRequest();
@@ -124,6 +127,7 @@ public class DownloadlistAdapter extends BaseAdapter {
     public interface ItemAccess {
         int getCount();
 
+        @Nullable
         Downloader getItem(int position);
 
         void onSecondaryActionClick(Downloader downloader);

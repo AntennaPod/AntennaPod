@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
@@ -13,20 +14,20 @@ import de.danoeh.antennapod.R;
 
 public class MasterSwitchPreference extends SwitchPreference {
 
-    public MasterSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MasterSwitchPreference(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public MasterSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public MasterSwitchPreference(@NonNull Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public MasterSwitchPreference(Context context, AttributeSet attrs) {
+    public MasterSwitchPreference(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MasterSwitchPreference(Context context) {
+    public MasterSwitchPreference(@NonNull Context context) {
         super(context);
     }
 

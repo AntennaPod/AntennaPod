@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.concurrent.ExecutionException;
 
@@ -27,11 +29,12 @@ public class FeedRemover extends AsyncTask<Void, Void, Void> {
 		this.feed = feed;
 	}
 
-	@Override
+	@Nullable
+    @Override
 	protected Void doInBackground(Void... params) {
         try {
             DBWriter.deleteFeed(context, feed.getId()).get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (@NonNull InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;

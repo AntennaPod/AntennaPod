@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.apache.commons.io.input.XmlStreamReader;
@@ -26,7 +27,8 @@ public class TypeGetter {
 	private static final String ATOM_ROOT = "feed";
 	private static final String RSS_ROOT = "rss";
 
-	public Type getType(Feed feed) throws UnsupportedFeedtypeException {
+	@NonNull
+    public Type getType(@NonNull Feed feed) throws UnsupportedFeedtypeException {
 		XmlPullParserFactory factory;
 		if (feed.getFile_url() != null) {
 			Reader reader = null;

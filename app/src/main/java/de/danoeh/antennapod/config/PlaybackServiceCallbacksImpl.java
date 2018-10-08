@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.CastplayerActivity;
@@ -13,6 +15,7 @@ import de.danoeh.antennapod.core.feed.MediaType;
 
 
 public class PlaybackServiceCallbacksImpl implements PlaybackServiceCallbacks {
+    @NonNull
     @Override
     public Intent getPlayerActivityIntent(Context context, MediaType mediaType, boolean remotePlayback) {
         if (remotePlayback) {

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
@@ -27,7 +28,7 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
     }
 
     @Override
-    public void uncaughtException(Thread thread, Throwable ex) {
+    public void uncaughtException(Thread thread, @NonNull Throwable ex) {
         File path = getFile();
         PrintWriter out = null;
         try {

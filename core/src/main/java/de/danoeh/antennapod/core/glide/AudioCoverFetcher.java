@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.glide;
 
 import android.media.MediaMetadataRetriever;
+import android.support.annotation.NonNull;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.data.DataFetcher;
@@ -24,6 +25,7 @@ class AudioCoverFetcher implements DataFetcher<InputStream> {
         return path;
     }
 
+    @NonNull
     @Override public InputStream loadData(Priority priority) throws Exception {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         try {

@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.gpoddernet.model;
 
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -167,7 +169,7 @@ public class GpodnetEpisodeAction {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -198,6 +200,7 @@ public class GpodnetEpisodeAction {
         return result;
     }
 
+    @NonNull
     public String writeToString() {
         return this.podcast + "\t" +
                 this.episode + "\t" +
@@ -214,6 +217,7 @@ public class GpodnetEpisodeAction {
      *
      * @return JSON object representation, or null if the object is invalid
      */
+    @Nullable
     public JSONObject writeToJSONObject() {
         JSONObject obj = new JSONObject();
         try {
@@ -236,6 +240,7 @@ public class GpodnetEpisodeAction {
         return obj;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "GpodnetEpisodeAction{" +
@@ -274,24 +279,29 @@ public class GpodnetEpisodeAction {
             this.action = action;
         }
 
+        @NonNull
         public Builder deviceId(String deviceId) {
             this.deviceId = deviceId;
             return this;
         }
 
+        @NonNull
         public Builder currentDeviceId() {
             return deviceId(GpodnetPreferences.getDeviceID());
         }
 
+        @NonNull
         public Builder timestamp(Date timestamp) {
             this.timestamp = timestamp;
             return this;
         }
 
+        @NonNull
         public Builder currentTimestamp() {
             return timestamp(new Date());
         }
 
+        @NonNull
         public Builder started(int seconds) {
             if(action == Action.PLAY) {
                 this.started = seconds;
@@ -299,6 +309,7 @@ public class GpodnetEpisodeAction {
             return this;
         }
 
+        @NonNull
         public Builder position(int seconds) {
             if(action == Action.PLAY) {
                 this.position = seconds;
@@ -306,6 +317,7 @@ public class GpodnetEpisodeAction {
             return this;
         }
 
+        @NonNull
         public Builder total(int seconds) {
             if(action == Action.PLAY) {
                 this.total = seconds;
@@ -313,6 +325,7 @@ public class GpodnetEpisodeAction {
             return this;
         }
 
+        @NonNull
         public GpodnetEpisodeAction build() {
             return new GpodnetEpisodeAction(this);
         }

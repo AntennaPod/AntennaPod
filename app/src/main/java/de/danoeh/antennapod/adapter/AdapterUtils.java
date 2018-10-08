@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -26,7 +27,7 @@ class AdapterUtils {
     /**
      * Updates the contents of the TextView that shows the current playback position and the ProgressBar.
      */
-    static void updateEpisodePlaybackProgress(FeedItem item, TextView txtvPos, ProgressBar episodeProgress) {
+    static void updateEpisodePlaybackProgress(FeedItem item, @NonNull TextView txtvPos, ProgressBar episodeProgress) {
         FeedMedia media = item.getMedia();
         episodeProgress.setVisibility(View.GONE);
         if (media == null) {

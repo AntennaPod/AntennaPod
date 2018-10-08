@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util.comparator;
 
+import android.support.annotation.NonNull;
+
 import java.util.Comparator;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -12,7 +14,7 @@ public class FeedItemPubdateComparator implements Comparator<FeedItem> {
 		FeedItemPubdateComparator
 	}*/
 	@Override
-	public int compare(FeedItem lhs, FeedItem rhs) {
+	public int compare(@NonNull FeedItem lhs, @NonNull FeedItem rhs) {
 		return rhs.getPubDate().compareTo(lhs.getPubDate());
 	}
 

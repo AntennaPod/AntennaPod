@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.support.annotation.NonNull;
+
 public class ID3Chapter extends Chapter {
 	public static final int CHAPTERTYPE_ID3CHAPTER = 2;
 
@@ -18,7 +20,8 @@ public class ID3Chapter extends Chapter {
 		super(start, title, item, link);
 	}
 
-	@Override
+	@NonNull
+    @Override
 	public String toString() {
 		return "ID3Chapter [id3ID=" + id3ID + ", title=" + title + ", start="
 				+ start + ", url=" + link + "]";

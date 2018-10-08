@@ -1,4 +1,7 @@
 package de.danoeh.antennapod.core.util.vorbiscommentreader;
+
+import android.support.annotation.NonNull;
+
 class VorbisCommentHeader {
 	private final String vendorString;
 	private final long userCommentLength;
@@ -9,7 +12,8 @@ class VorbisCommentHeader {
 		this.userCommentLength = userCommentLength;
 	}
 
-	@Override
+	@NonNull
+    @Override
 	public String toString() {
 		return "VorbisCommentHeader [vendorString=" + vendorString
 				+ ", userCommentLength=" + userCommentLength + "]";

@@ -3,6 +3,8 @@ package de.danoeh.antennapod.core.glide;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
@@ -19,6 +21,7 @@ public class FastBlurTransformation extends BitmapTransformation {
         super(context);
     }
 
+    @Nullable
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap source,
                                int outWidth, int outHeight) {
@@ -33,12 +36,13 @@ public class FastBlurTransformation extends BitmapTransformation {
         return result;
     }
 
+    @NonNull
     @Override
     public String getId() {
         return "FastBlurTransformation[width=" + BLUR_IMAGE_WIDTH + "px,radius=" + STACK_BLUR_RADIUS +"]";
     }
 
-    private static Bitmap fastBlur(Bitmap bitmap, int radius) {
+    private static Bitmap fastBlur(@NonNull Bitmap bitmap, int radius) {
 
         // Stack Blur v1.0 from
         // http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html

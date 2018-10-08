@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.apache.commons.lang3.Validate;
@@ -24,6 +25,7 @@ public class TagFragment extends PodcastListFragment {
 
     private GpodnetTag tag;
 
+    @NonNull
     public static TagFragment newInstance(GpodnetTag tag) {
         Validate.notNull(tag);
         TagFragment fragment = new TagFragment();
@@ -49,7 +51,7 @@ public class TagFragment extends PodcastListFragment {
     }
 
     @Override
-    protected List<GpodnetPodcast> loadPodcastData(GpodnetService service) throws GpodnetServiceException {
+    protected List<GpodnetPodcast> loadPodcastData(@NonNull GpodnetService service) throws GpodnetServiceException {
         return service.getPodcastsForTag(tag, PODCAST_COUNT);
     }
 }

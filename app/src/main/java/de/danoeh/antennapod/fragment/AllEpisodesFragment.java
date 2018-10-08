@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -72,6 +74,7 @@ public class AllEpisodesFragment extends Fragment {
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
     RecyclerView recyclerView;
+    @Nullable
     AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
 
@@ -177,7 +180,7 @@ public class AllEpisodesFragment extends Fragment {
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if(!isAdded()) {
             return;
         }
@@ -207,7 +210,7 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem markAllRead = menu.findItem(R.id.mark_all_read_item);
         if (markAllRead != null) {
@@ -220,7 +223,7 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.refresh_item:
@@ -267,7 +270,7 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
         if(!isVisible()) {
             return false;
@@ -299,13 +302,14 @@ public class AllEpisodesFragment extends Fragment {
         return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
     }
 
-    View onCreateViewHelper(LayoutInflater inflater,
+    View onCreateViewHelper(@NonNull LayoutInflater inflater,
                             ViewGroup container,
                             Bundle savedInstanceState,
                             int fragmentResource) {
@@ -352,6 +356,7 @@ public class AllEpisodesFragment extends Fragment {
         updateShowOnlyEpisodesListViewState();
     }
 
+    @Nullable
     private final AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
 
         @Override
@@ -370,6 +375,7 @@ public class AllEpisodesFragment extends Fragment {
             return null;
         }
 
+        @NonNull
         @Override
         public LongList getItemsIds() {
             if(episodes == null) {
@@ -383,7 +389,7 @@ public class AllEpisodesFragment extends Fragment {
         }
 
         @Override
-        public int getItemDownloadProgressPercent(FeedItem item) {
+        public int getItemDownloadProgressPercent(@NonNull FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
                     if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
@@ -396,10 +402,11 @@ public class AllEpisodesFragment extends Fragment {
         }
 
         @Override
-        public boolean isInQueue(FeedItem item) {
+        public boolean isInQueue(@Nullable FeedItem item) {
             return item != null && item.isTagged(FeedItem.TAG_QUEUE);
         }
 
+        @NonNull
         @Override
         public LongList getQueueIds() {
             LongList queueIds = new LongList();
@@ -416,7 +423,7 @@ public class AllEpisodesFragment extends Fragment {
 
     };
 
-    public void onEventMainThread(FeedItemEvent event) {
+    public void onEventMainThread(@NonNull FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if(episodes == null || listAdapter == null) {
             return;
@@ -433,7 +440,7 @@ public class AllEpisodesFragment extends Fragment {
     }
 
 
-    public void onEventMainThread(DownloadEvent event) {
+    public void onEventMainThread(@NonNull DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
@@ -493,7 +500,7 @@ public class AllEpisodesFragment extends Fragment {
         return DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
     }
 
-    void markItemAsSeenWithUndo(FeedItem item) {
+    void markItemAsSeenWithUndo(@Nullable FeedItem item) {
         if (item == null) {
             return;
         }

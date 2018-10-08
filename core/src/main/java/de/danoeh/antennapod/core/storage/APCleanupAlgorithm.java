@@ -36,7 +36,7 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     }
 
     @Override
-    public int performCleanup(Context context, int numberOfEpisodesToDelete) {
+    public int performCleanup(@NonNull Context context, int numberOfEpisodesToDelete) {
         List<FeedItem> candidates = getCandidates();
         List<FeedItem> delete;
 
@@ -62,7 +62,7 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         for (FeedItem item : delete) {
             try {
                 DBWriter.deleteFeedMediaOfItem(context, item.getMedia().getId()).get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (@NonNull InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }

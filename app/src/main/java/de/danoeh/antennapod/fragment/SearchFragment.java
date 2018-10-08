@@ -2,6 +2,8 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +40,7 @@ public class SearchFragment extends ListFragment {
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
 
+    @Nullable
     private SearchlistAdapter searchAdapter;
     private List<SearchResult> searchResults;
 
@@ -49,7 +52,8 @@ public class SearchFragment extends ListFragment {
     /**
      * Create a new SearchFragment that searches all feeds.
      */
-    public static SearchFragment newInstance(String query) {
+    @NonNull
+    public static SearchFragment newInstance(@Nullable String query) {
         if (query == null) query = "";
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
@@ -62,6 +66,7 @@ public class SearchFragment extends ListFragment {
     /**
      * Create a new SearchFragment that searches one specific feed.
      */
+    @NonNull
     public static SearchFragment newInstance(String query, long feed) {
         SearchFragment fragment = newInstance(query);
         fragment.getArguments().putLong(ARG_FEED, feed);
@@ -124,7 +129,7 @@ public class SearchFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         SearchResult result = (SearchResult) l.getAdapter().getItem(position);
         FeedComponent comp = result.getComponent();
@@ -139,7 +144,7 @@ public class SearchFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if (itemsLoaded) {
             MenuItem item = menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label);
@@ -187,6 +192,7 @@ public class SearchFragment extends ListFragment {
         setEmptyText(getString(R.string.no_results_for_query, query));
     }
 
+    @Nullable
     private final SearchlistAdapter.ItemAccess itemAccess = new SearchlistAdapter.ItemAccess() {
         @Override
         public int getCount() {

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -96,6 +97,7 @@ public class OpmlFeedChooserActivity extends AppCompatActivity {
 
     }
 
+    @NonNull
     private List<String> getTitleList() {
         List<String> result = new ArrayList<>();
         if (OpmlImportHolder.getReadElements() != null) {
@@ -107,7 +109,7 @@ public class OpmlFeedChooserActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.opml_selection_options, menu);
@@ -118,7 +120,7 @@ public class OpmlFeedChooserActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.select_all_item:
                 selectAll.setVisible(false);

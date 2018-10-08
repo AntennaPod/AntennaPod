@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.xml.sax.Attributes;
@@ -21,7 +22,8 @@ import de.danoeh.antennapod.core.syndication.namespace.atom.NSAtom;
 class SyndHandler extends DefaultHandler {
 	private static final String TAG = "SyndHandler";
 	private static final String DEFAULT_PREFIX = "";
-	final HandlerState state;
+	@NonNull
+    final HandlerState state;
 
 	public SyndHandler(Feed feed, TypeGetter.Type type) {
 		state = new HandlerState(feed);
@@ -31,8 +33,8 @@ class SyndHandler extends DefaultHandler {
 	}
 
 	@Override
-	public void startElement(String uri, String localName, String qName,
-			Attributes attributes) throws SAXException {
+	public void startElement(String uri, String localName, @NonNull String qName,
+                             Attributes attributes) throws SAXException {
 		state.contentBuf = new StringBuilder();
 		Namespace handler = getHandlingNamespace(uri, qName);
 		if (handler != null) {
@@ -56,7 +58,7 @@ class SyndHandler extends DefaultHandler {
 	}
 
 	@Override
-	public void endElement(String uri, String localName, String qName)
+	public void endElement(String uri, String localName, @NonNull String qName)
 			throws SAXException {
 		Namespace handler = getHandlingNamespace(uri, qName);
 		if (handler != null) {
@@ -69,14 +71,14 @@ class SyndHandler extends DefaultHandler {
 	}
 
 	@Override
-	public void endPrefixMapping(String prefix) throws SAXException {
+	public void endPrefixMapping(@NonNull String prefix) throws SAXException {
 		if (state.defaultNamespaces.size() > 1 && prefix.equals(DEFAULT_PREFIX)) {
 			state.defaultNamespaces.pop();
 		}
 	}
 
 	@Override
-	public void startPrefixMapping(String prefix, String uri)
+	public void startPrefixMapping(@NonNull String prefix, @NonNull String uri)
 			throws SAXException {
 		// Find the right namespace
 		if (!state.namespaces.containsKey(uri)) {
@@ -111,7 +113,7 @@ class SyndHandler extends DefaultHandler {
 		}
 	}
 
-	private Namespace getHandlingNamespace(String uri, String qName) {
+	private Namespace getHandlingNamespace(String uri, @NonNull String qName) {
 		Namespace handler = state.namespaces.get(uri);
 		if (handler == null && !state.defaultNamespaces.empty()
 				&& !qName.contains(":")) {
@@ -126,7 +128,8 @@ class SyndHandler extends DefaultHandler {
 		state.getFeed().setItems(state.getItems());
 	}
 
-	public HandlerState getState() {
+	@NonNull
+    public HandlerState getState() {
 		return state;
 	}
 

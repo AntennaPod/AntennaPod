@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.util;
 
 
+import android.support.annotation.NonNull;
+
 import java.util.Arrays;
 
 /**
@@ -204,6 +206,7 @@ public class LongIntMap {
      *
      * @return a copy of the values contained in this map
      */
+    @NonNull
     public int[] values() {
         return Arrays.copyOf(values, size);
     }
@@ -239,6 +242,7 @@ public class LongIntMap {
         return hashCode;
     }
 
+    @NonNull
     @Override
     public String toString() {
         if (size() <= 0) {

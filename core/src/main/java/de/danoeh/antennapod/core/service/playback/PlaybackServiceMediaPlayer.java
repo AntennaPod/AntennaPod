@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.service.playback;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.util.Log;
 import android.util.Pair;
@@ -39,7 +40,9 @@ public abstract class PlaybackServiceMediaPlayer {
      */
     private WifiManager.WifiLock wifiLock;
 
+    @NonNull
     final PSMPCallback callback;
+    @NonNull
     final Context context;
 
     PlaybackServiceMediaPlayer(@NonNull Context context,
@@ -197,6 +200,7 @@ public abstract class PlaybackServiceMediaPlayer {
      * return an invalid non-null value if the getVideoWidth() and getVideoHeight() methods of the media player return
      * invalid values.
      */
+    @Nullable
     public abstract Pair<Integer, Integer> getVideoSize();
 
     /**
@@ -224,6 +228,7 @@ public abstract class PlaybackServiceMediaPlayer {
      * could result in nonsensical results (like a status of PLAYING, but a null playable)
      * @return the current media. May be null
      */
+    @Nullable
     public abstract Playable getPlayable();
 
     protected abstract void setPlayable(Playable playable);
@@ -238,6 +243,7 @@ public abstract class PlaybackServiceMediaPlayer {
      *
      * @see #endPlayback(boolean, boolean, boolean, boolean)
      */
+    @NonNull
     public Future<?> stopPlayback(boolean toStoppedState) {
         return endPlayback(false, false, false, toStoppedState);
     }
@@ -268,6 +274,7 @@ public abstract class PlaybackServiceMediaPlayer {
      *
      * @return a Future, just for the purpose of tracking its execution.
      */
+    @NonNull
     protected abstract Future<?> endPlayback(boolean hasEnded, boolean wasSkipped,
                                              boolean shouldContinue, boolean toStoppedState);
 
@@ -308,7 +315,7 @@ public abstract class PlaybackServiceMediaPlayer {
      * @param position  The position to be set to the current Playable object in case playback started or paused.
      *                  Will be ignored if given the value of {@link #INVALID_TIME}.
      */
-    final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, Playable newMedia, int position) {
+    final synchronized void setPlayerStatus(@NonNull PlayerStatus newStatus, @Nullable Playable newMedia, int position) {
         Log.d(TAG, this.getClass().getSimpleName() + ": Setting player status to " + newStatus);
 
         this.oldPlayerStatus = playerStatus;
@@ -356,6 +363,7 @@ public abstract class PlaybackServiceMediaPlayer {
 
         void onPlaybackPause(Playable playable, int position);
 
+        @Nullable
         Playable getNextInQueue(Playable currentMedia);
 
         void onPlaybackEnded(MediaType mediaType, boolean stopPlaying);

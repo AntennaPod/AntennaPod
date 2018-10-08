@@ -23,6 +23,7 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
@@ -208,6 +209,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
+    @Nullable
     private PlaybackServiceFlavorHelper flavorHelper;
 
     /**
@@ -220,6 +222,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final IBinder mBinder = new LocalBinder();
 
     public class LocalBinder extends Binder {
+        @NonNull
         public PlaybackService getService() {
             return PlaybackService.this;
         }
@@ -445,7 +448,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(@NonNull Intent intent) {
         Log.d(TAG, "Received onBind event");
         if (intent.getAction() != null && TextUtils.equals(intent.getAction(), MediaBrowserServiceCompat.SERVICE_INTERFACE)) {
             return super.onBind(intent);
@@ -455,7 +458,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(@NonNull Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
         Log.d(TAG, "OnStartCommand called");
@@ -657,9 +660,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     };
 
+    @Nullable
     private final PlaybackServiceMediaPlayer.PSMPCallback mediaPlayerCallback = new PlaybackServiceMediaPlayer.PSMPCallback() {
         @Override
-        public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+        public void statusChanged(@NonNull PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
             if (mediaPlayer != null) {
                 currentMediaType = mediaPlayer.getCurrentMediaType();
             } else {
@@ -791,7 +795,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onPlaybackPause(Playable playable, int position) {
+        public void onPlaybackPause(@Nullable Playable playable, int position) {
             taskManager.cancelPositionSaver();
             saveCurrentPosition(position == PlaybackServiceMediaPlayer.INVALID_TIME || playable == null,
                     playable, position);
@@ -801,6 +805,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
 
+        @Nullable
         @Override
         public Playable getNextInQueue(Playable currentMedia) {
             return PlaybackService.this.getNextInQueue(currentMedia);
@@ -849,7 +854,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * Set of instructions to be performed when playback ends.
      */
-    private void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+    private void onPlaybackEnded(@Nullable MediaType mediaType, boolean stopPlaying) {
         Log.d(TAG, "Playback ended");
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
@@ -886,7 +891,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      *                    Instances when we'd set it to false would be when we're not following the
      *                    queue or when the queue has ended.
      */
-    private void onPostPlayback(final Playable playable, boolean ended, boolean skipped,
+    private void onPostPlayback(@Nullable final Playable playable, boolean ended, boolean skipped,
                                 boolean playingNext) {
         if (playable == null) {
             Log.e(TAG, "Cannot do post-playback processing: media was null");
@@ -1067,7 +1072,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      *
      * @param playerStatus the current {@link PlayerStatus}
      */
-    private void updateMediaSession(final PlayerStatus playerStatus) {
+    private void updateMediaSession(@Nullable final PlayerStatus playerStatus) {
         PlaybackStateCompat.Builder sessionState = new PlaybackStateCompat.Builder();
 
         int state;
@@ -1149,7 +1154,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private Thread mediaSessionSetupThread;
 
-    private void updateMediaSessionMetadata(final Playable p) {
+    private void updateMediaSessionMetadata(@Nullable final Playable p) {
         if (p == null || mediaSession == null) {
             return;
         }
@@ -1208,6 +1213,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * Used by setupNotification to load notification data in another thread.
      */
+    @Nullable
     private Thread notificationSetupThread;
 
     /**
@@ -1217,7 +1223,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         setupNotification(info.playable);
     }
 
-    private synchronized void setupNotification(final Playable playable) {
+    private synchronized void setupNotification(@Nullable final Playable playable) {
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
         }
@@ -1229,6 +1235,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return;
         }
         Runnable notificationSetupTask = new Runnable() {
+            @Nullable
             Bitmap icon = null;
 
             @Override
@@ -1474,7 +1481,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         private static final int PLUGGED = 1;
 
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @NonNull Intent intent) {
             if (isInitialStickyBroadcast ()) {
                 // Don't pause playback after we just started, just because the receiver
                 // delivers the current headset state (instead of a change)
@@ -1619,6 +1626,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaPlayer.reinit();
     }
 
+    @NonNull
     public PlaybackServiceMediaPlayer.PSMPInfo getPSMPInfo() {
         return mediaPlayer.getPSMPInfo();
     }
@@ -1676,7 +1684,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * Seek to the start of the specified chapter.
      */
-    public void seekToChapter(Chapter c) {
+    public void seekToChapter(@NonNull Chapter c) {
         seekTo((int) c.getStart());
     }
 
@@ -1710,6 +1718,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return mediaPlayer.getVideoSize();
     }
 
+    @Nullable
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
 
         private static final String TAG = "MediaSessionCompat";
@@ -1727,7 +1736,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onPlayFromMediaId(String mediaId, Bundle extras) {
+        public void onPlayFromMediaId(@NonNull String mediaId, Bundle extras) {
             Log.d(TAG, "onPlayFromMediaId: mediaId: " + mediaId + " extras: " + extras.toString());
             FeedMedia p = DBReader.getFeedMedia(Long.parseLong(mediaId));
             if (p != null) {
@@ -1804,7 +1813,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public boolean onMediaButtonEvent(final Intent mediaButton) {
+        public boolean onMediaButtonEvent(@Nullable final Intent mediaButton) {
             Log.d(TAG, "onMediaButtonEvent(" + mediaButton + ")");
             if (mediaButton != null) {
                 KeyEvent keyEvent = (KeyEvent) mediaButton.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
@@ -1838,6 +1847,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             };
 
     interface FlavorHelperCallback {
+        @Nullable
         PlaybackServiceMediaPlayer.PSMPCallback getMediaPlayerCallback();
 
         void setMediaPlayer(PlaybackServiceMediaPlayer mediaPlayer);
@@ -1859,7 +1869,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         void unregisterReceiver(BroadcastReceiver receiver);
     }
 
+    @Nullable
     private final FlavorHelperCallback flavorHelperCallback = new FlavorHelperCallback() {
+        @Nullable
         @Override
         public PlaybackServiceMediaPlayer.PSMPCallback getMediaPlayerCallback() {
             return PlaybackService.this.mediaPlayerCallback;
@@ -1891,7 +1903,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info) {
+        public void setupNotification(boolean connected, @NonNull PlaybackServiceMediaPlayer.PSMPInfo info) {
             if (connected) {
                 PlaybackService.this.setupNotification(info);
             } else {

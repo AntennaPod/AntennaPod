@@ -2,6 +2,8 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -57,6 +59,7 @@ public class ItunesSearchFragment extends Fragment {
     /**
      * Adapter responsible with the search results
      */
+    @Nullable
     private ItunesAdapter adapter;
     private GridView gridView;
     private ProgressBar progressBar;
@@ -67,6 +70,7 @@ public class ItunesSearchFragment extends Fragment {
     /**
      * List of podcasts retreived from the search
      */
+    @Nullable
     private List<Podcast> searchResults;
     private List<Podcast> topList;
     private Subscription subscription;
@@ -75,7 +79,7 @@ public class ItunesSearchFragment extends Fragment {
      * Replace adapter data with provided search results from SearchTask.
      * @param result List of Podcast objects containing search results
      */
-    private void updateData(List<Podcast> result) {
+    private void updateData(@Nullable List<Podcast> result) {
         this.searchResults = result;
         adapter.clear();
         if (result != null && result.size() > 0) {
@@ -105,7 +109,7 @@ public class ItunesSearchFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
@@ -144,7 +148,7 @@ public class ItunesSearchFragment extends Fragment {
                                     String prefix = getString(R.string.error_msg_prefix);
                                     subscriber.onError(new IOException(prefix + response));
                                 }
-                            } catch (IOException | JSONException e) {
+                            } catch (@NonNull IOException | JSONException e) {
                                 subscriber.onError(e);
                             }
                             subscriber.onCompleted();
@@ -190,7 +194,7 @@ public class ItunesSearchFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.itunes_search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -199,7 +203,7 @@ public class ItunesSearchFragment extends Fragment {
         sv.setQueryHint(getString(R.string.search_itunes_label));
         sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
+            public boolean onQueryTextSubmit(@NonNull String s) {
                 sv.clearFocus();
                 search(s);
                 return true;
@@ -270,7 +274,7 @@ public class ItunesSearchFragment extends Fragment {
                             String prefix = getString(R.string.error_msg_prefix);
                             subscriber.onError(new IOException(prefix + response));
                         }
-                    } catch (IOException | JSONException e) {
+                    } catch (@NonNull IOException | JSONException e) {
                         subscriber.onError(e);
                     }
                     subscriber.onNext(results);
@@ -292,7 +296,7 @@ public class ItunesSearchFragment extends Fragment {
                 });
     }
 
-    private void search(String query) {
+    private void search(@NonNull String query) {
         if (subscription != null) {
             subscription.unsubscribe();
         }
@@ -338,7 +342,7 @@ public class ItunesSearchFragment extends Fragment {
                             String prefix = getString(R.string.error_msg_prefix);
                             subscriber.onError(new IOException(prefix + response));
                         }
-                    } catch (IOException | JSONException e) {
+                    } catch (@NonNull IOException | JSONException e) {
                         subscriber.onError(e);
                     }
                     subscriber.onNext(podcasts);

@@ -1,12 +1,15 @@
 package de.danoeh.antennapod.core.util;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 
 public class FeedItemUtil {
 
-    public static int indexOfItemWithDownloadUrl(List<FeedItem> items, String downloadUrl) {
+    public static int indexOfItemWithDownloadUrl(@Nullable List<FeedItem> items, String downloadUrl) {
         if(items == null) {
             return -1;
         }
@@ -39,7 +42,8 @@ public class FeedItemUtil {
         return -1;
     }
 
-    public static long[] getIds(FeedItem... items) {
+    @NonNull
+    public static long[] getIds(@Nullable FeedItem... items) {
         if(items == null || items.length == 0) {
             return new long[0];
         }
@@ -50,7 +54,8 @@ public class FeedItemUtil {
         return result;
     }
 
-    public static long[] getIds(List<FeedItem> items) {
+    @NonNull
+    public static long[] getIds(@Nullable List<FeedItem> items) {
         if(items == null || items.size() == 0) {
             return new long[0];
         }
@@ -61,7 +66,7 @@ public class FeedItemUtil {
         return result;
     }
 
-    public static boolean containsAnyId(List<FeedItem> items, long[] ids) {
+    public static boolean containsAnyId(@Nullable List<FeedItem> items, @NonNull long[] ids) {
         if(items == null || items.size() == 0) {
             return false;
         }
@@ -79,7 +84,8 @@ public class FeedItemUtil {
      * Get the link for the feed item for the purpose of Share. It fallbacks to
      * use the feed's link if the named feed item has no link.
      */
-    public static String getLinkWithFallback(FeedItem item) {
+    @Nullable
+    public static String getLinkWithFallback(@Nullable FeedItem item) {
         if (item == null) {
             return null;
         } else if (item.getLink() != null) {

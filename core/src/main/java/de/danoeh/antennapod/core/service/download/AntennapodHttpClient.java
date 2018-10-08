@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.download;
 
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -48,11 +49,13 @@ public class AntennapodHttpClient {
     private static final int MAX_CONNECTIONS = 8;
 
 
+    @Nullable
     private static volatile OkHttpClient httpClient = null;
 
     /**
      * Returns the HttpClient singleton.
      */
+    @Nullable
     public static synchronized OkHttpClient getHttpClient() {
         if (httpClient == null) {
             httpClient = newBuilder().build();
@@ -192,36 +195,42 @@ public class AntennapodHttpClient {
             return factory.getSupportedCipherSuites();
         }
 
+        @NonNull
         public Socket createSocket() throws IOException {
             SSLSocket result = (SSLSocket) factory.createSocket();
             configureSocket(result);
             return result;
         }
 
+        @NonNull
         public Socket createSocket(String var1, int var2) throws IOException {
             SSLSocket result = (SSLSocket) factory.createSocket(var1, var2);
             configureSocket(result);
             return result;
         }
 
+        @NonNull
         public Socket createSocket(Socket var1, String var2, int var3, boolean var4) throws IOException {
             SSLSocket result = (SSLSocket) factory.createSocket(var1, var2, var3, var4);
             configureSocket(result);
             return result;
         }
 
+        @NonNull
         public Socket createSocket(InetAddress var1, int var2) throws IOException {
             SSLSocket result = (SSLSocket) factory.createSocket(var1, var2);
             configureSocket(result);
             return result;
         }
 
+        @NonNull
         public Socket createSocket(String var1, int var2, InetAddress var3, int var4) throws IOException {
             SSLSocket result = (SSLSocket) factory.createSocket(var1, var2, var3, var4);
             configureSocket(result);
             return result;
         }
 
+        @NonNull
         public Socket createSocket(InetAddress var1, int var2, InetAddress var3, int var4) throws IOException {
             SSLSocket result = (SSLSocket) factory.createSocket(var1, var2, var3, var4);
             configureSocket(result);

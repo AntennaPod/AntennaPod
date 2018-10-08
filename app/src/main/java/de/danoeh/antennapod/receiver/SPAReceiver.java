@@ -3,6 +3,7 @@ package de.danoeh.antennapod.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,7 +27,7 @@ public class SPAReceiver extends BroadcastReceiver{
     private static final String ACTION_SP_APPS_QUERY_FEEDS_REPSONSE_FEEDS_EXTRA = "feeds";
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(Context context, @NonNull Intent intent) {
         if (!TextUtils.equals(intent.getAction(), ACTION_SP_APPS_QUERY_FEEDS_REPSONSE)) {
             return;
         }

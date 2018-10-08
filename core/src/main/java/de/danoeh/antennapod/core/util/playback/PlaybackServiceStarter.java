@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.util.playback;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -23,11 +24,13 @@ public class PlaybackServiceStarter {
     /**
      * Default value: false
      */
+    @NonNull
     public PlaybackServiceStarter shouldStream(boolean shouldStream) {
         this.shouldStream = shouldStream;
         return this;
     }
 
+    @NonNull
     public PlaybackServiceStarter streamIfLastWasStream() {
         boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
         return shouldStream(lastIsStream);
@@ -36,6 +39,7 @@ public class PlaybackServiceStarter {
     /**
      * Default value: false
      */
+    @NonNull
     public PlaybackServiceStarter startWhenPrepared(boolean startWhenPrepared) {
         this.startWhenPrepared = startWhenPrepared;
         return this;
@@ -44,6 +48,7 @@ public class PlaybackServiceStarter {
     /**
      * Default value: false
      */
+    @NonNull
     public PlaybackServiceStarter callEvenIfRunning(boolean callEvenIfRunning) {
         this.callEvenIfRunning = callEvenIfRunning;
         return this;
@@ -52,11 +57,13 @@ public class PlaybackServiceStarter {
     /**
      * Default value: true
      */
+    @NonNull
     public PlaybackServiceStarter prepareImmediately(boolean prepareImmediately) {
         this.prepareImmediately = prepareImmediately;
         return this;
     }
 
+    @NonNull
     public Intent getIntent() {
         Intent launchIntent = new Intent(context, PlaybackService.class);
         launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);

@@ -3,6 +3,7 @@ package de.test.antennapod.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.test.FlakyTest;
 import android.test.InstrumentationTestCase;
 
@@ -104,8 +105,8 @@ public class DBCleanupTests extends InstrumentationTestCase {
         }
     }
 
-    void populateItems(final int numItems, Feed feed, List<FeedItem> items,
-                       List<File> files, int itemState, boolean addToQueue,
+    void populateItems(final int numItems, @NonNull Feed feed, @NonNull List<FeedItem> items,
+                       @NonNull List<File> files, int itemState, boolean addToQueue,
                        boolean addToFavorites) throws IOException {
         for (int i = 0; i < numItems; i++) {
             Date itemDate = new Date(numItems - i);

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -9,6 +11,7 @@ import java.io.File;
  */
 public abstract class FeedFile extends FeedComponent {
 
+    @Nullable
     String file_url;
     protected String download_url;
     boolean downloaded;
@@ -22,7 +25,7 @@ public abstract class FeedFile extends FeedComponent {
      * @param downloaded   true if the FeedFile has been downloaded, false otherwise. This parameter
      *                     will automatically be interpreted as false if the file_url is null.
      */
-    public FeedFile(String file_url, String download_url, boolean downloaded) {
+    public FeedFile(@Nullable String file_url, String download_url, boolean downloaded) {
         super();
         this.file_url = file_url;
         this.download_url = download_url;
@@ -40,7 +43,7 @@ public abstract class FeedFile extends FeedComponent {
      * FeedFile. This method should only update attributes which where read from
      * the feed.
      */
-    void updateFromOther(FeedFile other) {
+    void updateFromOther(@NonNull FeedFile other) {
         super.updateFromOther(other);
         this.download_url = other.download_url;
     }
@@ -52,7 +55,7 @@ public abstract class FeedFile extends FeedComponent {
      *
      * @return true if attribute values are different, false otherwise
      */
-    boolean compareWithOther(FeedFile other) {
+    boolean compareWithOther(@NonNull FeedFile other) {
         if (super.compareWithOther(other)) {
             return true;
         }
@@ -74,6 +77,7 @@ public abstract class FeedFile extends FeedComponent {
         }
     }
 
+    @Nullable
     public String getFile_url() {
         return file_url;
     }
@@ -82,7 +86,7 @@ public abstract class FeedFile extends FeedComponent {
      * Changes the file_url of this FeedFile. Setting this value to
      * null will also set the downloaded-attribute to false.
      */
-    public void setFile_url(String file_url) {
+    public void setFile_url(@Nullable String file_url) {
         this.file_url = file_url;
         if (file_url == null) {
             downloaded = false;

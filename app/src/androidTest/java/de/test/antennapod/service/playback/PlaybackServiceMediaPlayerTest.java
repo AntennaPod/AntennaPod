@@ -2,6 +2,7 @@ package de.test.antennapod.service.playback;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.test.InstrumentationTestCase;
 
@@ -38,11 +39,13 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
     private static final String PLAYABLE_FILE_URL = "http://127.0.0.1:" + HTTPBin.PORT + "/files/0";
     private static final String PLAYABLE_DEST_URL = "psmptestfile.mp3";
+    @Nullable
     private String PLAYABLE_LOCAL_URL = null;
     private static final int LATCH_TIMEOUT_SECONDS = 10;
 
     private HTTPBin httpServer;
 
+    @Nullable
     private volatile AssertionFailedError assertionError;
 
     @Override
@@ -119,7 +122,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         psmp.shutdown();
     }
 
-    private Playable writeTestPlayable(String downloadUrl, String fileUrl) {
+    @NonNull
+    private Playable writeTestPlayable(String downloadUrl, @Nullable String fileUrl) {
         final Context c = getInstrumentation().getTargetContext();
         Feed f = new Feed(0, null, "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
         FeedPreferences prefs = new FeedPreferences(f.getId(), false, FeedPreferences.AutoDeleteAction.NO, null, null);
@@ -143,7 +147,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -181,7 +185,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -220,7 +224,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final CountDownLatch countDownLatch = new CountDownLatch(4);
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -260,7 +264,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final CountDownLatch countDownLatch = new CountDownLatch(5);
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -302,7 +306,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -339,7 +343,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final CountDownLatch countDownLatch = new CountDownLatch(2);
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -376,7 +380,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final CountDownLatch countDownLatch = new CountDownLatch(4);
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -415,7 +419,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final CountDownLatch countDownLatch = new CountDownLatch(5);
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 try {
                     checkPSMPInfo(newInfo);
                     if (newInfo.playerStatus == PlayerStatus.ERROR)
@@ -460,7 +464,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
                 if (newInfo.playerStatus == PlayerStatus.ERROR) {
                     if (assertionError == null)
@@ -561,7 +565,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
                 if (newInfo.playerStatus == PlayerStatus.ERROR) {
                     if (assertionError == null)
@@ -619,7 +623,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final CountDownLatch countDownLatch = new CountDownLatch(latchCount);
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
                 if (newInfo.playerStatus == PlayerStatus.ERROR) {
                     if (assertionError == null)
@@ -688,7 +692,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final CountDownLatch countDownLatch = new CountDownLatch(latchCount);
         PlaybackServiceMediaPlayer.PSMPCallback callback = new DefaultPSMPCallback() {
             @Override
-            public void statusChanged(LocalPSMP.PSMPInfo newInfo) {
+            public void statusChanged(@NonNull LocalPSMP.PSMPInfo newInfo) {
                 checkPSMPInfo(newInfo);
                 if (newInfo.playerStatus == PlayerStatus.ERROR) {
                     if (assertionError == null)
@@ -803,6 +807,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
 
         }
 
+        @Nullable
         @Override
         public Playable getNextInQueue(Playable currentMedia) {
             return null;

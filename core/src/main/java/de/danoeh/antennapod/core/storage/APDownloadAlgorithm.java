@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -31,8 +32,9 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
      * @param context  Used for accessing the DB.
      * @return A Runnable that will be submitted to an ExecutorService.
      */
+    @NonNull
     @Override
-    public Runnable autoDownloadUndownloadedItems(final Context context) {
+    public Runnable autoDownloadUndownloadedItems(@NonNull final Context context) {
         return () -> {
 
             // true if we should auto download based on network status

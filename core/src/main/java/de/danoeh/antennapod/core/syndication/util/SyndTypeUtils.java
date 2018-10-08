@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.util;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
@@ -22,14 +23,14 @@ public class SyndTypeUtils {
 
 	}
 
-	public static boolean enclosureTypeValid(String type) {
+	public static boolean enclosureTypeValid(@Nullable String type) {
 		if (type == null) {
 			return false;
 		} else {
 			return type.matches(VALID_MEDIA_MIMETYPE);
 		}
 	}
-	public static boolean imageTypeValid(String type) {
+	public static boolean imageTypeValid(@Nullable String type) {
 		if (type == null) {
 			return false;
 		} else {
@@ -56,7 +57,8 @@ public class SyndTypeUtils {
 	 * Should be used if mime-type of enclosure tag is not supported. This
 	 * method will return the mime-type of the file extension.
 	 */
-	public static String getMimeTypeFromUrl(String url) {
+	@Nullable
+    public static String getMimeTypeFromUrl(@Nullable String url) {
 		if (url == null) {
 			return null;
 		}

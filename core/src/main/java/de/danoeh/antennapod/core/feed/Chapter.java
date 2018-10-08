@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
@@ -26,7 +27,8 @@ public abstract class Chapter extends FeedComponent {
 		this.link = link;
 	}
 
-	public static Chapter fromCursor(Cursor cursor, FeedItem item) {
+	@Nullable
+    public static Chapter fromCursor(Cursor cursor, FeedItem item) {
 		int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
 		int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
 		int indexStart = cursor.getColumnIndex(PodDBAdapter.KEY_START);

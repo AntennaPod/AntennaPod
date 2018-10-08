@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -70,6 +72,7 @@ public class FeedSettingsActivity extends AppCompatActivity {
     private Subscription subscription;
 
 
+    @Nullable
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -203,7 +206,7 @@ public class FeedSettingsActivity extends AppCompatActivity {
                     });
                     spnAutoDelete.setOnItemSelectedListener(new OnItemSelectedListener() {
                         @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                        public void onItemSelected(@NonNull AdapterView<?> parent, View view, int pos, long id) {
                             FeedPreferences.AutoDeleteAction auto_delete_action;
                             switch (parent.getSelectedItemPosition()) {
                                 case 0:
@@ -310,7 +313,7 @@ public class FeedSettingsActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.support_item).setVisible(
                 feed != null && feed.getPaymentLink() != null);
@@ -321,7 +324,7 @@ public class FeedSettingsActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,7 +39,7 @@ public class FeedMenuHandler {
         return true;
     }
 
-    public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
+    public static boolean onPrepareOptionsMenu(@NonNull Menu menu, @Nullable Feed selectedFeed) {
         if (selectedFeed == null) {
             return true;
         }
@@ -59,8 +61,8 @@ public class FeedMenuHandler {
      *
      * @throws DownloadRequestException
      */
-    public static boolean onOptionsItemClicked(final Context context, final MenuItem item,
-                                               final Feed selectedFeed) throws DownloadRequestException {
+    public static boolean onOptionsItemClicked(@NonNull final Context context, final MenuItem item,
+                                               @NonNull final Feed selectedFeed) throws DownloadRequestException {
         switch (item.getItemId()) {
             case R.id.refresh_item:
                 DBTasks.forceRefreshFeed(context, selectedFeed);

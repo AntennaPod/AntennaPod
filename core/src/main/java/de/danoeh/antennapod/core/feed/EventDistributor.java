@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.AbstractQueue;
@@ -27,8 +28,10 @@ public class EventDistributor extends Observable {
 	public static final int DOWNLOAD_HANDLED = 64;
     public static final int PLAYER_STATUS_UPDATE = 128;
 
-	private final Handler handler;
-	private final AbstractQueue<Integer> events;
+	@NonNull
+    private final Handler handler;
+	@NonNull
+    private final AbstractQueue<Integer> events;
 
 	private static EventDistributor instance;
 
@@ -44,7 +47,7 @@ public class EventDistributor extends Observable {
 		return instance;
 	}
 
-	public void register(EventListener el) {
+	public void register(@NonNull EventListener el) {
 		addObserver(el);
 	}
 

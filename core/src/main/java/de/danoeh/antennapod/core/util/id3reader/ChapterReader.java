@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util.id3reader;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.IOException;
@@ -21,7 +23,8 @@ public class ChapterReader extends ID3Reader {
     private static final String FRAME_ID_LINK = "WXXX";
 
 	private List<Chapter> chapters;
-	private ID3Chapter currentChapter;
+	@Nullable
+    private ID3Chapter currentChapter;
 
 	@Override
 	public int onStartTagHeader(TagHeader header) {
@@ -31,7 +34,7 @@ public class ChapterReader extends ID3Reader {
 	}
 
 	@Override
-	public int onStartFrameHeader(FrameHeader header, InputStream input)
+	public int onStartFrameHeader(@NonNull FrameHeader header, @NonNull InputStream input)
 			throws IOException, ID3ReaderException {
 		Log.d(TAG, "header: " + header);
 		switch (header.getId()) {
@@ -85,7 +88,7 @@ public class ChapterReader extends ID3Reader {
 		return super.onStartFrameHeader(header, input);
 	}
 
-	private boolean hasId3Chapter(ID3Chapter chapter) {
+	private boolean hasId3Chapter(@NonNull ID3Chapter chapter) {
 		for (Chapter c : chapters) {
 			if (((ID3Chapter) c).getId3ID().equals(chapter.getId3ID())) {
 				return true;

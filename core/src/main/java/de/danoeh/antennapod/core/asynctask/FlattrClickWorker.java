@@ -77,12 +77,13 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
      * @param context          A context for accessing the database and posting notifications. Must not be null.
      * @param extraFlattrThing The additional thing to flattr
      */
-    public FlattrClickWorker(Context context, FlattrThing extraFlattrThing) {
+    public FlattrClickWorker(@NonNull Context context, FlattrThing extraFlattrThing) {
         this(context);
         this.extraFlattrThing = extraFlattrThing;
     }
 
 
+    @NonNull
     @Override
     protected ExitCode doInBackground(Void... params) {
 
@@ -134,7 +135,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
         for (Future<?> f : dbFutures) {
             try {
                 f.get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (@NonNull InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }
@@ -143,7 +144,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
     }
 
     @Override
-    protected void onPostExecute(ExitCode exitCode) {
+    protected void onPostExecute(@NonNull ExitCode exitCode) {
         super.onPostExecute(exitCode);
         switch (exitCode) {
             case EXIT_NORMAL:

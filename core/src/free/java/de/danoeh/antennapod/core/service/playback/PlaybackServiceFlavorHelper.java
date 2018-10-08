@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -16,7 +17,7 @@ class PlaybackServiceFlavorHelper {
         this.callback = callback;
     }
 
-    void initializeMediaPlayer(Context context) {
+    void initializeMediaPlayer(@NonNull Context context) {
         callback.setMediaPlayer(new LocalPSMP(context, callback.getMediaPlayerCallback()));
     }
 

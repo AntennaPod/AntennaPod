@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
+import android.support.annotation.NonNull;
+
 import de.danoeh.antennapod.core.BuildConfig;
 
 /**
@@ -10,6 +12,7 @@ public enum Flavors {
     PLAY,
     UNKNOWN;
 
+    @NonNull
     public static final Flavors FLAVOR;
 
     static {

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util.gui;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -11,6 +12,7 @@ import de.danoeh.antennapod.core.R;
  */
 public class MoreContentListFooterUtil {
 
+    @NonNull
     private final View root;
 
     private boolean loading;
@@ -47,6 +49,7 @@ public class MoreContentListFooterUtil {
         void onClick();
     }
 
+    @NonNull
     public View getRoot() {
         return root;
     }

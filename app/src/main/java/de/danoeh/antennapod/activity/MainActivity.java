@@ -10,6 +10,8 @@ import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -112,6 +114,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     private View navDrawer;
     private ListView navList;
+    @Nullable
     private NavListAdapter navAdapter;
     private int mPosition = -1;
 
@@ -124,7 +127,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private Subscription subscription;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(UserPreferences.getNoTitleTheme());
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
@@ -207,7 +210,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         UserPreferences.restartUpdateAlarm(false);
     }
 
-    private void saveLastNavFragment(String tag) {
+    private void saveLastNavFragment(@Nullable String tag) {
         Log.d(TAG, "saveLastNavFragment(tag: " + tag +")");
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
@@ -270,6 +273,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
+    @Nullable
     public List<Feed> getFeeds() {
         return (navDrawerData != null) ? navDrawerData.feeds : null;
     }
@@ -285,7 +289,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
-    public void loadFragment(String tag, Bundle args) {
+    public void loadFragment(@NonNull String tag, Bundle args) {
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment = null;
         switch (tag) {
@@ -332,7 +336,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         loadFeedFragmentById(feed.getId(), args);
     }
 
-    public void loadFeedFragmentById(long feedId, Bundle args) {
+    public void loadFeedFragmentById(long feedId, @Nullable Bundle args) {
         Fragment fragment = ItemlistFragment.newInstance(feedId);
         if(args != null) {
             fragment.setArguments(args);
@@ -429,7 +433,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
         if (savedInstanceState != null) {
@@ -448,7 +452,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(SAVE_TITLE, getSupportActionBar().getTitle().toString());
         outState.putInt(SAVE_BACKSTACK_COUNT, getSupportFragmentManager().getBackStackEntryCount());
@@ -534,7 +538,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         } else if (item.getItemId() == android.R.id.home) {
@@ -549,7 +553,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         if(v.getId() != R.id.nav_list) {
             return;
@@ -568,7 +572,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         final int position = mPosition;
         mPosition = -1; // reset
         if(position < 0) {
@@ -653,6 +657,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private DBReader.NavDrawerData navDrawerData;
     private int selectedNavListIndex = 0;
 
+    @Nullable
     private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override
         public int getCount() {
@@ -732,7 +737,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    public void onEvent(QueueEvent event) {
+    public void onEvent(@NonNull QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         // we are only interested in the number of queue items, not download status or position
         if(event.action == QueueEvent.Action.DELETED_MEDIA ||
@@ -743,7 +748,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         loadData();
     }
 
-    public void onEventMainThread(ServiceEvent event) {
+    public void onEventMainThread(@NonNull ServiceEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         switch(event.action) {
             case SERVICE_STARTED:
@@ -752,7 +757,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
-    public void onEventMainThread(ProgressEvent event) {
+    public void onEventMainThread(@NonNull ProgressEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         switch(event.action) {
             case START:
@@ -770,7 +775,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
-    public void onEventMainThread(MessageEvent event) {
+    public void onEventMainThread(@NonNull MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         View parentLayout = findViewById(R.id.drawer_layout);
         Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.Selection;
@@ -44,7 +45,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
     @NonNull
     @Override
-    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Holder holder;
 
         Chapter sc = getItem(position);
@@ -155,6 +156,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
     }
 
     static class Holder {
+        @Nullable
         View view;
         TextView title;
         TextView start;
@@ -178,7 +180,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
         return counter;
     }
 
-    private boolean ignoreChapter(Chapter c) {
+    private boolean ignoreChapter(@NonNull Chapter c) {
         return media.getDuration() > 0 && media.getDuration() < c.getStart();
     }
 

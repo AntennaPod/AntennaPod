@@ -3,6 +3,8 @@ package de.danoeh.antennapod.fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -47,7 +49,7 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.external_player_fragment,
                 container, false);
@@ -184,7 +186,7 @@ public class ExternalPlayerFragment extends Fragment {
         return true;
     }
 
-    private void updateUi(Playable media) {
+    private void updateUi(@Nullable Playable media) {
         if (media != null) {
             txtvTitle.setText(media.getEpisodeTitle());
             mFeedName.setText(media.getFeedTitle());

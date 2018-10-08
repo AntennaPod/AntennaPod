@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util.comparator;
 
+import android.support.annotation.NonNull;
+
 import java.util.Comparator;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -14,7 +16,7 @@ public class SearchResultValueComparator implements Comparator<SearchResult> {
 	 * before "#8 Example B" due to the fact that "8" has a larger unicode value than "1"
      */
 	@Override
-	public int compare(SearchResult lhs, SearchResult rhs) {
+	public int compare(@NonNull SearchResult lhs, @NonNull SearchResult rhs) {
 		int value = rhs.getValue() - lhs.getValue();
 		if (value == 0 && lhs.getComponent() instanceof FeedItem && rhs.getComponent() instanceof  FeedItem) {
 			String lhsTitle = ((FeedItem) lhs.getComponent()).getTitle();

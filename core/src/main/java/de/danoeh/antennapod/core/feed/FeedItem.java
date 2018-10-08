@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import android.text.TextUtils;
@@ -48,7 +49,9 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     private String contentEncoded;
 
     private String link;
+    @Nullable
     private Date pubDate;
+    @Nullable
     private FeedMedia media;
 
     private Feed feed;
@@ -119,7 +122,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     /**
      * This constructor should be used for creating test objects.
      */
-    public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate, int state, Feed feed) {
+    public FeedItem(long id, String title, String itemIdentifier, String link, @Nullable Date pubDate, int state, Feed feed) {
         this.id = id;
         this.title = title;
         this.itemIdentifier = itemIdentifier;
@@ -134,7 +137,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     /**
      * This constructor should be used for creating test objects involving chapter marks.
      */
-    public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate, int state, Feed feed, boolean hasChapters) {
+    public FeedItem(long id, String title, String itemIdentifier, String link, @Nullable Date pubDate, int state, Feed feed, boolean hasChapters) {
         this.id = id;
         this.title = title;
         this.itemIdentifier = itemIdentifier;
@@ -177,7 +180,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
                 hasChapters, imageUrl, state, itemIdentifier, autoDownload);
     }
 
-    public void updateFromOther(FeedItem other) {
+    public void updateFromOther(@NonNull FeedItem other) {
         super.updateFromOther(other);
         if (other.imageUrl != null) {
             this.imageUrl = other.imageUrl;
@@ -256,6 +259,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         this.link = link;
     }
 
+    @Nullable
     public Date getPubDate() {
         if (pubDate != null) {
             return (Date) pubDate.clone();
@@ -264,7 +268,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         }
     }
 
-    public void setPubDate(Date pubDate) {
+    public void setPubDate(@Nullable Date pubDate) {
         if (pubDate != null) {
             this.pubDate = (Date) pubDate.clone();
         } else {
@@ -282,7 +286,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
      * FeedMedia object is not null, it's 'item'-attribute value
      * will also be set to this item.
      */
-    public void setMedia(FeedMedia media) {
+    public void setMedia(@Nullable FeedMedia media) {
         this.media = media;
         if (media != null && media.getItem() != this) {
             media.setItem(this);
@@ -366,6 +370,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         return media != null && media.isPlaying();
     }
 
+    @Nullable
     @Override
     public Callable<String> loadShownotes() {
         return () -> {
@@ -384,6 +389,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         };
     }
 
+    @Nullable
     @Override
     public String getImageLocation() {
         if(media != null && media.hasEmbeddedPicture()) {
@@ -401,6 +407,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         UNREAD, IN_PROGRESS, READ, PLAYING
     }
 
+    @NonNull
     public State getState() {
         if (hasMedia()) {
             if (isPlaying()) {

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.service.playback;
 
+import android.support.annotation.Nullable;
+
 public enum PlayerStatus {
     INDETERMINATE(0),  // player is currently changing its state, listeners should wait until the player has left this state.
 	ERROR(-1),
@@ -27,7 +29,7 @@ public enum PlayerStatus {
         return fromOrdinalLookup[o];
     }
 
-	public boolean isAtLeast(PlayerStatus other) {
+	public boolean isAtLeast(@Nullable PlayerStatus other) {
 		return other == null || this.statusValue>=other.statusValue;
 	}
 }

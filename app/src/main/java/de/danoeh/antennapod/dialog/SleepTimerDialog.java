@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -70,7 +71,7 @@ public abstract class SleepTimerDialog {
         etxtTime.setText(SleepTimerPreferences.lastTimerValue());
         etxtTime.addTextChangedListener(new TextWatcher() {
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(@NonNull Editable s) {
                 checkInputLength(s.length());
             }
 

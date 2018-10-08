@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -35,7 +37,7 @@ public class TagListFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.gpodder_podcasts, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -85,6 +87,7 @@ public class TagListFragment extends ListFragment {
         cancelLoadTask();
     }
 
+    @Nullable
     private AsyncTask<Void, Void, List<GpodnetTag>> loadTask;
 
     private void cancelLoadTask() {
@@ -98,6 +101,7 @@ public class TagListFragment extends ListFragment {
         loadTask = new AsyncTask<Void, Void, List<GpodnetTag>>() {
             private Exception exception;
 
+            @Nullable
             @Override
             protected List<GpodnetTag> doInBackground(Void... params) {
                 GpodnetService service = new GpodnetService();
@@ -119,7 +123,7 @@ public class TagListFragment extends ListFragment {
             }
 
             @Override
-            protected void onPostExecute(List<GpodnetTag> gpodnetTags) {
+            protected void onPostExecute(@Nullable List<GpodnetTag> gpodnetTags) {
                 super.onPostExecute(gpodnetTags);
                 final Context context = getActivity();
                 if (context != null) {

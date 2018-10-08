@@ -2,6 +2,8 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -42,6 +44,7 @@ public class FyydSearchFragment extends Fragment {
     /**
      * Adapter responsible with the search results
      */
+    @Nullable
     private ItunesAdapter adapter;
     private GridView gridView;
     private ProgressBar progressBar;
@@ -71,7 +74,7 @@ public class FyydSearchFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
@@ -105,7 +108,7 @@ public class FyydSearchFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.itunes_search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);

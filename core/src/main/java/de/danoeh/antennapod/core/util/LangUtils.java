@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
 import java.nio.charset.Charset;
@@ -7,7 +8,8 @@ import java.nio.charset.Charset;
 public class LangUtils {
 	public static final Charset UTF_8 = Charset.forName("UTF-8");
 
-	private static final ArrayMap<String, String> languages;
+	@NonNull
+    private static final ArrayMap<String, String> languages;
 	static {
 		languages = new ArrayMap<>();
 		languages.put("af", "Afrikaans");

@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -45,9 +47,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
     private static final String TAG = AllEpisodesRecycleAdapter.class.getSimpleName();
 
+    @NonNull
     private final WeakReference<MainActivity> mainActivityRef;
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
+    @NonNull
     private final ActionButtonUtils actionButtonUtils;
     private final boolean showOnlyNewEpisodes;
 
@@ -56,7 +60,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
 
-    public AllEpisodesRecycleAdapter(MainActivity mainActivity,
+    public AllEpisodesRecycleAdapter(@NonNull MainActivity mainActivity,
                                      ItemAccess itemAccess,
                                      ActionButtonCallback actionButtonCallback,
                                      boolean showOnlyNewEpisodes) {
@@ -71,8 +75,9 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         normalBackGroundColor = ContextCompat.getColor(mainActivity, android.R.color.transparent);
     }
 
+    @NonNull
     @Override
-    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.new_episodes_listitem, parent, false);
         Holder holder = new Holder(view);
@@ -103,7 +108,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
     }
 
     @Override
-    public void onBindViewHolder(final Holder holder, int position) {
+    public void onBindViewHolder(@NonNull final Holder holder, int position) {
         final FeedItem item = itemAccess.getItem(position);
         if (item == null) return;
         holder.itemView.setOnLongClickListener(v -> {
@@ -211,6 +216,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         return itemAccess.getCount();
     }
 
+    @Nullable
     public FeedItem getItem(int position) {
         return itemAccess.getItem(position);
     }
@@ -244,10 +250,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         ProgressBar progress;
         TextView txtvDuration;
         ImageButton butSecondary;
+        @Nullable
         FeedItem item;
         WeakReference<MainActivity> mainActivityRef;
 
-        public Holder(View itemView) {
+        public Holder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnCreateContextMenuListener(this);
@@ -272,10 +279,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             itemView.setAlpha(1.0f);
         }
 
+        @Nullable
         public FeedItem getFeedItem() { return item; }
 
         @Override
-        public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        public void onCreateContextMenu(@NonNull final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             FeedItem item = itemAccess.getItem(getAdapterPosition());
 
             MenuInflater inflater = mainActivityRef.get().getMenuInflater();
@@ -305,6 +313,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
         int getCount();
 
+        @Nullable
         FeedItem getItem(int position);
 
         LongList getItemsIds();

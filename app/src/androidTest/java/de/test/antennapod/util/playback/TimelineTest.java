@@ -1,6 +1,7 @@
 package de.test.antennapod.util.playback;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.test.InstrumentationTestCase;
 
 import org.jsoup.Jsoup;
@@ -30,6 +31,7 @@ public class TimelineTest extends InstrumentationTestCase {
         context = getInstrumentation().getTargetContext();
     }
 
+    @NonNull
     private Playable newTestPlayable(List<Chapter> chapters, String shownotes) {
         FeedItem item = new FeedItem(0, "Item", "item-id", "http://example.com/item", new Date(), FeedItem.PLAYED, null);
         item.setChapters(chapters);
@@ -90,7 +92,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
-    private void checkLinkCorrect(String res, long[] timecodes, String[] timecodeStr) {
+    private void checkLinkCorrect(@NonNull String res, @NonNull long[] timecodes, String[] timecodeStr) {
         assertNotNull(res);
         Document d = Jsoup.parse(res);
         Elements links = d.body().getElementsByTag("a");

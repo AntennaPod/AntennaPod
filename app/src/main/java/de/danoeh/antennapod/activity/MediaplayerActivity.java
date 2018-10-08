@@ -12,6 +12,7 @@ import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -79,6 +80,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final int REQUEST_CODE_STORAGE = 42;
 
+    @Nullable
     PlaybackController controller;
 
     private TextView txtvPosition;
@@ -321,7 +323,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         if (controller == null) {
             return false;
@@ -376,7 +378,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (controller == null) {
             return false;
         }
@@ -617,7 +619,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
-    private static String getWebsiteLinkWithFallback(Playable media) {
+    @Nullable
+    private static String getWebsiteLinkWithFallback(@Nullable Playable media) {
         if (media == null) {
             return null;
         } else if (media.getWebsiteLink() != null) {
@@ -638,7 +641,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
-    public void onEventMainThread(ServiceEvent event) {
+    public void onEventMainThread(@NonNull ServiceEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
             if (controller != null) {
@@ -964,7 +967,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
-    void playExternalMedia(Intent intent, MediaType type) {
+    void playExternalMedia(@Nullable Intent intent, MediaType type) {
         if (intent == null || intent.getData() == null) {
             return;
         }

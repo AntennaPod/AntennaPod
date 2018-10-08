@@ -6,6 +6,8 @@ import android.content.SharedPreferences.Editor;
 import android.media.MediaMetadataRetriever;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -51,7 +53,7 @@ public class ExternalMedia implements Playable {
 	}
 
 	@Override
-	public void writeToParcel(Parcel dest, int flags) {
+	public void writeToParcel(@NonNull Parcel dest, int flags) {
 		dest.writeString(source);
 		dest.writeString(mediaType.toString());
 		dest.writeInt(position);
@@ -59,7 +61,7 @@ public class ExternalMedia implements Playable {
 	}
 
 	@Override
-	public void writeToPreferences(Editor prefEditor) {
+	public void writeToPreferences(@NonNull Editor prefEditor) {
 		prefEditor.putString(PREF_SOURCE_URL, source);
 		prefEditor.putString(PREF_MEDIA_TYPE, mediaType.toString());
 		prefEditor.putInt(PREF_POSITION, position);
@@ -105,7 +107,8 @@ public class ExternalMedia implements Playable {
 		return episodeTitle;
 	}
 
-	@Override
+	@NonNull
+    @Override
 	public Callable<String> loadShownotes() {
 		return () -> "";
 	}
@@ -115,12 +118,14 @@ public class ExternalMedia implements Playable {
 		return chapters;
 	}
 
-	@Override
+	@Nullable
+    @Override
 	public String getWebsiteLink() {
 		return null;
 	}
 
-	@Override
+	@Nullable
+    @Override
 	public String getPaymentLink() {
 		return null;
 	}
@@ -160,7 +165,8 @@ public class ExternalMedia implements Playable {
 		return source;
 	}
 
-	@Override
+	@Nullable
+    @Override
 	public String getStreamUrl() {
 		return null;
 	}
@@ -176,7 +182,7 @@ public class ExternalMedia implements Playable {
 	}
 
 	@Override
-	public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timestamp) {
+	public void saveCurrentPosition(@NonNull SharedPreferences pref, int newPosition, long timestamp) {
 		SharedPreferences.Editor editor = pref.edit();
 		editor.putInt(PREF_POSITION, newPosition);
 		editor.putLong(PREF_LAST_PLAYED_TIME, timestamp);
@@ -246,6 +252,7 @@ public class ExternalMedia implements Playable {
 		}
 	};
 
+    @Nullable
     @Override
     public String getImageLocation() {
         if (localFileAvailable()) {

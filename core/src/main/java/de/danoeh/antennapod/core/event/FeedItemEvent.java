@@ -21,16 +21,16 @@ public class FeedItemEvent {
     private final Action action;
     @NonNull public final List<FeedItem> items;
 
-    private FeedItemEvent(Action action, List<FeedItem> items) {
+    private FeedItemEvent(@NonNull Action action, @NonNull List<FeedItem> items) {
         this.action = action;
         this.items = items;
     }
 
-    public static FeedItemEvent deletedMedia(List<FeedItem> items) {
+    public static FeedItemEvent deletedMedia(@NonNull List<FeedItem> items) {
         return new FeedItemEvent(Action.DELETE_MEDIA, items);
     }
 
-    public static FeedItemEvent updated(List<FeedItem> items) {
+    public static FeedItemEvent updated(@NonNull List<FeedItem> items) {
         return new FeedItemEvent(Action.UPDATE, items);
     }
 

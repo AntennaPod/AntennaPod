@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.support.annotation.Nullable;
+
 /**
  * Represents every possible component of a feed
  *
@@ -48,7 +50,7 @@ public abstract class FeedComponent {
     public abstract String getHumanReadableIdentifier();
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 

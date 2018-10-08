@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -28,6 +29,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     /* title as defined by the feed */
     private String feedTitle;
     /* custom title set by the user */
+    @Nullable
     private String customTitle;
 
     /**
@@ -90,6 +92,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     /**
      * Contains property strings. If such a property applies to a feed item, it is not shown in the feed list
      */
+    @Nullable
     private FeedItemFilter itemfilter;
 
     /**
@@ -98,7 +101,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, FlattrStatus status, boolean paged, String nextPageLink,
-                String filter, boolean lastUpdateFailed) {
+                @Nullable String filter, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
         this.id = id;
         this.feedTitle = title;
@@ -171,6 +174,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, username, password);
     }
 
+    @NonNull
     public static Feed fromCursor(Cursor cursor) {
         int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
         int indexLastUpdate = cursor.getColumnIndex(PodDBAdapter.KEY_LASTUPDATE);
@@ -264,7 +268,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         }
     }
 
-    public void updateFromOther(Feed other) {
+    public void updateFromOther(@NonNull Feed other) {
         // don't update feed's download_url, we do that manually if redirected
         // see AntennapodHttpClient
         if (other.imageUrl != null) {
@@ -302,7 +306,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         }
     }
 
-    public boolean compareWithOther(Feed other) {
+    public boolean compareWithOther(@NonNull Feed other) {
         if (super.compareWithOther(other)) {
             return true;
         }
@@ -353,6 +357,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         return false;
     }
 
+    @Nullable
     public FeedItem getMostRecentItem() {
         // we could sort, but we don't need to, a simple search is fine...
         Date mostRecentDate = new Date(0);
@@ -371,6 +376,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         return FEEDFILETYPE_FEED;
     }
 
+    @Nullable
     public String getTitle() {
         return !TextUtils.isEmpty(customTitle) ? customTitle : feedTitle;
     }
@@ -388,7 +394,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         return this.customTitle;
     }
 
-    public void setCustomTitle(String customTitle) {
+    public void setCustomTitle(@Nullable String customTitle) {
         if(customTitle == null || customTitle.equals(feedTitle)) {
             this.customTitle = null;
         } else {
@@ -538,7 +544,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         return itemfilter;
     }
 
-    public void setItemFilter(String[] properties) {
+    public void setItemFilter(@Nullable String[] properties) {
         if (properties != null) {
             this.itemfilter = new FeedItemFilter(properties);
         }

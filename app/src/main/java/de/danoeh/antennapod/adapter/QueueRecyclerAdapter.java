@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
@@ -51,20 +52,23 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     private static final String TAG = QueueRecyclerAdapter.class.getSimpleName();
 
+    @NonNull
     private final WeakReference<MainActivity> mainActivity;
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
+    @NonNull
     private final ActionButtonUtils actionButtonUtils;
     private final ItemTouchHelper itemTouchHelper;
 
     private boolean locked;
 
+    @Nullable
     private FeedItem selectedItem;
 
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
 
-    public QueueRecyclerAdapter(MainActivity mainActivity,
+    public QueueRecyclerAdapter(@NonNull MainActivity mainActivity,
                                 ItemAccess itemAccess,
                                 ActionButtonCallback actionButtonCallback,
                                 ItemTouchHelper itemTouchHelper) {
@@ -85,12 +89,13 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         notifyDataSetChanged();
     }
 
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.queue_listitem, parent, false);
         return new ViewHolder(view);
     }
 
-    public void onBindViewHolder(ViewHolder holder, int pos) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int pos) {
         FeedItem item = itemAccess.getItem(pos);
         holder.bind(item);
         holder.itemView.setOnLongClickListener(v -> {
@@ -119,20 +124,30 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                        View.OnCreateContextMenuListener,
                        ItemTouchHelperViewHolder {
 
+        @NonNull
         private final FrameLayout container;
+        @NonNull
         private final ImageView dragHandle;
+        @NonNull
         private final TextView placeholder;
+        @NonNull
         private final ImageView cover;
+        @NonNull
         private final TextView title;
+        @NonNull
         private final TextView pubDate;
+        @NonNull
         private final TextView progressLeft;
+        @NonNull
         private final TextView progressRight;
+        @NonNull
         private final ProgressBar progressBar;
+        @NonNull
         private final ImageButton butSecondary;
         
         private FeedItem item;
 
-        public ViewHolder(View v) {
+        public ViewHolder(@NonNull View v) {
             super(v);
             container = (FrameLayout) v.findViewById(R.id.container);
             dragHandle = (ImageView) v.findViewById(R.id.drag_handle);
@@ -170,7 +185,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         }
 
         @Override
-        public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        public void onCreateContextMenu(@NonNull final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             FeedItem item = itemAccess.getItem(getAdapterPosition());
 
             MenuInflater inflater = mainActivity.get().getMenuInflater();
@@ -202,7 +217,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             itemView.setAlpha(1.0f);
         }
 
-        public void bind(FeedItem item) {
+        public void bind(@NonNull FeedItem item) {
             this.item = item;
             if(locked) {
                 dragHandle.setVisibility(View.GONE);
@@ -311,6 +326,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
 
     public interface ItemAccess {
+        @Nullable
         FeedItem getItem(int position);
         int getCount();
         long getItemDownloadedBytes(FeedItem item);
@@ -342,7 +358,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
     }
 
     // Oh Xiaomi, I hate you so much. How did you manage to fuck this up?
-    private static int countMatches(final CharSequence str, final char ch) {
+    private static int countMatches(@NonNull final CharSequence str, final char ch) {
         if (TextUtils.isEmpty(str)) {
             return 0;
         }

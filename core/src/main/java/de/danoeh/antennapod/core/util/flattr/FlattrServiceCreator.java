@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util.flattr;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.shredzone.flattr4j.FlattrFactory;
@@ -13,9 +14,11 @@ import de.danoeh.antennapod.core.BuildConfig;
 class FlattrServiceCreator {
 	private static final String TAG = "FlattrServiceCreator";
 	
-	private static volatile FlattrService flattrService;
+	@Nullable
+    private static volatile FlattrService flattrService;
 	
-	public static synchronized FlattrService getService(AccessToken token) {
+	@Nullable
+    public static synchronized FlattrService getService(AccessToken token) {
 		if (flattrService == null) {
 			flattrService = FlattrFactory.getInstance().createFlattrService(token);
 		}

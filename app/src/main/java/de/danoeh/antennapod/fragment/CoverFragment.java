@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,11 +28,13 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
 
     private Playable media;
 
+    @Nullable
     private View root;
     private TextView txtvPodcastTitle;
     private TextView txtvEpisodeTitle;
     private ImageView imgvCover;
 
+    @NonNull
     public static CoverFragment newInstance(Playable item) {
         CoverFragment f = new CoverFragment();
         f.media = item;
@@ -46,7 +50,7 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.cover_fragment, container, false);
         txtvPodcastTitle = (TextView) root.findViewById(R.id.txtvPodcastTitle);

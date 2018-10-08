@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,7 @@ public class SearchlistAdapter extends BaseAdapter {
         return itemAccess.getCount();
     }
 
+    @Nullable
     @Override
     public SearchResult getItem(int position) {
         return itemAccess.getItem(position);
@@ -48,8 +50,9 @@ public class SearchlistAdapter extends BaseAdapter {
         return 0;
     }
 
+    @Nullable
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, @Nullable View convertView, ViewGroup parent) {
         final Holder holder;
         SearchResult result = getItem(position);
         FeedComponent component = result.getComponent();
@@ -121,6 +124,7 @@ public class SearchlistAdapter extends BaseAdapter {
     public interface ItemAccess {
         int getCount();
 
+        @Nullable
         SearchResult getItem(int position);
     }
 

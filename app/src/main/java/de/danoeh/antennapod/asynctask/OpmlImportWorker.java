@@ -3,6 +3,7 @@ package de.danoeh.antennapod.asynctask;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
@@ -33,7 +34,8 @@ public class OpmlImportWorker extends
         this.mReader=reader;
     }
 
-	@Override
+	@Nullable
+    @Override
 	protected ArrayList<OpmlElement> doInBackground(Void... params) {
 		Log.d(TAG, "Starting background work");
 

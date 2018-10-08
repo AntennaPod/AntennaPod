@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +31,7 @@ public class RunningDownloadsFragment extends ListFragment {
 
     private static final String TAG = "RunningDownloadsFrag";
 
+    @Nullable
     private DownloadlistAdapter adapter;
     private List<Downloader> downloaderList;
 
@@ -65,7 +68,7 @@ public class RunningDownloadsFragment extends ListFragment {
         adapter = null;
     }
 
-    public void onEvent(DownloadEvent event) {
+    public void onEvent(@NonNull DownloadEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
@@ -75,6 +78,7 @@ public class RunningDownloadsFragment extends ListFragment {
     }
 
 
+    @Nullable
     private final DownloadlistAdapter.ItemAccess itemAccess = new DownloadlistAdapter.ItemAccess() {
         @Override
         public int getCount() {

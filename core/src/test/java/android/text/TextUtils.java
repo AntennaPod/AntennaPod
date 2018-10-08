@@ -1,5 +1,7 @@
 package android.text;
 
+import android.support.annotation.Nullable;
+
 /**
  * A slim-down version of standard {@link android.text.TextUtils} to be used in unit tests.
  */
@@ -13,7 +15,7 @@ public class TextUtils {
      * @param b second CharSequence to check
      * @return true if a and b are equal
      */
-    public static boolean equals(CharSequence a, CharSequence b) {
+    public static boolean equals(@Nullable CharSequence a, @Nullable CharSequence b) {
         if (a == b) return true;
         int length;
         if (a != null && b != null && (length = a.length()) == b.length()) {

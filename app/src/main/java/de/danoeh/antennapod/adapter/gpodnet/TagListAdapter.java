@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter.gpodnet;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,9 @@ public class TagListAdapter extends ArrayAdapter<GpodnetTag> {
         super(context, resource, objects);
     }
 
+    @Nullable
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, @Nullable View convertView, ViewGroup parent) {
         Holder holder;
 
         GpodnetTag tag = getItem(position);

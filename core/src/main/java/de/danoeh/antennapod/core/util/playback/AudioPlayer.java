@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.util.playback;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -27,7 +28,7 @@ public class AudioPlayer extends MediaPlayer implements IPlayer {
 			};
 
 	@Override
-	public void setDisplay(SurfaceHolder sh) {
+	public void setDisplay(@Nullable SurfaceHolder sh) {
 		if (sh != null) {
 			Log.e(TAG, "Setting display not supported in Audio Player");
 			throw new UnsupportedOperationException("Setting display not supported in Audio Player");

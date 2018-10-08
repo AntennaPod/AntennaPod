@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util.syndication;
 
+import android.support.annotation.NonNull;
+
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -31,6 +33,7 @@ public class HtmlToPlainText {
      * @param element the root element to format
      * @return formatted text
      */
+    @NonNull
     public String getPlainText(Element element) {
         FormattingVisitor formatter = new FormattingVisitor();
         NodeTraversor traversor = new NodeTraversor(formatter);
@@ -45,7 +48,7 @@ public class HtmlToPlainText {
         private final StringBuilder accum = new StringBuilder(); // holds the accumulated text
 
         // hit when the node is first seen
-        public void head(Node node, int depth) {
+        public void head(@NonNull Node node, int depth) {
             String name = node.nodeName();
             if (node instanceof TextNode) {
                 append(((TextNode) node).text()); // TextNodes carry all user-readable text in the DOM.
@@ -62,7 +65,7 @@ public class HtmlToPlainText {
         }
 
         // hit when all of the node's children (if any) have been visited
-        public void tail(Node node, int depth) {
+        public void tail(@NonNull Node node, int depth) {
             String name = node.nodeName();
             if (StringUtil.in(name, "br", "dd", "dt", "p", "h1", "h2", "h3", "h4", "h5")) {
                 append("\n");
@@ -81,6 +84,7 @@ public class HtmlToPlainText {
             accum.append(text);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return accum.toString();

@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.media.MediaMetadataRetriever;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import de.danoeh.antennapod.core.R;
@@ -281,6 +283,7 @@ public class PodDBAdapter {
     /**
      * Contains FEEDITEM_SEL_FI_SMALL as comma-separated list. Useful for raw queries.
      */
+    @NonNull
     private static final String SEL_FI_SMALL_STR;
 
     static {
@@ -296,6 +299,7 @@ public class PodDBAdapter {
 
     private static Context context;
 
+    @Nullable
     private static volatile SQLiteDatabase db;
     private static int counter = 0;
 
@@ -305,10 +309,12 @@ public class PodDBAdapter {
 
     // Bill Pugh Singleton Implementation
     private static class SingletonHolder {
+        @Nullable
         private static final PodDBHelper dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
         private static final PodDBAdapter dbAdapter = new PodDBAdapter();
     }
 
+    @NonNull
     public static PodDBAdapter getInstance() {
         return SingletonHolder.dbAdapter;
     }
@@ -316,6 +322,7 @@ public class PodDBAdapter {
     private PodDBAdapter() {
     }
 
+    @NonNull
     public synchronized PodDBAdapter open() {
         counter++;
         Log.v(TAG, "Opening DB #" + counter);
@@ -407,7 +414,7 @@ public class PodDBAdapter {
         return feed.getId();
     }
 
-    public void setFeedPreferences(FeedPreferences prefs) {
+    public void setFeedPreferences(@NonNull FeedPreferences prefs) {
         if (prefs.getFeedID() == 0) {
             throw new IllegalArgumentException("Feed ID of preference must not be null");
         }
@@ -436,7 +443,7 @@ public class PodDBAdapter {
      *
      * @return the id of the entry
      */
-    public long setMedia(FeedMedia media) {
+    public long setMedia(@NonNull FeedMedia media) {
         ContentValues values = new ContentValues();
         values.put(KEY_DURATION, media.getDuration());
         values.put(KEY_POSITION, media.getPosition());
@@ -465,7 +472,7 @@ public class PodDBAdapter {
         return media.getId();
     }
 
-    public void setFeedMediaPlaybackInformation(FeedMedia media) {
+    public void setFeedMediaPlaybackInformation(@NonNull FeedMedia media) {
         if (media.getId() != 0) {
             ContentValues values = new ContentValues();
             values.put(KEY_POSITION, media.getPosition());
@@ -479,7 +486,7 @@ public class PodDBAdapter {
         }
     }
 
-    public void setFeedMediaPlaybackCompletionDate(FeedMedia media) {
+    public void setFeedMediaPlaybackCompletionDate(@NonNull FeedMedia media) {
         if (media.getId() != 0) {
             ContentValues values = new ContentValues();
             values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
@@ -495,7 +502,7 @@ public class PodDBAdapter {
      * Insert all FeedItems of a feed and the feed object itself in a single
      * transaction
      */
-    public void setCompleteFeed(Feed... feeds) {
+    public void setCompleteFeed(@NonNull Feed... feeds) {
         try {
             db.beginTransactionNonExclusive();
             for (Feed feed : feeds) {
@@ -520,7 +527,7 @@ public class PodDBAdapter {
     /**
      * Update the flattr status of a feed
      */
-    public void setFeedFlattrStatus(Feed feed) {
+    public void setFeedFlattrStatus(@NonNull Feed feed) {
         ContentValues values = new ContentValues();
         values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feed.getId())});
@@ -551,7 +558,7 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEEDS, values, KEY_DOWNLOAD_URL + "=?", new String[]{original});
     }
 
-    public void setFeedItemlist(List<FeedItem> items) {
+    public void setFeedItemlist(@NonNull List<FeedItem> items) {
         try {
             db.beginTransactionNonExclusive();
             for (FeedItem item : items) {
@@ -565,7 +572,7 @@ public class PodDBAdapter {
         }
     }
 
-    public long setSingleFeedItem(FeedItem item) {
+    public long setSingleFeedItem(@NonNull FeedItem item) {
         long result = 0;
         try {
             db.beginTransactionNonExclusive();
@@ -582,7 +589,7 @@ public class PodDBAdapter {
     /**
      * Update the flattr status of a FeedItem
      */
-    public void setFeedItemFlattrStatus(FeedItem feedItem) {
+    public void setFeedItemFlattrStatus(@NonNull FeedItem feedItem) {
         ContentValues values = new ContentValues();
         values.put(KEY_FLATTR_STATUS, feedItem.getFlattrStatus().toLong());
         db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(feedItem.getId())});
@@ -592,7 +599,7 @@ public class PodDBAdapter {
      * Update the flattr status of a feed or feed item specified by its payment link
      * and the new flattr status to use
      */
-    public void setItemFlattrStatus(String url, FlattrStatus status) {
+    public void setItemFlattrStatus(String url, @NonNull FlattrStatus status) {
         //Log.d(TAG, "setItemFlattrStatus(" + url + ") = " + status.toString());
         ContentValues values = new ContentValues();
         values.put(KEY_FLATTR_STATUS, status.toLong());
@@ -715,7 +722,7 @@ public class PodDBAdapter {
      * @param read    must be one of FeedItem.PLAYED, FeedItem.NEW, FeedItem.UNPLAYED
      * @param itemIds items to change the value of
      */
-    public void setFeedItemRead(int read, long... itemIds) {
+    public void setFeedItemRead(int read, @NonNull long... itemIds) {
         try {
             db.beginTransactionNonExclusive();
             ContentValues values = new ContentValues();
@@ -765,7 +772,7 @@ public class PodDBAdapter {
     /**
      * Inserts or updates a download status.
      */
-    public long setDownloadStatus(DownloadStatus status) {
+    public long setDownloadStatus(@NonNull DownloadStatus status) {
         ContentValues values = new ContentValues();
         values.put(KEY_FEEDFILE, status.getFeedfileId());
         values.put(KEY_FEEDFILETYPE, status.getFeedfileType());
@@ -783,21 +790,21 @@ public class PodDBAdapter {
         return status.getId();
     }
 
-    public void setFeedItemAutoDownload(FeedItem feedItem, long autoDownload) {
+    public void setFeedItemAutoDownload(@NonNull FeedItem feedItem, long autoDownload) {
         ContentValues values = new ContentValues();
         values.put(KEY_AUTO_DOWNLOAD, autoDownload);
         db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
                 new String[]{String.valueOf(feedItem.getId())});
     }
 
-    public void setFeedsItemsAutoDownload(Feed feed, boolean autoDownload) {
+    public void setFeedsItemsAutoDownload(@NonNull Feed feed, boolean autoDownload) {
         final String sql = "UPDATE " + TABLE_NAME_FEED_ITEMS
                 + " SET " + KEY_AUTO_DOWNLOAD + "=" + (autoDownload ? "1" : "0")
                 + " WHERE " + KEY_FEED + "=" + feed.getId();
         db.execSQL(sql);
     }
 
-    public void setFavorites(List<FeedItem> favorites) {
+    public void setFavorites(@NonNull List<FeedItem> favorites) {
         ContentValues values = new ContentValues();
         try {
             db.beginTransactionNonExclusive();
@@ -820,7 +827,7 @@ public class PodDBAdapter {
     /**
      * Adds the item to favorites
      */
-    public void addFavoriteItem(FeedItem item) {
+    public void addFavoriteItem(@NonNull FeedItem item) {
         // don't add an item that's already there...
         if (isItemInFavorites(item)) {
             Log.d(TAG, "item already in favorites");
@@ -832,7 +839,7 @@ public class PodDBAdapter {
         db.insert(TABLE_NAME_FAVORITES, null, values);
     }
 
-    public void removeFavoriteItem(FeedItem item) {
+    public void removeFavoriteItem(@NonNull FeedItem item) {
         String deleteClause = String.format("DELETE FROM %s WHERE %s=%s AND %s=%s",
                 TABLE_NAME_FAVORITES,
                 KEY_FEEDITEM, item.getId(),
@@ -849,7 +856,7 @@ public class PodDBAdapter {
         return count > 0;
     }
 
-    public void setQueue(List<FeedItem> queue) {
+    public void setQueue(@NonNull List<FeedItem> queue) {
         ContentValues values = new ContentValues();
         try {
             db.beginTransactionNonExclusive();
@@ -904,7 +911,7 @@ public class PodDBAdapter {
     /**
      * Remove a feed with all its FeedItems and Media entries.
      */
-    public void removeFeed(Feed feed) {
+    public void removeFeed(@NonNull Feed feed) {
         try {
             db.beginTransactionNonExclusive();
             if (feed.getItems() != null) {
@@ -1267,6 +1274,7 @@ public class PodDBAdapter {
         return result;
     }
 
+    @NonNull
     public final LongIntMap getFeedCounters(long... feedIds) {
         int setting = UserPreferences.getFeedCounterSetting();
         String whereRead;
@@ -1292,6 +1300,7 @@ public class PodDBAdapter {
         return conditionalFeedCounterRead(whereRead, feedIds);
     }
 
+    @NonNull
     private LongIntMap conditionalFeedCounterRead(String whereRead, long... feedIds) {
         // work around TextUtils.join wanting only boxed items
         // and StringUtils.join() causing NoSuchMethodErrors on MIUI
@@ -1325,6 +1334,7 @@ public class PodDBAdapter {
         return result;
     }
 
+    @NonNull
     public final LongIntMap getPlayedEpisodesCounters(long... feedIds) {
         String whereRead = KEY_READ + "=" + FeedItem.PLAYED;
         return conditionalFeedCounterRead(whereRead, feedIds);
@@ -1516,7 +1526,7 @@ public class PodDBAdapter {
      */
     public static class PodDbErrorHandler implements DatabaseErrorHandler {
         @Override
-        public void onCorruption(SQLiteDatabase db) {
+        public void onCorruption(@NonNull SQLiteDatabase db) {
             Log.e(TAG, "Database corrupted: " + db.getPath());
 
             File dbPath = new File(db.getPath());
@@ -1556,7 +1566,7 @@ public class PodDBAdapter {
         }
 
         @Override
-        public void onCreate(final SQLiteDatabase db) {
+        public void onCreate(@NonNull final SQLiteDatabase db) {
             db.execSQL(CREATE_TABLE_FEEDS);
             db.execSQL(CREATE_TABLE_FEED_ITEMS);
             db.execSQL(CREATE_TABLE_FEED_MEDIA);
@@ -1575,7 +1585,7 @@ public class PodDBAdapter {
         }
 
         @Override
-        public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
+        public void onUpgrade(@NonNull final SQLiteDatabase db, final int oldVersion,
                               final int newVersion) {
             EventBus.getDefault().post(ProgressEvent.start(context.getString(R.string.progress_upgrading_database)));
             Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "

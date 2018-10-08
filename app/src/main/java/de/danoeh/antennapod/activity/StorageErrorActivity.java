@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -123,7 +124,7 @@ public class StorageErrorActivity extends AppCompatActivity {
                 });
     }
 
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
 		if (resultCode == Activity.RESULT_OK &&
 				requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
             String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);

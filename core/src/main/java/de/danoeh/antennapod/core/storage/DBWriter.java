@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -61,6 +62,7 @@ public class DBWriter {
 
     private static final String TAG = "DBWriter";
 
+    @NonNull
     private static final ExecutorService dbExec;
 
     static {
@@ -80,7 +82,7 @@ public class DBWriter {
      * @param context A context that is used for opening a database connection.
      * @param mediaId ID of the FeedMedia object whose downloaded file should be deleted.
      */
-    public static Future<?> deleteFeedMediaOfItem(final Context context,
+    public static Future<?> deleteFeedMediaOfItem(@NonNull final Context context,
                                                   final long mediaId) {
         return dbExec.submit(() -> {
             final FeedMedia media = DBReader.getFeedMedia(mediaId);
@@ -142,7 +144,7 @@ public class DBWriter {
      * @param context A context that is used for opening a database connection.
      * @param feedId  ID of the Feed that should be deleted.
      */
-    public static Future<?> deleteFeed(final Context context, final long feedId) {
+    public static Future<?> deleteFeed(@NonNull final Context context, final long feedId) {
         return dbExec.submit(() -> {
             DownloadRequester requester = DownloadRequester.getInstance();
             SharedPreferences prefs = PreferenceManager
@@ -248,7 +250,7 @@ public class DBWriter {
      *
      * @param media   FeedMedia that should be added to the playback history.
      */
-    public static Future<?> addItemToPlaybackHistory(final FeedMedia media) {
+    public static Future<?> addItemToPlaybackHistory(@NonNull final FeedMedia media) {
         return dbExec.submit(() -> {
             Log.d(TAG, "Adding new item to playback history");
             media.setPlaybackCompletionDate(new Date());
@@ -340,7 +342,7 @@ public class DBWriter {
      * @param itemIds IDs of the FeedItem objects that should be added to the queue.
      */
     public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
-                                         final long... itemIds) {
+                                         @NonNull final long... itemIds) {
         return dbExec.submit(() -> {
             if (itemIds.length > 0) {
                 final PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -418,7 +420,7 @@ public class DBWriter {
      * @param performAutoDownload true if an auto-download process should be started after the operation.
      */
     public static Future<?> removeQueueItem(final Context context,
-                                            final FeedItem item, final boolean performAutoDownload) {
+                                            @NonNull final FeedItem item, final boolean performAutoDownload) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -446,7 +448,7 @@ public class DBWriter {
 
     }
 
-    public static Future<?> addFavoriteItem(final FeedItem item) {
+    public static Future<?> addFavoriteItem(@NonNull final FeedItem item) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
             adapter.addFavoriteItem(item);
@@ -457,7 +459,7 @@ public class DBWriter {
         });
     }
 
-    public static Future<?> removeFavoriteItem(final FeedItem item) {
+    public static Future<?> removeFavoriteItem(@NonNull final FeedItem item) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
             adapter.removeFavoriteItem(item);
@@ -672,7 +674,7 @@ public class DBWriter {
         });
     }
 
-    static Future<?> addNewFeed(final Context context, final Feed... feeds) {
+    static Future<?> addNewFeed(final Context context, @NonNull final Feed... feeds) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -786,7 +788,7 @@ public class DBWriter {
      *
      * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
      */
-    private static Future<?> setFeedItemFlattrStatus(final Context context,
+    private static Future<?> setFeedItemFlattrStatus(@NonNull final Context context,
                                                      final FeedItem item,
                                                      final boolean startFlattrClickWorker) {
         return dbExec.submit(() -> {
@@ -805,7 +807,7 @@ public class DBWriter {
      *
      * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
      */
-    private static Future<?> setFeedFlattrStatus(final Context context,
+    private static Future<?> setFeedFlattrStatus(@NonNull final Context context,
                                                  final Feed feed,
                                                  final boolean startFlattrClickWorker) {
         return dbExec.submit(() -> {
@@ -834,7 +836,7 @@ public class DBWriter {
         });
     }
 
-    public static Future<?> setFeedCustomTitle(Feed feed) {
+    public static Future<?> setFeedCustomTitle(@NonNull Feed feed) {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -867,7 +869,7 @@ public class DBWriter {
      * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
      * @return
      */
-    public static Future<?> setFlattredStatus(Context context, FlattrThing thing, boolean startFlattrClickWorker) {
+    public static Future<?> setFlattredStatus(@NonNull Context context, FlattrThing thing, boolean startFlattrClickWorker) {
         // must propagate this to back db
         if (thing instanceof FeedItem) {
             return setFeedItemFlattrStatus(context, (FeedItem) thing, startFlattrClickWorker);
@@ -946,7 +948,7 @@ public class DBWriter {
      *                        QueueUpdateBroadcast. This option should be set to <code>false</code>
      *                        if the caller wants to avoid unexpected updates of the GUI.
      */
-    public static Future<?> reorderQueue(final Permutor<FeedItem> permutor, final boolean broadcastUpdate) {
+    public static Future<?> reorderQueue(@NonNull final Permutor<FeedItem> permutor, final boolean broadcastUpdate) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -982,7 +984,7 @@ public class DBWriter {
         });
     }
 
-    public static Future<?> saveFeedItemAutoDownloadFailed(final FeedItem feedItem) {
+    public static Future<?> saveFeedItemAutoDownloadFailed(@NonNull final FeedItem feedItem) {
         return dbExec.submit(() -> {
             int failedAttempts = feedItem.getFailedAutoDownloadAttempts() + 1;
             long autoDownload;

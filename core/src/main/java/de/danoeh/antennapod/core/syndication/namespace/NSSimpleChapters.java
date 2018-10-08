@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.xml.sax.Attributes;
@@ -23,9 +24,10 @@ public class NSSimpleChapters extends Namespace {
     private static final String TITLE = "title";
     private static final String HREF = "href";
 
+    @NonNull
     @Override
-    public SyndElement handleElementStart(String localName, HandlerState state,
-                                          Attributes attributes) {
+    public SyndElement handleElementStart(@NonNull String localName, @NonNull HandlerState state,
+                                          @NonNull Attributes attributes) {
         FeedItem currentItem = state.getCurrentItem();
         if(currentItem != null) {
             if (localName.equals(CHAPTERS)) {

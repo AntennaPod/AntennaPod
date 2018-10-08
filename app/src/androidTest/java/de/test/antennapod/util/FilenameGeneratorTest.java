@@ -1,5 +1,6 @@
 package de.test.antennapod.util;
 
+import android.support.annotation.NonNull;
 import android.test.AndroidTestCase;
 import android.text.TextUtils;
 
@@ -56,7 +57,7 @@ public class FilenameGeneratorTest extends AndroidTestCase {
 	 * 
 	 * @throws IOException
 	 */
-	private void createFiles(String name) throws IOException {
+	private void createFiles(@NonNull String name) throws IOException {
 		File cache = getContext().getExternalCacheDir();
 		File testFile = new File(cache, name);
 		testFile.mkdir();

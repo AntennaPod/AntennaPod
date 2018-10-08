@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
     private static final int ADD_POSITION = -1;
     private static final String TAG = "SubscriptionsAdapter";
 
+    @NonNull
     private final WeakReference<MainActivity> mainActivityRef;
     private final ItemAccess itemAccess;
 
@@ -58,6 +61,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         return 1 + itemAccess.getCount();
     }
 
+    @Nullable
     @Override
     public Object getItem(int position) {
         if (position == getAddTilePosition()) {
@@ -79,8 +83,9 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         return itemAccess.getItem(getAdjustedPosition(position)).getId();
     }
 
+    @Nullable
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, @Nullable View convertView, ViewGroup parent) {
         Holder holder;
 
         if (convertView == null) {
@@ -154,6 +159,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     public interface ItemAccess {
         int getCount();
+        @Nullable
         Feed getItem(int position);
         int getFeedCounter(long feedId);
     }

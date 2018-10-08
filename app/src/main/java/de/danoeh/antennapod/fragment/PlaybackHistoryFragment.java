@@ -3,6 +3,8 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
@@ -43,6 +45,7 @@ public class PlaybackHistoryFragment extends ListFragment {
             EventDistributor.PLAYER_STATUS_UPDATE;
 
     private List<FeedItem> playbackHistory;
+    @Nullable
     private FeedItemlistAdapter adapter;
 
     private boolean itemsLoaded = false;
@@ -127,7 +130,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         viewsCreated = false;
     }
 
-    public void onEvent(DownloadEvent event) {
+    public void onEvent(@NonNull DownloadEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
@@ -137,7 +140,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         position -= l.getHeaderViewsCount();
         long[] ids = FeedItemUtil.getIds(playbackHistory);
@@ -145,7 +148,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         if(!isAdded()) {
             return;
         }
@@ -160,7 +163,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         if (itemsLoaded) {
             MenuItem menuItem = menu.findItem(R.id.clear_history_item);
@@ -171,7 +174,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.clear_history_item:
@@ -185,7 +188,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
-    public void onEventMainThread(FeedItemEvent event) {
+    public void onEventMainThread(@NonNull FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if(playbackHistory == null) {
             return;
@@ -224,10 +227,11 @@ public class PlaybackHistoryFragment extends ListFragment {
         getActivity().supportInvalidateOptionsMenu();
     }
 
+    @Nullable
     private final FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
 
         @Override
-        public int getItemDownloadProgressPercent(FeedItem item) {
+        public int getItemDownloadProgressPercent(@NonNull FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
                     if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
@@ -253,6 +257,7 @@ public class PlaybackHistoryFragment extends ListFragment {
             }
         }
 
+        @NonNull
         @Override
         public LongList getQueueIds() {
             LongList queueIds = new LongList();

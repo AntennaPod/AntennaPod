@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
+import android.support.annotation.NonNull;
+
 import java.util.Comparator;
 
 import de.danoeh.antennapod.core.feed.Feed;
@@ -8,7 +10,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 class FeedtitleComparator implements Comparator<Feed> {
 
 	@Override
-	public int compare(Feed lhs, Feed rhs) {
+	public int compare(@NonNull Feed lhs, @NonNull Feed rhs) {
 		return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
 	}
 

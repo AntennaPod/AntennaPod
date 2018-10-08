@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.dialog;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
 import de.danoeh.antennapod.core.R;
@@ -10,8 +11,8 @@ public class DownloadRequestErrorDialogCreator {
 	private DownloadRequestErrorDialogCreator() {
 	}
 
-	public static void newRequestErrorDialog(Context context,
-			String errorMessage) {
+	public static void newRequestErrorDialog(@NonNull Context context,
+                                             String errorMessage) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setNeutralButton(android.R.string.ok,
 				(dialog, which) -> dialog.dismiss())

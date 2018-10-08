@@ -2,6 +2,7 @@ package de.danoeh.antennapod.preferences;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.preference.Preference;
 import android.text.InputFilter;
 import android.util.AttributeSet;
@@ -16,22 +17,22 @@ public class NumberPickerPreference extends Preference {
     private int minValue = 0;
     private int maxValue = Integer.MAX_VALUE;
 
-    public NumberPickerPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public NumberPickerPreference(@NonNull Context context, @NonNull AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs);
     }
 
-    public NumberPickerPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NumberPickerPreference(@NonNull Context context, @NonNull AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
 
-    public NumberPickerPreference(Context context, AttributeSet attrs) {
+    public NumberPickerPreference(@NonNull Context context, @NonNull AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public NumberPickerPreference(Context context) {
+    public NumberPickerPreference(@NonNull Context context) {
         super(context);
         this.context = context;
     }

@@ -1,5 +1,6 @@
 package de.test.antennapod.ui;
 
+import android.support.annotation.NonNull;
 import android.test.InstrumentationTestCase;
 
 import java.io.File;
@@ -46,7 +47,7 @@ public class UITestUtilsTest extends InstrumentationTestCase {
         }
     }
 
-    private void testUrlReachable(String strUtl) throws Exception {
+    private void testUrlReachable(@NonNull String strUtl) throws Exception {
         URL url = new URL(strUtl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");

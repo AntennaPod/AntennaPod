@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +51,9 @@ public class StatisticsListAdapter extends BaseAdapter {
         return feedTime.get(position).feed.getId();
     }
 
+    @Nullable
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, @Nullable View convertView, ViewGroup parent) {
         StatisticsHolder holder;
         Feed feed = feedTime.get(position).feed;
 

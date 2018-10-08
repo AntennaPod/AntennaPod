@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util.id3reader.model;
 
+import android.support.annotation.NonNull;
+
 public class TagHeader extends Header {
 
 	private final char version;
@@ -11,7 +13,8 @@ public class TagHeader extends Header {
 		this.flags = flags;
 	}
 
-	@Override
+	@NonNull
+    @Override
 	public String toString() {
 		return "TagHeader [version=" + version + ", flags=" + flags + ", id="
 				+ id + ", size=" + size + "]";

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import de.danoeh.antennapod.core.feed.MediaType;
 
@@ -18,6 +19,7 @@ public interface PlaybackServiceCallbacks {
      * @param remotePlayback true if the media is played on a remote device.
      * @return A non-null activity intent.
      */
+    @NonNull
     Intent getPlayerActivityIntent(Context context, MediaType mediaType, boolean remotePlayback);
 
     /**

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -73,6 +75,7 @@ public class QueueFragment extends Fragment {
 
     private TextView infoBar;
     private RecyclerView recyclerView;
+    @Nullable
     private QueueRecyclerAdapter recyclerAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
@@ -88,6 +91,7 @@ public class QueueFragment extends Fragment {
 
     private Subscription subscription;
     private LinearLayoutManager layoutManager;
+    @Nullable
     private ItemTouchHelper itemTouchHelper;
 
 
@@ -125,7 +129,7 @@ public class QueueFragment extends Fragment {
         }
     }
 
-    public void onEventMainThread(QueueEvent event) {
+    public void onEventMainThread(@NonNull QueueEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if(queue == null || recyclerAdapter == null) {
             return;
@@ -160,7 +164,7 @@ public class QueueFragment extends Fragment {
         onFragmentLoaded(false);
     }
 
-    public void onEventMainThread(FeedItemEvent event) {
+    public void onEventMainThread(@NonNull FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if(queue == null || recyclerAdapter == null) {
             return;
@@ -176,7 +180,7 @@ public class QueueFragment extends Fragment {
         }
     }
 
-    public void onEventMainThread(DownloadEvent event) {
+    public void onEventMainThread(@NonNull DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
@@ -233,7 +237,7 @@ public class QueueFragment extends Fragment {
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if(!isAdded()) {
             return;
         }
@@ -266,7 +270,7 @@ public class QueueFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.queue_lock:
@@ -346,7 +350,7 @@ public class QueueFragment extends Fragment {
 
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
         if(!isVisible()) {
             return false;
@@ -377,7 +381,7 @@ public class QueueFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.queue_label);
 
@@ -402,7 +406,7 @@ public class QueueFragment extends Fragment {
                 int dragTo = -1;
 
                 @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                public boolean onMove(RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                     int fromPosition = viewHolder.getAdapterPosition();
                     int toPosition = target.getAdapterPosition();
 
@@ -424,7 +428,7 @@ public class QueueFragment extends Fragment {
                 }
 
                 @Override
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                     if(subscription != null) {
                         subscription.unsubscribe();
                     }
@@ -547,6 +551,7 @@ public class QueueFragment extends Fragment {
         infoBar.setText(info);
     }
 
+    @Nullable
     private final QueueRecyclerAdapter.ItemAccess itemAccess = new QueueRecyclerAdapter.ItemAccess() {
         @Override
         public int getCount() {
@@ -562,7 +567,7 @@ public class QueueFragment extends Fragment {
         }
 
         @Override
-        public long getItemDownloadedBytes(FeedItem item) {
+        public long getItemDownloadedBytes(@NonNull FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
                     if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
@@ -576,7 +581,7 @@ public class QueueFragment extends Fragment {
         }
 
         @Override
-        public long getItemDownloadSize(FeedItem item) {
+        public long getItemDownloadSize(@NonNull FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
                     if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
@@ -589,7 +594,7 @@ public class QueueFragment extends Fragment {
             return 0;
         }
         @Override
-        public int getItemDownloadProgressPercent(FeedItem item) {
+        public int getItemDownloadProgressPercent(@NonNull FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
                     if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
@@ -601,6 +606,7 @@ public class QueueFragment extends Fragment {
             return 0;
         }
 
+        @NonNull
         @Override
         public LongList getQueueIds() {
             return queue != null ? LongList.of(FeedItemUtil.getIds(queue)) : new LongList(0);

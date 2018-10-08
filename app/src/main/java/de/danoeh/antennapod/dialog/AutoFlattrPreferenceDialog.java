@@ -3,6 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.CheckBox;
@@ -22,7 +23,7 @@ public class AutoFlattrPreferenceDialog {
     private AutoFlattrPreferenceDialog() {
     }
 
-    public static void newAutoFlattrPreferenceDialog(final Activity activity, final AutoFlattrPreferenceDialogInterface callback) {
+    public static void newAutoFlattrPreferenceDialog(@NonNull final Activity activity, @NonNull final AutoFlattrPreferenceDialogInterface callback) {
         Validate.notNull(activity);
         Validate.notNull(callback);
 
@@ -77,7 +78,7 @@ public class AutoFlattrPreferenceDialog {
                 .setCancelable(false).show();
     }
 
-    private static void setStatusMsgText(Context context, TextView txtvStatus, int progress) {
+    private static void setStatusMsgText(@NonNull Context context, @NonNull TextView txtvStatus, int progress) {
         if (progress == 0) {
             txtvStatus.setText(R.string.auto_flattr_ater_beginning);
         } else if (progress == 100) {

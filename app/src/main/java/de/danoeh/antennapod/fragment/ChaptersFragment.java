@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
@@ -18,11 +20,15 @@ public class ChaptersFragment extends ListFragment implements MediaplayerInfoCon
 
     private static final String TAG = "ChaptersFragment";
 
+    @Nullable
     private Playable media;
+    @Nullable
     private PlaybackController controller;
 
+    @Nullable
     private ChaptersListAdapter adapter;
 
+    @NonNull
     public static ChaptersFragment newInstance(Playable media) {
         ChaptersFragment f = new ChaptersFragment();
         f.media = media;
@@ -68,7 +74,7 @@ public class ChaptersFragment extends ListFragment implements MediaplayerInfoCon
     }
 
     @Override
-    public void onMediaChanged(Playable media) {
+    public void onMediaChanged(@Nullable Playable media) {
         if(this.media == media) {
             return;
         }

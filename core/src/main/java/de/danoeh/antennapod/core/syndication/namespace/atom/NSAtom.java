@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.namespace.atom;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -66,9 +67,10 @@ public class NSAtom extends Namespace {
     private static final String isFeed = FEED + "|" + NSRSS20.CHANNEL;
     private static final String isFeedItem = ENTRY + "|" + NSRSS20.ITEM;
 
+    @NonNull
     @Override
-    public SyndElement handleElementStart(String localName, HandlerState state,
-                                          Attributes attributes) {
+    public SyndElement handleElementStart(@NonNull String localName, @NonNull HandlerState state,
+                                          @NonNull Attributes attributes) {
         if (ENTRY.equals(localName)) {
             state.setCurrentItem(new FeedItem());
             state.getItems().add(state.getCurrentItem());
@@ -151,7 +153,7 @@ public class NSAtom extends Namespace {
     }
 
     @Override
-    public void handleElementEnd(String localName, HandlerState state) {
+    public void handleElementEnd(String localName, @NonNull HandlerState state) {
         if (ENTRY.equals(localName)) {
             if (state.getCurrentItem() != null &&
                     state.getTempObjects().containsKey(NSITunes.DURATION)) {

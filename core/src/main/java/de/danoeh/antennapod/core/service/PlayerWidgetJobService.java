@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.JobIntentService;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -29,12 +30,13 @@ public class PlayerWidgetJobService extends JobIntentService {
 
     private static final String TAG = "PlayerWidgetJobService";
 
+    @Nullable
     private PlaybackService playbackService;
     private final Object waitForService = new Object();
 
     private static final int JOB_ID = -17001;
 
-    public static void updateWidget(Context context) {
+    public static void updateWidget(@NonNull Context context) {
         enqueueWork(context, PlayerWidgetJobService.class, JOB_ID, new Intent(context, PlayerWidgetJobService.class));
     }
 
@@ -158,6 +160,7 @@ public class PlayerWidgetJobService extends JobIntentService {
         }
     }
 
+    @Nullable
     private final ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             Log.d(TAG, "Connection to service established");

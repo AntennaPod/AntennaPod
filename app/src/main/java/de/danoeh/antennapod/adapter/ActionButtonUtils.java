@@ -2,6 +2,8 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -18,11 +20,12 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
  */
 class ActionButtonUtils {
 
+    @NonNull
     private final int[] labels;
     private final TypedArray drawables;
     private final Context context;
 
-    public ActionButtonUtils(Context context) {
+    public ActionButtonUtils(@NonNull Context context) {
         Validate.notNull(context);
 
         this.context = context.getApplicationContext();
@@ -48,7 +51,7 @@ class ActionButtonUtils {
      * action button so that it matches the state of the FeedItem.
      */
     @SuppressWarnings("ResourceType")
-    public void configureActionButton(ImageButton butSecondary, FeedItem item, boolean isInQueue) {
+    public void configureActionButton(@Nullable ImageButton butSecondary, @Nullable FeedItem item, boolean isInQueue) {
         Validate.isTrue(butSecondary != null && item != null, "butSecondary or item was null");
 
         final FeedMedia media = item.getMedia();

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util.vorbiscommentreader;
 
+import android.support.annotation.NonNull;
+
 import org.apache.commons.io.EndianUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -123,7 +125,7 @@ public abstract class VorbisCommentReader {
 		return false;
 	}
 
-	private boolean findCommentHeader(InputStream input) throws IOException {
+	private boolean findCommentHeader(@NonNull InputStream input) throws IOException {
 		char[] buffer = new char["vorbis".length() + 1];
 		for (int bytesRead = 0; bytesRead < SECOND_PAGE_MAX_LENGTH; bytesRead++) {
 			char c = (char) input.read();
@@ -165,7 +167,7 @@ public abstract class VorbisCommentReader {
 		return false;
 	}
 
-	private VorbisCommentHeader readCommentHeader(InputStream input)
+	private VorbisCommentHeader readCommentHeader(@NonNull InputStream input)
 			throws IOException, VorbisCommentReaderException {
 		try {
 			long vendorLength = EndianUtils.readSwappedUnsignedInteger(input);
@@ -178,7 +180,7 @@ public abstract class VorbisCommentReader {
 		}
 	}
 
-	private String readContentVectorKey(InputStream input, long vectorLength)
+	private String readContentVectorKey(@NonNull InputStream input, long vectorLength)
 			throws IOException {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < vectorLength; i++) {

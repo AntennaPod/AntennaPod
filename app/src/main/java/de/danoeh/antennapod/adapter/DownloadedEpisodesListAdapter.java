@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         return itemAccess.getCount();
     }
 
+    @Nullable
     @Override
     public FeedItem getItem(int position) {
         return itemAccess.getItem(position);
@@ -49,8 +51,9 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         return position;
     }
 
+    @Nullable
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, @Nullable View convertView, ViewGroup parent) {
         Holder holder;
         final FeedItem item = getItem(position);
         if (item == null) return null;
@@ -134,6 +137,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
     public interface ItemAccess {
         int getCount();
 
+        @Nullable
         FeedItem getItem(int position);
 
         void onFeedItemSecondaryAction(FeedItem item);

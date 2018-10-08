@@ -60,12 +60,16 @@ public abstract class PlaybackController {
 
     private static final int INVALID_TIME = -1;
 
+    @NonNull
     private final Activity activity;
 
+    @Nullable
     private PlaybackService playbackService;
+    @Nullable
     private Playable media;
     private PlayerStatus status = PlayerStatus.STOPPED;
 
+    @NonNull
     private final ScheduledThreadPoolExecutor schedExecutor;
     private static final int SCHED_EX_POOLSIZE = 1;
 
@@ -259,6 +263,7 @@ public abstract class PlaybackController {
         }
     }
 
+    @Nullable
     private final ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             if(service instanceof PlaybackService.LocalBinder) {
@@ -299,7 +304,7 @@ public abstract class PlaybackController {
     private final BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
 
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @NonNull Intent intent) {
             if (!isConnectedToPlaybackService()) {
                 bindToService();
                 return;
@@ -353,7 +358,7 @@ public abstract class PlaybackController {
     private final BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
 
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @NonNull Intent intent) {
             if (isConnectedToPlaybackService()) {
                 if (TextUtils.equals(intent.getAction(),
                         PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
@@ -492,6 +497,7 @@ public abstract class PlaybackController {
         }
     }
 
+    @Nullable
     public ImageButton getPlayButton() {
         return null;
     }
@@ -544,8 +550,8 @@ public abstract class PlaybackController {
     /**
      * Should be used by classes which implement the OnSeekBarChanged interface.
      */
-    public float onSeekBarProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser, TextView txtvPosition) {
+    public float onSeekBarProgressChanged(@NonNull SeekBar seekBar, int progress,
+                                          boolean fromUser, @NonNull TextView txtvPosition) {
         if (fromUser && playbackService != null && media != null) {
             float prog = progress / ((float) seekBar.getMax());
             int duration = media.getDuration();
@@ -641,6 +647,7 @@ public abstract class PlaybackController {
         }
     }
 
+    @Nullable
     public Playable getMedia() {
         if (media == null) {
             media = PlayableUtils.createInstanceFromPreferences(activity);
@@ -745,6 +752,7 @@ public abstract class PlaybackController {
         }
     }
 
+    @Nullable
     public Pair<Integer, Integer> getVideoSize() {
         if (playbackService != null) {
             return playbackService.getVideoSize();

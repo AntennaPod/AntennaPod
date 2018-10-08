@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.Preference;
@@ -53,6 +54,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             return fragment.getPreferenceScreen();
         }
 
+        @NonNull
         @Override
         public AppCompatActivity getActivity() {
             return PreferenceActivity.this;
@@ -114,7 +116,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
@@ -129,7 +131,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
     }
 
     @Override
-    public void onSearchResultClicked(SearchPreferenceResult result) {
+    public void onSearchResultClicked(@NonNull SearchPreferenceResult result) {
         showPreferenceScreen(result.getResourceFile(), true);
         result.highlight(preferenceUI.getFragment());
     }

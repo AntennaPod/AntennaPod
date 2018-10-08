@@ -1,5 +1,6 @@
 package de.test.antennapod.util.syndication.feedgenerator;
 
+import android.support.annotation.Nullable;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlSerializer;
@@ -19,7 +20,7 @@ public class RSS2Generator implements FeedGenerator{
     public static final long FEATURE_WRITE_GUID = 1;
 
     @Override
-    public void writeFeed(Feed feed, OutputStream outputStream, String encoding, long flags) throws IOException {
+    public void writeFeed(@Nullable Feed feed, @Nullable OutputStream outputStream, @Nullable String encoding, long flags) throws IOException {
         if (feed == null) throw new IllegalArgumentException("feed = null");
         if (outputStream == null) throw new IllegalArgumentException("outputStream = null");
         if (encoding == null) throw new IllegalArgumentException("encoding = null");

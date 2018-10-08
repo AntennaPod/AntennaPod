@@ -2,6 +2,8 @@
 
 package de.danoeh.antennapod.core.util;
 
+import android.support.annotation.NonNull;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -33,7 +35,7 @@ public class DuckType {
 
 	private class CoercedProxy implements InvocationHandler {
 		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		public Object invoke(Object proxy, @NonNull Method method, Object[] args) throws Throwable {
 			Method delegateMethod = findMethodBySignature(method);
 			assert delegateMethod != null;
 			return delegateMethod.invoke(DuckType.this.objectToCoerce, args);
@@ -63,8 +65,9 @@ public class DuckType {
 	 *             if the object being coerced does not implement all the
 	 *             methods in the given interface.
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public <T> T to(Class iface) {
+	@NonNull
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public <T> T to(@NonNull Class iface) {
 		if (BuildConfig.DEBUG && !iface.isInterface()) throw new AssertionError("cannot coerce object to a class, must be an interface");
 		if (isA(iface)) {
 			return (T) iface.cast(objectToCoerce);

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -41,9 +42,10 @@ public class NSRSS20 extends Namespace {
     private static final String ENC_LEN = "length";
     private static final String ENC_TYPE = "type";
 
-	@Override
-	public SyndElement handleElementStart(String localName, HandlerState state,
-			Attributes attributes) {
+	@NonNull
+    @Override
+	public SyndElement handleElementStart(String localName, @NonNull HandlerState state,
+                                          @NonNull Attributes attributes) {
 		if (ITEM.equals(localName)) {
 			state.setCurrentItem(new FeedItem());
 			state.getItems().add(state.getCurrentItem());
@@ -81,7 +83,7 @@ public class NSRSS20 extends Namespace {
 	}
 
 	@Override
-	public void handleElementEnd(String localName, HandlerState state) {
+	public void handleElementEnd(String localName, @NonNull HandlerState state) {
 		if (ITEM.equals(localName)) {
 			if (state.getCurrentItem() != null) {
 				FeedItem currentItem = state.getCurrentItem();

@@ -1,5 +1,7 @@
 package de.test.antennapod.util.service.download;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 
 import java.io.BufferedReader;
@@ -132,7 +134,7 @@ public abstract class NanoHTTPD {
         setAsyncRunner(new DefaultAsyncRunner());
     }
 
-    private static final void safeClose(Closeable closeable) {
+    private static final void safeClose(@Nullable Closeable closeable) {
         if (closeable != null) {
             try {
                 closeable.close();
@@ -141,7 +143,7 @@ public abstract class NanoHTTPD {
         }
     }
 
-    private static final void safeClose(Socket closeable) {
+    private static final void safeClose(@Nullable Socket closeable) {
         if (closeable != null) {
             try {
                 closeable.close();
@@ -150,7 +152,7 @@ public abstract class NanoHTTPD {
         }
     }
 
-    private static final void safeClose(ServerSocket closeable) {
+    private static final void safeClose(@Nullable ServerSocket closeable) {
         if (closeable != null) {
             try {
                 closeable.close();
@@ -273,6 +275,7 @@ public abstract class NanoHTTPD {
      * @param headers Header entries, percent decoded
      * @return HTTP response, see class Response for details
      */
+    @NonNull
     @Deprecated
     public Response serve(String uri, Method method, Map<String, String> headers, Map<String, String> parms,
                                    Map<String, String> files) {
@@ -288,7 +291,8 @@ public abstract class NanoHTTPD {
      * @param session The HTTP session
      * @return HTTP response, see class Response for details
      */
-    Response serve(IHTTPSession session) {
+    @Nullable
+    Response serve(@NonNull IHTTPSession session) {
         Map<String, String> files = new ArrayMap<>();
         Method method = session.getMethod();
         if (Method.PUT.equals(method) || Method.POST.equals(method)) {
@@ -312,7 +316,8 @@ public abstract class NanoHTTPD {
      * @param str the percent encoded <code>String</code>
      * @return expanded form of the input, for example "foo%20bar" becomes "foo bar"
      */
-    private String decodePercent(String str) {
+    @Nullable
+    private String decodePercent(@NonNull String str) {
         String decoded = null;
         try {
             decoded = URLDecoder.decode(str, "UTF8");
@@ -329,7 +334,8 @@ public abstract class NanoHTTPD {
      * @param parms original <b>NanoHttpd</b> parameters values, as passed to the <code>serve()</code> method.
      * @return a map of <code>String</code> (parameter name) to <code>List&lt;String&gt;</code> (a list of the values supplied).
      */
-    protected Map<String, List<String>> decodeParameters(Map<String, String> parms) {
+    @NonNull
+    protected Map<String, List<String>> decodeParameters(@NonNull Map<String, String> parms) {
         return this.decodeParameters(parms.get(QUERY_STRING_PARAMETER));
     }
 
@@ -341,7 +347,8 @@ public abstract class NanoHTTPD {
      * @param queryString a query string pulled from the URL.
      * @return a map of <code>String</code> (parameter name) to <code>List&lt;String&gt;</code> (a list of the values supplied).
      */
-    private Map<String, List<String>> decodeParameters(String queryString) {
+    @NonNull
+    private Map<String, List<String>> decodeParameters(@Nullable String queryString) {
         Map<String, List<String>> parms = new ArrayMap<>();
         if (queryString != null) {
             StringTokenizer st = new StringTokenizer(queryString, "&");
@@ -418,6 +425,7 @@ public abstract class NanoHTTPD {
      * Factory to create temp file managers.
      */
     public interface TempFileManagerFactory {
+        @NonNull
         TempFileManager create();
     }
 
@@ -430,6 +438,7 @@ public abstract class NanoHTTPD {
      * temporary files created as a result of handling the request.</p>
      */
     public interface TempFileManager {
+        @NonNull
         TempFile createTempFile() throws Exception;
 
         void clear();
@@ -446,6 +455,7 @@ public abstract class NanoHTTPD {
 
         void delete();
 
+        @NonNull
         String getName();
     }
 
@@ -480,6 +490,7 @@ public abstract class NanoHTTPD {
      */
     public static class DefaultTempFileManager implements TempFileManager {
         private final String tmpdir;
+        @NonNull
         private final List<TempFile> tempFiles;
 
         public DefaultTempFileManager() {
@@ -487,6 +498,7 @@ public abstract class NanoHTTPD {
             tempFiles = new ArrayList<>();
         }
 
+        @NonNull
         @Override
         public TempFile createTempFile() throws Exception {
             DefaultTempFile tempFile = new DefaultTempFile(tmpdir);
@@ -516,7 +528,7 @@ public abstract class NanoHTTPD {
         private File file;
         private OutputStream fstream;
 
-        public DefaultTempFile(String tempdir) throws IOException {
+        public DefaultTempFile(@NonNull String tempdir) throws IOException {
             file = File.createTempFile("NanoHTTPD-", "", new File(tempdir));
             fstream = new FileOutputStream(file);
         }
@@ -532,6 +544,7 @@ public abstract class NanoHTTPD {
             file.delete();
         }
 
+        @NonNull
         @Override
         public String getName() {
             return file.getAbsolutePath();
@@ -553,6 +566,7 @@ public abstract class NanoHTTPD {
         /**
          * Data of the response, may be null.
          */
+        @Nullable
         private InputStream data;
         /**
          * Headers for the HTTP response. Use addHeader() to add lines.
@@ -586,7 +600,7 @@ public abstract class NanoHTTPD {
         /**
          * Convenience method that makes an InputStream out of given text.
          */
-        public Response(IStatus status, String mimeType, String txt) {
+        public Response(IStatus status, String mimeType, @Nullable String txt) {
             this.status = status;
             this.mimeType = mimeType;
             try {
@@ -610,7 +624,7 @@ public abstract class NanoHTTPD {
         /**
          * Sends given response to the socket.
          */
-        void send(OutputStream outputStream) {
+        void send(@NonNull OutputStream outputStream) {
             String mime = mimeType;
             SimpleDateFormat gmtFrmt = new SimpleDateFormat("E, d MMM yyyy HH:mm:ss 'GMT'", Locale.US);
             gmtFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -655,13 +669,13 @@ public abstract class NanoHTTPD {
             }
         }
 
-        void sendContentLengthHeaderIfNotAlreadyPresent(PrintWriter pw, Map<String, String> header, int size) {
+        void sendContentLengthHeaderIfNotAlreadyPresent(@NonNull PrintWriter pw, @NonNull Map<String, String> header, int size) {
             if (!headerAlreadySent(header, "content-length")) {
                 pw.print("Content-Length: "+ size +"\r\n");
             }
         }
 
-        void sendConnectionHeaderIfNotAlreadyPresent(PrintWriter pw, Map<String, String> header) {
+        void sendConnectionHeaderIfNotAlreadyPresent(@NonNull PrintWriter pw, @NonNull Map<String, String> header) {
             if (!headerAlreadySent(header, "connection")) {
                 pw.print("Connection: keep-alive\r\n");
             }
@@ -675,7 +689,7 @@ public abstract class NanoHTTPD {
             return alreadySent;
         }
 
-        private void sendAsChunked(OutputStream outputStream, PrintWriter pw) throws IOException {
+        private void sendAsChunked(@NonNull OutputStream outputStream, PrintWriter pw) throws IOException {
             pw.print("Transfer-Encoding: chunked\r\n");
             pw.print("\r\n");
             pw.flush();
@@ -691,7 +705,7 @@ public abstract class NanoHTTPD {
             outputStream.write("0\r\n\r\n".getBytes());
         }
 
-        private void sendAsFixedLength(OutputStream outputStream, int pending) throws IOException {
+        private void sendAsFixedLength(@NonNull OutputStream outputStream, int pending) throws IOException {
             if (requestMethod != Method.HEAD && data != null) {
                 int BUFFER_SIZE = 16 * 1024;
                 byte[] buff = new byte[BUFFER_SIZE];
@@ -722,6 +736,7 @@ public abstract class NanoHTTPD {
             this.mimeType = mimeType;
         }
 
+        @Nullable
         public InputStream getData() {
             return data;
         }
@@ -744,6 +759,7 @@ public abstract class NanoHTTPD {
 
         public interface IStatus {
             int getRequestStatus();
+            @NonNull
             String getDescription();
         }
 
@@ -798,6 +814,7 @@ public abstract class NanoHTTPD {
      * Default strategy for creating and cleaning up temporary files.
      */
     private class DefaultTempFileManagerFactory implements TempFileManagerFactory {
+        @NonNull
         @Override
         public TempFileManager create() {
             return new DefaultTempFileManager();
@@ -819,10 +836,13 @@ public abstract class NanoHTTPD {
          */
         String getUri();
 
+        @Nullable
         String getQueryParameterString();
 
+        @Nullable
         Method getMethod();
 
+        @NonNull
         InputStream getInputStream();
 
         CookieHandler getCookies();
@@ -838,14 +858,17 @@ public abstract class NanoHTTPD {
         public static final int BUFSIZE = 8192;
         private final TempFileManager tempFileManager;
         private final OutputStream outputStream;
+        @NonNull
         private final PushbackInputStream inputStream;
         private int splitbyte;
         private int rlen;
         private String uri;
+        @Nullable
         private Method method;
         private Map<String, String> parms;
         private Map<String, String> headers;
         private CookieHandler cookies;
+        @Nullable
         private String queryParameterString;
 
         public HTTPSession(TempFileManager tempFileManager, InputStream inputStream, OutputStream outputStream) {
@@ -952,7 +975,7 @@ public abstract class NanoHTTPD {
         }
 
         @Override
-        public void parseBody(Map<String, String> files) throws IOException, ResponseException {
+        public void parseBody(@NonNull Map<String, String> files) throws IOException, ResponseException {
             RandomAccessFile randomAccessFile = null;
             BufferedReader in = null;
             try {
@@ -1045,7 +1068,7 @@ public abstract class NanoHTTPD {
         /**
          * Decodes the sent headers and loads the data into Key/value pairs
          */
-        private void decodeHeader(BufferedReader in, Map<String, String> pre, Map<String, String> parms, Map<String, String> headers)
+        private void decodeHeader(BufferedReader in, @NonNull Map<String, String> pre, @NonNull Map<String, String> parms, @NonNull Map<String, String> headers)
             throws ResponseException {
             try {
                 // Read the request line
@@ -1099,8 +1122,8 @@ public abstract class NanoHTTPD {
         /**
          * Decodes the Multipart Body data and put it into Key/Value pairs.
          */
-        private void decodeMultipartData(String boundary, ByteBuffer fbuf, BufferedReader in, Map<String, String> parms,
-                                         Map<String, String> files) throws ResponseException {
+        private void decodeMultipartData(String boundary, @NonNull ByteBuffer fbuf, BufferedReader in, @NonNull Map<String, String> parms,
+                                         @NonNull Map<String, String> files) throws ResponseException {
             try {
                 int[] bpositions = getBoundaryPositions(fbuf, boundary.getBytes());
                 int boundarycount = 1;
@@ -1189,7 +1212,8 @@ public abstract class NanoHTTPD {
         /**
          * Find the byte positions where multipart boundaries start.
          */
-        private int[] getBoundaryPositions(ByteBuffer b, byte[] boundary) {
+        @NonNull
+        private int[] getBoundaryPositions(ByteBuffer b, @NonNull byte[] boundary) {
             int matchcount = 0;
             int matchbyte = -1;
             List<Integer> matchbytes = new ArrayList<>();
@@ -1219,7 +1243,8 @@ public abstract class NanoHTTPD {
         /**
          * Retrieves the content of a sent file and saves it to a temporary file. The full path to the saved file is returned.
          */
-        private String saveTmpFile(ByteBuffer b, int offset, int len) {
+        @NonNull
+        private String saveTmpFile(@NonNull ByteBuffer b, int offset, int len) {
             String path = "";
             if (len > 0) {
                 FileOutputStream fileOutputStream = null;
@@ -1266,7 +1291,7 @@ public abstract class NanoHTTPD {
          * Decodes parameters in percent-encoded URI-format ( e.g. "name=Jack%20Daniels&pass=Single%20Malt" ) and
          * adds them to given Map. NOTE: this doesn't support multiple identical keys due to the simplicity of Map.
          */
-        private void decodeParms(String parms, Map<String, String> p) {
+        private void decodeParms(@Nullable String parms, @NonNull Map<String, String> p) {
             if (parms == null) {
                 queryParameterString = "";
                 return;
@@ -1291,7 +1316,8 @@ public abstract class NanoHTTPD {
             return parms;
         }
 
-		public String getQueryParameterString() {
+		@Nullable
+        public String getQueryParameterString() {
             return queryParameterString;
         }
 
@@ -1305,11 +1331,13 @@ public abstract class NanoHTTPD {
             return uri;
         }
 
+        @Nullable
         @Override
         public final Method getMethod() {
             return method;
         }
 
+        @NonNull
         @Override
         public final InputStream getInputStream() {
             return inputStream;
@@ -1380,6 +1408,7 @@ public abstract class NanoHTTPD {
             }
         }
 
+        @NonNull
         @Override public Iterator<String> iterator() {
             return cookies.keySet().iterator();
         }
@@ -1423,7 +1452,7 @@ public abstract class NanoHTTPD {
          *
          * @param response The Response object to which headers the queued cookies will be added.
          */
-        public void unloadQueue(Response response) {
+        public void unloadQueue(@NonNull Response response) {
             for (Cookie cookie : queue) {
                 response.addHeader("Set-Cookie", cookie.getHTTPHeader());
             }

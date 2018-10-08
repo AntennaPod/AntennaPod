@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.util.playback;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.support.annotation.NonNull;
 
 import de.danoeh.antennapod.core.R;
 
@@ -9,7 +10,7 @@ import de.danoeh.antennapod.core.R;
 public class MediaPlayerError {
 
 	/** Get a human-readable string for a specific error code. */
-	public static String getErrorString(Context context, int code) {
+	public static String getErrorString(@NonNull Context context, int code) {
 		int resId;
 		switch(code) {
 		case MediaPlayer.MEDIA_ERROR_SERVER_DIED:

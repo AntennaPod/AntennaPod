@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -53,7 +54,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
     }
 
     @Override
-    public void onActionButtonPressed(final FeedItem item, final LongList queueIds) {
+    public void onActionButtonPressed(@NonNull final FeedItem item, @NonNull final LongList queueIds) {
 
         if (item.hasMedia()) {
             final FeedMedia media = item.getMedia();
@@ -105,7 +106,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
         }
     }
 
-    private void confirmMobileDownload(final Context context, final FeedItem item) {
+    private void confirmMobileDownload(@NonNull final Context context, final FeedItem item) {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
         builder
                 .title(R.string.confirm_mobile_download_dialog_title)

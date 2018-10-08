@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -49,7 +51,7 @@ public abstract class PodcastListFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.gpodder_podcasts, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -75,7 +77,7 @@ public abstract class PodcastListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.gpodnet_podcast_list, container, false);
 
         gridView = (GridView) root.findViewById(R.id.gridView);
@@ -103,6 +105,7 @@ public abstract class PodcastListFragment extends Fragment {
 
     final void loadData() {
         AsyncTask<Void, Void, List<GpodnetPodcast>> loaderTask = new AsyncTask<Void, Void, List<GpodnetPodcast>>() {
+            @Nullable
             volatile Exception exception = null;
 
             @Override
@@ -123,7 +126,7 @@ public abstract class PodcastListFragment extends Fragment {
             }
 
             @Override
-            protected void onPostExecute(List<GpodnetPodcast> gpodnetPodcasts) {
+            protected void onPostExecute(@Nullable List<GpodnetPodcast> gpodnetPodcasts) {
                 super.onPostExecute(gpodnetPodcasts);
                 final Context context = getActivity();
                 if (context != null && gpodnetPodcasts != null && gpodnetPodcasts.size() > 0) {

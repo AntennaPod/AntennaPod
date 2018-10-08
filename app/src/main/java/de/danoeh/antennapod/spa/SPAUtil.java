@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.apache.commons.lang3.Validate;
@@ -32,7 +34,7 @@ public class SPAUtil {
      * @return True if an intent was sent, false otherwise (for example if the intent has already been
      * sent before.
      */
-    public static synchronized boolean sendSPAppsQueryFeedsIntent(Context context) {
+    public static synchronized boolean sendSPAppsQueryFeedsIntent(@Nullable Context context) {
         if (context == null) throw new IllegalArgumentException("context = null");
         final Context appContext = context.getApplicationContext();
         if (appContext == null) {
@@ -57,7 +59,7 @@ public class SPAUtil {
     /**
      * Resets all preferences created by this class. Should only be used for debug purposes.
      */
-    public static void resetSPAPreferences(Context c) {
+    public static void resetSPAPreferences(@NonNull Context c) {
         if (BuildConfig.DEBUG) {
             Validate.notNull(c);
             SharedPreferences.Editor editor = PreferenceManager

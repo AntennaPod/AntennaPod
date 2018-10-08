@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.service.playback;
 import android.content.Context;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class PlaybackServiceTaskManager {
     public static final int WIDGET_UPDATER_NOTIFICATION_INTERVAL = 1000;
 
     private static final int SCHED_EX_POOL_SIZE = 2;
+    @NonNull
     private final ScheduledThreadPoolExecutor schedExecutor;
 
     private ScheduledFuture<?> positionSaverFuture;
@@ -50,7 +52,9 @@ public class PlaybackServiceTaskManager {
 
     private SleepTimer sleepTimer;
 
+    @NonNull
     private final Context context;
+    @NonNull
     private final PSTMCallback callback;
 
     /**
@@ -98,11 +102,12 @@ public class PlaybackServiceTaskManager {
      * Returns the queue if it is already loaded or null if it hasn't been loaded yet.
      * In order to wait until the queue has been loaded, use getQueue()
      */
+    @Nullable
     public synchronized List<FeedItem> getQueueIfLoaded() {
         if (queueFuture.isDone()) {
             try {
                 return queueFuture.get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (@NonNull InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }
@@ -303,6 +308,7 @@ public class PlaybackServiceTaskManager {
         private long timeLeft;
         private final boolean shakeToReset;
         private final boolean vibrate;
+        @Nullable
         private ShakeListener shakeListener;
 
         public SleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,7 @@ public class DateUtils {
 
     private static final TimeZone defaultTimezone = TimeZone.getTimeZone("GMT");
 
-    public static Date parse(final String input) {
+    public static Date parse(@Nullable final String input) {
         if (input == null) {
             throw new IllegalArgumentException("Date must not be null");
         }
@@ -156,7 +157,7 @@ public class DateUtils {
         return format.format(date);
     }
 
-    public static String formatAbbrev(final Context context, final Date date) {
+    public static String formatAbbrev(final Context context, @Nullable final Date date) {
         if (date == null) {
             return "";
         }

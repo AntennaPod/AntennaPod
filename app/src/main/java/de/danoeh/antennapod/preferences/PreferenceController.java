@@ -17,6 +17,8 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
@@ -128,6 +130,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE };
     private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 41;
+    @NonNull
     private final PreferenceUI ui;
     private final SharedPreferences.OnSharedPreferenceChangeListener gpoddernetListener =
             (sharedPreferences, key) -> {
@@ -581,7 +584,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 .addFile(R.xml.preferences_flattr);
     }
 
-    public PreferenceFragmentCompat openScreen(int preferences, AppCompatActivity activity) {
+    @NonNull
+    public PreferenceFragmentCompat openScreen(int preferences, @NonNull AppCompatActivity activity) {
         PreferenceFragmentCompat prefFragment = new PreferenceActivity.MainFragment();
         Bundle args = new Bundle();
         args.putInt(PARAM_RESOURCE, preferences);
@@ -615,7 +619,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         }
     }
 
-    private boolean export(ExportWriter exportWriter) {
+    private boolean export(@NonNull ExportWriter exportWriter) {
         Context context = ui.getActivity();
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(context.getString(R.string.exporting_label));
@@ -708,7 +712,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     @SuppressLint("NewApi")
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         if (resultCode == Activity.RESULT_OK &&
                 requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
             String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
@@ -783,6 +787,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         }
     }
 
+    @NonNull
     private String[] getUpdateIntervalEntries(final String[] values) {
         final Resources res = ui.getActivity().getResources();
         String[] entries = new String[values.length];
@@ -941,7 +946,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         }
     }
 
-    private static String blankIfNull(String val) {
+    @NonNull
+    private static String blankIfNull(@Nullable String val) {
         return val == null ? "" : val;
     }
 
@@ -1186,6 +1192,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
         PreferenceScreen getPreferenceScreen();
 
+        @NonNull
         AppCompatActivity getActivity();
     }
 }

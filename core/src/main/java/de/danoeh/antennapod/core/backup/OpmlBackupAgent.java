@@ -6,6 +6,8 @@ import android.app.backup.BackupDataOutput;
 import android.app.backup.BackupHelper;
 import android.content.Context;
 import android.os.ParcelFileDescriptor;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
@@ -70,6 +72,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
         /**
          * Checksum of restored OPML file
          */
+        @Nullable
         private byte[] mChecksum;
 
         public OpmlBackupHelper(Context context) {
@@ -77,7 +80,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
         }
 
         @Override
-        public void performBackup(ParcelFileDescriptor oldState, BackupDataOutput data, ParcelFileDescriptor newState) {
+        public void performBackup(@Nullable ParcelFileDescriptor oldState, @NonNull BackupDataOutput data, @NonNull ParcelFileDescriptor newState) {
             Log.d(TAG, "Performing backup");
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             MessageDigest digester = null;
@@ -137,7 +140,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
         }
 
         @Override
-        public void restoreEntity(BackupDataInputStream data) {
+        public void restoreEntity(@NonNull BackupDataInputStream data) {
             LOGD(TAG, "Backup restore");
 
             if (!OPML_ENTITY_KEY.equals(data.getKey())) {
@@ -180,7 +183,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
         }
 
         @Override
-        public void writeNewStateDescription(ParcelFileDescriptor newState) {
+        public void writeNewStateDescription(@NonNull ParcelFileDescriptor newState) {
             writeNewStateDescription(newState, mChecksum);
         }
 
@@ -190,7 +193,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
          * @param newState
          * @param checksum
          */
-        private void writeNewStateDescription(ParcelFileDescriptor newState, byte[] checksum) {
+        private void writeNewStateDescription(@NonNull ParcelFileDescriptor newState, @Nullable byte[] checksum) {
             if (checksum == null) {
                 return;
             }

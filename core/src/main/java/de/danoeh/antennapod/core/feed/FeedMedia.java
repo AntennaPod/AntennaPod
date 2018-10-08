@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -53,6 +54,7 @@ public class FeedMedia extends FeedFile implements Playable {
     private long size; // File size in Byte
     private String mime_type;
     @Nullable private volatile FeedItem item;
+    @Nullable
     private Date playbackCompletionDate;
     private int startPosition = -1;
     private int playedDurationWhenStarted;
@@ -73,7 +75,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
                      long size, String mime_type, String file_url, String download_url,
-                     boolean downloaded, Date playbackCompletionDate, int played_duration,
+                     boolean downloaded, @Nullable Date playbackCompletionDate, int played_duration,
                      long lastPlayedTime) {
         super(file_url, download_url, downloaded);
         this.id = id;
@@ -162,6 +164,7 @@ public class FeedMedia extends FeedFile implements Playable {
      * Returns a MediaItem representing the FeedMedia object.
      * This is used by the MediaBrowserService
      */
+    @NonNull
     public MediaBrowserCompat.MediaItem getMediaItem() {
         Playable p = this;
         MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
@@ -180,7 +183,7 @@ public class FeedMedia extends FeedFile implements Playable {
         return MediaType.fromMimeType(mime_type);
     }
 
-    public void updateFromOther(FeedMedia other) {
+    public void updateFromOther(@NonNull FeedMedia other) {
         super.updateFromOther(other);
         if (other.size > 0) {
             size = other.size;
@@ -190,7 +193,7 @@ public class FeedMedia extends FeedFile implements Playable {
         }
     }
 
-    public boolean compareWithOther(FeedMedia other) {
+    public boolean compareWithOther(@NonNull FeedMedia other) {
         if (super.compareWithOther(other)) {
             return true;
         }
@@ -318,19 +321,20 @@ public class FeedMedia extends FeedFile implements Playable {
      * FeedItem object is not null, it's 'media'-attribute value
      * will also be set to this media object.
      */
-    public void setItem(FeedItem item) {
+    public void setItem(@Nullable FeedItem item) {
         this.item = item;
         if (item != null && item.getMedia() != this) {
             item.setMedia(this);
         }
     }
 
+    @Nullable
     public Date getPlaybackCompletionDate() {
         return playbackCompletionDate == null
                 ? null : (Date) playbackCompletionDate.clone();
     }
 
-    public void setPlaybackCompletionDate(Date playbackCompletionDate) {
+    public void setPlaybackCompletionDate(@Nullable Date playbackCompletionDate) {
         this.playbackCompletionDate = playbackCompletionDate == null
                 ? null : (Date) playbackCompletionDate.clone();
     }
@@ -352,7 +356,7 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeLong(id);
         dest.writeLong(item != null ? item.getId() : 0L);
 
@@ -369,7 +373,7 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void writeToPreferences(Editor prefEditor) {
+    public void writeToPreferences(@NonNull Editor prefEditor) {
         if(item != null && item.getFeed() != null) {
             prefEditor.putLong(PREF_FEED_ID, item.getFeed().getId());
         } else {
@@ -408,6 +412,7 @@ public class FeedMedia extends FeedFile implements Playable {
         }
     }
 
+    @Nullable
     @Override
     public String getEpisodeTitle() {
         if (item == null) {
@@ -420,6 +425,7 @@ public class FeedMedia extends FeedFile implements Playable {
         }
     }
 
+    @Nullable
     @Override
     public List<Chapter> getChapters() {
         if (item == null) {
@@ -428,6 +434,7 @@ public class FeedMedia extends FeedFile implements Playable {
         return item.getChapters();
     }
 
+    @Nullable
     @Override
     public String getWebsiteLink() {
         if (item == null) {
@@ -436,6 +443,7 @@ public class FeedMedia extends FeedFile implements Playable {
         return item.getLink();
     }
 
+    @Nullable
     @Override
     public String getFeedTitle() {
         if (item == null || item.getFeed() == null) {
@@ -449,6 +457,7 @@ public class FeedMedia extends FeedFile implements Playable {
         return id;
     }
 
+    @Nullable
     @Override
     public String getLocalMediaUrl() {
         return file_url;
@@ -459,6 +468,7 @@ public class FeedMedia extends FeedFile implements Playable {
         return download_url;
     }
 
+    @Nullable
     @Override
     public String getPaymentLink() {
         if (item == null) {
@@ -551,6 +561,7 @@ public class FeedMedia extends FeedFile implements Playable {
         }
     }
 
+    @Nullable
     @Override
     public Callable<String> loadShownotes() {
         return () -> {
@@ -562,6 +573,7 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public static final Parcelable.Creator<FeedMedia> CREATOR = new Parcelable.Creator<FeedMedia>() {
+        @NonNull
         public FeedMedia createFromParcel(Parcel in) {
             final long id = in.readLong();
             final long itemID = in.readLong();
@@ -576,6 +588,7 @@ public class FeedMedia extends FeedFile implements Playable {
         }
     };
 
+    @Nullable
     @Override
     public String getImageLocation() {
         if (hasEmbeddedPicture()) {
@@ -625,7 +638,7 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@NonNull Object o) {
         if (FeedMediaFlavorHelper.instanceOfRemoteMedia(o)) {
             return o.equals(this);
         }

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaMetadataRetriever;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import de.danoeh.antennapod.core.feed.FeedItem;
 
@@ -11,7 +12,7 @@ class DBUpgrader {
     /**
      * Upgrades the given database to a new schema version
      */
-    static void upgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+    static void upgrade(@NonNull final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         if (oldVersion <= 1) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS + " ADD COLUMN "
                     + PodDBAdapter.KEY_TYPE + " TEXT");

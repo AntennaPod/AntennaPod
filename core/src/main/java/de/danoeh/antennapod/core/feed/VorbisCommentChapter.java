@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.support.annotation.NonNull;
+
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.util.vorbiscommentreader.VorbisCommentReaderException;
@@ -20,7 +22,8 @@ public class VorbisCommentChapter extends Chapter {
 		super(start, title, item, link);
 	}
 
-	@Override
+	@NonNull
+    @Override
 	public String toString() {
 		return "VorbisCommentChapter [id=" + id + ", title=" + title
 				+ ", link=" + link + ", start=" + start + "]";

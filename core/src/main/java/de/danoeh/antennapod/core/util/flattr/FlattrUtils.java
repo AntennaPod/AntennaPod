@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,6 +44,7 @@ public class FlattrUtils {
 
     private static final String PREF_ACCESS_TOKEN = "de.danoeh.antennapod.preference.flattrAccessToken";
 
+    @Nullable
     private static volatile AccessToken cachedToken;
 
     private static AndroidAuthenticator createAuthenticator() {
@@ -86,7 +89,7 @@ public class FlattrUtils {
         return retrieveToken() != null;
     }
 
-    public static void storeToken(AccessToken token) {
+    public static void storeToken(@Nullable AccessToken token) {
         Log.d(TAG, "Storing token");
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(ClientConfig.applicationCallbacks.getApplicationInstance()).edit();
@@ -114,6 +117,7 @@ public class FlattrUtils {
         }
     }
 
+    @NonNull
     public static List<Flattr> retrieveFlattredThings()
             throws FlattrException {
         ArrayList<Flattr> myFlattrs = new ArrayList<>();
@@ -162,7 +166,7 @@ public class FlattrUtils {
         new FlattrTokenFetcher(context, auth, uri).executeAsync();
     }
 
-    public static void revokeAccessToken(Context context) {
+    public static void revokeAccessToken(@NonNull Context context) {
         Log.d(TAG, "Revoking access token");
         deleteToken();
         FlattrServiceCreator.deleteFlattrService();
@@ -172,7 +176,7 @@ public class FlattrUtils {
 
     // ------------------------------------------------ DIALOGS
 
-    private static void showRevokeDialog(final Context context) {
+    private static void showRevokeDialog(@NonNull final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.access_revoked_title);
         builder.setMessage(R.string.access_revoked_info);
@@ -185,7 +189,7 @@ public class FlattrUtils {
      * the thing's website.
      * If no API credentials are available, the user will immediately be redirected to the thing's website.
      */
-    public static void showNoTokenDialogOrRedirect(final Context context, final String url) {
+    public static void showNoTokenDialogOrRedirect(@NonNull final Context context, final String url) {
         if (hasAPICredentials()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.no_flattr_token_title);
@@ -209,7 +213,7 @@ public class FlattrUtils {
         }
     }
 
-    public static void showErrorDialog(final Context context, final String msg) {
+    public static void showErrorDialog(@NonNull final Context context, final String msg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.error_label);
         builder.setMessage(msg);

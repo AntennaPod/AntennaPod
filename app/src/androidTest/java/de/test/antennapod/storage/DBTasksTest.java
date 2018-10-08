@@ -1,6 +1,7 @@
 package de.test.antennapod.storage;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.test.FlakyTest;
 import android.test.InstrumentationTestCase;
 
@@ -150,7 +151,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         assertTrue("state: " + feedItemFromDB.getState(), feedItemFromDB.isNew());
     }
 
-    private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {
+    private void updatedFeedTest(final Feed newFeed, long feedID, @NonNull List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {
         assertTrue(newFeed.getId() == feedID);
         assertTrue(newFeed.getItems().size() == NUM_ITEMS_NEW + NUM_ITEMS_OLD);
         Collections.reverse(newFeed.getItems());

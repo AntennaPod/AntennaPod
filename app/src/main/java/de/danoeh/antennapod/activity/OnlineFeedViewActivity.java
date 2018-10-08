@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -87,8 +89,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private static final String TAG = "OnlineFeedViewActivity";
     private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
     private volatile List<Feed> feeds;
+    @Nullable
     private Feed feed;
     private String selectedDownloadUrl;
+    @Nullable
     private Downloader downloader;
 
     private boolean isPaused;
@@ -125,7 +129,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
@@ -223,7 +227,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if (feed != null && feed.getPreferences() != null) {
             outState.putString("username", feed.getPreferences().getUsername());
@@ -239,7 +243,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent destIntent = new Intent(this, MainActivity.class);
@@ -253,7 +257,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void startFeedDownload(String url, String username, String password) {
+    private void startFeedDownload(String url, @Nullable String username, @Nullable String password) {
         Log.d(TAG, "Starting feed download");
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, null);
@@ -279,7 +283,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                         error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void checkDownloadResult(DownloadStatus status) {
+    private void checkDownloadResult(@Nullable DownloadStatus status) {
         if (status == null) {
             Log.wtf(TAG, "DownloadStatus returned by Downloader was null");
             finish();
@@ -373,7 +377,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      * Called when feed parsed successfully.
      * This method is executed on the GUI thread.
      */
-    private void showFeedInformation(final Feed feed, Map<String, String> alternateFeedUrls) {
+    private void showFeedInformation(final Feed feed, @NonNull Map<String, String> alternateFeedUrls) {
         setContentView(R.layout.listview_activity);
 
         this.feed = feed;
@@ -465,7 +469,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         setSubscribeButtonState(feed);
     }
 
-    private void setSubscribeButtonState(Feed feed) {
+    private void setSubscribeButtonState(@Nullable Feed feed) {
         if (subscribeButton != null && feed != null) {
             if (DownloadRequester.getInstance().isDownloadingFile(feed.getDownload_url())) {
                 subscribeButton.setEnabled(false);
@@ -480,7 +484,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     }
 
-    private boolean feedInFeedlist(Feed feed) {
+    private boolean feedInFeedlist(@Nullable Feed feed) {
         if (feeds == null || feed == null) {
             return false;
         }
@@ -492,7 +496,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         return false;
     }
 
-    private long getFeedId(Feed feed) {
+    private long getFeedId(@Nullable Feed feed) {
         if (feeds == null || feed == null) {
             return 0;
         }
@@ -505,7 +509,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     @UiThread
-    private void showErrorDialog(String errorMsg) {
+    private void showErrorDialog(@Nullable String errorMsg) {
         if (!isFinishing() && !isPaused) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.error_label);

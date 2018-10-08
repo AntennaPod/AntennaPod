@@ -64,7 +64,7 @@ public class GpodnetSyncService extends JobIntentService {
 
     private static final int JOB_ID = -17000;
 
-    private static void enqueueWork(Context context, Intent intent) {
+    private static void enqueueWork(@NonNull Context context, @NonNull Intent intent) {
         enqueueWork(context, GpodnetSyncService.class, JOB_ID, intent);
     }
 
@@ -178,9 +178,9 @@ public class GpodnetSyncService extends JobIntentService {
         }
     }
 
-    private synchronized void processSubscriptionChanges(List<String> localSubscriptions,
-                                                         Collection<String> localAdded,
-                                                         Collection<String> localRemoved,
+    private synchronized void processSubscriptionChanges(@NonNull List<String> localSubscriptions,
+                                                         @NonNull Collection<String> localAdded,
+                                                         @NonNull Collection<String> localRemoved,
                                                          GpodnetSubscriptionChange changes) throws DownloadRequestException {
         // local changes are always superior to remote changes!
         // add subscription if (1) not already subscribed and (2) not just unsubscribed
@@ -232,7 +232,7 @@ public class GpodnetSyncService extends JobIntentService {
     }
 
 
-    private synchronized void processEpisodeActions(List<GpodnetEpisodeAction> localActions,
+    private synchronized void processEpisodeActions(@NonNull List<GpodnetEpisodeAction> localActions,
                                                     List<GpodnetEpisodeAction> remoteActions) {
         if(remoteActions.size() == 0) {
             return;
@@ -337,7 +337,7 @@ public class GpodnetSyncService extends JobIntentService {
         nm.notify(id, notification);
     }
 
-    public static void sendSyncIntent(Context context) {
+    public static void sendSyncIntent(@NonNull Context context) {
         if (GpodnetPreferences.loggedIn()) {
             Intent intent = new Intent(context, GpodnetSyncService.class);
             intent.putExtra(ARG_ACTION, ACTION_SYNC);
@@ -345,7 +345,7 @@ public class GpodnetSyncService extends JobIntentService {
         }
     }
 
-    public static void sendSyncSubscriptionsIntent(Context context) {
+    public static void sendSyncSubscriptionsIntent(@NonNull Context context) {
         if (GpodnetPreferences.loggedIn()) {
             Intent intent = new Intent(context, GpodnetSyncService.class);
             intent.putExtra(ARG_ACTION, ACTION_SYNC_SUBSCRIPTIONS);
@@ -353,7 +353,7 @@ public class GpodnetSyncService extends JobIntentService {
         }
     }
 
-    public static void sendSyncActionsIntent(Context context) {
+    public static void sendSyncActionsIntent(@NonNull Context context) {
         if (GpodnetPreferences.loggedIn()) {
             Intent intent = new Intent(context, GpodnetSyncService.class);
             intent.putExtra(ARG_ACTION, ACTION_SYNC_ACTIONS);

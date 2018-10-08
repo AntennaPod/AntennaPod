@@ -6,6 +6,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.WindowCompat;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
@@ -48,6 +50,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     private boolean videoSurfaceCreated = false;
     private boolean destroyingDueToReload = false;
 
+    @Nullable
     private VideoControlsHider videoControlsHider = new VideoControlsHider(this);
 
     private final AtomicBoolean isSetup = new AtomicBoolean(false);
@@ -251,6 +254,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
 
+    @Nullable
     private final SurfaceHolder.Callback surfaceHolderCallback = new SurfaceHolder.Callback() {
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -379,7 +383,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         if (PictureInPictureUtil.supportsPictureInPicture(this)) {
             menu.findItem(R.id.player_go_to_picture_in_picture).setVisible(true);
@@ -388,7 +392,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.player_go_to_picture_in_picture) {
             compatEnterPictureInPicture();
             return true;
@@ -414,6 +418,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             this.activity = new WeakReference<>(activity);
         }
 
+        @Nullable
         private final Runnable hideVideoControls = () -> {
             VideoplayerActivity vpa = activity != null ? activity.get() : null;
             if (vpa == null) {

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
@@ -19,7 +20,7 @@ import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 public class GpodnetSetHostnameDialog {
     private static final String TAG = "GpodnetSetHostnameDialog";
 
-    public static AlertDialog createDialog(final Context context) {
+    public static AlertDialog createDialog(@NonNull final Context context) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         final EditText et = new EditText(context);
         et.setText(GpodnetPreferences.getHostname());
@@ -42,7 +43,8 @@ public class GpodnetSetHostnameDialog {
         return dialog.show();
     }
 
-    private static View setupContentView(Context context, EditText et) {
+    @NonNull
+    private static View setupContentView(Context context, @NonNull EditText et) {
         LinearLayout ll = new LinearLayout(context);
         ll.addView(et);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) et.getLayoutParams();

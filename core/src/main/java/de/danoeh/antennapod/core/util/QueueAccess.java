@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
+import android.support.annotation.Nullable;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public abstract class QueueAccess {
     private QueueAccess() {
     }
 
-    public static QueueAccess ItemListAccess(final List<FeedItem> items) {
+    public static QueueAccess ItemListAccess(@Nullable final List<FeedItem> items) {
         return new QueueAccess() {
             @Override
             public boolean contains(long id) {

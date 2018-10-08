@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
  */
 public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuItemUtils {
 
-    public static void adjustTextColor(Context context, SearchView sv) {
+    public static void adjustTextColor(Context context, @NonNull SearchView sv) {
         if(Build.VERSION.SDK_INT < 14) {
             EditText searchEditText = (EditText) sv.findViewById(R.id.search_src_text);
             if (UserPreferences.getTheme() == de.danoeh.antennapod.R.style.Theme_AntennaPod_Dark

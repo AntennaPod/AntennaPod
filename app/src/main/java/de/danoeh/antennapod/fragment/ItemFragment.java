@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -95,6 +96,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
      * @param feeditem The ID of the FeedItem that should be displayed.
      * @return The ItemFragment instance
      */
+    @NonNull
     public static ItemFragment newInstance(long feeditem) {
         return newInstance(new long[] { feeditem }, 0);
     }
@@ -106,6 +108,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
      * @param feedItemPos The position of the FeedItem that is currently shown
      * @return The ItemFragment instance
      */
+    @NonNull
     public static ItemFragment newInstance(long[] feeditems, int feedItemPos) {
         ItemFragment fragment = new ItemFragment();
         Bundle args = new Bundle();
@@ -140,6 +143,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     /**
      * URL that was selected via long-press.
      */
+    @Nullable
     private String selectedURL;
 
     @Override
@@ -162,7 +166,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.feeditem_fragment, container, false);
 
@@ -315,7 +319,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, @NonNull MenuInflater inflater) {
         if(!isAdded() || item == null) {
             return;
         }
@@ -335,7 +339,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.open_podcast:
                 openPodcast();
@@ -345,6 +349,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
     }
 
+    @Nullable
     private final FeedItemMenuHandler.MenuInterface popupMenuInterface = new FeedItemMenuHandler.MenuInterface() {
         @Override
         public void setItemVisibility(int id, boolean visible) {
@@ -460,6 +465,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
     }
 
+    @Nullable
     private final View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
 
         @Override
@@ -478,7 +484,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     };
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         boolean handled = selectedURL != null;
         if (selectedURL != null) {
             switch (item.getItemId()) {
@@ -513,7 +519,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
+    public void onCreateContextMenu(@NonNull ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         if (selectedURL != null) {
             super.onCreateContextMenu(menu, v, menuInfo);
@@ -536,7 +542,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         ((MainActivity)getActivity()).loadChildFragment(fragment);
     }
 
-    public void onEventMainThread(FeedItemEvent event) {
+    public void onEventMainThread(@NonNull FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         for(FeedItem item : event.items) {
             if(feedItems[feedItemPos] == item.getId()) {
@@ -546,7 +552,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
     }
 
-    public void onEventMainThread(DownloadEvent event) {
+    public void onEventMainThread(@NonNull DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;

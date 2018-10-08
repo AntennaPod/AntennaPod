@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.export.opml;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.Xml;
 
@@ -31,7 +32,7 @@ public class OpmlWriter implements ExportWriter {
 	 * @throws IllegalArgumentException
 	 */
 	@Override
-	public void writeDocument(List<Feed> feeds, Writer writer)
+	public void writeDocument(@NonNull List<Feed> feeds, Writer writer)
 			throws IllegalArgumentException, IllegalStateException, IOException {
 		Log.d(TAG, "Starting to write document");
 		XmlSerializer xs = Xml.newSerializer();
@@ -71,7 +72,8 @@ public class OpmlWriter implements ExportWriter {
 		Log.d(TAG, "Finished writing document");
 	}
 
-	public String fileExtension() {
+	@NonNull
+    public String fileExtension() {
 		return "opml";
 	}
 

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.asynctask;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.shredzone.flattr4j.exception.FlattrException;
@@ -38,7 +39,7 @@ public class FlattrStatusFetcher extends Thread {
         } catch (FlattrException e) {
             e.printStackTrace();
             Log.d(TAG, "flattrQueue exception retrieving list with flattred items " + e.getMessage());
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (@NonNull InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 

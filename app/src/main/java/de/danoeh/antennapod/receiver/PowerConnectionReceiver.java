@@ -3,6 +3,7 @@ package de.danoeh.antennapod.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.ClientConfig;
@@ -19,7 +20,7 @@ public class PowerConnectionReceiver extends BroadcastReceiver {
 	private static final String TAG = "PowerConnectionReceiver";
 
 	@Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(Context context, @NonNull Intent intent) {
         final String action = intent.getAction();
 
         Log.d(TAG, "charging intent: " + action);

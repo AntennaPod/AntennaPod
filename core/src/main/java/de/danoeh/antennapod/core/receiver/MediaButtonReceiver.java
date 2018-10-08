@@ -3,6 +3,8 @@ package de.danoeh.antennapod.core.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,7 +21,7 @@ public class MediaButtonReceiver extends BroadcastReceiver {
 	public static final String NOTIFY_BUTTON_RECEIVER = "de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER";
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
+	public void onReceive(@NonNull Context context, @Nullable Intent intent) {
 		Log.d(TAG, "Received intent");
 		if (intent == null || intent.getExtras() == null) {
 			return;

@@ -1,5 +1,8 @@
 package android.util;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -195,7 +198,7 @@ public final class Log {
      * @param tag Used to identify the source of a log message.
      * @param tr An exception to log.
      */
-    public static int wtf(String tag, Throwable tr) {
+    public static int wtf(String tag, @NonNull Throwable tr) {
         return wtf(LOG_ID_MAIN, tag, tr.getMessage(), tr, false, false);
     }
 
@@ -231,7 +234,7 @@ public final class Log {
     }
 
     private static int printlns(int bufID, int priority, String tag, String msg,
-                               Throwable tr) {
+                                @Nullable Throwable tr) {
         StringWriter trSW = new StringWriter();
         if (tr != null) {
             trSW.append(" , Exception: ");

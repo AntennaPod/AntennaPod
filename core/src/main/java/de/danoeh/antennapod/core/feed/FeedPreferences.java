@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.feed;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -94,7 +95,7 @@ public class FeedPreferences {
      *
      * @return True if the two objects are different.
      */
-    public boolean compareWithOther(FeedPreferences other) {
+    public boolean compareWithOther(@Nullable FeedPreferences other) {
         if (other == null) {
             return true;
         }
@@ -111,7 +112,7 @@ public class FeedPreferences {
      * Update this FeedPreferences object from another one. The feedID, autoDownload and AutoDeleteAction attributes are excluded
      * from the update.
      */
-    public void updateFromOther(FeedPreferences other) {
+    public void updateFromOther(@Nullable FeedPreferences other) {
         if (other == null)
             return;
         this.username = other.username;

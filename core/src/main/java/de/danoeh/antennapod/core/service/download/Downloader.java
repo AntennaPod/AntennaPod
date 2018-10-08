@@ -2,6 +2,8 @@ package de.danoeh.antennapod.core.service.download;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.concurrent.Callable;
 
@@ -18,10 +20,12 @@ public abstract class Downloader implements Callable<Downloader> {
 
     volatile boolean cancelled;
 
+    @NonNull
     final DownloadRequest request;
+    @Nullable
     final DownloadStatus result;
 
-    Downloader(DownloadRequest request) {
+    Downloader(@NonNull DownloadRequest request) {
         super();
         this.request = request;
         this.request.setStatusMsg(R.string.download_pending);
@@ -31,6 +35,7 @@ public abstract class Downloader implements Callable<Downloader> {
 
     protected abstract void download();
 
+    @NonNull
     public final Downloader call() {
         WifiManager wifiManager = (WifiManager)
                 ClientConfig.applicationCallbacks.getApplicationInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -54,10 +59,12 @@ public abstract class Downloader implements Callable<Downloader> {
         return this;
     }
 
+    @NonNull
     public DownloadRequest getDownloadRequest() {
         return request;
     }
 
+    @Nullable
     public DownloadStatus getResult() {
         return result;
     }

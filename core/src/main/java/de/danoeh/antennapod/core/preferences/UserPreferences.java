@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -171,6 +172,7 @@ public class UserPreferences {
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
     }
 
+    @NonNull
     public static List<Integer> getCompactNotificationButtons() {
         String[] buttons = TextUtils.split(
                 prefs.getString(PREF_COMPACT_NOTIFICATION_BUTTONS,
@@ -312,6 +314,7 @@ public class UserPreferences {
         return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
     }
 
+    @Nullable
     public static String[] getPlaybackSpeedArray() {
         return readPlaybackSpeedArray(prefs.getString(PREF_PLAYBACK_SPEED_ARRAY, null));
     }
@@ -591,7 +594,7 @@ public class UserPreferences {
              .apply();
     }
 
-    private static int readThemeValue(String valueFromPrefs) {
+    private static int readThemeValue(@NonNull String valueFromPrefs) {
         switch (Integer.parseInt(valueFromPrefs)) {
             case 0:
                 return R.style.Theme_AntennaPod_Light;
@@ -604,7 +607,7 @@ public class UserPreferences {
         }
     }
 
-    private static long readUpdateInterval(String valueFromPrefs) {
+    private static long readUpdateInterval(@NonNull String valueFromPrefs) {
         int hours = Integer.parseInt(valueFromPrefs);
         return TimeUnit.HOURS.toMillis(hours);
     }
@@ -617,7 +620,8 @@ public class UserPreferences {
         }
     }
 
-    private static String[] readPlaybackSpeedArray(String valueFromPrefs) {
+    @Nullable
+    private static String[] readPlaybackSpeedArray(@Nullable String valueFromPrefs) {
         String[] selectedSpeeds = null;
         // If this preference hasn't been set yet, return the default options
         if (valueFromPrefs == null) {
@@ -659,6 +663,7 @@ public class UserPreferences {
                 .apply();
     }
 
+    @NonNull
     public static VideoBackgroundBehavior getVideoBackgroundBehavior() {
         switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "stop")) {
             case "stop": return VideoBackgroundBehavior.STOP;
@@ -688,7 +693,7 @@ public class UserPreferences {
      * @return The data folder that has been requested or null if the folder
      * could not be created.
      */
-    public static File getDataFolder(String type) {
+    public static File getDataFolder(@Nullable String type) {
         String strDir = prefs.getString(PREF_DATA_FOLDER, null);
         if (strDir == null) {
             Log.d(TAG, "Using default data folder");
@@ -792,7 +797,7 @@ public class UserPreferences {
     /**
      * Reads episode cache size as it is saved in the episode_cache_size_values array.
      */
-    public static int readEpisodeCacheSize(String valueFromPrefs) {
+    public static int readEpisodeCacheSize(@NonNull String valueFromPrefs) {
         return readEpisodeCacheSizeInternal(valueFromPrefs);
     }
 

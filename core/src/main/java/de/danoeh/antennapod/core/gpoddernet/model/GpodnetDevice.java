@@ -1,11 +1,14 @@
 package de.danoeh.antennapod.core.gpoddernet.model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 public class GpodnetDevice {
 
+    @NonNull
     private final String id;
     private final String caption;
+    @NonNull
     private final DeviceType type;
     private final int subscriptions;
 
@@ -19,6 +22,7 @@ public class GpodnetDevice {
         this.subscriptions = subscriptions;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "GpodnetDevice [id=" + id + ", caption=" + caption + ", type="
@@ -28,7 +32,8 @@ public class GpodnetDevice {
     public enum DeviceType {
         DESKTOP, LAPTOP, MOBILE, SERVER, OTHER;
 
-        static DeviceType fromString(String s) {
+        @NonNull
+        static DeviceType fromString(@Nullable String s) {
             if (s == null) {
                 return OTHER;
             }
@@ -54,6 +59,7 @@ public class GpodnetDevice {
 
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
@@ -62,6 +68,7 @@ public class GpodnetDevice {
         return caption;
     }
 
+    @NonNull
     public DeviceType getType() {
         return type;
     }

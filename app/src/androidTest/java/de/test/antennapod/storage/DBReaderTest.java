@@ -1,6 +1,7 @@
 package de.test.antennapod.storage;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.test.InstrumentationTestCase;
 
 import java.util.ArrayList;
@@ -128,6 +129,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         }
     }
 
+    @NonNull
     private List<FeedItem> saveQueue(int numItems) {
         if (numItems <= 0) {
             throw new IllegalArgumentException("numItems<=0");
@@ -177,6 +179,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         }
     }
 
+    @NonNull
     private List<FeedItem> saveDownloadedItems(int numItems) {
         if (numItems <= 0) {
             throw new IllegalArgumentException("numItems<=0");
@@ -218,6 +221,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         }
     }
 
+    @NonNull
     private List<FeedItem> saveNewItems(int numItems) {
         List<Feed> feeds = saveFeedlist(numItems, numItems, true);
         List<FeedItem> items = new ArrayList<>();

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.menuhandler;
 
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,7 @@ public class MenuItemUtils {
      * @param checker Is used for checking whether to show the progress indicator or not.
      * @return The returned value of the UpdateRefreshMenuItemChecker's isRefreshing() method.
      */
-    public static boolean updateRefreshMenuItem(Menu menu, int resId, UpdateRefreshMenuItemChecker checker) {
+    public static boolean updateRefreshMenuItem(@NonNull Menu menu, int resId, UpdateRefreshMenuItemChecker checker) {
         // expand actionview if feeds are being downloaded, collapse otherwise
         if (checker.isRefreshing()) {
             MenuItem refreshItem = menu.findItem(resId);

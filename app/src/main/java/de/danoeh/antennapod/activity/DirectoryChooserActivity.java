@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileObserver;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -49,12 +51,15 @@ public class DirectoryChooserActivity extends AppCompatActivity {
     private TextView txtvSelectedFolder;
     private ListView listDirectories;
 
+    @Nullable
     private ArrayAdapter<String> listDirectoriesAdapter;
     private ArrayList<String> filenames;
     /** The directory that is currently being shown. */
+    @Nullable
     private File selectedDir;
     private File[] filesInDir;
 
+    @Nullable
     private FileObserver fileObserver;
 
     @Override
@@ -175,7 +180,7 @@ public class DirectoryChooserActivity extends AppCompatActivity {
      *            non-null and a directory, otherwise the displayed directory
      *            will not be changed
      */
-    private void changeDirectory(File dir) {
+    private void changeDirectory(@Nullable File dir) {
         if (dir != null && dir.isDirectory()) {
             File[] contents = dir.listFiles();
             if (contents != null) {
@@ -247,7 +252,7 @@ public class DirectoryChooserActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.new_folder_item).setVisible(isValidFile(selectedDir));
         return true;
@@ -262,7 +267,7 @@ public class DirectoryChooserActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
             NavUtils.navigateUpFromSameTask(this);
@@ -326,7 +331,7 @@ public class DirectoryChooserActivity extends AppCompatActivity {
     }
 
     /** Returns true if the selected file or directory would be valid selection. */
-    private boolean isValidFile(File file) {
+    private boolean isValidFile(@Nullable File file) {
         return file != null && file.isDirectory() && file.canRead() && file.canWrite();
     }
 

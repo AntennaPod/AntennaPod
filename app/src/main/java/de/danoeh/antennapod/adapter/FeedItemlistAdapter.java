@@ -3,6 +3,8 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -33,11 +35,13 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
     private final ActionButtonCallback callback;
     private final ItemAccess itemAccess;
+    @NonNull
     private final Context context;
     private final boolean showFeedtitle;
     private final int selectedItemIndex;
     /** true if played items should be made partially transparent */
     private final boolean makePlayedItemsTransparent;
+    @NonNull
     private final ActionButtonUtils actionButtonUtils;
 
     private static final int SELECTION_NONE = -1;
@@ -45,7 +49,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
 
-    public FeedItemlistAdapter(Context context,
+    public FeedItemlistAdapter(@NonNull Context context,
                                ItemAccess itemAccess,
                                ActionButtonCallback callback,
                                boolean showFeedtitle,
@@ -74,14 +78,16 @@ public class FeedItemlistAdapter extends BaseAdapter {
         return position;
     }
 
+    @Nullable
     @Override
     public FeedItem getItem(int position) {
         return itemAccess.getItem(position);
     }
 
+    @Nullable
     @Override
     @SuppressWarnings("ResourceType")
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, ViewGroup parent) {
         Holder holder;
         final FeedItem item = getItem(position);
 
@@ -236,6 +242,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
         int getCount();
 
+        @Nullable
         FeedItem getItem(int position);
 
         LongList getQueueIds();

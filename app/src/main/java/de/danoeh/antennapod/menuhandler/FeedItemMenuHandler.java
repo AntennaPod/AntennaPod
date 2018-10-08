@@ -3,6 +3,7 @@ package de.danoeh.antennapod.menuhandler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
@@ -59,8 +60,8 @@ public class FeedItemMenuHandler {
      *                         move to top/bottom in the queue
      * @return Returns true if selectedItem is not null.
      */
-    public static boolean onPrepareMenu(MenuInterface mi,
-                                        FeedItem selectedItem,
+    public static boolean onPrepareMenu(@NonNull MenuInterface mi,
+                                        @Nullable FeedItem selectedItem,
                                         boolean showExtendedMenu,
                                         @Nullable LongList queueAccess) {
         if (selectedItem == null) {
@@ -140,11 +141,11 @@ public class FeedItemMenuHandler {
      * @param excludeIds Menu item that should be excluded
      * @return true if selectedItem is not null.
      */
-    public static boolean onPrepareMenu(MenuInterface mi,
+    public static boolean onPrepareMenu(@NonNull MenuInterface mi,
                                         FeedItem selectedItem,
                                         boolean showExtendedMenu,
                                         LongList queueAccess,
-                                        int... excludeIds) {
+                                        @Nullable int... excludeIds) {
         boolean rc = onPrepareMenu(mi, selectedItem, showExtendedMenu, queueAccess);
         if (rc && excludeIds != null) {
             for (int id : excludeIds) {
@@ -154,8 +155,8 @@ public class FeedItemMenuHandler {
         return rc;
     }
 
-    public static boolean onMenuItemClicked(Context context, int menuItemId,
-                                            FeedItem selectedItem) {
+    public static boolean onMenuItemClicked(@NonNull Context context, int menuItemId,
+                                            @NonNull FeedItem selectedItem) {
         switch (menuItemId) {
             case R.id.skip_episode_item:
                 IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);

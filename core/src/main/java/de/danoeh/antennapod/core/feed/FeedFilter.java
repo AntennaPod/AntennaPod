@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -31,7 +33,8 @@ public class FeedFilter {
      * @param filter string to parse in to terms
      * @return list of terms
      */
-    private List<String> parseTerms(String filter) {
+    @NonNull
+    private List<String> parseTerms(@NonNull String filter) {
         // from http://stackoverflow.com/questions/7804335/split-string-on-spaces-in-java-except-if-between-quotes-i-e-treat-hello-wor
         List<String> list = new ArrayList<>();
         Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(filter);
@@ -44,7 +47,7 @@ public class FeedFilter {
      * @param item
      * @return true if the item should be downloaded
      */
-    public boolean shouldAutoDownload(FeedItem item) {
+    public boolean shouldAutoDownload(@NonNull FeedItem item) {
 
         List<String> includeTerms = parseTerms(includeFilter);
         List<String> excludeTerms = parseTerms(excludeFilter);

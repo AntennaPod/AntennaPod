@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -51,6 +52,7 @@ public class DownloadRequester {
 
     private static DownloadRequester downloader;
 
+    @NonNull
     private final Map<String, DownloadRequest> downloads;
 
     private DownloadRequester() {
@@ -89,7 +91,7 @@ public class DownloadRequester {
         return true;
     }
 
-    private void download(Context context, FeedFile item, FeedFile container, File dest,
+    private void download(@NonNull Context context, FeedFile item, @Nullable FeedFile container, @NonNull File dest,
                           boolean overwriteIfExists, String username, String password,
                           String lastModified, boolean deleteOnFailure, Bundle arguments) {
         final boolean partiallyDownloadedFileExists = item.getFile_url() != null && new File(item.getFile_url()).exists();
@@ -167,7 +169,7 @@ public class DownloadRequester {
      * @param feed Feed to download
      * @param loadAllPages Set to true to download all pages
      */
-    public synchronized void downloadFeed(Context context, Feed feed, boolean loadAllPages,
+    public synchronized void downloadFeed(@NonNull Context context, @NonNull Feed feed, boolean loadAllPages,
                                           boolean force)
             throws DownloadRequestException {
         if (feedFileValid(feed)) {
@@ -184,11 +186,11 @@ public class DownloadRequester {
         }
     }
 
-    public synchronized void downloadFeed(Context context, Feed feed) throws DownloadRequestException {
+    public synchronized void downloadFeed(@NonNull Context context, @NonNull Feed feed) throws DownloadRequestException {
         downloadFeed(context, feed, false, false);
     }
 
-    public synchronized void downloadMedia(Context context, FeedMedia feedmedia)
+    public synchronized void downloadMedia(@NonNull Context context, @NonNull FeedMedia feedmedia)
             throws DownloadRequestException {
         if (feedFileValid(feedmedia)) {
             Feed feed = feedmedia.getItem().getFeed();
@@ -219,7 +221,7 @@ public class DownloadRequester {
      *
      * @throws DownloadRequestException
      */
-    private boolean feedFileValid(FeedFile f) throws DownloadRequestException {
+    private boolean feedFileValid(@Nullable FeedFile f) throws DownloadRequestException {
         if (f == null) {
             throw new DownloadRequestException("Feedfile was null");
         } else if (f.getDownload_url() == null) {
@@ -232,14 +234,14 @@ public class DownloadRequester {
     /**
      * Cancels a running download.
      */
-    public synchronized void cancelDownload(final Context context, final FeedFile f) {
+    public synchronized void cancelDownload(@NonNull final Context context, @NonNull final FeedFile f) {
         cancelDownload(context, f.getDownload_url());
     }
 
     /**
      * Cancels a running download.
      */
-    public synchronized void cancelDownload(final Context context, final String downloadUrl) {
+    public synchronized void cancelDownload(@NonNull final Context context, final String downloadUrl) {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Cancelling download with url " + downloadUrl);
         Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
@@ -251,7 +253,7 @@ public class DownloadRequester {
     /**
      * Cancels all running downloads
      */
-    public synchronized void cancelAllDownloads(Context context) {
+    public synchronized void cancelAllDownloads(@NonNull Context context) {
         Log.d(TAG, "Cancelling all running downloads");
         IntentUtils.sendLocalBroadcast(context, DownloadService.ACTION_CANCEL_ALL_DOWNLOADS);
     }
@@ -271,7 +273,7 @@ public class DownloadRequester {
     /**
      * Checks if feedfile is in the downloads list
      */
-    public synchronized boolean isDownloadingFile(FeedFile item) {
+    public synchronized boolean isDownloadingFile(@NonNull FeedFile item) {
         return item.getDownload_url() != null && downloads.containsKey(item.getDownload_url());
     }
 
@@ -293,7 +295,7 @@ public class DownloadRequester {
     /**
      * Remove an object from the downloads-list of the requester.
      */
-    public synchronized void removeDownload(DownloadRequest r) {
+    public synchronized void removeDownload(@NonNull DownloadRequest r) {
         if (downloads.remove(r.getSource()) == null) {
             Log.e(TAG,
                     "Could not remove object with url " + r.getSource());
@@ -328,6 +330,7 @@ public class DownloadRequester {
         return externalStorage.toString();
     }
 
+    @Nullable
     private File getExternalFilesDirOrThrowException(String type) throws DownloadRequestException {
         File result = UserPreferences.getDataFolder(type);
         if (result == null) {

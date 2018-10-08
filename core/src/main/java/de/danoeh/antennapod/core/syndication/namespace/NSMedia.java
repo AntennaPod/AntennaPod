@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -37,9 +38,10 @@ public class NSMedia extends Namespace {
 	private static final String DESCRIPTION = "description";
 	private static final String DESCRIPTION_TYPE = "type";
 
-	@Override
-	public SyndElement handleElementStart(String localName, HandlerState state,
-										  Attributes attributes) {
+	@NonNull
+    @Override
+	public SyndElement handleElementStart(String localName, @NonNull HandlerState state,
+                                          @NonNull Attributes attributes) {
 		if (CONTENT.equals(localName)) {
 			String url = attributes.getValue(DOWNLOAD_URL);
 			String type = attributes.getValue(MIME_TYPE);
@@ -114,7 +116,7 @@ public class NSMedia extends Namespace {
 	}
 
 	@Override
-	public void handleElementEnd(String localName, HandlerState state) {
+	public void handleElementEnd(String localName, @NonNull HandlerState state) {
 		if (DESCRIPTION.equals(localName)) {
 			String content = state.getContentBuf().toString();
 			if (state.getCurrentItem() != null && content != null &&

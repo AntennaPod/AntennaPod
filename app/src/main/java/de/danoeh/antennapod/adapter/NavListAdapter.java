@@ -7,6 +7,8 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,10 +65,11 @@ public class NavListAdapter extends BaseAdapter
     private static String[] titles;
 
     private final ItemAccess itemAccess;
+    @NonNull
     private final WeakReference<Activity> activity;
     private boolean showSubscriptionList = true;
 
-    public NavListAdapter(ItemAccess itemAccess, Activity context) {
+    public NavListAdapter(ItemAccess itemAccess, @NonNull Activity context) {
         this.itemAccess = itemAccess;
         this.activity = new WeakReference<>(context);
 
@@ -77,7 +80,7 @@ public class NavListAdapter extends BaseAdapter
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, @NonNull String key) {
         if (key.equals(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)) {
             loadItems();
         }
@@ -108,7 +111,7 @@ public class NavListAdapter extends BaseAdapter
         return titles[index];
     }
 
-    private Drawable getDrawable(String tag) {
+    private Drawable getDrawable(@NonNull String tag) {
         Activity context = activity.get();
         if(context == null) {
             return null;
@@ -148,6 +151,7 @@ public class NavListAdapter extends BaseAdapter
         return result;
     }
 
+    @NonNull
     public List<String> getTags() {
         return Collections.unmodifiableList(tags);
     }
@@ -162,6 +166,7 @@ public class NavListAdapter extends BaseAdapter
         return baseCount;
     }
 
+    @Nullable
     @Override
     public Object getItem(int position) {
         int viewType = getItemViewType(position);
@@ -200,6 +205,7 @@ public class NavListAdapter extends BaseAdapter
     }
 
 
+    @Nullable
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         int viewType = getItemViewType(position);
@@ -222,7 +228,7 @@ public class NavListAdapter extends BaseAdapter
         return v;
     }
 
-    private View getNavView(String title, int position, View convertView, ViewGroup parent) {
+    private View getNavView(String title, int position, @Nullable View convertView, ViewGroup parent) {
         Activity context = activity.get();
         if(context == null) {
             return null;
@@ -309,7 +315,7 @@ public class NavListAdapter extends BaseAdapter
         return convertView;
     }
 
-    private View getFeedView(int position, View convertView, ViewGroup parent) {
+    private View getFeedView(int position, @Nullable View convertView, ViewGroup parent) {
         Activity context = activity.get();
         if(context == null) {
             return null;
@@ -384,6 +390,7 @@ public class NavListAdapter extends BaseAdapter
 
     public interface ItemAccess {
         int getCount();
+        @Nullable
         Feed getItem(int position);
         int getSelectedItemIndex();
         int getQueueSize();

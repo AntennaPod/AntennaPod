@@ -1,5 +1,7 @@
 package de.test.antennapod.service.download;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
 
@@ -51,7 +53,8 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         httpServer.start();
     }
 
-    private FeedFileImpl setupFeedFile(String downloadUrl, String title, boolean deleteExisting) {
+    @NonNull
+    private FeedFileImpl setupFeedFile(String downloadUrl, @NonNull String title, boolean deleteExisting) {
         FeedFileImpl feedfile = new FeedFileImpl(downloadUrl);
         String fileUrl = new File(destDir, title).getAbsolutePath();
         File file = new File(fileUrl);
@@ -62,11 +65,13 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         return feedfile;
     }
 
-    private Downloader download(String url, String title, boolean expectedResult) {
+    @Nullable
+    private Downloader download(@NonNull String url, @NonNull String title, boolean expectedResult) {
         return download(url, title, expectedResult, true, null, null, true);
     }
 
-    private Downloader download(String url, String title, boolean expectedResult, boolean deleteExisting, String username, String password, boolean deleteOnFail) {
+    @Nullable
+    private Downloader download(@NonNull String url, @NonNull String title, boolean expectedResult, boolean deleteExisting, String username, String password, boolean deleteOnFail) {
         FeedFile feedFile = setupFeedFile(url, title, deleteExisting);
         DownloadRequest request = new DownloadRequest(feedFile.getFile_url(), url, title, 0, feedFile.getTypeAsInt(), username, password, deleteOnFail, null);
         Downloader downloader = new HttpDownloader(request);

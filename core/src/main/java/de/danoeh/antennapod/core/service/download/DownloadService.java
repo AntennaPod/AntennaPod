@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
@@ -146,7 +147,9 @@ public class DownloadService extends Service {
 
     private Handler handler;
 
+    @Nullable
     private NotificationUpdater notificationUpdater;
+    @Nullable
     private ScheduledFuture<?> notificationUpdaterFuture;
     private static final int SCHED_EX_POOL_SIZE = 1;
     private ScheduledThreadPoolExecutor schedExecutor;
@@ -156,11 +159,13 @@ public class DownloadService extends Service {
     private final IBinder mBinder = new LocalBinder();
 
     private class LocalBinder extends Binder {
+        @NonNull
         public DownloadService getService() {
             return DownloadService.this;
         }
     }
 
+    @Nullable
     private final Thread downloadCompletionThread = new Thread() {
         private static final String TAG = "downloadCompletionThd";
 
@@ -244,7 +249,7 @@ public class DownloadService extends Service {
     };
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(@NonNull Intent intent, int flags, int startId) {
         if (intent.getParcelableExtra(EXTRA_REQUEST) != null) {
             onDownloadQueued(intent);
         } else if (numberOfDownloads.get() == 0) {
@@ -298,6 +303,7 @@ public class DownloadService extends Service {
         startForeground(NOTIFICATION_ID, updateNotifications());
     }
 
+    @NonNull
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -383,6 +389,7 @@ public class DownloadService extends Service {
         return null;
     }
 
+    @Nullable
     private final BroadcastReceiver cancelDownloadReceiver = new BroadcastReceiver() {
 
         @Override
@@ -453,7 +460,7 @@ public class DownloadService extends Service {
      * Remove download from the DownloadRequester list and from the
      * DownloadService list.
      */
-    private void removeDownload(final Downloader d) {
+    private void removeDownload(@NonNull final Downloader d) {
         handler.post(() -> {
             Log.d(TAG, "Removing downloader: " + d.getDownloadRequest().getSource());
             boolean rc = downloads.remove(d);
@@ -546,7 +553,7 @@ public class DownloadService extends Service {
         }
     }
 
-    private void postAuthenticationNotification(final DownloadRequest downloadRequest) {
+    private void postAuthenticationNotification(@NonNull final DownloadRequest downloadRequest) {
         handler.post(() -> {
             final String resourceTitle = (downloadRequest.getTitle() != null) ?
                     downloadRequest.getTitle() : downloadRequest.getSource();
@@ -571,7 +578,7 @@ public class DownloadService extends Service {
     /**
      * Is called whenever a Feed is downloaded
      */
-    private void handleCompletedFeedDownload(DownloadRequest request) {
+    private void handleCompletedFeedDownload(@NonNull DownloadRequest request) {
         Log.d(TAG, "Handling completed Feed Download");
         feedSyncThread.submitCompletedDownload(request);
     }
@@ -579,7 +586,7 @@ public class DownloadService extends Service {
     /**
      * Is called whenever a FeedMedia is downloaded.
      */
-    private void handleCompletedFeedMediaDownload(DownloadStatus status, DownloadRequest request) {
+    private void handleCompletedFeedMediaDownload(@NonNull DownloadStatus status, @NonNull DownloadRequest request) {
         Log.d(TAG, "Handling completed FeedMedia Download");
         syncExecutor.execute(new MediaHandlerThread(status, request));
     }
@@ -744,6 +751,7 @@ public class DownloadService extends Service {
         /**
          * Helper method
          */
+        @NonNull
         private Feed[] getFeeds(List<Pair<DownloadRequest, FeedHandlerResult>> results) {
             Feed[] feeds = new Feed[results.size()];
             for (int i = 0; i < results.size(); i++) {
@@ -760,6 +768,7 @@ public class DownloadService extends Service {
                 this.request = request;
             }
 
+            @Nullable
             @Override
             public Pair<DownloadRequest, FeedHandlerResult> call() throws Exception {
                 return parseFeed(request);
@@ -788,7 +797,7 @@ public class DownloadService extends Service {
                     throw new InvalidFeedException();
                 }
 
-            } catch (SAXException | IOException | ParserConfigurationException e) {
+            } catch (@NonNull SAXException | IOException | ParserConfigurationException e) {
                 successful = false;
                 e.printStackTrace();
                 reason = DownloadError.ERROR_PARSER_EXCEPTION;
@@ -885,7 +894,7 @@ public class DownloadService extends Service {
             }
         }
 
-        void submitCompletedDownload(DownloadRequest request) {
+        void submitCompletedDownload(@NonNull DownloadRequest request) {
             completedRequests.offer(request);
             if (isCollectingRequests) {
                 interrupt();
@@ -963,6 +972,7 @@ public class DownloadService extends Service {
      */
     private class MediaHandlerThread implements Runnable {
 
+        @NonNull
         private final DownloadRequest request;
         private DownloadStatus status;
 

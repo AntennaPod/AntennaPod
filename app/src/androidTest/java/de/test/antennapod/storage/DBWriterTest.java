@@ -2,6 +2,7 @@ package de.test.antennapod.storage;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
 
@@ -359,6 +360,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
+    @NonNull
     private FeedMedia playbackHistorySetup(Date playbackCompletionDate) {
         final Context context = getInstrumentation().getTargetContext();
         Feed feed = new Feed("url", null, "title");
@@ -404,6 +406,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertFalse(OLD_DATE == media.getPlaybackCompletionDate().getTime());
     }
 
+    @NonNull
     private Feed queueTestSetupMultipleItems(final int NUM_ITEMS) throws InterruptedException, ExecutionException, TimeoutException {
         final Context context = getInstrumentation().getTargetContext();
         Feed feed = new Feed("url", null, "title");

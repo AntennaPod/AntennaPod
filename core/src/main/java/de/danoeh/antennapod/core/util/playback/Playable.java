@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -49,23 +50,28 @@ public interface Playable extends Parcelable,
     /**
      * Returns the title of the episode that this playable represents
      */
+    @Nullable
     String getEpisodeTitle();
 
     /**
      * Returns a list of chapter marks or null if this Playable has no chapters.
      */
+    @Nullable
     List<Chapter> getChapters();
 
     /**
      * Returns a link to a website that is meant to be shown in a browser
      */
+    @Nullable
     String getWebsiteLink();
 
+    @Nullable
     String getPaymentLink();
 
     /**
      * Returns the title of the feed this Playable belongs to.
      */
+    @Nullable
     String getFeedTitle();
 
     /**
@@ -100,6 +106,7 @@ public interface Playable extends Parcelable,
      * Returns an url to a local file that can be played or null if this file
      * does not exist.
      */
+    @Nullable
     String getLocalMediaUrl();
 
     /**
@@ -185,7 +192,7 @@ public interface Playable extends Parcelable,
          * @return The restored Playable object
          */
         @Nullable
-        public static Playable createInstanceFromPreferences(Context context) {
+        public static Playable createInstanceFromPreferences(@NonNull Context context) {
             long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMedia();
             if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
@@ -205,8 +212,9 @@ public interface Playable extends Parcelable,
          *             is restored
          * @return The restored Playable object
          */
+        @Nullable
         public static Playable createInstanceFromPreferences(Context context, int type,
-                                                             SharedPreferences pref) {
+                                                             @NonNull SharedPreferences pref) {
             Playable result = null;
             // ADD new Playable types here:
             switch (type) {
@@ -223,6 +231,7 @@ public interface Playable extends Parcelable,
             return result;
         }
 
+        @Nullable
         private static Playable createFeedMediaInstance(SharedPreferences pref) {
             Playable result = null;
             long mediaId = pref.getLong(FeedMedia.PREF_MEDIA_ID, -1);
@@ -232,6 +241,7 @@ public interface Playable extends Parcelable,
             return result;
         }
 
+        @Nullable
         private static Playable createExternalMediaInstance(SharedPreferences pref) {
             Playable result = null;
             String source = pref.getString(ExternalMedia.PREF_SOURCE_URL, null);
