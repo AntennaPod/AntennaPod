@@ -3,10 +3,9 @@ package de.danoeh.antennapod.core.util;
 import android.content.Context;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.util.Log;
-
 import android.util.TypedValue;
+
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 

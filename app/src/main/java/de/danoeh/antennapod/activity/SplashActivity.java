@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import rx.Completable;

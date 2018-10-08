@@ -5,6 +5,7 @@ import android.app.job.JobService;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.FeedUpdateUtils;

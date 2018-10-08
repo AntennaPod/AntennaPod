@@ -7,9 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
 
 import java.util.Arrays;
+
+import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
 
 
 public class PlayerWidget extends AppWidgetProvider {

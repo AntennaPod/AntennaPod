@@ -10,7 +10,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 import java.util.LinkedList;
@@ -27,6 +26,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 /**
  * Performs a click action in a background thread.

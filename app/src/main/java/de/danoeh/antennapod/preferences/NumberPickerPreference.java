@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+
 import de.danoeh.antennapod.R;
 
 public class NumberPickerPreference extends Preference {

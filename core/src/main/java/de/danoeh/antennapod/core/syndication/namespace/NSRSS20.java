@@ -6,7 +6,6 @@ import android.util.Log;
 
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;

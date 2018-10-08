@@ -12,11 +12,12 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
-import de.danoeh.antennapod.core.service.FeedUpdateJobService;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
+
+import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
+import de.danoeh.antennapod.core.service.FeedUpdateJobService;
 
 public class AutoUpdateManager {
     private static final int JOB_ID_FEED_UPDATE = 42;

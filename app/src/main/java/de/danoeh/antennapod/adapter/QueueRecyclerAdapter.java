@@ -26,7 +26,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 
-import de.danoeh.antennapod.core.util.ThemeUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -42,6 +41,7 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.fragment.ItemFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
