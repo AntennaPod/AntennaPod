@@ -10,14 +10,7 @@ import android.util.Log;
 
 import org.antennapod.audio.MediaPlayer;
 
-import java.io.File;
-import java.util.List;
-
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
 
 /*
  * This class's job is do perform maintenance tasks whenever the app has been updated

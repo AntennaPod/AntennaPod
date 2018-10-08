@@ -2,14 +2,12 @@ package de.danoeh.antennapod.core.asynctask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;

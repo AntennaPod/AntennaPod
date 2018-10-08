@@ -8,14 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.service.download.ProxyConfig;
-import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -26,6 +19,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.service.download.ProxyConfig;
+import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
