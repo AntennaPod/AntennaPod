@@ -20,7 +20,7 @@ public class PodcastApp extends Application {
         try {
             Class.forName("de.danoeh.antennapod.config.ClientConfigurator");
         } catch (Exception e) {
-            throw new RuntimeException("ClientConfigurator not found");
+            throw new RuntimeException("ClientConfigurator not found", e);
         }
     }
 

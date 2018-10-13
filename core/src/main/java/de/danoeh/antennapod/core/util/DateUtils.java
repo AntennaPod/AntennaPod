@@ -135,7 +135,7 @@ public class DateUtils {
         if (parts.length >= 2) {
             result += Integer.parseInt(parts[idx]) * 60000L;
             idx++;
-            result += (Float.parseFloat(parts[idx])) * 1000L;
+            result += (long) (Float.parseFloat(parts[idx]) * 1000L);
         }
         return result;
     }

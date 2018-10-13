@@ -777,10 +777,8 @@ public final class DBTasks {
      */
     abstract static class QueryTask<T> implements Callable<T> {
         private T result;
-        private final Context context;
 
         public QueryTask(Context context) {
-            this.context = context;
         }
 
         @Override

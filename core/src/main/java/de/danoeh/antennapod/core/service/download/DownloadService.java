@@ -117,11 +117,6 @@ public class DownloadService extends Service {
     private CompletionService<Downloader> downloadExecutor;
     private FeedSyncThread feedSyncThread;
 
-    /**
-     * Number of threads of downloadExecutor.
-     */
-    private static final int NUM_PARALLEL_DOWNLOADS = 6;
-
     private DownloadRequester requester;
 
 
@@ -860,22 +855,6 @@ public class DownloadService extends Service {
                 }
             }
             return true;
-        }
-
-        /**
-         * Delete files that aren't needed anymore
-         */
-        private void cleanup(Feed feed) {
-            if (feed.getFile_url() != null) {
-                if (new File(feed.getFile_url()).delete()) {
-                    Log.d(TAG, "Successfully deleted cache file.");
-                } else {
-                    Log.e(TAG, "Failed to delete cache file.");
-                }
-                feed.setFile_url(null);
-            } else {
-                Log.d(TAG, "Didn't delete cache file: File url is not set.");
-            }
         }
 
         public void shutdown() {

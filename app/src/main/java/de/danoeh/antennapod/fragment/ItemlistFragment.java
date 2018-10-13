@@ -417,13 +417,10 @@ public class ItemlistFragment extends ListFragment {
 
     }
 
-    private boolean insideOnFragmentLoaded = false;
-
     private void onFragmentLoaded() {
         if(!isVisible()) {
             return;
         }
-        insideOnFragmentLoaded = true;
         if (adapter == null) {
             setListAdapter(null);
             setupHeaderView();
@@ -440,9 +437,6 @@ public class ItemlistFragment extends ListFragment {
         if (feed != null && feed.getNextPageLink() == null && listFooter != null) {
             getListView().removeFooterView(listFooter.getRoot());
         }
-
-        insideOnFragmentLoaded = false;
-
     }
 
     private void refreshHeaderView() {

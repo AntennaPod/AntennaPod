@@ -532,8 +532,8 @@ public class FeedMedia extends FeedFile implements Playable {
                     UserPreferences.isAutoFlattr() &&
                     item.getPaymentLink() != null &&
                     item.getFlattrStatus().getUnflattred() &&
-                    (completed && autoFlattrThreshold <= 1.0f ||
-                            played_duration >= autoFlattrThreshold * duration)) {
+                    ((completed && autoFlattrThreshold <= 1.0f) ||
+                            (played_duration >= autoFlattrThreshold * duration))) {
                 DBTasks.flattrItemIfLoggedIn(context, item);
             }
         }
@@ -626,6 +626,9 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
         if (FeedMediaFlavorHelper.instanceOfRemoteMedia(o)) {
             return o.equals(this);
         }

@@ -231,7 +231,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         Log.d(TAG, "onCreate()");
         StorageUtils.checkStorageAvailability(this);
 
-        orientation = getResources().getConfiguration().orientation;
         getWindow().setFormat(PixelFormat.TRANSPARENT);
     }
 
@@ -265,14 +264,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     private void onBufferUpdate(float progress) {
         if (sbPosition != null) {
-            sbPosition.setSecondaryProgress((int) progress * sbPosition.getMax());
+            sbPosition.setSecondaryProgress((int) (progress * sbPosition.getMax()));
         }
     }
-
-    /**
-     * Current screen orientation.
-     */
-    private int orientation;
 
     @Override
     protected void onStart() {
@@ -992,7 +986,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_CODE_STORAGE) {
             if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();

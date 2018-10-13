@@ -69,22 +69,6 @@ public class FeedSettingsActivity extends AppCompatActivity {
 
     private Subscription subscription;
 
-
-    private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if(feed != null && feed.getDownload_url() != null) {
-                String url = feed.getDownload_url();
-                ClipData clipData = ClipData.newPlainText(url, url);
-                android.content.ClipboardManager cm = (android.content.ClipboardManager) FeedSettingsActivity.this
-                        .getSystemService(Context.CLIPBOARD_SERVICE);
-                cm.setPrimaryClip(clipData);
-                Toast t = Toast.makeText(FeedSettingsActivity.this, R.string.copied_url_msg, Toast.LENGTH_SHORT);
-                t.show();
-            }
-        }
-    };
-
     private boolean authInfoChanged = false;
 
     private final TextWatcher authTextWatcher = new TextWatcher() {

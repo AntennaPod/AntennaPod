@@ -210,11 +210,6 @@ public class ExternalPlayerFragment extends Fragment {
         }
     }
 
-    private String getPositionString(int position, int duration) {
-        return Converter.getDurationStringLong(position) + " / "
-                + Converter.getDurationStringLong(duration);
-    }
-
     public PlaybackController getPlaybackControllerTestingOnly() {
         return controller;
     }
