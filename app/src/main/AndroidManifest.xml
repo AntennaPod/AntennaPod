@@ -392,10 +392,6 @@
         </provider>
 
         <meta-data
-            android:name="de.danoeh.antennapod.core.glide.ApGlideModule"
-            android:value="GlideModule" />
-
-        <meta-data
                     android:name="com.google.android.gms.car.application"
                     android:resource="@xml/automotive_app_desc"/>
     </application>

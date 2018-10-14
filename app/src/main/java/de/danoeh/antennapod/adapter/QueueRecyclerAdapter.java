@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 
 import de.danoeh.antennapod.core.util.ThemeUtils;
@@ -293,9 +294,10 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
             Glide.with(mainActivity.get())
                 .load(item.getImageLocation())
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(new CoverTarget(item.getFeed().getImageLocation(), placeholder, cover, mainActivity.get()));
         }
 

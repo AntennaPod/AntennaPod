@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.concurrent.ExecutionException;
@@ -463,10 +464,10 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         } else if (iconUri != null) {
             try {
                 art = Glide.with(getContext().getApplicationContext())
-                        .load(iconUri.toString())
                         .asBitmap()
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .load(iconUri.toString())
+                        .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                        .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                         .get();
             } catch (InterruptedException | ExecutionException e) {
                 Log.e(TAG, "Image art load failed", e);

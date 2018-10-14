@@ -1,21 +1,23 @@
 package de.danoeh.antennapod.adapter;
 
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomViewTarget;
 
 import java.lang.ref.WeakReference;
 
+import com.bumptech.glide.request.transition.Transition;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
-class CoverTarget extends GlideDrawableImageViewTarget {
+class CoverTarget extends CustomViewTarget<ImageView, Drawable> {
 
     private final WeakReference<String> fallback;
     private final WeakReference<TextView> placeholder;
@@ -31,7 +33,7 @@ class CoverTarget extends GlideDrawableImageViewTarget {
     }
 
     @Override
-    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+    public void onLoadFailed(Drawable errorDrawable) {
         String fallbackUri = fallback.get();
         TextView txtvPlaceholder = placeholder.get();
         ImageView imgvCover = cover.get();
@@ -39,19 +41,27 @@ class CoverTarget extends GlideDrawableImageViewTarget {
             MainActivity activity = mainActivity.get();
             Glide.with(activity)
                     .load(fallbackUri)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate()
+                    .apply(new RequestOptions()
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate())
                     .into(new CoverTarget(null, txtvPlaceholder, imgvCover, activity));
         }
     }
 
     @Override
-    public void onResourceReady(GlideDrawable drawable, GlideAnimation<? super GlideDrawable> anim) {
-        super.onResourceReady(drawable, anim);
+    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
         TextView txtvPlaceholder = placeholder.get();
         if (txtvPlaceholder != null) {
             txtvPlaceholder.setVisibility(View.INVISIBLE);
         }
+        ImageView ivCover = cover.get();
+        ivCover.setImageDrawable(resource);
+    }
+
+    @Override
+    protected void onResourceCleared(@Nullable Drawable placeholder) {
+        ImageView ivCover = cover.get();
+        ivCover.setImageDrawable(placeholder);
     }
 }

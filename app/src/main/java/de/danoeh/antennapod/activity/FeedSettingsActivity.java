@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -165,19 +166,21 @@ public class FeedSettingsActivity extends AppCompatActivity {
                     FeedPreferences prefs = feed.getPreferences();
                     Glide.with(FeedSettingsActivity.this)
                             .load(feed.getImageLocation())
-                            .placeholder(R.color.light_gray)
-                            .error(R.color.light_gray)
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                            .fitCenter()
-                            .dontAnimate()
+                            .apply(new RequestOptions()
+                                .placeholder(R.color.light_gray)
+                                .error(R.color.light_gray)
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .fitCenter()
+                                .dontAnimate())
                             .into(imgvCover);
                     Glide.with(FeedSettingsActivity.this)
                             .load(feed.getImageLocation())
-                            .placeholder(R.color.image_readability_tint)
-                            .error(R.color.image_readability_tint)
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                            .transform(new FastBlurTransformation(FeedSettingsActivity.this))
-                            .dontAnimate()
+                            .apply(new RequestOptions()
+                                .placeholder(R.color.image_readability_tint)
+                                .error(R.color.image_readability_tint)
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .transform(new FastBlurTransformation())
+                                .dontAnimate())
                             .into(imgvBackground);
 
                     txtvTitle.setText(feed.getTitle());

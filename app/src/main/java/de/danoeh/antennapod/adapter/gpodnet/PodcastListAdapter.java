@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.request.RequestOptions;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -52,11 +53,12 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
         if (StringUtils.isNotBlank(podcast.getLogoUrl())) {
             Glide.with(convertView.getContext())
                     .load(podcast.getLogoUrl())
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate()
+                    .apply(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate())
                     .into(holder.image);
         }
 
