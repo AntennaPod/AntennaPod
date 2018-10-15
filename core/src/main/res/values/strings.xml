@@ -427,8 +427,8 @@
     <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
     <string name="pref_gpodnet_sethostname_title">Set hostname</string>
     <string name="pref_gpodnet_sethostname_use_default_host">Use default host</string>
-    <string name="pref_expandNotify_title">Expand Notification</string>
-    <string name="pref_expandNotify_sum">Always expand the notification to show playback buttons.</string>
+    <string name="pref_expandNotify_title">High Notification priority</string>
+    <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
     <string name="pref_compact_notification_buttons_title">Set Lockscreen Buttons</string>

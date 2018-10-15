@@ -227,6 +227,9 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     return true;
                 });
 
+        if (Build.VERSION.SDK_INT >= 26) {
+            ui.findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
+        }
     }
 
     private void setupStorageScreen() {
