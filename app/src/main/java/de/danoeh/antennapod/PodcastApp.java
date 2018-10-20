@@ -41,10 +41,8 @@ public class PodcastApp extends Application {
 				.detectLeakedSqlLiteObjects()
 				.penaltyLog()
 				.penaltyDropBox();
-			if (Build.VERSION.SDK_INT >= 11) {
-				builder.detectActivityLeaks();
-				builder.detectLeakedClosableObjects();
-			}
+			builder.detectActivityLeaks();
+			builder.detectLeakedClosableObjects();
 			if(Build.VERSION.SDK_INT >= 16) {
 				builder.detectLeakedRegistrationObjects();
 			}

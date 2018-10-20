@@ -6,7 +6,7 @@ import de.danoeh.antennapod.core.ClientConfig;
 /**
  * Configures the ClientConfig class of the core package.
  */
-public class ClientConfigurator {
+class ClientConfigurator {
 
     private ClientConfigurator(){}
 

@@ -1,9 +1,10 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import android.text.TextUtils;
+import de.danoeh.antennapod.core.asynctask.ImageResource;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -14,7 +15,6 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
@@ -60,7 +60,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     public static final int PLAYED = 1;
 
     private String paymentLink;
-    private FlattrStatus flattrStatus;
+    private final FlattrStatus flattrStatus;
 
     /**
      * Is true if the database contains any chapters that belong to this item. This attribute is only
@@ -75,7 +75,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
      * in the database. The 'hasChapters' attribute should be used to check if this item has any chapters.
      * */
     private List<Chapter> chapters;
-    private FeedImage image;
+    private String imageUrl;
 
     /*
      *   0: auto download disabled
@@ -88,7 +88,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     /**
      * Any tags assigned to this item
      */
-    private Set<String> tags = new HashSet<>();
+    private final Set<String> tags = new HashSet<>();
 
     public FeedItem() {
         this.state = UNPLAYED;
@@ -100,7 +100,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
      * This constructor is used by DBReader.
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
-                    FlattrStatus flattrStatus, boolean hasChapters, FeedImage image, int state,
+                    FlattrStatus flattrStatus, boolean hasChapters, String imageUrl, int state,
                     String itemIdentifier, long autoDownload) {
         this.id = id;
         this.title = title;
@@ -110,7 +110,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         this.feedId = feedId;
         this.flattrStatus = flattrStatus;
         this.hasChapters = hasChapters;
-        this.image = image;
+        this.imageUrl = imageUrl;
         this.state = state;
         this.itemIdentifier = itemIdentifier;
         this.autoDownload = autoDownload;
@@ -158,9 +158,9 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         int indexRead = cursor.getColumnIndex(PodDBAdapter.KEY_READ);
         int indexItemIdentifier = cursor.getColumnIndex(PodDBAdapter.KEY_ITEM_IDENTIFIER);
         int indexAutoDownload = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD);
+        int indexImageUrl = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE_URL);
 
         long id = cursor.getInt(indexId);
-        assert(id > 0);
         String title = cursor.getString(indexTitle);
         String link = cursor.getString(indexLink);
         Date pubDate = new Date(cursor.getLong(indexPubDate));
@@ -171,15 +171,16 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         int state = cursor.getInt(indexRead);
         String itemIdentifier = cursor.getString(indexItemIdentifier);
         long autoDownload = cursor.getLong(indexAutoDownload);
+        String imageUrl = cursor.getString(indexImageUrl);
 
         return new FeedItem(id, title, link, pubDate, paymentLink, feedId, flattrStatus,
-                hasChapters, null, state, itemIdentifier, autoDownload);
+                hasChapters, imageUrl, state, itemIdentifier, autoDownload);
     }
 
     public void updateFromOther(FeedItem other) {
         super.updateFromOther(other);
-        if (other.image != null) {
-            this.image = other.image;
+        if (other.imageUrl != null) {
+            this.imageUrl = other.imageUrl;
         }
         if (other.title != null) {
             title = other.title;
@@ -212,9 +213,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
             if (!hasChapters) {
                 chapters = other.chapters;
             }
-        }
-        if (image == null) {
-            image = other.image;
         }
     }
 
@@ -374,7 +372,15 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
             if (contentEncoded == null || description == null) {
                 DBReader.loadExtraInformationOfFeedItem(FeedItem.this);
             }
-            return (contentEncoded != null) ? contentEncoded : description;
+            if (TextUtils.isEmpty(contentEncoded)) {
+                return description;
+            } else if (TextUtils.isEmpty(description)) {
+                return contentEncoded;
+            } else if (description.length() > 1.25 * contentEncoded.length()) {
+                return description;
+            } else {
+                return contentEncoded;
+            }
         };
     }
 
@@ -382,8 +388,8 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     public String getImageLocation() {
         if(media != null && media.hasEmbeddedPicture()) {
             return media.getImageLocation();
-        } else if (image != null) {
-           return image.getImageLocation();
+        } else if (imageUrl != null) {
+           return imageUrl;
         } else if (feed != null) {
             return feed.getImageLocation();
         } else {
@@ -419,29 +425,12 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
      * Returns the image of this item or the image of the feed if this item does
      * not have its own image.
      */
-    public FeedImage getImage() {
-        return (hasItemImage()) ? image : feed.getImage();
+    public String getImageUrl() {
+        return (imageUrl != null) ? imageUrl : feed.getImageUrl();
     }
 
-    public void setImage(FeedImage image) {
-        this.image = image;
-        if (image != null) {
-            image.setOwner(this);
-        }
-    }
-
-    /**
-     * Returns true if this FeedItem has its own image, false otherwise.
-     */
-    public boolean hasItemImage() {
-        return image != null;
-    }
-
-    /**
-     * Returns true if this FeedItem has its own image and the image has been downloaded.
-     */
-    public boolean hasItemImageDownloaded() {
-        return image != null && image.isDownloaded();
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override

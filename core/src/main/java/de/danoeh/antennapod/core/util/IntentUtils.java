@@ -24,4 +24,8 @@ public class IntentUtils {
         return false;
     }
 
+    public static void sendLocalBroadcast(Context context, String action) {
+        context.sendBroadcast(new Intent(action).setPackage(context.getPackageName()));
+    }
+
 }

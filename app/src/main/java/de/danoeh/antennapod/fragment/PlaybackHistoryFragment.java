@@ -199,7 +199,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
@@ -224,7 +224,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         getActivity().supportInvalidateOptionsMenu();
     }
 
-    private FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
+    private final FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
 
         @Override
         public int getItemDownloadProgressPercent(FeedItem item) {

@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Foretrukne</string>
   <string name="new_label">Ny(e)</string>
   <string name="settings_label">Indstillinger</string>
-  <string name="add_new_feed_label">Tilføj podcast</string>
   <string name="downloads_label">Overførsler</string>
   <string name="downloads_running_label">I gang</string>
   <string name="downloads_completed_label">Færdige</string>
@@ -22,7 +21,7 @@
   <string name="gpodnet_auth_label">Login til gpodder.net</string>
   <string name="free_space_label">%1$s ledig</string>
   <string name="episode_cache_full_title">Mellemlageret for udsendelser er fuldt</string>
-  <string name="episode_cache_full_message">Grænsen for størrelsen på udsendelsesmellemlageret er nået. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
+  <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret for udsendelser. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Samlet varighed for afspillede podcasts:</string>
   <string name="statistics_details_dialog">%1$d af %2$d udsendelser startet.\n\nAfspillet %3$s af %4$s.</string>
@@ -115,6 +114,7 @@
   <string name="remove_feed_label">Fjern podcast</string>
   <string name="share_label">Del…</string>
   <string name="share_link_label">Del link</string>
+  <string name="share_file_label">Del fil</string>
   <string name="share_link_with_position_label">Del link med position</string>
   <string name="share_feed_url_label">Del webadresse for feedet</string>
   <string name="share_item_url_label">Del webadresse for udsendelsen</string>
@@ -123,7 +123,6 @@
   <string name="feed_remover_msg">Fjerner feed</string>
   <string name="load_complete_feed">Opdater hele feedet</string>
   <string name="hide_episodes_title">Skjul udsendelser</string>
-  <string name="episode_actions">Anvend handlinger</string>
   <string name="hide_unplayed_episodes_label">Uafspillede</string>
   <string name="hide_paused_episodes_label">Sat på pause</string>
   <string name="hide_played_episodes_label">Afspillede</string>
@@ -143,6 +142,7 @@
   <string name="stream_label">Stream</string>
   <string name="remove_label">Fjern</string>
   <string name="delete_label">Slet</string>
+  <string name="delete_failed">Kan ikke slette fil. En genstart af enheden vil sandsynligvis hjælpe.</string>
   <string name="remove_episode_lable">Fjern udsendelse</string>
   <string name="marked_as_seen_label">Markeret som set</string>
   <string name="mark_read_label">Marker som læst</string>
@@ -280,7 +280,6 @@
   <string name="other_pref">Andre</string>
   <string name="about_pref">Om</string>
   <string name="queue_label">Kø</string>
-  <string name="services_label">Tjenester</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Oprydning i udsendelser</string>
   <string name="pref_episode_cleanup_summary">Tillad at udsendelser, som ikke er i køen og som ikke er markeret som foretrukne, kan fjernes, hvis Automatisk overførsel har brug for plads til nye udsendelser</string>
@@ -298,6 +297,8 @@
   <string name="pref_smart_mark_as_played_title">Smart markering af afspillet</string>
   <string name="pref_skip_keeps_episodes_sum">Behold udsendelser når de bliver sprunget over</string>
   <string name="pref_skip_keeps_episodes_title">Behold oversprungne udsendelser</string>
+  <string name="pref_favorite_keeps_episodes_sum">Behold udsendelser, som er markeret som foretrukne</string>
+  <string name="pref_favorite_keeps_episodes_title">Behold foretrukne udsendelser</string>
   <string name="playback_pref">Afspilning</string>
   <string name="network_pref">Netværk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Opdateringsinterval eller -klokkeslæt</string>
@@ -341,6 +342,8 @@
   <string name="pref_automatic_download_sum">Konfigurer automatisk overførsel af udsendelser</string>
   <string name="pref_autodl_wifi_filter_title">Slå wi-fi-filter til</string>
   <string name="pref_autodl_wifi_filter_sum">Tillad automatisk overførsel kun på de valgte wi-fi-netværk</string>
+  <string name="pref_autodl_allow_on_mobile_title">Hent på mobilt netværk</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Tillad automatisk overførsel på den mobile dataforbindelse</string>
   <string name="pref_automatic_download_on_battery_title">Tillad overførsel ved batteridrift</string>
   <string name="pref_automatic_download_on_battery_sum">Tillad automatisk overførsel, når batteriet ikke oplades</string>
   <string name="pref_parallel_downloads_title">Parallelle overførsler</string>
@@ -397,8 +400,6 @@
   <string name="crash_report_sum">Send den seneste nedbrudsrapport via e-mail</string>
   <string name="send_email">Send e-mail</string>
   <string name="experimental_pref">Eksperimentelt</string>
-  <string name="pref_sonic_title">Sonic-medieafspiller</string>
-  <string name="pref_sonic_message">Brug indbygget Sonic-medieafspiller i stedet for Androids indbyggede medieafspiller og Prestissimo</string>
   <string name="pref_current_value">Nuværende værdi: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Indstil en netværksproxy</string>
@@ -446,8 +447,6 @@
   <string name="html_export_label">HTML-eksport</string>
   <string name="exporting_label">Eksporterer…</string>
   <string name="export_error_label">Eksportfejl</string>
-  <string name="opml_export_success_title">OPML-eksport lykkedes.</string>
-  <string name="opml_export_success_sum">.opml-filen blev skrevet til:\u0020</string>
   <string name="opml_import_ask_read_permission">Adgang til eksternt lager er påkrævet for at læse OPML-filen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Indstil søvntimer</string>
@@ -615,6 +614,7 @@
   <string name="proxy_host_empty_error">Vært kan ikke være tom</string>
   <string name="proxy_host_invalid_error">Vært er ikke en gyldig IP-adresse eller et gyldigt domæne</string>
   <string name="proxy_port_invalid_error">Port ikke gyldig</string>
+  <!--Database import/export-->
   <!--Casting-->
   <string name="cast_media_route_menu_title">Afspil på …</string>
   <string name="cast_disconnect_label">Afbryd cast-sessionen</string>
@@ -631,4 +631,5 @@
   <string name="cast_failed_seek">Det lykkedes ikke at søge til den nye position på cast-enheden</string>
   <string name="cast_failed_receiver_player_error">Modtagerafspilleren er stødt på en alvorlig fejl</string>
   <string name="cast_failed_media_error_skipping">Fejl ved afspilning af medie. Springer over…</string>
+  <!--Notification channels-->
 </resources>

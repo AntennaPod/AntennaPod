@@ -8,12 +8,13 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="8dp"
+    android:descendantFocusability="blocksDescendants"
     tools:background="@android:color/darker_gray">
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/txtvIcon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="48sp"
+        android:layout_height="48sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:textSize="48sp"

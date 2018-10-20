@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.glide;
 
 import android.media.MediaMetadataRetriever;
-import android.util.Log;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.data.DataFetcher;

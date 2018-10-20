@@ -2,10 +2,10 @@ package de.danoeh.antennapod.core.gpoddernet;
 
 public class GpodnetServiceException extends Exception {
 
-    public GpodnetServiceException() {
+    GpodnetServiceException() {
     }
 
-    public GpodnetServiceException(String message) {
+    GpodnetServiceException(String message) {
         super(message);
     }
 
@@ -13,7 +13,7 @@ public class GpodnetServiceException extends Exception {
         super(cause);
     }
 
-    public GpodnetServiceException(String message, Throwable cause) {
+    GpodnetServiceException(String message, Throwable cause) {
         super(message, cause);
     }
 }

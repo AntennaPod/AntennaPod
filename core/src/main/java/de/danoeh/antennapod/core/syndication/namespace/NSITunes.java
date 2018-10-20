@@ -7,7 +7,6 @@ import org.xml.sax.Attributes;
 
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 
 public class NSITunes extends Namespace {
@@ -16,34 +15,27 @@ public class NSITunes extends Namespace {
     public static final String NSURI = "http://www.itunes.com/dtds/podcast-1.0.dtd";
 
     private static final String IMAGE = "image";
-    private static final String IMAGE_TITLE = "image";
     private static final String IMAGE_HREF = "href";
 
     private static final String AUTHOR = "author";
     public static final String DURATION = "duration";
-    public static final String SUBTITLE = "subtitle";
-    public static final String SUMMARY = "summary";
+    private static final String SUBTITLE = "subtitle";
+    private static final String SUMMARY = "summary";
 
 
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
                                           Attributes attributes) {
         if (IMAGE.equals(localName)) {
-            FeedImage image = new FeedImage();
-            image.setTitle(IMAGE_TITLE);
-            image.setDownload_url(attributes.getValue(IMAGE_HREF));
+            String url = attributes.getValue(IMAGE_HREF);
 
             if (state.getCurrentItem() != null) {
-                // this is an items image
-                image.setTitle(state.getCurrentItem().getTitle() + IMAGE_TITLE);
-                image.setOwner(state.getCurrentItem());
-                state.getCurrentItem().setImage(image);
+                state.getCurrentItem().setImageUrl(url);
             } else {
                 // this is the feed image
                 // prefer to all other images
-                if (!TextUtils.isEmpty(image.getDownload_url())) {
-                    image.setOwner(state.getFeed());
-                    state.getFeed().setImage(image);
+                if (!TextUtils.isEmpty(url)) {
+                    state.getFeed().setImageUrl(url);
                 }
             }
         }
@@ -55,6 +47,9 @@ public class NSITunes extends Namespace {
         if(state.getContentBuf() == null) {
             return;
         }
+        SyndElement secondElement = state.getSecondTag();
+        String second = secondElement.getName();
+
         if (AUTHOR.equals(localName)) {
             if (state.getFeed() != null) {
                 String author = state.getContentBuf().toString();
@@ -103,10 +98,9 @@ public class NSITunes extends Namespace {
             }
             if (state.getCurrentItem() != null &&
                     (TextUtils.isEmpty(state.getCurrentItem().getDescription()) ||
-                            state.getCurrentItem().getDescription().length() * 1.25 < summary.length())
-            ) {
+                            state.getCurrentItem().getDescription().length() * 1.25 < summary.length())) {
                 state.getCurrentItem().setDescription(summary);
-            } else if (state.getFeed() != null) {
+            } else if (NSRSS20.CHANNEL.equals(second) && state.getFeed() != null) {
                 state.getFeed().setDescription(summary);
             }
         }

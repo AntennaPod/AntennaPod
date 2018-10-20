@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceScreen
+            android:key="pref_flattr_authenticate"
+            android:summary="@string/pref_flattr_auth_sum"
+            android:title="@string/pref_flattr_auth_title">
+        <intent android:action=".activities.FlattrAuthActivity"/>
+    </PreferenceScreen>
+
+    <Preference
+            android:key="prefAutoFlattrPrefs"
+            android:summary="@string/pref_auto_flattr_sum"
+            android:title="@string/pref_auto_flattr_title"/>
+    <Preference
+            android:key="prefRevokeAccess"
+            android:summary="@string/pref_revokeAccess_sum"
+            android:title="@string/pref_revokeAccess_title"/>
+
+</PreferenceScreen>

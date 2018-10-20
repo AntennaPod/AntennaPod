@@ -19,7 +19,6 @@ import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -29,11 +28,11 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 /** Displays a list of DownloadStatus entries. */
 public class DownloadLogAdapter extends BaseAdapter {
 
-	private final String TAG = "DownloadLogAdapter";
+	private static final String TAG = "DownloadLogAdapter";
 
-	private Context context;
+	private final Context context;
 
-    private ItemAccess itemAccess;
+    private final ItemAccess itemAccess;
 
 	public DownloadLogAdapter(Context context, ItemAccess itemAccess) {
 		super();
@@ -67,8 +66,6 @@ public class DownloadLogAdapter extends BaseAdapter {
 			holder.type.setText(R.string.download_type_feed);
 		} else if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
 			holder.type.setText(R.string.download_type_media);
-		} else if (status.getFeedfileType() == FeedImage.FEEDFILETYPE_FEEDIMAGE) {
-			holder.type.setText(R.string.download_type_image);
 		}
 		if (status.getTitle() != null) {
 			holder.title.setText(status.getTitle());
@@ -94,8 +91,7 @@ public class DownloadLogAdapter extends BaseAdapter {
 			}
 			holder.reason.setText(reasonText);
 			holder.reason.setVisibility(View.VISIBLE);
-			if(status.getFeedfileType() != FeedImage.FEEDFILETYPE_FEEDIMAGE &&
-					!newerWasSuccessful(position, status.getFeedfileType(), status.getFeedfileId())) {
+			if(!newerWasSuccessful(position, status.getFeedfileType(), status.getFeedfileId())) {
 				holder.retry.setVisibility(View.VISIBLE);
 				holder.retry.setOnClickListener(clickListener);
 				ButtonHolder btnHolder;

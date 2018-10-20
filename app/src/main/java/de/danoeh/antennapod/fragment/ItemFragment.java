@@ -34,6 +34,8 @@ import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
 
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
@@ -183,12 +185,16 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
         }
         webvDescription = (WebView) layout.findViewById(R.id.webvDescription);
-        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            if (Build.VERSION.SDK_INT >= 11
-                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark ||
+                UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
             webvDescription.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
+        }
+        if (!NetworkUtils.networkAvailable()) {
+            webvDescription.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            // Use cached resources, even if they have expired
         }
         webvDescription.getSettings().setUseWideViewPort(false);
         webvDescription.getSettings().setLayoutAlgorithm(
@@ -335,13 +341,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 openPodcast();
                 return true;
             default:
-                try {
-                    return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    return true;
-                }
+                return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
         }
     }
 
@@ -434,6 +434,16 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 butAction1Text = R.string.download_label;
             }
         }
+
+        FeedItem.State state = item.getState();
+        if (butAction2Text == R.string.delete_label && state == FeedItem.State.PLAYING && PlaybackService.isRunning) {
+            butAction2.setEnabled(false);
+            butAction2.setAlpha(0.5f);
+        } else {
+            butAction2.setEnabled(true);
+            butAction2.setAlpha(1.0f);
+        }
+
         if(butAction1Icon != null && butAction1Text != 0) {
             butAction1.setText(butAction1Icon +"\u0020\u0020" + getActivity().getString(butAction1Text));
             Iconify.addIcons(butAction1);
@@ -450,7 +460,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
     }
 
-    private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
+    private final View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {
@@ -483,17 +493,11 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                     ShareUtils.shareLink(getActivity(), selectedURL);
                     break;
                 case R.id.copy_url_item:
-                    if (android.os.Build.VERSION.SDK_INT >= 11) {
-                        ClipData clipData = ClipData.newPlainText(selectedURL,
-                                selectedURL);
-                        android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
-                                .getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setPrimaryClip(clipData);
-                    } else {
-                        android.text.ClipboardManager cm = (android.text.ClipboardManager) getActivity()
-                                .getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setText(selectedURL);
-                    }
+                    ClipData clipData = ClipData.newPlainText(selectedURL,
+                            selectedURL);
+                    android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
+                            .getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setPrimaryClip(clipData);
                     Toast t = Toast.makeText(getActivity(),
                             R.string.copied_url_msg, Toast.LENGTH_SHORT);
                     t.show();
@@ -558,7 +562,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {

@@ -19,7 +19,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 /**
  * Utility methods for DB* tests.
  */
-public class DBTestUtils {
+class DBTestUtils {
 
     private DBTestUtils(){}
     /**

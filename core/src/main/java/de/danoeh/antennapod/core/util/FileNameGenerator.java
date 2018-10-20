@@ -3,7 +3,8 @@ package de.danoeh.antennapod.core.util;
 import android.text.TextUtils;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.RandomStringGenerator;
+
 
 /** Generates valid filenames for a given string. */
 public class FileNameGenerator {
@@ -34,7 +35,11 @@ public class FileNameGenerator {
 		}
 		String filename = buf.toString().trim();
 		if(TextUtils.isEmpty(filename)) {
-			return RandomStringUtils.randomAlphanumeric(8);
+			return new RandomStringGenerator.Builder()
+					.withinRange('0', 'z')
+					.filteredBy(Character::isLetterOrDigit)
+					.build()
+					.generate(8);
 		}
 		return filename;
 	}

@@ -24,8 +24,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
-import com.nineoldandroids.view.ViewHelper;
 
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -51,7 +51,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     private static final String TAG = QueueRecyclerAdapter.class.getSimpleName();
 
-    private WeakReference<MainActivity> mainActivity;
+    private final WeakReference<MainActivity> mainActivity;
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
@@ -76,11 +76,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         this.itemTouchHelper = itemTouchHelper;
         locked = UserPreferences.isQueueLocked();
 
-        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_dark);
-        } else {
-            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_light);
-        }
+        playingBackGroundColor = ThemeUtils.getColorFromAttr(mainActivity, R.attr.currently_playing_background);
         normalBackGroundColor = ContextCompat.getColor(mainActivity, android.R.color.transparent);
     }
 
@@ -198,12 +194,12 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
         @Override
         public void onItemSelected() {
-            ViewHelper.setAlpha(itemView, 0.5f);
+            itemView.setAlpha(0.5f);
         }
 
         @Override
         public void onItemClear() {
-            ViewHelper.setAlpha(itemView, 1.0f);
+            itemView.setAlpha(1.0f);
         }
 
         public void bind(FeedItem item) {
@@ -280,7 +276,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                         progressLeft.setText("");
                     }
                     progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 if(media.isCurrentlyPlaying()) {
@@ -305,7 +301,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     }
 
-    private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
+    private final View.OnClickListener secondaryActionListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();

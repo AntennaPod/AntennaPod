@@ -50,7 +50,6 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
     }
 
     private int getAdjustedPosition(int origPosition) {
-        assert(origPosition != getAddTilePosition());
         return origPosition < getAddTilePosition() ? origPosition : origPosition - 1;
     }
 

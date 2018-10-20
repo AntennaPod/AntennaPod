@@ -1,7 +1,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "com.android.application"
-apply plugin: "me.tatarka.retrolambda"
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.getkeepsafe.dexcount'
 
@@ -15,7 +14,7 @@ buildscript {
        jcenter()
     }
     dependencies {
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.1'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'
     }
 }
 
@@ -84,9 +83,17 @@ android {
             applicationIdSuffix ".debug"
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
             buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
-            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
+            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret            
+            dexcount {
+                if (project.hasProperty("enableDexcountInDebug")) {
+                    runOnEachPackage enableDexcountInDebug.toBoolean()
+                } else { // default to not running dexcount
+                    runOnEachPackage false                 
+                }
+            }
         }
         release {
+            resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
             minifyEnabled true
             proguardFile "proguard.cfg"
             signingConfig signingConfigs.releaseConfig
@@ -113,10 +120,13 @@ android {
         additionalParameters "--no-version-vectors"
     }
 
+    flavorDimensions "market"
     productFlavors {
         free {
+            dimension "market"
         }
         play {
+            dimension "market"
         }
     }
 
@@ -125,59 +135,55 @@ android {
     }
 }
 
-configurations {
-    freeDebugCompile
-    freeReleaseCompile
-    playDebugCompile
-    playReleaseCompile
-}
-
 dependencies {
-    freeDebugCompile project(path: ":core", configuration: "freeDebug")
-    freeReleaseCompile project(path: ":core", configuration: "freeRelease")
+    freeImplementation project(":core")
     // free build hack: skip some dependencies
     if (!doFreeBuild()) {
-        playDebugCompile project(path: ":core", configuration: "playDebug")
-        playReleaseCompile project(path: ":core", configuration: "playRelease")
+        playImplementation project(":core")
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
-    compile "com.android.support:support-v4:$supportVersion"
-    compile "com.android.support:appcompat-v7:$supportVersion"
-    compile "com.android.support:design:$supportVersion"
-    compile "com.android.support:gridlayout-v7:$supportVersion"
-    compile "com.android.support:percent:$supportVersion"
-    compile "com.android.support:recyclerview-v7:$supportVersion"
-    compile "org.apache.commons:commons-lang3:$commonslangVersion"
-    compile("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
+    implementation "com.android.support:support-v4:$supportVersion"
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation "com.android.support:design:$supportVersion"
+    implementation "com.android.support:preference-v14:$supportVersion"
+    implementation "com.android.support:gridlayout-v7:$supportVersion"
+    implementation "com.android.support:percent:$supportVersion"
+    implementation "com.android.support:recyclerview-v7:$supportVersion"
+    compileOnly 'com.google.android.wearable:wearable:2.2.0'
+    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+    implementation("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
         exclude group: "org.json", module: "json"
     }
-    compile "commons-io:commons-io:$commonsioVersion"
-    compile "org.jsoup:jsoup:$jsoupVersion"
-    compile "com.github.bumptech.glide:glide:$glideVersion"
-    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
-    compile "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
-    compile "com.squareup.okio:okio:$okioVersion"
-    compile "de.greenrobot:eventbus:$eventbusVersion"
-    compile "io.reactivex:rxandroid:$rxAndroidVersion"
-    compile "io.reactivex:rxjava:$rxJavaVersion"
+    implementation "commons-io:commons-io:$commonsioVersion"
+    implementation "org.jsoup:jsoup:$jsoupVersion"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
+    implementation "com.squareup.okio:okio:$okioVersion"
+    implementation "de.greenrobot:eventbus:$eventbusVersion"
+    implementation "io.reactivex:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex:rxjava:$rxJavaVersion"
     // And ProGuard rules for RxJava!
-    compile "com.artemzin.rxjava:proguard-rules:$rxJavaRulesVersion"
-    compile "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
-    compile "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
-    compile("com.afollestad.material-dialogs:commons:$materialDialogsVersion") {
+    implementation "com.artemzin.rxjava:proguard-rules:$rxJavaRulesVersion"
+    implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
+    implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
+    implementation("com.afollestad.material-dialogs:commons:$materialDialogsVersion") {
         transitive = true
     }
-    compile "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
-    compile("com.githang:viewpagerindicator:2.5@aar") {
+    implementation "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
+    implementation("com.githang:viewpagerindicator:2.5.1@aar") {
         exclude module: "support-v4"
     }
 
-    compile "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
+    implementation "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
 
-    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
+    implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
-    compile 'com.github.mfietz:fyydlin:v0.3'
+    implementation 'com.github.mfietz:fyydlin:v0.3'
+    implementation 'com.github.ByteHamster:SearchPreference:v1.0.8'
+
+    androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
 }
 
 play {

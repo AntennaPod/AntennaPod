@@ -3,9 +3,9 @@ package de.danoeh.antennapod.core.util.flattr;
 import java.util.Calendar;
 
 public class FlattrStatus {
-	public static final int STATUS_UNFLATTERED = 0;
+	private static final int STATUS_UNFLATTERED = 0;
 	public static final int STATUS_QUEUE = 1;
-	public static final int STATUS_FLATTRED = 2;
+	private static final int STATUS_FLATTRED = 2;
 	
 	private int status = STATUS_UNFLATTERED;
 	private Calendar lastFlattred;
@@ -38,7 +38,7 @@ public class FlattrStatus {
 			status = STATUS_QUEUE;
 	}
 	
-	public void fromLong(long status) {
+	private void fromLong(long status) {
 		if (status == STATUS_UNFLATTERED || status == STATUS_QUEUE)
 			this.status = (int) status;
 		else {

@@ -4,8 +4,9 @@ import de.danoeh.antennapod.core.syndication.handler.TypeGetter.Type;
 
 public class UnsupportedFeedtypeException extends Exception {
 	private static final long serialVersionUID = 9105878964928170669L;
-	private TypeGetter.Type type;
-    private String rootElement;
+	private final TypeGetter.Type type;
+	private String rootElement;
+	private String message = null;
 	
 	public UnsupportedFeedtypeException(Type type) {
 		super();
@@ -17,6 +18,11 @@ public class UnsupportedFeedtypeException extends Exception {
         this.rootElement = rootElement;
     }
 
+	public UnsupportedFeedtypeException(String message) {
+		this.message = message;
+		type = Type.INVALID;
+	}
+
     public TypeGetter.Type getType() {
 		return type;
 	}
@@ -27,7 +33,9 @@ public class UnsupportedFeedtypeException extends Exception {
 
     @Override
 	public String getMessage() {
-		if (type == TypeGetter.Type.INVALID) {
+		if (message != null) {
+			return message;
+		} else if (type == TypeGetter.Type.INVALID) {
 			return "Invalid type";
 		} else {
 			return "Type " + type + " not supported";

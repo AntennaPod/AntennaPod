@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Lemmikud</string>
   <string name="new_label">Uus</string>
   <string name="settings_label">Seaded</string>
-  <string name="add_new_feed_label">Lisa taskuhääling</string>
   <string name="downloads_label">Allalaadimised</string>
   <string name="downloads_running_label">Käimas</string>
   <string name="downloads_completed_label">Lõpetatud</string>
@@ -100,12 +99,12 @@
   <string name="remove_feed_label">Eemalda taskuhääling</string>
   <string name="share_label">Jaga...</string>
   <string name="share_link_label">Jaga linki</string>
+  <string name="share_file_label">Jaga faili</string>
   <string name="share_link_with_position_label">Jaga linki koos asukohaga</string>
   <string name="share_feed_url_label">Jaga uudisvoo URL-i</string>
   <string name="feed_remover_msg">Uudisvoo eemaldamine</string>
   <string name="load_complete_feed">Värskenda kogu uudisvoogu</string>
   <string name="hide_episodes_title">Peida saated</string>
-  <string name="episode_actions">Rakenda tegevused</string>
   <string name="hide_unplayed_episodes_label">Esitamata</string>
   <string name="hide_paused_episodes_label">Peatatud</string>
   <string name="hide_played_episodes_label">Esitatud</string>
@@ -148,6 +147,7 @@
   <string name="download_failed">ebaõnnestus</string>
   <string name="download_pending">Ootel allalaadimine</string>
   <string name="download_running">Allalaadimine on käimas</string>
+  <string name="download_error_details">Üksikasjad</string>
   <string name="download_error_device_not_found">Salvestuskohta ei leitud</string>
   <string name="download_error_insufficient_space">Pole piisavalt ruumi</string>
   <string name="download_error_file_error">Faili viga</string>
@@ -234,7 +234,6 @@
   <string name="other_pref">Muud</string>
   <string name="about_pref">Info</string>
   <string name="queue_label">Järjekord</string>
-  <string name="services_label">Teenused</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Saadete kustutamien</string>
   <string name="pref_followQueue_sum">Kui saade lõpeb, siis esita kohe järgmine järjekorras olev saade.</string>
@@ -242,6 +241,7 @@
   <string name="pref_auto_delete_title">Automaatne kustutamine</string>
   <string name="pref_skip_keeps_episodes_sum">Hoia saated alles, kui need jäetakse vahele</string>
   <string name="pref_skip_keeps_episodes_title">Hoia vahelejäetud osad alles</string>
+  <string name="pref_favorite_keeps_episodes_title">Säilita lemmikosad</string>
   <string name="playback_pref">Esitamine</string>
   <string name="network_pref">Võrk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Uuendamise intervall või kellaaeg</string>
@@ -343,8 +343,6 @@
   <string name="html_export_label">HTML eksport</string>
   <string name="exporting_label">Eksportimine...</string>
   <string name="export_error_label">Viga eksportimisel</string>
-  <string name="opml_export_success_title">OPML eksport oli edukas.</string>
-  <string name="opml_export_success_sum">.opml fail kirjutati kausta:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Määra unetaimer</string>
   <string name="disable_sleeptimer_label">Keela unetaimer</string>
@@ -369,6 +367,9 @@
     <item quantity="one">1 tund</item>
     <item quantity="other">%d tundi</item>
   </plurals>
+  <string name="auto_enable_label">Automaatne kustutamine</string>
+  <string name="sleep_timer_enabled_label">Unetaimer on sisse lülitatud</string>
+  <string name="sleep_timer_disabled_label">Unetaimer on välja lülitatud</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGOORIAD</string>
   <string name="gpodnet_toplist_header">POPIMAD TASKUHÄÄLINGUD</string>
@@ -386,6 +387,7 @@
   <string name="gpodnetauth_device_chooseExistingDevice">Vali olemasolev seade:</string>
   <string name="gpodnetauth_device_errorEmpty">Seadme ID ei tohi olla tühi</string>
   <string name="gpodnetauth_device_errorAlreadyUsed">Seadme ID on juba kasutuses</string>
+  <string name="gpodnetauth_device_caption_errorEmpty">Pealkiri ei tohi olla tühi</string>
   <string name="gpodnetauth_device_butChoose">Vali</string>
   <string name="gpodnetauth_finish_title">Sisse logitud!</string>
   <string name="gpodnetauth_finish_butsyncnow">Alusta kohe sünkroonimist</string>
@@ -491,8 +493,17 @@
   <string name="proxy_test_successful">Kontroll oli edukas</string>
   <string name="proxy_test_failed">Kontroll ebaõnnestus</string>
   <string name="proxy_host_empty_error">Hostinimi ei saa olla tühi</string>
+  <string name="proxy_host_invalid_error">Se pole korrektne IP aadress või domeen</string>
   <string name="proxy_port_invalid_error">Port pole korrektne</string>
+  <!--Database import/export-->
+  <string name="import_export">Andmebaasi importimine/eksportimine</string>
+  <string name="label_import">Impordi</string>
+  <string name="label_export">Ekspordi</string>
+  <string name="import_select_file">Vali fail, mida importida</string>
+  <string name="export_ok">Eksportimine on sooritatud.</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Esita...</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_media_error_skipping">Tõrge meedia esitamisel. Jätame vahele...</string>
+  <!--Notification channels-->
 </resources>

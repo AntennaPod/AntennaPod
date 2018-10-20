@@ -16,6 +16,7 @@ import android.widget.GridView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.activity.MediaplayerInfoActivity;
 import de.danoeh.antennapod.adapter.SubscriptionsAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -26,6 +27,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import rx.Observable;
 import rx.Subscription;
@@ -152,18 +154,39 @@ public class SubscriptionFragment extends Fragment {
         Feed feed = (Feed)selectedObject;
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
-                Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> loadSubscriptions(),
-                                error -> Log.e(TAG, Log.getStackTraceString(error)));
+                ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(getActivity(),
+                        R.string.mark_all_seen_label,
+                        R.string.mark_all_seen_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+
+                        Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
+                                .subscribeOn(Schedulers.newThread())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result -> loadSubscriptions(),
+                                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+                    }
+                };
+                markAllSeenConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.mark_all_read_item:
-                Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> loadSubscriptions(),
-                                error -> Log.e(TAG, Log.getStackTraceString(error)));
+                ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
+                        R.string.mark_all_read_label,
+                        R.string.mark_all_read_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
+                                .subscribeOn(Schedulers.newThread())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result -> loadSubscriptions(),
+                                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+                    }
+                };
+                markAllReadConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.rename_item:
                 new RenameFeedDialog(getActivity(), feed).show();
@@ -190,8 +213,8 @@ public class SubscriptionFragment extends Fragment {
                             remover.skipOnCompletion = true;
                             int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
                             if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                                getActivity().sendBroadcast(new Intent(
-                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                                IntentUtils.sendLocalBroadcast(getContext(), PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+
                             }
                         }
                         remover.executeAsync();
@@ -210,7 +233,7 @@ public class SubscriptionFragment extends Fragment {
         loadSubscriptions();
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
@@ -220,7 +243,7 @@ public class SubscriptionFragment extends Fragment {
         }
     };
 
-    private SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
+    private final SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
         @Override
         public int getCount() {
             if (navDrawerData != null) {

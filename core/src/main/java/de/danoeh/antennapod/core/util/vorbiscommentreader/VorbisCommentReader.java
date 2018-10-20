@@ -19,29 +19,29 @@ public abstract class VorbisCommentReader {
 	private static final int PACKET_TYPE_COMMENT = 3;
 
 	/** Called when Reader finds identification header. */
-	public abstract void onVorbisCommentFound();
+	protected abstract void onVorbisCommentFound();
 
-	public abstract void onVorbisCommentHeaderFound(VorbisCommentHeader header);
+	protected abstract void onVorbisCommentHeaderFound(VorbisCommentHeader header);
 
 	/**
 	 * Is called every time the Reader finds a content vector. The handler
 	 * should return true if it wants to handle the content vector.
 	 */
-	public abstract boolean onContentVectorKey(String content);
+	protected abstract boolean onContentVectorKey(String content);
 
 	/**
 	 * Is called if onContentVectorKey returned true for the key.
 	 * 
 	 * @throws VorbisCommentReaderException
 	 */
-	public abstract void onContentVectorValue(String key, String value)
+	protected abstract void onContentVectorValue(String key, String value)
 			throws VorbisCommentReaderException;
 
-	public abstract void onNoVorbisCommentFound();
+	protected abstract void onNoVorbisCommentFound();
 
-	public abstract void onEndOfComment();
+	protected abstract void onEndOfComment();
 
-	public abstract void onError(VorbisCommentReaderException exception);
+	protected abstract void onError(VorbisCommentReaderException exception);
 
 	public void readInputStream(InputStream input)
 			throws VorbisCommentReaderException {

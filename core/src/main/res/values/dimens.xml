@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_margin">0dp</dimen>
     <dimen name="thumbnail_length">70dp</dimen>
     <dimen name="external_player_height">56dp</dimen>
     <dimen name="enc_icons_size">20dp</dimen>
@@ -20,11 +20,10 @@
     <dimen name="listview_secondary_button_width">48dp</dimen>
     <dimen name="drawer_width">280dp</dimen>
     <dimen name="listitem_iconwithtext_height">48dp</dimen>
-    <dimen name="listitem_iconwithtext_textleftpadding">14dp</dimen>
+    <dimen name="listitem_iconwithtext_textleftpadding">16dp</dimen>
     <dimen name="listitem_iconwithtext_textverticalpadding">16dp</dimen>
 
-    <dimen name="listitem_threeline_height">96dp</dimen>
-    <dimen name="listitem_threeline_textleftpadding">14dp</dimen>
+    <dimen name="listitem_threeline_textleftpadding">16dp</dimen>
     <dimen name="listitem_threeline_textrightpadding">8dp</dimen>
     <dimen name="listitem_threeline_verticalpadding">16dp</dimen>
     <dimen name="listitem_threeline_horizontalpadding">16dp</dimen>

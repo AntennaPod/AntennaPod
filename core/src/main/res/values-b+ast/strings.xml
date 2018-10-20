@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Nuevo</string>
   <string name="settings_label">Axustes</string>
-  <string name="add_new_feed_label">Amestar podcast</string>
   <string name="downloads_label">Descargues</string>
   <string name="downloads_running_label">N\'execución</string>
   <string name="downloads_completed_label">Completóse</string>
@@ -110,7 +109,6 @@
   <string name="feed_remover_msg">Desaniciando fees</string>
   <string name="load_complete_feed">Completóse\'l refrescu\'l feed</string>
   <string name="hide_episodes_title">Anubrir episodios</string>
-  <string name="episode_actions">Aplicar aiciones</string>
   <string name="hide_unplayed_episodes_label">Ensin reproducir</string>
   <string name="hide_paused_episodes_label">Posóse</string>
   <string name="hide_played_episodes_label">Reprodúxose</string>
@@ -244,7 +242,6 @@
   <!--Preferences-->
   <string name="storage_pref">Almacenamientu</string>
   <string name="project_pref">Proyeutu</string>
-  <string name="services_label">Servicios</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Llimpieza d\'episodios</string>
   <string name="pref_pauseOnDisconnect_sum">Posa la reproducción al desconeutase los auriculares o Bluetooth</string>
@@ -376,6 +373,8 @@
   <string name="port_label">Puertu</string>
   <string name="optional_hint">(Opcional)</string>
   <string name="proxy_checking">Comprobando...</string>
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

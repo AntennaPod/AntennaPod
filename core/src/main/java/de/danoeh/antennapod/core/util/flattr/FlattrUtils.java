@@ -101,7 +101,7 @@ public class FlattrUtils {
         cachedToken = token;
     }
 
-    public static void deleteToken() {
+    private static void deleteToken() {
         Log.d(TAG, "Deleting flattr token");
         storeToken(null);
     }
@@ -174,17 +174,11 @@ public class FlattrUtils {
 
     // ------------------------------------------------ DIALOGS
 
-    public static void showRevokeDialog(final Context context) {
+    private static void showRevokeDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.access_revoked_title);
         builder.setMessage(R.string.access_revoked_info);
-        builder.setNeutralButton(android.R.string.ok, new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
         builder.create().show();
     }
 
@@ -199,27 +193,15 @@ public class FlattrUtils {
             builder.setTitle(R.string.no_flattr_token_title);
             builder.setMessage(R.string.no_flattr_token_msg);
             builder.setPositiveButton(R.string.authenticate_now_label,
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            context.startActivity(
-                                    ClientConfig.flattrCallbacks.getFlattrAuthenticationActivityIntent(context));
-                        }
-
-                    }
+                    (dialog, which) -> context.startActivity(
+                            ClientConfig.flattrCallbacks.getFlattrAuthenticationActivityIntent(context))
             );
 
             builder.setNegativeButton(R.string.visit_website_label,
-                    new OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Uri uri = Uri.parse(url);
-                            context.startActivity(new Intent(Intent.ACTION_VIEW,
-                                    uri));
-                        }
-
+                    (dialog, which) -> {
+                        Uri uri = Uri.parse(url);
+                        context.startActivity(new Intent(Intent.ACTION_VIEW,
+                                uri));
                     }
             );
             builder.create().show();
@@ -233,13 +215,7 @@ public class FlattrUtils {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.error_label);
         builder.setMessage(msg);
-        builder.setNeutralButton(android.R.string.ok, new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
         builder.create().show();
     }
 

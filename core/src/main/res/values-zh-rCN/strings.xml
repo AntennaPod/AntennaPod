@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">收藏</string>
   <string name="new_label">最新</string>
   <string name="settings_label">设置</string>
-  <string name="add_new_feed_label">添加播客</string>
   <string name="downloads_label">下载</string>
   <string name="downloads_running_label">正在运行</string>
   <string name="downloads_completed_label">已完成</string>
@@ -67,7 +66,7 @@
   <string name="refresh_label">刷新</string>
   <string name="external_storage_error_msg">没有可用的外部存储. 请确保安装外部存储器, 这样本应用才可以正常工作.</string>
   <string name="chapters_label">章节</string>
-  <string name="chapter_duration">按时长： %1$s</string>
+  <string name="chapter_duration">时长： %1$s</string>
   <string name="shownotes_label">笔记</string>
   <string name="description_label">描述</string>
   <string name="most_recent_prefix">最近曲目:\u0020</string>
@@ -114,6 +113,7 @@
   <string name="remove_feed_label">删除播客</string>
   <string name="share_label">分享</string>
   <string name="share_link_label">分享网站链接</string>
+  <string name="share_file_label">分享文件</string>
   <string name="share_link_with_position_label">分享网站链接与位置</string>
   <string name="share_feed_url_label">分享订阅地址</string>
   <string name="share_item_url_label">分享剧集文件URL</string>
@@ -122,7 +122,6 @@
   <string name="feed_remover_msg">删除订阅</string>
   <string name="load_complete_feed">刷新全部订阅</string>
   <string name="hide_episodes_title">隐藏曲目</string>
-  <string name="episode_actions">启用</string>
   <string name="hide_unplayed_episodes_label">未播放</string>
   <string name="hide_paused_episodes_label">已暂停</string>
   <string name="hide_played_episodes_label">已播放</string>
@@ -141,6 +140,7 @@
   <string name="stream_label">流媒体</string>
   <string name="remove_label">删除</string>
   <string name="delete_label">删除</string>
+  <string name="delete_failed">无法删除文件。重启可能解决该问题。</string>
   <string name="remove_episode_lable">移除曲目</string>
   <string name="marked_as_seen_label">标记为已读</string>
   <string name="mark_read_label">标记已播放</string>
@@ -276,7 +276,6 @@
   <string name="other_pref">其他</string>
   <string name="about_pref">关于</string>
   <string name="queue_label">播放列表</string>
-  <string name="services_label">服务</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">清理曲目</string>
   <string name="pref_pauseOnDisconnect_sum">暂停播放曲目当耳机或蓝牙重新连接</string>
@@ -383,8 +382,6 @@
   <string name="crash_report_sum">通过 E-mail 发送最后崩溃报告</string>
   <string name="send_email">发送 E-mail</string>
   <string name="experimental_pref">实验性</string>
-  <string name="pref_sonic_title">音频媒体播放器</string>
-  <string name="pref_sonic_message">使用内置音频媒体播放器代替 Android 原生媒体播放器</string>
   <string name="pref_current_value">当前值：%1$s</string>
   <string name="pref_proxy_title">代理</string>
   <string name="pref_proxy_sum">选择一个网络代理</string>
@@ -394,7 +391,6 @@
   <string name="pref_cast_title">Chromecast 支持</string>
   <string name="pref_cast_message_play_flavor">启用在 Cast 设备（例如 Chromecast 、 Audio Speakers 和 Android TV ）上对于远端媒体回放的支持</string>
   <string name="pref_cast_message_free_flavor">Chromecast 所需要的第三方库文件在这个版本的 AntennaPod 中被禁用</string>
-  <string name="pref_enqueue_downloaded_title">队列任务下载完毕</string>
   <string name="pref_enqueue_downloaded_summary">向队列添加已下载的节目</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">启用自动 flattring</string>
@@ -430,8 +426,6 @@
   <string name="html_export_label">导出为 HTML 文件</string>
   <string name="exporting_label">正在导出</string>
   <string name="export_error_label">导出出错</string>
-  <string name="opml_export_success_title">OPML 导出成功.</string>
-  <string name="opml_export_success_sum">.opml 文件已保存到:\u0020</string>
   <string name="opml_import_ask_read_permission">读取 OPML 文件需要访问外部存储的权限</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">设置休眠计时器</string>
@@ -590,6 +584,7 @@
   <string name="proxy_host_empty_error">主机地址不能为空</string>
   <string name="proxy_host_invalid_error">主机地址为无效的IP地址或域名</string>
   <string name="proxy_port_invalid_error">端口不可用</string>
+  <!--Database import/export-->
   <!--Casting-->
   <string name="cast_failed_to_play">媒体回放开始失败</string>
   <string name="cast_failed_to_stop">媒体回放停止失败</string>
@@ -597,4 +592,5 @@
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">音量设置失败</string>
   <string name="cast_failed_media_error_skipping">媒体播放出错.跳转中...</string>
+  <!--Notification channels-->
 </resources>

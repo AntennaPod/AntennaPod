@@ -22,7 +22,7 @@ class HtmlSymbols extends CommonSymbols {
     static final String ORDERED_LIST = "ol";
     static final String LIST_ITEM = "li";
 
-    static String HEADING = "h1";
+    static final String HEADING = "h1";
 
     static final String LINK = "a";
     static final String LINK_DESTINATION = "href";

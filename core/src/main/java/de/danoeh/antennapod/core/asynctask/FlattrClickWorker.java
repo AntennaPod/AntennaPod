@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.asynctask;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 import java.util.LinkedList;
@@ -39,7 +39,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
  * to flattr something, a notification will be displayed.
  */
 public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorker.ExitCode> {
-    protected static final String TAG = "FlattrClickWorker";
+    private static final String TAG = "FlattrClickWorker";
 
     private static final int NOTIFICATION_ID = 4;
 
@@ -176,7 +176,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
                 ClientConfig.flattrCallbacks.getFlattrAuthenticationActivityIntent(context), 0);
 
-        Notification notification = new NotificationCompat.Builder(context)
+        Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_ERROR)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.no_flattr_token_notification_msg)))
                 .setContentIntent(contentIntent)
                 .setContentTitle(context.getString(R.string.no_flattr_token_title))
@@ -209,7 +209,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
                     + context.getString(R.string.flattr_click_failure_count, failed);
         }
 
-        Notification notification = new NotificationCompat.Builder(context)
+        Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_ERROR)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(subtext))
                 .setContentIntent(contentIntent)
                 .setContentTitle(title)
@@ -225,12 +225,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
     /**
      * Starts the FlattrClickWorker as an AsyncTask.
      */
-    @TargetApi(11)
     public void executeAsync() {
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            execute();
-        }
+        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

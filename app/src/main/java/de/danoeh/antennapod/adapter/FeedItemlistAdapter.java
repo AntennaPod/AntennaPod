@@ -17,13 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.nineoldandroids.view.ViewHelper;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.LongList;
@@ -34,16 +31,16 @@ import de.danoeh.antennapod.core.util.ThemeUtils;
  */
 public class FeedItemlistAdapter extends BaseAdapter {
 
-    private ActionButtonCallback callback;
+    private final ActionButtonCallback callback;
     private final ItemAccess itemAccess;
     private final Context context;
-    private boolean showFeedtitle;
-    private int selectedItemIndex;
+    private final boolean showFeedtitle;
+    private final int selectedItemIndex;
     /** true if played items should be made partially transparent */
-    private boolean makePlayedItemsTransparent;
+    private final boolean makePlayedItemsTransparent;
     private final ActionButtonUtils actionButtonUtils;
 
-    public static final int SELECTION_NONE = -1;
+    private static final int SELECTION_NONE = -1;
 
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
@@ -62,11 +59,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.makePlayedItemsTransparent = makePlayedItemsTransparent;
 
-        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            playingBackGroundColor = ContextCompat.getColor(context, R.color.highlight_dark);
-        } else {
-            playingBackGroundColor = ContextCompat.getColor(context, R.color.highlight_light);
-        }
+        playingBackGroundColor = ThemeUtils.getColorFromAttr(context, R.attr.currently_playing_background);
         normalBackGroundColor = ContextCompat.getColor(context, android.R.color.transparent);
     }
 
@@ -145,9 +138,9 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 holder.statusUnread.setVisibility(View.INVISIBLE);
             }
             if(item.isPlayed() && makePlayedItemsTransparent) {
-                ViewHelper.setAlpha(convertView, 0.5f);
+                convertView.setAlpha(0.5f);
             } else {
-                ViewHelper.setAlpha(convertView, 1.0f);
+                convertView.setAlpha(1.0f);
             }
 
             String pubDateStr = DateUtils.formatAbbrev(context, item.getPubDate());
@@ -157,7 +150,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
             FeedMedia media = item.getMedia();
             if (media == null) {
-                holder.episodeProgress.setVisibility(View.GONE);
+                holder.episodeProgress.setVisibility(View.INVISIBLE);
                 holder.inPlaylist.setVisibility(View.INVISIBLE);
                 holder.type.setVisibility(View.INVISIBLE);
                 holder.lenSize.setVisibility(View.INVISIBLE);
@@ -176,7 +169,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
                     holder.episodeProgress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
                 } else {
                     if(media.getPosition() == 0) {
-                        holder.episodeProgress.setVisibility(View.GONE);
+                        holder.episodeProgress.setVisibility(View.INVISIBLE);
                     }
                 }
 

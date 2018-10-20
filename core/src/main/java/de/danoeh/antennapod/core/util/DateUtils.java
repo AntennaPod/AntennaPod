@@ -87,7 +87,8 @@ public class DateUtils {
                 "yyyy-MM-dd'T'HH:mm:ss'Z'",
                 "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                 "yyyy-MM-ddZ",
-                "yyyy-MM-dd"
+                "yyyy-MM-dd",
+                "EEE d MMM yyyy HH:mm:ss 'GMT'Z (z)"
         };
 
         SimpleDateFormat parser = new SimpleDateFormat("", Locale.US);

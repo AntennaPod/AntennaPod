@@ -1,347 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/user_interface_label">
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
-            android:entryValues="@array/theme_values"
-            android:entries="@array/theme_options"
-            android:title="@string/pref_set_theme_title"
-            android:key="prefTheme"
-            android:summary="@string/pref_set_theme_sum"
-            android:defaultValue="0"
-            app:useStockLayout="true"/>
-        <PreferenceScreen
-            android:key="prefDrawerSettings"
-            android:summary="@string/pref_nav_drawer_sum"
-            android:title="@string/pref_nav_drawer_title">
-            <Preference
-                android:key="prefHiddenDrawerItems"
-                android:summary="@string/pref_nav_drawer_items_sum"
-                android:title="@string/pref_nav_drawer_items_title" />
-            <com.afollestad.materialdialogs.prefs.MaterialListPreference
-                android:entryValues="@array/nav_drawer_feed_order_values"
-                android:entries="@array/nav_drawer_feed_order_options"
-                android:title="@string/pref_nav_drawer_feed_order_title"
-                android:key="prefDrawerFeedOrder"
-                android:summary="@string/pref_nav_drawer_feed_order_sum"
-                android:defaultValue="0"
-                app:useStockLayout="true"/>
-            <com.afollestad.materialdialogs.prefs.MaterialListPreference
-                android:entryValues="@array/nav_drawer_feed_counter_values"
-                android:entries="@array/nav_drawer_feed_counter_options"
-                android:title="@string/pref_nav_drawer_feed_counter_title"
-                android:key="prefDrawerFeedIndicator"
-                android:summary="@string/pref_nav_drawer_feed_counter_sum"
-                android:defaultValue="0"
-                app:useStockLayout="true"/>
-        </PreferenceScreen>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefExpandNotify"
-            android:summary="@string/pref_expandNotify_sum"
-            android:title="@string/pref_expandNotify_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefPersistNotify"
-            android:summary="@string/pref_persistNotify_sum"
-            android:title="@string/pref_persistNotify_title"/>
-        <Preference
-            android:key="prefCompactNotificationButtons"
-            android:summary="@string/pref_compact_notification_buttons_sum"
-            android:title="@string/pref_compact_notification_buttons_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefLockscreenBackground"
-            android:summary="@string/pref_lockscreen_background_sum"
-            android:title="@string/pref_lockscreen_background_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefShowDownloadReport"
-            android:summary="@string/pref_showDownloadReport_sum"
-            android:title="@string/pref_showDownloadReport_title"/>
-    </PreferenceCategory>
+    <com.bytehamster.lib.preferencesearch.SearchPreference
+            android:key="searchPreference" />
 
-    <PreferenceCategory android:title="@string/queue_label">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefQueueAddToFront"
-            android:summary="@string/pref_queueAddToFront_sum"
-            android:title="@string/pref_queueAddToFront_title"/>
-    </PreferenceCategory>
+    <Preference
+            android:key="prefScreenInterface"
+            android:title="@string/user_interface_label"
+            android:icon="?attr/type_video" />
 
-    <PreferenceCategory android:title="@string/playback_pref">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="false"
-            android:key="prefSonic"
-            android:summary="@string/pref_sonic_message"
-            android:title="@string/pref_sonic_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefPauseOnHeadsetDisconnect"
-            android:summary="@string/pref_pauseOnDisconnect_sum"
-            android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="true"
-            android:dependency="prefPauseOnHeadsetDisconnect"
-            android:key="prefUnpauseOnHeadsetReconnect"
-            android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
-            android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:dependency="prefPauseOnHeadsetDisconnect"
-            android:key="prefUnpauseOnBluetoothReconnect"
-            android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
-            android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefHardwareForwardButtonSkips"
-            android:summary="@string/pref_hardwareForwardButtonSkips_sum"
-            android:title="@string/pref_hardwareForwardButtonSkips_title"/>
-        <Preference
-            android:key="prefPlaybackFastForwardDeltaLauncher"
-            android:summary="@string/pref_fast_forward_sum"
-            android:title="@string/pref_fast_forward" />
-        <Preference
-            android:key="prefPlaybackRewindDeltaLauncher"
-            android:summary="@string/pref_rewind_sum"
-            android:title="@string/pref_rewind" />
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefHardwarePreviousButtonRestarts"
-            android:summary="@string/pref_hardwarePreviousButtonRestarts_sum"
-            android:title="@string/pref_hardwarePreviousButtonRestarts_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefFollowQueue"
-            android:summary="@string/pref_followQueue_sum"
-            android:title="@string/pref_followQueue_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefSkipKeepsEpisode"
-            android:summary="@string/pref_skip_keeps_episodes_sum"
-            android:title="@string/pref_skip_keeps_episodes_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefFavoriteKeepsEpisode"
-            android:summary="@string/pref_favorite_keeps_episodes_sum"
-            android:title="@string/pref_favorite_keeps_episodes_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefAutoDelete"
-            android:summary="@string/pref_auto_delete_sum"
-            android:title="@string/pref_auto_delete_title"/>
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
-            android:defaultValue="30"
-            android:entries="@array/smart_mark_as_played_values"
-            android:entryValues="@array/smart_mark_as_played_values"
-            android:key="prefSmartMarkAsPlayedSecs"
-            android:summary="@string/pref_smart_mark_as_played_sum"
-            android:title="@string/pref_smart_mark_as_played_title"
-            app:useStockLayout="true"/>
-        <Preference
-            android:key="prefPlaybackSpeedLauncher"
-            android:summary="@string/pref_playback_speed_sum"
-            android:title="@string/pref_playback_speed_title" />
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefPauseForFocusLoss"
-            android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
-            android:title="@string/pref_pausePlaybackForFocusLoss_title" />
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefResumeAfterCall"
-            android:summary="@string/pref_resumeAfterCall_sum"
-            android:title="@string/pref_resumeAfterCall_title"/>
+    <Preference
+            android:key="prefScreenPlayback"
+            android:title="@string/playback_pref"
+            android:icon="?attr/av_play" />
 
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/network_pref">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefEnqueueDownloaded"
-            android:summary="@string/pref_enqueue_downloaded_summary"
-            android:title="@string/pref_enqueue_downloaded_title" />
-        <Preference
-            android:key="prefAutoUpdateIntervall"
-            android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
-            android:title="@string/pref_autoUpdateIntervallOrTime_title"/>
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefMobileUpdate"
-            android:summary="@string/pref_mobileUpdate_sum"
-            android:title="@string/pref_mobileUpdate_title"/>
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
-            android:defaultValue="-1"
-            android:entries="@array/episode_cleanup_entries"
-            android:key="prefEpisodeCleanup"
-            android:title="@string/pref_episode_cleanup_title"
-            android:summary="@string/pref_episode_cleanup_summary"
-            android:entryValues="@array/episode_cleanup_values"
-            app:useStockLayout="true"/>
-        <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
-            android:defaultValue="4"
-            android:inputType="number"
-            android:key="prefParallelDownloads"
-            android:title="@string/pref_parallel_downloads_title"
-            app:useStockLayout="true"/>
-        <PreferenceScreen
-            android:summary="@string/pref_automatic_download_sum"
-            android:key="prefAutoDownloadSettings"
-            android:title="@string/pref_automatic_download_title">
-            <de.danoeh.antennapod.preferences.SwitchCompatPreference
-                android:key="prefEnableAutoDl"
-                android:title="@string/pref_automatic_download_title"
-                android:defaultValue="false"/>
-            <com.afollestad.materialdialogs.prefs.MaterialListPreference
-                android:defaultValue="25"
-                android:entries="@array/episode_cache_size_entries"
-                android:key="prefEpisodeCacheSize"
-                android:title="@string/pref_episode_cache_title"
-                android:entryValues="@array/episode_cache_size_values"
-                app:useStockLayout="true"/>
-            <de.danoeh.antennapod.preferences.SwitchCompatPreference
-                android:key="prefEnableAutoDownloadOnBattery"
-                android:title="@string/pref_automatic_download_on_battery_title"
-                android:summary="@string/pref_automatic_download_on_battery_sum"
-                android:defaultValue="true"/>
-            <de.danoeh.antennapod.preferences.SwitchCompatPreference
-                android:key="prefEnableAutoDownloadOnMobile"
-                android:title="@string/pref_autodl_allow_on_mobile_title"
-                android:summary="@string/pref_autodl_allow_on_mobile_sum"
-                android:defaultValue="false"/>
-            <de.danoeh.antennapod.preferences.SwitchCompatPreference
-                android:key="prefEnableAutoDownloadWifiFilter"
-                android:title="@string/pref_autodl_wifi_filter_title"
-                android:summary="@string/pref_autodl_wifi_filter_sum"/>
-        </PreferenceScreen>
-        <Preference
-            android:key="prefProxy"
-            android:summary="@string/pref_proxy_sum"
-            android:title="@string/pref_proxy_title" />
+    <Preference
+            android:key="prefScreenNetwork"
+            android:title="@string/network_pref"
+            android:icon="?attr/ic_swap" />
 
-    </PreferenceCategory>
+    <Preference
+            android:key="prefScreenIntegrations"
+            android:title="@string/integrations_label"
+            android:icon="?attr/ic_unfav" />
 
-    <PreferenceCategory android:title="@string/services_label">
-        <PreferenceScreen
-            android:key="prefFlattrSettings"
-            android:title="@string/flattr_label">
-            <PreferenceScreen
-                android:key="pref_flattr_authenticate"
-                android:summary="@string/pref_flattr_auth_sum"
-                android:title="@string/pref_flattr_auth_title">
-                <intent android:action=".activities.FlattrAuthActivity"/>
-            </PreferenceScreen>
+    <Preference
+            android:key="prefScreenStorage"
+            android:title="@string/storage_pref"
+            android:icon="?attr/storage" />
 
-            <Preference
-                android:key="prefAutoFlattrPrefs"
-                android:summary="@string/pref_auto_flattr_sum"
-                android:title="@string/pref_auto_flattr_title" />
-            <Preference
-                android:key="prefRevokeAccess"
-                android:summary="@string/pref_revokeAccess_sum"
-                android:title="@string/pref_revokeAccess_title"/>
-        </PreferenceScreen>
-        <PreferenceScreen
-            android:key="prefGpodderSettings"
-            android:title="@string/gpodnet_main_label">
-
-            <PreferenceScreen
-                android:key="pref_gpodnet_authenticate"
-                android:title="@string/pref_gpodnet_authenticate_title"
-                android:summary="@string/pref_gpodnet_authenticate_sum">
-                <intent android:action=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
-            </PreferenceScreen>
-            <Preference
-                android:key="pref_gpodnet_setlogin_information"
-                android:title="@string/pref_gpodnet_setlogin_information_title"
-                android:summary="@string/pref_gpodnet_setlogin_information_sum"/>
-            <Preference
-                android:key="pref_gpodnet_sync"
-                android:title="@string/pref_gpodnet_sync_changes_title"
-                android:summary="@string/pref_gpodnet_sync_changes_sum"/>
-            <Preference
-                android:key="pref_gpodnet_force_full_sync"
-                android:title="@string/pref_gpodnet_full_sync_title"
-                android:summary="@string/pref_gpodnet_full_sync_sum"/>
-            <Preference
-                android:key="pref_gpodnet_logout"
-                android:title="@string/pref_gpodnet_logout_title"/>
-            <Preference
-                android:key="pref_gpodnet_hostname"
-                android:title="@string/pref_gpodnet_sethostname_title"/>
-            <de.danoeh.antennapod.preferences.SwitchCompatPreference
-                android:key="pref_gpodnet_notifications"
-                android:title="@string/pref_gpodnet_notifications_title"
-                android:summary="@string/pref_gpodnet_notifications_sum"
-                android:defaultValue="true"/>
-        </PreferenceScreen>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/storage_pref">
-        <Preference
-            android:title="@string/choose_data_directory"
-            android:key="prefChooseDataDir"/>
-        <ListPreference
-            android:entryValues="@array/image_cache_size_values"
-            android:entries="@array/image_cache_size_options"
-            android:title="@string/pref_image_cache_size_title"
-            android:key="prefImageCacheSize"
-            android:summary="@string/pref_image_cache_size_sum"
-            android:defaultValue="100"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/other_pref">
-        <Preference
-            android:key="prefOpmlExport"
-            android:title="@string/opml_export_label"/>
-        <Preference
-            android:key="prefHtmlExport"
-            android:title="@string/html_export_label"/>
-        <Preference
+    <Preference
             android:key="statistics"
-            android:title="@string/statistics_label"/>
-    </PreferenceCategory>
+            android:title="@string/statistics_label"
+            android:icon="?attr/statistics" />
+
     <PreferenceCategory android:title="@string/project_pref">
         <Preference
             android:key="prefFaq"
-            android:title="@string/pref_faq"/>
+            android:title="@string/pref_faq"
+            android:icon="?attr/ic_question_answer" />
+
         <Preference
             android:key="prefKnownIssues"
-            android:title="@string/pref_known_issues"/>
+            android:title="@string/pref_known_issues"
+            android:icon="?attr/ic_known_issues" />
         <Preference
             android:key="prefSendCrashReport"
             android:title="@string/crash_report_title"
-            android:summary="@string/crash_report_sum"/>
+            android:summary="@string/crash_report_sum"
+            android:icon="?attr/ic_bug" />
         <Preference
             android:key="prefAbout"
-            android:title="@string/about_pref"/>
+            android:title="@string/about_pref"
+            android:icon="?attr/action_about" />
     </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/experimental_pref">
-        <de.danoeh.antennapod.preferences.SwitchCompatPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefCast"
-            android:summary="@string/pref_cast_message"
-            android:title="@string/pref_cast_title"/>
-    </PreferenceCategory>
-    
 </PreferenceScreen>

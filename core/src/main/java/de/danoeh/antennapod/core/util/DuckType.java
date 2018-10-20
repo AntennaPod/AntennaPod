@@ -92,7 +92,7 @@ public class DuckType {
 	 *         false otherwise.
 	 */
 	@SuppressWarnings("rawtypes")
-	public boolean quacksLikeA(Class iface) {
+    private boolean quacksLikeA(Class iface) {
 		for (Method method : iface.getMethods()) {
 			if (findMethodBySignature(method) == null) {
 				return false;

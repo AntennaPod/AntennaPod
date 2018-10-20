@@ -20,6 +20,7 @@ import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v7.app.MediaRouteControllerDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.media.MediaRouter;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -68,7 +69,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         this(context, 0);
     }
 
-    public CustomMRControllerDialog(Context context, int theme) {
+    private CustomMRControllerDialog(Context context, int theme) {
         super(context, theme);
         mediaRouter = MediaRouter.getInstance(getContext());
         token = mediaRouter.getMediaSessionToken();
@@ -203,7 +204,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
          * http://stackoverflow.com/questions/18077325/scale-image-to-fill-imageview-width-and-keep-aspect-ratio
          */
         if (landscape) {
-            artView = new ImageView(getContext()) {
+            artView = new AppCompatImageView(getContext()) {
                 @Override
                 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
                     int desiredWidth = widthMeasureSpec;
@@ -234,7 +235,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
             MarginLayoutParamsCompat.setMarginStart(artParams,
                     getContext().getResources().getDimensionPixelSize(R.dimen.media_router_controller_playback_control_horizontal_spacing));
         } else {
-            artView = new ImageView(getContext()) {
+            artView = new AppCompatImageView(getContext()) {
                 @Override
                 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
                     int desiredHeight = heightMeasureSpec;

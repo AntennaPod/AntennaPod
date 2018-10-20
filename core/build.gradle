@@ -1,5 +1,4 @@
 apply plugin: "com.android.library"
-apply plugin: "me.tatarka.retrolambda"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -11,7 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testApplicationId "de.danoeh.antennapod.core.tests"
-        testInstrumentationRunner "de.danoeh.antennapod.core.tests.AntennaPodTestRunner"
+        testInstrumentationRunner "de.danoeh.antennapod.core.AntennaPodTestRunner"
     }
     buildTypes {
         release {
@@ -30,11 +29,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    publishNonDefault true
+    flavorDimensions "market"
     productFlavors {
         free {
+            dimension "market"
         }
         play {
+            dimension "market"
         }
     }
 
@@ -46,35 +47,51 @@ repositories {
 }
 
 dependencies {
-    compile "com.android.support:support-v4:$supportVersion"
-    compile "com.android.support:appcompat-v7:$supportVersion"
-    compile "org.apache.commons:commons-lang3:$commonslangVersion"
-    compile ("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
+    implementation "com.android.support:support-v4:$supportVersion"
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation "com.android.support:preference-v14:$supportVersion"
+    implementation "com.android.support:percent:$supportVersion"
+    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+    implementation "org.apache.commons:commons-text:$commonstextVersion"
+    implementation ("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
         exclude group: "org.json", module: "json"
     }
-    compile "commons-io:commons-io:$commonsioVersion"
-    compile "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
-    compile "org.jsoup:jsoup:$jsoupVersion"
-    compile "com.github.bumptech.glide:glide:$glideVersion"
-    compile "com.github.bumptech.glide:okhttp3-integration:$glideOkhttpIntegrationVersion@aar"
-    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
-    compile "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
-    compile "com.squareup.okio:okio:$okioVersion"
-    compile "com.nineoldandroids:library:2.4.0"
-    compile "de.greenrobot:eventbus:$eventbusVersion"
-    compile "io.reactivex:rxandroid:$rxAndroidVersion"
+    implementation "commons-io:commons-io:$commonsioVersion"
+    implementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
+    implementation "org.jsoup:jsoup:$jsoupVersion"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$glideOkhttpIntegrationVersion@aar"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
+    implementation "com.squareup.okio:okio:$okioVersion"
+    implementation "de.greenrobot:eventbus:$eventbusVersion"
+    implementation "io.reactivex:rxandroid:$rxAndroidVersion"
+    implementation "org.awaitility:awaitility:$awaitilityVersion"
 
-    compile "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
+    implementation "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"
+    implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     // Add casting features
     // free build hack: skip some dependencies
     if (!doFreeBuild()) {
-        playCompile "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
-        compile "com.android.support:mediarouter-v7:$supportVersion"
-        playCompile "com.google.android.gms:play-services-cast:$playServicesVersion"
-        compile "com.google.android.support:wearable:$wearableSupportVersion"
+        playApi "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
+        api "com.android.support:mediarouter-v7:$supportVersion"
+        playApi "com.google.android.gms:play-services-cast:$playServicesVersion"
+        api "com.google.android.support:wearable:$wearableSupportVersion"
     } else {
         System.out.println("core: free build hack, skipping some dependencies")
+    }
+
+    testImplementation 'junit:junit:4.12'
+
+}
+
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "skipped", "passed", "failed"
+        showStandardStreams true
+        displayGranularity 2
     }
 }
 

@@ -137,10 +137,12 @@
     <string-array name="theme_options">
         <item>@string/pref_theme_title_light</item>
         <item>@string/pref_theme_title_dark</item>
+        <item>@string/pref_theme_title_trueblack</item>
     </string-array>
     <string-array name="theme_values">
         <item>0</item>
         <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="nav_drawer_titles">
@@ -181,6 +183,28 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="media_player_options">
+        <item>@string/media_player_builtin</item>
+        <item>@string/media_player_sonic</item>
+        <item>@string/media_player_exoplayer</item>
+    </string-array>
+
+    <string-array name="media_player_values">
+        <item>builtin</item>
+        <item>sonic</item>
+        <item>exoplayer</item>
+    </string-array>
+
+    <string-array name="media_player_options_no_sonic">
+        <item>@string/media_player_builtin</item>
+        <item>@string/media_player_exoplayer</item>
+    </string-array>
+
+    <string-array name="media_player_values_no_sonic">
+        <item>builtin</item>
+        <item>exoplayer</item>
+    </string-array>
+
     <string-array name="episode_filter_options">
         <item>@string/hide_unplayed_episodes_label</item>
         <item>@string/hide_paused_episodes_label</item>
@@ -190,6 +214,7 @@
         <item>@string/hide_downloaded_episodes_label</item>
         <item>@string/hide_not_downloaded_episodes_label</item>
         <item>@string/hide_has_media_label</item>
+        <item>@string/hide_is_favorite_label</item>
     </string-array>
 
     <string-array name="episode_filter_values">
@@ -201,6 +226,7 @@
         <item>downloaded</item>
         <item>not_downloaded</item>
         <item>has_media</item>
+        <item>is_favorite</item>
     </string-array>
 
     <string-array name="image_cache_size_options">
@@ -223,5 +249,27 @@
         <item>@string/rewind_label</item>
         <item>@string/fast_forward_label</item>
         <item>@string/skip_episode_label</item>
+    </string-array>
+
+    <string-array name="video_background_behavior_options">
+        <item>@string/stop_playback</item>
+        <item>@string/player_go_to_picture_in_picture</item>
+        <item>@string/continue_playback</item>
+    </string-array>
+
+    <string-array name="video_background_behavior_values">
+        <item>stop</item>
+        <item>pip</item>
+        <item>continue</item>
+    </string-array>
+
+    <string-array name="video_background_behavior_options_without_pip">
+        <item>@string/stop_playback</item>
+        <item>@string/continue_playback</item>
+    </string-array>
+
+    <string-array name="video_background_behavior_values_without_pip">
+        <item>stop</item>
+        <item>continue</item>
     </string-array>
 </resources>

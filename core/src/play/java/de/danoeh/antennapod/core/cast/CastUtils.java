@@ -13,7 +13,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -99,9 +98,9 @@ public class CastUtils {
             if (subtitle != null) {
                 metadata.putString(MediaMetadata.KEY_SUBTITLE, subtitle);
             }
-            FeedImage image = feedItem.getImage();
-            if (image != null && !TextUtils.isEmpty(image.getDownload_url())) {
-                metadata.addImage(new WebImage(Uri.parse(image.getDownload_url())));
+
+            if (!TextUtils.isEmpty(feedItem.getImageUrl())) {
+                metadata.addImage(new WebImage(Uri.parse(feedItem.getImageUrl())));
             }
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(media.getItem().getPubDate());

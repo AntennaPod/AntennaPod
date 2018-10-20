@@ -13,7 +13,9 @@
         android:scrollbarStyle="outsideOverlay"
         android:paddingTop="@dimen/list_vertical_padding"
         android:paddingBottom="@dimen/list_vertical_padding"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        tools:listitem="@layout/new_episodes_listitem"
+        tools:itemCount="13"/>
 
     <ProgressBar
         android:id="@+id/progLoading"
@@ -22,7 +24,7 @@
         android:layout_gravity="center"
         android:indeterminateOnly="true"
         android:visibility="gone"
-        tools:visibility="visible"
+        tools:visibility="gone"
         tools:layout_width="match_parent"
         tools:layout_height="64dp"
         tools:background="@android:color/holo_red_light"/>

@@ -76,4 +76,18 @@ public class FeedItemUtil {
         return false;
     }
 
+    /**
+     * Get the link for the feed item for the purpose of Share. It fallbacks to
+     * use the feed's link if the named feed item has no link.
+     */
+    public static String getLinkWithFallback(FeedItem item) {
+        if (item == null) {
+            return null;
+        } else if (item.getLink() != null) {
+            return item.getLink();
+        } else if (item.getFeed() != null) {
+            return item.getFeed().getLink();
+        }
+        return null;
+    }
 }

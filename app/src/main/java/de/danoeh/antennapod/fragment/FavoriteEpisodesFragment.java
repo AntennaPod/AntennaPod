@@ -26,7 +26,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 
 public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
-    public static final String TAG = "FavoriteEpisodesFrag";
+    private static final String TAG = "FavoriteEpisodesFrag";
 
     private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
 

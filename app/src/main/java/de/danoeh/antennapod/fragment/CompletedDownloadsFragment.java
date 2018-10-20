@@ -140,18 +140,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         super.onCreateOptionsMenu(menu, inflater);
         if(items != null) {
             inflater.inflate(R.menu.downloads_completed, menu);
-            MenuItem episodeActions = menu.findItem(R.id.episode_actions);
-            if(items.size() > 0) {
-                int[] attrs = {R.attr.action_bar_icon_color};
-                TypedArray ta = getActivity().obtainStyledAttributes(UserPreferences.getTheme(), attrs);
-                int textColor = ta.getColor(0, Color.GRAY);
-                ta.recycle();
-                episodeActions.setIcon(new IconDrawable(getActivity(),
-                        FontAwesomeIcons.fa_gears).color(textColor).actionBarSize());
-                episodeActions.setVisible(true);
-            } else {
-                episodeActions.setVisible(false);
-            }
+            menu.findItem(R.id.episode_actions).setVisible(items.size() > 0);
         }
     }
 
@@ -160,7 +149,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         switch (item.getItemId()) {
             case R.id.episode_actions:
                 EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
-                        .newInstance(items, EpisodesApplyActionFragment.ACTION_REMOVE);
+                        .newInstance(items, EpisodesApplyActionFragment.ACTION_REMOVE | EpisodesApplyActionFragment.ACTION_QUEUE);
                 ((MainActivity) getActivity()).loadChildFragment(fragment);
                 return true;
             default:
@@ -168,7 +157,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
     }
 
-    private DownloadedEpisodesListAdapter.ItemAccess itemAccess = new DownloadedEpisodesListAdapter.ItemAccess() {
+    private final DownloadedEpisodesListAdapter.ItemAccess itemAccess = new DownloadedEpisodesListAdapter.ItemAccess() {
         @Override
         public int getCount() {
             return (items != null) ? items.size() : 0;
@@ -189,7 +178,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
     };
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {

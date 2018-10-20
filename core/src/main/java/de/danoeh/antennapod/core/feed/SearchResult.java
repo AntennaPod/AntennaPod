@@ -1,11 +1,11 @@
 package de.danoeh.antennapod.core.feed;
 
 public class SearchResult {
-	private FeedComponent component;
+	private final FeedComponent component;
 	/** Additional information (e.g. where it was found) */
 	private String subtitle;
 	/** Higher value means more importance */
-	private int value;
+	private final int value;
 
 	public SearchResult(FeedComponent component, int value, String subtitle) {
 		super();

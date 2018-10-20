@@ -8,7 +8,6 @@
   <string name="favorite_episodes_label">Preferits</string>
   <string name="new_label">Nous</string>
   <string name="settings_label">Ajustaments</string>
-  <string name="add_new_feed_label">Afegir Podcast</string>
   <string name="downloads_label">Descàrregues</string>
   <string name="downloads_running_label">Actius</string>
   <string name="downloads_completed_label">Finalitzats</string>
@@ -56,6 +55,8 @@
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

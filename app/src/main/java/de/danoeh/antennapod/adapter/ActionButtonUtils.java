@@ -16,7 +16,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
  * Utility methods for the action button that is displayed on the right hand side
  * of a listitem.
  */
-public class ActionButtonUtils {
+class ActionButtonUtils {
 
     private final int[] labels;
     private final TypedArray drawables;

@@ -21,10 +21,10 @@ public class EpisodesFragment extends Fragment {
     public static final String TAG = "EpisodesFragment";
     private static final String PREF_LAST_TAB_POSITION = "tab_position";
 
-    public static final int POS_NEW_EPISODES = 0;
-    public static final int POS_ALL_EPISODES = 1;
-    public static final int POS_FAV_EPISODES = 2;
-    public static final int TOTAL_COUNT = 3;
+    private static final int POS_NEW_EPISODES = 0;
+    private static final int POS_ALL_EPISODES = 1;
+    private static final int POS_FAV_EPISODES = 2;
+    private static final int TOTAL_COUNT = 3;
 
 
     private TabLayout tabLayout;
@@ -79,7 +79,7 @@ public class EpisodesFragment extends Fragment {
     public static class EpisodesPagerAdapter extends FragmentPagerAdapter {
 
         private final Resources resources;
-        private AllEpisodesFragment[] fragments = {
+        private final AllEpisodesFragment[] fragments = {
                 new NewEpisodesFragment(),
                 new AllEpisodesFragment(),
                 new FavoriteEpisodesFragment()
@@ -106,7 +106,7 @@ public class EpisodesFragment extends Fragment {
                 case POS_ALL_EPISODES:
                     return resources.getString(R.string.all_episodes_short_label);
                 case POS_NEW_EPISODES:
-                    return resources.getString(R.string.new_label);
+                    return resources.getString(R.string.new_episodes_label);
                 case POS_FAV_EPISODES:
                     return resources.getString(R.string.favorite_episodes_label);
                 default:

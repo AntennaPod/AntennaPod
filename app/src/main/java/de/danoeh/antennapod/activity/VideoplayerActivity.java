@@ -7,28 +7,33 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.WindowCompat;
+import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
+import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
+import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.view.AspectRatioVideoView;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.view.AspectRatioVideoView;
 
 /**
  * Activity for playing video files.
@@ -45,12 +50,13 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     private VideoControlsHider videoControlsHider = new VideoControlsHider(this);
 
-    private AtomicBoolean isSetup = new AtomicBoolean(false);
+    private final AtomicBoolean isSetup = new AtomicBoolean(false);
 
     private LinearLayout controls;
     private LinearLayout videoOverlay;
     private AspectRatioVideoView videoview;
     private ProgressBar progressIndicator;
+    private FrameLayout videoframe;
 
     @Override
     protected void chooseTheme() {
@@ -70,20 +76,8 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent().getAction() != null
-                && getIntent().getAction().equals(Intent.ACTION_VIEW)) {
-            Intent intent = getIntent();
-            Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
-            ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
-                    MediaType.VIDEO);
-            Intent launchIntent = new Intent(this, PlaybackService.class);
-            launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
-            launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
-                    true);
-            launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, false);
-            launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
-                    true);
-            startService(launchIntent);
+        if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
+            playExternalMedia(getIntent(), MediaType.VIDEO);
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
@@ -95,10 +89,27 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
+            videoControlsHider.stop();
+        }
+    }
+
+    @Override
+    public void onUserLeaveHint () {
+        if (!PictureInPictureUtil.isInPictureInPictureMode(this) && UserPreferences.getVideoBackgroundBehavior()
+                == UserPreferences.VideoBackgroundBehavior.PICTURE_IN_PICTURE) {
+            compatEnterPictureInPicture();
+        }
+    }
+
+    @Override
     protected void onPause() {
-        videoControlsHider.stop();
-        if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
-            controller.pause();
+        if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
+            if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
+                controller.pause();
+            }
         }
         super.onPause();
     }
@@ -126,7 +137,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void setupGUI() {
-        if(isSetup.getAndSet(true)) {
+        if (isSetup.getAndSet(true)) {
             return;
         }
         super.setupGUI();
@@ -134,34 +145,30 @@ public class VideoplayerActivity extends MediaplayerActivity {
         controls = (LinearLayout) findViewById(R.id.controls);
         videoOverlay = (LinearLayout) findViewById(R.id.overlay);
         videoview = (AspectRatioVideoView) findViewById(R.id.videoview);
+        videoframe = (FrameLayout) findViewById(R.id.videoframe);
         progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
         videoview.getHolder().addCallback(surfaceHolderCallback);
-        videoview.setOnTouchListener(onVideoviewTouched);
+        videoframe.setOnTouchListener(onVideoviewTouched);
+        videoOverlay.setOnTouchListener((view, motionEvent) -> true); // To suppress touches directly below the slider
 
         if (Build.VERSION.SDK_INT >= 16) {
             videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         }
-        if (Build.VERSION.SDK_INT >= 14) {
-            videoOverlay.setFitsSystemWindows(true);
-        }
+        videoOverlay.setFitsSystemWindows(true);
 
         setupVideoControlsToggler();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        videoframe.getViewTreeObserver().addOnGlobalLayoutListener(() ->
+                videoview.setAvailableSize(videoframe.getWidth(), videoframe.getHeight()));
     }
 
     @Override
     protected void onAwaitingVideoSurface() {
+        setupVideoAspectRatio();
         if (videoSurfaceCreated && controller != null) {
             Log.d(TAG, "Videosurface already created, setting videosurface now");
-
-            Pair<Integer, Integer> videoSize = controller.getVideoSize();
-            if (videoSize != null && videoSize.first > 0 && videoSize.second > 0) {
-                Log.d(TAG, "Width,height of video: " + videoSize.first + ", " + videoSize.second);
-                videoview.setVideoSize(videoSize.first, videoSize.second);
-            } else {
-                Log.e(TAG, "Could not determine video size");
-            }
             controller.setVideoSurface(videoview.getHolder());
         }
     }
@@ -180,8 +187,11 @@ public class VideoplayerActivity extends MediaplayerActivity {
         progressIndicator.setVisibility(View.INVISIBLE);
     }
 
-    View.OnTouchListener onVideoviewTouched = (v, event) -> {
+    private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (PictureInPictureUtil.isInPictureInPictureMode(this)) {
+                return true;
+            }
             videoControlsHider.stop();
             toggleVideoControlsVisibility();
             if (videoControlsShowing) {
@@ -194,9 +204,21 @@ public class VideoplayerActivity extends MediaplayerActivity {
     };
 
     @SuppressLint("NewApi")
-    void setupVideoControlsToggler() {
+    private void setupVideoControlsToggler() {
         videoControlsHider.stop();
         videoControlsHider.start();
+    }
+
+    private void setupVideoAspectRatio() {
+        if (videoSurfaceCreated && controller != null) {
+            Pair<Integer, Integer> videoSize = controller.getVideoSize();
+            if (videoSize != null && videoSize.first > 0 && videoSize.second > 0) {
+                Log.d(TAG, "Width,height of video: " + videoSize.first + ", " + videoSize.second);
+                videoview.setVideoSize(videoSize.first, videoSize.second);
+            } else {
+                Log.e(TAG, "Could not determine video size");
+            }
+        }
     }
 
     private void toggleVideoControlsVisibility() {
@@ -247,14 +269,16 @@ public class VideoplayerActivity extends MediaplayerActivity {
                     Log.e(TAG, "Couldn't attach surface to mediaplayer - reference to service was null");
                 }
             }
-
+            setupVideoAspectRatio();
         }
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
             Log.d(TAG, "Videosurface was destroyed");
             videoSurfaceCreated = false;
-            if (controller != null && !destroyingDueToReload) {
+            if (controller != null && !destroyingDueToReload
+                    && UserPreferences.getVideoBackgroundBehavior()
+                    != UserPreferences.VideoBackgroundBehavior.CONTINUE_PLAYING) {
                 controller.notifyVideoSurfaceAbandoned();
             }
         }
@@ -263,6 +287,13 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onReloadNotification(int notificationCode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && PictureInPictureUtil.isInPictureInPictureMode(this)) {
+            if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO
+                    || notificationCode == PlaybackService.EXTRA_CODE_CAST) {
+                finish();
+            }
+            return;
+        }
         if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
             Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
             destroyingDueToReload = true;
@@ -307,26 +338,29 @@ public class VideoplayerActivity extends MediaplayerActivity {
             videoOverlay.startAnimation(animation);
             controls.startAnimation(animation);
         }
-        if (Build.VERSION.SDK_INT >= 14) {
-            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-        }
+        videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
     }
 
     @SuppressLint("NewApi")
-    private void hideVideoControls() {
-        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-        if (animation != null) {
-            videoOverlay.startAnimation(animation);
-            controls.startAnimation(animation);
+    private void hideVideoControls(boolean showAnimation) {
+        if (showAnimation) {
+            final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+            if (animation != null) {
+                videoOverlay.startAnimation(animation);
+                controls.startAnimation(animation);
+            }
         }
-        if (Build.VERSION.SDK_INT >= 14) {
-            int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | videoviewFlag);
-            videoOverlay.setFitsSystemWindows(true);
-        }
+        int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | videoviewFlag);
+        videoOverlay.setFitsSystemWindows(true);
+
         videoOverlay.setVisibility(View.GONE);
         controls.setVisibility(View.GONE);
+    }
+
+    private void hideVideoControls() {
+        hideVideoControls(true);
     }
 
     @Override
@@ -344,24 +378,53 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (PictureInPictureUtil.supportsPictureInPicture(this)) {
+            menu.findItem(R.id.player_go_to_picture_in_picture).setVisible(true);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.player_go_to_picture_in_picture) {
+            compatEnterPictureInPicture();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void compatEnterPictureInPicture() {
+        if (PictureInPictureUtil.supportsPictureInPicture(this) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            getSupportActionBar().hide();
+            hideVideoControls(false);
+            enterPictureInPictureMode();
+        }
+    }
+
     private static class VideoControlsHider extends Handler {
 
         private static final int DELAY = 2500;
 
         private WeakReference<VideoplayerActivity> activity;
 
-        public VideoControlsHider(VideoplayerActivity activity) {
+        VideoControlsHider(VideoplayerActivity activity) {
             this.activity = new WeakReference<>(activity);
         }
 
         private final Runnable hideVideoControls = () -> {
-            VideoplayerActivity vpa = activity.get();
-            if(vpa == null) {
+            VideoplayerActivity vpa = activity != null ? activity.get() : null;
+            if (vpa == null) {
                 return;
             }
             if (vpa.videoControlsShowing) {
                 Log.d(TAG, "Hiding video controls");
-                vpa.getSupportActionBar().hide();
+                ActionBar actionBar = vpa.getSupportActionBar();
+                if (actionBar != null) {
+                    actionBar.hide();
+                }
                 vpa.hideVideoControls();
                 vpa.videoControlsShowing = false;
             }
@@ -371,7 +434,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             this.postDelayed(hideVideoControls, DELAY);
         }
 
-        public void stop() {
+        void stop() {
             this.removeCallbacks(hideVideoControls);
         }
 

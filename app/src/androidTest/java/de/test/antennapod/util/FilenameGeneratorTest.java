@@ -1,11 +1,12 @@
 package de.test.antennapod.util;
 
+import android.test.AndroidTestCase;
+import android.text.TextUtils;
+
 import java.io.File;
 import java.io.IOException;
 
 import de.danoeh.antennapod.core.util.FileNameGenerator;
-import android.test.AndroidTestCase;
-import android.text.TextUtils;
 
 public class FilenameGeneratorTest extends AndroidTestCase {
 

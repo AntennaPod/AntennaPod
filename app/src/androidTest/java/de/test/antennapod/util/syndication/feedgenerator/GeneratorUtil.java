@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * Utility methods for FeedGenerator
  */
-public class GeneratorUtil {
+class GeneratorUtil {
     private GeneratorUtil(){}
 
     public static void addPaymentLink(XmlSerializer xml, String paymentLink, boolean withNamespace) throws IOException {

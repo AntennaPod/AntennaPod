@@ -15,7 +15,8 @@
         android:layout_alignParentBottom="true"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/settings_label"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:focusable="true">
 
         <ImageView
             android:id="@+id/imgvCover"
@@ -31,7 +32,7 @@
             android:scaleType="centerCrop"
             android:src="?attr/ic_settings"
             tools:background="@android:color/holo_orange_dark"
-            tools:src="@android:drawable/sym_def_app_icon"></ImageView>
+            tools:src="@android:drawable/sym_def_app_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -69,5 +70,5 @@
         android:paddingTop="@dimen/list_vertical_padding"
         android:scrollbarStyle="outsideOverlay"
         tools:background="@android:color/holo_purple"
-        tools:listitem="@layout/nav_listitem"></ListView>
+        tools:listitem="@layout/nav_listitem" />
 </RelativeLayout>

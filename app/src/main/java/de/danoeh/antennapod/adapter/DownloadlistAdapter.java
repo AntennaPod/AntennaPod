@@ -19,11 +19,11 @@ import de.danoeh.antennapod.core.util.ThemeUtils;
 
 public class DownloadlistAdapter extends BaseAdapter {
 
-    public static final int SELECTION_NONE = -1;
+    private static final int SELECTION_NONE = -1;
 
     private int selectedItemIndex;
-    private ItemAccess itemAccess;
-    private Context context;
+    private final ItemAccess itemAccess;
+    private final Context context;
 
     public DownloadlistAdapter(Context context,
                                ItemAccess itemAccess) {
@@ -105,7 +105,7 @@ public class DownloadlistAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private View.OnClickListener butSecondaryListener = new View.OnClickListener() {
+    private final View.OnClickListener butSecondaryListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Downloader downloader = (Downloader) v.getTag();
@@ -119,15 +119,6 @@ public class DownloadlistAdapter extends BaseAdapter {
         TextView percent;
         ProgressBar progbar;
         ImageButton butSecondary;
-    }
-
-    public int getSelectedItemIndex() {
-        return selectedItemIndex;
-    }
-
-    public void setSelectedItemIndex(int selectedItemIndex) {
-        this.selectedItemIndex = selectedItemIndex;
-        notifyDataSetChanged();
     }
 
     public interface ItemAccess {

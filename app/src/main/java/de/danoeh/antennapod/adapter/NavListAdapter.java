@@ -48,10 +48,10 @@ import de.danoeh.antennapod.fragment.SubscriptionFragment;
 public class NavListAdapter extends BaseAdapter
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public static final int VIEW_TYPE_COUNT = 3;
+    private static final int VIEW_TYPE_COUNT = 3;
     public static final int VIEW_TYPE_NAV = 0;
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
-    public static final int VIEW_TYPE_SUBSCRIPTION = 2;
+    private static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
     /**
      * a tag used as a placeholder to indicate if the subscription list should be displayed or not
@@ -62,8 +62,8 @@ public class NavListAdapter extends BaseAdapter
     private static List<String> tags;
     private static String[] titles;
 
-    private ItemAccess itemAccess;
-    private WeakReference<Activity> activity;
+    private final ItemAccess itemAccess;
+    private final WeakReference<Activity> activity;
     private boolean showSubscriptionList = true;
 
     public NavListAdapter(ItemAccess itemAccess, Activity context) {
@@ -86,9 +86,7 @@ public class NavListAdapter extends BaseAdapter
     private void loadItems() {
         List<String> newTags = new ArrayList<>(Arrays.asList(MainActivity.NAV_DRAWER_TAGS));
         List<String> hiddenFragments = UserPreferences.getHiddenDrawerItems();
-        for(String hidden : hiddenFragments) {
-            newTags.remove(hidden);
-        }
+        newTags.removeAll(hiddenFragments);
 
         if (newTags.contains(SUBSCRIPTION_LIST_TAG)) {
             // we never want SUBSCRIPTION_LIST_TAG to be in 'tags'

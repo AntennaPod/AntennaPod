@@ -67,7 +67,6 @@
   <!--Empty list labels-->
   <!--Preferences-->
   <string name="queue_label">Kolejka</string>
-  <string name="services_label">Usługi</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Pobieraj pliki tylko przez WiFi</string>
   <string name="refreshing_label">Odświeżanie</string>
   <string name="user_interface_label">Interfejs Użytkownika</string>
@@ -94,6 +93,8 @@
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

@@ -43,7 +43,7 @@ public class ProxyDialog {
 
     private static final String TAG = "ProxyDialog";
 
-    private Context context;
+    private final Context context;
 
     private MaterialDialog dialog;
 
@@ -243,47 +243,44 @@ public class ProxyDialog {
         txtvMessage.setTextColor(textColorPrimary);
         txtvMessage.setText("{fa-circle-o-notch spin} " + checking);
         txtvMessage.setVisibility(View.VISIBLE);
-        subscription = Observable.create(new Observable.OnSubscribe<Response>() {
-                    @Override
-                    public void call(Subscriber<? super Response> subscriber) {
-                        String type = (String) spType.getSelectedItem();
-                        String host = etHost.getText().toString();
-                        String port = etPort.getText().toString();
-                        String username = etUsername.getText().toString();
-                        String password = etPassword.getText().toString();
-                        int portValue = 8080;
-                        if(!TextUtils.isEmpty(port)) {
-                            portValue = Integer.valueOf(port);
-                        }
-                        SocketAddress address = InetSocketAddress.createUnresolved(host, portValue);
-                        Proxy.Type proxyType = Proxy.Type.valueOf(type.toUpperCase());
-                        Proxy proxy = new Proxy(proxyType, address);
-                        OkHttpClient.Builder builder = AntennapodHttpClient.newBuilder()
-                                .connectTimeout(10, TimeUnit.SECONDS)
-                                .proxy(proxy);
-                        builder.interceptors().clear();
-                        OkHttpClient client = builder.build();
-                        if(!TextUtils.isEmpty(username)) {
-                            String credentials = Credentials.basic(username, password);
-                            client.interceptors().add(chain -> {
-                                Request request = chain.request().newBuilder()
-                                        .header("Proxy-Authorization", credentials).build();
-                                return chain.proceed(request);
-                            });
-                        }
-                        Request request = new Request.Builder()
-                                .url("http://www.google.com")
-                                .head()
-                                .build();
-                        try {
-                            Response response = client.newCall(request).execute();
-                            subscriber.onNext(response);
-                        } catch(IOException e) {
-                            subscriber.onError(e);
-                        }
-                        subscriber.onCompleted();
-                    }
-                })
+        subscription = Observable.create((Observable.OnSubscribe<Response>) subscriber -> {
+            String type = (String) spType.getSelectedItem();
+            String host = etHost.getText().toString();
+            String port = etPort.getText().toString();
+            String username = etUsername.getText().toString();
+            String password = etPassword.getText().toString();
+            int portValue = 8080;
+            if(!TextUtils.isEmpty(port)) {
+                portValue = Integer.valueOf(port);
+            }
+            SocketAddress address = InetSocketAddress.createUnresolved(host, portValue);
+            Proxy.Type proxyType = Proxy.Type.valueOf(type.toUpperCase());
+            Proxy proxy = new Proxy(proxyType, address);
+            OkHttpClient.Builder builder = AntennapodHttpClient.newBuilder()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .proxy(proxy);
+            builder.interceptors().clear();
+            OkHttpClient client = builder.build();
+            if(!TextUtils.isEmpty(username)) {
+                String credentials = Credentials.basic(username, password);
+                client.interceptors().add(chain -> {
+                    Request request = chain.request().newBuilder()
+                            .header("Proxy-Authorization", credentials).build();
+                    return chain.proceed(request);
+                });
+            }
+            Request request = new Request.Builder()
+                    .url("http://www.google.com")
+                    .head()
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                subscriber.onNext(response);
+            } catch(IOException e) {
+                subscriber.onError(e);
+            }
+            subscriber.onCompleted();
+        })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

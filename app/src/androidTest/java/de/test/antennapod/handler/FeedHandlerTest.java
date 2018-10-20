@@ -17,7 +17,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
@@ -32,8 +31,8 @@ import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 public class FeedHandlerTest extends InstrumentationTestCase {
     private static final String FEEDS_DIR = "testfeeds";
 
-    File file = null;
-    OutputStream outputStream = null;
+    private File file = null;
+    private OutputStream outputStream = null;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -82,15 +81,7 @@ public class FeedHandlerTest extends InstrumentationTestCase {
         assertEquals(feed.getLink(), parsedFeed.getLink());
         assertEquals(feed.getDescription(), parsedFeed.getDescription());
         assertEquals(feed.getPaymentLink(), parsedFeed.getPaymentLink());
-
-        if (feed.getImage() != null) {
-            FeedImage image = feed.getImage();
-            FeedImage parsedImage = parsedFeed.getImage();
-            assertNotNull(parsedImage);
-
-            assertEquals(image.getTitle(), parsedImage.getTitle());
-            assertEquals(image.getDownload_url(), parsedImage.getDownload_url());
-        }
+        assertEquals(feed.getImageUrl(), parsedFeed.getImageUrl());
 
         if (feed.getItems() != null) {
             assertNotNull(parsedFeed.getItems());
@@ -119,14 +110,7 @@ public class FeedHandlerTest extends InstrumentationTestCase {
                     assertEquals(media.getMime_type(), parsedMedia.getMime_type());
                 }
 
-                if (item.hasItemImage()) {
-                    assertTrue(parsedItem.hasItemImage());
-                    FeedImage image = item.getImage();
-                    FeedImage parsedImage = parsedItem.getImage();
-
-                    assertEquals(image.getTitle(), parsedImage.getTitle());
-                    assertEquals(image.getDownload_url(), parsedImage.getDownload_url());
-                }
+                assertEquals(item.getImageUrl(), parsedFeed.getImageUrl());
 
                 if (item.getChapters() != null) {
                     assertNotNull(parsedItem.getChapters());
@@ -158,14 +142,10 @@ public class FeedHandlerTest extends InstrumentationTestCase {
     }
 
     private Feed createTestFeed(int numItems, boolean withImage, boolean withFeedMedia, boolean withChapters) {
-        FeedImage image = null;
-        if (withImage) {
-            image = new FeedImage(0, "image", null, "http://example.com/picture", false);
-        }
         Feed feed = new Feed(0, null, "title", "http://example.com", "This is the description",
-                "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed", image, file.getAbsolutePath(),
+                "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed", "http://example.com/picture", file.getAbsolutePath(),
                 "http://example.com/feed", true);
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
 
         for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "item-" + i, "http://example.com/item-" + i,

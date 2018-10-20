@@ -1,9 +1,11 @@
 package de.danoeh.antennapod.activity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -11,6 +13,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
@@ -33,21 +38,28 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.Supplier;
+import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
+import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import rx.Observable;
@@ -65,20 +77,21 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private static final String TAG = "MediaplayerActivity";
     private static final String PREFS = "MediaPlayerActivityPreferences";
     private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
+    private static final int REQUEST_CODE_STORAGE = 42;
 
-    protected PlaybackController controller;
+    PlaybackController controller;
 
-    protected TextView txtvPosition;
-    protected TextView txtvLength;
-    protected SeekBar sbPosition;
-    protected ImageButton butRev;
-    protected TextView txtvRev;
-    protected ImageButton butPlay;
-    protected ImageButton butFF;
-    protected TextView txtvFF;
-    protected ImageButton butSkip;
+    private TextView txtvPosition;
+    private TextView txtvLength;
+    SeekBar sbPosition;
+    private ImageButton butRev;
+    private TextView txtvRev;
+    private ImageButton butPlay;
+    private ImageButton butFF;
+    private TextView txtvFF;
+    private ImageButton butSkip;
 
-    protected boolean showTimeLeft = false;
+    private boolean showTimeLeft = false;
 
     private boolean isFavorite = false;
 
@@ -183,31 +196,31 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         };
     }
 
-    protected static TextView getTxtvFFFromActivity(MediaplayerActivity activity) {
+    private static TextView getTxtvFFFromActivity(MediaplayerActivity activity) {
         return activity.txtvFF;
     }
-    protected static TextView getTxtvRevFromActivity(MediaplayerActivity activity) {
+    private static TextView getTxtvRevFromActivity(MediaplayerActivity activity) {
         return activity.txtvRev;
     }
 
-    protected void onSetSpeedAbilityChanged() {
+    private void onSetSpeedAbilityChanged() {
         Log.d(TAG, "onSetSpeedAbilityChanged()");
         updatePlaybackSpeedButton();
     }
 
-    protected void onPlaybackSpeedChange() {
+    private void onPlaybackSpeedChange() {
         updatePlaybackSpeedButtonText();
     }
 
-    protected void onServiceQueried() {
+    private void onServiceQueried() {
         supportInvalidateOptionsMenu();
     }
 
-    protected void chooseTheme() {
+    void chooseTheme() {
         setTheme(UserPreferences.getTheme());
     }
 
-    protected void setScreenOn(boolean enable) {
+    void setScreenOn(boolean enable) {
     }
 
     @Override
@@ -224,9 +237,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     @Override
     protected void onPause() {
-        if(controller != null) {
-            controller.reinitServiceIfPaused();
-            controller.pause();
+        if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
+            if (controller != null) {
+                controller.reinitServiceIfPaused();
+                controller.pause();
+            }
         }
         super.onPause();
     }
@@ -248,7 +263,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
      */
     protected abstract void onBufferEnd();
 
-    protected void onBufferUpdate(float progress) {
+    private void onBufferUpdate(float progress) {
         if (sbPosition != null) {
             sbPosition.setSecondaryProgress((int) progress * sbPosition.getMax());
         }
@@ -257,7 +272,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     /**
      * Current screen orientation.
      */
-    protected int orientation;
+    private int orientation;
 
     @Override
     protected void onStart() {
@@ -266,6 +281,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             controller.release();
         }
         controller = newPlaybackController();
+        setupGUI();
+        loadMediaInfo();
+        onPositionObserverUpdate();
     }
 
     @Override
@@ -316,11 +334,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
         );
 
-        boolean hasWebsiteLink = media != null && media.getWebsiteLink() != null;
+        boolean hasWebsiteLink = ( getWebsiteLinkWithFallback(media) != null );
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
         boolean isItemAndHasLink = isFeedMedia &&
-                ((FeedMedia) media).getItem() != null && ((FeedMedia) media).getItem().getLink() != null;
+                ShareUtils.hasLinkToShare(((FeedMedia) media).getItem());
         menu.findItem(R.id.share_link_item).setVisible(isItemAndHasLink);
         menu.findItem(R.id.share_link_with_position_item).setVisible(isItemAndHasLink);
 
@@ -368,7 +386,17 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+
+            View cover = findViewById(R.id.imgvCover);
+            if (cover != null && Build.VERSION.SDK_INT >= 16) {
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(MediaplayerActivity.this,
+                        cover, "coverTransition");
+                startActivity(intent, options.toBundle());
+            } else {
+                startActivity(intent);
+            }
+            finish();
             return true;
         } else {
             if (media != null) {
@@ -546,7 +574,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         });
                         break;
                     case R.id.visit_website_item:
-                        Uri uri = Uri.parse(media.getWebsiteLink());
+                        Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));
                         break;
                     case R.id.support_item:
@@ -589,13 +617,34 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
+    private static String getWebsiteLinkWithFallback(Playable media) {
+        if (media == null) {
+            return null;
+        } else if (media.getWebsiteLink() != null) {
+            return media.getWebsiteLink();
+        } else if (media instanceof FeedMedia) {
+            return FeedItemUtil.getLinkWithFallback(((FeedMedia)media).getItem());
+        }
+        return null;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume()");
         StorageUtils.checkStorageAvailability(this);
-        if(controller != null) {
+        if (controller != null) {
             controller.init();
+        }
+    }
+
+    public void onEventMainThread(ServiceEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
+            if (controller != null) {
+                controller.init();
+            }
+
         }
     }
 
@@ -609,7 +658,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     protected abstract void clearStatusMsg();
 
-    protected void onPositionObserverUpdate() {
+    void onPositionObserverUpdate() {
         if (controller == null || txtvPosition == null || txtvLength == null) {
             return;
         }
@@ -645,12 +694,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
      * to the PlaybackService to ensure that the activity has the right
      * FeedMedia object.
      */
-    protected boolean loadMediaInfo() {
+    boolean loadMediaInfo() {
         Log.d(TAG, "loadMediaInfo()");
         if(controller == null || controller.getMedia() == null) {
             return false;
         }
-        Playable media = controller.getMedia();
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
         onPositionObserverUpdate();
@@ -659,18 +707,18 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         return true;
     }
 
-    protected void updatePlaybackSpeedButton() {
+    void updatePlaybackSpeedButton() {
         // Only meaningful on AudioplayerActivity, where it is overridden.
     }
 
-    protected void updatePlaybackSpeedButtonText() {
+    void updatePlaybackSpeedButtonText() {
         // Only meaningful on AudioplayerActivity, where it is overridden.
     }
 
     /**
      * Abstract directions to skip forward or back (rewind) and encapsulates behavior to get or set preference (including update of UI on the skip buttons).
      */
-    static public enum SkipDirection {
+    public enum SkipDirection {
         SKIP_FORWARD(
                 UserPreferences::getFastForwardSecs,
                 MediaplayerActivity::getTxtvFFFromActivity,
@@ -753,7 +801,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         builder.create().show();
     }
 
-    protected void setupGUI() {
+    void setupGUI() {
         setContentView(getContentViewResourceId());
         sbPosition = (SeekBar) findViewById(R.id.sbPosition);
         txtvPosition = (TextView) findViewById(R.id.txtvPosition);
@@ -823,11 +871,12 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
 
         if (butSkip != null) {
-            butSkip.setOnClickListener(v -> sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE)));
+            butSkip.setOnClickListener(v ->
+                    IntentUtils.sendLocalBroadcast(MediaplayerActivity.this, PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
         }
     }
 
-    protected void onRewind() {
+    void onRewind() {
         if (controller == null) {
             return;
         }
@@ -835,14 +884,15 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         controller.seekTo(curr - UserPreferences.getRewindSecs() * 1000);
     }
 
-    protected void onPlayPause() {
+    void onPlayPause() {
         if(controller == null) {
             return;
         }
+        controller.init();
         controller.playPause();
     }
 
-    protected void onFastForward() {
+    void onFastForward() {
         if (controller == null) {
             return;
         }
@@ -852,7 +902,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     protected abstract int getContentViewResourceId();
 
-    void handleError(int errorCode) {
+    private void handleError(int errorCode) {
         final AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
         errorDialog.setTitle(R.string.error_label);
         errorDialog.setMessage(MediaPlayerError.getErrorString(this, errorCode));
@@ -865,7 +915,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         errorDialog.create().show();
     }
 
-    float prog;
+    private float prog;
 
     @Override
     public void onProgressChanged (SeekBar seekBar,int progress, boolean fromUser) {
@@ -914,4 +964,39 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
+    void playExternalMedia(Intent intent, MediaType type) {
+        if (intent == null || intent.getData() == null) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= 23
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_CODE_STORAGE);
+            }
+            return;
+        }
+
+        Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
+        ExternalMedia media = new ExternalMedia(intent.getData().getPath(), type);
+
+        new PlaybackServiceStarter(this, media)
+                .startWhenPrepared(true)
+                .shouldStream(false)
+                .prepareImmediately(true)
+                .start();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == REQUEST_CODE_STORAGE) {
+            if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

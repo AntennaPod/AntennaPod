@@ -9,7 +9,7 @@
 
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="@dimen/listitem_threeline_height"
+    android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
     android:gravity="center_vertical"
@@ -122,11 +122,10 @@
 
             <ProgressBar
                 android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
+                style="?attr/progressBarTheme"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="4dp"
                 android:layout_below="@id/txtvProgressLeft"
-                android:layout_marginTop="-2dp"
                 android:max="100"
                 tools:background="@android:color/holo_blue_light" />
 

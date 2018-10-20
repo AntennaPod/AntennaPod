@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceScreen
+            android:key="pref_gpodnet_authenticate"
+            android:title="@string/pref_gpodnet_authenticate_title"
+            android:summary="@string/pref_gpodnet_authenticate_sum">
+        <intent android:action=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
+    </PreferenceScreen>
+    <Preference
+            android:key="pref_gpodnet_setlogin_information"
+            android:title="@string/pref_gpodnet_setlogin_information_title"
+            android:summary="@string/pref_gpodnet_setlogin_information_sum"/>
+    <Preference
+            android:key="pref_gpodnet_sync"
+            android:title="@string/pref_gpodnet_sync_changes_title"
+            android:summary="@string/pref_gpodnet_sync_changes_sum"/>
+    <Preference
+            android:key="pref_gpodnet_force_full_sync"
+            android:title="@string/pref_gpodnet_full_sync_title"
+            android:summary="@string/pref_gpodnet_full_sync_sum"/>
+    <Preference
+            android:key="pref_gpodnet_logout"
+            android:title="@string/pref_gpodnet_logout_title"/>
+    <Preference
+            android:key="pref_gpodnet_hostname"
+            android:title="@string/pref_gpodnet_sethostname_title"/>
+    <SwitchPreference
+            android:key="pref_gpodnet_notifications"
+            android:title="@string/pref_gpodnet_notifications_title"
+            android:summary="@string/pref_gpodnet_notifications_sum"
+            android:defaultValue="true"/>
+
+</PreferenceScreen>

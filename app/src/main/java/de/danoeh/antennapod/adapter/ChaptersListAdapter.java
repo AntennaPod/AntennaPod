@@ -9,7 +9,6 @@ import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,9 +19,9 @@ import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
@@ -144,9 +143,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
         Chapter current = ChapterUtils.getCurrentChapter(media);
         if (current == sc) {
-            boolean darkTheme = UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark;
-            int highlight = darkTheme ? R.color.highlight_dark : R.color.highlight_light;
-            int playingBackGroundColor = ContextCompat.getColor(getContext(), highlight);
+            int playingBackGroundColor = ThemeUtils.getColorFromAttr(getContext(), R.attr.currently_playing_background);
             holder.view.setBackgroundColor(playingBackGroundColor);
         } else {
             holder.view.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));

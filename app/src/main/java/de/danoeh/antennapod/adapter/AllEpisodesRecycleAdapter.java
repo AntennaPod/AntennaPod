@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
-import com.nineoldandroids.view.ViewHelper;
 
 import java.lang.ref.WeakReference;
 
@@ -30,12 +29,12 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.fragment.ItemFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
@@ -68,11 +67,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         this.actionButtonCallback = actionButtonCallback;
         this.showOnlyNewEpisodes = showOnlyNewEpisodes;
 
-        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_dark);
-        } else {
-            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_light);
-        }
+        playingBackGroundColor = ThemeUtils.getColorFromAttr(mainActivity, R.attr.currently_playing_background);
         normalBackGroundColor = ContextCompat.getColor(mainActivity, android.R.color.transparent);
     }
 
@@ -101,7 +96,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.txtvDuration = (TextView) view.findViewById(R.id.txtvDuration);
         holder.item = null;
         holder.mainActivityRef = mainActivityRef;
-        holder.position = -1;
         // so we can grab this later
         view.setTag(holder);
 
@@ -113,11 +107,10 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         final FeedItem item = itemAccess.getItem(position);
         if (item == null) return;
         holder.itemView.setOnLongClickListener(v -> {
-            this.position = position;
+            this.position = holder.getAdapterPosition();
             return false;
         });
         holder.item = item;
-        holder.position = position;
         holder.placeholder.setVisibility(View.VISIBLE);
         holder.placeholder.setText(item.getFeed().getTitle());
         holder.title.setText(item.getTitle());
@@ -129,9 +122,9 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             holder.statusUnread.setVisibility(View.VISIBLE);
         }
         if(item.isPlayed()) {
-            ViewHelper.setAlpha(holder.content, 0.5f);
+            holder.content.setAlpha(0.5f);
         } else {
-            ViewHelper.setAlpha(holder.content, 1.0f);
+            holder.content.setAlpha(1.0f);
         }
 
         FeedMedia media = item.getMedia();
@@ -174,7 +167,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                     holder.progress.setVisibility(View.VISIBLE);
                 }
             } else {
-                holder.progress.setVisibility(View.GONE);
+                holder.progress.setVisibility(View.INVISIBLE);
             }
 
             if(media.isCurrentlyPlaying()) {
@@ -183,7 +176,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 holder.container.setBackgroundColor(normalBackGroundColor);
             }
         } else {
-            holder.progress.setVisibility(View.GONE);
+            holder.progress.setVisibility(View.INVISIBLE);
             holder.txtvDuration.setVisibility(View.GONE);
         }
 
@@ -228,7 +221,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         return pos;
     }
 
-    private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
+    private final View.OnClickListener secondaryActionListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();
@@ -253,7 +246,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         ImageButton butSecondary;
         FeedItem item;
         WeakReference<MainActivity> mainActivityRef;
-        int position;
 
         public Holder(View itemView) {
             super(itemView);
@@ -266,18 +258,18 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             MainActivity mainActivity = mainActivityRef.get();
             if (mainActivity != null) {
                 long[] ids = itemAccess.getItemsIds().toArray();
-                mainActivity.loadChildFragment(ItemFragment.newInstance(ids, position));
+                mainActivity.loadChildFragment(ItemFragment.newInstance(ids, getAdapterPosition()));
             }
         }
 
         @Override
         public void onItemSelected() {
-            ViewHelper.setAlpha(itemView, 0.5f);
+            itemView.setAlpha(0.5f);
         }
 
         @Override
         public void onItemClear() {
-            ViewHelper.setAlpha(itemView, 1.0f);
+            itemView.setAlpha(1.0f);
         }
 
         public FeedItem getFeedItem() { return item; }
@@ -303,6 +295,8 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 }
             };
             FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
+
+            contextMenuInterface.setItemVisibility(R.id.mark_as_seen_item, item.isNew());
         }
 
     }

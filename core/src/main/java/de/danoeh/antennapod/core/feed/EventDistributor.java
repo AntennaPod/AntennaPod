@@ -27,8 +27,8 @@ public class EventDistributor extends Observable {
 	public static final int DOWNLOAD_HANDLED = 64;
     public static final int PLAYER_STATUS_UPDATE = 128;
 
-	private Handler handler;
-	private AbstractQueue<Integer> events;
+	private final Handler handler;
+	private final AbstractQueue<Integer> events;
 
 	private static EventDistributor instance;
 
@@ -52,7 +52,7 @@ public class EventDistributor extends Observable {
 		deleteObserver(el);
 	}
 
-	public void addEvent(Integer i) {
+	private void addEvent(Integer i) {
 		events.offer(i);
 		handler.post(EventDistributor.this::processEventQueue);
 	}

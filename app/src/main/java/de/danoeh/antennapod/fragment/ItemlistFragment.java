@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,6 +31,7 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.widget.IconTextView;
 
+import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
@@ -89,9 +88,9 @@ public class ItemlistFragment extends ListFragment {
             | EventDistributor.PLAYER_STATUS_UPDATE;
 
     public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
-    public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
+    private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
-    protected FeedItemlistAdapter adapter;
+    private FeedItemlistAdapter adapter;
     private ContextMenu contextMenu;
     private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 
@@ -223,13 +222,6 @@ public class ItemlistFragment extends ListFragment {
                 menu.findItem(R.id.share_link_item).setVisible(false);
                 menu.findItem(R.id.visit_website_item).setVisible(false);
             }
-            int[] attrs = { R.attr.action_bar_icon_color };
-            TypedArray ta = getActivity().obtainStyledAttributes(UserPreferences.getTheme(), attrs);
-            int textColor = ta.getColor(0, Color.GRAY);
-            ta.recycle();
-
-            menu.findItem(R.id.episode_actions).setIcon(new IconDrawable(getActivity(),
-                    FontAwesomeIcons.fa_gears).color(textColor).actionBarSize());
 
             isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
@@ -342,22 +334,7 @@ public class ItemlistFragment extends ListFragment {
             return super.onContextItemSelected(item);
         }
 
-        try {
-            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
-        } catch (DownloadRequestException e) {
-            // context menu doesn't contain download functionality
-            return true;
-        }
-    }
-
-
-    @Override
-    public void setListAdapter(ListAdapter adapter) {
-        // This workaround prevents the ListFragment from setting a list adapter when its state is restored.
-        // This is only necessary on API 10 because addFooterView throws an internal exception in this case.
-        if (Build.VERSION.SDK_INT > 10 || insideOnFragmentLoaded) {
-            super.setListAdapter(adapter);
-        }
+        return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
     }
 
     @Override
@@ -417,7 +394,7 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
@@ -514,6 +491,7 @@ public class ItemlistFragment extends ListFragment {
         imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
         imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
+        ImageButton butShowSettings = (ImageButton) header.findViewById(R.id.butShowSettings);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
         txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
 
@@ -526,15 +504,26 @@ public class ItemlistFragment extends ListFragment {
 
         loadFeedImage();
 
-        butShowInfo.setOnClickListener(v -> {
+        butShowInfo.setOnClickListener(v -> showFeedInfo());
+        imgvCover.setOnClickListener(v -> showFeedInfo());
+        butShowSettings.setOnClickListener(v -> {
             if (viewsCreated && itemsLoaded) {
-                Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
-                startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
+                Intent startIntent = new Intent(getActivity(), FeedSettingsActivity.class);
+                startIntent.putExtra(FeedSettingsActivity.EXTRA_FEED_ID,
                         feed.getId());
                 startActivity(startIntent);
             }
         });
         headerCreated = true;
+    }
+
+    private void showFeedInfo() {
+        if (viewsCreated && itemsLoaded) {
+            Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
+            startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
+                    feed.getId());
+            startActivity(startIntent);
+        }
     }
 
     private void loadFeedImage() {
@@ -583,7 +572,7 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
-    private FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
+    private final FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
 
         @Override
         public FeedItem getItem(int position) {

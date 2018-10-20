@@ -110,9 +110,9 @@
                     android:layout_centerHorizontal="true"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/pause_label"
-                    android:src="?attr/av_pause"
+                    android:src="?attr/av_play"
                     android:scaleType="fitCenter"
-                    tools:src="@drawable/ic_pause_white_36dp"
+                    tools:src="@drawable/ic_play_arrow_white_24dp"
                     tools:background="@android:color/holo_green_dark" />
 
                 <ImageButton
@@ -152,6 +152,7 @@
                     android:src="?attr/av_fast_forward"
                     android:textSize="@dimen/text_size_medium"
                     android:textAllCaps="false"
+                    android:maxLines="1"
                     tools:visibility="gone"
                     tools:background="@android:color/holo_green_dark" />
 

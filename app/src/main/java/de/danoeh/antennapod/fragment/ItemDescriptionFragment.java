@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -34,6 +33,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -112,15 +112,20 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                              Bundle savedInstanceState) {
         Log.d(TAG, "Creating view");
         webvDescription = new WebView(getActivity().getApplicationContext());
-        if (Build.VERSION.SDK_INT >= 11) {
-            webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
+        webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
         TypedArray ta = getActivity().getTheme().obtainStyledAttributes(new int[]
                 {android.R.attr.colorBackground});
-        int backgroundColor = ta.getColor(0, UserPreferences.getTheme() ==
-                R.style.Theme_AntennaPod_Dark ? Color.BLACK : Color.WHITE);
+        boolean black = UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark
+                || UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack;
+        int backgroundColor = ta.getColor(0, black ? Color.BLACK : Color.WHITE);
+
         ta.recycle();
         webvDescription.setBackgroundColor(backgroundColor);
+        if (!NetworkUtils.networkAvailable()) {
+            webvDescription.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            // Use cached resources, even if they have expired
+        }
         webvDescription.getSettings().setUseWideViewPort(false);
         webvDescription.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webvDescription.getSettings().setLoadWithOverviewMode(true);
@@ -203,7 +208,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     }
 
 
-    private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
+    private final View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
 
         @Override
         public boolean onLongClick(View v) {
@@ -238,17 +243,11 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                     ShareUtils.shareLink(getActivity(), selectedURL);
                     break;
                 case R.id.copy_url_item:
-                    if (android.os.Build.VERSION.SDK_INT >= 11) {
-                        ClipData clipData = ClipData.newPlainText(selectedURL,
-                                selectedURL);
-                        android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
-                                .getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setPrimaryClip(clipData);
-                    } else {
-                        android.text.ClipboardManager cm = (android.text.ClipboardManager) getActivity()
-                                .getSystemService(Context.CLIPBOARD_SERVICE);
-                        cm.setText(selectedURL);
-                    }
+                    ClipData clipData = ClipData.newPlainText(selectedURL,
+                            selectedURL);
+                    android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
+                            .getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setPrimaryClip(clipData);
                     Toast t = Toast.makeText(getActivity(),
                             R.string.copied_url_msg, Toast.LENGTH_SHORT);
                     t.show();

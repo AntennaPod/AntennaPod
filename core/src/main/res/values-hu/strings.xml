@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Kedvencek</string>
   <string name="new_label">Új</string>
   <string name="settings_label">Beállítások</string>
-  <string name="add_new_feed_label">Podcast hozzáadása</string>
   <string name="downloads_label">Letöltések</string>
   <string name="downloads_running_label">Futó</string>
   <string name="downloads_completed_label">Befejezett</string>
@@ -33,6 +32,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Rendezés számláló szerint</string>
   <string name="drawer_feed_order_alphabetical">Rendezés ABC rendben</string>
   <string name="drawer_feed_order_last_update">Rendezés megjelenés dátuma szerint</string>
+  <string name="drawer_feed_order_most_played">Rendezés játszott epizódok szerint</string>
   <string name="drawer_feed_counter_new_unplayed">Új és nem játszott epizódok száma</string>
   <string name="drawer_feed_counter_new">Új epizódok száma</string>
   <string name="drawer_feed_counter_unplayed">Nem játszott epizódok száma</string>
@@ -62,6 +62,7 @@
   <string name="refresh_label">Frissítés</string>
   <string name="external_storage_error_msg">Nem található külső tárhely. Biztosíts egy külső tárhelyet hogy az alkalmazás működni tudjon.</string>
   <string name="chapters_label">Fejezetek</string>
+  <string name="chapter_duration">Hossz: %1$s</string>
   <string name="shownotes_label">Jegyzetek</string>
   <string name="description_label">Leírás</string>
   <string name="most_recent_prefix">Legfrissebb epizód:\u0020</string>
@@ -83,7 +84,7 @@
   <string name="feed_auto_download_never">Soha</string>
   <string name="send_label">Küldés…</string>
   <string name="episode_cleanup_never">Soha</string>
-  <string name="episode_cleanup_queue_removal">Ha nem várakozik</string>
+  <string name="episode_cleanup_queue_removal">Ha nincs sorbaállítva</string>
   <string name="episode_cleanup_after_listening">Befejezés után</string>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 nappal a befejezés után</item>
@@ -109,19 +110,20 @@
   <string name="remove_feed_label">Podcast eltávolítása</string>
   <string name="share_label">Megosztás…</string>
   <string name="share_link_label">Link megosztása</string>
+  <string name="share_file_label">Fájl megosztása</string>
   <string name="share_link_with_position_label">Link megosztása pozícióval</string>
   <string name="share_feed_url_label">Idővonal URL megosztása</string>
   <string name="share_item_url_label">Epizód fájl URL megosztása</string>
   <string name="share_item_url_with_position_label">Epizód fájl URL megosztása pozícióval</string>
+  <string name="feed_delete_confirmation_msg">Kérlek erősítsd meg, hogy törlöd a %1$s csatornát, az összes letöltött epizóddal együtt.</string>
   <string name="feed_remover_msg">Idővonal eltávolítása</string>
   <string name="load_complete_feed">Teljes idővonal frissítése</string>
   <string name="hide_episodes_title">Epizódok elrejtése</string>
-  <string name="episode_actions">Műveletek alkalmazása</string>
   <string name="hide_unplayed_episodes_label">Nem lejátszott</string>
   <string name="hide_paused_episodes_label">Szüneteltetett</string>
   <string name="hide_played_episodes_label">Lejátszott</string>
-  <string name="hide_queued_episodes_label">Várakozó</string>
-  <string name="hide_not_queued_episodes_label">Nem várakozó</string>
+  <string name="hide_queued_episodes_label">Sorbaállítva</string>
+  <string name="hide_not_queued_episodes_label">Nincs sorbaállítva</string>
   <string name="hide_downloaded_episodes_label">Letöltött</string>
   <string name="hide_not_downloaded_episodes_label">Nem letöltött</string>
   <string name="hide_has_media_label">További tartalma van</string>
@@ -138,12 +140,12 @@
   <string name="delete_label">Törlés</string>
   <string name="remove_episode_lable">Epizód eltávolítása</string>
   <string name="marked_as_seen_label">Megtekintettként megjelölve</string>
-  <string name="mark_read_label">Lejátszottként megjelölés</string>
+  <string name="mark_read_label">Jelölés játszottnak</string>
   <string name="marked_as_read_label">Lejátszottként megjelölve</string>
-  <string name="mark_unread_label">Nem lejátszottként megjelölés</string>
-  <string name="add_to_queue_label">Várakozási sorhoz adás</string>
-  <string name="added_to_queue_label">Várakozási sorhoz adva</string>
-  <string name="remove_from_queue_label">Várakozási sorból eltávolítás</string>
+  <string name="mark_unread_label">Jelölés nem játszottnak</string>
+  <string name="add_to_queue_label">Sorbaállítás</string>
+  <string name="added_to_queue_label">Hozzáadva a lejátszási sorhoz</string>
+  <string name="remove_from_queue_label">Eltávolítás lejátszási sorból</string>
   <string name="add_to_favorite_label">Kedvencekhez adás</string>
   <string name="added_to_favorites">Kedvencekhez adva</string>
   <string name="remove_from_favorite_label">Kedvencekből eltávolítás</string>
@@ -160,6 +162,8 @@
   <string name="download_failed">sikertelen</string>
   <string name="download_pending">Letöltés várakozik</string>
   <string name="download_running">Letöltés fut</string>
+  <string name="download_error_details">Részletek</string>
+  <string name="download_error_details_message">%1$s \n\nFájl URL:\n%2$s</string>
   <string name="download_error_device_not_found">Táreszköz nem található</string>
   <string name="download_error_insufficient_space">Túl kevés tárhely</string>
   <string name="download_error_file_error">Fájl Hiba</string>
@@ -174,29 +178,212 @@
   <string name="download_error_forbidden">Tiltott</string>
   <string name="cancel_all_downloads_label">Az összes letöltés visszavonása</string>
   <string name="download_canceled_msg">Letöltés visszavonva</string>
+  <string name="download_report_title">Letöltés befejeződött, hibák léptek fel</string>
+  <string name="download_report_content_title">Jelentés letöltése</string>
+  <string name="download_error_request_error">Lekérési hiba</string>
+  <string name="download_error_db_access">Adatbázis hozzáférési hiba</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d letöltés van hátra</item>
+    <item quantity="other">%d letöltés van hátra</item>
+  </plurals>
+  <string name="downloads_processing">Letöltések feldolgozása</string>
+  <string name="download_notification_title">Podcast adatok letöltése</string>
+  <string name="download_report_content">%1$d letöltés sikeres, %2$d sikertelen</string>
+  <string name="download_log_title_unknown">Ismeretlen cím</string>
+  <string name="download_type_feed">Csatorna</string>
+  <string name="download_type_media">Média fájl</string>
+  <string name="download_type_image">Kép</string>
+  <string name="authentication_notification_title">Bejelentkezés szükséges</string>
+  <string name="authentication_notification_msg">A kért forrás felhasználónevet és jelszót kér</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Átmenetileg engedélyez</string>
   <!--Mediaplayer messages-->
+  <string name="player_error_msg">Hiba!</string>
+  <string name="player_preparing_msg">Előkészítés</string>
+  <string name="player_ready_msg">Kész</string>
+  <string name="player_seeking_msg">Tekerés</string>
+  <string name="playback_error_server_died">Szerver kapcsolat megszakadt</string>
+  <string name="playback_error_unknown">Ismeretlen hiba</string>
+  <string name="player_buffering_msg">Pufferelés</string>
+  <string name="playbackservice_notification_title">Podcast lejátszása</string>
   <!--Queue operations-->
+  <string name="lock_queue">Lejátszási sor lezárása</string>
+  <string name="unlock_queue">Lejátszási sor feloldása</string>
+  <string name="queue_locked">Lejátszási sor lezárva</string>
+  <string name="queue_unlocked">Lejátszási sor feloldva</string>
+  <string name="clear_queue_label">Lejátszási sor tisztítása</string>
+  <string name="undo">Visszavonás</string>
+  <string name="removed_from_queue">Elem eltávolítva</string>
+  <string name="move_to_top_label">Mozgatás az elejére</string>
+  <string name="move_to_bottom_label">Mozgatás a végére</string>
+  <string name="sort">Rendezés</string>
+  <string name="date">Dátum</string>
+  <string name="duration">Hossz</string>
+  <string name="episode_title">Epizód cím</string>
+  <string name="feed_title">Csatorna cím</string>
+  <string name="ascending">Növekvő</string>
+  <string name="descending">Csökkenő</string>
   <!--Flattr-->
+  <string name="flattr_auth_label">Flattr bejelentkezés</string>
+  <string name="access_revoked_title">Hozzáférés megtagadva</string>
   <!--Flattr-->
   <!--Variable Speed-->
+  <string name="download_plugin_label">Kiegészítő letöltése</string>
+  <string name="no_playback_plugin_title">Kiegészítő nincs telepítve</string>
+  <string name="set_playback_speed_label">Lejátszási sebesség</string>
+  <string name="enable_sonic">Sonic engedélyezése</string>
   <!--Empty list labels-->
+  <string name="no_items_label">Nincs elem a listában</string>
+  <string name="no_feeds_label">Egy csatornára sem iratkoztál még fel</string>
   <!--Preferences-->
+  <string name="storage_pref">Tároló</string>
+  <string name="project_pref">Projekt</string>
+  <string name="other_pref">Egyebek</string>
+  <string name="about_pref">Rólam</string>
+  <string name="queue_label">Lejátszási sor</string>
+  <string name="flattr_label">Flattr</string>
+  <string name="pref_pauseOnDisconnect_sum">Lejátszás szüneteltetése fejhallgató és bluetooth leválasztásakor</string>
+  <string name="pref_hardwareForwardButtonSkips_title">Előre gomb átugor</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">Előző gomb újraindít</string>
+  <string name="pref_auto_delete_title">Autómata törlés</string>
+  <string name="pref_smart_mark_as_played_title">Intelligens játszottnak jelölés</string>
+  <string name="playback_pref">Lejátszás</string>
+  <string name="network_pref">Hálózat</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Intervallum</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Időpont</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">minden %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">%1$s-kor</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Média fájlok letöltése csak WiFi-n</string>
+  <string name="pref_followQueue_title">Folyamatos lejátszás</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">WiFi média lejátszás</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Fejhallgató leválasztása</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Fejhallgató újracsatlakoztatása</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth újracsatlakozás</string>
+  <string name="pref_mobileUpdate_title">Frissítések mobiladat-kapcsolaton</string>
+  <string name="pref_mobileUpdate_sum">Frissítések engedélyezése mobiladat-kapcsolaton keresztül</string>
+  <string name="flattr_settings_label">Flattr beállítások</string>
+  <string name="pref_flattr_auth_title">Flattr bejelentkezés</string>
+  <string name="pref_revokeAccess_title">Hozzáférés megvonása</string>
+  <string name="user_interface_label">Felhasználói felület</string>
+  <string name="pref_set_theme_title">Téma kiválasztása</string>
+  <string name="pref_nav_drawer_title">Navigációs fiók testreszabása</string>
+  <string name="pref_nav_drawer_sum">Navigációs fiók kinézetének testreszabás</string>
+  <string name="pref_nav_drawer_items_title">Navigációs fiók elemeinek kiválaasztása</string>
+  <string name="pref_set_theme_sum">AntennaPod kinézetének megváltoztatása</string>
+  <string name="pref_automatic_download_title">Autómatikus letöltés</string>
+  <string name="pref_automatic_download_sum">Epizódok autómatikus letöltésének beállítása</string>
+  <string name="pref_autodl_wifi_filter_title">Wi-Fi szűrő beállítása</string>
+  <string name="pref_parallel_downloads_title">Párhuzamos letöltések</string>
+  <string name="pref_episode_cache_title">Epizód gyorsítótár</string>
+  <string name="pref_theme_title_light">Világos</string>
+  <string name="pref_theme_title_dark">Sötét</string>
+  <string name="pref_update_interval_hours_plural">óra</string>
+  <string name="pref_update_interval_hours_singular">óra</string>
+  <string name="pref_gpodnet_authenticate_title">Bejelentkezés</string>
+  <string name="pref_gpodnet_authenticate_sum">Jelentkezz be a gpodder.net fiókodba a feliratkozások szinkronizálásához.</string>
+  <string name="pref_gpodnet_logout_title">Kijelentkezés</string>
+  <string name="pref_gpodnet_logout_toast">Kijelentkezés sikeres</string>
+  <string name="pref_gpodnet_sync_changes_title">Változások szinkronizálása most</string>
+  <string name="pref_gpodnet_full_sync_title">Teljes szinkronizálás most</string>
+  <string name="pref_playback_speed_title">Lejátszási sebesség</string>
+  <string name="pref_expandNotify_title">Értesítés kibontása</string>
+  <string name="pref_expandNotify_sum">Mindig kibontja az értesítést a vezérlő gombok megjelenítéséhez.</string>
+  <string name="pref_compact_notification_buttons_title">Zárképernyő gombok beállítása</string>
+  <string name="pref_lockscreen_background_title">Zárképernyő háttérkép</string>
+  <string name="pref_lockscreen_background_sum">Zárképernyő háttérkép átállítása az epizód képeként.</string>
+  <string name="pref_image_cache_size_title">Kép gyorsítótár mérete</string>
+  <string name="pref_image_cache_size_sum">Kép gyorsítótár méretének a lemezen</string>
+  <string name="crash_report_title">Hibajelentés</string>
+  <string name="experimental_pref">Kísérleti</string>
+  <string name="pref_proxy_title">Proxy</string>
+  <string name="pref_proxy_sum">Hálózati proxy beállítása</string>
+  <string name="pref_faq">GYIK</string>
+  <string name="pref_known_issues">Ismert hibák</string>
+  <string name="pref_no_browser_found">Nem található webböngésző</string>
+  <string name="pref_cast_title">Chromecast támogatás</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
+  <string name="search_hint">Epizódok keresése</string>
+  <string name="search_label">Keresés</string>
   <!--OPML import and export-->
+  <string name="start_import_label">Importálás indítása</string>
+  <string name="opml_import_label">OPML importálása</string>
+  <string name="opml_directory_error">HIBA!</string>
+  <string name="reading_opml_label">OPML fájl olvasása</string>
   <!--Sleep timer-->
+  <string name="sleep_timer_enabled_label">Elalvás időzítő engedélyezése</string>
+  <string name="sleep_timer_disabled_label">Elalvás időzítő kikapcsolása</string>
   <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">KATEGÓRIÁK</string>
+  <string name="gpodnet_suggestions_header">AJÁNLÁSOK</string>
+  <string name="gpodnetauth_login_title">Bejelentkezés</string>
+  <string name="gpodnetauth_login_butLabel">Bejelentkezés</string>
+  <string name="username_label">Felhasználónév</string>
+  <string name="password_label">Jelszó</string>
+  <string name="gpodnetauth_device_title">Eszköz kiválasztása</string>
+  <string name="gpodnetsync_pref_report_successful">Sikeres</string>
+  <string name="gpodnetsync_pref_report_failed">Sikertelen</string>
   <!--Directory chooser-->
+  <string name="selected_folder_label">Kiválasztott mappa:</string>
+  <string name="create_folder_label">Mappa létrehozása</string>
+  <string name="create_folder_error_already_exists">Mappa már létezik</string>
+  <string name="folder_not_empty_dialog_title">Mappa nem üres</string>
+  <string name="set_to_default_folder">Alapértelmezett mappa kiválasztása</string>
   <!--Online feed view-->
+  <string name="subscribe_label">Feliratkozás</string>
+  <string name="subscribed_label">Feliratkozva</string>
+  <string name="downloading_label">Letöltés...</string>
   <!--Content descriptions for image buttons-->
+  <string name="media_type_audio_label">Hang</string>
+  <string name="media_type_video_label">Video</string>
+  <string name="load_next_page_label">Következő oldal betöltése</string>
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <string name="search_itunes_label">iTunes keresés</string>
+  <string name="search_fyyd_label">fyyd keresés</string>
   <!--Episodes apply actions-->
+  <string name="all_label">Mind</string>
+  <string name="downloaded_label">Letöltve</string>
+  <string name="not_downloaded_label">Nincs letöltve</string>
+  <string name="queued_label">Sorbaállítva</string>
+  <string name="not_queued_label">Nincs sorbaállítva</string>
   <!--Sort-->
+  <string name="sort_title_a_z">Cím (A \u2192 Z)</string>
+  <string name="sort_title_z_a">Cím (Z \u2192 A)</string>
+  <string name="sort_date_new_old">Dátum (Új \u2192 Régi)</string>
+  <string name="sort_date_old_new">Dátum (Régi \u2192 Új)</string>
+  <string name="sort_duration_short_long">Hossz (Rövid \u2192 Hosszú)</string>
+  <string name="sort_duration_long_short">Hossz (Hosszú \u2192 Rövid)</string>
   <!--Rating dialog-->
+  <string name="rating_later_label">Kérdezz rákésőbb</string>
   <!--Audio controls-->
+  <string name="audio_controls">Hang vezérlők</string>
+  <string name="playback_speed">Lejátszási sebesség</string>
+  <string name="volume">Hangerő</string>
+  <string name="left_short">B</string>
+  <string name="right_short">J</string>
+  <string name="audio_effects">Hangeffektek</string>
+  <string name="stereo_to_mono">Lekeverés: Sztereót Monora</string>
+  <string name="sonic_only">Csak Sonic</string>
   <!--proxy settings-->
+  <string name="proxy_type_label">Típus</string>
+  <string name="host_label">Kiszolgáló</string>
+  <string name="port_label">Port</string>
+  <string name="optional_hint">(Opcionális)</string>
+  <string name="proxy_test_label">Teszt</string>
+  <string name="proxy_test_successful">Teszt sikeres</string>
+  <string name="proxy_test_failed">Teszt sikertelen</string>
+  <string name="proxy_host_empty_error">Kiszolgáló nem lehet üres</string>
+  <string name="proxy_port_invalid_error">Port nem helyes</string>
+  <!--Database import/export-->
+  <string name="import_export">Adatbázis importálása/exportálása</string>
+  <string name="label_import">Importálás</string>
+  <string name="label_export">Exportálás</string>
+  <string name="import_select_file">Fájl kiálasztás importáláshoz</string>
+  <string name="export_ok">Exportálás sikeres</string>
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_setting_volume">Hiba a hangerő beállítása közben</string>
+  <string name="cast_failed_media_error_skipping">Hiba a lejátszás közben. Átugrás...</string>
+  <!--Notification channels-->
 </resources>

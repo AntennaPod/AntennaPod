@@ -88,15 +88,15 @@ public abstract class NanoHTTPD {
      * This is required as the Keep-Alive HTTP connections would otherwise
      * block the socket reading thread forever (or as long the browser is open).
      */
-    public static final int SOCKET_READ_TIMEOUT = 5000;
+    private static final int SOCKET_READ_TIMEOUT = 5000;
     /**
      * Common mime type for dynamic content: plain text
      */
-    public static final String MIME_PLAINTEXT = "text/plain";
+    private static final String MIME_PLAINTEXT = "text/plain";
     /**
      * Common mime type for dynamic content: html
      */
-    public static final String MIME_HTML = "text/html";
+    private static final String MIME_HTML = "text/html";
     /**
      * Pseudo-Parameter to use to store the actual query string in the parameters map for later re-processing.
      */
@@ -104,7 +104,7 @@ public abstract class NanoHTTPD {
     private final String hostname;
     private final int myPort;
     private ServerSocket myServerSocket;
-    private Set<Socket> openConnections = new HashSet<>();
+    private final Set<Socket> openConnections = new HashSet<>();
     private Thread myThread;
     /**
      * Pluggable strategy for asynchronously executing requests.
@@ -118,14 +118,14 @@ public abstract class NanoHTTPD {
     /**
      * Constructs an HTTP server on given port.
      */
-    public NanoHTTPD(int port) {
+    NanoHTTPD(int port) {
         this(null, port);
     }
 
     /**
      * Constructs an HTTP server on given hostname and port.
      */
-    public NanoHTTPD(String hostname, int port) {
+    private NanoHTTPD(String hostname, int port) {
         this.hostname = hostname;
         this.myPort = port;
         setTempFileManagerFactory(new DefaultTempFileManagerFactory());
@@ -168,44 +168,38 @@ public abstract class NanoHTTPD {
         myServerSocket = new ServerSocket();
         myServerSocket.bind((hostname != null) ? new InetSocketAddress(hostname, myPort) : new InetSocketAddress(myPort));
 
-        myThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                do {
-                    try {
-                        final Socket finalAccept = myServerSocket.accept();
-                        registerConnection(finalAccept);
-                        finalAccept.setSoTimeout(SOCKET_READ_TIMEOUT);
-                        final InputStream inputStream = finalAccept.getInputStream();
-                        asyncRunner.exec(new Runnable() {
-                            @Override
-                            public void run() {
-                                OutputStream outputStream = null;
-                                try {
-                                    outputStream = finalAccept.getOutputStream();
-                                    TempFileManager tempFileManager = tempFileManagerFactory.create();
-                                    HTTPSession session = new HTTPSession(tempFileManager, inputStream, outputStream, finalAccept.getInetAddress());
-                                    while (!finalAccept.isClosed()) {
-                                        session.execute();
-                                    }
-                                } catch (Exception e) {
-                                    // When the socket is closed by the client, we throw our own SocketException
-                                    // to break the  "keep alive" loop above.
-                                    if (!(e instanceof SocketException && "NanoHttpd Shutdown".equals(e.getMessage()))) {
-                                        e.printStackTrace();
-                                    }
-                                } finally {
-                                    safeClose(outputStream);
-                                    safeClose(inputStream);
-                                    safeClose(finalAccept);
-                                    unRegisterConnection(finalAccept);
-                                }
+        myThread = new Thread(() -> {
+            do {
+                try {
+                    final Socket finalAccept = myServerSocket.accept();
+                    registerConnection(finalAccept);
+                    finalAccept.setSoTimeout(SOCKET_READ_TIMEOUT);
+                    final InputStream inputStream = finalAccept.getInputStream();
+                    asyncRunner.exec(() -> {
+                        OutputStream outputStream = null;
+                        try {
+                            outputStream = finalAccept.getOutputStream();
+                            TempFileManager tempFileManager = tempFileManagerFactory.create();
+                            HTTPSession session = new HTTPSession(tempFileManager, inputStream, outputStream, finalAccept.getInetAddress());
+                            while (!finalAccept.isClosed()) {
+                                session.execute();
                             }
-                        });
-                    } catch (IOException e) {
-                    }
-                } while (!myServerSocket.isClosed());
-            }
+                        } catch (Exception e) {
+                            // When the socket is closed by the client, we throw our own SocketException
+                            // to break the  "keep alive" loop above.
+                            if (!(e instanceof SocketException && "NanoHttpd Shutdown".equals(e.getMessage()))) {
+                                e.printStackTrace();
+                            }
+                        } finally {
+                            safeClose(outputStream);
+                            safeClose(inputStream);
+                            safeClose(finalAccept);
+                            unRegisterConnection(finalAccept);
+                        }
+                    });
+                } catch (IOException e) {
+                }
+            } while (!myServerSocket.isClosed());
         });
         myThread.setDaemon(true);
         myThread.setName("NanoHttpd Main Listener");
@@ -232,7 +226,7 @@ public abstract class NanoHTTPD {
      *
      * @param socket the {@link Socket} for the connection.
      */
-    public synchronized void registerConnection(Socket socket) {
+    private synchronized void registerConnection(Socket socket) {
         openConnections.add(socket);
     }
 
@@ -242,14 +236,14 @@ public abstract class NanoHTTPD {
      * @param socket
      *            the {@link Socket} for the connection.
      */
-    public synchronized void unRegisterConnection(Socket socket) {
+    private synchronized void unRegisterConnection(Socket socket) {
         openConnections.remove(socket);
     }
 
     /**
      * Forcibly closes all connections that are open.
      */
-    public synchronized void closeAllConnections() {
+    private synchronized void closeAllConnections() {
         for (Socket socket : openConnections) {
             safeClose(socket);
         }
@@ -259,7 +253,7 @@ public abstract class NanoHTTPD {
         return myServerSocket == null ? -1 : myServerSocket.getLocalPort();
     }
 
-    public final boolean wasStarted() {
+    private boolean wasStarted() {
         return myServerSocket != null && myThread != null;
     }
 
@@ -294,7 +288,7 @@ public abstract class NanoHTTPD {
      * @param session The HTTP session
      * @return HTTP response, see class Response for details
      */
-    public Response serve(IHTTPSession session) {
+    Response serve(IHTTPSession session) {
         Map<String, String> files = new ArrayMap<>();
         Method method = session.getMethod();
         if (Method.PUT.equals(method) || Method.POST.equals(method)) {
@@ -318,7 +312,7 @@ public abstract class NanoHTTPD {
      * @param str the percent encoded <code>String</code>
      * @return expanded form of the input, for example "foo%20bar" becomes "foo bar"
      */
-    protected String decodePercent(String str) {
+    private String decodePercent(String str) {
         String decoded = null;
         try {
             decoded = URLDecoder.decode(str, "UTF8");
@@ -347,7 +341,7 @@ public abstract class NanoHTTPD {
      * @param queryString a query string pulled from the URL.
      * @return a map of <code>String</code> (parameter name) to <code>List&lt;String&gt;</code> (a list of the values supplied).
      */
-    protected Map<String, List<String>> decodeParameters(String queryString) {
+    private Map<String, List<String>> decodeParameters(String queryString) {
         Map<String, List<String>> parms = new ArrayMap<>();
         if (queryString != null) {
             StringTokenizer st = new StringTokenizer(queryString, "&");
@@ -378,7 +372,7 @@ public abstract class NanoHTTPD {
      *
      * @param asyncRunner new strategy for handling threads.
      */
-    public void setAsyncRunner(AsyncRunner asyncRunner) {
+    private void setAsyncRunner(AsyncRunner asyncRunner) {
         this.asyncRunner = asyncRunner;
     }
 
@@ -393,7 +387,7 @@ public abstract class NanoHTTPD {
      *
      * @param tempFileManagerFactory new strategy for handling temp files.
      */
-    public void setTempFileManagerFactory(TempFileManagerFactory tempFileManagerFactory) {
+    private void setTempFileManagerFactory(TempFileManagerFactory tempFileManagerFactory) {
         this.tempFileManagerFactory = tempFileManagerFactory;
     }
 
@@ -448,9 +442,9 @@ public abstract class NanoHTTPD {
      * themselves up when no longer needed.</p>
      */
     public interface TempFile {
-        OutputStream open() throws Exception;
+        OutputStream open();
 
-        void delete() throws Exception;
+        void delete();
 
         String getName();
     }
@@ -528,12 +522,12 @@ public abstract class NanoHTTPD {
         }
 
         @Override
-        public OutputStream open() throws Exception {
+        public OutputStream open() {
             return fstream;
         }
 
         @Override
-        public void delete() throws Exception {
+        public void delete() {
             safeClose(fstream);
             file.delete();
         }
@@ -563,7 +557,7 @@ public abstract class NanoHTTPD {
         /**
          * Headers for the HTTP response. Use addHeader() to add lines.
          */
-        private Map<String, String> header = new ArrayMap<>();
+        private final Map<String, String> header = new ArrayMap<>();
         /**
          * The request method that spawned this response.
          */
@@ -616,7 +610,7 @@ public abstract class NanoHTTPD {
         /**
          * Sends given response to the socket.
          */
-        protected void send(OutputStream outputStream) {
+        void send(OutputStream outputStream) {
             String mime = mimeType;
             SimpleDateFormat gmtFrmt = new SimpleDateFormat("E, d MMM yyyy HH:mm:ss 'GMT'", Locale.US);
             gmtFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -661,13 +655,13 @@ public abstract class NanoHTTPD {
             }
         }
 
-        protected void sendContentLengthHeaderIfNotAlreadyPresent(PrintWriter pw, Map<String, String> header, int size) {
+        void sendContentLengthHeaderIfNotAlreadyPresent(PrintWriter pw, Map<String, String> header, int size) {
             if (!headerAlreadySent(header, "content-length")) {
                 pw.print("Content-Length: "+ size +"\r\n");
             }
         }
 
-        protected void sendConnectionHeaderIfNotAlreadyPresent(PrintWriter pw, Map<String, String> header) {
+        void sendConnectionHeaderIfNotAlreadyPresent(PrintWriter pw, Map<String, String> header) {
             if (!headerAlreadySent(header, "connection")) {
                 pw.print("Connection: keep-alive\r\n");
             }
@@ -694,7 +688,7 @@ public abstract class NanoHTTPD {
                 outputStream.write(buff, 0, read);
                 outputStream.write(CRLF);
             }
-            outputStream.write(String.format("0\r\n\r\n").getBytes());
+            outputStream.write("0\r\n\r\n".getBytes());
         }
 
         private void sendAsFixedLength(OutputStream outputStream, int pending) throws IOException {
@@ -844,7 +838,7 @@ public abstract class NanoHTTPD {
         public static final int BUFSIZE = 8192;
         private final TempFileManager tempFileManager;
         private final OutputStream outputStream;
-        private PushbackInputStream inputStream;
+        private final PushbackInputStream inputStream;
         private int splitbyte;
         private int rlen;
         private String uri;
@@ -1144,17 +1138,19 @@ public abstract class NanoHTTPD {
 
                         String value = "";
                         if (item.get("content-type") == null) {
+                            StringBuilder tmp = new StringBuilder();
                             while (mpline != null && !mpline.contains(boundary)) {
                                 mpline = in.readLine();
                                 if (mpline != null) {
                                     int d = mpline.indexOf(boundary);
                                     if (d == -1) {
-                                        value += mpline;
+                                        tmp.append(mpline);
                                     } else {
-                                        value += mpline.substring(0, d - 2);
+                                        tmp.append(mpline.substring(0, d - 2));
                                     }
                                 }
                             }
+                            value = tmp.toString();
                         } else {
                             if (boundarycount > bpositions.length) {
                                 throw new ResponseException(Response.Status.INTERNAL_ERROR, "Error processing request");
@@ -1326,7 +1322,9 @@ public abstract class NanoHTTPD {
     }
 
     public static class Cookie {
-        private String n, v, e;
+        private final String n;
+        private final String v;
+        private final String e;
 
         public Cookie(String name, String value, String expires) {
             n = name;
@@ -1366,8 +1364,8 @@ public abstract class NanoHTTPD {
      * @author LordFokas
      */
     public class CookieHandler implements Iterable<String> {
-        private ArrayMap<String, String> cookies = new ArrayMap<>();
-        private ArrayList<Cookie> queue = new ArrayList<>();
+        private final ArrayMap<String, String> cookies = new ArrayMap<>();
+        private final ArrayList<Cookie> queue = new ArrayList<>();
 
         public CookieHandler(Map<String, String> httpHeaders) {
             String raw = httpHeaders.get("cookie");

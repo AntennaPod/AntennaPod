@@ -25,7 +25,7 @@ public class AddFeedFragment extends Fragment {
     /**
      * Preset value for url text field.
      */
-    public static final String ARG_FEED_URL = "feedurl";
+    private static final String ARG_FEED_URL = "feedurl";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,5 +65,16 @@ public class AddFeedFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+        // So, we certainly *don't* have an options menu,
+        // but unless we say we do, old options menus sometimes
+        // persist.  mfietz thinks this causes the ActionBar to be invalidated
+        setHasOptionsMenu(true);
     }
 }

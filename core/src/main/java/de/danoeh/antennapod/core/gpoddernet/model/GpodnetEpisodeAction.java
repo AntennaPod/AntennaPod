@@ -131,7 +131,7 @@ public class GpodnetEpisodeAction {
         return this.action;
     }
 
-    public String getActionString() {
+    private String getActionString() {
         return this.action.name().toLowerCase();
     }
 
@@ -199,16 +199,14 @@ public class GpodnetEpisodeAction {
     }
 
     public String writeToString() {
-        StringBuilder result = new StringBuilder();
-        result.append(this.podcast).append("\t");
-        result.append(this.episode).append("\t");
-        result.append(this.deviceId).append("\t");
-        result.append(this.action).append("\t");
-        result.append(this.timestamp.getTime()).append("\t");
-        result.append(String.valueOf(this.started)).append("\t");
-        result.append(String.valueOf(this.position)).append("\t");
-        result.append(String.valueOf(this.total));
-        return result.toString();
+        return this.podcast + "\t" +
+                this.episode + "\t" +
+                this.deviceId + "\t" +
+                this.action + "\t" +
+                this.timestamp.getTime() + "\t" +
+                String.valueOf(this.started) + "\t" +
+                String.valueOf(this.position) + "\t" +
+                String.valueOf(this.total);
     }
 
     /**

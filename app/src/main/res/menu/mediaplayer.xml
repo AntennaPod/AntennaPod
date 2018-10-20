@@ -41,6 +41,14 @@
         android:title="@string/visit_website_label"
         android:visible="false">
     </item>
+
+    <item
+            android:id="@+id/player_go_to_picture_in_picture"
+            custom:showAsAction="collapseActionView"
+            android:title="@string/player_go_to_picture_in_picture"
+            android:visible="false">
+    </item>
+
     <item
         android:id="@+id/share_item"
         android:icon="?attr/social_share"

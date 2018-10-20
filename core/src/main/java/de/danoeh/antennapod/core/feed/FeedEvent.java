@@ -9,7 +9,7 @@ public class FeedEvent {
         FILTER_CHANGED
     }
 
-    public final Action action;
+    private final Action action;
     public final long feedId;
 
     public FeedEvent(Action action, long feedId) {

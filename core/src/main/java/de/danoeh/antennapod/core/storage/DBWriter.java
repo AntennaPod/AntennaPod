@@ -7,8 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -25,14 +24,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -43,6 +43,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.core.util.Permutor;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
@@ -115,11 +116,8 @@ public class DBWriter {
                                     true);
                             editor.commit();
                         }
-                        if (PlaybackPreferences
-                                .getCurrentlyPlayingFeedMediaId() == media
-                                .getId()) {
-                            context.sendBroadcast(new Intent(
-                                    PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+                        if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media.getId()) {
+                            IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
                         }
                     }
                     // Gpodder: queue delete action for synchronization
@@ -156,8 +154,7 @@ public class DBWriter {
                 if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
                         && PlaybackPreferences.getLastPlayedFeedId() == feed
                         .getId()) {
-                    context.sendBroadcast(new Intent(
-                            PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putLong(
                             PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
@@ -165,17 +162,6 @@ public class DBWriter {
                     editor.commit();
                 }
 
-                // delete image file
-                if (feed.getImage() != null) {
-                    if (feed.getImage().isDownloaded()
-                            && feed.getImage().getFile_url() != null) {
-                        File imageFile = new File(feed.getImage()
-                                .getFile_url());
-                        imageFile.delete();
-                    } else if (requester.isDownloadingFile(feed.getImage())) {
-                        requester.cancelDownload(context, feed.getImage());
-                    }
-                }
                 // delete stored media files and mark them as read
                 List<FeedItem> queue = DBReader.getQueue();
                 List<FeedItem> removed = new ArrayList<>();
@@ -187,6 +173,9 @@ public class DBWriter {
                     if(queue.remove(item)) {
                         removed.add(item);
                     }
+                    if (item.getState() == FeedItem.State.PLAYING && PlaybackService.isRunning) {
+                        context.stopService(new Intent(context, PlaybackService.class));
+                    }
                     if (item.getMedia() != null
                             && item.getMedia().isDownloaded()) {
                         File mediaFile = new File(item.getMedia()
@@ -195,16 +184,6 @@ public class DBWriter {
                     } else if (item.getMedia() != null
                             && requester.isDownloadingFile(item.getMedia())) {
                         requester.cancelDownload(context, item.getMedia());
-                    }
-
-                    if (item.hasItemImage()) {
-                        FeedImage image = item.getImage();
-                        if (image.isDownloaded() && image.getFile_url() != null) {
-                            File imgFile = new File(image.getFile_url());
-                            imgFile.delete();
-                        } else if (requester.isDownloadingFile(image)) {
-                            requester.cancelDownload(context, item.getImage());
-                        }
                     }
                 }
                 PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -382,8 +361,8 @@ public class DBWriter {
                                 // add item to either front ot back of queue
                                 boolean addToFront = UserPreferences.enqueueAtFront();
                                 if (addToFront) {
-                                    queue.add(0 + i, item);
-                                    events.add(QueueEvent.added(item, 0 + i));
+                                    queue.add(i, item);
+                                    events.add(QueueEvent.added(item, i));
                                 } else {
                                     queue.add(item);
                                     events.add(QueueEvent.added(item, queue.size() - 1));
@@ -469,22 +448,6 @@ public class DBWriter {
 
     public static Future<?> addFavoriteItem(final FeedItem item) {
         return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
-            adapter.addFavoriteItem(item);
-            adapter.close();
-            item.addTag(FeedItem.TAG_FAVORITE);
-            EventBus.getDefault().post(FavoritesEvent.added(item));
-            EventBus.getDefault().post(FeedItemEvent.updated(item));
-        });
-    }
-
-    public static Future<?> addFavoriteItemById(final long itemId) {
-        return dbExec.submit(() -> {
-            final FeedItem item = DBReader.getFeedItem(itemId);
-            if (item == null) {
-                Log.d(TAG, "Can't find item for itemId " + itemId);
-                return;
-            }
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
             adapter.addFavoriteItem(item);
             adapter.close();
@@ -782,21 +745,6 @@ public class DBWriter {
     }
 
     /**
-     * Saves a FeedImage object in the database. This method will save all attributes of the FeedImage object. The
-     * contents of FeedComponent-attributes (e.g. the FeedImages's 'feed'-attribute) will not be saved.
-     *
-     * @param image   The FeedImage object.
-     */
-    public static Future<?> setFeedImage(final FeedImage image) {
-        return dbExec.submit(() -> {
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setImage(image);
-            adapter.close();
-        });
-    }
-
-    /**
      * Updates download URL of a feed
      */
     public static Future<?> updateFeedDownloadURL(final String original, final String updated) {
@@ -838,9 +786,9 @@ public class DBWriter {
      *
      * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
      */
-    public static Future<?> setFeedItemFlattrStatus(final Context context,
-                                                    final FeedItem item,
-                                                    final boolean startFlattrClickWorker) {
+    private static Future<?> setFeedItemFlattrStatus(final Context context,
+                                                     final FeedItem item,
+                                                     final boolean startFlattrClickWorker) {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -986,6 +934,32 @@ public class DBWriter {
                 }
             } else {
                 Log.e(TAG, "sortQueue: Could not load queue");
+            }
+            adapter.close();
+        });
+    }
+
+    /**
+     * Similar to sortQueue, but allows more complex reordering by providing whole-queue context.
+     * @param permutor        Encapsulates whole-Queue reordering logic.
+     * @param broadcastUpdate <code>true</code> if this operation should trigger a
+     *                        QueueUpdateBroadcast. This option should be set to <code>false</code>
+     *                        if the caller wants to avoid unexpected updates of the GUI.
+     */
+    public static Future<?> reorderQueue(final Permutor<FeedItem> permutor, final boolean broadcastUpdate) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            final List<FeedItem> queue = DBReader.getQueue(adapter);
+
+            if (queue != null) {
+                permutor.reorder(queue);
+                adapter.setQueue(queue);
+                if (broadcastUpdate) {
+                    EventBus.getDefault().post(QueueEvent.sorted(queue));
+                }
+            } else {
+                Log.e(TAG, "reorderQueue: Could not load queue");
             }
             adapter.close();
         });

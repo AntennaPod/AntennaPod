@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Lượt thích</string>
   <string name="new_label">Tạo mới</string>
   <string name="settings_label">Thiết lập</string>
-  <string name="add_new_feed_label">Thêm podcast</string>
   <string name="downloads_label">Tải về</string>
   <string name="downloads_running_label">Đang tải</string>
   <string name="downloads_completed_label">Đã tải</string>
@@ -107,7 +106,6 @@
   <string name="share_item_url_with_position_label">Chia sẻ liên kết và vị trí phát tập này</string>
   <string name="feed_remover_msg">Đang xoá feed</string>
   <string name="hide_episodes_title">Ẩn các tập</string>
-  <string name="episode_actions">Áp dụng hành động</string>
   <string name="hide_unplayed_episodes_label">Chưa nghe</string>
   <string name="hide_paused_episodes_label">Đang tạm dừng</string>
   <string name="hide_played_episodes_label">Đã nghe</string>
@@ -307,6 +305,8 @@
   <string name="volume">Âm lượng</string>
   <string name="audio_effects">Hiệu ứng âm thanh</string>
   <!--proxy settings-->
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

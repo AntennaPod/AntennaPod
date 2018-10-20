@@ -1,16 +1,17 @@
 package de.danoeh.antennapod.core.syndication.namespace.atom;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import de.danoeh.antennapod.core.syndication.namespace.Namespace;
 import de.danoeh.antennapod.core.syndication.namespace.SyndElement;
-import org.apache.commons.lang3.StringEscapeUtils;
 
 /** Represents Atom Element which contains text (content, title, summary). */
 public class AtomText extends SyndElement {
 	public static final String TYPE_TEXT = "text";
-	public static final String TYPE_HTML = "html";
-	public static final String TYPE_XHTML = "xhtml";
+	private static final String TYPE_HTML = "html";
+	private static final String TYPE_XHTML = "xhtml";
 
-	private String type;
+	private final String type;
 	private String content;
 
 	public AtomText(String name, Namespace namespace, String type) {

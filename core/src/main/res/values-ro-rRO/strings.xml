@@ -2,25 +2,38 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
   <string name="feeds_label">Feeduri</string>
+  <string name="statistics_label">Statistici</string>
+  <string name="add_feed_label">Adaugă podcast</string>
+  <string name="episodes_label">Episoade</string>
+  <string name="all_episodes_short_label">Toate</string>
+  <string name="favorite_episodes_label">Favorite</string>
   <string name="new_label">Nou</string>
   <string name="settings_label">Setări</string>
   <string name="downloads_label">Descărcări</string>
+  <string name="downloads_running_label">Active</string>
+  <string name="downloads_completed_label">Complete</string>
+  <string name="downloads_log_label">Jurnal</string>
   <string name="cancel_download_label">Anulează descărcare</string>
   <string name="playback_history_label">Istorie ascultare</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">autentificare gpodder.net</string>
   <!--Statistics fragment-->
   <!--Main activity-->
+  <string name="drawer_open">Deschide meniul</string>
+  <string name="drawer_close">Închide meniul</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Deschide în browser</string>
   <string name="copy_url_label">Copiază URL</string>
   <string name="share_url_label">Împarte URL</string>
   <string name="copied_url_msg">URL copiat în clipboard</string>
+  <string name="go_to_position_label">Mergi la poziția</string>
   <!--Playback history-->
   <string name="clear_history_label">Golește istoric</string>
   <!--Other-->
   <string name="confirm_label">Confirmă</string>
   <string name="cancel_label">Anulează</string>
+  <string name="yes">Da</string>
+  <string name="no">Nu</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Limbă</string>
   <string name="podcast_settings_label">Setări</string>
@@ -29,6 +42,7 @@
   <string name="refresh_label">Reîncarcă</string>
   <string name="external_storage_error_msg">Nu exista stocare externă. Asigurați-vă că stocarea externă este conectată pentru ca aplicația să funcționeze corespunzător.</string>
   <string name="chapters_label">Capitole</string>
+  <string name="chapter_duration">Durata: %1$s</string>
   <string name="shownotes_label">Notițe</string>
   <string name="description_label">Descriere</string>
   <string name="most_recent_prefix">Cel mai recent episod:\u0020</string>
@@ -39,6 +53,13 @@
   <string name="save_username_password_label">Salvează numele de utilizator și parola</string>
   <string name="close_label">închide</string>
   <string name="retry_label">Reîncearcă</string>
+  <string name="auto_delete_label">Șterge epidosul automat</string>
+  <string name="feed_auto_download_always">Întotdeauna</string>
+  <string name="feed_auto_download_never">Niciodată</string>
+  <string name="send_label">Trimite...</string>
+  <string name="episode_cleanup_never">Niciodată</string>
+  <string name="episode_cleanup_queue_removal">Când nu e în coadă</string>
+  <string name="episode_cleanup_after_listening">După terminare</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Adresă feed</string>
   <!--Actions on feeds-->
@@ -123,7 +144,6 @@
   <string name="other_pref">Altele</string>
   <string name="about_pref">Despre</string>
   <string name="queue_label">Coadă</string>
-  <string name="services_label">Servicii</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_followQueue_sum">Sari la următorul element din coadă cand se termină ascultarea</string>
   <string name="playback_pref">Ascultare</string>
@@ -174,7 +194,6 @@
   <string name="deselect_all_label">Deselectează toate</string>
   <string name="opml_export_label">Exportă OPML</string>
   <string name="export_error_label">Eroare exportare</string>
-  <string name="opml_export_success_sum">Fișierul .opml a fost scris în:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Setează cronometru somn</string>
   <string name="disable_sleeptimer_label">Oprește cronometru somn</string>
@@ -224,6 +243,8 @@
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

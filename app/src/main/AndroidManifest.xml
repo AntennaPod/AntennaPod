@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
     android:installLocation="auto"
-    android:versionCode="1060402"
-    android:versionName="1.6.4.2">
+    android:versionCode="1070000"
+    android:versionName="1.7.0">
     <!--
       Version code schema:
       "1.2.3-SNAPSHOT" -> 1020300
@@ -33,11 +33,12 @@
 
     <application
         android:name="de.danoeh.antennapod.PodcastApp"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:backupAgent=".core.backup.OpmlBackupAgent"
         android:restoreAnyVersion="true"
-        android:logo="@drawable/ic_launcher">
+        android:logo="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.gms.car.notification.SmallIcon"
                     android:resource="@drawable/ic_notification" />
         <meta-data
@@ -97,15 +98,6 @@
             android:launchMode="singleInstance"/>
 
         <activity
-            android:name=".activity.PreferenceActivityGingerbread"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/settings_label">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity"/>
-        </activity>
-
-        <activity
             android:name=".activity.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/settings_label">
@@ -114,16 +106,25 @@
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
         </activity>
 
-        <activity android:name=".activity.FeedInfoActivity">
+        <activity
+                android:name=".activity.FeedInfoActivity"
+                android:label="@string/feed_info_label">
+        </activity>
+
+        <activity
+                android:name=".activity.FeedSettingsActivity"
+                android:windowSoftInputMode="stateHidden"
+                android:label="@string/feed_settings_label">
         </activity>
 
         <service
-            android:name=".service.PlayerWidgetService"
+            android:name=".core.service.PlayerWidgetJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:enabled="true"
             android:exported="false">
         </service>
 
-        <receiver android:name=".receiver.PlayerWidget">
+        <receiver android:name=".core.receiver.PlayerWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -177,6 +178,13 @@
                 android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
         <activity
+                android:name=".activity.ImportExportActivity"
+                android:label="@string/import_export">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
+        </activity>
+        <activity
             android:name=".activity.OpmlImportFromPathActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/opml_import_label">
@@ -224,7 +232,8 @@
 
         <activity
             android:name=".activity.VideoplayerActivity"
-            android:configChanges="keyboardHidden|orientation"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:supportsPictureInPicture="true"
             android:screenOrientation="sensorLandscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

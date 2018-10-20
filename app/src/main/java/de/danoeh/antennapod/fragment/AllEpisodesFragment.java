@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,12 +38,12 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
@@ -69,24 +71,24 @@ public class AllEpisodesFragment extends Fragment {
     private static final String PREF_SCROLL_POSITION = "scroll_position";
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
-    protected RecyclerView recyclerView;
-    protected AllEpisodesRecycleAdapter listAdapter;
+    RecyclerView recyclerView;
+    AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
 
-    protected List<FeedItem> episodes;
+    List<FeedItem> episodes;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
 
     private boolean isUpdatingFeeds;
-    protected boolean isMenuInvalidationAllowed = false;
+    boolean isMenuInvalidationAllowed = false;
 
-    protected Subscription subscription;
+    Subscription subscription;
     private LinearLayoutManager layoutManager;
 
-    protected boolean showOnlyNewEpisodes() { return false; }
-    protected String getPrefName() { return DEFAULT_PREF_NAME; }
+    boolean showOnlyNewEpisodes() { return false; }
+    String getPrefName() { return DEFAULT_PREF_NAME; }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -165,7 +167,7 @@ public class AllEpisodesFragment extends Fragment {
         }
     }
 
-    protected void resetViewState() {
+    void resetViewState() {
         viewsCreated = false;
         listAdapter = null;
     }
@@ -284,13 +286,17 @@ public class AllEpisodesFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
 
-        try {
-            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+        // Mark as seen contains UI logic specific to All/New/FavoriteSegments,
+        // e.g., Undo with Snackbar,
+        // and is handled by this class rather than the generic FeedItemMenuHandler
+        // Undo is useful for Mark as seen, given there is no UI to undo it otherwise,
+        // i.e., there is context menu item for Mark as new
+        if (R.id.mark_as_seen_item == item.getItemId()) {
+            markItemAsSeenWithUndo(selectedItem);
             return true;
         }
+
+        return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
     }
 
     @Override
@@ -299,10 +305,10 @@ public class AllEpisodesFragment extends Fragment {
                 R.layout.all_episodes_fragment);
     }
 
-    protected View onCreateViewHelper(LayoutInflater inflater,
-                                      ViewGroup container,
-                                      Bundle savedInstanceState,
-                                      int fragmentResource) {
+    View onCreateViewHelper(LayoutInflater inflater,
+                            ViewGroup container,
+                            Bundle savedInstanceState,
+                            int fragmentResource) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View root = inflater.inflate(fragmentResource, container, false);
@@ -346,7 +352,7 @@ public class AllEpisodesFragment extends Fragment {
         updateShowOnlyEpisodesListViewState();
     }
 
-    protected AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
+    private final AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
 
         @Override
         public int getCount() {
@@ -444,7 +450,7 @@ public class AllEpisodesFragment extends Fragment {
         }
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
@@ -459,7 +465,7 @@ public class AllEpisodesFragment extends Fragment {
     private void updateShowOnlyEpisodesListViewState() {
     }
 
-    protected void loadItems() {
+    void loadItems() {
         if(subscription != null) {
             subscription.unsubscribe();
         }
@@ -483,8 +489,40 @@ public class AllEpisodesFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    protected List<FeedItem> loadData() {
+    List<FeedItem> loadData() {
         return DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
+    }
+
+    void markItemAsSeenWithUndo(FeedItem item) {
+        if (item == null) {
+            return;
+        }
+
+        Log.d(TAG, "markItemAsSeenWithUndo(" + item.getId() + ")");
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
+        // we're marking it as unplayed since the user didn't actually play it
+        // but they don't want it considered 'NEW' anymore
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+
+        final Handler h = new Handler(getActivity().getMainLooper());
+        final Runnable r  = () -> {
+            FeedMedia media = item.getMedia();
+            if (media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
+                DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
+            }
+        };
+
+        Snackbar snackbar = Snackbar.make(getView(), getString(R.string.marked_as_seen_label),
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(getString(R.string.undo), v -> {
+            DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
+            // don't forget to cancel the thing that's going to remove the media
+            h.removeCallbacks(r);
+        });
+        snackbar.show();
+        h.postDelayed(r, (int)Math.ceil(snackbar.getDuration() * 1.05f));
     }
 
 }
