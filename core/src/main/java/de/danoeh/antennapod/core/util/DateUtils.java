@@ -17,7 +17,9 @@ import java.util.TimeZone;
  */
 public class DateUtils {
 
-    private static final String TAG = "DateUtils";
+    private DateUtils(){}
+
+	private static final String TAG = "DateUtils";
 
     private static final TimeZone defaultTimezone = TimeZone.getTimeZone("GMT");
 

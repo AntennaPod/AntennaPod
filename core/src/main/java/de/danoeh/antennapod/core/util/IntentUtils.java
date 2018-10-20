@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import java.util.List;
 
 public class IntentUtils {
+    private IntentUtils(){}
 
     /*
      *  Checks if there is at least one exported activity that can be performed for the intent

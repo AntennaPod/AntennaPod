@@ -34,6 +34,7 @@ import java.util.concurrent.TimeUnit;
  * when called.
  */
 public class UserPreferences {
+    private UserPreferences(){}
 
     private static final String IMPORT_DIR = "import/";
 

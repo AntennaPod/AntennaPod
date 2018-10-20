@@ -19,6 +19,8 @@ import de.danoeh.antennapod.core.util.comparator.SearchResultValueComparator;
  * Performs search on Feeds and FeedItems
  */
 public class FeedSearcher {
+    private FeedSearcher(){}
+
     private static final String TAG = "FeedSearcher";
 
 

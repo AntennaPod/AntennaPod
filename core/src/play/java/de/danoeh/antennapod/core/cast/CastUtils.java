@@ -23,6 +23,8 @@ import de.danoeh.antennapod.core.util.playback.Playable;
  * Helper functions for Cast support.
  */
 public class CastUtils {
+    private CastUtils(){}
+
     private static final String TAG = "CastUtils";
 
     public static final String KEY_MEDIA_ID = "de.danoeh.antennapod.core.cast.MediaId";

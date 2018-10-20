@@ -335,7 +335,7 @@
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
     <string name="pref_hardwareForwardButtonSkips_title">Forward Button Skips</string>
-    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a hardware forward button skip to the next episode instead of fast-forwarding</string>
+    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a forward button on a bluetooth-connected device skip to the next episode instead of fast-forwarding</string>
     <string name="pref_hardwarePreviousButtonRestarts_title">Previous button restarts</string>
     <string name="pref_hardwarePreviousButtonRestarts_sum">When pressing a hardware previous button restart playing the current episode instead of rewinding</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
