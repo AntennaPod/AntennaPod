@@ -144,6 +144,8 @@
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="hide_episodes_title">Hide Episodes</string>
     <string name="batch_edit">Batch edit</string>
+    <string name="select_all_above">Select all above</string>
+    <string name="select_all_below">Select all below</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
     <string name="hide_paused_episodes_label">Paused</string>
     <string name="hide_played_episodes_label">Played</string>

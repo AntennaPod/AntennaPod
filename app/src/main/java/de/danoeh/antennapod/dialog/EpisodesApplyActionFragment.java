@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.dialog;
 
+import android.app.AlertDialog;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -94,6 +95,28 @@ public class EpisodesApplyActionFragment extends Fragment {
                 checkedIds.add(id);
             }
             refreshCheckboxes();
+        });
+        mListView.setOnItemLongClickListener((adapterView, view12, position, id) -> {
+            new AlertDialog.Builder(getActivity())
+                    .setItems(R.array.batch_long_press_options, (dialogInterface, item) -> {
+                        int direction;
+                        if (item == 0) {
+                            direction = -1;
+                        } else {
+                            direction = 1;
+                        }
+
+                        int currentPosition = position + direction;
+                        while (currentPosition >= 0 && currentPosition < episodes.size()) {
+                            long id1 = episodes.get(currentPosition).getId();
+                            if (!checkedIds.contains(id1)) {
+                                checkedIds.add(id1);
+                            }
+                            currentPosition += direction;
+                        }
+                        refreshCheckboxes();
+                    }).show();
+            return true;
         });
 
         for(FeedItem episode : episodes) {
