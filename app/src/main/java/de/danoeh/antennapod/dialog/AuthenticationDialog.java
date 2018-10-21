@@ -35,11 +35,11 @@ public abstract class AuthenticationDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authentication_dialog);
-        final EditText etxtUsername = (EditText) findViewById(R.id.etxtUsername);
-        final EditText etxtPassword = (EditText) findViewById(R.id.etxtPassword);
-        final CheckBox saveUsernamePassword = (CheckBox) findViewById(R.id.chkSaveUsernamePassword);
-        final Button butConfirm = (Button) findViewById(R.id.butConfirm);
-        final Button butCancel = (Button) findViewById(R.id.butCancel);
+        final EditText etxtUsername = findViewById(R.id.etxtUsername);
+        final EditText etxtPassword = findViewById(R.id.etxtPassword);
+        final CheckBox saveUsernamePassword = findViewById(R.id.chkSaveUsernamePassword);
+        final Button butConfirm = findViewById(R.id.butConfirm);
+        final Button butCancel = findViewById(R.id.butCancel);
 
         if (titleRes != 0) {
             setTitle(titleRes);

@@ -313,7 +313,7 @@ public class AllEpisodesFragment extends Fragment {
 
         View root = inflater.inflate(fragmentResource, container, false);
 
-        recyclerView = (RecyclerView) root.findViewById(android.R.id.list);
+        recyclerView = root.findViewById(android.R.id.list);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
@@ -323,7 +323,7 @@ public class AllEpisodesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
 
-        progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
+        progLoading = root.findViewById(R.id.progLoading);
 
         if (!itemsLoaded) {
             progLoading.setVisibility(View.VISIBLE);

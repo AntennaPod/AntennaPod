@@ -797,13 +797,13 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     void setupGUI() {
         setContentView(getContentViewResourceId());
-        sbPosition = (SeekBar) findViewById(R.id.sbPosition);
-        txtvPosition = (TextView) findViewById(R.id.txtvPosition);
+        sbPosition = findViewById(R.id.sbPosition);
+        txtvPosition = findViewById(R.id.txtvPosition);
 
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
         Log.d("timeleft", showTimeLeft ? "true" : "false");
-        txtvLength = (TextView) findViewById(R.id.txtvLength);
+        txtvLength = findViewById(R.id.txtvLength);
         if (txtvLength != null) {
             txtvLength.setOnClickListener(v -> {
                 showTimeLeft = !showTimeLeft;
@@ -827,18 +827,18 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             });
         }
 
-        butRev = (ImageButton) findViewById(R.id.butRev);
-        txtvRev = (TextView) findViewById(R.id.txtvRev);
+        butRev = findViewById(R.id.butRev);
+        txtvRev = findViewById(R.id.txtvRev);
         if (txtvRev != null) {
             txtvRev.setText(String.valueOf(UserPreferences.getRewindSecs()));
         }
-        butPlay = (ImageButton) findViewById(R.id.butPlay);
-        butFF = (ImageButton) findViewById(R.id.butFF);
-        txtvFF = (TextView) findViewById(R.id.txtvFF);
+        butPlay = findViewById(R.id.butPlay);
+        butFF = findViewById(R.id.butFF);
+        txtvFF = findViewById(R.id.txtvFF);
         if (txtvFF != null) {
             txtvFF.setText(String.valueOf(UserPreferences.getFastForwardSecs()));
         }
-        butSkip = (ImageButton) findViewById(R.id.butSkip);
+        butSkip = findViewById(R.id.butSkip);
 
         // SEEKBAR SETUP
 

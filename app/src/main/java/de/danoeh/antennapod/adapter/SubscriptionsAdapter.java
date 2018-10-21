@@ -89,9 +89,9 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             LayoutInflater layoutInflater =
                     (LayoutInflater) mainActivityRef.get().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.subscription_item, parent, false);
-            holder.feedTitle = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.imgvCover);
-            holder.count = (TriangleLabelView) convertView.findViewById(R.id.triangleCountView);
+            holder.feedTitle = convertView.findViewById(R.id.txtvTitle);
+            holder.imageView = convertView.findViewById(R.id.imgvCover);
+            holder.count = convertView.findViewById(R.id.triangleCountView);
 
 
             convertView.setTag(holder);

@@ -31,12 +31,12 @@ public class GpodnetMainFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.pager_fragment, container, false);
 
-        viewPager = (ViewPager)root.findViewById(R.id.viewpager);
+        viewPager = root.findViewById(R.id.viewpager);
         GpodnetPagerAdapter pagerAdapter = new GpodnetPagerAdapter(getChildFragmentManager(), getResources());
         viewPager.setAdapter(pagerAdapter);
 
         // Give the TabLayout the ViewPager
-        tabLayout = (TabLayout) root.findViewById(R.id.sliding_tabs);
+        tabLayout = root.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         return root;

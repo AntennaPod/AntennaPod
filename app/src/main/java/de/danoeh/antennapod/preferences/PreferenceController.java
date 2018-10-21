@@ -36,24 +36,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
-import de.danoeh.antennapod.activity.AboutActivity;
-import de.danoeh.antennapod.activity.ImportExportActivity;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
-import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.activity.StatisticsActivity;
-import de.danoeh.antennapod.core.export.html.HtmlWriter;
-import de.danoeh.antennapod.core.export.opml.OpmlWriter;
-import de.danoeh.antennapod.core.service.GpodnetSyncService;
-import de.danoeh.antennapod.dialog.AuthenticationDialog;
-import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
-import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
-import de.danoeh.antennapod.dialog.ProxyDialog;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -67,14 +52,29 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
+import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.activity.MediaplayerActivity;
+import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
+import de.danoeh.antennapod.core.export.html.HtmlWriter;
+import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
+import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
+import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
+import de.danoeh.antennapod.dialog.ProxyDialog;
+import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;

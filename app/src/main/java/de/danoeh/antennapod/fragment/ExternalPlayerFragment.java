@@ -52,12 +52,12 @@ public class ExternalPlayerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.external_player_fragment,
                 container, false);
-        fragmentLayout = (ViewGroup) root.findViewById(R.id.fragmentLayout);
-        imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
-        txtvTitle = (TextView) root.findViewById(R.id.txtvTitle);
-        butPlay = (ImageButton) root.findViewById(R.id.butPlay);
-        mFeedName = (TextView) root.findViewById(R.id.txtvAuthor);
-        mProgressBar = (ProgressBar) root.findViewById(R.id.episodeProgress);
+        fragmentLayout = root.findViewById(R.id.fragmentLayout);
+        imgvCover = root.findViewById(R.id.imgvCover);
+        txtvTitle = root.findViewById(R.id.txtvTitle);
+        butPlay = root.findViewById(R.id.butPlay);
+        mFeedName = root.findViewById(R.id.txtvAuthor);
+        mProgressBar = root.findViewById(R.id.episodeProgress);
 
         fragmentLayout.setOnClickListener(v -> {
             Log.d(TAG, "layoutInfo was clicked");

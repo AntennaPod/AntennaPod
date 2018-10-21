@@ -27,8 +27,8 @@ public class MoreContentListFooterUtil {
     }
 
     public void setLoadingState(boolean newState) {
-        final ImageView imageView = (ImageView) root.findViewById(R.id.imgExpand);
-        final ProgressBar progressBar = (ProgressBar) root.findViewById(R.id.progBar);
+        final ImageView imageView = root.findViewById(R.id.imgExpand);
+        final ProgressBar progressBar = root.findViewById(R.id.progBar);
         if (newState) {
             imageView.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);

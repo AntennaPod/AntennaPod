@@ -34,9 +34,9 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.itemdescription_listitem, parent, false);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.pubDate = (TextView) convertView.findViewById(R.id.txtvPubDate);
-            holder.description = (TextView) convertView.findViewById(R.id.txtvDescription);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
+            holder.pubDate = convertView.findViewById(R.id.txtvPubDate);
+            holder.description = convertView.findViewById(R.id.txtvDescription);
 
             convertView.setTag(holder);
         } else {

@@ -57,12 +57,12 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
             convertView = inflater.inflate(R.layout.simplechapter_item, parent, false);
             holder.view = convertView;
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
             defaultTextColor = holder.title.getTextColors().getDefaultColor();
-            holder.start = (TextView) convertView.findViewById(R.id.txtvStart);
-            holder.link = (TextView) convertView.findViewById(R.id.txtvLink);
-            holder.duration = (TextView) convertView.findViewById(R.id.txtvDuration);
-            holder.butPlayChapter = (ImageButton) convertView.findViewById(R.id.butPlayChapter);
+            holder.start = convertView.findViewById(R.id.txtvStart);
+            holder.link = convertView.findViewById(R.id.txtvLink);
+            holder.duration = convertView.findViewById(R.id.txtvDuration);
+            holder.butPlayChapter = convertView.findViewById(R.id.butPlayChapter);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
