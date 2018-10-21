@@ -1,3 +1,36 @@
+import net.ltgt.gradle.errorprone.CheckSeverity
+
+plugins {
+    id("net.ltgt.errorprone") version "0.6"
+}
+
+dependencies {
+    errorprone("com.google.errorprone:error_prone_core:2.3.2")
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.errorprone {
+        check("CatchAndPrintStackTrace", CheckSeverity.OFF)
+        check("DefaultCharset", CheckSeverity.OFF)
+        check("FutureReturnValueIgnored", CheckSeverity.OFF)
+        check("ImmutableEnumChecker", CheckSeverity.OFF)
+        check("InconsistentCapitalization", CheckSeverity.OFF)
+        check("InputStreamSlowMultibyteRead", CheckSeverity.OFF)
+        check("IntLongMath", CheckSeverity.OFF)
+        check("IsInstanceOfClass", CheckSeverity.OFF)
+        check("JdkObsolete", CheckSeverity.OFF)
+        check("LockNotBeforeTry", CheckSeverity.OFF)
+        check("MissingCasesInEnumSwitch", CheckSeverity.OFF)
+        check("MissingOverride", CheckSeverity.OFF)
+        check("NarrowingCompoundAssignment", CheckSeverity.OFF)
+        check("ReferenceEquality", CheckSeverity.OFF)
+        check("StringSplitter", CheckSeverity.OFF)
+        check("ThreadPriorityCheck", CheckSeverity.OFF)
+        check("TypeParameterUnusedInFormals", CheckSeverity.OFF)
+        check("UnnecessaryParentheses", CheckSeverity.OFF)
+    }
+}
+
 apply plugin: "com.android.library"
 
 android {
@@ -84,6 +117,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
+    errorproneJavac("com.google.errorprone:javac:9+181-r4173-1")
 }
 
 tasks.withType(Test) {

@@ -1,13 +1,5 @@
+import net.ltgt.gradle.errorprone.CheckSeverity
 import org.apache.tools.ant.filters.ReplaceTokens
-
-apply plugin: "com.android.application"
-apply plugin: 'com.github.triplet.play'
-apply plugin: 'com.getkeepsafe.dexcount'
-
-repositories {
-    maven { url "https://jitpack.io" }
-    mavenCentral()
-}
 
 buildscript {
     repositories {
@@ -16,6 +8,23 @@ buildscript {
     dependencies {
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'
     }
+}
+
+plugins {
+    id("net.ltgt.errorprone") version "0.6"
+}
+
+apply plugin: "com.android.application"
+apply plugin: "com.github.triplet.play"
+apply plugin: "com.getkeepsafe.dexcount"
+
+dependencies {
+    errorprone("com.google.errorprone:error_prone_core:2.3.2")
+}
+
+repositories {
+    maven { url "https://jitpack.io" }
+    mavenCentral()
 }
 
 def getMyVersionName() {
@@ -184,6 +193,8 @@ dependencies {
     implementation 'com.github.ByteHamster:SearchPreference:v1.0.8'
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
+
+    errorproneJavac("com.google.errorprone:javac:9+181-r4173-1")
 }
 
 play {
@@ -223,5 +234,28 @@ allprojects {
         tasks.withType(JavaCompile) {
             options.compilerArgs << "-Xlint" << "-Xlint:-deprecation" << "-Xlint:-serial"
         }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.errorprone {
+        check("CatchAndPrintStackTrace", CheckSeverity.OFF)
+        check("DefaultCharset", CheckSeverity.OFF)
+        check("FutureReturnValueIgnored", CheckSeverity.OFF)
+        check("ImmutableEnumChecker", CheckSeverity.OFF)
+        check("InconsistentCapitalization", CheckSeverity.OFF)
+        check("InputStreamSlowMultibyteRead", CheckSeverity.OFF)
+        check("IntLongMath", CheckSeverity.OFF)
+        check("IsInstanceOfClass", CheckSeverity.OFF)
+        check("JdkObsolete", CheckSeverity.OFF)
+        check("LockNotBeforeTry", CheckSeverity.OFF)
+        check("MissingCasesInEnumSwitch", CheckSeverity.OFF)
+        check("MissingOverride", CheckSeverity.OFF)
+        check("NarrowingCompoundAssignment", CheckSeverity.OFF)
+        check("ReferenceEquality", CheckSeverity.OFF)
+        check("StringSplitter", CheckSeverity.OFF)
+        check("ThreadPriorityCheck", CheckSeverity.OFF)
+        check("TypeParameterUnusedInFormals", CheckSeverity.OFF)
+        check("UnnecessaryParentheses", CheckSeverity.OFF)
     }
 }
