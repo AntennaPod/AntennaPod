@@ -2,16 +2,14 @@ package de.test.antennapod.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.test.ActivityInstrumentationTestCase2;
-import android.test.FlakyTest;
+import android.support.test.espresso.contrib.DrawerActions;
+import android.support.test.espresso.intent.Intents;
+import android.support.test.filters.FlakyTest;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
 import android.widget.ListView;
-
 import com.robotium.solo.Solo;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.robotium.solo.Timeout;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
@@ -23,25 +21,46 @@ import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static de.test.antennapod.NthMatcher.first;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * User interface tests for MainActivity
  */
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
+@RunWith(AndroidJUnit4.class)
+public class MainActivityTest {
 
     private Solo solo;
     private UITestUtils uiTestUtils;
-
     private SharedPreferences prefs;
 
-    public MainActivityTest() {
-        super(MainActivity.class);
-    }
+    @Rule
+    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        Context context = getInstrumentation().getTargetContext();
+    @Before
+    public void setUp() throws IOException {
+        Intents.init();
+        Context context = mActivityRule.getActivity();
         uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
 
@@ -54,30 +73,26 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         // override first launch preference
         // do this BEFORE calling getActivity()!
-        prefs = getInstrumentation().getTargetContext().getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE);
+        prefs = context.getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(MainActivity.PREF_IS_FIRST_LAUNCH, false).commit();
 
-        solo = new Solo(getInstrumentation(), getActivity());
+        solo = new Solo(getInstrumentation(), mActivityRule.getActivity());
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         uiTestUtils.tearDown();
         solo.finishOpenedActivities();
-
+        Intents.release();
         PodDBAdapter.deleteDatabase();
-
-        // reset preferences
         prefs.edit().clear().commit();
-
-        super.tearDown();
     }
 
     private void openNavDrawer() {
-        solo.clickOnImageButton(0);
-        getInstrumentation().waitForIdleSync();
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
     }
 
+    @Test
     public void testAddFeed() throws Exception {
         uiTestUtils.addHostedFeedData();
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
@@ -89,10 +104,12 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForView(R.id.butSubscribe);
         assertEquals(solo.getString(R.string.subscribe_label), solo.getButton(0).getText().toString());
         solo.clickOnButton(0);
-        solo.waitForText(solo.getString(R.string.subscribed_label));
+        assertTrue(solo.waitForText(solo.getString(R.string.open_podcast), 0, Timeout.getLargeTimeout(), false));
     }
 
-    @FlakyTest(tolerance = 3)
+
+    @Test
+    @FlakyTest
     public void testClickNavDrawer() throws Exception {
         uiTestUtils.addLocalFeedData(false);
 
@@ -150,57 +167,60 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         return ((MainActivity) solo.getCurrentActivity()).getSupportActionBar().getTitle().toString();
     }
 
-    @SuppressWarnings("unchecked")
-    @FlakyTest(tolerance = 3)
+
+    @Test
+    @FlakyTest
     public void testGoToPreferences() {
         openNavDrawer();
-        solo.clickOnText(solo.getString(R.string.settings_label));
-        solo.waitForActivity(PreferenceActivity.class);
+        onView(withText(R.string.settings_label)).perform(click());
+        intended(hasComponent(PreferenceActivity.class.getName()));
     }
 
+    @Test
     public void testDrawerPreferencesHideSomeElements() {
         UserPreferences.setHiddenDrawerItems(new ArrayList<>());
         openNavDrawer();
-        solo.clickLongOnText(solo.getString(R.string.queue_label));
-        solo.waitForDialogToOpen();
-        solo.clickOnText(solo.getString(R.string.episodes_label));
-        solo.clickOnText(solo.getString(R.string.playback_history_label));
-        solo.clickOnText(solo.getString(R.string.confirm_label));
-        solo.waitForDialogToClose();
+        onView(first(withText(R.string.queue_label))).perform(longClick());
+        onView(withText(R.string.episodes_label)).perform(click());
+        onView(withText(R.string.playback_history_label)).perform(click());
+        onView(withText(R.string.confirm_label)).perform(click());
+
         List<String> hidden = UserPreferences.getHiddenDrawerItems();
         assertEquals(2, hidden.size());
         assertTrue(hidden.contains(EpisodesFragment.TAG));
         assertTrue(hidden.contains(PlaybackHistoryFragment.TAG));
     }
 
+    @Test
     public void testDrawerPreferencesUnhideSomeElements() {
         List<String> hidden = Arrays.asList(PlaybackHistoryFragment.TAG, DownloadsFragment.TAG);
         UserPreferences.setHiddenDrawerItems(hidden);
         openNavDrawer();
-        solo.clickLongOnText(solo.getString(R.string.queue_label));
-        solo.waitForDialogToOpen();
-        solo.clickOnText(solo.getString(R.string.downloads_label));
-        solo.clickOnText(solo.getString(R.string.queue_label));
-        solo.clickOnText(solo.getString(R.string.confirm_label));
-        solo.waitForDialogToClose();
+        onView(first(withText(R.string.queue_label))).perform(longClick());
+
+        onView(withText(R.string.downloads_label)).perform(click());
+        onView(withText(R.string.queue_label)).perform(click());
+        onView(withText(R.string.confirm_label)).perform(click());
+
         hidden = UserPreferences.getHiddenDrawerItems();
         assertEquals(2, hidden.size());
         assertTrue(hidden.contains(QueueFragment.TAG));
         assertTrue(hidden.contains(PlaybackHistoryFragment.TAG));
     }
 
+
+    @Test
     public void testDrawerPreferencesHideAllElements() {
         UserPreferences.setHiddenDrawerItems(new ArrayList<>());
-        String[] titles = getInstrumentation().getTargetContext().getResources().getStringArray(R.array.nav_drawer_titles);
+        String[] titles = mActivityRule.getActivity().getResources().getStringArray(R.array.nav_drawer_titles);
 
         openNavDrawer();
-        solo.clickLongOnText(solo.getString(R.string.queue_label));
-        solo.waitForDialogToOpen();
+        onView(first(withText(R.string.queue_label))).perform(longClick());
         for (String title : titles) {
-            solo.clickOnText(title);
+            onView(first(withText(title))).perform(click());
         }
-        solo.clickOnText(solo.getString(R.string.confirm_label));
-        solo.waitForDialogToClose();
+        onView(withText(R.string.confirm_label)).perform(click());
+
         List<String> hidden = UserPreferences.getHiddenDrawerItems();
         assertEquals(titles.length, hidden.size());
         for (String tag : MainActivity.NAV_DRAWER_TAGS) {
@@ -208,19 +228,17 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         }
     }
 
+    @Test
     public void testDrawerPreferencesHideCurrentElement() {
         UserPreferences.setHiddenDrawerItems(new ArrayList<>());
+        openNavDrawer();
+        onView(withText(R.string.downloads_label)).perform(click());
+        openNavDrawer();
 
-        openNavDrawer();
-        String downloads = solo.getString(R.string.downloads_label);
-        solo.clickOnText(downloads);
-        solo.waitForView(android.R.id.list);
-        openNavDrawer();
-        solo.clickLongOnText(downloads);
-        solo.waitForDialogToOpen();
-        solo.clickOnText(downloads);
-        solo.clickOnText(solo.getString(R.string.confirm_label));
-        solo.waitForDialogToClose();
+        onView(first(withText(R.string.queue_label))).perform(longClick());
+        onView(first(withText(R.string.downloads_label))).perform(click());
+        onView(withText(R.string.confirm_label)).perform(click());
+
         List<String> hidden = UserPreferences.getHiddenDrawerItems();
         assertEquals(1, hidden.size());
         assertTrue(hidden.contains(DownloadsFragment.TAG));

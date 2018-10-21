@@ -43,7 +43,7 @@ android {
         versionCode getMyVersionCode()
         versionName "${getMyVersionName()}"
         testApplicationId "de.test.antennapod"
-        testInstrumentationRunner "de.test.antennapod.AntennaPodTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         generatedDensities = []
     }
 
@@ -120,6 +120,10 @@ android {
         additionalParameters "--no-version-vectors"
     }
 
+    testOptions {
+        animationsDisabled = true
+    }
+
     flavorDimensions "market"
     productFlavors {
         free {
@@ -184,6 +188,11 @@ dependencies {
     implementation 'com.github.ByteHamster:SearchPreference:v1.0.8'
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 }
 
 play {

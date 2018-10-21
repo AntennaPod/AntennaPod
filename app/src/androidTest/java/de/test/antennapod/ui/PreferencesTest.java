@@ -1,15 +1,14 @@
 package de.test.antennapod.ui;
 
-import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.test.ActivityInstrumentationTestCase2;
-
+import android.preference.PreferenceManager;
+import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
+import android.view.View;
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
-
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -17,36 +16,54 @@ import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import org.hamcrest.Matcher;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class PreferencesTest extends ActivityInstrumentationTestCase2<PreferenceActivity>  {
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
-    private static final String TAG = "PreferencesTest";
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 
+@RunWith(AndroidJUnit4.class)
+public class PreferencesTest {
     private Solo solo;
-    private Context context;
     private Resources res;
+    private SharedPreferences prefs;
 
-    public PreferencesTest() {
-        super(PreferenceActivity.class);
-    }
+    @Rule
+    public ActivityTestRule<PreferenceActivity> mActivityRule = new ActivityTestRule<>(PreferenceActivity.class);
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        solo = new Solo(getInstrumentation(), getActivity());
+    @Before
+    public void setUp() {
+        solo = new Solo(getInstrumentation(), mActivityRule.getActivity());
         Timeout.setSmallTimeout(500);
         Timeout.setLargeTimeout(1000);
-        context = getInstrumentation().getTargetContext();
-        res = getActivity().getResources();
-        UserPreferences.init(context);
+        res = mActivityRule.getActivity().getResources();
+        UserPreferences.init(mActivityRule.getActivity());
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
+        prefs.edit().clear();
+        prefs.edit().putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true).commit();
     }
 
-    @Override
-    public void tearDown() throws Exception {
+    @After
+    public void tearDown() {
         solo.finishOpenedActivities();
-        super.tearDown();
+        prefs.edit().clear();
     }
 
+    @Test
     public void testSwitchTheme() {
         final int theme = UserPreferences.getTheme();
         int otherTheme;
@@ -55,13 +72,13 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         } else {
             otherTheme = R.string.pref_theme_title_light;
         }
-        solo.clickOnText(solo.getString(R.string.user_interface_label));
-        solo.clickOnText(solo.getString(R.string.pref_set_theme_title));
-        solo.waitForDialogToOpen();
-        solo.clickOnText(solo.getString(otherTheme));
+        clickPreference(withText(R.string.user_interface_label));
+        clickPreference(withText(R.string.pref_set_theme_title));
+        onView(withText(otherTheme)).perform(click());
         assertTrue(solo.waitForCondition(() -> UserPreferences.getTheme() != theme, Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testSwitchThemeBack() {
         final int theme = UserPreferences.getTheme();
         int otherTheme;
@@ -70,33 +87,23 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         } else {
             otherTheme = R.string.pref_theme_title_light;
         }
-        solo.clickOnText(solo.getString(R.string.user_interface_label));
-        solo.clickOnText(solo.getString(R.string.pref_set_theme_title));
-        solo.waitForDialogToOpen(1000);
-        solo.clickOnText(solo.getString(otherTheme));
+        clickPreference(withText(R.string.user_interface_label));
+        clickPreference(withText(R.string.pref_set_theme_title));
+        onView(withText(otherTheme)).perform(click());
         assertTrue(solo.waitForCondition(() -> UserPreferences.getTheme() != theme, Timeout.getLargeTimeout()));
     }
 
-    public void testExpandNotification() {
-        solo.clickOnText(solo.getString(R.string.user_interface_label));
-        final int priority = UserPreferences.getNotifyPriority();
-        solo.clickOnText(solo.getString(R.string.pref_expandNotify_title));
-        assertTrue(solo.waitForCondition(() -> priority != UserPreferences.getNotifyPriority(), Timeout.getLargeTimeout()));
-        solo.clickOnText(solo.getString(R.string.pref_expandNotify_title));
-        assertTrue(solo.waitForCondition(() -> priority == UserPreferences.getNotifyPriority(), Timeout.getLargeTimeout()));
-    }
-
+    @Test
     public void testEnablePersistentPlaybackControls() {
-        solo.clickOnText(solo.getString(R.string.user_interface_label));
         final boolean persistNotify = UserPreferences.isPersistNotify();
-        solo.scrollDown();
-        solo.scrollDown();
-        solo.clickOnText(solo.getString(R.string.pref_persistNotify_title));
+        clickPreference(withText(R.string.user_interface_label));
+        clickPreference(withText(R.string.pref_persistNotify_title));
         assertTrue(solo.waitForCondition(() -> persistNotify != UserPreferences.isPersistNotify(), Timeout.getLargeTimeout()));
-        solo.clickOnText(solo.getString(R.string.pref_persistNotify_title));
+        clickPreference(withText(R.string.pref_persistNotify_title));
         assertTrue(solo.waitForCondition(() -> persistNotify == UserPreferences.isPersistNotify(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testSetLockscreenButtons() {
         solo.clickOnText(solo.getString(R.string.user_interface_label));
         solo.scrollDown();
@@ -123,6 +130,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> !UserPreferences.showSkipOnCompactNotification(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testEnqueueAtFront() {
         solo.clickOnText(solo.getString(R.string.playback_pref));
         final boolean enqueueAtFront = UserPreferences.enqueueAtFront();
@@ -134,6 +142,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> enqueueAtFront == UserPreferences.enqueueAtFront(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testHeadPhonesDisconnect() {
         solo.clickOnText(solo.getString(R.string.playback_pref));
         final boolean pauseOnHeadsetDisconnect = UserPreferences.isPauseOnHeadsetDisconnect();
@@ -143,6 +152,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> pauseOnHeadsetDisconnect == UserPreferences.isPauseOnHeadsetDisconnect(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testHeadPhonesReconnect() {
         solo.clickOnText(solo.getString(R.string.playback_pref));
         if(UserPreferences.isPauseOnHeadsetDisconnect() == false) {
@@ -156,6 +166,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> unpauseOnHeadsetReconnect == UserPreferences.isUnpauseOnHeadsetReconnect(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testBluetoothReconnect() {
         solo.clickOnText(solo.getString(R.string.playback_pref));
         if(UserPreferences.isPauseOnHeadsetDisconnect() == false) {
@@ -169,6 +180,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> unpauseOnBluetoothReconnect == UserPreferences.isUnpauseOnBluetoothReconnect(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testContinuousPlayback() {
         solo.clickOnText(solo.getString(R.string.playback_pref));
         final boolean continuousPlayback = UserPreferences.isFollowQueue();
@@ -180,6 +192,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> continuousPlayback == UserPreferences.isFollowQueue(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testAutoDelete() {
         solo.clickOnText(solo.getString(R.string.storage_pref));
         final boolean autoDelete = UserPreferences.isAutoDelete();
@@ -189,17 +202,15 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> autoDelete == UserPreferences.isAutoDelete(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testPlaybackSpeeds() {
-        solo.clickOnText(solo.getString(R.string.playback_pref));
-        solo.scrollDown();
-        solo.scrollDown();
-        solo.clickOnText(solo.getString(R.string.pref_playback_speed_title));
-        solo.waitForDialogToOpen(1000);
+        clickPreference(withText(R.string.playback_pref));
+        clickPreference(withText(R.string.pref_playback_speed_title));
         assertTrue(solo.searchText(res.getStringArray(R.array.playback_speed_values)[0]));
-        solo.clickOnText(solo.getString(R.string.cancel_label));
-        solo.waitForDialogToClose(1000);
+        onView(withText(R.string.cancel_label)).perform(click());
     }
 
+    @Test
     public void testPauseForInterruptions() {
         solo.clickOnText(solo.getString(R.string.playback_pref));
         final boolean pauseForFocusLoss = UserPreferences.shouldPauseForFocusLoss();
@@ -209,6 +220,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> pauseForFocusLoss == UserPreferences.shouldPauseForFocusLoss(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testDisableUpdateInterval() {
         solo.clickOnText(solo.getString(R.string.network_pref));
         solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_sum));
@@ -217,31 +229,31 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> UserPreferences.getUpdateInterval() == 0, 1000));
     }
 
+    @Test
     public void testSetUpdateInterval() {
-        solo.clickOnText(solo.getString(R.string.network_pref));
-        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_title));
-        solo.waitForDialogToOpen();
-        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_Interval));
-        solo.waitForDialogToOpen();
+        clickPreference(withText(R.string.network_pref));
+        clickPreference(withText(R.string.pref_autoUpdateIntervallOrTime_title));
+        onView(withText(R.string.pref_autoUpdateIntervallOrTime_Interval)).perform(click());
         String search = "12 " + solo.getString(R.string.pref_update_interval_hours_plural);
-        solo.clickOnText(search);
-        solo.waitForDialogToClose();
+        onView(withText(search)).perform(click());
         assertTrue(solo.waitForCondition(() -> UserPreferences.getUpdateInterval() ==
                 TimeUnit.HOURS.toMillis(12), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testMobileUpdates() {
-        solo.clickOnText(solo.getString(R.string.network_pref));
+        clickPreference(withText(R.string.network_pref));
         final boolean mobileUpdates = UserPreferences.isAllowMobileUpdate();
-        solo.clickOnText(solo.getString(R.string.pref_mobileUpdate_title));
+        clickPreference(withText(R.string.pref_mobileUpdate_title));
         assertTrue(solo.waitForCondition(() -> mobileUpdates != UserPreferences.isAllowMobileUpdate(), Timeout.getLargeTimeout()));
-        solo.clickOnText(solo.getString(R.string.pref_mobileUpdate_title));
+        clickPreference(withText(R.string.pref_mobileUpdate_title));
         assertTrue(solo.waitForCondition(() -> mobileUpdates == UserPreferences.isAllowMobileUpdate(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testSetSequentialDownload() {
-        solo.clickOnText(solo.getString(R.string.network_pref));
-        solo.clickOnText(solo.getString(R.string.pref_parallel_downloads_title));
+        clickPreference(withText(R.string.network_pref));
+        clickPreference(withText(R.string.pref_parallel_downloads_title));
         solo.waitForDialogToOpen();
         solo.clearEditText(0);
         solo.enterText(0, "1");
@@ -249,9 +261,10 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> UserPreferences.getParallelDownloads() == 1, Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testSetParallelDownloads() {
-        solo.clickOnText(solo.getString(R.string.network_pref));
-        solo.clickOnText(solo.getString(R.string.pref_parallel_downloads_title));
+        clickPreference(withText(R.string.network_pref));
+        clickPreference(withText(R.string.pref_parallel_downloads_title));
         solo.waitForDialogToOpen();
         solo.clearEditText(0);
         solo.enterText(0, "10");
@@ -259,50 +272,50 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> UserPreferences.getParallelDownloads() == 10, Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testSetParallelDownloadsInvalidInput() {
-        solo.clickOnText(solo.getString(R.string.network_pref));
-        solo.clickOnText(solo.getString(R.string.pref_parallel_downloads_title));
+        clickPreference(withText(R.string.network_pref));
+        clickPreference(withText(R.string.pref_parallel_downloads_title));
         solo.waitForDialogToOpen();
         solo.clearEditText(0);
         solo.enterText(0, "0");
-        assertEquals("1", solo.getEditText(0).getText().toString());
+        assertEquals("", solo.getEditText(0).getText().toString());
         solo.clearEditText(0);
         solo.enterText(0, "100");
-        assertEquals("50", solo.getEditText(0).getText().toString());
+        assertEquals("", solo.getEditText(0).getText().toString());
     }
 
+    @Test
     public void testSetEpisodeCache() {
         String[] entries = res.getStringArray(R.array.episode_cache_size_entries);
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String entry = entries[entries.length/2];
         final int value = Integer.valueOf(values[values.length/2]);
-        solo.clickOnText(solo.getString(R.string.network_pref));
-        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
-        solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
-        solo.clickOnText(solo.getString(R.string.pref_episode_cache_title));
+        clickPreference(withText(R.string.network_pref));
+        clickPreference(withText(R.string.pref_automatic_download_title));
+        clickPreference(withText(R.string.pref_episode_cache_title));
         solo.waitForDialogToOpen();
         solo.clickOnText(entry);
         assertTrue(solo.waitForCondition(() -> UserPreferences.getEpisodeCacheSize() == value, Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testSetEpisodeCacheMin() {
         String[] entries = res.getStringArray(R.array.episode_cache_size_entries);
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String minEntry = entries[0];
         final int minValue = Integer.valueOf(values[0]);
-        solo.clickOnText(solo.getString(R.string.network_pref));
-        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
-        solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
-        if(!UserPreferences.isEnableAutodownload()) {
-            solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
-        }
-        solo.clickOnText(solo.getString(R.string.pref_episode_cache_title));
+
+        clickPreference(withText(R.string.network_pref));
+        clickPreference(withText(R.string.pref_automatic_download_title));
+        clickPreference(withText(R.string.pref_episode_cache_title));
         solo.waitForDialogToOpen(1000);
         solo.scrollUp();
         solo.clickOnText(minEntry);
         assertTrue(solo.waitForCondition(() -> UserPreferences.getEpisodeCacheSize() == minValue, Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testSetEpisodeCacheMax() {
         String[] entries = res.getStringArray(R.array.episode_cache_size_entries);
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
@@ -311,24 +324,22 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         solo.clickOnText(solo.getString(R.string.network_pref));
         solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
         solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
-        if(!UserPreferences.isEnableAutodownload()) {
-            solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
-        }
         solo.clickOnText(solo.getString(R.string.pref_episode_cache_title));
         solo.waitForDialogToOpen();
         solo.clickOnText(maxEntry);
         assertTrue(solo.waitForCondition(() -> UserPreferences.getEpisodeCacheSize() == maxValue, Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testAutomaticDownload() {
         final boolean automaticDownload = UserPreferences.isEnableAutodownload();
-        solo.clickOnText(solo.getString(R.string.network_pref));
-        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
-        solo.waitForText(solo.getString(R.string.pref_automatic_download_title));
-        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+        clickPreference(withText(R.string.network_pref));
+        clickPreference(withText(R.string.pref_automatic_download_title));
+        clickPreference(withText(R.string.pref_automatic_download_title));
+
         assertTrue(solo.waitForCondition(() -> automaticDownload != UserPreferences.isEnableAutodownload(), Timeout.getLargeTimeout()));
         if(UserPreferences.isEnableAutodownload() == false) {
-            solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
+            clickPreference(withText(R.string.pref_automatic_download_title));
         }
         assertTrue(solo.waitForCondition(() -> UserPreferences.isEnableAutodownload() == true, Timeout.getLargeTimeout()));
         final boolean enableAutodownloadOnBattery = UserPreferences.isEnableAutodownloadOnBattery();
@@ -343,6 +354,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         assertTrue(solo.waitForCondition(() -> enableWifiFilter == UserPreferences.isEnableAutodownloadWifiFilter(), Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testEpisodeCleanupQueueOnly() {
         solo.clickOnText(solo.getString(R.string.network_pref));
         solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
@@ -356,6 +368,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
                 Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testEpisodeCleanupNeverAlg() {
         solo.clickOnText(solo.getString(R.string.network_pref));
         solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
@@ -369,6 +382,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
                 Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testEpisodeCleanupClassic() {
         solo.clickOnText(solo.getString(R.string.network_pref));
         solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
@@ -386,12 +400,14 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
                 Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testEpisodeCleanupNumDays() {
-        solo.clickOnText(solo.getString(R.string.network_pref));
-        solo.clickOnText(solo.getString(R.string.pref_automatic_download_title));
-        solo.clickOnText(solo.getString(R.string.pref_episode_cleanup_title));
-        solo.waitForText(solo.getString(R.string.episode_cleanup_after_listening));
-        solo.clickOnText("5");
+        clickPreference(withText(R.string.network_pref));
+        clickPreference(withText(R.string.pref_automatic_download_title));
+        clickPreference(withText(R.string.pref_episode_cleanup_title));
+        solo.waitForDialogToOpen();
+        String search = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, 5, 5);
+        onView(withText(search)).perform(click());
         assertTrue(solo.waitForCondition(() -> {
                     EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
                     if (alg instanceof APCleanupAlgorithm) {
@@ -403,15 +419,13 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
                 Timeout.getLargeTimeout()));
     }
 
-
+    @Test
     public void testRewindChange() {
         int seconds = UserPreferences.getRewindSecs();
         int deltas[] = res.getIntArray(R.array.seek_delta_values);
 
-        solo.clickOnText(solo.getString(R.string.playback_pref));
-        solo.scrollDown();
-        solo.scrollDown();
-        solo.clickOnText(solo.getString(R.string.pref_rewind));
+        clickPreference(withText(R.string.playback_pref));
+        clickPreference(withText(R.string.pref_rewind));
         solo.waitForDialogToOpen();
 
         int currentIndex = Arrays.binarySearch(deltas, seconds);
@@ -419,24 +433,22 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
 
         // Find next value (wrapping around to next)
         int newIndex = (currentIndex + 1) % deltas.length;
-
-        solo.clickOnText(String.valueOf(deltas[newIndex]) + " seconds");
-        solo.clickOnButton("Confirm");
+        onView(withText(String.valueOf(deltas[newIndex]) + " seconds")).perform(click());
+        onView(withText("Confirm")).perform(click());
 
         solo.waitForDialogToClose();
         assertTrue(solo.waitForCondition(() -> UserPreferences.getRewindSecs() == deltas[newIndex],
                 Timeout.getLargeTimeout()));
     }
 
+    @Test
     public void testFastForwardChange() {
-        solo.clickOnText(solo.getString(R.string.playback_pref));
-        solo.scrollDown();
-        solo.scrollDown();
+        clickPreference(withText(R.string.playback_pref));
         for (int i = 2; i > 0; i--) { // repeat twice to catch any error where fastforward is tracking rewind
             int seconds = UserPreferences.getFastForwardSecs();
             int deltas[] = res.getIntArray(R.array.seek_delta_values);
 
-            solo.clickOnText(solo.getString(R.string.pref_fast_forward));
+            clickPreference(withText(R.string.pref_fast_forward));
             solo.waitForDialogToOpen();
 
             int currentIndex = Arrays.binarySearch(deltas, seconds);
@@ -445,12 +457,17 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
             // Find next value (wrapping around to next)
             int newIndex = (currentIndex + 1) % deltas.length;
 
-            solo.clickOnText(String.valueOf(deltas[newIndex]) + " seconds");
-            solo.clickOnButton("Confirm");
+            onView(withText(String.valueOf(deltas[newIndex]) + " seconds")).perform(click());
+            onView(withText("Confirm")).perform(click());
 
             solo.waitForDialogToClose();
             assertTrue(solo.waitForCondition(() -> UserPreferences.getFastForwardSecs() == deltas[newIndex],
                     Timeout.getLargeTimeout()));
         }
+    }
+
+    private void clickPreference(Matcher<View> matcher) {
+        onView(withId(R.id.list))
+                .perform(RecyclerViewActions.actionOnItem(hasDescendant(matcher), click()));
     }
 }
