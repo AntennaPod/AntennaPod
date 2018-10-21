@@ -45,8 +45,6 @@ import de.danoeh.antennapod.core.service.GpodnetSyncService;
 public class GpodnetAuthenticationActivity extends AppCompatActivity {
     private static final String TAG = "GpodnetAuthActivity";
 
-    private static final String CURRENT_STEP = "current_step";
-
     private ViewFlipper viewFlipper;
 
     private static final int STEP_DEFAULT = -1;

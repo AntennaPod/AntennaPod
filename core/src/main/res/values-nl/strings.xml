@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Feeds updaten</string>
   <string name="feeds_label">Feeds</string>
   <string name="statistics_label">Statistieken</string>
   <string name="add_feed_label">Podcast toevoegen</string>
   <string name="episodes_label">Afleveringen</string>
   <string name="all_episodes_short_label">Alle</string>
+  <string name="new_episodes_label">Nieuw</string>
   <string name="favorite_episodes_label">Favorieten</string>
   <string name="new_label">Nieuw</string>
   <string name="settings_label">Instellingen</string>
@@ -18,10 +20,12 @@
   <string name="cancel_download_label">Annuleer download</string>
   <string name="playback_history_label">Afspeelgeschiedenis</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Met andere apparaten synchroniseren</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
   <string name="free_space_label">%1$s beschikbaar</string>
   <string name="episode_cache_full_title">Afleveringen cache is vol</string>
   <string name="episode_cache_full_message">Het maximum aantal gecachte afleveringen is bereikt. U kunt het maximum verhogen in de instellingen.</string>
+  <string name="synchronizing">Synchroniseren…</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Totale duur van afgespeelde podcasts:</string>
   <string name="statistics_details_dialog">%1$d van de %2$d afleveringen gestart.\n\n%3$s van de %4$s afgespeeld.</string>
@@ -56,7 +60,7 @@
   <string name="yes">Ja</string>
   <string name="no">Nee</string>
   <string name="reset">Reset</string>
-  <string name="author_label">Auteur</string>
+  <string name="author_label">Auteur(s)</string>
   <string name="language_label">Taal</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Instellingen</string>
@@ -110,6 +114,9 @@
   <string name="mark_all_seen_msg">\'Nieuw\' label van alle afleveringen verwijderend</string>
   <string name="mark_all_seen_confirmation_msg">Bevestig aub dat u het \'nieuw\' label van alle afleveringen wilt verwijderen.</string>
   <string name="show_info_label">Toon informatie</string>
+  <string name="show_feed_settings_label">Feed-instellingen tonen</string>
+  <string name="feed_info_label">Feed-informatie</string>
+  <string name="feed_settings_label">Feed-instellingen</string>
   <string name="rename_feed_label">Podcast hernoemen</string>
   <string name="remove_feed_label">Podcast verwijderen</string>
   <string name="share_label">Delen…</string>
@@ -117,13 +124,13 @@
   <string name="share_file_label">Deel bestand</string>
   <string name="share_link_with_position_label">Link van de aflevering met tijdstip delen</string>
   <string name="share_feed_url_label">URL van de feed delen</string>
-  <string name="share_item_url_label">URL van het mediabestand delen</string>
-  <string name="share_item_url_with_position_label">URL van mediabestand met tijdstip delen</string>
+  <string name="share_item_url_label">URL v/h mediabestand delen</string>
+  <string name="share_item_url_with_position_label">URL v/h mediabestand met tijdstip delen</string>
   <string name="feed_delete_confirmation_msg">Bevestig dat u de feed <i>%1$s</i> en ALLE (ook gedownloade) afleveringen van deze podcast wilt verwijderen.</string>
   <string name="feed_remover_msg">Feed verwijderen</string>
   <string name="load_complete_feed">Hele feed vernieuwen</string>
   <string name="hide_episodes_title">Afleveringen verbergen</string>
-  <string name="episode_actions">Afleveringen beheren</string>
+  <string name="batch_edit">Bulkbewerking</string>
   <string name="hide_unplayed_episodes_label">Niet afgespeeld</string>
   <string name="hide_paused_episodes_label">Gepauzeerd</string>
   <string name="hide_played_episodes_label">Afgespeeld</string>
@@ -176,7 +183,7 @@
   <string name="download_error_http_data_error">HTTP data fout</string>
   <string name="download_error_error_unknown">Onbekende fout</string>
   <string name="download_error_parser_exception">Parser Exception</string>
-  <string name="download_error_unsupported_type">Niet ondersteunde feed soort</string>
+  <string name="download_error_unsupported_type">Niet ondersteunde type feed</string>
   <string name="download_error_connection_error">Verbindingsfout</string>
   <string name="download_error_unknown_host">Onbekende host</string>
   <string name="download_error_unauthorized">Authenticatie fout</string>
@@ -220,6 +227,7 @@
   <string name="playback_error_unknown">Onbekende fout</string>
   <string name="no_media_playing_label">Geen media aan het afspelen</string>
   <string name="player_buffering_msg">Buffering</string>
+  <string name="player_go_to_picture_in_picture">Picture-in-picture modus</string>
   <string name="playbackservice_notification_title">Podcast aan het afspelen</string>
   <string name="unknown_media_key">AntennaPod - Mediaknop onbekend: %1$d</string>
   <!--Queue operations-->
@@ -237,6 +245,8 @@
   <string name="duration">Lengte</string>
   <string name="episode_title">Afleveringtitel</string>
   <string name="feed_title">Feed-titel</string>
+  <string name="random">Willekeurig</string>
+  <string name="smart_shuffle">Slim Shuffelen</string>
   <string name="ascending">Oplopend</string>
   <string name="descending">Aflopend</string>
   <string name="clear_queue_confirmation_msg">Bevestig aub dat u alle afleveringen uit de wachtrij wilt verwijderen</string>
@@ -283,16 +293,25 @@
   <string name="other_pref">Overig</string>
   <string name="about_pref">Over AntennaPod</string>
   <string name="queue_label">Wachtrij</string>
-  <string name="services_label">Services</string>
+  <string name="integrations_label">Integraties</string>
   <string name="flattr_label">Flattr</string>
+  <string name="flattr_summary">Service voor microbetalingen</string>
+  <string name="automation">Automatische acties</string>
+  <string name="download_pref_details">Details</string>
+  <string name="import_export_pref">Importeren/exporteren</string>
+  <string name="appearance">Uiterlijk</string>
+  <string name="external_elements">Externe elementen</string>
+  <string name="interruptions">Onderbrekingen</string>
+  <string name="buttons">Knoppen</string>
+  <string name="media_player">Mediaspeler</string>
   <string name="pref_episode_cleanup_title">Automatisch opschonen</string>
   <string name="pref_episode_cleanup_summary">Afleveringen die niet in de wachtrij staan én niet als favoriet gemarkeerd zijn, mogen verwijderd worden als Automatisch Downloaden ruimte nodig heeft voor nieuwe afleveringen</string>
   <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren wanneer de koptelefoon wordt losgekoppeld of de bluetooth verbinding wordt verbroken</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten wanneer de koptelefoon opnieuw wordt aangesloten</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten wanneer de bluetooth verbinding hervat wordt</string>
-  <string name="pref_hardwareForwardButtonSkips_title">\'Volgende\' knop voor overslaan</string>
+  <string name="pref_hardwareForwardButtonSkips_title">\'Volgende\' voor overslaan</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Aflevering overslaan ipv vooruitspoelen wanneer op een fysieke \'volgende\' knop wordt gedrukt</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">Vorige voor opnieuw afspelen</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">\'Vorige\' voor opnieuw afspelen</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Aflevering afspelen vanaf het begin ipv terugspoelen wanneer op een fysieke \'vorige\' knop wordt gedrukt</string>
   <string name="pref_followQueue_sum">Volgende item in de wachtrij afspelen als de aflevering voltooid is</string>
   <string name="pref_auto_delete_sum">Afleveringen verwijderen als ze zijn afgespeeld</string>
@@ -335,7 +354,7 @@
   <string name="pref_set_theme_title">Kies kleurschema</string>
   <string name="pref_nav_drawer_title">Menu aanpassen</string>
   <string name="pref_nav_drawer_sum">Het uiterlijk en andere instellingen van het menu aanpassen.</string>
-  <string name="pref_nav_drawer_items_title">Menu-items instellen</string>
+  <string name="pref_nav_drawer_items_title">Selecteer menu-items</string>
   <string name="pref_nav_drawer_items_sum">Aanpassen welke items in het menu worden getoond</string>
   <string name="pref_nav_drawer_feed_order_title">Feed volgorde instellen</string>
   <string name="pref_nav_drawer_feed_order_sum">De volgorde van uw feeds instellen</string>
@@ -354,6 +373,7 @@
   <string name="pref_episode_cache_title">Afleveringen cache</string>
   <string name="pref_theme_title_light">Licht</string>
   <string name="pref_theme_title_dark">Donker</string>
+  <string name="pref_theme_title_trueblack">Echt zwart</string>
   <string name="pref_episode_cache_unlimited">Onbeperkt</string>
   <string name="pref_update_interval_hours_plural">uur</string>
   <string name="pref_update_interval_hours_singular">uur</string>
@@ -378,7 +398,7 @@
   <string name="pref_playback_speed_sum">Pas de beschikbare snelheden aan voor de variabele audio afspeelsnelheid</string>
   <string name="pref_fast_forward">Snelheid van vooruitspoelen</string>
   <string name="pref_fast_forward_sum">Pas het aantal seconden aan waarmee wordt vooruitgespoeld per klik op de knop</string>
-  <string name="pref_rewind">Snelheid terugspoelen</string>
+  <string name="pref_rewind">Snelheid van terugspoelen</string>
   <string name="pref_rewind_sum">Pas het aantal seconden aan waarmee wordt teruggespoeld per klik op de knop</string>
   <string name="pref_gpodnet_sethostname_title">Definieer hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Gebruik standaard host</string>
@@ -404,8 +424,7 @@
   <string name="crash_report_sum">Verstuur laatste crashreport via email</string>
   <string name="send_email">Verstuur email</string>
   <string name="experimental_pref">Experimentele functie(s)</string>
-  <string name="pref_sonic_title">Sonic mediaspeler</string>
-  <string name="pref_sonic_message">Gebruik AntennaPod\'s ingebouwde Sonic mediaspeler als een alternatief voor Prestissimo en de mediaspeler van Android.</string>
+  <string name="pref_media_player_message">Selecteer welke mediaspeler gebruikt moet worden voor het afspelen van bestanden</string>
   <string name="pref_current_value">Huidige instelling: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Netwerkproxy instellen</string>
@@ -417,6 +436,11 @@
   <string name="pref_cast_message_free_flavor">Voor Chromecast is software van derden vereist die niet beschikbaar zijn in deze versie van AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Gedownloade afleveringen in wachtrij</string>
   <string name="pref_enqueue_downloaded_summary">Voeg gedownloade afleveringen toe aan de wachtrij</string>
+  <string name="media_player_builtin">Ingebouwde speler van Android</string>
+  <string name="pref_videoBehavior_title">Bij verlaten video</string>
+  <string name="pref_videoBehavior_sum">Wat te doen bij het verlaten van spelende video</string>
+  <string name="stop_playback">Afspelen stoppen</string>
+  <string name="continue_playback">Blijf geluid afspelen</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisch flattr\'en aanzetten</string>
   <string name="auto_flattr_after_percent">Flattr een aflevering zodra %d procent is afgespeeld</string>
@@ -449,8 +473,8 @@
   <string name="select_options_label">Selecteren…</string>
   <string name="choose_file_from_filesystem">Via bestandsbeheer</string>
   <string name="choose_file_from_external_application">Via externe app</string>
-  <string name="opml_export_label">OPML export</string>
-  <string name="html_export_label">HTML export</string>
+  <string name="opml_export_label">OPML exporteren</string>
+  <string name="html_export_label">HTML exporteren</string>
   <string name="exporting_label">Exporteren…</string>
   <string name="export_error_label">Export fout</string>
   <string name="export_success_title">Export succesvol</string>
@@ -518,7 +542,7 @@
   <!--Directory chooser-->
   <string name="selected_folder_label">Geselecteerde map:</string>
   <string name="create_folder_label">Map aanmaken</string>
-  <string name="choose_data_directory">Kies data map</string>
+  <string name="choose_data_directory">Kies datamap</string>
   <string name="choose_data_directory_message">Kies de hoofdmap voor uw data. AntennaPod zal de benodigde submappen creeëren.</string>
   <string name="choose_data_directory_permission_rationale">Toegang tot de externe opslag is nodig om de data-map aan te passen</string>
   <string name="create_folder_msg">Maak een nieuwe map aan met de naam \"%1$s\"?</string>
@@ -645,4 +669,13 @@
   <string name="cast_failed_seek">Het opzoeken van het nieuwe tijdstip op het Cast apparaat is mislukt</string>
   <string name="cast_failed_receiver_player_error">Ernstige fout opgetreden bij het afspelende Cast apparaat</string>
   <string name="cast_failed_media_error_skipping">Er was een fout bij het afspelen; de aflevering wordt overgeslagen…</string>
+  <!--Notification channels-->
+  <string name="notification_channel_user_action">Actie vereist</string>
+  <string name="notification_channel_user_action_description">Tonen als actie vereist is, bijvoorbeeld als je een wachtwoord moet invoeren.</string>
+  <string name="notification_channel_downloading">Aan het downloaden</string>
+  <string name="notification_channel_downloading_description">Tonen als er iets wordt gedownload.</string>
+  <string name="notification_channel_playing">Wordt momenteel afgespeeld</string>
+  <string name="notification_channel_playing_description">Hiermee kun je het afspelen controleren. Dit is de voornaamste notificatie tijdens het afspelen van een podcast.</string>
+  <string name="notification_channel_error">Foutmeldingen</string>
+  <string name="notification_channel_error_description">Tonen wanneer er iets fout is gegaan, bijvoorbeeld als downloaden of synchroniseren mislukt.</string>
 </resources>

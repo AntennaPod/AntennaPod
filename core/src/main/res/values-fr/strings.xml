@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Mettre à jour les abonnements</string>
   <string name="feeds_label">Flux</string>
   <string name="statistics_label">Statistiques</string>
   <string name="add_feed_label">Ajouter un podcast</string>
   <string name="episodes_label">Épisodes</string>
   <string name="all_episodes_short_label">Tout</string>
+  <string name="new_episodes_label">Nouveaux</string>
   <string name="favorite_episodes_label">Favoris</string>
   <string name="new_label">Nouveau</string>
   <string name="settings_label">Préférences</string>
@@ -18,10 +20,12 @@
   <string name="cancel_download_label">Annuler les téléchargements</string>
   <string name="playback_history_label">Journal de lecture</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Synchroniser avec d\'autres appareils</string>
   <string name="gpodnet_auth_label">Identifiants gpodder.net</string>
   <string name="free_space_label">%1$s d\'espace libre</string>
   <string name="episode_cache_full_title">L\'emplacement pour stocker les épisodes est plein</string>
   <string name="episode_cache_full_message">Le nombre maximal d\'épisodes téléchargés a été atteint. Vous pouvez changer ce nombre dans les paramètres.</string>
+  <string name="synchronizing">Synchronisation...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Temps d\'écoute total</string>
   <string name="statistics_details_dialog">%1$d épisodes sur %2$d commencés.\n\nLu %3$s sur %4$s.</string>
@@ -83,7 +87,7 @@
   <string name="auto_download_apply_to_items_message">Le nouveau paramètre <i>Téléchargement Automatique</i> sera automatiquement appliqué sur chaque nouvel épisode.\nVoulez-vous faire de même avec les épisodes précédents ?</string>
   <string name="auto_delete_label">Suppression automatique de l\'épisode</string>
   <string name="parallel_downloads_suffix">\u0020téléchargements parallèles</string>
-  <string name="feed_auto_download_global">Param.par défaut</string>
+  <string name="feed_auto_download_global">Option par défaut</string>
   <string name="feed_auto_download_always">Toujours</string>
   <string name="feed_auto_download_never">Jamais</string>
   <string name="send_label">Envoyer...</string>
@@ -110,6 +114,9 @@
   <string name="mark_all_seen_msg">Tous les épisodes ont été marqués vus</string>
   <string name="mark_all_seen_confirmation_msg">Merci de confirmer que vous voulez marquer tous les épisodes comme vus.</string>
   <string name="show_info_label">Voir les détails</string>
+  <string name="show_feed_settings_label">Paramètres de flux...</string>
+  <string name="feed_info_label">Infos du flux</string>
+  <string name="feed_settings_label">Paramètres du flux</string>
   <string name="rename_feed_label">Renommer le podcast</string>
   <string name="remove_feed_label">Supprimer le podcast</string>
   <string name="share_label">Partager...</string>
@@ -123,7 +130,7 @@
   <string name="feed_remover_msg">Flux en cours de suppression</string>
   <string name="load_complete_feed">Mettre à jour tout le flux</string>
   <string name="hide_episodes_title">Cacher épisodes</string>
-  <string name="episode_actions">Appliquer les actions</string>
+  <string name="batch_edit">Edition groupée</string>
   <string name="hide_unplayed_episodes_label">Non lus</string>
   <string name="hide_paused_episodes_label">En pause</string>
   <string name="hide_played_episodes_label">Lus</string>
@@ -220,6 +227,7 @@
   <string name="playback_error_unknown">Erreur inconnue</string>
   <string name="no_media_playing_label">Aucune lecture</string>
   <string name="player_buffering_msg">Mise en mémoire</string>
+  <string name="player_go_to_picture_in_picture">Mode Picture-in-Picture</string>
   <string name="playbackservice_notification_title">Lecture de podcast en cours</string>
   <string name="unknown_media_key">AntennaPod - Touche média inconnue : %1$d</string>
   <!--Queue operations-->
@@ -237,6 +245,8 @@
   <string name="duration">Durée</string>
   <string name="episode_title">Titre de l\'épisode</string>
   <string name="feed_title">Nom du flux</string>
+  <string name="random">Aléatoire</string>
+  <string name="smart_shuffle">Tri intelligent</string>
   <string name="ascending">Ordre croissant</string>
   <string name="descending">Ordre décroissant</string>
   <string name="clear_queue_confirmation_msg">Veuillez confirmer que vous voulez bien supprimer TOUS les épisodes de la liste de lecture</string>
@@ -283,13 +293,22 @@
   <string name="other_pref">Autres</string>
   <string name="about_pref">À propos</string>
   <string name="queue_label">Liste</string>
-  <string name="services_label">Services</string>
+  <string name="integrations_label">Intégrations</string>
   <string name="flattr_label">Flattr</string>
+  <string name="flattr_summary">Service de micropaiement</string>
+  <string name="automation">Automatisation</string>
+  <string name="download_pref_details">Détails</string>
+  <string name="import_export_pref">Importation / Exportation</string>
+  <string name="appearance">Apparence</string>
+  <string name="external_elements">Eléments externes</string>
+  <string name="interruptions">Interruptions</string>
+  <string name="buttons">Boutons</string>
+  <string name="media_player">Lecteur multimédia</string>
   <string name="pref_episode_cleanup_title">Nettoyage des épisodes</string>
   <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont pas dans la liste de lecture et qui ne sont pas marqués comme favoris peuvent être supprimés si l\'espace est insuffisant pour le téléchargement automatique de nouveaux épisodes</string>
   <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture lorsque le casque ou le bluetooth sont déconnectés</string>
-  <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se reconnecte</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont connectés</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se connecte</string>
   <string name="pref_hardwareForwardButtonSkips_title">Le bouton \"saut avant\" saute l\'épisode</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\'épisode suivant au lieu de faire un saut avant quand un bouton physique \"saut avant\" est pressé</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Le bouton \"saut arrière\" redémarre l\'épisode</string>
@@ -316,9 +335,9 @@
   <string name="pref_downloadMediaOnWifiOnly_sum">Ne télécharger les épisodes que par Wi-Fi</string>
   <string name="pref_followQueue_title">Lecture continue</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Téléchargement en Wi-Fi</string>
-  <string name="pref_pauseOnHeadsetDisconnect_title">Déconnexion du casque</string>
-  <string name="pref_unpauseOnHeadsetReconnect_title">Reconnexion du casque</string>
-  <string name="pref_unpauseOnBluetoothReconnect_title">Reconnexion Bluetooth</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Déconnexion des écouteurs ou du Bluetooth</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Connexion des écouteurs</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Connexion du Bluetooth</string>
   <string name="pref_mobileUpdate_title">Mises à jour mobile</string>
   <string name="pref_mobileUpdate_sum">Autoriser les mises à jour avec la connexion mobile</string>
   <string name="refreshing_label">Mise à jour en cours</string>
@@ -354,6 +373,7 @@
   <string name="pref_episode_cache_title">Épisodes stockés localement</string>
   <string name="pref_theme_title_light">Clair</string>
   <string name="pref_theme_title_dark">Sombre</string>
+  <string name="pref_theme_title_trueblack">Noir / True Black</string>
   <string name="pref_episode_cache_unlimited">Illimité</string>
   <string name="pref_update_interval_hours_plural">heures</string>
   <string name="pref_update_interval_hours_singular">heure</string>
@@ -404,8 +424,7 @@
   <string name="crash_report_sum">Envoyer le dernier rapport de crash par e-mail</string>
   <string name="send_email">Envoyer e-mail</string>
   <string name="experimental_pref">Expérimental</string>
-  <string name="pref_sonic_title">Lecteur multimédia Sonic</string>
-  <string name="pref_sonic_message">Utiliser le lecteur multimédia interne Sonic au lieu du lecteur natif d\'Android ou Prestissimo</string>
+  <string name="pref_media_player_message">Choisir le lecteur à utiliser pour lire les fichiers</string>
   <string name="pref_current_value">Valeur actuelle : %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Paramétrer un réseau proxy</string>
@@ -417,6 +436,11 @@
   <string name="pref_cast_message_free_flavor">Chromecast nécessite des bibliothèques tierces qui sont désactivées dans cette version d\'AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Ajouter à la liste après téléchargement</string>
   <string name="pref_enqueue_downloaded_summary">Mettre les épisodes dans la la liste de lecture après téléchargement</string>
+  <string name="media_player_builtin">Lecteur natif d\'Android</string>
+  <string name="pref_videoBehavior_title">Sorti du lecteur pendant une vidéo</string>
+  <string name="pref_videoBehavior_sum">Définir ce qu\'il se passe si une vidéo est quittée pendant sa lecture</string>
+  <string name="stop_playback">Arrêter la lecture</string>
+  <string name="continue_playback">Continuer la lecture</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
   <string name="auto_flattr_after_percent">Lancer un paiement flattr quand %d pourcent de l\'épisode a été lu</string>
@@ -645,4 +669,13 @@
   <string name="cast_failed_seek">Échec de la recherche de la nouvelle position sur l\'appareil cast</string>
   <string name="cast_failed_receiver_player_error">Le lecteur de réception a rencontré une grave erreur</string>
   <string name="cast_failed_media_error_skipping">Erreur de lecture du média. Passage au suivant...</string>
+  <!--Notification channels-->
+  <string name="notification_channel_user_action">Action requise</string>
+  <string name="notification_channel_user_action_description">S\'affiche si une action est requise. Par exemple, un mot de passe à saisir.</string>
+  <string name="notification_channel_downloading">Téléchargement en cours</string>
+  <string name="notification_channel_downloading_description">S\'affiche lorsqu\'un téléchargement est en cours.</string>
+  <string name="notification_channel_playing">Lecture en cours</string>
+  <string name="notification_channel_playing_description">Permet de contrôler la lecture. C\'est la notification principale pendant la lecture d\'un podcast.</string>
+  <string name="notification_channel_error">Erreurs</string>
+  <string name="notification_channel_error_description">S\'affiche en cas de problème. Par exemple, un téléchargement ou une synchronisation qui échoue.</string>
 </resources>

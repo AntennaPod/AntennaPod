@@ -123,7 +123,6 @@
   <string name="feed_remover_msg">Rimozione del Feed in corso</string>
   <string name="load_complete_feed">Aggiorna il feed completo</string>
   <string name="hide_episodes_title">Nascondi gli episodi</string>
-  <string name="episode_actions">Applica le azioni</string>
   <string name="hide_unplayed_episodes_label">Non riprodotti</string>
   <string name="hide_paused_episodes_label">In pausa</string>
   <string name="hide_played_episodes_label">Riprodotti</string>
@@ -278,7 +277,6 @@
   <string name="other_pref">Altro</string>
   <string name="about_pref">Riguardo a</string>
   <string name="queue_label">Coda</string>
-  <string name="services_label">Servizi</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Pulizia dell\'episodio</string>
   <string name="pref_episode_cleanup_summary">Gli episodi che non sono in coda e non sono preferiti dovrebbero essere idonei alla rimozione se Auto Download richiede spazio per nuovi episodi</string>
@@ -532,4 +530,5 @@
   <!--Casting-->
   <string name="cast_media_route_menu_title">Riproduci su...</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

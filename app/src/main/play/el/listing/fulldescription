@@ -1,11 +1,11 @@
-AntennaPod is a podcast manager and player that gives you instant access to millions of free and paid podcasts, from independent podcasters to large publishing houses such as the BBC, NPR and CNN. Add, import and export their feeds hassle-free using the iTunes podcast database, OPML files or simple RSS URLs. Save effort, battery power and mobile data usage with powerful automation controls for downloading episodes (specify times, intervals and WiFi networks) and deleting episodes (based your favourites and delay settings).<br>
-But most importantly: Download, stream or queue episodes and enjoy them the way you like with adjustable playback speeds, chapter support and a sleep timer. You can even show your love to the content creators  with our Flattr integration.
+Το Antennapod είναι μία εφαρμογή διαχείρισης και εκτέλεσης podcasts που σας δίνει άμεση πρόσβαση σε εκατομμύρια δωρεάν και επί πληρωμή podcasts, από ανεξάρτητους podcasters έως μεγάλους εκδοτικούς οίκους όπως το BBC, NPR και CNN. Μπορείτε εύκολα να προσθέσετε, να εισάγετε και να εξάγετε τις ροές τους χρησιμοποιώντας τη βάση δεδομένων podcast του iTunes, αρχεία OPML ή απλά RSS URLs. Γλυτώστε προσπάθεια, μπαταρία και χρήση δεδομένων κινητής τηλεφωνίας με ισχυρές ρυθμίσεις αυτοματισμών για λήψη επεισοδίων (ορίστε τους χρόνους, τα διαστήματα και τα δίκτυα WiFi) και σβήστε επεισόδια (με βάση τα αγαπημένα σας και τις ρυθμίσεις καθυστέρησης).<br>
+Αλλά το πλέον σημαντικό: Κατεβάστε, κάντε stream ή βάλτε στη σειρά επεισόδια και απολαύστε τα όπως επιθυμήτε με ρυθμιζόμενη ταχύτητα αναπαραγωγής, υποστήριξη κεφάλαιων και χρονόμετρο απενεργοποίησης. Μπορείτε ακόμη και να δείξετε την αγάπη σας στους δημιουργούς περιεχομένου μέσω της ενσωμάτωσης του Flattr.
 
-Made by podcast-enthousiast, AntennaPod is free in all senses of the word: open source, no costs, no ads.
+Φτιαγμένο από λάτρη των podcast, το AntennaPod είναι ελεύθερο με όλες τις έννοιες της λέξης: ανοικτού λογισμικού, χωρίς κόστη, χωρίς διαφημίσεις.
 
-<b>All features:</b><br>
-IMPORT, ORGANIZE AND PLAY<br>
-&#8226; Add and import feeds via the iTunes and gPodder.net directories, OPML files and RSS or Atom links<br>
+<b>Όλα τα χαρακτηριστικά:</b><br>
+ΕΙΣΑΓΩΓΉ, ΟΡΓΆΝΩΣΗ ΚΑΙ ΕΚΤΈΛΕΣΗ<br>
+&#8226; Προσθέστε και εισάγετε ροές μέσω των φακέλων του iTunes και του gPodder.net, αρχείων OPML και RSS ή συνδέσμους Atom<br>
 &#8226; Manage playback from anywhere: homescreen widget, system notification and earplug and bluetooth controls<br>
 &#8226; Enjoy listening your way with adjustable playback speed, chapter support (MP3, VorbisComment and Podlove), remembered playback position and an advanced sleep timer (shake to reset, lower volume and slow down playback)<br>
 &#8226; Access password-protected feeds and episodes<br>
@@ -24,20 +24,20 @@ CONTROL THE SYSTEM<br>
 &#8226; Adapt to your environment using the light and dark theme<br>
 &#8226; Back-up your subscriptions with the gPodder.net integration and OPML export
 
-<b>Join the AntennaPod community!</b><br>
-AntennaPod is under active development by volunteers. You can contribute too, with code or with comment!
+<b>Ενταχθείτε στη κοινότητα του AntennaPod!</b><br>
+Το AntennaPod βρίσκεται υπό ενεργή ανάπτυξη από εθελοντές. Μπορείτε και εσείς να συνεισφέρετε, με κώδικα ή με κάποιο σχόλιο. 
 
-GitHub is the place to go for feature requests, bug reports and code contributions:<br>
+Το Github είναι το μέρος να επισκεφθείτε για να ζητήσετε καινούρια χαρακτηριστικά, να αναφέρετε σφάλματα και για συνεισφορά κώδικα:<br>
 https://www.github.com/AntennaPod/AntennaPod
 
-Our Google Group is the place to share your ideas, favourite podcasting moments and gratitude to all the volunteers:<br>
+Το Google Group μας είναι το μέρος να μοιραστείτε τις ιδέες σας, τις αγαπημένες σας στιγμές ενασχόλησης με τα podcasts και ευγνωμοσύνη σε όλους τους εθελοντές:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
-Have a question or want to give us feedback?
+Έχετε κάποια ερώτηση ή θέλετε να μας δώσετε κάποια ανατροφοδότηση;
 https://twitter.com/@AntennaPod
 
-Transifex is the place to help with translations:<br>
+Το Transifex είναι το μέρος για να βοηθήσετε με τις μεταφράσεις:<br>
 https://www.transifex.com/antennapod/antennapod
 
-Check out our Beta Testing programme to get the latest features first:<br>
+Ελέγξτε το πρόγραμμά μας Beta Testing για να λαμβάνετε τα τελευταία χαρακτηριστικά πρώτοι:<br>
 https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

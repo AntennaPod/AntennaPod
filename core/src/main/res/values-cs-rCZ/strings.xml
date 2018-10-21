@@ -88,6 +88,7 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 den po dokončení</item>
     <item quantity="few">%d dny po dokončení</item>
+    <item quantity="many">%d dnů po dokončení</item>
     <item quantity="other">%d dnů po dokončení</item>
   </plurals>
   <!--'Add Feed' Activity labels-->
@@ -117,7 +118,6 @@
   <string name="feed_remover_msg">Odstranit kanál</string>
   <string name="load_complete_feed">Obnovit kompletní kanál</string>
   <string name="hide_episodes_title">Skrýt epizody</string>
-  <string name="episode_actions">Provést akce</string>
   <string name="hide_unplayed_episodes_label">Neposlechnuté</string>
   <string name="hide_paused_episodes_label">Pozastavené</string>
   <string name="hide_played_episodes_label">Poslechnuté</string>
@@ -185,6 +185,7 @@
   <plurals name="downloads_left">
     <item quantity="one">%d čekající na stažení</item>
     <item quantity="few">%d čekající na stažení</item>
+    <item quantity="many">%d čekajících na stažení</item>
     <item quantity="other">%d čekajících na stažení</item>
   </plurals>
   <string name="downloads_processing">Probíhá stahování</string>
@@ -275,7 +276,6 @@
   <string name="other_pref">Ostatní</string>
   <string name="about_pref">O aplikaci</string>
   <string name="queue_label">Fronta</string>
-  <string name="services_label">Služby</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Vyčistit epizody</string>
   <string name="pref_episode_cleanup_summary">Epizody, které nejsou ve frontě a nejsou označeny za oblíbené by mělo být možné smazat, pokud bude funkce automatického stahování potřebovat místo pro nové epizody</string>
@@ -386,7 +386,6 @@
   <string name="crash_report_sum">Odesílat hlášení o posledním pádu aplikace emailem</string>
   <string name="send_email">Poslat email</string>
   <string name="experimental_pref">Experimentální</string>
-  <string name="pref_sonic_message">Použít připojený sonic media player jako náhradu za výchozí přehrávač médií pro Android a Prestissimo</string>
   <string name="pref_current_value">Aktuální hodnota: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Nastavit síťovou proxy</string>
@@ -430,8 +429,6 @@
   <string name="html_export_label">HTML export</string>
   <string name="exporting_label">Export</string>
   <string name="export_error_label">Chyba exportu</string>
-  <string name="opml_export_success_title">OPML export byl úspěšný.</string>
-  <string name="opml_export_success_sum">OPML soubor byl zapsán do:\u0020</string>
   <string name="opml_import_ask_read_permission">Pro přečtení OPML souboru je vyžadován  přístup k externímu úložišti</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Nastavit časovač vypnutí</string>
@@ -449,16 +446,19 @@
   <plurals name="time_seconds_quantified">
     <item quantity="one">1 sekunda</item>
     <item quantity="few">%d sekundy</item>
+    <item quantity="many">%d sekund</item>
     <item quantity="other">%d sekund</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">1 minuta</item>
     <item quantity="few">%d minuty</item>
+    <item quantity="many">%d minut</item>
     <item quantity="other">%d minut</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="one">1 hodina</item>
     <item quantity="few">%d hodiny</item>
+    <item quantity="many">%d hodin</item>
     <item quantity="other">%d hodin</item>
   </plurals>
   <string name="auto_enable_label">Automaticky zapnout</string>
@@ -618,4 +618,5 @@
   <string name="cast_failed_seek">Selhal posun na novou pozici na vysílači</string>
   <string name="cast_failed_receiver_player_error">Přijímač zaznamenal závažnou chybu</string>
   <string name="cast_failed_media_error_skipping">Chyba přehrávání médií. Přeskakuji...</string>
+  <!--Notification channels-->
 </resources>

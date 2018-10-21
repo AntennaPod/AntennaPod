@@ -67,8 +67,13 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item type="attr" name="ic_cellphone_text">@drawable/ic_cellphone_text_grey600_24dp</item>
+        <item type="attr" name="ic_question_answer">@drawable/ic_forum_grey600_24dp</item>
+        <item type="attr" name="ic_bug">@drawable/ic_bug_grey600_24dp</item>
+        <item type="attr" name="ic_known_issues">@drawable/ic_format_list_bulleted_grey600_24dp</item>
+
         <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
         <item type="attr" name="currently_playing_background">@color/highlight_light</item>
+
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 
         <item type="attr" name="about_screen_background">#e5e5e5</item>
@@ -143,6 +148,9 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item type="attr" name="ic_cellphone_text">@drawable/ic_cellphone_text_white_24dp</item>
+        <item type="attr" name="ic_question_answer">@drawable/ic_baseline_question_answer_white_24dp</item>
+        <item type="attr" name="ic_bug">@drawable/ic_bug_white_24dp</item>
+        <item type="attr" name="ic_known_issues">@drawable/ic_format_list_bulleted_white_24dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
         <item type="attr" name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
@@ -241,6 +249,9 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item type="attr" name="ic_cellphone_text">@drawable/ic_cellphone_text_grey600_24dp</item>
+        <item type="attr" name="ic_question_answer">@drawable/ic_forum_grey600_24dp</item>
+        <item type="attr" name="ic_bug">@drawable/ic_bug_grey600_24dp</item>
+        <item type="attr" name="ic_known_issues">@drawable/ic_format_list_bulleted_grey600_24dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
         <item type="attr" name="currently_playing_background">@color/highlight_light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
@@ -318,6 +329,9 @@
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
         <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item type="attr" name="ic_cellphone_text">@drawable/ic_cellphone_text_white_24dp</item>
+        <item type="attr" name="ic_question_answer">@drawable/ic_baseline_question_answer_white_24dp</item>
+        <item type="attr" name="ic_bug">@drawable/ic_bug_white_24dp</item>
+        <item type="attr" name="ic_known_issues">@drawable/ic_format_list_bulleted_white_24dp</item>
         <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
         <item type="attr" name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>

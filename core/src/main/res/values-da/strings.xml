@@ -123,7 +123,6 @@
   <string name="feed_remover_msg">Fjerner feed</string>
   <string name="load_complete_feed">Opdater hele feedet</string>
   <string name="hide_episodes_title">Skjul udsendelser</string>
-  <string name="episode_actions">Anvend handlinger</string>
   <string name="hide_unplayed_episodes_label">Uafspillede</string>
   <string name="hide_paused_episodes_label">Sat på pause</string>
   <string name="hide_played_episodes_label">Afspillede</string>
@@ -281,7 +280,6 @@
   <string name="other_pref">Andre</string>
   <string name="about_pref">Om</string>
   <string name="queue_label">Kø</string>
-  <string name="services_label">Tjenester</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Oprydning i udsendelser</string>
   <string name="pref_episode_cleanup_summary">Tillad at udsendelser, som ikke er i køen og som ikke er markeret som foretrukne, kan fjernes, hvis Automatisk overførsel har brug for plads til nye udsendelser</string>
@@ -402,8 +400,6 @@
   <string name="crash_report_sum">Send den seneste nedbrudsrapport via e-mail</string>
   <string name="send_email">Send e-mail</string>
   <string name="experimental_pref">Eksperimentelt</string>
-  <string name="pref_sonic_title">Sonic-medieafspiller</string>
-  <string name="pref_sonic_message">Brug indbygget Sonic-medieafspiller i stedet for Androids indbyggede medieafspiller og Prestissimo</string>
   <string name="pref_current_value">Nuværende værdi: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Indstil en netværksproxy</string>
@@ -451,8 +447,6 @@
   <string name="html_export_label">HTML-eksport</string>
   <string name="exporting_label">Eksporterer…</string>
   <string name="export_error_label">Eksportfejl</string>
-  <string name="opml_export_success_title">OPML-eksport lykkedes.</string>
-  <string name="opml_export_success_sum">.opml-filen blev skrevet til:\u0020</string>
   <string name="opml_import_ask_read_permission">Adgang til eksternt lager er påkrævet for at læse OPML-filen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Indstil søvntimer</string>
@@ -637,4 +631,5 @@
   <string name="cast_failed_seek">Det lykkedes ikke at søge til den nye position på cast-enheden</string>
   <string name="cast_failed_receiver_player_error">Modtagerafspilleren er stødt på en alvorlig fejl</string>
   <string name="cast_failed_media_error_skipping">Fejl ved afspilning af medie. Springer over…</string>
+  <!--Notification channels-->
 </resources>

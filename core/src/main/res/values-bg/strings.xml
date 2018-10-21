@@ -118,7 +118,6 @@
   <string name="other_pref">Други</string>
   <string name="about_pref">Относно</string>
   <string name="queue_label">Опашка</string>
-  <string name="services_label">Услуги</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Почистване на епизодите</string>
   <string name="pref_episode_cleanup_summary">Епизодите, които не са в опашката и не са в любими, отговарят на условията за премахване, ако автоматичното изтегляне се нуждае от място за нови епизоди</string>
@@ -253,4 +252,5 @@
   <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

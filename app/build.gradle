@@ -150,6 +150,7 @@ dependencies {
     implementation "com.android.support:gridlayout-v7:$supportVersion"
     implementation "com.android.support:percent:$supportVersion"
     implementation "com.android.support:recyclerview-v7:$supportVersion"
+    compileOnly 'com.google.android.wearable:wearable:2.2.0'
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
         exclude group: "org.json", module: "json"

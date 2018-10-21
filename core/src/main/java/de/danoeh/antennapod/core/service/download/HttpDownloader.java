@@ -304,7 +304,7 @@ public class HttpDownloader extends Downloader {
             String encoded = ByteString.of(bytes).base64();
             return "Basic " + encoded;
         } catch (UnsupportedEncodingException e) {
-            throw new AssertionError();
+            throw new AssertionError(e);
         }
     }
 

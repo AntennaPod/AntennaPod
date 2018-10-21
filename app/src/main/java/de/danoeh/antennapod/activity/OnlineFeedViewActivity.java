@@ -144,7 +144,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
         } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
                 || TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
-            feedUrl = (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND))
+            feedUrl = TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
                     ? getIntent().getStringExtra(Intent.EXTRA_TEXT) : getIntent().getDataString();
             if (actionBar != null) {
                 actionBar.setTitle(R.string.add_feed_label);
@@ -306,7 +306,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private void parseFeed() {
-        if (feed == null || feed.getFile_url() == null && feed.isDownloaded()) {
+        if (feed == null || (feed.getFile_url() == null && feed.isDownloaded())) {
             throw new IllegalStateException("feed must be non-null and downloaded when parseFeed is called");
         }
         Log.d(TAG, "Parsing feed");

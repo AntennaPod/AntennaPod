@@ -11,6 +11,8 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class ThemeUtils {
+    private ThemeUtils(){}
+
     private static final String TAG = "ThemeUtils";
 
     public static int getSelectionBackgroundColor() {

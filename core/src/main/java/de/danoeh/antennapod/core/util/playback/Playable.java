@@ -176,6 +176,8 @@ public interface Playable extends Parcelable,
      * Provides utility methods for Playable objects.
      */
     class PlayableUtils {
+        private PlayableUtils(){}
+
         private static final String TAG = "PlayableUtils";
 
         /**

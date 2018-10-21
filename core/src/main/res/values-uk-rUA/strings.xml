@@ -125,7 +125,6 @@
   <string name="feed_remover_msg">Удаляю канал</string>
   <string name="load_complete_feed">Оновити канал цілком</string>
   <string name="hide_episodes_title">Приховати епізоди</string>
-  <string name="episode_actions">Застосувати дії</string>
   <string name="hide_unplayed_episodes_label">Неграні</string>
   <string name="hide_paused_episodes_label">На паузі</string>
   <string name="hide_played_episodes_label">Грані</string>
@@ -287,7 +286,6 @@
   <string name="other_pref">Інше</string>
   <string name="about_pref">Про програму</string>
   <string name="queue_label">Черга</string>
-  <string name="services_label">Сервіси</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Чищення епізодів</string>
   <string name="pref_episode_cleanup_summary">Епізоди що не знаходяться в черзі та не помічені як улюблені можуть бути видалені якщо Автозавантажувач потребуватиме місце для нових епізодів.</string>
@@ -408,8 +406,6 @@
   <string name="crash_report_sum">Надіслати е-пошту зі звітом про останній збій</string>
   <string name="send_email">Надіслати е-пошту</string>
   <string name="experimental_pref">Експериментальні</string>
-  <string name="pref_sonic_title">Sonic Media Player</string>
-  <string name="pref_sonic_message">Застосувати вбудований програвач sonic замість програвача Android та Prestissimo</string>
   <string name="pref_current_value">Поточне значення: %1$s</string>
   <string name="pref_proxy_title">Проксі</string>
   <string name="pref_proxy_sum">Застосувати проксі сервер</string>
@@ -655,4 +651,5 @@
   <string name="cast_failed_seek">Помилка перехода на нову позицію програвання на пристрої.</string>
   <string name="cast_failed_receiver_player_error">Серйозна помилка програвання на пристрої</string>
   <string name="cast_failed_media_error_skipping">Помилка програвання файла. Пропускаю...</string>
+  <!--Notification channels-->
 </resources>

@@ -17,6 +17,9 @@ import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
  * Creates a dialog that lets the user change the hostname for the gpodder.net service.
  */
 public class GpodnetSetHostnameDialog {
+
+    private GpodnetSetHostnameDialog(){}
+
     private static final String TAG = "GpodnetSetHostnameDialog";
 
     public static AlertDialog createDialog(final Context context) {

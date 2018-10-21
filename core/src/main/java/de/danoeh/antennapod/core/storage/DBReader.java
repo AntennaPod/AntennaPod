@@ -75,7 +75,7 @@ public final class DBReader {
             cursor = adapter.getAllFeedsCursor();
             List<Feed> feeds = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
-                Feed feed = extractFeedFromCursorRow(adapter, cursor);
+                Feed feed = extractFeedFromCursorRow(cursor);
                 feeds.add(feed);
             }
             return feeds;
@@ -243,7 +243,7 @@ public final class DBReader {
         return result;
     }
 
-    private static Feed extractFeedFromCursorRow(PodDBAdapter adapter, Cursor cursor) {
+    private static Feed extractFeedFromCursorRow(Cursor cursor) {
         Feed feed = Feed.fromCursor(cursor);
         FeedPreferences preferences = FeedPreferences.fromCursor(cursor);
         feed.setPreferences(preferences);
@@ -580,7 +580,7 @@ public final class DBReader {
         try {
             cursor = adapter.getFeedCursor(feedId);
             if (cursor.moveToNext()) {
-                feed = extractFeedFromCursorRow(adapter, cursor);
+                feed = extractFeedFromCursorRow(cursor);
                 feed.setItems(getFeedItemList(feed));
             } else {
                 Log.e(TAG, "getFeed could not find feed with id " + feedId);
@@ -1007,7 +1007,7 @@ public final class DBReader {
         Cursor feedCursor = adapter.getFeedsInFlattrQueueCursor();
         if (feedCursor.moveToFirst()) {
             do {
-                result.add(extractFeedFromCursorRow(adapter, feedCursor));
+                result.add(extractFeedFromCursorRow(feedCursor));
             } while (feedCursor.moveToNext());
         }
         feedCursor.close();

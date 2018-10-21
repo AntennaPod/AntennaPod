@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -46,7 +45,6 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
@@ -489,8 +487,8 @@ public class QueueFragment extends Fragment {
 
                 private void reallyMoved(int from, int to) {
                     // Write drag operation to database
-                    Log.d(TAG, "Write to database move(" + dragFrom + ", " + dragTo + ")");
-                    DBWriter.moveQueueItem(dragFrom, dragTo, true);
+                    Log.d(TAG, "Write to database move(" + from + ", " + to + ")");
+                    DBWriter.moveQueueItem(from, to, true);
                 }
             }
         );
@@ -535,9 +533,12 @@ public class QueueFragment extends Fragment {
         String info = queue.size() + getString(R.string.episodes_suffix);
         if(queue.size() > 0) {
             long timeLeft = 0;
+            float playbackSpeed = Float.valueOf(UserPreferences.getPlaybackSpeed());
             for(FeedItem item : queue) {
                 if(item.getMedia() != null) {
-                    timeLeft += item.getMedia().getDuration() - item.getMedia().getPosition();
+                    timeLeft +=
+                            (long) ((item.getMedia().getDuration() - item.getMedia().getPosition())
+                                    / playbackSpeed);
                 }
             }
             info += " \u2022 ";

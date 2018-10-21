@@ -38,16 +38,21 @@
     <PreferenceCategory android:title="@string/project_pref">
         <Preference
             android:key="prefFaq"
-            android:title="@string/pref_faq"/>
+            android:title="@string/pref_faq"
+            android:icon="?attr/ic_question_answer" />
+
         <Preference
             android:key="prefKnownIssues"
-            android:title="@string/pref_known_issues"/>
+            android:title="@string/pref_known_issues"
+            android:icon="?attr/ic_known_issues" />
         <Preference
             android:key="prefSendCrashReport"
             android:title="@string/crash_report_title"
-            android:summary="@string/crash_report_sum"/>
+            android:summary="@string/crash_report_sum"
+            android:icon="?attr/ic_bug" />
         <Preference
             android:key="prefAbout"
-            android:title="@string/about_pref"/>
+            android:title="@string/about_pref"
+            android:icon="?attr/action_about" />
     </PreferenceCategory>
 </PreferenceScreen>

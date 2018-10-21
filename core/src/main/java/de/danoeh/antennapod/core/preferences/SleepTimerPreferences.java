@@ -23,7 +23,6 @@ public class SleepTimerPreferences {
     private static final String DEFAULT_VALUE = "15";
     private static final int DEFAULT_TIME_UNIT = 1;
 
-    private static Context context;
     private static SharedPreferences prefs;
 
     /**

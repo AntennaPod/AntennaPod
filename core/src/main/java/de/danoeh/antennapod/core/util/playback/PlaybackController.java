@@ -702,7 +702,7 @@ public abstract class PlaybackController {
         return org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
                 || UserPreferences.useSonic()
                 || Build.VERSION.SDK_INT >= 23
-                || playbackService != null && playbackService.canSetSpeed();
+                || (playbackService != null && playbackService.canSetSpeed());
     }
 
     public void setPlaybackSpeed(float speed) {
