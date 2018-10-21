@@ -22,9 +22,6 @@ public class NSRSS20 extends Namespace {
 
     private static final String TAG = "NSRSS20";
 
-    private static final String NSTAG = "rss";
-	private static final String NSURI = "";
-
     public static final String CHANNEL = "channel";
 	public static final String ITEM = "item";
     private static final String GUID = "guid";

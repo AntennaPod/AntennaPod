@@ -28,7 +28,6 @@ public final class Converter {
     /** Determines the length of the number for best readability.*/
     private static final int NUM_LENGTH = 1024;
     
-    private static final int DAYS_MIL = 86400000;
     private static final int HOURS_MIL = 3600000;
 	private static final int MINUTES_MIL = 60000;
 	private static final int SECONDS_MIL = 1000;

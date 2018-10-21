@@ -602,14 +602,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaPlayer.setVideoSurface(sh);
     }
 
-    /**
-     * Called when the surface holder of the mediaplayer has to be changed.
-     */
-    private void resetVideoSurface() {
-        taskManager.cancelPositionSaver();
-        mediaPlayer.resetVideoSurface();
-    }
-
     public void notifyVideoSurfaceAbandoned() {
         mediaPlayer.pause(true, false);
         mediaPlayer.resetVideoSurface();

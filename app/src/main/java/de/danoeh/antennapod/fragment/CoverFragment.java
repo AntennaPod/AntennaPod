@@ -22,7 +22,6 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 public class CoverFragment extends Fragment implements MediaplayerInfoContentFragment {
 
     private static final String TAG = "CoverFragment";
-    private static final String ARG_PLAYABLE = "arg.playable";
 
     private Playable media;
 

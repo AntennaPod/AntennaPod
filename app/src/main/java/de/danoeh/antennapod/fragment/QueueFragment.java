@@ -487,8 +487,8 @@ public class QueueFragment extends Fragment {
 
                 private void reallyMoved(int from, int to) {
                     // Write drag operation to database
-                    Log.d(TAG, "Write to database move(" + dragFrom + ", " + dragTo + ")");
-                    DBWriter.moveQueueItem(dragFrom, dragTo, true);
+                    Log.d(TAG, "Write to database move(" + from + ", " + to + ")");
+                    DBWriter.moveQueueItem(from, to, true);
                 }
             }
         );
@@ -537,8 +537,8 @@ public class QueueFragment extends Fragment {
             for(FeedItem item : queue) {
                 if(item.getMedia() != null) {
                     timeLeft +=
-                            (item.getMedia().getDuration() - item.getMedia().getPosition())
-                                    / playbackSpeed;
+                            (long) ((item.getMedia().getDuration() - item.getMedia().getPosition())
+                                    / playbackSpeed);
                 }
             }
             info += " \u2022 ";

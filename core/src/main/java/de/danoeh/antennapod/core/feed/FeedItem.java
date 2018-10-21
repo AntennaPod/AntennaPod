@@ -194,7 +194,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         if (other.link != null) {
             link = other.link;
         }
-        if (other.pubDate != null && other.pubDate != pubDate) {
+        if (other.pubDate != null && other.pubDate.equals(pubDate)) {
             pubDate = other.pubDate;
         }
         if (other.media != null) {

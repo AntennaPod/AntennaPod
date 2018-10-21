@@ -15,7 +15,6 @@ public abstract class Namespace {
 	public abstract SyndElement handleElementStart(String localName, HandlerState state, Attributes attributes);
 	
 	/** Called by a Feedhandler when in endElement and it detects a namespace element 
-	 * 	@return true if namespace handled the element, false if it ignored it
 	 * */
 	public abstract void handleElementEnd(String localName, HandlerState state);
 	

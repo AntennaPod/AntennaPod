@@ -357,7 +357,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return drawerToggle != null && drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return (drawerToggle != null && drawerToggle.onOptionsItemSelected(item)) || super.onOptionsItemSelected(item);
     }
 
     @Override
