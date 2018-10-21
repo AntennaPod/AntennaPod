@@ -17,6 +17,8 @@ import de.danoeh.antennapod.R;
 
 public class RatingDialog {
 
+    private RatingDialog(){}
+
     private static final String TAG = RatingDialog.class.getSimpleName();
     private static final int AFTER_DAYS = 7;
 

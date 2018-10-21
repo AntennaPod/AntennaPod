@@ -14,6 +14,7 @@ import de.danoeh.antennapod.core.util.NetworkUtils;
  * Apps using the core module of AntennaPod should register implementations of all interfaces here.
  */
 public class ClientConfig {
+    private ClientConfig(){}
 
     /**
      * Should be used when setting User-Agent header for HTTP-requests.

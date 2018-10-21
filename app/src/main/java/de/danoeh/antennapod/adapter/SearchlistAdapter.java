@@ -62,13 +62,13 @@ public class SearchlistAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             convertView = inflater.inflate(R.layout.searchlist_item, parent, false);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
             if(Build.VERSION.SDK_INT >= 23) {
                 holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
             }
-            holder.cover = (ImageView) convertView
+            holder.cover = convertView
                     .findViewById(R.id.imgvFeedimage);
-            holder.subtitle = (TextView) convertView
+            holder.subtitle = convertView
                     .findViewById(R.id.txtvSubtitle);
 
             convertView.setTag(holder);

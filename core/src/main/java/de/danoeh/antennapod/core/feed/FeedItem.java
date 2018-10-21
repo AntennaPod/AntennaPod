@@ -2,9 +2,8 @@ package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
 import android.support.annotation.Nullable;
-
 import android.text.TextUtils;
-import de.danoeh.antennapod.core.asynctask.ImageResource;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -15,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
@@ -194,7 +194,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         if (other.link != null) {
             link = other.link;
         }
-        if (other.pubDate != null && other.pubDate != pubDate) {
+        if (other.pubDate != null && other.pubDate.equals(pubDate)) {
             pubDate = other.pubDate;
         }
         if (other.media != null) {

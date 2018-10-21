@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.core.util.flattr;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -36,6 +34,8 @@ import de.danoeh.antennapod.core.storage.DBWriter;
  */
 
 public class FlattrUtils {
+    private FlattrUtils(){}
+
     private static final String TAG = "FlattrUtils";
 
     private static final String HOST_NAME = "de.danoeh.antennapod";

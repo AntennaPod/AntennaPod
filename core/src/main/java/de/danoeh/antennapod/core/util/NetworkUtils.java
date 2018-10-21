@@ -22,11 +22,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class NetworkUtils {
+    private NetworkUtils(){}
 
 	private static final String TAG = NetworkUtils.class.getSimpleName();
 

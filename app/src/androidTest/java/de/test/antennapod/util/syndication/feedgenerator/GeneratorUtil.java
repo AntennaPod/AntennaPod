@@ -8,6 +8,7 @@ import java.io.IOException;
  * Utility methods for FeedGenerator
  */
 class GeneratorUtil {
+    private GeneratorUtil(){}
 
     public static void addPaymentLink(XmlSerializer xml, String paymentLink, boolean withNamespace) throws IOException {
         String ns = (withNamespace) ? "http://www.w3.org/2005/Atom" : null;

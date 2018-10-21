@@ -21,10 +21,10 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import rx.Single;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -42,6 +42,7 @@ public class ExternalPlayerFragment extends Fragment {
     private TextView mFeedName;
     private ProgressBar mProgressBar;
     private PlaybackController controller;
+    private Subscription subscription;
 
     public ExternalPlayerFragment() {
         super();
@@ -52,12 +53,12 @@ public class ExternalPlayerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.external_player_fragment,
                 container, false);
-        fragmentLayout = (ViewGroup) root.findViewById(R.id.fragmentLayout);
-        imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
-        txtvTitle = (TextView) root.findViewById(R.id.txtvTitle);
-        butPlay = (ImageButton) root.findViewById(R.id.butPlay);
-        mFeedName = (TextView) root.findViewById(R.id.txtvAuthor);
-        mProgressBar = (ProgressBar) root.findViewById(R.id.episodeProgress);
+        fragmentLayout = root.findViewById(R.id.fragmentLayout);
+        imgvCover = root.findViewById(R.id.imgvCover);
+        txtvTitle = root.findViewById(R.id.txtvTitle);
+        butPlay = root.findViewById(R.id.butPlay);
+        mFeedName = root.findViewById(R.id.txtvAuthor);
+        mProgressBar = root.findViewById(R.id.episodeProgress);
 
         fragmentLayout.setOnClickListener(v -> {
             Log.d(TAG, "layoutInfo was clicked");
@@ -82,7 +83,7 @@ public class ExternalPlayerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         controller = setupPlaybackController();
         butPlay.setOnClickListener(v -> {
-            if(controller != null) {
+            if (controller != null) {
                 controller.playPause();
             }
         });
@@ -143,6 +144,9 @@ public class ExternalPlayerFragment extends Fragment {
         if (controller != null) {
             controller.release();
         }
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
@@ -163,7 +167,7 @@ public class ExternalPlayerFragment extends Fragment {
         controller = setupPlaybackController();
         if (butPlay != null) {
             butPlay.setOnClickListener(v -> {
-                if(controller != null) {
+                if (controller != null) {
                     controller.playPause();
                 }
             });
@@ -178,7 +182,10 @@ public class ExternalPlayerFragment extends Fragment {
             return false;
         }
 
-        Single.create(subscriber -> subscriber.onSuccess(controller.getMedia()))
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
+        subscription = Single.create(subscriber -> subscriber.onSuccess(controller.getMedia()))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(media -> updateUi((Playable) media));
@@ -208,13 +215,8 @@ public class ExternalPlayerFragment extends Fragment {
                 butPlay.setVisibility(View.VISIBLE);
             }
         } else {
-            Log.w(TAG,  "loadMediaInfo was called while the media object of playbackService was null!");
+            Log.w(TAG, "loadMediaInfo was called while the media object of playbackService was null!");
         }
-    }
-
-    private String getPositionString(int position, int duration) {
-        return Converter.getDurationStringLong(position) + " / "
-                + Converter.getDurationStringLong(duration);
     }
 
     public PlaybackController getPlaybackControllerTestingOnly() {

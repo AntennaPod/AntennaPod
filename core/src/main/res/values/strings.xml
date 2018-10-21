@@ -144,6 +144,8 @@
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="hide_episodes_title">Hide Episodes</string>
     <string name="batch_edit">Batch edit</string>
+    <string name="select_all_above">Select all above</string>
+    <string name="select_all_below">Select all below</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
     <string name="hide_paused_episodes_label">Paused</string>
     <string name="hide_played_episodes_label">Played</string>
@@ -335,7 +337,7 @@
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
     <string name="pref_hardwareForwardButtonSkips_title">Forward Button Skips</string>
-    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a hardware forward button skip to the next episode instead of fast-forwarding</string>
+    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a forward button on a bluetooth-connected device skip to the next episode instead of fast-forwarding</string>
     <string name="pref_hardwarePreviousButtonRestarts_title">Previous button restarts</string>
     <string name="pref_hardwarePreviousButtonRestarts_sum">When pressing a hardware previous button restart playing the current episode instead of rewinding</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
@@ -427,8 +429,8 @@
     <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
     <string name="pref_gpodnet_sethostname_title">Set hostname</string>
     <string name="pref_gpodnet_sethostname_use_default_host">Use default host</string>
-    <string name="pref_expandNotify_title">Expand Notification</string>
-    <string name="pref_expandNotify_sum">Always expand the notification to show playback buttons.</string>
+    <string name="pref_expandNotify_title">High Notification priority</string>
+    <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
     <string name="pref_compact_notification_buttons_title">Set Lockscreen Buttons</string>

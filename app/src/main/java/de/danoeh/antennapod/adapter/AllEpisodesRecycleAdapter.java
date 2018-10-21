@@ -77,24 +77,24 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.new_episodes_listitem, parent, false);
         Holder holder = new Holder(view);
-        holder.container = (FrameLayout) view.findViewById(R.id.container);
-        holder.content = (LinearLayout) view.findViewById(R.id.content);
-        holder.placeholder = (TextView) view.findViewById(R.id.txtvPlaceholder);
-        holder.title = (TextView) view.findViewById(R.id.txtvTitle);
+        holder.container = view.findViewById(R.id.container);
+        holder.content = view.findViewById(R.id.content);
+        holder.placeholder = view.findViewById(R.id.txtvPlaceholder);
+        holder.title = view.findViewById(R.id.txtvTitle);
         if(Build.VERSION.SDK_INT >= 23) {
             holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         }
-        holder.pubDate = (TextView) view
+        holder.pubDate = view
                 .findViewById(R.id.txtvPublished);
         holder.statusUnread = view.findViewById(R.id.statusUnread);
-        holder.butSecondary = (ImageButton) view
+        holder.butSecondary = view
                 .findViewById(R.id.butSecondaryAction);
-        holder.queueStatus = (ImageView) view
+        holder.queueStatus = view
                 .findViewById(R.id.imgvInPlaylist);
-        holder.progress = (ProgressBar) view
+        holder.progress = view
                 .findViewById(R.id.pbar_progress);
-        holder.cover = (ImageView) view.findViewById(R.id.imgvCover);
-        holder.txtvDuration = (TextView) view.findViewById(R.id.txtvDuration);
+        holder.cover = view.findViewById(R.id.imgvCover);
+        holder.txtvDuration = view.findViewById(R.id.txtvDuration);
         holder.item = null;
         holder.mainActivityRef = mainActivityRef;
         // so we can grab this later

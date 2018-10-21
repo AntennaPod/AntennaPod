@@ -34,7 +34,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -102,7 +101,7 @@ public class ProxyDialog {
                 .autoDismiss(false)
                 .build();
         View view = dialog.getCustomView();
-        spType = (Spinner) view.findViewById(R.id.spType);
+        spType = view.findViewById(R.id.spType);
         String[] types = { Proxy.Type.DIRECT.name(), Proxy.Type.HTTP.name() };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
             android.R.layout.simple_spinner_item, types);
@@ -110,22 +109,22 @@ public class ProxyDialog {
         spType.setAdapter(adapter);
         ProxyConfig proxyConfig = UserPreferences.getProxyConfig();
         spType.setSelection(adapter.getPosition(proxyConfig.type.name()));
-        etHost = (EditText) view.findViewById(R.id.etHost);
+        etHost = view.findViewById(R.id.etHost);
         if(!TextUtils.isEmpty(proxyConfig.host)) {
             etHost.setText(proxyConfig.host);
         }
         etHost.addTextChangedListener(requireTestOnChange);
-        etPort = (EditText) view.findViewById(R.id.etPort);
+        etPort = view.findViewById(R.id.etPort);
         if(proxyConfig.port > 0) {
             etPort.setText(String.valueOf(proxyConfig.port));
         }
         etPort.addTextChangedListener(requireTestOnChange);
-        etUsername = (EditText) view.findViewById(R.id.etUsername);
+        etUsername = view.findViewById(R.id.etUsername);
         if(!TextUtils.isEmpty(proxyConfig.username)) {
             etUsername.setText(proxyConfig.username);
         }
         etUsername.addTextChangedListener(requireTestOnChange);
-        etPassword = (EditText) view.findViewById(R.id.etPassword);
+        etPassword = view.findViewById(R.id.etPassword);
         if(!TextUtils.isEmpty(proxyConfig.password)) {
             etPassword.setText(proxyConfig.username);
         }
@@ -146,7 +145,7 @@ public class ProxyDialog {
                 enableSettings(false);
             }
         });
-        txtvMessage = (TextView) view.findViewById(R.id.txtvMessage);
+        txtvMessage = view.findViewById(R.id.txtvMessage);
         checkValidity();
         return dialog;
     }

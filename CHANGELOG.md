@@ -1,10 +1,10 @@
 Change Log
 ==========
 
-Version 1.6.6
+Version 1.7.0
 -------------
 
-* Experimental new media player (ExoPlayer)
+* NEW ExoPlayer (experimental)
 * Fix for Bluetooth Forward (Oreo)
 * Preference redesign + search
 * Notification improvements

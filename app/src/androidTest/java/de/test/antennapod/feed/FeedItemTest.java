@@ -1,6 +1,7 @@
 package de.test.antennapod.feed;
 
 import android.test.AndroidTestCase;
+
 import de.danoeh.antennapod.core.feed.FeedItem;
 
 public class FeedItemTest extends AndroidTestCase {

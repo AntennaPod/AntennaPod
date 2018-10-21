@@ -213,7 +213,7 @@ public class NavListAdapter extends BaseAdapter
             v = getFeedView(position, convertView, parent);
         }
         if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
-            TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
+            TextView txtvTitle = v.findViewById(R.id.txtvTitle);
             if (position == itemAccess.getSelectedItemIndex()) {
                 txtvTitle.setTypeface(null, Typeface.BOLD);
             } else {
@@ -236,9 +236,9 @@ public class NavListAdapter extends BaseAdapter
 
             convertView = inflater.inflate(R.layout.nav_listitem, parent, false);
 
-            holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.count = (TextView) convertView.findViewById(R.id.txtvCount);
+            holder.image = convertView.findViewById(R.id.imgvCover);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
+            holder.count = convertView.findViewById(R.id.txtvCount);
             convertView.setTag(holder);
         } else {
             holder = (NavHolder) convertView.getTag();
@@ -326,10 +326,10 @@ public class NavListAdapter extends BaseAdapter
 
             convertView = inflater.inflate(R.layout.nav_feedlistitem, parent, false);
 
-            holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.failure = (IconTextView) convertView.findViewById(R.id.itxtvFailure);
-            holder.count = (TextView) convertView.findViewById(R.id.txtvCount);
+            holder.image = convertView.findViewById(R.id.imgvCover);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
+            holder.failure = convertView.findViewById(R.id.itxtvFailure);
+            holder.count = convertView.findViewById(R.id.txtvCount);
             convertView.setTag(holder);
         } else {
             holder = (FeedHolder) convertView.getTag();

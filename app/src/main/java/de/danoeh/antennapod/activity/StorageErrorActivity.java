@@ -42,7 +42,7 @@ public class StorageErrorActivity extends AppCompatActivity {
 
 		setContentView(R.layout.storage_error);
 
-		Button btnChooseDataFolder = (Button) findViewById(R.id.btnChooseDataFolder);
+		Button btnChooseDataFolder = findViewById(R.id.btnChooseDataFolder);
 		btnChooseDataFolder.setOnClickListener(v -> {
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT &&
                     Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {

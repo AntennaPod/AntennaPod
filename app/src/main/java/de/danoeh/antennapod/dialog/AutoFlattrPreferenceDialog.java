@@ -29,9 +29,9 @@ public class AutoFlattrPreferenceDialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         @SuppressLint("InflateParams") View view = activity.getLayoutInflater().inflate(R.layout.autoflattr_preference_dialog, null);
-        final CheckBox chkAutoFlattr = (CheckBox) view.findViewById(R.id.chkAutoFlattr);
-        final SeekBar skbPercent = (SeekBar) view.findViewById(R.id.skbPercent);
-        final TextView txtvStatus = (TextView) view.findViewById(R.id.txtvStatus);
+        final CheckBox chkAutoFlattr = view.findViewById(R.id.chkAutoFlattr);
+        final SeekBar skbPercent = view.findViewById(R.id.skbPercent);
+        final TextView txtvStatus = view.findViewById(R.id.txtvStatus);
 
         chkAutoFlattr.setChecked(UserPreferences.isAutoFlattr());
         skbPercent.setEnabled(chkAutoFlattr.isChecked());

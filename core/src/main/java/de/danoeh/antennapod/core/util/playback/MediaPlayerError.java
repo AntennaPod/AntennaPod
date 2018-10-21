@@ -7,6 +7,7 @@ import de.danoeh.antennapod.core.R;
 
 /** Utility class for MediaPlayer errors. */
 public class MediaPlayerError {
+	private MediaPlayerError(){}
 
 	/** Get a human-readable string for a specific error code. */
 	public static String getErrorString(Context context, int code) {

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaMetadataRetriever;
 import android.util.Log;
+
 import de.danoeh.antennapod.core.feed.FeedItem;
 
 class DBUpgrader {

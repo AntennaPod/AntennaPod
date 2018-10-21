@@ -8,7 +8,7 @@
     <Preference
             android:key="prefScreenInterface"
             android:title="@string/user_interface_label"
-            android:icon="?attr/type_video" />
+            android:icon="?attr/ic_cellphone_text" />
 
     <Preference
             android:key="prefScreenPlayback"

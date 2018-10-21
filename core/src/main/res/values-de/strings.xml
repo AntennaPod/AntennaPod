@@ -60,15 +60,16 @@
   <string name="yes">Ja</string>
   <string name="no">Nein</string>
   <string name="reset">Reset</string>
-  <string name="author_label">Autor</string>
+  <string name="author_label">Autor(en)</string>
   <string name="language_label">Sprache</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Einstellungen</string>
   <string name="cover_label">Bild</string>
   <string name="error_label">Fehler</string>
   <string name="error_msg_prefix">Ein Fehler ist aufgetreten:</string>
+  <string name="needs_storage_permission">Für diese Funktion wird die Speicher-Berechtigung benötigt</string>
   <string name="refresh_label">Aktualisieren</string>
-  <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die Anwendung funktioniert.</string>
+  <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die App funktioniert.</string>
   <string name="chapters_label">Kapitel</string>
   <string name="chapter_duration">Dauer: %1$s</string>
   <string name="shownotes_label">Shownotizen</string>
@@ -117,17 +118,16 @@
   <string name="show_feed_settings_label">Zeige Feed-Einstellungen</string>
   <string name="feed_info_label">Feed-Informationen</string>
   <string name="feed_settings_label">Feed-Einstellungen</string>
-  <string name="rename_feed_label">Podcast umbenennen</string>
+  <string name="rename_feed_label">Feed umbenennen</string>
   <string name="remove_feed_label">Podcast entfernen</string>
   <string name="share_label">Teilen…</string>
-  <string name="share_link_label">Teile Link</string>
-  <string name="share_file_label">Teile Datei</string>
+  <string name="share_link_label">Episoden URL Teilen</string>
   <string name="share_link_with_position_label">Teile Link mit Zeitmarke</string>
+  <string name="share_file_label">Teile Datei</string>
   <string name="share_feed_url_label">Teile URL des Podcasts</string>
-  <string name="share_item_url_label">Teile URL der Episode</string>
-  <string name="share_item_url_with_position_label">Teile URL der Episode mit Zeitmarke</string>
-  <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Feed \"%1$s\" und ALLE heruntergeladenen Episoden löschen möchtest.</string>
-  <string name="feed_remover_msg">Entferne Feed</string>
+  <string name="share_item_url_label">Teile URL der Episodendatei</string>
+  <string name="share_item_url_with_position_label">Teile URL der Episodendatei mit Zeitmarke</string>
+  <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Podcast \"%1$s\" und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
   <string name="load_complete_feed">Kompletten Feed aktualisieren</string>
   <string name="hide_episodes_title">Episoden verbergen</string>
   <string name="batch_edit">Stapelbearbeitung</string>
@@ -139,6 +139,7 @@
   <string name="hide_downloaded_episodes_label">Heruntergeladen</string>
   <string name="hide_not_downloaded_episodes_label">Nicht heruntergeladen</string>
   <string name="hide_has_media_label">Hat Medien</string>
+  <string name="hide_is_favorite_label">Favorit</string>
   <string name="filtered_label">Gefiltert</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Aktualisierung fehlgeschlagen</string>
   <string name="open_podcast">Podcast öffnen</string>
@@ -152,6 +153,7 @@
   <string name="delete_label">Löschen</string>
   <string name="delete_failed">Die Datei kann nicht gelöscht werden. Eventuell hilft es, das Gerät neu zu starten.</string>
   <string name="remove_episode_lable">Episode entfernen</string>
+  <string name="mark_as_seen_label">Als gelesen markieren</string>
   <string name="marked_as_seen_label">Als gesehen markiert</string>
   <string name="mark_read_label">Als gespielt markieren</string>
   <string name="marked_as_read_label">Als gespielt markiert</string>
@@ -244,7 +246,7 @@
   <string name="date">Datum</string>
   <string name="duration">Dauer</string>
   <string name="episode_title">Episodentitel</string>
-  <string name="feed_title">Podcastname</string>
+  <string name="feed_title">Feedname</string>
   <string name="random">Zufällig</string>
   <string name="smart_shuffle">Schlaues Mischen</string>
   <string name="ascending">Aufsteigend</string>
@@ -302,7 +304,7 @@
   <string name="appearance">Erscheinungsbild</string>
   <string name="external_elements">Externe Elemente</string>
   <string name="interruptions">Unterbrechungen</string>
-  <string name="buttons">Knöpfe</string>
+  <string name="buttons">Buttons zur Steuerung der Wiedergabe</string>
   <string name="media_player">Medienabspieler</string>
   <string name="pref_episode_cleanup_title">Automatisches Löschen</string>
   <string name="pref_episode_cleanup_summary">Episoden, die weder in der Abspielliste noch Favoriten sind, können gelöscht werden, wenn beim automatischen Herunterladen Speicherplatz für neue Episoden gebraucht wird</string>
@@ -359,7 +361,6 @@
   <string name="pref_nav_drawer_feed_order_title">Reihenfolge der Abonnements einstellen</string>
   <string name="pref_nav_drawer_feed_order_sum">Ändere die Reihenfolge deiner Abonnements</string>
   <string name="pref_nav_drawer_feed_counter_title">Abonnement-Zähler einstellen</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Ändere, welche Information der Abonnement-Zähler anzeigt</string>
   <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
   <string name="pref_automatic_download_sum">Konfiguriere das automatische Herunterladen von Episoden.</string>
@@ -373,7 +374,6 @@
   <string name="pref_episode_cache_title">Episodenspeicher</string>
   <string name="pref_theme_title_light">Hell</string>
   <string name="pref_theme_title_dark">Dunkel</string>
-  <string name="pref_theme_title_trueblack">Echtes Schwarz</string>
   <string name="pref_episode_cache_unlimited">Unbegrenzt</string>
   <string name="pref_update_interval_hours_plural">Stunden</string>
   <string name="pref_update_interval_hours_singular">Stunde</string>
@@ -437,10 +437,10 @@
   <string name="pref_enqueue_downloaded_title">Downloads einreihen</string>
   <string name="pref_enqueue_downloaded_summary">Füge heruntergeladene Episoden zur Abspielliste hinzu</string>
   <string name="media_player_builtin">Androids eingebauter Abspieler</string>
-  <string name="pref_videoBehavior_title">Video-Verhalten</string>
+  <string name="pref_videoBehavior_title">Beim Beenden des Videos</string>
   <string name="pref_videoBehavior_sum">Verhalten beim Verlassen der Video-Wiedergabe</string>
   <string name="stop_playback">Wiedergabe anhalten</string>
-  <string name="continue_playback">Wiedergabe fortsetzen</string>
+  <string name="continue_playback">Audiowiedergabe fortsetzen</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
   <string name="auto_flattr_after_percent">Flattr eine Episode, sobald %d Prozent gespielt worden sind</string>
@@ -450,8 +450,6 @@
   <string name="search_hint">Suche nach Episoden</string>
   <string name="found_in_shownotes_label">In Shownotizen gefunden</string>
   <string name="found_in_chapters_label">In Kapiteln gefunden</string>
-  <string name="found_in_authors_label">In Autoren gefunden</string>
-  <string name="found_in_feeds_label">In Feeds gefunden</string>
   <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
   <string name="search_label">Suchen</string>
   <string name="found_in_title_label">In Titel gefunden</string>
