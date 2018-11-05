@@ -422,6 +422,7 @@ public class ItemlistFragment extends ListFragment {
             setupFooterView();
             adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false, true);
             setListAdapter(adapter);
+            scrollToPlayingListItem(adapter);
         }
         refreshHeaderView();
         setListShown(true);
@@ -431,6 +432,19 @@ public class ItemlistFragment extends ListFragment {
 
         if (feed != null && feed.getNextPageLink() == null && listFooter != null) {
             getListView().removeFooterView(listFooter.getRoot());
+        }
+    }
+
+    private void scrollToPlayingListItem(FeedItemlistAdapter adapter){
+        if (adapter == null) {
+            Log.e(TAG, "Unable to scroll to playing list item");
+            return;
+        }
+        for (int position = 0; position < adapter.getCount(); position++) {
+            if (adapter.getItem(position).getState() == FeedItem.State.PLAYING) {
+                getListView().setSelection(position);
+                return;
+            }
         }
     }
 
