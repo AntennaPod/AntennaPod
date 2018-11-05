@@ -7,7 +7,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.1.0'
         classpath "com.github.triplet.gradle:play-publisher:1.2.0"
         // Exclude the version that the android plugin depends on.
         configurations.classpath.exclude group: "com.android.tools.external.lombok"
