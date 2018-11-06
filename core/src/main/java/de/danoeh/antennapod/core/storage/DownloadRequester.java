@@ -2,6 +2,8 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -75,6 +77,12 @@ public class DownloadRequester {
      */
     public synchronized boolean download(@NonNull Context context,
                                          @NonNull DownloadRequest request) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo == null || !netInfo.isConnected()) {
+            Log.d(TAG, "Rejecting download due to lack of network");
+            return false;
+        }
         if (downloads.containsKey(request.getSource())) {
             if (BuildConfig.DEBUG) Log.i(TAG, "DownloadRequest is already stored.");
             return false;
