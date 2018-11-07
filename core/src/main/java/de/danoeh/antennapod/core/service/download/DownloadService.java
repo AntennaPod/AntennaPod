@@ -13,8 +13,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -66,7 +64,6 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandlerResult;
 import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
@@ -251,7 +248,6 @@ public class DownloadService extends Service {
     public void onCreate() {
         Log.d(TAG, "Service started");
         isRunning = true;
-        PodDBAdapter.getInstance().open(); // Prevent thrashing the database by opening and closing rapidly
         handler = new Handler();
         reportQueue = Collections.synchronizedList(new ArrayList<>());
         downloads = Collections.synchronizedList(new ArrayList<>());
@@ -331,7 +327,6 @@ public class DownloadService extends Service {
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
-        PodDBAdapter.getInstance().close();
     }
 
     private void setupNotificationBuilders() {
