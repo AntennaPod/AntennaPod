@@ -29,10 +29,6 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         this.numberOfHoursAfterPlayback = numberOfHoursAfterPlayback;
     }
 
-    public APCleanupAlgorithm(float numberOfDaysAfterPlayback) { // TODO: temporary, until callers are migrated
-        this.numberOfHoursAfterPlayback = (int)(24 * numberOfDaysAfterPlayback);
-    }
-
     /**
      * @return the number of episodes that *could* be cleaned up, if needed
      */

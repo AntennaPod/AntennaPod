@@ -63,6 +63,14 @@ class UpdateManager {
                 UserPreferences.enableSonic();
             }
         }
+
+        if(oldVersionCode < 1070196) {
+            // migrate episode cleanup value (unit changed from days to hours)
+            int oldValueInDays = UserPreferences.getEpisodeCleanupValue();
+            if (oldValueInDays > 0) {
+                UserPreferences.setEpisodeCleanupValue(oldValueInDays * 24);
+            } // else 0 or special negative values, no change needed
+        }
     }
 
 }
