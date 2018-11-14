@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.util.Converter;
 
 /**
  * Implementation of the EpisodeCleanupAlgorithm interface used by AntennaPod.
@@ -24,10 +23,14 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     private static final String TAG = "APCleanupAlgorithm";
     /** the number of days after playback to wait before an item is eligible to be cleaned up.
         Fractional for number of hours, e.g., 0.5 = 12 hours, 0.0416 = 1 hour.  */
-    private final float numberOfDaysAfterPlayback;
+    private final int numberOfHoursAfterPlayback;
 
-    public APCleanupAlgorithm(float numberOfDaysAfterPlayback) {
-        this.numberOfDaysAfterPlayback = numberOfDaysAfterPlayback;
+    public APCleanupAlgorithm(int numberOfHoursAfterPlayback) {
+        this.numberOfHoursAfterPlayback = numberOfHoursAfterPlayback;
+    }
+
+    public APCleanupAlgorithm(float numberOfDaysAfterPlayback) { // TODO: temporary, until callers are migrated
+        this.numberOfHoursAfterPlayback = (int)(24 * numberOfDaysAfterPlayback);
     }
 
     /**
@@ -82,7 +85,7 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
 
     @VisibleForTesting
     Date calcMostRecentDateForDeletion(@NonNull Date currentDate) {
-        return minusDays(currentDate, numberOfDaysAfterPlayback);
+        return minusHours(currentDate, numberOfHoursAfterPlayback);
     }
 
     @NonNull
@@ -116,17 +119,13 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
     }
 
     @VisibleForTesting
-    public float getNumberOfDaysAfterPlayback() { return numberOfDaysAfterPlayback; }
+    public int getNumberOfHoursAfterPlayback() { return numberOfHoursAfterPlayback; }
 
-    private static Date minusDays(Date baseDate, float numberOfDays) {
+    private static Date minusHours(Date baseDate, int numberOfHours) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(baseDate);
 
-        int integral = (int)numberOfDays;
-        float fraction = numberOfDays - integral;
-
-        cal.add(Calendar.DAY_OF_MONTH, -1 * integral);
-        cal.add(Calendar.HOUR_OF_DAY, -1 * Converter.numberOfDaysFloatToNumberOfHours(fraction));
+        cal.add(Calendar.HOUR_OF_DAY, -1 * numberOfHours);
 
         return cal.getTime();
     }
