@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -122,6 +123,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private ProgressDialog pd;
 
     private Subscription subscription;
+
+    private long lastBackButtonPressTime = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -646,7 +649,33 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         if(isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
         } else {
-            super.onBackPressed();
+            switch (UserPreferences.getBackButtonBehavior()) {
+                case OPEN_DRAWER:
+                    drawerLayout.openDrawer(navDrawer);
+                    break;
+                case SHOW_PROMPT:
+                    new AlertDialog.Builder(this)
+                        .setMessage(R.string.close_prompt)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                MainActivity.super.onBackPressed();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, null)
+                        .setCancelable(false)
+                        .show();
+                    break;
+                case DOUBLE_TAP:
+                    if(lastBackButtonPressTime < System.currentTimeMillis() - 2000) {
+                        Toast.makeText(this, R.string.double_tap_toast, Toast.LENGTH_SHORT).show();
+                        lastBackButtonPressTime = System.currentTimeMillis();
+                    } else {
+                        super.onBackPressed();
+                    }
+                    break;
+                default: super.onBackPressed();
+            }
         }
     }
 

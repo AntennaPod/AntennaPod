@@ -277,4 +277,18 @@
         <item>@string/select_all_above</item>
         <item>@string/select_all_below</item>
     </string-array>
+
+    <string-array name="back_button_behavior_options">
+        <item>@string/back_button_default</item>
+        <item>@string/back_button_open_drawer</item>
+        <item>@string/back_button_double_tap</item>
+        <item>@string/back_button_show_prompt</item>
+    </string-array>
+
+    <string-array name="back_button_behavior_values">
+        <item>default</item>
+        <item>drawer</item>
+        <item>doubletap</item>
+        <item>prompt</item>
+    </string-array>
 </resources>

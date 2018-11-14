@@ -52,6 +52,7 @@ public class UserPreferences {
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
+    private static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
 
     // Queue
     private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
@@ -808,5 +809,19 @@ public class UserPreferences {
 
     public enum VideoBackgroundBehavior {
         STOP, PICTURE_IN_PICTURE, CONTINUE_PLAYING
+    }
+
+    public enum BackButtonBehavior {
+        DEFAULT, OPEN_DRAWER, DOUBLE_TAP, SHOW_PROMPT
+    }
+
+    public static BackButtonBehavior getBackButtonBehavior() {
+        switch (prefs.getString(PREF_BACK_BUTTON_BEHAVIOR, "default")) {
+            case "default": return BackButtonBehavior.DEFAULT;
+            case "drawer": return BackButtonBehavior.OPEN_DRAWER;
+            case "doubletap": return BackButtonBehavior.DOUBLE_TAP;
+            case "prompt": return BackButtonBehavior.SHOW_PROMPT;
+            default: return BackButtonBehavior.DEFAULT;
+        }
     }
 }
