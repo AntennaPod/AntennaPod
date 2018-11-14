@@ -80,12 +80,17 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         return counter;
     }
 
+    @VisibleForTesting
+    Date calcMostRecentDateForDeletion(@NonNull Date currentDate) {
+        return minusDays(currentDate, numberOfDaysAfterPlayback);
+    }
+
     @NonNull
     private List<FeedItem> getCandidates() {
         List<FeedItem> candidates = new ArrayList<>();
         List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
 
-        Date mostRecentDateForDeletion = minusDays(new Date(), numberOfDaysAfterPlayback);
+        Date mostRecentDateForDeletion = calcMostRecentDateForDeletion(new Date());
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia()
                     && item.getMedia().isDownloaded()
