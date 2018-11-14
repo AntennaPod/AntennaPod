@@ -849,7 +849,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             } else if (v > 0 && v < 24) {
                 entries[x] = res.getQuantityString(R.plurals.episode_cleanup_hours_after_listening, v, v);
             } else {
-                int numDays = (int)(v / 24); // assume underlying value will be fractions, e.g., 36 (hours)
+                int numDays = (int)(v / 24); // assume underlying value will be NOT fraction of days, e.g., 36 (hours)
                 entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, numDays, numDays);
             }
         }
