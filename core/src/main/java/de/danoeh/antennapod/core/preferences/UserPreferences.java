@@ -52,7 +52,8 @@ public class UserPreferences {
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
-    private static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
+    public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
+    private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
 
     // Queue
     private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
@@ -812,7 +813,7 @@ public class UserPreferences {
     }
 
     public enum BackButtonBehavior {
-        DEFAULT, OPEN_DRAWER, DOUBLE_TAP, SHOW_PROMPT
+        DEFAULT, OPEN_DRAWER, DOUBLE_TAP, SHOW_PROMPT, GO_TO_QUEUE, GO_TO_EPISODES, GO_TO_SUBSCRIPTIONS
     }
 
     public static BackButtonBehavior getBackButtonBehavior() {
@@ -821,7 +822,24 @@ public class UserPreferences {
             case "drawer": return BackButtonBehavior.OPEN_DRAWER;
             case "doubletap": return BackButtonBehavior.DOUBLE_TAP;
             case "prompt": return BackButtonBehavior.SHOW_PROMPT;
+            case "page":
+                switch (UserPreferences.getBackButtonGoToPage()) {
+                    case 0: return BackButtonBehavior.GO_TO_QUEUE;
+                    case 1: return BackButtonBehavior.GO_TO_EPISODES;
+                    case 2: return BackButtonBehavior.GO_TO_SUBSCRIPTIONS;
+                    default: return BackButtonBehavior.GO_TO_QUEUE;
+                }
             default: return BackButtonBehavior.DEFAULT;
         }
+    }
+
+    public static int getBackButtonGoToPage() {
+        return prefs.getInt(PREF_BACK_BUTTON_GO_TO_PAGE, 0);
+    }
+
+    public static void setBackButtonGoToPage(int page) {
+        prefs.edit()
+                .putInt(PREF_BACK_BUTTON_GO_TO_PAGE, page)
+                .apply();
     }
 }

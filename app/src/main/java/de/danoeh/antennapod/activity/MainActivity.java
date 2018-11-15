@@ -656,12 +656,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 case SHOW_PROMPT:
                     new AlertDialog.Builder(this)
                         .setMessage(R.string.close_prompt)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                MainActivity.super.onBackPressed();
-                            }
-                        })
+                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> MainActivity.super.onBackPressed())
                         .setNegativeButton(R.string.no, null)
                         .setCancelable(false)
                         .show();
@@ -672,6 +667,27 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                         lastBackButtonPressTime = System.currentTimeMillis();
                     } else {
                         super.onBackPressed();
+                    }
+                    break;
+                case GO_TO_QUEUE:
+                    if(getLastNavFragment().equals(QueueFragment.TAG)) {
+                        super.onBackPressed();
+                    } else {
+                        loadFragment(QueueFragment.TAG, null);
+                    }
+                    break;
+                case GO_TO_EPISODES:
+                    if(getLastNavFragment().equals(EpisodesFragment.TAG)) {
+                        super.onBackPressed();
+                    } else {
+                        loadFragment(EpisodesFragment.TAG, null);
+                    }
+                    break;
+                case GO_TO_SUBSCRIPTIONS:
+                    if(getLastNavFragment().equals(SubscriptionFragment.TAG)) {
+                        super.onBackPressed();
+                    } else {
+                        loadFragment(SubscriptionFragment.TAG, null);
                     }
                     break;
                 default: super.onBackPressed();
