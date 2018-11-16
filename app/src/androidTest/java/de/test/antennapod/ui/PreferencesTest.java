@@ -466,6 +466,19 @@ public class PreferencesTest {
         }
     }
 
+    @Test
+    public void testBackButtonBehaviorGoToPageSelector() {
+        clickPreference(withText(R.string.user_interface_label));
+        clickPreference(withText(R.string.pref_back_button_behavior_title));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.back_button_go_to_page));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.subscriptions_label));
+        solo.clickOnText(solo.getString(R.string.confirm_label));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_SUBSCRIPTIONS,
+                Timeout.getLargeTimeout()));
+    }
+
     private void clickPreference(Matcher<View> matcher) {
         onView(withId(R.id.list))
                 .perform(RecyclerViewActions.actionOnItem(hasDescendant(matcher), click()));
