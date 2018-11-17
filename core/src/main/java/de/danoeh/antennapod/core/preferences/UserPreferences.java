@@ -813,7 +813,7 @@ public class UserPreferences {
     }
 
     public enum BackButtonBehavior {
-        DEFAULT, OPEN_DRAWER, DOUBLE_TAP, SHOW_PROMPT, GO_TO_QUEUE, GO_TO_EPISODES, GO_TO_SUBSCRIPTIONS
+        DEFAULT, OPEN_DRAWER, DOUBLE_TAP, SHOW_PROMPT, GO_TO_PAGE
     }
 
     public static BackButtonBehavior getBackButtonBehavior() {
@@ -822,24 +822,18 @@ public class UserPreferences {
             case "drawer": return BackButtonBehavior.OPEN_DRAWER;
             case "doubletap": return BackButtonBehavior.DOUBLE_TAP;
             case "prompt": return BackButtonBehavior.SHOW_PROMPT;
-            case "page":
-                switch (UserPreferences.getBackButtonGoToPage()) {
-                    case 0: return BackButtonBehavior.GO_TO_QUEUE;
-                    case 1: return BackButtonBehavior.GO_TO_EPISODES;
-                    case 2: return BackButtonBehavior.GO_TO_SUBSCRIPTIONS;
-                    default: return BackButtonBehavior.GO_TO_QUEUE;
-                }
+            case "page": return BackButtonBehavior.GO_TO_PAGE;
             default: return BackButtonBehavior.DEFAULT;
         }
     }
 
-    public static int getBackButtonGoToPage() {
-        return prefs.getInt(PREF_BACK_BUTTON_GO_TO_PAGE, 0);
+    public static String getBackButtonGoToPage() {
+        return prefs.getString(PREF_BACK_BUTTON_GO_TO_PAGE, "QueueFragment");
     }
 
-    public static void setBackButtonGoToPage(int page) {
+    public static void setBackButtonGoToPage(String tag) {
         prefs.edit()
-                .putInt(PREF_BACK_BUTTON_GO_TO_PAGE, page)
+                .putString(PREF_BACK_BUTTON_GO_TO_PAGE, tag)
                 .apply();
     }
 }

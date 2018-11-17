@@ -669,25 +669,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                         super.onBackPressed();
                     }
                     break;
-                case GO_TO_QUEUE:
-                    if(getLastNavFragment().equals(QueueFragment.TAG)) {
+                case GO_TO_PAGE:
+                    if(getLastNavFragment().equals(UserPreferences.getBackButtonGoToPage())) {
                         super.onBackPressed();
                     } else {
-                        loadFragment(QueueFragment.TAG, null);
-                    }
-                    break;
-                case GO_TO_EPISODES:
-                    if(getLastNavFragment().equals(EpisodesFragment.TAG)) {
-                        super.onBackPressed();
-                    } else {
-                        loadFragment(EpisodesFragment.TAG, null);
-                    }
-                    break;
-                case GO_TO_SUBSCRIPTIONS:
-                    if(getLastNavFragment().equals(SubscriptionFragment.TAG)) {
-                        super.onBackPressed();
-                    } else {
-                        loadFragment(SubscriptionFragment.TAG, null);
+                        loadFragment(UserPreferences.getBackButtonGoToPage(), null);
                     }
                     break;
                 default: super.onBackPressed();
