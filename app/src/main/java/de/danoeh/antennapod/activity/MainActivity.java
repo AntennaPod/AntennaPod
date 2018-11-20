@@ -648,6 +648,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public void onBackPressed() {
         if(isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
+        } else if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
+            super.onBackPressed();
         } else {
             switch (UserPreferences.getBackButtonBehavior()) {
                 case OPEN_DRAWER:
