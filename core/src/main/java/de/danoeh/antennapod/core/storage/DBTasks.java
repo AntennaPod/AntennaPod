@@ -34,6 +34,7 @@ import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.core.util.FeedUpdateUtils;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
@@ -338,7 +339,7 @@ public final class DBTasks {
         Log.d(TAG, "last refresh: " + Converter.getDurationStringLocalized(context,
                 System.currentTimeMillis() - lastRefresh) + " ago");
         if(lastRefresh <= System.currentTimeMillis() - interval) {
-            DBTasks.refreshAllFeeds(context, null);
+            FeedUpdateUtils.startAutoUpdate(context, null);
         }
     }
 
