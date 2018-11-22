@@ -229,7 +229,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
         ui.findPreference(UserPreferences.PREF_BACK_BUTTON_BEHAVIOR)
                 .setOnPreferenceChangeListener((preference, newValue) -> {
-                        if(newValue.equals("page")) {
+                        if (newValue.equals("page")) {
                             final Context context = ui.getActivity();
                             final String[] navTitles = context.getResources().getStringArray(R.array.back_button_go_to_pages);
                             final String[] navTags = new String[3];
@@ -239,7 +239,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
                             builder.setTitle(R.string.back_button_go_to_page_title);
                             builder.setSingleChoiceItems(navTitles, ArrayUtils.indexOf(navTags, UserPreferences.getBackButtonGoToPage()), (dialogInterface, i) -> {
-                                if(i >= 0) {
+                                if (i >= 0) {
                                     choice[0] = navTags[i];
                                 }
                             });

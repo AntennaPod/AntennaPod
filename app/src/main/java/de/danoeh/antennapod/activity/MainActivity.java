@@ -646,9 +646,9 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     @Override
     public void onBackPressed() {
-        if(isDrawerOpen()) {
+        if (isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
-        } else if(getSupportFragmentManager().getBackStackEntryCount() != 0) {
+        } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             super.onBackPressed();
         } else {
             switch (UserPreferences.getBackButtonBehavior()) {
@@ -664,7 +664,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                         .show();
                     break;
                 case DOUBLE_TAP:
-                    if(lastBackButtonPressTime < System.currentTimeMillis() - 2000) {
+                    if (lastBackButtonPressTime < System.currentTimeMillis() - 2000) {
                         Toast.makeText(this, R.string.double_tap_toast, Toast.LENGTH_SHORT).show();
                         lastBackButtonPressTime = System.currentTimeMillis();
                     } else {
@@ -672,7 +672,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                     }
                     break;
                 case GO_TO_PAGE:
-                    if(getLastNavFragment().equals(UserPreferences.getBackButtonGoToPage())) {
+                    if (getLastNavFragment().equals(UserPreferences.getBackButtonGoToPage())) {
                         super.onBackPressed();
                     } else {
                         loadFragment(UserPreferences.getBackButtonGoToPage(), null);
