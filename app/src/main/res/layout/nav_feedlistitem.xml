@@ -5,8 +5,6 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listitem_iconwithtext_height"
-                android:paddingRight="@dimen/listitem_threeline_verticalpadding"
-                android:paddingEnd="@dimen/listitem_threeline_verticalpadding"
                 tools:background="@android:color/darker_gray">
 
     <ImageView
@@ -33,6 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/list_vertical_padding"
         android:layout_marginStart="@dimen/list_vertical_padding"
+        android:layout_marginRight="@dimen/listitem_icon_rightpadding"
+        android:layout_marginEnd="@dimen/listitem_icon_rightpadding"
         android:lines="1"
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="@dimen/text_size_navdrawer"
