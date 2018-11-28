@@ -16,6 +16,10 @@ import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
+
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
@@ -464,6 +468,41 @@ public class PreferencesTest {
             assertTrue(solo.waitForCondition(() -> UserPreferences.getFastForwardSecs() == deltas[newIndex],
                     Timeout.getLargeTimeout()));
         }
+    }
+
+    @Test
+    public void testBackButtonBehaviorGoToPageSelector() {
+        clickPreference(withText(R.string.user_interface_label));
+        clickPreference(withText(R.string.pref_back_button_behavior_title));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.back_button_go_to_page));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.queue_label));
+        solo.clickOnText(solo.getString(R.string.confirm_label));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_PAGE,
+                Timeout.getLargeTimeout()));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getBackButtonGoToPage().equals(QueueFragment.TAG),
+                Timeout.getLargeTimeout()));
+        clickPreference(withText(R.string.pref_back_button_behavior_title));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.back_button_go_to_page));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.episodes_label));
+        solo.clickOnText(solo.getString(R.string.confirm_label));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_PAGE,
+                Timeout.getLargeTimeout()));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getBackButtonGoToPage().equals(EpisodesFragment.TAG),
+                Timeout.getLargeTimeout()));
+        clickPreference(withText(R.string.pref_back_button_behavior_title));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.back_button_go_to_page));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.subscriptions_label));
+        solo.clickOnText(solo.getString(R.string.confirm_label));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_PAGE,
+                Timeout.getLargeTimeout()));
+        assertTrue(solo.waitForCondition(() -> UserPreferences.getBackButtonGoToPage().equals(SubscriptionFragment.TAG),
+                Timeout.getLargeTimeout()));
     }
 
     private void clickPreference(Matcher<View> matcher) {

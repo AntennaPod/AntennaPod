@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -122,6 +123,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private ProgressDialog pd;
 
     private Subscription subscription;
+
+    private long lastBackButtonPressTime = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -643,10 +646,40 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     @Override
     public void onBackPressed() {
-        if(isDrawerOpen()) {
+        if (isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
-        } else {
+        } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             super.onBackPressed();
+        } else {
+            switch (UserPreferences.getBackButtonBehavior()) {
+                case OPEN_DRAWER:
+                    drawerLayout.openDrawer(navDrawer);
+                    break;
+                case SHOW_PROMPT:
+                    new AlertDialog.Builder(this)
+                        .setMessage(R.string.close_prompt)
+                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> MainActivity.super.onBackPressed())
+                        .setNegativeButton(R.string.no, null)
+                        .setCancelable(false)
+                        .show();
+                    break;
+                case DOUBLE_TAP:
+                    if (lastBackButtonPressTime < System.currentTimeMillis() - 2000) {
+                        Toast.makeText(this, R.string.double_tap_toast, Toast.LENGTH_SHORT).show();
+                        lastBackButtonPressTime = System.currentTimeMillis();
+                    } else {
+                        super.onBackPressed();
+                    }
+                    break;
+                case GO_TO_PAGE:
+                    if (getLastNavFragment().equals(UserPreferences.getBackButtonGoToPage())) {
+                        super.onBackPressed();
+                    } else {
+                        loadFragment(UserPreferences.getBackButtonGoToPage(), null);
+                    }
+                    break;
+                default: super.onBackPressed();
+            }
         }
     }
 

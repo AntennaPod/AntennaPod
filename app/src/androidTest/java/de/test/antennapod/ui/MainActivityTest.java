@@ -243,4 +243,70 @@ public class MainActivityTest {
         assertEquals(1, hidden.size());
         assertTrue(hidden.contains(DownloadsFragment.TAG));
     }
+
+    @Test
+    public void testBackButtonBehaviorGoToPage() {
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.settings_label));
+        solo.clickOnText(solo.getString(R.string.user_interface_label));
+        solo.clickOnText(solo.getString(R.string.pref_back_button_behavior_title));
+        solo.clickOnText(solo.getString(R.string.back_button_go_to_page));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.subscriptions_label));
+        solo.clickOnText(solo.getString(R.string.confirm_label));
+        solo.goBackToActivity(MainActivity.class.getSimpleName());
+        solo.goBack();
+        assertEquals(solo.getString(R.string.subscriptions_label), getActionbarTitle());
+    }
+
+    @Test
+    public void testBackButtonBehaviorOpenDrawer() {
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.settings_label));
+        solo.clickOnText(solo.getString(R.string.user_interface_label));
+        solo.clickOnText(solo.getString(R.string.pref_back_button_behavior_title));
+        solo.clickOnText(solo.getString(R.string.back_button_open_drawer));
+        solo.goBackToActivity(MainActivity.class.getSimpleName());
+        solo.goBack();
+        assertTrue(((MainActivity)solo.getCurrentActivity()).isDrawerOpen());
+    }
+
+    @Test
+    public void testBackButtonBehaviorDoubleTap() {
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.settings_label));
+        solo.clickOnText(solo.getString(R.string.user_interface_label));
+        solo.clickOnText(solo.getString(R.string.pref_back_button_behavior_title));
+        solo.clickOnText(solo.getString(R.string.back_button_double_tap));
+        solo.goBackToActivity(MainActivity.class.getSimpleName());
+        solo.goBack();
+        solo.goBack();
+        assertTrue(solo.getCurrentActivity().isFinishing());
+    }
+
+    @Test
+    public void testBackButtonBehaviorPrompt() {
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.settings_label));
+        solo.clickOnText(solo.getString(R.string.user_interface_label));
+        solo.clickOnText(solo.getString(R.string.pref_back_button_behavior_title));
+        solo.clickOnText(solo.getString(R.string.back_button_show_prompt));
+        solo.goBackToActivity(MainActivity.class.getSimpleName());
+        solo.goBack();
+        solo.clickOnText(solo.getString(R.string.yes));
+        solo.waitForDialogToClose();
+        assertTrue(solo.getCurrentActivity().isFinishing());
+    }
+
+    @Test
+    public void testBackButtonBehaviorDefault() {
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.settings_label));
+        solo.clickOnText(solo.getString(R.string.user_interface_label));
+        solo.clickOnText(solo.getString(R.string.pref_back_button_behavior_title));
+        solo.clickOnText(solo.getString(R.string.back_button_default));
+        solo.goBackToActivity(MainActivity.class.getSimpleName());
+        solo.goBack();
+        assertTrue(solo.getCurrentActivity().isFinishing());
+    }
 }

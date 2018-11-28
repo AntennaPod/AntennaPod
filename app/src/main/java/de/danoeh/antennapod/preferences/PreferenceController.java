@@ -227,6 +227,35 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     return true;
                 });
 
+        ui.findPreference(UserPreferences.PREF_BACK_BUTTON_BEHAVIOR)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                        if (newValue.equals("page")) {
+                            final Context context = ui.getActivity();
+                            final String[] navTitles = context.getResources().getStringArray(R.array.back_button_go_to_pages);
+                            final String[] navTags = new String[3];
+                            System.arraycopy(MainActivity.NAV_DRAWER_TAGS, 0, navTags, 0, 3);
+                            final String choice[] = { UserPreferences.getBackButtonGoToPage() };
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle(R.string.back_button_go_to_page_title);
+                            builder.setSingleChoiceItems(navTitles, ArrayUtils.indexOf(navTags, UserPreferences.getBackButtonGoToPage()), (dialogInterface, i) -> {
+                                if (i >= 0) {
+                                    choice[0] = navTags[i];
+                                }
+                            });
+                            builder.setPositiveButton(R.string.confirm_label, (dialogInterface, i) -> {
+                                if (!choice[0].equals(UserPreferences.getBackButtonGoToPage())) {
+                                    UserPreferences.setBackButtonGoToPage(choice[0]);
+                                }
+                            });
+                            builder.setNegativeButton(R.string.cancel_label, null);
+                            builder.create().show();
+                            return true;
+                        } else {
+                            return true;
+                        }
+                    });
+
         if (Build.VERSION.SDK_INT >= 26) {
             ui.findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
         }
