@@ -232,7 +232,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                         if (newValue.equals("page")) {
                             final Context context = ui.getActivity();
                             final String[] navTitles = context.getResources().getStringArray(R.array.back_button_go_to_pages);
-                            final String[] navTags = { MainActivity.NAV_DRAWER_TAGS[0], MainActivity.NAV_DRAWER_TAGS[1], MainActivity.NAV_DRAWER_TAGS[2] };
+                            final String[] navTags = context.getResources().getStringArray(R.array.back_button_go_to_pages_tags);
                             final String choice[] = { UserPreferences.getBackButtonGoToPage() };
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
