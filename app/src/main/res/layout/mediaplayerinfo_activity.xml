@@ -47,6 +47,7 @@
             android:paddingTop="8dp"
             android:layout_alignParentBottom="true"
             android:background="?attr/overlay_drawable"
+            android:layoutDirection="ltr"
             android:orientation="vertical">
 
 
