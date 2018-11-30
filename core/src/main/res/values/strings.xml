@@ -479,7 +479,7 @@
     <string name="back_button_show_prompt">Confirm to exit</string>
     <string name="close_prompt">Are you sure you want to close AntennaPod?</string>
     <string name="double_tap_toast">Tap back button again to exit</string>
-    <string name="back_button_go_to_page">Go to page</string>
+    <string name="back_button_go_to_page">Go to page…</string>
     <string name="back_button_go_to_page_title">Select page</string>
 
     <!-- Auto-Flattr dialog -->
