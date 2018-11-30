@@ -232,8 +232,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                         if (newValue.equals("page")) {
                             final Context context = ui.getActivity();
                             final String[] navTitles = context.getResources().getStringArray(R.array.back_button_go_to_pages);
-                            final String[] navTags = new String[3];
-                            System.arraycopy(MainActivity.NAV_DRAWER_TAGS, 0, navTags, 0, 3);
+                            final String[] navTags = context.getResources().getStringArray(R.array.back_button_go_to_pages_tags);
                             final String choice[] = { UserPreferences.getBackButtonGoToPage() };
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -243,11 +242,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                                     choice[0] = navTags[i];
                                 }
                             });
-                            builder.setPositiveButton(R.string.confirm_label, (dialogInterface, i) -> {
-                                if (!choice[0].equals(UserPreferences.getBackButtonGoToPage())) {
-                                    UserPreferences.setBackButtonGoToPage(choice[0]);
-                                }
-                            });
+                            builder.setPositiveButton(R.string.confirm_label, (dialogInterface, i) -> UserPreferences.setBackButtonGoToPage(choice[0]));
                             builder.setNegativeButton(R.string.cancel_label, null);
                             builder.create().show();
                             return true;
