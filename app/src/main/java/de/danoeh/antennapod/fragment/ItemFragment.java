@@ -248,6 +248,9 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                     ((MainActivity) getActivity()).dismissChildFragment();
                 } else {
                     DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
+                    if (UserPreferences.shouldDeleteRemoveFromQueue()) {
+                        DBWriter.removeQueueItem(getActivity(), item, false);
+                    }
                 }
             } else if (item.getLink() != null) {
                 Uri uri = Uri.parse(item.getLink());

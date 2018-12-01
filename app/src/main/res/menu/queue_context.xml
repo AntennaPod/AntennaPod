@@ -26,6 +26,10 @@
         android:id="@+id/remove_from_queue_item"
         android:menuCategory="container"
         android:title="@string/remove_from_queue_label" />
+    <item
+        android:id="@+id/remove_item"
+        android:menuCategory="container"
+        android:title="@string/delete_label" />
 
     <item
         android:id="@+id/add_to_favorites_item"
@@ -48,10 +52,6 @@
         android:id="@+id/deactivate_auto_download"
         android:menuCategory="container"
         android:title="@string/deactivate_auto_download" />
-    <item
-        android:id="@+id/remove_item"
-        android:menuCategory="container"
-        android:title="@string/delete_label" />
 
     <item
         android:id="@+id/visit_website_item"

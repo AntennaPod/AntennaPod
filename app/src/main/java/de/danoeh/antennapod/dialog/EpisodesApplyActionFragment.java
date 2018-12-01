@@ -26,6 +26,7 @@ import java.util.Map;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
@@ -449,6 +450,9 @@ public class EpisodesApplyActionFragment extends Fragment {
             FeedItem episode = idMap.get(id);
             if(episode.hasMedia()) {
                 DBWriter.deleteFeedMediaOfItem(getActivity(), episode.getMedia().getId());
+                if (UserPreferences.shouldDeleteRemoveFromQueue()) {
+                    DBWriter.removeQueueItem(getActivity(), episode, false);
+                }
             }
         }
         close();
