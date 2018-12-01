@@ -4,6 +4,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listitem_iconwithtext_height"
+                android:paddingLeft="@dimen/listitem_threeline_verticalpadding"
+                android:paddingStart="@dimen/listitem_threeline_verticalpadding"
                 android:paddingRight="@dimen/listitem_threeline_verticalpadding"
                 android:paddingEnd="@dimen/listitem_threeline_verticalpadding"
                 tools:background="@android:color/darker_gray">
@@ -21,8 +23,6 @@
         android:scaleType="centerCrop"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:layout_marginLeft="@dimen/listitem_icon_leftpadding"
-        android:layout_marginStart="@dimen/listitem_icon_leftpadding"
         tools:src="@drawable/ic_stat_antenna_default"
         tools:background="@android:color/holo_green_dark"/>
 
