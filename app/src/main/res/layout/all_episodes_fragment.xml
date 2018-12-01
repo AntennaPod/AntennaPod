@@ -10,12 +10,12 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarStyle="outsideOverlay"
+        android:clipToPadding="false"
         android:paddingTop="@dimen/list_vertical_padding"
         android:paddingBottom="@dimen/list_vertical_padding"
-        android:clipToPadding="false"
-        tools:listitem="@layout/new_episodes_listitem"
-        tools:itemCount="13"/>
+        android:scrollbarStyle="outsideOverlay"
+        tools:itemCount="13"
+        tools:listitem="@layout/new_episodes_listitem" />
 
     <ProgressBar
         android:id="@+id/progLoading"

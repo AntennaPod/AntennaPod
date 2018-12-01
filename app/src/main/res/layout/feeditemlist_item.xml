@@ -103,18 +103,18 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtvPublished"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@id/txtvPublished"
             android:layout_toStartOf="@id/txtvPublished"
-            android:layout_toRightOf="@id/txtvLenSize"
+            android:layout_toLeftOf="@id/txtvPublished"
             android:layout_toEndOf="@id/txtvLenSize"
-            android:layout_alignTop="@id/txtvPublished"
-            android:layout_alignBottom="@id/txtvPublished"
-            tools:background="@android:color/holo_blue_light"
+            android:layout_toRightOf="@id/txtvLenSize"
+            android:layoutDirection="ltr"
+            android:indeterminate="false"
             android:max="100"
             android:progress="42"
-            android:indeterminate="false" />
+            tools:background="@android:color/holo_blue_light" />
 
     </RelativeLayout>
 
