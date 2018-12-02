@@ -165,9 +165,6 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.remove_item:
                 DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());
-                if (UserPreferences.shouldDeleteRemoveFromQueue()) {
-                    DBWriter.removeQueueItem(context, selectedItem, false);
-                }
                 break;
             case R.id.mark_read_item:
                 selectedItem.setPlayed(true);

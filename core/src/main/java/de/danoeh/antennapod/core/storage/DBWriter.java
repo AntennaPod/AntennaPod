@@ -74,13 +74,7 @@ public class DBWriter {
     private DBWriter() {
     }
 
-    /**
-     * Deletes a downloaded FeedMedia file from the storage device.
-     *
-     * @param context A context that is used for opening a database connection.
-     * @param mediaId ID of the FeedMedia object whose downloaded file should be deleted.
-     */
-    public static Future<?> deleteFeedMediaOfItem(final Context context,
+    private static Future<?> doDeleteFeedMediaOfItem(final Context context,
                                                   final long mediaId) {
         return dbExec.submit(() -> {
             final FeedMedia media = DBReader.getFeedMedia(mediaId);
@@ -134,6 +128,20 @@ public class DBWriter {
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
         });
+    }
+
+    /**
+     * Deletes a downloaded FeedMedia file from the storage device.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param mediaId ID of the FeedMedia object whose downloaded file should be deleted.
+     */
+    public static Future<?> deleteFeedMediaOfItem(final Context context,
+                                                  final long mediaId) {
+        if (UserPreferences.shouldDeleteRemoveFromQueue()) {
+            DBWriter.removeQueueItem(context, DBReader.getFeedMedia(mediaId).getItem(), false);
+        }
+        return doDeleteFeedMediaOfItem(context, mediaId);
     }
 
     /**

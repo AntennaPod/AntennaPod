@@ -17,7 +17,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadedEpisodesListAdapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
@@ -170,9 +169,6 @@ public class CompletedDownloadsFragment extends ListFragment {
         @Override
         public void onFeedItemSecondaryAction(FeedItem item) {
             DBWriter.deleteFeedMediaOfItem(getActivity(), item.getMedia().getId());
-            if (UserPreferences.shouldDeleteRemoveFromQueue()) {
-                DBWriter.removeQueueItem(getActivity(), item, false);
-            }
         }
     };
 
