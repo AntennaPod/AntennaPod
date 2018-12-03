@@ -15,8 +15,10 @@
         android:layout_width="@dimen/thumbnail_length_itemlist"
         android:layout_height="@dimen/thumbnail_length_itemlist"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/cover_label"
         android:cropToPadding="true"
@@ -30,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/txtvTitle"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:orientation="horizontal">
 
         <ImageView
@@ -37,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginRight="-4dp"
+            android:layout_marginEnd="-4dp"
             android:src="?attr/feed" />
 
         <TextView
@@ -56,7 +60,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imgvCover"
+        android:layout_toEndOf="@id/imgvCover"
         android:layout_toLeftOf="@id/subscribers_container"
+        android:layout_toStartOf="@id/subscribers_container"
         android:layout_alignTop="@id/imgvCover"
         android:maxLines="2"
         android:includeFontPadding="false"
@@ -69,6 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imgvCover"
+        android:layout_toEndOf="@id/imgvCover"
         android:layout_below="@id/txtvTitle"
         android:textSize="14sp"
         android:textColor="?android:attr/textColorSecondary"

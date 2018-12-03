@@ -32,6 +32,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/cover_label"
                 android:gravity="center_vertical"
@@ -45,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/imgvCover"
                 android:layout_toRightOf="@id/imgvCover"
+                android:layout_toEndOf="@id/imgvCover"
                 tools:text="Podcast title"
                 tools:background="@android:color/holo_green_dark" />
 
@@ -54,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtvPodcast"
                 android:layout_toRightOf="@id/imgvCover"
+                android:layout_toEndOf="@id/imgvCover"
                 android:textSize="16sp"
                 android:textColor="?android:attr/textColorPrimary"
                 android:ellipsize="end"
@@ -67,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/imgvCover"
+                android:layout_toEndOf="@id/imgvCover"
                 android:layout_below="@id/txtvTitle"
                 tools:text="00:42:23"
                 tools:background="@android:color/holo_green_dark"/>
@@ -77,8 +81,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_below="@id/txtvTitle"
                 android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 tools:text="Jan 23"
                 tools:background="@android:color/holo_green_dark" />
 
@@ -98,7 +104,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:orientation="horizontal"
             tools:background="@android:color/holo_blue_bright">
 
@@ -108,6 +116,7 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:ellipsize="end"
@@ -123,6 +132,7 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:ellipsize="end"
