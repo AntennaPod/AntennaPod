@@ -1213,13 +1213,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
         }
+        if (!started) {
+            stopService();
+        }
         if (playable == null) {
             Log.d(TAG, "setupNotification: playable is null");
-            if (!started) {
-                stopService();
-            }
             return;
         }
+
         Runnable notificationSetupTask = new Runnable() {
             Bitmap icon = null;
 
@@ -1229,9 +1230,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 if (mediaPlayer == null) {
                     Log.d(TAG, "notificationSetupTask: mediaPlayer is null");
-                    if (!started) {
-                        stopService();
-                    }
                     return;
                 }
 
