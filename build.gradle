@@ -50,7 +50,7 @@ project.ext {
     eventbusVersion = "2.4.0"
     flattr4jVersion = "2.14"
     glideVersion = "4.8.0"
-    glideOkhttpIntegrationVersion = "1.5.0"
+    glideOkhttpIntegrationVersion = "4.8.0"
     iconifyVersion = "2.2.2"
     jsoupVersion = "1.11.2"
     materialDialogsVersion = "0.9.0.2"

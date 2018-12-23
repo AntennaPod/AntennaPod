@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -39,13 +40,13 @@ class CoverTarget extends CustomViewTarget<ImageView, Drawable> {
         ImageView imgvCover = cover.get();
         if (fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
             MainActivity activity = mainActivity.get();
-            Glide.with(activity)
+            new Handler().post(() -> Glide.with(activity)
                     .load(fallbackUri)
                     .apply(new RequestOptions()
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
-                        .dontAnimate())
-                    .into(new CoverTarget(null, txtvPlaceholder, imgvCover, activity));
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .fitCenter()
+                            .dontAnimate())
+                    .into(new CoverTarget(null, txtvPlaceholder, imgvCover, activity)));
         }
     }
 
