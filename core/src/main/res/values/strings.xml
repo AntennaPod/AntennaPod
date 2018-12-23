@@ -470,6 +470,17 @@
     <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
     <string name="stop_playback">Stop playback</string>
     <string name="continue_playback">Continue audio playback</string>
+    <string name="behavior">Behavior</string>
+    <string name="pref_back_button_behavior_title">Back Button Behavior</string>
+    <string name="pref_back_button_behavior_sum">Change behavior of the back button.</string>
+    <string name="back_button_default">Default</string>
+    <string name="back_button_open_drawer">Open navigation drawer</string>
+    <string name="back_button_double_tap">Double tap to exit</string>
+    <string name="back_button_show_prompt">Confirm to exit</string>
+    <string name="close_prompt">Are you sure you want to close AntennaPod?</string>
+    <string name="double_tap_toast">Tap back button again to exit</string>
+    <string name="back_button_go_to_page">Go to page…</string>
+    <string name="back_button_go_to_page_title">Select page</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>

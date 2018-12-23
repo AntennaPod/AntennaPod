@@ -16,8 +16,10 @@
         android:layout_width="@dimen/thumbnail_length_itemlist"
         android:layout_height="@dimen/thumbnail_length_itemlist"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/cover_label"
         android:cropToPadding="true"
@@ -29,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imgvCover"
+        android:layout_toEndOf="@id/imgvCover"
         android:layout_centerVertical="true"
         android:orientation="vertical">
 

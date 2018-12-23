@@ -12,8 +12,10 @@
         android:layout_width="@dimen/thumbnail_length_itemlist"
         android:layout_height="@dimen/thumbnail_length_itemlist"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_marginStart="@dimen/listitem_threeline_horizontalpadding"
         android:contentDescription="@string/cover_label"
         android:scaleType="centerCrop"
         tools:src="@drawable/ic_stat_antenna_default"
@@ -23,8 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/listitem_iconwithtext_textleftpadding"
+        android:layout_marginStart="@dimen/listitem_iconwithtext_textleftpadding"
         android:layout_marginRight="@dimen/listitem_threeline_verticalpadding"
+        android:layout_marginEnd="@dimen/listitem_threeline_verticalpadding"
         android:layout_toRightOf="@id/imgvFeedimage"
+        android:layout_toEndOf="@id/imgvFeedimage"
         android:orientation="vertical"
         tools:background="@android:color/holo_red_dark">
 

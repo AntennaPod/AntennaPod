@@ -301,7 +301,6 @@ public class PodDBAdapter {
     private static Context context;
 
     private static volatile SQLiteDatabase db;
-    private static int counter = 0;
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
@@ -321,9 +320,6 @@ public class PodDBAdapter {
     }
 
     public synchronized PodDBAdapter open() {
-        counter++;
-        Log.v(TAG, "Opening DB #" + counter);
-
         if (db == null || !db.isOpen() || db.isReadOnly()) {
             db = openDb();
         }
@@ -334,7 +330,6 @@ public class PodDBAdapter {
         SQLiteDatabase newDb;
         try {
             newDb = SingletonHolder.dbHelper.getWritableDatabase();
-            newDb.enableWriteAheadLogging();
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
             newDb = SingletonHolder.dbHelper.getReadableDatabase();
@@ -343,14 +338,7 @@ public class PodDBAdapter {
     }
 
     public synchronized void close() {
-        counter--;
-        Log.v(TAG, "Closing DB #" + counter);
-
-        if (counter == 0) {
-            Log.v(TAG, "Closing DB, really");
-            db.close();
-            db = null;
-        }
+        // do nothing
     }
 
     public static boolean deleteDatabase() {

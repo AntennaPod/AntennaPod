@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              tools:background="@android:color/darker_gray">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:background="@android:color/darker_gray">
 
     <TextView
         android:id="@+id/txtvTitle"
-        android:textColor="?android:attr/textColorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_small"
-        android:singleLine="true"
         android:layout_margin="16dp"
         android:ellipsize="start"
-        tools:text="List item title"
-        tools:background="@android:color/holo_green_dark"/>
+        android:singleLine="true"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_small"
+        tools:background="@android:color/holo_green_dark"
+        tools:text="List item title" />
 
 </LinearLayout>

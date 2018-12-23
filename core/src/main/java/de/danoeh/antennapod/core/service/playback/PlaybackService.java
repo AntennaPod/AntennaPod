@@ -1097,7 +1097,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else {
             state = PlaybackStateCompat.STATE_NONE;
         }
-        sessionState.setState(state, mediaPlayer.getPosition(), mediaPlayer.getPlaybackSpeed());
+        sessionState.setState(state, getCurrentPosition(), getCurrentPlaybackSpeed());
         long capabilities = PlaybackStateCompat.ACTION_PLAY_PAUSE
                 | PlaybackStateCompat.ACTION_REWIND
                 | PlaybackStateCompat.ACTION_FAST_FORWARD
@@ -1637,6 +1637,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public float getCurrentPlaybackSpeed() {
+        if(mediaPlayer == null) {
+            return 1.0f;
+        }
         return mediaPlayer.getPlaybackSpeed();
     }
 
