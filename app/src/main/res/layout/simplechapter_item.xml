@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_marginStart="@dimen/listitem_threeline_horizontalpadding"
         android:gravity="center_vertical"
         tools:text="Start"
         tools:background="@android:color/holo_green_dark" />
@@ -22,7 +23,9 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_marginStart="@dimen/listitem_threeline_horizontalpadding"
         android:layout_marginRight="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_marginEnd="@dimen/listitem_threeline_horizontalpadding"
         android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
         android:layout_weight="1"
         android:gravity="center_vertical"

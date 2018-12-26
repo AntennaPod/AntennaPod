@@ -5,7 +5,6 @@ import android.util.Log;
 
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
@@ -21,9 +20,6 @@ import de.danoeh.antennapod.core.util.DateUtils;
 public class NSRSS20 extends Namespace {
 
     private static final String TAG = "NSRSS20";
-
-    private static final String NSTAG = "rss";
-	private static final String NSURI = "";
 
     public static final String CHANNEL = "channel";
 	public static final String ITEM = "item";

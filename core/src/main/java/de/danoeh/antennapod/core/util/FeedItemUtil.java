@@ -5,6 +5,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.feed.FeedItem;
 
 public class FeedItemUtil {
+    private FeedItemUtil(){}
 
     public static int indexOfItemWithDownloadUrl(List<FeedItem> items, String downloadUrl) {
         if(items == null) {

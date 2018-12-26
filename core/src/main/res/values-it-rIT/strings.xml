@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Aggiorna Sottoscrizioni</string>
   <string name="feeds_label">Feed</string>
   <string name="statistics_label">Statistiche</string>
   <string name="add_feed_label">Aggiungi un podcast</string>
   <string name="episodes_label">Episodi</string>
   <string name="all_episodes_short_label">Tutti</string>
+  <string name="new_episodes_label">Novità</string>
   <string name="favorite_episodes_label">Preferiti</string>
   <string name="new_label">Nuovo</string>
   <string name="settings_label">Impostazioni</string>
@@ -18,16 +20,18 @@
   <string name="cancel_download_label">Annulla\nil Download</string>
   <string name="playback_history_label">Cronologia delle riproduzioni</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Sincronizza con altri dispositivi</string>
   <string name="gpodnet_auth_label">Accesso a gpodder.net</string>
   <string name="free_space_label">%1$s disponibili</string>
   <string name="episode_cache_full_title">Cache degli episodi piena</string>
   <string name="episode_cache_full_message">Lo spazio di memoria della cache degli episodi è esaurito. Puoi aumentarlo nelle Impostazioni</string>
+  <string name="synchronizing">Sincronizzazione...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tempo totale di riproduzione:</string>
   <string name="statistics_details_dialog">%1$d di %2$d episodi iniziati.\n\nRiprodotti %3$s di %4$s.</string>
-  <string name="statistics_mode">Modalità di statistica</string>
-  <string name="statistics_mode_normal">Calcola l\'attuale tempo di riproduzione. Riprodurre un podcast due volte verrà contato due volte, mentre segnarlo come riprodotto no.</string>
-  <string name="statistics_mode_count_all">Somma tutti i podcast segnati come riprodotti</string>
+  <string name="statistics_mode">Modalità di calcolo</string>
+  <string name="statistics_mode_normal">Calcola il tempo di riproduzione reale. Riprodurre un podcast due volte verrà contato due volte, segnarlo come riprodotto no.</string>
+  <string name="statistics_mode_count_all">Somma il tempo di riproduzione di tutti i podcast segnati come riprodotti</string>
   <string name="statistics_speed_not_counted">Avviso: La velocità di riproduzione non viene considerata.</string>
   <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
@@ -83,7 +87,7 @@
   <string name="auto_download_apply_to_items_message">L\'opzione <i>Download Automatico</i> verrà applicata ai nuovi episodi.\nVuoi anche applicarla agli episodi precedenti?</string>
   <string name="auto_delete_label">Elimina Episodi Automaticamente</string>
   <string name="parallel_downloads_suffix">\u0020download paralleli</string>
-  <string name="feed_auto_download_global">Impostazione Globale</string>
+  <string name="feed_auto_download_global">Predefinita globale</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Mai</string>
   <string name="send_label">Invia...</string>
@@ -110,20 +114,23 @@
   <string name="mark_all_seen_msg">Segnati tutti gli episodi come visti</string>
   <string name="mark_all_seen_confirmation_msg">Conferma che desideri segnare tutti gli episodi come visti.</string>
   <string name="show_info_label">Informazioni</string>
-  <string name="rename_feed_label">Rinomina Podcast</string>
+  <string name="show_feed_settings_label">Mostra le impostazioni del feed</string>
+  <string name="feed_info_label">Informazioni feed</string>
+  <string name="feed_settings_label">Impostazioni feed</string>
+  <string name="rename_feed_label">Rinomina podcast</string>
   <string name="remove_feed_label">Rimuovi podcast</string>
   <string name="share_label">Condividi...</string>
   <string name="share_link_label">Condividi il link</string>
   <string name="share_file_label">Condividi il file</string>
   <string name="share_link_with_position_label">Condividi il Link con la Posizione</string>
-  <string name="share_feed_url_label">Condividi URL del Feed</string>
+  <string name="share_feed_url_label">Condividi URL del feed</string>
   <string name="share_item_url_label">Condividi l\'URL dell\'episodio</string>
-  <string name="share_item_url_with_position_label">Condividi l\'URL del File dell\'epsiodio con la Posizione</string>
+  <string name="share_item_url_with_position_label">Condividi l\'URL del file dell\'epsiodio con la posizione</string>
   <string name="feed_delete_confirmation_msg">Conferma che desideri cancellare il feed \"%1$s\" e TUTTI i suoi episodi scaricati.</string>
   <string name="feed_remover_msg">Rimozione del Feed in corso</string>
   <string name="load_complete_feed">Ricarica il feed completo</string>
   <string name="hide_episodes_title">Nascondi gli episodi</string>
-  <string name="episode_actions">Applica le azioni</string>
+  <string name="batch_edit">Modifica in gruppo</string>
   <string name="hide_unplayed_episodes_label">Non riprodotti</string>
   <string name="hide_paused_episodes_label">In pausa</string>
   <string name="hide_played_episodes_label">Riprodotti</string>
@@ -220,6 +227,7 @@
   <string name="playback_error_unknown">Errore sconosciuto</string>
   <string name="no_media_playing_label">Nessun elemento multimediale in riproduzione</string>
   <string name="player_buffering_msg">Buffer in corso</string>
+  <string name="player_go_to_picture_in_picture">Modalità picture-in-picture</string>
   <string name="playbackservice_notification_title">Riproduzione del podcast in corso</string>
   <string name="unknown_media_key">AntennaPod - Chiave dell\'elemento multimediale sconosciuta: %1$d</string>
   <!--Queue operations-->
@@ -237,6 +245,8 @@
   <string name="duration">Per durata</string>
   <string name="episode_title">Titolo dell\'episodio</string>
   <string name="feed_title">Titolo del feed</string>
+  <string name="random">Casuale</string>
+  <string name="smart_shuffle">Casuale intelligente</string>
   <string name="ascending">In ordine crescente</string>
   <string name="descending">In ordine decrescente</string>
   <string name="clear_queue_confirmation_msg">Per favore conferma che vuoi rimuovere dalla coda TUTTI gli episodi in essa presenti.</string>
@@ -283,13 +293,22 @@
   <string name="other_pref">Altro</string>
   <string name="about_pref">Informazioni</string>
   <string name="queue_label">Coda</string>
-  <string name="services_label">Servizi</string>
+  <string name="integrations_label">Integrazioni</string>
   <string name="flattr_label">Flattr</string>
+  <string name="flattr_summary">Servizio micropagamenti</string>
+  <string name="automation">Automazione</string>
+  <string name="download_pref_details">Dettagli</string>
+  <string name="import_export_pref">Importa/Esporta</string>
+  <string name="appearance">Aspetto</string>
+  <string name="external_elements">Elementi esterni</string>
+  <string name="interruptions">Interruzioni</string>
+  <string name="buttons">Pulsanti</string>
+  <string name="media_player">Media player</string>
   <string name="pref_episode_cleanup_title">Pulizia episodi</string>
   <string name="pref_episode_cleanup_summary">Gli episodi che non sono in coda e non sono tra i preferiti potrebbero essere rimossi se i Download Automatici richiedono maggiore spazio.</string>
-  <string name="pref_pauseOnDisconnect_sum">Sospendi la riproduzione quando le cuffie o il bluetooth sono disconnessi</string>
+  <string name="pref_pauseOnDisconnect_sum">Sospendi la riproduzione quando le cuffie o il bluetooth vengono disconnessi</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Riprendi la riproduzione quando vengono riconnesse le cuffie</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">Riprendere la riproduzione quando il Bluetooth si riconnette</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Riprendi la riproduzione quando il Bluetooth si riconnette</string>
   <string name="pref_hardwareForwardButtonSkips_title">Il tasto Avanti salta la traccia</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Quando viene premuto un tasto Avanti fisico, viene saltata la traccia invece di andare avanti veloce</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Il tasto Indietro riavvia la traccia</string>
@@ -298,15 +317,15 @@
   <string name="pref_auto_delete_sum">Elimina l\'episodio quando viene completata la riproduzione</string>
   <string name="pref_auto_delete_title">Elimina automaticamente</string>
   <string name="pref_smart_mark_as_played_sum">Contrassegna gli episodi come riprodotti anche se rimangono alcuni secondi da riprodurre</string>
-  <string name="pref_smart_mark_as_played_title">Imposta come Riprodotto intelligente</string>
-  <string name="pref_skip_keeps_episodes_sum">Mantieni gli episodi quando vengono saltati</string>
-  <string name="pref_skip_keeps_episodes_title">Manteni gli Episodi Saltati</string>
+  <string name="pref_smart_mark_as_played_title">Segna come Riprodotto dopo</string>
+  <string name="pref_skip_keeps_episodes_sum">Mantieni in coda gli episodi quando vengono saltati</string>
+  <string name="pref_skip_keeps_episodes_title">Manteni gli episodi saltati</string>
   <string name="pref_favorite_keeps_episodes_sum">Mantieni gli episodi quando sono segnati come Preferiti</string>
   <string name="pref_favorite_keeps_episodes_title">Mantieni episodi preferiti</string>
   <string name="playback_pref">Riproduzione</string>
   <string name="network_pref">Rete</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervallo o orario di aggiornamento</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Imposta un intervallo di tempo o un orario specifico in cui le sottoscrizioni si aggiornano automaticamente</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Imposta un intervallo di tempo o un orario specifico in cui le sottoscrizioni vengono aggiornate automaticamente</string>
   <string name="pref_autoUpdateIntervallOrTime_message">Puoi impostare un <i>intervallo</i> come \"ogni 2 ore\", impostare <i>un\'ora del giorno</i> specifica, come \"7:00\" oppure <i>disabilitare</i> gli aggiornamenti automatici del tutto.\n\n<small>Nota: I tempi di aggiornamento non sono perfetti. Potrai riscontrare dei brevi ritardi.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Disabilita</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Imposta Intervallo</string>
@@ -317,7 +336,7 @@
   <string name="pref_followQueue_title">Riproduzione Continua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Download dei media su WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Disconnessione cuffie</string>
-  <string name="pref_unpauseOnHeadsetReconnect_title">Riconnetti le Cuffie</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Riconnessione cuffie</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Riconnessione Bluetooth</string>
   <string name="pref_mobileUpdate_title">Aggiornamenti su Reti a Consumo</string>
   <string name="pref_mobileUpdate_sum">Permetti gli aggiornamenti tramite connessione dati mobile</string>
@@ -354,6 +373,7 @@
   <string name="pref_episode_cache_title">Cache degli Episodi</string>
   <string name="pref_theme_title_light">Chiaro</string>
   <string name="pref_theme_title_dark">Scuro</string>
+  <string name="pref_theme_title_trueblack">Nero</string>
   <string name="pref_episode_cache_unlimited">Illimitato</string>
   <string name="pref_update_interval_hours_plural">ore</string>
   <string name="pref_update_interval_hours_singular">ora</string>
@@ -398,15 +418,14 @@
   <string name="pref_queueAddToFront_sum">Aggiungi un nuovo episodio in testa alla coda.</string>
   <string name="pref_queueAddToFront_title">Aggiungi in cima alla coda</string>
   <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
-  <string name="pref_image_cache_size_title">Dimensione Cache delle Immagini</string>
+  <string name="pref_image_cache_size_title">Dimensione cache delle immagini</string>
   <string name="pref_image_cache_size_sum">Dimensione cache per le immagini</string>
   <string name="crash_report_title">Report dei crash</string>
   <string name="crash_report_sum">Invia il report dell\'ultimo crash via e-mail</string>
   <string name="send_email">Invia e-mail</string>
   <string name="experimental_pref">Sperimentale</string>
-  <string name="pref_sonic_title">Sonic Media Player</string>
-  <string name="pref_sonic_message">Usa il sonic media player integrato in sostituzione di Prestissimo e del mediaplayer nativo di Android</string>
-  <string name="pref_current_value">Valore corrente: %1$s</string>
+  <string name="pref_media_player_message">Seleziona il media player da usare per riprodurre i file</string>
+  <string name="pref_current_value">Impostazione attuale: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Imposta proxy di rete</string>
   <string name="pref_faq">FAQ</string>
@@ -417,6 +436,11 @@
   <string name="pref_cast_message_free_flavor">Chromecast richiede librerie proprietarie di terze parti che sono disabilitate in questa versione di AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Aggiungi i download alla coda</string>
   <string name="pref_enqueue_downloaded_summary">Aggiungi gli episodi scaricati alla coda di riproduzione</string>
+  <string name="media_player_builtin">Player Android integrato</string>
+  <string name="pref_videoBehavior_title">Comportamento del video</string>
+  <string name="pref_videoBehavior_sum">Comportamento quando si esce dalla riproduzione video</string>
+  <string name="stop_playback">Interrompi riproduzione</string>
+  <string name="continue_playback">Continua la riproduzione</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Abilita l\'esecuzione automatica di Flattr</string>
   <string name="auto_flattr_after_percent">Carica l\'episodio su Flattr appena è stato riprodotto al %d percento</string>
@@ -439,7 +463,7 @@
   <string name="opml_import_explanation_2">Usa un\'applicazione esterna come Dropbox, Google Drive o il tuo gestore file preferito per aprire un file OPML.</string>
   <string name="opml_import_explanation_3">Molte applicazioni come Google Mail, Dropbox, Google Drive e i gestori di file possono <i>aprire</i> i file OPML <i>con</i> AntennaPod.</string>
   <string name="start_import_label">Avvio importazione</string>
-  <string name="opml_import_label">Importazione OPML</string>
+  <string name="opml_import_label">Importa da OPML</string>
   <string name="opml_directory_error">ERRORE!</string>
   <string name="reading_opml_label">Lettura OPML file in corso</string>
   <string name="opml_reader_error">E\' stato riscontrato un errore nell\'apertura del documento OPML</string>
@@ -450,7 +474,7 @@
   <string name="choose_file_from_filesystem">Dal filesystem locale</string>
   <string name="choose_file_from_external_application">Utilizza un\'applicazione esterna</string>
   <string name="opml_export_label">Esportazione su OPML</string>
-  <string name="html_export_label">Esportazione in HTML</string>
+  <string name="html_export_label">Esporta in HTML</string>
   <string name="exporting_label">Esportazione in corso...</string>
   <string name="export_error_label">Errore di esportazione</string>
   <string name="export_success_title">Esportazione eseguita</string>
@@ -645,4 +669,13 @@
   <string name="cast_failed_seek">Ricerca della nuova posizione sul dispositivo ricevente fallita</string>
   <string name="cast_failed_receiver_player_error">Il dispositivo ricevente ha restituito un errore grave</string>
   <string name="cast_failed_media_error_skipping">Errore nella riproduzione. Salto...</string>
+  <!--Notification channels-->
+  <string name="notification_channel_user_action">Azione richesta</string>
+  <string name="notification_channel_user_action_description">Mostra se è richesto un tuo intervento, per sempio se è necessario inserire la password.</string>
+  <string name="notification_channel_downloading">Scaricando</string>
+  <string name="notification_channel_downloading_description">Mostra mentre è in corso il download</string>
+  <string name="notification_channel_playing">In riproduzione</string>
+  <string name="notification_channel_playing_description">Permette di controllare la riproduzione. Questa è la principale notifica visibile quando un prodcast è in riproduzione.</string>
+  <string name="notification_channel_error">Errori</string>
+  <string name="notification_channel_error_description">Mostrato se qualcosa è andato storto, per esempio se fallisce il download o la sincronizzazione di gpodder.</string>
 </resources>

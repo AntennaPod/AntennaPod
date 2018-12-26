@@ -86,22 +86,22 @@ public class FeedInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         long feedId = getIntent().getLongExtra(EXTRA_FEED_ID, -1);
 
-        imgvCover = (ImageView) findViewById(R.id.imgvCover);
-        txtvTitle = (TextView) findViewById(R.id.txtvTitle);
-        TextView txtvAuthorHeader = (TextView) findViewById(R.id.txtvAuthor);
-        ImageView imgvBackground = (ImageView) findViewById(R.id.imgvBackground);
+        imgvCover = findViewById(R.id.imgvCover);
+        txtvTitle = findViewById(R.id.txtvTitle);
+        TextView txtvAuthorHeader = findViewById(R.id.txtvAuthor);
+        ImageView imgvBackground = findViewById(R.id.imgvBackground);
         findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
         findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
         // https://github.com/bumptech/glide/issues/529
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
 
-        txtvDescription = (TextView) findViewById(R.id.txtvDescription);
-        lblLanguage = (TextView) findViewById(R.id.lblLanguage);
-        txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
-        lblAuthor = (TextView) findViewById(R.id.lblAuthor);
-        txtvAuthor = (TextView) findViewById(R.id.txtvDetailsAuthor);
-        txtvUrl = (TextView) findViewById(R.id.txtvUrl);
+        txtvDescription = findViewById(R.id.txtvDescription);
+        lblLanguage = findViewById(R.id.lblLanguage);
+        txtvLanguage = findViewById(R.id.txtvLanguage);
+        lblAuthor = findViewById(R.id.lblAuthor);
+        txtvAuthor = findViewById(R.id.txtvDetailsAuthor);
+        txtvUrl = findViewById(R.id.txtvUrl);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 

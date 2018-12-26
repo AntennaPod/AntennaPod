@@ -122,7 +122,6 @@
   <string name="feed_remover_msg">删除订阅</string>
   <string name="load_complete_feed">刷新全部订阅</string>
   <string name="hide_episodes_title">隐藏曲目</string>
-  <string name="episode_actions">启用</string>
   <string name="hide_unplayed_episodes_label">未播放</string>
   <string name="hide_paused_episodes_label">已暂停</string>
   <string name="hide_played_episodes_label">已播放</string>
@@ -277,7 +276,6 @@
   <string name="other_pref">其他</string>
   <string name="about_pref">关于</string>
   <string name="queue_label">播放列表</string>
-  <string name="services_label">服务</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">清理曲目</string>
   <string name="pref_pauseOnDisconnect_sum">暂停播放曲目当耳机或蓝牙重新连接</string>
@@ -384,8 +382,6 @@
   <string name="crash_report_sum">通过 E-mail 发送最后崩溃报告</string>
   <string name="send_email">发送 E-mail</string>
   <string name="experimental_pref">实验性</string>
-  <string name="pref_sonic_title">音频媒体播放器</string>
-  <string name="pref_sonic_message">使用内置音频媒体播放器代替 Android 原生媒体播放器</string>
   <string name="pref_current_value">当前值：%1$s</string>
   <string name="pref_proxy_title">代理</string>
   <string name="pref_proxy_sum">选择一个网络代理</string>
@@ -430,8 +426,6 @@
   <string name="html_export_label">导出为 HTML 文件</string>
   <string name="exporting_label">正在导出</string>
   <string name="export_error_label">导出出错</string>
-  <string name="opml_export_success_title">OPML 导出成功.</string>
-  <string name="opml_export_success_sum">.opml 文件已保存到:\u0020</string>
   <string name="opml_import_ask_read_permission">读取 OPML 文件需要访问外部存储的权限</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">设置休眠计时器</string>
@@ -598,4 +592,5 @@
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">音量设置失败</string>
   <string name="cast_failed_media_error_skipping">媒体播放出错.跳转中...</string>
+  <!--Notification channels-->
 </resources>

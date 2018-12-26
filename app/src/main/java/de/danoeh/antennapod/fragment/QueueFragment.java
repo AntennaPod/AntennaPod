@@ -380,8 +380,8 @@ public class QueueFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.queue_label);
 
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
-        infoBar = (TextView) root.findViewById(R.id.info_bar);
-        recyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
+        infoBar = root.findViewById(R.id.info_bar);
+        recyclerView = root.findViewById(R.id.recyclerView);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
@@ -487,16 +487,16 @@ public class QueueFragment extends Fragment {
 
                 private void reallyMoved(int from, int to) {
                     // Write drag operation to database
-                    Log.d(TAG, "Write to database move(" + dragFrom + ", " + dragTo + ")");
-                    DBWriter.moveQueueItem(dragFrom, dragTo, true);
+                    Log.d(TAG, "Write to database move(" + from + ", " + to + ")");
+                    DBWriter.moveQueueItem(from, to, true);
                 }
             }
         );
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
+        txtvEmpty = root.findViewById(android.R.id.empty);
         txtvEmpty.setVisibility(View.GONE);
-        progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
+        progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
 
         return root;
@@ -533,9 +533,12 @@ public class QueueFragment extends Fragment {
         String info = queue.size() + getString(R.string.episodes_suffix);
         if(queue.size() > 0) {
             long timeLeft = 0;
+            float playbackSpeed = Float.valueOf(UserPreferences.getPlaybackSpeed());
             for(FeedItem item : queue) {
                 if(item.getMedia() != null) {
-                    timeLeft += item.getMedia().getDuration() - item.getMedia().getPosition();
+                    timeLeft +=
+                            (long) ((item.getMedia().getDuration() - item.getMedia().getPosition())
+                                    / playbackSpeed);
                 }
             }
             info += " \u2022 ";

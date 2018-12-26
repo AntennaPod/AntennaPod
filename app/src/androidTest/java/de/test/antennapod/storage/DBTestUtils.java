@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
  */
 class DBTestUtils {
 
+    private DBTestUtils(){}
     /**
      * Use this method when tests don't involve chapters.
      */

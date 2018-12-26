@@ -53,9 +53,9 @@ public class StatisticsActivity extends AppCompatActivity
         prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         countAll = prefs.getBoolean(PREF_COUNT_ALL, false);
 
-        totalTimeTextView = (TextView) findViewById(R.id.total_time);
-        feedStatisticsList = (ListView) findViewById(R.id.statistics_list);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        totalTimeTextView = findViewById(R.id.total_time);
+        feedStatisticsList = findViewById(R.id.statistics_list);
+        progressBar = findViewById(R.id.progressBar);
         listAdapter = new StatisticsListAdapter(this);
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setAdapter(listAdapter);

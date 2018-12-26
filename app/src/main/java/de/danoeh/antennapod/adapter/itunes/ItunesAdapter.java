@@ -182,9 +182,9 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
          * @param view GridView cell
          */
         PodcastViewHolder(View view){
-            coverView = (ImageView) view.findViewById(R.id.imgvCover);
-            titleView = (TextView) view.findViewById(R.id.txtvTitle);
-            urlView = (TextView) view.findViewById(R.id.txtvUrl);
+            coverView = view.findViewById(R.id.imgvCover);
+            titleView = view.findViewById(R.id.txtvTitle);
+            urlView = view.findViewById(R.id.txtvUrl);
         }
     }
 }

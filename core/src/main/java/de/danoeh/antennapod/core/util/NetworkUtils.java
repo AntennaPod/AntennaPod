@@ -27,6 +27,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class NetworkUtils {
+    private NetworkUtils(){}
 
 	private static final String TAG = NetworkUtils.class.getSimpleName();
 

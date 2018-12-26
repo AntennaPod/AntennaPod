@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Uppdatera Prenumerationer</string>
   <string name="feeds_label">Flöden</string>
   <string name="statistics_label">Statistik</string>
   <string name="add_feed_label">Lägg till Podcast</string>
   <string name="episodes_label">Episoder</string>
   <string name="all_episodes_short_label">Alla</string>
+  <string name="new_episodes_label">Nytt</string>
   <string name="favorite_episodes_label">Favoriter</string>
   <string name="new_label">Nya</string>
   <string name="settings_label">Inställningar</string>
@@ -18,10 +20,12 @@
   <string name="cancel_download_label">Avbryt\nNedladdning</string>
   <string name="playback_history_label">Uppspelningshistorik</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Synkronisera med andra enheter</string>
   <string name="gpodnet_auth_label">Inloggning till gpodder.net</string>
   <string name="free_space_label">%1$s kvar</string>
   <string name="episode_cache_full_title">Episodcachen är full</string>
   <string name="episode_cache_full_message">Episodcachens gräns har nåtts. Du kan öka cachens storlek i inställningarna.</string>
+  <string name="synchronizing">Synkroniserar...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Total uppspelningstid:</string>
   <string name="statistics_details_dialog">%1$d av %2$d episoder startade.\n\nSpelat %3$s av %4$s.</string>
@@ -110,6 +114,9 @@
   <string name="mark_all_seen_msg">Markera alla Episoder som sedda</string>
   <string name="mark_all_seen_confirmation_msg">Bekräfta att du vill markera alla episoder som sedda.</string>
   <string name="show_info_label">Visa information</string>
+  <string name="show_feed_settings_label">Visa flödesinställningar</string>
+  <string name="feed_info_label">Flödesinfo</string>
+  <string name="feed_settings_label">Flödesinställningar</string>
   <string name="rename_feed_label">Byt namn på Podcast</string>
   <string name="remove_feed_label">Ta bort Podcast</string>
   <string name="share_label">Dela…</string>
@@ -123,7 +130,7 @@
   <string name="feed_remover_msg">Tar bort Flöde</string>
   <string name="load_complete_feed">Uppdatera hela Flödet</string>
   <string name="hide_episodes_title">Dölj Episoder</string>
-  <string name="episode_actions">Applicera åtgärder</string>
+  <string name="batch_edit">Batchredigering</string>
   <string name="hide_unplayed_episodes_label">Ospelade</string>
   <string name="hide_paused_episodes_label">Pausade</string>
   <string name="hide_played_episodes_label">Spelad</string>
@@ -220,6 +227,7 @@
   <string name="playback_error_unknown">Okänt fel</string>
   <string name="no_media_playing_label">Inget media spelar</string>
   <string name="player_buffering_msg">Buffrar</string>
+  <string name="player_go_to_picture_in_picture">Bild-i-bild läge</string>
   <string name="playbackservice_notification_title">Spelar podcast</string>
   <string name="unknown_media_key">AntannaPod - Okänd mediaknapp: %1$d</string>
   <!--Queue operations-->
@@ -237,6 +245,8 @@
   <string name="duration">Längd</string>
   <string name="episode_title">Episodtitel</string>
   <string name="feed_title">Flödestitel</string>
+  <string name="random">Slumpa</string>
+  <string name="smart_shuffle">Smart Blandning</string>
   <string name="ascending">Stigande</string>
   <string name="descending">Fallande</string>
   <string name="clear_queue_confirmation_msg">Bekräfta att du vill rensa kön från ALLA episoder.</string>
@@ -283,8 +293,17 @@
   <string name="other_pref">Annat</string>
   <string name="about_pref">Om</string>
   <string name="queue_label">Kö</string>
-  <string name="services_label">Tjänster</string>
+  <string name="integrations_label">Integrationer</string>
   <string name="flattr_label">Flattr</string>
+  <string name="flattr_summary">Mikrobetalningstjänst</string>
+  <string name="automation">Automatisering</string>
+  <string name="download_pref_details">Detaljer</string>
+  <string name="import_export_pref">Importera/Exportera</string>
+  <string name="appearance">Utseende</string>
+  <string name="external_elements">Externa element</string>
+  <string name="interruptions">Avbrott</string>
+  <string name="buttons">Knappar</string>
+  <string name="media_player">Mediaspelare</string>
   <string name="pref_episode_cleanup_title">Episodupprensning</string>
   <string name="pref_episode_cleanup_summary">Episoder som inte är i kön och inte är favoriter kan tas bort om Automatisk Nedladdning behöver utrymme för nya episoder</string>
   <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller bluetooth kopplas ifrån.</string>
@@ -354,6 +373,7 @@
   <string name="pref_episode_cache_title">Episodcache</string>
   <string name="pref_theme_title_light">Ljust</string>
   <string name="pref_theme_title_dark">Mörkt</string>
+  <string name="pref_theme_title_trueblack">Riktig Svart</string>
   <string name="pref_episode_cache_unlimited">Obegränsat</string>
   <string name="pref_update_interval_hours_plural">timmar</string>
   <string name="pref_update_interval_hours_singular">timme</string>
@@ -404,8 +424,7 @@
   <string name="crash_report_sum">Sänd den senaste krashrapporten via e-post</string>
   <string name="send_email">Sänd e-post</string>
   <string name="experimental_pref">Experimentellt</string>
-  <string name="pref_sonic_title">Sonic Mediaspelare</string>
-  <string name="pref_sonic_message">Använd den inbyggda Sonic mediaspelare som ersättning för Androids egna mediaspelare och Prestissimo</string>
+  <string name="pref_media_player_message">Välj vilken mediaspelare som ska spela filer</string>
   <string name="pref_current_value">Nuvarande värde: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Använd en nätverksproxy</string>
@@ -417,6 +436,11 @@
   <string name="pref_cast_message_free_flavor">Chromecast kräver propretiära tredjepartsbibliotek som inte är inkluderade i denna version av AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Köa Nedladdade</string>
   <string name="pref_enqueue_downloaded_summary">Lägg nedladdade episoder i uppspelningskön</string>
+  <string name="media_player_builtin">Andriods inbyggda spelare</string>
+  <string name="pref_videoBehavior_title">Videobeteende</string>
+  <string name="pref_videoBehavior_sum">Beteende när videouppspelning avslutas</string>
+  <string name="stop_playback">Stoppa uppspelning</string>
+  <string name="continue_playback">Fortsätt uppspelning</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>
@@ -645,4 +669,13 @@
   <string name="cast_failed_seek">Misslyckades att söka till den nya positionen på cast-enheten</string>
   <string name="cast_failed_receiver_player_error">Mottagande uppspelaren har stött på ett allvarligt fel</string>
   <string name="cast_failed_media_error_skipping">Fel vid uppspelning av media. Hoppar över...</string>
+  <!--Notification channels-->
+  <string name="notification_channel_user_action">Åtgärd krävs</string>
+  <string name="notification_channel_user_action_description">Visas om din åtgärd är obligatorisk, till exempel om du behöver ange ett lösenord.</string>
+  <string name="notification_channel_downloading">Laddar ner</string>
+  <string name="notification_channel_downloading_description">Visas under tiden som nedladdning pågår.</string>
+  <string name="notification_channel_playing">Uppspelning pågår</string>
+  <string name="notification_channel_playing_description">Medger kontroll över uppspelning. Detta är huvudnotifieringen som du ser när en podcast spelas.</string>
+  <string name="notification_channel_error">Fel</string>
+  <string name="notification_channel_error_description">Visas om något blev fel, exempelvis om nedladdning eller gpodder synkronisering misslyckas.</string>
 </resources>

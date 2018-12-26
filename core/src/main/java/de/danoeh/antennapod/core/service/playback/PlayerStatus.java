@@ -12,7 +12,7 @@ public enum PlayerStatus {
 	INITIALIZING(9),			// playback service is loading the Playable's metadata
 	INITIALIZED(10);	// playback service was started, data source of media player was set.
 
-	private int statusValue;
+	private final int statusValue;
     private static final PlayerStatus[] fromOrdinalLookup;
 
     static {

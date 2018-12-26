@@ -122,7 +122,6 @@
   <string name="feed_remover_msg">Removendo feed</string>
   <string name="load_complete_feed">Atualizar feed completamente</string>
   <string name="hide_episodes_title">Ocultar Episódios</string>
-  <string name="episode_actions">Aplicar ações</string>
   <string name="hide_unplayed_episodes_label">Não reproduzido</string>
   <string name="hide_paused_episodes_label">Pausado</string>
   <string name="hide_played_episodes_label">Reproduzido</string>
@@ -279,7 +278,6 @@
   <string name="other_pref">Outros</string>
   <string name="about_pref">Sobre</string>
   <string name="queue_label">Fila</string>
-  <string name="services_label">Serviços</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Limpar Episódio</string>
   <string name="pref_episode_cleanup_summary">Episódios que não estão na fila e não estão nos favoritos podem ser removidos se o Download Automático precisar de espaço para novos episódios</string>
@@ -396,8 +394,6 @@
   <string name="crash_report_sum">Enviar o relatório da última falha por e-mail</string>
   <string name="send_email">Enviar e-mail</string>
   <string name="experimental_pref">Experimental</string>
-  <string name="pref_sonic_title">Sonic Media Player</string>
-  <string name="pref_sonic_message">Utilizar o reprodutor de mídia Sonic no lugar do reprodutor de mídia nativo do Android e do Prestissimo</string>
   <string name="pref_current_value">Valor atual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Configurar um proxy da rede</string>
@@ -444,8 +440,6 @@
   <string name="html_export_label">Exportar HTML</string>
   <string name="exporting_label">Exportando...</string>
   <string name="export_error_label">Erro na exportação</string>
-  <string name="opml_export_success_title">Exportação do OPML realizada com sucesso.</string>
-  <string name="opml_export_success_sum">O arquivo .opml foi gravado em:\u0020</string>
   <string name="opml_import_ask_read_permission">Acesso ao armazenamento externo é necessária para ler o arquivo OPML</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Configura desligamento automático</string>
@@ -629,4 +623,5 @@
   <string name="cast_failed_seek">Falha ao buscar uma nova posição no dispositivo cast</string>
   <string name="cast_failed_receiver_player_error">O receptor de reprodução encontrou um erro grave</string>
   <string name="cast_failed_media_error_skipping">Erro ao reproduzir mídia. Pulando...</string>
+  <!--Notification channels-->
 </resources>

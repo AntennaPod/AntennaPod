@@ -122,7 +122,6 @@
   <string name="feed_remover_msg">移除播客源</string>
   <string name="load_complete_feed">刷新完成播客源</string>
   <string name="hide_episodes_title">隱藏劇集</string>
-  <string name="episode_actions">應用</string>
   <string name="hide_unplayed_episodes_label">未播放</string>
   <string name="hide_paused_episodes_label">暫停</string>
   <string name="hide_played_episodes_label">已播放</string>
@@ -279,7 +278,6 @@
   <string name="other_pref">其他</string>
   <string name="about_pref">關於</string>
   <string name="queue_label">隊列</string>
-  <string name="services_label">服務</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">劇集清理</string>
   <string name="pref_episode_cleanup_summary">如果自動下載需要空間用於新的劇集，則不在隊列中並且不是最愛的劇集將被移除。</string>
@@ -319,4 +317,5 @@
   <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

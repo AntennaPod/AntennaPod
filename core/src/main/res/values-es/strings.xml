@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Actualizar suscripciones</string>
   <string name="feeds_label">Canales</string>
   <string name="statistics_label">Estadísticas</string>
   <string name="add_feed_label">Añadir podcast</string>
   <string name="episodes_label">Episodios</string>
   <string name="all_episodes_short_label">Todos</string>
+  <string name="new_episodes_label">Nuevo</string>
   <string name="favorite_episodes_label">Favoritos</string>
   <string name="new_label">Nuevos</string>
   <string name="settings_label">Ajustes</string>
@@ -18,10 +20,12 @@
   <string name="cancel_download_label">Cancelar\ndescarga</string>
   <string name="playback_history_label">Historial de reproducciones</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Sincronizar con otros dispositivos</string>
   <string name="gpodnet_auth_label">Iniciar sesión en gpodder.net</string>
   <string name="free_space_label">%1$s libre</string>
   <string name="episode_cache_full_title">Caché de episodios completa</string>
   <string name="episode_cache_full_message">Se ha alcanzado el límite de caché de episodios. Puedes aumentar el tamaño de la caché en las Opciones.</string>
+  <string name="synchronizing">Sincronizando...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tiempo total reproducido:</string>
   <string name="statistics_details_dialog">Empezados %1$d episodios de %2$d.\n\nReproducidos %3$s de %4$s.</string>
@@ -110,6 +114,9 @@
   <string name="mark_all_seen_msg">Marcar todos los episodios como vistos</string>
   <string name="mark_all_seen_confirmation_msg">Por favor confirma que quieres marcar todos los episodios como vistos.</string>
   <string name="show_info_label">Información del programa</string>
+  <string name="show_feed_settings_label">Mostrar configuraciones del feed</string>
+  <string name="feed_info_label">Informaciones del feed</string>
+  <string name="feed_settings_label">Configuraciones del feed</string>
   <string name="rename_feed_label">Renombrar Podcast</string>
   <string name="remove_feed_label">Eliminar podcast</string>
   <string name="share_label">Compartir…</string>
@@ -123,7 +130,7 @@
   <string name="feed_remover_msg">Quitando el canal</string>
   <string name="load_complete_feed">Actualizar el canal completo</string>
   <string name="hide_episodes_title">Ocultar episodios</string>
-  <string name="episode_actions">Aplicar acciones</string>
+  <string name="batch_edit">Edición por lotes</string>
   <string name="hide_unplayed_episodes_label">No escuchados</string>
   <string name="hide_paused_episodes_label">Pausados</string>
   <string name="hide_played_episodes_label">Escuchados</string>
@@ -220,6 +227,7 @@
   <string name="playback_error_unknown">Error desconocido</string>
   <string name="no_media_playing_label">No hay medios en reproducción</string>
   <string name="player_buffering_msg">Almacenando</string>
+  <string name="player_go_to_picture_in_picture">Modo picture-in-picture</string>
   <string name="playbackservice_notification_title">Reproduciendo el podcast</string>
   <string name="unknown_media_key">AntennaPod - Tecla multimedia desconocida: %1$d</string>
   <!--Queue operations-->
@@ -237,6 +245,8 @@
   <string name="duration">Duración</string>
   <string name="episode_title">Título del episodio</string>
   <string name="feed_title">Título del feed</string>
+  <string name="random">Aleatorio</string>
+  <string name="smart_shuffle">Aleatorio inteligente</string>
   <string name="ascending">Ascendente</string>
   <string name="descending">Descendente</string>
   <string name="clear_queue_confirmation_msg">Confirme que quiere borrar TODOS los episodios de la cola</string>
@@ -283,8 +293,17 @@
   <string name="other_pref">Otros</string>
   <string name="about_pref">Acerca de</string>
   <string name="queue_label">Cola</string>
-  <string name="services_label">Servicios</string>
+  <string name="integrations_label">Integraciones</string>
   <string name="flattr_label">Flattr</string>
+  <string name="flattr_summary">Servicio de micropagos</string>
+  <string name="automation">Automatización</string>
+  <string name="download_pref_details">Detalles</string>
+  <string name="import_export_pref">Importar/Exportar</string>
+  <string name="appearance">Apariencia</string>
+  <string name="external_elements">Elementos externos</string>
+  <string name="interruptions">Interrupciones</string>
+  <string name="buttons">Botones</string>
+  <string name="media_player">Reproductor multimedia</string>
   <string name="pref_episode_cleanup_title">Limpieza de episodios</string>
   <string name="pref_episode_cleanup_summary">Los episodios que no estén en la cola ni en Favoritos pueden eliminarse si Descarga automática necesita espacio para episodios nuevos</string>
   <string name="pref_pauseOnDisconnect_sum">Pausar la reproducción al desconectar los auriculares o el bluetooth</string>
@@ -354,6 +373,7 @@
   <string name="pref_episode_cache_title">Caché de episodios</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Oscuro</string>
+  <string name="pref_theme_title_trueblack">Negro total</string>
   <string name="pref_episode_cache_unlimited">Ilimitado</string>
   <string name="pref_update_interval_hours_plural">horas</string>
   <string name="pref_update_interval_hours_singular">hora</string>
@@ -404,8 +424,7 @@
   <string name="crash_report_sum">Enviar el último informe de fallo por e-mail</string>
   <string name="send_email">Enviar e-mail</string>
   <string name="experimental_pref">Experimental</string>
-  <string name="pref_sonic_title">Sonic media player</string>
-  <string name="pref_sonic_message">Usar el reproductor Sonic Media incorporado en lugar del reproductor multimedia de Android y Prestissimo</string>
+  <string name="pref_media_player_message">Seleccione qué reproductor multimedia usar para reproducir archivos</string>
   <string name="pref_current_value">Valor actual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Configurar proxy de red</string>
@@ -417,6 +436,11 @@
   <string name="pref_cast_message_free_flavor">Chromecast requiere librerías propietarias de terceros que están deshabilitadas en esta versión de AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Poner descargados en cola</string>
   <string name="pref_enqueue_downloaded_summary">Agregar episodios descargados a la cola</string>
+  <string name="media_player_builtin">Reproductor Android integrado</string>
+  <string name="pref_videoBehavior_title">Funcionamiento del video</string>
+  <string name="pref_videoBehavior_sum">Funcionamiento al dejar la reproducción de video</string>
+  <string name="stop_playback">Parar reproducción</string>
+  <string name="continue_playback">Continuar reproducción</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Hacer Flattr del episodio en cuanto se haya reproducido el %d por ciento</string>
@@ -645,4 +669,13 @@
   <string name="cast_failed_seek">Fallo al cambiar de posición en el dispositivo Cast</string>
   <string name="cast_failed_receiver_player_error">El reproductor ha encontrado un error grave</string>
   <string name="cast_failed_media_error_skipping">Error reproduciendo medio. Saltando...</string>
+  <!--Notification channels-->
+  <string name="notification_channel_user_action">Acción necesaria</string>
+  <string name="notification_channel_user_action_description">Se muestra si su acción es necesaria, por ejemplo, si necesita ingresar una contraseña.</string>
+  <string name="notification_channel_downloading">Descargando</string>
+  <string name="notification_channel_downloading_description">Se muestra mientras se está descargando.</string>
+  <string name="notification_channel_playing">Reproducción actual</string>
+  <string name="notification_channel_playing_description">Permite controlar la reproducción. Esta es la notificación principal que ves al reproducir un podcast.</string>
+  <string name="notification_channel_error">Errores</string>
+  <string name="notification_channel_error_description">Se muestra si algo salió mal, por ejemplo, si falla la descarga o la sincronización del gpodder.</string>
 </resources>

@@ -105,7 +105,6 @@
   <string name="feed_remover_msg">Uudisvoo eemaldamine</string>
   <string name="load_complete_feed">Värskenda kogu uudisvoogu</string>
   <string name="hide_episodes_title">Peida saated</string>
-  <string name="episode_actions">Rakenda tegevused</string>
   <string name="hide_unplayed_episodes_label">Esitamata</string>
   <string name="hide_paused_episodes_label">Peatatud</string>
   <string name="hide_played_episodes_label">Esitatud</string>
@@ -235,7 +234,6 @@
   <string name="other_pref">Muud</string>
   <string name="about_pref">Info</string>
   <string name="queue_label">Järjekord</string>
-  <string name="services_label">Teenused</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Saadete kustutamien</string>
   <string name="pref_followQueue_sum">Kui saade lõpeb, siis esita kohe järgmine järjekorras olev saade.</string>
@@ -507,4 +505,5 @@
   <string name="cast_media_route_menu_title">Esita...</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_media_error_skipping">Tõrge meedia esitamisel. Jätame vahele...</string>
+  <!--Notification channels-->
 </resources>

@@ -122,7 +122,6 @@
   <string name="feed_remover_msg">피드 삭제하는 중</string>
   <string name="load_complete_feed">전체 피드 새로고침</string>
   <string name="hide_episodes_title">에피소드 감추기</string>
-  <string name="episode_actions">동작 적용</string>
   <string name="hide_unplayed_episodes_label">재생 안 함</string>
   <string name="hide_paused_episodes_label">일시 중지</string>
   <string name="hide_played_episodes_label">재생함</string>
@@ -281,7 +280,6 @@
   <string name="other_pref">기타</string>
   <string name="about_pref">정보</string>
   <string name="queue_label">대기열</string>
-  <string name="services_label">서비스</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">에피소드 정리</string>
   <string name="pref_episode_cleanup_summary">대기열에 없고 즐겨찾기에 넣지 않은 에피소드는 자동 다운로드에서 새 에피소드에 공간이 필요할 경우 제거될 수 있습니다.</string>
@@ -402,8 +400,6 @@
   <string name="crash_report_sum">최근의 이상 종료 보고서를 이메일로 보냅니다.</string>
   <string name="send_email">이메일 보내기</string>
   <string name="experimental_pref">실험적 기능</string>
-  <string name="pref_sonic_title">소닉 미디어 플레이어</string>
-  <string name="pref_sonic_message">내장 소닉 미디어 플레이어를 안드로이드 고유 미디어 플레이어와 Prestissimo 대신 사용합니다.</string>
   <string name="pref_current_value">현재 값: %1$s</string>
   <string name="pref_proxy_title">프록시</string>
   <string name="pref_proxy_sum">네트워크 프록시 설정</string>
@@ -640,4 +636,5 @@
   <string name="cast_failed_seek">캐스트 장치에 새 재생 위치로 이동하는데 실패했습니다</string>
   <string name="cast_failed_receiver_player_error">리시버 플레이어에서 심각한 오류가 발생했습니다</string>
   <string name="cast_failed_media_error_skipping">미디어 재생에 오류. 건너뜁니다...</string>
+  <!--Notification channels-->
 </resources>

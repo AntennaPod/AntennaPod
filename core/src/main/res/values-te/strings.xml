@@ -84,7 +84,6 @@
   <!--Preferences-->
   <string name="other_pref">ఇతర</string>
   <string name="about_pref">గురించి</string>
-  <string name="services_label">సేవలు</string>
   <string name="network_pref">నెట్‌వర్క్</string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">అచేతనించు</string>
   <string name="pref_autoUpdateIntervallOrTime_every">ప్రతీ %1$s</string>
@@ -148,4 +147,5 @@
   <string name="export_ok">ఎగుమతి విజయవంతం.</string>
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

@@ -47,8 +47,6 @@ public class NSAtom extends Namespace {
     private static final String LINK_REL_ARCHIVES = "archives";
     private static final String LINK_REL_ENCLOSURE = "enclosure";
     private static final String LINK_REL_PAYMENT = "payment";
-    private static final String LINK_REL_RELATED = "related";
-    private static final String LINK_REL_SELF = "self";
     private static final String LINK_REL_NEXT = "next";
     // type-values
     private static final String LINK_TYPE_ATOM = "application/atom+xml";

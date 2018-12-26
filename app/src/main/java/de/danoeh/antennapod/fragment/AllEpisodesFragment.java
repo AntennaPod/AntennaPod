@@ -275,14 +275,10 @@ public class AllEpisodesFragment extends Fragment {
         if(item.getItemId() == R.id.share_item) {
             return true; // avoids that the position is reset when we need it in the submenu
         }
-        int pos = listAdapter.getPosition();
-        if(pos < 0) {
-            return false;
-        }
-        FeedItem selectedItem = itemAccess.getItem(pos);
 
+        FeedItem selectedItem = listAdapter.getSelectedItem();
         if (selectedItem == null) {
-            Log.i(TAG, "Selected item at position " + pos + " was null, ignoring selection");
+            Log.i(TAG, "Selected item was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
 
@@ -313,7 +309,7 @@ public class AllEpisodesFragment extends Fragment {
 
         View root = inflater.inflate(fragmentResource, container, false);
 
-        recyclerView = (RecyclerView) root.findViewById(android.R.id.list);
+        recyclerView = root.findViewById(android.R.id.list);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
@@ -323,7 +319,7 @@ public class AllEpisodesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
 
-        progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
+        progLoading = root.findViewById(R.id.progLoading);
 
         if (!itemsLoaded) {
             progLoading.setVisibility(View.VISIBLE);

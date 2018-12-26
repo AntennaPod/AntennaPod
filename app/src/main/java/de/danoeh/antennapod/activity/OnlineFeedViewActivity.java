@@ -144,7 +144,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
         } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
                 || TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
-            feedUrl = (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND))
+            feedUrl = TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
                     ? getIntent().getStringExtra(Intent.EXTRA_TEXT) : getIntent().getDataString();
             if (actionBar != null) {
                 actionBar.setTitle(R.string.add_feed_label);
@@ -306,7 +306,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private void parseFeed() {
-        if (feed == null || feed.getFile_url() == null && feed.isDownloaded()) {
+        if (feed == null || (feed.getFile_url() == null && feed.isDownloaded())) {
             throw new IllegalStateException("feed must be non-null and downloaded when parseFeed is called");
         }
         Log.d(TAG, "Parsing feed");
@@ -379,20 +379,20 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
         EventDistributor.getInstance().register(listener);
-        ListView listView = (ListView) findViewById(R.id.listview);
+        ListView listView = findViewById(R.id.listview);
         LayoutInflater inflater = LayoutInflater.from(this);
         View header = inflater.inflate(R.layout.onlinefeedview_header, listView, false);
         listView.addHeaderView(header);
 
         listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
-        ImageView cover = (ImageView) header.findViewById(R.id.imgvCover);
-        TextView title = (TextView) header.findViewById(R.id.txtvTitle);
-        TextView author = (TextView) header.findViewById(R.id.txtvAuthor);
-        TextView description = (TextView) header.findViewById(R.id.txtvDescription);
-        Spinner spAlternateUrls = (Spinner) header.findViewById(R.id.spinnerAlternateUrls);
+        ImageView cover = header.findViewById(R.id.imgvCover);
+        TextView title = header.findViewById(R.id.txtvTitle);
+        TextView author = header.findViewById(R.id.txtvAuthor);
+        TextView description = header.findViewById(R.id.txtvDescription);
+        Spinner spAlternateUrls = header.findViewById(R.id.spinnerAlternateUrls);
 
-        subscribeButton = (Button) header.findViewById(R.id.butSubscribe);
+        subscribeButton = header.findViewById(R.id.butSubscribe);
 
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)

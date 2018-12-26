@@ -120,7 +120,6 @@
   <string name="feed_remover_msg">Fjerner strøm</string>
   <string name="load_complete_feed">Oppdater hele strømmen</string>
   <string name="hide_episodes_title">Skjul episoder</string>
-  <string name="episode_actions">Lagre handlinger</string>
   <string name="hide_unplayed_episodes_label">Ikke avspilt</string>
   <string name="hide_paused_episodes_label">Pauset</string>
   <string name="hide_played_episodes_label">Avspilt</string>
@@ -273,7 +272,6 @@
   <string name="other_pref">Annet</string>
   <string name="about_pref">Om</string>
   <string name="queue_label">Queue</string>
-  <string name="services_label">Tjenester</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Episodeopprydding</string>
   <string name="pref_pauseOnDisconnect_sum">Sett playback på pause når hodetelefoner eller bluetooth er frakoblet</string>
@@ -381,8 +379,6 @@
   <string name="crash_report_sum">Send den siste kræsj-rapporten via e-post</string>
   <string name="send_email">Send e-post</string>
   <string name="experimental_pref">Eksperimentell</string>
-  <string name="pref_sonic_title">Sonic mediaspiller</string>
-  <string name="pref_sonic_message">Bruk innebygd Sonic mediaspiller som en erstatning for Androids mediaspiller og Prestissimo</string>
   <string name="pref_faq">FAQ</string>
   <string name="pref_known_issues">Kjente problemer</string>
   <string name="pref_no_browser_found">Ingen nettleser funnet.</string>
@@ -421,8 +417,6 @@
   <string name="html_export_label">HTML eksport</string>
   <string name="exporting_label">Eksporterer...</string>
   <string name="export_error_label">Eksporteringserror</string>
-  <string name="opml_export_success_title">OPML-import vellykket.</string>
-  <string name="opml_export_success_sum">.opml-filen ble skrevet til:\u0020</string>
   <string name="opml_import_ask_read_permission">Tilgang til ekstern lagring er nødvendig for å lese OPML filen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Sett opp sovetimer</string>
@@ -592,4 +586,5 @@
   <string name="cast_failed_to_stop">Feilter å stoppe avspillingen av media</string>
   <string name="cast_failed_to_pause">Feilet å pause avspillingen av media</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>
