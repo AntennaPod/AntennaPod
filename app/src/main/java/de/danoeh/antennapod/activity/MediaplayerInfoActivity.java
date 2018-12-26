@@ -127,7 +127,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         if(pagerAdapter != null) {
             pagerAdapter.setController(null);
         }
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         EventDistributor.getInstance().unregister(contentUpdate);

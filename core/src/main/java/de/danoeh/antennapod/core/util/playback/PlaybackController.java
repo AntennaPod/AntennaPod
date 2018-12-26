@@ -781,7 +781,7 @@ public abstract class PlaybackController {
     private void initServiceNotRunning() {
         mediaLoader = Maybe.create((MaybeOnSubscribe<Playable>) emitter -> {
             Playable media = getMedia();
-            if(media != null) {
+            if (media != null) {
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();

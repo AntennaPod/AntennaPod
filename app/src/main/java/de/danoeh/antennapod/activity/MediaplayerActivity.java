@@ -290,7 +290,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             controller.release();
             controller = null; // prevent leak
         }
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         super.onStop();
@@ -952,7 +952,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (feedItem == null) {
             return;
         }
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))

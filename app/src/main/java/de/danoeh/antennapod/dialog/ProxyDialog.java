@@ -229,7 +229,7 @@ public class ProxyDialog {
     }
 
     private void test() {
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         if(!checkValidity()) {

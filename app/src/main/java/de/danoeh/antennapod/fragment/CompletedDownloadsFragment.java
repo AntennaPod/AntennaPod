@@ -61,7 +61,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }
@@ -69,7 +69,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }
@@ -79,7 +79,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         super.onDestroyView();
         listAdapter = null;
         viewCreated = false;
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }
@@ -182,7 +182,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     };
 
     private void loadItems() {
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         if (items == null && viewCreated) {

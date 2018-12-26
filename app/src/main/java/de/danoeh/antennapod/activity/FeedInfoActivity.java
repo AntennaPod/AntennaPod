@@ -107,7 +107,7 @@ public class FeedInfoActivity extends AppCompatActivity {
 
         disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
             Feed feed = DBReader.getFeed(feedId);
-            if(feed != null) {
+            if (feed != null) {
                 emitter.onSuccess(feed);
             } else {
                 emitter.onComplete();
@@ -180,7 +180,7 @@ public class FeedInfoActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }

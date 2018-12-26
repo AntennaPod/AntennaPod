@@ -186,7 +186,7 @@ public class ExternalPlayerFragment extends Fragment {
         }
         disposable = Maybe.create(emitter -> {
                     Playable media = controller.getMedia();
-                    if(media != null) {
+                    if (media != null) {
                         emitter.onSuccess(media);
                     } else {
                         emitter.onComplete();

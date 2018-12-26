@@ -491,7 +491,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         if(pd != null) {

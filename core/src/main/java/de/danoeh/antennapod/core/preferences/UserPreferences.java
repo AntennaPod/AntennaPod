@@ -113,7 +113,6 @@ public class UserPreferences {
     private static final String PREF_RIGHT_VOLUME = "prefRightVolume";
 
     // Experimental
-    public static final String PREF_SONIC = "prefSonic";
     private static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
     public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
     public static final int EPISODE_CLEANUP_QUEUE = -1;

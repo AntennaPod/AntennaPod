@@ -146,7 +146,7 @@ public class AboutActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         if (webViewContainer != null && webView != null) {

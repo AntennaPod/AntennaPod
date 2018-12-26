@@ -125,7 +125,7 @@ public class AllEpisodesFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }
@@ -462,7 +462,7 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     void loadItems() {
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         if (viewsCreated && !itemsLoaded) {
