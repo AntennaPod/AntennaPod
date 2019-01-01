@@ -349,6 +349,8 @@
     <string name="pref_skip_keeps_episodes_title">Keep Skipped Episodes</string>
     <string name="pref_favorite_keeps_episodes_sum">Keep episodes when they are marked Favorite</string>
     <string name="pref_favorite_keeps_episodes_title">Keep Favorite Episodes</string>
+    <string name="pref_playback_history_size_sum">Playback history size</string>
+    <string name="pref_playback_history_size_title">Playback History Size</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
     <string name="pref_autoUpdateIntervallOrTime_title">Update Interval or Time of Day</string>

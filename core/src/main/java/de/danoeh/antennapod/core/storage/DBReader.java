@@ -37,11 +37,6 @@ public final class DBReader {
     private static final String TAG = "DBReader";
 
     /**
-     * Maximum size of the list returned by {@link #getPlaybackHistory()}.
-     */
-    public static final int PLAYBACK_HISTORY_SIZE = 50;
-
-    /**
      * Maximum size of the list returned by {@link #getDownloadLog()}.
      */
     private static final int DOWNLOAD_LOG_SIZE = 200;
@@ -437,9 +432,10 @@ public final class DBReader {
      * has been completed at least once.
      *
      * @return The playback history. The FeedItems are sorted by their media's playbackCompletionDate in descending order.
-     * The size of the returned list is limited by {@link #PLAYBACK_HISTORY_SIZE}.
+     *
+     * @param playbackHistorySize The maximum number of entries to return
      */
-    public static List<FeedItem> getPlaybackHistory() {
+    public static List<FeedItem> getPlaybackHistory(final int playbackHistorySize) {
         Log.d(TAG, "getPlaybackHistory() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -448,7 +444,7 @@ public final class DBReader {
         Cursor mediaCursor = null;
         Cursor itemCursor = null;
         try {
-            mediaCursor = adapter.getCompletedMediaCursor(PLAYBACK_HISTORY_SIZE);
+            mediaCursor = adapter.getCompletedMediaCursor(playbackHistorySize);
             String[] itemIds = new String[mediaCursor.getCount()];
             for (int i = 0; i < itemIds.length && mediaCursor.moveToPosition(i); i++) {
                 int index = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);

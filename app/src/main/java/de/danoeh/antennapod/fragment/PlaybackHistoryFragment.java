@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
@@ -287,7 +288,10 @@ public class PlaybackHistoryFragment extends ListFragment {
     }
 
     private List<FeedItem> loadData() {
-        List<FeedItem> history = DBReader.getPlaybackHistory();
+        final String playbackHistorySizeS = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getString("prefPlaybackHistorySize", "50");
+        final int playbackHistorySize = Integer.parseInt(playbackHistorySizeS);
+        List<FeedItem> history = DBReader.getPlaybackHistory(playbackHistorySize);
         DBReader.loadAdditionalFeedItemListData(history);
         return history;
     }

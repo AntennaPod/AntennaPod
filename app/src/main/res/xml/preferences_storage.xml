@@ -25,7 +25,11 @@
             android:key="prefFavoriteKeepsEpisode"
             android:summary="@string/pref_favorite_keeps_episodes_sum"
             android:title="@string/pref_favorite_keeps_episodes_title"/>
-
+    <EditTextPreference
+        android:defaultValue="50"
+        android:key="prefPlaybackHistorySize"
+        android:summary="@string/pref_playback_history_size_sum"
+        android:title="@string/pref_playback_history_size_title"/>
     <PreferenceCategory android:title="@string/import_export_pref">
         <Preference
                 android:key="prefOpmlExport"
