@@ -428,7 +428,7 @@ public final class DBReader {
     }
 
     /**
-     * Loads the playback history from the database. A FeedItem is in the playback history if playback of the correpsonding episode
+     * Loads the playback history from the database. A FeedItem is in the playback history if playback of the corresponding episode
      * has been completed at least once.
      *
      * @return The playback history. The FeedItems are sorted by their media's playbackCompletionDate in descending order.
