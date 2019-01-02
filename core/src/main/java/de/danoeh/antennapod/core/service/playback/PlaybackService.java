@@ -25,6 +25,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -75,6 +76,7 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
+ * TODO [2716] add some guidelines on how to / not to start / stop the service from callers.
  */
 public class PlaybackService extends MediaBrowserServiceCompat {
     /**
@@ -264,9 +266,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Service created.");
         isRunning = true;
 
-        NotificationCompat.Builder notificationBuilder = createBasicNotification();
-        startForeground(NOTIFICATION_ID, notificationBuilder.build());
-
         registerReceiver(autoStateUpdated, new IntentFilter("com.google.android.gms.car.media.STATUS"));
         registerReceiver(headsetDisconnected, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(ACTION_SHUTDOWN_PLAYBACK_SERVICE));
@@ -342,7 +341,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Service is about to be destroyed");
-        stopForeground(true);
+        stopForeground(true); // TODO: [2716] unclear if stopForeground is still needed
         isRunning = false;
         started = false;
         currentMediaType = MediaType.UNKNOWN;
@@ -367,7 +366,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
     
     private void stopService() {
-        stopForeground(true);
+        stopForeground(true); // TODO: [2716] unclear if stopForeground is still needed
         stopSelf();
     }
 
@@ -465,13 +464,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
         if (keycode == -1 && playable == null && !castDisconnect) {
             Log.e(TAG, "PlaybackService was started with no arguments");
-            stopService();
+            // some code call startService with no arg, causing playback to stop prematurely in typical case
+            // temporarily comment it out for now.
+            // TODO: Next step - find the source of the no-arg service start
+//            stopService(); // TODO: find the source of starting service with no argument that causes me to comment out this line temporarily
             return Service.START_NOT_STICKY;
         }
 
         if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
             Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
-            stopForeground(true);
+            stopForeground(true); // TODO: unclear if stopForeground is still needed
         } else {
             if (keycode != -1) {
                 Log.d(TAG, "Received media button event");
@@ -494,7 +496,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
-            setupNotification(playable);
         }
 
         return Service.START_NOT_STICKY;
@@ -573,7 +574,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     started = false;
                 }
 
-                stopForeground(true); // gets rid of persistent notification
+                stopForeground(true); // gets rid of persistent notification // TODO: [2716] unclear if stopForeground is still needed
                 return true;
             default:
                 Log.d(TAG, "Unhandled key code: " + keycode);
@@ -606,8 +607,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void notifyVideoSurfaceAbandoned() {
         mediaPlayer.pause(true, false);
         mediaPlayer.resetVideoSurface();
-        setupNotification(getPlayable());
-        stopForeground(!UserPreferences.isPersistNotify());
     }
 
     private final PlaybackServiceTaskManager.PSTMCallback taskManagerCallback = new PlaybackServiceTaskManager.PSTMCallback() {
@@ -670,15 +669,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
 
                 case PAUSED:
-                    if ((UserPreferences.isPersistNotify() || isCasting) &&
-                            android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        // do not remove notification on pause based on user pref and whether android version supports expanded notifications
-                        // Change [Play] button to [Pause]
-                        setupNotification(newInfo);
-                    } else if (!UserPreferences.isPersistNotify() && !isCasting) {
-                        // remove notification on pause
-                        stopForeground(true);
-                    }
                     writePlayerStatusPlaybackPreferences();
                     break;
 
@@ -689,7 +679,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 case PLAYING:
                     writePlayerStatusPlaybackPreferences();
-                    setupNotification(newInfo);
                     started = true;
                     // set sleep timer if auto-enabled
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING &&
@@ -701,7 +690,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 case ERROR:
                     writePlaybackPreferencesNoMediaPlaying();
-                    stopService();
                     break;
 
             }
@@ -714,7 +702,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void shouldStop() {
-            stopService();
+            stopService(); // TODO: [2716] unclear if stopService() call is still needed
         }
 
         @Override
@@ -763,7 +751,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
             sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
             writePlaybackPreferencesNoMediaPlaying();
-            stopService();
             return true;
         }
 
@@ -848,7 +835,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             taskManager.cancelPositionSaver();
             writePlaybackPreferencesNoMediaPlaying();
             if (!isCasting) {
-                stopForeground(true);
+                stopForeground(true); // TODO: [2716] unclear if stopForeground is still needed
             }
         }
         if (mediaType == null) {
@@ -1063,6 +1050,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void updateMediaSession(final PlayerStatus playerStatus) {
         PlaybackStateCompat.Builder sessionState = new PlaybackStateCompat.Builder();
 
+        @PlaybackStateCompat.State
         int state;
         if (playerStatus != null) {
             switch (playerStatus) {
@@ -1126,7 +1114,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         flavorHelper.mediaSessionSetExtraForWear(mediaSession);
 
-        mediaSession.setPlaybackState(sessionState.build());
+        final PlaybackStateCompat sessionStateBuilt = sessionState.build();
+        mediaSession.setPlaybackState(sessionStateBuilt);
+        serviceManager.onPlaybackStateChange(sessionStateBuilt);
     }
 
     private static boolean useSkipToPreviousForRewindInLockscreen() {
@@ -1203,13 +1193,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private Thread notificationSetupThread;
 
-    /**
-     * Prepares notification and starts the service in the foreground.
-     */
-    private void setupNotification(final PlaybackServiceMediaPlayer.PSMPInfo info) {
-        setupNotification(info.playable);
-    }
-
     private synchronized void setupNotification(final Playable playable) {
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
@@ -1226,7 +1209,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             @Override
             public void run() {
-                Log.d(TAG, "Starting background work");
+                Log.d(TAG, "notificationSetupTask: Starting background work");
 
                 if (mediaPlayer == null) {
                     Log.d(TAG, "notificationSetupTask: mediaPlayer is null");
@@ -1256,6 +1239,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
 
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
+                Log.v(TAG, "notificationSetupTask: playerStatus=" + playerStatus);
 
                 if (!Thread.currentThread().isInterrupted() && started) {
                     String contentText = playable.getEpisodeTitle();
@@ -1349,7 +1333,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             playerStatus == PlayerStatus.PREPARING ||
                             playerStatus == PlayerStatus.SEEKING ||
                             isCasting) {
+                        Log.v(TAG, "DBG - notificationSetupTask: make service foreground");
                         startForeground(NOTIFICATION_ID, notification);
+                    } else if (playerStatus == PlayerStatus.PAUSED) {
+                        // TODO: logic originally in mediaPlayerCallback case PAUSED.
+                        if ((UserPreferences.isPersistNotify() || isCasting) &&
+                                android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            // do not remove notification on pause based on user pref and whether android version supports expanded notifications
+                            // Change [Play] button to [Pause]
+                            // TODO LATER: logic same as outer else clause: setupNotification(info)
+                            stopForeground(false);
+                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                            mNotificationManager.notify(NOTIFICATION_ID, notification);
+                        } else if (!UserPreferences.isPersistNotify() && !isCasting) {
+                            // remove notification on pause
+                            stopForeground(true);
+                        }
                     } else {
                         stopForeground(false);
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -1846,11 +1845,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         void setIsCasting(boolean isCasting);
 
-        void sendNotificationBroadcast(int type, int code);
+        void sendNotificationBroadcast(int type, int code); // TODO: unclear if the broadcast is still needed with ServiceManager
 
         void saveCurrentPosition(boolean fromMediaPlayer, Playable playable, int position);
-
-        void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info);
 
         MediaSessionCompat getMediaSession();
 
@@ -1891,24 +1888,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info) {
-            if (connected) {
-                PlaybackService.this.setupNotification(info);
-            } else {
-                PlayerStatus status = info.playerStatus;
-                if ((status == PlayerStatus.PLAYING ||
-                        status == PlayerStatus.SEEKING ||
-                        status == PlayerStatus.PREPARING ||
-                        UserPreferences.isPersistNotify()) &&
-                        android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    PlaybackService.this.setupNotification(info);
-                } else if (!UserPreferences.isPersistNotify()) {
-                    PlaybackService.this.stopForeground(true);
-                }
-            }
-        }
-
-        @Override
         public MediaSessionCompat getMediaSession() {
             return PlaybackService.this.mediaSession;
         }
@@ -1923,4 +1902,80 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             PlaybackService.this.unregisterReceiver(receiver);
         }
     };
+
+    /**
+     * The helper that manages PlaybackService's foreground service life cycle and the associated
+     * notification control.
+     *
+     * The logic is adapted from a sample app from The Android Open Source Project.
+     * See https://github.com/googlesamples/android-MediaBrowserService/blob/6cf01be9ef82ca2dd653f03e2a4af0b075cc0021/Application/src/main/java/com/example/android/mediasession/service/MusicService.java#L211
+     *
+     */
+    private class ServiceManager {
+        private boolean mServiceInStartedState; // TODO: rationalize it with parent's static started
+        // TODO LATER: rename the variable, do not use m prefix
+
+        /**
+         *
+         * Entry point method for callers. Upon PlaybackState changes,
+         * the manager start/stop the PlaybackService as well as relevant notification
+         */
+        void onPlaybackStateChange(PlaybackStateCompat state) {
+            // Report the state to the MediaSession.
+
+            Log.v(TAG, "DBG - onPlaybackStateChange(" + state + ")");
+            // Manage the started state of this service.
+            switch (state.getState()) {
+                case PlaybackStateCompat.STATE_PLAYING:
+                    moveServiceToStartedState(state);
+                    break;
+                case PlaybackStateCompat.STATE_PAUSED:
+                    updateNotificationForPause(state);
+                    break;
+                case PlaybackStateCompat.STATE_STOPPED:
+                    moveServiceOutOfStartedState(state);
+                    break;
+                case PlaybackStateCompat.STATE_ERROR:
+                    moveServiceOutOfStartedState(state);
+                    break;
+            }
+        }
+
+        private void moveServiceToStartedState(PlaybackStateCompat state) {
+            Log.v(TAG, "DBG - ServiceManager.moveServiceToStartedState() - mServiceInStartedState:" + mServiceInStartedState);
+
+            if (!mServiceInStartedState) {
+                ContextCompat.startForegroundService(
+                        PlaybackService.this,
+                        new Intent(PlaybackService.this, PlaybackService.class));
+                mServiceInStartedState = true;
+            }
+
+            doSetupNotification();
+        }
+
+        private void updateNotificationForPause(PlaybackStateCompat state) {
+            doSetupNotification();
+        }
+
+        private void moveServiceOutOfStartedState(PlaybackStateCompat state) {
+            stopForeground(true);
+            stopSelf();
+            mServiceInStartedState = false;
+        }
+
+        private void doSetupNotification() {
+            if (mediaPlayer != null && mediaPlayer.getPlayable() != null) {
+                // it updates notification and set foreground status
+                // based on player status (similar to PlaybackState)
+                setupNotification(mediaPlayer.getPlayable());
+            } else {
+                // should not happen unless there are bugs.
+                Log.e(TAG, "doSetupNotification() - unexpectedly there is no playable. No notification setup done. mediaPlayer." + mediaPlayer);
+            }
+        }
+    }
+
+    private final ServiceManager serviceManager = new ServiceManager();
+
 }

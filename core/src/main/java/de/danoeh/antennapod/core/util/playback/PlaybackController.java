@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -105,6 +104,7 @@ public abstract class PlaybackController {
     }
 
     private synchronized void initServiceRunning() {
+        Log.v(TAG, "initServiceRunning()");
         if (initialized) {
             return;
         }
@@ -192,7 +192,7 @@ public abstract class PlaybackController {
                     if (!PlaybackService.started) {
                         if (intent != null) {
                             Log.d(TAG, "Calling start service");
-                            ContextCompat.startForegroundService(activity, intent);
+                            // ContextCompat.startForegroundService(activity, intent); // TODO: [2716] likely not needed but is not 100% sure
                             bound = activity.bindService(intent, mConnection, 0);
                         } else {
                             status = PlayerStatus.STOPPED;
@@ -784,6 +784,7 @@ public abstract class PlaybackController {
     }
 
     private void initServiceNotRunning() {
+        Log.v(TAG, "DBG - initServiceNotRunning()"); // TODO: review it it's still needed
         mediaLoader = Maybe.create((MaybeOnSubscribe<Playable>) emitter -> {
             Playable media = getMedia();
             if (media != null) {

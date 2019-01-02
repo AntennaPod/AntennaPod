@@ -3,7 +3,6 @@ package de.danoeh.antennapod.core.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 
@@ -30,7 +29,7 @@ public class MediaButtonReceiver extends BroadcastReceiver {
 			Intent serviceIntent = new Intent(context, PlaybackService.class);
 			serviceIntent.putExtra(EXTRA_KEYCODE, event.getKeyCode());
 			serviceIntent.putExtra(EXTRA_SOURCE, event.getSource());
-			ContextCompat.startForegroundService(context, serviceIntent);
+			context.startService(serviceIntent); // the service itself will determine if it needs to become a foreground service.
 		}
 
 	}

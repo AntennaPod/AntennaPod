@@ -2,9 +2,6 @@ package de.danoeh.antennapod.core.util.playback;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -73,6 +70,6 @@ public class PlaybackServiceStarter {
         if (PlaybackService.isRunning && !callEvenIfRunning) {
             return;
         }
-        ContextCompat.startForegroundService(context, getIntent());
+        context.startService(getIntent()); // the service itself will decide if it needs to become foreground
     }
 }
