@@ -132,6 +132,8 @@ public class DBWriterTest extends InstrumentationTestCase {
 
     public void testDeleteFeedMediaOfItemRemoveFromQueue()
             throws IOException, ExecutionException, InterruptedException, TimeoutException {
+        assertTrue(UserPreferences.shouldDeleteRemoveFromQueue());
+
         File dest = new File(getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER), "testFile");
 
         assertTrue(dest.createNewFile());
@@ -158,8 +160,8 @@ public class DBWriterTest extends InstrumentationTestCase {
         queue = DBReader.getQueue();
         assertTrue(queue.size() != 0);
 
-        DBWriter.deleteFeedMediaOfItem(getInstrumentation().getTargetContext(), media.getId())
-                .get(TIMEOUT, TimeUnit.SECONDS);
+        DBWriter.deleteFeedMediaOfItem(getInstrumentation().getTargetContext(), media.getId());
+        Thread.sleep(200);
         media = DBReader.getFeedMedia(media.getId());
         assertNotNull(media);
         assertFalse(dest.exists());

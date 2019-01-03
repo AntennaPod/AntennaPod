@@ -138,10 +138,11 @@ public class DBWriter {
      */
     public static Future<?> deleteFeedMediaOfItem(final Context context,
                                                   final long mediaId) {
+        Future res = doDeleteFeedMediaOfItem(context, mediaId);
         if (UserPreferences.shouldDeleteRemoveFromQueue()) {
             DBWriter.removeQueueItem(context, DBReader.getFeedMedia(mediaId).getItem(), false);
         }
-        return doDeleteFeedMediaOfItem(context, mediaId);
+        return res;
     }
 
     /**
