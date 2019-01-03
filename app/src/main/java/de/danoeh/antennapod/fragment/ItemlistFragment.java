@@ -66,10 +66,10 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays a list of FeedItems.
@@ -109,7 +109,7 @@ public class ItemlistFragment extends ListFragment {
 
     private TextView txtvInformation;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -160,8 +160,8 @@ public class ItemlistFragment extends ListFragment {
         super.onPause();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -607,11 +607,11 @@ public class ItemlistFragment extends ListFragment {
 
 
     private void loadItems() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
-        subscription = Observable.fromCallable(this::loadData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(this::loadData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {

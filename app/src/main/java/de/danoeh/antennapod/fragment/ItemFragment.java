@@ -68,10 +68,10 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.OnSwipeGesture;
 import de.danoeh.antennapod.view.SwipeGestureDetector;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays information about a FeedItem and actions.
@@ -134,7 +134,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     private IconButton butAction2;
     private Menu popupMenu;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     /**
      * URL that was selected via long-press.
@@ -285,8 +285,8 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
         if (webvDescription != null && root != null) {
             root.removeView(webvDescription);
@@ -571,12 +571,12 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     };
 
     private void load() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
         progbarLoading.setVisibility(View.VISIBLE);
-        subscription = Observable.fromCallable(this::loadInBackground)
-            .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(this::loadInBackground)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
                 progbarLoading.setVisibility(View.GONE);

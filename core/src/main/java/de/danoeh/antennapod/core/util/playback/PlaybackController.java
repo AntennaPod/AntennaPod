@@ -38,11 +38,12 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
-import rx.Observable;
-import rx.Single;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Communicates with the playback service. GUI classes should use this class to
@@ -70,7 +71,8 @@ public abstract class PlaybackController {
     private boolean released = false;
     private boolean initialized = false;
 
-    private Subscription serviceBinder;
+    private Disposable serviceBinder;
+    private Disposable mediaLoader;
 
     /**
      * True if controller should reinit playback service if 'pause' button is
@@ -145,7 +147,7 @@ public abstract class PlaybackController {
         }
 
         if(serviceBinder != null) {
-            serviceBinder.unsubscribe();
+            serviceBinder.dispose();
         }
         try {
             activity.unbindService(mConnection);
@@ -180,10 +182,10 @@ public abstract class PlaybackController {
     private void bindToService() {
         Log.d(TAG, "Trying to connect to service");
         if (serviceBinder != null) {
-            serviceBinder.unsubscribe();
+            serviceBinder.dispose();
         }
         serviceBinder = Observable.fromCallable(this::getPlayLastPlayedMediaIntent)
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(intent -> {
                     boolean bound = false;
@@ -777,15 +779,18 @@ public abstract class PlaybackController {
     }
 
     private void initServiceNotRunning() {
-        Single.create(subscriber -> subscriber.onSuccess(getMedia()))
-            .subscribeOn(Schedulers.newThread())
+        mediaLoader = Maybe.create((MaybeOnSubscribe<Playable>) emitter -> {
+            Playable media = getMedia();
+            if (media != null) {
+                emitter.onSuccess(media);
+            } else {
+                emitter.onComplete();
+            }
+        })
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe((Object media) -> {
-                if (media == null) {
-                    return;
-                }
-
-                if (((Playable) media).getMediaType() == MediaType.AUDIO) {
+            .subscribe(media -> {
+                if (media.getMediaType() == MediaType.AUDIO) {
                     TypedArray res = activity.obtainStyledAttributes(new int[]{
                             de.danoeh.antennapod.core.R.attr.av_play_big});
                     getPlayButton().setImageResource(
@@ -794,7 +799,7 @@ public abstract class PlaybackController {
                 } else {
                     getPlayButton().setImageResource(R.drawable.ic_av_play_circle_outline_80dp);
                 }
-            });
+            }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     /**
@@ -802,7 +807,7 @@ public abstract class PlaybackController {
      */
     public class MediaPositionObserver implements Runnable {
 
-        public static final int WAITING_INTERVALL = 1000;
+        static final int WAITING_INTERVALL = 1000;
 
         @Override
         public void run() {

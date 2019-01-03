@@ -65,7 +65,8 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "com.squareup.okio:okio:$okioVersion"
     implementation "de.greenrobot:eventbus:$eventbusVersion"
-    implementation "io.reactivex:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "org.awaitility:awaitility:$awaitilityVersion"
 
     implementation "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"

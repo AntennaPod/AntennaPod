@@ -63,10 +63,10 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Activity for playing files that do not require a video surface.
@@ -106,7 +106,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     private ViewPager pager;
     private MediaplayerInfoPagerAdapter pagerAdapter;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     @Override
     protected void onPause() {
@@ -127,8 +127,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         if(pagerAdapter != null) {
             pagerAdapter.setController(null);
         }
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         EventDistributor.getInstance().unregister(contentUpdate);
         saveCurrentFragment();
@@ -472,8 +472,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     private DBReader.NavDrawerData navDrawerData;
 
     private void loadData() {
-        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(DBReader::getNavDrawerData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     navDrawerData = result;

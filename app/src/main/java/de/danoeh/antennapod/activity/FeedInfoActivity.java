@@ -36,10 +36,11 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LangUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays information about a feed.
@@ -59,7 +60,7 @@ public class FeedInfoActivity extends AppCompatActivity {
     private TextView txtvAuthor;
     private TextView txtvUrl;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
 
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
@@ -104,14 +105,17 @@ public class FeedInfoActivity extends AppCompatActivity {
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
-        subscription = Observable.fromCallable(()-> DBReader.getFeed(feedId))
-                .subscribeOn(Schedulers.newThread())
+        disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
+            Feed feed = DBReader.getFeed(feedId);
+            if (feed != null) {
+                emitter.onSuccess(feed);
+            } else {
+                emitter.onComplete();
+            }
+        })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    if (result == null) {
-                        Log.e(TAG, "Activity was started with invalid arguments");
-                        finish();
-                    }
                     feed = result;
                     Log.d(TAG, "Language is " + feed.getLanguage());
                     Log.d(TAG, "Author is " + feed.getAuthor());
@@ -167,14 +171,17 @@ public class FeedInfoActivity extends AppCompatActivity {
                 }, error -> {
                     Log.d(TAG, Log.getStackTraceString(error));
                     finish();
+                }, () -> {
+                    Log.e(TAG, "Activity was started with invalid arguments");
+                    finish();
                 });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 

@@ -39,10 +39,10 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays the description of a Playable object in a Webview.
@@ -66,7 +66,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     private ShownotesProvider shownotesProvider;
     private Playable media;
 
-    private Subscription webViewLoader;
+    private Disposable webViewLoader;
 
     /**
      * URL that was selected via long-press.
@@ -167,7 +167,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
         super.onDestroy();
         Log.d(TAG, "Fragment destroyed");
         if (webViewLoader != null) {
-            webViewLoader.unsubscribe();
+            webViewLoader.dispose();
         }
         if (webvDescription != null) {
             webvDescription.removeAllViews();
@@ -198,7 +198,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
         } else if (args.containsKey(ARG_FEEDITEM_ID)) {
             long id = getArguments().getLong(ARG_FEEDITEM_ID);
             Observable.defer(() -> Observable.just(DBReader.getFeedItem(id)))
-                    .subscribeOn(Schedulers.newThread())
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(feedItem -> {
                         shownotesProvider = feedItem;
@@ -298,13 +298,13 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     private void load() {
         Log.d(TAG, "load()");
         if(webViewLoader != null) {
-            webViewLoader.unsubscribe();
+            webViewLoader.dispose();
         }
         if(shownotesProvider == null) {
             return;
         }
-        webViewLoader = Observable.defer(() -> Observable.just(loadData()))
-                .subscribeOn(Schedulers.newThread())
+        webViewLoader = Observable.fromCallable(this::loadData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     webvDescription.loadDataWithBaseURL(null, data, "text/html",

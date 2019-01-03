@@ -69,10 +69,10 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -122,7 +122,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     private ProgressDialog pd;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     private long lastBackButtonPressTime = 0;
 
@@ -491,8 +491,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         if(pd != null) {
             pd.dismiss();
@@ -750,8 +750,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     };
 
     private void loadData() {
-        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(DBReader::getNavDrawerData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     boolean handleIntent = (navDrawerData == null);

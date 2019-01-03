@@ -27,10 +27,10 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Fragment for displaying feed subscriptions
@@ -48,7 +48,7 @@ public class SubscriptionFragment extends Fragment {
 
     private int mPosition = -1;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     public SubscriptionFragment() {
     }
@@ -94,17 +94,17 @@ public class SubscriptionFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
     private void loadSubscriptions() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
-        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(DBReader::getNavDrawerData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     navDrawerData = result;
@@ -161,7 +161,7 @@ public class SubscriptionFragment extends Fragment {
                         dialog.dismiss();
 
                         Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
-                                .subscribeOn(Schedulers.newThread())
+                                .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(result -> loadSubscriptions(),
                                         error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -178,7 +178,7 @@ public class SubscriptionFragment extends Fragment {
                     public void onConfirmButtonPressed(DialogInterface dialog) {
                         dialog.dismiss();
                         Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
-                                .subscribeOn(Schedulers.newThread())
+                                .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(result -> loadSubscriptions(),
                                         error -> Log.e(TAG, Log.getStackTraceString(error)));

@@ -132,7 +132,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         }
 
         public static Podcast fromSearch(SearchHit searchHit) {
-            return new Podcast(searchHit.getTitle(), searchHit.getImageUrl(), searchHit.getXmlUrl());
+            return new Podcast(searchHit.getTitle(), searchHit.getThumbImageURL(), searchHit.getXmlUrl());
         }
 
         /**
