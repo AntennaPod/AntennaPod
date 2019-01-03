@@ -25,6 +25,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
+import org.awaitility.Awaitility;
+
 /**
  * Test class for DBWriter
  */
@@ -161,7 +163,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertTrue(queue.size() != 0);
 
         DBWriter.deleteFeedMediaOfItem(getInstrumentation().getTargetContext(), media.getId());
-        Thread.sleep(200);
+        Awaitility.await().until(() -> dest.exists() == false);
         media = DBReader.getFeedMedia(media.getId());
         assertNotNull(media);
         assertFalse(dest.exists());
