@@ -764,6 +764,7 @@ public abstract class PlaybackController {
     }
 
     public void notifyVideoSurfaceAbandoned() {
+        Log.v(TAG, "notifyVideoSurfaceAbandoned() - hasPlaybackService=" + (playbackService != null));
         if (playbackService != null) {
             playbackService.notifyVideoSurfaceAbandoned();
         }

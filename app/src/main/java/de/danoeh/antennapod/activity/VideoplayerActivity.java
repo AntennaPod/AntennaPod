@@ -91,9 +91,19 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onStop() {
+        stopPlaybackIfUserPreferencesSpecified(); // MUST be called before super.onStop(), while it still has member variable controller
         super.onStop();
         if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
             videoControlsHider.stop();
+        }
+    }
+
+    void stopPlaybackIfUserPreferencesSpecified() {
+        if (controller != null && !destroyingDueToReload
+                && UserPreferences.getVideoBackgroundBehavior()
+                != UserPreferences.VideoBackgroundBehavior.CONTINUE_PLAYING) {
+            Log.v(TAG, "stop video playback per UserPreference");
+            controller.notifyVideoSurfaceAbandoned();
         }
     }
 
@@ -275,13 +285,12 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
-            Log.d(TAG, "Videosurface was destroyed");
+            Log.d(TAG, "Videosurface was destroyed." );
+            Log.v(TAG, "    hasController=" + (controller != null)
+                    + " , destroyingDueToReload=" + destroyingDueToReload
+                    + " , videoBackgroundBehavior=" + UserPreferences.getVideoBackgroundBehavior());
             videoSurfaceCreated = false;
-            if (controller != null && !destroyingDueToReload
-                    && UserPreferences.getVideoBackgroundBehavior()
-                    != UserPreferences.VideoBackgroundBehavior.CONTINUE_PLAYING) {
-                controller.notifyVideoSurfaceAbandoned();
-            }
+            stopPlaybackIfUserPreferencesSpecified();
         }
     };
 

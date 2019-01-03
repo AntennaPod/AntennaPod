@@ -605,6 +605,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void notifyVideoSurfaceAbandoned() {
+        Log.v(TAG, "notifyVideoSurfaceAbandoned()");
         mediaPlayer.pause(true, false);
         mediaPlayer.resetVideoSurface();
     }
