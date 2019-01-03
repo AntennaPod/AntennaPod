@@ -162,6 +162,7 @@ dependencies {
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "com.squareup.okio:okio:$okioVersion"

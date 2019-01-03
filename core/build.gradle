@@ -60,6 +60,7 @@ dependencies {
     implementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     implementation "com.github.bumptech.glide:okhttp3-integration:$glideOkhttpIntegrationVersion@aar"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"

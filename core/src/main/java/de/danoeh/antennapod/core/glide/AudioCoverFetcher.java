@@ -30,6 +30,7 @@ class AudioCoverFetcher implements DataFetcher<InputStream> {
             byte[] picture = retriever.getEmbeddedPicture();
             if (picture != null) {
                 callback.onDataReady(new ByteArrayInputStream(picture));
+                return;
             }
         } finally {
             retriever.release();
