@@ -1,12 +1,12 @@
 package de.danoeh.antennapod.core.glide;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
-import com.bumptech.glide.load.data.DataFetcher;
-import com.bumptech.glide.load.model.GenericLoaderFactory;
+import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 
+import com.bumptech.glide.load.model.MultiModelLoaderFactory;
+import com.bumptech.glide.signature.ObjectKey;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -56,19 +58,20 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
         /**
          * Constructor for a new Factory that runs requests using a static singleton client.
          */
-        public Factory() {
+        Factory() {
             this(getInternalClient());
         }
 
         /**
          * Constructor for a new Factory that runs requests using given client.
          */
-        public Factory(OkHttpClient client) {
+        Factory(OkHttpClient client) {
             this.client = client;
         }
 
+        @NonNull
         @Override
-        public ModelLoader<String, InputStream> build(Context context, GenericLoaderFactory factories) {
+        public ModelLoader<String, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
             return new ApOkHttpUrlLoader(client);
         }
 
@@ -84,18 +87,24 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
         this.client = client;
     }
 
+    @Nullable
     @Override
-    public DataFetcher<InputStream> getResourceFetcher(String model, int width, int height) {
-        Log.d(TAG, "getResourceFetcher() called with: " + "model = [" + model + "], width = ["
+    public LoadData<InputStream> buildLoadData(@NonNull String model, int width, int height, @NonNull Options options) {
+        Log.d(TAG, "buildLoadData() called with: " + "model = [" + model + "], width = ["
                 + width + "], height = [" + height + "]");
         if(TextUtils.isEmpty(model)) {
             return null;
         } else if(model.startsWith("/")) {
-            return new AudioCoverFetcher(model);
+            return new LoadData<>(new ObjectKey(model), new AudioCoverFetcher(model));
         } else {
             GlideUrl url = new GlideUrl(model);
-            return new OkHttpStreamFetcher(client, url);
+            return new LoadData<>(new ObjectKey(model), new OkHttpStreamFetcher(client, url));
         }
+    }
+
+    @Override
+    public boolean handles(@NonNull String s) {
+        return true;
     }
 
     private static class NetworkAllowanceInterceptor implements Interceptor {

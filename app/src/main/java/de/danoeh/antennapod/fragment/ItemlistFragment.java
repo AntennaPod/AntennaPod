@@ -24,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
@@ -518,20 +520,22 @@ public class ItemlistFragment extends ListFragment {
     private void loadFeedImage() {
         Glide.with(getActivity())
                 .load(feed.getImageLocation())
-                .placeholder(R.color.image_readability_tint)
-                .error(R.color.image_readability_tint)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .transform(new FastBlurTransformation(getActivity()))
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.image_readability_tint)
+                    .error(R.color.image_readability_tint)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .transform(new FastBlurTransformation())
+                    .dontAnimate())
                 .into(imgvBackground);
 
         Glide.with(getActivity())
                 .load(feed.getImageLocation())
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(imgvCover);
     }
 
