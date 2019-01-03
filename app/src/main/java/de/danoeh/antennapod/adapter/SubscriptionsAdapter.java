@@ -126,14 +126,13 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         } else {
             holder.count.setVisibility(View.GONE);
         }
-        Glide.with(mainActivityRef.get())
-                .load(feed.getImageLocation())
-                .apply(new RequestOptions()
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate())
-                .into(new CoverTarget(null, holder.feedTitle, holder.imageView, mainActivityRef.get()));
+
+        new CoverLoader(mainActivityRef.get())
+                .withUri(feed.getImageLocation())
+                .withPlaceholderView(holder.feedTitle)
+                .withCoverView(holder.imageView)
+                .withError(R.color.light_gray)
+                .load();
 
         return convertView;
     }

@@ -292,13 +292,12 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             butSecondary.setTag(item);
             butSecondary.setOnClickListener(secondaryActionListener);
 
-            Glide.with(mainActivity.get())
-                .load(item.getImageLocation())
-                .apply(new RequestOptions()
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate())
-                .into(new CoverTarget(item.getFeed().getImageLocation(), placeholder, cover, mainActivity.get()));
+            new CoverLoader(mainActivity.get())
+                    .withUri(item.getImageLocation())
+                    .withFallbackUri(item.getFeed().getImageLocation())
+                    .withPlaceholderView(placeholder)
+                    .withCoverView(cover)
+                    .load();
         }
 
     }
