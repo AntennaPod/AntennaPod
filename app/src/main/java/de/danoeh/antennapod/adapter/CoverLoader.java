@@ -66,42 +66,32 @@ public class CoverLoader {
             options = options.error(errorResource);
         }
 
-        Glide.with(activity)
+        RequestBuilder builder = Glide.with(activity)
                 .load(uri)
-                .apply(options)
-                .into(new CoverTarget(fallbackUri, txtvPlaceholder, imgvCover, activity));
+                .apply(options);
+
+        if (fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
+            builder = builder.error(Glide.with(activity)
+                    .load(fallbackUri)
+                    .apply(options));
+        }
+
+        builder.into(new CoverTarget(txtvPlaceholder, imgvCover));
     }
 
     class CoverTarget extends CustomViewTarget<ImageView, Drawable> {
-
-        private final WeakReference<String> fallback;
         private final WeakReference<TextView> placeholder;
         private final WeakReference<ImageView> cover;
-        private final WeakReference<MainActivity> mainActivity;
 
-        public CoverTarget(String fallbackUri, TextView txtvPlaceholder, ImageView imgvCover, MainActivity activity) {
+        public CoverTarget(TextView txtvPlaceholder, ImageView imgvCover) {
             super(imgvCover);
-            fallback = new WeakReference<>(fallbackUri);
             placeholder = new WeakReference<>(txtvPlaceholder);
             cover = new WeakReference<>(imgvCover);
-            mainActivity = new WeakReference<>(activity);
         }
 
         @Override
         public void onLoadFailed(Drawable errorDrawable) {
-            String fallbackUri = fallback.get();
-            TextView txtvPlaceholder = placeholder.get();
-            ImageView imgvCover = cover.get();
-            if (fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
-                MainActivity activity = mainActivity.get();
-                new Handler().post(() -> Glide.with(activity)
-                        .load(fallbackUri)
-                        .apply(new RequestOptions()
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .fitCenter()
-                                .dontAnimate())
-                        .into(new CoverTarget(null, txtvPlaceholder, imgvCover, activity)));
-            }
+
         }
 
         @Override
