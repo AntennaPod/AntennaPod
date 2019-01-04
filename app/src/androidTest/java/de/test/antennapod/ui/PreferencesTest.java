@@ -10,16 +10,6 @@ import android.view.View;
 
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -38,6 +28,9 @@ import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
