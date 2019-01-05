@@ -76,7 +76,13 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
- * TODO [2716] add some guidelines on how to / not to start / stop the service from callers.
+ *
+ * Callers should connect to the service with either:
+ * - .bindService()
+ * - .startService(), optionally with arguments such as media to be played.
+ *
+ * Caller should not call startForegroundService(). The PlaybackService will make itself foreground
+ * when appropriate.
  */
 public class PlaybackService extends MediaBrowserServiceCompat {
     /**
@@ -463,11 +469,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         final boolean castDisconnect = intent.getBooleanExtra(EXTRA_CAST_DISCONNECT, false);
         Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
         if (keycode == -1 && playable == null && !castDisconnect) {
-            Log.e(TAG, "PlaybackService was started with no arguments");
-            // some code call startService with no arg, causing playback to stop prematurely in typical case
-            // temporarily comment it out for now.
-            // TODO: Next step - find the source of the no-arg service start
-//            stopService(); // TODO: find the source of starting service with no argument that causes me to comment out this line temporarily
+            // Typical cases when the service was started with no argument
+            // - when it is first bound, and then moved to startedState, as in <code>serviceManager.moveServiceToStartedState()</code>
+            // - callers (e.g., Controller) explicitly
+            Log.d(TAG, "PlaybackService was started with no arguments.");
             return Service.START_NOT_STICKY;
         }
 

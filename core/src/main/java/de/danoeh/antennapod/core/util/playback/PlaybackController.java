@@ -192,7 +192,6 @@ public abstract class PlaybackController {
                     if (!PlaybackService.started) {
                         if (intent != null) {
                             Log.d(TAG, "Calling start service");
-                            // ContextCompat.startForegroundService(activity, intent); // TODO: [2716] likely not needed but is not 100% sure
                             bound = activity.bindService(intent, mConnection, 0);
                         } else {
                             status = PlayerStatus.STOPPED;
@@ -587,7 +586,8 @@ public abstract class PlaybackController {
                     .startWhenPrepared(true)
                     .streamIfLastWasStream()
                     .start();
-            Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
+            Log.d(TAG, "Play/Pause button was pressed, but playbackservice was null - " +
+                    "it is likely to have been released by Android system. Restarting it.");
             return;
         }
         switch (status) {
