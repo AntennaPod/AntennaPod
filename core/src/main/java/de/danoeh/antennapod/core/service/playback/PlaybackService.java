@@ -1629,7 +1629,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void setSpeed(float speed) {
-        mediaPlayer.setSpeed(speed);
+        mediaPlayer.setPlaybackParams(speed, UserPreferences.isSkipSilence());
     }
 
     public void setVolume(float leftVolume, float rightVolume) {

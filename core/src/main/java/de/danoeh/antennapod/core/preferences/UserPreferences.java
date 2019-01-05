@@ -103,7 +103,9 @@ public class UserPreferences {
 
     // Mediaplayer
     public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
+    public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
+    public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
@@ -315,6 +317,10 @@ public class UserPreferences {
 
     public static String getPlaybackSpeed() {
         return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
+    }
+
+    public static boolean isSkipSilence() {
+        return prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false);
     }
 
     public static String[] getPlaybackSpeedArray() {
@@ -647,7 +653,7 @@ public class UserPreferences {
     }
 
     public static boolean useExoplayer() {
-        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals("exoplayer");
+        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals(PREF_MEDIA_PLAYER_EXOPLAYER);
     }
 
     public static void enableSonic() {
