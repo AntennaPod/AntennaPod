@@ -43,7 +43,7 @@ public class ExoPlayerWrapper implements IPlayer {
     }
 
     private SimpleExoPlayer createPlayer() {
-        SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(mContext),
+        SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(mContext, new DefaultRenderersFactory(mContext),
                 new DefaultTrackSelector(), new DefaultLoadControl());
         p.setSeekParameters(SeekParameters.PREVIOUS_SYNC);
         p.addListener(new Player.EventListener() {
