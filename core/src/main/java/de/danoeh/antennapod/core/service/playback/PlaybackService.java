@@ -1632,6 +1632,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaPlayer.setPlaybackParams(speed, UserPreferences.isSkipSilence());
     }
 
+    public void skipSilence(boolean skipSilence) {
+        mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
+    }
+
     public void setVolume(float leftVolume, float rightVolume) {
         mediaPlayer.setVolume(leftVolume, rightVolume);
     }

@@ -509,6 +509,12 @@ public class UserPreferences {
              .apply();
     }
 
+    public static void setSkipSilence(boolean skipSilence) {
+        prefs.edit()
+                .putBoolean(PREF_PLAYBACK_SKIP_SILENCE, skipSilence)
+                .apply();
+    }
+
     public static void setPlaybackSpeedArray(String[] speeds) {
         JSONArray jsonArray = new JSONArray();
         for (String speed : speeds) {

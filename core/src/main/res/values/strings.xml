@@ -466,7 +466,7 @@
     <string name="media_player_builtin">Built-in Android player</string>
     <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
     <string name="media_player_exoplayer" translatable="false">ExoPlayer</string>
-    <string name="pref_skip_silence_title" >Skip Silence in Audio</string>
+    <string name="pref_skip_silence_title">Skip Silence in Audio</string>
     <string name="pref_videoBehavior_title">Upon exiting video</string>
     <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
     <string name="stop_playback">Stop playback</string>
