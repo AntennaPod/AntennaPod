@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/listitem_threeline_height"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     tools:background="@android:color/darker_gray">
 
@@ -13,7 +13,10 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_marginStart="@dimen/listitem_threeline_horizontalpadding"
         android:layout_weight="1"
+        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
         tools:background="@android:color/holo_orange_dark">
 
         <TextView
@@ -22,8 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             tools:text="NEW"
@@ -35,10 +38,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+            android:layout_marginBottom="4dp"
             android:layout_toLeftOf="@id/statusUnread"
+            android:layout_toStartOf="@id/statusUnread"
             tools:text="Episode title"
             tools:background="@android:color/holo_green_dark" />
 
@@ -48,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_below="@id/txtvItemname"
             tools:text="00:42:23"
             tools:background="@android:color/holo_green_dark" />
@@ -57,8 +62,10 @@
             android:layout_width="@dimen/enc_icons_size"
             android:layout_height="@dimen/enc_icons_size"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_below="@id/txtvItemname"
             android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="@string/in_queue_label"
             android:src="?attr/stat_playlist"
             android:visibility="visible"
@@ -71,7 +78,9 @@
             android:layout_height="@dimen/enc_icons_size"
             android:layout_below="@id/txtvItemname"
             android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_toLeftOf="@id/imgvInPlaylist"
+            android:layout_toStartOf="@id/imgvInPlaylist"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_hearing_white_18dp"
             tools:background="@android:color/holo_red_light" />
@@ -83,7 +92,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txtvItemname"
             android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_toLeftOf="@id/imgvType"
+            android:layout_toStartOf="@id/imgvType"
             tools:text="Jan 23"
             tools:background="@android:color/holo_green_dark" />
 
@@ -92,17 +103,18 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/txtvPublished"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_toStartOf="@id/txtvPublished"
             android:layout_toLeftOf="@id/txtvPublished"
+            android:layout_toEndOf="@id/txtvLenSize"
             android:layout_toRightOf="@id/txtvLenSize"
-            android:layout_alignTop="@id/txtvPublished"
-            android:layout_alignBottom="@id/txtvPublished"
-            tools:background="@android:color/holo_blue_light"
+            android:layoutDirection="ltr"
+            android:indeterminate="false"
             android:max="100"
             android:progress="42"
-            android:indeterminate="false"
-            />
+            tools:background="@android:color/holo_blue_light" />
 
     </RelativeLayout>
 

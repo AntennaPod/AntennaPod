@@ -4,7 +4,6 @@
   <string name="feeds_label">फिड्स</string>
   <string name="new_label">नया</string>
   <string name="settings_label">सेटिंग्स</string>
-  <string name="add_new_feed_label">पॉडकास्ट जोड़ें</string>
   <string name="downloads_label">डाउनलोड</string>
   <string name="cancel_download_label">डाउनलोड रद्द करें</string>
   <string name="playback_history_label">प्लेबैक इतिहास</string>
@@ -141,7 +140,6 @@
   <string name="other_pref">अन्य</string>
   <string name="about_pref">के बारे में</string>
   <string name="queue_label">पंक्ति</string>
-  <string name="services_label">सेवाएं</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_followQueue_sum">प्लेबैक के पूरा होने पर अगली पंक्ति आइटम के लिए जाएँ</string>
   <string name="playback_pref">प्लेबैक</string>
@@ -200,7 +198,6 @@
   <string name="deselect_all_label">सभी का चयन रद्द करें</string>
   <string name="opml_export_label">OPML निर्यात</string>
   <string name="export_error_label">निर्यात त्रुटि</string>
-  <string name="opml_export_success_sum">.ompl फ़ाइल लिखा गया था:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">स्लीप टाइमर सेट</string>
   <string name="disable_sleeptimer_label">स्लीप टाइमर अक्षम</string>
@@ -261,6 +258,8 @@
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

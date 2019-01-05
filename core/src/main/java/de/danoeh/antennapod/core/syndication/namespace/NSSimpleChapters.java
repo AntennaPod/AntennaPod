@@ -17,11 +17,11 @@ public class NSSimpleChapters extends Namespace {
     public static final String NSTAG = "psc|sc";
     public static final String NSURI = "http://podlove.org/simple-chapters";
 
-    public static final String CHAPTERS = "chapters";
-    public static final String CHAPTER = "chapter";
-    public static final String START = "start";
-    public static final String TITLE = "title";
-    public static final String HREF = "href";
+    private static final String CHAPTERS = "chapters";
+    private static final String CHAPTER = "chapter";
+    private static final String START = "start";
+    private static final String TITLE = "title";
+    private static final String HREF = "href";
 
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,

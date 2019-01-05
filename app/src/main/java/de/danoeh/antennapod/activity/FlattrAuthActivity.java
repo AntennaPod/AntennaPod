@@ -4,7 +4,7 @@ package de.danoeh.antennapod.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,11 +18,10 @@ import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
-import de.danoeh.antennapod.preferences.PreferenceController;
 
 /** Guides the user through the authentication process */
 
-public class FlattrAuthActivity extends ActionBarActivity {
+public class FlattrAuthActivity extends AppCompatActivity {
 	private static final String TAG = "FlattrAuthActivity";
 
 	private TextView txtvExplanation;
@@ -42,9 +41,9 @@ public class FlattrAuthActivity extends ActionBarActivity {
 		if (BuildConfig.DEBUG) Log.d(TAG, "Activity created");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.flattr_auth);
-		txtvExplanation = (TextView) findViewById(R.id.txtvExplanation);
-		butAuthenticate = (Button) findViewById(R.id.but_authenticate);
-		butReturn = (Button) findViewById(R.id.but_return_home);
+		txtvExplanation = findViewById(R.id.txtvExplanation);
+		butAuthenticate = findViewById(R.id.but_authenticate);
+		butReturn = findViewById(R.id.but_return_home);
 
 		butReturn.setOnClickListener(v -> {
             Intent intent = new Intent(FlattrAuthActivity.this, MainActivity.class);
@@ -104,7 +103,7 @@ public class FlattrAuthActivity extends ActionBarActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			if (authSuccessful) {
-				Intent intent = new Intent(this, PreferenceController.getPreferenceActivity());
+				Intent intent = new Intent(this, PreferenceActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			} else {

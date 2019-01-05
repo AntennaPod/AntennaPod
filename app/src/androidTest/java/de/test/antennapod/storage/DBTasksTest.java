@@ -5,7 +5,6 @@ import android.test.FlakyTest;
 import android.test.InstrumentationTestCase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +16,8 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+
+import static java.util.Collections.singletonList;
 
 /**
  * Test class for DBTasks
@@ -100,7 +101,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         assertTrue(feed.getId() != 0);
         final long feedID = feed.getId();
         feed.setId(0);
-        List<Long> itemIDs = new ArrayList<Long>();
+        List<Long> itemIDs = new ArrayList<>();
         for (FeedItem item : feed.getItems()) {
             assertTrue(item.getId() != 0);
             itemIDs.add(item.getId());
@@ -125,7 +126,7 @@ public class DBTasksTest extends InstrumentationTestCase {
     public void testUpdateFeedMediaUrlResetState() {
         final Feed feed = new Feed("url", null, "title");
         FeedItem item = new FeedItem(0, "item", "id", "link", new Date(), FeedItem.PLAYED, feed);
-        feed.setItems(Arrays.asList(item));
+        feed.setItems(singletonList(item));
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -138,7 +139,7 @@ public class DBTasksTest extends InstrumentationTestCase {
 
         FeedMedia media = new FeedMedia(item, "url", 1024, "mime/type");
         item.setMedia(media);
-        feed.setItems(Arrays.asList(item));
+        feed.setItems(singletonList(item));
 
         final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
         assertTrue(feed != newFeed);

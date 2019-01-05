@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.lang.ref.WeakReference;
 
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -50,7 +51,6 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
     }
 
     private int getAdjustedPosition(int origPosition) {
-        assert(origPosition != getAddTilePosition());
         return origPosition < getAddTilePosition() ? origPosition : origPosition - 1;
     }
 
@@ -90,9 +90,9 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             LayoutInflater layoutInflater =
                     (LayoutInflater) mainActivityRef.get().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.subscription_item, parent, false);
-            holder.feedTitle = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.imgvCover);
-            holder.count = (TriangleLabelView) convertView.findViewById(R.id.triangleCountView);
+            holder.feedTitle = convertView.findViewById(R.id.txtvTitle);
+            holder.imageView = convertView.findViewById(R.id.imgvCover);
+            holder.count = convertView.findViewById(R.id.triangleCountView);
 
 
             convertView.setTag(holder);
@@ -109,7 +109,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             holder.count.setVisibility(View.INVISIBLE);
 
             // when this holder is reused, we could else end up with a cover image
-            Glide.clear(holder.imageView);
+            Glide.with(mainActivityRef.get()).clear(holder.imageView);
 
             return convertView;
         }
@@ -126,13 +126,13 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         } else {
             holder.count.setVisibility(View.GONE);
         }
-        Glide.with(mainActivityRef.get())
-                .load(feed.getImageLocation())
-                .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
-                .into(new CoverTarget(null, holder.feedTitle, holder.imageView, mainActivityRef.get()));
+
+        new CoverLoader(mainActivityRef.get())
+                .withUri(feed.getImageLocation())
+                .withPlaceholderView(holder.feedTitle)
+                .withCoverView(holder.imageView)
+                .withError(R.color.light_gray)
+                .load();
 
         return convertView;
     }

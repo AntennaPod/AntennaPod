@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,11 +25,12 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Fragment for displaying feed subscriptions
@@ -48,7 +48,7 @@ public class SubscriptionFragment extends Fragment {
 
     private int mPosition = -1;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     public SubscriptionFragment() {
     }
@@ -68,7 +68,7 @@ public class SubscriptionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_subscriptions, container, false);
-        subscriptionGridLayout = (GridView) root.findViewById(R.id.subscriptions_grid);
+        subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
         registerForContextMenu(subscriptionGridLayout);
         return root;
     }
@@ -94,17 +94,17 @@ public class SubscriptionFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
     private void loadSubscriptions() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
-        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(DBReader::getNavDrawerData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     navDrawerData = result;
@@ -152,18 +152,39 @@ public class SubscriptionFragment extends Fragment {
         Feed feed = (Feed)selectedObject;
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
-                Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> loadSubscriptions(),
-                                error -> Log.e(TAG, Log.getStackTraceString(error)));
+                ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(getActivity(),
+                        R.string.mark_all_seen_label,
+                        R.string.mark_all_seen_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+
+                        Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result -> loadSubscriptions(),
+                                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+                    }
+                };
+                markAllSeenConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.mark_all_read_item:
-                Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(result -> loadSubscriptions(),
-                                error -> Log.e(TAG, Log.getStackTraceString(error)));
+                ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
+                        R.string.mark_all_read_label,
+                        R.string.mark_all_read_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(result -> loadSubscriptions(),
+                                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+                    }
+                };
+                markAllReadConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.rename_item:
                 new RenameFeedDialog(getActivity(), feed).show();
@@ -190,8 +211,8 @@ public class SubscriptionFragment extends Fragment {
                             remover.skipOnCompletion = true;
                             int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
                             if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                                getActivity().sendBroadcast(new Intent(
-                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                                IntentUtils.sendLocalBroadcast(getContext(), PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+
                             }
                         }
                         remover.executeAsync();
@@ -210,7 +231,7 @@ public class SubscriptionFragment extends Fragment {
         loadSubscriptions();
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
@@ -220,7 +241,7 @@ public class SubscriptionFragment extends Fragment {
         }
     };
 
-    private SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
+    private final SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
         @Override
         public int getCount() {
             if (navDrawerData != null) {

@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Favorits</string>
   <string name="new_label">Nous</string>
   <string name="settings_label">Configuració</string>
-  <string name="add_new_feed_label">Afegeix podcast</string>
   <string name="downloads_label">Baixades</string>
   <string name="downloads_running_label">En execució</string>
   <string name="downloads_completed_label">Completat</string>
@@ -39,8 +38,8 @@
   <string name="drawer_feed_order_last_update">Ordre per data de publicació</string>
   <string name="drawer_feed_order_most_played">Ordre per número d\'episodis reproduïts</string>
   <string name="drawer_feed_counter_new_unplayed">Número d\'episodis nous i per reproduir</string>
-  <string name="drawer_feed_counter_new">Número de episodis nous</string>
-  <string name="drawer_feed_counter_unplayed">Número de episodis per reproduir</string>
+  <string name="drawer_feed_counter_new">Número d\'episodis nous</string>
+  <string name="drawer_feed_counter_unplayed">Número d\'episodis per reproduir</string>
   <string name="drawer_feed_counter_downloaded">Número d\'episodis descarregats</string>
   <string name="drawer_feed_counter_none">Cap</string>
   <!--Webview actions-->
@@ -115,6 +114,7 @@
   <string name="remove_feed_label">Esborra podcast</string>
   <string name="share_label">Compartir...</string>
   <string name="share_link_label">Comparteix l\'enllaç</string>
+  <string name="share_file_label">Comparteix un fitxer</string>
   <string name="share_link_with_position_label">Comparteix enllaç amb posició</string>
   <string name="share_feed_url_label">Comparteix adreça del canal</string>
   <string name="share_item_url_label">Comparteix adreça del fitxer del canal</string>
@@ -123,7 +123,6 @@
   <string name="feed_remover_msg">S\'està esborrant el canal</string>
   <string name="load_complete_feed">S\'ha actualitzat el canal</string>
   <string name="hide_episodes_title">Amaga Episodis</string>
-  <string name="episode_actions">Aplica accions</string>
   <string name="hide_unplayed_episodes_label">Per reproduir</string>
   <string name="hide_paused_episodes_label">Pausat</string>
   <string name="hide_played_episodes_label">Reproduit</string>
@@ -143,6 +142,7 @@
   <string name="stream_label">Reprodueix sense baixar</string>
   <string name="remove_label">Suprimeix</string>
   <string name="delete_label">Esborrar</string>
+  <string name="delete_failed">No s\'ha pogut esborrar el fitxer. Reiniciar el dispositiu pot ajudar.</string>
   <string name="remove_episode_lable">Esborra episodi</string>
   <string name="marked_as_seen_label">Marcat com a vist</string>
   <string name="mark_read_label">Marca com a llegit</string>
@@ -280,7 +280,6 @@
   <string name="other_pref">Altres</string>
   <string name="about_pref">Quant a</string>
   <string name="queue_label">Cua</string>
-  <string name="services_label">Serveis</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Neteja l\'episodi</string>
   <string name="pref_episode_cleanup_summary">Els episodis que no es troben a la cua i no són favorits haurien de ser candidats a ser esborrats si l\'Auto Descàrrega necessita espai per a nous episodis</string>
@@ -298,6 +297,8 @@
   <string name="pref_smart_mark_as_played_title">Marca intel·ligent com a reproduït</string>
   <string name="pref_skip_keeps_episodes_sum">Mantenir episodis quan són passats de llarg</string>
   <string name="pref_skip_keeps_episodes_title">Mantenir els episodis passats de llarg</string>
+  <string name="pref_favorite_keeps_episodes_sum">Conserva els episodis marcats com a favorits.</string>
+  <string name="pref_favorite_keeps_episodes_title">Conserva els episodis favorits.</string>
   <string name="playback_pref">Reproducció</string>
   <string name="network_pref">Xarxa</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Actualitza interval o horari del dia</string>
@@ -341,6 +342,8 @@
   <string name="pref_automatic_download_sum">Configureu la baixada automàtica d\'episodis.</string>
   <string name="pref_autodl_wifi_filter_title">Activa el filtre de la xarxa sense fils</string>
   <string name="pref_autodl_wifi_filter_sum">Permet les baixades automàtiques només per a les xarxes sense fils seleccionades.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Baixa usant la connexió del mòbil.</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Permet la baixada automàtica mitjançant la connexió de dades del mòbil.</string>
   <string name="pref_automatic_download_on_battery_title">Baixa mentre no es carrega</string>
   <string name="pref_automatic_download_on_battery_sum">Permet les baixades automàtiques mentre la bateria no es carrega</string>
   <string name="pref_parallel_downloads_title">Baixades paral·leles</string>
@@ -397,8 +400,6 @@
   <string name="crash_report_sum">Envia l\'últim informe de tancament abrupte per e-mail</string>
   <string name="send_email">Envia e-mail</string>
   <string name="experimental_pref">Experimental</string>
-  <string name="pref_sonic_title">Reproductor Sonic Media Player</string>
-  <string name="pref_sonic_message">Fes servir el reproductor Sonic Media Player integrat en comptes del reproductor natiu d\'Android i Prestissimo</string>
   <string name="pref_current_value">Valor actual: %1$s</string>
   <string name="pref_proxy_title">Servidor intermediari</string>
   <string name="pref_proxy_sum">Estableix un servidor intermediari</string>
@@ -408,7 +409,7 @@
   <string name="pref_cast_title">Suport per a Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilita el suport per la reproducció remota en dispositius de difusió (com ara Chromecast, Audio Speakers o Android TV). </string>
   <string name="pref_cast_message_free_flavor">Chromecast requereix de llibreries propietàries de terceres parts que estan inhabilitades en aquesta versió d\'AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Posa a la cua els descarregats</string>
+  <string name="pref_enqueue_downloaded_title">Afegeix les baixades a la cua</string>
   <string name="pref_enqueue_downloaded_summary">Afegeix els episodis descarregats a la cua</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activa la compartició automàtica per Flattr</string>
@@ -446,8 +447,6 @@
   <string name="html_export_label">Exporta HTML</string>
   <string name="exporting_label">Exportant...</string>
   <string name="export_error_label">Error d\'exportació</string>
-  <string name="opml_export_success_title">S\'ha exportat l\'OPML correctament.</string>
-  <string name="opml_export_success_sum">El fitxer OPML s\'ha escrit a:\u0020</string>
   <string name="opml_import_ask_read_permission">Per llegir arxius OPML és necessari accés a la memòria externa</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Defineix un temporitzador</string>
@@ -614,6 +613,13 @@
   <string name="proxy_host_empty_error">El host no pot estar buit</string>
   <string name="proxy_host_invalid_error">El host no és una adreça IP o domini vàlid</string>
   <string name="proxy_port_invalid_error">El port no és vàlid</string>
+  <!--Database import/export-->
+  <string name="import_export">Importa/exporta la base de dades</string>
+  <string name="import_export_warning">Podeu fer servir aquesta funcionalitat experimental per a transferir les vostres subscripcions i episodis reproduïts a un altre dispositiu.\n\nNomés podreu importar la base de dades fent servir la mateixa versió de l\'AntennaPod. En cas contrari, aquesta funcionalitat es comportarà de forma imprevisible.\n\nDesprés d\'importar-los, els episodis es poden mostrar com a baixats tot i no estar disponibles. Premeu el botó per a reproduir-los per a que l\'AntennaPod ho detecti.</string>
+  <string name="label_import">Importa</string>
+  <string name="label_export">Exporta</string>
+  <string name="import_select_file">Tria un fitxer per a importar</string>
+  <string name="import_ok">S\'ha importat amb èxit.\n\nPremeu D\'acord per a reiniciar l\'AntennaPod.</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Reproduir a...</string>
   <string name="cast_disconnect_label">Desconnectar la sessió de difusió </string>
@@ -630,4 +636,5 @@
   <string name="cast_failed_seek">No s\'ha pogut cercar la nova posició al dispositiu de difusió</string>
   <string name="cast_failed_receiver_player_error">El reproductor receptor ha trobat un error greu</string>
   <string name="cast_failed_media_error_skipping">Error en la reproducció. Saltant...</string>
+  <!--Notification channels-->
 </resources>

@@ -15,12 +15,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -124,90 +121,14 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertNull(media.getFile_url());
     }
 
-    public void testDeleteFeed() throws IOException, ExecutionException, InterruptedException, TimeoutException {
+    public void testDeleteFeed() throws ExecutionException, InterruptedException, IOException, TimeoutException {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
 
-        // create Feed image
-        File imgFile = new File(destFolder, "image");
-        assertTrue(imgFile.createNewFile());
-        FeedImage image = new FeedImage(0, "image", imgFile.getAbsolutePath(), "url", true);
-        image.setOwner(feed);
-        feed.setImage(image);
-
-        List<File> itemFiles = new ArrayList<File>();
-        // create items with downloaded media files
-        for (int i = 0; i < 10; i++) {
-            FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed, true);
-            feed.getItems().add(item);
-
-            File enc = new File(destFolder, "file " + i);
-            assertTrue(enc.createNewFile());
-            itemFiles.add(enc);
-
-            FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", true, null, 0, 0);
-            item.setMedia(media);
-
-            item.setChapters(new ArrayList<Chapter>());
-            item.getChapters().add(new SimpleChapter(0, "item " + i, item, "example.com"));
-        }
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.close();
-
-        assertTrue(feed.getId() != 0);
-        assertTrue(feed.getImage().getId() != 0);
-        for (FeedItem item : feed.getItems()) {
-            assertTrue(item.getId() != 0);
-            assertTrue(item.getMedia().getId() != 0);
-            assertTrue(item.getChapters().get(0).getId() != 0);
-        }
-
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
-
-        // check if files still exist
-        assertFalse(imgFile.exists());
-        for (File f : itemFiles) {
-            assertFalse(f.exists());
-        }
-
-        adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        Cursor c = adapter.getFeedCursor(feed.getId());
-        assertEquals(0, c.getCount());
-        c.close();
-        c = adapter.getImageCursor(String.valueOf(image.getId()));
-        assertEquals(0, c.getCount());
-        c.close();
-        for (FeedItem item : feed.getItems()) {
-            c = adapter.getFeedItemCursor(String.valueOf(item.getId()));
-            assertEquals(0, c.getCount());
-            c.close();
-            c = adapter.getSingleFeedMediaCursor(item.getMedia().getId());
-            assertEquals(0, c.getCount());
-            c.close();
-            c = adapter.getSimpleChaptersOfFeedItemCursor(item);
-            assertEquals(0, c.getCount());
-            c.close();
-        }
-        adapter.close();
-    }
-
-    public void testDeleteFeedNoImage() throws ExecutionException, InterruptedException, IOException, TimeoutException {
-        File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
-        assertNotNull(destFolder);
-
-        Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<>());
-
-        feed.setImage(null);
-
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
@@ -261,13 +182,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
         Feed feed = new Feed("url", null, "title");
         feed.setItems(null);
-
-        // create Feed image
-        File imgFile = new File(destFolder, "image");
-        assertTrue(imgFile.createNewFile());
-        FeedImage image = new FeedImage(0, "image", imgFile.getAbsolutePath(), "url", true);
-        image.setOwner(feed);
-        feed.setImage(image);
+        feed.setImageUrl("url");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -275,19 +190,12 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
 
         assertTrue(feed.getId() != 0);
-        assertTrue(feed.getImage().getId() != 0);
 
         DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
-
-        // check if files still exist
-        assertFalse(imgFile.exists());
 
         adapter = PodDBAdapter.getInstance();
         adapter.open();
         Cursor c = adapter.getFeedCursor(feed.getId());
-        assertTrue(c.getCount() == 0);
-        c.close();
-        c = adapter.getImageCursor(String.valueOf(image.getId()));
         assertTrue(c.getCount() == 0);
         c.close();
         adapter.close();
@@ -300,12 +208,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
 
-        // create Feed image
-        File imgFile = new File(destFolder, "image");
-        assertTrue(imgFile.createNewFile());
-        FeedImage image = new FeedImage(0, "image", imgFile.getAbsolutePath(), "url", true);
-        image.setOwner(feed);
-        feed.setImage(image);
+        feed.setImageUrl("url");
 
         // create items
         for (int i = 0; i < 10; i++) {
@@ -320,86 +223,21 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
 
         assertTrue(feed.getId() != 0);
-        assertTrue(feed.getImage().getId() != 0);
         for (FeedItem item : feed.getItems()) {
             assertTrue(item.getId() != 0);
         }
 
         DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
 
-        // check if files still exist
-        assertFalse(imgFile.exists());
 
         adapter = PodDBAdapter.getInstance();
         adapter.open();
         Cursor c = adapter.getFeedCursor(feed.getId());
         assertTrue(c.getCount() == 0);
         c.close();
-        c = adapter.getImageCursor(String.valueOf(image.getId()));
-        assertTrue(c.getCount() == 0);
-        c.close();
         for (FeedItem item : feed.getItems()) {
             c = adapter.getFeedItemCursor(String.valueOf(item.getId()));
             assertTrue(c.getCount() == 0);
-            c.close();
-        }
-        adapter.close();
-    }
-
-    public void testDeleteFeedWithItemImages() throws InterruptedException, ExecutionException, TimeoutException, IOException {
-        File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
-        assertNotNull(destFolder);
-
-        Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<>());
-
-        // create Feed image
-        File imgFile = new File(destFolder, "image");
-        assertTrue(imgFile.createNewFile());
-        FeedImage image = new FeedImage(0, "image", imgFile.getAbsolutePath(), "url", true);
-        image.setOwner(feed);
-        feed.setImage(image);
-
-        // create items with images
-        for (int i = 0; i < 10; i++) {
-            FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
-            feed.getItems().add(item);
-            File itemImageFile = new File(destFolder, "item-image-" + i);
-            FeedImage itemImage = new FeedImage(0, "item-image" + i, itemImageFile.getAbsolutePath(), "url", true);
-            item.setImage(itemImage);
-        }
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.close();
-
-        assertTrue(feed.getId() != 0);
-        assertTrue(feed.getImage().getId() != 0);
-        for (FeedItem item : feed.getItems()) {
-            assertTrue(item.getId() != 0);
-            assertTrue(item.getImage().getId() != 0);
-        }
-
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
-
-        // check if files still exist
-        assertFalse(imgFile.exists());
-
-        adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        Cursor c = adapter.getFeedCursor(feed.getId());
-        assertTrue(c.getCount() == 0);
-        c.close();
-        c = adapter.getImageCursor(String.valueOf(image.getId()));
-        assertTrue(c.getCount() == 0);
-        c.close();
-        for (FeedItem item : feed.getItems()) {
-            c = adapter.getFeedItemCursor(String.valueOf(item.getId()));
-            assertTrue(c.getCount() == 0);
-            c.close();
-            c = adapter.getImageCursor(String.valueOf(item.getImage().getId()));
-            assertEquals(0, c.getCount());
             c.close();
         }
         adapter.close();
@@ -412,13 +250,9 @@ public class DBWriterTest extends InstrumentationTestCase {
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
 
-        // create Feed image
-        File imgFile = new File(destFolder, "image");
-        FeedImage image = new FeedImage(0, "image", imgFile.getAbsolutePath(), "url", true);
-        image.setOwner(feed);
-        feed.setImage(image);
+        feed.setImageUrl("url");
 
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
@@ -437,14 +271,13 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
 
         assertTrue(feed.getId() != 0);
-        assertTrue(feed.getImage().getId() != 0);
         for (FeedItem item : feed.getItems()) {
             assertTrue(item.getId() != 0);
             assertTrue(item.getMedia().getId() != 0);
         }
 
 
-        List<FeedItem> queue = new ArrayList<FeedItem>();
+        List<FeedItem> queue = new ArrayList<>();
         queue.addAll(feed.getItems());
         adapter.open();
         adapter.setQueue(queue);
@@ -458,9 +291,6 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.open();
 
         Cursor c = adapter.getFeedCursor(feed.getId());
-        assertTrue(c.getCount() == 0);
-        c.close();
-        c = adapter.getImageCursor(String.valueOf(image.getId()));
         assertTrue(c.getCount() == 0);
         c.close();
         for (FeedItem item : feed.getItems()) {
@@ -482,15 +312,11 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertNotNull(destFolder);
 
         Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
 
-        // create Feed image
-        File imgFile = new File(destFolder, "image");
-        FeedImage image = new FeedImage(0, "image", imgFile.getAbsolutePath(), "url", true);
-        image.setOwner(feed);
-        feed.setImage(image);
+        feed.setImageUrl("url");
 
-        List<File> itemFiles = new ArrayList<File>();
+        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
@@ -509,7 +335,6 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
 
         assertTrue(feed.getId() != 0);
-        assertTrue(feed.getImage().getId() != 0);
         for (FeedItem item : feed.getItems()) {
             assertTrue(item.getId() != 0);
             assertTrue(item.getMedia().getId() != 0);
@@ -520,9 +345,6 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter = PodDBAdapter.getInstance();
         adapter.open();
         Cursor c = adapter.getFeedCursor(feed.getId());
-        assertTrue(c.getCount() == 0);
-        c.close();
-        c = adapter.getImageCursor(String.valueOf(image.getId()));
         assertTrue(c.getCount() == 0);
         c.close();
         for (FeedItem item : feed.getItems()) {
@@ -539,7 +361,7 @@ public class DBWriterTest extends InstrumentationTestCase {
     private FeedMedia playbackHistorySetup(Date playbackCompletionDate) {
         final Context context = getInstrumentation().getTargetContext();
         Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
         FeedMedia media = new FeedMedia(0, item, 10, 0, 1, "mime", null, "url", false, playbackCompletionDate, 0, 0);
         feed.getItems().add(item);
@@ -598,7 +420,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         for (FeedItem item : feed.getItems()) {
             assertTrue(item.getId() != 0);
         }
-        List<Future<?>> futures = new ArrayList<Future<?>>();
+        List<Future<?>> futures = new ArrayList<>();
         for (FeedItem item : feed.getItems()) {
             futures.add(DBWriter.addQueueItem(context, item));
         }
@@ -791,7 +613,7 @@ public class DBWriterTest extends InstrumentationTestCase {
     public void testMarkFeedRead() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
         Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.UNPLAYED, feed);
             feed.getItems().add(item);

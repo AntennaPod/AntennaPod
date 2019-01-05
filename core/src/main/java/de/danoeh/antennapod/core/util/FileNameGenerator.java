@@ -1,10 +1,10 @@
 package de.danoeh.antennapod.core.util;
 
-import org.apache.commons.lang3.ArrayUtils;
+import android.text.TextUtils;
 
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.text.RandomStringGenerator;
+
 
 /** Generates valid filenames for a given string. */
 public class FileNameGenerator {
@@ -33,7 +33,15 @@ public class FileNameGenerator {
 				buf.append(c);
 			}
 		}
-		return buf.toString().trim();
+		String filename = buf.toString().trim();
+		if(TextUtils.isEmpty(filename)) {
+			return new RandomStringGenerator.Builder()
+					.withinRange('0', 'z')
+					.filteredBy(Character::isLetterOrDigit)
+					.build()
+					.generate(8);
+		}
+		return filename;
 	}
 
 }

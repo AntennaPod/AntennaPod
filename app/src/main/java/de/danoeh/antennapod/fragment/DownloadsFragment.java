@@ -25,7 +25,7 @@ public class DownloadsFragment extends Fragment {
     public static final String ARG_SELECTED_TAB = "selected_tab";
 
     public static final int POS_RUNNING = 0;
-    public static final int POS_COMPLETED = 1;
+    private static final int POS_COMPLETED = 1;
     public static final int POS_LOG = 2;
 
     private static final String PREF_LAST_TAB_POSITION = "tab_position";
@@ -38,12 +38,12 @@ public class DownloadsFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.pager_fragment, container, false);
 
-        viewPager = (ViewPager)root.findViewById(R.id.viewpager);
+        viewPager = root.findViewById(R.id.viewpager);
         DownloadsPagerAdapter pagerAdapter = new DownloadsPagerAdapter(getChildFragmentManager(), getResources());
         viewPager.setAdapter(pagerAdapter);
 
         // Give the TabLayout the ViewPager
-        tabLayout = (TabLayout) root.findViewById(R.id.sliding_tabs);
+        tabLayout = root.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         return root;
@@ -78,9 +78,9 @@ public class DownloadsFragment extends Fragment {
         viewPager.setCurrentItem(lastPosition);
     }
 
-    public class DownloadsPagerAdapter extends FragmentPagerAdapter {
+    public static class DownloadsPagerAdapter extends FragmentPagerAdapter {
 
-        Resources resources;
+        final Resources resources;
 
         public DownloadsPagerAdapter(FragmentManager fm, Resources resources) {
             super(fm);

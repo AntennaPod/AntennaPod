@@ -41,7 +41,7 @@ public class FeedDiscoverer {
      * @return A map which contains the feed URLs as keys and titles as values (the feed URL is also used as a title if
      * a title cannot be found).
      */
-    public Map<String, String> findLinks(String in, String baseUrl) throws IOException {
+    public Map<String, String> findLinks(String in, String baseUrl) {
         return findLinks(Jsoup.parse(in), baseUrl);
     }
 

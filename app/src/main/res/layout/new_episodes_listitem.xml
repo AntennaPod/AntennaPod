@@ -10,10 +10,10 @@
 <LinearLayout
     android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/listitem_threeline_height"
+    android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    tools:background="@android:color/darker_gray">
+    android:gravity="center_vertical">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -26,6 +26,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
             android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+            android:layout_marginStart="@dimen/listitem_threeline_horizontalpadding"
             android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
             android:background="@color/light_gray"
             android:ellipsize="end"
@@ -37,24 +38,26 @@
             android:layout_height="64dp"
             android:layout_width="64dp"
             android:layout_alignLeft="@id/txtvPlaceholder"
+            android:layout_alignStart="@id/txtvPlaceholder"
             android:layout_alignTop="@id/txtvPlaceholder"
             android:layout_alignRight="@id/txtvPlaceholder"
+            android:layout_alignEnd="@id/txtvPlaceholder"
             android:layout_alignBottom="@id/txtvPlaceholder"
             android:contentDescription="@string/cover_label"
-            tools:src="@drawable/ic_stat_antenna_default"
-            tools:background="@android:color/holo_green_dark" />
+            tools:src="@tools:sample/avatars" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
         android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
+        android:layout_marginStart="@dimen/listitem_threeline_textleftpadding"
         android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
+        android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
         android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-        android:layout_weight="1"
-        tools:background="@android:color/white" >
+        android:layout_weight="1">
 
 
         <TextView
@@ -63,8 +66,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="8dp"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            tools:text="@sample/episodes.json/data/status_label"/>
 
         <TextView
             android:id="@+id/txtvTitle"
@@ -72,10 +78,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/statusUnread"
-            tools:text="Episode title"
-            tools:background="@android:color/holo_green_dark" />
+            android:layout_toStartOf="@id/statusUnread"
+            tools:text="@sample/episodes.json/data/title" />
 
         <RelativeLayout
             android:id="@+id/bottom_bar"
@@ -84,8 +91,9 @@
             android:layout_below="@id/txtvTitle"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
-            tools:background="@android:color/holo_red_light" >
+            android:layout_alignParentEnd="true">
 
             <TextView
                 android:id="@+id/txtvDuration"
@@ -93,19 +101,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                tools:text="00:42:23"
-                tools:background="@android:color/holo_blue_dark" />
+                android:layout_alignParentStart="true"
+                tools:text="@sample/episodes.json/data/duration" />
 
             <ImageView
                 android:id="@+id/imgvInPlaylist"
                 android:layout_width="@dimen/enc_icons_size"
                 android:layout_height="@dimen/enc_icons_size"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:contentDescription="@string/in_queue_label"
                 android:src="?attr/stat_playlist"
-                tools:src="@drawable/ic_list_grey600_24dp"
-                tools:background="@android:color/black" />
+                tools:src="@sample/inplaylist" />
 
             <TextView
                 android:id="@+id/txtvPublished"
@@ -114,17 +123,16 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@id/imgvInPlaylist"
+                android:layout_toStartOf="@id/imgvInPlaylist"
                 android:ellipsize="end"
-                tools:text="Jan 23"
-                tools:background="@android:color/holo_green_dark" />
+                tools:text="@sample/episodes.json/data/published_at" />
 
             <ProgressBar
                 android:id="@+id/pbar_progress"
-                style="?android:attr/progressBarStyleHorizontal"
+                style="?attr/progressBarTheme"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="4dp"
                 android:layout_below="@id/txtvDuration"
-                android:layout_marginTop="-2dp"
                 android:max="100" />
 
         </RelativeLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+            android:title="@string/choose_data_directory"
+            android:key="prefChooseDataDir"/>
+    <ListPreference
+            android:entryValues="@array/image_cache_size_values"
+            android:entries="@array/image_cache_size_options"
+            android:title="@string/pref_image_cache_size_title"
+            android:key="prefImageCacheSize"
+            android:summary="@string/pref_image_cache_size_sum"
+            android:defaultValue="100"/>
+    <SwitchPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefAutoDelete"
+            android:summary="@string/pref_auto_delete_sum"
+            android:title="@string/pref_auto_delete_title"/>
+    <SwitchPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefFavoriteKeepsEpisode"
+            android:summary="@string/pref_favorite_keeps_episodes_sum"
+            android:title="@string/pref_favorite_keeps_episodes_title"/>
+
+    <PreferenceCategory android:title="@string/import_export_pref">
+        <Preference
+                android:key="prefOpmlExport"
+                android:title="@string/opml_export_label"/>
+        <Preference
+                android:key="prefOpmlImport"
+                android:title="@string/opml_import_label"/>
+        <Preference
+                android:key="prefHtmlExport"
+                android:title="@string/html_export_label"/>
+        <Preference
+                android:key="importExport"
+                android:title="@string/import_export"/>
+    </PreferenceCategory>
+</PreferenceScreen>

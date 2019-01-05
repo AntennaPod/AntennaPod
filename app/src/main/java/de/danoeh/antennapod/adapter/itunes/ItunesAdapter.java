@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import com.bumptech.glide.request.RequestOptions;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,10 +82,11 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         //Update the empty imageView with the image from the feed
         Glide.with(context)
                 .load(podcast.imageUrl)
-                .placeholder(R.color.light_gray)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .fitCenter()
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.light_gray)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(viewHolder.coverView);
 
         //Feed the grid view
@@ -124,7 +127,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
          * @param json object holding the podcast information
          * @throws JSONException
          */
-        public static Podcast fromSearch(JSONObject json) throws JSONException {
+        public static Podcast fromSearch(JSONObject json) {
             String title = json.optString("collectionName", "");
             String imageUrl = json.optString("artworkUrl100", null);
             String feedUrl = json.optString("feedUrl", null);
@@ -132,7 +135,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         }
 
         public static Podcast fromSearch(SearchHit searchHit) {
-            return new Podcast(searchHit.getTitle(), searchHit.getImageUrl(), searchHit.getXmlUrl());
+            return new Podcast(searchHit.getTitle(), searchHit.getThumbImageURL(), searchHit.getXmlUrl());
         }
 
         /**
@@ -162,7 +165,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
     /**
      * View holder object for the GridView
      */
-    class PodcastViewHolder {
+    static class PodcastViewHolder {
 
         /**
          * ImageView holding the Podcast image
@@ -182,9 +185,9 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
          * @param view GridView cell
          */
         PodcastViewHolder(View view){
-            coverView = (ImageView) view.findViewById(R.id.imgvCover);
-            titleView = (TextView) view.findViewById(R.id.txtvTitle);
-            urlView = (TextView) view.findViewById(R.id.txtvUrl);
+            coverView = view.findViewById(R.id.imgvCover);
+            titleView = view.findViewById(R.id.txtvTitle);
+            urlView = view.findViewById(R.id.txtvUrl);
         }
     }
 }

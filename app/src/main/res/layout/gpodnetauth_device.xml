@@ -41,7 +41,8 @@
         android:textColor="?android:attr/textColorSecondary"
         android:layout_margin="8dp"
         android:layout_alignTop="@+id/etxtDeviceID"
-        android:layout_alignLeft="@+id/etxtCaption"/>
+        android:layout_alignLeft="@+id/etxtCaption"
+        android:layout_alignStart="@+id/etxtCaption"/>
 
     <EditText
         android:id="@+id/etxtDeviceID"
@@ -49,7 +50,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/etxtCaption"
         android:layout_toRightOf="@id/txtvDeviceID"
+        android:layout_toEndOf="@id/txtvDeviceID"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="8dp"/>
 
     <Button
@@ -58,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@id/etxtDeviceID"
         android:text="@string/gpodnetauth_device_butCreateNewDevice"/>
 
@@ -66,8 +70,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@id/etxtDeviceID"
         android:layout_toLeftOf="@id/butCreateNewDevice"
+        android:layout_toStartOf="@id/butCreateNewDevice"
         android:textColor="@color/download_failed_red"
         android:layout_margin="16dp"
         android:textSize="@dimen/text_size_small"
@@ -80,6 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/butCreateNewDevice"
         android:layout_toLeftOf="@id/butCreateNewDevice"
+        android:layout_toStartOf="@id/butCreateNewDevice"
         android:textColor="@color/download_failed_red"
         android:textSize="@dimen/text_size_medium"
         android:visibility="gone"
@@ -102,7 +109,9 @@
         android:text="@string/gpodnetauth_device_butChoose"
         android:layout_below="@+id/spinnerChooseDevice"
         android:layout_alignLeft="@+id/butCreateNewDevice"
-        android:layout_alignRight="@+id/butCreateNewDevice"/>
+        android:layout_alignStart="@+id/butCreateNewDevice"
+        android:layout_alignRight="@+id/butCreateNewDevice"
+        android:layout_alignEnd="@+id/butCreateNewDevice"/>
 
     <Spinner
         android:id="@+id/spinnerChooseDevice"
@@ -110,7 +119,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txtvChooseExistingDevice"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_margin="8dp"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

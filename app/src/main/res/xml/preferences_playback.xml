@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="@string/interruptions">
+        <SwitchPreference
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefPauseOnHeadsetDisconnect"
+                android:summary="@string/pref_pauseOnDisconnect_sum"
+                android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
+        <SwitchPreference
+                android:defaultValue="true"
+                android:enabled="true"
+                android:dependency="prefPauseOnHeadsetDisconnect"
+                android:key="prefUnpauseOnHeadsetReconnect"
+                android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
+                android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
+        <SwitchPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:dependency="prefPauseOnHeadsetDisconnect"
+                android:key="prefUnpauseOnBluetoothReconnect"
+                android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
+                android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
+        <SwitchPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefPauseForFocusLoss"
+                android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
+                android:title="@string/pref_pausePlaybackForFocusLoss_title"/>
+        <SwitchPreference
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefResumeAfterCall"
+                android:summary="@string/pref_resumeAfterCall_sum"
+                android:title="@string/pref_resumeAfterCall_title"/>
+        <ListPreference
+                android:defaultValue="stop"
+                android:entries="@array/video_background_behavior_options"
+                android:entryValues="@array/video_background_behavior_values"
+                android:key="prefVideoBehavior"
+                android:summary="@string/pref_videoBehavior_sum"
+                android:title="@string/pref_videoBehavior_title"
+                app:useStockLayout="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/buttons">
+        <SwitchPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefHardwareForwardButtonSkips"
+                android:summary="@string/pref_hardwareForwardButtonSkips_sum"
+                android:title="@string/pref_hardwareForwardButtonSkips_title"/>
+        <SwitchPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefHardwarePreviousButtonRestarts"
+                android:summary="@string/pref_hardwarePreviousButtonRestarts_sum"
+                android:title="@string/pref_hardwarePreviousButtonRestarts_title"/>
+        <Preference
+                android:key="prefPlaybackFastForwardDeltaLauncher"
+                android:summary="@string/pref_fast_forward_sum"
+                android:title="@string/pref_fast_forward"/>
+        <Preference
+                android:key="prefPlaybackRewindDeltaLauncher"
+                android:summary="@string/pref_rewind_sum"
+                android:title="@string/pref_rewind"/>
+        <Preference
+                android:key="prefPlaybackSpeedLauncher"
+                android:summary="@string/pref_playback_speed_sum"
+                android:title="@string/pref_playback_speed_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/queue_label">
+        <SwitchPreference
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefEnqueueDownloaded"
+                android:summary="@string/pref_enqueue_downloaded_summary"
+                android:title="@string/pref_enqueue_downloaded_title" />
+        <SwitchPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefQueueAddToFront"
+                android:summary="@string/pref_queueAddToFront_sum"
+                android:title="@string/pref_queueAddToFront_title"/>
+        <SwitchPreference
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefFollowQueue"
+                android:summary="@string/pref_followQueue_sum"
+                android:title="@string/pref_followQueue_title"/>
+        <ListPreference
+                android:defaultValue="30"
+                android:entries="@array/smart_mark_as_played_values"
+                android:entryValues="@array/smart_mark_as_played_values"
+                android:key="prefSmartMarkAsPlayedSecs"
+                android:summary="@string/pref_smart_mark_as_played_sum"
+                android:title="@string/pref_smart_mark_as_played_title"
+                app:useStockLayout="true"/>
+        <SwitchPreference
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefSkipKeepsEpisode"
+                android:summary="@string/pref_skip_keeps_episodes_sum"
+                android:title="@string/pref_skip_keeps_episodes_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/media_player">
+        <ListPreference
+                android:defaultValue="sonic"
+                android:entries="@array/media_player_options"
+                android:key="prefMediaPlayer"
+                android:title="@string/media_player"
+                android:summary="@string/pref_media_player_message"
+                android:entryValues="@array/media_player_values"
+                app:useStockLayout="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/experimental_pref">
+        <SwitchPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefCast"
+                android:summary="@string/pref_cast_message"
+                android:title="@string/pref_cast_title"/>
+    </PreferenceCategory>
+</PreferenceScreen>

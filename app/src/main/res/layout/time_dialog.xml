@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal" >
 
         <EditText
             android:id="@+id/etxtTime"
@@ -18,9 +18,11 @@
             android:layout_margin="8dp"
             android:ems="2"
             android:hint="@string/enter_time_here_label"
-
             android:inputType="number"
-            android:maxLength="2" />
+            android:maxLength="2" >
+
+            <requestFocus />
+        </EditText>
 
         <Spinner
             android:id="@+id/spTimeUnit"
@@ -28,7 +30,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp" />
-
     </LinearLayout>
 
     <LinearLayout

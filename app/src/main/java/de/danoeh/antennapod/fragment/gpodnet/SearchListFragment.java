@@ -73,7 +73,7 @@ public class SearchListFragment extends PodcastListFragment {
         return service.searchPodcasts(query, 0);
     }
 
-    public void changeQuery(String query) {
+    private void changeQuery(String query) {
         Validate.notNull(query);
 
         this.query = query;

@@ -9,8 +9,8 @@ import de.danoeh.antennapod.core.feed.Feed;
  */
 public class FeedHandlerResult {
 
-    public Feed feed;
-    public Map<String, String> alternateFeedUrls;
+    public final Feed feed;
+    public final Map<String, String> alternateFeedUrls;
 
     public FeedHandlerResult(Feed feed, Map<String, String> alternateFeedUrls) {
         this.feed = feed;

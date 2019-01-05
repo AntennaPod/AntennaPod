@@ -90,6 +90,25 @@
                         android:title="@string/descending"/>
                 </menu>
             </item>
+
+            <item
+                android:id="@+id/queue_sort_random"
+                android:title="@string/random">
+            </item>
+
+            <item
+                android:id="@+id/queue_sort_smart_shuffle"
+                android:title="@string/smart_shuffle">
+
+                <menu>
+                    <item
+                        android:id="@+id/queue_sort_smart_shuffle_asc"
+                        android:title="@string/ascending"/>
+                    <item
+                        android:id="@+id/queue_sort_smart_shuffle_desc"
+                        android:title="@string/descending"/>
+                </menu>
+            </item>
         </menu>
     </item>
 

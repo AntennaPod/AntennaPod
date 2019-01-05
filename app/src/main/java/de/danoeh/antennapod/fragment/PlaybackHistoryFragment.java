@@ -30,10 +30,10 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class PlaybackHistoryFragment extends ListFragment {
 
@@ -50,7 +50,7 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private List<Downloader> downloaderList;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     @Override
     public void onAttach(Context context) {
@@ -107,16 +107,16 @@ public class PlaybackHistoryFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -199,7 +199,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
@@ -224,7 +224,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         getActivity().supportInvalidateOptionsMenu();
     }
 
-    private FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
+    private final FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
 
         @Override
         public int getItemDownloadProgressPercent(FeedItem item) {
@@ -269,11 +269,11 @@ public class PlaybackHistoryFragment extends ListFragment {
     };
 
     private void loadItems() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
-        subscription = Observable.fromCallable(this::loadData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(this::loadData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {

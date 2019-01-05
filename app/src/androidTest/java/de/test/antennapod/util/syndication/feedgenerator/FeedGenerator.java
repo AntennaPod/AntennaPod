@@ -1,9 +1,9 @@
 package de.test.antennapod.util.syndication.feedgenerator;
 
-import de.danoeh.antennapod.core.feed.Feed;
-
 import java.io.IOException;
 import java.io.OutputStream;
+
+import de.danoeh.antennapod.core.feed.Feed;
 
 /**
  * Generates a machine-readable, platform-independent representation of a Feed object.
@@ -24,5 +24,5 @@ public interface FeedGenerator {
      * @param encoding     The encoding to use. Must not be null.
      * @param flags        Optional argument for enabling implementation-dependent features.
      */
-    public void writeFeed(Feed feed, OutputStream outputStream, String encoding, long flags) throws IOException;
+    void writeFeed(Feed feed, OutputStream outputStream, String encoding, long flags) throws IOException;
 }

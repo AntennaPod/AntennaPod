@@ -20,17 +20,22 @@
     <color name="swipe_refresh_secondary_color_dark">#060708</color>
     <color name="new_indicator_green">#669900</color>
     <color name="image_readability_tint">#80000000</color>
+    <color name="feed_image_bg">#50000000</color>
 
-    <!-- Use Gingerbread-orange -->
-    <color name="selection_background_color_dark">#FEBB20</color>
-    <color name="selection_background_color_light">#FEBB20</color>
+    <color name="selection_background_color_trueblack">#286E8A</color>
+    <color name="selection_background_color_dark">#286E8A</color>
+    <color name="selection_background_color_light">#81CFEA</color>
 
     <!-- Theme colors -->
     <color name="primary_light">#FFFFFF</color>
 
     <color name="highlight_light">#DDDDDD</color>
     <color name="highlight_dark">#414141</color>
+    <color name="highlight_trueblack">#414141</color>
 
     <color name="antennapod_blue">#147BAF</color>
+
+    <color name="master_switch_background_light">#DDDDDD</color>
+    <color name="master_switch_background_dark">#191919</color>
 
 </resources>

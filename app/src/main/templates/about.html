@@ -8,30 +8,52 @@
         font-family: 'Roboto-Light';
         src: url('file:///android_asset/Roboto-Light.ttf');
         }
+        
+        html, body {
+        background: @background@;
+        margin: 0;
+        padding: 0;
+        }
 
         * {
-        color: %s;
+        color: @fontcolor@;
         font-family: roboto-Light;
         font-size: 12pt;
         }
 
-        header {
+        img#logo {
         display: block;
         margin-left: auto;
         margin-right: auto;
-        padding-bottom: 500px;
+        max-height: 200px;
+        max-height: 50vh;
+        max-width: 100%;
+        height: auto;
+        width: auto;
         }
-
-        versiontag {
-        color: gray;
+        
+        div#logobackground{
+        width: 100%;
+        background: #42a5f5;
+        }
+        
+        .card {
+        background: @card_background@;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid @card_border@;
+        border-top-width: 0;
+        border-bottom-width: 2px;
         }
 
         h1 {
         font-size: 15pt;
+        margin-left: 20px;
         }
 
         h2 {
         font-size: 13pt;
+        margin-top: 0px;
         }
 
         a {
@@ -44,67 +66,117 @@
     <title>About AntennaPod</title>
 </head>
 <body>
-<div id="header" align="center">
-    <img src="file:///android_asset/logo.png" alt="Logo" width="100px" height="100px"/>
-
-    <p>AntennaPod, Version @versionname@</p>
-    <p>Commit: @commit@</p>
-
-    <p>Created by Daniel Oeh</p>
-
-    <p>Copyright &copy; 2012-@year@ AntennaPod Contributors <a href="CONTRIBUTORS.txt">(View)</a></p>
-
-    <p>Licensed under the MIT License <a href="LICENSE.txt">(View)</a></p>
+<div id="logobackground">
+<img id="logo" src="file:///android_asset/logo.png" alt="Logo"/>
 </div>
+
+<h1>AntennaPod</h1>
+
+<div class="card">
+<table>
+<tr><td>Version:</td><td><b>@versionname@</b></td></tr>
+<tr><td>Commit:</td><td><b>@commit@</b></td></tr>
+</table>
+</div>
+
+<div class="card">
+Created by Daniel Oeh<br />
+Copyright &copy; 2012-@year@<br />
+AntennaPod Contributors <a href="CONTRIBUTORS.txt">(View)</a><br />
+Licensed under the MIT License <a href="LICENSE.txt">(View)</a>
+</div>
+
 <h1>Used libraries</h1>
 
+<div class="card">
 <h2>Apache Commons <a href="http://commons.apache.org/">(Link)</a></h2>
 by The Apache Software Foundation, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>EventBus <a href="https://github.com/greenrobot/EventBus">(Link)</a></h2>
 by greenrobot, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+</div>
 
+<div class="card">
+<h2>ExoPlayer <a href="https://github.com/google/ExoPlayer">(Link)</a></h2>
+by Google, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+</div>
+
+<div class="card">
 <h2>flattr4j <a href="http://www.shredzone.org/projects/flattr4j/wiki">(Link)</a></h2>
 licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>Glide <a href="https://github.com/bumptech/glide/">(Link)</a></h2>
 licensed under the Simplified BSD license <a href="LICENSE_GLIDE.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>Iconify <a href="https://github.com/JoanZapata/android-iconify">(Link)</a></h2>
 by Joan Zapata, licensed under the Apache 2.0 license <a href="LICENSE_ANDROID_ICONIFY.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>jsoup <a href="http://jsoup.org/">(Link)</a></h2>
 licensed under the MIT license <a href="LICENSE_JSOUP.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>Material Design Icons <a href="https://github.com/google/material-design-icons">(Link)</a></h2>
 by Google, licensed under an Attribution-ShareAlike 4.0 International license <a href="LICENSE_MATERIAL_DESIGN_ICONS.txt">(View)</a>
+</div>
 
+<div class="card">
+<h2>Material Design Icons <a href="https://github.com/Templarian/MaterialDesign">(Link)</a></h2>
+by Templarian, licensed under the SIL Open Font License, Version 1.1 <a href="LICENSE_SIL.txt">(View)</a>
+</div>
+
+<div class="card">
 <h2>Material Dialogs <a href="https://github.com/afollestad/material-dialogs">(Link)</a></h2>
 by Aidan Michael Follestad, licensed under the MIT License <a href="LICENSE_MATERIAL_DIALOGS.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>OkHttp <a href="https://github.com/square/okhttp">(Link)</a></h2>
 by Square, licensed under the Apache 2.0 license <a href="LICENSE_OKHTTP.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>Okio <a href="https://github.com/square/okio">(Link)</a></h2>
 by Square, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>Presto Client <a href="http://www.aocate.com/presto/">(Link)</a></h2>
 licensed under the Apache 2.0 license <a href="LICENSE_PRESTO.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>RecyclerView-FlexibleDivider <a href="https://github.com/yqritc/RecyclerView-FlexibleDivider">(Link)</a></h2>
 licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>RxAndroid <a href="https://github.com/ReactiveX/RxAndroid">(Link)</a></h2>
 licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>StackBlur <a href="https://github.com/kikoso/android-stackblur">(Link)</a></h2>
 by Enrique L&oacute;pez Ma&ntilde;as, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>Triangle Label View <a href="https://github.com/shts/TriangleLabelView">(Link)</a></h2>
 by Shota Saito, licensed under the Apache 2.0 license <a href="LICENSE_TRIANGLE_LABEL_VIEW.txt">(View)</a>
+</div>
 
+<div class="card">
 <h2>AntennaPod-AudioPlayer <a href="https://github.com/AntennaPod/AntennaPod-AudioPlayer/">(Link)</a></h2>
 by the AntennaPod team, licensed under the Apache 2.0 license <a href="LICENSE_APACHE-2.0.txt">(View)</a>
+</div>
 
 </body>
 </html>

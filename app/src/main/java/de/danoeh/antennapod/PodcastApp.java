@@ -20,7 +20,7 @@ public class PodcastApp extends Application {
         try {
             Class.forName("de.danoeh.antennapod.config.ClientConfigurator");
         } catch (Exception e) {
-            throw new RuntimeException("ClientConfigurator not found");
+            throw new RuntimeException("ClientConfigurator not found", e);
         }
     }
 
@@ -41,10 +41,8 @@ public class PodcastApp extends Application {
 				.detectLeakedSqlLiteObjects()
 				.penaltyLog()
 				.penaltyDropBox();
-			if (Build.VERSION.SDK_INT >= 11) {
-				builder.detectActivityLeaks();
-				builder.detectLeakedClosableObjects();
-			}
+			builder.detectActivityLeaks();
+			builder.detectLeakedClosableObjects();
 			if(Build.VERSION.SDK_INT >= 16) {
 				builder.detectLeakedRegistrationObjects();
 			}

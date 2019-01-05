@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.Selection;
@@ -8,7 +9,6 @@ import android.text.Spannable;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,9 +19,9 @@ import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
@@ -42,8 +42,9 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
         this.media = media;
     }
 
+    @NonNull
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         Holder holder;
 
         Chapter sc = getItem(position);
@@ -56,12 +57,12 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
             convertView = inflater.inflate(R.layout.simplechapter_item, parent, false);
             holder.view = convertView;
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
             defaultTextColor = holder.title.getTextColors().getDefaultColor();
-            holder.start = (TextView) convertView.findViewById(R.id.txtvStart);
-            holder.link = (TextView) convertView.findViewById(R.id.txtvLink);
-            holder.duration = (TextView) convertView.findViewById(R.id.txtvDuration);
-            holder.butPlayChapter = (ImageButton) convertView.findViewById(R.id.butPlayChapter);
+            holder.start = convertView.findViewById(R.id.txtvStart);
+            holder.link = convertView.findViewById(R.id.txtvLink);
+            holder.duration = convertView.findViewById(R.id.txtvDuration);
+            holder.butPlayChapter = convertView.findViewById(R.id.butPlayChapter);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -120,7 +121,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
                     if (link.length != 0) {
                         if (action == MotionEvent.ACTION_UP) {
                             link[0].onClick(widget);
-                        } else if (action == MotionEvent.ACTION_DOWN){
+                        } else if (action == MotionEvent.ACTION_DOWN) {
                             Selection.setSelection(buffer,
                                     buffer.getSpanStart(link[0]),
                                     buffer.getSpanEnd(link[0]));
@@ -139,23 +140,15 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
                 callback.onPlayChapterButtonClicked(position);
             }
         });
+
         Chapter current = ChapterUtils.getCurrentChapter(media);
-        if (current != null) {
-            if (current == sc) {
-                int playingBackGroundColor;
-                if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-                    playingBackGroundColor = ContextCompat.getColor(getContext(), R.color.highlight_dark);
-                } else {
-                    playingBackGroundColor = ContextCompat.getColor(getContext(), R.color.highlight_light);
-                }
-                holder.view.setBackgroundColor(playingBackGroundColor);
-            } else {
-                holder.view.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
-                holder.title.setTextColor(defaultTextColor);
-                holder.start.setTextColor(defaultTextColor);
-            }
+        if (current == sc) {
+            int playingBackGroundColor = ThemeUtils.getColorFromAttr(getContext(), R.attr.currently_playing_background);
+            holder.view.setBackgroundColor(playingBackGroundColor);
         } else {
-            Log.w(TAG, "Could not find out what the current chapter is.");
+            holder.view.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
+            holder.title.setTextColor(defaultTextColor);
+            holder.start.setTextColor(defaultTextColor);
         }
 
         return convertView;
@@ -172,7 +165,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
     @Override
     public int getCount() {
-        if(media == null || media.getChapters() == null) {
+        if (media == null || media.getChapters() == null) {
             return 0;
         }
         // ignore invalid chapters

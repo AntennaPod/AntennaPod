@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.URLUtil;
@@ -22,6 +23,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
 
 
@@ -33,8 +35,8 @@ public class DownloadRequester {
     private static final String TAG = "DownloadRequester";
 
     public static final String IMAGE_DOWNLOADPATH = "images/";
-    public static final String FEED_DOWNLOADPATH = "cache/";
-    public static final String MEDIA_DOWNLOADPATH = "media/";
+    private static final String FEED_DOWNLOADPATH = "cache/";
+    private static final String MEDIA_DOWNLOADPATH = "media/";
 
     /**
      * Denotes the page of the feed that is contained in the DownloadRequest sent by the DownloadRequester.
@@ -48,7 +50,7 @@ public class DownloadRequester {
 
     private static DownloadRequester downloader;
 
-    private Map<String, DownloadRequest> downloads;
+    private final Map<String, DownloadRequest> downloads;
 
     private DownloadRequester() {
         downloads = new ConcurrentHashMap<>();
@@ -81,7 +83,7 @@ public class DownloadRequester {
 
         Intent launchIntent = new Intent(context, DownloadService.class);
         launchIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
-        context.startService(launchIntent);
+        ContextCompat.startForegroundService(context, launchIntent);
 
         return true;
     }
@@ -89,7 +91,9 @@ public class DownloadRequester {
     private void download(Context context, FeedFile item, FeedFile container, File dest,
                           boolean overwriteIfExists, String username, String password,
                           String lastModified, boolean deleteOnFailure, Bundle arguments) {
-        final boolean partiallyDownloadedFileExists = item.getFile_url() != null;
+        final boolean partiallyDownloadedFileExists = item.getFile_url() != null && new File(item.getFile_url()).exists();
+
+        Log.d(TAG, "partiallyDownloadedFileExists: " + partiallyDownloadedFileExists);
         if (isDownloadingFile(item)) {
                 Log.e(TAG, "URL " + item.getDownload_url()
                         + " is already being downloaded");
@@ -174,8 +178,8 @@ public class DownloadRequester {
             args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
             args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
 
-            download(context, feed, null, new File(getFeedfilePath(context),
-                    getFeedfileName(feed)), true, username, password, lastModified, true, args);
+            download(context, feed, null, new File(getFeedfilePath(), getFeedfileName(feed)),
+                    true, username, password, lastModified, true, args);
         }
     }
 
@@ -201,8 +205,7 @@ public class DownloadRequester {
             if (feedmedia.getFile_url() != null) {
                 dest = new File(feedmedia.getFile_url());
             } else {
-                dest = new File(getMediafilePath(context, feedmedia),
-                        getMediafilename(feedmedia));
+                dest = new File(getMediafilePath(feedmedia), getMediafilename(feedmedia));
             }
             download(context, feedmedia, feed,
                     dest, false, username, password, null, false, null);
@@ -240,6 +243,7 @@ public class DownloadRequester {
             Log.d(TAG, "Cancelling download with url " + downloadUrl);
         Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
         cancelIntent.putExtra(DownloadService.EXTRA_DOWNLOAD_URL, downloadUrl);
+        cancelIntent.setPackage(context.getPackageName());
         context.sendBroadcast(cancelIntent);
     }
 
@@ -248,8 +252,7 @@ public class DownloadRequester {
      */
     public synchronized void cancelAllDownloads(Context context) {
         Log.d(TAG, "Cancelling all running downloads");
-        context.sendBroadcast(new Intent(
-                DownloadService.ACTION_CANCEL_ALL_DOWNLOADS));
+        IntentUtils.sendLocalBroadcast(context, DownloadService.ACTION_CANCEL_ALL_DOWNLOADS);
     }
 
     /**
@@ -303,13 +306,11 @@ public class DownloadRequester {
         return downloads.size();
     }
 
-    public synchronized String getFeedfilePath(Context context)
-            throws DownloadRequestException {
-        return getExternalFilesDirOrThrowException(context, FEED_DOWNLOADPATH)
-                .toString() + "/";
+    private synchronized String getFeedfilePath() throws DownloadRequestException {
+        return getExternalFilesDirOrThrowException(FEED_DOWNLOADPATH).toString() + "/";
     }
 
-    public synchronized String getFeedfileName(Feed feed) {
+    private synchronized String getFeedfileName(Feed feed) {
         String filename = feed.getDownload_url();
         if (feed.getTitle() != null && !feed.getTitle().isEmpty()) {
             filename = feed.getTitle();
@@ -317,10 +318,8 @@ public class DownloadRequester {
         return "feed-" + FileNameGenerator.generateFileName(filename);
     }
 
-    public synchronized String getMediafilePath(Context context, FeedMedia media)
-            throws DownloadRequestException {
+    private synchronized String getMediafilePath(FeedMedia media) throws DownloadRequestException {
         File externalStorage = getExternalFilesDirOrThrowException(
-                context,
                 MEDIA_DOWNLOADPATH
                         + FileNameGenerator.generateFileName(media.getItem()
                         .getFeed().getTitle()) + "/"
@@ -328,8 +327,7 @@ public class DownloadRequester {
         return externalStorage.toString();
     }
 
-    private File getExternalFilesDirOrThrowException(Context context,
-                                                     String type) throws DownloadRequestException {
+    private File getExternalFilesDirOrThrowException(String type) throws DownloadRequestException {
         File result = UserPreferences.getDataFolder(type);
         if (result == null) {
             throw new DownloadRequestException(

@@ -1,9 +1,10 @@
 package de.danoeh.antennapod.core.glide;
 
 import android.media.MediaMetadataRetriever;
-import android.util.Log;
 
+import android.support.annotation.NonNull;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.data.DataFetcher;
 
 import java.io.ByteArrayInputStream;
@@ -21,22 +22,20 @@ class AudioCoverFetcher implements DataFetcher<InputStream> {
         this.path = path;
     }
 
-    @Override public String getId() {
-        return path;
-    }
-
-    @Override public InputStream loadData(Priority priority) throws Exception {
+    @Override
+    public void loadData(@NonNull Priority priority, @NonNull DataCallback<? super InputStream> callback) {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         try {
             retriever.setDataSource(path);
             byte[] picture = retriever.getEmbeddedPicture();
             if (picture != null) {
-                return new ByteArrayInputStream(picture);
+                callback.onDataReady(new ByteArrayInputStream(picture));
+                return;
             }
         } finally {
             retriever.release();
         }
-        throw new IOException("Loading embedded cover did not work");
+        callback.onLoadFailed(new IOException("Loading embedded cover did not work"));
     }
 
     @Override public void cleanup() {
@@ -44,5 +43,17 @@ class AudioCoverFetcher implements DataFetcher<InputStream> {
     }
     @Override public void cancel() {
         // cannot cancel
+    }
+
+    @NonNull
+    @Override
+    public Class<InputStream> getDataClass() {
+        return InputStream.class;
+    }
+
+    @NonNull
+    @Override
+    public DataSource getDataSource() {
+        return DataSource.LOCAL;
     }
 }

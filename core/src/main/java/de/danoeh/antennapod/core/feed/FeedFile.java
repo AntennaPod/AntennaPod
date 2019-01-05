@@ -9,9 +9,9 @@ import java.io.File;
  */
 public abstract class FeedFile extends FeedComponent {
 
-    protected String file_url;
+    String file_url;
     protected String download_url;
-    protected boolean downloaded;
+    boolean downloaded;
 
     /**
      * Creates a new FeedFile object.
@@ -40,7 +40,7 @@ public abstract class FeedFile extends FeedComponent {
      * FeedFile. This method should only update attributes which where read from
      * the feed.
      */
-    public void updateFromOther(FeedFile other) {
+    void updateFromOther(FeedFile other) {
         super.updateFromOther(other);
         this.download_url = other.download_url;
     }
@@ -52,7 +52,7 @@ public abstract class FeedFile extends FeedComponent {
      *
      * @return true if attribute values are different, false otherwise
      */
-    public boolean compareWithOther(FeedFile other) {
+    boolean compareWithOther(FeedFile other) {
         if (super.compareWithOther(other)) {
             return true;
         }

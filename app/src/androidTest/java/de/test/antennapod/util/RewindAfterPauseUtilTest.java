@@ -1,8 +1,8 @@
 package de.test.antennapod.util;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-import de.danoeh.antennapod.core.util.*;
+import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 
 /**
  * Tests for {@link RewindAfterPauseUtils}.

@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
@@ -48,10 +49,10 @@ import de.danoeh.antennapod.fragment.SubscriptionFragment;
 public class NavListAdapter extends BaseAdapter
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public static final int VIEW_TYPE_COUNT = 3;
+    private static final int VIEW_TYPE_COUNT = 3;
     public static final int VIEW_TYPE_NAV = 0;
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
-    public static final int VIEW_TYPE_SUBSCRIPTION = 2;
+    private static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
     /**
      * a tag used as a placeholder to indicate if the subscription list should be displayed or not
@@ -62,8 +63,8 @@ public class NavListAdapter extends BaseAdapter
     private static List<String> tags;
     private static String[] titles;
 
-    private ItemAccess itemAccess;
-    private WeakReference<Activity> activity;
+    private final ItemAccess itemAccess;
+    private final WeakReference<Activity> activity;
     private boolean showSubscriptionList = true;
 
     public NavListAdapter(ItemAccess itemAccess, Activity context) {
@@ -86,9 +87,7 @@ public class NavListAdapter extends BaseAdapter
     private void loadItems() {
         List<String> newTags = new ArrayList<>(Arrays.asList(MainActivity.NAV_DRAWER_TAGS));
         List<String> hiddenFragments = UserPreferences.getHiddenDrawerItems();
-        for(String hidden : hiddenFragments) {
-            newTags.remove(hidden);
-        }
+        newTags.removeAll(hiddenFragments);
 
         if (newTags.contains(SUBSCRIPTION_LIST_TAG)) {
             // we never want SUBSCRIPTION_LIST_TAG to be in 'tags'
@@ -214,7 +213,7 @@ public class NavListAdapter extends BaseAdapter
             v = getFeedView(position, convertView, parent);
         }
         if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
-            TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
+            TextView txtvTitle = v.findViewById(R.id.txtvTitle);
             if (position == itemAccess.getSelectedItemIndex()) {
                 txtvTitle.setTypeface(null, Typeface.BOLD);
             } else {
@@ -237,9 +236,9 @@ public class NavListAdapter extends BaseAdapter
 
             convertView = inflater.inflate(R.layout.nav_listitem, parent, false);
 
-            holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.count = (TextView) convertView.findViewById(R.id.txtvCount);
+            holder.image = convertView.findViewById(R.id.imgvCover);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
+            holder.count = convertView.findViewById(R.id.txtvCount);
             convertView.setTag(holder);
         } else {
             holder = (NavHolder) convertView.getTag();
@@ -327,10 +326,10 @@ public class NavListAdapter extends BaseAdapter
 
             convertView = inflater.inflate(R.layout.nav_feedlistitem, parent, false);
 
-            holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.failure = (IconTextView) convertView.findViewById(R.id.itxtvFailure);
-            holder.count = (TextView) convertView.findViewById(R.id.txtvCount);
+            holder.image = convertView.findViewById(R.id.imgvCover);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
+            holder.failure = convertView.findViewById(R.id.itxtvFailure);
+            holder.count = convertView.findViewById(R.id.txtvCount);
             convertView.setTag(holder);
         } else {
             holder = (FeedHolder) convertView.getTag();
@@ -338,11 +337,12 @@ public class NavListAdapter extends BaseAdapter
 
         Glide.with(context)
                 .load(feed.getImageLocation())
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(holder.image);
 
         holder.title.setText(feed.getTitle());

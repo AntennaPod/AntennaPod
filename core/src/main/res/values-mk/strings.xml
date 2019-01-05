@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <!--Activitiy and fragment titles-->
+  <string name="statistics_label">Статистики</string>
+  <string name="add_feed_label">Стави Подкаст</string>
+  <string name="episodes_label">Епизоди</string>
+  <string name="all_episodes_short_label">Сите</string>
+  <string name="new_episodes_label">Нови</string>
+  <string name="favorite_episodes_label">Омилени</string>
+  <!--Statistics fragment-->
+  <!--Main activity-->
+  <!--Webview actions-->
+  <!--Playback history-->
+  <!--Other-->
+  <string name="no">Не</string>
+  <string name="reset">Ресет</string>
+  <string name="author_label">Автор</string>
+  <string name="language_label">Јазик</string>
+  <string name="url_label">УРЛ</string>
+  <string name="chapters_label">Поглавја</string>
+  <!--'Add Feed' Activity labels-->
+  <!--Actions on feeds-->
+  <!--actions on feeditems-->
+  <string name="delete_label">Избриши</string>
+  <!--Download messages and labels-->
+  <!--Mediaplayer messages-->
+  <!--Queue operations-->
+  <string name="date">Датум</string>
+  <!--Flattr-->
+  <!--Flattr-->
+  <!--Variable Speed-->
+  <!--Empty list labels-->
+  <!--Preferences-->
+  <!--Auto-Flattr dialog-->
+  <!--Search-->
+  <!--OPML import and export-->
+  <!--Sleep timer-->
+  <!--gpodder.net-->
+  <!--Directory chooser-->
+  <!--Online feed view-->
+  <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
+  <!--Progress information-->
+  <!--AntennaPodSP-->
+  <!--Episodes apply actions-->
+  <!--Sort-->
+  <!--Rating dialog-->
+  <!--Audio controls-->
+  <!--proxy settings-->
+  <!--Database import/export-->
+  <!--Casting-->
+  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
+</resources>

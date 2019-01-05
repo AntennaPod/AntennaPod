@@ -18,12 +18,10 @@ import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
  */
 
 public class FlattrStatusFetcher extends Thread {
-    protected static final String TAG = "FlattrStatusFetcher";
-    protected Context context;
+    private static final String TAG = "FlattrStatusFetcher";
 
     public FlattrStatusFetcher(Context context) {
         super();
-        this.context = context;
     }
 
     @Override

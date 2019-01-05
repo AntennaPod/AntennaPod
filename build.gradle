@@ -4,12 +4,11 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        google()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:2.3.3"
-        classpath "me.tatarka:gradle-retrolambda:3.7.0"
-        classpath "me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2"
-        classpath "com.github.triplet.gradle:play-publisher:1.1.4"
+        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath "com.github.triplet.gradle:play-publisher:1.2.0"
         // Exclude the version that the android plugin depends on.
         configurations.classpath.exclude group: "com.android.tools.external.lombok"
     }
@@ -17,6 +16,7 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         jcenter()
     }
 }
@@ -28,48 +28,51 @@ project.ext.preDexLibs = !project.hasProperty("disablePreDex")
 
 subprojects {
     project.plugins.whenPluginAdded { plugin ->
-        if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
+        if ("com.android.build.gradle.AppPlugin" == plugin.class.name) {
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
-        } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
+        } else if ("com.android.build.gradle.LibraryPlugin" == plugin.class.name) {
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
         }
     }
 }
 
 project.ext {
-    compileSdkVersion = 25
-    buildToolsVersion = "25.0.3"
-    minSdkVersion = 10
-    targetSdkVersion = 25
+    compileSdkVersion = 26
+    buildToolsVersion = "27.0.3"
+    minSdkVersion = 14
+    targetSdkVersion = 26
 
-    supportVersion = "25.3.1"
+    supportVersion = "27.1.1"
+    awaitilityVersion = "3.1.2"
     commonsioVersion = "2.5"
     commonslangVersion = "3.6"
+    commonstextVersion = "1.3"
     eventbusVersion = "2.4.0"
     flattr4jVersion = "2.14"
-    glideVersion = "3.8.0"
-    glideOkhttpIntegrationVersion = "1.5.0"
+    glideVersion = "4.8.0"
+    glideOkhttpIntegrationVersion = "4.8.0"
     iconifyVersion = "2.2.2"
-    jsoupVersion = "1.10.3"
+    jsoupVersion = "1.11.2"
     materialDialogsVersion = "0.9.0.2"
     okhttpVersion = "3.9.0"
-    okioVersion = "1.13.0"
-    recyclerviewFlexibledividerVersion = "1.2.6"
+    okioVersion = "1.14.0"
+    recyclerviewFlexibledividerVersion = "1.4.0"
     robotiumSoloVersion = "5.6.3"
-    rxAndroidVersion = "1.2.1"
-    rxJavaVersion = "1.3.2"
-    rxJavaRulesVersion = "1.3.2.0"
-    triangleLabelViewVersion = "1.1.0"
+    rxAndroidVersion = "2.1.0"
+    rxJavaVersion = "2.2.2"
+    rxJavaRulesVersion = "1.3.3.0"
+    triangleLabelViewVersion = "1.1.2"
 
+    exoPlayerVersion = "2.7.3"
     audioPlayerVersion = "v1.0.17"
 
     castCompanionLibVer = "2.9.1"
     playServicesVersion = "8.4.0"
-    wearableSupportVersion = "2.0.3"
+    wearableSupportVersion = "2.2.0"
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = "4.2"
+wrapper {
+    gradleVersion = "4.10.2"
 }
 
 // free build hack: common functions

@@ -1,6 +1,38 @@
 Change Log
 ==========
 
+
+Version 1.7.1
+-------------
+
+* Fix for database corruption
+
+Version 1.7.0
+-------------
+
+* NEW ExoPlayer (experimental)
+* Fix for Bluetooth Forward (Oreo)
+* Preference redesign + search
+* Notification improvements
+* Different screens for feed info and settings
+* Sort Queue with Random or Smart Shuffle
+* True Black Theme for AMOLED
+* Improvements to feed parsing
+* Fix for app being killed by Android Oreo
+
+Version 1.6.5
+-------------
+
+* Fix database corruption
+* Improvements to Feed parsing
+
+Version 1.6.4
+-------------
+
+* Fixes issues on Android Oreo
+* Avoids duplicate chapters
+* Experimental: Database import & export
+
 Version 1.6.3
 -------------
 

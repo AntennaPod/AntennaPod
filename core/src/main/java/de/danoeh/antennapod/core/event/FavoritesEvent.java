@@ -11,8 +11,8 @@ public class FavoritesEvent {
         ADDED, REMOVED
     }
 
-    public final Action action;
-    public final FeedItem item;
+    private final Action action;
+    private final FeedItem item;
 
     private FavoritesEvent(Action action, FeedItem item) {
         this.action = action;

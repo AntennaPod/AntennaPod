@@ -1,15 +1,180 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feeds_label">خوراک</string>
+  <string name="statistics_label">آمار</string>
+  <string name="add_feed_label">اضافه کردن پادکست</string>
+  <string name="episodes_label">قسمت ها</string>
+  <string name="all_episodes_short_label">همه</string>
+  <string name="favorite_episodes_label">علاقه مندی ها</string>
+  <string name="new_label">جدید</string>
+  <string name="settings_label">تنظیمات</string>
+  <string name="downloads_label">دانلودها</string>
+  <string name="downloads_running_label">در حال اجرا</string>
+  <string name="downloads_completed_label">تکمیل شده</string>
+  <string name="downloads_log_label">log</string>
+  <string name="subscriptions_label">اشتراک ها</string>
+  <string name="subscriptions_list_label">لیست اشتراک</string>
+  <string name="cancel_download_label">بارگیری n\ لغو</string>
+  <string name="playback_history_label">تاریخچه پخش</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net Login</string>
+  <string name="free_space_label">%1$s free </string>
+  <string name="episode_cache_full_title">ظرفیت حافظه پنهان تکمیل شده است</string>
+  <string name="episode_cache_full_message">حد مجاز  تکمیل شده است . شما می توانید اندازه حافظه پنهان را در تنظیمات افزایش دهید.</string>
   <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">مجموع زمان پخش پادکست ها:</string>
+  <string name="statistics_mode">حالت آمار</string>
+  <string name="statistics_mode_normal">مدت زمان واقعی پخش را محاسبه کنید. دو بار پخش کردن دو بار شمارش می شود، در حالیکه علامت گذاری شده به عنوان پخش شده محاسبه نمی شود.</string>
+  <string name="statistics_mode_count_all">مجموع پادکست هایی که به عنوان پخش شده مشخص شده است را جمع کنید</string>
+  <string name="statistics_speed_not_counted">توجه: سرعت پخش هرگز به حساب نمی آید.</string>
   <!--Main activity-->
+  <string name="drawer_open">بازکردن منو</string>
+  <string name="drawer_close">بستن منو</string>
+  <string name="drawer_preferences">تنظیمات بیشتر</string>
+  <string name="drawer_feed_order_unplayed_episodes">مرتب سازی بر اساس شمارنده</string>
+  <string name="drawer_feed_order_alphabetical">مرتب سازی بر اساس حروف الفبا</string>
+  <string name="drawer_feed_order_last_update">مرتب سازی بر اساس تاریخ انتشار</string>
+  <string name="drawer_feed_order_most_played">مرتب سازی بر اساس تعداد قسمت پخش شده</string>
+  <string name="drawer_feed_counter_new_unplayed">تعداد قسمت های جدید و پخش نشده</string>
+  <string name="drawer_feed_counter_new">تعداد قسمت های جدید</string>
+  <string name="drawer_feed_counter_unplayed">تعداد قسمت های پخش نشده</string>
+  <string name="drawer_feed_counter_downloaded">تعداد قسمت های دانلود شده</string>
+  <string name="drawer_feed_counter_none">هیچ یک</string>
   <!--Webview actions-->
+  <string name="open_in_browser_label">باز کردن در مرور گر</string>
+  <string name="copy_url_label">کپی کردن  URL </string>
+  <string name="share_url_label">اشتراک گذاری  URL </string>
+  <string name="copied_url_msg">URL در کلیپ بورد کپی شد.</string>
+  <string name="go_to_position_label">برو به این موقعیت</string>
   <!--Playback history-->
+  <string name="clear_history_label">پاک کردن تاریخچه</string>
   <!--Other-->
+  <string name="confirm_label">تایید</string>
+  <string name="cancel_label">لغو</string>
+  <string name="yes">بله</string>
+  <string name="no">خیر</string>
+  <string name="reset">بازنشانی</string>
+  <string name="author_label">نویسنده</string>
+  <string name="language_label">زبان</string>
+  <string name="url_label">URL</string>
+  <string name="podcast_settings_label">تنظیمات</string>
+  <string name="cover_label">تصویر</string>
+  <string name="error_label">خطا</string>
+  <string name="error_msg_prefix">یک خطا رخ داد:</string>
+  <string name="refresh_label">تازه کردن</string>
+  <string name="external_storage_error_msg">هیچ  فضای ذخیره سازی خارجی موجود نیست لطفا مطمئن شوید که کارت حافظه به درستی نصب شده است تا برنامه بتواند به درستی کار کند.</string>
+  <string name="chapters_label">فصل ها</string>
+  <string name="chapter_duration">مدت زمان:%1$s</string>
+  <string name="shownotes_label">Shownotes</string>
+  <string name="description_label">شرح</string>
+  <string name="most_recent_prefix">آخرین قسمت: \u0020</string>
+  <string name="episodes_suffix">\u0020قسمت ها</string>
+  <string name="length_prefix">طول:\u0020</string>
+  <string name="size_prefix">حجم:\u0020</string>
+  <string name="processing_label">در حال پردازش</string>
+  <string name="loading_label">بارگذاری...</string>
+  <string name="save_username_password_label">ذخیره نام کاربری و رمز عبور</string>
+  <string name="close_label">بستن</string>
+  <string name="retry_label">تلاش مجدد</string>
+  <string name="auto_download_label">شامل در دریافت خودکار است</string>
+  <string name="auto_download_apply_to_items_title">اعمال به قسمت های قبلی</string>
+  <string name="auto_download_apply_to_items_message">تنظیمات جدید<i>دانلود خودکار</i> به طور اتوماتیک به قسمت های جدید اعمال خواهد شد. \ n آیا شما همچنین می خواهید آن را به قسمت هایی که قبلا منتشر شده اعمال کنید؟</string>
+  <string name="auto_delete_label">حذف خودکار قسمت ها </string>
+  <string name="parallel_downloads_suffix">\u0020دانلود همزمان</string>
+  <string name="feed_auto_download_global">پیش فرض جهانی</string>
+  <string name="feed_auto_download_always">همیشه</string>
+  <string name="feed_auto_download_never">Never</string>
+  <string name="send_label">ارسال...</string>
+  <string name="episode_cleanup_never">هرگز</string>
+  <string name="episode_cleanup_queue_removal">وقتی که در صف نیست</string>
+  <string name="episode_cleanup_after_listening">بعد از تمام شدن</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">%dروز بعد از اتمام</item>
+    <item quantity="other">%dروز بعد از اتمام</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">Feed URL</string>
+  <string name="etxtFeedurlHint">www.example.com/feed</string>
+  <string name="txtvfeedurl_label">اضافه کردن پادکست توسط URL</string>
+  <string name="podcastdirectories_label">یافتن پادکست در مجموعه</string>
+  <string name="podcastdirectories_descr">برای اضافه کردن پادکست های جدید، شما می توانید  آنها را در iTunes یا  fyyd و همچنین gpodder.net ، بر اساس نام، دسته یا محبوبیت  جستجو کنید.</string>
+  <string name="browse_gpoddernet_label">Browse gpodder.net</string>
   <!--Actions on feeds-->
+  <string name="mark_all_read_label">علامت گذاری همه به عنوان پخش شده</string>
+  <string name="mark_all_read_msg">همه قسمت ها به عنوان پخش شده علامت گذاری شد.</string>
+  <string name="mark_all_read_confirmation_msg">لطفا تأیید کنید که میخواهید تمام قسمتها را بعنوان پخش شده علامت بزنید.</string>
+  <string name="mark_all_read_feed_confirmation_msg">لطفا تأیید کنید که میخواهید تمام قسمتهای این خوراک را بعنوان پخش شده علامت بزنید.</string>
+  <string name="mark_all_seen_label">علامت گذاری همه به عنوان دیده شده</string>
+  <string name="mark_all_seen_msg">همه قسمت ها بعنوان دیده شده علامت گذاری شد.</string>
+  <string name="mark_all_seen_confirmation_msg">لطفا تأیید کنید که میخواهید تمام قسمتها را بعنوان دیده شده علامت بزنید.</string>
+  <string name="show_info_label">نمایش اطلاعات</string>
+  <string name="rename_feed_label"> تغییر نام پادکست</string>
+  <string name="remove_feed_label">حذف پادکست</string>
+  <string name="share_label">اشتراک گذاری...</string>
+  <string name="share_link_label">اشتراک گذاری لینک</string>
+  <string name="share_file_label">اشتراک گذاری فایل</string>
+  <string name="share_link_with_position_label">اشتراک گذاری لینک با موقعیت پخش</string>
+  <string name="share_feed_url_label">اشتراک گذاری URL خوراک </string>
+  <string name="share_item_url_label">اشتراک گذاری فایل URL  قسمت</string>
+  <string name="share_item_url_with_position_label">اشتراک گذاری فایل URL قسمت با موقعیت پخش</string>
+  <string name="feed_delete_confirmation_msg">لطفا تأیید کنید که میخواهید خوراک \"%1$s\" و تمام قسمتهای آن که دانلود کرده اید را حذف کنید.</string>
+  <string name="feed_remover_msg">حذف خوراک</string>
+  <string name="load_complete_feed">تازه کردن کامل خوراک</string>
+  <string name="hide_episodes_title">پنهان کردن قسمت ها</string>
+  <string name="hide_unplayed_episodes_label">پخش نشده</string>
+  <string name="hide_paused_episodes_label">متوقف شد</string>
+  <string name="hide_played_episodes_label">پخش شد</string>
+  <string name="hide_queued_episodes_label">در صف</string>
+  <string name="hide_not_queued_episodes_label">خارج از صف</string>
+  <string name="hide_downloaded_episodes_label">دانلود شده</string>
+  <string name="hide_not_downloaded_episodes_label">دانلود نشده</string>
+  <string name="hide_has_media_label">دارای رسانه</string>
+  <string name="filtered_label">فیلتر شده</string>
+  <string name="open_podcast">باز کردن پادکست</string>
   <!--actions on feeditems-->
+  <string name="download_label">دانلود</string>
+  <string name="play_label">پخش</string>
+  <string name="pause_label">مکث</string>
+  <string name="stop_label">توقف</string>
+  <string name="remove_label">حذف</string>
+  <string name="delete_label">حذف</string>
+  <string name="delete_failed">فایل حذف نشد.! راه اندازی مجدد دستگاه می تواند کمک کند.</string>
+  <string name="remove_episode_lable">حذف قسمت</string>
+  <string name="marked_as_seen_label">علامت گذاری به عنوان دیده شده</string>
+  <string name="mark_read_label">علامت گذاری به عنوان پخش شده</string>
+  <string name="marked_as_read_label">بعنوان پخش شده علامت گذاری شد</string>
+  <string name="mark_unread_label">علامت گذاری به عنوان پخش نشده</string>
+  <string name="add_to_queue_label">افزودن به صف</string>
+  <string name="added_to_queue_label">به صف اضافه شد</string>
+  <string name="remove_from_queue_label">حذف از صف</string>
+  <string name="add_to_favorite_label">اضافه کردن به علاقه مندی ها</string>
+  <string name="added_to_favorites">به موارد دلخواه اضافه شد.</string>
+  <string name="remove_from_favorite_label">از علاقه مندی ها حذف شود</string>
+  <string name="removed_from_favorites">از موارد دلخواه حذف شد.</string>
+  <string name="skip_episode_label">رد شدن از قسمت</string>
+  <string name="activate_auto_download">فعال کردن دانلود خودکار</string>
+  <string name="deactivate_auto_download">غیر فعال کردن دانلود خودکار</string>
+  <string name="reset_position">تنظیم مجدد موقعیت پخش</string>
+  <string name="removed_item">مورد حذف شده است</string>
   <!--Download messages and labels-->
+  <string name="download_successful">موفقیت آمیز</string>
+  <string name="download_failed">ناموفق</string>
+  <string name="download_pending">دانلود در حال انتظار</string>
+  <string name="download_running">دانلود در حال اجرا</string>
+  <string name="download_error_device_not_found">حافظه خارجی یافت نشد.</string>
+  <string name="download_error_insufficient_space">فضای ناکافی</string>
+  <string name="download_error_file_error">خطای فایل</string>
+  <string name="download_error_http_data_error">خطای HTTP Data </string>
+  <string name="download_error_error_unknown">خطای ناشناخته</string>
+  <string name="download_error_unsupported_type"> عدم  پشتیبانی از این نوع خوراک</string>
+  <string name="download_error_connection_error">خطای اتصال</string>
+  <string name="download_error_unknown_host">میزبان ناشناس</string>
+  <string name="download_error_unauthorized">خطای احراز هویت</string>
+  <string name="cancel_all_downloads_label">لغو همه دانلودها</string>
+  <string name="download_canceled_msg">دانلود لغو شد.</string>
+  <string name="download_canceled_autodownload_enabled_msg"> دانلود لغو \n غیرفعال  کردن <i> دانلود خودکار </i> برای این مورد </string>
+  <string name="download_type_feed">خوراک</string>
   <!--Mediaplayer messages-->
   <!--Queue operations-->
   <!--Flattr-->
@@ -33,6 +198,8 @@
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

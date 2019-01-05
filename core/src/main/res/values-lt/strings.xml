@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Mėgiami</string>
   <string name="new_label">Nauji</string>
   <string name="settings_label">Nustatymai</string>
-  <string name="add_new_feed_label">Pridėti tinklalaidę</string>
   <string name="downloads_label">Atsiuntimai</string>
   <string name="downloads_running_label">Vykdomi</string>
   <string name="downloads_completed_label">Užbaigti</string>
@@ -94,6 +93,7 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">Praėjus 1 dienai nuo perklausymo</item>
     <item quantity="few">Praėjus %d dienoms nuo perklausymo</item>
+    <item quantity="many">Praėjus %d dienų nuo perklausymo</item>
     <item quantity="other">Praėjus %d dienų nuo perklausymo</item>
   </plurals>
   <!--'Add Feed' Activity labels-->
@@ -116,6 +116,7 @@
   <string name="remove_feed_label">Pašalinti tinklalaidę</string>
   <string name="share_label">Dalintis...</string>
   <string name="share_link_label">Dalintis nuoroda</string>
+  <string name="share_file_label">Dalintis failu</string>
   <string name="share_link_with_position_label">Dalintis nuoroda su pozicija</string>
   <string name="share_feed_url_label">Dalintis sklaidos kanalo URL</string>
   <string name="share_item_url_label">Dalintis epizodo failo URL</string>
@@ -124,7 +125,6 @@
   <string name="feed_remover_msg">Šalinamas sklaidos kanalas</string>
   <string name="load_complete_feed">Atnaujinti visą sklaidos kanalą</string>
   <string name="hide_episodes_title">Slėpti epizodus</string>
-  <string name="episode_actions">Pritaikyti veiksmus</string>
   <string name="hide_unplayed_episodes_label">Neperklausyti</string>
   <string name="hide_paused_episodes_label">Pristabdyti</string>
   <string name="hide_played_episodes_label">Perklausyti</string>
@@ -144,6 +144,7 @@
   <string name="stream_label">Klausytis tiesiogiai</string>
   <string name="remove_label">Pašalinti</string>
   <string name="delete_label">Ištrinti</string>
+  <string name="delete_failed">Nepavyksta ištrinti failo. Įrenginio paleidimas iš naujo gali padėti.</string>
   <string name="remove_episode_lable">Pašalinti epizodą</string>
   <string name="marked_as_seen_label">Pažymėtas kaip matytas</string>
   <string name="mark_read_label">Pažymėti kaip perklausytą</string>
@@ -192,6 +193,7 @@
   <plurals name="downloads_left">
     <item quantity="one">Liko %d atsiuntimas</item>
     <item quantity="few">Liko %d atsiuntimai</item>
+    <item quantity="many">Liko %d atsiuntimų</item>
     <item quantity="other">Liko %d atsiuntimų</item>
   </plurals>
   <string name="downloads_processing">Apdorojami atsiuntimai</string>
@@ -282,7 +284,6 @@
   <string name="other_pref">Kita</string>
   <string name="about_pref">Apie</string>
   <string name="queue_label">Eilė</string>
-  <string name="services_label">Paslaugos</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Epizodų valymas</string>
   <string name="pref_episode_cleanup_summary">Epizodai, nesantys eilėje ar tarp mėgiamųjų, gali būti ištrinti automatinio atsiuntimo metu pritrūkus laisvos vietos naujiems epizodams </string>
@@ -300,6 +301,8 @@
   <string name="pref_smart_mark_as_played_title">Išmanus perklausų žymėjimas</string>
   <string name="pref_skip_keeps_episodes_sum">Palikti epizodus, kai šie praleidžiami</string>
   <string name="pref_skip_keeps_episodes_title">Palikti praleistus epizodus</string>
+  <string name="pref_favorite_keeps_episodes_sum">Palikti epizodus, kurie yra pažymėti kaip mėgiami</string>
+  <string name="pref_favorite_keeps_episodes_title">Palikti mėgiamus epizodus</string>
   <string name="playback_pref">Atkūrimas</string>
   <string name="network_pref">Tinklas</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Atnaujinimų intervalas ar dienos metas</string>
@@ -343,6 +346,8 @@
   <string name="pref_automatic_download_sum">Konfigūruoti automatinį epizodų atsiuntimą.</string>
   <string name="pref_autodl_wifi_filter_title">Įjungti belaidžių tinklų filtrą</string>
   <string name="pref_autodl_wifi_filter_sum">Leisti automatinį atsiuntimą tik prisijungus prie nurodytų belaidžių tinklų.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Leisti atsiuntimus mobiliuoju internetu</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Leisti automatinį atsiuntimą naudojantis mobiliuoju internetu.</string>
   <string name="pref_automatic_download_on_battery_title">Atsiuntimas ne įkrovimo metu</string>
   <string name="pref_automatic_download_on_battery_sum">Leisti automatinį atsiuntimą kai baterija nėra įkraunama</string>
   <string name="pref_parallel_downloads_title">Lygiagretūs atsiuntimai</string>
@@ -399,8 +404,6 @@
   <string name="crash_report_sum">Siųsti paskiausios strigties pranešimą el. paštu</string>
   <string name="send_email">Siųsti el. laišką</string>
   <string name="experimental_pref">Eksperimentinis</string>
-  <string name="pref_sonic_title">„Sonic“ medijos leistuvė</string>
-  <string name="pref_sonic_message">Naudoti įtaisytąją „Sonic“ medijos leistuvę vietoje savosios „Android“ medijos leistuvės ir „Prestissimo“ </string>
   <string name="pref_current_value">Dabartinė reikšmė: %1$s</string>
   <string name="pref_proxy_title">Įgaliotasis serveris</string>
   <string name="pref_proxy_sum">Nustatyti įgaliotąjį tinklo serverį</string>
@@ -448,8 +451,6 @@
   <string name="html_export_label">HTML eksportas</string>
   <string name="exporting_label">Eksportuojama...</string>
   <string name="export_error_label">Eksporto klaida</string>
-  <string name="opml_export_success_title">OPML eksportas sėkmingas.</string>
-  <string name="opml_export_success_sum">.opml failas išsaugotas į:\u0020</string>
   <string name="opml_import_ask_read_permission">Norint nuskaityti OPML failą reikalinga prieiga prie nešiojamos atmintinės</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Nustatyti miego laikmatį</string>
@@ -467,16 +468,19 @@
   <plurals name="time_seconds_quantified">
     <item quantity="one">1 sekundė</item>
     <item quantity="few">%d sekundės</item>
+    <item quantity="many">%d sekundžių</item>
     <item quantity="other">%d sekundžių</item>
   </plurals>
   <plurals name="time_minutes_quantified">
     <item quantity="one">1 minutė</item>
     <item quantity="few">%d minutės</item>
+    <item quantity="many">%d minučių</item>
     <item quantity="other">%d minučių</item>
   </plurals>
   <plurals name="time_hours_quantified">
     <item quantity="one">1 valanda</item>
     <item quantity="few">%d valandos</item>
+    <item quantity="many">%d valandų</item>
     <item quantity="other">%d valandų</item>
   </plurals>
   <string name="auto_enable_label">Įjungti automatiškai</string>
@@ -619,6 +623,19 @@
   <string name="proxy_host_empty_error">Serverio laukelis negali būti tuščias</string>
   <string name="proxy_host_invalid_error">Serverio laukelyje nurodytas netaisyklingas IP adresas ar sritis</string>
   <string name="proxy_port_invalid_error">Netinkamas prievadas</string>
+  <!--Database import/export-->
+  <string name="import_export">Duomenų bazės importas/eksportas</string>
+  <string name="import_export_warning">Šis eksperimentinė funkcija leidžia perkelti jūsų prenumeratas bei duomenis apie perklausytus epizodus į kitą įrenginį.
+
+Eksportuota duomenų bazė gali būti importuota tik naudojantis ta pačia „AntennaPod“ versija. Kitu atveju, šios funkcijos naudojimas gali turėti netikėtų padarinių.
+
+Po importavimo, epizodai gali būti per klaidą pažymėti kaip atsisiųsti. Tiesiog spustelėkite atkūrimo mygtuką ir „AntennaPod“ aptiks šią klaidą. </string>
+  <string name="label_import">Importuoti</string>
+  <string name="label_export">Eksportuoti</string>
+  <string name="import_select_file">Pasirinkite failą, kurį norite importuoti</string>
+  <string name="import_ok">Importuota sėkmingai.
+
+Spauskite „OK“, kad paleisti „AntennaPod“ iš naujo.</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Atkurti naudojant...</string>
   <string name="cast_disconnect_label">Atjungti „Chromecast“ sesiją</string>
@@ -635,4 +652,5 @@
   <string name="cast_failed_seek">Peršokti į naują poziciją „Chromecast“ įrenginyje nepavyko</string>
   <string name="cast_failed_receiver_player_error">Imtuvo leistuvę ištiko rimta klaida</string>
   <string name="cast_failed_media_error_skipping">Įvyko medijos atkūrimo klaida. Praleidžiama...</string>
+  <!--Notification channels-->
 </resources>

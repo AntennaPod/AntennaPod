@@ -16,6 +16,7 @@
         android:scaleType="fitCenter"
         app:layout_aspectRatio="100%"
         app:layout_widthPercent="82%"
+        android:transitionName="coverTransition"
         tools:src="@android:drawable/sym_def_app_icon" />
 
     <LinearLayout
@@ -37,6 +38,7 @@
             android:maxLines="2"
             android:ellipsize="end"
             android:text="Podcast"
+            android:textIsSelectable="true"
             android:textColor="?android:attr/textColorSecondary" />
 
     </LinearLayout>
@@ -60,6 +62,7 @@
             android:maxLines="2"
             android:ellipsize="end"
             android:text="Episode"
+            android:textIsSelectable="true"
             android:textColor="?android:attr/textColorPrimary" />
 
     </LinearLayout>

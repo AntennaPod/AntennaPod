@@ -17,15 +17,15 @@ public class DownloadRequest implements Parcelable {
     private String username;
     private String password;
     private String lastModified;
-    private boolean deleteOnFailure;
+    private final boolean deleteOnFailure;
     private final long feedfileId;
     private final int feedfileType;
     private final Bundle arguments;
 
-    protected int progressPercent;
-    protected long soFar;
-    protected long size;
-    protected int statusMsg;
+    private int progressPercent;
+    private long soFar;
+    private long size;
+    private int statusMsg;
 
     public DownloadRequest(@NonNull String destination,
                            @NonNull String source,
@@ -53,7 +53,7 @@ public class DownloadRequest implements Parcelable {
         this(destination, source, title, feedfileId, feedfileType, null, null, true, null);
     }
 
-    public DownloadRequest(Builder builder) {
+    private DownloadRequest(Builder builder) {
         this.destination = builder.destination;
         this.source = builder.source;
         this.title = builder.title;
@@ -124,7 +124,7 @@ public class DownloadRequest implements Parcelable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !(o instanceof DownloadRequest)) return false;
 
         DownloadRequest that = (DownloadRequest) o;
 
@@ -211,10 +211,6 @@ public class DownloadRequest implements Parcelable {
         this.size = size;
     }
 
-    public int getStatusMsg() {
-        return statusMsg;
-    }
-
     public void setStatusMsg(int statusMsg) {
         this.statusMsg = statusMsg;
     }
@@ -254,15 +250,15 @@ public class DownloadRequest implements Parcelable {
     }
 
     public static class Builder {
-        private String destination;
-        private String source;
-        private String title;
+        private final String destination;
+        private final String source;
+        private final String title;
         private String username;
         private String password;
         private String lastModified;
         private boolean deleteOnFailure = false;
-        private long feedfileId;
-        private int feedfileType;
+        private final long feedfileId;
+        private final int feedfileType;
         private Bundle arguments;
 
         public Builder(@NonNull String destination, @NonNull FeedFile item) {

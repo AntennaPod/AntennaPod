@@ -9,7 +9,6 @@
   <string name="favorite_episodes_label">Ulubione</string>
   <string name="new_label">Nowy</string>
   <string name="settings_label">Ustawienia</string>
-  <string name="add_new_feed_label">Dodaj podcast</string>
   <string name="downloads_label">Pobrane</string>
   <string name="downloads_running_label">W toku</string>
   <string name="downloads_completed_label">Ukończone</string>
@@ -23,6 +22,7 @@
   <string name="free_space_label">%1$s wolnego miejsca</string>
   <string name="episode_cache_full_title">Pełna pamięć cache</string>
   <string name="episode_cache_full_message">Limit pamięci cache został osiągnięty. Możesz zwiększyć pojemność cache w ustawieniach aplikacji.</string>
+  <string name="synchronizing">Synchronizowanie...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Całkowity czas trwania podcastów:</string>
   <string name="statistics_details_dialog">%1$d z %2$d odcinków rozpoczęto.\n\nZagrano %3$s z %4$s.</string>
@@ -117,6 +117,7 @@
   <string name="remove_feed_label">Usuń podcast</string>
   <string name="share_label">Udostępnij...</string>
   <string name="share_link_label">Udostępnij stronę</string>
+  <string name="share_file_label">Udostępnij plik</string>
   <string name="share_link_with_position_label">Udostępnij link z aktualną pozycją</string>
   <string name="share_feed_url_label">Udostępnij adres kanału</string>
   <string name="share_item_url_label">Udostępnij plik URL odcinka</string>
@@ -125,7 +126,6 @@
   <string name="feed_remover_msg">Usuwanie kanału</string>
   <string name="load_complete_feed">Odśwież cały kanał</string>
   <string name="hide_episodes_title">Ukryj odcinki</string>
-  <string name="episode_actions">Zatwierdź czynności</string>
   <string name="hide_unplayed_episodes_label">Nieodtworzone</string>
   <string name="hide_paused_episodes_label">Zatrzymane</string>
   <string name="hide_played_episodes_label">Odtworzone</string>
@@ -145,6 +145,7 @@
   <string name="stream_label">Strumień</string>
   <string name="remove_label">Usuń</string>
   <string name="delete_label">Usuń</string>
+  <string name="delete_failed">Nie można usunąć pliku. Restart urządzenia może w tym pomóc.</string>
   <string name="remove_episode_lable">Usuń odcinek</string>
   <string name="marked_as_seen_label">Zaznaczono jako wyświetlone</string>
   <string name="mark_read_label">Oznacz jako odtworzone</string>
@@ -169,6 +170,9 @@
   <string name="download_failed">Operacja nie powiodła się</string>
   <string name="download_pending">Pobieranie w toku</string>
   <string name="download_running">Pobieram</string>
+  <string name="download_error_details">Szczegóły</string>
+  <string name="download_error_details_message">%1$s \n\nAdres pliku:\n%2$s
+</string>
   <string name="download_error_device_not_found">Nie znaleziono urządzenia docelowego</string>
   <string name="download_error_insufficient_space">Niewystarczająca ilość pamięci</string>
   <string name="download_error_file_error">Błąd pliku</string>
@@ -284,7 +288,6 @@
   <string name="other_pref">Inne</string>
   <string name="about_pref">O...</string>
   <string name="queue_label">Kolejka</string>
-  <string name="services_label">Usługi</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Usuwanie odcinków</string>
   <string name="pref_episode_cleanup_summary">Odcinki niebędące w kolejce i niebędące na liście ulubiobych powinny nadawać się do usunięcia, jeśli Automatyczne Pobieranie potrzebuje miejsca na nowe odcinki.</string>
@@ -302,6 +305,8 @@
   <string name="pref_smart_mark_as_played_title">Inteligentnie oznacz jako odtworzone</string>
   <string name="pref_skip_keeps_episodes_sum">Zachowuje pominięte odcinki w kolejce</string>
   <string name="pref_skip_keeps_episodes_title">Zachowaj pominięte odcinki</string>
+  <string name="pref_favorite_keeps_episodes_sum">Zachowaj odcinki gdy są oznaczone jako Ulubione</string>
+  <string name="pref_favorite_keeps_episodes_title">Zachowaj Ulubione Odcinki</string>
   <string name="playback_pref">Odtwarzanie</string>
   <string name="network_pref">Sieć</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Częstotliwość aktualizacji lub Czas dnia</string>
@@ -345,6 +350,8 @@
   <string name="pref_automatic_download_sum">Skonfiguruj automatyczne pobieranie odcinków.</string>
   <string name="pref_autodl_wifi_filter_title">Włącz filtr Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Zezwól na automatyczne pobieranie tylko dla określonych sieci Wi-Fi.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Pobierz przy użyciu komórkowego transferu danych</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Zezwól na automatyczne pobieranie przy użyciu komórkowego transferu danych</string>
   <string name="pref_automatic_download_on_battery_title">Pobieraj, gdy nie ładuje</string>
   <string name="pref_automatic_download_on_battery_sum">Zezwól na automatyczne pobieranie, gdy bateria nie jest ładowana.</string>
   <string name="pref_parallel_downloads_title">Liczba równoległych pobierań</string>
@@ -401,8 +408,6 @@
   <string name="crash_report_sum">Wyślij ostatni raport o błędach przez e-mail</string>
   <string name="send_email">Wyślij e-mail</string>
   <string name="experimental_pref">Eksperymentalne</string>
-  <string name="pref_sonic_title">Odtwarzacz mediów Sonic</string>
-  <string name="pref_sonic_message">Użyj wbudowanego odtwarzacza Sonic jako oprogramowanie zastępcze do natywnego odtwarzacza Android i Prestissimo</string>
   <string name="pref_current_value">Aktualna wartość: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Ustaw proxy sieciowe</string>
@@ -412,7 +417,7 @@
   <string name="pref_cast_title">Obsługa Chromecast</string>
   <string name="pref_cast_message_play_flavor">Uruchom obsługę dla zdalnego odtwarzania mediów na innych urządzeniach (takich jak Chromecast, Audio Speakers albo Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast wymagadodatkowych bibliotek, które są zablokowane w tej wersji AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Rzeczy z kolejki zostały pobrane</string>
+  <string name="pref_enqueue_downloaded_title">Rzeczy z kolejki pobrane</string>
   <string name="pref_enqueue_downloaded_summary">Dodaj pobrane odcinki do kolejki</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Włącz automatyczne wspieranie na flattr.</string>
@@ -450,8 +455,8 @@
   <string name="html_export_label">Eksport HTML</string>
   <string name="exporting_label">Eksportowanie...</string>
   <string name="export_error_label">Błąd eksportu</string>
-  <string name="opml_export_success_title">Eksport OPML udany.</string>
-  <string name="opml_export_success_sum">Plik .opml został zapisany do:\u0020</string>
+  <string name="export_success_title">Export zakończony powodzeniem</string>
+  <string name="export_success_sum">Wyeksportowany plik został zapisany w:\n\n %1$s</string>
   <string name="opml_import_ask_read_permission">Dostęp do zewnętrznej pamięci jest potrzebny do odczytywania plików OPML</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Ustaw czas do wyłączenia</string>
@@ -625,6 +630,14 @@ https://gpodder.net/register/</string>
   <string name="proxy_host_empty_error">Host nie może być pusty!</string>
   <string name="proxy_host_invalid_error">Host nie jest prawidłowym adresem IP albo domeną</string>
   <string name="proxy_port_invalid_error">Błędny port</string>
+  <!--Database import/export-->
+  <string name="import_export">Import/Export bazy danych</string>
+  <string name="import_export_warning">Ta eksperymentalna funkcja może zostać użyta do przeniesienia Twoich subskrypcji i już obejrzanych odcinków na inne urządzenie.\n\n Wyeksportowana baza może zostać zaimportowana jedynie taką samą wersją programu AntennaPod. W innym przypadku może to spowodować nieprzewidziane zachowanie programu.\n\n Po zaimportowaniu, odcinki mogą być pokazane jako pobrane pomimo tego iż nie zostały pobrane. Wystarczy kliknąć odtwórz odcinek aby AntennaPod wykrył poprawny stan pliku.</string>
+  <string name="label_import">Import</string>
+  <string name="label_export">Export</string>
+  <string name="import_select_file">Wybierz plik do Importowania</string>
+  <string name="export_ok">Export zakończony powodzeniem</string>
+  <string name="import_ok">Import zakończony powodzeniem.\n\nNaciśnij OK aby zrestartować AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Odtwarzaj na...</string>
   <string name="cast_disconnect_label">Rozłącz sesję</string>
@@ -641,4 +654,5 @@ https://gpodder.net/register/</string>
   <string name="cast_failed_seek">Wystąpił błąd podczas szukania nowej pozycji na urządzeniu nadającym.</string>
   <string name="cast_failed_receiver_player_error">Urządzenie odbierające napotkało poważny problem</string>
   <string name="cast_failed_media_error_skipping">Błąd podczas odtwarzania, pomijanie...</string>
+  <!--Notification channels-->
 </resources>

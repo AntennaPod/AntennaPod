@@ -7,19 +7,19 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
 public abstract class Chapter extends FeedComponent {
 
 	/** Defines starting point in milliseconds. */
-	protected long start;
-	protected String title;
-	protected String link;
+    long start;
+	String title;
+	String link;
 
-	public Chapter() {
+	Chapter() {
 	}
 	
-	public Chapter(long start) {
+	Chapter(long start) {
 		super();
 		this.start = start;
 	}
 
-	public Chapter(long start, String title, FeedItem item, String link) {
+	Chapter(long start, String title, FeedItem item, String link) {
 		super();
 		this.start = start;
 		this.title = title;
@@ -27,11 +27,13 @@ public abstract class Chapter extends FeedComponent {
 	}
 
 	public static Chapter fromCursor(Cursor cursor, FeedItem item) {
+		int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
 		int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
 		int indexStart = cursor.getColumnIndex(PodDBAdapter.KEY_START);
 		int indexLink = cursor.getColumnIndex(PodDBAdapter.KEY_LINK);
 		int indexChapterType = cursor.getColumnIndex(PodDBAdapter.KEY_CHAPTER_TYPE);
 
+		long id = cursor.getLong(indexId);
 		String title = cursor.getString(indexTitle);
 		long start = cursor.getLong(indexStart);
 		String link = cursor.getString(indexLink);
@@ -49,6 +51,7 @@ public abstract class Chapter extends FeedComponent {
 				chapter = new VorbisCommentChapter(start, title, item, link);
 				break;
 		}
+		chapter.setId(id);
 		return chapter;
 	}
 

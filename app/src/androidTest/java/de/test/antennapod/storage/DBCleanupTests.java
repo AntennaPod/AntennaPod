@@ -27,12 +27,12 @@ import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
 public class DBCleanupTests extends InstrumentationTestCase {
 
     private static final String TAG = "DBTasksTest";
-    protected static final int EPISODE_CACHE_SIZE = 5;
+    static final int EPISODE_CACHE_SIZE = 5;
     private final int cleanupAlgorithm;
 
-    protected Context context;
+    Context context;
 
-    protected File destFolder;
+    private File destFolder;
 
     public DBCleanupTests() {
         this.cleanupAlgorithm = UserPreferences.EPISODE_CLEANUP_DEFAULT;
@@ -104,9 +104,9 @@ public class DBCleanupTests extends InstrumentationTestCase {
         }
     }
 
-    protected void populateItems(final int numItems, Feed feed, List<FeedItem> items,
-                                 List<File> files, int itemState, boolean addToQueue,
-                                 boolean addToFavorites) throws IOException {
+    void populateItems(final int numItems, Feed feed, List<FeedItem> items,
+                       List<File> files, int itemState, boolean addToQueue,
+                       boolean addToFavorites) throws IOException {
         for (int i = 0; i < numItems; i++) {
             Date itemDate = new Date(numItems - i);
             Date playbackCompletionDate = null;
@@ -145,9 +145,9 @@ public class DBCleanupTests extends InstrumentationTestCase {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
         Feed feed = new Feed("url", null, "title");
-        List<FeedItem> items = new ArrayList<FeedItem>();
+        List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         populateItems(NUM_ITEMS, feed, items, files, FeedItem.UNPLAYED, false, false);
 
         DBTasks.performAutoCleanup(context);

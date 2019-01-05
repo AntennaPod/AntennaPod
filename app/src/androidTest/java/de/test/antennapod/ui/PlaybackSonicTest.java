@@ -33,8 +33,8 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
 public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private static final String TAG = PlaybackTest.class.getSimpleName();
-    public static final int EPISODES_DRAWER_LIST_INDEX = 1;
-    public static final int QUEUE_DRAWER_LIST_INDEX = 0;
+    private static final int EPISODES_DRAWER_LIST_INDEX = 1;
+    private static final int QUEUE_DRAWER_LIST_INDEX = 0;
 
     private Solo solo;
     private UITestUtils uiTestUtils;
@@ -59,7 +59,7 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
                 .clear()
                 .putBoolean(UserPreferences.PREF_UNPAUSE_ON_HEADSET_RECONNECT, false)
                 .putBoolean(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT, false)
-                .putBoolean(UserPreferences.PREF_SONIC, true)
+                .putString(UserPreferences.PREF_MEDIA_PLAYER, "sonic")
                 .commit();
 
         solo = new Solo(getInstrumentation(), getActivity());

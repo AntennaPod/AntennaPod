@@ -7,9 +7,9 @@ package de.danoeh.antennapod.core.feed;
  */
 public abstract class FeedComponent {
 
-    protected long id;
+    long id;
 
-    public FeedComponent() {
+    FeedComponent() {
         super();
     }
 
@@ -26,7 +26,7 @@ public abstract class FeedComponent {
      * FeedComponent. This method should only update attributes which where read from
      * the feed.
      */
-    public void updateFromOther(FeedComponent other) {
+    void updateFromOther(FeedComponent other) {
     }
 
     /**
@@ -36,7 +36,7 @@ public abstract class FeedComponent {
      *
      * @return true if attribute values are different, false otherwise
      */
-    public boolean compareWithOther(FeedComponent other) {
+    boolean compareWithOther(FeedComponent other) {
         return false;
     }
 
@@ -50,7 +50,7 @@ public abstract class FeedComponent {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !(o instanceof FeedComponent)) return false;
 
         FeedComponent that = (FeedComponent) o;
 

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="@string/appearance">
+        <ListPreference
+                android:entryValues="@array/theme_values"
+                android:entries="@array/theme_options"
+                android:title="@string/pref_set_theme_title"
+                android:key="prefTheme"
+                android:summary="@string/pref_set_theme_sum"
+                android:defaultValue="0"
+                app:useStockLayout="true"/>
+        <Preference
+                android:key="prefHiddenDrawerItems"
+                android:summary="@string/pref_nav_drawer_items_sum"
+                android:title="@string/pref_nav_drawer_items_title"/>
+        <ListPreference
+                android:entryValues="@array/nav_drawer_feed_order_values"
+                android:entries="@array/nav_drawer_feed_order_options"
+                android:title="@string/pref_nav_drawer_feed_order_title"
+                android:key="prefDrawerFeedOrder"
+                android:summary="@string/pref_nav_drawer_feed_order_sum"
+                android:defaultValue="0"
+                app:useStockLayout="true"/>
+        <ListPreference
+                android:entryValues="@array/nav_drawer_feed_counter_values"
+                android:entries="@array/nav_drawer_feed_counter_options"
+                android:title="@string/pref_nav_drawer_feed_counter_title"
+                android:key="prefDrawerFeedIndicator"
+                android:summary="@string/pref_nav_drawer_feed_counter_sum"
+                android:defaultValue="0"
+                app:useStockLayout="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/external_elements">
+        <SwitchPreference
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefExpandNotify"
+                android:summary="@string/pref_expandNotify_sum"
+                android:title="@string/pref_expandNotify_title"/>
+        <SwitchPreference
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefPersistNotify"
+                android:summary="@string/pref_persistNotify_sum"
+                android:title="@string/pref_persistNotify_title"/>
+        <Preference
+                android:key="prefCompactNotificationButtons"
+                android:summary="@string/pref_compact_notification_buttons_sum"
+                android:title="@string/pref_compact_notification_buttons_title"/>
+        <SwitchPreference
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefLockscreenBackground"
+                android:summary="@string/pref_lockscreen_background_sum"
+                android:title="@string/pref_lockscreen_background_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/behavior">
+        <ListPreference
+                android:entryValues="@array/back_button_behavior_values"
+                android:entries="@array/back_button_behavior_options"
+                android:key="prefBackButtonBehavior"
+                android:title="@string/pref_back_button_behavior_title"
+                android:summary="@string/pref_back_button_behavior_sum"
+                android:defaultValue="default"
+                app:useStockLayout="true"/>
+    </PreferenceCategory>
+</PreferenceScreen>

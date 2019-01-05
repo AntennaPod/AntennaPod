@@ -45,11 +45,11 @@ public class HTTPBin extends NanoHTTPD {
     private static final String MIME_HTML = "text/html";
     private static final String MIME_PLAIN = "text/plain";
 
-    private List<File> servedFiles;
+    private final List<File> servedFiles;
 
     public HTTPBin() {
         super(PORT);
-        this.servedFiles = new ArrayList<File>();
+        this.servedFiles = new ArrayList<>();
     }
 
     /**

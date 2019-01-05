@@ -1,7 +1,8 @@
 package de.danoeh.antennapod.core.syndication.namespace;
 
-import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 import org.xml.sax.Attributes;
+
+import de.danoeh.antennapod.core.syndication.handler.HandlerState;
 
 
 public abstract class Namespace {
@@ -14,7 +15,6 @@ public abstract class Namespace {
 	public abstract SyndElement handleElementStart(String localName, HandlerState state, Attributes attributes);
 	
 	/** Called by a Feedhandler when in endElement and it detects a namespace element 
-	 * 	@return true if namespace handled the element, false if it ignored it
 	 * */
 	public abstract void handleElementEnd(String localName, HandlerState state);
 	

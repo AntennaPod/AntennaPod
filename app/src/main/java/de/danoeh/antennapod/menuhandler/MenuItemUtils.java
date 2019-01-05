@@ -19,8 +19,9 @@ public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuIte
 
     public static void adjustTextColor(Context context, SearchView sv) {
         if(Build.VERSION.SDK_INT < 14) {
-            EditText searchEditText = (EditText) sv.findViewById(R.id.search_src_text);
-            if(UserPreferences.getTheme() == de.danoeh.antennapod.R.style.Theme_AntennaPod_Dark) {
+            EditText searchEditText = sv.findViewById(R.id.search_src_text);
+            if (UserPreferences.getTheme() == de.danoeh.antennapod.R.style.Theme_AntennaPod_Dark
+                    || UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack) {
                 searchEditText.setTextColor(Color.WHITE);
             } else {
                 searchEditText.setTextColor(Color.BLACK);

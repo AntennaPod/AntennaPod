@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -10,19 +12,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Shows the download log
@@ -37,7 +41,7 @@ public class DownloadLogFragment extends ListFragment {
     private boolean viewsCreated = false;
     private boolean itemsLoaded = false;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     @Override
     public void onStart() {
@@ -51,8 +55,8 @@ public class DownloadLogFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -82,7 +86,30 @@ public class DownloadLogFragment extends ListFragment {
         getActivity().supportInvalidateOptionsMenu();
     }
 
-    private DownloadLogAdapter.ItemAccess itemAccess = new DownloadLogAdapter.ItemAccess() {
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+        DownloadStatus status = adapter.getItem(position);
+        String url = "unknown";
+        String message = getString(R.string.download_successful);
+        FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
+        if (media != null) {
+            url = media.getDownload_url();
+        }
+        if (!status.isSuccessful()) {
+            message = status.getReasonDetailed();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.download_error_details);
+        builder.setMessage(getString(R.string.download_error_details_message, message, url));
+        builder.setPositiveButton(android.R.string.ok, null);
+        Dialog dialog = builder.show();
+        ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
+    }
+
+    private final DownloadLogAdapter.ItemAccess itemAccess = new DownloadLogAdapter.ItemAccess() {
 
         @Override
         public int getCount() {
@@ -99,7 +126,7 @@ public class DownloadLogFragment extends ListFragment {
         }
     };
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
@@ -151,11 +178,11 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     private void loadItems() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
-        subscription = Observable.fromCallable(DBReader::getDownloadLog)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(DBReader::getDownloadLog)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {

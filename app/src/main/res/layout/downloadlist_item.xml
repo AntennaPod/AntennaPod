@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/listitem_threeline_height"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     tools:background="@android:color/darker_gray">
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+            android:layout_marginStart="@dimen/listitem_threeline_horizontalpadding"
             android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
             android:ellipsize="end"
             android:lines="1"
@@ -48,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:ellipsize="end"
                 android:lines="1"
                 android:textColor="?android:attr/textColorPrimary"
@@ -60,6 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:ellipsize="end"
                 android:lines="1"
                 android:textColor="?android:attr/textColorPrimary"

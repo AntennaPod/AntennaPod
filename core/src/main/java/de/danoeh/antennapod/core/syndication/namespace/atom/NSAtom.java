@@ -5,7 +5,6 @@ import android.util.Log;
 
 import org.xml.sax.Attributes;
 
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
@@ -48,8 +47,6 @@ public class NSAtom extends Namespace {
     private static final String LINK_REL_ARCHIVES = "archives";
     private static final String LINK_REL_ENCLOSURE = "enclosure";
     private static final String LINK_REL_PAYMENT = "payment";
-    private static final String LINK_REL_RELATED = "related";
-    private static final String LINK_REL_SELF = "self";
     private static final String LINK_REL_NEXT = "next";
     // type-values
     private static final String LINK_TYPE_ATOM = "application/atom+xml";
@@ -64,8 +61,8 @@ public class NSAtom extends Namespace {
     private static final String isText = TITLE + "|" + CONTENT + "|"
             + SUBTITLE + "|" + SUMMARY;
 
-    public static final String isFeed = FEED + "|" + NSRSS20.CHANNEL;
-    public static final String isFeedItem = ENTRY + "|" + NSRSS20.ITEM;
+    private static final String isFeed = FEED + "|" + NSRSS20.CHANNEL;
+    private static final String isFeedItem = ENTRY + "|" + NSRSS20.ITEM;
 
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
@@ -210,10 +207,10 @@ public class NSAtom extends Namespace {
                 state.getCurrentItem().setPubDate(DateUtils.parse(content));
             } else if (PUBLISHED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null) {
                 state.getCurrentItem().setPubDate(DateUtils.parse(content));
-            } else if (IMAGE_LOGO.equals(top) && state.getFeed() != null && state.getFeed().getImage() == null) {
-                state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
+            } else if (IMAGE_LOGO.equals(top) && state.getFeed() != null && state.getFeed().getImageUrl() == null) {
+                state.getFeed().setImageUrl(content);
             } else if (IMAGE_ICON.equals(top) && state.getFeed() != null) {
-                state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
+                state.getFeed().setImageUrl(content);
             } else if (AUTHOR_NAME.equals(top) && AUTHOR.equals(second) &&
                     state.getFeed() != null && state.getCurrentItem() == null) {
                 String currentName = state.getFeed().getAuthor();

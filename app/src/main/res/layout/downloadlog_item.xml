@@ -8,14 +8,16 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="8dp"
+    android:descendantFocusability="blocksDescendants"
     tools:background="@android:color/darker_gray">
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/txtvIcon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="48sp"
+        android:layout_height="48sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:textSize="48sp"
         android:gravity="center" />
 
@@ -25,7 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txtvIcon"
         android:layout_alignLeft="@id/txtvIcon"
+        android:layout_alignStart="@id/txtvIcon"
         android:layout_alignRight="@id/txtvIcon"
+        android:layout_alignEnd="@id/txtvIcon"
         android:layout_marginTop="8dp"
         android:text="{fa-repeat}"
         tools:text="↻" />
@@ -37,7 +41,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         tools:text="Media file"
         tools:background="@android:color/holo_green_dark" />
@@ -49,8 +55,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/txtvIcon"
+        android:layout_toEndOf="@id/txtvIcon"
         android:layout_toLeftOf="@id/txtvType"
+        android:layout_toStartOf="@id/txtvType"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         android:minLines="1"
         android:maxLines="2"
@@ -63,8 +72,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/txtvIcon"
+        android:layout_toEndOf="@id/txtvIcon"
         android:layout_below="@id/txtvTitle"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         tools:text="January 23"
         tools:background="@android:color/holo_green_dark" />
@@ -75,7 +86,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txtvDate"
         android:layout_toRightOf="@id/txtvIcon"
+        android:layout_toEndOf="@id/txtvIcon"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="@dimen/text_size_micro"
         tools:text="@string/design_time_downloaded_log_failure_reason"

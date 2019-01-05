@@ -2,7 +2,7 @@ package de.danoeh.antennapod.config;
 
 import android.content.Context;
 import android.content.Intent;
-
+import android.os.Build;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.CastplayerActivity;
@@ -18,7 +18,11 @@ public class PlaybackServiceCallbacksImpl implements PlaybackServiceCallbacks {
             return new Intent(context, CastplayerActivity.class);
         }
         if (mediaType == MediaType.VIDEO) {
-            return new Intent(context, VideoplayerActivity.class);
+            Intent i = new Intent(context, VideoplayerActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+            }
+            return i;
         } else {
             return new Intent(context, AudioplayerActivity.class);
         }

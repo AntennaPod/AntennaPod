@@ -1,9 +1,7 @@
 package de.test.antennapod.ui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.util.Log;
 
 import junit.framework.Assert;
@@ -20,14 +18,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
@@ -39,27 +35,25 @@ import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
  * Utility methods for UI tests.
  * Starts a web server that hosts feeds, episodes and images.
  */
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class UITestUtils {
+class UITestUtils {
 
     private static final String TAG = UITestUtils.class.getSimpleName();
 
     private static final String DATA_FOLDER = "test/UITestUtils";
 
-    public static final int NUM_FEEDS = 5;
-    public static final int NUM_ITEMS_PER_FEED = 10;
+    private static final int NUM_FEEDS = 5;
+    private static final int NUM_ITEMS_PER_FEED = 10;
 
-    public static final int HOME_VIEW = (Build.VERSION.SDK_INT >= 11) ? android.R.id.home : R.id.home;
-    public static final String TEST_FILE_NAME = "3sec.mp3";
+    private static final String TEST_FILE_NAME = "3sec.mp3";
 
 
-    private Context context;
-    private HTTPBin server = new HTTPBin();
+    private final Context context;
+    private final HTTPBin server = new HTTPBin();
     private File destDir;
     private File hostedFeedDir;
     private File hostedMediaDir;
 
-    public List<Feed> hostedFeeds = new ArrayList<Feed>();
+    public final List<Feed> hostedFeeds = new ArrayList<>();
 
     public UITestUtils(Context context) {
         this.context = context;
@@ -141,15 +135,12 @@ public class UITestUtils {
     public void addHostedFeedData() throws IOException {
         if (feedDataHosted) throw new IllegalStateException("addHostedFeedData was called twice on the same instance");
         for (int i = 0; i < NUM_FEEDS; i++) {
-            File bitmapFile = newBitmapFile("image" + i);
-            FeedImage image = new FeedImage(0, "image " + i, null, hostFile(bitmapFile), false);
             Feed feed = new Feed(0, null, "Title " + i, "http://example.com/" + i, "Description of feed " + i,
-                    "http://example.com/pay/feed" + i, "author " + i, "en", Feed.TYPE_RSS2, "feed" + i, image, null,
+                    "http://example.com/pay/feed" + i, "author " + i, "en", Feed.TYPE_RSS2, "feed" + i, null, null,
                     "http://example.com/feed/src/" + i, false);
-            image.setOwner(feed);
 
             // create items
-            List<FeedItem> items = new ArrayList<FeedItem>();
+            List<FeedItem> items = new ArrayList<>();
             for (int j = 0; j < NUM_ITEMS_PER_FEED; j++) {
                 FeedItem item = new FeedItem(j, "Feed " + (i+1) + ": Item " + (j+1), "item" + j,
                         "http://example.com/feed" + i + "/item/" + j, new Date(), FeedItem.UNPLAYED, feed);
@@ -192,12 +183,6 @@ public class UITestUtils {
         List<FeedItem> queue = new ArrayList<>();
         for (Feed feed : hostedFeeds) {
             feed.setDownloaded(true);
-            if (feed.getImage() != null) {
-                FeedImage image = feed.getImage();
-                int fileId = Integer.parseInt(StringUtils.substringAfter(image.getDownload_url(), "files/"));
-                image.setFile_url(server.accessFile(fileId).getAbsolutePath());
-                image.setDownloaded(true);
-            }
             if (downloadEpisodes) {
                 for (FeedItem item : feed.getItems()) {
                     if (item.hasMedia()) {

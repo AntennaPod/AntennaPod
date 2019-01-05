@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.asynctask;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -16,9 +15,9 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 /** Queues items for download in the background. */
 public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {
-	private Context context;
+	private final Context context;
 	private ProgressDialog progDialog;
-	private int[] selection;
+	private final int[] selection;
 
 	public OpmlFeedQueuer(Context context, int[] selection) {
 		super();
@@ -56,13 +55,8 @@ public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {
 		return null;
 	}
 
-	@SuppressLint("NewApi")
 	public void executeAsync() {
-		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-			executeOnExecutor(THREAD_POOL_EXECUTOR);
-		} else {
-			execute();
-		}
+		executeOnExecutor(THREAD_POOL_EXECUTOR);
 	}
 
 }

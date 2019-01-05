@@ -19,11 +19,11 @@ import de.danoeh.antennapod.core.util.ThemeUtils;
 
 public class DownloadlistAdapter extends BaseAdapter {
 
-    public static final int SELECTION_NONE = -1;
+    private static final int SELECTION_NONE = -1;
 
     private int selectedItemIndex;
-    private ItemAccess itemAccess;
-    private Context context;
+    private final ItemAccess itemAccess;
+    private final Context context;
 
     public DownloadlistAdapter(Context context,
                                ItemAccess itemAccess) {
@@ -59,14 +59,14 @@ public class DownloadlistAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.downloadlist_item, parent, false);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.downloaded = (TextView) convertView
+            holder.title = convertView.findViewById(R.id.txtvTitle);
+            holder.downloaded = convertView
                     .findViewById(R.id.txtvDownloaded);
-            holder.percent = (TextView) convertView
+            holder.percent = convertView
                     .findViewById(R.id.txtvPercent);
-            holder.progbar = (ProgressBar) convertView
+            holder.progbar = convertView
                     .findViewById(R.id.progProgress);
-            holder.butSecondary = (ImageButton) convertView
+            holder.butSecondary = convertView
                     .findViewById(R.id.butSecondaryAction);
 
             convertView.setTag(holder);
@@ -105,7 +105,7 @@ public class DownloadlistAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private View.OnClickListener butSecondaryListener = new View.OnClickListener() {
+    private final View.OnClickListener butSecondaryListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Downloader downloader = (Downloader) v.getTag();
@@ -119,15 +119,6 @@ public class DownloadlistAdapter extends BaseAdapter {
         TextView percent;
         ProgressBar progbar;
         ImageButton butSecondary;
-    }
-
-    public int getSelectedItemIndex() {
-        return selectedItemIndex;
-    }
-
-    public void setSelectedItemIndex(int selectedItemIndex) {
-        this.selectedItemIndex = selectedItemIndex;
-        notifyDataSetChanged();
     }
 
     public interface ItemAccess {

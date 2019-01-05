@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -42,17 +43,20 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
@@ -64,12 +68,11 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -83,7 +86,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
-    public static final String PREF_LAST_FRAGMENT_TAG = "prefMainActivityLastFragmentTag";
+    private static final String PREF_LAST_FRAGMENT_TAG = "prefMainActivityLastFragmentTag";
 
     public static final String EXTRA_NAV_TYPE = "nav_type";
     public static final String EXTRA_NAV_INDEX = "nav_index";
@@ -91,8 +94,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
 
-    public static final String SAVE_BACKSTACK_COUNT = "backstackCount";
-    public static final String SAVE_TITLE = "title";
+    private static final String SAVE_BACKSTACK_COUNT = "backstackCount";
+    private static final String SAVE_TITLE = "title";
 
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
@@ -119,7 +122,9 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     private ProgressDialog pd;
 
-    private Subscription subscription;
+    private Disposable disposable;
+
+    private long lastBackButtonPressTime = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,7 +133,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -140,8 +145,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         currentTitle = getTitle();
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navList = (ListView) findViewById(R.id.nav_list);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navList = findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
@@ -173,7 +178,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         findViewById(R.id.nav_settings).setOnClickListener(v -> {
             drawerLayout.closeDrawer(navDrawer);
-            startActivity(new Intent(MainActivity.this, PreferenceController.getPreferenceActivity()));
+            startActivity(new Intent(MainActivity.this, PreferenceActivity.class));
         });
 
         FragmentTransaction transaction = fm.beginTransaction();
@@ -201,6 +206,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         transaction.commit();
 
         checkFirstLaunch();
+        NotificationUtils.createChannels(this);
+        UserPreferences.restartUpdateAlarm(false);
     }
 
     private void saveLastNavFragment(String tag) {
@@ -236,7 +243,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
-    public void showDrawerPreferencesDialog() {
+    private void showDrawerPreferencesDialog() {
         final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         String[] navLabels = new String[NAV_DRAWER_TAGS.length];
         final boolean[] checked = new boolean[NAV_DRAWER_TAGS.length];
@@ -270,7 +277,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         return (navDrawerData != null) ? navDrawerData.feeds : null;
     }
 
-    public void loadFragment(int index, Bundle args) {
+    private void loadFragment(int index, Bundle args) {
         Log.d(TAG, "loadFragment(index: " + index + ", args: " + args + ")");
         if (index < navAdapter.getSubscriptionOffset()) {
             String tag = navAdapter.getTags().get(index);
@@ -399,7 +406,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
-    private AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
+    private final AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int viewType = parent.getAdapter().getItemViewType(position);
@@ -410,7 +417,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     };
 
-    private AdapterView.OnItemLongClickListener newListLongClickListener = new AdapterView.OnItemLongClickListener() {
+    private final AdapterView.OnItemLongClickListener newListLongClickListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             if(position < navAdapter.getTags().size()) {
@@ -467,7 +474,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        DBTasks.checkShouldRefreshFeeds(getApplicationContext());
+        AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
 
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_FEED_ID) ||
@@ -484,8 +491,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         if(pd != null) {
             pd.dismiss();
@@ -573,10 +580,29 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
-                DBWriter.markFeedSeen(feed.getId());
+                ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(this,
+                        R.string.mark_all_seen_label,
+                        R.string.mark_all_seen_confirmation_msg) {
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        DBWriter.markFeedSeen(feed.getId());
+                    }
+                };
+                markAllSeenConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.mark_all_read_item:
-                DBWriter.markFeedRead(feed.getId());
+                ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(this,
+                        R.string.mark_all_read_label,
+                        R.string.mark_all_read_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        DBWriter.markFeedRead(feed.getId());
+                    }
+                };
+                markAllReadConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.rename_item:
                 new RenameFeedDialog(this, feed).show();
@@ -605,8 +631,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                             remover.skipOnCompletion = true;
                             int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
                             if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                                sendBroadcast(new Intent(
-                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                                IntentUtils.sendLocalBroadcast(MainActivity.this, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
                             }
                         }
                         remover.executeAsync();
@@ -621,17 +646,47 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     @Override
     public void onBackPressed() {
-        if(isDrawerOpen()) {
+        if (isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
-        } else {
+        } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             super.onBackPressed();
+        } else {
+            switch (UserPreferences.getBackButtonBehavior()) {
+                case OPEN_DRAWER:
+                    drawerLayout.openDrawer(navDrawer);
+                    break;
+                case SHOW_PROMPT:
+                    new AlertDialog.Builder(this)
+                        .setMessage(R.string.close_prompt)
+                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> MainActivity.super.onBackPressed())
+                        .setNegativeButton(R.string.no, null)
+                        .setCancelable(false)
+                        .show();
+                    break;
+                case DOUBLE_TAP:
+                    if (lastBackButtonPressTime < System.currentTimeMillis() - 2000) {
+                        Toast.makeText(this, R.string.double_tap_toast, Toast.LENGTH_SHORT).show();
+                        lastBackButtonPressTime = System.currentTimeMillis();
+                    } else {
+                        super.onBackPressed();
+                    }
+                    break;
+                case GO_TO_PAGE:
+                    if (getLastNavFragment().equals(UserPreferences.getBackButtonGoToPage())) {
+                        super.onBackPressed();
+                    } else {
+                        loadFragment(UserPreferences.getBackButtonGoToPage(), null);
+                    }
+                    break;
+                default: super.onBackPressed();
+            }
         }
     }
 
     private DBReader.NavDrawerData navDrawerData;
     private int selectedNavListIndex = 0;
 
-    private NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
+    private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override
         public int getCount() {
             if (navDrawerData != null) {
@@ -695,8 +750,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     };
 
     private void loadData() {
-        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(DBReader::getNavDrawerData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     boolean handleIntent = (navDrawerData == null);
@@ -719,6 +774,15 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             return;
         }
         loadData();
+    }
+
+    public void onEventMainThread(ServiceEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        switch(event.action) {
+            case SERVICE_STARTED:
+                externalPlayerFragment.connectToPlaybackService();
+                break;
+        }
     }
 
     public void onEventMainThread(ProgressEvent event) {
@@ -744,14 +808,12 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         View parentLayout = findViewById(R.id.drawer_layout);
         Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);
         if(event.action != null) {
-            snackbar.setAction(getString(R.string.undo), v -> {
-                event.action.run();
-            });
+            snackbar.setAction(getString(R.string.undo), v -> event.action.run());
         }
         snackbar.show();
     }
 
-    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {

@@ -45,8 +45,6 @@ import de.danoeh.antennapod.core.service.GpodnetSyncService;
 public class GpodnetAuthenticationActivity extends AppCompatActivity {
     private static final String TAG = "GpodnetAuthActivity";
 
-    private static final String CURRENT_STEP = "current_step";
-
     private ViewFlipper viewFlipper;
 
     private static final int STEP_DEFAULT = -1;
@@ -61,7 +59,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
     private volatile String password;
     private volatile GpodnetDevice selectedDevice;
 
-    View[] views;
+    private View[] views;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +70,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
         setContentView(R.layout.gpodnetauth_activity);
         service = new GpodnetService();
 
-        viewFlipper = (ViewFlipper) findViewById(R.id.viewflipper);
+        viewFlipper = findViewById(R.id.viewflipper);
         LayoutInflater inflater = (LayoutInflater)
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         views = new View[]{
@@ -109,11 +107,11 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
     }
 
     private void setupLoginView(View view) {
-        final EditText username = (EditText) view.findViewById(R.id.etxtUsername);
-        final EditText password = (EditText) view.findViewById(R.id.etxtPassword);
-        final Button login = (Button) view.findViewById(R.id.butLogin);
-        final TextView txtvError = (TextView) view.findViewById(R.id.txtvError);
-        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progBarLogin);
+        final EditText username = view.findViewById(R.id.etxtUsername);
+        final EditText password = view.findViewById(R.id.etxtPassword);
+        final Button login = view.findViewById(R.id.butLogin);
+        final TextView txtvError = view.findViewById(R.id.txtvError);
+        final ProgressBar progressBar = view.findViewById(R.id.progBarLogin);
 
         password.setOnEditorActionListener((v, actionID, event) ->
             actionID == EditorInfo.IME_ACTION_GO && login.performClick());
@@ -171,23 +169,19 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
                         return null;
                     }
                 };
-                if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-                    authTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, service);
-                } else {
-                    authTask.execute();
-                }
+                authTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, service);
             }
         });
     }
 
     private void setupDeviceView(View view) {
-        final EditText deviceID = (EditText) view.findViewById(R.id.etxtDeviceID);
-        final EditText caption = (EditText) view.findViewById(R.id.etxtCaption);
-        final Button createNewDevice = (Button) view.findViewById(R.id.butCreateNewDevice);
-        final Button chooseDevice = (Button) view.findViewById(R.id.butChooseExistingDevice);
-        final TextView txtvError = (TextView) view.findViewById(R.id.txtvError);
-        final ProgressBar progBarCreateDevice = (ProgressBar) view.findViewById(R.id.progbarCreateDevice);
-        final Spinner spinnerDevices = (Spinner) view.findViewById(R.id.spinnerChooseDevice);
+        final EditText deviceID = view.findViewById(R.id.etxtDeviceID);
+        final EditText caption = view.findViewById(R.id.etxtCaption);
+        final Button createNewDevice = view.findViewById(R.id.butCreateNewDevice);
+        final Button chooseDevice = view.findViewById(R.id.butChooseExistingDevice);
+        final TextView txtvError = view.findViewById(R.id.txtvError);
+        final ProgressBar progBarCreateDevice = view.findViewById(R.id.progbarCreateDevice);
+        final Spinner spinnerDevices = view.findViewById(R.id.spinnerChooseDevice);
 
 
         // load device list
@@ -352,8 +346,8 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
     }
 
     private void setupFinishView(View view) {
-        final Button sync = (Button) view.findViewById(R.id.butSyncNow);
-        final Button back = (Button) view.findViewById(R.id.butGoMainscreen);
+        final Button sync = view.findViewById(R.id.butSyncNow);
+        final Button back = view.findViewById(R.id.butGoMainscreen);
 
         sync.setOnClickListener(v -> {
             GpodnetSyncService.sendSyncIntent(GpodnetAuthenticationActivity.this);

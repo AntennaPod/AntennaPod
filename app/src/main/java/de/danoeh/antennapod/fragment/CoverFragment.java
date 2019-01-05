@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -22,7 +23,6 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 public class CoverFragment extends Fragment implements MediaplayerInfoContentFragment {
 
     private static final String TAG = "CoverFragment";
-    private static final String ARG_PLAYABLE = "arg.playable";
 
     private Playable media;
 
@@ -49,9 +49,9 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.cover_fragment, container, false);
-        txtvPodcastTitle = (TextView) root.findViewById(R.id.txtvPodcastTitle);
-        txtvEpisodeTitle = (TextView) root.findViewById(R.id.txtvEpisodeTitle);
-        imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
+        txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
+        txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
+        imgvCover = root.findViewById(R.id.imgvCover);
         return root;
     }
 
@@ -61,9 +61,10 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
             txtvEpisodeTitle.setText(media.getEpisodeTitle());
             Glide.with(this)
                     .load(media.getImageLocation())
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .dontAnimate()
-                    .fitCenter()
+                    .apply(new RequestOptions()
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .dontAnimate()
+                        .fitCenter())
                     .into(imgvCover);
         } else {
             Log.w(TAG, "loadMediaInfo was called while media was null");

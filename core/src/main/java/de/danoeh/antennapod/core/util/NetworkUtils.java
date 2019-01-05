@@ -8,6 +8,7 @@ import android.net.wifi.WifiManager;
 import android.support.v4.net.ConnectivityManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -17,15 +18,16 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class NetworkUtils {
+    private NetworkUtils(){}
 
 	private static final String TAG = NetworkUtils.class.getSimpleName();
 
@@ -53,7 +55,7 @@ public class NetworkUtils {
 						Log.d(TAG, "Auto-dl filter is disabled");
 						return true;
 					} else {
-						WifiManager wm = (WifiManager) context
+						WifiManager wm = (WifiManager) context.getApplicationContext()
 								.getSystemService(Context.WIFI_SERVICE);
 						WifiInfo wifiInfo = wm.getConnectionInfo();
 						List<String> selectedNetworks = Arrays
@@ -92,7 +94,7 @@ public class NetworkUtils {
 		return UserPreferences.isAllowMobileUpdate() || !NetworkUtils.isNetworkMetered();
 	}
 
-	public static boolean isNetworkMetered() {
+	private static boolean isNetworkMetered() {
 		ConnectivityManager connManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
         return ConnectivityManagerCompat.isActiveNetworkMetered(connManager);
@@ -102,7 +104,7 @@ public class NetworkUtils {
      * Returns the SSID of the wifi connection, or <code>null</code> if there is no wifi.
      */
     public static String getWifiSsid() {
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         if (wifiInfo != null) {
             return wifiInfo.getSSID();
@@ -110,66 +112,59 @@ public class NetworkUtils {
         return null;
     }
 
-	public static Observable<Long> getFeedMediaSizeObservable(FeedMedia media) {
-        return Observable.create(new Observable.OnSubscribe<Long>() {
-            @Override
-            public void call(Subscriber<? super Long> subscriber) {
-                if (!NetworkUtils.isDownloadAllowed()) {
-                    subscriber.onNext(0L);
-                    subscriber.onCompleted();
+	public static Single<Long> getFeedMediaSizeObservable(FeedMedia media) {
+        return Single.create((SingleOnSubscribe<Long>) emitter -> {
+            if (!NetworkUtils.isDownloadAllowed()) {
+                emitter.onSuccess(0L);
+                return;
+            }
+            long size = Integer.MIN_VALUE;
+            if (media.isDownloaded()) {
+                File mediaFile = new File(media.getLocalMediaUrl());
+                if (mediaFile.exists()) {
+                    size = mediaFile.length();
+                }
+            } else if (!media.checkedOnSizeButUnknown()) {
+                // only query the network if we haven't already checked
+
+                String url = media.getDownload_url();
+                if(TextUtils.isEmpty(url)) {
+                    emitter.onSuccess(0L);
                     return;
                 }
-                long size = Integer.MIN_VALUE;
-                if (media.isDownloaded()) {
-                    File mediaFile = new File(media.getLocalMediaUrl());
-                    if (mediaFile.exists()) {
-                        size = mediaFile.length();
-                    }
-                } else if (!media.checkedOnSizeButUnknown()) {
-                    // only query the network if we haven't already checked
 
-                    String url = media.getDownload_url();
-                    if(TextUtils.isEmpty(url)) {
-                        subscriber.onNext(0L);
-                        subscriber.onCompleted();
-                        return;
-                    }
-
-                    OkHttpClient client = AntennapodHttpClient.getHttpClient();
-                    Request.Builder httpReq = new Request.Builder()
-                            .url(url)
-                            .header("Accept-Encoding", "identity")
-                            .head();
-                    try {
-                        Response response = client.newCall(httpReq.build()).execute();
-                        if (response.isSuccessful()) {
-                            String contentLength = response.header("Content-Length");
-                            try {
-                                size = Integer.parseInt(contentLength);
-                            } catch (NumberFormatException e) {
-                                Log.e(TAG, Log.getStackTraceString(e));
-                            }
+                OkHttpClient client = AntennapodHttpClient.getHttpClient();
+                Request.Builder httpReq = new Request.Builder()
+                        .url(url)
+                        .header("Accept-Encoding", "identity")
+                        .head();
+                try {
+                    Response response = client.newCall(httpReq.build()).execute();
+                    if (response.isSuccessful()) {
+                        String contentLength = response.header("Content-Length");
+                        try {
+                            size = Integer.parseInt(contentLength);
+                        } catch (NumberFormatException e) {
+                            Log.e(TAG, Log.getStackTraceString(e));
                         }
-                    } catch (IOException e) {
-                        subscriber.onNext(0L);
-                        subscriber.onCompleted();
-                        Log.e(TAG, Log.getStackTraceString(e));
-                        return; // better luck next time
                     }
+                } catch (IOException e) {
+                    emitter.onSuccess(0L);
+                    Log.e(TAG, Log.getStackTraceString(e));
+                    return; // better luck next time
                 }
-                Log.d(TAG, "new size: " + size);
-                if (size <= 0) {
-                    // they didn't tell us the size, but we don't want to keep querying on it
-                    media.setCheckedOnSizeButUnknown();
-                } else {
-                    media.setSize(size);
-                }
-                subscriber.onNext(size);
-                subscriber.onCompleted();
-                DBWriter.setFeedMedia(media);
             }
+            Log.d(TAG, "new size: " + size);
+            if (size <= 0) {
+                // they didn't tell us the size, but we don't want to keep querying on it
+                media.setCheckedOnSizeButUnknown();
+            } else {
+                media.setSize(size);
+            }
+            emitter.onSuccess(size);
+            DBWriter.setFeedMedia(media);
         })
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread());
     }
 

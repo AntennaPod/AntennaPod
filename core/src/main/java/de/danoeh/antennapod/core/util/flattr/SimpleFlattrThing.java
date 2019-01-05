@@ -24,7 +24,7 @@ public class SimpleFlattrThing implements FlattrThing {
         return this.status;
     }
 
-    private String title;
-    private String url;
-    private FlattrStatus status;
+    private final String title;
+    private final String url;
+    private final FlattrStatus status;
 }

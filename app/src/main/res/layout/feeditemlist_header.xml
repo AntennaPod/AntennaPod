@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/feed_image_bg"
     tools:context="de.danoeh.antennapod.activity.MainActivity"
     tools:background="@android:color/darker_gray">
 
@@ -18,10 +19,12 @@
         android:layout_width="@dimen/thumbnail_length_onlinefeedview"
         android:layout_height="@dimen/thumbnail_length_onlinefeedview"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/cover_label"
         tools:src="@drawable/ic_stat_antenna_default"
@@ -29,17 +32,31 @@
 
     <ImageButton
         android:id="@+id/butShowInfo"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/show_info_label"
         android:src="@drawable/ic_info_white_24dp"
         tools:background="@android:color/holo_green_dark"/>
+
+    <ImageButton
+        android:id="@+id/butShowSettings"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/show_feed_settings_label"
+        android:src="@drawable/ic_settings_white_24dp"
+        tools:background="@android:color/holo_green_dark"
+        android:layout_below="@+id/butShowInfo"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:id="@+id/txtvTitle"
@@ -49,9 +66,12 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_toLeftOf="@id/butShowInfo"
+        android:layout_toStartOf="@id/butShowInfo"
         android:layout_toRightOf="@id/imgvCover"
+        android:layout_toEndOf="@id/imgvCover"
         android:ellipsize="end"
         android:maxLines="2"
         android:shadowColor="@color/black"
@@ -62,13 +82,18 @@
 
     <TextView
         android:id="@+id/txtvAuthor"
-        android:layout_width="wrap_content"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtvTitle"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toLeftOf="@id/butShowSettings"
+        android:layout_toStartOf="@id/butShowSettings"
         android:layout_toRightOf="@id/imgvCover"
+        android:layout_toEndOf="@id/imgvCover"
         android:ellipsize="end"
         android:lines="1"
         android:shadowColor="@color/black"
@@ -76,7 +101,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_small"
         tools:text="Podcast author"
-        tools:background="@android:color/holo_green_dark" />
+        tools:background="@android:color/holo_green_dark"/>
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/txtvFailure"

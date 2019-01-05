@@ -8,7 +8,6 @@
   <string name="favorite_episodes_label">Favoritter</string>
   <string name="new_label">Nye</string>
   <string name="settings_label">Innstillinger</string>
-  <string name="add_new_feed_label">Legg til podcast</string>
   <string name="downloads_label">Nedlastninger</string>
   <string name="downloads_running_label">Kjører</string>
   <string name="downloads_completed_label">Fullført</string>
@@ -96,7 +95,6 @@
   <string name="feed_remover_msg">Fjerner strøm</string>
   <string name="load_complete_feed">Oppdater hele strømmen</string>
   <string name="hide_episodes_title">Skjul episoder</string>
-  <string name="episode_actions">Lagre handlinger</string>
   <string name="hide_unplayed_episodes_label">Ikke avspilt</string>
   <string name="hide_paused_episodes_label">Pauset</string>
   <string name="hide_played_episodes_label">Avspilt</string>
@@ -232,7 +230,6 @@
   <string name="other_pref">Annet</string>
   <string name="about_pref">Om</string>
   <string name="queue_label">Queue</string>
-  <string name="services_label">Tjenester</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Episodeopprydding</string>
   <string name="pref_pauseOnDisconnect_sum">Sett playback på pause når hodetelefoner eller bluetooth er frakoblet</string>
@@ -351,8 +348,6 @@
   <string name="choose_file_from_external_application">Bruk ekstern applikasjon</string>
   <string name="opml_export_label">OPML-eksportering</string>
   <string name="export_error_label">Eksporteringserror</string>
-  <string name="opml_export_success_title">OPML-import vellykket.</string>
-  <string name="opml_export_success_sum">.opml-filen ble skrevet til:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Sett opp sovetimer</string>
   <string name="disable_sleeptimer_label">Deaktiver sovetimer</string>
@@ -478,6 +473,8 @@
   <string name="rating_now_label">Naturligvis, kom igjen!</string>
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

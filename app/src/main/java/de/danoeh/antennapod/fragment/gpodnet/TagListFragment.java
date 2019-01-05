@@ -135,11 +135,7 @@ public class TagListFragment extends ListFragment {
                 }
             }
         };
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            loadTask.execute();
-        }
+        loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
 

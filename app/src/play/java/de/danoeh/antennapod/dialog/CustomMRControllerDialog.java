@@ -20,6 +20,7 @@ import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.support.v7.app.MediaRouteControllerDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.media.MediaRouter;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -34,16 +35,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class CustomMRControllerDialog extends MediaRouteControllerDialog {
     public static final String TAG = "CustomMRContrDialog";
@@ -59,7 +61,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
 
     private boolean viewsCreated = false;
 
-    private Subscription fetchArtSubscription;
+    private Disposable fetchArtSubscription;
 
     private MediaControllerCompat mediaController;
     private MediaControllerCompat.Callback mediaControllerCallback;
@@ -68,7 +70,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         this(context, 0);
     }
 
-    public CustomMRControllerDialog(Context context, int theme) {
+    private CustomMRControllerDialog(Context context, int theme) {
         super(context, theme);
         mediaRouter = MediaRouter.getInstance(getContext());
         token = mediaRouter.getMediaSessionToken();
@@ -203,7 +205,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
          * http://stackoverflow.com/questions/18077325/scale-image-to-fill-imageview-width-and-keep-aspect-ratio
          */
         if (landscape) {
-            artView = new ImageView(getContext()) {
+            artView = new AppCompatImageView(getContext()) {
                 @Override
                 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
                     int desiredWidth = widthMeasureSpec;
@@ -234,7 +236,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
             MarginLayoutParamsCompat.setMarginStart(artParams,
                     getContext().getResources().getDimensionPixelSize(R.dimen.media_router_controller_playback_control_horizontal_spacing));
         } else {
-            artView = new ImageView(getContext()) {
+            artView = new AppCompatImageView(getContext()) {
                 @Override
                 protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
                     int desiredHeight = heightMeasureSpec;
@@ -326,7 +328,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
     @Override
     public void onDetachedFromWindow() {
         if (fetchArtSubscription != null) {
-            fetchArtSubscription.unsubscribe();
+            fetchArtSubscription.dispose();
             fetchArtSubscription = null;
         }
         super.onDetachedFromWindow();
@@ -395,11 +397,11 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         }
 
         if (fetchArtSubscription != null) {
-            fetchArtSubscription.unsubscribe();
+            fetchArtSubscription.dispose();
         }
 
         fetchArtSubscription = Observable.fromCallable(() -> fetchArt(description))
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     fetchArtSubscription = null;
@@ -462,10 +464,10 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         } else if (iconUri != null) {
             try {
                 art = Glide.with(getContext().getApplicationContext())
-                        .load(iconUri.toString())
                         .asBitmap()
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .load(iconUri.toString())
+                        .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                        .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                         .get();
             } catch (InterruptedException | ExecutionException e) {
                 Log.e(TAG, "Image art load failed", e);

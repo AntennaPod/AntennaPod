@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +16,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
@@ -33,8 +41,8 @@ public class ExternalPlayerFragment extends Fragment {
     private ImageButton butPlay;
     private TextView mFeedName;
     private ProgressBar mProgressBar;
-
     private PlaybackController controller;
+    private Disposable disposable;
 
     public ExternalPlayerFragment() {
         super();
@@ -45,19 +53,26 @@ public class ExternalPlayerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.external_player_fragment,
                 container, false);
-        fragmentLayout = (ViewGroup) root.findViewById(R.id.fragmentLayout);
-        imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
-        txtvTitle = (TextView) root.findViewById(R.id.txtvTitle);
-        butPlay = (ImageButton) root.findViewById(R.id.butPlay);
-        mFeedName = (TextView) root.findViewById(R.id.txtvAuthor);
-        mProgressBar = (ProgressBar) root.findViewById(R.id.episodeProgress);
+        fragmentLayout = root.findViewById(R.id.fragmentLayout);
+        imgvCover = root.findViewById(R.id.imgvCover);
+        txtvTitle = root.findViewById(R.id.txtvTitle);
+        butPlay = root.findViewById(R.id.butPlay);
+        mFeedName = root.findViewById(R.id.txtvAuthor);
+        mProgressBar = root.findViewById(R.id.episodeProgress);
 
         fragmentLayout.setOnClickListener(v -> {
             Log.d(TAG, "layoutInfo was clicked");
 
             if (controller != null && controller.getMedia() != null) {
-                startActivity(PlaybackService.getPlayerActivityIntent(
-                        getActivity(), controller.getMedia()));
+                Intent intent = PlaybackService.getPlayerActivityIntent(getActivity(), controller.getMedia());
+
+                if (Build.VERSION.SDK_INT >= 16 && controller.getMedia().getMediaType() == MediaType.AUDIO) {
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(getActivity(), imgvCover, "coverTransition");
+                    startActivity(intent, options.toBundle());
+                } else {
+                    startActivity(intent);
+                }
             }
         });
         return root;
@@ -68,10 +83,15 @@ public class ExternalPlayerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         controller = setupPlaybackController();
         butPlay.setOnClickListener(v -> {
-            if(controller != null) {
+            if (controller != null) {
                 controller.playPause();
             }
         });
+        loadMediaInfo();
+    }
+
+    public void connectToPlaybackService() {
+        controller.init();
     }
 
     private PlaybackController setupPlaybackController() {
@@ -112,9 +132,9 @@ public class ExternalPlayerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        onPositionObserverUpdate();
+
         controller.init();
-        mProgressBar.setProgress((int)
-                ((double) controller.getPosition() / controller.getDuration() * 100));
     }
 
     @Override
@@ -123,6 +143,9 @@ public class ExternalPlayerFragment extends Fragment {
         Log.d(TAG, "Fragment is about to be destroyed");
         if (controller != null) {
             controller.release();
+        }
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -144,7 +167,7 @@ public class ExternalPlayerFragment extends Fragment {
         controller = setupPlaybackController();
         if (butPlay != null) {
             butPlay.setOnClickListener(v -> {
-                if(controller != null) {
+                if (controller != null) {
                     controller.playPause();
                 }
             });
@@ -154,50 +177,65 @@ public class ExternalPlayerFragment extends Fragment {
 
     private boolean loadMediaInfo() {
         Log.d(TAG, "Loading media info");
-        if (controller != null && controller.serviceAvailable()) {
-            Playable media = controller.getMedia();
-            if (media != null) {
-                txtvTitle.setText(media.getEpisodeTitle());
-                mFeedName.setText(media.getFeedTitle());
-                mProgressBar.setProgress((int)
-                        ((double) controller.getPosition() / controller.getDuration() * 100));
+        if (controller == null) {
+            Log.w(TAG, "loadMediaInfo was called while PlaybackController was null!");
+            return false;
+        }
 
-                Glide.with(getActivity())
-                        .load(media.getImageLocation())
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Maybe.create(emitter -> {
+                    Playable media = controller.getMedia();
+                    if (media != null) {
+                        emitter.onSuccess(media);
+                    } else {
+                        emitter.onComplete();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> updateUi((Playable) media),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+        return true;
+    }
+
+    private void updateUi(Playable media) {
+        if (media != null) {
+            txtvTitle.setText(media.getEpisodeTitle());
+            mFeedName.setText(media.getFeedTitle());
+            onPositionObserverUpdate();
+
+            Glide.with(getActivity())
+                    .load(media.getImageLocation())
+                    .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
                         .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .fitCenter()
-                        .dontAnimate()
-                        .into(imgvCover);
+                        .dontAnimate())
+                    .into(imgvCover);
 
-                fragmentLayout.setVisibility(View.VISIBLE);
-                if (controller.isPlayingVideoLocally()) {
-                    butPlay.setVisibility(View.GONE);
-                } else {
-                    butPlay.setVisibility(View.VISIBLE);
-                }
-                return true;
+            fragmentLayout.setVisibility(View.VISIBLE);
+            if (controller.isPlayingVideoLocally()) {
+                butPlay.setVisibility(View.GONE);
             } else {
-                Log.w(TAG,  "loadMediaInfo was called while the media object of playbackService was null!");
-                return false;
+                butPlay.setVisibility(View.VISIBLE);
             }
         } else {
-            Log.w(TAG, "loadMediaInfo was called while playbackService was null!");
-            return false;
+            Log.w(TAG, "loadMediaInfo was called while the media object of playbackService was null!");
         }
-    }
-
-    private String getPositionString(int position, int duration) {
-        return Converter.getDurationStringLong(position) + " / "
-                + Converter.getDurationStringLong(duration);
     }
 
     public PlaybackController getPlaybackControllerTestingOnly() {
         return controller;
     }
 
-    public void onPositionObserverUpdate() {
+    private void onPositionObserverUpdate() {
+        if (controller.getPosition() == PlaybackService.INVALID_TIME
+                || controller.getDuration() == PlaybackService.INVALID_TIME) {
+            return;
+        }
         mProgressBar.setProgress((int)
                 ((double) controller.getPosition() / controller.getDuration() * 100));
     }

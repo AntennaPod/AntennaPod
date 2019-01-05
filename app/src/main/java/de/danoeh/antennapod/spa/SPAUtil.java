@@ -33,7 +33,7 @@ public class SPAUtil {
      * sent before.
      */
     public static synchronized boolean sendSPAppsQueryFeedsIntent(Context context) {
-        if (context == null) throw new IllegalArgumentException("context = null");
+        assert context != null : "context = null";
         final Context appContext = context.getApplicationContext();
         if (appContext == null) {
             Log.wtf(TAG, "Unable to get application context");

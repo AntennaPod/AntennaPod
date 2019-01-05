@@ -36,13 +36,14 @@ import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static de.danoeh.antennapod.adapter.itunes.ItunesAdapter.Podcast;
 
@@ -69,13 +70,13 @@ public class ItunesSearchFragment extends Fragment {
      */
     private List<Podcast> searchResults;
     private List<Podcast> topList;
-    private Subscription subscription;
+    private Disposable disposable;
 
     /**
      * Replace adapter data with provided search results from SearchTask.
      * @param result List of Podcast objects containing search results
      */
-    void updateData(List<Podcast> result) {
+    private void updateData(List<Podcast> result) {
         this.searchResults = result;
         adapter.clear();
         if (result != null && result.size() > 0) {
@@ -109,7 +110,7 @@ public class ItunesSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
-        gridView = (GridView) root.findViewById(R.id.gridView);
+        gridView = root.findViewById(R.id.gridView);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
@@ -127,7 +128,7 @@ public class ItunesSearchFragment extends Fragment {
             } else {
                 gridView.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
-                subscription = Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+                disposable = Single.create((SingleOnSubscribe<String>) emitter -> {
                             OkHttpClient client = AntennapodHttpClient.getHttpClient();
                             Request.Builder httpReq = new Request.Builder()
                                     .url(podcast.feedUrl)
@@ -139,17 +140,16 @@ public class ItunesSearchFragment extends Fragment {
                                     JSONObject result = new JSONObject(resultString);
                                     JSONObject results = result.getJSONArray("results").getJSONObject(0);
                                     String feedUrl = results.getString("feedUrl");
-                                    subscriber.onNext(feedUrl);
+                                    emitter.onSuccess(feedUrl);
                                 } else {
                                     String prefix = getString(R.string.error_msg_prefix);
-                                    subscriber.onError(new IOException(prefix + response));
+                                    emitter.onError(new IOException(prefix + response));
                                 }
                             } catch (IOException | JSONException e) {
-                                subscriber.onError(e);
+                                emitter.onError(e);
                             }
-                            subscriber.onCompleted();
                         })
-                        .subscribeOn(Schedulers.newThread())
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(feedUrl -> {
                             progressBar.setVisibility(View.GONE);
@@ -170,10 +170,10 @@ public class ItunesSearchFragment extends Fragment {
                         });
             }
         });
-        progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
-        txtvError = (TextView) root.findViewById(R.id.txtvError);
-        butRetry = (Button) root.findViewById(R.id.butRetry);
-        txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
+        progressBar = root.findViewById(R.id.progressBar);
+        txtvError = root.findViewById(R.id.txtvError);
+        butRetry = root.findViewById(R.id.butRetry);
+        txtvEmpty = root.findViewById(android.R.id.empty);
 
         loadToplist();
 
@@ -183,8 +183,8 @@ public class ItunesSearchFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         adapter = null;
     }
@@ -228,15 +228,15 @@ public class ItunesSearchFragment extends Fragment {
     }
 
     private void loadToplist() {
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         gridView.setVisibility(View.GONE);
         txtvError.setVisibility(View.GONE);
         butRetry.setVisibility(View.GONE);
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        subscription = Observable.create((Observable.OnSubscribe<List<Podcast>>) subscriber -> {
+        disposable = Single.create((SingleOnSubscribe<List<Podcast>>) emitter -> {
                     String lang = Locale.getDefault().getLanguage();
                     String url = "https://itunes.apple.com/" + lang + "/rss/toppodcasts/limit=25/explicit=true/json";
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
@@ -268,15 +268,14 @@ public class ItunesSearchFragment extends Fragment {
                         }
                         else {
                             String prefix = getString(R.string.error_msg_prefix);
-                            subscriber.onError(new IOException(prefix + response));
+                            emitter.onError(new IOException(prefix + response));
                         }
                     } catch (IOException | JSONException e) {
-                        subscriber.onError(e);
+                        emitter.onError(e);
                     }
-                    subscriber.onNext(results);
-                    subscriber.onCompleted();
+                    emitter.onSuccess(results);
                 })
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(podcasts -> {
                     progressBar.setVisibility(View.GONE);
@@ -293,15 +292,15 @@ public class ItunesSearchFragment extends Fragment {
     }
 
     private void search(String query) {
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         gridView.setVisibility(View.GONE);
         txtvError.setVisibility(View.GONE);
         butRetry.setVisibility(View.GONE);
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        subscription = rx.Observable.create((Observable.OnSubscribe<List<Podcast>>) subscriber -> {
+        disposable = Single.create((SingleOnSubscribe<List<Podcast>>) subscriber -> {
                     String encodedQuery = null;
                     try {
                         encodedQuery = URLEncoder.encode(query, "UTF-8");
@@ -341,10 +340,9 @@ public class ItunesSearchFragment extends Fragment {
                     } catch (IOException | JSONException e) {
                         subscriber.onError(e);
                     }
-                    subscriber.onNext(podcasts);
-                    subscriber.onCompleted();
+                    subscriber.onSuccess(podcasts);
                 })
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(podcasts -> {
                     progressBar.setVisibility(View.GONE);

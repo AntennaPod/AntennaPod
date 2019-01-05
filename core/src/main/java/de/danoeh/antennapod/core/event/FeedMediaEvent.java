@@ -8,8 +8,8 @@ public class FeedMediaEvent {
         UPDATE
     }
 
-    public final Action action;
-    public final FeedMedia media;
+    private final Action action;
+    private final FeedMedia media;
 
     private FeedMediaEvent(Action action, FeedMedia media) {
         this.action = action;

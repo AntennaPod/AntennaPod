@@ -23,8 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
-import com.nineoldandroids.view.ViewHelper;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -41,6 +41,7 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.fragment.ItemFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
@@ -51,7 +52,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     private static final String TAG = QueueRecyclerAdapter.class.getSimpleName();
 
-    private WeakReference<MainActivity> mainActivity;
+    private final WeakReference<MainActivity> mainActivity;
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
@@ -76,11 +77,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         this.itemTouchHelper = itemTouchHelper;
         locked = UserPreferences.isQueueLocked();
 
-        if(UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_dark);
-        } else {
-            playingBackGroundColor = ContextCompat.getColor(mainActivity, R.color.highlight_light);
-        }
+        playingBackGroundColor = ThemeUtils.getColorFromAttr(mainActivity, R.attr.currently_playing_background);
         normalBackGroundColor = ContextCompat.getColor(mainActivity, android.R.color.transparent);
     }
 
@@ -138,19 +135,19 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
         public ViewHolder(View v) {
             super(v);
-            container = (FrameLayout) v.findViewById(R.id.container);
-            dragHandle = (ImageView) v.findViewById(R.id.drag_handle);
-            placeholder = (TextView) v.findViewById(R.id.txtvPlaceholder);
-            cover = (ImageView) v.findViewById(R.id.imgvCover);
-            title = (TextView) v.findViewById(R.id.txtvTitle);
+            container = v.findViewById(R.id.container);
+            dragHandle = v.findViewById(R.id.drag_handle);
+            placeholder = v.findViewById(R.id.txtvPlaceholder);
+            cover = v.findViewById(R.id.imgvCover);
+            title = v.findViewById(R.id.txtvTitle);
             if(Build.VERSION.SDK_INT >= 23) {
                 title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
             }
-            pubDate = (TextView) v.findViewById(R.id.txtvPubDate);
-            progressLeft = (TextView) v.findViewById(R.id.txtvProgressLeft);
-            progressRight = (TextView) v.findViewById(R.id.txtvProgressRight);
-            butSecondary = (ImageButton) v.findViewById(R.id.butSecondaryAction);
-            progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+            pubDate = v.findViewById(R.id.txtvPubDate);
+            progressLeft = v.findViewById(R.id.txtvProgressLeft);
+            progressRight = v.findViewById(R.id.txtvProgressRight);
+            butSecondary = v.findViewById(R.id.butSecondaryAction);
+            progressBar = v.findViewById(R.id.progressBar);
             v.setTag(this);
             v.setOnClickListener(this);
             v.setOnCreateContextMenuListener(this);
@@ -198,12 +195,12 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
         @Override
         public void onItemSelected() {
-            ViewHelper.setAlpha(itemView, 0.5f);
+            itemView.setAlpha(0.5f);
         }
 
         @Override
         public void onItemClear() {
-            ViewHelper.setAlpha(itemView, 1.0f);
+            itemView.setAlpha(1.0f);
         }
 
         public void bind(FeedItem item) {
@@ -280,7 +277,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                         progressLeft.setText("");
                     }
                     progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 if(media.isCurrentlyPlaying()) {
@@ -295,17 +292,17 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             butSecondary.setTag(item);
             butSecondary.setOnClickListener(secondaryActionListener);
 
-            Glide.with(mainActivity.get())
-                .load(item.getImageLocation())
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
-                .into(new CoverTarget(item.getFeed().getImageLocation(), placeholder, cover, mainActivity.get()));
+            new CoverLoader(mainActivity.get())
+                    .withUri(item.getImageLocation())
+                    .withFallbackUri(item.getFeed().getImageLocation())
+                    .withPlaceholderView(placeholder)
+                    .withCoverView(cover)
+                    .load();
         }
 
     }
 
-    private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
+    private final View.OnClickListener secondaryActionListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();

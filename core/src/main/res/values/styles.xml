@@ -1,125 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.AntennaPod.Light" parent="Theme.AppCompat.Light">
+    <style name="Theme.AntennaPod.Light" parent="Theme.Base.AntennaPod.Light">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Light" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/primary_light</item>
         <item name="colorAccent">@color/holo_blue_light</item>
         <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
-        <item name="attr/action_bar_icon_color">@color/grey600</item>
-        <item name="attr/action_about">@drawable/ic_info_grey600_24dp</item>
-        <item name="attr/action_search">@drawable/ic_search_grey600_24dp</item>
-        <item name="attr/action_stream">@drawable/ic_settings_input_antenna_grey600_24dp</item>
-        <item name="attr/av_download">@drawable/ic_file_download_grey600_24dp</item>
-        <item name="attr/av_fast_forward">@drawable/ic_fast_forward_grey600_24dp</item>
-        <item name="attr/av_pause">@drawable/ic_pause_grey600_24dp</item>
-        <item name="attr/av_play">@drawable/ic_play_arrow_grey600_24dp</item>
-        <item name="attr/av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
-        <item name="attr/content_discard">@drawable/ic_delete_grey600_24dp</item>
-        <item name="attr/content_new">@drawable/ic_add_grey600_24dp</item>
-        <item name="attr/feed">@drawable/ic_feed_grey600_24dp</item>
-        <item name="attr/location_web_site">@drawable/ic_web_grey600_24dp</item>
-        <item name="attr/navigation_accept">@drawable/ic_done_grey600_24dp</item>
-        <item name="attr/navigation_cancel">@drawable/ic_cancel_grey600_24dp</item>
-        <item name="attr/navigation_expand">@drawable/ic_expand_more_grey600_36dp</item>
-        <item name="attr/navigation_refresh">@drawable/ic_refresh_grey600_24dp</item>
-        <item name="attr/navigation_up">@drawable/navigation_up</item>
-        <item name="attr/social_share">@drawable/ic_share_grey600_24dp</item>
-        <item name="attr/stat_playlist">@drawable/ic_list_grey600_24dp</item>
-        <item name="attr/type_audio">@drawable/ic_hearing_grey600_18dp</item>
-        <item name="attr/type_video">@drawable/ic_remove_red_eye_grey600_18dp</item>
-        <item name="attr/non_transparent_background">@color/white</item>
-        <item name="attr/overlay_background">@color/overlay_light</item>
-        <item name="attr/overlay_drawable">@drawable/overlay_drawable</item>
-        <item name="attr/dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
-        <item name="attr/dragview_float_background">@color/white</item>
-        <item name="attr/nav_drawer_background">@color/white</item>
-        <item name="attr/ic_new">@drawable/ic_new_releases_grey600_24dp</item>
-        <item name="attr/ic_history">@drawable/ic_history_grey600_24dp</item>
-        <item name="attr/ic_folder">@drawable/ic_folder_grey600_24dp</item>
-        <item name="attr/av_play_big">@drawable/ic_play_arrow_grey600_36dp</item>
-        <item name="attr/av_pause_big">@drawable/ic_pause_grey600_36dp</item>
-        <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
-        <item name="attr/av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
-        <item name="attr/av_skip_big">@drawable/ic_skip_grey600_36dp</item>
-        <item name="attr/ic_fav">@drawable/ic_star_border_grey600_24dp</item>
-        <item name="attr/ic_unfav">@drawable/ic_star_grey600_24dp</item>
-        <item name="attr/ic_settings">@drawable/ic_settings_grey600_24dp</item>
-        <item name="attr/ic_lock_open">@drawable/ic_lock_open_grey600_24dp</item>
-        <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
-        <item name="attr/ic_filter">@drawable/ic_filter_grey600_24dp</item>
-        <item name="attr/ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
-        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
-        <item name="attr/ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
-        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
-        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
-        <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
-        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
-        <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
-        <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
+        <item type="attr" name="action_bar_icon_color">@color/grey600</item>
+        <item type="attr" name="storage">@drawable/ic_sd_grey600_24dp</item>
+        <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_grey600_24dp</item>
+        <item type="attr" name="statistics">@drawable/ic_poll_box_grey600_24dp</item>
+        <item type="attr" name="action_about">@drawable/ic_info_grey600_24dp</item>
+        <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_grey600_24dp</item>
+        <item type="attr" name="action_search">@drawable/ic_search_grey600_24dp</item>
+        <item type="attr" name="action_stream">@drawable/ic_settings_input_antenna_grey600_24dp</item>
+        <item type="attr" name="av_download">@drawable/ic_file_download_grey600_24dp</item>
+        <item type="attr" name="av_fast_forward">@drawable/ic_fast_forward_grey600_24dp</item>
+        <item type="attr" name="av_pause">@drawable/ic_pause_grey600_24dp</item>
+        <item type="attr" name="av_play">@drawable/ic_play_arrow_grey600_24dp</item>
+        <item type="attr" name="av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
+        <item type="attr" name="content_discard">@drawable/ic_delete_grey600_24dp</item>
+        <item type="attr" name="content_new">@drawable/ic_add_grey600_24dp</item>
+        <item type="attr" name="feed">@drawable/ic_feed_grey600_24dp</item>
+        <item type="attr" name="location_web_site">@drawable/ic_web_grey600_24dp</item>
+        <item type="attr" name="navigation_accept">@drawable/ic_done_grey600_24dp</item>
+        <item type="attr" name="navigation_cancel">@drawable/ic_cancel_grey600_24dp</item>
+        <item type="attr" name="navigation_expand">@drawable/ic_expand_more_grey600_36dp</item>
+        <item type="attr" name="navigation_refresh">@drawable/ic_refresh_grey600_24dp</item>
+        <item type="attr" name="navigation_up">@drawable/navigation_up</item>
+        <item type="attr" name="social_share">@drawable/ic_share_grey600_24dp</item>
+        <item type="attr" name="stat_playlist">@drawable/ic_list_grey600_24dp</item>
+        <item type="attr" name="type_audio">@drawable/ic_hearing_grey600_18dp</item>
+        <item type="attr" name="type_video">@drawable/ic_remove_red_eye_grey600_18dp</item>
+        <item type="attr" name="non_transparent_background">@color/white</item>
+        <item type="attr" name="overlay_background">@color/overlay_light</item>
+        <item type="attr" name="overlay_drawable">@drawable/overlay_drawable</item>
+        <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
+        <item type="attr" name="dragview_float_background">@color/white</item>
+        <item type="attr" name="nav_drawer_background">@color/white</item>
+        <item type="attr" name="ic_new">@drawable/ic_new_releases_grey600_24dp</item>
+        <item type="attr" name="ic_history">@drawable/ic_history_grey600_24dp</item>
+        <item type="attr" name="ic_folder">@drawable/ic_folder_grey600_24dp</item>
+        <item type="attr" name="av_play_big">@drawable/ic_play_arrow_grey600_36dp</item>
+        <item type="attr" name="av_pause_big">@drawable/ic_pause_grey600_36dp</item>
+        <item type="attr" name="av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
+        <item type="attr" name="av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
+        <item type="attr" name="av_skip_big">@drawable/ic_skip_grey600_36dp</item>
+        <item type="attr" name="ic_fav">@drawable/ic_star_border_grey600_24dp</item>
+        <item type="attr" name="ic_unfav">@drawable/ic_star_grey600_24dp</item>
+        <item type="attr" name="ic_settings">@drawable/ic_settings_grey600_24dp</item>
+        <item type="attr" name="ic_lock_open">@drawable/ic_lock_open_grey600_24dp</item>
+        <item type="attr" name="ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
+        <item type="attr" name="ic_filter">@drawable/ic_filter_grey600_24dp</item>
+        <item type="attr" name="ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
+        <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
+        <item type="attr" name="ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
+        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
+        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
+        <item type="attr" name="ic_sort">@drawable/ic_sort_grey600_24dp</item>
+        <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
+        <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
+        <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
+        <item type="attr" name="ic_cellphone_text">@drawable/ic_cellphone_text_grey600_24dp</item>
+        <item type="attr" name="ic_question_answer">@drawable/ic_forum_grey600_24dp</item>
+        <item type="attr" name="ic_bug">@drawable/ic_bug_grey600_24dp</item>
+        <item type="attr" name="ic_known_issues">@drawable/ic_format_list_bulleted_grey600_24dp</item>
+
+        <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_light</item>
+
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+
+        <item type="attr" name="about_screen_background">#e5e5e5</item>
+        <item type="attr" name="about_screen_card_background">#ffffff</item>
+        <item type="attr" name="about_screen_card_border">#d2d2d2</item>
+        <item type="attr" name="about_screen_font_color">#000000</item>
     </style>
 
-    <style name="Theme.AntennaPod.Dark" parent="Theme.AppCompat">
+    <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Dark" parent="Theme.AppCompat">
         <item name="colorAccent">@color/holo_blue_dark</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
-        <item name="attr/action_bar_icon_color">@color/white</item>
-        <item name="attr/action_about">@drawable/ic_info_white_24dp</item>g
-        <item name="attr/action_search">@drawable/ic_search_white_24dp</item>
-        <item name="attr/action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
-        <item name="attr/av_download">@drawable/ic_file_download_white_24dp</item>
-        <item name="attr/av_fast_forward">@drawable/ic_fast_forward_white_24dp</item>
-        <item name="attr/av_pause">@drawable/ic_pause_white_24dp</item>
-        <item name="attr/av_play">@drawable/ic_play_arrow_white_24dp</item>
-        <item name="attr/av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
-        <item name="attr/content_discard">@drawable/ic_delete_white_24dp</item>
-        <item name="attr/content_new">@drawable/ic_add_white_24dp</item>
-        <item name="attr/feed">@drawable/ic_feed_white_24dp</item>
-        <item name="attr/location_web_site">@drawable/ic_web_white_24dp</item>
-        <item name="attr/navigation_accept">@drawable/ic_done_white_24dp</item>
-        <item name="attr/navigation_cancel">@drawable/ic_cancel_white_24dp</item>
-        <item name="attr/navigation_expand">@drawable/ic_expand_more_white_36dp</item>
-        <item name="attr/navigation_refresh">@drawable/ic_refresh_white_24dp</item>
-        <item name="attr/navigation_up">@drawable/navigation_up_dark</item>
-        <item name="attr/social_share">@drawable/ic_share_white_24dp</item>
-        <item name="attr/stat_playlist">@drawable/ic_list_white_24dp</item>
-        <item name="attr/type_audio">@drawable/ic_hearing_white_18dp</item>
-        <item name="attr/type_video">@drawable/ic_remove_red_eye_white_18dp</item>
-        <item name="attr/non_transparent_background">@color/black</item>
-        <item name="attr/overlay_background">@color/overlay_dark</item>
-        <item name="attr/overlay_drawable">@drawable/overlay_drawable_dark</item>
-        <item name="attr/dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
-        <item name="attr/dragview_float_background">@color/black</item>
-        <item name="attr/nav_drawer_background">#3B3B3B</item>
-        <item name="attr/ic_new">@drawable/ic_new_releases_white_24dp</item>
-        <item name="attr/ic_history">@drawable/ic_history_white_24dp</item>
-        <item name="attr/ic_folder">@drawable/ic_folder_white_24dp</item>
-        <item name="attr/av_play_big">@drawable/ic_play_arrow_white_36dp</item>
-        <item name="attr/av_pause_big">@drawable/ic_pause_white_36dp</item>
-        <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
-        <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
-        <item name="attr/av_skip_big">@drawable/ic_skip_white_36dp</item>
-        <item name="attr/ic_fav">@drawable/ic_star_border_white_24dp</item>
-        <item name="attr/ic_unfav">@drawable/ic_star_white_24dp</item>
-        <item name="attr/ic_settings">@drawable/ic_settings_white_24dp</item>
-        <item name="attr/ic_lock_open">@drawable/ic_lock_open_white_24dp</item>
-        <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
-        <item name="attr/ic_filter">@drawable/ic_filter_white_24dp</item>
-        <item name="attr/ic_sleep">@drawable/ic_sleep_white_24dp</item>
-        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
-        <item name="attr/ic_check_box">@drawable/ic_check_box_white_24dp</item>
-        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
-        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
-        <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
-        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
-        <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
-        <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
+        <item type="attr" name="action_bar_icon_color">@color/white</item>
+        <item type="attr" name="storage">@drawable/ic_sd_white_24dp</item>
+        <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_white_24dp</item>
+        <item type="attr" name="statistics">@drawable/ic_poll_box_white_24dp</item>
+        <item type="attr" name="action_about">@drawable/ic_info_white_24dp</item>
+        <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_white_24dp</item>
+        <item type="attr" name="action_search">@drawable/ic_search_white_24dp</item>
+        <item type="attr" name="action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
+        <item type="attr" name="av_download">@drawable/ic_file_download_white_24dp</item>
+        <item type="attr" name="av_fast_forward">@drawable/ic_fast_forward_white_24dp</item>
+        <item type="attr" name="av_pause">@drawable/ic_pause_white_24dp</item>
+        <item type="attr" name="av_play">@drawable/ic_play_arrow_white_24dp</item>
+        <item type="attr" name="av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
+        <item type="attr" name="content_discard">@drawable/ic_delete_white_24dp</item>
+        <item type="attr" name="content_new">@drawable/ic_add_white_24dp</item>
+        <item type="attr" name="feed">@drawable/ic_feed_white_24dp</item>
+        <item type="attr" name="location_web_site">@drawable/ic_web_white_24dp</item>
+        <item type="attr" name="navigation_accept">@drawable/ic_done_white_24dp</item>
+        <item type="attr" name="navigation_cancel">@drawable/ic_cancel_white_24dp</item>
+        <item type="attr" name="navigation_expand">@drawable/ic_expand_more_white_36dp</item>
+        <item type="attr" name="navigation_refresh">@drawable/ic_refresh_white_24dp</item>
+        <item type="attr" name="navigation_up">@drawable/navigation_up_dark</item>
+        <item type="attr" name="social_share">@drawable/ic_share_white_24dp</item>
+        <item type="attr" name="stat_playlist">@drawable/ic_list_white_24dp</item>
+        <item type="attr" name="type_audio">@drawable/ic_hearing_white_18dp</item>
+        <item type="attr" name="type_video">@drawable/ic_remove_red_eye_white_18dp</item>
+        <item type="attr" name="non_transparent_background">@color/black</item>
+        <item type="attr" name="overlay_background">@color/overlay_dark</item>
+        <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark</item>
+        <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
+        <item type="attr" name="dragview_float_background">@color/black</item>
+        <item type="attr" name="nav_drawer_background">#3B3B3B</item>
+        <item type="attr" name="ic_new">@drawable/ic_new_releases_white_24dp</item>
+        <item type="attr" name="ic_history">@drawable/ic_history_white_24dp</item>
+        <item type="attr" name="ic_folder">@drawable/ic_folder_white_24dp</item>
+        <item type="attr" name="av_play_big">@drawable/ic_play_arrow_white_36dp</item>
+        <item type="attr" name="av_pause_big">@drawable/ic_pause_white_36dp</item>
+        <item type="attr" name="av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
+        <item type="attr" name="av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
+        <item type="attr" name="av_skip_big">@drawable/ic_skip_white_36dp</item>
+        <item type="attr" name="ic_fav">@drawable/ic_star_border_white_24dp</item>
+        <item type="attr" name="ic_unfav">@drawable/ic_star_white_24dp</item>
+        <item type="attr" name="ic_settings">@drawable/ic_settings_white_24dp</item>
+        <item type="attr" name="ic_lock_open">@drawable/ic_lock_open_white_24dp</item>
+        <item type="attr" name="ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
+        <item type="attr" name="ic_filter">@drawable/ic_filter_white_24dp</item>
+        <item type="attr" name="ic_sleep">@drawable/ic_sleep_white_24dp</item>
+        <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
+        <item type="attr" name="ic_check_box">@drawable/ic_check_box_white_24dp</item>
+        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
+        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
+        <item type="attr" name="ic_sort">@drawable/ic_sort_white_24dp</item>
+        <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
+        <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
+        <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
+        <item type="attr" name="ic_cellphone_text">@drawable/ic_cellphone_text_white_24dp</item>
+        <item type="attr" name="ic_question_answer">@drawable/ic_baseline_question_answer_white_24dp</item>
+        <item type="attr" name="ic_bug">@drawable/ic_bug_white_24dp</item>
+        <item type="attr" name="ic_known_issues">@drawable/ic_format_list_bulleted_white_24dp</item>
+        <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_dark</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+
+        <item type="attr" name="about_screen_background">#303030</item>
+        <item type="attr" name="about_screen_card_background">#424242</item>
+        <item type="attr" name="about_screen_card_border">#262626</item>
+        <item type="attr" name="about_screen_font_color">#ffffff</item>
     </style>
 
-    <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.Dark">
+        <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
+        <item type="attr" name="non_transparent_background">@color/black</item>
+        <item type="attr" name="overlay_background">@color/black</item>
+        <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark_trueblack</item>
+        <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
+        <item type="attr" name="dragview_float_background">@color/black</item>
+        <item type="attr" name="nav_drawer_background">@color/black</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:colorBackground">@color/black</item>
+        <item name="android:windowBackground">@color/black</item>
+        <item name="android:actionBarStyle">@color/black</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+    </style>
+
+
+    <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.Base.AntennaPod.Light.NoTitle">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Light.NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="progressBarTheme">@style/ProgressBarLight</item>
@@ -127,59 +195,79 @@
         <item name="colorAccent">@color/holo_blue_light</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
-        <item name="attr/action_about">@drawable/ic_info_grey600_24dp</item>
-        <item name="attr/action_search">@drawable/ic_search_grey600_24dp</item>
-        <item name="attr/action_stream">@drawable/ic_settings_input_antenna_grey600_24dp</item>
-        <item name="attr/av_download">@drawable/ic_file_download_grey600_24dp</item>
-        <item name="attr/av_fast_forward">@drawable/ic_fast_forward_grey600_24dp</item>
-        <item name="attr/av_pause">@drawable/ic_pause_grey600_24dp</item>
-        <item name="attr/av_play">@drawable/ic_play_arrow_grey600_24dp</item>
-        <item name="attr/av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
-        <item name="attr/content_discard">@drawable/ic_delete_grey600_24dp</item>
-        <item name="attr/content_new">@drawable/ic_add_grey600_24dp</item>
-        <item name="attr/feed">@drawable/ic_feed_grey600_24dp</item>
-        <item name="attr/location_web_site">@drawable/ic_web_grey600_24dp</item>
-        <item name="attr/navigation_accept">@drawable/ic_done_grey600_24dp</item>
-        <item name="attr/navigation_cancel">@drawable/ic_cancel_grey600_24dp</item>
-        <item name="attr/navigation_expand">@drawable/ic_expand_more_grey600_36dp</item>
-        <item name="attr/navigation_refresh">@drawable/ic_refresh_grey600_24dp</item>
-        <item name="attr/navigation_up">@drawable/navigation_up</item>
-        <item name="attr/social_share">@drawable/ic_share_grey600_24dp</item>
-        <item name="attr/stat_playlist">@drawable/ic_list_grey600_24dp</item>
-        <item name="attr/type_audio">@drawable/ic_hearing_grey600_18dp</item>
-        <item name="attr/type_video">@drawable/ic_remove_red_eye_grey600_18dp</item>
-        <item name="attr/non_transparent_background">@color/white</item>
-        <item name="attr/overlay_background">@color/overlay_light</item>
-        <item name="attr/overlay_drawable">@drawable/overlay_drawable</item>
-        <item name="attr/dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
-        <item name="attr/dragview_float_background">@color/white</item>
-        <item name="attr/nav_drawer_background">@color/white</item>
-        <item name="attr/ic_new">@drawable/ic_new_releases_grey600_24dp</item>
-        <item name="attr/ic_history">@drawable/ic_history_grey600_24dp</item>
-        <item name="attr/ic_folder">@drawable/ic_folder_grey600_24dp</item>
-        <item name="attr/av_play_big">@drawable/ic_play_arrow_grey600_36dp</item>
-        <item name="attr/av_pause_big">@drawable/ic_pause_grey600_36dp</item>
-        <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
-        <item name="attr/av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
-        <item name="attr/av_skip_big">@drawable/ic_skip_grey600_36dp</item>
-        <item name="attr/ic_fav">@drawable/ic_star_border_grey600_24dp</item>
-        <item name="attr/ic_unfav">@drawable/ic_star_grey600_24dp</item>
-        <item name="attr/ic_settings">@drawable/ic_settings_grey600_24dp</item>
-        <item name="attr/ic_lock_open">@drawable/ic_lock_open_grey600_24dp</item>
-        <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
-        <item name="attr/ic_filter">@drawable/ic_filter_grey600_24dp</item>
-        <item name="attr/ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
-        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
-        <item name="attr/ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
-        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
-        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
-        <item name="attr/ic_sort">@drawable/ic_sort_grey600_24dp</item>
-        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
-        <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
-        <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
+        <item type="attr" name="storage">@drawable/ic_sd_grey600_24dp</item>
+        <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_grey600_24dp</item>
+        <item type="attr" name="statistics">@drawable/ic_poll_box_grey600_24dp</item>
+        <item type="attr" name="action_about">@drawable/ic_info_grey600_24dp</item>
+        <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_grey600_24dp</item>
+        <item type="attr" name="action_search">@drawable/ic_search_grey600_24dp</item>
+        <item type="attr" name="action_stream">@drawable/ic_settings_input_antenna_grey600_24dp</item>
+        <item type="attr" name="av_download">@drawable/ic_file_download_grey600_24dp</item>
+        <item type="attr" name="av_fast_forward">@drawable/ic_fast_forward_grey600_24dp</item>
+        <item type="attr" name="av_pause">@drawable/ic_pause_grey600_24dp</item>
+        <item type="attr" name="av_play">@drawable/ic_play_arrow_grey600_24dp</item>
+        <item type="attr" name="av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
+        <item type="attr" name="content_discard">@drawable/ic_delete_grey600_24dp</item>
+        <item type="attr" name="content_new">@drawable/ic_add_grey600_24dp</item>
+        <item type="attr" name="feed">@drawable/ic_feed_grey600_24dp</item>
+        <item type="attr" name="location_web_site">@drawable/ic_web_grey600_24dp</item>
+        <item type="attr" name="navigation_accept">@drawable/ic_done_grey600_24dp</item>
+        <item type="attr" name="navigation_cancel">@drawable/ic_cancel_grey600_24dp</item>
+        <item type="attr" name="navigation_expand">@drawable/ic_expand_more_grey600_36dp</item>
+        <item type="attr" name="navigation_refresh">@drawable/ic_refresh_grey600_24dp</item>
+        <item type="attr" name="navigation_up">@drawable/navigation_up</item>
+        <item type="attr" name="social_share">@drawable/ic_share_grey600_24dp</item>
+        <item type="attr" name="stat_playlist">@drawable/ic_list_grey600_24dp</item>
+        <item type="attr" name="type_audio">@drawable/ic_hearing_grey600_18dp</item>
+        <item type="attr" name="type_video">@drawable/ic_remove_red_eye_grey600_18dp</item>
+        <item type="attr" name="non_transparent_background">@color/white</item>
+        <item type="attr" name="overlay_background">@color/overlay_light</item>
+        <item type="attr" name="overlay_drawable">@drawable/overlay_drawable</item>
+        <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
+        <item type="attr" name="dragview_float_background">@color/white</item>
+        <item type="attr" name="nav_drawer_background">@color/white</item>
+        <item type="attr" name="ic_new">@drawable/ic_new_releases_grey600_24dp</item>
+        <item type="attr" name="ic_history">@drawable/ic_history_grey600_24dp</item>
+        <item type="attr" name="ic_folder">@drawable/ic_folder_grey600_24dp</item>
+        <item type="attr" name="av_play_big">@drawable/ic_play_arrow_grey600_36dp</item>
+        <item type="attr" name="av_pause_big">@drawable/ic_pause_grey600_36dp</item>
+        <item type="attr" name="av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
+        <item type="attr" name="av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
+        <item type="attr" name="av_skip_big">@drawable/ic_skip_grey600_36dp</item>
+        <item type="attr" name="ic_fav">@drawable/ic_star_border_grey600_24dp</item>
+        <item type="attr" name="ic_unfav">@drawable/ic_star_grey600_24dp</item>
+        <item type="attr" name="ic_settings">@drawable/ic_settings_grey600_24dp</item>
+        <item type="attr" name="ic_lock_open">@drawable/ic_lock_open_grey600_24dp</item>
+        <item type="attr" name="ic_lock_closed">@drawable/ic_lock_closed_grey600_24dp</item>
+        <item type="attr" name="ic_filter">@drawable/ic_filter_grey600_24dp</item>
+        <item type="attr" name="ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
+        <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
+        <item type="attr" name="ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
+        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
+        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
+        <item type="attr" name="ic_sort">@drawable/ic_sort_grey600_24dp</item>
+        <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
+        <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
+        <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
+        <item type="attr" name="ic_cellphone_text">@drawable/ic_cellphone_text_grey600_24dp</item>
+        <item type="attr" name="ic_question_answer">@drawable/ic_forum_grey600_24dp</item>
+        <item type="attr" name="ic_bug">@drawable/ic_bug_grey600_24dp</item>
+        <item type="attr" name="ic_known_issues">@drawable/ic_format_list_bulleted_grey600_24dp</item>
+        <item type="attr" name="master_switch_background">@color/master_switch_background_light</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_light</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+
+        <item type="attr" name="about_screen_background">#e5e5e5</item>
+        <item type="attr" name="about_screen_card_background">#ffffff</item>
+        <item type="attr" name="about_screen_card_border">#d2d2d2</item>
+        <item type="attr" name="about_screen_font_color">#000000</item>
     </style>
 
-    <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.Base.AntennaPod.Dark.NoTitle">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
@@ -187,57 +275,96 @@
         <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
-        <item name="attr/action_about">@drawable/ic_info_white_24dp</item>
-        <item name="attr/action_search">@drawable/ic_search_white_24dp</item>
-        <item name="attr/action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
-        <item name="attr/av_download">@drawable/ic_file_download_white_24dp</item>
-        <item name="attr/av_fast_forward">@drawable/ic_fast_forward_white_24dp</item>
-        <item name="attr/av_pause">@drawable/ic_pause_white_24dp</item>
-        <item name="attr/av_play">@drawable/ic_play_arrow_white_24dp</item>
-        <item name="attr/av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
-        <item name="attr/content_discard">@drawable/ic_delete_white_24dp</item>
-        <item name="attr/content_new">@drawable/ic_add_white_24dp</item>
-        <item name="attr/feed">@drawable/ic_feed_white_24dp</item>
-        <item name="attr/location_web_site">@drawable/ic_web_white_24dp</item>
-        <item name="attr/navigation_accept">@drawable/ic_done_white_24dp</item>
-        <item name="attr/navigation_cancel">@drawable/ic_cancel_white_24dp</item>
-        <item name="attr/navigation_expand">@drawable/ic_expand_more_white_36dp</item>
-        <item name="attr/navigation_refresh">@drawable/ic_refresh_white_24dp</item>
-        <item name="attr/navigation_up">@drawable/navigation_up_dark</item>
-        <item name="attr/social_share">@drawable/ic_share_white_24dp</item>
-        <item name="attr/stat_playlist">@drawable/ic_list_white_24dp</item>
-        <item name="attr/type_audio">@drawable/ic_hearing_white_18dp</item>
-        <item name="attr/type_video">@drawable/ic_remove_red_eye_white_18dp</item>
-        <item name="attr/non_transparent_background">@color/black</item>
-        <item name="attr/overlay_background">@color/overlay_dark</item>
-        <item name="attr/overlay_drawable">@drawable/overlay_drawable_dark</item>
-        <item name="attr/dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
-        <item name="attr/dragview_float_background">@color/black</item>
-        <item name="attr/nav_drawer_background">#3B3B3B</item>
-        <item name="attr/ic_new">@drawable/ic_new_releases_white_24dp</item>
-        <item name="attr/ic_history">@drawable/ic_history_white_24dp</item>
-        <item name="attr/ic_folder">@drawable/ic_folder_white_24dp</item>
-        <item name="attr/av_play_big">@drawable/ic_play_arrow_white_36dp</item>
-        <item name="attr/av_pause_big">@drawable/ic_pause_white_36dp</item>
-        <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
-        <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
-        <item name="attr/av_skip_big">@drawable/ic_skip_white_36dp</item>
-        <item name="attr/ic_fav">@drawable/ic_star_border_white_24dp</item>
-        <item name="attr/ic_unfav">@drawable/ic_star_white_24dp</item>
-        <item name="attr/ic_settings">@drawable/ic_settings_white_24dp</item>
-        <item name="attr/ic_lock_open">@drawable/ic_lock_open_white_24dp</item>
-        <item name="attr/ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
-        <item name="attr/ic_filter">@drawable/ic_filter_white_24dp</item>
-        <item name="attr/ic_sleep">@drawable/ic_sleep_white_24dp</item>
-        <item name="attr/ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
-        <item name="attr/ic_check_box">@drawable/ic_check_box_white_24dp</item>
-        <item name="attr/ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
-        <item name="attr/ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
-        <item name="attr/ic_sort">@drawable/ic_sort_white_24dp</item>
-        <item name="attr/ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
-        <item name="attr/ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
-        <item name="attr/ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
+        <item type="attr" name="storage">@drawable/ic_sd_white_24dp</item>
+        <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_white_24dp</item>
+        <item type="attr" name="statistics">@drawable/ic_poll_box_white_24dp</item>
+        <item type="attr" name="action_about">@drawable/ic_info_white_24dp</item>
+        <item type="attr" name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_white_24dp</item>
+        <item type="attr" name="action_search">@drawable/ic_search_white_24dp</item>
+        <item type="attr" name="action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
+        <item type="attr" name="av_download">@drawable/ic_file_download_white_24dp</item>
+        <item type="attr" name="av_fast_forward">@drawable/ic_fast_forward_white_24dp</item>
+        <item type="attr" name="av_pause">@drawable/ic_pause_white_24dp</item>
+        <item type="attr" name="av_play">@drawable/ic_play_arrow_white_24dp</item>
+        <item type="attr" name="av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
+        <item type="attr" name="content_discard">@drawable/ic_delete_white_24dp</item>
+        <item type="attr" name="content_new">@drawable/ic_add_white_24dp</item>
+        <item type="attr" name="feed">@drawable/ic_feed_white_24dp</item>
+        <item type="attr" name="location_web_site">@drawable/ic_web_white_24dp</item>
+        <item type="attr" name="navigation_accept">@drawable/ic_done_white_24dp</item>
+        <item type="attr" name="navigation_cancel">@drawable/ic_cancel_white_24dp</item>
+        <item type="attr" name="navigation_expand">@drawable/ic_expand_more_white_36dp</item>
+        <item type="attr" name="navigation_refresh">@drawable/ic_refresh_white_24dp</item>
+        <item type="attr" name="navigation_up">@drawable/navigation_up_dark</item>
+        <item type="attr" name="social_share">@drawable/ic_share_white_24dp</item>
+        <item type="attr" name="stat_playlist">@drawable/ic_list_white_24dp</item>
+        <item type="attr" name="type_audio">@drawable/ic_hearing_white_18dp</item>
+        <item type="attr" name="type_video">@drawable/ic_remove_red_eye_white_18dp</item>
+        <item type="attr" name="non_transparent_background">@color/black</item>
+        <item type="attr" name="overlay_background">@color/overlay_dark</item>
+        <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark</item>
+        <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
+        <item type="attr" name="dragview_float_background">@color/black</item>
+        <item type="attr" name="nav_drawer_background">#3B3B3B</item>
+        <item type="attr" name="ic_new">@drawable/ic_new_releases_white_24dp</item>
+        <item type="attr" name="ic_history">@drawable/ic_history_white_24dp</item>
+        <item type="attr" name="ic_folder">@drawable/ic_folder_white_24dp</item>
+        <item type="attr" name="av_play_big">@drawable/ic_play_arrow_white_36dp</item>
+        <item type="attr" name="av_pause_big">@drawable/ic_pause_white_36dp</item>
+        <item type="attr" name="av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
+        <item type="attr" name="av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
+        <item type="attr" name="av_skip_big">@drawable/ic_skip_white_36dp</item>
+        <item type="attr" name="ic_fav">@drawable/ic_star_border_white_24dp</item>
+        <item type="attr" name="ic_unfav">@drawable/ic_star_white_24dp</item>
+        <item type="attr" name="ic_settings">@drawable/ic_settings_white_24dp</item>
+        <item type="attr" name="ic_lock_open">@drawable/ic_lock_open_white_24dp</item>
+        <item type="attr" name="ic_lock_closed">@drawable/ic_lock_closed_white_24dp</item>
+        <item type="attr" name="ic_filter">@drawable/ic_filter_white_24dp</item>
+        <item type="attr" name="ic_sleep">@drawable/ic_sleep_white_24dp</item>
+        <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
+        <item type="attr" name="ic_check_box">@drawable/ic_check_box_white_24dp</item>
+        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
+        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
+        <item type="attr" name="ic_sort">@drawable/ic_sort_white_24dp</item>
+        <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
+        <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
+        <item type="attr" name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
+        <item type="attr" name="ic_cellphone_text">@drawable/ic_cellphone_text_white_24dp</item>
+        <item type="attr" name="ic_question_answer">@drawable/ic_baseline_question_answer_white_24dp</item>
+        <item type="attr" name="ic_bug">@drawable/ic_bug_white_24dp</item>
+        <item type="attr" name="ic_known_issues">@drawable/ic_format_list_bulleted_white_24dp</item>
+        <item type="attr" name="master_switch_background">@color/master_switch_background_dark</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_dark</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+
+        <item type="attr" name="about_screen_background">#303030</item>
+        <item type="attr" name="about_screen_card_background">#424242</item>
+        <item type="attr" name="about_screen_card_border">#262626</item>
+        <item type="attr" name="about_screen_font_color">#ffffff</item>
     </style>
+
+    <style name="Theme.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.TrueBlack.NoTitle">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.Dark.NoTitle">
+        <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
+        <item type="attr" name="non_transparent_background">@color/black</item>
+        <item type="attr" name="overlay_background">@color/black</item>
+        <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark_trueblack</item>
+        <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
+        <item type="attr" name="dragview_float_background">@color/black</item>
+        <item type="attr" name="nav_drawer_background">@color/black</item>
+        <item type="attr" name="currently_playing_background">@color/highlight_trueblack</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:colorBackground">@color/black</item>
+        <item name="android:windowBackground">@color/black</item>
+        <item name="android:actionBarStyle">@color/black</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+    </style>
+
 
     <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
@@ -283,6 +410,7 @@
         <item name="android:textSize">@dimen/text_size_micro</item>
         <item name="android:textColor">@color/new_indicator_green</item>
         <item name="android:text">@string/new_label</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="Widget.AntennaPod.Button" parent="Widget.AppCompat.Button">
@@ -323,6 +451,11 @@
     <style name="ProgressBarDark">
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/progress_bar_horizontal_dark</item>
+    </style>
+
+    <style name="ProgressBarTrueBlack">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_trueblack</item>
     </style>
 
 </resources>

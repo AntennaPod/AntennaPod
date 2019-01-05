@@ -1,10 +1,12 @@
 package de.test.antennapod.util;
 
+import android.test.AndroidTestCase;
+import android.text.TextUtils;
+
 import java.io.File;
 import java.io.IOException;
 
 import de.danoeh.antennapod.core.util.FileNameGenerator;
-import android.test.AndroidTestCase;
 
 public class FilenameGeneratorTest extends AndroidTestCase {
 
@@ -41,7 +43,12 @@ public class FilenameGeneratorTest extends AndroidTestCase {
 
 	public void testFeedTitleContainsDash() {
 		String result = FileNameGenerator.generateFileName("Left - Right");
-		assertEquals("Left Right", result);
+		assertEquals("Left - Right", result);
+	}
+
+	public void testInvalidInput() {
+		String result = FileNameGenerator.generateFileName("???");
+		assertTrue(!TextUtils.isEmpty(result));
 	}
 
 	/**

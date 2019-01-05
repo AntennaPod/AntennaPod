@@ -78,10 +78,10 @@ public abstract class PodcastListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.gpodnet_podcast_list, container, false);
 
-        gridView = (GridView) root.findViewById(R.id.gridView);
-        progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
-        txtvError = (TextView) root.findViewById(R.id.txtvError);
-        butRetry = (Button) root.findViewById(R.id.butRetry);
+        gridView = root.findViewById(R.id.gridView);
+        progressBar = root.findViewById(R.id.progressBar);
+        txtvError = root.findViewById(R.id.txtvError);
+        butRetry = root.findViewById(R.id.butRetry);
 
         gridView.setOnItemClickListener((parent, view, position, id) ->
                 onPodcastSelected((GpodnetPodcast) gridView.getAdapter().getItem(position)));
@@ -91,7 +91,7 @@ public abstract class PodcastListFragment extends Fragment {
         return root;
     }
 
-    protected void onPodcastSelected(GpodnetPodcast selection) {
+    private void onPodcastSelected(GpodnetPodcast selection) {
         Log.d(TAG, "Selected podcast: " + selection.toString());
         Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, selection.getUrl());
@@ -101,7 +101,7 @@ public abstract class PodcastListFragment extends Fragment {
 
     protected abstract List<GpodnetPodcast> loadPodcastData(GpodnetService service) throws GpodnetServiceException;
 
-    protected final void loadData() {
+    final void loadData() {
         AsyncTask<Void, Void, List<GpodnetPodcast>> loaderTask = new AsyncTask<Void, Void, List<GpodnetPodcast>>() {
             volatile Exception exception = null;
 
@@ -160,10 +160,6 @@ public abstract class PodcastListFragment extends Fragment {
             }
         };
 
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            loaderTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            loaderTask.execute();
-        }
+        loaderTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -26,7 +24,7 @@ public abstract class SleepTimerDialog {
     
     private static final String TAG = SleepTimerDialog.class.getSimpleName();
 
-    private Context context;
+    private final Context context;
 
     private MaterialDialog dialog;
     private EditText etxtTime;
@@ -63,11 +61,11 @@ public abstract class SleepTimerDialog {
         dialog = builder.build();
         
         View view = dialog.getView();
-        etxtTime = (EditText) view.findViewById(R.id.etxtTime);
-        spTimeUnit = (Spinner) view.findViewById(R.id.spTimeUnit);
-        cbShakeToReset = (CheckBox) view.findViewById(R.id.cbShakeToReset);
-        cbVibrate = (CheckBox) view.findViewById(R.id.cbVibrate);
-        chAutoEnable = (CheckBox) view.findViewById(R.id.chAutoEnable);
+        etxtTime = view.findViewById(R.id.etxtTime);
+        spTimeUnit = view.findViewById(R.id.spTimeUnit);
+        cbShakeToReset = view.findViewById(R.id.cbShakeToReset);
+        cbVibrate = view.findViewById(R.id.cbVibrate);
+        chAutoEnable = view.findViewById(R.id.chAutoEnable);
 
         etxtTime.setText(SleepTimerPreferences.lastTimerValue());
         etxtTime.addTextChangedListener(new TextWatcher() {

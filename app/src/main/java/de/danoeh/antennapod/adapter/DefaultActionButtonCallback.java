@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -19,8 +20,10 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 /**
  * Default implementation of an ActionButtonCallback
@@ -80,13 +83,19 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                     Toast.makeText(context, R.string.download_canceled_msg, Toast.LENGTH_LONG).show();
                 }
             } else { // media is downloaded
-                if (item.hasMedia() && item.getMedia().isCurrentlyPlaying()) {
-                    context.sendBroadcast(new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
-                }
-                else if (item.hasMedia() && item.getMedia().isCurrentlyPaused()) {
-                    context.sendBroadcast(new Intent(PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE));
-                }
-                else {
+                if (media.isCurrentlyPlaying()) {
+                    new PlaybackServiceStarter(context, media)
+                            .startWhenPrepared(true)
+                            .shouldStream(false)
+                            .start();
+                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+                } else if (media.isCurrentlyPaused()) {
+                    new PlaybackServiceStarter(context, media)
+                            .startWhenPrepared(true)
+                            .shouldStream(false)
+                            .start();
+                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE);
+                } else {
                     DBTasks.playMedia(context, media, false, true, false);
                 }
             }
