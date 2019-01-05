@@ -16,16 +16,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import rx.Single;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
@@ -41,7 +42,7 @@ public class ExternalPlayerFragment extends Fragment {
     private TextView mFeedName;
     private ProgressBar mProgressBar;
     private PlaybackController controller;
-    private Subscription subscription;
+    private Disposable disposable;
 
     public ExternalPlayerFragment() {
         super();
@@ -143,8 +144,8 @@ public class ExternalPlayerFragment extends Fragment {
         if (controller != null) {
             controller.release();
         }
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -181,13 +182,21 @@ public class ExternalPlayerFragment extends Fragment {
             return false;
         }
 
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
-        subscription = Single.create(subscriber -> subscriber.onSuccess(controller.getMedia()))
-                .subscribeOn(Schedulers.newThread())
+        disposable = Maybe.create(emitter -> {
+                    Playable media = controller.getMedia();
+                    if (media != null) {
+                        emitter.onSuccess(media);
+                    } else {
+                        emitter.onComplete();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(media -> updateUi((Playable) media));
+                .subscribe(media -> updateUi((Playable) media),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
         return true;
     }
 
@@ -199,11 +208,12 @@ public class ExternalPlayerFragment extends Fragment {
 
             Glide.with(getActivity())
                     .load(media.getImageLocation())
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate()
+                    .apply(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate())
                     .into(imgvCover);
 
             fragmentLayout.setVisibility(View.VISIBLE);

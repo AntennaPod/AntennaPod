@@ -15,8 +15,12 @@ import android.util.Log;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.FeedUpdateReceiver;
 import de.danoeh.antennapod.core.service.FeedUpdateJobService;
+import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.FeedUpdateUtils;
 
 public class AutoUpdateManager {
     private static final int JOB_ID_FEED_UPDATE = 42;
@@ -152,5 +156,30 @@ public class AutoUpdateManager {
                 alarm.getTimeInMillis(),
                 updateIntent);
         Log.d(TAG, "Changed alarm to new time of day " + alarm.get(Calendar.HOUR_OF_DAY) + ":" + alarm.get(Calendar.MINUTE));
+    }
+
+    /*
+     *  Checks if the app should refresh all feeds, i.e. if the last auto refresh failed.
+     *
+     *  The feeds are only refreshed if an update interval or time of day is set and the last
+     *  (successful) refresh was before the last interval or more than a day ago, respectively.
+     *
+     */
+    public static void checkShouldRefreshFeeds(Context context) {
+        long interval = 0;
+        if(UserPreferences.getUpdateInterval() > 0) {
+            interval = UserPreferences.getUpdateInterval();
+        } else if(UserPreferences.getUpdateTimeOfDay().length > 0){
+            interval = TimeUnit.DAYS.toMillis(1);
+        }
+        if(interval == 0) { // auto refresh is disabled
+            return;
+        }
+        long lastRefresh = DBTasks.getLastRefreshAllFeedsTimeMillis(context);
+        Log.d(TAG, "last refresh: " + Converter.getDurationStringLocalized(context,
+                System.currentTimeMillis() - lastRefresh) + " ago");
+        if(lastRefresh <= System.currentTimeMillis() - interval) {
+            FeedUpdateUtils.startAutoUpdate(context, null);
+        }
     }
 }

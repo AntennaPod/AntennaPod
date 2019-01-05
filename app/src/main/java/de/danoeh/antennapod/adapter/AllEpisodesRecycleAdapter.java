@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 
 import java.lang.ref.WeakReference;
@@ -29,7 +28,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
@@ -193,12 +191,12 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        Glide.with(mainActivityRef.get())
-                .load(item.getImageLocation())
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
-                .into(new CoverTarget(item.getFeed().getImageLocation(), holder.placeholder, holder.cover, mainActivityRef.get()));
+        new CoverLoader(mainActivityRef.get())
+                .withUri(item.getImageLocation())
+                .withFallbackUri(item.getFeed().getImageLocation())
+                .withPlaceholderView(holder.placeholder)
+                .withCoverView(holder.cover)
+                .load();
     }
 
     @Nullable

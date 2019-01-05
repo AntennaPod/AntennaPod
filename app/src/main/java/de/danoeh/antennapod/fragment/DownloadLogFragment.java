@@ -23,10 +23,10 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Shows the download log
@@ -41,7 +41,7 @@ public class DownloadLogFragment extends ListFragment {
     private boolean viewsCreated = false;
     private boolean itemsLoaded = false;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     @Override
     public void onStart() {
@@ -55,8 +55,8 @@ public class DownloadLogFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -178,11 +178,11 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     private void loadItems() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
-        subscription = Observable.fromCallable(DBReader::getDownloadLog)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(DBReader::getDownloadLog)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {

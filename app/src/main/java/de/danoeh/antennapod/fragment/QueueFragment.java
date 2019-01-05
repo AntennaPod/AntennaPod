@@ -53,10 +53,10 @@ import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Shows all items in the queue
@@ -84,7 +84,7 @@ public class QueueFragment extends Fragment {
     private static final String PREF_SCROLL_POSITION = "scroll_position";
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
-    private Subscription subscription;
+    private Disposable disposable;
     private LinearLayoutManager layoutManager;
     private ItemTouchHelper itemTouchHelper;
 
@@ -118,8 +118,8 @@ public class QueueFragment extends Fragment {
         saveScrollPosition();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -423,8 +423,8 @@ public class QueueFragment extends Fragment {
 
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    if(subscription != null) {
-                        subscription.unsubscribe();
+                    if(disposable != null) {
+                        disposable.dispose();
                     }
                     final int position = viewHolder.getAdapterPosition();
                     Log.d(TAG, "remove(" + position + ")");
@@ -623,16 +623,16 @@ public class QueueFragment extends Fragment {
 
     private void loadItems(final boolean restoreScrollPosition) {
         Log.d(TAG, "loadItems()");
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
         if (queue == null) {
             recyclerView.setVisibility(View.GONE);
             txtvEmpty.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
-        subscription = Observable.fromCallable(DBReader::getQueue)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(DBReader::getQueue)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
                     if(items != null) {

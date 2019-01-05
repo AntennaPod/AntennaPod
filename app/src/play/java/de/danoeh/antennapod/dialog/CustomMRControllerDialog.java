@@ -35,16 +35,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class CustomMRControllerDialog extends MediaRouteControllerDialog {
     public static final String TAG = "CustomMRContrDialog";
@@ -60,7 +61,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
 
     private boolean viewsCreated = false;
 
-    private Subscription fetchArtSubscription;
+    private Disposable fetchArtSubscription;
 
     private MediaControllerCompat mediaController;
     private MediaControllerCompat.Callback mediaControllerCallback;
@@ -327,7 +328,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
     @Override
     public void onDetachedFromWindow() {
         if (fetchArtSubscription != null) {
-            fetchArtSubscription.unsubscribe();
+            fetchArtSubscription.dispose();
             fetchArtSubscription = null;
         }
         super.onDetachedFromWindow();
@@ -396,11 +397,11 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         }
 
         if (fetchArtSubscription != null) {
-            fetchArtSubscription.unsubscribe();
+            fetchArtSubscription.dispose();
         }
 
         fetchArtSubscription = Observable.fromCallable(() -> fetchArt(description))
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     fetchArtSubscription = null;
@@ -463,10 +464,10 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         } else if (iconUri != null) {
             try {
                 art = Glide.with(getContext().getApplicationContext())
-                        .load(iconUri.toString())
                         .asBitmap()
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .load(iconUri.toString())
+                        .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                        .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                         .get();
             } catch (InterruptedException | ExecutionException e) {
                 Log.e(TAG, "Image art load failed", e);

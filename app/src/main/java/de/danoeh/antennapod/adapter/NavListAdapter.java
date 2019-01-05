@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
@@ -336,11 +337,12 @@ public class NavListAdapter extends BaseAdapter
 
         Glide.with(context)
                 .load(feed.getImageLocation())
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(holder.image);
 
         holder.title.setText(feed.getTitle());
