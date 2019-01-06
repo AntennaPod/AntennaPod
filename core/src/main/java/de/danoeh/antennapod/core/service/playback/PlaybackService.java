@@ -343,7 +343,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Service is about to be destroyed");
-        stopForeground(true); // TODO: [2716] unclear if stopForeground is still needed
+        stopForeground(true);
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
 
@@ -366,11 +366,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         taskManager.shutdown();
     }
     
-    private void stopService() {
-        stopForeground(true); // TODO: [2716] unclear if stopForeground is still needed
-        stopSelf();
-    }
-
     @Override
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, Bundle rootHints) {
         Log.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName +
@@ -473,13 +468,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
             Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
-            stopForeground(true); // TODO: unclear if stopForeground is still needed
+            stopForeground(true); // TODO: [2716]-RemoveOptional legacy code from v0.9.8.1 that is no longer applicable, which used to return Service.START_REDELIVER_INTENT. See
         } else {
             if (keycode != -1) {
                 Log.d(TAG, "Received media button event");
                 boolean handled = handleKeycode(keycode, true);
                 if (!handled) {
-                    stopService();
+                    serviceManager.stopService(); // TODO: [2716]-RemoveOptional why is it added in the first place in v1.7.0?
                     return Service.START_NOT_STICKY;
                 }
             } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
@@ -568,11 +563,23 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
                 return true;
             case KeyEvent.KEYCODE_MEDIA_STOP:
+                // The logic gives UI illusion of stop by removing notification
+                // In the UI within AntennaPod, including widgets, it is seen as PAUSE, e.g.,
+                // users can still user on-screen widget to resume playing.
                 if (status == PlayerStatus.PLAYING) {
+                    // Implementation note: Use of a state in serviceManager to tell it to
+                    // show stop state UI (i.e., stopForeground(true)) is a bit awkward.
+                    //
+                    // More intuitive API would be for mediaPlayer.pause() returns a Future that
+                    // returns after pause, including the related async notification work completes.
+                    // However, it has its own complication, that mediaPlayer.pause() does not
+                    // really know when all the related work completes, as they are buried into
+                    // (asynchronous) callbacks.
+                    serviceManager.treatNextPauseAsStopOnUI();
                     mediaPlayer.pause(true, true);
+                } else {
+                    serviceManager.showUIForStopState();
                 }
-
-                stopForeground(true); // gets rid of persistent notification // TODO: [2716] unclear if stopForeground is still needed
                 return true;
             default:
                 Log.d(TAG, "Unhandled key code: " + keycode);
@@ -672,7 +679,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 case STOPPED:
                     //writePlaybackPreferencesNoMediaPlaying();
-                    //stopService();
+                    //serviceManager.stopService();
                     break;
 
                 case PLAYING:
@@ -699,7 +706,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void shouldStop() {
-            stopService(); // TODO: [2716] unclear if stopService() call is still needed
+            serviceManager.stopService();
         }
 
         @Override
@@ -831,9 +838,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             writePlaybackPreferencesNoMediaPlaying();
-            if (!isCasting) {
-                stopForeground(true); // TODO: [2716] unclear if stopForeground is still needed
-            }
         }
         if (mediaType == null) {
             sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
@@ -1190,14 +1194,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private Thread notificationSetupThread;
 
-    private synchronized void setupNotification(final Playable playable) {
+    private void setupNotification(final Playable playable) {
+        setupNotification(playable, false);
+    }
+
+    private synchronized void setupNotification(final Playable playable, boolean treatPauseAsStop) {
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
         }
         if (playable == null) {
             Log.d(TAG, "setupNotification: playable is null");
             if (!isStarted()) {
-                stopService();
+                serviceManager.stopService();
             }
             return;
         }
@@ -1211,7 +1219,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (mediaPlayer == null) {
                     Log.d(TAG, "notificationSetupTask: mediaPlayer is null");
                     if (!isStarted()) {
-                        stopService();
+                        serviceManager.stopService();
                     }
                     return;
                 }
@@ -1334,7 +1342,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         startForeground(NOTIFICATION_ID, notification);
                     } else if (playerStatus == PlayerStatus.PAUSED) {
                         // TODO: logic originally in mediaPlayerCallback case PAUSED.
-                        if ((UserPreferences.isPersistNotify() || isCasting) &&
+                        if (treatPauseAsStop) {
+                            stopForeground(true);
+                        } else if ((UserPreferences.isPersistNotify() || isCasting) &&
                                 android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             // do not remove notification on pause based on user pref and whether android version supports expanded notifications
                             // Change [Play] button to [Pause]
@@ -1548,7 +1558,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
-                stopService();
+                serviceManager.stopService();
             }
         }
 
@@ -1914,6 +1924,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private class ServiceManager {
         private boolean serviceInStartedState;
+        private boolean toTreatNextPauseAsStopOnUI = false;
 
         /**
          *
@@ -1924,21 +1935,49 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             // Report the state to the MediaSession.
 
             Log.v(TAG, "DBG - onPlaybackStateChange(" + state + ")");
-            // Manage the started state of this service.
-            switch (state.getState()) {
-                case PlaybackStateCompat.STATE_PLAYING:
-                    moveServiceToStartedState(state);
-                    break;
-                case PlaybackStateCompat.STATE_PAUSED:
-                    updateNotificationForPause(state);
-                    break;
-                case PlaybackStateCompat.STATE_STOPPED:
-                    moveServiceOutOfStartedState(state);
-                    break;
-                case PlaybackStateCompat.STATE_ERROR:
-                    moveServiceOutOfStartedState(state);
-                    break;
+            try {
+                // Manage the started state of this service.
+                switch (state.getState()) {
+                    case PlaybackStateCompat.STATE_PLAYING:
+                        moveServiceToStartedState(state);
+                        break;
+                    case PlaybackStateCompat.STATE_PAUSED:
+                        updateNotificationForPause(state);
+                        break;
+                    case PlaybackStateCompat.STATE_STOPPED:
+                        moveServiceOutOfStartedState(state);
+                        break;
+                    case PlaybackStateCompat.STATE_ERROR:
+                        moveServiceOutOfStartedState(state);
+                        break;
+                }
+            } finally {
+                if (toTreatNextPauseAsStopOnUI) {
+                    Log.v(TAG, "onPlaybackStateChange() - toTreatNextPauseAsStopOnUI enabled. The actual state (should be PAUSED, aka 2): " + state.getState());
+                    toTreatNextPauseAsStopOnUI = false;
+                }
             }
+        }
+
+        /**
+         * Tell service manager that on the next state change, if the state is STATE_PAUSED,
+         * give UI treatment as if it is stopped.
+         *
+         * @see #handleKeycode(int, boolean) the use case
+         */
+        public void treatNextPauseAsStopOnUI() {
+            this.toTreatNextPauseAsStopOnUI = true;
+        }
+
+        public void showUIForStopState() {
+            Log.v(TAG, "serviceManager.showUIForStopState()");
+            stopForeground(true); // gets rid of persistent notification, to give the UI illusion of STOP
+        }
+
+        public void stopService() {
+            stopForeground(true);
+            stopSelf();
+            serviceInStartedState = false;
         }
 
         private void moveServiceToStartedState(PlaybackStateCompat state) {
@@ -1959,16 +1998,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         private void moveServiceOutOfStartedState(PlaybackStateCompat state) {
-            stopForeground(true);
-            stopSelf();
-            serviceInStartedState = false;
+            stopService();
         }
 
         private void doSetupNotification() {
             if (mediaPlayer != null && mediaPlayer.getPlayable() != null) {
                 // it updates notification and set foreground status
                 // based on player status (similar to PlaybackState)
-                setupNotification(mediaPlayer.getPlayable());
+                setupNotification(mediaPlayer.getPlayable(), toTreatNextPauseAsStopOnUI);
             } else {
                 // should not happen unless there are bugs.
                 Log.e(TAG, "doSetupNotification() - unexpectedly there is no playable. No notification setup done. mediaPlayer." + mediaPlayer);
