@@ -781,7 +781,7 @@ public abstract class PlaybackController {
     }
 
     private void initServiceNotRunning() {
-        Log.v(TAG, "DBG - initServiceNotRunning()"); // TODO: review it it's still needed
+        Log.v(TAG, "initServiceNotRunning()");
         mediaLoader = Maybe.create((MaybeOnSubscribe<Playable>) emitter -> {
             Playable media = getMedia();
             if (media != null) {

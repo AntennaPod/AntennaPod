@@ -1333,7 +1333,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             playerStatus == PlayerStatus.PREPARING ||
                             playerStatus == PlayerStatus.SEEKING ||
                             isCasting) {
-                        Log.v(TAG, "DBG - notificationSetupTask: make service foreground");
+                        Log.v(TAG, "notificationSetupTask: make service foreground");
                         startForeground(NOTIFICATION_ID, notification);
                     } else if (playerStatus == PlayerStatus.PAUSED) {
                         if (treatPauseAsStop) {
@@ -1848,7 +1848,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         void setIsCasting(boolean isCasting);
 
-        void sendNotificationBroadcast(int type, int code); // TODO: unclear if the broadcast is still needed with ServiceManager
+        void sendNotificationBroadcast(int type, int code);
 
         void saveCurrentPosition(boolean fromMediaPlayer, Playable playable, int position);
 
@@ -1930,7 +1930,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         void onPlaybackStateChange(PlaybackStateCompat state) {
             // Report the state to the MediaSession.
 
-            Log.v(TAG, "DBG - onPlaybackStateChange(" + state + ")");
+            Log.v(TAG, "onPlaybackStateChange(" + (state != null ? state.getState() : "null") + ")");
             try {
                 // Manage the started state of this service.
                 switch (state.getState()) {
@@ -1977,8 +1977,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         private void moveServiceToStartedState(PlaybackStateCompat state) {
-            Log.v(TAG, "DBG - ServiceManager.moveServiceToStartedState() - serviceInStartedState:" + serviceInStartedState);
-
             if (!serviceInStartedState) {
                 ContextCompat.startForegroundService(
                         PlaybackService.this,
