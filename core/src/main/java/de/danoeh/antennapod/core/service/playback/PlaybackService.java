@@ -466,30 +466,25 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return Service.START_NOT_STICKY;
         }
 
-        if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
-            Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
-            stopForeground(true); // TODO: [2716]-RemoveOptional legacy code from v0.9.8.1 that is no longer applicable, which used to return Service.START_REDELIVER_INTENT. See
-        } else {
-            if (keycode != -1) {
-                Log.d(TAG, "Received media button event");
-                boolean handled = handleKeycode(keycode, true);
-                if (!handled) {
-                    serviceManager.stopService(); // TODO: [2716]-RemoveOptional why is it added in the first place in v1.7.0?
-                    return Service.START_NOT_STICKY;
-                }
-            } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
-                boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
-                        true);
-                boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
-                boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
-                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
-                //If the user asks to play External Media, the casting session, if on, should end.
-                flavorHelper.castDisconnect(playable instanceof ExternalMedia);
-                if (playable instanceof FeedMedia) {
-                    playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
-                }
-                mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+        if (keycode != -1) {
+            Log.d(TAG, "Received media button event");
+            boolean handled = handleKeycode(keycode, true);
+            if (!handled) {
+                serviceManager.stopService(); // TODO: [2716]-RemoveOptional why is it added in the first place in v1.7.0?
+                return Service.START_NOT_STICKY;
             }
+        } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
+            boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
+                    true);
+            boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
+            boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
+            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+            //If the user asks to play External Media, the casting session, if on, should end.
+            flavorHelper.castDisconnect(playable instanceof ExternalMedia);
+            if (playable instanceof FeedMedia) {
+                playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
+            }
+            mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
         }
 
         return Service.START_NOT_STICKY;
