@@ -12,7 +12,6 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,6 +36,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
@@ -187,13 +187,13 @@ public abstract class PlaybackController {
         serviceBinder = Observable.fromCallable(this::getPlayLastPlayedMediaIntent)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(intent -> {
+                .subscribe(optionalIntent -> {
                     boolean bound = false;
                     if (!PlaybackService.started) {
-                        if (intent != null) {
+                        if (optionalIntent.isPresent()) {
                             Log.d(TAG, "Calling start service");
-                            ContextCompat.startForegroundService(activity, intent);
-                            bound = activity.bindService(intent, mConnection, 0);
+                            ContextCompat.startForegroundService(activity, optionalIntent.get());
+                            bound = activity.bindService(optionalIntent.get(), mConnection, 0);
                         } else {
                             status = PlayerStatus.STOPPED;
                             setupGUI();
@@ -212,12 +212,13 @@ public abstract class PlaybackController {
      * Returns an intent that starts the PlaybackService and plays the last
      * played media or null if no last played media could be found.
      */
-    @Nullable private Intent getPlayLastPlayedMediaIntent() {
+    @NonNull
+    private Optional<Intent> getPlayLastPlayedMediaIntent() {
         Log.d(TAG, "Trying to restore last played media");
         Playable media = PlayableUtils.createInstanceFromPreferences(activity);
         if (media == null) {
             Log.d(TAG, "No last played media found");
-            return null;
+            return Optional.empty();
         }
 
         boolean fileExists = media.localFileAvailable();
@@ -226,10 +227,10 @@ public abstract class PlaybackController {
             DBTasks.notifyMissingFeedMediaFile(activity, (FeedMedia) media);
         }
 
-        return new PlaybackServiceStarter(activity, media)
+        return Optional.of(new PlaybackServiceStarter(activity, media)
                 .startWhenPrepared(false)
                 .shouldStream(lastIsStream || !fileExists)
-                .getIntent();
+                .getIntent());
     }
 
 
