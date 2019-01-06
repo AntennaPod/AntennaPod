@@ -1336,29 +1336,30 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         Log.v(TAG, "DBG - notificationSetupTask: make service foreground");
                         startForeground(NOTIFICATION_ID, notification);
                     } else if (playerStatus == PlayerStatus.PAUSED) {
-                        // TODO: logic originally in mediaPlayerCallback case PAUSED.
                         if (treatPauseAsStop) {
                             stopForeground(true);
                         } else if ((UserPreferences.isPersistNotify() || isCasting) &&
                                 android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             // do not remove notification on pause based on user pref and whether android version supports expanded notifications
                             // Change [Play] button to [Pause]
-                            // TODO LATER: logic same as outer else clause: setupNotification(info)
-                            stopForeground(false);
-                            NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                            mNotificationManager.notify(NOTIFICATION_ID, notification);
+                            leaveNotificationAsBackground(notification);
                         } else if (!UserPreferences.isPersistNotify() && !isCasting) {
                             // remove notification on pause
                             stopForeground(true);
                         }
                     } else {
-                        stopForeground(false);
-                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                        mNotificationManager.notify(NOTIFICATION_ID, notification);
+                        leaveNotificationAsBackground(notification);
                     }
                     Log.d(TAG, "Notification set up");
                 }
             }
+
+            private void leaveNotificationAsBackground(@NonNull Notification notification) {
+                stopForeground(false);
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                mNotificationManager.notify(NOTIFICATION_ID, notification);
+            }
+
         };
         notificationSetupThread = new Thread(notificationSetupTask);
         notificationSetupThread.start();
