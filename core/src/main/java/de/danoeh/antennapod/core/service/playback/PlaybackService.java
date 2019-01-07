@@ -79,10 +79,8 @@ import de.greenrobot.event.EventBus;
  *
  * Callers should connect to the service with either:
  * - .bindService()
- * - .startService(), optionally with arguments such as media to be played.
+ * - ContextCompat.startForegroundService(), optionally with arguments, such as media to be played, in intent extras
  *
- * Caller should not call startForegroundService(). The PlaybackService will make itself foreground
- * when appropriate.
  */
 public class PlaybackService extends MediaBrowserServiceCompat {
     /**
