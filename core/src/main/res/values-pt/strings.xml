@@ -55,18 +55,19 @@
   <!--Playback history-->
   <string name="clear_history_label">Limpar histórico</string>
   <!--Other-->
-  <string name="confirm_label">Confirmar</string>
+  <string name="confirm_label">Confirmação</string>
   <string name="cancel_label">Cancelar</string>
   <string name="yes">Sim</string>
   <string name="no">Não</string>
   <string name="reset">Repor</string>
-  <string name="author_label">Autor</string>
+  <string name="author_label">Autor(es)</string>
   <string name="language_label">Idioma</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Definições</string>
   <string name="cover_label">Imagem</string>
   <string name="error_label">Erro</string>
   <string name="error_msg_prefix">Ocorreu um erro:</string>
+  <string name="needs_storage_permission">Tem que permitir o acesso ao armazenamento para esta operação</string>
   <string name="refresh_label">Atualizar</string>
   <string name="external_storage_error_msg">Cartão SD não disponível. Certifique-se de que inseriu o cartão corretamente para que a aplicação funcione corretamente.</string>
   <string name="chapters_label">Capítulos</string>
@@ -109,26 +110,26 @@
   <string name="mark_all_read_label">Marcar tudo como reproduzido</string>
   <string name="mark_all_read_msg">Marcar todos os episódios como reproduzidos</string>
   <string name="mark_all_read_confirmation_msg">Tem a certeza de que deseja marcar todos os episódios como reproduzidos?</string>
-  <string name="mark_all_read_feed_confirmation_msg">Tem a certeza de que deseja marcar todos os episódios desta fonte como reproduzidos?</string>
-  <string name="mark_all_seen_label">Marcar tudo como visto</string>
-  <string name="mark_all_seen_msg">Marcar todos os episódios como vistos</string>
-  <string name="mark_all_seen_confirmation_msg">Confirma de que deseja marcar todos os episódios como vistos?</string>
+  <string name="mark_all_read_feed_confirmation_msg">Tem a certeza de que deseja marcar como reproduzidos todos os episódios deste podcast?</string>
+  <string name="mark_all_seen_label">Marcar tudo como reproduzido</string>
+  <string name="mark_all_seen_msg">Marcar todos como reproduzidos</string>
+  <string name="mark_all_seen_confirmation_msg">Tem a certeza de que deseja marcar todos os episódios como vistos?</string>
   <string name="show_info_label">Mostrar informações</string>
-  <string name="show_feed_settings_label">Mostrar definições da fonte</string>
-  <string name="feed_info_label">Informação da fonte</string>
-  <string name="feed_settings_label">Definições da fonte</string>
+  <string name="show_feed_settings_label">Mostrar definições do podcast</string>
+  <string name="feed_info_label">Informações do podcast</string>
+  <string name="feed_settings_label">Definições do podcast</string>
   <string name="rename_feed_label">Renomear podcast</string>
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_label">Partilhar...</string>
-  <string name="share_link_label">Partilhar ligação</string>
+  <string name="share_link_label">Partilhar URL do episódio</string>
+  <string name="share_link_with_position_label">Partilhar URL do episódio (com posição)</string>
   <string name="share_file_label">Partilhar ficheiro</string>
-  <string name="share_link_with_position_label">Partilhar ligação com posição</string>
   <string name="share_feed_url_label">Partilhar URL da fonte</string>
-  <string name="share_item_url_label">Partilhar URL do episódio</string>
-  <string name="share_item_url_with_position_label">Partilhar URL do episódio com posição</string>
-  <string name="feed_delete_confirmation_msg">Tem a certeza de que deseja remover a fonte  \"%1$s\" e TODOS os episódios descarregados?</string>
-  <string name="feed_remover_msg">Remover fonte</string>
-  <string name="load_complete_feed">Atualizar todas as páginas da fonte</string>
+  <string name="share_item_url_label">Partilhar URL do ficheiro multimédia</string>
+  <string name="share_item_url_with_position_label">Partilhar URL do ficheiro multimédia (com posição)</string>
+  <string name="feed_delete_confirmation_msg">Tem a certeza de que deseja remover o podcast  \"%1$s\" e TODOS os seus episódios (inclusive descarregados)?</string>
+  <string name="feed_remover_msg">A remover podcast</string>
+  <string name="load_complete_feed">Atualizar podcast</string>
   <string name="hide_episodes_title">Ocultar episódios</string>
   <string name="batch_edit">Edição em lote</string>
   <string name="hide_unplayed_episodes_label">Não reproduzidos</string>
@@ -139,6 +140,7 @@
   <string name="hide_downloaded_episodes_label">Descarregados</string>
   <string name="hide_not_downloaded_episodes_label">Não descarregados</string>
   <string name="hide_has_media_label">Tem ficheiro</string>
+  <string name="hide_is_favorite_label">É favorito</string>
   <string name="filtered_label">Filtrados</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Última atualização falhada</string>
   <string name="open_podcast">Abrir podcast</string>
@@ -152,7 +154,8 @@
   <string name="delete_label">Apagar</string>
   <string name="delete_failed">Episódio não apagado. Experimente reiniciar o dispositivo.</string>
   <string name="remove_episode_lable">Remover episódio</string>
-  <string name="marked_as_seen_label">Marcar como visto</string>
+  <string name="mark_as_seen_label">Marcar como reproduzido</string>
+  <string name="marked_as_seen_label">Marcar como reproduzido</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
   <string name="marked_as_read_label">Marcado como reproduzido</string>
   <string name="mark_unread_label">Marcar como não reproduzido</string>
@@ -244,7 +247,7 @@
   <string name="date">Data</string>
   <string name="duration">Duração</string>
   <string name="episode_title">Título do episódio</string>
-  <string name="feed_title">Título da fonte</string>
+  <string name="feed_title">Título do podcast</string>
   <string name="random">Aleatório</string>
   <string name="smart_shuffle">Mistura inteligente</string>
   <string name="ascending">Crescente</string>
@@ -284,7 +287,7 @@
   <string name="enable_sonic">Ativar Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Não existem itens nesta lista</string>
-  <string name="no_feeds_label">Ainda não possui quaisquer fontes</string>
+  <string name="no_feeds_label">Ainda não tem quaisquer podcasts subscritos.</string>
   <string name="no_chapters_label">Este episódio não tem capítulos.</string>
   <string name="no_shownotes_label">Este episódio não tem notas.</string>
   <!--Preferences-->
@@ -302,7 +305,7 @@
   <string name="appearance">Aparência</string>
   <string name="external_elements">Elementos externos</string>
   <string name="interruptions">Interrupções</string>
-  <string name="buttons">Botões</string>
+  <string name="buttons">Botões para controlo de reprodução</string>
   <string name="media_player">Reprodutor multimédia</string>
   <string name="pref_episode_cleanup_title">Limpeza de episódios</string>
   <string name="pref_episode_cleanup_summary">Os episódios que não estejam na fila e não sejam favoritos podem ser elegíveis para serem removidos se a Descarga automática necessitar de espaço para novos episódios.</string>
@@ -310,7 +313,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continuar reprodução ao ligar os auscultadores</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Continuar reprodução ao estabelecer a ligação bluetooth</string>
   <string name="pref_hardwareForwardButtonSkips_title">Botão para avançar</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Ao premir o botão Avançar, ir para o episódio seguinte em vez de avançar a reprodução</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Botão Anterior para reiniciar</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Ao premir o botão do telefone, reiniciar o episódio atual em vez de recuar para o episódio anterior</string>
   <string name="pref_followQueue_sum">Ir para a episódio seguinte ao terminar a reprodução</string>
@@ -359,7 +361,7 @@
   <string name="pref_nav_drawer_feed_order_title">Definir ordem de subscrição</string>
   <string name="pref_nav_drawer_feed_order_sum">Alterar a ordem das suas subscrições</string>
   <string name="pref_nav_drawer_feed_counter_title">Definir contador de subscrições</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Alterar a informação mostrada no contador de subscrições</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Alterar a informação mostrada no contador de subscrições. Também afeta as subscrições se \'Ordem de subscrição\' estiver definida como \'Contador\'.</string>
   <string name="pref_set_theme_sum">Alterar a aparência do AntennaPod</string>
   <string name="pref_automatic_download_title">Descarga automática</string>
   <string name="pref_automatic_download_sum">Configurar a descarga automática dos episódios</string>
@@ -373,13 +375,13 @@
   <string name="pref_episode_cache_title">Cache de episódios</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Escuro</string>
-  <string name="pref_theme_title_trueblack">Muito escuro</string>
+  <string name="pref_theme_title_trueblack">Preto (AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Sem limite</string>
   <string name="pref_update_interval_hours_plural">horas</string>
   <string name="pref_update_interval_hours_singular">hora</string>
   <string name="pref_update_interval_hours_manual">Manual</string>
   <string name="pref_gpodnet_authenticate_title">Acesso</string>
-  <string name="pref_gpodnet_authenticate_sum">Aceda à sua conta gpodder.net para poder sincronizar as subscrições</string>
+  <string name="pref_gpodnet_authenticate_sum">Aceda à sua conta gpodder.net para poder sincronizar as subscrições.</string>
   <string name="pref_gpodnet_logout_title">Sair</string>
   <string name="pref_gpodnet_logout_toast">Sessão terminada</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informação de acesso</string>
@@ -402,8 +404,6 @@
   <string name="pref_rewind_sum">Personalizar o número de segundos a recuar ao clicar no botão de recuo rápido</string>
   <string name="pref_gpodnet_sethostname_title">Definir nome de servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilizar predefinições</string>
-  <string name="pref_expandNotify_title">Expansão de notificação</string>
-  <string name="pref_expandNotify_sum">Expandir sempre a notificação para mostrar os botões de reprodução</string>
   <string name="pref_persistNotify_title">Controlos de reprodução</string>
   <string name="pref_persistNotify_sum">Manter controlos de notificação e ecrã de bloqueio ao colocar a reprodução em pausa</string>
   <string name="pref_compact_notification_buttons_title">Definir botões do ecrã de bloqueio</string>
@@ -437,10 +437,10 @@
   <string name="pref_enqueue_downloaded_title">Colocar descargas na fila</string>
   <string name="pref_enqueue_downloaded_summary">Adicionar à fila os episódios descarregados</string>
   <string name="media_player_builtin">Reprodutor nativo Android</string>
-  <string name="pref_videoBehavior_title">Comportamento do vídeo </string>
+  <string name="pref_videoBehavior_title">Ao sair do vídeo</string>
   <string name="pref_videoBehavior_sum">Comportamento ao sair da reprodução do vídeo</string>
   <string name="stop_playback">Parar reprodução</string>
-  <string name="continue_playback">Continuar reprodução</string>
+  <string name="continue_playback">Continuar reprodução de áudio</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>
   <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>
@@ -450,8 +450,8 @@
   <string name="search_hint">Pesquisar por episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas</string>
   <string name="found_in_chapters_label">Encontrado nos capítulos</string>
-  <string name="found_in_authors_label">Encontrado em autores</string>
-  <string name="found_in_feeds_label">Encontrado em fontes</string>
+  <string name="found_in_authors_label">Localizado em autor(es)</string>
+  <string name="found_in_feeds_label">Localizado em podcast</string>
   <string name="search_status_no_results">Nenhum resultado</string>
   <string name="search_label">Pesquisar</string>
   <string name="found_in_title_label">Encontrado no título</string>
