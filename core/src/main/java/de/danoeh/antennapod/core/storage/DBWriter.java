@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.shredzone.flattr4j.model.Flattr;
@@ -633,11 +634,13 @@ public class DBWriter {
      *                           FeedItem.NEW, FeedItem.UNPLAYED
      * @param resetMediaPosition true if this method should also reset the position of the FeedItem's FeedMedia object.
      */
+    @NonNull
     public static Future<?> markItemPlayed(FeedItem item, int played, boolean resetMediaPosition) {
         long mediaId = (item.hasMedia()) ? item.getMedia().getId() : 0;
         return markItemPlayed(item.getId(), played, mediaId, resetMediaPosition);
     }
 
+    @NonNull
     private static Future<?> markItemPlayed(final long itemId,
                                             final int played,
                                             final long mediaId,

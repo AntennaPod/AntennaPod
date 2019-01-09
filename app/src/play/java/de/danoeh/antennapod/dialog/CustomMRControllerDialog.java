@@ -455,6 +455,7 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         return context.getTheme().resolveAttribute(attr, value, true) ? value.resourceId : 0;
     }
 
+    @NonNull
     private Pair<Bitmap, Integer> fetchArt(@NonNull MediaDescriptionCompat description) {
         Bitmap iconBitmap = description.getIconBitmap();
         Uri iconUri = description.getIconUri();

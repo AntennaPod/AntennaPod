@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
@@ -58,6 +59,7 @@ public final class DBReader {
      * of the returned list does NOT have its list of FeedItems yet. The FeedItem-list
      * can be loaded separately with {@link #getFeedItemList(Feed)}.
      */
+    @NonNull
     public static List<Feed> getFeedList() {
         Log.d(TAG, "Extracting Feedlist");
 
@@ -70,6 +72,7 @@ public final class DBReader {
         }
     }
 
+    @NonNull
     private static List<Feed> getFeedList(PodDBAdapter adapter) {
         Cursor cursor = null;
         try {
@@ -324,6 +327,7 @@ public final class DBReader {
      *
      * @return A list of FeedItems whose episdoe has been downloaded.
      */
+    @NonNull
     public static List<FeedItem> getDownloadedItems() {
         Log.d(TAG, "getDownloadedItems() called");
 
@@ -859,6 +863,7 @@ public final class DBReader {
      *                       countAll calculation time
      * @return The StatisticsInfo object
      */
+    @NonNull
     public static StatisticsData getStatistics(boolean sortByCountAll) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -1025,6 +1030,7 @@ public final class DBReader {
      * the list of subscriptions, the number of items in the queue and the number of unread
      * items.
      */
+    @NonNull
     public static NavDrawerData getNavDrawerData() {
         Log.d(TAG, "getNavDrawerData() called with: " + "");
         PodDBAdapter adapter = PodDBAdapter.getInstance();

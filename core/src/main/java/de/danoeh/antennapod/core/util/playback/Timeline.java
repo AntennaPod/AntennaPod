@@ -83,6 +83,7 @@ public class Timeline {
      * @param addTimecodes True if this method should add timecode links
      * @return The processed HTML string.
      */
+    @NonNull
     public String processShownotes(final boolean addTimecodes) {
         final Playable playable = (shownotesProvider instanceof Playable) ? (Playable) shownotesProvider : null;
 
@@ -92,8 +93,8 @@ public class Timeline {
         try {
             shownotes = shownotesProvider.loadShownotes().call();
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            Log.e(TAG, "processShownotes() - encounters exceptions unexpectedly in load, treat as if no shownotes.", e);
+            shownotes = "";
         }
 
         if (TextUtils.isEmpty(shownotes)) {
