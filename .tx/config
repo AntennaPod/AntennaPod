@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[antennapod.english]
+[antennapod.core-values]
 source_file = core/src/main/res/values/strings.xml
 source_lang = en
 trans.ast_ES = core/src/main/res/values-b+ast/strings.xml
@@ -66,9 +66,4 @@ source_lang = en
 [antennapod.shortdescription]
 file_filter = app/src/main/play/<lang>/listing/shortdescription
 source_file = app/src/main/play/en-US/listing/shortdescription
-source_lang = en
-
-[antennapod.changelog]
-file_filter = app/src/main/play/<lang>/whatsnew
-source_file = app/src/main/play/en-US/whatsnew
 source_lang = en
