@@ -604,6 +604,7 @@ public final class DBReader {
         }
     }
 
+    @Nullable
     private static FeedItem getFeedItem(final long itemId, PodDBAdapter adapter) {
         Log.d(TAG, "Loading feeditem with id " + itemId);
 
@@ -637,6 +638,7 @@ public final class DBReader {
      * @return The FeedItem or null if the FeedItem could not be found. All FeedComponent-attributes
      * as well as chapter marks of the FeedItem will also be loaded from the database.
      */
+    @Nullable
     public static FeedItem getFeedItem(final long itemId) {
         Log.d(TAG, "getFeedItem() called with: " + "itemId = [" + itemId + "]");
 
@@ -649,6 +651,7 @@ public final class DBReader {
         }
     }
 
+    @Nullable
     private static FeedItem getFeedItem(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
         Log.d(TAG, "Loading feeditem with podcast url " + podcastUrl + " and episode url " + episodeUrl);
         Cursor cursor = null;
