@@ -5,51 +5,51 @@
 	<!-- Activitiy and fragment titles -->
 	<string name="feed_update_receiver_name">Оновити підписки</string>
 	<string name="feeds_label">Канали</string>
-  <string name="statistics_label">Статистика</string>
-  <string name="add_feed_label">Додати подкаст</string>
-  <string name="episodes_label">Епізоди</string>
-  <string name="all_episodes_short_label">Всі</string>
-  <string name="new_episodes_label">Нові</string>
-  <string name="favorite_episodes_label">Улюблені</string>
-  <string name="new_label">Нові</string>
-  <string name="settings_label">Налаштування</string>
-  <string name="downloads_label">Завантаження</string>
-  <string name="downloads_running_label">В процесі</string>
-  <string name="downloads_completed_label">Завершено</string>
-  <string name="downloads_log_label">Журнал</string>
-  <string name="subscriptions_label">Підписки</string>
-  <string name="subscriptions_list_label">Перелік підписок</string>
-  <string name="cancel_download_label">Скасувати\nзавантаження</string>
-  <string name="playback_history_label">Історія відтворення</string>
-  <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Синхронізація з іншими пристроями</string>
-  <string name="gpodnet_auth_label">Логін gpodder.net</string>
-  <string name="free_space_label">%1$s вільно</string>
-  <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
-  <string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Розмір кешу можна збільшити в налаштуваннях.</string>
-  <string name="synchronizing">Синхронізується&#8230;</string>
+	<string name="statistics_label">Статистика</string>
+	<string name="add_feed_label">Додати подкаст</string>
+	<string name="episodes_label">Епізоди</string>
+	<string name="all_episodes_short_label">Всі</string>
+	<string name="new_episodes_label">Нові</string>
+	<string name="favorite_episodes_label">Улюблені</string>
+	<string name="new_label">Нові</string>
+	<string name="settings_label">Налаштування</string>
+	<string name="downloads_label">Завантаження</string>
+	<string name="downloads_running_label">В процесі</string>
+	<string name="downloads_completed_label">Завершено</string>
+	<string name="downloads_log_label">Журнал</string>
+	<string name="subscriptions_label">Підписки</string>
+	<string name="subscriptions_list_label">Перелік підписок</string>
+	<string name="cancel_download_label">Скасувати\nзавантаження</string>
+	<string name="playback_history_label">Історія відтворення</string>
+	<string name="gpodnet_main_label">gpodder.net</string>
+	<string name="gpodnet_summary">Синхронізація з іншими пристроями</string>
+	<string name="gpodnet_auth_label">Логін gpodder.net</string>
+	<string name="free_space_label">%1$s вільно</string>
+	<string name="episode_cache_full_title">Кеш епізодів заповнений</string>
+	<string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Розмір кешу можна збільшити в налаштуваннях.</string>
+	<string name="synchronizing">Синхронізується&#8230;</string>
 
-  <!-- Statistics fragment -->
-  <string name="total_time_listened_to_podcasts">Загальний час прослуханих подкастів:</string>
-  <string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
-  <string name="statistics_mode">Режим статистики</string>
-  <string name="statistics_mode_normal">Обчислити тривалість дійсно прослуханого. Прослухане двічі враховується двічі, але просто позначене як прослухане не враховується</string>
-  <string name="statistics_mode_count_all">Підсумувати всі подкасти позначені як прослухані</string>
-  <string name="statistics_speed_not_counted">Зауваження: Швидкість програвання не береться до уваги.</string>
+	<!-- Statistics fragment -->
+	<string name="total_time_listened_to_podcasts">Загальний час прослуханих подкастів:</string>
+	<string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
+	<string name="statistics_mode">Режим статистики</string>
+	<string name="statistics_mode_normal">Обчислити тривалість дійсно прослуханого. Прослухане двічі враховується двічі, але просто позначене як прослухане не враховується</string>
+	<string name="statistics_mode_count_all">Підсумувати всі подкасти позначені як прослухані</string>
+	<string name="statistics_speed_not_counted">Зауваження: Швидкість програвання не береться до уваги.</string>
 
-  <!-- Main activity -->
-  <string name="drawer_open">Показати меню</string>
-  <string name="drawer_close">Сховати меню</string>
-  <string name="drawer_preferences">Настройки меню навігації</string>
-  <string name="drawer_feed_order_unplayed_episodes">Сортувати за лічильником</string>
-  <string name="drawer_feed_order_alphabetical">Сортувати за абеткою</string>
-  <string name="drawer_feed_order_last_update">Сортувати за датою публікації</string>
-  <string name="drawer_feed_order_most_played">Сортувати за кількістю прослуханих епізодів</string>
-  <string name="drawer_feed_counter_new_unplayed">Кількість нових та непрослуханих епізодів</string>
-  <string name="drawer_feed_counter_new">Кількість нових епізодів</string>
-  <string name="drawer_feed_counter_unplayed">Кількість непрослуханих епізодів</string>
-  <string name="drawer_feed_counter_downloaded">Кількість завантажених епізодів</string>
-  <string name="drawer_feed_counter_none">Жодних</string>
+	<!-- Main activity -->
+	<string name="drawer_open">Показати меню</string>
+	<string name="drawer_close">Сховати меню</string>
+	<string name="drawer_preferences">Настройки меню навігації</string>
+	<string name="drawer_feed_order_unplayed_episodes">Сортувати за лічильником</string>
+	<string name="drawer_feed_order_alphabetical">Сортувати за абеткою</string>
+	<string name="drawer_feed_order_last_update">Сортувати за датою публікації</string>
+	<string name="drawer_feed_order_most_played">Сортувати за кількістю прослуханих епізодів</string>
+	<string name="drawer_feed_counter_new_unplayed">Кількість нових та непрослуханих епізодів</string>
+	<string name="drawer_feed_counter_new">Кількість нових епізодів</string>
+	<string name="drawer_feed_counter_unplayed">Кількість непрослуханих епізодів</string>
+	<string name="drawer_feed_counter_downloaded">Кількість завантажених епізодів</string>
+	<string name="drawer_feed_counter_none">Жодних</string>
 
 	<!--Webview actions-->
 	<string name="open_in_browser_label">Відкрити в браузері</string>
@@ -118,45 +118,45 @@
 	<string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
 
 	<!-- Actions on feeds -->
-  <string name="mark_all_read_label">Позначити всі як відтворені</string>
-  <string name="mark_all_read_msg">Всі епізоди позначено як відтворені</string>
-  <string name="mark_all_read_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як відтворені.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Будь ласка, підтвердіть, що ви бажаєте позначити всі епізоди цього подкасту як відтворені.</string>
-  <string name="mark_all_seen_label">Позначити всі як переглянуті</string>
-  <string name="mark_all_seen_msg">Всі епізоди позначено як переглянуті</string>
-  <string name="mark_all_seen_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як переглянуті.</string>
-  <string name="show_info_label">Показати подробиці</string>
-  <string name="show_feed_settings_label">Показати налаштування подкасту</string>
-  <string name="feed_info_label">Інформація про подкаст</string>
-  <string name="feed_settings_label">Налаштування подкасту</string>
-  <string name="rename_feed_label">Перейменувати подкаст</string>
-  <string name="remove_feed_label">Видалити подкаст</string>
-  <string name="share_label">Поділитися&#8230;</string>
-  <string name="share_link_label">Поділитись посиланням на епізод</string>
-  <string name="share_link_with_position_label">Поділіться посиланням на епізод з позицією</string>
-  <string name="share_file_label">Поділитись файлом</string>
-  <string name="share_feed_url_label">Поділитись посиланням на канал</string>
-  <string name="share_item_url_label">Поділитись посиланням на медіа-файл</string>
-  <string name="share_item_url_with_position_label">Поділитись посиланням на медіа-файл з позицією</string>
-  <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте видалити подкаст \"%1$s\" і ВСІ його епізоди (разом з завантаженими).</string>
-  <string name="feed_remover_msg">Видалення подкасту</string>
-  <string name="load_complete_feed">Оновити весь подкаст</string>
-  <string name="hide_episodes_title">Приховати епізоди</string>
-  <string name="batch_edit">Групове редагування</string>
-  <string name="select_all_above">Вибрати все вище</string>
-  <string name="select_all_below">Вибрати все нижче</string>
-  <string name="hide_unplayed_episodes_label">Невідтворені</string>
-  <string name="hide_paused_episodes_label">Призупинені</string>
-  <string name="hide_played_episodes_label">Відтворені</string>
-  <string name="hide_queued_episodes_label">В черзі</string>
-  <string name="hide_not_queued_episodes_label">Не в черзі</string>
-  <string name="hide_downloaded_episodes_label">Завантажені</string>
-  <string name="hide_not_downloaded_episodes_label">Не завантажені</string>
-  <string name="hide_has_media_label">Зі звуком або відео</string>
-  <string name="hide_is_favorite_label">В улюблених</string>
-  <string name="filtered_label">Фільтровані</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Останнє оновлення було невдалим</string>
-  <string name="open_podcast">Відкрити подкаст</string>
+	<string name="mark_all_read_label">Позначити всі як відтворені</string>
+	<string name="mark_all_read_msg">Всі епізоди позначено як відтворені</string>
+	<string name="mark_all_read_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як відтворені.</string>
+	<string name="mark_all_read_feed_confirmation_msg">Будь ласка, підтвердіть, що ви бажаєте позначити всі епізоди цього подкасту як відтворені.</string>
+	<string name="mark_all_seen_label">Позначити всі як переглянуті</string>
+	<string name="mark_all_seen_msg">Всі епізоди позначено як переглянуті</string>
+	<string name="mark_all_seen_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як переглянуті.</string>
+	<string name="show_info_label">Показати подробиці</string>
+	<string name="show_feed_settings_label">Показати налаштування подкасту</string>
+	<string name="feed_info_label">Інформація про подкаст</string>
+	<string name="feed_settings_label">Налаштування подкасту</string>
+	<string name="rename_feed_label">Перейменувати подкаст</string>
+	<string name="remove_feed_label">Видалити подкаст</string>
+	<string name="share_label">Поділитися&#8230;</string>
+	<string name="share_link_label">Поділитись посиланням на епізод</string>
+	<string name="share_link_with_position_label">Поділіться посиланням на епізод з позицією</string>
+	<string name="share_file_label">Поділитись файлом</string>
+	<string name="share_feed_url_label">Поділитись посиланням на канал</string>
+	<string name="share_item_url_label">Поділитись посиланням на медіа-файл</string>
+	<string name="share_item_url_with_position_label">Поділитись посиланням на медіа-файл з позицією</string>
+	<string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте видалити подкаст \"%1$s\" і ВСІ його епізоди (разом з завантаженими).</string>
+	<string name="feed_remover_msg">Видалення подкасту</string>
+	<string name="load_complete_feed">Оновити весь подкаст</string>
+	<string name="hide_episodes_title">Приховати епізоди</string>
+	<string name="batch_edit">Групове редагування</string>
+	<string name="select_all_above">Вибрати все вище</string>
+	<string name="select_all_below">Вибрати все нижче</string>
+	<string name="hide_unplayed_episodes_label">Невідтворені</string>
+	<string name="hide_paused_episodes_label">Призупинені</string>
+	<string name="hide_played_episodes_label">Відтворені</string>
+	<string name="hide_queued_episodes_label">В черзі</string>
+	<string name="hide_not_queued_episodes_label">Не в черзі</string>
+	<string name="hide_downloaded_episodes_label">Завантажені</string>
+	<string name="hide_not_downloaded_episodes_label">Не завантажені</string>
+	<string name="hide_has_media_label">Зі звуком або відео</string>
+	<string name="hide_is_favorite_label">В улюблених</string>
+	<string name="filtered_label">Фільтровані</string>
+	<string name="refresh_failed_msg">{fa-exclamation-circle} Останнє оновлення було невдалим</string>
+	<string name="open_podcast">Відкрити подкаст</string>
 
 	<!--actions on feeditems-->
 	<string name="download_label">Завантажити</string>
@@ -739,12 +739,12 @@
 
 	<!--Notification channels-->
 	<string name="notification_channel_user_action">Потрібна дія</string>
-  <string name="notification_channel_user_action_description">Показується, якщо потрібна Ваша дія, наприклад, якщо потрібно ввести пароль.</string>
-  <string name="notification_channel_downloading">Завантаження</string>
-  <string name="notification_channel_downloading_description">Показується під час завантаження.</string>
-  <string name="notification_channel_playing">Зараз відтворюється</string>
-  <string name="notification_channel_playing_description">Дозволяє керувати відтворенням. Це основне сповіщення, яке ви бачите під час відтворення подкасту.</string>
-  <string name="notification_channel_error">Помилки</string>
-  <string name="notification_channel_error_description">Відображається, якщо щось пішло не так, наприклад, якщо не вдалося завантажити або синхронізувати з gpodder.</string>
+	<string name="notification_channel_user_action_description">Показується, якщо потрібна Ваша дія, наприклад, якщо потрібно ввести пароль.</string>
+	<string name="notification_channel_downloading">Завантаження</string>
+	<string name="notification_channel_downloading_description">Показується під час завантаження.</string>
+	<string name="notification_channel_playing">Зараз відтворюється</string>
+	<string name="notification_channel_playing_description">Дозволяє керувати відтворенням. Це основне сповіщення, яке ви бачите під час відтворення подкасту.</string>
+	<string name="notification_channel_error">Помилки</string>
+	<string name="notification_channel_error_description">Відображається, якщо щось пішло не так, наприклад, якщо не вдалося завантажити або синхронізувати з gpodder.</string>
 
 </resources>
