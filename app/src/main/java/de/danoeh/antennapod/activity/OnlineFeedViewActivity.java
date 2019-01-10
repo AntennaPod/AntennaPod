@@ -316,6 +316,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         Log.d(TAG, "Parsing feed");
 
         parser = Observable.fromCallable(() -> {
+                    // TODO: [PENDING 2954] return Optional<FeedHandlerResult>
                     FeedHandler handler = new FeedHandler();
                     try {
                         return handler.parseFeed(feed);
@@ -337,7 +338,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 })
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
+                .subscribe(result -> { // TODO: [PENDING 2954] wrap underlying Nullable return with Optional<>
                     if(result != null) {
                         beforeShowFeedInformation(result.feed);
                         showFeedInformation(result.feed, result.alternateFeedUrls);
