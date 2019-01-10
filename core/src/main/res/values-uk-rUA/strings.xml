@@ -17,18 +17,18 @@
   <string name="subscriptions_label">Підписки</string>
   <string name="subscriptions_list_label">Перелік підписок</string>
   <string name="cancel_download_label">Скасувати завантаження</string>
-  <string name="playback_history_label">Що грало</string>
+  <string name="playback_history_label">Історія відтворення</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_auth_label">gpodder.net логін</string>
+  <string name="gpodnet_auth_label">Логін gpodder.net</string>
   <string name="free_space_label">%1$s вільно</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
-  <string name="episode_cache_full_message">Досягнута межа розміра кеша епізодів. Розмір кеша можна збільшити в налаштуваннях.</string>
+  <string name="episode_cache_full_message">Досягнута межа розміру кеша епізодів. Розмір кешу можна збільшити в налаштуваннях.</string>
   
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Загальний час прослуханих подкастів:</string>
   <string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
   <string name="statistics_mode">Режим статистики</string>
-  <string name="statistics_mode_normal">Обчислити тривалість прослуханого. Прослухане двічі враховується двічи, але просто позначене як прослухане не враховується </string>
+  <string name="statistics_mode_normal">Обчислити тривалість дійсно прослуханого. Прослухане двічі враховується двічи, але просто позначене як прослухане не враховується </string>
   <string name="statistics_mode_count_all">Підсумувати всі подкасти позначені як прослухані</string>
   <string name="statistics_speed_not_counted">Зауваження: Швидкість програвання не береться до уваги.</string>
   
@@ -37,9 +37,9 @@
   <string name="drawer_close">Сховати меню</string>
   <string name="drawer_preferences">Настройки меню навігації</string>
   <string name="drawer_feed_order_unplayed_episodes">Сортувати за лічильником</string>
-  <string name="drawer_feed_order_alphabetical">Сортування за абеткою</string>
+  <string name="drawer_feed_order_alphabetical">Сортувати за абеткою</string>
   <string name="drawer_feed_order_last_update">Сортувати за датою публікації</string>
-  <string name="drawer_feed_order_most_played">Сортування за кількістю прослуханих епізодів</string>
+  <string name="drawer_feed_order_most_played">Сортувати за кількістю прослуханих епізодів</string>
   <string name="drawer_feed_counter_new_unplayed">Кількість нових та непрослуханих епізодів</string>
   <string name="drawer_feed_counter_new">Кількість нових епізодів</string>
   <string name="drawer_feed_counter_unplayed">Кількість непрослуханих епізодів</string>
@@ -54,7 +54,7 @@
   <string name="go_to_position_label">До цієї позиції</string>
   
   <!--Playback history-->
-  <string name="clear_history_label">Забути</string>
+  <string name="clear_history_label">Очистити історію</string>
   
   <!--Other-->
   <string name="confirm_label"> Підтвердити</string>
@@ -62,16 +62,16 @@
   <string name="yes">Так</string>
   <string name="no">Ні</string>
   <string name="reset">Перезапуск</string>
-  <string name="author_label">Автор</string>
+  <string name="author_label">Автор(и)</string>
   <string name="language_label">Мова</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Налаштування</string>
   <string name="cover_label">Зображення</string>
   <string name="error_label">Помилка</string>
-  <string name="error_msg_prefix">Трапилась помілка:</string>
+  <string name="error_msg_prefix">Трапилась помилка:</string>
   <string name="refresh_label">Оновити</string>
   <string name="external_storage_error_msg">Немає доступної карти пам\'яті. Зовнішній носій потрібен для коректної роботи додатку</string>
-  <string name="chapters_label">Глави</string>
+  <string name="chapters_label">Розділи</string>
   <string name="chapter_duration">Тривалість: %1$s</string>
   <string name="shownotes_label">Нотатки до епізода</string>
   <string name="description_label">Опис</string>
@@ -86,10 +86,10 @@
   <string name="retry_label">Повторити знову</string>
   <string name="auto_download_label">Включити до автозавантаження</string>
   <string name="auto_download_apply_to_items_title">Застосувати до попередніх епізодів</string>
-  <string name="auto_download_apply_to_items_message">Нове налаштування <i>Автозагрузка</i> буде автоматично застосоване до нових епізодів.\nБажаєте також застосувати його до тих епізодів що було опубліковано раніше?</string>
-  <string name="auto_delete_label">Автовидалення епізода</string>
+  <string name="auto_download_apply_to_items_message">Нове налаштування <i>Автозавантаження</i> буде автоматично застосоване до нових епізодів.\nБажаєте також застосувати його до тих епізодів що були опубліковані раніше?</string>
+  <string name="auto_delete_label">Автовидалення епізоду</string>
   <string name="parallel_downloads_suffix">\u0020паралельних завантажень</string>
-  <string name="feed_auto_download_global">За замовчанням</string>
+  <string name="feed_auto_download_global">За замовчуванням</string>
   <string name="feed_auto_download_always">Завжди</string>
   <string name="feed_auto_download_never">Ніколи</string>
   <string name="send_label">Відправити…</string>
