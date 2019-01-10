@@ -3,8 +3,8 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<!-- Activitiy and fragment titles -->
-  <string name="feed_update_receiver_name">Оновити підписки</string>
-  <string name="feeds_label">Канали</string>
+	<string name="feed_update_receiver_name">Оновити підписки</string>
+	<string name="feeds_label">Канали</string>
   <string name="statistics_label">Статистика</string>
   <string name="add_feed_label">Додати подкаст</string>
   <string name="episodes_label">Епізоди</string>
