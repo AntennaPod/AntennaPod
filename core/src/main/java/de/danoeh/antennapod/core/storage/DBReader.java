@@ -202,6 +202,7 @@ public final class DBReader {
         }
     }
 
+    @NonNull
     private static List<FeedItem> extractItemlistFromCursor(PodDBAdapter adapter, Cursor cursor) {
         List<FeedItem> result = new ArrayList<>(cursor.getCount());
 
@@ -254,6 +255,7 @@ public final class DBReader {
         return feed;
     }
 
+    @NonNull
     static List<FeedItem> getQueue(PodDBAdapter adapter) {
         Log.d(TAG, "getQueue()");
         Cursor cursor = null;
@@ -310,6 +312,7 @@ public final class DBReader {
      * @return A list of FeedItems sorted by the same order as the queue. The caller can wrap the returned
      * list in a {@link de.danoeh.antennapod.core.util.QueueAccess} object for easier access to the queue's properties.
      */
+    @NonNull
     public static List<FeedItem> getQueue() {
         Log.d(TAG, "getQueue() called");
 
@@ -418,6 +421,7 @@ public final class DBReader {
      *
      * @param limit The maximum number of episodes that should be loaded.
      */
+    @NonNull
     public static List<FeedItem> getRecentlyPublishedEpisodes(int limit) {
         Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "limit = [" + limit + "]");
 
@@ -444,6 +448,7 @@ public final class DBReader {
      * @return The playback history. The FeedItems are sorted by their media's playbackCompletionDate in descending order.
      * The size of the returned list is limited by {@link #PLAYBACK_HISTORY_SIZE}.
      */
+    @NonNull
     public static List<FeedItem> getPlaybackHistory() {
         Log.d(TAG, "getPlaybackHistory() called");
 

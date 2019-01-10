@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -38,7 +39,7 @@ public class HttpDownloader extends Downloader {
 
     private static final int BUFFER_SIZE = 8 * 1024;
 
-    public HttpDownloader(DownloadRequest request) {
+    public HttpDownloader(@NonNull DownloadRequest request) {
         super(request);
     }
 
