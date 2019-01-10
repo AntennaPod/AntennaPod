@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+  
   <!--Activitiy and fragment titles-->
   <string name="feeds_label">Канали</string>
   <string name="statistics_label">Статистика</string>
@@ -22,6 +23,7 @@
   <string name="free_space_label">%1$s вільно</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
   <string name="episode_cache_full_message">Досягнута межа розміра кеша епізодів. Розмір кеша можна збільшити в налаштуваннях.</string>
+  
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Загальний час прослуханих подкастів:</string>
   <string name="statistics_details_dialog">%1$d з %2$d епізодів почато.\n\nПрослухано %3$s з %4$s.</string>
@@ -29,6 +31,7 @@
   <string name="statistics_mode_normal">Обчислити тривалість прослуханого. Прослухане двічі враховується двічи, але просто позначене як прослухане не враховується </string>
   <string name="statistics_mode_count_all">Підсумувати всі подкасти позначені як прослухані</string>
   <string name="statistics_speed_not_counted">Зауваження: Швидкість програвання не береться до уваги.</string>
+  
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
   <string name="drawer_close">Сховати меню</string>
@@ -42,14 +45,17 @@
   <string name="drawer_feed_counter_unplayed">Кількість непрослуханих епізодів</string>
   <string name="drawer_feed_counter_downloaded">Кількість завантажених епізодів</string>
   <string name="drawer_feed_counter_none">Жодних</string>
+ 
   <!--Webview actions-->
   <string name="open_in_browser_label">Відкрити в браузері</string>
   <string name="copy_url_label">Копіювати URL</string>
   <string name="share_url_label">Поділитися URL</string>
   <string name="copied_url_msg">URL скопійовано в буфер</string>
   <string name="go_to_position_label">До цієї позиції</string>
+  
   <!--Playback history-->
   <string name="clear_history_label">Забути</string>
+  
   <!--Other-->
   <string name="confirm_label"> Підтвердити</string>
   <string name="cancel_label">Скасувати</string>
@@ -96,6 +102,7 @@
     <item quantity="many">%d днів після закінчення</item>
     <item quantity="other">%d днів після закінчення</item>
   </plurals>
+
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Посилання на канал</string>
   <string name="etxtFeedurlHint">URL канала або сайта</string>
@@ -103,6 +110,7 @@
   <string name="podcastdirectories_label">Знайти подкаст в каталозі</string>
   <string name="podcastdirectories_descr">Нові подкасти можна шукати на iTunes або fyyd, або переглянути gpodder.net за іменами, категоріями або популярністю.</string>
   <string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
+  
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Позначити всі як грані</string>
   <string name="mark_all_read_msg">Позначено всі епізоди як грані</string>
@@ -136,6 +144,7 @@
   <string name="filtered_label">Фільтровані</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Останнє оновлення було невдалим</string>
   <string name="open_podcast">Відкрити подкаст</string>
+ 
   <!--actions on feeditems-->
   <string name="download_label">Завантажити</string>
   <string name="play_label">Грати</string>
@@ -164,6 +173,7 @@
   <string name="deactivate_auto_download">Виключити автозавантаження</string>
   <string name="reset_position">Вернути початкову позицію відтворення</string>
   <string name="removed_item">Видалено</string>
+
   <!--Download messages and labels-->
   <string name="download_successful">успішно</string>
   <string name="download_failed">з помилками</string>
@@ -213,6 +223,7 @@
   <string name="confirm_mobile_download_dialog_message">Завантаження через мобільний зв\'язок вимкнено в настройках.\n\nУвімкнути тимчасово?\n\n<small>Ваш вибір буде запам\'ятовано на 10 хвилин.</small></string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Лише додати до черги</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Увімкнути тимчасово</string>
+
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Помилка!</string>
   <string name="player_stopped_msg"> Нічого грати</string>
@@ -225,6 +236,7 @@
   <string name="player_buffering_msg">Буферізую</string>
   <string name="playbackservice_notification_title">Грає подкаст</string>
   <string name="unknown_media_key">AntennaPod - Невідомий медіа ключ: %1$d</string>
+
   <!--Queue operations-->
   <string name="lock_queue">Заблокувати чергу</string>
   <string name="unlock_queue">Розблокувати чергу</string>
@@ -243,6 +255,7 @@
   <string name="ascending">За зростанням</string>
   <string name="descending">За спаданням</string>
   <string name="clear_queue_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте вилучити всі епізоди з черги.</string>
+  
   <!--Flattr-->
   <string name="flattr_auth_label">Увійти до Flattr</string>
   <string name="flattr_auth_explanation">Нажміть цю кнопку для початку авторізації. Буде відкрито flattr в браузері, буде запит на дозвіл доступу AntennaPod до flattr. Після надання доступу ви повернетесь до цього екрану автоматично</string>
@@ -257,6 +270,7 @@
   <string name="action_forbidden_msg">AntennaPod не маэ дозвілу це зробити. Можливо відкликаний доступ до AntennaPod. Або ввідіть логін пароль в налаштуваннях або зробить це на сайті</string>
   <string name="access_revoked_title">Доступ відкликано</string>
   <string name="access_revoked_info">Ви відкликали доступ AntennaPod до облікового запису. Для закінчення процессу вам потрібно видалити додаток з затвержденного списку в вашому облікову запису на сайті flattr</string>
+ 
   <!--Flattr-->
   <string name="flattr_click_success">Підтримано через Flattr!</string>
   <string name="flattr_click_success_count">Flattr\'ed %d things!</string>
@@ -269,17 +283,20 @@
   <string name="flattrd_label">AntennaPod has flattr\'ed</string>
   <string name="flattrd_failed_label">AntennaPod flattr failed</string>
   <string name="flattr_retrieving_status">Retrieving flattr\'ed things</string>
+ 
   <!--Variable Speed-->
   <string name="download_plugin_label">Завантажити додаток</string>
   <string name="no_playback_plugin_title">Додаток не встановлено</string>
   <string name="no_playback_plugin_or_sonic_msg">Для програвання зі змінною швидкістю, ми радимо включити вбудований програвач Sonic [Android 4.1+].\n\nАбо ви можете завантажити додаток <i>Prestissimo</i> із Play Store.\nБудь які проблеми з Prestissimo не є відповідальністю розробників AntennaPod та мають вирішуватись авторами додатка.</string>
   <string name="set_playback_speed_label">Швидкість програвання</string>
   <string name="enable_sonic">Включити Sonic</string>
+
   <!--Empty list labels-->
   <string name="no_items_label">Нічого в цьому списку</string>
   <string name="no_feeds_label">Немає підписаних каналів </string>
   <string name="no_chapters_label">В цьому епізоді немає розділів.</string>
   <string name="no_shownotes_label">До цього епізода немає нотаток.</string>
+ 
   <!--Preferences-->
   <string name="storage_pref">Зберігання</string>
   <string name="project_pref">Проект</string>
@@ -417,11 +434,13 @@
   <string name="pref_cast_message_free_flavor">Для підтримки Chromecast потрібні бібліотеки які не включені в цю версію AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Додати завантаження до черги</string>
   <string name="pref_enqueue_downloaded_summary">Додавати завантажені епізоди до черги</string>
+ 
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
   <string name="auto_flattr_ater_beginning">Заохотити автора через Flattr коли починається відтворення</string>
   <string name="auto_flattr_ater_end">Заохотити автора через Flattr коли закінчується відтворення</string>
+
   <!--Search-->
   <string name="search_hint">Пошук епізодів</string>
   <string name="found_in_shownotes_label">Знайдено в нотатках епізода</string>
@@ -432,6 +451,7 @@
   <string name="search_label">Пошук</string>
   <string name="found_in_title_label">Знайдено у назві</string>
   <string name="no_results_for_query">Нічого не знайдено за запитом \"%1$s\"</string>
+
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML файли дозволяют вам перенести подкасти з однієї программи до іншої</string>
   <string name="opml_import_option">Варіант %1$d</string>
@@ -456,6 +476,7 @@
   <string name="export_success_title">Успішний експорт</string>
   <string name="export_success_sum">Файл було записано в:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Щоб прочитати файл OPML потрібен доступ до зовнішньої пам’яти</string>
+ 
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Таймер сну</string>
   <string name="disable_sleeptimer_label">Вимкнути засинання</string>
@@ -490,6 +511,7 @@
   <string name="auto_enable_label">Увімкнути автоматично</string>
   <string name="sleep_timer_enabled_label">Таймер сну увімкнено</string>
   <string name="sleep_timer_disabled_label">Таймер сну вимкнено</string>
+ 
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">КАТЕГОРІЇ</string>
   <string name="gpodnet_toplist_header">ТОП ПОДКАСТІВ</string>
@@ -521,6 +543,7 @@
   <string name="gpodnetsync_error_descr">Трапилась помилка при сінхронизації:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Успішно</string>
   <string name="gpodnetsync_pref_report_failed">Невдало</string>
+
   <!--Directory chooser-->
   <string name="selected_folder_label">Обрати папку:</string>
   <string name="create_folder_label">Нова папка</string>
@@ -543,10 +566,12 @@
   <string name="pref_resumeAfterCall_sum">Відновити відтворення після закінчення дзвінка</string>
   <string name="pref_resumeAfterCall_title">Відновити після дзвінка</string>
   <string name="pref_restart_required">Для застосування змін потрібно перезапустити AntennaPod</string>
+
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
   <string name="subscribed_label">Підписано</string>
   <string name="downloading_label">Завантажується…</string>
+ 
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Перемотка назад</string>
   <string name="fast_forward_label">Перемотка вперед</string>
@@ -557,6 +582,7 @@
   <string name="in_queue_label">Епізод чекає в черзі</string>
   <string name="drag_handle_content_description">Перетягніть щоб змінити позицію</string>
   <string name="load_next_page_label">Завантажити наступну сторінку</string>
+ 
   <!--Feed information screen-->
   <string name="authentication_label">Автентикація</string>
   <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>
@@ -567,13 +593,16 @@
   <string name="episode_filters_exclude">Вилучити</string>
   <string name="episode_filters_hint">Окремі слова \n\"Слова Разом\"</string>
   <string name="keep_updated">Підтримувати оновленим</string>
+
   <!--Progress information-->
   <string name="progress_upgrading_database">Оновлення бази даних</string>
+
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <string name="search_itunes_label">Пошук в iTunes</string>
   <string name="filter">Фільтр</string>
   <string name="search_fyyd_label">Шукати в fyyd</string>
+
   <!--Episodes apply actions-->
   <string name="all_label">Всі</string>
   <string name="selected_all_label">Обрано всі епізоди</string>
@@ -593,6 +622,7 @@
   <string name="selected_not_queued_label">Обрано епізоди що не в черзі</string>
   <string name="has_media">Із звуком або відео</string>
   <string name="selected_has_media_label">Обрано епізоди із звуком або відео</string>
+ 
   <!--Sort-->
   <string name="sort_title_a_z">Назва (А \u2192 Я)</string>
   <string name="sort_title_z_a">Назва (Я \u2192 А)</string>
@@ -600,12 +630,14 @@
   <string name="sort_date_old_new">Дата (Старі \u2192 Нові)</string>
   <string name="sort_duration_short_long">Тривалість (Короткі \u2192 Довгі)</string>
   <string name="sort_duration_long_short">Тривалість (Довгі \u2192 Короткі)</string>
+ 
   <!--Rating dialog-->
   <string name="rating_title">Оцінити AntennaPod?</string>
   <string name="rating_message">Ми будемо вдячні якщо ви поставите свою оцінку AntennaPod.</string>
   <string name="rating_never_label">Не зараз</string>
   <string name="rating_later_label">Нагадати згодом</string>
   <string name="rating_now_label">Звичайно, з задоволенням!</string>
+
   <!--Audio controls-->
   <string name="audio_controls">Керування звуком</string>
   <string name="playback_speed">Швидкість програвання</string>
@@ -615,6 +647,7 @@
   <string name="audio_effects">Аудіоефекти</string>
   <string name="stereo_to_mono">Зробити моно із стерео</string>
   <string name="sonic_only">Тільки Sonic</string>
+ 
   <!--proxy settings-->
   <string name="proxy_type_label">Тип</string>
   <string name="host_label">Хост</string>
@@ -627,6 +660,7 @@
   <string name="proxy_host_empty_error">Хост не може бути пустим</string>
   <string name="proxy_host_invalid_error">Хост не є правильною IP-адресою або доменним ім’ям</string>
   <string name="proxy_port_invalid_error">Неправильний порт</string>
+ 
   <!--Database import/export-->
   <string name="import_export">Імпортувати/Експортувати базу данних</string>
   <string name="import_export_warning">Ця експериментальна функція може бути використана щоб перенести ваші підпискаи то вже прослухані епізоди до іншого пристрою.\n\nЕкспортована база данних може тільки бути імпортована використоваючи ту саму версію AntennaPod. В противному випадку результат може бути непердбаченним.\n\nПисля импортування, епізоди можут бути відображенним як завантажені, коли на справді воне такими не є. Просто натисніть кнопку грати на цих епізодах щоб видалати іх.</string>
@@ -635,6 +669,7 @@
   <string name="import_select_file">Обрати файл для імпорту</string>
   <string name="export_ok">Успішний експорт</string>
   <string name="import_ok">Імпорт пройшов успішно.\n\nБудь ласка натисніть ОК щоб перезапустити AntennaPod</string>
+  
   <!--Casting-->
   <string name="cast_media_route_menu_title">Грати на…</string>
   <string name="cast_disconnect_label">Від’єднатись від пристроя програвання</string>
@@ -642,6 +677,7 @@
   <string name="cast_failed_to_play">Помилка програвання файла</string>
   <string name="cast_failed_to_stop">Помилка спроби зупинки програвання</string>
   <string name="cast_failed_to_pause">Помилка спроби призупинення програвання</string>
+ 
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Помилка встановлення гучності</string>
   <string name="cast_failed_no_connection">Немає з’єднання з пристроєм програвання</string>
