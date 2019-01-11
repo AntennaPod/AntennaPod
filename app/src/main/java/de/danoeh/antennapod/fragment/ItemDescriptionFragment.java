@@ -240,7 +240,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                     }
                     break;
                 case R.id.share_url_item:
-                    ShareUtils.shareLink(getActivity(), selectedURL);
+                    ShareUtils.shareLink(getActivity(), "", selectedURL);
                     break;
                 case R.id.copy_url_item:
                     ClipData clipData = ClipData.newPlainText(selectedURL,

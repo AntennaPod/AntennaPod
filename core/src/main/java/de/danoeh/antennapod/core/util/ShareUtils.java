@@ -23,19 +23,20 @@ public class ShareUtils {
 	
 	private ShareUtils() {}
 	
-	public static void shareLink(Context context, String text) {
+	public static void shareLink(Context context, String subject, String text) {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("text/plain");
+		i.putExtra(Intent.EXTRA_SUBJECT, subject);
 		i.putExtra(Intent.EXTRA_TEXT, text);
 		context.startActivity(Intent.createChooser(i, context.getString(R.string.share_url_label)));
 	}
 
 	public static void shareFeedlink(Context context, Feed feed) {
-		shareLink(context, feed.getTitle() + ": " + feed.getLink());
+		shareLink(context, feed.getTitle(), feed.getLink());
 	}
 	
 	public static void shareFeedDownloadLink(Context context, Feed feed) {
-		shareLink(context, feed.getTitle() + ": " + feed.getDownload_url());
+		shareLink(context, feed.getTitle(), feed.getDownload_url());
 	}
 
 	public static void shareFeedItemLink(Context context, FeedItem item) {
@@ -55,21 +56,21 @@ public class ShareUtils {
     }
 
 	public static void shareFeedItemLink(Context context, FeedItem item, boolean withPosition) {
-		String text = getItemShareText(item) + " " + FeedItemUtil.getLinkWithFallback(item);
+		String text = FeedItemUtil.getLinkWithFallback(item);
 		if(withPosition) {
 			int pos = item.getMedia().getPosition();
 			text += " [" + Converter.getDurationStringLong(pos) + "]";
 		}
-		shareLink(context, text);
+		shareLink(context, getItemShareText(item), text);
 	}
 
 	public static void shareFeedItemDownloadLink(Context context, FeedItem item, boolean withPosition) {
-		String text = getItemShareText(item) + " " + item.getMedia().getDownload_url();
+		String text =  item.getMedia().getDownload_url();
 		if(withPosition) {
 			int pos = item.getMedia().getPosition();
 			text += " [" + Converter.getDurationStringLong(pos) + "]";
 		}
-		shareLink(context, text);
+		shareLink(context, getItemShareText(item), text);
 	}
 
 	public static void shareFeedItemFile(Context context, FeedMedia media) {
