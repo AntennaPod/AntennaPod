@@ -2,14 +2,18 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,11 +50,13 @@ import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.Consumer;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -459,10 +465,47 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     @Override
     public void onStart() {
+        Log.v(TAG, "onStart"
+                + ", intent.flags=" + Integer.toHexString(getIntent().getFlags()));
+        if (isFromFreshLaunch()) {
+            redirectToPlayerActivityIfCurrentlyPlaying();
+        }
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         RatingDialog.init(this);
+    }
+
+    private boolean isFromFreshLaunch() {
+        // TODO: limitation - the logic can detect if the user comes here
+        // from pressing the top-left action bar back button (which has FLAG_ACTIVITY_CLEAR_TOP set),
+        //
+        // but it cannot detect if the user comes here from pressing system back button (which
+        // preserve the flags from how this activity is originally launched)
+        // E.g, the following sequence will happen (and not acceptable)
+        //  1. user launches AntennaPod
+        //  2. clicks a FeedItem to play something
+        //  3. goes to player screen (it continues to play)
+        //  4. presses system back button
+        // The logic here will bounce the user back to player screen, as the flags from pressing
+        // system back button are the one from fresh launch in step 1.
+        //
+        // Possible workaround: once determined the user reaches here from launcher,
+        // use setIntent to change the intent to one with FLAG_ACTIVITY_CLEAR_TOP, so that
+        // upon pressing system back button, it won't be seen as from launcher again.
+        return Intent.FLAG_ACTIVITY_NEW_TASK == getIntent().getFlags();
+    }
+
+    private void redirectToPlayerActivityIfCurrentlyPlaying() {
+        Log.v(TAG, "DBG - redirectToPlayerActivityIfCurrentlyPlaying()");
+        long startTime = System.currentTimeMillis(); // to measure elapsed time to determine if it's playing
+        doIfCurrentlyPlaying(playbackService -> {
+            long playerLaunchTime = System.currentTimeMillis();
+            Log.v(TAG, "    DBG - time to determine it is currently playing(ms)=" + (playerLaunchTime - startTime));
+            Intent playerActivityIntent = PlaybackService.getPlayerActivityIntent(this, playbackService.getPlayable());
+            startActivity(playerActivityIntent);
+            finish();
+        });
     }
 
     @Override
@@ -484,6 +527,37 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
         loadData();
         RatingDialog.check();
+    }
+
+    private void doIfCurrentlyPlaying(@NonNull Consumer<PlaybackService> callback) {
+        if (PlaybackService.isRunning) {
+            ServiceConnection serviceConnection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder serviceBinder) {
+                    try {
+                        if (serviceBinder instanceof PlaybackService.LocalBinder) {
+                            PlaybackService playbackService = ((PlaybackService.LocalBinder) serviceBinder).getService();
+                            // check if it is currently playing something, if so, invoke callback
+                            if (!(playbackService.getPlayable() instanceof FeedMedia)) {
+                                // don't support other types of playback, e.g., casting.
+                                return;
+                            }
+                            FeedMedia feedMedia = (FeedMedia)playbackService.getPlayable();
+                            if (feedMedia.isCurrentlyPlaying()) {
+                                callback.accept(playbackService);
+                            }
+                        }
+                    } finally {
+                        // unbind the service once callback is done
+                        unbindService(this);
+                    }
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {}
+            };
+            bindService(new Intent(this, PlaybackService.class), serviceConnection, 0);
+        } // else nothing to invoke
     }
 
     @Override
