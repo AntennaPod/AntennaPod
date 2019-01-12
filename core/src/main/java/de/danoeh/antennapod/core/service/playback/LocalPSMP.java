@@ -991,7 +991,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
     private final MediaPlayer.OnErrorListener audioErrorListener =
             (mp, what, extra) -> {
-                if(mp.canFallback()) {
+                if(mp != null && mp.canFallback()) {
                     mp.fallback();
                     return true;
                 } else {
