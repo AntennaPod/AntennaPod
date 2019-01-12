@@ -467,7 +467,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public void onStart() {
         Log.v(TAG, "onStart"
                 + ", intent.flags=" + Integer.toHexString(getIntent().getFlags()));
-        if (isFromFreshLaunch()) {
+        if (isFromLauncher()) {
             redirectToPlayerActivityIfCurrentlyPlaying();
         }
         super.onStart();
@@ -476,24 +476,22 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         RatingDialog.init(this);
     }
 
-    private boolean isFromFreshLaunch() {
-        // TODO: limitation - the logic can detect if the user comes here
-        // from pressing the top-left action bar back button (which has FLAG_ACTIVITY_CLEAR_TOP set),
-        //
-        // but it cannot detect if the user comes here from pressing system back button (which
-        // preserve the flags from how this activity is originally launched)
-        // E.g, the following sequence will happen (and not acceptable)
-        //  1. user launches AntennaPod
-        //  2. clicks a FeedItem to play something
-        //  3. goes to player screen (it continues to play)
-        //  4. presses system back button
-        // The logic here will bounce the user back to player screen, as the flags from pressing
-        // system back button are the one from fresh launch in step 1.
-        //
-        // Possible workaround: once determined the user reaches here from launcher,
-        // use setIntent to change the intent to one with FLAG_ACTIVITY_CLEAR_TOP, so that
-        // upon pressing system back button, it won't be seen as from launcher again.
-        return Intent.FLAG_ACTIVITY_NEW_TASK == getIntent().getFlags();
+    private boolean isFromLauncher() {
+        if (Intent.FLAG_ACTIVITY_NEW_TASK == getIntent().getFlags()) {
+            // case the activity is launched from launcher, rather than
+            // navigating back here from other Player, Settings, etc.
+
+            // Workaround: change the intent flag (as if it's the one upon clicking action bar back button)
+            // so that if users comes here from Player screen by pressing system back button,
+            // the activity will see the modified intent, and will not try to relaunch player.
+            Intent intentModified = new Intent(getIntent());
+            intentModified.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            setIntent(intentModified);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void redirectToPlayerActivityIfCurrentlyPlaying() {
