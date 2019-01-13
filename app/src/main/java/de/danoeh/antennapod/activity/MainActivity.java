@@ -477,7 +477,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     }
 
     private boolean isFromLauncher() {
-        if (Intent.FLAG_ACTIVITY_NEW_TASK == getIntent().getFlags()) {
+        final int flags = getIntent().getFlags();
+        if (Intent.FLAG_ACTIVITY_NEW_TASK == flags || // tested on Android 7, 9
+                0 == flags // tested on Android 4
+                ) {
             // case the activity is launched from launcher, rather than
             // navigating back here from other Player, Settings, etc.
 
