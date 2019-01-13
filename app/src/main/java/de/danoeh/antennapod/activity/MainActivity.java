@@ -498,11 +498,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     }
 
     private void redirectToPlayerActivityIfCurrentlyPlaying() {
-        Log.v(TAG, "DBG - redirectToPlayerActivityIfCurrentlyPlaying()");
-        long startTime = System.currentTimeMillis(); // to measure elapsed time to determine if it's playing
         doIfCurrentlyPlaying(playbackService -> {
-            long playerLaunchTime = System.currentTimeMillis();
-            Log.v(TAG, "    DBG - time to determine it is currently playing(ms)=" + (playerLaunchTime - startTime));
+            Log.v(TAG, "redirectToPlayerActivityIfCurrentlyPlaying() - to redirect");
             Intent playerActivityIntent = PlaybackService.getPlayerActivityIntent(this, playbackService.getPlayable());
             startActivity(playerActivityIntent);
             finish();
