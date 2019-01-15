@@ -48,7 +48,6 @@
   <string name="yes">Jah</string>
   <string name="no">Ei</string>
   <string name="reset">Nulli</string>
-  <string name="author_label">Autor</string>
   <string name="language_label">Keel</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Seaded</string>
@@ -93,17 +92,10 @@
   <string name="mark_all_read_label">Märgi kuulatuks</string>
   <string name="mark_all_read_msg">Märgi kõik saated esitatuks</string>
   <string name="mark_all_seen_label">Märgi kõik nähtuks</string>
-  <string name="mark_all_seen_msg">Märgi kõik saated nähtuks</string>
   <string name="show_info_label">Näita infot</string>
-  <string name="rename_feed_label">Nimeta taskuhääling ümber</string>
-  <string name="remove_feed_label">Eemalda taskuhääling</string>
   <string name="share_label">Jaga...</string>
-  <string name="share_link_label">Jaga linki</string>
   <string name="share_file_label">Jaga faili</string>
-  <string name="share_link_with_position_label">Jaga linki koos asukohaga</string>
   <string name="share_feed_url_label">Jaga uudisvoo URL-i</string>
-  <string name="feed_remover_msg">Uudisvoo eemaldamine</string>
-  <string name="load_complete_feed">Värskenda kogu uudisvoogu</string>
   <string name="hide_episodes_title">Peida saated</string>
   <string name="hide_unplayed_episodes_label">Esitamata</string>
   <string name="hide_paused_episodes_label">Peatatud</string>
@@ -208,7 +200,6 @@
   <string name="date">Kuupäeva järgi</string>
   <string name="duration">Kestuse järgi</string>
   <string name="episode_title">Saate pealkiri</string>
-  <string name="feed_title">Uudisvoo pealkiri</string>
   <string name="ascending">Kasvavalt</string>
   <string name="descending">Kahanevalt</string>
   <!--Flattr-->
@@ -225,7 +216,6 @@
   <string name="enable_sonic">Luba Sonicu kasutamine</string>
   <!--Empty list labels-->
   <string name="no_items_label">Selles nimekirjas pole midagi.</string>
-  <string name="no_feeds_label">Sa pole veel ühtegi uusidvoogi tellinud.</string>
   <string name="no_chapters_label">Saatel pole peatükke.</string>
   <string name="no_shownotes_label">Sellel saatel pole mingeid märkusi.</string>
   <!--Preferences-->
@@ -294,8 +284,6 @@
   <string name="pref_playback_speed_title">Esitamise kiirused</string>
   <string name="pref_gpodnet_sethostname_title">Määra hostinimi</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Kasuta vaikimisi hosti</string>
-  <string name="pref_expandNotify_title">Teavituste laiendamine</string>
-  <string name="pref_expandNotify_sum">Näita alati teavitustes pleieri nuppe.</string>
   <string name="pref_persistNotify_title">Püsivad taasesitamise nupud</string>
   <string name="pref_compact_notification_buttons_title">Määra lukustutekraani nupud</string>
   <string name="pref_lockscreen_background_title">Määra lukustusekraani taustapilt</string>

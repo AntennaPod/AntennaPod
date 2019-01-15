@@ -48,7 +48,6 @@
   <string name="yes">Có</string>
   <string name="no">Không</string>
   <string name="reset">Đặt lại</string>
-  <string name="author_label">Tác giả</string>
   <string name="language_label">Ngôn ngữ</string>
   <string name="url_label">Liên kết</string>
   <string name="podcast_settings_label">Thiết lập</string>
@@ -93,18 +92,10 @@
   <string name="mark_all_read_msg">Đánh dấu đã nghe tất cả các tập</string>
   <string name="mark_all_read_confirmation_msg">Hãy xác nhận bạn muốn đánh dấu đã nghe tất cả các tập.</string>
   <string name="mark_all_seen_label">Đánh dấu đã xem tất cả</string>
-  <string name="mark_all_seen_msg">Đánh dấu đã xem tất cả các tập</string>
   <string name="mark_all_seen_confirmation_msg">Hãy xác nhận bạn muốn đánh dấu đã xem tất cả các tập.</string>
   <string name="show_info_label">Hiện thông tin</string>
-  <string name="rename_feed_label">Đổi tên podcast</string>
-  <string name="remove_feed_label">Xoá podcast</string>
   <string name="share_label">Chia sẻ…</string>
-  <string name="share_link_label">Chia sẻ liên kết</string>
-  <string name="share_link_with_position_label">Chia sẻ liên kết cùng vị trí phát</string>
   <string name="share_feed_url_label">Chia sẻ liên kết feed</string>
-  <string name="share_item_url_label">Chia sẻ liên kết của tập này</string>
-  <string name="share_item_url_with_position_label">Chia sẻ liên kết và vị trí phát tập này</string>
-  <string name="feed_remover_msg">Đang xoá feed</string>
   <string name="hide_episodes_title">Ẩn các tập</string>
   <string name="hide_unplayed_episodes_label">Chưa nghe</string>
   <string name="hide_paused_episodes_label">Đang tạm dừng</string>
@@ -203,7 +194,6 @@
   <string name="date">Ngày</string>
   <string name="duration">Thời lượng</string>
   <string name="episode_title">Tiêu đề tập</string>
-  <string name="feed_title">Tiêu đề feed</string>
   <string name="ascending">Tăng dần</string>
   <string name="descending">Giảm dần</string>
   <!--Flattr-->
@@ -232,7 +222,6 @@
   <string name="pref_pauseOnDisconnect_sum">Tạm dừng khi tai nghe hoặc thiết bị Bluetooth bị ngắt kết nối</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Tiếp tục phát khi tai nghe được kết nối lại</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Tiếp tục phát khi thiết bị Bluetooth được kết nối lại</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Khi ấn nút tua nhanh (nút cứng), không tua mà chuyến sang tập tiếp theo</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Nghe lại khi ấn nút tua lại</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Khi ấn nút tua lại (nút cứng), không tua lại mà phát lại tập đang nghe</string>
   <string name="pref_followQueue_sum">Chuyển đến mục đợi phát tiếp theo khi nghe xong</string>

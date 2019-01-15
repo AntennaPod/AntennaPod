@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Aggiorna sottoscrizioni</string>
   <string name="feeds_label">Feed</string>
   <string name="statistics_label">Statistiche</string>
   <string name="add_feed_label">Aggiungi un podcast</string>
   <string name="episodes_label">Episodi</string>
   <string name="all_episodes_short_label">Tutti</string>
+  <string name="new_episodes_label">Nuovo</string>
   <string name="favorite_episodes_label">Preferiti</string>
   <string name="new_label">Nuovo</string>
   <string name="settings_label">Impostazioni</string>
@@ -18,10 +20,12 @@
   <string name="cancel_download_label">Annulla\nil download</string>
   <string name="playback_history_label">Cronologia delle riproduzioni</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Sincronizza con altri dispositivi</string>
   <string name="gpodnet_auth_label">Accesso a gpodder.net</string>
   <string name="free_space_label">%1$s liberi</string>
   <string name="episode_cache_full_title">Cache degli episodi piena</string>
   <string name="episode_cache_full_message">Lo spazio di memoria della cache dell\'episodio è esaurito. Puoi aumentarlo nelle Impostazioni</string>
+  <string name="synchronizing">Sincronizzazione...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tempo totale di riproduzione:</string>
   <string name="statistics_details_dialog">%1$d di %2$d episodi iniziati.\n\nRiprodotti %3$s di %4$s.</string>
@@ -56,13 +60,14 @@
   <string name="yes">Sì</string>
   <string name="no">No</string>
   <string name="reset">Reimposta</string>
-  <string name="author_label">Autore</string>
+  <string name="author_label">Autore(i)</string>
   <string name="language_label">Lingua</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Impostazioni</string>
   <string name="cover_label">Immagine</string>
   <string name="error_label">Errore</string>
   <string name="error_msg_prefix">È avvenuto un errore:</string>
+  <string name="needs_storage_permission">Permessi di archiviazione obbligatori per questa azione</string>
   <string name="refresh_label">Ricarica</string>
   <string name="external_storage_error_msg">Non è stata trovata nessuna memoria esterna. Controlla che la memoria esterna sia montata in modo che l\'app possa rilevarla</string>
   <string name="chapters_label">Capitoli</string>
@@ -105,23 +110,26 @@
   <string name="mark_all_read_label">Segna tutti come riprodotti</string>
   <string name="mark_all_read_msg">Segnati tutti gli episodi come riprodotti</string>
   <string name="mark_all_read_confirmation_msg">Conferma che desideri segnare tutti gli episodi come riprodotti.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Conferma che desideri segnare tutti gli episodi in questo feed come riprodotti.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Per favore conferma che vuoi segnare tutti gli episodi di questo podcast come riprodotti.</string>
   <string name="mark_all_seen_label">Segna tutti come visti</string>
-  <string name="mark_all_seen_msg">Segnati tutti gli episodi come visti</string>
+  <string name="mark_all_seen_msg">Segna tutti gli episodi come visti</string>
   <string name="mark_all_seen_confirmation_msg">Conferma che desideri segnare tutti gli episodi come visti.</string>
   <string name="show_info_label">Mostra delle informazioni</string>
-  <string name="rename_feed_label">Rinomina Podcast</string>
-  <string name="remove_feed_label">Rimuovi Podcast</string>
+  <string name="show_feed_settings_label">Mostra impostazioni podcast</string>
+  <string name="feed_info_label">Info podcast</string>
+  <string name="feed_settings_label">Impostazioni podcast</string>
+  <string name="rename_feed_label">Rinomina podcast</string>
+  <string name="remove_feed_label">Rimuovi podcast</string>
   <string name="share_label">Condividi...</string>
-  <string name="share_link_label">Condividi il link</string>
+  <string name="share_link_label">Condividi URL episodio</string>
+  <string name="share_link_with_position_label">Condividi URL episodio con posizione</string>
   <string name="share_file_label">Condividi il file</string>
-  <string name="share_link_with_position_label">Condividi il Link con la Posizione</string>
   <string name="share_feed_url_label">Condividi URL del Feed</string>
-  <string name="share_item_url_label">Condividi l\'URL dell\'episodio</string>
-  <string name="share_item_url_with_position_label">Condividi l\'URL del File dell\'epsiodio con la Posizione</string>
-  <string name="feed_delete_confirmation_msg">Conferma che desideri cancellare il feed \"%1$s\" e TUTTI i suoi episodi scaricati.</string>
-  <string name="feed_remover_msg">Rimozione del Feed in corso</string>
-  <string name="load_complete_feed">Aggiorna il feed completo</string>
+  <string name="share_item_url_label">Condividi URL Media File</string>
+  <string name="share_item_url_with_position_label">Condividi URL Media File con posizione</string>
+  <string name="feed_delete_confirmation_msg">Conferma che vuoi eliminare il podcast \"%1$s\" e TUTTI i suoi episodi (compresi quelli scaricati).</string>
+  <string name="feed_remover_msg">Rimozione podcast</string>
+  <string name="load_complete_feed">Aggiorna l\'intero podcast</string>
   <string name="hide_episodes_title">Nascondi gli episodi</string>
   <string name="hide_unplayed_episodes_label">Non riprodotti</string>
   <string name="hide_paused_episodes_label">In pausa</string>
@@ -130,6 +138,7 @@
   <string name="hide_not_queued_episodes_label">Non in coda</string>
   <string name="hide_downloaded_episodes_label">Scaricati</string>
   <string name="hide_not_downloaded_episodes_label">Non scaricati</string>
+  <string name="hide_is_favorite_label">Preferito</string>
   <string name="filtered_label">Filtrati</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Ultimo aggiornamento fallito</string>
   <string name="open_podcast">Apri il Podcast</string>
@@ -143,6 +152,7 @@
   <string name="delete_label">Elimina</string>
   <string name="delete_failed">Impossibile eliminare il file. Il riavvio del dispositivo potrebbe aiutare.</string>
   <string name="remove_episode_lable">Rimuovi l\'episodio</string>
+  <string name="mark_as_seen_label">Segna come visto</string>
   <string name="marked_as_seen_label">Segna come visto</string>
   <string name="mark_read_label">Segna come riprodotto</string>
   <string name="marked_as_read_label">Segnato come riprodotto</string>
@@ -167,6 +177,7 @@
   <string name="download_pending">Download in attesa</string>
   <string name="download_running">Download in corso</string>
   <string name="download_error_details">Dettagli</string>
+  <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
   <string name="download_error_device_not_found">Spazio di archiviazione non trovato</string>
   <string name="download_error_insufficient_space">Spazio Insufficiente</string>
   <string name="download_error_file_error">Errore del file</string>
@@ -231,7 +242,6 @@
   <string name="date">Per data</string>
   <string name="duration">Per durata</string>
   <string name="episode_title">Titolo dell\'episodio</string>
-  <string name="feed_title">Titolo del feed</string>
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
   <string name="clear_queue_confirmation_msg">Per favore conferma che vuoi rimuovere dalla coda TUTTI gli episodi in essa presenti.</string>
@@ -268,7 +278,6 @@
   <string name="enable_sonic">Abilita Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Non ci sono oggetti in questo elenco.</string>
-  <string name="no_feeds_label">Non sei ancora abbonato a nessun feed.</string>
   <string name="no_chapters_label">Questo episodio non ha capitoli.</string>
   <string name="no_shownotes_label">Questo episodio non ha note.</string>
   <!--Preferences-->
@@ -342,8 +351,6 @@
   <string name="pref_playback_speed_sum">Personalizza le velocità disponibili per la riproduzione audio a velocità variabile</string>
   <string name="pref_gpodnet_sethostname_title">Imposta il nome dell\'host</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilizza l\'host predefinito</string>
-  <string name="pref_expandNotify_title">Espandi le notifiche</string>
-  <string name="pref_expandNotify_sum">Espandi sempre le notifiche per mostrare i pulsanti di riproduzione.</string>
   <string name="pref_persistNotify_title">Controlli di riproduzione persistenti</string>
   <string name="pref_persistNotify_sum">Mantieni le notifiche e i controlli del blocco dello schermo quando la riproduzione è in pausa.</string>
   <string name="pref_showDownloadReport_title">Mostra il Rapporto del Download</string>

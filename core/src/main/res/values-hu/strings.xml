@@ -52,7 +52,6 @@
   <string name="yes">Igen</string>
   <string name="no">Nem</string>
   <string name="reset">Visszaállítás</string>
-  <string name="author_label">Szerző</string>
   <string name="language_label">Nyelv</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Beállítások</string>
@@ -101,23 +100,12 @@
   <string name="mark_all_read_label">Az összes megjelölése lejátszottként</string>
   <string name="mark_all_read_msg">Az összes epizód lejátszottként megjelölve</string>
   <string name="mark_all_read_confirmation_msg">Biztosan megjelölöd az összes epizódot lejátszottként?</string>
-  <string name="mark_all_read_feed_confirmation_msg">Biztosan megjelölöd az összes epizódot az idővonalon lejátszottként?</string>
   <string name="mark_all_seen_label">Az összes megjelölése megnézettként</string>
-  <string name="mark_all_seen_msg">Az összes epizód megnézettként megjelölve</string>
   <string name="mark_all_seen_confirmation_msg">Biztosan megjelölöd az összes epizódott megnézettként?</string>
   <string name="show_info_label">Információ mutatása</string>
-  <string name="rename_feed_label">Podcast átnevezése</string>
-  <string name="remove_feed_label">Podcast eltávolítása</string>
   <string name="share_label">Megosztás…</string>
-  <string name="share_link_label">Link megosztása</string>
   <string name="share_file_label">Fájl megosztása</string>
-  <string name="share_link_with_position_label">Link megosztása pozícióval</string>
   <string name="share_feed_url_label">Idővonal URL megosztása</string>
-  <string name="share_item_url_label">Epizód fájl URL megosztása</string>
-  <string name="share_item_url_with_position_label">Epizód fájl URL megosztása pozícióval</string>
-  <string name="feed_delete_confirmation_msg">Kérlek erősítsd meg, hogy törlöd a %1$s csatornát, az összes letöltött epizóddal együtt.</string>
-  <string name="feed_remover_msg">Idővonal eltávolítása</string>
-  <string name="load_complete_feed">Teljes idővonal frissítése</string>
   <string name="hide_episodes_title">Epizódok elrejtése</string>
   <string name="hide_unplayed_episodes_label">Nem lejátszott</string>
   <string name="hide_paused_episodes_label">Szüneteltetett</string>
@@ -219,7 +207,6 @@
   <string name="date">Dátum</string>
   <string name="duration">Hossz</string>
   <string name="episode_title">Epizód cím</string>
-  <string name="feed_title">Csatorna cím</string>
   <string name="ascending">Növekvő</string>
   <string name="descending">Csökkenő</string>
   <!--Flattr-->
@@ -233,7 +220,6 @@
   <string name="enable_sonic">Sonic engedélyezése</string>
   <!--Empty list labels-->
   <string name="no_items_label">Nincs elem a listában</string>
-  <string name="no_feeds_label">Egy csatornára sem iratkoztál még fel</string>
   <!--Preferences-->
   <string name="storage_pref">Tároló</string>
   <string name="project_pref">Projekt</string>
@@ -285,8 +271,6 @@
   <string name="pref_gpodnet_sync_changes_title">Változások szinkronizálása most</string>
   <string name="pref_gpodnet_full_sync_title">Teljes szinkronizálás most</string>
   <string name="pref_playback_speed_title">Lejátszási sebesség</string>
-  <string name="pref_expandNotify_title">Értesítés kibontása</string>
-  <string name="pref_expandNotify_sum">Mindig kibontja az értesítést a vezérlő gombok megjelenítéséhez.</string>
   <string name="pref_compact_notification_buttons_title">Zárképernyő gombok beállítása</string>
   <string name="pref_lockscreen_background_title">Zárképernyő háttérkép</string>
   <string name="pref_lockscreen_background_sum">Zárképernyő háttérkép átállítása az epizód képeként.</string>

@@ -48,7 +48,6 @@
   <string name="yes">Evet</string>
   <string name="no">Hayır</string>
   <string name="reset">Sıfırla</string>
-  <string name="author_label">Yayıncı</string>
   <string name="language_label">Dil</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Ayarlar</string>
@@ -94,21 +93,11 @@
   <string name="mark_all_read_label">Hepsini oynatıldı olarak işaretle</string>
   <string name="mark_all_read_msg">Tüm bölümleri oynatıldı olarak işaretle</string>
   <string name="mark_all_read_confirmation_msg">Lütfen tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Lütfen bu besleme içindeki tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="mark_all_seen_label">Hepsini görüldü olarak işaretle</string>
-  <string name="mark_all_seen_msg">Tüm bölümler görüldü olarak işaretlendi</string>
   <string name="mark_all_seen_confirmation_msg">Lütfen tüm bölümleri görüldü olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="show_info_label">Bilgiyi göster</string>
-  <string name="rename_feed_label">Cep yayınını yeniden adlandır</string>
-  <string name="remove_feed_label">Cep yayını kaldır</string>
   <string name="share_label">Paylaş...</string>
-  <string name="share_link_label">Link\'i paylaş</string>
-  <string name="share_link_with_position_label">Link\'i Konumla birlikte paylaş</string>
   <string name="share_feed_url_label">Besleme Adresini Paylaş</string>
-  <string name="share_item_url_label">Bölüm Dosyası Adresini Paylaş</string>
-  <string name="share_item_url_with_position_label">Bölüm Dosyası Adresini Konumla birlikte paylaş</string>
-  <string name="feed_remover_msg">Besleme kaldırılıyor</string>
-  <string name="load_complete_feed">Tüm beslemeyi yenile</string>
   <string name="hide_episodes_title">Bölümleri gizle</string>
   <string name="hide_unplayed_episodes_label">Oynatılmadı</string>
   <string name="hide_paused_episodes_label">Duraklatıldı</string>
@@ -219,7 +208,6 @@
   <string name="date">Tarih</string>
   <string name="duration">Süre</string>
   <string name="episode_title">Blüm başlığı</string>
-  <string name="feed_title">Besleme başlığı</string>
   <string name="ascending">Artan</string>
   <string name="descending">Azalan</string>
   <string name="clear_queue_confirmation_msg">Lütfen içerisindeki BÜTÜN ölümlerle birlikte kuyruğu temizleme isteğinizi onaylayın.</string>
@@ -256,7 +244,6 @@
   <string name="enable_sonic">Sonic\'i Etkinleştir</string>
   <!--Empty list labels-->
   <string name="no_items_label">Bu listede hiç öge yok.</string>
-  <string name="no_feeds_label">Henüz hiçbir beslemeye abone değilsiniz.</string>
   <!--Preferences-->
   <string name="storage_pref">Depolama</string>
   <string name="project_pref">Proje</string>
@@ -328,8 +315,6 @@
   <string name="pref_playback_speed_sum">Değişken hızlı ses yürütmesi için kullanılabilir hızları özelleştirin</string>
   <string name="pref_gpodnet_sethostname_title">Sunucu ismini ayarla</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Varsayılan sunucuyu kullan</string>
-  <string name="pref_expandNotify_title">Bildirimi Genişlet</string>
-  <string name="pref_expandNotify_sum">Çalma tuşlarını göstermek için bildirimi her zaman genişlet.</string>
   <string name="pref_persistNotify_title">Kalıcı oynatma kontrolleri</string>
   <string name="pref_persistNotify_sum">Çalma duraklatıldığında bildirim ve ekran kilidi ayarlarını sakla.</string>
   <string name="pref_showDownloadReport_title">İndirme Raporunu Göster</string>

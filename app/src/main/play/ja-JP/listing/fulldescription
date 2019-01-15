@@ -7,13 +7,12 @@ AntennaPodは、独自のポッドキャスターから、BBC、NPR、CNNなど�
 インポート、整理、再生<br>
 &#8226; iTunesや、gPodder.netディレクトリ、OPMLファイル、RSSまたはAtom経由でフィードを追加およびインポートします<br>
 &#8226; 様々な場所で再生を管理します: ホーム画面ウィジェット、システム通知、イヤホン、Bluetoothコントロール<br>
-&#8226; 再生速度の調整、チャプターのサポート (MP3、VorbisCommentとPodlove)、再生位置の保存、高度なスリープタイマー (シェイクしてリセット、音量を小さく、再生速度を遅く) で、お好みの
-聞き方でお楽しみください<br>
+&#8226; 再生速度の調整、チャプターのサポート (MP3、VorbisCommentとPodlove)、再生位置の保存、高度なスリープタイマー (シェイクしてリセット、音量を小さく、再生速度を遅く) で、お好みの聞き方でお楽しみください<br>
 &#8226; アクセスパスワードで保護されたフィードとエピソード<br>
 &#8226; ページフィードをご利用ください (www.podlove.org/paged-feeds)
 
 記録、共有 & 感謝<br>
-&#8226; エピソードをお気に入りとしてマークして、一番の中の一番を記録してください<br>
+&#8226; エピソードをお気に入りとしてマークして、一番の中の一番を保存してください<br>
 &#8226; 再生履歴から、または検索 (タイトルとショーノート) して目的のエピソードを見つけてください<br>
 &#8226; 高度なソーシャルメディアとメールオプション、gPodder.netサービス、OPMLエクスポートからエピソードやフィードを共有してください<br>
 &#8226; 自動Flattrを含むFlattrの統合でコンテンツクリエイターをサポートします
@@ -29,13 +28,16 @@ AntennaPodは、独自のポッドキャスターから、BBC、NPR、CNNなど�
 AntennaPod はボランティアによって活発に開発中です。コードやコメントで、あなたもも貢献することができます!
 
 GitHubは、機能のリクエスト、バグの報告、コードの貢献のための場所です:<br>
-www.github.com/AntennaPod/AntennaPod
+https://www.github.com/AntennaPod/AntennaPod
 
-私たちのGoogleグループは、あなたのアイデア、お気に入りのポッドキャスティングモーメント、感謝を、すべてのボランティアと共有するための場所で:<br>
+私たちのGoogleグループは、あなたのアイデア、お気に入りのポッドキャスティングモーメント、感謝を、すべてのボランティアと共有するための場所です:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
+質問や、私たちへのフィードバックがありませんか?
+https://twitter.com/@AntennaPod
+
 Transifexは翻訳を支援するための場所です:<br>
-www.transifex.com/antennapod/antennapod
+https://www.transifex.com/antennapod/antennapod
 
 私たちのベータテストプログラムをチェックして、最新機能を最初に入手してください:<br>
-www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
