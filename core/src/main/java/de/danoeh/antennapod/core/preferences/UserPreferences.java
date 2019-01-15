@@ -100,6 +100,7 @@ public class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
+    public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
 
     // Mediaplayer
     public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
@@ -309,6 +310,10 @@ public class UserPreferences {
 
     public static int getSmartMarkAsPlayedSecs() {
         return Integer.parseInt(prefs.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
+    }
+
+    public static boolean shouldDeleteRemoveFromQueue() {
+        return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
     public static boolean isAutoFlattr() {

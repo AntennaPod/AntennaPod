@@ -482,6 +482,8 @@
     <string name="double_tap_toast">Tap back button again to exit</string>
     <string name="back_button_go_to_page">Go to page…</string>
     <string name="back_button_go_to_page_title">Select page</string>
+    <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
+    <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
