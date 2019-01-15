@@ -71,6 +71,13 @@
 
     </RelativeLayout>
 
+    <CheckBox
+        android:id="@+id/skipSilence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/pref_skip_silence_title" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

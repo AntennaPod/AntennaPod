@@ -37,7 +37,7 @@ public interface IPlayer {
 
 	void setDisplay(SurfaceHolder sh);
 
-	void setPlaybackSpeed(float f);
+	void setPlaybackParams(float speed, boolean skipSilence);
 
 	void setDownmix(boolean enable);
 
