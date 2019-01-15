@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import io.reactivex.annotations.NonNull;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -80,7 +81,7 @@ public class DBWriter {
      * @param context A context that is used for opening a database connection.
      * @param mediaId ID of the FeedMedia object whose downloaded file should be deleted.
      */
-    public static Future<?> deleteFeedMediaOfItem(final Context context,
+    public static Future<?> deleteFeedMediaOfItem(@NonNull final Context context,
                                                   final long mediaId) {
         return dbExec.submit(() -> {
             final FeedMedia media = DBReader.getFeedMedia(mediaId);
@@ -94,7 +95,7 @@ public class DBWriter {
         });
     }
 
-    private static boolean deleteFeedMediaSynchronous(Context context, FeedMedia media) {
+    private static boolean deleteFeedMediaSynchronous(@NonNull Context context, @NonNull FeedMedia media) {
         Log.i(TAG, String.format("Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
                 media.getId(), media.getEpisodeTitle(), String.valueOf(media.isDownloaded())));
         if (media.isDownloaded()) {
