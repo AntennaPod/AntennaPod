@@ -534,11 +534,16 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             stereoToMono.setText(stereoToMono.getText() + " [" + sonicOnly + "]");
                         }
 
+                        if (UserPreferences.useExoplayer()) {
+                            barRightVolume.setEnabled(false);
+                        }
+
                         final CheckBox skipSilence = (CheckBox) dialog.findViewById(R.id.skipSilence);
                         skipSilence.setChecked(UserPreferences.isSkipSilence());
                         if (!UserPreferences.useExoplayer()) {
                             skipSilence.setEnabled(false);
-                            skipSilence.setText(skipSilence.getText() + "[ ExoPlayer only ]");
+                            String exoplayerOnly = getString(R.string.exoplayer_only);
+                            skipSilence.setText(skipSilence.getText() + " [" + exoplayerOnly + "]");
                         }
                         skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
                             UserPreferences.setSkipSilence(isChecked);

@@ -692,6 +692,7 @@
     <string name="audio_effects">Audio Effects</string>
     <string name="stereo_to_mono">Downmix: Stereo to mono</string>
     <string name="sonic_only">Sonic only</string>
+    <string name="exoplayer_only">ExoPlayer only</string>
 
     <!-- proxy settings -->
     <string name="proxy_type_label">Type</string>
