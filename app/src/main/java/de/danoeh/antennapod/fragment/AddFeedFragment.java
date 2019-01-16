@@ -13,6 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.activity.SingleFileAddActivity;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
 
 /**
@@ -44,6 +45,7 @@ public class AddFeedFragment extends Fragment {
         Button butSearchFyyd = root.findViewById(R.id.butSearchFyyd);
         Button butOpmlImport = root.findViewById(R.id.butOpmlImport);
         Button butConfirm = root.findViewById(R.id.butConfirm);
+        Button butSingleFileAdd = root.findViewById(R.id.butSingleFileAdd);
 
         final MainActivity activity = (MainActivity) getActivity();
         activity.getSupportActionBar().setTitle(R.string.add_feed_label);
@@ -56,6 +58,9 @@ public class AddFeedFragment extends Fragment {
 
         butOpmlImport.setOnClickListener(v -> startActivity(new Intent(getActivity(),
                 OpmlImportFromPathActivity.class)));
+
+        butSingleFileAdd.setOnClickListener(v -> startActivity(new Intent(getActivity(),
+                SingleFileAddActivity.class)));
 
         butConfirm.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
