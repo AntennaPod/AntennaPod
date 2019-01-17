@@ -377,16 +377,12 @@
 
     <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
-        <item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector_trueblack</item>
-
         <item name="colorPrimary">@color/ic_launcher_background</item>
         <item name="colorPrimaryDark">@color/ic_launcher_background</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
         <item name="windowActionBarOverlay">true</item>
-        <item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector_trueblack</item>
-
     </style>
 
     <style name="AntennaPod.TextView.Heading" parent="@android:style/TextAppearance.Medium">
