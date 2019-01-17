@@ -94,6 +94,7 @@
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
+        <item type="attr" name="nav_drawer_list_selector">@drawable/drawer_list_selector_dark</item>
         <item type="attr" name="action_bar_icon_color">@color/white</item>
         <item type="attr" name="storage">@drawable/ic_sd_white_24dp</item>
         <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_white_24dp</item>
@@ -197,6 +198,7 @@
         <item name="colorAccent">@color/holo_blue_light</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
+        <item type="attr" name="nav_drawer_list_selector">@drawable/drawer_list_selector_light</item>
         <item type="attr" name="storage">@drawable/ic_sd_grey600_24dp</item>
         <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_grey600_24dp</item>
         <item type="attr" name="statistics">@drawable/ic_poll_box_grey600_24dp</item>
@@ -270,6 +272,8 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector_trueblack</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
@@ -279,6 +283,7 @@
         <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
+        <item type="attr" name="nav_drawer_list_selector">@drawable/drawer_list_selector_dark</item>
         <item type="attr" name="storage">@drawable/ic_sd_white_24dp</item>
         <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_white_24dp</item>
         <item type="attr" name="statistics">@drawable/ic_poll_box_white_24dp</item>
@@ -372,12 +377,16 @@
 
     <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector_trueblack</item>
+
         <item name="colorPrimary">@color/ic_launcher_background</item>
         <item name="colorPrimaryDark">@color/ic_launcher_background</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
         <item name="windowActionBarOverlay">true</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector_trueblack</item>
+
     </style>
 
     <style name="AntennaPod.TextView.Heading" parent="@android:style/TextAppearance.Medium">
