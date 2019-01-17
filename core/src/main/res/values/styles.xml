@@ -11,6 +11,7 @@
         <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
+        <item type="attr" name="nav_drawer_list_selector">@drawable/drawer_list_selector_light</item>
         <item type="attr" name="action_bar_icon_color">@color/grey600</item>
         <item type="attr" name="storage">@drawable/ic_sd_grey600_24dp</item>
         <item type="attr" name="ic_swap">@drawable/ic_swap_vertical_grey600_24dp</item>
@@ -170,6 +171,7 @@
 
     <style name="Theme.Base.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.Dark">
         <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
+        <item type="attr" name="nav_drawer_list_selector">@drawable/drawer_list_selector_trueblack</item>
         <item type="attr" name="non_transparent_background">@color/black</item>
         <item type="attr" name="overlay_background">@color/black</item>
         <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark_trueblack</item>
@@ -272,8 +274,6 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.Dark.NoTitle" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector_trueblack</item>
-
         <item name="windowActionBar">false</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
@@ -358,6 +358,7 @@
 
     <style name="Theme.Base.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.Dark.NoTitle">
         <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
+        <item type="attr" name="nav_drawer_list_selector">@drawable/drawer_list_selector_trueblack</item>
         <item type="attr" name="non_transparent_background">@color/black</item>
         <item type="attr" name="overlay_background">@color/black</item>
         <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark_trueblack</item>
