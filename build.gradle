@@ -7,8 +7,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
-        classpath "com.github.triplet.gradle:play-publisher:1.2.0"
+        classpath 'com.android.tools.build:gradle:3.3.0'
         // Exclude the version that the android plugin depends on.
         configurations.classpath.exclude group: "com.android.tools.external.lombok"
     }
@@ -38,7 +37,7 @@ subprojects {
 
 project.ext {
     compileSdkVersion = 26
-    buildToolsVersion = "27.0.3"
+    buildToolsVersion = "28.0.3"
     minSdkVersion = 14
     targetSdkVersion = 26
 
