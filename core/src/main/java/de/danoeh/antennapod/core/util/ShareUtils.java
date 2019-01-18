@@ -7,8 +7,8 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
-
 import java.io.File;
 import java.util.List;
 
@@ -26,8 +26,10 @@ public class ShareUtils {
 	public static void shareLink(Context context, String subject, String text) {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("text/plain");
-		i.putExtra(Intent.EXTRA_SUBJECT, subject);
 		i.putExtra(Intent.EXTRA_TEXT, text);
+		if (!TextUtils.isEmpty(subject)) {
+			i.putExtra(Intent.EXTRA_SUBJECT, subject);
+		}
 		context.startActivity(Intent.createChooser(i, context.getString(R.string.share_url_label)));
 	}
 
