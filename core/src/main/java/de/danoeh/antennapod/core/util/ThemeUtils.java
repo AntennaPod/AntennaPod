@@ -39,7 +39,7 @@ public class ThemeUtils {
             return R.color.highlight_light;
         } else {
             Log.e(TAG,
-                    "getSelectionBackgroundColor could not match the current theme to any color!");
+                    "getSelectionDrawerActivatedColor could not match the current theme to any color!");
             return R.color.highlight_light;
         }
 
@@ -55,7 +55,7 @@ public class ThemeUtils {
             return R.color.primary_light;
         } else {
             Log.e(TAG,
-                    "getSelectionBackgroundColor could not match the current theme to any color!");
+                    "getSelectionDrawerNotActivatedColor could not match the current theme to any color!");
             return R.color.highlight_light;
         }
     }
