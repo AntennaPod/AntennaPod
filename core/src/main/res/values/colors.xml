@@ -29,8 +29,8 @@
     <!-- Theme colors -->
     <color name="primary_light">#FFFFFF</color>
     <color name="primary_darktheme">#212121</color>
-    <color name="darktheme_drawer">#3B3B3B</color>
-
+    <color name="nav_drawer_background_dark">#3B3B3B</color>
+    <color name="nav_drawer_highlighted_dark">#212121</color>
     <color name="highlight_light">#DDDDDD</color>
     <color name="highlight_dark">#414141</color>
     <color name="highlight_trueblack">#414141</color>

@@ -29,38 +29,6 @@ public class ThemeUtils {
         }
     }
 
-    public static int getSelectionDrawerActivatedColor() {
-        int theme = UserPreferences.getTheme();
-        if (theme == R.style.Theme_AntennaPod_Dark) {
-            return R.color.overlay_dark;
-        } else if (theme == R.style.Theme_AntennaPod_TrueBlack){
-            return R.color.highlight_trueblack;
-        } else if (theme == R.style.Theme_AntennaPod_Light) {
-            return R.color.highlight_light;
-        } else {
-            Log.e(TAG,
-                    "getSelectionDrawerActivatedColor could not match the current theme to any color!");
-            return R.color.highlight_light;
-        }
-
-    }
-
-    public static int getSelectionDrawerNotActivatedColor() {
-        int theme = UserPreferences.getTheme();
-        if (theme == R.style.Theme_AntennaPod_Dark) {
-            return R.color.darktheme_drawer;
-        } else if (theme == R.style.Theme_AntennaPod_TrueBlack){
-            return R.color.black;
-        } else if (theme == R.style.Theme_AntennaPod_Light) {
-            return R.color.primary_light;
-        } else {
-            Log.e(TAG,
-                    "getSelectionDrawerNotActivatedColor could not match the current theme to any color!");
-            return R.color.highlight_light;
-        }
-    }
-
-
     public static @ColorInt int getColorFromAttr(Context context, @AttrRes int attr) {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(attr, typedValue, true);
