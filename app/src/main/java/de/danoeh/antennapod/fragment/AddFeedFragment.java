@@ -13,7 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
-import de.danoeh.antennapod.activity.SingleFileAddActivity;
+import de.danoeh.antennapod.activity.AddLocalFilesActivity;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
 
 /**
@@ -60,7 +60,7 @@ public class AddFeedFragment extends Fragment {
                 OpmlImportFromPathActivity.class)));
 
         butSingleFileAdd.setOnClickListener(v -> startActivity(new Intent(getActivity(),
-                SingleFileAddActivity.class)));
+                AddLocalFilesActivity.class)));
 
         butConfirm.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);

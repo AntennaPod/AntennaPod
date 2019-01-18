@@ -190,7 +190,7 @@
             android:label="@string/opml_import_label">
         </activity>
         <activity
-            android:name=".activity.SingleFileAddActivity"
+            android:name=".activity.AddLocalFilesActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/singlefile_import_label">
         </activity>
