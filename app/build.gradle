@@ -197,8 +197,16 @@ dependencies {
 }
 
 play {
-    serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
-    pk12File = file('../serviceaccount-c3d7d0f61387.p12')
+    if (project.hasProperty("antennaPodServiceAccountEmail")) {
+        serviceAccountEmail = antennaPodServiceAccountEmail
+    } else {
+        serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
+    }
+    if (project.hasProperty("antennaPodPk12File")) {
+        pk12File = file(antennaPodPk12File)
+    } else {
+        pk12File = file('../serviceaccount-c3d7d0f61387.p12')
+    }
 }
 
 // about.html is templatized so that we can automatically insert
