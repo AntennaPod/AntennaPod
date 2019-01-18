@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <attr name="nav_drawer_list_selector" format="reference"/>
     <attr name="action_bar_icon_color" format="reference"/>
     <attr name="action_about" format="reference"/>
     <attr name="action_search" format="reference"/>

@@ -34,6 +34,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
@@ -216,8 +217,10 @@ public class NavListAdapter extends BaseAdapter
             TextView txtvTitle = v.findViewById(R.id.txtvTitle);
             if (position == itemAccess.getSelectedItemIndex()) {
                 txtvTitle.setTypeface(null, Typeface.BOLD);
+                v.setBackgroundResource(ThemeUtils.getSelectionDrawerActivatedColor());
             } else {
                 txtvTitle.setTypeface(null, Typeface.NORMAL);
+                v.setBackgroundResource(ThemeUtils.getSelectionDrawerNotActivatedColor());
             }
         }
         return v;
