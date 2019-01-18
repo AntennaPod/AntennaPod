@@ -220,20 +220,12 @@ public class NavListAdapter extends BaseAdapter
             if (position == itemAccess.getSelectedItemIndex()) {
                 txtvTitle.setTypeface(null, Typeface.BOLD);
                 v.getContext().getTheme().resolveAttribute(de.danoeh.antennapod.core.R.attr.drawer_activated_color, typedValue, true);
-                int[] attribute = new int[] { de.danoeh.antennapod.core.R.attr.drawer_activated_color };
-                TypedArray array = v.getContext().obtainStyledAttributes(typedValue.resourceId, attribute);
-                int backgroundResource = array.getColor(0, 0);
-                array.recycle();
-                v.setBackgroundColor(backgroundResource);
+                v.setBackgroundResource(typedValue.resourceId);
 
             } else {
                 txtvTitle.setTypeface(null, Typeface.NORMAL);
                 v.getContext().getTheme().resolveAttribute(de.danoeh.antennapod.core.R.attr.nav_drawer_background, typedValue, true);
-                int[] attribute = new int[] { de.danoeh.antennapod.core.R.attr.nav_drawer_background};
-                TypedArray array = v.getContext().obtainStyledAttributes(typedValue.resourceId, attribute);
-                int backgroundResource = array.getColor(0, 0);
-                array.recycle();
-                v.setBackgroundColor(backgroundResource);
+                v.setBackgroundResource(typedValue.resourceId);
             }
         }
         return v;
