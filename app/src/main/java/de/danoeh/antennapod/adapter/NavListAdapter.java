@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -214,10 +215,17 @@ public class NavListAdapter extends BaseAdapter
         }
         if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
             TextView txtvTitle = v.findViewById(R.id.txtvTitle);
+            TypedValue typedValue = new TypedValue();
+
             if (position == itemAccess.getSelectedItemIndex()) {
                 txtvTitle.setTypeface(null, Typeface.BOLD);
+                v.getContext().getTheme().resolveAttribute(de.danoeh.antennapod.core.R.attr.drawer_activated_color, typedValue, true);
+                v.setBackgroundResource(typedValue.resourceId);
+
             } else {
                 txtvTitle.setTypeface(null, Typeface.NORMAL);
+                v.getContext().getTheme().resolveAttribute(de.danoeh.antennapod.core.R.attr.nav_drawer_background, typedValue, true);
+                v.setBackgroundResource(typedValue.resourceId);
             }
         }
         return v;
