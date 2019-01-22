@@ -158,7 +158,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(this.getApplicationContext(), "Feed URL not found.", Toast.LENGTH_SHORT);
             Log.e(TAG, "feedUrl is null.");
             toast.show();
-        }else {
+        } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
             setLoadingLayout();
             if (savedInstanceState == null) {
