@@ -48,6 +48,7 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setRetainInstance(true);
         root = inflater.inflate(R.layout.cover_fragment, container, false);
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
