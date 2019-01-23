@@ -5,6 +5,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listitem_iconwithtext_height"
+                android:foreground="?attr/selectableItemBackground"
                 tools:background="@android:color/darker_gray">
 
     <ImageView
