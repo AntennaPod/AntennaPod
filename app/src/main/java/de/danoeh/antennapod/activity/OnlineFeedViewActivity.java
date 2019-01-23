@@ -141,7 +141,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         StorageUtils.checkStorageAvailability(this);
 
-        final String feedUrl;
+        String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
         } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
