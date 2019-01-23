@@ -235,6 +235,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         StorageUtils.checkStorageAvailability(this);
 
         getWindow().setFormat(PixelFormat.TRANSPARENT);
+        setupGUI();
+        loadMediaInfo();
     }
 
     @Override
@@ -278,8 +280,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             controller.release();
         }
         controller = newPlaybackController();
-        setupGUI();
-        loadMediaInfo();
         onPositionObserverUpdate();
     }
 
