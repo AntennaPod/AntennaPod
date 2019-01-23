@@ -143,27 +143,24 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         final String feedUrl;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
+            if(feedUrl == null){
+                Toast.makeText(this.getApplicationContext(), "Feed URL Error.", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "feedUrl is null.");
+            } else {
+                Log.d(TAG, "Activity was started with url " + feedUrl);
+                setLoadingLayout();
+                if (savedInstanceState == null) {
+                    startFeedDownload(feedUrl, null, null);
+                } else {
+                    startFeedDownload(feedUrl, savedInstanceState.getString("username"), savedInstanceState.getString("password"));
+                }
+            }
         } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
                 || TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
             feedUrl = TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
                     ? getIntent().getStringExtra(Intent.EXTRA_TEXT) : getIntent().getDataString();
             if (actionBar != null) {
                 actionBar.setTitle(R.string.add_feed_label);
-            }
-        } else {
-            throw new IllegalArgumentException("Activity must be started with feedurl argument!");
-        }
-
-        if(feedUrl == null){
-            Toast.makeText(this.getApplicationContext(), "Feed URL Error.", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "feedUrl is null.");
-        } else {
-            Log.d(TAG, "Activity was started with url " + feedUrl);
-            setLoadingLayout();
-            if (savedInstanceState == null) {
-                startFeedDownload(feedUrl, null, null);
-            } else {
-                startFeedDownload(feedUrl, savedInstanceState.getString("username"), savedInstanceState.getString("password"));
             }
         }
     }
