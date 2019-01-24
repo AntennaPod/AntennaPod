@@ -46,7 +46,6 @@ class AdapterUtils {
                 txtvPos.setText(Converter.getDurationStringLong(media.getDuration()
                                 - media.getPosition()));
             }
-
         } else {
             txtvPos.setText(Converter.getDurationStringLong(media.getDuration()));
         }
