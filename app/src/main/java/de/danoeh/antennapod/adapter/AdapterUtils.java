@@ -46,27 +46,7 @@ class AdapterUtils {
                 txtvPos.setText(Converter.getDurationStringLong(media.getDuration()
                                 - media.getPosition()));
             }
-        } else if (!media.isDownloaded()) {
-            if (media.getSize() > 0) {
-                txtvPos.setText(Converter.byteToString(media.getSize()));
-            } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
-                txtvPos.setText("{fa-spinner}");
-                Iconify.addIcons(txtvPos);
-                NetworkUtils.getFeedMediaSizeObservable(media)
-                        .subscribe(
-                                size -> {
-                                    if (size > 0) {
-                                        txtvPos.setText(Converter.byteToString(size));
-                                    } else {
-                                        txtvPos.setText("");
-                                    }
-                                }, error -> {
-                                    txtvPos.setText("");
-                                    Log.e(TAG, Log.getStackTraceString(error));
-                                });
-            } else {
-                txtvPos.setText("");
-            }
+
         } else {
             txtvPos.setText(Converter.getDurationStringLong(media.getDuration()));
         }
