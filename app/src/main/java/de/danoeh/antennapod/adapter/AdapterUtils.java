@@ -26,28 +26,53 @@ class AdapterUtils {
     /**
      * Updates the contents of the TextView that shows the current playback position and the ProgressBar.
      */
-    static void updateEpisodePlaybackProgress(FeedItem item, TextView txtvPos, ProgressBar episodeProgress) {
+    static void updateEpisodePlaybackProgress(FeedItem item, TextView txtvPosLeft, TextView txtvPosRight, ProgressBar episodeProgress) {
         FeedMedia media = item.getMedia();
         episodeProgress.setVisibility(View.GONE);
         if (media == null) {
-            txtvPos.setVisibility(View.GONE);
+            txtvPosLeft.setVisibility(View.GONE);
+            txtvPosRight.setVisibility(View.GONE);
             return;
         } else {
-            txtvPos.setVisibility(View.VISIBLE);
+            txtvPosLeft.setVisibility(View.VISIBLE);
+            txtvPosRight.setVisibility(View.VISIBLE);
         }
 
         FeedItem.State state = item.getState();
+
         if (state == FeedItem.State.PLAYING
                 || state == FeedItem.State.IN_PROGRESS) {
             if (media.getDuration() > 0) {
+                int progress = (int) (100.0 * media.getPosition() / media.getDuration());
+                episodeProgress.setProgress(progress);
                 episodeProgress.setVisibility(View.VISIBLE);
-                episodeProgress.setProgress((int) (((double) media
-                                .getPosition()) / media.getDuration() * 100));
-                txtvPos.setText(Converter.getDurationStringLong(media.getDuration()
-                                - media.getPosition()));
+                txtvPosLeft.setText(Converter
+                        .getDurationStringLong(media.getPosition()));
+                txtvPosRight.setText(Converter.getDurationStringLong(media.getDuration()));
             }
         } else {
-            txtvPos.setText(Converter.getDurationStringLong(media.getDuration()));
+            if(media.getSize() > 0) {
+                txtvPosLeft.setText(Converter.byteToString(media.getSize()));
+            } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
+                txtvPosLeft.setText("{fa-spinner}");
+                Iconify.addIcons(txtvPosLeft);
+                NetworkUtils.getFeedMediaSizeObservable(media)
+                        .subscribe(
+                                size -> {
+                                    if (size > 0) {
+                                        txtvPosLeft.setText(Converter.byteToString(size));
+                                    } else {
+                                        txtvPosLeft.setText("");
+                                    }
+                                }, error -> {
+                                    txtvPosLeft.setText("");
+                                    Log.e(TAG, Log.getStackTraceString(error));
+                                });
+            } else {
+                txtvPosLeft.setText("");
+            }
+            txtvPosRight.setText(Converter.getDurationStringLong(media.getDuration()));
+            episodeProgress.setVisibility(View.INVISIBLE);
         }
     }
 }

@@ -262,17 +262,17 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                         progressLeft.setText("{fa-spinner}");
                         Iconify.addIcons(progressLeft);
                         NetworkUtils.getFeedMediaSizeObservable(media)
-                            .subscribe(
-                                size -> {
-                                    if (size > 0) {
-                                        progressLeft.setText(Converter.byteToString(size));
-                                    } else {
-                                        progressLeft.setText("");
-                                    }
-                                }, error -> {
-                                    progressLeft.setText("");
-                                    Log.e(TAG, Log.getStackTraceString(error));
-                                });
+                                .subscribe(
+                                        size -> {
+                                            if (size > 0) {
+                                                progressLeft.setText(Converter.byteToString(size));
+                                            } else {
+                                                progressLeft.setText("");
+                                            }
+                                        }, error -> {
+                                            progressLeft.setText("");
+                                            Log.e(TAG, Log.getStackTraceString(error));
+                                        });
                     } else {
                         progressLeft.setText("");
                     }

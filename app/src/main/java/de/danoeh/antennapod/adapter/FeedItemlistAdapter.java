@@ -96,8 +96,10 @@ public class FeedItemlistAdapter extends BaseAdapter {
             if(Build.VERSION.SDK_INT >= 23) {
                 holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
             }
-            holder.lenSize = convertView
+            holder.lenSizeLeft = convertView
                     .findViewById(R.id.txtvLenSize);
+            holder.lenSizeRight = convertView
+                    .findViewById(R.id.txtvLenSizeRight);
             holder.butAction = convertView
                     .findViewById(R.id.butSecondaryAction);
             holder.published = convertView
@@ -153,10 +155,11 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 holder.episodeProgress.setVisibility(View.INVISIBLE);
                 holder.inPlaylist.setVisibility(View.INVISIBLE);
                 holder.type.setVisibility(View.INVISIBLE);
-                holder.lenSize.setVisibility(View.INVISIBLE);
+                holder.lenSizeLeft.setVisibility(View.INVISIBLE);
+                holder.lenSizeRight.setVisibility(View.INVISIBLE);
             } else {
 
-                AdapterUtils.updateEpisodePlaybackProgress(item, holder.lenSize, holder.episodeProgress);
+                AdapterUtils.updateEpisodePlaybackProgress(item, holder.lenSizeLeft, holder.lenSizeRight, holder.episodeProgress);
 
                 if (isInQueue) {
                     holder.inPlaylist.setVisibility(View.VISIBLE);
@@ -222,7 +225,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
         LinearLayout container;
         TextView title;
         TextView published;
-        TextView lenSize;
+        TextView lenSizeLeft;
+        TextView lenSizeRight;
         ImageView type;
         ImageView inPlaylist;
         ImageButton butAction;
