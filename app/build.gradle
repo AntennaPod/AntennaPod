@@ -1,25 +1,11 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.5'
-    }
-}
-
 plugins {
     id('com.github.triplet.play') version '2.0.0'
 }
 
-import org.apache.tools.ant.filters.ReplaceTokens
-
 apply plugin: "com.android.application"
 apply plugin: 'com.getkeepsafe.dexcount'
 
-repositories {
-    maven { url "https://jitpack.io" }
-    mavenCentral()
-}
+import org.apache.tools.ant.filters.ReplaceTokens
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
