@@ -117,8 +117,8 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener,
-            View.OnCreateContextMenuListener,
-            ItemTouchHelperViewHolder {
+                       View.OnCreateContextMenuListener,
+                       ItemTouchHelperViewHolder {
 
         private final FrameLayout container;
         private final ImageView dragHandle;
@@ -130,7 +130,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         private final TextView progressRight;
         private final ProgressBar progressBar;
         private final ImageButton butSecondary;
-
+        
         private FeedItem item;
 
         public ViewHolder(View v) {
@@ -246,13 +246,13 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                     progressBar.setProgress(itemAccess.getItemDownloadProgressPercent(item));
                     progressBar.setVisibility(View.VISIBLE);
                 } else if (state == FeedItem.State.PLAYING
-                        || state == FeedItem.State.IN_PROGRESS) {
+                    || state == FeedItem.State.IN_PROGRESS) {
                     if (media.getDuration() > 0) {
                         int progress = (int) (100.0 * media.getPosition() / media.getDuration());
                         progressBar.setProgress(progress);
                         progressBar.setVisibility(View.VISIBLE);
                         progressLeft.setText(Converter
-                                .getDurationStringLong(media.getPosition()));
+                            .getDurationStringLong(media.getPosition()));
                         progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
                     }
                 } else {
@@ -262,17 +262,17 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                         progressLeft.setText("{fa-spinner}");
                         Iconify.addIcons(progressLeft);
                         NetworkUtils.getFeedMediaSizeObservable(media)
-                                .subscribe(
-                                        size -> {
-                                            if (size > 0) {
-                                                progressLeft.setText(Converter.byteToString(size));
-                                            } else {
-                                                progressLeft.setText("");
-                                            }
-                                        }, error -> {
-                                            progressLeft.setText("");
-                                            Log.e(TAG, Log.getStackTraceString(error));
-                                        });
+                            .subscribe(
+                                size -> {
+                                    if (size > 0) {
+                                        progressLeft.setText(Converter.byteToString(size));
+                                    } else {
+                                        progressLeft.setText("");
+                                    }
+                                }, error -> {
+                                    progressLeft.setText("");
+                                    Log.e(TAG, Log.getStackTraceString(error));
+                                });
                     } else {
                         progressLeft.setText("");
                     }
