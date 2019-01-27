@@ -21,20 +21,6 @@ repositories {
     mavenCentral()
 }
 
-def getMyVersionName() {
-    def parsedManifestXml = (new XmlSlurper())
-            .parse("${projectDir}/src/main/AndroidManifest.xml")
-            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
-    return parsedManifestXml."@android:versionName"
-}
-
-def getMyVersionCode() {
-    def parsedManifestXml = (new XmlSlurper())
-            .parse("${projectDir}/src/main/AndroidManifest.xml")
-            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
-    return parsedManifestXml."@android:versionCode".toInteger()
-}
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -43,8 +29,12 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode getMyVersionCode()
-        versionName "${getMyVersionName()}"
+        // Version code schema:
+        // "1.2.3-SNAPSHOT" -> 1020300
+        // "1.2.3-RC4"      -> 1020304
+        // btw I would recommend to autogenerate this
+        versionCode 1070195
+        versionName "1.7.1"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         generatedDensities = []

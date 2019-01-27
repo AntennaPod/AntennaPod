@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
-    android:installLocation="auto"
-    android:versionCode="1070195"
-    android:versionName="1.7.1">
-    <!--
-      Version code schema:
-      "1.2.3-SNAPSHOT" -> 1020300
-      "1.2.3-RC4"      -> 1020304
-    -->
+    android:installLocation="auto">
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
