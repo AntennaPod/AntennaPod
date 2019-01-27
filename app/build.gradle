@@ -1,21 +1,24 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.5'
+    }
+}
+
+plugins {
+    id('com.github.triplet.play') version '2.0.0'
+}
+
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "com.android.application"
-apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 repositories {
     maven { url "https://jitpack.io" }
     mavenCentral()
-}
-
-buildscript {
-    repositories {
-       jcenter()
-    }
-    dependencies {
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'
-    }
 }
 
 android {
@@ -193,9 +196,9 @@ play {
         serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
     }
     if (project.hasProperty("antennaPodPk12File")) {
-        pk12File = file(antennaPodPk12File)
+        serviceAccountCredentials = file(antennaPodPk12File)
     } else {
-        pk12File = file('../serviceaccount-c3d7d0f61387.p12')
+        serviceAccountCredentials = file('../serviceaccount-c3d7d0f61387.p12')
     }
 }
 
