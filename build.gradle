@@ -16,6 +16,12 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
     }
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint" << "-Xlint:-deprecation" << "-Xlint:-serial"
+        }
+    }
 }
 
 // Disable predex if requested (we can"t predex in Circle CI
