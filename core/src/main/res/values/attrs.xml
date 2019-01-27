@@ -67,6 +67,7 @@
     <attr name="overlay_background" format="color"/>
 
     <attr name="nav_drawer_background" format="color"/>
+    <attr name="drawer_activated_color" format="color"/>
 
     <attr name="about_screen_background" format="color"/>
     <attr name="about_screen_card_background" format="color"/>

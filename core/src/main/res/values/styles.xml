@@ -43,6 +43,7 @@
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
         <item type="attr" name="dragview_float_background">@color/white</item>
         <item type="attr" name="nav_drawer_background">@color/white</item>
+        <item type="attr" name="drawer_activated_color">@color/highlight_light</item>
         <item type="attr" name="ic_new">@drawable/ic_new_releases_grey600_24dp</item>
         <item type="attr" name="ic_history">@drawable/ic_history_grey600_24dp</item>
         <item type="attr" name="ic_folder">@drawable/ic_folder_grey600_24dp</item>
@@ -125,7 +126,8 @@
         <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark</item>
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item type="attr" name="dragview_float_background">@color/black</item>
-        <item type="attr" name="nav_drawer_background">#3B3B3B</item>
+        <item type="attr" name="nav_drawer_background">@color/nav_drawer_background_dark</item>
+        <item type="attr" name="drawer_activated_color">@color/nav_drawer_highlighted_dark</item>
         <item type="attr" name="ic_new">@drawable/ic_new_releases_white_24dp</item>
         <item type="attr" name="ic_history">@drawable/ic_history_white_24dp</item>
         <item type="attr" name="ic_folder">@drawable/ic_folder_white_24dp</item>
@@ -175,6 +177,7 @@
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item type="attr" name="dragview_float_background">@color/black</item>
         <item type="attr" name="nav_drawer_background">@color/black</item>
+        <item type="attr" name="drawer_activated_color">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:color">@color/white</item>
         <item name="android:colorBackground">@color/black</item>
@@ -228,6 +231,7 @@
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
         <item type="attr" name="dragview_float_background">@color/white</item>
         <item type="attr" name="nav_drawer_background">@color/white</item>
+        <item type="attr" name="drawer_activated_color">@color/highlight_light</item>
         <item type="attr" name="ic_new">@drawable/ic_new_releases_grey600_24dp</item>
         <item type="attr" name="ic_history">@drawable/ic_history_grey600_24dp</item>
         <item type="attr" name="ic_folder">@drawable/ic_folder_grey600_24dp</item>
@@ -309,7 +313,8 @@
         <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark</item>
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item type="attr" name="dragview_float_background">@color/black</item>
-        <item type="attr" name="nav_drawer_background">#3B3B3B</item>
+        <item type="attr" name="nav_drawer_background">@color/nav_drawer_background_dark</item>
+        <item type="attr" name="drawer_activated_color">@color/nav_drawer_highlighted_dark</item>
         <item type="attr" name="ic_new">@drawable/ic_new_releases_white_24dp</item>
         <item type="attr" name="ic_history">@drawable/ic_history_white_24dp</item>
         <item type="attr" name="ic_folder">@drawable/ic_folder_white_24dp</item>
@@ -359,6 +364,7 @@
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item type="attr" name="dragview_float_background">@color/black</item>
         <item type="attr" name="nav_drawer_background">@color/black</item>
+        <item type="attr" name="drawer_activated_color">@color/highlight_trueblack</item>
         <item type="attr" name="currently_playing_background">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:color">@color/white</item>

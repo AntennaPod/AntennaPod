@@ -278,6 +278,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         butCastDisconnect = findViewById(R.id.butCastDisconnect);
 
         pager = findViewById(R.id.pager);
+        pager.setOffscreenPageLimit(3);
         pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager(), media);
         pagerAdapter.setController(controller);
         pager.setAdapter(pagerAdapter);
