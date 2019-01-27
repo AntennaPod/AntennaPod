@@ -30,6 +30,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
+
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -43,6 +45,7 @@ import java.util.Map;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.core.dialog.NullValueErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -152,10 +155,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 actionBar.setTitle(R.string.add_feed_label);
             }
         }
-        
+
         if (feedUrl == null) {
-            Toast.makeText(this.getApplicationContext(), "Error: No feed url", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this.getApplicationContext(), "Error: No feed url", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "feedUrl is null.");
+            NullValueErrorDialogCreator.
+                    newRequestErrorDialog(this,
+                            "feed url is null.");
         } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
             setLoadingLayout();
