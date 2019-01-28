@@ -25,13 +25,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,7 +43,6 @@ import java.util.Map;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
-import de.danoeh.antennapod.core.dialog.NullValueErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -157,11 +154,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
 
         if (feedUrl == null) {
-            //Toast.makeText(this.getApplicationContext(), "Error: No feed url", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "feedUrl is null.");
-            NullValueErrorDialogCreator.
-                    newRequestErrorDialog(this,
-                            "feed url is null.");
+            new AlertDialog.Builder(OnlineFeedViewActivity.this).
+                    setNeutralButton(android.R.string.ok,
+                    (dialog, which) -> dialog.dismiss()).
+                    setTitle(R.string.null_value_error_error).
+                    setMessage(R.string.null_value_error_dialog_message_prefix).create().show();
         } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
             setLoadingLayout();
