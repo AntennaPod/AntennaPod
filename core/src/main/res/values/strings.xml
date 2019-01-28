@@ -216,7 +216,6 @@
     <string name="download_error_malformed_url">Malformed URL</string>
     <string name="download_error_io_error">IO Error</string>
     <string name="download_error_request_error">Request Error</string>
-    <string name="null_value_error_error">Null Value Error</string>
     <string name="download_error_db_access">Database Access Error</string>
     <plurals name="downloads_left">
         <item quantity="one">%d download left</item>
@@ -230,7 +229,8 @@
     <string name="download_type_media">Media file</string>
     <string name="download_type_image">Image</string>
     <string name="download_request_error_dialog_message_prefix">An error occurred when trying to download the file:\u0020</string>
-    <string name="null_value_error_dialog_message_prefix">A null value was found when trying import feed:\u0020</string>
+    <string name="null_value_error_dialog_message_prefix">No URL was found when trying import feed:\u0020</string>
+    <string name="null_value_error_error">No podcast was provided that could be shown:\u0020</string>
     <string name="authentication_notification_title">Authentication required</string>
     <string name="authentication_notification_msg">The resource you requested requires a username and a password</string>
     <string name="confirm_mobile_download_dialog_title">Confirm Mobile Download</string>
