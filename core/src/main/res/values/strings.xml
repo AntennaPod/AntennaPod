@@ -229,7 +229,7 @@
     <string name="download_type_media">Media file</string>
     <string name="download_type_image">Image</string>
     <string name="download_request_error_dialog_message_prefix">An error occurred when trying to download the file:\u0020</string>
-    <string name="error_label">Error</string>
+    <string name="error_label_error_show_null_podcast">Error</string>
     <string name="error_show_null_podcast">No podcast was provided that could be shown.</string>
     <string name="authentication_notification_title">Authentication required</string>
     <string name="authentication_notification_msg">The resource you requested requires a username and a password</string>
