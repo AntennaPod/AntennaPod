@@ -158,8 +158,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             new AlertDialog.Builder(OnlineFeedViewActivity.this).
                     setNeutralButton(android.R.string.ok,
                     (dialog, which) -> dialog.dismiss()).
-                    setTitle(R.string.null_value_error_error).
-                    setMessage(R.string.null_value_error_dialog_message_prefix).create().show();
+                    setTitle(R.string.error_label).
+                    setMessage(R.string.null_value_podcast_error).create().show();
         } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
             setLoadingLayout();
