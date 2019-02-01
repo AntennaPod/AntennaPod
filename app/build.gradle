@@ -32,7 +32,6 @@ android {
         // Version code schema:
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
-        // btw I would recommend to autogenerate this
         versionCode 1070195
         versionName "1.7.1"
         testApplicationId "de.test.antennapod"
