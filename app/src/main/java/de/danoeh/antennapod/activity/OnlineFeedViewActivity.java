@@ -157,7 +157,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             Log.e(TAG, "feedUrl is null.");
             new AlertDialog.Builder(OnlineFeedViewActivity.this).
                     setNeutralButton(android.R.string.ok,
-                    (dialog, which) -> dialog.dismiss()).
+                    (dialog, which) -> finish()).
                     setTitle(R.string.error_label).
                     setMessage(R.string.null_value_podcast_error).create().show();
         } else {
