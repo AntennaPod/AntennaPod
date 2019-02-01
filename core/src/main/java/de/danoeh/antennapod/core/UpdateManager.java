@@ -58,10 +58,18 @@ class UpdateManager {
     }
 
     private static void onUpgrade(final int oldVersionCode, final int newVersionCode) {
-        if(oldVersionCode < 1050004) {
+        if (oldVersionCode < 1050004) {
             if(MediaPlayer.isPrestoLibraryInstalled(context) && Build.VERSION.SDK_INT >= 16) {
                 UserPreferences.enableSonic();
             }
+        }
+
+        if (oldVersionCode < 1070196) {
+            // migrate episode cleanup value (unit changed from days to hours)
+            int oldValueInDays = UserPreferences.getEpisodeCleanupValue();
+            if (oldValueInDays > 0) {
+                UserPreferences.setEpisodeCleanupValue(oldValueInDays * 24);
+            } // else 0 or special negative values, no change needed
         }
     }
 

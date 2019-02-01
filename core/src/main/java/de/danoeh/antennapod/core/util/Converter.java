@@ -130,6 +130,7 @@ public final class Converter {
         return String.format(Locale.getDefault(), "%.1f ", hours) + context.getString(R.string.time_hours);
     }
 
+
     /**
      * Converts the volume as read as the progress from a SeekBar scaled to 100 and as saved in
      * UserPreferences to the format taken by setVolume methods.

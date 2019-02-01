@@ -691,7 +691,7 @@ public class UserPreferences {
     }
 
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
-        int cleanupValue = Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+        int cleanupValue = getEpisodeCleanupValue();
         if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
             return new APQueueCleanupAlgorithm();
         } else if (cleanupValue == EPISODE_CLEANUP_NULL) {
@@ -699,6 +699,16 @@ public class UserPreferences {
         } else {
             return new APCleanupAlgorithm(cleanupValue);
         }
+    }
+
+    public static int getEpisodeCleanupValue() {
+        return Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+    }
+
+    public static void setEpisodeCleanupValue(int episodeCleanupValue) {
+        prefs.edit()
+                .putString(PREF_EPISODE_CLEANUP, Integer.toString(episodeCleanupValue))
+                .apply();
     }
 
     /**
