@@ -43,6 +43,7 @@
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
         <item type="attr" name="dragview_float_background">@color/white</item>
         <item type="attr" name="nav_drawer_background">@color/white</item>
+        <item type="attr" name="drawer_activated_color">@color/highlight_light</item>
         <item type="attr" name="ic_new">@drawable/ic_new_releases_grey600_24dp</item>
         <item type="attr" name="ic_history">@drawable/ic_history_grey600_24dp</item>
         <item type="attr" name="ic_folder">@drawable/ic_folder_grey600_24dp</item>
@@ -88,6 +89,8 @@
 
     <style name="Theme.Base.AntennaPod.Dark" parent="Theme.AppCompat">
         <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="colorPrimary">@color/primary_darktheme</item>
+        <item name="colorPrimaryDark">@color/primary_darktheme</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
@@ -123,7 +126,8 @@
         <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark</item>
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item type="attr" name="dragview_float_background">@color/black</item>
-        <item type="attr" name="nav_drawer_background">#3B3B3B</item>
+        <item type="attr" name="nav_drawer_background">@color/nav_drawer_background_dark</item>
+        <item type="attr" name="drawer_activated_color">@color/nav_drawer_highlighted_dark</item>
         <item type="attr" name="ic_new">@drawable/ic_new_releases_white_24dp</item>
         <item type="attr" name="ic_history">@drawable/ic_history_white_24dp</item>
         <item type="attr" name="ic_folder">@drawable/ic_folder_white_24dp</item>
@@ -173,6 +177,7 @@
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item type="attr" name="dragview_float_background">@color/black</item>
         <item type="attr" name="nav_drawer_background">@color/black</item>
+        <item type="attr" name="drawer_activated_color">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:color">@color/white</item>
         <item name="android:colorBackground">@color/black</item>
@@ -226,6 +231,7 @@
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
         <item type="attr" name="dragview_float_background">@color/white</item>
         <item type="attr" name="nav_drawer_background">@color/white</item>
+        <item type="attr" name="drawer_activated_color">@color/highlight_light</item>
         <item type="attr" name="ic_new">@drawable/ic_new_releases_grey600_24dp</item>
         <item type="attr" name="ic_history">@drawable/ic_history_grey600_24dp</item>
         <item type="attr" name="ic_folder">@drawable/ic_folder_grey600_24dp</item>
@@ -272,6 +278,8 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="colorPrimary">@color/primary_darktheme</item>
+        <item name="colorPrimaryDark">@color/primary_darktheme</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
@@ -305,7 +313,8 @@
         <item type="attr" name="overlay_drawable">@drawable/overlay_drawable_dark</item>
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item type="attr" name="dragview_float_background">@color/black</item>
-        <item type="attr" name="nav_drawer_background">#3B3B3B</item>
+        <item type="attr" name="nav_drawer_background">@color/nav_drawer_background_dark</item>
+        <item type="attr" name="drawer_activated_color">@color/nav_drawer_highlighted_dark</item>
         <item type="attr" name="ic_new">@drawable/ic_new_releases_white_24dp</item>
         <item type="attr" name="ic_history">@drawable/ic_history_white_24dp</item>
         <item type="attr" name="ic_folder">@drawable/ic_folder_white_24dp</item>
@@ -355,6 +364,7 @@
         <item type="attr" name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item type="attr" name="dragview_float_background">@color/black</item>
         <item type="attr" name="nav_drawer_background">@color/black</item>
+        <item type="attr" name="drawer_activated_color">@color/highlight_trueblack</item>
         <item type="attr" name="currently_playing_background">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:color">@color/white</item>
@@ -368,6 +378,8 @@
 
     <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
+        <item name="colorPrimary">@color/ic_launcher_background</item>
+        <item name="colorPrimaryDark">@color/ic_launcher_background</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">

@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -140,7 +141,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         StorageUtils.checkStorageAvailability(this);
 
-        final String feedUrl;
+        String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
         } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
@@ -150,16 +151,23 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if (actionBar != null) {
                 actionBar.setTitle(R.string.add_feed_label);
             }
-        } else {
-            throw new IllegalArgumentException("Activity must be started with feedurl argument!");
         }
 
-        Log.d(TAG, "Activity was started with url " + feedUrl);
-        setLoadingLayout();
-        if (savedInstanceState == null) {
-            startFeedDownload(feedUrl, null, null);
+        if (feedUrl == null) {
+            Log.e(TAG, "feedUrl is null.");
+            new AlertDialog.Builder(OnlineFeedViewActivity.this).
+                    setNeutralButton(android.R.string.ok,
+                    (dialog, which) -> finish()).
+                    setTitle(R.string.error_label).
+                    setMessage(R.string.null_value_podcast_error).create().show();
         } else {
-            startFeedDownload(feedUrl, savedInstanceState.getString("username"), savedInstanceState.getString("password"));
+            Log.d(TAG, "Activity was started with url " + feedUrl);
+            setLoadingLayout();
+            if (savedInstanceState == null) {
+                startFeedDownload(feedUrl, null, null);
+            } else {
+                startFeedDownload(feedUrl, savedInstanceState.getString("username"), savedInstanceState.getString("password"));
+            }
         }
     }
 

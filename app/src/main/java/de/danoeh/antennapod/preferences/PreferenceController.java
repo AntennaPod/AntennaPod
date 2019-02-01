@@ -659,7 +659,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     alert.setMessage(message);
                     alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
-                                "de.danoeh.antennapod.provider", output);
+                                context.getString(R.string.provider_authority), output);
                         Intent sendIntent = new Intent(Intent.ACTION_SEND);
                         sendIntent.putExtra(Intent.EXTRA_SUBJECT,
                                 context.getResources().getText(R.string.opml_export_label));

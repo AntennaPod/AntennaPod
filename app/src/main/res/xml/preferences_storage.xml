@@ -25,6 +25,12 @@
             android:key="prefFavoriteKeepsEpisode"
             android:summary="@string/pref_favorite_keeps_episodes_sum"
             android:title="@string/pref_favorite_keeps_episodes_title"/>
+    <SwitchPreference
+        android:defaultValue="false"
+        android:enabled="true"
+        android:key="prefDeleteRemovesFromQueue"
+        android:summary="@string/pref_delete_removes_from_queue_sum"
+        android:title="@string/pref_delete_removes_from_queue_title"/>
 
     <PreferenceCategory android:title="@string/import_export_pref">
         <Preference

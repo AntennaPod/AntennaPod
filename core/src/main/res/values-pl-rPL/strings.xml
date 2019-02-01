@@ -57,7 +57,6 @@
   <string name="yes">Tak</string>
   <string name="no">Nie</string>
   <string name="reset">Reset</string>
-  <string name="author_label">Autor</string>
   <string name="language_label">Język</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Ustawienia</string>
@@ -108,23 +107,12 @@
   <string name="mark_all_read_label">Oznacz wszystkie jako odtworzone</string>
   <string name="mark_all_read_msg">Wszystkie odcinki zaznaczono jako odtworzone</string>
   <string name="mark_all_read_confirmation_msg">Proszę potwierdzić, że chcesz zaznaczyć wszystkie odcinki do odtworzenia.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Proszę potwierdzić, że chcesz zaznaczyć wszystkie odcinki na tym kanale do odtworzenia.</string>
   <string name="mark_all_seen_label">Oznacz wszystkie jako widziane</string>
-  <string name="mark_all_seen_msg">Zaznacz wszystkie Odcinki jako obejrzane</string>
   <string name="mark_all_seen_confirmation_msg">Proszę potwierdzić chęć zaznaczenia wszystkich odcinków jako obejrzanych.</string>
   <string name="show_info_label">Pokaż informacje</string>
-  <string name="rename_feed_label">Zmień nazwę podcast-u</string>
-  <string name="remove_feed_label">Usuń podcast</string>
   <string name="share_label">Udostępnij...</string>
-  <string name="share_link_label">Udostępnij stronę</string>
   <string name="share_file_label">Udostępnij plik</string>
-  <string name="share_link_with_position_label">Udostępnij link z aktualną pozycją</string>
   <string name="share_feed_url_label">Udostępnij adres kanału</string>
-  <string name="share_item_url_label">Udostępnij plik URL odcinka</string>
-  <string name="share_item_url_with_position_label">Udostępnik plik URL odcinka z pozycją</string>
-  <string name="feed_delete_confirmation_msg">Potwierdź chęć usunięcia kanału \"%1$s\" wraz ze WSZYSTKIMI odcinkami, które zostały pobrane.</string>
-  <string name="feed_remover_msg">Usuwanie kanału</string>
-  <string name="load_complete_feed">Odśwież cały kanał</string>
   <string name="hide_episodes_title">Ukryj odcinki</string>
   <string name="hide_unplayed_episodes_label">Nieodtworzone</string>
   <string name="hide_paused_episodes_label">Zatrzymane</string>
@@ -241,7 +229,6 @@
   <string name="date">Według daty</string>
   <string name="duration">Według długości</string>
   <string name="episode_title">Tytuł odcinka</string>
-  <string name="feed_title">Tytuł kanału</string>
   <string name="ascending">Rosnąco</string>
   <string name="descending">Malejąco</string>
   <string name="clear_queue_confirmation_msg">Potwierdź usunięcie WSZYSTKICH pozycji z kolejki</string>
@@ -279,7 +266,6 @@
   <string name="enable_sonic">Włącz Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Brak elementów na tej liście.</string>
-  <string name="no_feeds_label">Nie subskrybowałeś jeszcze żadnego kanału.</string>
   <string name="no_chapters_label">Ten odcinek nie ma rozdziałów.</string>
   <string name="no_shownotes_label">Ten epizod nie ma notatek.</string>
   <!--Preferences-->
@@ -295,7 +281,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wznów odtwarzanie kiedy słuchawki zostaną podłączone ponownie</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wznów odtwarzanie po przywróceniu połączenia Bluetooth</string>
   <string name="pref_hardwareForwardButtonSkips_title">Przycisk \'Do przodu\' pomija odcinek</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Przyciśnięcie fizycznego przycisku \'Do przodu\' przeskakuje do następnego odcinka zamiast przewijania</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Przycisk wstecz restartuje</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Podczas odtwarzania przycisk wstecz restartuje zamiast przewijać</string>
   <string name="pref_followQueue_sum">Przeskocz do następnego elementu kolejki po zakończeniu odtwarzania</string>
@@ -344,7 +329,6 @@
   <string name="pref_nav_drawer_feed_order_title">Ustaw kolejność subskrypcji</string>
   <string name="pref_nav_drawer_feed_order_sum">Zmień kolejność subskrybowanych kanałów</string>
   <string name="pref_nav_drawer_feed_counter_title">Ustaw licznik subskrypcji</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Zmień informację wyświetlaną przez licznik subskrypcji</string>
   <string name="pref_set_theme_sum">Zmień wygląd AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatyczne pobieranie</string>
   <string name="pref_automatic_download_sum">Skonfiguruj automatyczne pobieranie odcinków.</string>
@@ -386,8 +370,6 @@
   <string name="pref_rewind_sum">Dostosuj liczbę sekund do przeskoczenia przy kliknięciu przewijania do tyłu</string>
   <string name="pref_gpodnet_sethostname_title">Ustaw nazwę hosta</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Użyj domyślnego hosta</string>
-  <string name="pref_expandNotify_title">Rozwiń Powiadomienia</string>
-  <string name="pref_expandNotify_sum">Zawsze rozwijaj powiadomienie żeby pokazać przyciski odtwarzacza.</string>
   <string name="pref_persistNotify_title">Stałe przyciski odtwarzacza</string>
   <string name="pref_persistNotify_sum">Utrzymuj powiadomienie i przyciski odtwarzania na ekranie blokady gdy odtwarzanie jest wstrzymane.</string>
   <string name="pref_compact_notification_buttons_title">Ustaw przyciski ekranu blokowania</string>
@@ -428,8 +410,6 @@
   <string name="search_hint">Szukaj odcinków</string>
   <string name="found_in_shownotes_label">Znalezione w notatkach dotyczących show</string>
   <string name="found_in_chapters_label">Znaleziono w rozdziałach</string>
-  <string name="found_in_authors_label">Znaleziono wśród autorów</string>
-  <string name="found_in_feeds_label">Znaleziono wśród kanałów</string>
   <string name="search_status_no_results">Brak wyników</string>
   <string name="search_label">Szukaj</string>
   <string name="found_in_title_label">Znaleziono w tytułach</string>

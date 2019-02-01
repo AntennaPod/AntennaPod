@@ -235,6 +235,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         StorageUtils.checkStorageAvailability(this);
 
         getWindow().setFormat(PixelFormat.TRANSPARENT);
+        setupGUI();
+        loadMediaInfo();
     }
 
     @Override
@@ -278,8 +280,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             controller.release();
         }
         controller = newPlaybackController();
-        setupGUI();
-        loadMediaInfo();
         onPositionObserverUpdate();
     }
 
@@ -533,6 +533,22 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             String sonicOnly = getString(R.string.sonic_only);
                             stereoToMono.setText(stereoToMono.getText() + " [" + sonicOnly + "]");
                         }
+
+                        if (UserPreferences.useExoplayer()) {
+                            barRightVolume.setEnabled(false);
+                        }
+
+                        final CheckBox skipSilence = (CheckBox) dialog.findViewById(R.id.skipSilence);
+                        skipSilence.setChecked(UserPreferences.isSkipSilence());
+                        if (!UserPreferences.useExoplayer()) {
+                            skipSilence.setEnabled(false);
+                            String exoplayerOnly = getString(R.string.exoplayer_only);
+                            skipSilence.setText(skipSilence.getText() + " [" + exoplayerOnly + "]");
+                        }
+                        skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                            UserPreferences.setSkipSilence(isChecked);
+                            controller.setSkipSilence(isChecked);
+                        });
 
                         barLeftVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override

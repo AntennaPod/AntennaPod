@@ -706,6 +706,11 @@ public abstract class PlaybackController {
             playbackService.setSpeed(speed);
         }
     }
+    public void setSkipSilence(boolean skipSilence) {
+        if (playbackService != null) {
+            playbackService.skipSilence(skipSilence);
+        }
+    }
 
     public void setVolume(float leftVolume, float rightVolume) {
         if (playbackService != null) {

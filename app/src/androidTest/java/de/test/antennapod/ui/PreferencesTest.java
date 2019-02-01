@@ -507,6 +507,20 @@ public class PreferencesTest {
                 Timeout.getLargeTimeout()));
     }
 
+    @Test
+    public void testDeleteRemovesFromQueue() {
+        clickPreference(withText(R.string.storage_pref));
+        if (!UserPreferences.shouldDeleteRemoveFromQueue()) {
+            clickPreference(withText(R.string.pref_delete_removes_from_queue_title));
+            assertTrue(solo.waitForCondition(UserPreferences::shouldDeleteRemoveFromQueue, Timeout.getLargeTimeout()));
+        }
+        final boolean deleteRemovesFromQueue = UserPreferences.shouldDeleteRemoveFromQueue();
+        solo.clickOnText(solo.getString(R.string.pref_delete_removes_from_queue_title));
+        assertTrue(solo.waitForCondition(() -> deleteRemovesFromQueue != UserPreferences.shouldDeleteRemoveFromQueue(), Timeout.getLargeTimeout()));
+        solo.clickOnText(solo.getString(R.string.pref_delete_removes_from_queue_title));
+        assertTrue(solo.waitForCondition(() -> deleteRemovesFromQueue == UserPreferences.shouldDeleteRemoveFromQueue(), Timeout.getLargeTimeout()));
+    }
+
     private void clickPreference(Matcher<View> matcher) {
         onView(withId(R.id.list))
                 .perform(RecyclerViewActions.actionOnItem(hasDescendant(matcher), click()));

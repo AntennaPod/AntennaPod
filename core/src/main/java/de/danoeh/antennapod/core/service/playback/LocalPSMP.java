@@ -236,7 +236,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     Log.e(TAG, Log.getStackTraceString(e));
                     UserPreferences.setPlaybackSpeed(String.valueOf(speed));
                 }
-                setSpeed(speed);
+                setPlaybackParams(speed, UserPreferences.isSkipSilence());
                 setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
@@ -537,14 +537,14 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * Sets the playback speed.
      * This method is executed on the caller's thread.
      */
-    private void setSpeedSync(float speed) {
+    private void setSpeedSyncAndSkipSilence(float speed, boolean skipSilence) {
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
             if (mediaPlayer.canSetSpeed()) {
-                mediaPlayer.setPlaybackSpeed(speed);
                 Log.d(TAG, "Playback speed was set to " + speed);
                 callback.playbackSpeedChanged(speed);
             }
+            mediaPlayer.setPlaybackParams(speed, skipSilence);
         }
         playerLock.unlock();
     }
@@ -554,8 +554,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * This method is executed on an internal executor service.
      */
     @Override
-    public void setSpeed(final float speed) {
-        executor.submit(() -> setSpeedSync(speed));
+    public void setPlaybackParams(final float speed, final boolean skipSilence) {
+        executor.submit(() -> setSpeedSyncAndSkipSilence(speed, skipSilence));
     }
 
     /**
@@ -991,7 +991,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
     private final MediaPlayer.OnErrorListener audioErrorListener =
             (mp, what, extra) -> {
-                if(mp.canFallback()) {
+                if(mp != null && mp.canFallback()) {
                     mp.fallback();
                     return true;
                 } else {

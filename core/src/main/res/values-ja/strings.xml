@@ -67,6 +67,7 @@
   <string name="cover_label">映像</string>
   <string name="error_label">エラー</string>
   <string name="error_msg_prefix">エラーが発生しました。</string>
+  <string name="needs_storage_permission">この操作にはストレージのアクセス許可が必要です</string>
   <string name="refresh_label">更新</string>
   <string name="external_storage_error_msg">外部ストレージが利用できません。アプリが正常に動作できるように、外部ストレージがマウントされていることを確認してください。</string>
   <string name="chapters_label">チャプター</string>
@@ -108,26 +109,26 @@
   <string name="mark_all_read_label">すべて再生済としてマーク</string>
   <string name="mark_all_read_msg">すべてのエピソードを再生済にしました</string>
   <string name="mark_all_read_confirmation_msg">再生済としてマークするすべてのエピソードを確認してください。</string>
-  <string name="mark_all_read_feed_confirmation_msg">再生済としてマークするこのフィードのすべてのエピソードを確認してください。</string>
+  <string name="mark_all_read_feed_confirmation_msg">再生済としてマークするこのポッドキャストのすべてのエピソードを確認してください。</string>
   <string name="mark_all_seen_label">すべて参照済としてマーク</string>
   <string name="mark_all_seen_msg">すべてのエピソードを参照済にしました</string>
   <string name="mark_all_seen_confirmation_msg">参照済としてマークするすべてのエピソードを確認してください。</string>
   <string name="show_info_label">情報を表示</string>
-  <string name="show_feed_settings_label">フィード設定を表示</string>
-  <string name="feed_info_label">フィード情報</string>
-  <string name="feed_settings_label">フィード設定</string>
+  <string name="show_feed_settings_label">ポッドキャスト設定を表示</string>
+  <string name="feed_info_label">ポッドキャスト情報</string>
+  <string name="feed_settings_label">ポッドキャスト設定</string>
   <string name="rename_feed_label">ポッドキャストの名前を変更</string>
   <string name="remove_feed_label">ポッドキャストを削除</string>
   <string name="share_label">共有…</string>
-  <string name="share_link_label">Webサイトのリンクを共有</string>
+  <string name="share_link_label">エピソード URLを共有</string>
+  <string name="share_link_with_position_label">エピソード URL を位置と共に共有</string>
   <string name="share_file_label">ファイルを共有</string>
-  <string name="share_link_with_position_label">場所とリンクを共有</string>
   <string name="share_feed_url_label">フィード URLを共有</string>
-  <string name="share_item_url_label">エピソードファイル URLを共有</string>
-  <string name="share_item_url_with_position_label">エピソードファイル URL を位置と共に共有</string>
-  <string name="feed_delete_confirmation_msg">フィード \"%1$s\" と、このフィードのすべてのダウンロードしたエピソードを削除することを確認してください。</string>
-  <string name="feed_remover_msg">フィードの削除中</string>
-  <string name="load_complete_feed">フィードをすべて更新</string>
+  <string name="share_item_url_label">メディアファイル URLを共有</string>
+  <string name="share_item_url_with_position_label">メディアファイル URL を位置と共に共有</string>
+  <string name="feed_delete_confirmation_msg">ポッドキャスト \"%1$s\" とすべての（ダウンロード済を含む）エピソードを削除することを確認してください。</string>
+  <string name="feed_remover_msg">ポッドキャストを削除しています</string>
+  <string name="load_complete_feed">ポッドキャストをすべて更新</string>
   <string name="hide_episodes_title">エピソードを非表示にする</string>
   <string name="batch_edit">一括編集</string>
   <string name="hide_unplayed_episodes_label">未再生</string>
@@ -138,6 +139,7 @@
   <string name="hide_downloaded_episodes_label">ダウンロードしました</string>
   <string name="hide_not_downloaded_episodes_label">ダウンロードしていません</string>
   <string name="hide_has_media_label">メディアあり</string>
+  <string name="hide_is_favorite_label">お気に入り</string>
   <string name="filtered_label">フィルターしました</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} 前回更新に失敗しました</string>
   <string name="open_podcast">ポッドキャストを開く</string>
@@ -151,6 +153,7 @@
   <string name="delete_label">削除</string>
   <string name="delete_failed">ファイルを削除できません。デバイスを再起動してみてください。</string>
   <string name="remove_episode_lable">エピソードを削除</string>
+  <string name="mark_as_seen_label">参照済</string>
   <string name="marked_as_seen_label">参照済としてマーク</string>
   <string name="mark_read_label">再生済としてマーク</string>
   <string name="marked_as_read_label">再生済としてマークしました</string>
@@ -242,7 +245,7 @@
   <string name="date">日付</string>
   <string name="duration">継続時間</string>
   <string name="episode_title">エピソード タイトル</string>
-  <string name="feed_title">フィード タイトル</string>
+  <string name="feed_title">ポッドキャストのタイトル</string>
   <string name="random">ランダム</string>
   <string name="smart_shuffle">スマートシャッフル</string>
   <string name="ascending">昇順</string>
@@ -282,7 +285,7 @@
   <string name="enable_sonic">Sonic を有効にする</string>
   <!--Empty list labels-->
   <string name="no_items_label">このリストにはアイテムがありません。</string>
-  <string name="no_feeds_label">まだフィードを何も購読していません。</string>
+  <string name="no_feeds_label">まだポッドキャストを何も購読していません。</string>
   <string name="no_chapters_label">このエピソードにチャプターはありません。</string>
   <string name="no_shownotes_label">このエピソードにショーノートはありません。</string>
   <!--Preferences-->
@@ -300,7 +303,7 @@
   <string name="appearance">外観</string>
   <string name="external_elements">外部要素</string>
   <string name="interruptions">割り込み</string>
-  <string name="buttons">ボタン</string>
+  <string name="buttons">再生コントロールボタン</string>
   <string name="media_player">メディアプレーヤー</string>
   <string name="pref_episode_cleanup_title">エピソード クリーンアップ</string>
   <string name="pref_episode_cleanup_summary">キューに含まれておらず、お気に入りではないエピソードは、自動ダウンロードで新しいエピソードのためにスペースが必要な場合、除去の対象になります</string>
@@ -308,7 +311,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">ヘッドフォンが再接続された時に再生を再開します</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetoothが再接続された時に再生を再開します</string>
   <string name="pref_hardwareForwardButtonSkips_title">早送りボタンでスキップ</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">ハードウェアの早送りボタンを押したときに、早送りの代わりに次のエピソードにスキップします</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">戻るボタンで再開</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">ハードウェアの戻るボタンを押したときに、巻き戻しの代わりに現在のエピソードの再生を再開します</string>
   <string name="pref_followQueue_sum">再生が完了した時に次のキューのアイテムに移動します</string>
@@ -357,7 +359,7 @@
   <string name="pref_nav_drawer_feed_order_title">購読注文をセット</string>
   <string name="pref_nav_drawer_feed_order_sum">購読の注文を変更します</string>
   <string name="pref_nav_drawer_feed_counter_title">購読カウンターをセット</string>
-  <string name="pref_nav_drawer_feed_counter_sum">購読カウンターで表示される情報を変更します</string>
+  <string name="pref_nav_drawer_feed_counter_sum">購読カウンターに表示される情報を変更します。 \'購読順\' が \'カウンター\' に設定されている場合は、購読の並び替えにも影響します。</string>
   <string name="pref_set_theme_sum">AntennaPodの外観を変更します。</string>
   <string name="pref_automatic_download_title">自動ダウンロード</string>
   <string name="pref_automatic_download_sum">エピソードの自動ダウンロードを構成します。</string>
@@ -371,7 +373,7 @@
   <string name="pref_episode_cache_title">エピソードキャッシュ</string>
   <string name="pref_theme_title_light">ライト</string>
   <string name="pref_theme_title_dark">ダーク</string>
-  <string name="pref_theme_title_trueblack">トゥルーブラック</string>
+  <string name="pref_theme_title_trueblack">黒 (AMOLED 対応)</string>
   <string name="pref_episode_cache_unlimited">無制限</string>
   <string name="pref_update_interval_hours_plural">時間</string>
   <string name="pref_update_interval_hours_singular">時間</string>
@@ -400,8 +402,6 @@
   <string name="pref_rewind_sum">巻き戻しボタンがクリックされたときに後方にジャンプする秒数をカスタマイズします</string>
   <string name="pref_gpodnet_sethostname_title">ホスト名をセット</string>
   <string name="pref_gpodnet_sethostname_use_default_host">デフォルトホストを使用</string>
-  <string name="pref_expandNotify_title">拡張通知</string>
-  <string name="pref_expandNotify_sum">常に再生ボタンを表示するように通知を展開します。</string>
   <string name="pref_persistNotify_title">永続再生コントロール</string>
   <string name="pref_persistNotify_sum">再生が一時停止された時に、通知およびロック画面のコントロールを保持します。</string>
   <string name="pref_compact_notification_buttons_title">ロック画面ボタンを設定</string>
@@ -435,10 +435,10 @@
   <string name="pref_enqueue_downloaded_title">ダウンロードのキューに入れる</string>
   <string name="pref_enqueue_downloaded_summary">ダウンロードしたエピソードをキューに追加します</string>
   <string name="media_player_builtin">ビルトイン Android プレーヤー</string>
-  <string name="pref_videoBehavior_title">ビデオ動作</string>
+  <string name="pref_videoBehavior_title">ビデオ終了時</string>
   <string name="pref_videoBehavior_sum">ビデオ再生から遷移時の動作</string>
   <string name="stop_playback">再生停止</string>
-  <string name="continue_playback">再生継続</string>
+  <string name="continue_playback">音声の再生を続ける</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">自動Flattrを有効にする</string>
   <string name="auto_flattr_after_percent">%d ％再生したらエピソードをFlattr </string>
@@ -449,7 +449,7 @@
   <string name="found_in_shownotes_label">ショーノートで見つかりました</string>
   <string name="found_in_chapters_label">チャプターで見つかりました</string>
   <string name="found_in_authors_label">作者で見つかりました</string>
-  <string name="found_in_feeds_label">フィードで見つかりました</string>
+  <string name="found_in_feeds_label">ポッドキャストで見つかりました</string>
   <string name="search_status_no_results">見つかりませんでした</string>
   <string name="search_label">検索</string>
   <string name="found_in_title_label">タイトルで見つかりました</string>

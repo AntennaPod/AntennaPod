@@ -233,6 +233,7 @@
     <string name="download_type_media">Media file</string>
     <string name="download_type_image">Image</string>
     <string name="download_request_error_dialog_message_prefix">An error occurred when trying to download the file:\u0020</string>
+    <string name="null_value_podcast_error">No podcast was provided that could be shown.</string>
     <string name="authentication_notification_title">Authentication required</string>
     <string name="authentication_notification_msg">The resource you requested requires a username and a password</string>
     <string name="confirm_mobile_download_dialog_title">Confirm Mobile Download</string>
@@ -470,6 +471,7 @@
     <string name="media_player_builtin">Built-in Android player</string>
     <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
     <string name="media_player_exoplayer" translatable="false">ExoPlayer</string>
+    <string name="pref_skip_silence_title">Skip Silence in Audio</string>
     <string name="pref_videoBehavior_title">Upon exiting video</string>
     <string name="pref_videoBehavior_sum">Behavior when leaving video playback</string>
     <string name="stop_playback">Stop playback</string>
@@ -485,6 +487,8 @@
     <string name="double_tap_toast">Tap back button again to exit</string>
     <string name="back_button_go_to_page">Go to page…</string>
     <string name="back_button_go_to_page_title">Select page</string>
+    <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
+    <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -695,6 +699,7 @@
     <string name="audio_effects">Audio Effects</string>
     <string name="stereo_to_mono">Downmix: Stereo to mono</string>
     <string name="sonic_only">Sonic only</string>
+    <string name="exoplayer_only">ExoPlayer only</string>
 
     <!-- proxy settings -->
     <string name="proxy_type_label">Type</string>

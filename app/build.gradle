@@ -1,35 +1,24 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.5'
+    }
+}
+
+plugins {
+    id('com.github.triplet.play') version '2.0.0'
+}
+
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "com.android.application"
-apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 repositories {
     maven { url "https://jitpack.io" }
     mavenCentral()
-}
-
-buildscript {
-    repositories {
-       jcenter()
-    }
-    dependencies {
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'
-    }
-}
-
-def getMyVersionName() {
-    def parsedManifestXml = (new XmlSlurper())
-            .parse("${projectDir}/src/main/AndroidManifest.xml")
-            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
-    return parsedManifestXml."@android:versionName"
-}
-
-def getMyVersionCode() {
-    def parsedManifestXml = (new XmlSlurper())
-            .parse("${projectDir}/src/main/AndroidManifest.xml")
-            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
-    return parsedManifestXml."@android:versionCode".toInteger()
 }
 
 android {
@@ -40,8 +29,11 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode getMyVersionCode()
-        versionName "${getMyVersionName()}"
+        // Version code schema:
+        // "1.2.3-SNAPSHOT" -> 1020300
+        // "1.2.3-RC4"      -> 1020304
+        versionCode 1070196
+        versionName "1.7.1"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         generatedDensities = []
@@ -95,7 +87,7 @@ android {
         release {
             resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
             minifyEnabled true
-            proguardFile "proguard.cfg"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), "proguard.cfg"
             signingConfig signingConfigs.releaseConfig
             buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
             buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
@@ -186,6 +178,7 @@ dependencies {
 
     implementation 'com.github.mfietz:fyydlin:v0.4.1'
     implementation 'com.github.ByteHamster:SearchPreference:v1.0.8'
+    implementation "org.awaitility:awaitility:$awaitilityVersion"
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -196,8 +189,16 @@ dependencies {
 }
 
 play {
-    serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
-    pk12File = file('../serviceaccount-c3d7d0f61387.p12')
+    if (project.hasProperty("antennaPodServiceAccountEmail")) {
+        serviceAccountEmail = antennaPodServiceAccountEmail
+    } else {
+        serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
+    }
+    if (project.hasProperty("antennaPodPk12File")) {
+        serviceAccountCredentials = file(antennaPodPk12File)
+    } else {
+        serviceAccountCredentials = file('../serviceaccount-c3d7d0f61387.p12')
+    }
 }
 
 // about.html is templatized so that we can automatically insert

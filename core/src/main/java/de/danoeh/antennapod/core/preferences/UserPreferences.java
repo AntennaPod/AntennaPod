@@ -100,10 +100,13 @@ public class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
+    public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
 
     // Mediaplayer
     public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
+    public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
+    public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
@@ -309,12 +312,20 @@ public class UserPreferences {
         return Integer.parseInt(prefs.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
     }
 
+    public static boolean shouldDeleteRemoveFromQueue() {
+        return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
+    }
+
     public static boolean isAutoFlattr() {
         return prefs.getBoolean(PREF_AUTO_FLATTR, false);
     }
 
     public static String getPlaybackSpeed() {
         return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
+    }
+
+    public static boolean isSkipSilence() {
+        return prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false);
     }
 
     public static String[] getPlaybackSpeedArray() {
@@ -503,6 +514,12 @@ public class UserPreferences {
              .apply();
     }
 
+    public static void setSkipSilence(boolean skipSilence) {
+        prefs.edit()
+                .putBoolean(PREF_PLAYBACK_SKIP_SILENCE, skipSilence)
+                .apply();
+    }
+
     public static void setPlaybackSpeedArray(String[] speeds) {
         JSONArray jsonArray = new JSONArray();
         for (String speed : speeds) {
@@ -647,7 +664,7 @@ public class UserPreferences {
     }
 
     public static boolean useExoplayer() {
-        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals("exoplayer");
+        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals(PREF_MEDIA_PLAYER_EXOPLAYER);
     }
 
     public static void enableSonic() {
