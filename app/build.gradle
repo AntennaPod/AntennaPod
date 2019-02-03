@@ -182,6 +182,7 @@ dependencies {
 
     implementation 'com.github.mfietz:fyydlin:v0.3'
     implementation 'com.github.ByteHamster:SearchPreference:v1.0.8'
+    implementation 'com.github.angads25:filepicker:1.1.1'
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
 }
