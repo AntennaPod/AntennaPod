@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import java.net.Proxy;
 
 public class ProxyConfig {
-
     public final Proxy.Type type;
     @Nullable public final String host;
     public final int port;
@@ -16,6 +15,10 @@ public class ProxyConfig {
 
     public static ProxyConfig direct() {
         return new ProxyConfig(Proxy.Type.DIRECT, null, 0, null, null);
+    }
+
+    public static ProxyConfig socks(String host, int port, String username, String password) {
+        return new ProxyConfig(Proxy.Type.SOCKS, host, port, username, password);
     }
 
     public static ProxyConfig http(String host, int port, String username, String password) {

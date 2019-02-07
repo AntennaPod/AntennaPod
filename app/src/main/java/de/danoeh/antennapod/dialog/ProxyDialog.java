@@ -75,7 +75,7 @@ public class ProxyDialog {
                     }
                     String type = (String) ((Spinner) dialog1.findViewById(R.id.spType)).getSelectedItem();
                     ProxyConfig proxy;
-                    if(Proxy.Type.valueOf(type) == Proxy.Type.DIRECT) {
+                    if (Proxy.Type.valueOf(type) == Proxy.Type.DIRECT) {
                         proxy = ProxyConfig.direct();
                     } else {
                         String host = etHost.getText().toString();
@@ -92,7 +92,11 @@ public class ProxyDialog {
                         if(!TextUtils.isEmpty(port)) {
                             portValue = Integer.valueOf(port);
                         }
-                        proxy = ProxyConfig.http(host, portValue, username, password);
+                        if (Proxy.Type.valueOf(type) == Proxy.Type.SOCKS) {
+                            proxy = ProxyConfig.socks(host, portValue, username, password);
+                        } else {
+                            proxy = ProxyConfig.http(host, portValue, username, password);
+                        }
                     }
                     UserPreferences.setProxyConfig(proxy);
                     AntennapodHttpClient.reinit();
@@ -103,7 +107,7 @@ public class ProxyDialog {
                 .build();
         View view = dialog.getCustomView();
         spType = view.findViewById(R.id.spType);
-        String[] types = { Proxy.Type.DIRECT.name(), Proxy.Type.HTTP.name() };
+        String[] types = { Proxy.Type.DIRECT.name(), Proxy.Type.SOCKS.name(), Proxy.Type.HTTP.name() };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
             android.R.layout.simple_spinner_item, types);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
