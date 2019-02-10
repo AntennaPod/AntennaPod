@@ -76,11 +76,11 @@ public final class Converter {
     
     /** Converts milliseconds to a string containing hours and minutes */
     public static String getDurationStringShort(int duration) {
-    	int h = duration / HOURS_MIL;
-    	int rest = duration - h * HOURS_MIL;
-    	int m = rest / MINUTES_MIL;
+    	int minutes = duration / MINUTES_MIL;
+    	int rest = duration - minutes * MINUTES_MIL;
+    	int seconds = rest / SECONDS_MIL;
     	
-    	return String.format(Locale.getDefault(), "%02d:%02d", h, m);
+    	return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
     }
 
     /** Converts long duration string (HH:MM:SS) to milliseconds. */
@@ -100,8 +100,8 @@ public final class Converter {
         if (parts.length != 2) {
             return 0;
         }
-        return Integer.parseInt(parts[0]) * 3600 * 1000 +
-                Integer.parseInt(parts[1]) * 1000 * 60;
+        return Integer.parseInt(parts[0]) * 60 * 1000 +
+                Integer.parseInt(parts[1]) * 1000;
     }
 
     /** Converts milliseconds to a localized string containing hours and minutes */
