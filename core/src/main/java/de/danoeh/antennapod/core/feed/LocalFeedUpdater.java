@@ -34,10 +34,13 @@ public class LocalFeedUpdater {
     }
 
     private static void startImportDirectory(Uri uri, Context context) {
+        //create a feed object for this directory
         File f = new File(uri.getPath());
         String dirUrl = uri.toString();
         Feed dirFeed = new Feed(dirUrl, null, "Local directory (" + dirUrl + ")");
-        List<FeedItem> items = new ArrayList<>();
+        dirFeed.setItems(new ArrayList<>()); //this seems useless
+        //find the feed for this directory (if it exists), or create one
+        dirFeed = DBTasks.updateFeed(context, dirFeed)[0];
 
         //find relevant files and create items for them
         File[] itemFiles = f.listFiles(
@@ -48,14 +51,31 @@ public class LocalFeedUpdater {
                         return m != null && (m.startsWith("audio/") || m.startsWith("video/"));
                     }
                 });
+        List<FeedItem> newItems = new ArrayList<>();
         for (File it: itemFiles) {
-            FeedItem item = createFeedItem(it, dirFeed);
-            items.add(item);
+            FeedItem found = feedContainsFile(dirFeed, it.getAbsolutePath());
+            if (found != null) {
+                //TODO update (not implemented yet)
+            } else {
+                FeedItem item = createFeedItem(it, dirFeed);
+                newItems.add(item);
+            }
         }
-        dirFeed.setItems(items);
+        //don't care about the old items for now, but when the update code comes, we'll change this
+        dirFeed.setItems(newItems);
 
         //add or merge to the db
         Feed[] feeds = DBTasks.updateFeed(context, dirFeed);
+    }
+
+    private static FeedItem feedContainsFile(Feed feed, String fileUrl) {
+        List<FeedItem> items = feed.getItems();
+        for (FeedItem i: items) {
+            if (i.getMedia().getFile_url().equals(fileUrl)) {
+                return i;
+            }
+        }
+        return null;
     }
 
     private static FeedItem createFeedItem(File f, Feed whichFeed) {
