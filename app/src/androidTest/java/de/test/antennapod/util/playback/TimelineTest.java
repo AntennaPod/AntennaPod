@@ -50,9 +50,29 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
-    public void testProcessShownotesAddTimecodeHHMMNoChapters() throws Exception {
+    public void testProcessShownotesAddTimecodeHMMSSNoChapters() throws Exception {
+        final String timeStr = "2:11:12";
+        final long time = 2 * 60 * 60 * 1000 + 11 * 60 * 1000 + 12 * 1000;
+
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>");
+        Timeline t = new Timeline(context, p);
+        String res = t.processShownotes(true);
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
+    }
+
+    public void testProcessShownotesAddTimecodeMSSNoChapters() throws Exception {
+        final String timeStr = "1:12";
+        final long time = 60 * 1000 + 12 * 1000;
+
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>");
+        Timeline t = new Timeline(context, p);
+        String res = t.processShownotes(true);
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
+    }
+
+    public void testProcessShownotesAddTimecodeMMSSNoChapters() throws Exception {
         final String timeStr = "10:11";
-        final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
+        final long time = 60 * 1000 * 10 + 1000 * 11;
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>");
         Timeline t = new Timeline(context, p);
@@ -61,7 +81,7 @@ public class TimelineTest extends InstrumentationTestCase {
     }
 
     public void testProcessShownotesAddTimecodeParentheses() throws Exception {
-        final String timeStr = "10:11";
+        final String timeStr = "10:11:00";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode (" + timeStr + ") here.</p>");
@@ -71,7 +91,7 @@ public class TimelineTest extends InstrumentationTestCase {
     }
 
     public void testProcessShownotesAddTimecodeBrackets() throws Exception {
-        final String timeStr = "10:11";
+        final String timeStr = "10:11:00";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode [" + timeStr + "] here.</p>");
@@ -81,7 +101,7 @@ public class TimelineTest extends InstrumentationTestCase {
     }
 
     public void testProcessShownotesAddTimecodeAngleBrackets() throws Exception {
-        final String timeStr = "10:11";
+        final String timeStr = "10:11:00";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode <" + timeStr + "> here.</p>");
