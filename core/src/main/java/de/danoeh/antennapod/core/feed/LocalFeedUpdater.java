@@ -3,12 +3,14 @@ package de.danoeh.antennapod.core.feed;
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.webkit.MimeTypeMap;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import de.danoeh.antennapod.core.storage.DBTasks;
 
@@ -42,7 +44,8 @@ public class LocalFeedUpdater {
                 new FilenameFilter() {
                     @Override
                     public boolean accept(File file, String s) {
-                        return s.endsWith(".mp3");
+                        String m = getMimeType(s);
+                        return m != null && (m.startsWith("audio/") || m.startsWith("video/"));
                     }
                 });
         for (File it: itemFiles) {
@@ -59,16 +62,28 @@ public class LocalFeedUpdater {
         //create item
         long globalId = 0;
         Date date = new Date();
-        FeedItem item = new FeedItem(globalId, f.getName(), "item" + Long.toString(date.getTime()), //XXX possible problem with date resolution
+        String uuid = UUID.randomUUID().toString();
+        FeedItem item = new FeedItem(globalId, f.getName(), uuid,
                 f.toString(), date, FeedItem.UNPLAYED, whichFeed);
         item.setAutoDownload(false);
 
         //add the media to the item
         long duration = getFileDuration(f);
         long size = f.length();
-        FeedMedia media = new FeedMedia(0, item, (int)duration, 0, size, "audio/mp3", f.getAbsolutePath(), f.getAbsolutePath(), true, null, 0, 0);
+        String absPath = f.getAbsolutePath();
+        FeedMedia media = new FeedMedia(0, item, (int)duration, 0, size, getMimeType(absPath), absPath, absPath, true, null, 0, 0);
         item.setMedia(media);
 
         return item;
+    }
+
+    private static String getMimeType(String path) {
+        try {
+            String extension = path.substring(path.lastIndexOf("."));
+            String mimeTypeMap = MimeTypeMap.getFileExtensionFromUrl(extension);
+            return MimeTypeMap.getSingleton().getMimeTypeFromExtension(mimeTypeMap);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
