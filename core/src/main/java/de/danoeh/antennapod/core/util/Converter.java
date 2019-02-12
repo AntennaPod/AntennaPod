@@ -74,13 +74,14 @@ public final class Converter {
     	return String.format(Locale.getDefault(), "%02d:%02d:%02d", h, m, s);
     }
     
-    /** Converts milliseconds to a string containing hours and minutes */
-    public static String getDurationStringShort(int duration) {
-    	int minutes = duration / MINUTES_MIL;
-    	int rest = duration - minutes * MINUTES_MIL;
-    	int seconds = rest / SECONDS_MIL;
-    	
-    	return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+    /** Converts milliseconds to a string containing hours and minutes or minutes and seconds*/
+    public static String getDurationStringShort(int duration, boolean durationIsInHours) {
+        int firstPartBase = durationIsInHours ?  HOURS_MIL : MINUTES_MIL;
+        int firstPart = duration / firstPartBase;
+        int leftoverFromFirstPart = duration - firstPart * firstPartBase;
+        int secondPart = leftoverFromFirstPart / (durationIsInHours ? MINUTES_MIL : SECONDS_MIL);
+
+    	return String.format(Locale.getDefault(), "%02d:%02d", firstPart, secondPart);
     }
 
     /** Converts long duration string (HH:MM:SS) to milliseconds. */
@@ -94,14 +95,20 @@ public final class Converter {
                 Integer.parseInt(parts[2]) * 1000;
     }
 
-    /** Converts short duration string (HH:MM) to milliseconds. */
-    public static int durationStringShortToMs(String input) {
+    /**
+     * Converts short duration string (XX:YY) to milliseconds. If durationIsInHours is true then the
+     * format is HH:MM, otherwise it's MM:SS.
+     * */
+    public static int durationStringShortToMs(String input, boolean durationIsInHours) {
         String[] parts = input.split(":");
         if (parts.length != 2) {
             return 0;
         }
-        return Integer.parseInt(parts[0]) * 60 * 1000 +
-                Integer.parseInt(parts[1]) * 1000;
+
+        int modifier = durationIsInHours ? 60 : 1;
+
+        return Integer.parseInt(parts[0]) * 60 * 1000 * modifier+
+                Integer.parseInt(parts[1]) * 1000 * modifier;
     }
 
     /** Converts milliseconds to a localized string containing hours and minutes */
