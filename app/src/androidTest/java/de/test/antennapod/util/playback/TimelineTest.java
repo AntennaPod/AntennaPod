@@ -50,6 +50,16 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    public void testProcessShownotesAddTimecodeHHMMSSMoreThen24HoursNoChapters() throws Exception {
+        final String timeStr = "25:00:00";
+        final long time = 25 * 60 * 60 * 1000;
+
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", Integer.MAX_VALUE);
+        Timeline t = new Timeline(context, p);
+        String res = t.processShownotes(true);
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
+    }
+
     public void testProcessShownotesAddTimecodeHHMMNoChapters() throws Exception {
         final String timeStr = "10:11";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
