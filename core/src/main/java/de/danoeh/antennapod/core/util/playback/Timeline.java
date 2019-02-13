@@ -7,6 +7,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.util.TypedValue;
 
 import org.jsoup.Jsoup;
@@ -14,6 +15,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -127,34 +129,11 @@ public class Timeline {
 
         // apply timecode links
         if (addTimecodes) {
-            Elements elementsWithTimeCodes = document.body().getElementsMatchingOwnText(TIMECODE_REGEX);
-            Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
-            for (Element element : elementsWithTimeCodes) {
-                Matcher matcherLong = TIMECODE_REGEX.matcher(element.html());
-                StringBuffer buffer = new StringBuffer();
-                while (matcherLong.find()) {
-                    String h = matcherLong.group(1);
-                    String group = matcherLong.group(0);
-                    int time = (h != null) ? Converter.durationStringLongToMs(group) :
-                            Converter.durationStringShortToMs(group);
-
-                    String rep;
-                    if (playable == null || playable.getDuration() > time) {
-                        rep = String.format(Locale.getDefault(), TIMECODE_LINK, time, group);
-                    } else {
-                        rep = group;
-                    }
-                    matcherLong.appendReplacement(buffer, rep);
-                }
-                matcherLong.appendTail(buffer);
-
-                element.html(buffer.toString());
-            }
+            addTimecodes(document, playable);
         }
 
         return document.toString();
     }
-
 
     /**
      * Returns true if the given link is a timecode link.
@@ -185,5 +164,76 @@ public class Timeline {
 
     public void setShownotesProvider(@NonNull ShownotesProvider shownotesProvider) {
         this.shownotesProvider = shownotesProvider;
+    }
+
+    private void addTimecodes(Document document, final Playable playable) {
+        Elements elementsWithTimeCodes = document.body().getElementsMatchingOwnText(TIMECODE_REGEX);
+        Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
+
+        // Assuming the timecodes are going to increase through the document loop through the
+        // elements backwards so we can determine when/if we need to shift from HH:MM to MM:SS
+        boolean useHourFormat = true;
+        for (int i = elementsWithTimeCodes.size() - 1; i >= 0 ; i--) {
+            Element element = elementsWithTimeCodes.get(i);
+            Matcher matcherLong = TIMECODE_REGEX.matcher(element.html());
+
+            // Get all matches and store in reverse order
+            ArrayList<Pair<Boolean, String>> matches = new ArrayList<>();
+            while (matcherLong.find()) {
+                matches.add(0, new Pair<>(matcherLong.group(1) != null, matcherLong.group(0)));
+            }
+
+            // Now loop through the reversed matches and get the replacements. Store them in
+            // non-reversed order.
+            ArrayList<String> replacements = new ArrayList<>();
+            for (Pair<Boolean, String> matchPair : matches) {
+                boolean isLongFormat = matchPair.first;
+                String group = matchPair.second;
+                int time = isLongFormat
+                            ? Converter.durationStringLongToMs(group)
+                            : Converter.durationStringShortToMs(group, useHourFormat);
+
+                String rep = group;
+                if (playable == null) {
+                    rep = createTimeLink(time, group);
+                } else {
+                    int duration = playable.getDuration();
+
+                    if (duration > time) {
+                        rep = createTimeLink(time, group);
+                    } else if (!isLongFormat && useHourFormat) {
+
+                        // The duration calculated in hours is too long and the timecode format is
+                        // short. So try and see if it will work when treated as minutes.
+                        time = Converter.durationStringShortToMs(group, false);
+
+                        if (duration > time) {
+                            // We have found the treating a short timecode as minutes works, do that
+                            // from now on.
+                            rep = createTimeLink(time, group);
+                            useHourFormat = false;
+                        }
+                    }
+                }
+
+                replacements.add(0, rep);
+            }
+
+            // Now that we have all the replacements, replace.
+            StringBuffer buffer = new StringBuffer();
+            int index = 0;
+            matcherLong.reset();
+            while (matcherLong.find()) {
+                matcherLong.appendReplacement(buffer, replacements.get(index));
+                index++;
+            }
+
+            matcherLong.appendTail(buffer);
+            element.html(buffer.toString());
+        }
+    }
+
+    private String createTimeLink(int time, String group) {
+        return String.format(Locale.getDefault(), TIMECODE_LINK, time, group);
     }
 }

@@ -30,12 +30,12 @@ public class TimelineTest extends InstrumentationTestCase {
         context = getInstrumentation().getTargetContext();
     }
 
-    private Playable newTestPlayable(List<Chapter> chapters, String shownotes) {
+    private Playable newTestPlayable(List<Chapter> chapters, String shownotes, int duration) {
         FeedItem item = new FeedItem(0, "Item", "item-id", "http://example.com/item", new Date(), FeedItem.PLAYED, null);
         item.setChapters(chapters);
         item.setContentEncoded(shownotes);
         FeedMedia media = new FeedMedia(item, "http://example.com/episode", 100, "audio/mp3");
-        media.setDuration(Integer.MAX_VALUE);
+        media.setDuration(duration);
         item.setMedia(media);
         return media;
     }
@@ -44,7 +44,27 @@ public class TimelineTest extends InstrumentationTestCase {
         final String timeStr = "10:11:12";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11 + 12 * 1000;
 
-        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>");
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", Integer.MAX_VALUE);
+        Timeline t = new Timeline(context, p);
+        String res = t.processShownotes(true);
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
+    }
+
+    public void testProcessShownotesAddTimecodeHHMMNoChapters() throws Exception {
+        final String timeStr = "10:11";
+        final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
+
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", Integer.MAX_VALUE);
+        Timeline t = new Timeline(context, p);
+        String res = t.processShownotes(true);
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
+    }
+
+    public void testProcessShownotesAddTimecodeMMSSNoChapters() throws Exception {
+        final String timeStr = "10:11";
+        final long time = 10 * 60 * 1000 + 11 * 1000;
+
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", 11 * 60 * 1000);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes(true);
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
@@ -54,7 +74,7 @@ public class TimelineTest extends InstrumentationTestCase {
         final String timeStr = "2:11:12";
         final long time = 2 * 60 * 60 * 1000 + 11 * 60 * 1000 + 12 * 1000;
 
-        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>");
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes(true);
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
@@ -64,47 +84,55 @@ public class TimelineTest extends InstrumentationTestCase {
         final String timeStr = "1:12";
         final long time = 60 * 1000 + 12 * 1000;
 
-        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>");
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", 2 * 60 * 1000);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes(true);
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
-    public void testProcessShownotesAddTimecodeMMSSNoChapters() throws Exception {
-        final String timeStr = "10:11";
-        final long time = 60 * 1000 * 10 + 1000 * 11;
+    public void testProcessShownotesAddTimecodeMultipleFormatsNoChapters() throws Exception {
+        final String[] timeStrings = new String[]{ "10:12", "1:10:12" };
 
-        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>");
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStrings[0] + " here. Hey look another one " + timeStrings[1] + " here!</p>", 2 * 60 * 60 * 1000);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes(true);
-        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
+        checkLinkCorrect(res, new long[]{ 10 * 60 * 1000 + 12 * 1000, 60 * 60 * 1000 + 10 * 60 * 1000 + 12 * 1000 }, timeStrings);
+    }
+
+    public void testProcessShownotesAddTimecodeMultipleShortFormatNoChapters() throws Exception {
+        final String[] timeStrings = new String[]{ "10:12", "2:12" };
+
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStrings[0] + " here. Hey look another one " + timeStrings[1] + " here!</p>", 3 * 60 * 60 * 1000);
+        Timeline t = new Timeline(context, p);
+        String res = t.processShownotes(true);
+        checkLinkCorrect(res, new long[]{ 10 * 60 * 1000 + 12 * 1000, 2 * 60 * 60 * 1000 + 12 * 60 * 1000 }, timeStrings);
     }
 
     public void testProcessShownotesAddTimecodeParentheses() throws Exception {
-        final String timeStr = "10:11:00";
+        final String timeStr = "10:11";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
-        Playable p = newTestPlayable(null, "<p> Some test text with a timecode (" + timeStr + ") here.</p>");
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode (" + timeStr + ") here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes(true);
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     public void testProcessShownotesAddTimecodeBrackets() throws Exception {
-        final String timeStr = "10:11:00";
+        final String timeStr = "10:11";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
-        Playable p = newTestPlayable(null, "<p> Some test text with a timecode [" + timeStr + "] here.</p>");
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode [" + timeStr + "] here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes(true);
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     public void testProcessShownotesAddTimecodeAngleBrackets() throws Exception {
-        final String timeStr = "10:11:00";
+        final String timeStr = "10:11";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
-        Playable p = newTestPlayable(null, "<p> Some test text with a timecode <" + timeStr + "> here.</p>");
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode <" + timeStr + "> here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes(true);
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
