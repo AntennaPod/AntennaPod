@@ -110,12 +110,14 @@ public class TimelineTest extends InstrumentationTestCase {
     }
 
     public void testProcessShownotesAddTimecodeMultipleShortFormatNoChapters() throws Exception {
+
+        // One of these timecodes fits as HH:MM and one does not so both should be parsed as MM:SS.
         final String[] timeStrings = new String[]{ "10:12", "2:12" };
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStrings[0] + " here. Hey look another one " + timeStrings[1] + " here!</p>", 3 * 60 * 60 * 1000);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes(true);
-        checkLinkCorrect(res, new long[]{ 10 * 60 * 1000 + 12 * 1000, 2 * 60 * 60 * 1000 + 12 * 60 * 1000 }, timeStrings);
+        checkLinkCorrect(res, new long[]{ 10 * 60 * 1000 + 12 * 1000, 2 * 60 * 1000 + 12 * 1000 }, timeStrings);
     }
 
     public void testProcessShownotesAddTimecodeParentheses() throws Exception {

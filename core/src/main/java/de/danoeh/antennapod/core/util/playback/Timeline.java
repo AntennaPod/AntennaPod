@@ -170,70 +170,64 @@ public class Timeline {
         Elements elementsWithTimeCodes = document.body().getElementsMatchingOwnText(TIMECODE_REGEX);
         Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
 
-        // Assuming the timecodes are going to increase through the document loop through the
-        // elements backwards so we can determine when/if we need to shift from HH:MM to MM:SS
+        if (elementsWithTimeCodes.size() == 0) {
+            // No elements with timecodes
+            return;
+        }
+
+        int playableDuration = playable == null ? Integer.MAX_VALUE : playable.getDuration();
         boolean useHourFormat = true;
-        for (int i = elementsWithTimeCodes.size() - 1; i >= 0 ; i--) {
-            Element element = elementsWithTimeCodes.get(i);
-            Matcher matcherLong = TIMECODE_REGEX.matcher(element.html());
 
-            // Get all matches and store in reverse order
-            ArrayList<Pair<Boolean, String>> matches = new ArrayList<>();
-            while (matcherLong.find()) {
-                matches.add(0, new Pair<>(matcherLong.group(1) != null, matcherLong.group(0)));
-            }
+        if (playableDuration != Integer.MAX_VALUE) {
 
-            // Now loop through the reversed matches and get the replacements. Store them in
-            // non-reversed order.
-            ArrayList<String> replacements = new ArrayList<>();
-            for (Pair<Boolean, String> matchPair : matches) {
-                boolean isLongFormat = matchPair.first;
-                String group = matchPair.second;
-                int time = isLongFormat
-                            ? Converter.durationStringLongToMs(group)
-                            : Converter.durationStringShortToMs(group, useHourFormat);
+            // We need to decide if we are going to treat short timecodes as HH:MM or MM:SS. To do
+            // so we will parse all the short timecodes and see if they fit in the duration. If one
+            // does not we will use MM:SS, otherwise all will be parsed as HH:MM.
+            for (Element element : elementsWithTimeCodes) {
+                Matcher matcherForElement = TIMECODE_REGEX.matcher(element.html());
+                while (matcherForElement.find()) {
 
-                String rep = group;
-                if (playable == null) {
-                    rep = createTimeLink(time, group);
-                } else {
-                    int duration = playable.getDuration();
+                    // We only want short timecodes right now.
+                    if (matcherForElement.group(1) == null) {
+                        int time = Converter.durationStringShortToMs(matcherForElement.group(0), true);
 
-                    if (duration > time) {
-                        rep = createTimeLink(time, group);
-                    } else if (!isLongFormat && useHourFormat) {
-
-                        // The duration calculated in hours is too long and the timecode format is
-                        // short. So try and see if it will work when treated as minutes.
-                        time = Converter.durationStringShortToMs(group, false);
-
-                        if (duration > time) {
-                            // We have found the treating a short timecode as minutes works, do that
-                            // from now on.
-                            rep = createTimeLink(time, group);
+                        // If the parsed timecode is greater then the duration then we know we need to
+                        // use the minute format so we are done.
+                        if (time > playableDuration) {
                             useHourFormat = false;
+                            break;
                         }
                     }
                 }
 
-                replacements.add(0, rep);
+                if (!useHourFormat) {
+                    break;
+                }
             }
+        }
 
-            // Now that we have all the replacements, replace.
+        for (Element element : elementsWithTimeCodes) {
+
+            Matcher matcherForElement = TIMECODE_REGEX.matcher(element.html());
             StringBuffer buffer = new StringBuffer();
-            int index = 0;
-            matcherLong.reset();
-            while (matcherLong.find()) {
-                matcherLong.appendReplacement(buffer, replacements.get(index));
-                index++;
+
+            while (matcherForElement.find()) {
+                String group = matcherForElement.group(0);
+
+                int time = matcherForElement.group(1) != null
+                                        ? Converter.durationStringLongToMs(group)
+                                        : Converter.durationStringShortToMs(group, useHourFormat);
+
+                String replacementText = group;
+                if (time < playableDuration) {
+                    replacementText = String.format(Locale.getDefault(), TIMECODE_LINK, time, group);
+                }
+
+                matcherForElement.appendReplacement(buffer, replacementText);
             }
 
-            matcherLong.appendTail(buffer);
+            matcherForElement.appendTail(buffer);
             element.html(buffer.toString());
         }
-    }
-
-    private String createTimeLink(int time, String group) {
-        return String.format(Locale.getDefault(), TIMECODE_LINK, time, group);
     }
 }
