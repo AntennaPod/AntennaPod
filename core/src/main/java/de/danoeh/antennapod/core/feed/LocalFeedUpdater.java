@@ -38,7 +38,7 @@ public class LocalFeedUpdater {
         File f = new File(uri.getPath());
         String dirUrl = uri.toString();
         Feed dirFeed = new Feed(dirUrl, null, "Local directory (" + dirUrl + ")");
-        dirFeed.setItems(new ArrayList<>()); //this seems useless
+        dirFeed.setItems(new ArrayList<>()); //this seems useless but prevents an exception
         //find the feed for this directory (if it exists), or create one
         dirFeed = DBTasks.updateFeed(context, dirFeed)[0];
 
@@ -51,7 +51,7 @@ public class LocalFeedUpdater {
                         return m != null && (m.startsWith("audio/") || m.startsWith("video/"));
                     }
                 });
-        List<FeedItem> newItems = new ArrayList<>();
+        List<FeedItem> newItems = dirFeed.getItems();
         for (File it: itemFiles) {
             FeedItem found = feedContainsFile(dirFeed, it.getAbsolutePath());
             if (found != null) {
@@ -61,8 +61,8 @@ public class LocalFeedUpdater {
                 newItems.add(item);
             }
         }
-        //don't care about the old items for now, but when the update code comes, we'll change this
-        dirFeed.setItems(newItems);
+
+        //TODO do something about feeditems whose files are no longer in the directory
 
         //add or merge to the db
         Feed[] feeds = DBTasks.updateFeed(context, dirFeed);
