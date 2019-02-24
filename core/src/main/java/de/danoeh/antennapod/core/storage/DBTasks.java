@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -28,6 +29,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
@@ -314,7 +316,15 @@ public final class DBTasks {
                     feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
         }
         f.setId(feed.getId());
-        DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force);
+
+        String url = f.getDownload_url();
+        if (url.startsWith("file:")) {
+            String path = url.substring("file:".length()); //this is ugly
+            Uri uri = new Uri.Builder().scheme("file").path(path).build(); //very ugly
+            LocalFeedUpdater.startImport(uri, context);
+        } else {
+            DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force);
+        }
     }
 
     /*
