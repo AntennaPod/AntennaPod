@@ -1,35 +1,24 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.5'
+    }
+}
+
+plugins {
+    id('com.github.triplet.play') version '2.0.0'
+}
+
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: "com.android.application"
-apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 repositories {
     maven { url "https://jitpack.io" }
     mavenCentral()
-}
-
-buildscript {
-    repositories {
-       jcenter()
-    }
-    dependencies {
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'
-    }
-}
-
-def getMyVersionName() {
-    def parsedManifestXml = (new XmlSlurper())
-            .parse("${projectDir}/src/main/AndroidManifest.xml")
-            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
-    return parsedManifestXml."@android:versionName"
-}
-
-def getMyVersionCode() {
-    def parsedManifestXml = (new XmlSlurper())
-            .parse("${projectDir}/src/main/AndroidManifest.xml")
-            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
-    return parsedManifestXml."@android:versionCode".toInteger()
 }
 
 android {
@@ -40,10 +29,13 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode getMyVersionCode()
-        versionName "${getMyVersionName()}"
+        // Version code schema:
+        // "1.2.3-SNAPSHOT" -> 1020300
+        // "1.2.3-RC4"      -> 1020304
+        versionCode 1070196
+        versionName "1.7.1"
         testApplicationId "de.test.antennapod"
-        testInstrumentationRunner "de.test.antennapod.AntennaPodTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         generatedDensities = []
     }
 
@@ -95,7 +87,7 @@ android {
         release {
             resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
             minifyEnabled true
-            proguardFile "proguard.cfg"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), "proguard.cfg"
             signingConfig signingConfigs.releaseConfig
             buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
             buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
@@ -118,6 +110,10 @@ android {
 
     aaptOptions {
         additionalParameters "--no-version-vectors"
+    }
+
+    testOptions {
+        animationsDisabled = true
     }
 
     flavorDimensions "market"
@@ -158,14 +154,14 @@ dependencies {
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "com.squareup.okio:okio:$okioVersion"
     implementation "de.greenrobot:eventbus:$eventbusVersion"
-    implementation "io.reactivex:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex:rxjava:$rxJavaVersion"
-    // And ProGuard rules for RxJava!
-    implementation "com.artemzin.rxjava:proguard-rules:$rxJavaRulesVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
     implementation("com.afollestad.material-dialogs:commons:$materialDialogsVersion") {
@@ -180,16 +176,30 @@ dependencies {
 
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
-    implementation 'com.github.mfietz:fyydlin:v0.3'
+    implementation 'com.github.mfietz:fyydlin:v0.4.1'
     implementation 'com.github.ByteHamster:SearchPreference:v1.0.8'
     implementation 'com.github.angads25:filepicker:1.1.1'
+    implementation "org.awaitility:awaitility:$awaitilityVersion"
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 }
 
 play {
-    serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
-    pk12File = file('../serviceaccount-c3d7d0f61387.p12')
+    if (project.hasProperty("antennaPodServiceAccountEmail")) {
+        serviceAccountEmail = antennaPodServiceAccountEmail
+    } else {
+        serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
+    }
+    if (project.hasProperty("antennaPodPk12File")) {
+        serviceAccountCredentials = file(antennaPodPk12File)
+    } else {
+        serviceAccountCredentials = file('../serviceaccount-c3d7d0f61387.p12')
+    }
 }
 
 // about.html is templatized so that we can automatically insert

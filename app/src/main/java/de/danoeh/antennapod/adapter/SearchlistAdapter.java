@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
@@ -81,11 +82,12 @@ public class SearchlistAdapter extends BaseAdapter {
 
             Glide.with(context)
                     .load(feed.getImageLocation())
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate()
+                    .apply(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate())
                     .into(holder.cover);
 
         } else if (component.getClass() == FeedItem.class) {
@@ -100,11 +102,12 @@ public class SearchlistAdapter extends BaseAdapter {
 
             Glide.with(context)
                     .load(item.getFeed().getImageLocation())
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate()
+                    .apply(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate())
                     .into(holder.cover);
 
         }

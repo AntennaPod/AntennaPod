@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import com.bumptech.glide.request.RequestOptions;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,10 +82,11 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         //Update the empty imageView with the image from the feed
         Glide.with(context)
                 .load(podcast.imageUrl)
-                .placeholder(R.color.light_gray)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .fitCenter()
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.light_gray)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(viewHolder.coverView);
 
         //Feed the grid view
@@ -132,7 +135,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         }
 
         public static Podcast fromSearch(SearchHit searchHit) {
-            return new Podcast(searchHit.getTitle(), searchHit.getImageUrl(), searchHit.getXmlUrl());
+            return new Podcast(searchHit.getTitle(), searchHit.getThumbImageURL(), searchHit.getXmlUrl());
         }
 
         /**

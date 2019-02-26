@@ -50,10 +50,10 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Shows unread or recently published episodes
@@ -84,7 +84,7 @@ public class AllEpisodesFragment extends Fragment {
     private boolean isUpdatingFeeds;
     boolean isMenuInvalidationAllowed = false;
 
-    Subscription subscription;
+    Disposable disposable;
     private LinearLayoutManager layoutManager;
 
     boolean showOnlyNewEpisodes() { return false; }
@@ -125,8 +125,8 @@ public class AllEpisodesFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -275,14 +275,10 @@ public class AllEpisodesFragment extends Fragment {
         if(item.getItemId() == R.id.share_item) {
             return true; // avoids that the position is reset when we need it in the submenu
         }
-        int pos = listAdapter.getPosition();
-        if(pos < 0) {
-            return false;
-        }
-        FeedItem selectedItem = itemAccess.getItem(pos);
 
+        FeedItem selectedItem = listAdapter.getSelectedItem();
         if (selectedItem == null) {
-            Log.i(TAG, "Selected item at position " + pos + " was null, ignoring selection");
+            Log.i(TAG, "Selected item was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
 
@@ -466,15 +462,15 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     void loadItems() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         if (viewsCreated && !itemsLoaded) {
             recyclerView.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
-        subscription = Observable.fromCallable(this::loadData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(this::loadData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     recyclerView.setVisibility(View.VISIBLE);
@@ -499,8 +495,8 @@ public class AllEpisodesFragment extends Fragment {
         }
 
         Log.d(TAG, "markItemAsSeenWithUndo(" + item.getId() + ")");
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         // we're marking it as unplayed since the user didn't actually play it
         // but they don't want it considered 'NEW' anymore

@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.ClientConfig;
@@ -30,11 +29,9 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
@@ -209,6 +206,11 @@ public final class DBTasks {
         }).start();
     }
 
+    public static long getLastRefreshAllFeedsTimeMillis(final Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(DBTasks.PREF_NAME, MODE_PRIVATE);
+        return  prefs.getLong(DBTasks.PREF_LAST_REFRESH, 0);
+    }
+
     /**
      * @param context
      * @param feedList the list of feeds to refresh
@@ -324,31 +326,6 @@ public final class DBTasks {
             LocalFeedUpdater.startImport(uri, context);
         } else {
             DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force);
-        }
-    }
-
-    /*
-     *  Checks if the app should refresh all feeds, i.e. if the last auto refresh failed.
-     *
-     *  The feeds are only refreshed if an update interval or time of day is set and the last
-     *  (successful) refresh was before the last interval or more than a day ago, respectively.
-     */
-    public static void checkShouldRefreshFeeds(Context context) {
-        long interval = 0;
-        if(UserPreferences.getUpdateInterval() > 0) {
-            interval = UserPreferences.getUpdateInterval();
-        } else if(UserPreferences.getUpdateTimeOfDay().length > 0){
-            interval = TimeUnit.DAYS.toMillis(1);
-        }
-        if(interval == 0) { // auto refresh is disabled
-            return;
-        }
-        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        long lastRefresh = prefs.getLong(PREF_LAST_REFRESH, 0);
-        Log.d(TAG, "last refresh: " + Converter.getDurationStringLocalized(context,
-                System.currentTimeMillis() - lastRefresh) + " ago");
-        if(lastRefresh <= System.currentTimeMillis() - interval) {
-            DBTasks.refreshAllFeeds(context, null);
         }
     }
 

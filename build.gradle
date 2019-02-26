@@ -1,14 +1,11 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
+        google()
         jcenter()
         mavenCentral()
-        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
-        classpath "com.github.triplet.gradle:play-publisher:1.2.0"
+        classpath 'com.android.tools.build:gradle:3.3.0'
         // Exclude the version that the android plugin depends on.
         configurations.classpath.exclude group: "com.android.tools.external.lombok"
     }
@@ -38,19 +35,19 @@ subprojects {
 
 project.ext {
     compileSdkVersion = 26
-    buildToolsVersion = "27.0.3"
+    buildToolsVersion = "28.0.3"
     minSdkVersion = 14
     targetSdkVersion = 26
 
-    supportVersion = "26.1.0"
+    supportVersion = "27.1.1"
     awaitilityVersion = "3.1.2"
     commonsioVersion = "2.5"
     commonslangVersion = "3.6"
     commonstextVersion = "1.3"
     eventbusVersion = "2.4.0"
     flattr4jVersion = "2.14"
-    glideVersion = "3.8.0"
-    glideOkhttpIntegrationVersion = "1.5.0"
+    glideVersion = "4.8.0"
+    glideOkhttpIntegrationVersion = "4.8.0"
     iconifyVersion = "2.2.2"
     jsoupVersion = "1.11.2"
     materialDialogsVersion = "0.9.0.2"
@@ -58,12 +55,12 @@ project.ext {
     okioVersion = "1.14.0"
     recyclerviewFlexibledividerVersion = "1.4.0"
     robotiumSoloVersion = "5.6.3"
-    rxAndroidVersion = "1.2.1"
-    rxJavaVersion = "1.3.8"
+    rxAndroidVersion = "2.1.0"
+    rxJavaVersion = "2.2.2"
     rxJavaRulesVersion = "1.3.3.0"
     triangleLabelViewVersion = "1.1.2"
 
-    exoPlayerVersion = "2.7.3"
+    exoPlayerVersion = "2.9.3"
     audioPlayerVersion = "v1.0.17"
 
     castCompanionLibVer = "2.9.1"

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -19,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
 
 import java.lang.ref.WeakReference;
@@ -28,7 +28,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
@@ -51,7 +50,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
     private final ActionButtonUtils actionButtonUtils;
     private final boolean showOnlyNewEpisodes;
 
-    private int position = -1;
+    private FeedItem selectedItem;
 
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
@@ -107,7 +106,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         final FeedItem item = itemAccess.getItem(position);
         if (item == null) return;
         holder.itemView.setOnLongClickListener(v -> {
-            this.position = holder.getAdapterPosition();
+            this.selectedItem = item;
             return false;
         });
         holder.item = item;
@@ -192,12 +191,17 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        Glide.with(mainActivityRef.get())
-                .load(item.getImageLocation())
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
-                .into(new CoverTarget(item.getFeed().getImageLocation(), holder.placeholder, holder.cover, mainActivityRef.get()));
+        new CoverLoader(mainActivityRef.get())
+                .withUri(item.getImageLocation())
+                .withFallbackUri(item.getFeed().getImageLocation())
+                .withPlaceholderView(holder.placeholder)
+                .withCoverView(holder.cover)
+                .load();
+    }
+
+    @Nullable
+    public FeedItem getSelectedItem() {
+        return selectedItem;
     }
 
     @Override
@@ -209,16 +213,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
     @Override
     public int getItemCount() {
         return itemAccess.getCount();
-    }
-
-    public FeedItem getItem(int position) {
-        return itemAccess.getItem(position);
-    }
-
-    public int getPosition() {
-        int pos = position;
-        position = -1; // reset
-        return pos;
     }
 
     private final View.OnClickListener secondaryActionListener = new View.OnClickListener() {

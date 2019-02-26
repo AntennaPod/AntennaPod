@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import io.reactivex.annotations.NonNull;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -80,60 +81,70 @@ public class DBWriter {
      * @param context A context that is used for opening a database connection.
      * @param mediaId ID of the FeedMedia object whose downloaded file should be deleted.
      */
-    public static Future<?> deleteFeedMediaOfItem(final Context context,
+    public static Future<?> deleteFeedMediaOfItem(@NonNull final Context context,
                                                   final long mediaId) {
         return dbExec.submit(() -> {
             final FeedMedia media = DBReader.getFeedMedia(mediaId);
             if (media != null) {
-                Log.i(TAG, String.format("Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
-                        media.getId(), media.getEpisodeTitle(), String.valueOf(media.isDownloaded())));
-                if (media.isDownloaded()) {
-                    // delete downloaded media file
-                    File mediaFile = new File(media.getFile_url());
-                    if (mediaFile.exists() && !mediaFile.delete()) {
-                        MessageEvent evt = new MessageEvent(context.getString(R.string.delete_failed));
-                        EventBus.getDefault().post(evt);
-                        return;
-                    }
-                    media.setDownloaded(false);
-                    media.setFile_url(null);
-                    media.setHasEmbeddedPicture(false);
-                    PodDBAdapter adapter = PodDBAdapter.getInstance();
-                    adapter.open();
-                    adapter.setMedia(media);
-                    adapter.close();
+                boolean result = deleteFeedMediaSynchronous(context, media);
 
-                    // If media is currently being played, change playback
-                    // type to 'stream' and shutdown playback service
-                    SharedPreferences prefs = PreferenceManager
-                            .getDefaultSharedPreferences(context);
-                    if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
-                        if (media.getId() == PlaybackPreferences
-                                .getCurrentlyPlayingFeedMediaId()) {
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.putBoolean(
-                                    PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
-                                    true);
-                            editor.commit();
-                        }
-                        if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media.getId()) {
-                            IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
-                        }
-                    }
-                    // Gpodder: queue delete action for synchronization
-                    if(GpodnetPreferences.loggedIn()) {
-                        FeedItem item = media.getItem();
-                        GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.DELETE)
-                                .currentDeviceId()
-                                .currentTimestamp()
-                                .build();
-                        GpodnetPreferences.enqueueEpisodeAction(action);
-                    }
+                if (result && UserPreferences.shouldDeleteRemoveFromQueue()) {
+                    DBWriter.removeQueueItemSynchronous(context, media.getItem(), false);
                 }
-                EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
-                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
         });
+    }
+
+    private static boolean deleteFeedMediaSynchronous(@NonNull Context context, @NonNull FeedMedia media) {
+        Log.i(TAG, String.format("Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
+                media.getId(), media.getEpisodeTitle(), String.valueOf(media.isDownloaded())));
+        if (media.isDownloaded()) {
+            // delete downloaded media file
+            File mediaFile = new File(media.getFile_url());
+            if (mediaFile.exists() && !mediaFile.delete()) {
+                MessageEvent evt = new MessageEvent(context.getString(R.string.delete_failed));
+                EventBus.getDefault().post(evt);
+                return false;
+            }
+            media.setDownloaded(false);
+            media.setFile_url(null);
+            media.setHasEmbeddedPicture(false);
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setMedia(media);
+            adapter.close();
+
+            // If media is currently being played, change playback
+            // type to 'stream' and shutdown playback service
+            SharedPreferences prefs = PreferenceManager
+                    .getDefaultSharedPreferences(context);
+            if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
+                if (media.getId() == PlaybackPreferences
+                        .getCurrentlyPlayingFeedMediaId()) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean(
+                            PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
+                            true);
+                    editor.commit();
+                }
+                if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media.getId()) {
+                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                }
+            }
+            // Gpodder: queue delete action for synchronization
+            if(GpodnetPreferences.loggedIn()) {
+                FeedItem item = media.getItem();
+                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.DELETE)
+                        .currentDeviceId()
+                        .currentTimestamp()
+                        .build();
+                GpodnetPreferences.enqueueEpisodeAction(action);
+            }
+        }
+        EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
+        EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+
+        return true;
     }
 
     /**
@@ -419,31 +430,33 @@ public class DBWriter {
      */
     public static Future<?> removeQueueItem(final Context context,
                                             final FeedItem item, final boolean performAutoDownload) {
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            final List<FeedItem> queue = DBReader.getQueue(adapter);
+        return dbExec.submit(() -> removeQueueItemSynchronous(context, item, performAutoDownload));
+    }
 
-            if (queue != null) {
-                int position = queue.indexOf(item);
-                if (position >= 0) {
-                    queue.remove(position);
-                    adapter.setQueue(queue);
-                    item.removeTag(FeedItem.TAG_QUEUE);
-                    EventBus.getDefault().post(QueueEvent.removed(item));
-                    EventBus.getDefault().post(FeedItemEvent.updated(item));
-                } else {
-                    Log.w(TAG, "Queue was not modified by call to removeQueueItem");
-                }
+    private static void removeQueueItemSynchronous(final Context context,
+                                            final FeedItem item, final boolean performAutoDownload) {
+        final PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        final List<FeedItem> queue = DBReader.getQueue(adapter);
+
+        if (queue != null) {
+            int position = queue.indexOf(item);
+            if (position >= 0) {
+                queue.remove(position);
+                adapter.setQueue(queue);
+                item.removeTag(FeedItem.TAG_QUEUE);
+                EventBus.getDefault().post(QueueEvent.removed(item));
+                EventBus.getDefault().post(FeedItemEvent.updated(item));
             } else {
-                Log.e(TAG, "removeQueueItem: Could not load queue");
+                Log.w(TAG, "Queue was not modified by call to removeQueueItem");
             }
-            adapter.close();
-            if (performAutoDownload) {
-                DBTasks.autodownloadUndownloadedItems(context);
-            }
-        });
-
+        } else {
+            Log.e(TAG, "removeQueueItem: Could not load queue");
+        }
+        adapter.close();
+        if (performAutoDownload) {
+            DBTasks.autodownloadUndownloadedItems(context);
+        }
     }
 
     public static Future<?> addFavoriteItem(final FeedItem item) {

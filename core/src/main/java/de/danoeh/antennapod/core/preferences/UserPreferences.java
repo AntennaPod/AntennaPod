@@ -52,6 +52,8 @@ public class UserPreferences {
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
+    public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
+    private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
 
     // Queue
     private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
@@ -98,10 +100,13 @@ public class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
+    public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
 
     // Mediaplayer
     public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
+    public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
+    public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
@@ -307,12 +312,20 @@ public class UserPreferences {
         return Integer.parseInt(prefs.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
     }
 
+    public static boolean shouldDeleteRemoveFromQueue() {
+        return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
+    }
+
     public static boolean isAutoFlattr() {
         return prefs.getBoolean(PREF_AUTO_FLATTR, false);
     }
 
     public static String getPlaybackSpeed() {
         return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
+    }
+
+    public static boolean isSkipSilence() {
+        return prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false);
     }
 
     public static String[] getPlaybackSpeedArray() {
@@ -501,6 +514,12 @@ public class UserPreferences {
              .apply();
     }
 
+    public static void setSkipSilence(boolean skipSilence) {
+        prefs.edit()
+                .putBoolean(PREF_PLAYBACK_SKIP_SILENCE, skipSilence)
+                .apply();
+    }
+
     public static void setPlaybackSpeedArray(String[] speeds) {
         JSONArray jsonArray = new JSONArray();
         for (String speed : speeds) {
@@ -645,7 +664,7 @@ public class UserPreferences {
     }
 
     public static boolean useExoplayer() {
-        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals("exoplayer");
+        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals(PREF_MEDIA_PLAYER_EXOPLAYER);
     }
 
     public static void enableSonic() {
@@ -672,7 +691,7 @@ public class UserPreferences {
     }
 
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
-        int cleanupValue = Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+        int cleanupValue = getEpisodeCleanupValue();
         if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
             return new APQueueCleanupAlgorithm();
         } else if (cleanupValue == EPISODE_CLEANUP_NULL) {
@@ -680,6 +699,16 @@ public class UserPreferences {
         } else {
             return new APCleanupAlgorithm(cleanupValue);
         }
+    }
+
+    public static int getEpisodeCleanupValue() {
+        return Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+    }
+
+    public static void setEpisodeCleanupValue(int episodeCleanupValue) {
+        prefs.edit()
+                .putString(PREF_EPISODE_CLEANUP, Integer.toString(episodeCleanupValue))
+                .apply();
     }
 
     /**
@@ -808,5 +837,30 @@ public class UserPreferences {
 
     public enum VideoBackgroundBehavior {
         STOP, PICTURE_IN_PICTURE, CONTINUE_PLAYING
+    }
+
+    public enum BackButtonBehavior {
+        DEFAULT, OPEN_DRAWER, DOUBLE_TAP, SHOW_PROMPT, GO_TO_PAGE
+    }
+
+    public static BackButtonBehavior getBackButtonBehavior() {
+        switch (prefs.getString(PREF_BACK_BUTTON_BEHAVIOR, "default")) {
+            case "default": return BackButtonBehavior.DEFAULT;
+            case "drawer": return BackButtonBehavior.OPEN_DRAWER;
+            case "doubletap": return BackButtonBehavior.DOUBLE_TAP;
+            case "prompt": return BackButtonBehavior.SHOW_PROMPT;
+            case "page": return BackButtonBehavior.GO_TO_PAGE;
+            default: return BackButtonBehavior.DEFAULT;
+        }
+    }
+
+    public static String getBackButtonGoToPage() {
+        return prefs.getString(PREF_BACK_BUTTON_GO_TO_PAGE, "QueueFragment");
+    }
+
+    public static void setBackButtonGoToPage(String tag) {
+        prefs.edit()
+                .putString(PREF_BACK_BUTTON_GO_TO_PAGE, tag)
+                .apply();
     }
 }

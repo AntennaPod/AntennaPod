@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -49,12 +50,12 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
@@ -68,10 +69,10 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -121,7 +122,9 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     private ProgressDialog pd;
 
-    private Subscription subscription;
+    private Disposable disposable;
+
+    private long lastBackButtonPressTime = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -471,7 +474,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        DBTasks.checkShouldRefreshFeeds(getApplicationContext());
+        AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
 
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_FEED_ID) ||
@@ -488,8 +491,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         if(pd != null) {
             pd.dismiss();
@@ -643,10 +646,40 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     @Override
     public void onBackPressed() {
-        if(isDrawerOpen()) {
+        if (isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
-        } else {
+        } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             super.onBackPressed();
+        } else {
+            switch (UserPreferences.getBackButtonBehavior()) {
+                case OPEN_DRAWER:
+                    drawerLayout.openDrawer(navDrawer);
+                    break;
+                case SHOW_PROMPT:
+                    new AlertDialog.Builder(this)
+                        .setMessage(R.string.close_prompt)
+                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> MainActivity.super.onBackPressed())
+                        .setNegativeButton(R.string.no, null)
+                        .setCancelable(false)
+                        .show();
+                    break;
+                case DOUBLE_TAP:
+                    if (lastBackButtonPressTime < System.currentTimeMillis() - 2000) {
+                        Toast.makeText(this, R.string.double_tap_toast, Toast.LENGTH_SHORT).show();
+                        lastBackButtonPressTime = System.currentTimeMillis();
+                    } else {
+                        super.onBackPressed();
+                    }
+                    break;
+                case GO_TO_PAGE:
+                    if (getLastNavFragment().equals(UserPreferences.getBackButtonGoToPage())) {
+                        super.onBackPressed();
+                    } else {
+                        loadFragment(UserPreferences.getBackButtonGoToPage(), null);
+                    }
+                    break;
+                default: super.onBackPressed();
+            }
         }
     }
 
@@ -717,8 +750,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     };
 
     private void loadData() {
-        subscription = Observable.fromCallable(DBReader::getNavDrawerData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(DBReader::getNavDrawerData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     boolean handleIntent = (navDrawerData == null);

@@ -33,8 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/horizontal_divider"
+            android:layout_toStartOf="@id/horizontal_divider"
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/cancel_label" />
 
@@ -44,8 +46,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/horizontal_divider"
+            android:layout_toEndOf="@id/horizontal_divider"
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/confirm_label" />
     </RelativeLayout>
@@ -62,6 +66,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="?attr/selectableItemBackground"
             android:src="?attr/navigation_up"
@@ -77,6 +82,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/butNavUp"
+            android:layout_toEndOf="@id/butNavUp"
             android:text="@string/selected_folder_label"
             android:textStyle="bold"
             tools:background="@android:color/holo_green_dark">
@@ -87,9 +93,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_below="@id/txtvSelectedFolderLabel"
             android:layout_margin="8dp"
             android:layout_toRightOf="@id/butNavUp"
+            android:layout_toEndOf="@id/butNavUp"
             android:ellipsize="start"
             android:scrollHorizontally="true"
             android:singleLine="true"

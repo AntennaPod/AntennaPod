@@ -56,7 +56,6 @@
   <string name="yes">כן</string>
   <string name="no">לא</string>
   <string name="reset">איפוס</string>
-  <string name="author_label">יוצר</string>
   <string name="language_label">שפה</string>
   <string name="url_label">כתובת</string>
   <string name="podcast_settings_label">הגדרות</string>
@@ -107,23 +106,12 @@
   <string name="mark_all_read_label">סימון הכול כנוגנו</string>
   <string name="mark_all_read_msg">סימון את כל הפרקים כנוגנו</string>
   <string name="mark_all_read_confirmation_msg">נא לאשר שברצונך לסמן את כל הפרקים כנוגנו.</string>
-  <string name="mark_all_read_feed_confirmation_msg">נא לאשר שברצונך לסמן את כל הפרקים בהזנה הזאת כנוגנו.</string>
   <string name="mark_all_seen_label">סימון כולם כנצפו</string>
-  <string name="mark_all_seen_msg">סימון כל הפרקים כנצפו</string>
   <string name="mark_all_seen_confirmation_msg">נא לאשר שברצונך לסמן את כל הפרקים כנצפו.</string>
   <string name="show_info_label">הצגת מידע</string>
-  <string name="rename_feed_label">שינוי שם פודקאסט</string>
-  <string name="remove_feed_label">הסרת פודקאסט</string>
   <string name="share_label">שיתוף…</string>
-  <string name="share_link_label">שיתוף קישור</string>
   <string name="share_file_label">שיתוף כתובת</string>
-  <string name="share_link_with_position_label">שיתוף קישור עם מיקום</string>
   <string name="share_feed_url_label">שיתוף כתובת הזנה</string>
-  <string name="share_item_url_label">שיתוף הכתובת של קובץ הפרק</string>
-  <string name="share_item_url_with_position_label">שיתוף הכתובת של כתובת הפרק עם מיקום</string>
-  <string name="feed_delete_confirmation_msg">נא לאשר שברצונך למחוק את ההזנה „%1$s” ואת כל הפרקים שהורדת של ההזנה הזאת.</string>
-  <string name="feed_remover_msg">ההזנה נמחקת</string>
-  <string name="load_complete_feed">רענון אלו שהסתיימו בהזנה</string>
   <string name="hide_episodes_title">הסתרת פרקים</string>
   <string name="hide_unplayed_episodes_label">לא נוגן</string>
   <string name="hide_paused_episodes_label">מושהה</string>
@@ -239,7 +227,6 @@
   <string name="date">תאריך</string>
   <string name="duration">משך</string>
   <string name="episode_title">כותרת הפרק</string>
-  <string name="feed_title">כותרת ההזנה</string>
   <string name="ascending">בסדר עולה</string>
   <string name="descending">בסדר יורד</string>
   <string name="clear_queue_confirmation_msg">נא לאשר את פינוי התור מכל הפרקים שבו</string>
@@ -277,7 +264,6 @@
   <string name="enable_sonic">הפעלת Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">אין פריטים ברשימה זו.</string>
-  <string name="no_feeds_label">לא נרשמת להזנות עדיין.</string>
   <string name="no_chapters_label">לפרק זה אין פרקים.</string>
   <string name="no_shownotes_label">לפרק זה אין הערות פרק.</string>
   <!--Preferences-->
@@ -293,7 +279,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">להמשיך את הניגון כשהאוזניות מחוברות מחדש</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">להמשיך את הנגינה עם חיבור מחדש של ה־Bluetooth</string>
   <string name="pref_hardwareForwardButtonSkips_title">כפתור קדימה מדלג</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">לחיצה על כפתור החומרה קדימה מדלג לפרק הבא במקום להאיץ קדימה</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">כפתור אחורה מתחיל מחדש</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">לחיצה על כפתור החומרה אחורה מדלג מתחיל מחדש את נגינת הפרק הנוכחי במקום לחזור אחורה בפרק</string>
   <string name="pref_followQueue_sum">לעבור לפריט הבא בתור כאשר הניגון מסתיים</string>
@@ -342,7 +327,6 @@
   <string name="pref_nav_drawer_feed_order_title">הגדרת סדר מינויים</string>
   <string name="pref_nav_drawer_feed_order_sum">שינוי סדר המינויים שלך</string>
   <string name="pref_nav_drawer_feed_counter_title">הגדרת מונה מינויים</string>
-  <string name="pref_nav_drawer_feed_counter_sum">החלפת הפרטים שמוצגים על ידי מונה המינויים</string>
   <string name="pref_set_theme_sum">שינוי המראה של אנטנה־פּוֹד</string>
   <string name="pref_automatic_download_title">הורדה אוטומטית</string>
   <string name="pref_automatic_download_sum">הגדרת הורדה אטומטית של פרקים.</string>
@@ -384,8 +368,6 @@
   <string name="pref_rewind_sum">התאמת מספר השניות של הקפיצה אחורה בעת לחיצה על כפתור החזרה</string>
   <string name="pref_gpodnet_sethostname_title">הגדרת שם מארח</string>
   <string name="pref_gpodnet_sethostname_use_default_host">שימוש בשם מארח כבררת מחדל</string>
-  <string name="pref_expandNotify_title">הרחבת הודעה</string>
-  <string name="pref_expandNotify_sum">תמיד להרחיב את ההודעה כדי להציג את לחצני הנגינה.</string>
   <string name="pref_persistNotify_title">פקדי נגינה קבועים</string>
   <string name="pref_persistNotify_sum">להשאיר את פקדי ההתרעות ומסך הנעילה גם כשהנגינה מושהית.</string>
   <string name="pref_compact_notification_buttons_title">הגדרת כפתורים במסך נעילה</string>
@@ -426,8 +408,6 @@
   <string name="search_hint">חיפוש אחר פרקים</string>
   <string name="found_in_shownotes_label">נמצא בהערות הפרק</string>
   <string name="found_in_chapters_label">נמצא בפרקים</string>
-  <string name="found_in_authors_label">נמצא בין היוצרים</string>
-  <string name="found_in_feeds_label">נמצא בערוץ התוכן</string>
   <string name="search_status_no_results">לא נמצאו תוצאות</string>
   <string name="search_label">חיפוש</string>
   <string name="found_in_title_label">נמצא בכותרת</string>

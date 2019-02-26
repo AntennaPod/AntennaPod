@@ -75,10 +75,10 @@ import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
 import de.danoeh.antennapod.dialog.ProxyDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static de.danoeh.antennapod.activity.PreferenceActivity.PARAM_RESOURCE;
 
@@ -137,7 +137,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 }
             };
     private CheckBoxPreference[] selectedNetworks;
-    private Subscription subscription;
+    private Disposable disposable;
 
     public PreferenceController(PreferenceUI ui) {
         this.ui = ui;
@@ -226,6 +226,30 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     showNotificationButtonsDialog();
                     return true;
                 });
+
+        ui.findPreference(UserPreferences.PREF_BACK_BUTTON_BEHAVIOR)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                        if (newValue.equals("page")) {
+                            final Context context = ui.getActivity();
+                            final String[] navTitles = context.getResources().getStringArray(R.array.back_button_go_to_pages);
+                            final String[] navTags = context.getResources().getStringArray(R.array.back_button_go_to_pages_tags);
+                            final String choice[] = { UserPreferences.getBackButtonGoToPage() };
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle(R.string.back_button_go_to_page_title);
+                            builder.setSingleChoiceItems(navTitles, ArrayUtils.indexOf(navTags, UserPreferences.getBackButtonGoToPage()), (dialogInterface, i) -> {
+                                if (i >= 0) {
+                                    choice[0] = navTags[i];
+                                }
+                            });
+                            builder.setPositiveButton(R.string.confirm_label, (dialogInterface, i) -> UserPreferences.setBackButtonGoToPage(choice[0]));
+                            builder.setNegativeButton(R.string.cancel_label, null);
+                            builder.create().show();
+                            return true;
+                        } else {
+                            return true;
+                        }
+                    });
 
         if (Build.VERSION.SDK_INT >= 26) {
             ui.findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
@@ -627,7 +651,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         final AlertDialog.Builder alert = new AlertDialog.Builder(context)
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         Observable<File> observable = new ExportWorker(exportWriter).exportObservable();
-        subscription = observable.subscribeOn(Schedulers.newThread())
+        disposable = observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(output -> {
                     alert.setTitle(R.string.export_success_title);
@@ -635,7 +659,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     alert.setMessage(message);
                     alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
-                                "de.danoeh.antennapod.provider", output);
+                                context.getString(R.string.provider_authority), output);
                         Intent sendIntent = new Intent(Intent.ACTION_SEND);
                         sendIntent.putExtra(Intent.EXTRA_SUBJECT,
                                 context.getResources().getText(R.string.opml_export_label));
@@ -705,8 +729,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     public void unsubscribeExportSubscription() {
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -822,8 +846,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 entries[x] = res.getString(R.string.episode_cleanup_never);
             } else if (v == 0) {
                 entries[x] = res.getString(R.string.episode_cleanup_after_listening);
+            } else if (v > 0 && v < 24) {
+                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_hours_after_listening, v, v);
             } else {
-                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, v, v);
+                int numDays = (int)(v / 24); // assume underlying value will be NOT fraction of days, e.g., 36 (hours)
+                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, numDays, numDays);
             }
         }
         pref.setEntries(entries);

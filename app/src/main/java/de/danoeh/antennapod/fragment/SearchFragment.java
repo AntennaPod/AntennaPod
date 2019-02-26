@@ -24,10 +24,10 @@ import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
@@ -44,7 +44,7 @@ public class SearchFragment extends ListFragment {
     private boolean viewCreated = false;
     private boolean itemsLoaded = false;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -85,8 +85,8 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onStop() {
         super.onStop();
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
         EventDistributor.getInstance().unregister(contentUpdate);
     }
@@ -94,8 +94,8 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -205,14 +205,14 @@ public class SearchFragment extends ListFragment {
 
 
     private void search() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
         if (viewCreated && !itemsLoaded) {
             setListShown(false);
         }
-        subscription = Observable.fromCallable(this::performSearch)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(this::performSearch)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {

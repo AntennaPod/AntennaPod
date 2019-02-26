@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[antennapod.english]
+[antennapod.core-values]
 source_file = core/src/main/res/values/strings.xml
 source_lang = en
 trans.ast_ES = core/src/main/res/values-b+ast/strings.xml
@@ -25,8 +25,7 @@ trans.he_IL = core/src/main/res/values-iw-rIL/strings.xml
 trans.hi_IN = core/src/main/res/values-hi-rIN/strings.xml
 trans.hu = core/src/main/res/values-hu/strings.xml
 trans.id = core/src/main/res/values-id/strings.xml
-trans.it = core/src/main/res/values-it/strings.xml
-trans.it_IT = core/src/main/res/values-it-rIT/strings.xml
+trans.it_IT = core/src/main/res/values-it/strings.xml
 trans.is = core/src/main/res/values-is-rIS/strings.xml
 trans.ja = core/src/main/res/values-ja/strings.xml
 trans.kn_IN = core/src/main/res/values-kn-rIN/strings.xml
@@ -59,16 +58,75 @@ trans.zh_TW = core/src/main/res/values-zh-rTW/strings.xml
 trans.zh_HK = core/src/main/res/values-zh-rHK/strings.xml
 
 [antennapod.description]
-file_filter = app/src/main/play/<lang>/listing/fulldescription
 source_file = app/src/main/play/en-US/listing/fulldescription
 source_lang = en
+trans.ar = app/src/main/play/ar/listing/fulldescription
+trans.az = app/src/main/play/az-AZ/listing/fulldescription
+trans.bg = app/src/main/play/bg/listing/fulldescription
+trans.ca = app/src/main/play/ca/listing/fulldescription
+trans.cs = app/src/main/play/cs-CZ/listing/fulldescription
+trans.da = app/src/main/play/da-DK/listing/fulldescription
+trans.de = app/src/main/play/de-DE/listing/fulldescription
+trans.el = app/src/main/play/el-GR/listing/fulldescription
+trans.es = app/src/main/play/es-ES/listing/fulldescription
+trans.et = app/src/main/play/et/listing/fulldescription
+trans.fa = app/src/main/play/fa/listing/fulldescription
+trans.fr = app/src/main/play/fr-FR/listing/fulldescription
+trans.gl = app/src/main/play/gl-ES/listing/fulldescription
+trans.hi_IN = app/src/main/play/hi-IN/listing/fulldescription
+trans.hu = app/src/main/play/hu-HU/listing/fulldescription
+trans.it_IT = app/src/main/play/it-IT/listing/fulldescription
+trans.iw = app/src/main/play/iw-IL/listing/fulldescription
+trans.ja = app/src/main/play/ja-JP/listing/fulldescription
+trans.ko = app/src/main/play/ko-KR/listing/fulldescription
+trans.lt = app/src/main/play/lt/listing/fulldescription
+trans.nl = app/src/main/play/nl-NL/listing/fulldescription
+trans.pl_PL = app/src/main/play/pl-PL/listing/fulldescription
+trans.pt_BR = app/src/main/play/pt-BR/listing/fulldescription
+trans.pt_PT = app/src/main/play/pt-PT/listing/fulldescription
+trans.ro_RO = app/src/main/play/ro/listing/fulldescription
+trans.ru_RU = app/src/main/play/ru-RU/listing/fulldescription
+trans.sl_SI = app/src/main/play/sl/listing/fulldescription
+trans.sv_SE = app/src/main/play/sv-SE/listing/fulldescription
+trans.tr = app/src/main/play/tr-TR/listing/fulldescription
+trans.uk_UA = app/src/main/play/uk/listing/fulldescription
+trans.vi = app/src/main/play/vi/listing/fulldescription
+trans.zh_CN = app/src/main/play/zh-CN/listing/fulldescription
+trans.zh_TW = app/src/main/play/zh-TW/listing/fulldescription
 
 [antennapod.shortdescription]
-file_filter = app/src/main/play/<lang>/listing/shortdescription
 source_file = app/src/main/play/en-US/listing/shortdescription
 source_lang = en
-
-[antennapod.changelog]
-file_filter = app/src/main/play/<lang>/whatsnew
-source_file = app/src/main/play/en-US/whatsnew
-source_lang = en
+trans.ar = app/src/main/play/ar/listing/shortdescription
+trans.az = app/src/main/play/az-AZ/listing/shortdescription
+trans.bg = app/src/main/play/bg/listing/shortdescription
+trans.ca = app/src/main/play/ca/listing/shortdescription
+trans.cs = app/src/main/play/cs-CZ/listing/shortdescription
+trans.da = app/src/main/play/da-DK/listing/shortdescription
+trans.de = app/src/main/play/de-DE/listing/shortdescription
+trans.el = app/src/main/play/el-GR/listing/shortdescription
+trans.es = app/src/main/play/es-ES/listing/shortdescription
+trans.et = app/src/main/play/et/listing/shortdescription
+trans.fa = app/src/main/play/fa/listing/shortdescription
+trans.fr = app/src/main/play/fr-FR/listing/shortdescription
+trans.gl = app/src/main/play/gl-ES/listing/shortdescription
+trans.hi_IN = app/src/main/play/hi-IN/listing/shortdescription
+trans.hu = app/src/main/play/hu-HU/listing/shortdescription
+trans.it_IT = app/src/main/play/it-IT/listing/shortdescription
+trans.iw = app/src/main/play/iw-IL/listing/shortdescription
+trans.ja = app/src/main/play/ja-JP/listing/shortdescription
+trans.ko = app/src/main/play/ko-KR/listing/shortdescription
+trans.lt = app/src/main/play/lt/listing/shortdescription
+trans.nl = app/src/main/play/nl-NL/listing/shortdescription
+trans.pl_PL = app/src/main/play/pl-PL/listing/shortdescription
+trans.pt_BR = app/src/main/play/pt-BR/listing/shortdescription
+trans.pt_PT = app/src/main/play/pt-PT/listing/shortdescription
+trans.ro_RO = app/src/main/play/ro/listing/shortdescription
+trans.ru_RU = app/src/main/play/ru-RU/listing/shortdescription
+trans.sl_SI = app/src/main/play/sl/listing/shortdescription
+trans.sv_SE = app/src/main/play/sv-SE/listing/shortdescription
+trans.tr = app/src/main/play/tr-TR/listing/shortdescription
+trans.uk_UA = app/src/main/play/uk/listing/shortdescription
+trans.vi = app/src/main/play/vi/listing/shortdescription
+trans.zh_CN = app/src/main/play/zh-CN/listing/shortdescription
+trans.zh_TW = app/src/main/play/zh-TW/listing/shortdescription

@@ -128,6 +128,7 @@
   <string name="share_item_url_label">Teile URL der Episodendatei</string>
   <string name="share_item_url_with_position_label">Teile URL der Episodendatei mit Zeitmarke</string>
   <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Podcast \"%1$s\" und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
+  <string name="feed_remover_msg">Entferne Podcast</string>
   <string name="load_complete_feed">Kompletten Feed aktualisieren</string>
   <string name="hide_episodes_title">Episoden verbergen</string>
   <string name="batch_edit">Stapelbearbeitung</string>
@@ -312,7 +313,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder eingesteckt werden</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wiedergabe fortsetzen, wenn Bluetooth wieder verbunden ist</string>
   <string name="pref_hardwareForwardButtonSkips_title">\"Nächster\"-Taste springt zur nächsten Episode</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Zur nächsten Episode springen, wenn die \"Nächster\"-Taste gedrückt wird (statt vorzuspulen)</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Vorheriger-Taste startet neu</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Die Wiedergabe der aktuellen Episode neu starten, wenn die \"Vorheriger\"-Taste gedrückt wird (statt zurückzuspulen)</string>
   <string name="pref_followQueue_sum">Springe zur nächsten Episode in der Abspielliste, wenn die Wiedergabe endet</string>
@@ -361,6 +361,7 @@
   <string name="pref_nav_drawer_feed_order_title">Reihenfolge der Abonnements einstellen</string>
   <string name="pref_nav_drawer_feed_order_sum">Ändere die Reihenfolge deiner Abonnements</string>
   <string name="pref_nav_drawer_feed_counter_title">Abonnement-Zähler einstellen</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Ändere die durch den Abonnementszähler angezeigten Informationen. Betrifft auch die Sortierung der Abonnements wenn \"Reihenfolge der Abonnements\" auf \"Zähler\" gesetzt ist.</string>
   <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
   <string name="pref_automatic_download_sum">Konfiguriere das automatische Herunterladen von Episoden.</string>
@@ -374,6 +375,7 @@
   <string name="pref_episode_cache_title">Episodenspeicher</string>
   <string name="pref_theme_title_light">Hell</string>
   <string name="pref_theme_title_dark">Dunkel</string>
+  <string name="pref_theme_title_trueblack">Schwarz (für AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Unbegrenzt</string>
   <string name="pref_update_interval_hours_plural">Stunden</string>
   <string name="pref_update_interval_hours_singular">Stunde</string>
@@ -402,8 +404,6 @@
   <string name="pref_rewind_sum">Passe an, wie viele Sekunden zurückgespult wird, wenn die entsprechende Hardware-Taste gedrückt wird</string>
   <string name="pref_gpodnet_sethostname_title">Hostname ändern</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Standard-Host verwenden</string>
-  <string name="pref_expandNotify_title">Benachrichtigung erweitern</string>
-  <string name="pref_expandNotify_sum">Erweiterte Wiedergabebenachrichtigung mit Abspiel-, Pause- und Stop-Knöpfen anzeigen.</string>
   <string name="pref_persistNotify_title">Persistente Wiedergabesteuerung</string>
   <string name="pref_persistNotify_sum">Zeige Wiedergabebedienelemente in der Benachrichtigung und im Lockscreen an, während die Wiedergabe pausiert ist.</string>
   <string name="pref_compact_notification_buttons_title">Lockscreen-Wiedergabetasten festlegen</string>
@@ -450,6 +450,8 @@
   <string name="search_hint">Suche nach Episoden</string>
   <string name="found_in_shownotes_label">In Shownotizen gefunden</string>
   <string name="found_in_chapters_label">In Kapiteln gefunden</string>
+  <string name="found_in_authors_label">Gefunden in Autor(en)</string>
+  <string name="found_in_feeds_label">Gefunden in Podcast</string>
   <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
   <string name="search_label">Suchen</string>
   <string name="found_in_title_label">In Titel gefunden</string>

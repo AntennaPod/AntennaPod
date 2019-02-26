@@ -39,6 +39,7 @@ import android.view.SurfaceHolder;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
@@ -1165,10 +1166,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, imageLocation);
                     try {
                         Bitmap art = Glide.with(this)
-                                .load(imageLocation)
                                 .asBitmap()
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                .load(imageLocation)
+                                .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                                .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                                 .get();
                         builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
                     } catch (Throwable tr) {
@@ -1239,11 +1240,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         android.R.dimen.notification_large_icon_width);
                 try {
                     icon = Glide.with(PlaybackService.this)
-                            .load(playable.getImageLocation())
                             .asBitmap()
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                            .centerCrop()
-                            .into(iconSize, iconSize)
+                            .load(playable.getImageLocation())
+                            .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                            .apply(new RequestOptions().centerCrop())
+                            .submit(iconSize, iconSize)
                             .get();
                 } catch (Throwable tr) {
                     Log.e(TAG, "Error loading the media icon for the notification", tr);
@@ -1628,7 +1629,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void setSpeed(float speed) {
-        mediaPlayer.setSpeed(speed);
+        mediaPlayer.setPlaybackParams(speed, UserPreferences.isSkipSilence());
+    }
+
+    public void skipSilence(boolean skipSilence) {
+        mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
     }
 
     public void setVolume(float leftVolume, float rightVolume) {

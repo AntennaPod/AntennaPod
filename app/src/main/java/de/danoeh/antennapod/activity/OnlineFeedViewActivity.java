@@ -28,6 +28,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.request.RequestOptions;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -65,10 +67,10 @@ import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Downloads a feed from a feed URL and parses it. Subclasses can display the
@@ -97,15 +99,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private Button subscribeButton;
 
-    private Subscription download;
-    private Subscription parser;
-    private Subscription updater;
+    private Disposable download;
+    private Disposable parser;
+    private Disposable updater;
     private final EventDistributor.EventListener listener = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EventDistributor.FEED_LIST_UPDATE) != 0) {
                 updater = Observable.fromCallable(DBReader::getFeedList)
-                        .subscribeOn(Schedulers.newThread())
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 feeds -> {
@@ -139,7 +141,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         StorageUtils.checkStorageAvailability(this);
 
-        final String feedUrl;
+        String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
         } else if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
@@ -149,16 +151,23 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if (actionBar != null) {
                 actionBar.setTitle(R.string.add_feed_label);
             }
-        } else {
-            throw new IllegalArgumentException("Activity must be started with feedurl argument!");
         }
 
-        Log.d(TAG, "Activity was started with url " + feedUrl);
-        setLoadingLayout();
-        if (savedInstanceState == null) {
-            startFeedDownload(feedUrl, null, null);
+        if (feedUrl == null) {
+            Log.e(TAG, "feedUrl is null.");
+            new AlertDialog.Builder(OnlineFeedViewActivity.this).
+                    setNeutralButton(android.R.string.ok,
+                    (dialog, which) -> finish()).
+                    setTitle(R.string.error_label).
+                    setMessage(R.string.null_value_podcast_error).create().show();
         } else {
-            startFeedDownload(feedUrl, savedInstanceState.getString("username"), savedInstanceState.getString("password"));
+            Log.d(TAG, "Activity was started with url " + feedUrl);
+            setLoadingLayout();
+            if (savedInstanceState == null) {
+                startFeedDownload(feedUrl, null, null);
+            } else {
+                startFeedDownload(feedUrl, savedInstanceState.getString("username"), savedInstanceState.getString("password"));
+            }
         }
     }
 
@@ -212,13 +221,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         if(updater != null) {
-            updater.unsubscribe();
+            updater.dispose();
         }
         if(download != null) {
-            download.unsubscribe();
+            download.dispose();
         }
         if(parser != null) {
-            parser.unsubscribe();
+            parser.dispose();
         }
     }
 
@@ -273,7 +282,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                     downloader.call();
                     return downloader.getResult();
                 })
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::checkDownloadResult,
                         error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -331,7 +340,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                         Log.d(TAG, "Deleted feed source file. Result: " + rc);
                     }
                 })
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if(result != null) {
@@ -397,11 +406,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)
                     .load(feed.getImageUrl())
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate()
+                    .apply(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate())
                     .into(cover);
         }
 

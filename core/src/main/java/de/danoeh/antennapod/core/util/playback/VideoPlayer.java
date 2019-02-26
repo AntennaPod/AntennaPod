@@ -22,9 +22,8 @@ public class VideoPlayer extends MediaPlayer implements IPlayer {
 	}
 
 	@Override
-	public void setPlaybackSpeed(float f) {
-		Log.e(TAG, "Setting playback speed unsupported in video player");
-		throw new UnsupportedOperationException("Setting playback speed unsupported in video player");
+	public void setPlaybackParams(float speed, boolean skipSilence) {
+		//Ignore this for non ExoPlayer implementations
 	}
 
 	@Override

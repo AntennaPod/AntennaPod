@@ -39,7 +39,8 @@
                     app:layout_row="0"
                     app:layout_column="0"
                     app:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp" />
+                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp" />
 
                 <Spinner
                     android:layout_width="wrap_content"
@@ -97,6 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     app:layout_row="0"
                     app:layout_column="0"
@@ -119,6 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     app:layout_row="1"
                     app:layout_column="0"
