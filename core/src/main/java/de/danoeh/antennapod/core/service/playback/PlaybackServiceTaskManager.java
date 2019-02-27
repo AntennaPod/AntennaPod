@@ -14,9 +14,13 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import org.greenrobot.eventbus.EventBus;
@@ -84,6 +88,35 @@ public class PlaybackServiceTaskManager {
         Log.d(TAG, "onEvent(QueueEvent " + event +")");
         cancelQueueLoader();
         loadQueue();
+    }
+
+    public void onEvent(DownloadEvent event) {
+        Log.d(TAG, "onEvent(DownloadEvent " + event +")");
+        // Refresh the queue, if any of the successful download is in the queue.
+        for(Downloader downloader : event.update.downloaders) {
+            DownloadStatus status = downloader.getResult();
+            if (status.isSuccessful() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                if (isFeedMediaInQueue(status.getFeedfileId())) {
+                    Log.d(TAG, "onEvent(DownloadEvent) - some item (" + status.getFeedfileId() + ") in the queue has been downloaded successfully. Refresh the queue.");
+                    cancelQueueLoader();
+                    loadQueue();
+                    return;
+                }
+            }
+        }
+    }
+
+    private boolean isFeedMediaInQueue(long feedMediaId) {
+        List<FeedItem> queue = getQueueIfLoaded();
+        if (queue != null) {
+            for (FeedItem item : queue) {
+                FeedMedia media = item.getMedia();
+                if (media != null && feedMediaId == media.getId()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private synchronized boolean isQueueLoaderActive() {

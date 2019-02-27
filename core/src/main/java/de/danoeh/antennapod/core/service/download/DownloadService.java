@@ -152,7 +152,8 @@ public class DownloadService extends Service {
         }
     }
 
-    private final Thread downloadCompletionThread = new Thread("DownloadCompletionThread") {
+    private final Thread downloadCompletionThread = new DownloadCompletionThread();
+    private class DownloadCompletionThread extends Thread {
         private static final String TAG = "downloadCompletionThd";
 
         @Override
@@ -162,32 +163,35 @@ public class DownloadService extends Service {
                 try {
                     Downloader downloader = downloadExecutor.take().get();
                     Log.d(TAG, "Received 'Download Complete' - message.");
-                    removeDownload(downloader);
+                    // to be run after the download is processed
+                    AfterDownloadCompleteTask afterDownloadCompleteTask = new AfterDownloadCompleteTask(downloader);
+
+                    removeDownload(downloader); // TODO-2947: Consider to move it to AfterDownloadCompleteTask
                     DownloadStatus status = downloader.getResult();
                     boolean successful = status.isSuccessful();
 
                     final int type = status.getFeedfileType();
                     if (successful) {
                         if (type == Feed.FEEDFILETYPE_FEED) {
-                            handleCompletedFeedDownload(downloader.getDownloadRequest());
+                            handleCompletedFeedDownload(downloader.getDownloadRequest()); // TODO-2947: add AfterDownloadCompleteTask
                         } else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                            handleCompletedFeedMediaDownload(status, downloader.getDownloadRequest());
+                            handleCompletedFeedMediaDownload(status, downloader.getDownloadRequest(), afterDownloadCompleteTask);
                         }
                     } else {
                         numberOfDownloads.decrementAndGet();
                         if (!status.isCancelled()) {
                             if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
-                                postAuthenticationNotification(downloader.getDownloadRequest());
+                                postAuthenticationNotification(downloader.getDownloadRequest()); // TODO-2947: consider to run AfterDownloadCompleteTask
                             } else if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
                                     && Integer.parseInt(status.getReasonDetailed()) == 416) {
 
                                 Log.d(TAG, "Requested invalid range, restarting download from the beginning");
                                 FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-                                DownloadRequester.getInstance().download(DownloadService.this, downloader.getDownloadRequest());
+                                DownloadRequester.getInstance().download(DownloadService.this, downloader.getDownloadRequest());  // TODO-2947: consider to run AfterDownloadCompleteTask
                             } else {
                                 Log.e(TAG, "Download failed");
                                 saveDownloadStatus(status);
-                                handleFailedDownload(status, downloader.getDownloadRequest());
+                                handleFailedDownload(status, downloader.getDownloadRequest()); // TODO-2947: add AfterDownloadCompleteTask
 
                                 if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                                     long id = status.getFeedfileId();
@@ -210,6 +214,8 @@ public class DownloadService extends Service {
                                 }
                             }
                         } else {
+                            // TODO-2947: add AfterDownloadCompleteTask - case cancelled; should check broadcast receiver as well
+
                             // if FeedMedia download has been canceled, fake FeedItem update
                             // so that lists reload that it
                             if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
@@ -232,6 +238,35 @@ public class DownloadService extends Service {
             }
             Log.d(TAG, "End of downloadCompletionThread");
         }
+
+        /**
+         * Encapsulate the logic to be invoked after a completed (not necessarily in success) download
+         * is processed, e.g.,relevant states in the database are updated.
+         *
+         * The class is static in nature, but cannot be so because its parent is not static.
+         */
+        private class AfterDownloadCompleteTask implements Runnable {
+            @NonNull
+            private final Downloader downloader;
+
+            AfterDownloadCompleteTask(@NonNull Downloader downloader) {
+                this.downloader = downloader;
+            }
+
+            @Override
+            public void run() {
+                Log.v(TAG, "To post DownloadEvent for completed download [" +
+                                downloader.getDownloadRequest().getFeedfileId() +
+                                ",  " + downloader.getResult() + "]");
+
+                // Just post the completed downloader, and ignore ongoing ones
+                // The logic is similar to postDownloaders()
+                List<Downloader> downloadsToPost = new ArrayList<Downloader>(1);
+                downloadsToPost.add(downloader);
+                EventBus.getDefault().postSticky(DownloadEvent.refresh(downloadsToPost));
+            }
+        }
+
     };
 
     @Override
@@ -448,7 +483,7 @@ public class DownloadService extends Service {
             boolean rc = downloads.remove(d);
             Log.d(TAG, "Result of downloads.remove: " + rc);
             DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
-            postDownloaders();
+            postDownloaders();         // TODO-2947: if the invocation of removeDownload() is moved to AfterDownloadCompleteTask, postDownloaders() should probably be invoked by the caller, before the given downloader is removed
         });
     }
 
@@ -568,9 +603,9 @@ public class DownloadService extends Service {
     /**
      * Is called whenever a FeedMedia is downloaded.
      */
-    private void handleCompletedFeedMediaDownload(DownloadStatus status, DownloadRequest request) {
+    private void handleCompletedFeedMediaDownload(DownloadStatus status, DownloadRequest request, Runnable callback) {
         Log.d(TAG, "Handling completed FeedMedia Download");
-        syncExecutor.execute(new MediaHandlerThread(status, request));
+        syncExecutor.execute(new MediaHandlerThread(status, request, callback));
     }
 
     private void handleFailedDownload(DownloadStatus status, DownloadRequest request) {
@@ -862,6 +897,9 @@ public class DownloadService extends Service {
         }
 
         void submitCompletedDownload(DownloadRequest request) {
+            // TODO-2947: add AfterDownloadCompleteTask (for handleCompletedFeedDownload() case), it is slightly more complicated
+            // as the logic here does not process the download directly, but submits it to completedRequests queue
+            // the queue will need to be changed to take in Pair<DownloadRequest, AfterDownloadCompleteTask> pair
             completedRequests.offer(request);
             if (isCollectingRequests) {
                 interrupt();
@@ -919,7 +957,7 @@ public class DownloadService extends Service {
         private final DownloadRequest request;
         private final DownloadStatus status;
 
-        FailedDownloadHandler(DownloadStatus status, DownloadRequest request) {
+        FailedDownloadHandler(DownloadStatus status, DownloadRequest request) { // TODO-2947: add afterDownloadCompleteTask
             this.request = request;
             this.status = status;
         }
@@ -941,79 +979,86 @@ public class DownloadService extends Service {
 
         private final DownloadRequest request;
         private DownloadStatus status;
+        private Runnable callback;
 
         MediaHandlerThread(@NonNull DownloadStatus status,
-                           @NonNull DownloadRequest request) {
+                           @NonNull DownloadRequest request,
+                           @NonNull Runnable callback) {
             this.status = status;
             this.request = request;
+            this.callback = callback;
         }
 
         @Override
         public void run() {
-            FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
-            if (media == null) {
-                Log.e(TAG, "Could not find downloaded media object in database");
-                return;
-            }
-            media.setDownloaded(true);
-            media.setFile_url(request.getDestination());
-            media.checkEmbeddedPicture(); // enforce check
-
-            // check if file has chapters
-            if(media.getItem() != null && !media.getItem().hasChapters()) {
-                ChapterUtils.loadChaptersFromFileUrl(media);
-            }
-
-            // Get duration
-            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-            String durationStr = null;
             try {
-                mmr.setDataSource(media.getFile_url());
-                durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-                media.setDuration(Integer.parseInt(durationStr));
-                Log.d(TAG, "Duration of file is " + media.getDuration());
-            } catch (NumberFormatException e) {
-                Log.d(TAG, "Invalid file duration: " + durationStr);
-            } catch (Exception e) {
-                Log.e(TAG, "Get duration failed", e);
+                FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
+                if (media == null) {
+                    Log.e(TAG, "Could not find downloaded media object in database");
+                    return;
+                }
+                media.setDownloaded(true);
+                media.setFile_url(request.getDestination());
+                media.checkEmbeddedPicture(); // enforce check
+
+                // check if file has chapters
+                if (media.getItem() != null && !media.getItem().hasChapters()) {
+                    ChapterUtils.loadChaptersFromFileUrl(media);
+                }
+
+                // Get duration
+                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                String durationStr = null;
+                try {
+                    mmr.setDataSource(media.getFile_url());
+                    durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                    media.setDuration(Integer.parseInt(durationStr));
+                    Log.d(TAG, "Duration of file is " + media.getDuration());
+                } catch (NumberFormatException e) {
+                    Log.d(TAG, "Invalid file duration: " + durationStr);
+                } catch (Exception e) {
+                    Log.e(TAG, "Get duration failed", e);
+                } finally {
+                    mmr.release();
+                }
+
+                final FeedItem item = media.getItem();
+
+                try {
+                    // we've received the media, we don't want to autodownload it again
+                    if (item != null) {
+                        item.setAutoDownload(false);
+                        DBWriter.setFeedItem(item).get();
+                    }
+
+                    DBWriter.setFeedMedia(media).get();
+
+                    if (item != null && UserPreferences.enqueueDownloadedEpisodes() &&
+                            !DBTasks.isInQueue(DownloadService.this, item.getId())) {
+                        DBWriter.addQueueItem(DownloadService.this, item).get();
+                    }
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "MediaHandlerThread was interrupted");
+                } catch (ExecutionException e) {
+                    Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
+                    status = new DownloadStatus(media, media.getEpisodeTitle(), DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
+                }
+
+                saveDownloadStatus(status);
+
+                if (GpodnetPreferences.loggedIn() && item != null) {
+                    GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DOWNLOAD)
+                            .currentDeviceId()
+                            .currentTimestamp()
+                            .build();
+                    GpodnetPreferences.enqueueEpisodeAction(action);
+                }
+
+                numberOfDownloads.decrementAndGet();
+                queryDownloadsAsync();
             } finally {
-                mmr.release();
+                callback.run();
             }
-
-            final FeedItem item = media.getItem();
-
-            try {
-                // we've received the media, we don't want to autodownload it again
-                if (item != null) {
-                    item.setAutoDownload(false);
-                    DBWriter.setFeedItem(item).get();
-                }
-
-                DBWriter.setFeedMedia(media).get();
-
-                if (item != null && UserPreferences.enqueueDownloadedEpisodes() &&
-                        !DBTasks.isInQueue(DownloadService.this, item.getId())) {
-                    DBWriter.addQueueItem(DownloadService.this, item).get();
-                }
-            } catch (InterruptedException e) {
-                Log.e(TAG, "MediaHandlerThread was interrupted");
-            } catch (ExecutionException e) {
-                Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
-                status = new DownloadStatus(media, media.getEpisodeTitle(), DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
-            }
-
-            saveDownloadStatus(status);
-
-            if (GpodnetPreferences.loggedIn() && item != null) {
-                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DOWNLOAD)
-                        .currentDeviceId()
-                        .currentTimestamp()
-                        .build();
-                GpodnetPreferences.enqueueEpisodeAction(action);
-            }
-
-            numberOfDownloads.decrementAndGet();
-            queryDownloadsAsync();
         }
     }
 
