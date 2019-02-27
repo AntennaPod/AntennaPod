@@ -1932,6 +1932,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             try {
                 // Manage the started state of this service.
                 switch (state.getState()) {
+                    case PlaybackStateCompat.STATE_CONNECTING:
+                        // move the service to started, aka, making it foreground
+                        // upon STATE_CONNECTING, i.e., in preparing to play a media.
+                        // This is done so that in case the preparation takes a long time, e.g.,
+                        // streaming over a slow network,
+                        // the service won't be killed by the system prematurely.
+                        moveServiceToStartedState(state);
+                        break;
                     case PlaybackStateCompat.STATE_PLAYING:
                         moveServiceToStartedState(state);
                         break;
