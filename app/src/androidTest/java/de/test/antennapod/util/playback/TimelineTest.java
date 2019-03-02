@@ -150,6 +150,15 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    public void testProcessShownotesAndInvalidTimecode() throws Exception {
+        final String timeStr = "2:1";
+
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode <" + timeStr + "> here.</p>", Integer.MAX_VALUE);
+        Timeline t = new Timeline(context, p);
+        String res = t.processShownotes(true);
+        checkLinkCorrect(res, new long[0], new String[0]);
+    }
+
     private void checkLinkCorrect(String res, long[] timecodes, String[] timecodeStr) {
         assertNotNull(res);
         Document d = Jsoup.parse(res);
