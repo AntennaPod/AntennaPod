@@ -151,9 +151,15 @@ public class TimelineTest extends InstrumentationTestCase {
     }
 
     public void testProcessShownotesAndInvalidTimecode() throws Exception {
-        final String timeStr = "2:1";
+        final String[] timeStrs = new String[] {"2:1", "0:0", "000", "00", "00:000"};
 
-        Playable p = newTestPlayable(null, "<p> Some test text with a timecode <" + timeStr + "> here.</p>", Integer.MAX_VALUE);
+        StringBuilder shownotes = new StringBuilder("<p> Some test text with timecodes ");
+        for (String timeStr : timeStrs) {
+            shownotes.append(timeStr).append(" ");
+        }
+        shownotes.append("here.</p>");
+
+        Playable p = newTestPlayable(null, shownotes.toString(), Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes(true);
         checkLinkCorrect(res, new long[0], new String[0]);
