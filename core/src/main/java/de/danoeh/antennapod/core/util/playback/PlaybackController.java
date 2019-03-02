@@ -36,6 +36,7 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.Optional;
+import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
@@ -540,8 +541,8 @@ public abstract class PlaybackController {
         if (fromUser && playbackService != null && media != null) {
             float prog = progress / ((float) seekBar.getMax());
             int duration = media.getDuration();
-            txtvPosition.setText(Converter
-                    .getDurationStringLong((int) (prog * duration)));
+            int position = TimeSpeedConverter.convert((int) (prog * duration));
+            txtvPosition.setText(Converter.getDurationStringLong(position));
             return prog;
         }
         return 0;
