@@ -1,19 +1,21 @@
-package de.test.antennapod.util;
+package de.danoeh.antennapod.core.util;
 
-import android.test.AndroidTestCase;
+import org.junit.Test;
 
-import de.danoeh.antennapod.core.util.URIUtil;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test class for URIUtil
  */
-public class URIUtilTest extends AndroidTestCase {
+public class URIUtilTest {
 
+    @Test
     public void testGetURIFromRequestUrlShouldNotEncode() {
         final String testUrl = "http://example.com/this%20is%20encoded";
         assertEquals(testUrl, URIUtil.getURIFromRequestUrl(testUrl).toString());
     }
 
+    @Test
     public void testGetURIFromRequestUrlShouldEncode() {
         final String testUrl = "http://example.com/this is not encoded";
         final String expected = "http://example.com/this%20is%20not%20encoded";

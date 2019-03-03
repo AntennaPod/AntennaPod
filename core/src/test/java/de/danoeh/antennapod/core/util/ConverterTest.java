@@ -1,33 +1,37 @@
-package de.test.antennapod.util;
+package de.danoeh.antennapod.core.util;
 
-import android.test.AndroidTestCase;
+import org.junit.Test;
 
-import de.danoeh.antennapod.core.util.Converter;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test class for converter
  */
-public class ConverterTest extends AndroidTestCase {
+public class ConverterTest {
 
-    public void testGetDurationStringLong() throws Exception {
+    @Test
+    public void testGetDurationStringLong() {
         String expected = "13:05:10";
         int input = 47110000;
         assertEquals(expected, Converter.getDurationStringLong(input));
     }
 
-    public void testGetDurationStringShort() throws Exception {
+    @Test
+    public void testGetDurationStringShort() {
         String expected = "13:05";
         assertEquals(expected, Converter.getDurationStringShort(47110000, true));
         assertEquals(expected, Converter.getDurationStringShort(785000, false));
     }
 
-    public void testDurationStringLongToMs() throws Exception {
+    @Test
+    public void testDurationStringLongToMs() {
         String input = "01:20:30";
         long expected = 4830000;
         assertEquals(expected, Converter.durationStringLongToMs(input));
     }
 
-    public void testDurationStringShortToMs() throws Exception {
+    @Test
+    public void testDurationStringShortToMs() {
         String input = "8:30";
         assertEquals(30600000, Converter.durationStringShortToMs(input, true));
         assertEquals(510000, Converter.durationStringShortToMs(input, false));
