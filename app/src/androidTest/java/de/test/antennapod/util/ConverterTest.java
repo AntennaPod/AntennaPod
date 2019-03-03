@@ -17,8 +17,8 @@ public class ConverterTest extends AndroidTestCase {
 
     public void testGetDurationStringShort() throws Exception {
         String expected = "13:05";
-        int input = 47110000;
-        assertEquals(expected, Converter.getDurationStringShort(input));
+        assertEquals(expected, Converter.getDurationStringShort(47110000, true));
+        assertEquals(expected, Converter.getDurationStringShort(785000, false));
     }
 
     public void testDurationStringLongToMs() throws Exception {
@@ -29,7 +29,7 @@ public class ConverterTest extends AndroidTestCase {
 
     public void testDurationStringShortToMs() throws Exception {
         String input = "8:30";
-        long expected = 30600000;
-        assertEquals(expected, Converter.durationStringShortToMs(input));
+        assertEquals(30600000, Converter.durationStringShortToMs(input, true));
+        assertEquals(510000, Converter.durationStringShortToMs(input, false));
     }
 }
