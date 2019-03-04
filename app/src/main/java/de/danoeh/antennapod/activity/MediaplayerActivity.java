@@ -79,6 +79,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private static final String PREFS = "MediaPlayerActivityPreferences";
     private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final int REQUEST_CODE_STORAGE = 42;
+    private static final float PLAYBACK_SPEED_STEP = 0.05f;
+    private static final float DEFAULT_MIN_PLAYBACK_SPEED = 0.5f;
+    private static final float DEFAULT_MAX_PLAYBACK_SPEED = 2.5f;
 
     PlaybackController controller;
 
@@ -469,7 +472,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         final Button butDecSpeed = (Button) dialog.findViewById(R.id.butDecSpeed);
                         butDecSpeed.setOnClickListener(v -> {
                             if(controller != null && controller.canSetPlaybackSpeed()) {
-                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() - 2);
+                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() - 1);
                             } else {
                                 VariableSpeedDialog.showGetPluginDialog(this);
                             }
@@ -477,7 +480,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         final Button butIncSpeed = (Button) dialog.findViewById(R.id.butIncSpeed);
                         butIncSpeed.setOnClickListener(v -> {
                             if(controller != null && controller.canSetPlaybackSpeed()) {
-                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() + 2);
+                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() + 1);
                             } else {
                                 VariableSpeedDialog.showGetPluginDialog(this);
                             }
@@ -492,12 +495,20 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             UserPreferences.setPlaybackSpeed(String.valueOf(currentSpeed));
                         }
 
+                        String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
+                        final float minPlaybackSpeed = availableSpeeds.length > 1 ?
+                                Float.valueOf(availableSpeeds[0]) : DEFAULT_MIN_PLAYBACK_SPEED;
+                        float maxPlaybackSpeed = availableSpeeds.length > 1 ?
+                                Float.valueOf(availableSpeeds[availableSpeeds.length - 1]) : DEFAULT_MAX_PLAYBACK_SPEED;
+                        int progressMax = (int) ((maxPlaybackSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP);
+                        barPlaybackSpeed.setMax(progressMax);
+
                         txtvPlaybackSpeed.setText(String.format("%.2fx", currentSpeed));
                         barPlaybackSpeed.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                                 if(controller != null && controller.canSetPlaybackSpeed()) {
-                                    float playbackSpeed = (progress + 10) / 20.0f;
+                                    float playbackSpeed = progress * PLAYBACK_SPEED_STEP + minPlaybackSpeed;
                                     controller.setPlaybackSpeed(playbackSpeed);
                                     String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
                                     UserPreferences.setPlaybackSpeed(speedPref);
@@ -505,7 +516,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                                     txtvPlaybackSpeed.setText(speedStr);
                                 } else if(fromUser) {
                                     float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
-                                    barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress((int) (20 * speed) - 10));
+                                    barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress(
+                                            (int) ((speed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP)));
                                 }
                             }
 
@@ -520,7 +532,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             public void onStopTrackingTouch(SeekBar seekBar) {
                             }
                         });
-                        barPlaybackSpeed.setProgress((int) (20 * currentSpeed) - 10);
+                        barPlaybackSpeed.setProgress((int) ((currentSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP));
 
                         final SeekBar barLeftVolume = (SeekBar) dialog.findViewById(R.id.volume_left);
                         barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
