@@ -414,20 +414,26 @@ public class AllEpisodesFragment extends Fragment {
 
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(episodes == null || listAdapter == null) {
+        if (episodes == null || listAdapter == null) {
             return;
         }
-        for(int i=0, size = event.items.size(); i < size; i++) {
-            FeedItem item = event.items.get(i);
+        for (FeedItem item : event.items) {
             int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
-            if(pos >= 0) {
+            if (pos >= 0) {
                 episodes.remove(pos);
-                episodes.add(pos, item);
-                listAdapter.notifyItemChanged(pos);
+                if (shouldUpdatedItemRemainInList(item)) {
+                    episodes.add(pos, item);
+                    listAdapter.notifyItemChanged(pos);
+                } else {
+                    listAdapter.notifyItemRemoved(pos);
+                }
             }
         }
     }
 
+    protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
+        return true;
+    }
 
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");

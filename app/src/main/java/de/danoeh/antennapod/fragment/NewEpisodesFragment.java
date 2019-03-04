@@ -41,18 +41,8 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     }
 
     @Override
-    public void onEventMainThread(FeedItemEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(episodes == null) {
-            return;
-        }
-        for(FeedItem item : event.items) {
-            int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
-            if(pos >= 0 && item.isTagged(FeedItem.TAG_QUEUE)) {
-                episodes.remove(pos);
-                listAdapter.notifyItemRemoved(pos);
-            }
-        }
+    protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
+        return item.isNew();
     }
 
     @Override
