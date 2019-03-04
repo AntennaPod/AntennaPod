@@ -472,8 +472,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return Service.START_NOT_STICKY;
             }
         } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
-            boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
-                    true);
+            boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM, true);
             boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
             boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
             sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
