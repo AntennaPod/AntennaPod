@@ -1186,10 +1186,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private Thread notificationSetupThread;
 
-    private void setupNotification(final Playable playable) {
-        setupNotification(playable, false);
-    }
-
     private synchronized void setupNotification(final Playable playable, boolean treatPauseAsStop) {
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
