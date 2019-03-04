@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
     <Preference
             android:title="@string/choose_data_directory"
@@ -26,11 +26,11 @@
             android:summary="@string/pref_favorite_keeps_episodes_sum"
             android:title="@string/pref_favorite_keeps_episodes_title"/>
     <SwitchPreference
-        android:defaultValue="false"
-        android:enabled="true"
-        android:key="prefDeleteRemovesFromQueue"
-        android:summary="@string/pref_delete_removes_from_queue_sum"
-        android:title="@string/pref_delete_removes_from_queue_title"/>
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefDeleteRemovesFromQueue"
+            android:summary="@string/pref_delete_removes_from_queue_sum"
+            android:title="@string/pref_delete_removes_from_queue_title"/>
 
     <PreferenceCategory android:title="@string/import_export_pref">
         <Preference
@@ -44,6 +44,7 @@
                 android:title="@string/html_export_label"/>
         <Preference
                 android:key="importExport"
+                search:keywords="@string/import_export_search_keywords"
                 android:title="@string/import_export"/>
     </PreferenceCategory>
 </PreferenceScreen>
