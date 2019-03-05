@@ -468,7 +468,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "Received media button event");
             boolean handled = handleKeycode(keycode, true);
             if (!handled) {
-                serviceManager.stopService(); // TODO: [2716]-RemoveOptional why is it added in the first place in v1.7.0?
+                // Just silently ignores unsupported keycode. Whether the service will
+                // continue to run is solely dependent on whether it is playing some media.
                 return Service.START_NOT_STICKY;
             }
         } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
