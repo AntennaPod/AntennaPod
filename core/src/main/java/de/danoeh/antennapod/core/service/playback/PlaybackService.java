@@ -672,7 +672,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 case STOPPED:
                     //writePlaybackPreferencesNoMediaPlaying();
-                    //serviceManager.stopService();
                     break;
 
                 case PLAYING:
