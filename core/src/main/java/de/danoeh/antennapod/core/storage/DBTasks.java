@@ -319,11 +319,11 @@ public final class DBTasks {
         }
         f.setId(feed.getId());
 
-        String url = f.getDownload_url();
-        if (url.startsWith("file:")) {
-            String path = url.substring("file:".length()); //this is ugly
+        if (f.isLocalFeed()) {
+            String path = f.getDownload_url().substring("file:".length()); //this is ugly
             Uri uri = new Uri.Builder().scheme("file").path(path).build(); //very ugly
-            LocalFeedUpdater.startImport(uri, context);
+            f.setItems(feed.getItems()); //this prevents a null pointer exception when iterating
+            LocalFeedUpdater.updateFeed(f, context);
         } else {
             DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force);
         }

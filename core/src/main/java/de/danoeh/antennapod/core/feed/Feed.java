@@ -525,6 +525,11 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         this.paged = paged;
     }
 
+    public boolean isLocalFeed() {
+        return download_url.startsWith("file:");
+
+    }
+
     public String getNextPageLink() {
         return nextPageLink;
     }

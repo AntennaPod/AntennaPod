@@ -33,14 +33,26 @@ public class LocalFeedUpdater {
         }
     }
 
-    private static void startImportDirectory(Uri uri, Context context) {
+    private static Feed startImportDirectory(Uri uri, Context context) {
         //create a feed object for this directory
         File f = new File(uri.getPath());
         String dirUrl = uri.toString();
-        Feed dirFeed = new Feed(dirUrl, null, "Local directory (" + dirUrl + ")");
+        Feed dirFeed = new Feed(dirUrl, null, dirUrl);
         dirFeed.setItems(new ArrayList<>()); //this seems useless but prevents an exception
         //find the feed for this directory (if it exists), or create one
         dirFeed = DBTasks.updateFeed(context, dirFeed)[0];
+        return dirFeed;
+    }
+
+    public static void updateFeed(Feed feed, Context context) {
+        //make sure it is the latest 'version' of this feed from the db
+        //NOTE that, if the caller is always DBTasks, this is unnecessary; but maybe it comes from
+        //somewhere else in the future?
+        // Feed dirFeed = DBTasks.updateFeed(context, feed)[0];
+        Feed dirFeed = feed;
+
+        String uriStr = dirFeed.getDownload_url();
+        File f = new File(uriStr.substring("file:".length())); //ugly
 
         //find relevant files and create items for them
         File[] itemFiles = f.listFiles(
@@ -64,7 +76,23 @@ public class LocalFeedUpdater {
 
         //TODO do something about feeditems whose files are no longer in the directory
 
-        //add or merge to the db
+        //is there an icon? use the first one found
+        File[] iconFiles = f.listFiles(
+                new FilenameFilter() {
+                    @Override
+                    public boolean accept(File file, String s) {
+                        return s.toLowerCase().equals("folder.jpg") ||
+                                s.toLowerCase().equals("folder.png");
+                    }
+                }
+        );
+        if (iconFiles.length > 0) {
+            dirFeed.setImageUrl(
+                    new Uri.Builder().scheme("file").path(iconFiles[0].getAbsolutePath())
+                            .build().toString());
+        }
+
+        //merge to the db
         Feed[] feeds = DBTasks.updateFeed(context, dirFeed);
     }
 
