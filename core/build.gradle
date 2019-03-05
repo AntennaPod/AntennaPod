@@ -2,7 +2,6 @@ apply plugin: "com.android.library"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -39,11 +38,6 @@ android {
         }
     }
 
-}
-
-repositories {
-    maven { url "https://jitpack.io" }
-    mavenCentral()
 }
 
 dependencies {
@@ -97,13 +91,5 @@ tasks.withType(Test) {
         events "skipped", "passed", "failed"
         showStandardStreams true
         displayGranularity 2
-    }
-}
-
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint" << "-Xlint:-deprecation" << "-Xlint:-serial"
-        }
     }
 }
