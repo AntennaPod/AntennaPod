@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -587,7 +588,7 @@ public class GpodnetService {
         String result = null;
         ResponseBody body = null;
         try {
-            String credential = Credentials.basic(username, password);
+            String credential = Credentials.basic(username, password, Charset.forName("UTF-8"));
             Request authRequest = request.newBuilder().header("Authorization", credential).build();
             Response response = httpClient.newCall(authRequest).execute();
             checkStatusCode(response);
