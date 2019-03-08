@@ -311,8 +311,7 @@ public class ItunesSearchFragment extends Fragment {
                         encodedQuery = query; // failsafe
                     }
 
-                    //Spaces in the query need to be replaced with '+' character.
-                    String formattedUrl = String.format(API_URL, query).replace(' ', '+');
+                    String formattedUrl = String.format(API_URL, encodedQuery);
 
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
                     Request.Builder httpReq = new Request.Builder()
