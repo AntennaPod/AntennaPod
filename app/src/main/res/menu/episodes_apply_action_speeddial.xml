@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/addToQueue"
+        android:icon="?attr/content_new"
+        android:title="@string/add_to_queue_label"
+        />
+    <item android:id="@+id/remove_from_queue_item"
+        android:icon="@drawable/ic_remove_grey600"
+        android:title="@string/remove_from_queue_label"
+        />
+    <item
+        android:id="@+id/markAsPlayed"
+        android:icon="?attr/navigation_accept"
+        android:title="@string/mark_read_label"
+        />
+    <item android:id="@+id/markAsUnplayed"
+        android:icon="?attr/navigation_cancel"
+        android:title="@string/mark_unread_label"
+        />
+    <item android:id="@+id/download"
+        android:icon="?attr/av_download"
+        android:title="@string/download_label"
+        />
+    <item android:id="@+id/delete"
+        android:icon="?attr/content_discard"
+        android:title="@string/remove_episode_lable"
+        />
+</menu>

@@ -14,6 +14,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary true // consider to use pngs instead
         // Version code schema:
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
@@ -158,6 +159,7 @@ dependencies {
     }
 
     implementation "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
+    implementation 'com.leinardi.android:speed-dial:1.0.2' // 1.0.2 uses support 27.1.1 ; newer versions use 28.0.0;
 
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 

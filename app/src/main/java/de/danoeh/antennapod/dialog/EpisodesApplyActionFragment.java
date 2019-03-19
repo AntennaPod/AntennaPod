@@ -7,16 +7,21 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,6 +56,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     private Button btnMarkAsUnplayed;
     private Button btnDownload;
     private Button btnDelete;
+    private SpeedDialView mSpeedDialView;
 
     private final Map<Long,FeedItem> idMap = new ArrayMap<>();
     private final List<FeedItem> episodes = new ArrayList<>();
@@ -118,15 +124,28 @@ public class EpisodesApplyActionFragment extends Fragment {
                     }).show();
             return true;
         });
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (AbsListView.OnScrollListener.SCROLL_STATE_IDLE == scrollState) {
+                    showSpeedDialIfAnyChecked();
+                 } else {
+                    hideSpeedDial();
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {}
+        });
 
         for(FeedItem episode : episodes) {
             titles.add(episode.getTitle());
         }
 
         mAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_multiple_choice, titles);
+                R.layout.simple_list_item_multiple_choice_on_start, titles);
         mListView.setAdapter(mAdapter);
-        checkAll();
+        /// checkAll(); // TODO: no longer check all by default
 
         int lastVisibleDiv = 0;
         btnAddToQueue = view.findViewById(R.id.btnAddToQueue);
@@ -171,7 +190,20 @@ public class EpisodesApplyActionFragment extends Fragment {
             }
         }
 
+        // replacement for the buttons
+        mSpeedDialView = view.findViewById(R.id.fabSD);
+        mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+        showSpeedDialIfAnyChecked();
+
         return view;
+    }
+    
+    private void showSpeedDialIfAnyChecked() {
+        mSpeedDialView.setVisibility(checkedIds.size() > 0 ? View.VISIBLE : View.GONE);
+    }
+
+    private void hideSpeedDial() {
+        mSpeedDialView.setVisibility(View.GONE);
     }
 
     @Override
@@ -410,6 +442,13 @@ public class EpisodesApplyActionFragment extends Fragment {
             mListView.setItemChecked(i, checked);
         }
         ActivityCompat.invalidateOptionsMenu(EpisodesApplyActionFragment.this.getActivity());
+        showSpeedDialIfAnyChecked();
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            String title = checkedIds.size() > 0 ? checkedIds.size() + " selected" : ""; // TODO: restore to the original title
+            actionBar.setTitle(title);
+        }
     }
 
     private void queueChecked() {
