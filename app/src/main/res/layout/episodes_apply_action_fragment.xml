@@ -103,19 +103,25 @@
         android:id="@+id/fabSDOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <com.leinardi.android.speeddial.SpeedDialView
-        android:id="@+id/fabSD"
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:sdMainFabClosedSrc="@drawable/ic_fab_edit"
-        app:sdOverlayLayout="@id/fabSDOverlay"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        />
+        android:elevation="@dimen/sd_close_elevation"
+        > <!-- needs to match the speed dial's minimal elevation, or the speed dial can't be clicked at all -->
+        <com.leinardi.android.speeddial.SpeedDialView
+            android:id="@+id/fabSD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:sdMainFabClosedSrc="@drawable/ic_fab_edit"
+            app:sdOverlayLayout="@id/fabSDOverlay"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            />
+    </ScrollView>
     <View
         android:visibility="gone"
         android:id="@+id/divider"
