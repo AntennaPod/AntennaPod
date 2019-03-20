@@ -3,6 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.app.AlertDialog;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -201,7 +202,24 @@ public class EpisodesApplyActionFragment extends Fragment {
 
         return view;
     }
-    
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        compatEnsureSpeedDialClickable();
+    }
+
+    private void compatEnsureSpeedDialClickable() {
+        // On pre-Lolliop devices (that does not support elevation),
+        // need to explicitly bring the fab to the front, otherwise it won't be clickable.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            ViewGroup root = (ViewGroup)getView();
+            root.bringChildToFront(root.findViewById(R.id.fabSDScrollCtr));
+            root.requestLayout();
+            root.invalidate();
+        }
+    }
+
     private void showSpeedDialIfAnyChecked() {
         mSpeedDialView.setVisibility(checkedIds.size() > 0 ? View.VISIBLE : View.GONE);
     }
