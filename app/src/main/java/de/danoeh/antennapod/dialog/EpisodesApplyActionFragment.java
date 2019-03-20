@@ -193,6 +193,10 @@ public class EpisodesApplyActionFragment extends Fragment {
         // replacement for the buttons
         mSpeedDialView = view.findViewById(R.id.fabSD);
         mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+        mSpeedDialView.setOnActionSelectedListener(actionItem -> {
+            Toast.makeText(getContext(), "" + actionItem.getLabel() + " clicked", Toast.LENGTH_SHORT).show();
+            return true;
+        });
         showSpeedDialIfAnyChecked();
 
         return view;
