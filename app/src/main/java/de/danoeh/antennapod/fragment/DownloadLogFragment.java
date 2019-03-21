@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -75,6 +76,11 @@ public class DownloadLogFragment extends ListFragment {
         if (itemsLoaded) {
             onFragmentLoaded();
         }
+
+        //empty view
+        View  emptyView = getActivity().getLayoutInflater().inflate(R.layout.download_log_empty_view, null);
+        ((ViewGroup)getListView().getParent()).addView(emptyView);
+        getListView().setEmptyView(emptyView);
     }
 
     private void onFragmentLoaded() {

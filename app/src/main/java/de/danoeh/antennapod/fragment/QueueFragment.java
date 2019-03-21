@@ -73,6 +73,7 @@ public class QueueFragment extends Fragment {
     private RecyclerView recyclerView;
     private QueueRecyclerAdapter recyclerAdapter;
     private TextView txtvEmpty;
+    private TextView txtvHeadEmpty;
     private ProgressBar progLoading;
 
     private List<FeedItem> queue;
@@ -496,6 +497,9 @@ public class QueueFragment extends Fragment {
 
         txtvEmpty = root.findViewById(android.R.id.empty);
         txtvEmpty.setVisibility(View.GONE);
+        txtvHeadEmpty = root.findViewById(R.id.emptyQueueHeader);
+        txtvHeadEmpty.setVisibility(View.GONE);
+
         progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
 
@@ -513,9 +517,11 @@ public class QueueFragment extends Fragment {
         if(queue == null || queue.size() == 0) {
             recyclerView.setVisibility(View.GONE);
             txtvEmpty.setVisibility(View.VISIBLE);
+            txtvHeadEmpty.setVisibility(View.VISIBLE);
         } else {
             txtvEmpty.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+            txtvHeadEmpty.setVisibility(View.GONE);
         }
 
         if (restoreScrollPosition) {
@@ -629,6 +635,7 @@ public class QueueFragment extends Fragment {
         if (queue == null) {
             recyclerView.setVisibility(View.GONE);
             txtvEmpty.setVisibility(View.GONE);
+            txtvHeadEmpty.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(DBReader::getQueue)
