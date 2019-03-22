@@ -1,6 +1,7 @@
 package de.test.antennapod.handler;
 
 import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.test.InstrumentationTestCase;
 
 import org.xml.sax.SAXException;
@@ -36,7 +37,7 @@ public class FeedHandlerTest extends InstrumentationTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        Context context = getInstrumentation().getContext();
+        Context context = InstrumentationRegistry.getTargetContext();
         File destDir = context.getExternalFilesDir(FEEDS_DIR);
         assertNotNull(destDir);
 
@@ -66,6 +67,7 @@ public class FeedHandlerTest extends InstrumentationTestCase {
         Feed parsedFeed = new Feed(feed.getDownload_url(), feed.getLastUpdate());
         parsedFeed.setFile_url(file.getAbsolutePath());
         parsedFeed.setDownloaded(true);
+        parsedFeed.setImageUrl("http://example.com/picture");
         handler.parseFeed(parsedFeed);
         return parsedFeed;
     }
