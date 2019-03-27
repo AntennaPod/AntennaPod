@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.List;
@@ -22,6 +21,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -108,11 +108,10 @@ public class CompletedDownloadsFragment extends ListFragment {
             onFragmentLoaded();
         }
 
-        //empty view
-       View  emptyView = getActivity().getLayoutInflater().inflate(R.layout.completed_downloads_empty_view, null);
-       ((ViewGroup)getListView().getParent()).addView(emptyView);
-       getListView().setEmptyView(emptyView);
-
+        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView.setTitle(R.string.no_comp_downloads_head_label);
+        emptyView.setMessage(R.string.no_comp_downloads_label);
+        emptyView.attachToListView(getListView());
     }
 
     @Override

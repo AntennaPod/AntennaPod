@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,6 +20,7 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -46,10 +46,11 @@ public class RunningDownloadsFragment extends ListFragment {
         adapter = new DownloadlistAdapter(getActivity(), itemAccess);
         setListAdapter(adapter);
 
-        //empty view
-        View  emptyView = getActivity().getLayoutInflater().inflate(R.layout.running_downloads_empty_view, null);
-        ((ViewGroup)getListView().getParent()).addView(emptyView);
-        getListView().setEmptyView(emptyView);
+        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView.setTitle(R.string.no_run_downloads_head_label);
+        emptyView.setMessage(R.string.no_run_downloads_label);
+        emptyView.attachToListView(getListView());
+
     }
 
     @Override

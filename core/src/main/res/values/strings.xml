@@ -327,7 +327,12 @@
     <string name="no_log_downloads_label">Download logs will appear here when available.</string>
     <string name="no_history_head_label">No History</string>
     <string name="no_history_label">After you listen to an episode, it will appear here.</string>
-
+    <string name="no_all_episodes_head_label">No Episodes</string>
+    <string name="no_all_episodes_label">When you add a podcast, the episodes will be shown here.</string>
+    <string name="no_new_episodes_head_label">No new episodes</string>
+    <string name="no_new_episodes_label">When new episodes arrive, they will be shown here.</string>
+    <string name="no_fav_episodes_head_label">No favourite episodes</string>
+    <string name="no_fav_episodes_label">You can add episodes to the favourites by long-pressing them.</string>
 
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>

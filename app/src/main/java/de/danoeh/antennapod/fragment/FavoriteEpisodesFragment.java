@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
     private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
 
+    private TextView tvHeader;
+    private TextView tvEmpty;
+
     @Override
     protected boolean showOnlyNewEpisodes() { return true; }
 
@@ -50,7 +54,10 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
-
+        tvHeader = root.findViewById(R.id.emptyHeader);
+        tvHeader.setText(R.string.no_fav_episodes_head_label);
+        tvEmpty = root.findViewById(R.id.empty);
+        tvEmpty.setText(R.string.no_fav_episodes_label);
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {

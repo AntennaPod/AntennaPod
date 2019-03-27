@@ -6,20 +6,22 @@
     android:gravity="center">
 
     <TextView
+        android:id="@+id/txtvtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="@string/no_history_head_label"
+        android:text="empty"
         android:textSize="20dp"
         android:textStyle="bold"
         android:paddingBottom="10dp"/>
 
     <TextView
+        android:id="@+id/txtvmessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:text="@string/no_history_label"
+        android:text="empty"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:textAlignment="center"/>

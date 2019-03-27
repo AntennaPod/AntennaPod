@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -72,8 +73,7 @@ public class QueueFragment extends Fragment {
     private TextView infoBar;
     private RecyclerView recyclerView;
     private QueueRecyclerAdapter recyclerAdapter;
-    private TextView txtvEmpty;
-    private TextView txtvHeadEmpty;
+    private LinearLayout layoutEmpty;
     private ProgressBar progLoading;
 
     private List<FeedItem> queue;
@@ -494,11 +494,9 @@ public class QueueFragment extends Fragment {
             }
         );
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        txtvEmpty = root.findViewById(android.R.id.empty);
-        txtvEmpty.setVisibility(View.GONE);
-        txtvHeadEmpty = root.findViewById(R.id.emptyQueueHeader);
-        txtvHeadEmpty.setVisibility(View.GONE);
+        //empty view
+        layoutEmpty = (LinearLayout) root.findViewById(R.id.llEmpty);
+        layoutEmpty.setVisibility(View.GONE);
 
         progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
@@ -516,12 +514,10 @@ public class QueueFragment extends Fragment {
         }
         if(queue == null || queue.size() == 0) {
             recyclerView.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.VISIBLE);
-            txtvHeadEmpty.setVisibility(View.VISIBLE);
+              layoutEmpty.setVisibility(View.VISIBLE);
         } else {
-            txtvEmpty.setVisibility(View.GONE);
+            layoutEmpty.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-            txtvHeadEmpty.setVisibility(View.GONE);
         }
 
         if (restoreScrollPosition) {
@@ -634,8 +630,7 @@ public class QueueFragment extends Fragment {
         }
         if (queue == null) {
             recyclerView.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.GONE);
-            txtvHeadEmpty.setVisibility(View.GONE);
+            layoutEmpty.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(DBReader::getQueue)

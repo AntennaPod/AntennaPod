@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -74,6 +75,7 @@ public class AllEpisodesFragment extends Fragment {
     RecyclerView recyclerView;
     AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
+    private LinearLayout layoutEmpty;
 
     List<FeedItem> episodes;
     private List<Downloader> downloaderList;
@@ -331,6 +333,9 @@ public class AllEpisodesFragment extends Fragment {
             onFragmentLoaded();
         }
 
+        layoutEmpty = (LinearLayout) root.findViewById(R.id.llEmpty);
+        layoutEmpty.setVisibility(View.GONE);
+
         return root;
     }
 
@@ -342,6 +347,14 @@ public class AllEpisodesFragment extends Fragment {
             listAdapter.setHasStableIds(true);
             recyclerView.setAdapter(listAdapter);
         }
+        if(episodes == null || episodes.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            layoutEmpty.setVisibility(View.VISIBLE);
+        } else {
+            layoutEmpty.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+
         listAdapter.notifyDataSetChanged();
         restoreScrollPosition();
         getActivity().supportInvalidateOptionsMenu();
@@ -473,6 +486,7 @@ public class AllEpisodesFragment extends Fragment {
         }
         if (viewsCreated && !itemsLoaded) {
             recyclerView.setVisibility(View.GONE);
+            layoutEmpty.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(this::loadData)
