@@ -108,8 +108,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
     private Disposable disposable;
 
-    static Fragment[] fragments; // m-bilal
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -120,11 +118,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportPostponeEnterTransition();
-
-        //fragments = new Fragment[3];
-        //fragments[0] = new CoverFragment();
-        //fragments[1] = new ItemDescriptionFragment();
-        //fragments[2] = new ChaptersFragment();
     }
 
     @Override
@@ -189,39 +182,14 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     @Override
     protected void onResume() {
         super.onResume();
-        /*
-        media = controller.getMedia();
-        if (fragments == null) { // m-bilal
-            Log.d(TAG, "Creating fragments");
-            fragments = new Fragment[3];
-            fragments[0] = CoverFragment.newInstance(media);
-            fragments[1] = ItemDescriptionFragment.newInstance(media, true, true);
-            fragments[2] = ChaptersFragment.newInstance(media);
-        }
-        pagerAdapter.onMediaChanged(media);
-        */
+
         media = controller.getMedia();
         pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager(), media);
         pagerAdapter.setController(controller);
-        //pagerAdapter.notifyDataSetChanged(); // m-bilal
         pager.setAdapter(pagerAdapter);
+
         loadLastFragment();
 
-        //pagerAdapter.onMediaChanged(controller.getMedia());
-        if(pagerAdapter != null && controller != null && controller.getMedia() != media) {
-            Log.d(TAG, "onResume(), setting up changed media");
-            media = controller.getMedia();
-            //pagerAdapter.notifyDataSetChanged();
-            pagerAdapter.onMediaChanged(media);
-            pagerAdapter.setController(controller);
-
-            pagerAdapter.notifyDataSetChanged();
-
-            //Log.d(TAG, "onResume(), updating fragments");
-            //FragmentStatePagerAdapter adapter = (FragmentStatePagerAdapter) pager.getAdapter();
-            //CoverFragment fragment = (CoverFragment) adapter.instantiateItem(pager, 0);
-
-        }
         AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
 
         EventDistributor.getInstance().register(contentUpdate);
@@ -262,7 +230,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     @Override
     protected void setupGUI() {
         super.setupGUI();
-        Log.d(TAG, "setupGUI()"); // m-bilal
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -314,10 +281,9 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         butCastDisconnect = findViewById(R.id.butCastDisconnect);
 
         pager = findViewById(R.id.pager);
-        pager.setOffscreenPageLimit(1); // m-bilal
+        pager.setOffscreenPageLimit(3);
         pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager(), media);
         pagerAdapter.setController(controller);
-        //pagerAdapter.notifyDataSetChanged(); // m-bilal
         pager.setAdapter(pagerAdapter);
         CirclePageIndicator pageIndicator = findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
@@ -627,13 +593,10 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         public void onMediaChanged(Playable media) {
             Log.d(TAG, "media changing to " + ((media != null) ? media.getEpisodeTitle() : "null"));
             this.media = media;
-            //coverFragment = (CoverFragment) fragments[0];
-            //itemDescriptionFragment = (ItemDescriptionFragment) fragments[1];
-            //chaptersFragment = (ChaptersFragment) fragments[2];
             if(coverFragment != null) {
                 coverFragment.onMediaChanged(media);
             } else {
-                Log.d(TAG, "onMediaChanged(), coverFragment = null"); // m-bilal
+                Log.d(TAG, "onMediaChanged(), coverFragment = null");
                 coverFragment = (CoverFragment) getItem(POS_COVER);
                 coverFragment.onMediaChanged(media);
             }
@@ -641,16 +604,16 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 itemDescriptionFragment.onMediaChanged(media);
             }
             else {
+                Log.d(TAG, "onMediaChanged(), itemDescriptionFragment = null");
                 itemDescriptionFragment = (ItemDescriptionFragment) getItem(POS_DESCR);
                 itemDescriptionFragment.onMediaChanged(media);
-                Log.d(TAG, "onMediaChanged(), itemDescriptionFragment = null"); // m-bilal
             }
             if(chaptersFragment != null) {
                 chaptersFragment.onMediaChanged(media);
             } else {
+                Log.d(TAG, "onMediaChanged(), chaptersFragment = null");
                 chaptersFragment = (ChaptersFragment) getItem(POS_CHAPTERS);
                 chaptersFragment.onMediaChanged(media);
-                Log.d(TAG, "onMediaChanged(), chaptersFragment = null"); // m-bilal
             }
 
         }
@@ -672,30 +635,19 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             Log.d(TAG, "getItem(" + position + ")");
             switch (position) {
                 case POS_COVER:
-                    //m-bilal
-                    //return fragments[0];
                     if(coverFragment == null) {
-                        Log.d(TAG, "Adding CoverFragment");
                         coverFragment = CoverFragment.newInstance(media);
-                    } else {
-                        Log.d(TAG, "CoverFragment not null");
                     }
                     return coverFragment;
                 case POS_DESCR:
-                    //return fragments[1];
                     if(itemDescriptionFragment == null) {
                         itemDescriptionFragment = ItemDescriptionFragment.newInstance(media, true, true);
-                    } else {
-                        Log.d(TAG, "ItemDescriptionFragment not null");
                     }
                     return itemDescriptionFragment;
                 case POS_CHAPTERS:
-                    //return fragments[2];
                     if(chaptersFragment == null) {
                         chaptersFragment = ChaptersFragment.newInstance(media);
                         chaptersFragment.setController(controller);
-                    } else {
-                        Log.d(TAG, "ChaptersFragment not null");
                     }
                     return chaptersFragment;
                 default:
