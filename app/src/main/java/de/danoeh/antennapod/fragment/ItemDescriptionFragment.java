@@ -378,9 +378,11 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
 
     @Override
     public void onMediaChanged(Playable media) {
+        /*
         if(this.media == media) {
             return;
         }
+        */
         this.media = media;
         this.shownotesProvider = media;
         if (webvDescription != null) {

@@ -32,6 +32,7 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
     private ImageView imgvCover;
 
     public static CoverFragment newInstance(Playable item) {
+        Log.d(TAG, "newInstance()"); // m-bilal
         CoverFragment f = new CoverFragment();
         f.media = item;
         return f;
@@ -48,7 +49,7 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setRetainInstance(true);
+        //setRetainInstance(true);
         root = inflater.inflate(R.layout.cover_fragment, container, false);
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
@@ -93,9 +94,12 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
 
     @Override
     public void onMediaChanged(Playable media) {
+        /*
         if(this.media == media) {
             return;
         }
+        */
+        Log.d(TAG, "onMediaChanged(), media title : " + media.getEpisodeTitle());
         this.media = media;
         if (isAdded()) {
             loadMediaInfo();
