@@ -8,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
@@ -27,9 +25,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 public class NewEpisodesFragment extends AllEpisodesFragment {
 
     public static final String TAG = "NewEpisodesFragment";
-
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
-    
     @Override
     protected boolean showOnlyNewEpisodes() { return true; }
 

@@ -514,7 +514,7 @@ public class QueueFragment extends Fragment {
         }
         if(queue == null || queue.size() == 0) {
             recyclerView.setVisibility(View.GONE);
-              layoutEmpty.setVisibility(View.VISIBLE);
+            layoutEmpty.setVisibility(View.VISIBLE);
         } else {
             layoutEmpty.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);

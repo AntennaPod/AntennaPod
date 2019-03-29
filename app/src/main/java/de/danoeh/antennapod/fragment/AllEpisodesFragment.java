@@ -347,7 +347,7 @@ public class AllEpisodesFragment extends Fragment {
             listAdapter.setHasStableIds(true);
             recyclerView.setAdapter(listAdapter);
         }
-        if(episodes == null || episodes.size() == 0) {
+        if (episodes == null || episodes.size() == 0) {
             recyclerView.setVisibility(View.GONE);
             layoutEmpty.setVisibility(View.VISIBLE);
         } else {

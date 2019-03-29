@@ -319,9 +319,9 @@
     <string name="no_feeds_label">You haven\'t subscribed to any podcasts yet.</string>
     <string name="no_chapters_label">This episode has no chapters.</string>
     <string name="no_shownotes_label">This episode has no shownotes.</string>
-    <string name="no_run_downloads_head_label">No download running</string>
+    <string name="no_run_downloads_head_label">No downloads running</string>
     <string name="no_run_downloads_label">You can download episodes on the podcast details screen.</string>
-    <string name="no_comp_downloads_head_label">No download episodes</string>
+    <string name="no_comp_downloads_head_label">No downloaded episodes</string>
     <string name="no_comp_downloads_label">You can download episodes on the podcast details screen.</string>
     <string name="no_log_downloads_head_label">No download log</string>
     <string name="no_log_downloads_label">Download logs will appear here when available.</string>
@@ -331,8 +331,8 @@
     <string name="no_all_episodes_label">When you add a podcast, the episodes will be shown here.</string>
     <string name="no_new_episodes_head_label">No new episodes</string>
     <string name="no_new_episodes_label">When new episodes arrive, they will be shown here.</string>
-    <string name="no_fav_episodes_head_label">No favourite episodes</string>
-    <string name="no_fav_episodes_label">You can add episodes to the favourites by long-pressing them.</string>
+    <string name="no_fav_episodes_head_label">No favorite episodes</string>
+    <string name="no_fav_episodes_label">You can add episodes to the favorites by long-pressing them.</string>
 
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>
