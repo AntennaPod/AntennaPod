@@ -412,8 +412,8 @@ public abstract class PlaybackController {
             pauseResource = res.getResourceId(1, R.drawable.ic_pause_grey600_36dp);
             res.recycle();
         } else {
-            playResource = R.drawable.ic_av_play_circle_outline_80dp;
-            pauseResource = R.drawable.ic_av_pause_circle_outline_80dp;
+            playResource = R.drawable.ic_av_play_white_80dp;
+            pauseResource = R.drawable.ic_av_pause_white_80dp;
         }
 
         Log.d(TAG, "status: " + status.toString());
@@ -802,7 +802,7 @@ public abstract class PlaybackController {
                             res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_play_arrow_grey600_36dp));
                     res.recycle();
                 } else {
-                    getPlayButton().setImageResource(R.drawable.ic_av_play_circle_outline_80dp);
+                    getPlayButton().setImageResource(R.drawable.ic_av_play_white_80dp);
                 }
             }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
