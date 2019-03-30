@@ -161,7 +161,7 @@ dependencies {
 
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
-    implementation 'com.github.mfietz:fyydlin:v0.4.1'
+    implementation 'com.github.mfietz:fyydlin:v0.4.2'
     implementation 'com.github.ByteHamster:SearchPreference:v1.2.5'
     implementation "org.awaitility:awaitility:$awaitilityVersion"
 
