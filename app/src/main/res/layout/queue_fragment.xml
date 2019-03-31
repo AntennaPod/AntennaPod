@@ -44,7 +44,7 @@
         android:paddingBottom="15dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         />
 
@@ -55,7 +55,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:text="@string/no_items_label"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textAlignment="center"/>

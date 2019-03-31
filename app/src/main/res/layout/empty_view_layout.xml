@@ -12,7 +12,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="empty"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:paddingBottom="10dp"/>
 
@@ -20,7 +20,7 @@
         android:id="@+id/txtvmessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:text="empty"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
