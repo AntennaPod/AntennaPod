@@ -594,7 +594,7 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public void setDownloaded(boolean downloaded) {
         super.setDownloaded(downloaded);
-        if(item != null && downloaded && !item.isPlayed()) {
+        if(item != null && downloaded && item.isNew()) {
             item.setPlayed(false);
         }
     }
