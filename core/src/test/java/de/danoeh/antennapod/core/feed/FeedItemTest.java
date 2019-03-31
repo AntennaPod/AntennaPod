@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static de.danoeh.antennapod.core.feed.FeedItemMother.anyFeedItemWithImage;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class FeedItemTest {
 
@@ -37,6 +38,28 @@ public class FeedItemTest {
         setNewFeedItemImageDownloadUrl();
         original.updateFromOther(changedFeedItem);
         assertFeedItemImageWasUpdated();
+    }
+
+    /**
+     * Test that a played item loses that state after being marked as new.
+     */
+    @Test
+    public void testMarkPlayedItemAsNew_itemNotPlayed() {
+        original.setPlayed(true);
+        original.setNew();
+
+        assertFalse(original.isPlayed());
+    }
+
+    /**
+     * Test that a new item loses that state after being marked as played.
+     */
+    @Test
+    public void testMarkNewItemAsPlayed_itemNotNew() {
+        original.setNew();
+        original.setPlayed(true);
+
+        assertFalse(original.isNew());
     }
 
     private void setNewFeedItemImageDownloadUrl() {
