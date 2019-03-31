@@ -62,6 +62,17 @@ public class FeedItemTest {
         assertFalse(original.isNew());
     }
 
+    /**
+     * Test that a new item loses that state after being marked as not played.
+     */
+    @Test
+    public void testMarkNewItemAsNotPlayed_itemNotNew() {
+        original.setNew();
+        original.setPlayed(false);
+
+        assertFalse(original.isNew());
+    }
+
     private void setNewFeedItemImageDownloadUrl() {
         changedFeedItem.setImageUrl("http://example.com/new_picture");
     }
