@@ -148,6 +148,10 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         pagerAdapter = null;
     }
 
+    public Playable getMedia() {
+        return controller.getMedia();
+    }
+
     @Override
     protected void chooseTheme() {
         setTheme(UserPreferences.getNoTitleTheme());
@@ -182,14 +186,11 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     @Override
     protected void onResume() {
         super.onResume();
-
-        media = controller.getMedia();
-        pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager(), media);
-        pagerAdapter.setController(controller);
-        pager.setAdapter(pagerAdapter);
-
-        loadLastFragment();
-
+        if(pagerAdapter != null && controller != null && controller.getMedia() != media) {
+            media = controller.getMedia();
+            pagerAdapter.onMediaChanged(media);
+            pagerAdapter.setController(controller);
+        }
         AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
 
         EventDistributor.getInstance().register(contentUpdate);
@@ -306,7 +307,9 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         }
         if(controller != null && controller.getMedia() != media) {
             media = controller.getMedia();
-            pagerAdapter.onMediaChanged(media);
+            if (pagerAdapter != null) {
+                pagerAdapter.onMediaChanged(media);
+            }
         }
         return true;
     }
@@ -595,27 +598,13 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             this.media = media;
             if(coverFragment != null) {
                 coverFragment.onMediaChanged(media);
-            } else {
-                Log.d(TAG, "onMediaChanged(), coverFragment = null");
-                coverFragment = (CoverFragment) getItem(POS_COVER);
-                coverFragment.onMediaChanged(media);
             }
             if(itemDescriptionFragment != null) {
                 itemDescriptionFragment.onMediaChanged(media);
             }
-            else {
-                Log.d(TAG, "onMediaChanged(), itemDescriptionFragment = null");
-                itemDescriptionFragment = (ItemDescriptionFragment) getItem(POS_DESCR);
-                itemDescriptionFragment.onMediaChanged(media);
-            }
             if(chaptersFragment != null) {
                 chaptersFragment.onMediaChanged(media);
-            } else {
-                Log.d(TAG, "onMediaChanged(), chaptersFragment = null");
-                chaptersFragment = (ChaptersFragment) getItem(POS_CHAPTERS);
-                chaptersFragment.onMediaChanged(media);
             }
-
         }
 
         public void setController(PlaybackController controller) {
@@ -658,11 +647,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         @Override
         public int getCount() {
             return NUM_CONTENT_FRAGMENTS;
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
         }
     }
 }

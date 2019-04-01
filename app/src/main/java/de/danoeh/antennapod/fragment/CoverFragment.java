@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MediaplayerInfoActivity;
 import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -55,8 +56,25 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
         return root;
     }
 
+    public void getMediaFromActivity() {
+        MediaplayerInfoActivity mediaProviderActivity = (MediaplayerInfoActivity) getActivity();
+        media = mediaProviderActivity.getMedia();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+
+        if (media == null) {
+            getMediaFromActivity();
+        }
+        loadMediaInfo();
+    }
+
     private void loadMediaInfo() {
         if (media != null) {
+            Log.d(TAG, "loadMediaInfo()");
             txtvPodcastTitle.setText(media.getFeedTitle());
             txtvEpisodeTitle.setText(media.getEpisodeTitle());
             Glide.with(this)
@@ -75,12 +93,6 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
     public void onStart() {
         Log.d(TAG, "On Start");
         super.onStart();
-        if (media != null) {
-            Log.d(TAG, "Loading media info");
-            loadMediaInfo();
-        } else {
-            Log.w(TAG, "Unable to load media info: media was null");
-        }
     }
 
     @Override

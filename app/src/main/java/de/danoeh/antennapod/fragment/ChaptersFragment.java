@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MediaplayerInfoActivity;
 import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -49,9 +50,17 @@ public class ChaptersFragment extends ListFragment implements MediaplayerInfoCon
         setListAdapter(adapter);
     }
 
+    public void getMediaFromActivity() {
+        MediaplayerInfoActivity mediaProviderActivity = (MediaplayerInfoActivity) getActivity();
+        media = mediaProviderActivity.getMedia();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+        if (media == null) {
+            getMediaFromActivity();
+        }
         adapter.setMedia(media);
         adapter.notifyDataSetChanged();
         if(media == null || media.getChapters() == null) {

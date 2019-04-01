@@ -277,9 +277,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-
-        setupGUI();
-        loadMediaInfo();
         if (controller != null) {
             controller.release();
         }
@@ -334,8 +331,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         boolean isFeedMedia = media != null && (media instanceof FeedMedia);
 
         menu.findItem(R.id.support_item).setVisible(isFeedMedia && media.getPaymentLink() != null &&
-                        ((FeedMedia) media).getItem() != null &&
-                        ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
+                ((FeedMedia) media).getItem() != null &&
+                ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
         );
 
         boolean hasWebsiteLink = ( getWebsiteLinkWithFallback(media) != null );
@@ -395,7 +392,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             if (cover != null && Build.VERSION.SDK_INT >= 16) {
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation(MediaplayerActivity.this,
-                        cover, "coverTransition");
+                                cover, "coverTransition");
                 startActivity(intent, options.toBundle());
             } else {
                 startActivity(intent);
@@ -413,7 +410,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                                 isFavorite = true;
                                 invalidateOptionsMenu();
                                 Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
-                                     .show();
+                                        .show();
                             }
                         }
                         break;
@@ -425,7 +422,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                                 isFavorite = false;
                                 invalidateOptionsMenu();
                                 Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT)
-                                     .show();
+                                        .show();
                             }
                         }
                         break;
@@ -665,6 +662,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (controller != null) {
             controller.init();
         }
+        setupGUI();
+        loadMediaInfo();
     }
 
     public void onEventMainThread(ServiceEvent event) {
@@ -985,16 +984,16 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                item -> {
-                    boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
-                    if (isFavorite != isFav) {
-                        isFavorite = isFav;
-                        invalidateOptionsMenu();
-                    }
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        item -> {
+                            boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
+                            if (isFavorite != isFav) {
+                                isFavorite = isFav;
+                                invalidateOptionsMenu();
+                            }
+                        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     void playExternalMedia(Intent intent, MediaType type) {
