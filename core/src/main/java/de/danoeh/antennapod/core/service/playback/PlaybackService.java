@@ -512,7 +512,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
+                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
                 } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
                 } else if (status == PlayerStatus.PREPARING) {
@@ -1296,14 +1296,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                     if (playerStatus == PlayerStatus.PLAYING) {
                         PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
-                                KeyEvent.KEYCODE_MEDIA_PAUSE, numActions);
+                                KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, numActions);
                         notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
                                 getString(R.string.pause_label),
                                 pauseButtonPendingIntent);
                         compactActionList.add(numActions++);
                     } else {
                         PendingIntent playButtonPendingIntent = getPendingIntentForMediaAction(
-                                KeyEvent.KEYCODE_MEDIA_PLAY, numActions);
+                                KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, numActions);
                         notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
                                 getString(R.string.play_label),
                                 playButtonPendingIntent);
