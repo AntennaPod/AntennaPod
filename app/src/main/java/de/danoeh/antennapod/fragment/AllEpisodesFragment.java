@@ -19,8 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -75,7 +75,7 @@ public class AllEpisodesFragment extends Fragment {
     RecyclerView recyclerView;
     AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
-    private LinearLayout layoutEmpty;
+    private View emptyView;
 
     List<FeedItem> episodes;
     private List<Downloader> downloaderList;
@@ -333,8 +333,10 @@ public class AllEpisodesFragment extends Fragment {
             onFragmentLoaded();
         }
 
-        layoutEmpty = (LinearLayout) root.findViewById(R.id.llEmpty);
-        layoutEmpty.setVisibility(View.GONE);
+        emptyView = (View) root.findViewById(R.id.emptyView);
+        emptyView.setVisibility(View.GONE);
+        ((TextView)emptyView.findViewById(R.id.txtvtitle)).setText(R.string.no_all_episodes_head_label);
+        ((TextView)emptyView.findViewById(R.id.txtvmessage)).setText(R.string.no_all_episodes_label);
 
         return root;
     }
@@ -349,9 +351,9 @@ public class AllEpisodesFragment extends Fragment {
         }
         if (episodes == null || episodes.size() == 0) {
             recyclerView.setVisibility(View.GONE);
-            layoutEmpty.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.VISIBLE);
         } else {
-            layoutEmpty.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
 
@@ -486,7 +488,7 @@ public class AllEpisodesFragment extends Fragment {
         }
         if (viewsCreated && !itemsLoaded) {
             recyclerView.setVisibility(View.GONE);
-            layoutEmpty.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(this::loadData)

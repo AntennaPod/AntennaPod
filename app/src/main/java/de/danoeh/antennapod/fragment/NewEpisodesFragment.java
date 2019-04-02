@@ -46,8 +46,8 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
-        ((TextView)root.findViewById(R.id.emptyHeader)).setText(R.string.no_new_episodes_head_label);
-        ((TextView)root.findViewById(R.id.empty)).setText(R.string.no_new_episodes_label);
+        ((TextView)root.findViewById(R.id.txtvtitle)).setText(R.string.no_new_episodes_head_label);
+        ((TextView)root.findViewById(R.id.txtvmessage)).setText(R.string.no_new_episodes_label);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override

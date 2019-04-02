@@ -27,40 +27,10 @@
         android:layout_below="@id/divider"
         android:scrollbars="vertical"/>
 
-    <LinearLayout
-        android:id="@+id/llEmpty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+    <include
+        android:id="@+id/emptyView"
+        layout="@layout/empty_view_layout"/>
 
-    <TextView
-        android:id="@+id/emptyQueueHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="@string/no_items_header_label"
-        android:paddingBottom="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        />
-
-    <TextView
-        android:id="@+id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="@string/no_items_label"
-        android:textSize="15sp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textAlignment="center"/>
-
-    </LinearLayout>
     <ProgressBar
         android:id="@+id/progLoading"
         android:layout_width="wrap_content"
