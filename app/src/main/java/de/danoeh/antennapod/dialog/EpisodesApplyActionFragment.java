@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,17 +46,13 @@ public class EpisodesApplyActionFragment extends Fragment {
     private static final int ACTION_MARK_UNPLAYED = 4;
     private static final int ACTION_DOWNLOAD = 8;
     public static final int ACTION_REMOVE = 16;
+    public static final int ACTION_REMOVE_FROM_QUEUE = 32;
     private static final int ACTION_ALL = ACTION_QUEUE | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED
             | ACTION_DOWNLOAD | ACTION_REMOVE;
 
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
 
-    private Button btnAddToQueue;
-    private Button btnMarkAsPlayed;
-    private Button btnMarkAsUnplayed;
-    private Button btnDownload;
-    private Button btnDelete;
     private SpeedDialView mSpeedDialView;
 
     private final Map<Long,FeedItem> idMap = new ArrayMap<>();
@@ -148,56 +144,55 @@ public class EpisodesApplyActionFragment extends Fragment {
         mListView.setAdapter(mAdapter);
         /// checkAll(); // TODO: no longer check all by default
 
-        int lastVisibleDiv = 0;
-        btnAddToQueue = view.findViewById(R.id.btnAddToQueue);
-        if((actions & ACTION_QUEUE) != 0) {
-            btnAddToQueue.setOnClickListener(v -> queueChecked());
-            lastVisibleDiv = R.id.divider1;
-        } else {
-            btnAddToQueue.setVisibility(View.GONE);
-            view.findViewById(R.id.divider1).setVisibility(View.GONE);
-        }
-        btnMarkAsPlayed = view.findViewById(R.id.btnMarkAsPlayed);
-        if((actions & ACTION_MARK_PLAYED) != 0) {
-            btnMarkAsPlayed.setOnClickListener(v -> markedCheckedPlayed());
-            lastVisibleDiv = R.id.divider2;
-        } else {
-            btnMarkAsPlayed.setVisibility(View.GONE);
-            view.findViewById(R.id.divider2).setVisibility(View.GONE);
-        }
-        btnMarkAsUnplayed = view.findViewById(R.id.btnMarkAsUnplayed);
-        if((actions & ACTION_MARK_UNPLAYED) != 0) {
-            btnMarkAsUnplayed.setOnClickListener(v -> markedCheckedUnplayed());
-            lastVisibleDiv = R.id.divider3;
-        } else {
-            btnMarkAsUnplayed.setVisibility(View.GONE);
-            view.findViewById(R.id.divider3).setVisibility(View.GONE);
-        }
-        btnDownload = view.findViewById(R.id.btnDownload);
-        if((actions & ACTION_DOWNLOAD) != 0) {
-            btnDownload.setOnClickListener(v -> downloadChecked());
-            lastVisibleDiv = R.id.divider4;
-        } else {
-            btnDownload.setVisibility(View.GONE);
-            view.findViewById(R.id.divider4).setVisibility(View.GONE);
-        }
-        btnDelete = view.findViewById(R.id.btnDelete);
-        if((actions & ACTION_REMOVE) != 0) {
-            btnDelete.setOnClickListener(v -> deleteChecked());
-        } else {
-            btnDelete.setVisibility(View.GONE);
-            if(lastVisibleDiv > 0) {
-                view.findViewById(lastVisibleDiv).setVisibility(View.GONE);
-            }
-        }
-
         // replacement for the buttons
         mSpeedDialView = view.findViewById(R.id.fabSD);
         mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+
+        // show only specified actions, and bind speed dial UIs to the actual logic
+        if((actions & ACTION_QUEUE) == 0) {
+            mSpeedDialView.removeActionItemById(R.id.addToQueue);
+        }
+        if((actions & ACTION_REMOVE_FROM_QUEUE) == 0) {
+            mSpeedDialView.removeActionItemById(R.id.removeFromQueue);
+        }
+        if((actions & ACTION_MARK_PLAYED) == 0) {
+            mSpeedDialView.removeActionItemById(R.id.markAsPlayed);
+        }
+        if((actions & ACTION_MARK_UNPLAYED) == 0) {
+            mSpeedDialView.removeActionItemById(R.id.markAsUnplayed);
+        }
+        if((actions & ACTION_DOWNLOAD) == 0) {
+            mSpeedDialView.removeActionItemById(R.id.download);
+        }
+        if((actions & ACTION_REMOVE) == 0) {
+            mSpeedDialView.removeActionItemById(R.id.delete);
+        }
         mSpeedDialView.setOnActionSelectedListener(actionItem -> {
-            Toast.makeText(getContext(), "" + actionItem.getLabel() + " clicked", Toast.LENGTH_SHORT).show();
+            switch(actionItem.getId()) {
+                case R.id.addToQueue:
+                    queueChecked();
+                    break;
+                case R.id.removeFromQueue:
+                    Toast.makeText(getContext(), "To implement: remove from queue", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.markAsPlayed:
+                    markedCheckedPlayed();
+                    break;
+                case R.id.markAsUnplayed:
+                    markedCheckedUnplayed();
+                    break;
+                case R.id.download:
+                    downloadChecked();
+                    break;
+                case R.id.delete:
+                    deleteChecked();
+                    break;
+                default:
+                    Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
+            }
             return true;
         });
+
         showSpeedDialIfAnyChecked();
 
         return view;
