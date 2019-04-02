@@ -373,6 +373,9 @@
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
+    <string name="pref_mobileUpdate_nothing">Nothing</string>
+    <string name="pref_mobileUpdate_images">Images only</string>
+    <string name="pref_mobileUpdate_everything">Everything</string>
     <string name="refreshing_label">Refreshing</string>
     <string name="flattr_settings_label">Flattr settings</string>
     <string name="pref_flattr_auth_title">Flattr sign-in</string>
