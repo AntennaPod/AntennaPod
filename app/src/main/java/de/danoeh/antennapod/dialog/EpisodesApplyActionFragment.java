@@ -205,7 +205,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void compatEnsureSpeedDialClickable() {
-        // On pre-Lolliop devices (that does not support elevation),
+        // On pre-Lollipop devices (that does not support elevation),
         // need to explicitly bring the fab to the front, otherwise it won't be clickable.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             ViewGroup root = (ViewGroup)getView();
