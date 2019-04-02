@@ -47,8 +47,8 @@ public class EpisodesApplyActionFragment extends Fragment {
     private static final int ACTION_DOWNLOAD = 8;
     public static final int ACTION_REMOVE = 16;
     public static final int ACTION_REMOVE_FROM_QUEUE = 32;
-    private static final int ACTION_ALL = ACTION_QUEUE | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED
-            | ACTION_DOWNLOAD | ACTION_REMOVE;
+    private static final int ACTION_ALL = ACTION_QUEUE | ACTION_REMOVE_FROM_QUEUE
+            | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_REMOVE;
 
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
@@ -173,7 +173,7 @@ public class EpisodesApplyActionFragment extends Fragment {
                     queueChecked();
                     break;
                 case R.id.removeFromQueue:
-                    Toast.makeText(getContext(), "To implement: remove from queue", Toast.LENGTH_SHORT).show();
+                    removeFromQueueChecked();
                     break;
                 case R.id.markAsPlayed:
                     markedCheckedPlayed();
@@ -470,6 +470,11 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void queueChecked() {
         DBWriter.addQueueItem(getActivity(), true, checkedIds.toArray());
+        close();
+    }
+
+    private void removeFromQueueChecked() {
+        DBWriter.removeQueueItem(getActivity(), true, checkedIds.toArray());
         close();
     }
 

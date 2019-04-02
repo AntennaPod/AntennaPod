@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
-import io.reactivex.annotations.NonNull;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -49,6 +49,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
 import de.greenrobot.event.EventBus;
+import io.reactivex.annotations.NonNull;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -457,6 +458,12 @@ public class DBWriter {
         if (performAutoDownload) {
             DBTasks.autodownloadUndownloadedItems(context);
         }
+    }
+
+    public static Future<?> removeQueueItem(final Context context, final boolean performAutoDownload,
+                                         final long... itemIds) {
+        Toast.makeText(context, "To implement: remove from queue. ids=" + itemIds, Toast.LENGTH_SHORT).show();
+        return dbExec.submit(() -> { });
     }
 
     public static Future<?> addFavoriteItem(final FeedItem item) {
