@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.shredzone.flattr4j.model.Flattr;
 
@@ -434,6 +433,11 @@ public class DBWriter {
         return dbExec.submit(() -> removeQueueItemSynchronous(context, performAutoDownload, item.getId()));
     }
 
+    public static Future<?> removeQueueItem(final Context context, final boolean performAutoDownload,
+                                            final long... itemIds) {
+        return dbExec.submit(() -> removeQueueItemSynchronous(context, performAutoDownload, itemIds));
+    }
+
     private static void removeQueueItemSynchronous(final Context context,
                                                    final boolean performAutoDownload,
                                                    final long... itemIds) {
@@ -482,12 +486,6 @@ public class DBWriter {
         if (performAutoDownload) {
             DBTasks.autodownloadUndownloadedItems(context);
         }
-    }
-
-    public static Future<?> removeQueueItem(final Context context, final boolean performAutoDownload,
-                                         final long... itemIds) {
-        Toast.makeText(context, "To implement: remove from queue. ids=" + itemIds, Toast.LENGTH_SHORT).show();
-        return dbExec.submit(() -> { });
     }
 
     public static Future<?> addFavoriteItem(final FeedItem item) {
