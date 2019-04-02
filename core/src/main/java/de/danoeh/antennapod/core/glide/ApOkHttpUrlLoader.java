@@ -21,10 +21,8 @@ import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
+import okhttp3.internal.http.RealResponseBody;
 
 /**
  * @see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
@@ -111,10 +109,16 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-            if (NetworkUtils.isDownloadAllowed()) {
+            if (NetworkUtils.isImageAllowed()) {
                 return chain.proceed(chain.request());
             } else {
-                return null;
+                return new Response.Builder()
+                        .code(420)
+                        .protocol(Protocol.HTTP_2)
+                        .message("Dummy response")
+                        .body(new RealResponseBody(null, 0, null))
+                        .request(chain.request())
+                        .build();
             }
         }
 
