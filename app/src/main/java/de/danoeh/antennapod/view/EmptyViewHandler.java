@@ -41,10 +41,10 @@ public class EmptyViewHandler extends View {
         ((ViewGroup) listView.getParent()).addView(emptyView);
         listView.setEmptyView(emptyView);
 
-        TextView tvTitle = (TextView) emptyView.findViewById(R.id.txtvtitle);
+        TextView tvTitle = (TextView) emptyView.findViewById(R.id.emptyViewTitle);
         tvTitle.setText(title);
 
-        TextView tvMessage = (TextView) emptyView.findViewById(R.id.txtvmessage);
+        TextView tvMessage = (TextView) emptyView.findViewById(R.id.emptyViewMessage);
         tvMessage.setText(message);
 
     }

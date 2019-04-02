@@ -496,8 +496,8 @@ public class QueueFragment extends Fragment {
         //empty view
         emptyView = (View) root.findViewById(R.id.emptyView);
         emptyView.setVisibility(View.GONE);
-        ((TextView)emptyView.findViewById(R.id.txtvtitle)).setText(R.string.no_items_header_label);
-        ((TextView)emptyView.findViewById(R.id.txtvmessage)).setText(R.string.no_items_label);
+        ((TextView)emptyView.findViewById(R.id.emptyViewTitle)).setText(R.string.no_items_header_label);
+        ((TextView)emptyView.findViewById(R.id.emptyViewMessage)).setText(R.string.no_items_label);
 
         progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);

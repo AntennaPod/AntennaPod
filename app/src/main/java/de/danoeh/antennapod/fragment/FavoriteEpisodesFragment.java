@@ -51,8 +51,8 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
-        ((TextView)root.findViewById(R.id.txtvtitle)).setText(R.string.no_fav_episodes_head_label);
-        ((TextView)root.findViewById(R.id.txtvmessage)).setText(R.string.no_fav_episodes_label);
+        ((TextView)root.findViewById(R.id.emptyViewTitle)).setText(R.string.no_fav_episodes_head_label);
+        ((TextView)root.findViewById(R.id.emptyViewMessage)).setText(R.string.no_fav_episodes_label);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
