@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -74,6 +75,7 @@ public class AllEpisodesFragment extends Fragment {
     RecyclerView recyclerView;
     AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
+    private View emptyView;
 
     List<FeedItem> episodes;
     private List<Downloader> downloaderList;
@@ -331,6 +333,11 @@ public class AllEpisodesFragment extends Fragment {
             onFragmentLoaded();
         }
 
+        emptyView = (View) root.findViewById(R.id.emptyView);
+        emptyView.setVisibility(View.GONE);
+        ((TextView)emptyView.findViewById(R.id.emptyViewTitle)).setText(R.string.no_all_episodes_head_label);
+        ((TextView)emptyView.findViewById(R.id.emptyViewMessage)).setText(R.string.no_all_episodes_label);
+
         return root;
     }
 
@@ -342,6 +349,14 @@ public class AllEpisodesFragment extends Fragment {
             listAdapter.setHasStableIds(true);
             recyclerView.setAdapter(listAdapter);
         }
+        if (episodes == null || episodes.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+
         listAdapter.notifyDataSetChanged();
         restoreScrollPosition();
         getActivity().supportInvalidateOptionsMenu();
@@ -473,6 +488,7 @@ public class AllEpisodesFragment extends Fragment {
         }
         if (viewsCreated && !itemsLoaded) {
             recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(this::loadData)

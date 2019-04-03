@@ -20,6 +20,7 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -44,6 +45,12 @@ public class RunningDownloadsFragment extends ListFragment {
 
         adapter = new DownloadlistAdapter(getActivity(), itemAccess);
         setListAdapter(adapter);
+
+        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView.setTitle(R.string.no_run_downloads_head_label);
+        emptyView.setMessage(R.string.no_run_downloads_label);
+        emptyView.attachToListView(getListView());
+
     }
 
     @Override

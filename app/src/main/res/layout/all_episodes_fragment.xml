@@ -17,6 +17,10 @@
         tools:itemCount="13"
         tools:listitem="@layout/new_episodes_listitem" />
 
+    <include
+        android:id="@+id/emptyView"
+        layout="@layout/empty_view_layout"/>
+
     <ProgressBar
         android:id="@+id/progLoading"
         android:layout_width="wrap_content"

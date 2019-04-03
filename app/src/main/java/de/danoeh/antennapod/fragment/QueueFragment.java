@@ -72,7 +72,7 @@ public class QueueFragment extends Fragment {
     private TextView infoBar;
     private RecyclerView recyclerView;
     private QueueRecyclerAdapter recyclerAdapter;
-    private TextView txtvEmpty;
+    private View emptyView;
     private ProgressBar progLoading;
 
     private List<FeedItem> queue;
@@ -493,9 +493,12 @@ public class QueueFragment extends Fragment {
             }
         );
         itemTouchHelper.attachToRecyclerView(recyclerView);
+        //empty view
+        emptyView = (View) root.findViewById(R.id.emptyView);
+        emptyView.setVisibility(View.GONE);
+        ((TextView)emptyView.findViewById(R.id.emptyViewTitle)).setText(R.string.no_items_header_label);
+        ((TextView)emptyView.findViewById(R.id.emptyViewMessage)).setText(R.string.no_items_label);
 
-        txtvEmpty = root.findViewById(android.R.id.empty);
-        txtvEmpty.setVisibility(View.GONE);
         progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
 
@@ -512,9 +515,9 @@ public class QueueFragment extends Fragment {
         }
         if(queue == null || queue.size() == 0) {
             recyclerView.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.VISIBLE);
         } else {
-            txtvEmpty.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         }
 
@@ -628,7 +631,7 @@ public class QueueFragment extends Fragment {
         }
         if (queue == null) {
             recyclerView.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(DBReader::getQueue)

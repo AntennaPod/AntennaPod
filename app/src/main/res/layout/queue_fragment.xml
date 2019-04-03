@@ -27,13 +27,9 @@
         android:layout_below="@id/divider"
         android:scrollbars="vertical"/>
 
-    <TextView
-        android:id="@id/android:empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="@string/no_items_label" />
+    <include
+        android:id="@+id/emptyView"
+        layout="@layout/empty_view_layout"/>
 
     <ProgressBar
         android:id="@+id/progLoading"
