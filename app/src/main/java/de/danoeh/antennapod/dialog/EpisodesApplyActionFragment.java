@@ -42,14 +42,14 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     public static final String TAG = "EpisodeActionFragment";
 
-    public static final int ACTION_QUEUE = 1;
-    private static final int ACTION_MARK_PLAYED = 2;
-    private static final int ACTION_MARK_UNPLAYED = 4;
-    private static final int ACTION_DOWNLOAD = 8;
-    public static final int ACTION_REMOVE = 16;
-    public static final int ACTION_REMOVE_FROM_QUEUE = 32;
-    private static final int ACTION_ALL = ACTION_QUEUE | ACTION_REMOVE_FROM_QUEUE
-            | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_REMOVE;
+    public static final int ACTION_ADD_TO_QUEUE = 1;
+    private static final int ACTION_REMOVE_FROM_QUEUE = 2;
+    private static final int ACTION_MARK_PLAYED = 4;
+    private static final int ACTION_MARK_UNPLAYED = 8;
+    private static final int ACTION_DOWNLOAD = 16;
+    public static final int ACTION_DELETE = 32;
+    private static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
+            | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_DELETE;
 
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
@@ -153,7 +153,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
 
         // show only specified actions, and bind speed dial UIs to the actual logic
-        if((actions & ACTION_QUEUE) == 0) {
+        if((actions & ACTION_ADD_TO_QUEUE) == 0) {
             mSpeedDialView.removeActionItemById(R.id.addToQueue);
         }
         if((actions & ACTION_REMOVE_FROM_QUEUE) == 0) {
@@ -168,7 +168,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         if((actions & ACTION_DOWNLOAD) == 0) {
             mSpeedDialView.removeActionItemById(R.id.download);
         }
-        if((actions & ACTION_REMOVE) == 0) {
+        if((actions & ACTION_DELETE) == 0) {
             mSpeedDialView.removeActionItemById(R.id.delete);
         }
         mSpeedDialView.setOnActionSelectedListener(actionItem -> {

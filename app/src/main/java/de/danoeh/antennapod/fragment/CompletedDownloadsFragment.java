@@ -143,7 +143,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         switch (item.getItemId()) {
             case R.id.episode_actions:
                 EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
-                        .newInstance(items, EpisodesApplyActionFragment.ACTION_REMOVE | EpisodesApplyActionFragment.ACTION_QUEUE);
+                        .newInstance(items, EpisodesApplyActionFragment.ACTION_DELETE | EpisodesApplyActionFragment.ACTION_ADD_TO_QUEUE);
                 ((MainActivity) getActivity()).loadChildFragment(fragment);
                 return true;
             default:
