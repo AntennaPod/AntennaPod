@@ -72,7 +72,7 @@ class UpdateManager {
             } // else 0 or special negative values, no change needed
         }
         if (oldVersionCode < 1070197) {
-            if (prefs.getBoolean(UserPreferences.PREF_MOBILE_UPDATE_OLD, false)) {
+            if (prefs.getBoolean("prefMobileUpdate", false)) {
                 prefs.edit().putString(UserPreferences.PREF_MOBILE_UPDATE, "everything").apply();
             }
         }

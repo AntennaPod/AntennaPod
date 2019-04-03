@@ -77,7 +77,6 @@ public class UserPreferences {
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
-    public static final String PREF_MOBILE_UPDATE_OLD = "prefMobileUpdate";
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdateAllowed";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";

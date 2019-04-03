@@ -113,10 +113,10 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
                 return chain.proceed(chain.request());
             } else {
                 return new Response.Builder()
-                        .code(420)
                         .protocol(Protocol.HTTP_2)
-                        .message("Dummy response")
-                        .body(new RealResponseBody(null, 0, null))
+                        .code(420)
+                        .message("Policy Not Fulfilled")
+                        .body(ResponseBody.create(null, new byte[0]))
                         .request(chain.request())
                         .build();
             }
