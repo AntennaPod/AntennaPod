@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,27 @@ public class EpisodesApplyActionFragment extends Fragment {
     private static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
             | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_DELETE;
 
+    /**
+     * Specify an action (defined by #flag) 's UI bindings.
+     *
+     * Includes: the menu / action item and the actual logic
+     */
+    private class ActionBinding {
+        int flag;
+        @IdRes
+        final int actionItemId;
+        @NonNull
+        final Runnable action;
+
+        ActionBinding(int flag, @IdRes int actionItemId, @NonNull Runnable action) {
+            this.flag = flag;
+            this.actionItemId = actionItemId;
+            this.action = action;
+        }
+    }
+
+    private final List<? extends ActionBinding> actionBindings;
+
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
 
@@ -65,6 +88,23 @@ public class EpisodesApplyActionFragment extends Fragment {
     private final LongList checkedIds = new LongList();
 
     private MenuItem mSelectToggle;
+
+    public EpisodesApplyActionFragment() {
+        actionBindings = Arrays.asList(
+                new ActionBinding(ACTION_ADD_TO_QUEUE,
+                        R.id.add_to_queue_batch, this::queueChecked),
+                new ActionBinding(ACTION_REMOVE_FROM_QUEUE,
+                        R.id.remove_from_queue_batch, this::removeFromQueueChecked),
+                new ActionBinding(ACTION_MARK_PLAYED,
+                        R.id.mark_read_batch, this::markedCheckedPlayed),
+                new ActionBinding(ACTION_MARK_UNPLAYED,
+                        R.id.mark_unread_batch, this::markedCheckedUnplayed),
+                new ActionBinding(ACTION_DOWNLOAD,
+                        R.id.download_batch, this::downloadChecked),
+                new ActionBinding(ACTION_DELETE,
+                        R.id.delete_batch, this::deleteChecked)
+                );
+    }
 
     public static EpisodesApplyActionFragment newInstance(List<FeedItem> items) {
         return newInstance(items, ACTION_ALL);
@@ -153,46 +193,24 @@ public class EpisodesApplyActionFragment extends Fragment {
         mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
 
         // show only specified actions, and bind speed dial UIs to the actual logic
-        if((actions & ACTION_ADD_TO_QUEUE) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.add_to_queue_batch);
+        for (ActionBinding binding : actionBindings) {
+            if ((actions & binding.flag) == 0) {
+                mSpeedDialView.removeActionItemById(binding.actionItemId);
+            }
         }
-        if((actions & ACTION_REMOVE_FROM_QUEUE) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.remove_from_queue_batch);
-        }
-        if((actions & ACTION_MARK_PLAYED) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.mark_read_batch);
-        }
-        if((actions & ACTION_MARK_UNPLAYED) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.mark_unread_batch);
-        }
-        if((actions & ACTION_DOWNLOAD) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.download_batch);
-        }
-        if((actions & ACTION_DELETE) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.delete_batch);
-        }
+
         mSpeedDialView.setOnActionSelectedListener(actionItem -> {
-            switch(actionItem.getId()) {
-                case R.id.add_to_queue_batch:
-                    queueChecked();
+            ActionBinding selectedBinding = null;
+            for (ActionBinding binding : actionBindings) {
+                if (actionItem.getId() == binding.actionItemId) {
+                    selectedBinding = binding;
                     break;
-                case R.id.remove_from_queue_batch:
-                    removeFromQueueChecked();
-                    break;
-                case R.id.mark_read_batch:
-                    markedCheckedPlayed();
-                    break;
-                case R.id.mark_unread_batch:
-                    markedCheckedUnplayed();
-                    break;
-                case R.id.download_batch:
-                    downloadChecked();
-                    break;
-                case R.id.delete_batch:
-                    deleteChecked();
-                    break;
-                default:
-                    Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
+                }
+            }
+            if (selectedBinding != null) {
+                selectedBinding.action.run();
+            } else {
+                Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
             }
             return true;
         });
