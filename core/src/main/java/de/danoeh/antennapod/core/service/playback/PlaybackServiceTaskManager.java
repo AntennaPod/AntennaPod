@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -125,7 +126,8 @@ public class PlaybackServiceTaskManager {
      */
     public synchronized void startPositionSaver() {
         if (!isPositionSaverActive()) {
-            Runnable positionSaver = callback::positionSaverTick;
+            Handler handler = new Handler(); // Execute on main thread
+            Runnable positionSaver = () -> handler.post(callback::positionSaverTick);
             positionSaverFuture = schedExecutor.scheduleWithFixedDelay(positionSaver, POSITION_SAVER_WAITING_INTERVAL,
                     POSITION_SAVER_WAITING_INTERVAL, TimeUnit.MILLISECONDS);
 

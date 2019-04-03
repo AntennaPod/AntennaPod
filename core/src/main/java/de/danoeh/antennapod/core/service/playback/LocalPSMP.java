@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -57,16 +58,35 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private final ReentrantLock playerLock;
     private CountDownLatch seekLatch;
 
-    private final ThreadPoolExecutor executor;
+    private final PlayerExecutor executor;
+
+    private class PlayerExecutor {
+        private boolean useMainThread = true;
+        private ThreadPoolExecutor threadPool;
+
+        public Future<?> submit(Runnable r) {
+            if (useMainThread) {
+                r.run();
+                return new FutureTask<Void>(() -> {}, null);
+            } else {
+                return threadPool.submit(r);
+            }
+        }
+
+        public void shutdown() {
+            threadPool.shutdown();
+        }
+    }
 
     public LocalPSMP(@NonNull Context context,
                      @NonNull PSMPCallback callback) {
         super(context, callback);
-
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new ReentrantLock();
         this.startWhenPrepared = new AtomicBoolean(false);
-        executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
+
+        executor = new PlayerExecutor();
+        executor.threadPool = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
                 (r, executor) -> Log.d(TAG, "Rejected execution of runnable"));
 
         mediaPlayer = null;
@@ -105,6 +125,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject(...)");
+        executor.useMainThread = true; // ExoPlayer needs to be initialized in main thread
         executor.submit(() -> {
             playerLock.lock();
             try {
@@ -755,10 +776,13 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         if (UserPreferences.useExoplayer()) {
             mediaPlayer = new ExoPlayerWrapper(context);
+            executor.useMainThread = true;
         } else if (media.getMediaType() == MediaType.VIDEO) {
             mediaPlayer = new VideoPlayer();
+            executor.useMainThread = false;
         } else {
             mediaPlayer = new AudioPlayer(context);
+            executor.useMainThread = false;
         }
 
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
