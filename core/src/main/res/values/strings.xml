@@ -173,7 +173,7 @@
     <string name="remove_label">Remove</string>
     <string name="delete_label">Delete</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
-    <string name="remove_episode_lable">Remove Episode</string>
+    <string name="remove_episode_lable">Delete Episode</string>
     <string name="mark_as_seen_label">Mark as seen</string>
     <string name="marked_as_seen_label">Marked as seen</string>
     <string name="mark_read_label">Mark as played</string>
