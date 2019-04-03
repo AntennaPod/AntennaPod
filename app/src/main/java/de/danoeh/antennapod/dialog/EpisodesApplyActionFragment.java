@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
@@ -54,6 +55,8 @@ public class EpisodesApplyActionFragment extends Fragment {
     private ArrayAdapter<String> mAdapter;
 
     private SpeedDialView mSpeedDialView;
+    @NonNull
+    private CharSequence actionBarTitleOriginal = "";
 
     private final Map<Long,FeedItem> idMap = new ArrayMap<>();
     private final List<FeedItem> episodes = new ArrayList<>();
@@ -144,7 +147,9 @@ public class EpisodesApplyActionFragment extends Fragment {
         mListView.setAdapter(mAdapter);
         /// checkAll(); // TODO: no longer check all by default
 
-        // replacement for the buttons
+        saveActionBarTitle(); // needed when we dynamically change the title based on selection
+
+        // Init action UI (via a FAB Speed Dial)
         mSpeedDialView = view.findViewById(R.id.fabSD);
         mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
 
@@ -202,6 +207,12 @@ public class EpisodesApplyActionFragment extends Fragment {
     public void onStart() {
         super.onStart();
         compatEnsureSpeedDialClickable();
+    }
+
+    @Override
+    public void onStop() {
+        restoreActionBarTitle(); // it might have been changed to "N selected". Restore original.
+        super.onStop();
     }
 
     private void compatEnsureSpeedDialClickable() {
@@ -460,10 +471,33 @@ public class EpisodesApplyActionFragment extends Fragment {
         }
         ActivityCompat.invalidateOptionsMenu(EpisodesApplyActionFragment.this.getActivity());
         showSpeedDialIfAnyChecked();
+        updateActionBarTitle();
+    }
 
+    private void saveActionBarTitle() {
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
-            String title = checkedIds.size() > 0 ? checkedIds.size() + " selected" : ""; // TODO: restore to the original title
+            CharSequence title = actionBar.getTitle();
+            if (title == null) {
+                title = "";
+            }
+            actionBarTitleOriginal = title;
+        }
+    }
+
+    private void restoreActionBarTitle() {
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(actionBarTitleOriginal);
+        }
+    }
+
+    private void updateActionBarTitle() {
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            CharSequence title = checkedIds.size() > 0 ?
+                    getString(R.string.num_selected_label, checkedIds.size()) :
+                    actionBarTitleOriginal;
             actionBar.setTitle(title);
         }
     }
