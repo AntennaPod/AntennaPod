@@ -358,7 +358,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
 
     private void onFragmentLoaded() {
         if (webviewData != null) {
-            webvDescription.loadDataWithBaseURL(null, webviewData, "text/html", "utf-8", "about:blank");
+            webvDescription.loadDataWithBaseURL("https://127.0.0.1", webviewData, "text/html", "utf-8", "about:blank");
         }
         updateAppearance();
     }

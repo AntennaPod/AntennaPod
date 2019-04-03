@@ -307,7 +307,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                    webvDescription.loadDataWithBaseURL(null, data, "text/html",
+                    webvDescription.loadDataWithBaseURL("https://127.0.0.1", data, "text/html",
                             "utf-8", "about:blank");
                     Log.d(TAG, "Webview loaded");
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
