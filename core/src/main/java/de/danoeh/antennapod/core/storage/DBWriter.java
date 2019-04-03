@@ -423,13 +423,12 @@ public class DBWriter {
 
     /**
      * Removes a FeedItem object from the queue.
-     *
-     * @param context             A context that is used for opening a database connection.
-     * @param item                FeedItem that should be removed.
+     *  @param context             A context that is used for opening a database connection.
      * @param performAutoDownload true if an auto-download process should be started after the operation.
+     * @param item                FeedItem that should be removed.
      */
     public static Future<?> removeQueueItem(final Context context,
-                                            final FeedItem item, final boolean performAutoDownload) {
+                                            final boolean performAutoDownload, final FeedItem item) {
         return dbExec.submit(() -> removeQueueItemSynchronous(context, performAutoDownload, item.getId()));
     }
 

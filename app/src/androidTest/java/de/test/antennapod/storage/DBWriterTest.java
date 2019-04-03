@@ -584,7 +584,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             adapter.setQueue(feed.getItems());
             adapter.close();
 
-            DBWriter.removeQueueItem(context, item, false).get(TIMEOUT, TimeUnit.SECONDS);
+            DBWriter.removeQueueItem(context, false, item).get(TIMEOUT, TimeUnit.SECONDS);
             adapter = PodDBAdapter.getInstance();
             adapter.open();
             Cursor queue = adapter.getQueueIDCursor();

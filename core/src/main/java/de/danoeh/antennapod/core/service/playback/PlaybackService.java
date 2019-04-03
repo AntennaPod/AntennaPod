@@ -918,7 +918,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     final List<FeedItem> queue = taskManager.getQueue();
                     if (QueueAccess.ItemListAccess(queue).contains(item.getId())) {
                         // don't know if it actually matters to not autodownload when smart mark as played is triggered
-                        DBWriter.removeQueueItem(PlaybackService.this, item, ended);
+                        DBWriter.removeQueueItem(PlaybackService.this, ended, item);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
