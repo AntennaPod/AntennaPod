@@ -154,41 +154,41 @@ public class EpisodesApplyActionFragment extends Fragment {
 
         // show only specified actions, and bind speed dial UIs to the actual logic
         if((actions & ACTION_ADD_TO_QUEUE) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.addToQueue);
+            mSpeedDialView.removeActionItemById(R.id.add_to_queue_batch);
         }
         if((actions & ACTION_REMOVE_FROM_QUEUE) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.removeFromQueue);
+            mSpeedDialView.removeActionItemById(R.id.remove_from_queue_batch);
         }
         if((actions & ACTION_MARK_PLAYED) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.markAsPlayed);
+            mSpeedDialView.removeActionItemById(R.id.mark_read_batch);
         }
         if((actions & ACTION_MARK_UNPLAYED) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.markAsUnplayed);
+            mSpeedDialView.removeActionItemById(R.id.mark_unread_batch);
         }
         if((actions & ACTION_DOWNLOAD) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.download);
+            mSpeedDialView.removeActionItemById(R.id.download_batch);
         }
         if((actions & ACTION_DELETE) == 0) {
-            mSpeedDialView.removeActionItemById(R.id.delete);
+            mSpeedDialView.removeActionItemById(R.id.delete_batch);
         }
         mSpeedDialView.setOnActionSelectedListener(actionItem -> {
             switch(actionItem.getId()) {
-                case R.id.addToQueue:
+                case R.id.add_to_queue_batch:
                     queueChecked();
                     break;
-                case R.id.removeFromQueue:
+                case R.id.remove_from_queue_batch:
                     removeFromQueueChecked();
                     break;
-                case R.id.markAsPlayed:
+                case R.id.mark_read_batch:
                     markedCheckedPlayed();
                     break;
-                case R.id.markAsUnplayed:
+                case R.id.mark_unread_batch:
                     markedCheckedUnplayed();
                     break;
-                case R.id.download:
+                case R.id.download_batch:
                     downloadChecked();
                     break;
-                case R.id.delete:
+                case R.id.delete_batch:
                     deleteChecked();
                     break;
                 default:
