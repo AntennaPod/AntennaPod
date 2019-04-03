@@ -145,7 +145,6 @@ public class EpisodesApplyActionFragment extends Fragment {
         mAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.simple_list_item_multiple_choice_on_start, titles);
         mListView.setAdapter(mAdapter);
-        /// checkAll(); // TODO: no longer check all by default
 
         saveActionBarTitle(); // needed when we dynamically change the title based on selection
 
