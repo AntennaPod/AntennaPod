@@ -16,10 +16,11 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">
-        <SwitchPreference
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefMobileUpdate"
+        <ListPreference
+                android:defaultValue="images"
+                android:entries="@array/mobile_update_entries"
+                android:entryValues="@array/mobile_update_values"
+                android:key="prefMobileUpdateAllowed"
                 android:summary="@string/pref_mobileUpdate_sum"
                 android:title="@string/pref_mobileUpdate_title"/>
         <de.danoeh.antennapod.preferences.NumberPickerPreference

@@ -77,7 +77,7 @@ public class UserPreferences {
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
-    private static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
+    public static final String PREF_MOBILE_UPDATE = "prefMobileUpdateAllowed";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
@@ -380,8 +380,16 @@ public class UserPreferences {
         }
     }
 
+    public static String getMobileUpdatesEnabled() {
+        return prefs.getString(PREF_MOBILE_UPDATE, "images");
+    }
+
     public static boolean isAllowMobileUpdate() {
-        return prefs.getBoolean(PREF_MOBILE_UPDATE, false);
+        return getMobileUpdatesEnabled().equals("everything");
+    }
+
+    public static boolean isAllowMobileImages() {
+        return isAllowMobileUpdate() || getMobileUpdatesEnabled().equals("images");
     }
 
     public static int getParallelDownloads() {
