@@ -61,9 +61,6 @@
         <item type="attr" name="ic_filter">@drawable/ic_filter_grey600_24dp</item>
         <item type="attr" name="ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
         <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
-        <item type="attr" name="ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
-        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
-        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
         <item type="attr" name="ic_select_all">@drawable/ic_select_all_grey600</item>
         <item type="attr" name="ic_select_none">@drawable/ic_select_none_grey600</item>
         <item type="attr" name="ic_sort">@drawable/ic_sort_grey600_24dp</item>
@@ -148,9 +145,6 @@
         <item type="attr" name="ic_filter">@drawable/ic_filter_white_24dp</item>
         <item type="attr" name="ic_sleep">@drawable/ic_sleep_white_24dp</item>
         <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
-        <item type="attr" name="ic_check_box">@drawable/ic_check_box_white_24dp</item>
-        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
-        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
         <item type="attr" name="ic_select_all">@drawable/ic_select_all_white</item>
         <item type="attr" name="ic_select_none">@drawable/ic_select_none_white</item>
         <item type="attr" name="ic_sort">@drawable/ic_sort_white_24dp</item>
@@ -255,9 +249,6 @@
         <item type="attr" name="ic_filter">@drawable/ic_filter_grey600_24dp</item>
         <item type="attr" name="ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
         <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
-        <item type="attr" name="ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
-        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
-        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
         <item type="attr" name="ic_select_all">@drawable/ic_select_all_grey600</item>
         <item type="attr" name="ic_select_none">@drawable/ic_select_none_grey600</item>
         <item type="attr" name="ic_sort">@drawable/ic_sort_grey600_24dp</item>
@@ -341,9 +332,6 @@
         <item type="attr" name="ic_filter">@drawable/ic_filter_white_24dp</item>
         <item type="attr" name="ic_sleep">@drawable/ic_sleep_white_24dp</item>
         <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
-        <item type="attr" name="ic_check_box">@drawable/ic_check_box_white_24dp</item>
-        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
-        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
         <item type="attr" name="ic_select_all">@drawable/ic_select_all_white</item>
         <item type="attr" name="ic_select_none">@drawable/ic_select_none_white</item>
         <item type="attr" name="ic_sort">@drawable/ic_sort_white_24dp</item>
