@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.content.Intent;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -30,7 +28,7 @@ import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
  */
 public class DefaultActionButtonCallback implements ActionButtonCallback {
 
-    private static final String TAG = "DefaultActionButtonCallback";
+    private static final String TAG = "DefaultActionBtnCb";
 
     private final Context context;
 
@@ -84,13 +82,9 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                 }
             } else { // media is downloaded
                 if (media.isCurrentlyPlaying()) {
-                    new PlaybackServiceStarter(context, media)
-                            .startWhenPrepared(true)
-                            .shouldStream(false)
-                            .start();
                     IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
                 } else if (media.isCurrentlyPaused()) {
-                    new PlaybackServiceStarter(context, media)
+                    new PlaybackServiceStarter(context, media) // need to start the service in case it's been stopped by system.
                             .startWhenPrepared(true)
                             .shouldStream(false)
                             .start();

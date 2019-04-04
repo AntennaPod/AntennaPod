@@ -47,6 +47,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
      */
     private boolean videoControlsShowing = true;
     private boolean videoSurfaceCreated = false;
+    private boolean playbackStoppedUponExitVideo = false;
     private boolean destroyingDueToReload = false;
 
     private VideoControlsHider videoControlsHider = new VideoControlsHider(this);
@@ -77,6 +78,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        playbackStoppedUponExitVideo = false;
         if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
             playExternalMedia(getIntent(), MediaType.VIDEO);
         } else if (PlaybackService.isCasting()) {
@@ -91,9 +93,29 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onStop() {
+        stopPlaybackIfUserPreferencesSpecified(); // MUST be called before super.onStop(), while it still has member variable controller
         super.onStop();
         if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
             videoControlsHider.stop();
+        }
+    }
+
+    void stopPlaybackIfUserPreferencesSpecified() {
+        // to avoid the method being called twice during leaving Videoplayer
+        // , which will double-pause the media
+        // (it is usually first called by surfaceHolderCallback.surfaceDestroyed(),
+        //  then VideoplayerActivity.onStop() , but sometimes VideoplayerActivity.onStop()
+        //  will first be invoked.)
+        if (playbackStoppedUponExitVideo) {
+            return;
+        }
+        playbackStoppedUponExitVideo = true;
+
+        if (controller != null && !destroyingDueToReload
+                && UserPreferences.getVideoBackgroundBehavior()
+                != UserPreferences.VideoBackgroundBehavior.CONTINUE_PLAYING) {
+            Log.v(TAG, "stop video playback per UserPreference");
+            controller.notifyVideoSurfaceAbandoned();
         }
     }
 
@@ -275,13 +297,12 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
-            Log.d(TAG, "Videosurface was destroyed");
+            Log.d(TAG, "Videosurface was destroyed." );
+            Log.v(TAG, "    hasController=" + (controller != null)
+                    + " , destroyingDueToReload=" + destroyingDueToReload
+                    + " , videoBackgroundBehavior=" + UserPreferences.getVideoBackgroundBehavior());
             videoSurfaceCreated = false;
-            if (controller != null && !destroyingDueToReload
-                    && UserPreferences.getVideoBackgroundBehavior()
-                    != UserPreferences.VideoBackgroundBehavior.CONTINUE_PLAYING) {
-                controller.notifyVideoSurfaceAbandoned();
-            }
+            stopPlaybackIfUserPreferencesSpecified();
         }
     };
 
