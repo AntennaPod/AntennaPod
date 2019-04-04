@@ -273,11 +273,9 @@ public class EpisodesApplyActionFragment extends Fragment {
 
         int[] icon = new int[1];
         if (checkedIds.size() == episodes.size()) {
-            icon[0] = R.attr.ic_check_box;
-        } else if (checkedIds.size() == 0) {
-            icon[0] = R.attr.ic_check_box_outline;
+            icon[0] = R.attr.ic_select_none;
         } else {
-            icon[0] = R.attr.ic_indeterminate_check_box;
+            icon[0] = R.attr.ic_select_all;
         }
 
         TypedArray a = getActivity().obtainStyledAttributes(icon);
