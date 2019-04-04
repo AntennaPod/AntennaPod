@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- the order is opposite of the typical menu:
          catered to FAB speed dial, which somehow shows the item in reverse.
-         E.g., item @id/delete is the first in the xml,
+         E.g., item @id/delete_batch is the first in the xml,
          visually it will be shown at the bottom of the list of actions.
       -->
     <item android:id="@+id/delete_batch"
@@ -23,7 +23,7 @@
         android:title="@string/mark_read_label"
         />
     <item android:id="@+id/remove_from_queue_batch"
-        android:icon="@drawable/ic_remove_grey600"
+        android:icon="?attr/content_remove_from_queue"
         android:title="@string/remove_from_queue_label"
         />
     <item

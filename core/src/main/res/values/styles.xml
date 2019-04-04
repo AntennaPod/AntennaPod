@@ -26,6 +26,7 @@
         <item type="attr" name="av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
         <item type="attr" name="content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item type="attr" name="content_new">@drawable/ic_add_grey600_24dp</item>
+        <item type="attr" name="content_remove_from_queue">@drawable/ic_remove_grey600</item>
         <item type="attr" name="feed">@drawable/ic_feed_grey600_24dp</item>
         <item type="attr" name="location_web_site">@drawable/ic_web_grey600_24dp</item>
         <item type="attr" name="navigation_accept">@drawable/ic_done_grey600_24dp</item>
@@ -110,6 +111,7 @@
         <item type="attr" name="av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
         <item type="attr" name="content_discard">@drawable/ic_delete_white_24dp</item>
         <item type="attr" name="content_new">@drawable/ic_add_white_24dp</item>
+        <item type="attr" name="content_remove_from_queue">@drawable/ic_remove_white</item>
         <item type="attr" name="feed">@drawable/ic_feed_white_24dp</item>
         <item type="attr" name="location_web_site">@drawable/ic_web_white_24dp</item>
         <item type="attr" name="navigation_accept">@drawable/ic_done_white_24dp</item>
@@ -214,6 +216,7 @@
         <item type="attr" name="av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
         <item type="attr" name="content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item type="attr" name="content_new">@drawable/ic_add_grey600_24dp</item>
+        <item type="attr" name="content_remove_from_queue">@drawable/ic_remove_grey600</item>
         <item type="attr" name="feed">@drawable/ic_feed_grey600_24dp</item>
         <item type="attr" name="location_web_site">@drawable/ic_web_grey600_24dp</item>
         <item type="attr" name="navigation_accept">@drawable/ic_done_grey600_24dp</item>
@@ -298,6 +301,7 @@
         <item type="attr" name="content_discard">@drawable/ic_delete_white_24dp</item>
         <item type="attr" name="content_new">@drawable/ic_add_white_24dp</item>
         <item type="attr" name="feed">@drawable/ic_feed_white_24dp</item>
+        <item type="attr" name="content_remove_from_queue">@drawable/ic_remove_white</item>
         <item type="attr" name="location_web_site">@drawable/ic_web_white_24dp</item>
         <item type="attr" name="navigation_accept">@drawable/ic_done_white_24dp</item>
         <item type="attr" name="navigation_cancel">@drawable/ic_cancel_white_24dp</item>

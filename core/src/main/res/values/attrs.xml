@@ -12,6 +12,7 @@
     <attr name="av_rewind" format="reference"/>
     <attr name="content_discard" format="reference"/>
     <attr name="content_new" format="reference"/>
+    <attr name="content_remove_from_queue" format="reference"/>
     <attr name="storage" format="reference"/>
     <attr name="statistics" format="reference"/>
     <attr name="feed" format="reference"/>
