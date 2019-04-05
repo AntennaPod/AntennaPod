@@ -21,7 +21,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -164,19 +163,6 @@ public class EpisodesApplyActionFragment extends Fragment {
                         refreshCheckboxes();
                     }).show();
             return true;
-        });
-        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (AbsListView.OnScrollListener.SCROLL_STATE_IDLE == scrollState) {
-                    showSpeedDialIfAnyChecked();
-                 } else {
-                    hideSpeedDial();
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {}
         });
 
         for(FeedItem episode : episodes) {
