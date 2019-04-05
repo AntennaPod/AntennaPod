@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.PluralsRes;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -23,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.leinardi.android.speeddial.SpeedDialView;
 
@@ -271,7 +271,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int resId = 0;
+        @StringRes int resId = 0;
         switch(item.getItemId()) {
             case R.id.select_options:
                 return true;
@@ -331,7 +331,8 @@ public class EpisodesApplyActionFragment extends Fragment {
                 return true;
         }
         if(resId != 0) {
-            Toast.makeText(getActivity(), resId, Toast.LENGTH_SHORT).show();
+            Snackbar.make(getActivity().findViewById(R.id.content), resId, Snackbar.LENGTH_SHORT)
+                    .show();
             return true;
         } else {
             return false;
