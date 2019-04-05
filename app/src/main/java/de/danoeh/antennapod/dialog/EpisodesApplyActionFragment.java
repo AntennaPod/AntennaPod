@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.PluralsRes;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
@@ -501,22 +503,22 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void queueChecked() {
         DBWriter.addQueueItem(getActivity(), true, checkedIds.toArray());
-        close();
+        close(R.plurals.added_to_queue_batch_label, checkedIds.size());
     }
 
     private void removeFromQueueChecked() {
         DBWriter.removeQueueItem(getActivity(), true, checkedIds.toArray());
-        close();
+        close(R.plurals.removed_from_queue_batch_label, checkedIds.size());
     }
 
     private void markedCheckedPlayed() {
         DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds.toArray());
-        close();
+        close(R.plurals.marked_read_batch_label, checkedIds.size());
     }
 
     private void markedCheckedUnplayed() {
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds.toArray());
-        close();
+        close(R.plurals.marked_unread_batch_label, checkedIds.size());
     }
 
     private void downloadChecked() {
@@ -533,7 +535,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
         }
-        close();
+        close(R.plurals.downloading_batch_label, checkedIds.size());
     }
 
     private void deleteChecked() {
@@ -543,10 +545,18 @@ public class EpisodesApplyActionFragment extends Fragment {
                 DBWriter.deleteFeedMediaOfItem(getActivity(), episode.getMedia().getId());
             }
         }
-        close();
+        close(R.plurals.deleted_episode_batch_label, checkedIds.size());
     }
 
-    private void close() {
+    private void close(@PluralsRes int msgId, int numItems) {
+        if (numItems > 0) {
+            Snackbar.make(getActivity().findViewById(R.id.content),
+                    getResources().getQuantityString(msgId, numItems, numItems),
+                    Snackbar.LENGTH_LONG
+                    )
+                    .setAction(android.R.string.ok, v -> {})
+                    .show();
+        }
         getActivity().getSupportFragmentManager().popBackStack();
     }
 
