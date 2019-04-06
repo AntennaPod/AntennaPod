@@ -71,7 +71,7 @@ dependencies {
     // free build hack: skip some dependencies
     if (!doFreeBuild()) {
         playApi "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
-        api "com.android.support:mediarouter-v7:$supportVersion"
+        api "androidx.mediarouter:mediarouter:1.0.0"
         playApi "com.google.android.gms:play-services-cast:$playServicesVersion"
         api "com.google.android.support:wearable:$wearableSupportVersion"
     } else {
