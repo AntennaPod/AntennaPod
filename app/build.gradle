@@ -14,7 +14,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        vectorDrawables.useSupportLibrary true // consider to use pngs instead
+        vectorDrawables.useSupportLibrary true
         // Version code schema:
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
