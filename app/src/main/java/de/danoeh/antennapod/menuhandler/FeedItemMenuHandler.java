@@ -199,7 +199,7 @@ public class FeedItemMenuHandler {
                 DBWriter.addQueueItem(context, selectedItem);
                 break;
             case R.id.remove_from_queue_item:
-                DBWriter.removeQueueItem(context, selectedItem, true);
+                DBWriter.removeQueueItem(context, true, selectedItem);
                 break;
             case R.id.add_to_favorites_item:
                 DBWriter.addFavoriteItem(selectedItem);

@@ -113,6 +113,7 @@
         <item quantity="one">1 day after finishing</item>
         <item quantity="other">%d days after finishing</item>
     </plurals>
+    <string name="num_selected_label">%d selected</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
@@ -165,6 +166,10 @@
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
+    <plurals name="downloading_batch_label">
+        <item quantity="one">Downloading %d episode.</item>
+        <item quantity="other">Downloading %d episodes.</item>
+    </plurals>
     <string name="play_label">Play</string>
     <string name="pause_label">Pause</string>
     <string name="stop_label">Stop</string>
@@ -172,15 +177,35 @@
     <string name="remove_label">Remove</string>
     <string name="delete_label">Delete</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
-    <string name="remove_episode_lable">Remove Episode</string>
+    <string name="delete_episode_label">Delete Episode</string>
+    <plurals name="deleted_episode_batch_label">
+        <item quantity="one">%d episode deleted.</item>
+        <item quantity="other">%d episodes deleted.</item>
+    </plurals>
     <string name="mark_as_seen_label">Mark as seen</string>
     <string name="marked_as_seen_label">Marked as seen</string>
     <string name="mark_read_label">Mark as played</string>
     <string name="marked_as_read_label">Marked as played</string>
+    <plurals name="marked_read_batch_label">
+        <item quantity="one">%d episode marked as played.</item>
+        <item quantity="other">%d episodes marked as played.</item>
+    </plurals>
     <string name="mark_unread_label">Mark as unplayed</string>
+    <plurals name="marked_unread_batch_label">
+        <item quantity="one">%d episode marked as unplayed.</item>
+        <item quantity="other">%d episodes marked as unplayed.</item>
+    </plurals>
     <string name="add_to_queue_label">Add to Queue</string>
     <string name="added_to_queue_label">Added to Queue</string>
+    <plurals name="added_to_queue_batch_label">
+        <item quantity="one">%d episode added to queue.</item>
+        <item quantity="other">%d episodes added to queue.</item>
+    </plurals>
     <string name="remove_from_queue_label">Remove from Queue</string>
+    <plurals name="removed_from_queue_batch_label">
+        <item quantity="one">%d episode removed from queue.</item>
+        <item quantity="other">%d episodes removed from queue.</item>
+    </plurals>
     <string name="add_to_favorite_label">Add to Favorites</string>
     <string name="added_to_favorites">Added to Favorites</string>
     <string name="remove_from_favorite_label">Remove from Favorites</string>

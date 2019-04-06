@@ -1,115 +1,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-
-    <LinearLayout
-        android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="4dp">
-
-        <Button
-            android:id="@+id/btnAddToQueue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:drawableTop="?attr/content_new"
-            android:text="@string/add_to_queue_label"
-            android:textSize="10sp" />
-
-        <View
-            android:id="@+id/divider1"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="?android:attr/listDivider"
-            tools:background="@android:color/holo_red_dark" />
-
-        <Button
-            android:id="@+id/btnMarkAsPlayed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:drawableTop="?attr/navigation_accept"
-            android:text="@string/mark_read_label"
-            android:textSize="10sp" />
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="?android:attr/listDivider"
-            tools:background="@android:color/holo_red_dark" />
-
-        <Button
-            android:id="@+id/btnMarkAsUnplayed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:drawableTop="?attr/navigation_cancel"
-            android:text="@string/mark_unread_label"
-            android:textSize="10sp" />
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="?android:attr/listDivider"
-            tools:background="@android:color/holo_red_dark" />
-
-        <Button
-            android:id="@+id/btnDownload"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:drawableTop="?attr/av_download"
-            android:text="@string/download_label"
-            android:textSize="10sp" />
-
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="?android:attr/listDivider"
-            tools:background="@android:color/holo_red_dark" />
-
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:drawableTop="?attr/content_discard"
-            android:text="@string/remove_episode_lable"
-            android:textSize="10sp" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/bottomBar"
-        android:background="?android:attr/listDivider"
-        android:paddingBottom="4dp"
-        tools:background="@android:color/holo_red_dark" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/divider"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp" />
+
+    <com.leinardi.android.speeddial.SpeedDialOverlayLayout
+        android:id="@+id/fabSDOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <!-- The FAB SpeedDial
+         1. MUST be placed at the bottom of the layout xml to ensure it is at the front,
+            clickable on Pre-Lollipop devices (that do not support elevation).
+            See: https://stackoverflow.com/a/2614402
+         2. ScrollView is needed to ensure the vertical list of speed dials are
+            accessible when screen height is small, eg., landscape mode on most phones.
+      -->
+    <ScrollView
+        android:id="@+id/fabSDScrollCtr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:elevation="@dimen/sd_close_elevation"
+        tools:ignore="UnusedAttribute">
+        <!-- android:elevation:
+             1. Needs to match the speed dial's minimal elevation,
+                or the speed dial can't be clicked at all
+          -->
+        <com.leinardi.android.speeddial.SpeedDialView
+            android:id="@+id/fabSD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:sdMainFabClosedSrc="@drawable/ic_fab_edit"
+            app:sdOverlayLayout="@id/fabSDOverlay"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            />
+    </ScrollView>
 
 </RelativeLayout>

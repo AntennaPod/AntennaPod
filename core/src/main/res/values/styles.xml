@@ -26,6 +26,7 @@
         <item type="attr" name="av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
         <item type="attr" name="content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item type="attr" name="content_new">@drawable/ic_add_grey600_24dp</item>
+        <item type="attr" name="content_remove_from_queue">@drawable/ic_remove_grey600</item>
         <item type="attr" name="feed">@drawable/ic_feed_grey600_24dp</item>
         <item type="attr" name="location_web_site">@drawable/ic_web_grey600_24dp</item>
         <item type="attr" name="navigation_accept">@drawable/ic_done_grey600_24dp</item>
@@ -60,9 +61,8 @@
         <item type="attr" name="ic_filter">@drawable/ic_filter_grey600_24dp</item>
         <item type="attr" name="ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
         <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
-        <item type="attr" name="ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
-        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
-        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
+        <item type="attr" name="ic_select_all">@drawable/ic_select_all_grey600</item>
+        <item type="attr" name="ic_select_none">@drawable/ic_select_none_grey600</item>
         <item type="attr" name="ic_sort">@drawable/ic_sort_grey600_24dp</item>
         <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
@@ -110,6 +110,7 @@
         <item type="attr" name="av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
         <item type="attr" name="content_discard">@drawable/ic_delete_white_24dp</item>
         <item type="attr" name="content_new">@drawable/ic_add_white_24dp</item>
+        <item type="attr" name="content_remove_from_queue">@drawable/ic_remove_white</item>
         <item type="attr" name="feed">@drawable/ic_feed_white_24dp</item>
         <item type="attr" name="location_web_site">@drawable/ic_web_white_24dp</item>
         <item type="attr" name="navigation_accept">@drawable/ic_done_white_24dp</item>
@@ -144,9 +145,8 @@
         <item type="attr" name="ic_filter">@drawable/ic_filter_white_24dp</item>
         <item type="attr" name="ic_sleep">@drawable/ic_sleep_white_24dp</item>
         <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
-        <item type="attr" name="ic_check_box">@drawable/ic_check_box_white_24dp</item>
-        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
-        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
+        <item type="attr" name="ic_select_all">@drawable/ic_select_all_white</item>
+        <item type="attr" name="ic_select_none">@drawable/ic_select_none_white</item>
         <item type="attr" name="ic_sort">@drawable/ic_sort_white_24dp</item>
         <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>
@@ -214,6 +214,7 @@
         <item type="attr" name="av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
         <item type="attr" name="content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item type="attr" name="content_new">@drawable/ic_add_grey600_24dp</item>
+        <item type="attr" name="content_remove_from_queue">@drawable/ic_remove_grey600</item>
         <item type="attr" name="feed">@drawable/ic_feed_grey600_24dp</item>
         <item type="attr" name="location_web_site">@drawable/ic_web_grey600_24dp</item>
         <item type="attr" name="navigation_accept">@drawable/ic_done_grey600_24dp</item>
@@ -248,9 +249,8 @@
         <item type="attr" name="ic_filter">@drawable/ic_filter_grey600_24dp</item>
         <item type="attr" name="ic_sleep">@drawable/ic_sleep_grey600_24dp</item>
         <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_grey600_24dp</item>
-        <item type="attr" name="ic_check_box">@drawable/ic_check_box_grey600_24dp</item>
-        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_grey600_24dp</item>
-        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_grey600_24dp</item>
+        <item type="attr" name="ic_select_all">@drawable/ic_select_all_grey600</item>
+        <item type="attr" name="ic_select_none">@drawable/ic_select_none_grey600</item>
         <item type="attr" name="ic_sort">@drawable/ic_sort_grey600_24dp</item>
         <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_grey600_36dp</item>
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_grey600_24dp</item>
@@ -298,6 +298,7 @@
         <item type="attr" name="content_discard">@drawable/ic_delete_white_24dp</item>
         <item type="attr" name="content_new">@drawable/ic_add_white_24dp</item>
         <item type="attr" name="feed">@drawable/ic_feed_white_24dp</item>
+        <item type="attr" name="content_remove_from_queue">@drawable/ic_remove_white</item>
         <item type="attr" name="location_web_site">@drawable/ic_web_white_24dp</item>
         <item type="attr" name="navigation_accept">@drawable/ic_done_white_24dp</item>
         <item type="attr" name="navigation_cancel">@drawable/ic_cancel_white_24dp</item>
@@ -331,9 +332,8 @@
         <item type="attr" name="ic_filter">@drawable/ic_filter_white_24dp</item>
         <item type="attr" name="ic_sleep">@drawable/ic_sleep_white_24dp</item>
         <item type="attr" name="ic_sleep_off">@drawable/ic_sleep_off_white_24dp</item>
-        <item type="attr" name="ic_check_box">@drawable/ic_check_box_white_24dp</item>
-        <item type="attr" name="ic_check_box_outline">@drawable/ic_check_box_outline_blank_white_24dp</item>
-        <item type="attr" name="ic_indeterminate_check_box">@drawable/ic_indeterminate_check_box_white_24dp</item>
+        <item type="attr" name="ic_select_all">@drawable/ic_select_all_white</item>
+        <item type="attr" name="ic_select_none">@drawable/ic_select_none_white</item>
         <item type="attr" name="ic_sort">@drawable/ic_sort_white_24dp</item>
         <item type="attr" name="ic_sd_storage">@drawable/ic_sd_storage_white_36dp</item>
         <item type="attr" name="ic_create_new_folder">@drawable/ic_create_new_folder_white_24dp</item>

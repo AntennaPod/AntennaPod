@@ -4,9 +4,17 @@ import android.app.AlertDialog;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.PluralsRes;
+import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,11 +22,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -35,22 +44,42 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     public static final String TAG = "EpisodeActionFragment";
 
-    public static final int ACTION_QUEUE = 1;
-    private static final int ACTION_MARK_PLAYED = 2;
-    private static final int ACTION_MARK_UNPLAYED = 4;
-    private static final int ACTION_DOWNLOAD = 8;
-    public static final int ACTION_REMOVE = 16;
-    private static final int ACTION_ALL = ACTION_QUEUE | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED
-            | ACTION_DOWNLOAD | ACTION_REMOVE;
+    public static final int ACTION_ADD_TO_QUEUE = 1;
+    private static final int ACTION_REMOVE_FROM_QUEUE = 2;
+    private static final int ACTION_MARK_PLAYED = 4;
+    private static final int ACTION_MARK_UNPLAYED = 8;
+    private static final int ACTION_DOWNLOAD = 16;
+    public static final int ACTION_DELETE = 32;
+    private static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
+            | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_DELETE;
+
+    /**
+     * Specify an action (defined by #flag) 's UI bindings.
+     *
+     * Includes: the menu / action item and the actual logic
+     */
+    private class ActionBinding {
+        int flag;
+        @IdRes
+        final int actionItemId;
+        @NonNull
+        final Runnable action;
+
+        ActionBinding(int flag, @IdRes int actionItemId, @NonNull Runnable action) {
+            this.flag = flag;
+            this.actionItemId = actionItemId;
+            this.action = action;
+        }
+    }
+
+    private final List<? extends ActionBinding> actionBindings;
 
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
 
-    private Button btnAddToQueue;
-    private Button btnMarkAsPlayed;
-    private Button btnMarkAsUnplayed;
-    private Button btnDownload;
-    private Button btnDelete;
+    private SpeedDialView mSpeedDialView;
+    @NonNull
+    private CharSequence actionBarTitleOriginal = "";
 
     private final Map<Long,FeedItem> idMap = new ArrayMap<>();
     private final List<FeedItem> episodes = new ArrayList<>();
@@ -59,6 +88,23 @@ public class EpisodesApplyActionFragment extends Fragment {
     private final LongList checkedIds = new LongList();
 
     private MenuItem mSelectToggle;
+
+    public EpisodesApplyActionFragment() {
+        actionBindings = Arrays.asList(
+                new ActionBinding(ACTION_ADD_TO_QUEUE,
+                        R.id.add_to_queue_batch, this::queueChecked),
+                new ActionBinding(ACTION_REMOVE_FROM_QUEUE,
+                        R.id.remove_from_queue_batch, this::removeFromQueueChecked),
+                new ActionBinding(ACTION_MARK_PLAYED,
+                        R.id.mark_read_batch, this::markedCheckedPlayed),
+                new ActionBinding(ACTION_MARK_UNPLAYED,
+                        R.id.mark_unread_batch, this::markedCheckedUnplayed),
+                new ActionBinding(ACTION_DOWNLOAD,
+                        R.id.download_batch, this::downloadChecked),
+                new ActionBinding(ACTION_DELETE,
+                        R.id.delete_batch, this::deleteChecked)
+                );
+    }
 
     public static EpisodesApplyActionFragment newInstance(List<FeedItem> items) {
         return newInstance(items, ACTION_ALL);
@@ -124,54 +170,55 @@ public class EpisodesApplyActionFragment extends Fragment {
         }
 
         mAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_multiple_choice, titles);
+                R.layout.simple_list_item_multiple_choice_on_start, titles);
         mListView.setAdapter(mAdapter);
-        checkAll();
 
-        int lastVisibleDiv = 0;
-        btnAddToQueue = view.findViewById(R.id.btnAddToQueue);
-        if((actions & ACTION_QUEUE) != 0) {
-            btnAddToQueue.setOnClickListener(v -> queueChecked());
-            lastVisibleDiv = R.id.divider1;
-        } else {
-            btnAddToQueue.setVisibility(View.GONE);
-            view.findViewById(R.id.divider1).setVisibility(View.GONE);
-        }
-        btnMarkAsPlayed = view.findViewById(R.id.btnMarkAsPlayed);
-        if((actions & ACTION_MARK_PLAYED) != 0) {
-            btnMarkAsPlayed.setOnClickListener(v -> markedCheckedPlayed());
-            lastVisibleDiv = R.id.divider2;
-        } else {
-            btnMarkAsPlayed.setVisibility(View.GONE);
-            view.findViewById(R.id.divider2).setVisibility(View.GONE);
-        }
-        btnMarkAsUnplayed = view.findViewById(R.id.btnMarkAsUnplayed);
-        if((actions & ACTION_MARK_UNPLAYED) != 0) {
-            btnMarkAsUnplayed.setOnClickListener(v -> markedCheckedUnplayed());
-            lastVisibleDiv = R.id.divider3;
-        } else {
-            btnMarkAsUnplayed.setVisibility(View.GONE);
-            view.findViewById(R.id.divider3).setVisibility(View.GONE);
-        }
-        btnDownload = view.findViewById(R.id.btnDownload);
-        if((actions & ACTION_DOWNLOAD) != 0) {
-            btnDownload.setOnClickListener(v -> downloadChecked());
-            lastVisibleDiv = R.id.divider4;
-        } else {
-            btnDownload.setVisibility(View.GONE);
-            view.findViewById(R.id.divider4).setVisibility(View.GONE);
-        }
-        btnDelete = view.findViewById(R.id.btnDelete);
-        if((actions & ACTION_REMOVE) != 0) {
-            btnDelete.setOnClickListener(v -> deleteChecked());
-        } else {
-            btnDelete.setVisibility(View.GONE);
-            if(lastVisibleDiv > 0) {
-                view.findViewById(lastVisibleDiv).setVisibility(View.GONE);
+        saveActionBarTitle(); // needed when we dynamically change the title based on selection
+
+        // Init action UI (via a FAB Speed Dial)
+        mSpeedDialView = view.findViewById(R.id.fabSD);
+        mSpeedDialView.inflate(R.menu.episodes_apply_action_speeddial);
+
+        // show only specified actions, and bind speed dial UIs to the actual logic
+        for (ActionBinding binding : actionBindings) {
+            if ((actions & binding.flag) == 0) {
+                mSpeedDialView.removeActionItemById(binding.actionItemId);
             }
         }
 
+        mSpeedDialView.setOnActionSelectedListener(actionItem -> {
+            ActionBinding selectedBinding = null;
+            for (ActionBinding binding : actionBindings) {
+                if (actionItem.getId() == binding.actionItemId) {
+                    selectedBinding = binding;
+                    break;
+                }
+            }
+            if (selectedBinding != null) {
+                selectedBinding.action.run();
+            } else {
+                Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + actionItem.getId());
+            }
+            return true;
+        });
+
+        showSpeedDialIfAnyChecked();
+
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        restoreActionBarTitle(); // it might have been changed to "N selected". Restore original.
+        super.onStop();
+    }
+
+    private void showSpeedDialIfAnyChecked() {
+        mSpeedDialView.setVisibility(checkedIds.size() > 0 ? View.VISIBLE : View.GONE);
+    }
+
+    private void hideSpeedDial() {
+        mSpeedDialView.setVisibility(View.GONE);
     }
 
     @Override
@@ -196,11 +243,9 @@ public class EpisodesApplyActionFragment extends Fragment {
 
         int[] icon = new int[1];
         if (checkedIds.size() == episodes.size()) {
-            icon[0] = R.attr.ic_check_box;
-        } else if (checkedIds.size() == 0) {
-            icon[0] = R.attr.ic_check_box_outline;
+            icon[0] = R.attr.ic_select_none;
         } else {
-            icon[0] = R.attr.ic_indeterminate_check_box;
+            icon[0] = R.attr.ic_select_all;
         }
 
         TypedArray a = getActivity().obtainStyledAttributes(icon);
@@ -212,7 +257,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int resId = 0;
+        @StringRes int resId = 0;
         switch(item.getItemId()) {
             case R.id.select_options:
                 return true;
@@ -272,7 +317,8 @@ public class EpisodesApplyActionFragment extends Fragment {
                 return true;
         }
         if(resId != 0) {
-            Toast.makeText(getActivity(), resId, Toast.LENGTH_SHORT).show();
+            Snackbar.make(getActivity().findViewById(R.id.content), resId, Snackbar.LENGTH_SHORT)
+                    .show();
             return true;
         } else {
             return false;
@@ -410,21 +456,56 @@ public class EpisodesApplyActionFragment extends Fragment {
             mListView.setItemChecked(i, checked);
         }
         ActivityCompat.invalidateOptionsMenu(EpisodesApplyActionFragment.this.getActivity());
+        showSpeedDialIfAnyChecked();
+        updateActionBarTitle();
+    }
+
+    private void saveActionBarTitle() {
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            CharSequence title = actionBar.getTitle();
+            if (title == null) {
+                title = "";
+            }
+            actionBarTitleOriginal = title;
+        }
+    }
+
+    private void restoreActionBarTitle() {
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(actionBarTitleOriginal);
+        }
+    }
+
+    private void updateActionBarTitle() {
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            CharSequence title = checkedIds.size() > 0 ?
+                    getString(R.string.num_selected_label, checkedIds.size()) :
+                    actionBarTitleOriginal;
+            actionBar.setTitle(title);
+        }
     }
 
     private void queueChecked() {
         DBWriter.addQueueItem(getActivity(), true, checkedIds.toArray());
-        close();
+        close(R.plurals.added_to_queue_batch_label, checkedIds.size());
+    }
+
+    private void removeFromQueueChecked() {
+        DBWriter.removeQueueItem(getActivity(), true, checkedIds.toArray());
+        close(R.plurals.removed_from_queue_batch_label, checkedIds.size());
     }
 
     private void markedCheckedPlayed() {
         DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds.toArray());
-        close();
+        close(R.plurals.marked_read_batch_label, checkedIds.size());
     }
 
     private void markedCheckedUnplayed() {
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds.toArray());
-        close();
+        close(R.plurals.marked_unread_batch_label, checkedIds.size());
     }
 
     private void downloadChecked() {
@@ -441,7 +522,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
         }
-        close();
+        close(R.plurals.downloading_batch_label, checkedIds.size());
     }
 
     private void deleteChecked() {
@@ -451,10 +532,18 @@ public class EpisodesApplyActionFragment extends Fragment {
                 DBWriter.deleteFeedMediaOfItem(getActivity(), episode.getMedia().getId());
             }
         }
-        close();
+        close(R.plurals.deleted_episode_batch_label, checkedIds.size());
     }
 
-    private void close() {
+    private void close(@PluralsRes int msgId, int numItems) {
+        if (numItems > 0) {
+            Snackbar.make(getActivity().findViewById(R.id.content),
+                    getResources().getQuantityString(msgId, numItems, numItems),
+                    Snackbar.LENGTH_LONG
+                    )
+                    .setAction(android.R.string.ok, v -> {})
+                    .show();
+        }
         getActivity().getSupportFragmentManager().popBackStack();
     }
 
