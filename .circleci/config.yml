@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/android:api-26-alpha
+      - image: circleci/android:api-28
 
     working_directory: ~/AntennaPod
 
