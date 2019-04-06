@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.util.syndication;
 
 import android.net.Uri;
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 import android.text.TextUtils;
 
 import org.jsoup.Jsoup;

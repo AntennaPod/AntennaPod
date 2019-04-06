@@ -11,7 +11,7 @@ import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;

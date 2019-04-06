@@ -2,9 +2,9 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.core.view.MenuItemCompat;
+import androidx.appcompat.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -197,7 +197,7 @@ public class ItunesSearchFragment extends Fragment {
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
         MenuItemUtils.adjustTextColor(getActivity(), sv);
         sv.setQueryHint(getString(R.string.search_itunes_label));
-        sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+        sv.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 sv.clearFocus();

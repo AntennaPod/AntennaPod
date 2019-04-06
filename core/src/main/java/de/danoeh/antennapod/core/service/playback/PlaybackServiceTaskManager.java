@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import java.util.List;

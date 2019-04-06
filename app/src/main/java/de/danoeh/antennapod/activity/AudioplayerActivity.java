@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
-import android.support.v4.view.ViewCompat;
+import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;

@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.3.2'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.5'
     }
 }
@@ -40,7 +40,7 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 26
+    compileSdkVersion = 28
     minSdkVersion = 14
     targetSdkVersion = 26
 
@@ -51,7 +51,7 @@ project.ext {
     commonstextVersion = "1.3"
     eventbusVersion = "2.4.0"
     flattr4jVersion = "2.14"
-    glideVersion = "4.8.0"
+    glideVersion = "4.9.0"
     glideOkhttpIntegrationVersion = "4.8.0"
     iconifyVersion = "2.2.2"
     jsoupVersion = "1.11.2"
@@ -70,7 +70,7 @@ project.ext {
 
     castCompanionLibVer = "2.9.1"
     playServicesVersion = "8.4.0"
-    wearableSupportVersion = "2.2.0"
+    wearableSupportVersion = "2.4.0"
 }
 
 wrapper {

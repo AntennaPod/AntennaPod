@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.glide;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -22,7 +22,6 @@ import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import okhttp3.*;
-import okhttp3.internal.http.RealResponseBody;
 
 /**
  * @see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader

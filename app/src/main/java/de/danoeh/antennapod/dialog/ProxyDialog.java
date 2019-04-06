@@ -3,7 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;

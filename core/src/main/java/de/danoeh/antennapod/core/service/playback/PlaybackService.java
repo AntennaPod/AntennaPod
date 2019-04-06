@@ -22,12 +22,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat;
-import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -46,6 +41,11 @@ import com.bumptech.glide.request.target.Target;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.media.MediaBrowserServiceCompat;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
@@ -1312,7 +1312,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                     PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
                             KeyEvent.KEYCODE_MEDIA_STOP, numActions);
-                    notificationBuilder.setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+                    notificationBuilder.setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                             .setMediaSession(mediaSession.getSessionToken())
                             .setShowActionsInCompactView(compactActionList.toArray())
                             .setShowCancelButton(true)

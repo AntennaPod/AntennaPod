@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.GridLayout
+            <androidx.gridlayout.widget.GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -54,7 +54,7 @@
                     app:layout_gravity="center"
                     android:dropDownWidth="wrap_content"
                     android:clickable="true" />
-            </android.support.v7.widget.GridLayout>
+            </androidx.gridlayout.widget.GridLayout>
 
             <CheckBox
                 android:id="@+id/cbxKeepUpdated"
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"/>
 
-            <android.support.v7.widget.GridLayout
+            <androidx.gridlayout.widget.GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -140,7 +140,7 @@
                     android:focusableInTouchMode="true"
                     android:cursorVisible="true"/>
 
-            </android.support.v7.widget.GridLayout>
+            </androidx.gridlayout.widget.GridLayout>
 
             <TextView
                 android:id="@+id/txtvAutoDownloadSettings"

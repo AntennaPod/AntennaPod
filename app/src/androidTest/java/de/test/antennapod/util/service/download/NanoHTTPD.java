@@ -1,6 +1,6 @@
 package de.test.antennapod.util.service.download;
 
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

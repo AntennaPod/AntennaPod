@@ -20,7 +20,7 @@ android {
         versionCode 1070196
         versionName "1.7.1"
         testApplicationId "de.test.antennapod"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         generatedDensities = []
     }
 
@@ -124,14 +124,15 @@ dependencies {
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
-    implementation "com.android.support:support-v4:$supportVersion"
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:design:$supportVersion"
-    implementation "com.android.support:preference-v14:$supportVersion"
-    implementation "com.android.support:gridlayout-v7:$supportVersion"
-    implementation "com.android.support:percent:$supportVersion"
-    implementation "com.android.support:recyclerview-v7:$supportVersion"
-    compileOnly 'com.google.android.wearable:wearable:2.2.0'
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation "androidx.appcompat:appcompat:1.0.2"
+    implementation "com.google.android.material:material:1.0.0"
+    implementation "androidx.legacy:legacy-preference-v14:1.0.0"
+    implementation "androidx.gridlayout:gridlayout:1.0.0"
+    implementation "androidx.percentlayout:percentlayout:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    annotationProcessor 'androidx.annotation:annotation:1.0.2'
+    compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
         exclude group: "org.json", module: "json"
@@ -166,11 +167,11 @@ dependencies {
     implementation "org.awaitility:awaitility:$awaitilityVersion"
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.1'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
 }
 
 play {

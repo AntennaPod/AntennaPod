@@ -17,17 +17,6 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.CheckBoxPreference;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.preference.PreferenceScreen;
 import android.text.Html;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
@@ -38,6 +27,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -50,6 +40,16 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AboutActivity;
@@ -842,7 +842,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             } else if (v > 0 && v < 24) {
                 entries[x] = res.getQuantityString(R.plurals.episode_cleanup_hours_after_listening, v, v);
             } else {
-                int numDays = (int)(v / 24); // assume underlying value will be NOT fraction of days, e.g., 36 (hours)
+                int numDays = (v / 24); // assume underlying value will be NOT fraction of days, e.g., 36 (hours)
                 entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, numDays, numDays);
             }
         }

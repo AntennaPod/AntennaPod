@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.event;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

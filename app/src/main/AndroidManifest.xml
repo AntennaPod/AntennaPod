@@ -380,7 +380,7 @@
         
         <provider
             android:authorities="@string/provider_authority"
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

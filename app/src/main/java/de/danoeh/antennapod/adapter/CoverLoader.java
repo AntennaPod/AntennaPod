@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,10 +9,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomViewTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.lang.ref.WeakReference;
 
-import com.bumptech.glide.request.transition.Transition;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
@@ -66,14 +65,12 @@ public class CoverLoader {
             options = options.error(errorResource);
         }
 
-        RequestBuilder builder = Glide.with(activity)
+        RequestBuilder<Drawable> builder = Glide.with(activity)
                 .load(uri)
                 .apply(options);
 
         if (fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
-            builder = builder.error(Glide.with(activity)
-                    .load(fallbackUri)
-                    .apply(options));
+            builder = builder.error(Glide.with(activity).load(fallbackUri).apply(options));
         }
 
         builder.into(new CoverTarget(txtvPlaceholder, imgvCover));

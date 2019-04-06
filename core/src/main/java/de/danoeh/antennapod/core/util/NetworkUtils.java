@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.support.v4.net.ConnectivityManagerCompat;
+import androidx.core.net.ConnectivityManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
