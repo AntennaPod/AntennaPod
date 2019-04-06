@@ -506,19 +506,20 @@ public class QueueFragment extends Fragment {
     }
 
     private void onFragmentLoaded(final boolean restoreScrollPosition) {
-        if (recyclerAdapter == null) {
-            MainActivity activity = (MainActivity) getActivity();
-            recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
-                new DefaultActionButtonCallback(activity), itemTouchHelper);
-            recyclerAdapter.setHasStableIds(true);
-            recyclerView.setAdapter(recyclerAdapter);
-        }
-        if(queue == null || queue.size() == 0) {
-            recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        } else {
+        if (queue != null && queue.size() > 0) {
+            if (recyclerAdapter == null) {
+                MainActivity activity = (MainActivity) getActivity();
+                recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
+                        new DefaultActionButtonCallback(activity), itemTouchHelper);
+                recyclerAdapter.setHasStableIds(true);
+                recyclerView.setAdapter(recyclerAdapter);
+            }
             emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerAdapter = null;
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
         }
 
         if (restoreScrollPosition) {
