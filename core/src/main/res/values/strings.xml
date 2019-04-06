@@ -177,7 +177,7 @@
     <string name="remove_label">Remove</string>
     <string name="delete_label">Delete</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
-    <string name="remove_episode_lable">Delete Episode</string>
+    <string name="delete_episode_label">Delete Episode</string>
     <plurals name="deleted_episode_batch_label">
         <item quantity="one">%d episode deleted.</item>
         <item quantity="other">%d episodes deleted.</item>
