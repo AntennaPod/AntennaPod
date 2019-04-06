@@ -58,9 +58,11 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
+import de.danoeh.antennapod.core.syndication.handler.FeedHandlerResult;
 import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
+import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
@@ -315,31 +317,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
         Log.d(TAG, "Parsing feed");
 
-        parser = Observable.fromCallable(() -> {
-                    // TODO: [PENDING 2954] return Optional<FeedHandlerResult>
-                    FeedHandler handler = new FeedHandler();
-                    try {
-                        return handler.parseFeed(feed);
-                    } catch (UnsupportedFeedtypeException e) {
-                        Log.d(TAG, "Unsupported feed type detected");
-                        if ("html".equalsIgnoreCase(e.getRootElement())) {
-                            showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
-                            return null;
-                        } else {
-                            throw e;
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, Log.getStackTraceString(e));
-                        throw e;
-                    } finally {
-                        boolean rc = new File(feed.getFile_url()).delete();
-                        Log.d(TAG, "Deleted feed source file. Result: " + rc);
-                    }
-                })
+        parser = Observable.fromCallable(this::doParseFeed)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> { // TODO: [PENDING 2954] wrap underlying Nullable return with Optional<>
-                    if(result != null) {
+                .subscribe(optionalResult -> {
+                    if(optionalResult.isPresent()) {
+                        FeedHandlerResult result = optionalResult.get();
                         beforeShowFeedInformation(result.feed);
                         showFeedInformation(result.feed, result.alternateFeedUrls);
                     }
@@ -349,6 +332,28 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                     showErrorDialog(errorMsg);
                     Log.d(TAG, "Feed parser exception: " + Log.getStackTraceString(error));
                 });
+    }
+
+    @NonNull
+    private Optional<FeedHandlerResult> doParseFeed() throws Exception {
+        FeedHandler handler = new FeedHandler();
+        try {
+            return Optional.of(handler.parseFeed(feed));
+        } catch (UnsupportedFeedtypeException e) {
+            Log.d(TAG, "Unsupported feed type detected");
+            if ("html".equalsIgnoreCase(e.getRootElement())) {
+                showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
+                return Optional.empty();
+            } else {
+                throw e;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            throw e;
+        } finally {
+            boolean rc = new File(feed.getFile_url()).delete();
+            Log.d(TAG, "Deleted feed source file. Result: " + rc);
+        }
     }
 
     /**
