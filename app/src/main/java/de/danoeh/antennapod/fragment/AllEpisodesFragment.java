@@ -342,19 +342,20 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     private void onFragmentLoaded() {
-        if (listAdapter == null) {
-            MainActivity mainActivity = (MainActivity) getActivity();
-            listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess,
-                    new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
-            listAdapter.setHasStableIds(true);
-            recyclerView.setAdapter(listAdapter);
-        }
-        if (episodes == null || episodes.size() == 0) {
-            recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        } else {
+        if (episodes != null && episodes.size() > 0) {
+            if (listAdapter == null) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess,
+                        new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
+                listAdapter.setHasStableIds(true);
+                recyclerView.setAdapter(listAdapter);
+            }
             emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            listAdapter = null;
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
         }
 
         listAdapter.notifyDataSetChanged();
