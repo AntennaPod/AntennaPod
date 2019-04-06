@@ -34,9 +34,6 @@
         <!-- android:elevation:
              1. Needs to match the speed dial's minimal elevation,
                 or the speed dial can't be clicked at all
-             2. It is honored for API >= 21, but it does not hurt to be added here.
-                Use tools:ignore to suppress warnings.
-                Otherwise, we need a custom layout for API >= 21 that is more difficult to maintain.
           -->
         <com.leinardi.android.speeddial.SpeedDialView
             android:id="@+id/fabSD"
