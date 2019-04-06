@@ -239,7 +239,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
         getWindow().setFormat(PixelFormat.TRANSPARENT);
         setupGUI();
-        loadMediaInfo();
     }
 
     @Override
@@ -401,248 +400,246 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             }
             finish();
             return true;
-        } else {
-            if (media != null) {
-                switch (item.getItemId()) {
-                    case R.id.add_to_favorites_item:
-                        if(media instanceof FeedMedia) {
-                            FeedItem feedItem = ((FeedMedia)media).getItem();
-                            if(feedItem != null) {
-                                DBWriter.addFavoriteItem(feedItem);
-                                isFavorite = true;
-                                invalidateOptionsMenu();
-                                Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
-                                     .show();
-                            }
-                        }
-                        break;
-                    case R.id.remove_from_favorites_item:
-                        if(media instanceof FeedMedia) {
-                            FeedItem feedItem = ((FeedMedia)media).getItem();
-                            if(feedItem != null) {
-                                DBWriter.removeFavoriteItem(feedItem);
-                                isFavorite = false;
-                                invalidateOptionsMenu();
-                                Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT)
-                                     .show();
-                            }
-                        }
-                        break;
-                    case R.id.disable_sleeptimer_item:
-                        if (controller.serviceAvailable()) {
-
-                            MaterialDialog.Builder stDialog = new MaterialDialog.Builder(this);
-                            stDialog.title(R.string.sleep_timer_label);
-                            stDialog.content(getString(R.string.time_left_label)
-                                    + Converter.getDurationStringLong((int) controller
-                                    .getSleepTimerTimeLeft()));
-                            stDialog.positiveText(R.string.disable_sleeptimer_label);
-                            stDialog.negativeText(R.string.cancel_label);
-                            stDialog.onPositive((dialog, which) -> {
-                                dialog.dismiss();
-                                controller.disableSleepTimer();
-                            });
-                            stDialog.onNegative((dialog, which) -> dialog.dismiss());
-                            stDialog.build().show();
-                        }
-                        break;
-                    case R.id.set_sleeptimer_item:
-                        if (controller.serviceAvailable()) {
-                            SleepTimerDialog td = new SleepTimerDialog(this) {
-                                @Override
-                                public void onTimerSet(long millis, boolean shakeToReset, boolean vibrate) {
-                                    controller.setSleepTimer(millis, shakeToReset, vibrate);
-                                }
-                            };
-                            td.createNewDialog().show();
-                        }
-                        break;
-                    case R.id.audio_controls:
-                        MaterialDialog dialog = new MaterialDialog.Builder(this)
-                                .title(R.string.audio_controls)
-                                .customView(R.layout.audio_controls, true)
-                                .neutralText(R.string.close_label)
-                                .onNeutral((dialog1, which) -> {
-                                    final SeekBar left = (SeekBar) dialog1.findViewById(R.id.volume_left);
-                                    final SeekBar right = (SeekBar) dialog1.findViewById(R.id.volume_right);
-                                    UserPreferences.setVolume(left.getProgress(), right.getProgress());
-                                })
-                                .show();
-                        final SeekBar barPlaybackSpeed = (SeekBar) dialog.findViewById(R.id.playback_speed);
-                        final Button butDecSpeed = (Button) dialog.findViewById(R.id.butDecSpeed);
-                        butDecSpeed.setOnClickListener(v -> {
-                            if(controller != null && controller.canSetPlaybackSpeed()) {
-                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() - 1);
-                            } else {
-                                VariableSpeedDialog.showGetPluginDialog(this);
-                            }
-                        });
-                        final Button butIncSpeed = (Button) dialog.findViewById(R.id.butIncSpeed);
-                        butIncSpeed.setOnClickListener(v -> {
-                            if(controller != null && controller.canSetPlaybackSpeed()) {
-                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() + 1);
-                            } else {
-                                VariableSpeedDialog.showGetPluginDialog(this);
-                            }
-                        });
-
-                        final TextView txtvPlaybackSpeed = (TextView) dialog.findViewById(R.id.txtvPlaybackSpeed);
-                        float currentSpeed = 1.0f;
-                        try {
-                            currentSpeed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
-                        } catch (NumberFormatException e) {
-                            Log.e(TAG, Log.getStackTraceString(e));
-                            UserPreferences.setPlaybackSpeed(String.valueOf(currentSpeed));
-                        }
-
-                        String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
-                        final float minPlaybackSpeed = availableSpeeds.length > 1 ?
-                                Float.valueOf(availableSpeeds[0]) : DEFAULT_MIN_PLAYBACK_SPEED;
-                        float maxPlaybackSpeed = availableSpeeds.length > 1 ?
-                                Float.valueOf(availableSpeeds[availableSpeeds.length - 1]) : DEFAULT_MAX_PLAYBACK_SPEED;
-                        int progressMax = (int) ((maxPlaybackSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP);
-                        barPlaybackSpeed.setMax(progressMax);
-
-                        txtvPlaybackSpeed.setText(String.format("%.2fx", currentSpeed));
-                        barPlaybackSpeed.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-                            @Override
-                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                if(controller != null && controller.canSetPlaybackSpeed()) {
-                                    float playbackSpeed = progress * PLAYBACK_SPEED_STEP + minPlaybackSpeed;
-                                    controller.setPlaybackSpeed(playbackSpeed);
-                                    String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
-                                    UserPreferences.setPlaybackSpeed(speedPref);
-                                    String speedStr = String.format("%.2fx", playbackSpeed);
-                                    txtvPlaybackSpeed.setText(speedStr);
-                                } else if(fromUser) {
-                                    float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
-                                    barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress(
-                                            (int) ((speed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP)));
-                                }
-                            }
-
-                            @Override
-                            public void onStartTrackingTouch(SeekBar seekBar) {
-                                if(controller != null && !controller.canSetPlaybackSpeed()) {
-                                    VariableSpeedDialog.showGetPluginDialog(MediaplayerActivity.this);
-                                }
-                            }
-
-                            @Override
-                            public void onStopTrackingTouch(SeekBar seekBar) {
-                            }
-                        });
-                        barPlaybackSpeed.setProgress((int) ((currentSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP));
-
-                        final SeekBar barLeftVolume = (SeekBar) dialog.findViewById(R.id.volume_left);
-                        barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
-                        final SeekBar barRightVolume = (SeekBar) dialog.findViewById(R.id.volume_right);
-                        barRightVolume.setProgress(UserPreferences.getRightVolumePercentage());
-                        final CheckBox stereoToMono = (CheckBox) dialog.findViewById(R.id.stereo_to_mono);
-                        stereoToMono.setChecked(UserPreferences.stereoToMono());
-                        if (controller != null && !controller.canDownmix()) {
-                            stereoToMono.setEnabled(false);
-                            String sonicOnly = getString(R.string.sonic_only);
-                            stereoToMono.setText(stereoToMono.getText() + " [" + sonicOnly + "]");
-                        }
-
-                        if (UserPreferences.useExoplayer()) {
-                            barRightVolume.setEnabled(false);
-                        }
-
-                        final CheckBox skipSilence = (CheckBox) dialog.findViewById(R.id.skipSilence);
-                        skipSilence.setChecked(UserPreferences.isSkipSilence());
-                        if (!UserPreferences.useExoplayer()) {
-                            skipSilence.setEnabled(false);
-                            String exoplayerOnly = getString(R.string.exoplayer_only);
-                            skipSilence.setText(skipSilence.getText() + " [" + exoplayerOnly + "]");
-                        }
-                        skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                            UserPreferences.setSkipSilence(isChecked);
-                            controller.setSkipSilence(isChecked);
-                        });
-
-                        barLeftVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-                            @Override
-                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                controller.setVolume(
-                                        Converter.getVolumeFromPercentage(progress),
-                                        Converter.getVolumeFromPercentage(barRightVolume.getProgress()));
-                            }
-
-                            @Override
-                            public void onStartTrackingTouch(SeekBar seekBar) {
-                            }
-
-                            @Override
-                            public void onStopTrackingTouch(SeekBar seekBar) {
-                            }
-                        });
-                        barRightVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-                            @Override
-                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                controller.setVolume(
-                                        Converter.getVolumeFromPercentage(barLeftVolume.getProgress()),
-                                        Converter.getVolumeFromPercentage(progress));
-                            }
-
-                            @Override
-                            public void onStartTrackingTouch(SeekBar seekBar) {
-                            }
-
-                            @Override
-                            public void onStopTrackingTouch(SeekBar seekBar) {
-                            }
-                        });
-                        stereoToMono.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                            UserPreferences.stereoToMono(isChecked);
-                            if (controller != null) {
-                                controller.setDownmix(isChecked);
-                            }
-                        });
-                        break;
-                    case R.id.visit_website_item:
-                        Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
-                        startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                        break;
-                    case R.id.support_item:
-                        if (media instanceof FeedMedia) {
-                            DBTasks.flattrItemIfLoggedIn(this, ((FeedMedia) media).getItem());
-                        }
-                        break;
-                    case R.id.share_link_item:
-                        if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemLink(this, ((FeedMedia) media).getItem());
-                        }
-                        break;
-                    case R.id.share_download_url_item:
-                        if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem());
-                        }
-                        break;
-                    case R.id.share_link_with_position_item:
-                        if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemLink(this, ((FeedMedia) media).getItem(), true);
-                        }
-                        break;
-                    case R.id.share_download_url_with_position_item:
-                        if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem(), true);
-                        }
-                        break;
-                    case R.id.share_file:
-                        if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemFile(this, ((FeedMedia) media));
-                        }
-                        break;
-                    default:
-                        return false;
-                }
-                return true;
-            } else {
-                return false;
-            }
         }
+        if (media == null) {
+            return false;
+        }
+        switch (item.getItemId()) {
+            case R.id.add_to_favorites_item:
+                if (media instanceof FeedMedia) {
+                    FeedItem feedItem = ((FeedMedia) media).getItem();
+                    if (feedItem != null) {
+                        DBWriter.addFavoriteItem(feedItem);
+                        isFavorite = true;
+                        invalidateOptionsMenu();
+                        Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+                break;
+            case R.id.remove_from_favorites_item:
+                if (media instanceof FeedMedia) {
+                    FeedItem feedItem = ((FeedMedia) media).getItem();
+                    if (feedItem != null) {
+                        DBWriter.removeFavoriteItem(feedItem);
+                        isFavorite = false;
+                        invalidateOptionsMenu();
+                        Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+                break;
+            case R.id.disable_sleeptimer_item:
+                if (controller.serviceAvailable()) {
+
+                    MaterialDialog.Builder stDialog = new MaterialDialog.Builder(this);
+                    stDialog.title(R.string.sleep_timer_label);
+                    stDialog.content(getString(R.string.time_left_label)
+                            + Converter.getDurationStringLong((int) controller
+                            .getSleepTimerTimeLeft()));
+                    stDialog.positiveText(R.string.disable_sleeptimer_label);
+                    stDialog.negativeText(R.string.cancel_label);
+                    stDialog.onPositive((dialog, which) -> {
+                        dialog.dismiss();
+                        controller.disableSleepTimer();
+                    });
+                    stDialog.onNegative((dialog, which) -> dialog.dismiss());
+                    stDialog.build().show();
+                }
+                break;
+            case R.id.set_sleeptimer_item:
+                if (controller.serviceAvailable()) {
+                    SleepTimerDialog td = new SleepTimerDialog(this) {
+                        @Override
+                        public void onTimerSet(long millis, boolean shakeToReset, boolean vibrate) {
+                            controller.setSleepTimer(millis, shakeToReset, vibrate);
+                        }
+                    };
+                    td.createNewDialog().show();
+                }
+                break;
+            case R.id.audio_controls:
+                MaterialDialog dialog = new MaterialDialog.Builder(this)
+                        .title(R.string.audio_controls)
+                        .customView(R.layout.audio_controls, true)
+                        .neutralText(R.string.close_label)
+                        .onNeutral((dialog1, which) -> {
+                            final SeekBar left = (SeekBar) dialog1.findViewById(R.id.volume_left);
+                            final SeekBar right = (SeekBar) dialog1.findViewById(R.id.volume_right);
+                            UserPreferences.setVolume(left.getProgress(), right.getProgress());
+                        })
+                        .show();
+                final SeekBar barPlaybackSpeed = (SeekBar) dialog.findViewById(R.id.playback_speed);
+                final Button butDecSpeed = (Button) dialog.findViewById(R.id.butDecSpeed);
+                butDecSpeed.setOnClickListener(v -> {
+                    if (controller != null && controller.canSetPlaybackSpeed()) {
+                        barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() - 1);
+                    } else {
+                        VariableSpeedDialog.showGetPluginDialog(this);
+                    }
+                });
+                final Button butIncSpeed = (Button) dialog.findViewById(R.id.butIncSpeed);
+                butIncSpeed.setOnClickListener(v -> {
+                    if (controller != null && controller.canSetPlaybackSpeed()) {
+                        barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() + 1);
+                    } else {
+                        VariableSpeedDialog.showGetPluginDialog(this);
+                    }
+                });
+
+                final TextView txtvPlaybackSpeed = (TextView) dialog.findViewById(R.id.txtvPlaybackSpeed);
+                float currentSpeed = 1.0f;
+                try {
+                    currentSpeed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, Log.getStackTraceString(e));
+                    UserPreferences.setPlaybackSpeed(String.valueOf(currentSpeed));
+                }
+
+                String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
+                final float minPlaybackSpeed = availableSpeeds.length > 1 ?
+                        Float.valueOf(availableSpeeds[0]) : DEFAULT_MIN_PLAYBACK_SPEED;
+                float maxPlaybackSpeed = availableSpeeds.length > 1 ?
+                        Float.valueOf(availableSpeeds[availableSpeeds.length - 1]) : DEFAULT_MAX_PLAYBACK_SPEED;
+                int progressMax = (int) ((maxPlaybackSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP);
+                barPlaybackSpeed.setMax(progressMax);
+
+                txtvPlaybackSpeed.setText(String.format("%.2fx", currentSpeed));
+                barPlaybackSpeed.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if (controller != null && controller.canSetPlaybackSpeed()) {
+                            float playbackSpeed = progress * PLAYBACK_SPEED_STEP + minPlaybackSpeed;
+                            controller.setPlaybackSpeed(playbackSpeed);
+                            String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
+                            UserPreferences.setPlaybackSpeed(speedPref);
+                            String speedStr = String.format("%.2fx", playbackSpeed);
+                            txtvPlaybackSpeed.setText(speedStr);
+                        } else if (fromUser) {
+                            float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
+                            barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress(
+                                    (int) ((speed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP)));
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        if (controller != null && !controller.canSetPlaybackSpeed()) {
+                            VariableSpeedDialog.showGetPluginDialog(MediaplayerActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                    }
+                });
+                barPlaybackSpeed.setProgress((int) ((currentSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP));
+
+                final SeekBar barLeftVolume = (SeekBar) dialog.findViewById(R.id.volume_left);
+                barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
+                final SeekBar barRightVolume = (SeekBar) dialog.findViewById(R.id.volume_right);
+                barRightVolume.setProgress(UserPreferences.getRightVolumePercentage());
+                final CheckBox stereoToMono = (CheckBox) dialog.findViewById(R.id.stereo_to_mono);
+                stereoToMono.setChecked(UserPreferences.stereoToMono());
+                if (controller != null && !controller.canDownmix()) {
+                    stereoToMono.setEnabled(false);
+                    String sonicOnly = getString(R.string.sonic_only);
+                    stereoToMono.setText(stereoToMono.getText() + " [" + sonicOnly + "]");
+                }
+
+                if (UserPreferences.useExoplayer()) {
+                    barRightVolume.setEnabled(false);
+                }
+
+                final CheckBox skipSilence = (CheckBox) dialog.findViewById(R.id.skipSilence);
+                skipSilence.setChecked(UserPreferences.isSkipSilence());
+                if (!UserPreferences.useExoplayer()) {
+                    skipSilence.setEnabled(false);
+                    String exoplayerOnly = getString(R.string.exoplayer_only);
+                    skipSilence.setText(skipSilence.getText() + " [" + exoplayerOnly + "]");
+                }
+                skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    UserPreferences.setSkipSilence(isChecked);
+                    controller.setSkipSilence(isChecked);
+                });
+
+                barLeftVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        controller.setVolume(
+                                Converter.getVolumeFromPercentage(progress),
+                                Converter.getVolumeFromPercentage(barRightVolume.getProgress()));
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                    }
+                });
+                barRightVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        controller.setVolume(
+                                Converter.getVolumeFromPercentage(barLeftVolume.getProgress()),
+                                Converter.getVolumeFromPercentage(progress));
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                    }
+                });
+                stereoToMono.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    UserPreferences.stereoToMono(isChecked);
+                    if (controller != null) {
+                        controller.setDownmix(isChecked);
+                    }
+                });
+                break;
+            case R.id.visit_website_item:
+                Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                break;
+            case R.id.support_item:
+                if (media instanceof FeedMedia) {
+                    DBTasks.flattrItemIfLoggedIn(this, ((FeedMedia) media).getItem());
+                }
+                break;
+            case R.id.share_link_item:
+                if (media instanceof FeedMedia) {
+                    ShareUtils.shareFeedItemLink(this, ((FeedMedia) media).getItem());
+                }
+                break;
+            case R.id.share_download_url_item:
+                if (media instanceof FeedMedia) {
+                    ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem());
+                }
+                break;
+            case R.id.share_link_with_position_item:
+                if (media instanceof FeedMedia) {
+                    ShareUtils.shareFeedItemLink(this, ((FeedMedia) media).getItem(), true);
+                }
+                break;
+            case R.id.share_download_url_with_position_item:
+                if (media instanceof FeedMedia) {
+                    ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem(), true);
+                }
+                break;
+            case R.id.share_file:
+                if (media instanceof FeedMedia) {
+                    ShareUtils.shareFeedItemFile(this, ((FeedMedia) media));
+                }
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
     private static String getWebsiteLinkWithFallback(Playable media) {
@@ -664,6 +661,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (controller != null) {
             controller.init();
         }
+        loadMediaInfo();
     }
 
     public void onEventMainThread(ServiceEvent event) {

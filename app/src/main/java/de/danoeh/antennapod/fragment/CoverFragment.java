@@ -57,19 +57,19 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
     }
 
     private void loadMediaInfo() {
-        if (media != null) {
-            txtvPodcastTitle.setText(media.getFeedTitle());
-            txtvEpisodeTitle.setText(media.getEpisodeTitle());
-            Glide.with(this)
-                    .load(media.getImageLocation())
-                    .apply(new RequestOptions()
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .dontAnimate()
-                        .fitCenter())
-                    .into(imgvCover);
-        } else {
+        if (media == null) {
             Log.w(TAG, "loadMediaInfo was called while media was null");
+            return;
         }
+        txtvPodcastTitle.setText(media.getFeedTitle());
+        txtvEpisodeTitle.setText(media.getEpisodeTitle());
+        Glide.with(this)
+                .load(media.getImageLocation())
+                .apply(new RequestOptions()
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .dontAnimate()
+                    .fitCenter())
+                .into(imgvCover);
     }
 
     @Override
