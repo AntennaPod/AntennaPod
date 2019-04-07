@@ -342,8 +342,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         } catch (UnsupportedFeedtypeException e) {
             Log.d(TAG, "Unsupported feed type detected");
             if ("html".equalsIgnoreCase(e.getRootElement())) {
-                showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
-                return Optional.empty();
+                boolean dialogShown = showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
+                if (dialogShown) {
+                    return Optional.empty();
+                } else {
+                    Log.d(TAG, "Supplied feed is an HTML web page that has no references to any feed");
+                    throw e;
+                }
             } else {
                 throw e;
             }
@@ -539,21 +544,25 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     }
 
-    private void showFeedDiscoveryDialog(File feedFile, String baseUrl) {
+    /**
+     *
+     * @return true if a FeedDiscoveryDialog is shown, false otherwise (e.g., due to no feed found).
+     */
+    private boolean showFeedDiscoveryDialog(File feedFile, String baseUrl) {
         FeedDiscoverer fd = new FeedDiscoverer();
         final Map<String, String> urlsMap;
         try {
             urlsMap = fd.findLinks(feedFile, baseUrl);
             if (urlsMap == null || urlsMap.isEmpty()) {
-                return;
+                return false;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return;
+            return false;
         }
 
         if (isPaused || isFinishing()) {
-            return;
+            return false;
         }
 
         final List<String> titles = new ArrayList<>();
@@ -589,6 +598,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
             dialog = ab.show();
         });
+        return true;
     }
 
     private class FeedViewAuthenticationDialog extends AuthenticationDialog {
