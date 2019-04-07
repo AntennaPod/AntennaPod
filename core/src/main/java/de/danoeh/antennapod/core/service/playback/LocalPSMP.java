@@ -132,7 +132,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject(...)");
-        executor.useMainThread = true; // ExoPlayer needs to be initialized in main thread
+        executor.useMainThread = UserPreferences.useExoplayer();
         executor.submit(() -> {
             playerLock.lock();
             try {
@@ -400,6 +400,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     @Override
     public void reinit() {
+        executor.useMainThread = UserPreferences.useExoplayer();
         executor.submit(() -> {
             playerLock.lock();
             Log.d(TAG, "reinit()");
@@ -783,13 +784,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         if (UserPreferences.useExoplayer()) {
             mediaPlayer = new ExoPlayerWrapper(context);
-            executor.useMainThread = true;
         } else if (media.getMediaType() == MediaType.VIDEO) {
             mediaPlayer = new VideoPlayer();
-            executor.useMainThread = false;
         } else {
             mediaPlayer = new AudioPlayer(context);
-            executor.useMainThread = false;
         }
 
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -852,6 +850,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     protected Future<?> endPlayback(final boolean hasEnded, final boolean wasSkipped,
                                     final boolean shouldContinue, final boolean toStoppedState) {
+        executor.useMainThread = UserPreferences.useExoplayer();
         return executor.submit(() -> {
             playerLock.lock();
             releaseWifiLockIfNecessary();
@@ -1058,7 +1057,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             playerLock.unlock();
         };
 
-        if (mediaPlayer instanceof ExoPlayerWrapper) {
+        if (executor.useMainThread) {
             r.run();
         } else {
             new Thread(r).start();

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -126,8 +127,8 @@ public class PlaybackServiceTaskManager {
      */
     public synchronized void startPositionSaver() {
         if (!isPositionSaverActive()) {
-            Handler handler = new Handler(); // Execute on main thread
-            Runnable positionSaver = () -> handler.post(callback::positionSaverTick);
+            Runnable positionSaver = callback::positionSaverTick;
+            positionSaver = useMainThreadIfNecessary(positionSaver);
             positionSaverFuture = schedExecutor.scheduleWithFixedDelay(positionSaver, POSITION_SAVER_WAITING_INTERVAL,
                     POSITION_SAVER_WAITING_INTERVAL, TimeUnit.MILLISECONDS);
 
@@ -160,6 +161,7 @@ public class PlaybackServiceTaskManager {
     public synchronized void startWidgetUpdater() {
         if (!isWidgetUpdaterActive()) {
             Runnable widgetUpdater = callback::onWidgetUpdaterTick;
+            widgetUpdater = useMainThreadIfNecessary(widgetUpdater);
             widgetUpdaterFuture = schedExecutor.scheduleWithFixedDelay(widgetUpdater, WIDGET_UPDATER_NOTIFICATION_INTERVAL,
                     WIDGET_UPDATER_NOTIFICATION_INTERVAL, TimeUnit.MILLISECONDS);
 
@@ -186,7 +188,8 @@ public class PlaybackServiceTaskManager {
             sleepTimerFuture.cancel(true);
         }
         sleepTimer = new SleepTimer(waitingTime, shakeToReset, vibrate);
-        sleepTimerFuture = schedExecutor.schedule(sleepTimer, 0, TimeUnit.MILLISECONDS);
+        Runnable runnable = useMainThreadIfNecessary(sleepTimer);
+        sleepTimerFuture = schedExecutor.schedule(runnable, 0, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -269,6 +272,7 @@ public class PlaybackServiceTaskManager {
             }
             Log.d(TAG, "Chapter loader stopped");
         };
+        chapterLoader = useMainThreadIfNecessary(chapterLoader);
         chapterLoaderFuture = schedExecutor.submit(chapterLoader);
     }
 
@@ -292,6 +296,17 @@ public class PlaybackServiceTaskManager {
         EventBus.getDefault().unregister(this);
         cancelAllTasks();
         schedExecutor.shutdown();
+    }
+
+    private Runnable useMainThreadIfNecessary(Runnable runnable) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            // Called in main thread => ExoPlayer is used
+            // Run on ui thread even if called from schedExecutor
+            Handler handler = new Handler();
+            return () -> handler.post(runnable);
+        } else {
+            return runnable;
+        }
     }
 
     /**
