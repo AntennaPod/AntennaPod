@@ -11,6 +11,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -313,6 +314,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @NonNull
     private String loadData() {
         Timeline timeline = new Timeline(getActivity(), shownotesProvider);
         return timeline.processShownotes(highlightTimecodes);

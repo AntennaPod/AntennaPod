@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
@@ -293,6 +294,7 @@ public class PlaybackHistoryFragment extends ListFragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @NonNull
     private List<FeedItem> loadData() {
         List<FeedItem> history = DBReader.getPlaybackHistory();
         DBReader.loadAdditionalFeedItemListData(history);

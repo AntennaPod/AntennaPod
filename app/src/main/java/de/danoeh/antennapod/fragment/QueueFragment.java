@@ -639,13 +639,11 @@ public class QueueFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
-                    if(items != null) {
-                        progLoading.setVisibility(View.GONE);
-                        queue = items;
-                        onFragmentLoaded(restoreScrollPosition);
-                        if(recyclerAdapter != null) {
-                            recyclerAdapter.notifyDataSetChanged();
-                        }
+                    progLoading.setVisibility(View.GONE);
+                    queue = items;
+                    onFragmentLoaded(restoreScrollPosition);
+                    if(recyclerAdapter != null) {
+                        recyclerAdapter.notifyDataSetChanged();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }

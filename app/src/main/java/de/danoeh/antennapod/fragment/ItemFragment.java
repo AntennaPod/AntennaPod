@@ -588,6 +588,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @Nullable
     private FeedItem loadInBackground() {
         FeedItem feedItem = DBReader.getFeedItem(feedItems[feedItemPos]);
         if (feedItem != null) {
