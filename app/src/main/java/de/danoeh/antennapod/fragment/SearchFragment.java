@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -215,16 +216,15 @@ public class SearchFragment extends ListFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    if (result != null) {
-                        itemsLoaded = true;
-                        searchResults = result;
-                        if (viewCreated) {
-                            onFragmentLoaded();
-                        }
+                    itemsLoaded = true;
+                    searchResults = result;
+                    if (viewCreated) {
+                        onFragmentLoaded();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @NonNull
     private List<SearchResult> performSearch() {
         Bundle args = getArguments();
         String query = args.getString(ARG_QUERY);

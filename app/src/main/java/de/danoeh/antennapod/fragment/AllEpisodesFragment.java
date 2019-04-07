@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -498,16 +499,15 @@ public class AllEpisodesFragment extends Fragment {
                 .subscribe(data -> {
                     recyclerView.setVisibility(View.VISIBLE);
                     progLoading.setVisibility(View.GONE);
-                    if (data != null) {
-                        episodes = data;
-                        itemsLoaded = true;
-                        if (viewsCreated) {
-                            onFragmentLoaded();
-                        }
+                    episodes = data;
+                    itemsLoaded = true;
+                    if (viewsCreated) {
+                        onFragmentLoaded();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @NonNull
     List<FeedItem> loadData() {
         return DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
     }
