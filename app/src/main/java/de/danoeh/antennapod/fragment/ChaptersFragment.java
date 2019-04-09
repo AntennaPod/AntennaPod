@@ -2,32 +2,23 @@ package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.greenrobot.event.EventBus;
 
 
-public class ChaptersFragment extends ListFragment implements MediaplayerInfoContentFragment {
-
+public class ChaptersFragment extends ListFragment {
     private static final String TAG = "ChaptersFragment";
-
-    private Playable media;
+    private ChaptersListAdapter adapter;
     private PlaybackController controller;
 
-    private ChaptersListAdapter adapter;
-
-    public static ChaptersFragment newInstance(Playable media) {
-        ChaptersFragment f = new ChaptersFragment();
-        f.media = media;
-        return f;
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -39,10 +30,6 @@ public class ChaptersFragment extends ListFragment implements MediaplayerInfoCon
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
         adapter = new ChaptersListAdapter(getActivity(), 0, pos -> {
-            if(controller == null) {
-                Log.d(TAG, "controller is null");
-                return;
-            }
             Chapter chapter = (Chapter) getListAdapter().getItem(pos);
             controller.seekToChapter(chapter);
         });
@@ -50,42 +37,51 @@ public class ChaptersFragment extends ListFragment implements MediaplayerInfoCon
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        adapter.setMedia(media);
-        adapter.notifyDataSetChanged();
-        if(media == null || media.getChapters() == null) {
-            setEmptyText(getString(R.string.no_chapters_label));
-        } else {
-            setEmptyText(null);
-        }
-    }
+    public void onStart() {
+        super.onStart();
+        controller = new PlaybackController(getActivity(), false) {
+            @Override
+            public boolean loadMediaInfo() {
+                if (getMedia() == null) {
+                    return false;
+                }
+                onMediaChanged(getMedia());
+                return true;
+            }
 
-    public void onDestroy() {
-        super.onDestroy();
-        adapter = null;
-        controller = null;
+            @Override
+            public void onPositionObserverUpdate() {
+                adapter.notifyDataSetChanged();
+            }
+        };
+        controller.init();
+        onMediaChanged(controller.getMedia());
+        EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onMediaChanged(Playable media) {
-        if(this.media == media) {
-            return;
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+        controller.release();
+        controller = null;
+    }
+
+    public void onEventMainThread(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
+            controller.init();
         }
-        this.media = media;
+    }
+
+    private void onMediaChanged(Playable media) {
         if (adapter != null) {
             adapter.setMedia(media);
             adapter.notifyDataSetChanged();
-            if(media == null || media.getChapters() == null || media.getChapters().size() == 0) {
-                setEmptyText(getString(R.string.no_items_label));
+            if (media == null || media.getChapters() == null || media.getChapters().size() == 0) {
+                setEmptyText(getString(R.string.no_chapters_label));
             } else {
                 setEmptyText(null);
             }
         }
     }
-
-    public void setController(PlaybackController controller) {
-        this.controller = controller;
-    }
-
 }

@@ -28,18 +28,15 @@ import android.widget.Toast;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MediaplayerInfoActivity;
-import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
-import de.danoeh.antennapod.core.util.ShownotesProvider;
-import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
+import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -48,7 +45,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Displays the description of a Playable object in a Webview.
  */
-public class ItemDescriptionFragment extends Fragment implements MediaplayerInfoContentFragment {
+public class ItemDescriptionFragment extends Fragment {
 
     private static final String TAG = "ItemDescriptionFragment";
 
@@ -56,56 +53,15 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     private static final String PREF_SCROLL_Y = "prefScrollY";
     private static final String PREF_PLAYABLE_ID = "prefPlayableId";
 
-    private static final String ARG_PLAYABLE = "arg.playable";
-    private static final String ARG_FEEDITEM_ID = "arg.feeditem";
-
-    private static final String ARG_SAVE_STATE = "arg.saveState";
-    private static final String ARG_HIGHLIGHT_TIMECODES = "arg.highlightTimecodes";
-
     private WebView webvDescription;
-
-    private ShownotesProvider shownotesProvider;
-    private Playable media;
-
     private Disposable webViewLoader;
+    private PlaybackController controller;
 
     /**
      * URL that was selected via long-press.
      */
     private String selectedURL;
 
-    /**
-     * True if Fragment should save its state (e.g. scrolling position) in a
-     * shared preference.
-     */
-    private boolean saveState;
-
-    /**
-     * True if Fragment should highlight timecodes (e.g. time codes in the HH:MM:SS format).
-     */
-    private boolean highlightTimecodes;
-
-    public static ItemDescriptionFragment newInstance(Playable media,
-                                                      boolean saveState,
-                                                      boolean highlightTimecodes) {
-        ItemDescriptionFragment f = new ItemDescriptionFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_PLAYABLE, media);
-        args.putBoolean(ARG_SAVE_STATE, saveState);
-        args.putBoolean(ARG_HIGHLIGHT_TIMECODES, highlightTimecodes);
-        f.setArguments(args);
-        return f;
-    }
-
-    public static ItemDescriptionFragment newInstance(FeedItem item, boolean saveState, boolean highlightTimecodes) {
-        ItemDescriptionFragment f = new ItemDescriptionFragment();
-        Bundle args = new Bundle();
-        args.putLong(ARG_FEEDITEM_ID, item.getId());
-        args.putBoolean(ARG_SAVE_STATE, saveState);
-        args.putBoolean(ARG_HIGHLIGHT_TIMECODES, highlightTimecodes);
-        f.setArguments(args);
-        return f;
-    }
 
     @SuppressLint("NewApi")
     @Override
@@ -175,39 +131,6 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
             webvDescription.destroy();
         }
     }
-
-    @SuppressLint("NewApi")
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "Creating fragment");
-        Bundle args = getArguments();
-        saveState = args.getBoolean(ARG_SAVE_STATE, false);
-        highlightTimecodes = args.getBoolean(ARG_HIGHLIGHT_TIMECODES, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Bundle args = getArguments();
-        if (args.containsKey(ARG_PLAYABLE)) {
-            if (media == null) {
-                media = args.getParcelable(ARG_PLAYABLE);
-                shownotesProvider = media;
-            }
-            load();
-        } else if (args.containsKey(ARG_FEEDITEM_ID)) {
-            long id = getArguments().getLong(ARG_FEEDITEM_ID);
-            Observable.defer(() -> Observable.just(DBReader.getFeedItem(id)))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(feedItem -> {
-                        shownotesProvider = feedItem;
-                        load();
-                    }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-        }
-    }
-
 
     private final View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
 
@@ -301,9 +224,6 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
         if(webViewLoader != null) {
             webViewLoader.dispose();
         }
-        if(shownotesProvider == null) {
-            return;
-        }
         webViewLoader = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -316,8 +236,8 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
 
     @NonNull
     private String loadData() {
-        Timeline timeline = new Timeline(getActivity(), shownotesProvider);
-        return timeline.processShownotes(highlightTimecodes);
+        Timeline timeline = new Timeline(getActivity(), controller.getMedia());
+        return timeline.processShownotes(true);
     }
 
     @Override
@@ -327,42 +247,38 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     }
 
     private void savePreference() {
-        if (saveState) {
-            Log.d(TAG, "Saving preferences");
-            SharedPreferences prefs = getActivity().getSharedPreferences(PREF,
-                    Activity.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            if (media != null && webvDescription != null) {
-                Log.d(TAG, "Saving scroll position: " + webvDescription.getScrollY());
-                editor.putInt(PREF_SCROLL_Y, webvDescription.getScrollY());
-                editor.putString(PREF_PLAYABLE_ID, media.getIdentifier()
-                        .toString());
-            } else {
-                Log.d(TAG, "savePreferences was called while media or webview was null");
-                editor.putInt(PREF_SCROLL_Y, -1);
-                editor.putString(PREF_PLAYABLE_ID, "");
-            }
-            editor.commit();
+        Log.d(TAG, "Saving preferences");
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF,
+                Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        if (controller.getMedia() != null && webvDescription != null) {
+            Log.d(TAG, "Saving scroll position: " + webvDescription.getScrollY());
+            editor.putInt(PREF_SCROLL_Y, webvDescription.getScrollY());
+            editor.putString(PREF_PLAYABLE_ID, controller.getMedia().getIdentifier()
+                    .toString());
+        } else {
+            Log.d(TAG, "savePreferences was called while media or webview was null");
+            editor.putInt(PREF_SCROLL_Y, -1);
+            editor.putString(PREF_PLAYABLE_ID, "");
         }
+        editor.commit();
     }
 
     private boolean restoreFromPreference() {
-        if (saveState) {
-            Log.d(TAG, "Restoring from preferences");
-            Activity activity = getActivity();
-            if (activity != null) {
-                SharedPreferences prefs = activity.getSharedPreferences(
-                        PREF, Activity.MODE_PRIVATE);
-                String id = prefs.getString(PREF_PLAYABLE_ID, "");
-                int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
-                if (scrollY != -1 && media != null
-                        && id.equals(media.getIdentifier().toString())
-                        && webvDescription != null) {
-                    Log.d(TAG, "Restored scroll Position: " + scrollY);
-                    webvDescription.scrollTo(webvDescription.getScrollX(),
-                            scrollY);
-                    return true;
-                }
+        Log.d(TAG, "Restoring from preferences");
+        Activity activity = getActivity();
+        if (activity != null) {
+            SharedPreferences prefs = activity.getSharedPreferences(
+                    PREF, Activity.MODE_PRIVATE);
+            String id = prefs.getString(PREF_PLAYABLE_ID, "");
+            int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
+            if (scrollY != -1 && controller.getMedia() != null
+                    && id.equals(controller.getMedia().getIdentifier().toString())
+                    && webvDescription != null) {
+                Log.d(TAG, "Restored scroll Position: " + scrollY);
+                webvDescription.scrollTo(webvDescription.getScrollX(),
+                        scrollY);
+                return true;
             }
         }
         return false;
@@ -379,15 +295,35 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     }
 
     @Override
-    public void onMediaChanged(Playable media) {
-        if(this.media == media) {
-            return;
-        }
-        this.media = media;
-        this.shownotesProvider = media;
-        if (webvDescription != null) {
-            load();
+    public void onStart() {
+        super.onStart();
+        controller = new PlaybackController(getActivity(), false) {
+            @Override
+            public boolean loadMediaInfo() {
+                if (getMedia() == null) {
+                    return false;
+                }
+                load();
+                return true;
+            }
+
+        };
+        controller.init();
+        load();
+        EventBus.getDefault().register(this);
+    }
+
+    public void onEventMainThread(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
+            controller.init();
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+        controller.release();
+        controller = null;
+    }
 }
