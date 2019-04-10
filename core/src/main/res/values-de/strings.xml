@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Abonnements aktualisieren</string>
   <string name="feeds_label">Feeds</string>
   <string name="statistics_label">Statistiken</string>
   <string name="add_feed_label">Podcast hinzufügen</string>
   <string name="episodes_label">Episoden</string>
   <string name="all_episodes_short_label">Alle</string>
+  <string name="new_episodes_label">Neu</string>
   <string name="favorite_episodes_label">Favoriten</string>
   <string name="new_label">Neu</string>
   <string name="settings_label">Einstellungen</string>
@@ -18,10 +20,12 @@
   <string name="cancel_download_label">Download abbrechen</string>
   <string name="playback_history_label">Zuletzt gespielt</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Mit anderen Geräten synchronisieren</string>
   <string name="gpodnet_auth_label">gpodder.net Anmeldung</string>
   <string name="free_space_label">%1$s frei</string>
   <string name="episode_cache_full_title">Episodenspeicher voll</string>
   <string name="episode_cache_full_message">Der Episodenspeicher ist voll. Du kannst die Größe des Episodenspeichers in den Einstellungen erhöhen.</string>
+  <string name="synchronizing">Synchronisiere...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Gesamtzeit gespielter Podcasts:</string>
   <string name="statistics_details_dialog">%1$d von %2$d Episoden gestartet.\n\n%3$s von %4$s Episoden gespielt.</string>
@@ -56,15 +60,16 @@
   <string name="yes">Ja</string>
   <string name="no">Nein</string>
   <string name="reset">Reset</string>
-  <string name="author_label">Autor</string>
+  <string name="author_label">Autor(en)</string>
   <string name="language_label">Sprache</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Einstellungen</string>
   <string name="cover_label">Bild</string>
   <string name="error_label">Fehler</string>
   <string name="error_msg_prefix">Ein Fehler ist aufgetreten:</string>
+  <string name="needs_storage_permission">Für diese Funktion wird die Speicher-Berechtigung benötigt</string>
   <string name="refresh_label">Aktualisieren</string>
-  <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die Anwendung funktioniert.</string>
+  <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die App funktioniert.</string>
   <string name="chapters_label">Kapitel</string>
   <string name="chapter_duration">Dauer: %1$s</string>
   <string name="shownotes_label">Shownotizen</string>
@@ -110,20 +115,23 @@
   <string name="mark_all_seen_msg">Alle Episoden als gesehen markiert</string>
   <string name="mark_all_seen_confirmation_msg">Bitte bestätige, dass alle Episoden als gesehen markiert werden sollen.</string>
   <string name="show_info_label">Informationen anzeigen</string>
-  <string name="rename_feed_label">Podcast umbenennen</string>
+  <string name="show_feed_settings_label">Zeige Feed-Einstellungen</string>
+  <string name="feed_info_label">Feed-Informationen</string>
+  <string name="feed_settings_label">Feed-Einstellungen</string>
+  <string name="rename_feed_label">Feed umbenennen</string>
   <string name="remove_feed_label">Podcast entfernen</string>
   <string name="share_label">Teilen…</string>
-  <string name="share_link_label">Teile Link</string>
-  <string name="share_file_label">Teile Datei</string>
+  <string name="share_link_label">Episoden URL Teilen</string>
   <string name="share_link_with_position_label">Teile Link mit Zeitmarke</string>
+  <string name="share_file_label">Teile Datei</string>
   <string name="share_feed_url_label">Teile URL des Podcasts</string>
-  <string name="share_item_url_label">Teile URL der Episode</string>
-  <string name="share_item_url_with_position_label">Teile URL der Episode mit Zeitmarke</string>
-  <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Feed \"%1$s\" und ALLE heruntergeladenen Episoden löschen möchtest.</string>
-  <string name="feed_remover_msg">Entferne Feed</string>
+  <string name="share_item_url_label">Teile URL der Episodendatei</string>
+  <string name="share_item_url_with_position_label">Teile URL der Episodendatei mit Zeitmarke</string>
+  <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Podcast \"%1$s\" und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
+  <string name="feed_remover_msg">Entferne Podcast</string>
   <string name="load_complete_feed">Kompletten Feed aktualisieren</string>
   <string name="hide_episodes_title">Episoden verbergen</string>
-  <string name="episode_actions">Aktionen anwenden</string>
+  <string name="batch_edit">Stapelbearbeitung</string>
   <string name="hide_unplayed_episodes_label">Ungespielt</string>
   <string name="hide_paused_episodes_label">Pausiert</string>
   <string name="hide_played_episodes_label">Gespielt</string>
@@ -132,6 +140,7 @@
   <string name="hide_downloaded_episodes_label">Heruntergeladen</string>
   <string name="hide_not_downloaded_episodes_label">Nicht heruntergeladen</string>
   <string name="hide_has_media_label">Hat Medien</string>
+  <string name="hide_is_favorite_label">Favorit</string>
   <string name="filtered_label">Gefiltert</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Aktualisierung fehlgeschlagen</string>
   <string name="open_podcast">Podcast öffnen</string>
@@ -145,6 +154,7 @@
   <string name="delete_label">Löschen</string>
   <string name="delete_failed">Die Datei kann nicht gelöscht werden. Eventuell hilft es, das Gerät neu zu starten.</string>
   <string name="remove_episode_lable">Episode entfernen</string>
+  <string name="mark_as_seen_label">Als gelesen markieren</string>
   <string name="marked_as_seen_label">Als gesehen markiert</string>
   <string name="mark_read_label">Als gespielt markieren</string>
   <string name="marked_as_read_label">Als gespielt markiert</string>
@@ -168,6 +178,8 @@
   <string name="download_failed">fehlgeschlagen</string>
   <string name="download_pending">Download anstehend</string>
   <string name="download_running">Download läuft</string>
+  <string name="download_error_details">Details</string>
+  <string name="download_error_details_message">%1$s \n\nDatei-URL:\n%2$s</string>
   <string name="download_error_device_not_found">Speichermedium nicht gefunden</string>
   <string name="download_error_insufficient_space">Zu wenig Speicherplatz</string>
   <string name="download_error_file_error">Dateifehler</string>
@@ -218,6 +230,7 @@
   <string name="playback_error_unknown">Unbekannter Fehler</string>
   <string name="no_media_playing_label">Keine Medienwiedergabe</string>
   <string name="player_buffering_msg">Puffert</string>
+  <string name="player_go_to_picture_in_picture">Bild-in-Bild-Modus</string>
   <string name="playbackservice_notification_title">Spiele Podcast ab</string>
   <string name="unknown_media_key">AntennaPod - Unbekannte Medientaste: %1$d</string>
   <!--Queue operations-->
@@ -234,7 +247,9 @@
   <string name="date">Datum</string>
   <string name="duration">Dauer</string>
   <string name="episode_title">Episodentitel</string>
-  <string name="feed_title">Podcastname</string>
+  <string name="feed_title">Feedname</string>
+  <string name="random">Zufällig</string>
+  <string name="smart_shuffle">Schlaues Mischen</string>
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
   <string name="clear_queue_confirmation_msg">Bitte bestätige, dass ALLE Episoden aus der Abspielliste entfernt werden sollen</string>
@@ -281,15 +296,23 @@
   <string name="other_pref">Anderes</string>
   <string name="about_pref">Über</string>
   <string name="queue_label">Abspielliste</string>
-  <string name="services_label">Dienste</string>
+  <string name="integrations_label">Einbindungen</string>
   <string name="flattr_label">Flattr</string>
+  <string name="flattr_summary">Micropayment-Dienst</string>
+  <string name="automation">Automatisierung</string>
+  <string name="download_pref_details">Details</string>
+  <string name="import_export_pref">Import/Export</string>
+  <string name="appearance">Erscheinungsbild</string>
+  <string name="external_elements">Externe Elemente</string>
+  <string name="interruptions">Unterbrechungen</string>
+  <string name="buttons">Buttons zur Steuerung der Wiedergabe</string>
+  <string name="media_player">Medienabspieler</string>
   <string name="pref_episode_cleanup_title">Automatisches Löschen</string>
   <string name="pref_episode_cleanup_summary">Episoden, die weder in der Abspielliste noch Favoriten sind, können gelöscht werden, wenn beim automatischen Herunterladen Speicherplatz für neue Episoden gebraucht wird</string>
   <string name="pref_pauseOnDisconnect_sum">Wiedergabe pausieren, wenn Kopfhörer ausgesteckt oder Bluetooth getrennt wird</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder eingesteckt werden</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wiedergabe fortsetzen, wenn Bluetooth wieder verbunden ist</string>
   <string name="pref_hardwareForwardButtonSkips_title">\"Nächster\"-Taste springt zur nächsten Episode</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Zur nächsten Episode springen, wenn die \"Nächster\"-Taste gedrückt wird (statt vorzuspulen)</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Vorheriger-Taste startet neu</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Die Wiedergabe der aktuellen Episode neu starten, wenn die \"Vorheriger\"-Taste gedrückt wird (statt zurückzuspulen)</string>
   <string name="pref_followQueue_sum">Springe zur nächsten Episode in der Abspielliste, wenn die Wiedergabe endet</string>
@@ -338,7 +361,7 @@
   <string name="pref_nav_drawer_feed_order_title">Reihenfolge der Abonnements einstellen</string>
   <string name="pref_nav_drawer_feed_order_sum">Ändere die Reihenfolge deiner Abonnements</string>
   <string name="pref_nav_drawer_feed_counter_title">Abonnement-Zähler einstellen</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Ändere, welche Information der Abonnement-Zähler anzeigt</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Ändere die durch den Abonnementszähler angezeigten Informationen. Betrifft auch die Sortierung der Abonnements wenn \"Reihenfolge der Abonnements\" auf \"Zähler\" gesetzt ist.</string>
   <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
   <string name="pref_automatic_download_sum">Konfiguriere das automatische Herunterladen von Episoden.</string>
@@ -352,6 +375,7 @@
   <string name="pref_episode_cache_title">Episodenspeicher</string>
   <string name="pref_theme_title_light">Hell</string>
   <string name="pref_theme_title_dark">Dunkel</string>
+  <string name="pref_theme_title_trueblack">Schwarz (für AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Unbegrenzt</string>
   <string name="pref_update_interval_hours_plural">Stunden</string>
   <string name="pref_update_interval_hours_singular">Stunde</string>
@@ -380,8 +404,6 @@
   <string name="pref_rewind_sum">Passe an, wie viele Sekunden zurückgespult wird, wenn die entsprechende Hardware-Taste gedrückt wird</string>
   <string name="pref_gpodnet_sethostname_title">Hostname ändern</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Standard-Host verwenden</string>
-  <string name="pref_expandNotify_title">Benachrichtigung erweitern</string>
-  <string name="pref_expandNotify_sum">Erweiterte Wiedergabebenachrichtigung mit Abspiel-, Pause- und Stop-Knöpfen anzeigen.</string>
   <string name="pref_persistNotify_title">Persistente Wiedergabesteuerung</string>
   <string name="pref_persistNotify_sum">Zeige Wiedergabebedienelemente in der Benachrichtigung und im Lockscreen an, während die Wiedergabe pausiert ist.</string>
   <string name="pref_compact_notification_buttons_title">Lockscreen-Wiedergabetasten festlegen</string>
@@ -402,8 +424,7 @@
   <string name="crash_report_sum">Sende den aktuellen Absturzbericht per E-Mail</string>
   <string name="send_email">E-Mail senden</string>
   <string name="experimental_pref">Experimentell</string>
-  <string name="pref_sonic_title">Sonic Media Player</string>
-  <string name="pref_sonic_message">Benutze den integrierten Sonic Mediaplayer als Ersatz für Androids eigenen Mediaplayer und Prestissimo</string>
+  <string name="pref_media_player_message">Wähle, welcher Medienabspieler benutzt werden soll, um Dateien abzuspielen</string>
   <string name="pref_current_value">Aktueller Wert: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Richte einen Netzwerk-Proxy ein</string>
@@ -415,6 +436,11 @@
   <string name="pref_cast_message_free_flavor">Chromecast benötigt proprietäre Bibliotheken von Drittanbietern, die in dieser Version von AntennaPod deaktiviert sind</string>
   <string name="pref_enqueue_downloaded_title">Downloads einreihen</string>
   <string name="pref_enqueue_downloaded_summary">Füge heruntergeladene Episoden zur Abspielliste hinzu</string>
+  <string name="media_player_builtin">Androids eingebauter Abspieler</string>
+  <string name="pref_videoBehavior_title">Beim Beenden des Videos</string>
+  <string name="pref_videoBehavior_sum">Verhalten beim Verlassen der Video-Wiedergabe</string>
+  <string name="stop_playback">Wiedergabe anhalten</string>
+  <string name="continue_playback">Audiowiedergabe fortsetzen</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
   <string name="auto_flattr_after_percent">Flattr eine Episode, sobald %d Prozent gespielt worden sind</string>
@@ -424,8 +450,8 @@
   <string name="search_hint">Suche nach Episoden</string>
   <string name="found_in_shownotes_label">In Shownotizen gefunden</string>
   <string name="found_in_chapters_label">In Kapiteln gefunden</string>
-  <string name="found_in_authors_label">In Autoren gefunden</string>
-  <string name="found_in_feeds_label">In Feeds gefunden</string>
+  <string name="found_in_authors_label">Gefunden in Autor(en)</string>
+  <string name="found_in_feeds_label">Gefunden in Podcast</string>
   <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
   <string name="search_label">Suchen</string>
   <string name="found_in_title_label">In Titel gefunden</string>
@@ -451,8 +477,8 @@
   <string name="html_export_label">HTML Export</string>
   <string name="exporting_label">Exportiere…</string>
   <string name="export_error_label">Exportfehler</string>
-  <string name="opml_export_success_title">OPML Export erfolgreich</string>
-  <string name="opml_export_success_sum">Die OPML Datei wurde unter dem folgenden Pfad gespeichert:\u0020</string>
+  <string name="export_success_title">Export erfolgreich</string>
+  <string name="export_success_sum">Die exportierte Datei wurde geschrieben nach:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Zugriff auf externen Speicher wird benötigt, um die OPML Datei zu lesen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Timer einstellen</string>
@@ -625,7 +651,7 @@
   <string name="label_import">Import</string>
   <string name="label_export">Export</string>
   <string name="import_select_file">Zu importierende Datei auswählen</string>
-  <string name="export_ok">Export erfolgreich. Die Datenbank wurde auf die SD-Karte geschrieben.</string>
+  <string name="export_ok">Export erfolgreich.</string>
   <string name="import_ok">Import erfolgreich.\n\nBitte OK drücken, um AntennaPod neuzustarten</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Abspielen auf...</string>
@@ -643,4 +669,13 @@
   <string name="cast_failed_seek">Spulen zur neuen Position fehlgeschlagen</string>
   <string name="cast_failed_receiver_player_error">Es wurde ein schwerer Fehler beim Empfangsgerät festgestellt</string>
   <string name="cast_failed_media_error_skipping">Fehler bei Wiedergabe. Überspringe...</string>
+  <!--Notification channels-->
+  <string name="notification_channel_user_action">Handlung notwendig</string>
+  <string name="notification_channel_user_action_description">Wird gezeigt, wenn deine Handlung notwendig ist, zum Beispiel wenn du ein Passwort eingeben musst.</string>
+  <string name="notification_channel_downloading">Lädt herunter</string>
+  <string name="notification_channel_downloading_description">Wird gezeigt beim Herunterladen.</string>
+  <string name="notification_channel_playing">Jetzt spielt</string>
+  <string name="notification_channel_playing_description">Erlaubt es, die Wiedergabe zu steuern. Dies ist die Hauptbenachrichtigung, die du siehst, während ein Podcast abgespielt wird.</string>
+  <string name="notification_channel_error">Fehler</string>
+  <string name="notification_channel_error_description">Wird gezeigt, wenn etwas schief gegangen ist, etwa wenn das Herunterladen oder die gpodder-Synchronisierung fehlschlägt.</string>
 </resources>

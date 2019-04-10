@@ -13,14 +13,12 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.webkit.URLUtil;
 
-import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.apache.commons.io.FileUtils;
 import org.xml.sax.SAXException;
 
@@ -30,10 +28,8 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
@@ -55,7 +51,6 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -75,6 +70,7 @@ import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeExceptio
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.InvalidFeedException;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -116,11 +112,6 @@ public class DownloadService extends Service {
     private ExecutorService syncExecutor;
     private CompletionService<Downloader> downloadExecutor;
     private FeedSyncThread feedSyncThread;
-
-    /**
-     * Number of threads of downloadExecutor.
-     */
-    private static final int NUM_PARALLEL_DOWNLOADS = 6;
 
     private DownloadRequester requester;
 
@@ -489,9 +480,7 @@ public class DownloadService extends Service {
             if (status.isSuccessful()) {
                 successfulDownloads++;
             } else if (!status.isCancelled()) {
-                if (status.getFeedfileType() != FeedImage.FEEDFILETYPE_FEEDIMAGE) {
-                    createReport = true;
-                }
+                createReport = true;
                 failedDownloads++;
             }
         }
@@ -688,10 +677,6 @@ public class DownloadService extends Service {
 
                 Log.d(TAG, "Bundling " + results.size() + " feeds");
 
-                for (Pair<DownloadRequest, FeedHandlerResult> result : results) {
-                    removeDuplicateImages(result.second.feed); // duplicate images have to removed because the DownloadRequester does not accept two downloads with the same download URL yet.
-                }
-
                 // Save information of feed in DB
                 if (dbUpdateFuture != null) {
                     try {
@@ -864,22 +849,6 @@ public class DownloadService extends Service {
                 }
             }
             return true;
-        }
-
-        /**
-         * Delete files that aren't needed anymore
-         */
-        private void cleanup(Feed feed) {
-            if (feed.getFile_url() != null) {
-                if (new File(feed.getFile_url()).delete()) {
-                    Log.d(TAG, "Successfully deleted cache file.");
-                } else {
-                    Log.e(TAG, "Failed to delete cache file.");
-                }
-                feed.setFile_url(null);
-            } else {
-                Log.d(TAG, "Didn't delete cache file: File url is not set.");
-            }
         }
 
         public void shutdown() {
@@ -1098,26 +1067,6 @@ public class DownloadService extends Service {
             postHandler.removeCallbacks(postDownloaderTask);
             postDownloaderTask.run();
             lastPost = now;
-        }
-    }
-
-    /**
-     * Checks if the FeedItems of this feed have images that point to the same URL. If two FeedItems
-     * have an image that points to the same URL, the reference of the second item is removed, so
-     * that every image reference is unique.
-     */
-    @VisibleForTesting
-    static void removeDuplicateImages(Feed feed) {
-        Set<String> known = new HashSet<>();
-        for (FeedItem item : feed.getItems()) {
-            String url = item.hasItemImage() ? item.getImage().getDownload_url() : null;
-            if (url != null) {
-                if (known.contains(url)) {
-                    item.setImage(null);
-                } else {
-                    known.add(url);
-                }
-            }
         }
     }
 

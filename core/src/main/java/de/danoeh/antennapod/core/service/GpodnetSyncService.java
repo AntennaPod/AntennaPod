@@ -6,8 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.SafeJobIntentService;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.util.Pair;
@@ -44,7 +44,8 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
  * Synchronizes local subscriptions with gpodder.net service. The service should be started with ACTION_SYNC as an action argument.
  * This class also provides static methods for starting the GpodnetSyncService.
  */
-public class GpodnetSyncService extends JobIntentService {
+public class GpodnetSyncService extends SafeJobIntentService {
+
     private static final String TAG = "GpodnetSyncService";
 
     private static final long WAIT_INTERVAL = 5000L;
@@ -61,8 +62,10 @@ public class GpodnetSyncService extends JobIntentService {
     private static boolean syncSubscriptions = false;
     private static boolean syncActions = false;
 
+    private static final int JOB_ID = -17000;
+
     private static void enqueueWork(Context context, Intent intent) {
-        enqueueWork(context, GpodnetSyncService.class, 0, intent);
+        enqueueWork(context, GpodnetSyncService.class, JOB_ID, intent);
     }
 
     @Override

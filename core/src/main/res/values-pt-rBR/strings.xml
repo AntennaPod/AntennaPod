@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Atualizar Assinaturas</string>
   <string name="feeds_label">Feeds</string>
   <string name="statistics_label">Estatísticas</string>
   <string name="add_feed_label">Adicionar Podcast</string>
@@ -56,7 +57,6 @@
   <string name="yes">Sim</string>
   <string name="no">Não</string>
   <string name="reset">Resetar</string>
-  <string name="author_label">Autor</string>
   <string name="language_label">Idioma</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Configurações</string>
@@ -105,24 +105,12 @@
   <string name="mark_all_read_label">Marcar todos como reproduzidos</string>
   <string name="mark_all_read_msg">Marcar todos Episódios como reproduzidos</string>
   <string name="mark_all_read_confirmation_msg">Por favor, confirme que você deseja marcar todos os episódios como já reproduzidos.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Por favor confirme se você deseja marcar todos os episódios deste feed como já reproduzidos.</string>
   <string name="mark_all_seen_label">Marcar todos como vistos</string>
-  <string name="mark_all_seen_msg">Todos os episódios marcados como vistos</string>
   <string name="mark_all_seen_confirmation_msg">Confirme se deseja marcar todos os episódios como vistos.</string>
   <string name="show_info_label">Mostrar informação</string>
-  <string name="rename_feed_label">Renomear o Podcast</string>
-  <string name="remove_feed_label">Remover Podcast</string>
   <string name="share_label">Compartilhar...</string>
-  <string name="share_link_label">Compartilhar Link</string>
-  <string name="share_link_with_position_label">Compartilhar Link com posição</string>
   <string name="share_feed_url_label">Compartilhar Link do Feed</string>
-  <string name="share_item_url_label">Compartilhar URL do arquivo do episódio</string>
-  <string name="share_item_url_with_position_label">Compartilhar URL do arquivo do episódio com posição</string>
-  <string name="feed_delete_confirmation_msg">Confirme se deseja deletar o feed \"%1$s\" e todos os episódios baixados desse feed.</string>
-  <string name="feed_remover_msg">Removendo feed</string>
-  <string name="load_complete_feed">Atualizar feed completamente</string>
   <string name="hide_episodes_title">Ocultar Episódios</string>
-  <string name="episode_actions">Aplicar ações</string>
   <string name="hide_unplayed_episodes_label">Não reproduzido</string>
   <string name="hide_paused_episodes_label">Pausado</string>
   <string name="hide_played_episodes_label">Reproduzido</string>
@@ -232,7 +220,6 @@
   <string name="date">Data</string>
   <string name="duration">Duração</string>
   <string name="episode_title">Titulo do Episodio</string>
-  <string name="feed_title">Titulo do Feed</string>
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
   <string name="clear_queue_confirmation_msg">Por favor confirme que você deseja limpar TODOS episódios da fila</string>
@@ -270,7 +257,6 @@
   <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Não existem itens nesta lista.</string>
-  <string name="no_feeds_label">Você ainda não assinou nenhum feed.</string>
   <string name="no_chapters_label">Este episódio não possui capítulos</string>
   <string name="no_shownotes_label">Este episódio não possui notas.</string>
   <!--Preferences-->
@@ -279,7 +265,6 @@
   <string name="other_pref">Outros</string>
   <string name="about_pref">Sobre</string>
   <string name="queue_label">Fila</string>
-  <string name="services_label">Serviços</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Limpar Episódio</string>
   <string name="pref_episode_cleanup_summary">Episódios que não estão na fila e não estão nos favoritos podem ser removidos se o Download Automático precisar de espaço para novos episódios</string>
@@ -287,7 +272,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Continuar a reprodução quando os fones de ouvido forem reconectados</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Continuar a reprodução quando o bluetooth reconectar</string>
   <string name="pref_hardwareForwardButtonSkips_title">Botão avançar pula</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Quando pressionar um botão físico, avançar para o próximo episódio ao invés de avançar a reprodução</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Botão anterior reinicia</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Reinicia a reprodução atual ao pressionar o botão físico anterior ao invés de retroceder</string>
   <string name="pref_followQueue_sum">Pular para próximo item da fila quando a reprodução terminar</string>
@@ -333,8 +317,7 @@
   <string name="pref_nav_drawer_items_sum">Escolher quais itens irão aparecer na gaveta de navegação.</string>
   <string name="pref_nav_drawer_feed_order_title">Configurar Ordem de Assinaturas</string>
   <string name="pref_nav_drawer_feed_order_sum">Mudar a ordem de suas assinaturas</string>
-  <string name="pref_nav_drawer_feed_counter_title">Configurar um contador de assinaturas</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Mudar a informação exibida pelo contador de assinaturas</string>
+  <string name="pref_nav_drawer_feed_counter_title">Configurar Contador de Assinaturas</string>
   <string name="pref_set_theme_sum">Altera a aparência do AntennaPod</string>
   <string name="pref_automatic_download_title">Download automático</string>
   <string name="pref_automatic_download_sum">Configurar download automático de episódios.</string>
@@ -374,8 +357,6 @@
   <string name="pref_rewind_sum">Personalize os segundos para voltar quando o botão retroceder for clicado</string>
   <string name="pref_gpodnet_sethostname_title">Configurar hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usar host padrão</string>
-  <string name="pref_expandNotify_title">Expandir Notificação</string>
-  <string name="pref_expandNotify_sum">Sempre expandir a notificação para mostrar os botões de reprodução.</string>
   <string name="pref_persistNotify_title">Controles de Reprodução Persistentes</string>
   <string name="pref_persistNotify_sum">Manter a notificação e controles na tela de bloqueio enquanto a reprodução está pausada.</string>
   <string name="pref_compact_notification_buttons_title">Configurar Botões da tela de bloqueio</string>
@@ -396,8 +377,6 @@
   <string name="crash_report_sum">Enviar o relatório da última falha por e-mail</string>
   <string name="send_email">Enviar e-mail</string>
   <string name="experimental_pref">Experimental</string>
-  <string name="pref_sonic_title">Sonic Media Player</string>
-  <string name="pref_sonic_message">Utilizar o reprodutor de mídia Sonic no lugar do reprodutor de mídia nativo do Android e do Prestissimo</string>
   <string name="pref_current_value">Valor atual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Configurar um proxy da rede</string>
@@ -417,8 +396,6 @@
   <string name="search_hint">Buscar por episódios</string>
   <string name="found_in_shownotes_label">Encontrados em exibir descrição</string>
   <string name="found_in_chapters_label">Encontrado nos capítulos</string>
-  <string name="found_in_authors_label">Encontrados em autores</string>
-  <string name="found_in_feeds_label">Encontrados em feeds</string>
   <string name="search_status_no_results">Nenhum resultado encontrado</string>
   <string name="search_label">Pesquisar</string>
   <string name="found_in_title_label">Encontrado no título</string>
@@ -444,8 +421,6 @@
   <string name="html_export_label">Exportar HTML</string>
   <string name="exporting_label">Exportando...</string>
   <string name="export_error_label">Erro na exportação</string>
-  <string name="opml_export_success_title">Exportação do OPML realizada com sucesso.</string>
-  <string name="opml_export_success_sum">O arquivo .opml foi gravado em:\u0020</string>
   <string name="opml_import_ask_read_permission">Acesso ao armazenamento externo é necessária para ler o arquivo OPML</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Configura desligamento automático</string>
@@ -629,4 +604,5 @@
   <string name="cast_failed_seek">Falha ao buscar uma nova posição no dispositivo cast</string>
   <string name="cast_failed_receiver_player_error">O receptor de reprodução encontrou um erro grave</string>
   <string name="cast_failed_media_error_skipping">Erro ao reproduzir mídia. Pulando...</string>
+  <!--Notification channels-->
 </resources>

@@ -36,24 +36,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
-import de.danoeh.antennapod.activity.AboutActivity;
-import de.danoeh.antennapod.activity.ImportExportActivity;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
-import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.activity.StatisticsActivity;
-import de.danoeh.antennapod.core.export.html.HtmlWriter;
-import de.danoeh.antennapod.core.export.opml.OpmlWriter;
-import de.danoeh.antennapod.core.service.GpodnetSyncService;
-import de.danoeh.antennapod.dialog.AuthenticationDialog;
-import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
-import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
-import de.danoeh.antennapod.dialog.ProxyDialog;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -67,18 +52,33 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
+import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.activity.MediaplayerActivity;
+import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
+import de.danoeh.antennapod.core.export.html.HtmlWriter;
+import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
+import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
+import de.danoeh.antennapod.dialog.ProxyDialog;
+import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static de.danoeh.antennapod.activity.PreferenceActivity.PARAM_RESOURCE;
 
@@ -137,7 +137,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 }
             };
     private CheckBoxPreference[] selectedNetworks;
-    private Subscription subscription;
+    private Disposable disposable;
 
     public PreferenceController(PreferenceUI ui) {
         this.ui = ui;
@@ -147,12 +147,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(UserPreferences.PREF_SONIC)) {
-            CheckBoxPreference prefSonic = (CheckBoxPreference) ui.findPreference(UserPreferences.PREF_SONIC);
-            if(prefSonic != null) {
-                prefSonic.setChecked(sharedPreferences.getBoolean(UserPreferences.PREF_SONIC, false));
-            }
-        }
+
     }
 
 
@@ -167,7 +162,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 break;
             case R.xml.preferences_autodownload:
                 setupAutoDownloadScreen();
-                buildAutodownloadSelectedNetworsPreference();
+                buildAutodownloadSelectedNetworksPreference();
                 setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
                 buildEpisodeCleanupPreference();
                 break;
@@ -232,6 +227,33 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     return true;
                 });
 
+        ui.findPreference(UserPreferences.PREF_BACK_BUTTON_BEHAVIOR)
+                .setOnPreferenceChangeListener((preference, newValue) -> {
+                        if (newValue.equals("page")) {
+                            final Context context = ui.getActivity();
+                            final String[] navTitles = context.getResources().getStringArray(R.array.back_button_go_to_pages);
+                            final String[] navTags = context.getResources().getStringArray(R.array.back_button_go_to_pages_tags);
+                            final String choice[] = { UserPreferences.getBackButtonGoToPage() };
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle(R.string.back_button_go_to_page_title);
+                            builder.setSingleChoiceItems(navTitles, ArrayUtils.indexOf(navTags, UserPreferences.getBackButtonGoToPage()), (dialogInterface, i) -> {
+                                if (i >= 0) {
+                                    choice[0] = navTags[i];
+                                }
+                            });
+                            builder.setPositiveButton(R.string.confirm_label, (dialogInterface, i) -> UserPreferences.setBackButtonGoToPage(choice[0]));
+                            builder.setNegativeButton(R.string.cancel_label, null);
+                            builder.create().show();
+                            return true;
+                        } else {
+                            return true;
+                        }
+                    });
+
+        if (Build.VERSION.SDK_INT >= 26) {
+            ui.findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
+        }
     }
 
     private void setupStorageScreen() {
@@ -467,18 +489,10 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)
                 .setOnPreferenceChangeListener(
                         (preference, o) -> {
-                            if (o instanceof String) {
-                                try {
-                                    int value = Integer.parseInt((String) o);
-                                    if (1 <= value && value <= 50) {
-                                        setParallelDownloadsText(value);
-                                        return true;
-                                    }
-                                } catch (NumberFormatException e) {
-                                    return false;
-                                }
+                            if (o instanceof Integer) {
+                                setParallelDownloadsText((Integer) o);
                             }
-                            return false;
+                            return true;
                         }
                 );
         // validate and set correct value: number of downloads between 1 and 50 (inclusive)
@@ -567,31 +581,24 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         config.setFragmentContainerViewId(R.id.content);
         config.setBreadcrumbsEnabled(true);
 
-        config.index()
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_user_interface))
-                .addFile(R.xml.preferences_user_interface);
-        config.index()
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_playback))
-                .addFile(R.xml.preferences_playback);
-        config.index()
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
-                .addFile(R.xml.preferences_network);
-        config.index()
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_storage))
-                .addFile(R.xml.preferences_storage);
-        config.index()
+        config.index(R.xml.preferences_user_interface)
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_user_interface));
+        config.index(R.xml.preferences_playback)
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_playback));
+        config.index(R.xml.preferences_network)
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_network));
+        config.index(R.xml.preferences_storage)
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_storage));
+        config.index(R.xml.preferences_autodownload)
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
                 .addBreadcrumb(R.string.automation)
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_autodownload))
-                .addFile(R.xml.preferences_autodownload);
-        config.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_autodownload));
+        config.index(R.xml.preferences_gpodder)
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_gpodder))
-                .addFile(R.xml.preferences_gpodder);
-        config.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_gpodder));
+        config.index(R.xml.preferences_flattr)
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr))
-                .addFile(R.xml.preferences_flattr);
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr));
     }
 
     public PreferenceFragmentCompat openScreen(int preferences, AppCompatActivity activity) {
@@ -637,7 +644,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         final AlertDialog.Builder alert = new AlertDialog.Builder(context)
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         Observable<File> observable = new ExportWorker(exportWriter).exportObservable();
-        subscription = observable.subscribeOn(Schedulers.newThread())
+        disposable = observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(output -> {
                     alert.setTitle(R.string.export_success_title);
@@ -645,7 +652,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     alert.setMessage(message);
                     alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
-                                "de.danoeh.antennapod.provider", output);
+                                context.getString(R.string.provider_authority), output);
                         Intent sendIntent = new Intent(Intent.ACTION_SEND);
                         sendIntent.putExtra(Intent.EXTRA_SUBJECT,
                                 context.getResources().getText(R.string.opml_export_label));
@@ -715,8 +722,8 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     public void unsubscribeExportSubscription() {
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -832,8 +839,11 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 entries[x] = res.getString(R.string.episode_cleanup_never);
             } else if (v == 0) {
                 entries[x] = res.getString(R.string.episode_cleanup_after_listening);
+            } else if (v > 0 && v < 24) {
+                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_hours_after_listening, v, v);
             } else {
-                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, v, v);
+                int numDays = (int)(v / 24); // assume underlying value will be NOT fraction of days, e.g., 36 (hours)
+                entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, numDays, numDays);
             }
         }
         pref.setEntries(entries);
@@ -891,11 +901,10 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
     }
 
     private void checkSonicItemVisibility() {
-        if (Build.VERSION.SDK_INT >= 16) {
-            ui.findPreference(UserPreferences.PREF_SONIC).setEnabled(true);
-        } else {
-            Preference prefSonic = ui.findPreference(UserPreferences.PREF_SONIC);
-            prefSonic.setSummary("[Android 4.1+]\n" + prefSonic.getSummary());
+        if (Build.VERSION.SDK_INT < 16) {
+            ListPreference p = (ListPreference) ui.findPreference(UserPreferences.PREF_MEDIA_PLAYER);
+            p.setEntries(R.array.media_player_options_no_sonic);
+            p.setEntryValues(R.array.media_player_values_no_sonic);
         }
     }
 
@@ -959,7 +968,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         return val == null ? "" : val;
     }
 
-    private void buildAutodownloadSelectedNetworsPreference() {
+    private void buildAutodownloadSelectedNetworksPreference() {
         final Activity activity = ui.getActivity();
 
         if (selectedNetworks != null) {

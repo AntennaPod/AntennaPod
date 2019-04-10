@@ -20,10 +20,10 @@ import de.danoeh.antennapod.adapter.StatisticsListAdapter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays the 'statistics' screen
@@ -35,7 +35,7 @@ public class StatisticsActivity extends AppCompatActivity
     private static final String PREF_NAME = "StatisticsActivityPrefs";
     private static final String PREF_COUNT_ALL = "countAll";
 
-    private Subscription subscription;
+    private Disposable disposable;
     private TextView totalTimeTextView;
     private ListView feedStatisticsList;
     private ProgressBar progressBar;
@@ -53,9 +53,9 @@ public class StatisticsActivity extends AppCompatActivity
         prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         countAll = prefs.getBoolean(PREF_COUNT_ALL, false);
 
-        totalTimeTextView = (TextView) findViewById(R.id.total_time);
-        feedStatisticsList = (ListView) findViewById(R.id.statistics_list);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        totalTimeTextView = findViewById(R.id.total_time);
+        feedStatisticsList = findViewById(R.id.statistics_list);
+        progressBar = findViewById(R.id.progressBar);
         listAdapter = new StatisticsListAdapter(this);
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setAdapter(listAdapter);
@@ -119,21 +119,19 @@ public class StatisticsActivity extends AppCompatActivity
     }
 
     private void loadStatistics() {
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
-        subscription = Observable.fromCallable(() -> DBReader.getStatistics(countAll))
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(() -> DBReader.getStatistics(countAll))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    if (result != null) {
-                        totalTimeTextView.setText(Converter
-                                .shortLocalizedDuration(this, countAll ? result.totalTimeCountAll : result.totalTime));
-                        listAdapter.update(result.feedTime);
-                        progressBar.setVisibility(View.GONE);
-                        totalTimeTextView.setVisibility(View.VISIBLE);
-                        feedStatisticsList.setVisibility(View.VISIBLE);
-                    }
+                    totalTimeTextView.setText(Converter
+                            .shortLocalizedDuration(this, countAll ? result.totalTimeCountAll : result.totalTime));
+                    listAdapter.update(result.feedTime);
+                    progressBar.setVisibility(View.GONE);
+                    totalTimeTextView.setVisibility(View.VISIBLE);
+                    feedStatisticsList.setVisibility(View.VISIBLE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

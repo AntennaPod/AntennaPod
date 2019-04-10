@@ -30,6 +30,7 @@
   <string name="drawer_feed_counter_downloaded">Брой изтеглени епизоди</string>
   <string name="drawer_feed_counter_none">Никакви</string>
   <!--Webview actions-->
+  <string name="open_in_browser_label">Отвори в браузъра</string>
   <string name="copy_url_label">Копирай URL адрес</string>
   <string name="share_url_label">Сподели URL адрес</string>
   <string name="copied_url_msg">Адресът е копиран</string>
@@ -40,6 +41,7 @@
   <string name="cancel_label">Отказ</string>
   <string name="yes">Да</string>
   <string name="no">Не</string>
+  <string name="reset">Нулиране</string>
   <string name="author_label">Автор</string>
   <string name="language_label">Език</string>
   <string name="url_label">URL</string>
@@ -47,7 +49,9 @@
   <string name="cover_label">Снимка</string>
   <string name="error_label">Грешка</string>
   <string name="error_msg_prefix">Възникна грешка:</string>
+  <string name="refresh_label">Обнови</string>
   <string name="external_storage_error_msg">Няма налична външна памет. Уверете се, че външната памет е монтирана, за да може приложението да работи правилно.</string>
+  <string name="chapter_duration">Времетраене: %1$s</string>
   <string name="description_label">Описание</string>
   <string name="most_recent_prefix">Най-нов епизод:\u0020</string>
   <string name="size_prefix">Размер:\u0020</string>
@@ -60,6 +64,7 @@
   <string name="etxtFeedurlHint">www.primer.com/emisiq</string>
   <string name="txtvfeedurl_label">Добавяне на подкаст по URL адрес</string>
   <string name="podcastdirectories_label">Намиране на подкаст в директория</string>
+  <string name="podcastdirectories_descr">Можете да търсите нови подкасти в iTunes или fyyd, или да прегледате gpodder.net според име, категория и популярност.</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Маркирай всички като слушани</string>
   <string name="mark_all_read_msg">Всички епизоди са маркирани като слушани</string>
@@ -79,6 +84,8 @@
   <string name="share_item_url_label">Сподели URL адрес на епизода</string>
   <string name="share_item_url_with_position_label">Сподели URL адрес на епизода с позиция</string>
   <string name="feed_remover_msg">Премахване на емисията</string>
+  <string name="hide_downloaded_episodes_label">Изтеглени</string>
+  <string name="hide_not_downloaded_episodes_label">Неизтеглени</string>
   <!--actions on feeditems-->
   <string name="stream_label">Стрийм</string>
   <string name="marked_as_seen_label">Маркиран като прегледан</string>
@@ -111,7 +118,6 @@
   <string name="other_pref">Други</string>
   <string name="about_pref">Относно</string>
   <string name="queue_label">Опашка</string>
-  <string name="services_label">Услуги</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Почистване на епизодите</string>
   <string name="pref_episode_cleanup_summary">Епизодите, които не са в опашката и не са в любими, отговарят на условията за премахване, ако автоматичното изтегляне се нуждае от място за нови епизоди</string>
@@ -175,6 +181,7 @@
   <string name="crash_report_sum">Изпратете най-новия доклад за срив чрез имейл</string>
   <string name="send_email">Изпращане на имейл</string>
   <string name="experimental_pref">Експериментални</string>
+  <string name="pref_current_value">Текуща стойност: %1$s</string>
   <string name="pref_proxy_title">Прокси</string>
   <string name="pref_faq">Често задавани въпроси</string>
   <string name="pref_known_issues">Известни проблеми</string>
@@ -193,10 +200,9 @@
   <string name="html_export_label">HTML експортиране</string>
   <string name="exporting_label">Експортиране...</string>
   <string name="export_error_label">Грешка при експортиране</string>
-  <string name="opml_export_success_title">Успешно OPML експортиране.</string>
-  <string name="opml_export_success_sum">.opml файлът беше записан в:\u0020</string>
   <string name="opml_import_ask_read_permission">Необходим е достъп до външната памет за прочитане на OPML файла</string>
   <!--Sleep timer-->
+  <string name="timer_vibration_label">Вибрация</string>
   <string name="time_seconds">секунди</string>
   <string name="time_minutes">минути</string>
   <string name="time_hours">часа</string>
@@ -216,6 +222,7 @@
   <string name="gpodnet_taglist_header">КАТЕГОРИИ</string>
   <string name="gpodnet_toplist_header">ТОП ПОДКАСТИ</string>
   <string name="gpodnet_suggestions_header">ПРЕДЛОЖЕНИЯ</string>
+  <string name="gpodnet_search_hint">Търсене в gpodder.net</string>
   <string name="gpodnetauth_login_title">Вход</string>
   <string name="gpodnetauth_login_butLabel">Вход</string>
   <string name="username_label">Потребителско име</string>
@@ -229,11 +236,21 @@
   <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="filter">Филтър</string>
+  <string name="search_fyyd_label">Търсене във fyyd</string>
   <!--Episodes apply actions-->
   <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <string name="proxy_type_label">Тип</string>
+  <string name="host_label">Хост</string>
+  <string name="port_label">Порт</string>
+  <string name="proxy_test_label">Тест</string>
+  <string name="proxy_test_successful">Тестът е успешен</string>
+  <string name="proxy_test_failed">Тестът е неуспешен</string>
+  <string name="proxy_port_invalid_error">Портът не е валиден</string>
+  <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

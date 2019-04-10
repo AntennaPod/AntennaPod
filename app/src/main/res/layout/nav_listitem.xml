@@ -5,6 +5,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listitem_iconwithtext_height"
+                android:foreground="?attr/selectableItemBackground"
                 tools:background="@android:color/darker_gray">
 
     <ImageView
@@ -13,12 +14,14 @@
         android:layout_width="@dimen/thumbnail_length_navlist"
         android:layout_height="@dimen/thumbnail_length_navlist"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:adjustViewBounds="true"
         android:cropToPadding="true"
         android:scaleType="centerInside"
         android:padding="4dp"
         android:layout_marginLeft="@dimen/listitem_icon_leftpadding"
+        android:layout_marginStart="@dimen/listitem_icon_leftpadding"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         tools:src="@drawable/ic_new_releases_white_24dp"
@@ -36,8 +39,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/listitem_iconwithtext_textleftpadding"
+        android:layout_marginStart="@dimen/listitem_iconwithtext_textleftpadding"
         android:layout_marginRight="48dp"
+        android:layout_marginEnd="48dp"
         android:layout_toRightOf="@id/imgvCover"
+        android:layout_toEndOf="@id/imgvCover"
         tools:text="Navigation item title"
         tools:background="@android:color/holo_green_dark"
         />
@@ -50,8 +56,11 @@
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="@dimen/text_size_navdrawer"
         android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         android:layout_marginRight="@dimen/listitem_icon_rightpadding"
+        android:layout_marginEnd="@dimen/listitem_icon_rightpadding"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         tools:text="23"
         tools:background="@android:color/holo_green_dark"/>

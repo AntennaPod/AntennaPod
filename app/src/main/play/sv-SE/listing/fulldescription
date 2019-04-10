@@ -12,14 +12,14 @@ IMPORTERA, ORGANISERA OCH SPELA<br>
 &#8226; Dra nytta av siduppdelade flöden (www.podlove.ord/paged-feeds)
 
 SPÅRA, DELA & UPPSKATTA<br>
-&#8226; Spåra det bästa av det bästa med favoritmarkering av episoder<br>
+&#8226; Håll ordning på de bästa av de bästa med favoritmarkering av episoder<br>
 &#8226; Hitta just den där episoden i uppspelningshistoriken eller genom sökning (titel och shownotes)<br>
 &#8226;  Dela episoder och flöden med avancerade vald för social media och och email, tjänsten gPodder.net och via OPML export<br>
 &#8226; Stöd innehållsskaparna via integrering av Flattr och automatisk flattring
 
 KONTROLLERA SYSTEMET<br>
-&#8226; Ta kontroll över automatisk nedladdning: välj flöden, exkludera mobilnätverk, välj specifika WiFi nätver, kräv att telefonen är inkopplad för laddning och sätt tider eller intervall<br>
-&#8226; Hantera lagringsutrymme genom att välja antalet cachade episoder, smart borttagning (baserat på dina favoriter och uppspelningsstatus) och välj den plats du föredrar<br>
+&#8226; Ta kontroll över automatisk nedladdning: välj flöden, exkludera mobilnätverk, välj specifika WiFi nätverk, kräv att telefonen är inkopplad för laddning och sätt tider eller intervall för körning<br>
+&#8226; Hantera lagringsutrymme genom att välja antalet cachade episoder, smart borttagning (baserat på dina favoriter och uppspelningsstatus) och välj den lagringsplats du föredrar<br>
 &#8226; Använd AntennaPod på ditt språk (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
 &#8226; Anpassa till din omgivning med det ljusa och mörka temat<br>
 &#8226; Ta backup av dina prenumerationer med integreringen av gPodder.net och OPML exportering
@@ -28,13 +28,16 @@ KONTROLLERA SYSTEMET<br>
 AntennaPod är under aktiv utveckling av volontärer. Du kan också bidra, med kod eller kommentarer!
 
 GitHub är platsen att gå till för att be om funktioner, skapa buggrapporter eller bidra med kod:<br>
-www.github.com/AntennaPod/AntennaPod
+https://www.github.com/AntennaPod/AntennaPod
 
 Vår Google Group är platsen för att dela idéer, dina favoritögonblick med podcasting och din uppskattning till volontärerna:<br>
 https://groups.google.com/forum/#!forum/antennapod
 
+Har du frågor eller vill ge feedback?
+https://twitter.com/@AntennaPod
+
 Transifex är platsen att gå till för att hjälpa till med översättningen:<br>
-www.transifex.com/antennapod/antennapod
+https://www.transifex.com/antennapod/antennapod
 
 Kolla in vårat Beta Testing program för att få de senaste funktionerna först:<br>
-www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

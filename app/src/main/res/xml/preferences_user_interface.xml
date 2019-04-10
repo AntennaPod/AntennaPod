@@ -57,4 +57,14 @@
                 android:summary="@string/pref_lockscreen_background_sum"
                 android:title="@string/pref_lockscreen_background_title"/>
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/behavior">
+        <ListPreference
+                android:entryValues="@array/back_button_behavior_values"
+                android:entries="@array/back_button_behavior_options"
+                android:key="prefBackButtonBehavior"
+                android:title="@string/pref_back_button_behavior_title"
+                android:summary="@string/pref_back_button_behavior_sum"
+                android:defaultValue="default"
+                app:useStockLayout="true"/>
+    </PreferenceCategory>
 </PreferenceScreen>

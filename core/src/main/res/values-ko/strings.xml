@@ -122,7 +122,6 @@
   <string name="feed_remover_msg">피드 삭제하는 중</string>
   <string name="load_complete_feed">전체 피드 새로고침</string>
   <string name="hide_episodes_title">에피소드 감추기</string>
-  <string name="episode_actions">동작 적용</string>
   <string name="hide_unplayed_episodes_label">재생 안 함</string>
   <string name="hide_paused_episodes_label">일시 중지</string>
   <string name="hide_played_episodes_label">재생함</string>
@@ -167,6 +166,8 @@
   <string name="download_failed">실패</string>
   <string name="download_pending">다운로드 지연 중</string>
   <string name="download_running">다운로드 실행 중</string>
+  <string name="download_error_details">자세히</string>
+  <string name="download_error_details_message">%1$s \n\n파일 URL:\n%2$s</string>
   <string name="download_error_device_not_found">저장 장치가 없습니다</string>
   <string name="download_error_insufficient_space">저장 공간이 부족합니다</string>
   <string name="download_error_file_error">파일 오류</string>
@@ -279,7 +280,6 @@
   <string name="other_pref">기타</string>
   <string name="about_pref">정보</string>
   <string name="queue_label">대기열</string>
-  <string name="services_label">서비스</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">에피소드 정리</string>
   <string name="pref_episode_cleanup_summary">대기열에 없고 즐겨찾기에 넣지 않은 에피소드는 자동 다운로드에서 새 에피소드에 공간이 필요할 경우 제거될 수 있습니다.</string>
@@ -400,8 +400,6 @@
   <string name="crash_report_sum">최근의 이상 종료 보고서를 이메일로 보냅니다.</string>
   <string name="send_email">이메일 보내기</string>
   <string name="experimental_pref">실험적 기능</string>
-  <string name="pref_sonic_title">소닉 미디어 플레이어</string>
-  <string name="pref_sonic_message">내장 소닉 미디어 플레이어를 안드로이드 고유 미디어 플레이어와 Prestissimo 대신 사용합니다.</string>
   <string name="pref_current_value">현재 값: %1$s</string>
   <string name="pref_proxy_title">프록시</string>
   <string name="pref_proxy_sum">네트워크 프록시 설정</string>
@@ -449,8 +447,8 @@
   <string name="html_export_label">HTML 내보내기</string>
   <string name="exporting_label">내보내는 중…</string>
   <string name="export_error_label">내보내기 오류</string>
-  <string name="opml_export_success_title">OPML 내보내기가 성공했습니다.</string>
-  <string name="opml_export_success_sum">OPML 파일을 다음에 저장했습니다:\u0020</string>
+  <string name="export_success_title">내보내기 성공</string>
+  <string name="export_success_sum">내보낸 파일을 다음에 저장했습니다:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">OPML 파일을 읽으려면 외부 저장소 접근이 필요합니다</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">취침 타이머 설정</string>
@@ -615,6 +613,13 @@
   <string name="proxy_host_invalid_error">호스트가 올바른 IP 주소 또는 도메인이 아닙니다</string>
   <string name="proxy_port_invalid_error">포트가 올바르지 않습니다</string>
   <!--Database import/export-->
+  <string name="import_export">데이터베이스 가져오기/내보내기</string>
+  <string name="import_export_warning">실험적인 기능으로 구독 정보와 재생한 에피소드 정보를 다른 장치로 옮기는데 사용합니다.\n\n내보낸 데이터베이스는 같은 버전의 안테나팟을 사용할 경우에만 가져올 수 있습니다. 같은 버전이 아니면 예상치 못하게 동작할 수 있습니다.\n\n가져온 후에 다운로드하지 않은 에피소드가 다운로드한 것으로 표시될 수 있습니다. 그 경우 해당 에피소드의 재생 버튼을 누르면 안테나팟에서 다운로드 여부를 확인해 줍니다.</string>
+  <string name="label_import">가져오기</string>
+  <string name="label_export">내보내기</string>
+  <string name="import_select_file">가져올 파일을 선택하십시오</string>
+  <string name="export_ok">내보내기 성공</string>
+  <string name="import_ok">내보내기 성공.\n\n안테나팟을 다시 시작하려면 확인을 누르십시오</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">다른 장치에서 재생...</string>
   <string name="cast_disconnect_label">캐스트 세션 연결 끊기</string>
@@ -631,4 +636,5 @@
   <string name="cast_failed_seek">캐스트 장치에 새 재생 위치로 이동하는데 실패했습니다</string>
   <string name="cast_failed_receiver_player_error">리시버 플레이어에서 심각한 오류가 발생했습니다</string>
   <string name="cast_failed_media_error_skipping">미디어 재생에 오류. 건너뜁니다...</string>
+  <!--Notification channels-->
 </resources>

@@ -16,13 +16,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
@@ -38,6 +42,7 @@ public class ExternalPlayerFragment extends Fragment {
     private TextView mFeedName;
     private ProgressBar mProgressBar;
     private PlaybackController controller;
+    private Disposable disposable;
 
     public ExternalPlayerFragment() {
         super();
@@ -48,12 +53,12 @@ public class ExternalPlayerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.external_player_fragment,
                 container, false);
-        fragmentLayout = (ViewGroup) root.findViewById(R.id.fragmentLayout);
-        imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
-        txtvTitle = (TextView) root.findViewById(R.id.txtvTitle);
-        butPlay = (ImageButton) root.findViewById(R.id.butPlay);
-        mFeedName = (TextView) root.findViewById(R.id.txtvAuthor);
-        mProgressBar = (ProgressBar) root.findViewById(R.id.episodeProgress);
+        fragmentLayout = root.findViewById(R.id.fragmentLayout);
+        imgvCover = root.findViewById(R.id.imgvCover);
+        txtvTitle = root.findViewById(R.id.txtvTitle);
+        butPlay = root.findViewById(R.id.butPlay);
+        mFeedName = root.findViewById(R.id.txtvAuthor);
+        mProgressBar = root.findViewById(R.id.episodeProgress);
 
         fragmentLayout.setOnClickListener(v -> {
             Log.d(TAG, "layoutInfo was clicked");
@@ -78,7 +83,7 @@ public class ExternalPlayerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         controller = setupPlaybackController();
         butPlay.setOnClickListener(v -> {
-            if(controller != null) {
+            if (controller != null) {
                 controller.playPause();
             }
         });
@@ -127,8 +132,9 @@ public class ExternalPlayerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        controller.init();
         onPositionObserverUpdate();
+
+        controller.init();
     }
 
     @Override
@@ -137,6 +143,9 @@ public class ExternalPlayerFragment extends Fragment {
         Log.d(TAG, "Fragment is about to be destroyed");
         if (controller != null) {
             controller.release();
+        }
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -158,7 +167,7 @@ public class ExternalPlayerFragment extends Fragment {
         controller = setupPlaybackController();
         if (butPlay != null) {
             butPlay.setOnClickListener(v -> {
-                if(controller != null) {
+                if (controller != null) {
                     controller.playPause();
                 }
             });
@@ -173,7 +182,25 @@ public class ExternalPlayerFragment extends Fragment {
             return false;
         }
 
-        Playable media = controller.getMedia();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Maybe.create(emitter -> {
+                    Playable media = controller.getMedia();
+                    if (media != null) {
+                        emitter.onSuccess(media);
+                    } else {
+                        emitter.onComplete();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> updateUi((Playable) media),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+        return true;
+    }
+
+    private void updateUi(Playable media) {
         if (media != null) {
             txtvTitle.setText(media.getEpisodeTitle());
             mFeedName.setText(media.getFeedTitle());
@@ -181,11 +208,12 @@ public class ExternalPlayerFragment extends Fragment {
 
             Glide.with(getActivity())
                     .load(media.getImageLocation())
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate()
+                    .apply(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate())
                     .into(imgvCover);
 
             fragmentLayout.setVisibility(View.VISIBLE);
@@ -194,16 +222,9 @@ public class ExternalPlayerFragment extends Fragment {
             } else {
                 butPlay.setVisibility(View.VISIBLE);
             }
-            return true;
         } else {
-            Log.w(TAG,  "loadMediaInfo was called while the media object of playbackService was null!");
-            return false;
+            Log.w(TAG, "loadMediaInfo was called while the media object of playbackService was null!");
         }
-    }
-
-    private String getPositionString(int position, int duration) {
-        return Converter.getDurationStringLong(position) + " / "
-                + Converter.getDurationStringLong(duration);
     }
 
     public PlaybackController getPlaybackControllerTestingOnly() {

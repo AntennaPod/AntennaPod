@@ -31,11 +31,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
 
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.NetworkUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
@@ -53,26 +52,27 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.OnSwipeGesture;
 import de.danoeh.antennapod.view.SwipeGestureDetector;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays information about a FeedItem and actions.
@@ -135,7 +135,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     private IconButton butAction2;
     private Menu popupMenu;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     /**
      * URL that was selected via long-press.
@@ -166,26 +166,27 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.feeditem_fragment, container, false);
 
-        root = (ViewGroup) layout.findViewById(R.id.content_root);
+        root = layout.findViewById(R.id.content_root);
 
-        LinearLayout header = (LinearLayout) root.findViewById(R.id.header);
+        LinearLayout header = root.findViewById(R.id.header);
         if(feedItems.length > 0) {
             header.setOnTouchListener((v, event) -> headerGestureDetector.onTouchEvent(event));
         }
 
-        txtvPodcast = (TextView) layout.findViewById(R.id.txtvPodcast);
+        txtvPodcast = layout.findViewById(R.id.txtvPodcast);
         txtvPodcast.setOnClickListener(v -> openPodcast());
-        txtvTitle = (TextView) layout.findViewById(R.id.txtvTitle);
+        txtvTitle = layout.findViewById(R.id.txtvTitle);
         if(Build.VERSION.SDK_INT >= 23) {
             txtvTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         }
-        txtvDuration = (TextView) layout.findViewById(R.id.txtvDuration);
-        txtvPublished = (TextView) layout.findViewById(R.id.txtvPublished);
+        txtvDuration = layout.findViewById(R.id.txtvDuration);
+        txtvPublished = layout.findViewById(R.id.txtvPublished);
         if (Build.VERSION.SDK_INT >= 14) { // ellipsize is causing problems on old versions, see #448
             txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
         }
-        webvDescription = (WebView) layout.findViewById(R.id.webvDescription);
-        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
+        webvDescription = layout.findViewById(R.id.webvDescription);
+        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark ||
+                UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
@@ -215,12 +216,12 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         });
         registerForContextMenu(webvDescription);
 
-        imgvCover = (ImageView) layout.findViewById(R.id.imgvCover);
+        imgvCover = layout.findViewById(R.id.imgvCover);
         imgvCover.setOnClickListener(v -> openPodcast());
-        progbarDownload = (ProgressBar) layout.findViewById(R.id.progbarDownload);
-        progbarLoading = (ProgressBar) layout.findViewById(R.id.progbarLoading);
-        butAction1 = (IconButton) layout.findViewById(R.id.butAction1);
-        butAction2 = (IconButton) layout.findViewById(R.id.butAction2);
+        progbarDownload = layout.findViewById(R.id.progbarDownload);
+        progbarLoading = layout.findViewById(R.id.progbarLoading);
+        butAction1 = layout.findViewById(R.id.butAction1);
+        butAction2 = layout.findViewById(R.id.butAction2);
 
         butAction1.setOnClickListener(v -> {
             if (item == null) {
@@ -285,8 +286,8 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
         if (webvDescription != null && root != null) {
             root.removeView(webvDescription);
@@ -357,7 +358,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
 
     private void onFragmentLoaded() {
         if (webviewData != null) {
-            webvDescription.loadDataWithBaseURL(null, webviewData, "text/html", "utf-8", "about:blank");
+            webvDescription.loadDataWithBaseURL("https://127.0.0.1", webviewData, "text/html", "utf-8", "about:blank");
         }
         updateAppearance();
     }
@@ -378,11 +379,12 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
 
         Glide.with(getActivity())
                 .load(item.getImageLocation())
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(imgvCover);
 
         progbarDownload.setVisibility(View.GONE);
@@ -435,7 +437,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
 
         FeedItem.State state = item.getState();
-        if (butAction2Text == R.string.delete_label && state == FeedItem.State.PLAYING) {
+        if (butAction2Text == R.string.delete_label && state == FeedItem.State.PLAYING && PlaybackService.isRunning) {
             butAction2.setEnabled(false);
             butAction2.setAlpha(0.5f);
         } else {
@@ -571,12 +573,12 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     };
 
     private void load() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
         progbarLoading.setVisibility(View.VISIBLE);
-        subscription = Observable.fromCallable(this::loadInBackground)
-            .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(this::loadInBackground)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
                 progbarLoading.setVisibility(View.GONE);
@@ -586,6 +588,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @Nullable
     private FeedItem loadInBackground() {
         FeedItem feedItem = DBReader.getFeedItem(feedItems[feedItemPos]);
         if (feedItem != null) {

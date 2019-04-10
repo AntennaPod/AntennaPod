@@ -56,6 +56,11 @@ public class AtomGenerator implements FeedGenerator{
             xml.text(feed.getDescription());
             xml.endTag(null, "subtitle");
         }
+        if (feed.getImageUrl() != null) {
+            xml.startTag(null, "logo");
+            xml.text(feed.getImageUrl());
+            xml.endTag(null, "logo");
+        }
 
         if (feed.getPaymentLink() != null) {
             GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(), false);

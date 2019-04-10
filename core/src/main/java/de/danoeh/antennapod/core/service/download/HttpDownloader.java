@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -20,7 +21,6 @@ import java.util.Date;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
@@ -39,7 +39,7 @@ public class HttpDownloader extends Downloader {
 
     private static final int BUFFER_SIZE = 8 * 1024;
 
-    public HttpDownloader(DownloadRequest request) {
+    public HttpDownloader(@NonNull DownloadRequest request) {
         super(request);
     }
 
@@ -50,13 +50,8 @@ public class HttpDownloader extends Downloader {
 
         if (request.isDeleteOnFailure() && fileExists) {
             Log.w(TAG, "File already exists");
-            if (request.getFeedfileType() != FeedImage.FEEDFILETYPE_FEEDIMAGE) {
-                onFail(DownloadError.ERROR_FILE_EXISTS, null);
-                return;
-            } else {
-                onSuccess();
-                return;
-            }
+            onSuccess();
+            return;
         }
 
         OkHttpClient.Builder httpClientBuilder = AntennapodHttpClient.newBuilder();
@@ -310,7 +305,7 @@ public class HttpDownloader extends Downloader {
             String encoded = ByteString.of(bytes).base64();
             return "Basic " + encoded;
         } catch (UnsupportedEncodingException e) {
-            throw new AssertionError();
+            throw new AssertionError(e);
         }
     }
 

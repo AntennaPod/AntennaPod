@@ -24,6 +24,8 @@ import de.danoeh.antennapod.core.service.GpodnetSyncService;
  */
 public class GpodnetPreferences {
 
+    private GpodnetPreferences(){}
+
     private static final String TAG = "GpodnetPreferences";
 
     private static final String PREF_NAME = "gpodder.net";

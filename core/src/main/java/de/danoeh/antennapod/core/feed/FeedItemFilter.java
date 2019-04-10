@@ -8,6 +8,8 @@ import java.util.List;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.LongList;
 
+import static de.danoeh.antennapod.core.feed.FeedItem.TAG_FAVORITE;
+
 public class FeedItemFilter {
     private final String[] mProperties;
 
@@ -19,6 +21,7 @@ public class FeedItemFilter {
     private boolean showDownloaded = false;
     private boolean showNotDownloaded = false;
     private boolean showHasMedia = false;
+    private boolean showIsFavorite = false;
 
     public FeedItemFilter(String properties) {
         this(TextUtils.split(properties, ","));
@@ -52,6 +55,9 @@ public class FeedItemFilter {
                     break;
                 case "has_media":
                     showHasMedia = true;
+                    break;
+                case "is_favorite":
+                    showIsFavorite = true;
                     break;
             }
         }
@@ -87,6 +93,8 @@ public class FeedItemFilter {
             if (showNotDownloaded && downloaded) continue;
 
             if (showHasMedia && !item.hasMedia()) continue;
+
+            if (showIsFavorite && !item.isTagged(TAG_FAVORITE)) continue;
 
             // If the item reaches here, it meets all criteria
             result.add(item);

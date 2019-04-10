@@ -7,15 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -24,10 +20,8 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
@@ -41,11 +35,14 @@ import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Communicates with the playback service. GUI classes should use this class to
@@ -73,7 +70,8 @@ public abstract class PlaybackController {
     private boolean released = false;
     private boolean initialized = false;
 
-    private Subscription serviceBinder;
+    private Disposable serviceBinder;
+    private Disposable mediaLoader;
 
     /**
      * True if controller should reinit playback service if 'pause' button is
@@ -106,6 +104,7 @@ public abstract class PlaybackController {
     }
 
     private synchronized void initServiceRunning() {
+        Log.v(TAG, "initServiceRunning()");
         if (initialized) {
             return;
         }
@@ -148,7 +147,7 @@ public abstract class PlaybackController {
         }
 
         if(serviceBinder != null) {
-            serviceBinder.unsubscribe();
+            serviceBinder.dispose();
         }
         try {
             activity.unbindService(mConnection);
@@ -183,27 +182,20 @@ public abstract class PlaybackController {
     private void bindToService() {
         Log.d(TAG, "Trying to connect to service");
         if (serviceBinder != null) {
-            serviceBinder.unsubscribe();
+            serviceBinder.dispose();
         }
         serviceBinder = Observable.fromCallable(this::getPlayLastPlayedMediaIntent)
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(intent -> {
+                .subscribe(optionalIntent -> {
                     boolean bound = false;
-                    if (!PlaybackService.started) {
-                        if (intent != null) {
-                            Log.d(TAG, "Calling start service");
-                            ContextCompat.startForegroundService(activity, intent);
-                            bound = activity.bindService(intent, mConnection, 0);
-                        } else {
-                            status = PlayerStatus.STOPPED;
-                            setupGUI();
-                            handleStatus();
-                        }
+                    if (optionalIntent.isPresent()) {
+                        Log.d(TAG, "Calling bind service");
+                        bound = activity.bindService(optionalIntent.get(), mConnection, 0);
                     } else {
-                        Log.d(TAG, "PlaybackService is running, trying to connect without start command.");
-                        bound = activity.bindService(new Intent(activity, PlaybackService.class),
-                                mConnection, 0);
+                        status = PlayerStatus.STOPPED;
+                        setupGUI();
+                        handleStatus();
                     }
                     Log.d(TAG, "Result for service binding: " + bound);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -213,13 +205,15 @@ public abstract class PlaybackController {
      * Returns an intent that starts the PlaybackService and plays the last
      * played media or null if no last played media could be found.
      */
-    @Nullable private Intent getPlayLastPlayedMediaIntent() {
+    @NonNull
+    private Optional<Intent> getPlayLastPlayedMediaIntent() {
         Log.d(TAG, "Trying to restore last played media");
         Playable media = PlayableUtils.createInstanceFromPreferences(activity);
         if (media == null) {
             Log.d(TAG, "No last played media found");
-            return null;
+            return Optional.empty();
         }
+
 
         boolean fileExists = media.localFileAvailable();
         boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
@@ -227,10 +221,10 @@ public abstract class PlaybackController {
             DBTasks.notifyMissingFeedMediaFile(activity, (FeedMedia) media);
         }
 
-        return new PlaybackServiceStarter(activity, media)
+        return Optional.of(new PlaybackServiceStarter(activity, media)
                 .startWhenPrepared(false)
                 .shouldStream(lastIsStream || !fileExists)
-                .getIntent();
+                .getIntent());
     }
 
 
@@ -413,8 +407,8 @@ public abstract class PlaybackController {
             pauseResource = res.getResourceId(1, R.drawable.ic_pause_grey600_36dp);
             res.recycle();
         } else {
-            playResource = R.drawable.ic_av_play_circle_outline_80dp;
-            pauseResource = R.drawable.ic_av_pause_circle_outline_80dp;
+            playResource = R.drawable.ic_av_play_white_80dp;
+            pauseResource = R.drawable.ic_av_pause_white_80dp;
         }
 
         Log.d(TAG, "status: " + status.toString());
@@ -588,7 +582,8 @@ public abstract class PlaybackController {
                     .startWhenPrepared(true)
                     .streamIfLastWasStream()
                     .start();
-            Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
+            Log.d(TAG, "Play/Pause button was pressed, but playbackservice was null - " +
+                    "it is likely to have been released by Android system. Restarting it.");
             return;
         }
         switch (status) {
@@ -699,12 +694,17 @@ public abstract class PlaybackController {
         return org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
                 || UserPreferences.useSonic()
                 || Build.VERSION.SDK_INT >= 23
-                || playbackService != null && playbackService.canSetSpeed();
+                || (playbackService != null && playbackService.canSetSpeed());
     }
 
     public void setPlaybackSpeed(float speed) {
         if (playbackService != null) {
             playbackService.setSpeed(speed);
+        }
+    }
+    public void setSkipSilence(boolean skipSilence) {
+        if (playbackService != null) {
+            playbackService.skipSilence(skipSilence);
         }
     }
 
@@ -760,6 +760,7 @@ public abstract class PlaybackController {
     }
 
     public void notifyVideoSurfaceAbandoned() {
+        Log.v(TAG, "notifyVideoSurfaceAbandoned() - hasPlaybackService=" + (playbackService != null));
         if (playbackService != null) {
             playbackService.notifyVideoSurfaceAbandoned();
         }
@@ -780,18 +781,28 @@ public abstract class PlaybackController {
     }
 
     private void initServiceNotRunning() {
-        if (getMedia() == null) {
-            return;
-        }
-        if (getMedia().getMediaType() == MediaType.AUDIO) {
-            TypedArray res = activity.obtainStyledAttributes(new int[]{
-                    de.danoeh.antennapod.core.R.attr.av_play_big});
-            getPlayButton().setImageResource(
-                    res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_play_arrow_grey600_36dp));
-            res.recycle();
-        } else {
-            getPlayButton().setImageResource(R.drawable.ic_av_play_circle_outline_80dp);
-        }
+        Log.v(TAG, "initServiceNotRunning()");
+        mediaLoader = Maybe.create((MaybeOnSubscribe<Playable>) emitter -> {
+            Playable media = getMedia();
+            if (media != null) {
+                emitter.onSuccess(media);
+            } else {
+                emitter.onComplete();
+            }
+        })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(media -> {
+                if (media.getMediaType() == MediaType.AUDIO) {
+                    TypedArray res = activity.obtainStyledAttributes(new int[]{
+                            de.danoeh.antennapod.core.R.attr.av_play_big});
+                    getPlayButton().setImageResource(
+                            res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_play_arrow_grey600_36dp));
+                    res.recycle();
+                } else {
+                    getPlayButton().setImageResource(R.drawable.ic_av_play_white_80dp);
+                }
+            }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     /**
@@ -799,7 +810,7 @@ public abstract class PlaybackController {
      */
     public class MediaPositionObserver implements Runnable {
 
-        public static final int WAITING_INTERVALL = 1000;
+        static final int WAITING_INTERVALL = 1000;
 
         @Override
         public void run() {

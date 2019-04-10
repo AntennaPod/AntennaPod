@@ -12,7 +12,7 @@ import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.LangUtils;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Writes an OPML file into the export directory in the background.
@@ -23,15 +23,15 @@ public class ExportWorker {
     private static final String TAG = "ExportWorker";
     private static final String DEFAULT_OUTPUT_NAME = "antennapod-feeds";
 
-    private final ExportWriter exportWriter;
-    private final File output;
+    private final @NonNull ExportWriter exportWriter;
+    private final @NonNull File output;
 
-    public ExportWorker(ExportWriter exportWriter) {
+    public ExportWorker(@NonNull ExportWriter exportWriter) {
         this(exportWriter, new File(UserPreferences.getDataFolder(EXPORT_DIR),
                 DEFAULT_OUTPUT_NAME + "." + exportWriter.fileExtension()));
     }
 
-    private ExportWorker(ExportWriter exportWriter, @NonNull File output) {
+    private ExportWorker(@NonNull ExportWriter exportWriter, @NonNull File output) {
         this.exportWriter = exportWriter;
         this.output = output;
     }
@@ -57,7 +57,7 @@ public class ExportWorker {
                         subscriber.onError(e);
                     }
                 }
-                subscriber.onCompleted();
+                subscriber.onComplete();
             }
         });
     }

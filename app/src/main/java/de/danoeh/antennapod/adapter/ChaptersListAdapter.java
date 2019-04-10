@@ -19,9 +19,9 @@ import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
@@ -57,12 +57,12 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
             convertView = inflater.inflate(R.layout.simplechapter_item, parent, false);
             holder.view = convertView;
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
             defaultTextColor = holder.title.getTextColors().getDefaultColor();
-            holder.start = (TextView) convertView.findViewById(R.id.txtvStart);
-            holder.link = (TextView) convertView.findViewById(R.id.txtvLink);
-            holder.duration = (TextView) convertView.findViewById(R.id.txtvDuration);
-            holder.butPlayChapter = (ImageButton) convertView.findViewById(R.id.butPlayChapter);
+            holder.start = convertView.findViewById(R.id.txtvStart);
+            holder.link = convertView.findViewById(R.id.txtvLink);
+            holder.duration = convertView.findViewById(R.id.txtvDuration);
+            holder.butPlayChapter = convertView.findViewById(R.id.butPlayChapter);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -143,9 +143,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
         Chapter current = ChapterUtils.getCurrentChapter(media);
         if (current == sc) {
-            boolean darkTheme = UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark;
-            int highlight = darkTheme ? R.color.highlight_dark : R.color.highlight_light;
-            int playingBackGroundColor = ContextCompat.getColor(getContext(), highlight);
+            int playingBackGroundColor = ThemeUtils.getColorFromAttr(getContext(), R.attr.currently_playing_background);
             holder.view.setBackgroundColor(playingBackGroundColor);
         } else {
             holder.view.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));

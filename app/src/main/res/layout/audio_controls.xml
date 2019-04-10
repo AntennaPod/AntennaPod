@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:text="1.00x"/>
 
     </LinearLayout>
@@ -35,6 +36,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:gravity="center"
             android:text="-"
             android:textStyle="bold"
@@ -48,6 +50,7 @@
             android:layout_height="32dp"
             android:minWidth="0dp"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:gravity="center"
             android:text="+"
             android:textStyle="bold"
@@ -60,11 +63,20 @@
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:layout_toRightOf="@id/butDecSpeed"
+            android:layout_toEndOf="@id/butDecSpeed"
             android:layout_toLeftOf="@id/butIncSpeed"
+            android:layout_toStartOf="@id/butIncSpeed"
             android:layout_centerVertical="true"
             android:max="40"/>
 
     </RelativeLayout>
+
+    <CheckBox
+        android:id="@+id/skipSilence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/pref_skip_silence_title" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -79,6 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="-12dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:orientation="horizontal"
         android:gravity="center">
 
@@ -101,6 +114,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:orientation="horizontal"
         android:gravity="center">
 

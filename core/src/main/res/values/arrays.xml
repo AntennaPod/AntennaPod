@@ -55,6 +55,18 @@
         <item>-1</item>
     </string-array>
 
+    <string-array name="mobile_update_entries">
+        <item>@string/pref_mobileUpdate_nothing</item>
+        <item>@string/pref_mobileUpdate_images</item>
+        <item>@string/pref_mobileUpdate_everything</item>
+    </string-array>
+
+    <string-array name="mobile_update_values">
+        <item>nothing</item>
+        <item>images</item>
+        <item>everything</item>
+    </string-array>
+
     <string-array name="episode_cleanup_entries">
         <item>@string/episode_cleanup_queue_removal</item>
         <item>0</item>
@@ -68,10 +80,11 @@
     <string-array name="episode_cleanup_values">
         <item>-1</item>
         <item>0</item>
-        <item>1</item>
-        <item>3</item>
-        <item>5</item>
-        <item>7</item>
+        <item>12</item>
+        <item>24</item>
+        <item>72</item>
+        <item>120</item>
+        <item>168</item>
         <item>-2</item>
     </string-array>
 
@@ -137,10 +150,12 @@
     <string-array name="theme_options">
         <item>@string/pref_theme_title_light</item>
         <item>@string/pref_theme_title_dark</item>
+        <item>@string/pref_theme_title_trueblack</item>
     </string-array>
     <string-array name="theme_values">
         <item>0</item>
         <item>1</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="nav_drawer_titles">
@@ -181,6 +196,28 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="media_player_options">
+        <item>@string/media_player_builtin</item>
+        <item>@string/media_player_sonic</item>
+        <item>@string/media_player_exoplayer</item>
+    </string-array>
+
+    <string-array name="media_player_values">
+        <item>builtin</item>
+        <item>sonic</item>
+        <item>exoplayer</item>
+    </string-array>
+
+    <string-array name="media_player_options_no_sonic">
+        <item>@string/media_player_builtin</item>
+        <item>@string/media_player_exoplayer</item>
+    </string-array>
+
+    <string-array name="media_player_values_no_sonic">
+        <item>builtin</item>
+        <item>exoplayer</item>
+    </string-array>
+
     <string-array name="episode_filter_options">
         <item>@string/hide_unplayed_episodes_label</item>
         <item>@string/hide_paused_episodes_label</item>
@@ -190,6 +227,7 @@
         <item>@string/hide_downloaded_episodes_label</item>
         <item>@string/hide_not_downloaded_episodes_label</item>
         <item>@string/hide_has_media_label</item>
+        <item>@string/hide_is_favorite_label</item>
     </string-array>
 
     <string-array name="episode_filter_values">
@@ -201,6 +239,7 @@
         <item>downloaded</item>
         <item>not_downloaded</item>
         <item>has_media</item>
+        <item>is_favorite</item>
     </string-array>
 
     <string-array name="image_cache_size_options">
@@ -245,5 +284,38 @@
     <string-array name="video_background_behavior_values_without_pip">
         <item>stop</item>
         <item>continue</item>
+    </string-array>
+
+    <string-array name="batch_long_press_options">
+        <item>@string/select_all_above</item>
+        <item>@string/select_all_below</item>
+    </string-array>
+
+    <string-array name="back_button_behavior_options">
+        <item>@string/back_button_default</item>
+        <item>@string/back_button_go_to_page</item>
+        <item>@string/back_button_open_drawer</item>
+        <item>@string/back_button_double_tap</item>
+        <item>@string/back_button_show_prompt</item>
+    </string-array>
+
+    <string-array name="back_button_behavior_values">
+        <item>default</item>
+        <item>page</item>
+        <item>drawer</item>
+        <item>doubletap</item>
+        <item>prompt</item>
+    </string-array>
+
+    <string-array name="back_button_go_to_pages">
+        <item>@string/queue_label</item>
+        <item>@string/episodes_label</item>
+        <item>@string/subscriptions_label</item>
+    </string-array>
+
+    <string-array name="back_button_go_to_pages_tags">
+        <item>QueueFragment</item>
+        <item>EpisodesFragment</item>
+        <item>SubscriptionFragment</item>
     </string-array>
 </resources>

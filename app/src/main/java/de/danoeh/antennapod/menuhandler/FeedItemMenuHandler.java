@@ -101,7 +101,8 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
 
-        mi.setItemVisibility(R.id.share_file, hasMedia && selectedItem.getMedia().fileExists());
+        boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
+        mi.setItemVisibility(R.id.share_file, fileDownloaded);
 
         if (selectedItem.isPlayed()) {
             mi.setItemVisibility(R.id.mark_read_item, false);
@@ -129,6 +130,8 @@ public class FeedItemMenuHandler {
         boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
         mi.setItemVisibility(R.id.add_to_favorites_item, !isFavorite);
         mi.setItemVisibility(R.id.remove_from_favorites_item, isFavorite);
+
+        mi.setItemVisibility(R.id.remove_item, fileDownloaded);
 
         return true;
     }
@@ -158,7 +161,7 @@ public class FeedItemMenuHandler {
                                             FeedItem selectedItem) {
         switch (menuItemId) {
             case R.id.skip_episode_item:
-                context.sendBroadcast(new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
+                IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
                 break;
             case R.id.remove_item:
                 DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());
@@ -196,7 +199,7 @@ public class FeedItemMenuHandler {
                 DBWriter.addQueueItem(context, selectedItem);
                 break;
             case R.id.remove_from_queue_item:
-                DBWriter.removeQueueItem(context, selectedItem, true);
+                DBWriter.removeQueueItem(context, true, selectedItem);
                 break;
             case R.id.add_to_favorites_item:
                 DBWriter.addFavoriteItem(selectedItem);

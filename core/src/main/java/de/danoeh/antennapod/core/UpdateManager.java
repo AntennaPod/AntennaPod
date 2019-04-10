@@ -10,20 +10,14 @@ import android.util.Log;
 
 import org.antennapod.audio.MediaPlayer;
 
-import java.io.File;
-import java.util.List;
-
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
-import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
 
 /*
  * This class's job is do perform maintenance tasks whenever the app has been updated
  */
 class UpdateManager {
+
+    private UpdateManager(){}
 
     private static final String TAG = UpdateManager.class.getSimpleName();
 
@@ -64,32 +58,22 @@ class UpdateManager {
     }
 
     private static void onUpgrade(final int oldVersionCode, final int newVersionCode) {
-        if(oldVersionCode < 1030099) {
-            // delete the now obsolete image cache
-            // from now on, Glide will handle caching images
-            new Thread() {
-                public void run() {
-                    List<Feed> feeds = DBReader.getFeedList();
-                    for (Feed podcast : feeds) {
-                        List<FeedItem> episodes = DBReader.getFeedItemList(podcast);
-                        for (FeedItem episode : episodes) {
-                            FeedImage image = episode.getImage();
-                            if (image != null && image.isDownloaded() && image.getFile_url() != null) {
-                                File imageFile = new File(image.getFile_url());
-                                if (imageFile.exists()) {
-                                    imageFile.delete();
-                                }
-                                image.setFile_url(null); // calls setDownloaded(false)
-                                DBWriter.setFeedImage(image);
-                            }
-                        }
-                    }
-                }
-            }.start();
-        }
-        if(oldVersionCode < 1050004) {
+        if (oldVersionCode < 1050004) {
             if(MediaPlayer.isPrestoLibraryInstalled(context) && Build.VERSION.SDK_INT >= 16) {
-                UserPreferences.enableSonic(true);
+                UserPreferences.enableSonic();
+            }
+        }
+
+        if (oldVersionCode < 1070196) {
+            // migrate episode cleanup value (unit changed from days to hours)
+            int oldValueInDays = UserPreferences.getEpisodeCleanupValue();
+            if (oldValueInDays > 0) {
+                UserPreferences.setEpisodeCleanupValue(oldValueInDays * 24);
+            } // else 0 or special negative values, no change needed
+        }
+        if (oldVersionCode < 1070197) {
+            if (prefs.getBoolean("prefMobileUpdate", false)) {
+                prefs.edit().putString(UserPreferences.PREF_MOBILE_UPDATE, "everything").apply();
             }
         }
     }

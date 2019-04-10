@@ -11,6 +11,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -39,10 +40,10 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays the description of a Playable object in a Webview.
@@ -66,7 +67,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     private ShownotesProvider shownotesProvider;
     private Playable media;
 
-    private Subscription webViewLoader;
+    private Disposable webViewLoader;
 
     /**
      * URL that was selected via long-press.
@@ -113,10 +114,13 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
         Log.d(TAG, "Creating view");
         webvDescription = new WebView(getActivity().getApplicationContext());
         webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
         TypedArray ta = getActivity().getTheme().obtainStyledAttributes(new int[]
                 {android.R.attr.colorBackground});
-        int backgroundColor = ta.getColor(0, UserPreferences.getTheme() ==
-                R.style.Theme_AntennaPod_Dark ? Color.BLACK : Color.WHITE);
+        boolean black = UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark
+                || UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack;
+        int backgroundColor = ta.getColor(0, black ? Color.BLACK : Color.WHITE);
+
         ta.recycle();
         webvDescription.setBackgroundColor(backgroundColor);
         if (!NetworkUtils.networkAvailable()) {
@@ -164,7 +168,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
         super.onDestroy();
         Log.d(TAG, "Fragment destroyed");
         if (webViewLoader != null) {
-            webViewLoader.unsubscribe();
+            webViewLoader.dispose();
         }
         if (webvDescription != null) {
             webvDescription.removeAllViews();
@@ -195,7 +199,7 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
         } else if (args.containsKey(ARG_FEEDITEM_ID)) {
             long id = getArguments().getLong(ARG_FEEDITEM_ID);
             Observable.defer(() -> Observable.just(DBReader.getFeedItem(id)))
-                    .subscribeOn(Schedulers.newThread())
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(feedItem -> {
                         shownotesProvider = feedItem;
@@ -295,21 +299,22 @@ public class ItemDescriptionFragment extends Fragment implements MediaplayerInfo
     private void load() {
         Log.d(TAG, "load()");
         if(webViewLoader != null) {
-            webViewLoader.unsubscribe();
+            webViewLoader.dispose();
         }
         if(shownotesProvider == null) {
             return;
         }
-        webViewLoader = Observable.defer(() -> Observable.just(loadData()))
-                .subscribeOn(Schedulers.newThread())
+        webViewLoader = Observable.fromCallable(this::loadData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                    webvDescription.loadDataWithBaseURL(null, data, "text/html",
+                    webvDescription.loadDataWithBaseURL("https://127.0.0.1", data, "text/html",
                             "utf-8", "about:blank");
                     Log.d(TAG, "Webview loaded");
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @NonNull
     private String loadData() {
         Timeline timeline = new Timeline(getActivity(), shownotesProvider);
         return timeline.processShownotes(highlightTimecodes);

@@ -10,7 +10,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
+import android.support.v4.app.SafeJobIntentService;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,23 +21,26 @@ import com.bumptech.glide.Glide;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.receiver.PlayerWidget;
 
 /**
  * Updates the state of the player widget
  */
-public class PlayerWidgetJobService extends JobIntentService {
+public class PlayerWidgetJobService extends SafeJobIntentService {
+
     private static final String TAG = "PlayerWidgetJobService";
 
     private PlaybackService playbackService;
     private final Object waitForService = new Object();
 
+    private static final int JOB_ID = -17001;
+
     public static void updateWidget(Context context) {
-        enqueueWork(context, PlayerWidgetJobService.class, 0, new Intent(context, PlayerWidgetJobService.class));
+        enqueueWork(context, PlayerWidgetJobService.class, JOB_ID, new Intent(context, PlayerWidgetJobService.class));
     }
 
     @Override
@@ -46,8 +49,8 @@ public class PlayerWidgetJobService extends JobIntentService {
             return;
         }
 
-        if (PlaybackService.isRunning && playbackService == null) {
-            synchronized (waitForService) {
+        synchronized (waitForService) {
+            if (PlaybackService.isRunning && playbackService == null) {
                 bindService(new Intent(this, PlaybackService.class), mConnection, 0);
                 while (playbackService == null) {
                     try {

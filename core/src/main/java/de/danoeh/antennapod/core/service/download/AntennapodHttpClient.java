@@ -40,6 +40,9 @@ import okhttp3.internal.http.StatusLine;
  * Provides access to a HttpClient singleton.
  */
 public class AntennapodHttpClient {
+
+    private AntennapodHttpClient(){}
+
     private static final String TAG = "AntennapodHttpClient";
 
     private static final int CONNECTION_TIMEOUT = 30000;

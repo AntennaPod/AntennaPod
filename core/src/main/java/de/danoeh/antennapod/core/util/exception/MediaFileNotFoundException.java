@@ -12,11 +12,6 @@ public class MediaFileNotFoundException extends Exception {
 		this.media = media;
 	}
 
-	public MediaFileNotFoundException(FeedMedia media) {
-		super();
-		this.media = media;
-	}
-
 	public FeedMedia getMedia() {
 		return media;
 	}

@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -62,9 +63,9 @@ public class StatisticsListAdapter extends BaseAdapter {
 
             convertView = inflater.inflate(R.layout.statistics_listitem, parent, false);
 
-            holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.time = (TextView) convertView.findViewById(R.id.txtvTime);
+            holder.image = convertView.findViewById(R.id.imgvCover);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
+            holder.time = convertView.findViewById(R.id.txtvTime);
             convertView.setTag(holder);
         } else {
             holder = (StatisticsHolder) convertView.getTag();
@@ -72,11 +73,12 @@ public class StatisticsListAdapter extends BaseAdapter {
 
         Glide.with(context)
                 .load(feed.getImageLocation())
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(holder.image);
 
         holder.title.setText(feed.getTitle());

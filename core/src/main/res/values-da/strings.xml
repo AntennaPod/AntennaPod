@@ -56,7 +56,6 @@
   <string name="yes">Ja</string>
   <string name="no">Nej</string>
   <string name="reset">Nulstil</string>
-  <string name="author_label">Forfatter</string>
   <string name="language_label">Sprog</string>
   <string name="url_label">Webadresse</string>
   <string name="podcast_settings_label">Indstillinger </string>
@@ -105,25 +104,13 @@
   <string name="mark_all_read_label">Marker alle som afspillet</string>
   <string name="mark_all_read_msg">Marker alle udsendelser som afspillet</string>
   <string name="mark_all_read_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser som værende afspillet.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser i denne feed som værende afspillet.</string>
   <string name="mark_all_seen_label">Marker alle som set</string>
-  <string name="mark_all_seen_msg">Markerede alle udsendelser som set</string>
   <string name="mark_all_seen_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser som set.</string>
   <string name="show_info_label">Vis information</string>
-  <string name="rename_feed_label">Omdøb podcast</string>
-  <string name="remove_feed_label">Fjern podcast</string>
   <string name="share_label">Del…</string>
-  <string name="share_link_label">Del link</string>
   <string name="share_file_label">Del fil</string>
-  <string name="share_link_with_position_label">Del link med position</string>
   <string name="share_feed_url_label">Del webadresse for feedet</string>
-  <string name="share_item_url_label">Del webadresse for udsendelsen</string>
-  <string name="share_item_url_with_position_label">Del webadresse for udsendelsen med position</string>
-  <string name="feed_delete_confirmation_msg">Bekræft venligst at du ønsker at slette feedet \"%1$s\" og ALLE overførte udsendelser i dette feed.</string>
-  <string name="feed_remover_msg">Fjerner feed</string>
-  <string name="load_complete_feed">Opdater hele feedet</string>
   <string name="hide_episodes_title">Skjul udsendelser</string>
-  <string name="episode_actions">Anvend handlinger</string>
   <string name="hide_unplayed_episodes_label">Uafspillede</string>
   <string name="hide_paused_episodes_label">Sat på pause</string>
   <string name="hide_played_episodes_label">Afspillede</string>
@@ -234,7 +221,6 @@
   <string name="date">Dato</string>
   <string name="duration">Varighed</string>
   <string name="episode_title">Titel på udsendelse</string>
-  <string name="feed_title">Titel på feed</string>
   <string name="ascending">Stigende</string>
   <string name="descending">Faldende</string>
   <string name="clear_queue_confirmation_msg">Bekræft venligst at du vil rydde ALLE udsendelser fra køen</string>
@@ -272,7 +258,6 @@
   <string name="enable_sonic">Slå Sonic til</string>
   <!--Empty list labels-->
   <string name="no_items_label">Der er ingen elementer i denne liste.</string>
-  <string name="no_feeds_label">Du har endnu ikke abonneret på nogen feeds.</string>
   <string name="no_chapters_label">Denne udsendelse har ingen kapitler.</string>
   <string name="no_shownotes_label">Denne udsendelse har ingen beskrivelse.</string>
   <!--Preferences-->
@@ -281,7 +266,6 @@
   <string name="other_pref">Andre</string>
   <string name="about_pref">Om</string>
   <string name="queue_label">Kø</string>
-  <string name="services_label">Tjenester</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Oprydning i udsendelser</string>
   <string name="pref_episode_cleanup_summary">Tillad at udsendelser, som ikke er i køen og som ikke er markeret som foretrukne, kan fjernes, hvis Automatisk overførsel har brug for plads til nye udsendelser</string>
@@ -289,7 +273,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Genoptag afspilning når hovedtelefonerne tilsluttes igen</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Genoptag afspilning når bluetooth forbinder igen</string>
   <string name="pref_hardwareForwardButtonSkips_title">Fremadknap springer over</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Når der trykkes på en fysisk fremadknap, skal der springes til den næste udsendelse i stedet for at spoles fremad.</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Tilbageknap genstarter</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Når der trykkes på en fysisk tilbageknap, skal den aktuelle udsendelse afspilles forfra i stedet for at der spoles tilbage.</string>
   <string name="pref_followQueue_sum">Spring til næste element i køen når afspilningen er færdig</string>
@@ -338,7 +321,6 @@
   <string name="pref_nav_drawer_feed_order_title">Vælg abonnementsorden</string>
   <string name="pref_nav_drawer_feed_order_sum">Ændr rækkefølgen af dine abonnementer</string>
   <string name="pref_nav_drawer_feed_counter_title">Indstil abonnementstæller</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Vælg den information, som abonnementstælleren viser</string>
   <string name="pref_set_theme_sum">Ændr AntennaPods udseende.</string>
   <string name="pref_automatic_download_title">Automatisk overførsel</string>
   <string name="pref_automatic_download_sum">Konfigurer automatisk overførsel af udsendelser</string>
@@ -380,8 +362,6 @@
   <string name="pref_rewind_sum">Indstil antallet af sekunder, der skal springes tilbage, når der trykkes på tilbagespolingsknappen</string>
   <string name="pref_gpodnet_sethostname_title">Indstil værtsnavn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Brug standard vært</string>
-  <string name="pref_expandNotify_title">Udvidelse af notifikation</string>
-  <string name="pref_expandNotify_sum">Udvid altid notifikationen for at vise afspilningsknapper.</string>
   <string name="pref_persistNotify_title">Vedholdende afspilningsknapper</string>
   <string name="pref_persistNotify_sum">Behold notifikation og knapper på låseskærmen, når afspilningen sættes på pause.</string>
   <string name="pref_compact_notification_buttons_title">Indstil knapper på låseskærm</string>
@@ -402,8 +382,6 @@
   <string name="crash_report_sum">Send den seneste nedbrudsrapport via e-mail</string>
   <string name="send_email">Send e-mail</string>
   <string name="experimental_pref">Eksperimentelt</string>
-  <string name="pref_sonic_title">Sonic-medieafspiller</string>
-  <string name="pref_sonic_message">Brug indbygget Sonic-medieafspiller i stedet for Androids indbyggede medieafspiller og Prestissimo</string>
   <string name="pref_current_value">Nuværende værdi: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Indstil en netværksproxy</string>
@@ -424,8 +402,6 @@
   <string name="search_hint">Søg efter udsendelser</string>
   <string name="found_in_shownotes_label">Fundet i beskrivelse</string>
   <string name="found_in_chapters_label">Fundet i kapitler</string>
-  <string name="found_in_authors_label">Fundet i forfattere</string>
-  <string name="found_in_feeds_label">Fundet i feeds</string>
   <string name="search_status_no_results">Fandt ingen resultater</string>
   <string name="search_label">Søg</string>
   <string name="found_in_title_label">Fundet i titel</string>
@@ -451,8 +427,6 @@
   <string name="html_export_label">HTML-eksport</string>
   <string name="exporting_label">Eksporterer…</string>
   <string name="export_error_label">Eksportfejl</string>
-  <string name="opml_export_success_title">OPML-eksport lykkedes.</string>
-  <string name="opml_export_success_sum">.opml-filen blev skrevet til:\u0020</string>
   <string name="opml_import_ask_read_permission">Adgang til eksternt lager er påkrævet for at læse OPML-filen</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Indstil søvntimer</string>
@@ -637,4 +611,5 @@
   <string name="cast_failed_seek">Det lykkedes ikke at søge til den nye position på cast-enheden</string>
   <string name="cast_failed_receiver_player_error">Modtagerafspilleren er stødt på en alvorlig fejl</string>
   <string name="cast_failed_media_error_skipping">Fejl ved afspilning af medie. Springer over…</string>
+  <!--Notification channels-->
 </resources>

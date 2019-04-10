@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Обновить подписки</string>
   <string name="feeds_label">Каналы</string>
   <string name="statistics_label">Статистика</string>
   <string name="add_feed_label">Добавить подкаст</string>
   <string name="episodes_label">Выпуски</string>
   <string name="all_episodes_short_label">Все</string>
+  <string name="new_episodes_label">Новые</string>
   <string name="favorite_episodes_label">Избранное</string>
   <string name="new_label">Новые</string>
   <string name="settings_label">Настройки</string>
@@ -18,10 +20,12 @@
   <string name="cancel_download_label">Отменить загрузку</string>
   <string name="playback_history_label">Журнал</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Синхронизировать с другими устройствами</string>
   <string name="gpodnet_auth_label">Войти на gpodder.net</string>
   <string name="free_space_label">свободно %1$s</string>
   <string name="episode_cache_full_title">Кэш выпусков заполнен</string>
   <string name="episode_cache_full_message">Достигнут предел кэша выпусков. Объём кэша можно увеличить в Настройках.</string>
+  <string name="synchronizing">Синхронизация…</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Общее время прослушивания подкастов:</string>
   <string name="statistics_details_dialog">%1$d из %2$d выпусков начато.\n\nПрослушано %3$s из %4$s.</string>
@@ -56,13 +60,14 @@
   <string name="yes">Да</string>
   <string name="no">Нет</string>
   <string name="reset">Сброс</string>
-  <string name="author_label">Автор</string>
+  <string name="author_label">Автор(ы)</string>
   <string name="language_label">Язык</string>
   <string name="url_label">Адрес</string>
   <string name="podcast_settings_label">Настройки</string>
   <string name="cover_label">Обложка</string>
   <string name="error_label">Ошибка</string>
   <string name="error_msg_prefix">Произошла ошибка:</string>
+  <string name="needs_storage_permission">Для выполнения этой операции нужно разрешить доступ к хранилищу</string>
   <string name="refresh_label">Обновить</string>
   <string name="external_storage_error_msg">Внешний носитель недоступен. Убедитесь что внешний носитель установлен, иначе приложение не сможет нормально работать.</string>
   <string name="chapters_label">Главы</string>
@@ -107,25 +112,28 @@
   <string name="mark_all_read_label">Отметить как прослушанное</string>
   <string name="mark_all_read_msg">Отметить все выпуски как прослушанные</string>
   <string name="mark_all_read_confirmation_msg">Подтвердите, что хотите пометить все эпизоды как прослушанные.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Подтвердите, что хотите пометить все эпизоды в этом канале как прослушанные.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Пожалуйста, подтвердите желание отметить все выпуски этого подкаста как прослушанные.</string>
   <string name="mark_all_seen_label">Отметить все как просмотренное</string>
   <string name="mark_all_seen_msg">Все выпуски отмечены как просмотренные</string>
   <string name="mark_all_seen_confirmation_msg">Пожалуйста, подтвердите намерение отметить все выпуски как просмотренные.</string>
   <string name="show_info_label">Показать информацию</string>
+  <string name="show_feed_settings_label">Показать настройки подкаста</string>
+  <string name="feed_info_label">Сведения о подкасте</string>
+  <string name="feed_settings_label">Настройки подкаста</string>
   <string name="rename_feed_label">Переименовать подкаст</string>
   <string name="remove_feed_label">Удалить подкаст</string>
   <string name="share_label">Поделиться…</string>
-  <string name="share_link_label">Поделиться ссылкой</string>
+  <string name="share_link_label">Поделиться ссылкой на выпуск</string>
+  <string name="share_link_with_position_label">Поделиться ссылкой на выпуск с отметкой времени</string>
   <string name="share_file_label">Поделиться файлом</string>
-  <string name="share_link_with_position_label">Поделиться ссылкой с отметкой времени</string>
   <string name="share_feed_url_label">Поделиться ссылкой на канал</string>
-  <string name="share_item_url_label">Поделиться ссылкой на файл выпуска</string>
-  <string name="share_item_url_with_position_label">Поделиться ссылкой на файл выпуска с отметкой времени</string>
-  <string name="feed_delete_confirmation_msg">Подтвердите, что хотите удалить канал \"%1$s\" и ВСЕ скачанные эпизоды этого канала.</string>
-  <string name="feed_remover_msg">Удаление канала</string>
-  <string name="load_complete_feed">Обновить весь канал</string>
+  <string name="share_item_url_label">Поделиться ссылкой на файл</string>
+  <string name="share_item_url_with_position_label">Поделиться ссылкой на файл с отметкой времени</string>
+  <string name="feed_delete_confirmation_msg">Подтвердите желание удалить подкаст \"%1$s\" и ВСЕ его эпизоды, в том числе и скачанные.</string>
+  <string name="feed_remover_msg">Удаление подкаста</string>
+  <string name="load_complete_feed">Обновить весь подкаст</string>
   <string name="hide_episodes_title">Скрыть выпуски</string>
-  <string name="episode_actions">Применить действия</string>
+  <string name="batch_edit">Групповая обработка</string>
   <string name="hide_unplayed_episodes_label">Непрослушанное</string>
   <string name="hide_paused_episodes_label">Приостановленное</string>
   <string name="hide_played_episodes_label">Прослушанное</string>
@@ -134,6 +142,7 @@
   <string name="hide_downloaded_episodes_label">Загружено</string>
   <string name="hide_not_downloaded_episodes_label">Не загружено</string>
   <string name="hide_has_media_label">С файлами</string>
+  <string name="hide_is_favorite_label">Избранные</string>
   <string name="filtered_label">Отфильтровано</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Последнее обновление не удалось</string>
   <string name="open_podcast">Открыть подкаст</string>
@@ -147,6 +156,7 @@
   <string name="delete_label">Удалить</string>
   <string name="delete_failed">Невозможно удалить файл. Попробуйте перезагрузить устройство.</string>
   <string name="remove_episode_lable">Удалить выпуск</string>
+  <string name="mark_as_seen_label">Просмотрено</string>
   <string name="marked_as_seen_label">Отмечено как просмотренное</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
   <string name="marked_as_read_label">Помечено как прослушанное</string>
@@ -170,6 +180,11 @@
   <string name="download_failed">не удалось</string>
   <string name="download_pending">Загрузка в ожидании</string>
   <string name="download_running">Загрузка в процессе</string>
+  <string name="download_error_details">Подробнее</string>
+  <string name="download_error_details_message">%1$s
+
+URL файла:
+%2$s</string>
   <string name="download_error_device_not_found">Устройство хранения не найдено</string>
   <string name="download_error_insufficient_space">Недостаточно места</string>
   <string name="download_error_file_error">Ошибка файла</string>
@@ -222,6 +237,7 @@
   <string name="playback_error_unknown">Неизвестная ошибка</string>
   <string name="no_media_playing_label">Ничего не воспроизводится</string>
   <string name="player_buffering_msg">Буферизация</string>
+  <string name="player_go_to_picture_in_picture">Картинка в картинке</string>
   <string name="playbackservice_notification_title">Воспроизведение подкаста</string>
   <string name="unknown_media_key">AntennaPod - неизвестный ключ носителя: %1$d</string>
   <!--Queue operations-->
@@ -238,7 +254,9 @@
   <string name="date">По дате</string>
   <string name="duration">По продолжительности</string>
   <string name="episode_title">Название выпуска</string>
-  <string name="feed_title">Название канала</string>
+  <string name="feed_title">Название подкаста</string>
+  <string name="random">Случайно</string>
+  <string name="smart_shuffle">Умное перемешивание</string>
   <string name="ascending">По возрастанию</string>
   <string name="descending">По убыванию</string>
   <string name="clear_queue_confirmation_msg">Подтвердите, что хотите очистить очередь от ВСЕХ эпизодов.</string>
@@ -276,7 +294,7 @@
   <string name="enable_sonic">Включить Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Список пуст</string>
-  <string name="no_feeds_label">Вы ещё не подписаны ни на один канал.</string>
+  <string name="no_feeds_label">Вы ещё не подписаны ни на один подкаст.</string>
   <string name="no_chapters_label">Этот выпуск не содержит оглавления.</string>
   <string name="no_shownotes_label">Этот выпуск не содержит примечаний.</string>
   <!--Preferences-->
@@ -285,15 +303,23 @@
   <string name="other_pref">Прочее</string>
   <string name="about_pref">О программе</string>
   <string name="queue_label">Очередь</string>
-  <string name="services_label">Сервисы</string>
+  <string name="integrations_label">Интеграция</string>
   <string name="flattr_label">Flattr</string>
+  <string name="flattr_summary">Услуга микроплатежей</string>
+  <string name="automation">Автоматизация</string>
+  <string name="download_pref_details">Подробнее</string>
+  <string name="import_export_pref">Импорт/экспорт</string>
+  <string name="appearance">Внешний вид</string>
+  <string name="external_elements">Внешние органы управления</string>
+  <string name="interruptions">Прерывания</string>
+  <string name="buttons">Кнопки управления воспроизведением</string>
+  <string name="media_player">Проигрыватель</string>
   <string name="pref_episode_cleanup_title">Удаление выпусков</string>
   <string name="pref_episode_cleanup_summary">Выпуски, которые не стоят в очереди и не отмечены как избранные могут быть удалены для освобождения места под Автозагрузку.</string>
   <string name="pref_pauseOnDisconnect_sum">Приостановить воспроизведение, когда наушники или bluetooth отключены</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Продолжать воспроизведение после подключения наушников</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Продолжать воспроизведение после восстановления bluetooth-соединения</string>
   <string name="pref_hardwareForwardButtonSkips_title">Пропускать кнопкой перемотки вперёд</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">При нажатии на физическую кнопку перемотки вперёд переходить к следующему выпуску вместо перемотки</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">В начало кнопкой перемотки назад</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">При нажатии на физическую кнопку перемотки назад переходить к началу выпуска вместо перемотки назад</string>
   <string name="pref_followQueue_sum">После завершения воспроизведения перейти к следующему в очереди</string>
@@ -342,7 +368,7 @@
   <string name="pref_nav_drawer_feed_order_title">Упорядочить подписки</string>
   <string name="pref_nav_drawer_feed_order_sum">Выбрать порядок отображения подписок</string>
   <string name="pref_nav_drawer_feed_counter_title">Выбрать счётчик подписок</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Выбрать какую информацию показывать в счётчике подписок</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Выбрать какую информацию показывать в счётчике подписок. Влияет также на очерёдность подписок, если сортировка подписок производится по счётчику.</string>
   <string name="pref_set_theme_sum">Изменить тему оформления AntennaPod</string>
   <string name="pref_automatic_download_title">Автоматическая загрузка</string>
   <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков.</string>
@@ -356,6 +382,7 @@
   <string name="pref_episode_cache_title">Кэш выпусков</string>
   <string name="pref_theme_title_light">Светлая</string>
   <string name="pref_theme_title_dark">Тёмная</string>
+  <string name="pref_theme_title_trueblack">Чёрная (для AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Неограничен</string>
   <string name="pref_update_interval_hours_plural">ч.</string>
   <string name="pref_update_interval_hours_singular">ч.</string>
@@ -384,8 +411,6 @@
   <string name="pref_rewind_sum">Настройте длину шага в секундах при нажатии кнопки перемотки назад</string>
   <string name="pref_gpodnet_sethostname_title">Задать имя узла</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Использовать узел по умолчанию</string>
-  <string name="pref_expandNotify_title">Развёрнутое уведомление</string>
-  <string name="pref_expandNotify_sum">Всегда разворачивать уведомление, показывая кнопки управления воспроизведением.</string>
   <string name="pref_persistNotify_title">Постоянные кнопки воспроизведения</string>
   <string name="pref_persistNotify_sum">Сохранять уведомление и кнопки воспроизведения на экране блокировки во время паузы.</string>
   <string name="pref_compact_notification_buttons_title">Выбрать кнопки экрана блокировки</string>
@@ -406,8 +431,7 @@
   <string name="crash_report_sum">Отослать последний отчёт о сбое по e-mail</string>
   <string name="send_email">Отправить Email</string>
   <string name="experimental_pref">Экспериментальные настройки</string>
-  <string name="pref_sonic_title">Проигрывать через Sonic</string>
-  <string name="pref_sonic_message">Задействовать встроенный медиа проигрыватель Sonic вместо стандартного из ОС Android и Prestissimo</string>
+  <string name="pref_media_player_message">Выберите каким проигрывателем следует воспроизводить файлы</string>
   <string name="pref_current_value">Текущее значение: %1$s</string>
   <string name="pref_proxy_title">Прокси</string>
   <string name="pref_proxy_sum">Настройки прокси</string>
@@ -419,6 +443,11 @@
   <string name="pref_cast_message_free_flavor">Для работы Chromecast требуются собственнические библиотеки третьей стороны, которые не включены в данную версию AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Добавлять загруженные в очередь</string>
   <string name="pref_enqueue_downloaded_summary">Добавлять загруженные выпуски в очередь</string>
+  <string name="media_player_builtin">Встроенный в Android проигрыватель</string>
+  <string name="pref_videoBehavior_title">При завершении видео</string>
+  <string name="pref_videoBehavior_sum">При сворачивании проигрывателя видео</string>
+  <string name="stop_playback">остановить воспроизведение</string>
+  <string name="continue_playback">Продолжить воспроизведение звука</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включить автоматическую поддержку через Flattr</string>
   <string name="auto_flattr_after_percent">Поддерживать через Flattr эпизоды, прослушанные на %d процентов</string>
@@ -428,8 +457,8 @@
   <string name="search_hint">Найти выпуски</string>
   <string name="found_in_shownotes_label">Найдено в примечаниях к выпуску</string>
   <string name="found_in_chapters_label">Найдено в главах</string>
-  <string name="found_in_authors_label">Найдено в авторах</string>
-  <string name="found_in_feeds_label">Найдено в каналах</string>
+  <string name="found_in_authors_label">Найдено среди авторов</string>
+  <string name="found_in_feeds_label">Найдено в подкастах</string>
   <string name="search_status_no_results">Ничего не найдено</string>
   <string name="search_label">Поиск</string>
   <string name="found_in_title_label">Найдено в заголовке</string>
@@ -455,8 +484,10 @@
   <string name="html_export_label">Экспорт в HTML</string>
   <string name="exporting_label">Экспортируется...</string>
   <string name="export_error_label">Ошибка экспорта</string>
-  <string name="opml_export_success_title">OPML успешно экспортирован.</string>
-  <string name="opml_export_success_sum">Файл OPML был записан в:\u0020</string>
+  <string name="export_success_title">Экспорт завершён успешно</string>
+  <string name="export_success_sum">Экспорт осуществлён в файл:
+
+%1$s</string>
   <string name="opml_import_ask_read_permission">Для чтения файла OPML необходим доступ к внешнему хранилищу</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Установить таймер сна</string>
@@ -635,7 +666,7 @@
   <string name="label_import">Импорт</string>
   <string name="label_export">Экспорт</string>
   <string name="import_select_file">Выберите импортируемый файл</string>
-  <string name="export_ok">Успешно экспортировано. База данных была записана на карту памяти.</string>
+  <string name="export_ok">Успешно экспортировано.</string>
   <string name="import_ok">Успешно импортировано.\n\nПожалуйста, нажмите OK, чтобы перезапустить AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Воспроизвести на…</string>
@@ -653,4 +684,13 @@
   <string name="cast_failed_seek">Не удалось выполнить перемотку на устройстве Google cast</string>
   <string name="cast_failed_receiver_player_error">Серьёзная ошибка воспроизведения в устройстве Google cast</string>
   <string name="cast_failed_media_error_skipping">Ошибка воспроизведения. Пропускаю…</string>
+  <!--Notification channels-->
+  <string name="notification_channel_user_action">Требуется действие</string>
+  <string name="notification_channel_user_action_description">Показывается, когда требуется действие, например, для ввода пароля.</string>
+  <string name="notification_channel_downloading">Идёт загрузка</string>
+  <string name="notification_channel_downloading_description">Показывается во время загрузки.</string>
+  <string name="notification_channel_playing">Идёт воспроизведение</string>
+  <string name="notification_channel_playing_description">Позволяет управлять воспроизведением. Основное уведомление, показывается при воспроизведении подкаста.</string>
+  <string name="notification_channel_error">Ошибки</string>
+  <string name="notification_channel_error_description">Показывается если что-то пошло не так, к примеру, неудавшаяся загрузка или синхронизация с gpodder.</string>
 </resources>

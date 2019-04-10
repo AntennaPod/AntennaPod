@@ -21,16 +21,10 @@ public class AudioPlayer extends MediaPlayer implements IPlayer {
 
 	private final SharedPreferences.OnSharedPreferenceChangeListener sonicListener =
 			(sharedPreferences, key) -> {
-				if (key.equals(UserPreferences.PREF_SONIC)) {
+				if (key.equals(UserPreferences.PREF_MEDIA_PLAYER)) {
 					checkMpi();
 				}
 			};
-
-	@Override
-	public void setScreenOnWhilePlaying(boolean screenOn) {
-		Log.e(TAG, "Setting screen on while playing not supported in Audio Player");
-		throw new UnsupportedOperationException("Setting screen on while playing not supported in Audio Player");
-	}
 
 	@Override
 	public void setDisplay(SurfaceHolder sh) {
@@ -40,10 +34,13 @@ public class AudioPlayer extends MediaPlayer implements IPlayer {
 		}
 	}
 
-    @Override
-    public void setVideoScalingMode(int mode) {
-        throw new UnsupportedOperationException("Setting scaling mode is not supported in Audio Player");
-    }
+	@Override
+	public void setPlaybackParams(float speed, boolean skipSilence) {
+		if(canSetSpeed()) {
+			setPlaybackSpeed(speed);
+		}
+		//Default player does not support silence skipping
+	}
 
 	@Override
 	protected boolean useSonic() {

@@ -4,10 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -26,18 +25,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.joanzapata.iconify.IconDrawable;
+import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
+import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
@@ -55,7 +53,6 @@ import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -71,10 +68,10 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays a list of FeedItems.
@@ -114,7 +111,7 @@ public class ItemlistFragment extends ListFragment {
 
     private TextView txtvInformation;
 
-    private Subscription subscription;
+    private Disposable disposable;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -165,8 +162,8 @@ public class ItemlistFragment extends ListFragment {
         super.onPause();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
     }
 
@@ -417,13 +414,10 @@ public class ItemlistFragment extends ListFragment {
 
     }
 
-    private boolean insideOnFragmentLoaded = false;
-
     private void onFragmentLoaded() {
         if(!isVisible()) {
             return;
         }
-        insideOnFragmentLoaded = true;
         if (adapter == null) {
             setListAdapter(null);
             setupHeaderView();
@@ -440,9 +434,6 @@ public class ItemlistFragment extends ListFragment {
         if (feed != null && feed.getNextPageLink() == null && listFooter != null) {
             getListView().removeFooterView(listFooter.getRoot());
         }
-
-        insideOnFragmentLoaded = false;
-
     }
 
     private void refreshHeaderView() {
@@ -486,14 +477,14 @@ public class ItemlistFragment extends ListFragment {
         View header = inflater.inflate(R.layout.feeditemlist_header, lv, false);
         lv.addHeaderView(header);
 
-        txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
-        TextView txtvAuthor = (TextView) header.findViewById(R.id.txtvAuthor);
-        imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
-        imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
-        ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
-        ImageButton butShowSettings = (ImageButton) header.findViewById(R.id.butShowSettings);
-        txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
-        txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
+        txtvTitle = header.findViewById(R.id.txtvTitle);
+        TextView txtvAuthor = header.findViewById(R.id.txtvAuthor);
+        imgvBackground = header.findViewById(R.id.imgvBackground);
+        imgvCover = header.findViewById(R.id.imgvCover);
+        ImageButton butShowInfo = header.findViewById(R.id.butShowInfo);
+        ImageButton butShowSettings = header.findViewById(R.id.butShowSettings);
+        txtvInformation = header.findViewById(R.id.txtvInformation);
+        txtvFailure = header.findViewById(R.id.txtvFailure);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
@@ -529,20 +520,22 @@ public class ItemlistFragment extends ListFragment {
     private void loadFeedImage() {
         Glide.with(getActivity())
                 .load(feed.getImageLocation())
-                .placeholder(R.color.image_readability_tint)
-                .error(R.color.image_readability_tint)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .transform(new FastBlurTransformation(getActivity()))
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.image_readability_tint)
+                    .error(R.color.image_readability_tint)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .transform(new FastBlurTransformation())
+                    .dontAnimate())
                 .into(imgvBackground);
 
         Glide.with(getActivity())
                 .load(feed.getImageLocation())
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(imgvCover);
     }
 
@@ -618,23 +611,22 @@ public class ItemlistFragment extends ListFragment {
 
 
     private void loadItems() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if(disposable != null) {
+            disposable.dispose();
         }
-        subscription = Observable.fromCallable(this::loadData)
-                .subscribeOn(Schedulers.newThread())
+        disposable = Observable.fromCallable(this::loadData)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    if (result != null) {
-                        feed = result;
-                        itemsLoaded = true;
-                        if (viewsCreated) {
-                            onFragmentLoaded();
-                        }
+                    feed = result;
+                    itemsLoaded = true;
+                    if (viewsCreated) {
+                        onFragmentLoaded();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @Nullable
     private Feed loadData() {
         Feed feed = DBReader.getFeed(feedID);
         DBReader.loadAdditionalFeedItemListData(feed.getItems());

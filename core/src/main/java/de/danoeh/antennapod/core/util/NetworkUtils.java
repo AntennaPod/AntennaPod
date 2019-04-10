@@ -18,15 +18,16 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class NetworkUtils {
+    private NetworkUtils(){}
 
 	private static final String TAG = NetworkUtils.class.getSimpleName();
 
@@ -89,9 +90,13 @@ public class NetworkUtils {
         return info != null && info.isConnected();
     }
 
-	public static boolean isDownloadAllowed() {
-		return UserPreferences.isAllowMobileUpdate() || !NetworkUtils.isNetworkMetered();
-	}
+    public static boolean isDownloadAllowed() {
+        return UserPreferences.isAllowMobileUpdate() || !NetworkUtils.isNetworkMetered();
+    }
+
+    public static boolean isImageAllowed() {
+        return UserPreferences.isAllowMobileImages() || !NetworkUtils.isNetworkMetered();
+    }
 
 	private static boolean isNetworkMetered() {
 		ConnectivityManager connManager = (ConnectivityManager) context
@@ -111,11 +116,10 @@ public class NetworkUtils {
         return null;
     }
 
-	public static Observable<Long> getFeedMediaSizeObservable(FeedMedia media) {
-        return Observable.create((Observable.OnSubscribe<Long>) subscriber -> {
+	public static Single<Long> getFeedMediaSizeObservable(FeedMedia media) {
+        return Single.create((SingleOnSubscribe<Long>) emitter -> {
             if (!NetworkUtils.isDownloadAllowed()) {
-                subscriber.onNext(0L);
-                subscriber.onCompleted();
+                emitter.onSuccess(0L);
                 return;
             }
             long size = Integer.MIN_VALUE;
@@ -129,8 +133,7 @@ public class NetworkUtils {
 
                 String url = media.getDownload_url();
                 if(TextUtils.isEmpty(url)) {
-                    subscriber.onNext(0L);
-                    subscriber.onCompleted();
+                    emitter.onSuccess(0L);
                     return;
                 }
 
@@ -150,8 +153,7 @@ public class NetworkUtils {
                         }
                     }
                 } catch (IOException e) {
-                    subscriber.onNext(0L);
-                    subscriber.onCompleted();
+                    emitter.onSuccess(0L);
                     Log.e(TAG, Log.getStackTraceString(e));
                     return; // better luck next time
                 }
@@ -163,11 +165,10 @@ public class NetworkUtils {
             } else {
                 media.setSize(size);
             }
-            subscriber.onNext(size);
-            subscriber.onCompleted();
+            emitter.onSuccess(size);
             DBWriter.setFeedMedia(media);
         })
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread());
     }
 

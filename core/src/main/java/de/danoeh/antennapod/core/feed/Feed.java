@@ -44,7 +44,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      * Name of the author
      */
     private String author;
-    private FeedImage image;
+    private String imageUrl;
     private List<FeedItem> items;
 
     /**
@@ -96,7 +96,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      * This constructor is used for restoring a feed from the database.
      */
     public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLink,
-                String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
+                String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, FlattrStatus status, boolean paged, String nextPageLink,
                 String filter, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
@@ -111,7 +111,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         this.language = language;
         this.type = type;
         this.feedIdentifier = feedIdentifier;
-        this.image = image;
+        this.imageUrl = imageUrl;
         this.flattrStatus = status;
         this.paged = paged;
         this.nextPageLink = nextPageLink;
@@ -128,9 +128,9 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      * This constructor is used for test purposes and uses a default flattr status object.
      */
     public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLink,
-                String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
+                String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded) {
-        this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier, image,
+        this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier, imageUrl,
                 fileUrl, downloadUrl, downloaded, new FlattrStatus(), false, null, null, false);
     }
 
@@ -191,6 +191,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         int indexNextPageLink = cursor.getColumnIndex(PodDBAdapter.KEY_NEXT_PAGE_LINK);
         int indexHide = cursor.getColumnIndex(PodDBAdapter.KEY_HIDE);
         int indexLastUpdateFailed = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_UPDATE_FAILED);
+        int indexImageUrl = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE_URL);
 
         Feed feed = new Feed(
                 cursor.getLong(indexId),
@@ -204,7 +205,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
                 cursor.getString(indexLanguage),
                 cursor.getString(indexType),
                 cursor.getString(indexFeedIdentifier),
-                null,
+                cursor.getString(indexImageUrl),
                 cursor.getString(indexFileUrl),
                 cursor.getString(indexDownloadUrl),
                 cursor.getInt(indexDownloaded) > 0,
@@ -266,8 +267,8 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     public void updateFromOther(Feed other) {
         // don't update feed's download_url, we do that manually if redirected
         // see AntennapodHttpClient
-        if (other.image != null) {
-            this.image = other.image;
+        if (other.imageUrl != null) {
+            this.imageUrl = other.imageUrl;
         }
         if (other.feedTitle != null) {
             feedTitle = other.feedTitle;
@@ -305,8 +306,8 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         if (super.compareWithOther(other)) {
             return true;
         }
-        if (other.image != null) {
-            if (image == null || !TextUtils.equals(image.download_url, other.image.download_url)) {
+        if (other.imageUrl != null) {
+            if (imageUrl == null || !TextUtils.equals(imageUrl, other.imageUrl)) {
                 return true;
             }
         }
@@ -411,12 +412,12 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         this.description = description;
     }
 
-    public FeedImage getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(FeedImage image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public List<FeedItem> getItems() {
@@ -505,11 +506,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
 
     @Override
     public String getImageLocation() {
-        if (image != null) {
-            return image.getImageLocation();
-        } else {
-            return null;
-        }
+        return imageUrl;
     }
 
     public int getPageNr() {

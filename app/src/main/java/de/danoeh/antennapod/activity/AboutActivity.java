@@ -21,10 +21,10 @@ import java.nio.charset.Charset;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import rx.Single;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays the 'about' screen
@@ -35,7 +35,7 @@ public class AboutActivity extends AppCompatActivity {
 
     private WebView webView;
     private LinearLayout webViewContainer;
-    private Subscription subscription;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +43,8 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.about);
-        webViewContainer = (LinearLayout) findViewById(R.id.webViewContainer);
-        webView = (WebView) findViewById(R.id.webViewAbout);
+        webViewContainer = findViewById(R.id.webViewContainer);
+        webView = findViewById(R.id.webViewAbout);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
@@ -69,13 +69,16 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void loadAsset(String filename) {
-        subscription = Single.create(subscriber -> {
+        disposable = Single.create(subscriber -> {
             InputStream input = null;
             try {
                 TypedArray res = AboutActivity.this.getTheme().obtainStyledAttributes(
-                        new int[] { android.R.attr.textColorPrimary });
-                int colorResource = res.getColor(0, 0);
-                String colorString = String.format("#%06X", 0xFFFFFF & colorResource);
+                        new int[] { R.attr.about_screen_font_color, R.attr.about_screen_background,
+                        R.attr.about_screen_card_background, R.attr.about_screen_card_border});
+                String fontColor = String.format("#%06X", 0xFFFFFF & res.getColor(0, 0));
+                String backgroundColor = String.format("#%06X", 0xFFFFFF & res.getColor(1, 0));
+                String cardBackground = String.format("#%06X", 0xFFFFFF & res.getColor(2, 0));
+                String cardBorder = String.format("#%06X", 0xFFFFFF & res.getColor(3, 0));
                 res.recycle();
                 input = getAssets().open(filename);
                 String webViewData = IOUtils.toString(input, Charset.defaultCharset());
@@ -92,7 +95,7 @@ public class AboutActivity extends AppCompatActivity {
                             "           src: url('file:///android_asset/Roboto-Light.ttf');" +
                             "        }" +
                             "        * {" +
-                            "           color: %s;" +
+                            "           color: @fontcolor@;" +
                             "           font-family: roboto-Light;" +
                             "           font-size: 8pt;" +
                             "        }" +
@@ -100,7 +103,10 @@ public class AboutActivity extends AppCompatActivity {
                             "</head><body><p>" + webViewData + "</p></body></html>";
                     webViewData = webViewData.replace("\n", "<br/>");
                 }
-                webViewData = String.format(webViewData, colorString);
+                webViewData = webViewData.replace("@fontcolor@", fontColor);
+                webViewData = webViewData.replace("@background@", backgroundColor);
+                webViewData = webViewData.replace("@card_background@", cardBackground);
+                webViewData = webViewData.replace("@card_border@", cardBorder);
                 subscriber.onSuccess(webViewData);
             } catch (IOException e) {
                 Log.e(TAG, Log.getStackTraceString(e));
@@ -109,7 +115,7 @@ public class AboutActivity extends AppCompatActivity {
                 IOUtils.closeQuietly(input);
             }
         })
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         webViewData ->
@@ -140,8 +146,8 @@ public class AboutActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         if (webViewContainer != null && webView != null) {
             webViewContainer.removeAllViews();

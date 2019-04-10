@@ -1,20 +1,43 @@
-AntennaPod is een open-source podcast manager voor Android 2.3.3 en hoger. Het biedt alle basisfuncties die u verwacht van een podcatcher, zoals streaming en downloaden van episodes, alle feeds automatisch verversen of episodes aan een wachtrij toevoegen om ze later te luisteren. Bovendien laat AntennaPod je podcasts en afleveringen vanuit de app flattr'en.
+Met AntennaPod speel en beheer je al je podcasts en krijg je directe toegang tot duizenden gratis en betaalde podcasts - van onafhankelijke makers tot grote merken zoals BBC, CNN en NPO. Via de iTunes database, OPML-bestanden en simpele RSS-linkjes voeg je deze podcasts makkelijk toe. Dankzij simpele maar slimme automatische controle van het downloaden en verwijderen van afleveringen spaar je je batterij, hoef je je favoriete podcast niet meer handmatig te volgen en verbruik je geen onnodig mobiele data.<br>
+Maar belangrijker: Met een handige wachtrij, aanpasbare afspeelsnelheden, ondersteuning van hoofdstukken en een slaap timer luister je naar podcasts op de manier die jij prettig vindt. Je kunt zelfs je liefde voor de makers uiten met onze Flattr-integratie. 
 
-So far the following features are implemented:
+Gemaakt door podcast-enthousiastelingen, AntennaPod is vrij in de breedste zin van het woord: vrij van advertenties, open source en gratis.
 
-* Episodes downloaden en streamen
-* Variabele afspeelsnelheid (vereist Presto Sound Library of Prestissimo)
-* Support voor Atom en RSS feeds
-* Ondersteuning voor wachtwoord-beveiligde feeds en afleveringen
-* Support for searching iTunes listings
-* OPML import en export
-* Flattr integration including automatic flattring
-* Homescreen widget voor de player
-* Zoekfunctie
-* Automatische feed updates
-* Automatisch downloaden van nieuwe episodes
-* Sleep timer
-* Toegang tot de gpodder.net podcast gids
-* Abonnementen synchroniseren met de gpodder.net dienst
-* Supports MP3 chapters, VorbisComment chapters and Podlove Simple Chapters
-* Supports paged feeds (http://podlove.org/paged-feeds/)
+<b>Alle features:</b><br>
+IMPORTEREN, ORGANISEREN, AFSPELEN<br>
+&#8226; Voeg feeds toe via iTunes and gPodder.net database, OPML-bestanden and RSS of Atom linkjes<br>
+&#8226; Beheer het afspelen overal: met een homescreen widget, in je Android meldingen en de knoppen op je koptelefoon en bluetooth-apparaat<br>
+&#8226; Bepaal zelf hoe je luistert met aanpasbare afspeelsnelheden, ondersteuning van hoofdstukken (MP3, VorbisComment en Podlove), afspeelpositie voor elke aflevering en een handige 'slaap timer' (schudden om te resetten, volume langzaam zachter en herstel naar normale afspeelsnelheid)<br>
+&#8226; Toegang tot wachtwoord-beveiligde podcasts en afleveringen<br>
+&#8226; Doe je voordeel met 'paged feeds' (www.podlove.org/paged-feeds)
+
+DEEL & WAARDEER<br>
+&#8226; Hou het beste van het beste bij door afleveringen als favoriet te markeren<br>
+&#8226; Vindt die ene aflevering terug in de afspeelgeschiedenis of door te zoeken (in titels, shownotes en makers)<br>
+&#8226; Deel podcasts en afleveringen via uitgebreide opties voor sociale media, WhatsApp, email en gPodder.net<br>
+&#8226; Steun makers met Flattr-integratie, inclusief auto-Flattr
+
+HOUD DE CONTROLE
+&#8226; Beheer automatische downloads: kies je podcasts, sluit mobiele netwerken uit, selecteer specifieke WiFi-verbindingen, eis dat de telefoon wordt opgeladen and bepaal tijden of intervals<br>
+&#8226; Controleer geheugengebruik: stel een maximumaantal gedownloade afleveringen in, laat afleveringen automatisch verwijderen (maar sluit je favorieten en niet-afgespeelde afleveringen uit) en selecteer zelf je opslaglocatie<br>
+&#8226; Gebruik AntennaPod in jouw taal: Nederlands! (Of in het Engels, Zweeds, Frans, Duits, Spaans, enz)<br>
+&#8226; Voel je een kameleon: kies voor een licht of donker uiterlijk<br>
+&#8226; Back-up je abonnementen via gPodder.net en geëxporteerde OPML-bestanden
+
+<b>Doe mee met de AntennaPod gemeenschap!</b><br>
+AntennaPod wordt regelmatig geüpdatet door vrijwilligers. En jij kan ook helpen, met code of commentaar!
+
+GitHub is de beste plek voor foutmeldingen, verzoekjes voor nieuwe functies en bijdragen aan de code:<br>
+https://www.github.com/AntennaPod/AntennaPod
+
+Onze Google Group is de beste plek om je ideeën, favoriete podcast-momenten en waardering naar alle vrijwilligers te delen:<br>
+https://groups.google.com/forum/#!forum/antennapod
+
+Heb je een vraag of wil je feedback geven?
+https://twitter.com/@AntennaPod
+
+Transifex is de beste plek om te helpen met vertalen:<br>
+https://www.transifex.com/antennapod/antennapod
+
+Check het Beta Testprogramma om de laatste features als eerst te krijgen:<br>
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

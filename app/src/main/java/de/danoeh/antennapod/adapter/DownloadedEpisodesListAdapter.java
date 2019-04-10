@@ -13,9 +13,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 
@@ -60,16 +62,16 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.downloaded_episodeslist_item,
                     parent, false);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.imageView = convertView.findViewById(R.id.imgvImage);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
             if(Build.VERSION.SDK_INT >= 23) {
                 holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
             }
-            holder.txtvSize = (TextView) convertView.findViewById(R.id.txtvSize);
-            holder.queueStatus = (ImageView) convertView.findViewById(R.id.imgvInPlaylist);
-            holder.pubDate = (TextView) convertView
+            holder.txtvSize = convertView.findViewById(R.id.txtvSize);
+            holder.queueStatus = convertView.findViewById(R.id.imgvInPlaylist);
+            holder.pubDate = convertView
                     .findViewById(R.id.txtvPublished);
-            holder.butSecondary = (ImageButton) convertView
+            holder.butSecondary = convertView
                     .findViewById(R.id.butSecondaryAction);
             convertView.setTag(holder);
         } else {
@@ -78,11 +80,12 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
 
         Glide.with(context)
                 .load(item.getImageLocation())
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
-                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                .fitCenter()
-                .dontAnimate()
+                .apply(new RequestOptions()
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate())
                 .into(holder.imageView);
 
         if(item.isPlayed()) {
@@ -98,7 +101,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         holder.pubDate.setText(pubDateStr);
 
         FeedItem.State state = item.getState();
-        if (state == FeedItem.State.PLAYING) {
+        if (state == FeedItem.State.PLAYING && PlaybackService.isRunning) {
             holder.butSecondary.setEnabled(false);
             holder.butSecondary.setAlpha(0.5f);
         } else {

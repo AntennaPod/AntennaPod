@@ -29,15 +29,15 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class ProxyDialog {
 
@@ -55,7 +55,7 @@ public class ProxyDialog {
 
     private boolean testSuccessful = false;
     private TextView txtvMessage;
-    private Subscription subscription;
+    private Disposable disposable;
 
     public ProxyDialog(Context context) {
         this.context = context;
@@ -102,7 +102,7 @@ public class ProxyDialog {
                 .autoDismiss(false)
                 .build();
         View view = dialog.getCustomView();
-        spType = (Spinner) view.findViewById(R.id.spType);
+        spType = view.findViewById(R.id.spType);
         String[] types = { Proxy.Type.DIRECT.name(), Proxy.Type.HTTP.name() };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
             android.R.layout.simple_spinner_item, types);
@@ -110,22 +110,22 @@ public class ProxyDialog {
         spType.setAdapter(adapter);
         ProxyConfig proxyConfig = UserPreferences.getProxyConfig();
         spType.setSelection(adapter.getPosition(proxyConfig.type.name()));
-        etHost = (EditText) view.findViewById(R.id.etHost);
+        etHost = view.findViewById(R.id.etHost);
         if(!TextUtils.isEmpty(proxyConfig.host)) {
             etHost.setText(proxyConfig.host);
         }
         etHost.addTextChangedListener(requireTestOnChange);
-        etPort = (EditText) view.findViewById(R.id.etPort);
+        etPort = view.findViewById(R.id.etPort);
         if(proxyConfig.port > 0) {
             etPort.setText(String.valueOf(proxyConfig.port));
         }
         etPort.addTextChangedListener(requireTestOnChange);
-        etUsername = (EditText) view.findViewById(R.id.etUsername);
+        etUsername = view.findViewById(R.id.etUsername);
         if(!TextUtils.isEmpty(proxyConfig.username)) {
             etUsername.setText(proxyConfig.username);
         }
         etUsername.addTextChangedListener(requireTestOnChange);
-        etPassword = (EditText) view.findViewById(R.id.etPassword);
+        etPassword = view.findViewById(R.id.etPassword);
         if(!TextUtils.isEmpty(proxyConfig.password)) {
             etPassword.setText(proxyConfig.username);
         }
@@ -146,7 +146,7 @@ public class ProxyDialog {
                 enableSettings(false);
             }
         });
-        txtvMessage = (TextView) view.findViewById(R.id.txtvMessage);
+        txtvMessage = view.findViewById(R.id.txtvMessage);
         checkValidity();
         return dialog;
     }
@@ -229,8 +229,8 @@ public class ProxyDialog {
     }
 
     private void test() {
-        if(subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         if(!checkValidity()) {
             setTestRequired(true);
@@ -243,7 +243,7 @@ public class ProxyDialog {
         txtvMessage.setTextColor(textColorPrimary);
         txtvMessage.setText("{fa-circle-o-notch spin} " + checking);
         txtvMessage.setVisibility(View.VISIBLE);
-        subscription = Observable.create((Observable.OnSubscribe<Response>) subscriber -> {
+        disposable = Single.create((SingleOnSubscribe<Response>) emitter -> {
             String type = (String) spType.getSelectedItem();
             String host = etHost.getText().toString();
             String port = etPort.getText().toString();
@@ -275,13 +275,12 @@ public class ProxyDialog {
                     .build();
             try {
                 Response response = client.newCall(request).execute();
-                subscriber.onNext(response);
+                emitter.onSuccess(response);
             } catch(IOException e) {
-                subscriber.onError(e);
+                emitter.onError(e);
             }
-            subscriber.onCompleted();
         })
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         response -> {

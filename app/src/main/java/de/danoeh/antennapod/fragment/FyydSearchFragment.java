@@ -28,9 +28,9 @@ import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.mfietz.fyydlin.FyydClient;
 import de.mfietz.fyydlin.FyydResponse;
 import de.mfietz.fyydlin.SearchHit;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static de.danoeh.antennapod.adapter.itunes.ItunesAdapter.Podcast;
 import static java.util.Collections.emptyList;
@@ -55,7 +55,7 @@ public class FyydSearchFragment extends Fragment {
      * List of podcasts retreived from the search
      */
     private List<Podcast> searchResults;
-    private Subscription subscription;
+    private Disposable disposable;
 
     /**
      * Constructor
@@ -75,7 +75,7 @@ public class FyydSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
-        gridView = (GridView) root.findViewById(R.id.gridView);
+        gridView = root.findViewById(R.id.gridView);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
@@ -87,10 +87,10 @@ public class FyydSearchFragment extends Fragment {
             intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, podcast.title);
             startActivity(intent);
         });
-        progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
-        txtvError = (TextView) root.findViewById(R.id.txtvError);
-        butRetry = (Button) root.findViewById(R.id.butRetry);
-        txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
+        progressBar = root.findViewById(R.id.progressBar);
+        txtvError = root.findViewById(R.id.txtvError);
+        butRetry = root.findViewById(R.id.butRetry);
+        txtvEmpty = root.findViewById(android.R.id.empty);
 
         return root;
     }
@@ -98,8 +98,8 @@ public class FyydSearchFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         adapter = null;
     }
@@ -141,12 +141,12 @@ public class FyydSearchFragment extends Fragment {
     }
 
     private void search(String query) {
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null) {
+            disposable.dispose();
         }
         showOnlyProgressBar();
-        subscription =  client.searchPodcasts(query)
-                .subscribeOn(Schedulers.newThread())
+        disposable =  client.searchPodcasts(query, 10)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     progressBar.setVisibility(View.GONE);
@@ -174,7 +174,7 @@ public class FyydSearchFragment extends Fragment {
         if (!response.getData().isEmpty()) {
             adapter.clear();
             searchResults = new ArrayList<>();
-            for (SearchHit searchHit : response.getData().values()) {
+            for (SearchHit searchHit : response.getData()) {
                 Podcast podcast = Podcast.fromSearch(searchHit);
                 searchResults.add(podcast);
             }

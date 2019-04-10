@@ -6,6 +6,19 @@
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
         <item name="android:windowContentTransitions">true</item>
     </style>
+    <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:colorAccent">@color/white</item>
+        <item name="android:colorPrimary">@color/black</item>
+        <item name="android:colorPrimaryDark">@color/black</item>
+    </style>
+    <style name="Theme.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.TrueBlack.NoTitle">
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:colorAccent">@color/white</item>
+        <item name="android:colorPrimary">@color/black</item>
+        <item name="android:colorPrimaryDark">@color/black</item>
+    </style>
 
     <style name="Widget.AntennaPod.Button" parent="Widget.AppCompat.Button">
         <item name="textAllCaps">true</item>

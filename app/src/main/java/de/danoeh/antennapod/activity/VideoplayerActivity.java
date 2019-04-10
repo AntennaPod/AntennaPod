@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.WindowCompat;
 import android.support.v7.app.ActionBar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
@@ -22,19 +23,18 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+
+import java.lang.ref.WeakReference;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.view.AspectRatioVideoView;
-
-import java.lang.ref.WeakReference;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Activity for playing video files.
@@ -47,6 +47,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
      */
     private boolean videoControlsShowing = true;
     private boolean videoSurfaceCreated = false;
+    private boolean playbackStoppedUponExitVideo = false;
     private boolean destroyingDueToReload = false;
 
     private VideoControlsHider videoControlsHider = new VideoControlsHider(this);
@@ -77,18 +78,9 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent().getAction() != null
-                && getIntent().getAction().equals(Intent.ACTION_VIEW)) {
-            Intent intent = getIntent();
-            Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
-            ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
-                    MediaType.VIDEO);
-
-            new PlaybackServiceStarter(this, media)
-                    .startWhenPrepared(true)
-                    .shouldStream(false)
-                    .prepareImmediately(true)
-                    .start();
+        playbackStoppedUponExitVideo = false;
+        if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
+            playExternalMedia(getIntent(), MediaType.VIDEO);
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
@@ -101,9 +93,29 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onStop() {
+        stopPlaybackIfUserPreferencesSpecified(); // MUST be called before super.onStop(), while it still has member variable controller
         super.onStop();
         if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
             videoControlsHider.stop();
+        }
+    }
+
+    void stopPlaybackIfUserPreferencesSpecified() {
+        // to avoid the method being called twice during leaving Videoplayer
+        // , which will double-pause the media
+        // (it is usually first called by surfaceHolderCallback.surfaceDestroyed(),
+        //  then VideoplayerActivity.onStop() , but sometimes VideoplayerActivity.onStop()
+        //  will first be invoked.)
+        if (playbackStoppedUponExitVideo) {
+            return;
+        }
+        playbackStoppedUponExitVideo = true;
+
+        if (controller != null && !destroyingDueToReload
+                && UserPreferences.getVideoBackgroundBehavior()
+                != UserPreferences.VideoBackgroundBehavior.CONTINUE_PLAYING) {
+            Log.v(TAG, "stop video playback per UserPreference");
+            controller.notifyVideoSurfaceAbandoned();
         }
     }
 
@@ -153,11 +165,11 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
         super.setupGUI();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        controls = (LinearLayout) findViewById(R.id.controls);
-        videoOverlay = (LinearLayout) findViewById(R.id.overlay);
-        videoview = (AspectRatioVideoView) findViewById(R.id.videoview);
-        videoframe = (FrameLayout) findViewById(R.id.videoframe);
-        progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
+        controls = findViewById(R.id.controls);
+        videoOverlay = findViewById(R.id.overlay);
+        videoview = findViewById(R.id.videoview);
+        videoframe = findViewById(R.id.videoframe);
+        progressIndicator = findViewById(R.id.progressIndicator);
         videoview.getHolder().addCallback(surfaceHolderCallback);
         videoframe.setOnTouchListener(onVideoviewTouched);
         videoOverlay.setOnTouchListener((view, motionEvent) -> true); // To suppress touches directly below the slider
@@ -285,13 +297,12 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
-            Log.d(TAG, "Videosurface was destroyed");
+            Log.d(TAG, "Videosurface was destroyed." );
+            Log.v(TAG, "    hasController=" + (controller != null)
+                    + " , destroyingDueToReload=" + destroyingDueToReload
+                    + " , videoBackgroundBehavior=" + UserPreferences.getVideoBackgroundBehavior());
             videoSurfaceCreated = false;
-            if (controller != null && !destroyingDueToReload
-                    && UserPreferences.getVideoBackgroundBehavior()
-                    != UserPreferences.VideoBackgroundBehavior.CONTINUE_PLAYING) {
-                controller.notifyVideoSurfaceAbandoned();
-            }
+            stopPlaybackIfUserPreferencesSpecified();
         }
     };
 

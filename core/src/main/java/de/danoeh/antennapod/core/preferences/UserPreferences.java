@@ -8,14 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.service.download.ProxyConfig;
-import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -27,6 +20,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.service.download.ProxyConfig;
+import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+
 /**
  * Provides access to preferences set by the user in the settings screen. A
  * private instance of this class must first be instantiated via
@@ -34,6 +36,7 @@ import java.util.concurrent.TimeUnit;
  * when called.
  */
 public class UserPreferences {
+    private UserPreferences(){}
 
     private static final String IMPORT_DIR = "import/";
 
@@ -44,11 +47,13 @@ public class UserPreferences {
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
     private static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
     private static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
-    private static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
+    public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
+    public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
+    private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
 
     // Queue
     private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
@@ -72,7 +77,7 @@ public class UserPreferences {
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
-    private static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
+    public static final String PREF_MOBILE_UPDATE = "prefMobileUpdateAllowed";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
@@ -95,9 +100,13 @@ public class UserPreferences {
     // Other
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
+    public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
 
     // Mediaplayer
+    public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
+    public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
+    public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
@@ -107,9 +116,7 @@ public class UserPreferences {
     private static final String PREF_RIGHT_VOLUME = "prefRightVolume";
 
     // Experimental
-    public static final String PREF_SONIC = "prefSonic";
     private static final String PREF_STEREO_TO_MONO = "PrefStereoToMono";
-    public static final String PREF_NORMALIZER = "prefNormalizer";
     public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
@@ -122,7 +129,6 @@ public class UserPreferences {
     private static final int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static final int FEED_ORDER_COUNTER = 0;
     public static final int FEED_ORDER_ALPHABETICAL = 1;
-    public static final int FEED_ORDER_LAST_UPDATE = 2;
     public static final int FEED_ORDER_MOST_PLAYED = 3;
     public static final int FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM = 0;
     public static final int FEED_COUNTER_SHOW_NEW = 1;
@@ -161,6 +167,8 @@ public class UserPreferences {
         int theme = getTheme();
         if (theme == R.style.Theme_AntennaPod_Dark) {
             return R.style.Theme_AntennaPod_Dark_NoTitle;
+        } else if (theme == R.style.Theme_AntennaPod_TrueBlack) {
+            return R.style.Theme_AntennaPod_TrueBlack_NoTitle;
         } else {
             return R.style.Theme_AntennaPod_Light_NoTitle;
         }
@@ -304,12 +312,20 @@ public class UserPreferences {
         return Integer.parseInt(prefs.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
     }
 
+    public static boolean shouldDeleteRemoveFromQueue() {
+        return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
+    }
+
     public static boolean isAutoFlattr() {
         return prefs.getBoolean(PREF_AUTO_FLATTR, false);
     }
 
     public static String getPlaybackSpeed() {
         return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
+    }
+
+    public static boolean isSkipSilence() {
+        return prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false);
     }
 
     public static String[] getPlaybackSpeedArray() {
@@ -364,8 +380,16 @@ public class UserPreferences {
         }
     }
 
+    public static String getMobileUpdatesEnabled() {
+        return prefs.getString(PREF_MOBILE_UPDATE, "images");
+    }
+
     public static boolean isAllowMobileUpdate() {
-        return prefs.getBoolean(PREF_MOBILE_UPDATE, false);
+        return getMobileUpdatesEnabled().equals("everything");
+    }
+
+    public static boolean isAllowMobileImages() {
+        return isAllowMobileUpdate() || getMobileUpdatesEnabled().equals("images");
     }
 
     public static int getParallelDownloads() {
@@ -498,6 +522,12 @@ public class UserPreferences {
              .apply();
     }
 
+    public static void setSkipSilence(boolean skipSilence) {
+        prefs.edit()
+                .putBoolean(PREF_PLAYBACK_SKIP_SILENCE, skipSilence)
+                .apply();
+    }
+
     public static void setPlaybackSpeedArray(String[] speeds) {
         JSONArray jsonArray = new JSONArray();
         for (String speed : speeds) {
@@ -597,6 +627,8 @@ public class UserPreferences {
                 return R.style.Theme_AntennaPod_Light;
             case 1:
                 return R.style.Theme_AntennaPod_Dark;
+            case 2:
+                return R.style.Theme_AntennaPod_TrueBlack;
             default:
                 return R.style.Theme_AntennaPod_Light;
         }
@@ -636,13 +668,15 @@ public class UserPreferences {
     }
 
     public static boolean useSonic() {
-        return prefs.getBoolean(PREF_SONIC, false);
+        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals("sonic");
     }
 
-    public static void enableSonic(boolean enable) {
-        prefs.edit()
-            .putBoolean(PREF_SONIC, enable)
-            .apply();
+    public static boolean useExoplayer() {
+        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals(PREF_MEDIA_PLAYER_EXOPLAYER);
+    }
+
+    public static void enableSonic() {
+        prefs.edit().putString(PREF_MEDIA_PLAYER, "sonic").apply();
     }
 
     public static boolean stereoToMono() {
@@ -665,7 +699,7 @@ public class UserPreferences {
     }
 
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
-        int cleanupValue = Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+        int cleanupValue = getEpisodeCleanupValue();
         if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
             return new APQueueCleanupAlgorithm();
         } else if (cleanupValue == EPISODE_CLEANUP_NULL) {
@@ -673,6 +707,16 @@ public class UserPreferences {
         } else {
             return new APCleanupAlgorithm(cleanupValue);
         }
+    }
+
+    public static int getEpisodeCleanupValue() {
+        return Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+    }
+
+    public static void setEpisodeCleanupValue(int episodeCleanupValue) {
+        prefs.edit()
+                .putString(PREF_EPISODE_CLEANUP, Integer.toString(episodeCleanupValue))
+                .apply();
     }
 
     /**
@@ -801,5 +845,30 @@ public class UserPreferences {
 
     public enum VideoBackgroundBehavior {
         STOP, PICTURE_IN_PICTURE, CONTINUE_PLAYING
+    }
+
+    public enum BackButtonBehavior {
+        DEFAULT, OPEN_DRAWER, DOUBLE_TAP, SHOW_PROMPT, GO_TO_PAGE
+    }
+
+    public static BackButtonBehavior getBackButtonBehavior() {
+        switch (prefs.getString(PREF_BACK_BUTTON_BEHAVIOR, "default")) {
+            case "default": return BackButtonBehavior.DEFAULT;
+            case "drawer": return BackButtonBehavior.OPEN_DRAWER;
+            case "doubletap": return BackButtonBehavior.DOUBLE_TAP;
+            case "prompt": return BackButtonBehavior.SHOW_PROMPT;
+            case "page": return BackButtonBehavior.GO_TO_PAGE;
+            default: return BackButtonBehavior.DEFAULT;
+        }
+    }
+
+    public static String getBackButtonGoToPage() {
+        return prefs.getString(PREF_BACK_BUTTON_GO_TO_PAGE, "QueueFragment");
+    }
+
+    public static void setBackButtonGoToPage(String tag) {
+        prefs.edit()
+                .putString(PREF_BACK_BUTTON_GO_TO_PAGE, tag)
+                .apply();
     }
 }

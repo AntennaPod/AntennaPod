@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
@@ -61,13 +62,13 @@ public class SearchlistAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             convertView = inflater.inflate(R.layout.searchlist_item, parent, false);
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
             if(Build.VERSION.SDK_INT >= 23) {
                 holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
             }
-            holder.cover = (ImageView) convertView
+            holder.cover = convertView
                     .findViewById(R.id.imgvFeedimage);
-            holder.subtitle = (TextView) convertView
+            holder.subtitle = convertView
                     .findViewById(R.id.txtvSubtitle);
 
             convertView.setTag(holder);
@@ -81,11 +82,12 @@ public class SearchlistAdapter extends BaseAdapter {
 
             Glide.with(context)
                     .load(feed.getImageLocation())
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate()
+                    .apply(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate())
                     .into(holder.cover);
 
         } else if (component.getClass() == FeedItem.class) {
@@ -100,11 +102,12 @@ public class SearchlistAdapter extends BaseAdapter {
 
             Glide.with(context)
                     .load(item.getFeed().getImageLocation())
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate()
+                    .apply(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate())
                     .into(holder.cover);
 
         }

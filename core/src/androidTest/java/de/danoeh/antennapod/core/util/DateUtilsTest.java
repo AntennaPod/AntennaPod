@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.util;
 
 import android.test.AndroidTestCase;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -154,6 +155,14 @@ public class DateUtilsTest extends AndroidTestCase {
         exp1.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date expected = new Date(exp1.getTimeInMillis());
         Date actual = DateUtils.parse("Mon, 8 Sept 2014 00:00:00 GMT"); // should be Sep
+        assertEquals(expected, actual);
+    }
+
+    public void testParseDateWithTwoTimezones() {
+        final GregorianCalendar exp1 = new GregorianCalendar(2015, Calendar.MARCH, 1, 1, 0, 0);
+        exp1.setTimeZone(TimeZone.getTimeZone("GMT-4"));
+        final Date expected = new Date(exp1.getTimeInMillis());
+        final Date actual = DateUtils.parse("Sun 01 Mar 2015 01:00:00 GMT-0400 (EDT)");
         assertEquals(expected, actual);
     }
 }

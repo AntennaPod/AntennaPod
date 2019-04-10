@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+
 import de.danoeh.antennapod.core.R;
 
 public class NotificationUtils {
@@ -41,6 +42,7 @@ public class NotificationUtils {
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_DOWNLOADING,
                 c.getString(R.string.notification_channel_downloading), NotificationManager.IMPORTANCE_LOW);
         mChannel.setDescription(c.getString(R.string.notification_channel_downloading_description));
+        mChannel.setShowBadge(false);
         return mChannel;
     }
 
@@ -49,6 +51,7 @@ public class NotificationUtils {
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_PLAYING,
                 c.getString(R.string.notification_channel_playing), NotificationManager.IMPORTANCE_LOW);
         mChannel.setDescription(c.getString(R.string.notification_channel_playing_description));
+        mChannel.setShowBadge(false);
         return mChannel;
     }
 

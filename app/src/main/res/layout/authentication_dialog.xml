@@ -67,8 +67,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/horizontal_divider"
+            android:layout_toStartOf="@id/horizontal_divider"
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/cancel_label" />
 
@@ -78,8 +80,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/horizontal_divider"
+            android:layout_toEndOf="@id/horizontal_divider"
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/confirm_label" />
     </RelativeLayout>

@@ -6,13 +6,11 @@ import android.view.SurfaceHolder;
 import java.io.IOException;
 
 public interface IPlayer {
-	boolean canSetPitch();
 
 	boolean canSetSpeed();
 
 	boolean canDownmix();
 
-	float getCurrentPitchStepsAdjustment();
 
 	int getCurrentPosition();
 
@@ -20,19 +18,11 @@ public interface IPlayer {
 
 	int getDuration();
 
-	float getMaxSpeedMultiplier();
-
-	float getMinSpeedMultiplier();
-
-	boolean isLooping();
-
 	boolean isPlaying();
 
 	void pause();
 
 	void prepare() throws IllegalStateException, IOException;
-
-	void prepareAsync();
 
 	void release();
 
@@ -42,22 +32,12 @@ public interface IPlayer {
 
 	void setAudioStreamType(int streamtype);
 
-	void setScreenOnWhilePlaying(boolean screenOn);
-
 	void setDataSource(String path) throws IllegalStateException, IOException,
             IllegalArgumentException, SecurityException;
 
 	void setDisplay(SurfaceHolder sh);
 
-	void setEnableSpeedAdjustment(boolean enableSpeedAdjustment);
-
-	void setLooping(boolean looping);
-
-	void setPitchStepsAdjustment(float pitchSteps);
-
-	void setPlaybackPitch(float f);
-
-	void setPlaybackSpeed(float f);
+	void setPlaybackParams(float speed, boolean skipSilence);
 
 	void setDownmix(boolean enable);
 
@@ -66,8 +46,6 @@ public interface IPlayer {
 	void start();
 
 	void stop();
-
-    void setVideoScalingMode(int mode);
 
     void setWakeMode(Context context, int mode);
 }

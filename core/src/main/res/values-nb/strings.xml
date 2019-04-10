@@ -42,7 +42,6 @@
   <string name="cancel_label">Avbryt</string>
   <string name="yes">Ja</string>
   <string name="no">Nei</string>
-  <string name="author_label">Opphavsperson</string>
   <string name="language_label">Språk</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Innstillinger</string>
@@ -85,17 +84,10 @@
   <string name="mark_all_read_label">Marker alle som avspilt</string>
   <string name="mark_all_read_msg">Marker alle episoder som avspilt</string>
   <string name="mark_all_read_confirmation_msg">Vennligst bekreft at du ønsker å markere alle episoder som avspilt.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Vennligst bekreft at du ønsker å markere alle episoder i denne strømmen som avspilt.</string>
   <string name="mark_all_seen_label">Marker alle som sett</string>
   <string name="show_info_label">Vis informasjon</string>
-  <string name="remove_feed_label">Fjern podcast</string>
-  <string name="share_link_label">Del lenke</string>
-  <string name="share_link_with_position_label">Del lenke med plassering</string>
   <string name="share_feed_url_label">Del strømmens URL</string>
-  <string name="feed_remover_msg">Fjerner strøm</string>
-  <string name="load_complete_feed">Oppdater hele strømmen</string>
   <string name="hide_episodes_title">Skjul episoder</string>
-  <string name="episode_actions">Lagre handlinger</string>
   <string name="hide_unplayed_episodes_label">Ikke avspilt</string>
   <string name="hide_paused_episodes_label">Pauset</string>
   <string name="hide_played_episodes_label">Avspilt</string>
@@ -226,18 +218,15 @@
   <string name="enable_sonic">Skru på Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">Det er ingen objekter på denne listen.</string>
-  <string name="no_feeds_label">Du abonnerer ikke på noen strømmer enda.</string>
   <!--Preferences-->
   <string name="other_pref">Annet</string>
   <string name="about_pref">Om</string>
   <string name="queue_label">Queue</string>
-  <string name="services_label">Tjenester</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Episodeopprydding</string>
   <string name="pref_pauseOnDisconnect_sum">Sett playback på pause når hodetelefoner eller bluetooth er frakoblet</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Gjenoppta avspilling når hodetelefoner gjeninnkoples</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsett avspilling når bluetooth er tilkoblet igjen</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Ved pressing av hardware forover-knapp hopp til neste episode istedenfor forover-spoling</string>
   <string name="pref_followQueue_sum">Hopp til neste element i køen når avspillingen er ferdig</string>
   <string name="pref_auto_delete_sum">Slett episode når avspillingen er ferdig</string>
   <string name="pref_auto_delete_title">Automatisk sletting</string>
@@ -279,7 +268,6 @@
   <string name="pref_nav_drawer_feed_order_title">Velg rekkefølge på abbonement</string>
   <string name="pref_nav_drawer_feed_order_sum">Endre rekkefølgen på abbonementene dine</string>
   <string name="pref_nav_drawer_feed_counter_title">Velg abbonementsteller</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Endre informasjonen vist av abonnementstelleren</string>
   <string name="pref_set_theme_sum">Endre utseendet til AntennaPod</string>
   <string name="pref_automatic_download_title">Automatisk nedlasting</string>
   <string name="pref_automatic_download_sum">Konfigurer automatisk nedlasting av episoder.</string>
@@ -305,8 +293,6 @@
   <string name="pref_playback_speed_sum">Egendefiner hastighetene tilgjengelig for variabel avspillingshastighet</string>
   <string name="pref_gpodnet_sethostname_title">Sett vertsnavn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Bruk standard vert</string>
-  <string name="pref_expandNotify_title">Utvid varsel</string>
-  <string name="pref_expandNotify_sum">Utvider alltid varselet for å inkludere avspillingsknapper.</string>
   <string name="pref_persistNotify_title">Vedvarende avspillingskontroller</string>
   <string name="pref_persistNotify_sum">Behold varsel- og låseskjermkontroller når avspilling er satt på pause.</string>
   <string name="pref_lockscreen_background_title">Angi som bakgrunn på låseskjermen</string>
@@ -350,8 +336,6 @@
   <string name="choose_file_from_external_application">Bruk ekstern applikasjon</string>
   <string name="opml_export_label">OPML-eksportering</string>
   <string name="export_error_label">Eksporteringserror</string>
-  <string name="opml_export_success_title">OPML-import vellykket.</string>
-  <string name="opml_export_success_sum">.opml-filen ble skrevet til:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Sett opp sovetimer</string>
   <string name="disable_sleeptimer_label">Deaktiver sovetimer</string>
@@ -480,4 +464,5 @@
   <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

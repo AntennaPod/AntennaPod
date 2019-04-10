@@ -2,12 +2,15 @@ package de.danoeh.antennapod.core.util.playback;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
+
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 
 public class PlaybackServiceStarter {
+    private static final String TAG = "PlaybackServiceStarter";
+
     private final Context context;
     private final Playable media;
     private boolean startWhenPrepared = false;
@@ -63,6 +66,10 @@ public class PlaybackServiceStarter {
         launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, startWhenPrepared);
         launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, shouldStream);
         launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, prepareImmediately);
+
+        if (media == null) {
+            Log.e(TAG, "getIntent() - media is unexpectedly null. intent:" + launchIntent);
+        }
 
         return launchIntent;
     }

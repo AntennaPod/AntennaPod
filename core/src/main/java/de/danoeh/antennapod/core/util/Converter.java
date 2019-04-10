@@ -28,7 +28,6 @@ public final class Converter {
     /** Determines the length of the number for best readability.*/
     private static final int NUM_LENGTH = 1024;
     
-    private static final int DAYS_MIL = 86400000;
     private static final int HOURS_MIL = 3600000;
 	private static final int MINUTES_MIL = 60000;
 	private static final int SECONDS_MIL = 1000;
@@ -75,13 +74,14 @@ public final class Converter {
     	return String.format(Locale.getDefault(), "%02d:%02d:%02d", h, m, s);
     }
     
-    /** Converts milliseconds to a string containing hours and minutes */
-    public static String getDurationStringShort(int duration) {
-    	int h = duration / HOURS_MIL;
-    	int rest = duration - h * HOURS_MIL;
-    	int m = rest / MINUTES_MIL;
-    	
-    	return String.format(Locale.getDefault(), "%02d:%02d", h, m);
+    /** Converts milliseconds to a string containing hours and minutes or minutes and seconds*/
+    public static String getDurationStringShort(int duration, boolean durationIsInHours) {
+        int firstPartBase = durationIsInHours ?  HOURS_MIL : MINUTES_MIL;
+        int firstPart = duration / firstPartBase;
+        int leftoverFromFirstPart = duration - firstPart * firstPartBase;
+        int secondPart = leftoverFromFirstPart / (durationIsInHours ? MINUTES_MIL : SECONDS_MIL);
+
+    	return String.format(Locale.getDefault(), "%02d:%02d", firstPart, secondPart);
     }
 
     /** Converts long duration string (HH:MM:SS) to milliseconds. */
@@ -95,14 +95,20 @@ public final class Converter {
                 Integer.parseInt(parts[2]) * 1000;
     }
 
-    /** Converts short duration string (HH:MM) to milliseconds. */
-    public static int durationStringShortToMs(String input) {
+    /**
+     * Converts short duration string (XX:YY) to milliseconds. If durationIsInHours is true then the
+     * format is HH:MM, otherwise it's MM:SS.
+     * */
+    public static int durationStringShortToMs(String input, boolean durationIsInHours) {
         String[] parts = input.split(":");
         if (parts.length != 2) {
             return 0;
         }
-        return Integer.parseInt(parts[0]) * 3600 * 1000 +
-                Integer.parseInt(parts[1]) * 1000 * 60;
+
+        int modifier = durationIsInHours ? 60 : 1;
+
+        return Integer.parseInt(parts[0]) * 60 * 1000 * modifier+
+                Integer.parseInt(parts[1]) * 1000 * modifier;
     }
 
     /** Converts milliseconds to a localized string containing hours and minutes */
@@ -130,6 +136,7 @@ public final class Converter {
         float hours = (float) time / 3600f;
         return String.format(Locale.getDefault(), "%.1f ", hours) + context.getString(R.string.time_hours);
     }
+
 
     /**
      * Converts the volume as read as the progress from a SeekBar scaled to 100 and as saved in

@@ -515,8 +515,8 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public void setSpeed(float speed) {
-        throw new UnsupportedOperationException("Setting playback speed unsupported for Remote Playback");
+    public void setPlaybackParams(float speed, boolean skipSilence) {
+        //Can be safely ignored as neither set speed not skipSilence is supported
     }
 
     @Override

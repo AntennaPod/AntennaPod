@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.Base.AntennaPod.Light.NoTitle">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimaryDark">@color/primary_light</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Light" parent="Theme.Base.AntennaPod.Light">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimaryDark">@color/primary_light</item>
+    </style>
+</resources>

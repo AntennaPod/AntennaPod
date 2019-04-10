@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
@@ -202,9 +205,26 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
     private void resumeSync() {
         if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-            int focusGained = audioManager.requestAudioFocus(
-                    audioFocusChangeListener, AudioManager.STREAM_MUSIC,
-                    AudioManager.AUDIOFOCUS_GAIN);
+            int focusGained;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .build();
+                AudioFocusRequest audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                        .setAudioAttributes(audioAttributes)
+                        .setOnAudioFocusChangeListener(audioFocusChangeListener)
+                        .setAcceptsDelayedFocusGain(true)
+                        .setWillPauseWhenDucked(true)
+                        .build();
+                focusGained = audioManager.requestAudioFocus(audioFocusRequest);
+            } else {
+                focusGained = audioManager.requestAudioFocus(
+                        audioFocusChangeListener, AudioManager.STREAM_MUSIC,
+                        AudioManager.AUDIOFOCUS_GAIN);
+            }
+
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 Log.d(TAG, "Audiofocus successfully requested");
                 Log.d(TAG, "Resuming/Starting playback");
@@ -216,7 +236,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     Log.e(TAG, Log.getStackTraceString(e));
                     UserPreferences.setPlaybackSpeed(String.valueOf(speed));
                 }
-                setSpeed(speed);
+                setPlaybackParams(speed, UserPreferences.isSkipSilence());
                 setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
@@ -259,7 +279,13 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 setPlayerStatus(PlayerStatus.PAUSED, media, getPosition());
 
                 if (abandonFocus) {
-                    audioManager.abandonAudioFocus(audioFocusChangeListener);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                                .setOnAudioFocusChangeListener(audioFocusChangeListener);
+                        audioManager.abandonAudioFocusRequest(builder.build());
+                    } else {
+                        audioManager.abandonAudioFocus(audioFocusChangeListener);
+                    }
                     pausedBecauseOfTransientAudiofocusLoss = false;
                 }
                 if (stream && reinit) {
@@ -313,7 +339,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         Log.d(TAG, "Resource prepared");
 
-        if (mediaType == MediaType.VIDEO) {
+        if (mediaType == MediaType.VIDEO && mediaPlayer instanceof ExoPlayerWrapper) {
+            ExoPlayerWrapper vp = (ExoPlayerWrapper) mediaPlayer;
+            videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
+        } else if(mediaType == MediaType.VIDEO && mediaPlayer instanceof VideoPlayer) {
             VideoPlayer vp = (VideoPlayer) mediaPlayer;
             videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
         }
@@ -447,7 +476,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
             retVal = mediaPlayer.getDuration();
-        } else if (media != null && media.getDuration() > 0) {
+        }
+        if (retVal <= 0 && media != null && media.getDuration() > 0) {
             retVal = media.getDuration();
         }
 
@@ -507,14 +537,14 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * Sets the playback speed.
      * This method is executed on the caller's thread.
      */
-    private void setSpeedSync(float speed) {
+    private void setSpeedSyncAndSkipSilence(float speed, boolean skipSilence) {
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
             if (mediaPlayer.canSetSpeed()) {
-                mediaPlayer.setPlaybackSpeed(speed);
                 Log.d(TAG, "Playback speed was set to " + speed);
                 callback.playbackSpeedChanged(speed);
             }
+            mediaPlayer.setPlaybackParams(speed, skipSilence);
         }
         playerLock.unlock();
     }
@@ -524,8 +554,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * This method is executed on an internal executor service.
      */
     @Override
-    public void setSpeed(final float speed) {
-        executor.submit(() -> setSpeedSync(speed));
+    public void setPlaybackParams(final float speed, final boolean skipSilence) {
+        executor.submit(() -> setSpeedSyncAndSkipSilence(speed, skipSilence));
     }
 
     /**
@@ -610,11 +640,27 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         executor.shutdown();
         if (mediaPlayer != null) {
             try {
-                mediaPlayer.stop();
+                removeMediaPlayerErrorListener();
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                }
             } catch (Exception ignore) { }
             mediaPlayer.release();
         }
         releaseWifiLockIfNecessary();
+    }
+
+    private void removeMediaPlayerErrorListener() {
+        if (mediaPlayer instanceof VideoPlayer) {
+            VideoPlayer vp = (VideoPlayer) mediaPlayer;
+            vp.setOnErrorListener((mp, what, extra) -> true);
+        } else if (mediaPlayer instanceof AudioPlayer) {
+            AudioPlayer ap = (AudioPlayer) mediaPlayer;
+            ap.setOnErrorListener((mediaPlayer, i, i1) -> true);
+        } else if (mediaPlayer instanceof ExoPlayerWrapper) {
+            ExoPlayerWrapper ap = (ExoPlayerWrapper) mediaPlayer;
+            ap.setOnErrorListener((mediaPlayer, i, i1) -> true);
+        }
     }
 
     /**
@@ -669,6 +715,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         Pair<Integer, Integer> res;
         if (mediaPlayer == null || playerStatus == PlayerStatus.ERROR || mediaType != MediaType.VIDEO) {
             res = null;
+        } else if (mediaPlayer instanceof ExoPlayerWrapper) {
+            ExoPlayerWrapper vp = (ExoPlayerWrapper) mediaPlayer;
+            videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
+            res = videoSize;
         } else {
             VideoPlayer vp = (VideoPlayer) mediaPlayer;
             videoSize = new Pair<>(vp.getVideoWidth(), vp.getVideoHeight());
@@ -698,15 +748,19 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-        if(media == null) {
+        if (media == null) {
             mediaPlayer = null;
             return;
         }
-        if (media.getMediaType() == MediaType.VIDEO) {
+
+        if (UserPreferences.useExoplayer()) {
+            mediaPlayer = new ExoPlayerWrapper(context);
+        } else if (media.getMediaType() == MediaType.VIDEO) {
             mediaPlayer = new VideoPlayer();
         } else {
             mediaPlayer = new AudioPlayer(context);
         }
+
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK);
         setMediaPlayerListeners(mediaPlayer);
@@ -787,7 +841,14 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             if (mediaPlayer != null) {
                 mediaPlayer.reset();
             }
-            audioManager.abandonAudioFocus(audioFocusChangeListener);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                        .setOnAudioFocusChangeListener(audioFocusChangeListener);
+                audioManager.abandonAudioFocusRequest(builder.build());
+            } else {
+                audioManager.abandonAudioFocus(audioFocusChangeListener);
+            }
 
             final Playable currentMedia = media;
             Playable nextMedia = null;
@@ -883,6 +944,11 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
             ap.setOnInfoListener(audioInfoListener);
             ap.setOnSpeedAdjustmentAvailableChangedListener(audioSetSpeedAbilityListener);
+        } else if (mp instanceof ExoPlayerWrapper) {
+            ExoPlayerWrapper ap = (ExoPlayerWrapper) mp;
+            ap.setOnCompletionListener(audioCompletionListener);
+            ap.setOnSeekCompleteListener(audioSeekCompleteListener);
+            ap.setOnErrorListener(audioErrorListener);
         } else {
             Log.w(TAG, "Unknown media player: " + mp);
         }
@@ -925,7 +991,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
     private final MediaPlayer.OnErrorListener audioErrorListener =
             (mp, what, extra) -> {
-                if(mp.canFallback()) {
+                if(mp != null && mp.canFallback()) {
                     mp.fallback();
                     return true;
                 } else {

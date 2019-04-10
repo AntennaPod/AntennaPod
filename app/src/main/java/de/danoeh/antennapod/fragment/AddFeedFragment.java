@@ -32,18 +32,18 @@ public class AddFeedFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.addfeed, container, false);
 
-        final EditText etxtFeedurl = (EditText) root.findViewById(R.id.etxtFeedurl);
+        final EditText etxtFeedurl = root.findViewById(R.id.etxtFeedurl);
 
         Bundle args = getArguments();
         if (args != null && args.getString(ARG_FEED_URL) != null) {
             etxtFeedurl.setText(args.getString(ARG_FEED_URL));
         }
 
-        Button butSearchITunes = (Button) root.findViewById(R.id.butSearchItunes);
-        Button butBrowserGpoddernet = (Button) root.findViewById(R.id.butBrowseGpoddernet);
-        Button butSearchFyyd = (Button) root.findViewById(R.id.butSearchFyyd);
-        Button butOpmlImport = (Button) root.findViewById(R.id.butOpmlImport);
-        Button butConfirm = (Button) root.findViewById(R.id.butConfirm);
+        Button butSearchITunes = root.findViewById(R.id.butSearchItunes);
+        Button butBrowserGpoddernet = root.findViewById(R.id.butBrowseGpoddernet);
+        Button butSearchFyyd = root.findViewById(R.id.butSearchFyyd);
+        Button butOpmlImport = root.findViewById(R.id.butOpmlImport);
+        Button butConfirm = root.findViewById(R.id.butConfirm);
 
         final MainActivity activity = (MainActivity) getActivity();
         activity.getSupportActionBar().setTitle(R.string.add_feed_label);
@@ -65,5 +65,16 @@ public class AddFeedFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+        // So, we certainly *don't* have an options menu,
+        // but unless we say we do, old options menus sometimes
+        // persist.  mfietz thinks this causes the ActionBar to be invalidated
+        setHasOptionsMenu(true);
     }
 }

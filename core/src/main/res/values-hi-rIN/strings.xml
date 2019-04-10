@@ -1,35 +1,75 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">सब्स्क्रिप्शन्स का अद्यतन </string>
   <string name="feeds_label">फिड्स</string>
+  <string name="statistics_label">आंकड़े</string>
+  <string name="add_feed_label">पॉडकास्ट जोड़ें</string>
+  <string name="episodes_label">एपिसोड</string>
+  <string name="all_episodes_short_label">सारे</string>
+  <string name="new_episodes_label">नये</string>
+  <string name="favorite_episodes_label">पसंदीदा</string>
   <string name="new_label">नया</string>
   <string name="settings_label">सेटिंग्स</string>
   <string name="downloads_label">डाउनलोड</string>
+  <string name="downloads_running_label">जारी</string>
+  <string name="downloads_completed_label">संपन्न हुए</string>
+  <string name="downloads_log_label">अभिलेख</string>
+  <string name="subscriptions_label">सब्स्क्रिप्शन्स</string>
+  <string name="subscriptions_list_label">सब्स्क्रिप्शन्स की सूची</string>
   <string name="cancel_download_label">डाउनलोड रद्द करें</string>
   <string name="playback_history_label">प्लेबैक इतिहास</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_auth_label">gpodder.net login</string>
+  <string name="gpodnet_summary">अन्य उपकरण के साथ समक्रमिक करें</string>
+  <string name="gpodnet_auth_label">gpodder.net लॉगिन</string>
+  <string name="free_space_label">%1$s खाली</string>
+  <string name="episode_cache_full_title">एपिसोड कैश भर गया है</string>
+  <string name="episode_cache_full_message">एपिसोड कैश सीमा तक पहुंच गया है। आप सेटिंग में कैश का आकार बढ़ा सकते हैं।</string>
+  <string name="synchronizing">समक्रमिक हो रहा है...</string>
   <!--Statistics fragment-->
+  <string name="total_time_listened_to_podcasts">चलाये गए पॉडकास्ट का कुल समय:</string>
+  <string name="statistics_details_dialog">%2$d में से %1$d एपिसोड शुरू किए गए है.\n\n%4$s में से %3$sपूरे हुए है। </string>
+  <string name="statistics_mode_normal">वास्तव में चलाई गयी अवधि की गणना करें। दो बार चलने पर दो बार गिना जायेगा, जबकि चल चूका सा चिह्नितो को नही गिना जायेगा।</string>
+  <string name="statistics_speed_not_counted">सूचना: प्लेबैक गति को कभी भी ध्यान में नहीं रखा जाता है।</string>
   <!--Main activity-->
+  <string name="drawer_open">मेन्यू खोलें</string>
+  <string name="drawer_close">मेन्यू बंद करें</string>
+  <string name="drawer_preferences">ड्रावर की प्राथमिकताएं</string>
+  <string name="drawer_feed_order_unplayed_episodes">काउंटर से क्रमबद्ध करें</string>
+  <string name="drawer_feed_order_alphabetical">वर्णानुक्रम से क्रमबद्ध करें</string>
+  <string name="drawer_feed_order_last_update">प्रकाशन तिथि से क्रमबद्ध करें</string>
+  <string name="drawer_feed_order_most_played">चलाए गए एपिसोड की संख्या</string>
+  <string name="drawer_feed_counter_new_unplayed">नए और नहीं चलाए गए एपिसोड की संख्या</string>
+  <string name="drawer_feed_counter_new">नए एपिसोड की संख्या</string>
+  <string name="drawer_feed_counter_unplayed">नहीं चलाए गए एपिसोड की संख्या</string>
+  <string name="drawer_feed_counter_downloaded">डाउनलोड किए गए एपिसोड की संख्या</string>
+  <string name="drawer_feed_counter_none">शून्य</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">ब्राउज़र में खोलें</string>
   <string name="copy_url_label">कॉपी यूआरएल</string>
   <string name="share_url_label">शेयर यूआरएल</string>
-  <string name="copied_url_msg">यूआरएल को क्लिपबोर्ड पर कॉपी कर लिया गया है</string>
+  <string name="copied_url_msg">यूआरएल को क्लिपबोर्ड पर कॉपी किया गया है</string>
+  <string name="go_to_position_label">इस स्थान पर जाएं</string>
   <!--Playback history-->
   <string name="clear_history_label"> हिस्ट्री हटाएँ</string>
   <!--Other-->
   <string name="confirm_label">पुष्टि करें</string>
   <string name="cancel_label">रद्द करें</string>
-  <string name="author_label">	निर्माता</string>
+  <string name="yes">हाँ</string>
+  <string name="no">नहीं</string>
+  <string name="reset">रीसेट</string>
+  <string name="author_label">कलाकार</string>
   <string name="language_label">भाषा</string>
+  <string name="url_label">URL</string>
   <string name="podcast_settings_label">सेटिंग्स</string>
   <string name="cover_label">तस्वीर</string>
   <string name="error_label">त्रुटि</string>
   <string name="error_msg_prefix">एक त्रुटि हो गई:</string>
+  <string name="needs_storage_permission">इस कार्य की पूर्ती के लिए स्टोरेज अनुमति की आवश्यकता है</string>
   <string name="refresh_label">ताज़ा करें</string>
   <string name="external_storage_error_msg">कोई बाहरी भंडारण उपलब्ध नहीं है.सुनिश्चित करें कि आपने बाहरी भंडारण मुहिम शुरू की है ताकि अनुप्रयोग ठीक से काम कर सकते हैं</string>
   <string name="chapters_label">अध्याय</string>
+  <string name="chapter_duration">अवधि: %1$s</string>
   <string name="shownotes_label">नोट्स दिखाएँ</string>
   <string name="description_label">विवरण</string>
   <string name="most_recent_prefix">सबसे हाल का प्रकरण:\u0020</string>
@@ -37,40 +77,100 @@
   <string name="length_prefix">लंबाई:\u0020</string>
   <string name="size_prefix">साइज:\u0020</string>
   <string name="processing_label">प्रसंस्करण</string>
+  <string name="loading_label">लोड हो रहा है...</string>
   <string name="save_username_password_label">यूज़रनेम और पासवर्ड सहेजें</string>
   <string name="close_label">बंद करें</string>
   <string name="retry_label">पुन: प्रयास</string>
   <string name="auto_download_label">ऑटो डाउनलोड में शामिल करें</string>
+  <string name="auto_download_apply_to_items_title">पिछले एपिसोड पर लागू करें</string>
+  <string name="auto_download_apply_to_items_message">नया <i>ऑटो डाउनलोड</i> सेटिंग स्वचालित रूप से नए एपिसोड पर लागू की जाएगा।\nक्या आप इससे पहले प्रकाशित एपिसोड पर भी लागू करना चाहते हैं?</string>
+  <string name="auto_delete_label">ऑटो डिलीट एपिसोड</string>
+  <string name="parallel_downloads_suffix">\u0020समानांतर डाउनलोड</string>
+  <string name="feed_auto_download_global">सार्वभौमिक डिफ़ॉल्ट</string>
+  <string name="feed_auto_download_always">हमेशा</string>
+  <string name="feed_auto_download_never">कभी नहीँ</string>
+  <string name="send_label">भेजें...</string>
+  <string name="episode_cleanup_never">कभी नहीँ</string>
+  <string name="episode_cleanup_queue_removal">जब क़तार में नहीं हो</string>
+  <string name="episode_cleanup_after_listening">समाप्ति के बाद</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">समाप्ति के 1 दिन बाद</item>
+    <item quantity="other">समाप्ति के %d दिन बाद</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">यूआरएल फ़ीड</string>
+  <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">यूआरएल द्वारा पॉडकास्ट जोड़ें</string>
   <string name="podcastdirectories_label">पॉडकास्ट निर्देशिका</string>
+  <string name="podcastdirectories_descr">नए पॉडकास्ट के लिए, आप iTunes या fyyd खोज सकते हैं, या gpodder.net को नाम, श्रेणी या लोकप्रियता द्वारा ब्राउज़ कर सकते हैं।</string>
+  <string name="browse_gpoddernet_label">gpodder.net ब्राउज़ करें</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">पढ़ने के रूप में सभी को चिह्नित करें</string>
   <string name="show_info_label">जानकारी दिखाएँ</string>
-  <string name="remove_feed_label">पॉडकास्ट हटाएँ
-</string>
-  <string name="share_link_label">शेयर वेबसाइट लिंक</string>
-  <string name="feed_remover_msg">फ़ीड निकाल रहा है</string>
+  <string name="show_feed_settings_label">पॉडकास्ट सेटिंग दिखाएं</string>
+  <string name="feed_info_label">पॉडकास्ट की जानकारी</string>
+  <string name="feed_settings_label">पॉडकास्ट की सेटिंग</string>
+  <string name="rename_feed_label">पॉडकास्ट का नाम बदले</string>
+  <string name="remove_feed_label">पॉडकास्ट हटाए</string>
+  <string name="share_label">शेयर...</string>
+  <string name="share_link_label">एपिसोड URL शेयर करे</string>
+  <string name="share_link_with_position_label">स्थान के साथ एपिसोड URL शेयर करे</string>
+  <string name="share_file_label">फाइल शेयर करे</string>
+  <string name="share_feed_url_label">फीड URL शेयर करे</string>
+  <string name="share_item_url_label">मीडिया फाइल शेयर करे</string>
+  <string name="share_item_url_with_position_label"> स्थान के साथ मीडिया फाइल शेयर करे</string>
+  <string name="feed_remover_msg">पॉडकास्ट हटाया जारहा है</string>
+  <string name="load_complete_feed">सारे पॉडकास्ट को रिफ्रेश करें</string>
+  <string name="hide_episodes_title">एपिसोड छुपाए</string>
+  <string name="batch_edit">जत्था संपादित करें</string>
+  <string name="hide_unplayed_episodes_label">नहीं चलाए गए</string>
+  <string name="hide_paused_episodes_label">रोके गए</string>
+  <string name="hide_played_episodes_label">चलाए गए</string>
+  <string name="hide_queued_episodes_label">क़तार किए गए</string>
+  <string name="hide_not_queued_episodes_label">क़तार नही किए गए</string>
+  <string name="hide_downloaded_episodes_label">डाउनलोड किये गए</string>
+  <string name="hide_not_downloaded_episodes_label">नहीं डाउनलोड किये गए</string>
+  <string name="hide_has_media_label">मीडिया है</string>
+  <string name="hide_is_favorite_label">पसंदीदा है</string>
+  <string name="filtered_label">छाने हुए</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} पिछला रिफ्रेश असफल हुआ</string>
+  <string name="open_podcast">पॉडकास्ट खोले</string>
   <!--actions on feeditems-->
   <string name="download_label">डाउनलोड</string>
   <string name="play_label">प्ले</string>
   <string name="pause_label">रोकें</string>
+  <string name="stop_label">रोकें</string>
   <string name="stream_label">स्ट्रिम</string>
   <string name="remove_label"> हटाएँ</string>
-  <string name="mark_read_label">पढ़ा हुआ के रूप में  चिह्नित करें</string>
-  <string name="mark_unread_label">ना पढ़ा हुआ के रूप में  चिह्नित करें</string>
+  <string name="delete_label">डिलीट</string>
+  <string name="delete_failed">फ़ाइल डिलीट करने में असमर्थ। डिवाइस को रिबूट करने से मदद मिल सकती है।</string>
+  <string name="remove_episode_lable">एपिसोड हटाएं</string>
+  <string name="mark_as_seen_label">देखा गया के रूप में चिह्नित करें</string>
+  <string name="marked_as_seen_label">देखा गया के रूप में चिह्नित किया गया</string>
+  <string name="mark_read_label">चलाया गया के रूप में चिह्नित करें</string>
+  <string name="marked_as_read_label">चलाया गया के रूप में चिह्नित किया गया</string>
+  <string name="mark_unread_label">नही चलाया गया के रूप में चिह्नित करें</string>
   <string name="add_to_queue_label">क़तार में जोड़ें</string>
+  <string name="added_to_queue_label">कांतर में जोड़े गए</string>
   <string name="remove_from_queue_label">क़तार से हटाएँ</string>
+  <string name="add_to_favorite_label">पसंदीदा सूची में जोड़े</string>
+  <string name="added_to_favorites">पसंदीदा सूची में जोड़ा गया</string>
+  <string name="remove_from_favorite_label">पसंदीदा सूची से हटाए</string>
+  <string name="removed_from_favorites">पसंदीदा सूची से हटया गया</string>
   <string name="visit_website_label">वेबसाइट पर जाएँ</string>
   <string name="support_label">इसे Flattr करें</string>
   <string name="skip_episode_label">एपिसोड छोङें</string>
+  <string name="activate_auto_download">ऑटो डाउनलोड सक्रिय करें</string>
+  <string name="deactivate_auto_download">ऑटो डाउनलोड निष्क्रिय करें</string>
+  <string name="reset_position">प्लेबैक स्थिति रीसेट करें</string>
+  <string name="removed_item">आइटम हटया गया</string>
   <!--Download messages and labels-->
-  <string name="download_successful">सफल
-</string>
-  <string name="download_failed">डाउनलोड विफल</string>
+  <string name="download_successful">सफल हुआ</string>
+  <string name="download_failed">असफल हुआ</string>
   <string name="download_pending">लंबित डाउनलोड</string>
   <string name="download_running">डाउनलोड चल रहा है</string>
+  <string name="download_error_details">विवरण</string>
+  <string name="download_error_details_message">%1$s \n\nफाइल URL:\n%2$s</string>
   <string name="download_error_device_not_found">स्टोरेज डिवाइस नहीं मिला</string>
   <string name="download_error_insufficient_space">अपर्याप्त स्थान</string>
   <string name="download_error_file_error">फ़ाइल त्रुटि</string>
@@ -80,13 +180,23 @@
   <string name="download_error_unsupported_type">असमर्थित फ़ीड प्रकार</string>
   <string name="download_error_connection_error">कनेक्शन त्रुटि</string>
   <string name="download_error_unknown_host">अज्ञात होस्ट</string>
+  <string name="download_error_unauthorized">प्रमाणीकरण त्रुटि</string>
+  <string name="download_error_file_type_type">फ़ाइल प्रकार त्रुटि</string>
+  <string name="download_error_forbidden">निषिद्ध</string>
   <string name="cancel_all_downloads_label">सभी डाउनलोड रद्द  करें</string>
   <string name="download_canceled_msg">डाउनलोड रद्द</string>
-  <string name="download_report_title">डाउनलोड पूरा हो गया है</string>
+  <string name="download_canceled_autodownload_enabled_msg">डाउनलोड रद्द हुआ\nइस आइटम के लिए <i>ऑटडाउनलोड</i> अक्षम किया गया</string>
+  <string name="download_report_title">त्रुटि के साथ डाउनलोड संपन्न हुए</string>
+  <string name="download_report_content_title">रिपोर्ट डाउनलोड करे</string>
   <string name="download_error_malformed_url">गलत URL</string>
   <string name="download_error_io_error">आईओ त्रुटि</string>
   <string name="download_error_request_error">अनुरोध त्रुटि</string>
   <string name="download_error_db_access">डेटाबेस का उपयोग त्रुटि</string>
+  <plurals name="downloads_left">
+    <item quantity="one">%d डाउनलोड बाकी</item>
+    <item quantity="other">%d डाउनलोड बाकी</item>
+  </plurals>
+  <string name="downloads_processing">डाउनलोड प्रोसेस किये जारहे</string>
   <string name="download_notification_title">पॉडकास्ट डेटा डाउनलोड करें</string>
   <string name="download_report_content">%1$d डाउनलोड सफल रहा, %2$d में विफल रहा है</string>
   <string name="download_log_title_unknown">अज्ञात शीर्षक</string>
@@ -94,6 +204,11 @@
   <string name="download_type_media">मीडिया फ़ाइल</string>
   <string name="download_type_image">छवि</string>
   <string name="download_request_error_dialog_message_prefix">फाइल डाउनलोड करने के लिए प्रयास करते समय एक त्रुटि हुई:\u0020</string>
+  <string name="authentication_notification_title">प्रमाणीकरण आवश्यक है</string>
+  <string name="authentication_notification_msg">आपके द्वारा अनुरोधित संसाधन के लिए यूजरनाम यूजरनेम और पासवर्ड की आवश्यकता है</string>
+  <string name="confirm_mobile_download_dialog_title">मोबाइल डाउनलोड की पुष्टि करें</string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">कतारबद्ध करें</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">अस्थायी रूप से अनुमति दें</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">त्रुटि!</string>
   <string name="player_stopped_msg">मीडिया नहीं चल रहा</string>
@@ -105,12 +220,22 @@
   <string name="no_media_playing_label">मीडिया नहीं चल रहा</string>
   <string name="player_buffering_msg">बफरिंग</string>
   <string name="playbackservice_notification_title">प्लेईंग पॉडकास्ट</string>
+  <string name="unknown_media_key">एन्टेनापॉड - अनजान मीडिया की: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">कतार साफ</string>
   <string name="undo">पूर्ववत् करें</string>
   <string name="removed_from_queue">आइटम हटाया</string>
   <string name="move_to_top_label">शीर्ष पर ले जाएं</string>
   <string name="move_to_bottom_label">नीचे जाएं</string>
+  <string name="date">दिनांक</string>
+  <string name="duration">अवधि</string>
+  <string name="episode_title">एपिसोड का शीर्षक</string>
+  <string name="feed_title">पॉडकास्ट का शीर्षक</string>
+  <string name="random">क्रमरहित</string>
+  <string name="smart_shuffle">चतुर मिश्रण</string>
+  <string name="ascending">आरोही</string>
+  <string name="descending">अवरोही</string>
+  <string name="clear_queue_confirmation_msg">कृपया पुष्टि करें कि आप सारे एपिसोड के इस कतार को हटाना चाहते हैं</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr पंजीकरण करें</string>
   <string name="flattr_auth_explanation">प्रमाणीकरण प्रक्रिया शुरू करने के लिए नीचे दिए गए बटन को दबाएं. आपके ब्राउज़र में flattr लॉगिन स्क्रीन को भेजा जाएगा और flattr बातें करने के लिए अनुमति AntennaPod को देने के लिए कहा जाएगा. आपकि अनुमति देने के बाद, आप स्वतः ही इस स्क्रीन में वापस आ जाएगें.</string>
@@ -128,23 +253,39 @@
   <string name="flattr_click_success">सफलतापूर्वक यह बात Flattr किया</string>
   <string name="flattr_click_success_count">सफलतापूर्वक %d बातोंको Flattr किया</string>
   <string name="flattr_click_success_queue">Flattr गिनती: %s</string>
-  <string name="flattring_label">ऐन्टेनापॉड Flattr </string>
+  <string name="flattring_label">ऐन्टेनापॉड Flattr कररहा है</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">प्लगइन डाउनलोड करें</string>
   <string name="no_playback_plugin_title">प्लगइन स्थापित नहीं हुआ</string>
   <string name="set_playback_speed_label">प्लेबैक गति</string>
+  <string name="enable_sonic">सॉनिक सक्षम करे</string>
   <!--Empty list labels-->
   <string name="no_items_label">इस सूची में कोई आइटम नहीं हैं.</string>
-  <string name="no_feeds_label">आपने अभी तक किसी भी फ़ीड की सदस्यता नहीं ली है.</string>
+  <string name="no_feeds_label">आपने अभी तक किसी भी पॉडकास्ट को सब्सक्राइब नहीं किया है।</string>
+  <string name="no_chapters_label">इस एपिसोड में कोई अध्याय नहीं है।</string>
+  <string name="no_shownotes_label">इस एपिसोड में कोई शोनोट्स नहीं है।</string>
   <!--Preferences-->
+  <string name="storage_pref">स्टोरेज</string>
+  <string name="project_pref">परियोजना</string>
   <string name="other_pref">अन्य</string>
   <string name="about_pref">के बारे में</string>
   <string name="queue_label">पंक्ति</string>
-  <string name="services_label">सेवाएं</string>
   <string name="flattr_label">Flattr</string>
+  <string name="automation">स्वचालन</string>
+  <string name="download_pref_details">विवरण</string>
+  <string name="import_export_pref">आयात/निर्यात</string>
+  <string name="appearance">दिखावट</string>
+  <string name="external_elements">बाहरी तत्व</string>
+  <string name="interruptions">रुकावटे</string>
+  <string name="pref_episode_cleanup_title">एपिसोड की सफाई</string>
   <string name="pref_followQueue_sum">प्लेबैक के पूरा होने पर अगली पंक्ति आइटम के लिए जाएँ</string>
   <string name="playback_pref">प्लेबैक</string>
   <string name="network_pref">संजाल</string>
+  <string name="pref_autoUpdateIntervallOrTime_Disable">अक्षम करें</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">अंतराल निर्धारित करें</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">दिन का समय निर्धारित करें</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">प्रति %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">%1$s बजे </string>
   <string name="pref_downloadMediaOnWifiOnly_sum">केवल वाईफ़ाई पर मीडिया फ़ाइलें डाउनलोड करें</string>
   <string name="pref_followQueue_title">सतत प्लेबैक</string>
   <string name="pref_downloadMediaOnWifiOnly_title">वाईफाई मीडिया डाउनलोड करें</string>
@@ -179,6 +320,7 @@
   <string name="pref_gpodnet_logout_toast">लॉगआउट सफल रहा था</string>
   <string name="pref_gpodnet_setlogin_information_title">प्रवेश जानकारी बदलें</string>
   <string name="pref_gpodnet_setlogin_information_sum">अपने gpodder.net खाते के लिए प्रवेश जानकारी बदलें.</string>
+  <string name="pref_gpodnet_login_status"><![CDATA[ <i>%1$s</i> के रूप में <i>%2$s</i> डिवाइस के साथ लॉगिन किया गया ]]></string>
   <string name="pref_playback_speed_title">प्लेबैक गति</string>
   <string name="pref_playback_speed_sum">चर गति ऑडियो प्लेबैक के लिए उपलब्ध गति बनाइए</string>
   <string name="pref_gpodnet_sethostname_title">होस्टनाम सेट</string>
@@ -199,7 +341,6 @@
   <string name="deselect_all_label">सभी का चयन रद्द करें</string>
   <string name="opml_export_label">OPML निर्यात</string>
   <string name="export_error_label">निर्यात त्रुटि</string>
-  <string name="opml_export_success_sum">.ompl फ़ाइल लिखा गया था:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">स्लीप टाइमर सेट</string>
   <string name="disable_sleeptimer_label">स्लीप टाइमर अक्षम</string>
@@ -247,7 +388,7 @@
   <string name="folder_not_empty_dialog_msg">आपके द्वारा चुने गए फ़ोल्डर खाली नहीं है. मीडिया डाउनलोड और अन्य फ़ाइलें इस फ़ोल्डर में सीधे रखा जाएगा. फिर भी जारी रखें?</string>
   <string name="set_to_default_folder">डिफ़ॉल्ट फ़ोल्डर चुनें</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">प्लेबैक रोकें बजाय ध्वनियों को कम करने के अगर कोई  अन्य अनुप्रयोग इसे बजाना चाहता है </string>
-  <string name="pref_pausePlaybackForFocusLoss_title">रुकावट के लिए रोकें</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">रुकावटो के लिए रोकें</string>
   <!--Online feed view-->
   <string name="subscribe_label">सदस्यता लें</string>
   <string name="subscribed_label">सदस्यता ली गई</string>
@@ -263,4 +404,5 @@
   <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

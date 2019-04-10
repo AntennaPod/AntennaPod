@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="feeds_label">ఫీడులు</string>
   <string name="statistics_label">గణాంకాలు</string>
+  <string name="episodes_label">ఎపిసోడులు</string>
   <string name="all_episodes_short_label">అన్నీ</string>
   <string name="favorite_episodes_label">ఇష్టాలు</string>
   <string name="new_label">కొత్తది</string>
@@ -13,33 +14,63 @@
   <string name="downloads_log_label">చిట్టా</string>
   <string name="subscriptions_label">చందాలు</string>
   <string name="subscriptions_list_label">చందాల జాబితా</string>
+  <string name="cancel_download_label">దింపుకోలును\nరద్దుచేయి</string>
+  <string name="playback_history_label">ఆడింపు చరిత్ర</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net ప్రవేశం</string>
   <string name="free_space_label">%1$s ఖాళీ</string>
   <!--Statistics fragment-->
+  <string name="statistics_mode">గణాంకాల రీతి</string>
   <!--Main activity-->
+  <string name="drawer_open">మెనూని తెరువు</string>
+  <string name="drawer_close">మెనూని మూసివేయి</string>
   <string name="drawer_feed_counter_none">ఏమీలేవు</string>
   <!--Webview actions-->
   <!--Playback history-->
+  <string name="clear_history_label">చరిత్రను తుడిచివేయి</string>
   <!--Other-->
+  <string name="confirm_label">నిర్ధారించు</string>
   <string name="cancel_label">రద్దుచేయి</string>
   <string name="yes">అవును</string>
   <string name="no">కాదు</string>
   <string name="language_label">భాష</string>
   <string name="podcast_settings_label">అమరికలు</string>
+  <string name="cover_label">బొమ్మ</string>
+  <string name="error_label">పొరపాటు</string>
+  <string name="error_msg_prefix">పొరపాటు జరిగింది:</string>
+  <string name="chapters_label">చాప్టర్లు</string>
+  <string name="chapter_duration">నిడివి: %1$s</string>
   <string name="description_label">వివరణ</string>
+  <string name="most_recent_prefix">అత్యంత ఇటీవలి ఎపిసోడు:\u0020</string>
+  <string name="episodes_suffix">\u0020ఎపిసోడులు</string>
   <string name="length_prefix">నిడివి:\u0020</string>
+  <string name="size_prefix">పరిమాణం:\u0020</string>
   <string name="loading_label">వస్తోంది…</string>
+  <string name="save_username_password_label">వాడుకరి పేరునీ సంకేతపదాన్నీ భద్రపరచు</string>
   <string name="close_label">మూసివేయి</string>
+  <string name="retry_label">మళ్ళీ ప్రయత్నించు</string>
   <string name="feed_auto_download_always">ఎల్లప్పుడూ</string>
   <string name="send_label">పంపించు…</string>
+  <plurals name="episode_cleanup_days_after_listening">
+    <item quantity="one">ముగించిన 1 రోజు తర్వాత</item>
+    <item quantity="other">ముగించిన %d రోజుల తర్వాత</item>
+  </plurals>
   <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">ఫీడు చిరునామా</string>
+  <string name="etxtFeedurlHint">www.example.com/feed</string>
   <!--Actions on feeds-->
+  <string name="show_info_label">సమాచారం చూపించు</string>
   <string name="share_label">పంచుకోండి…</string>
   <!--actions on feeditems-->
+  <string name="download_label">దింపుకో</string>
   <string name="play_label">ఆడించు</string>
   <string name="pause_label">నిలుపు</string>
   <string name="stop_label">ఆపివేయి</string>
+  <string name="remove_label">తొలగించు</string>
   <string name="delete_label">తొలగించు</string>
   <!--Download messages and labels-->
+  <string name="download_error_details">వివరాలు</string>
+  <string name="download_type_feed">ఫీడు</string>
   <!--Mediaplayer messages-->
   <!--Queue operations-->
   <string name="date">తేదీ</string>
@@ -51,15 +82,22 @@
   <!--Variable Speed-->
   <!--Empty list labels-->
   <!--Preferences-->
+  <string name="other_pref">ఇతర</string>
   <string name="about_pref">గురించి</string>
-  <string name="services_label">సేవలు</string>
   <string name="network_pref">నెట్‌వర్క్</string>
+  <string name="pref_autoUpdateIntervallOrTime_Disable">అచేతనించు</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">ప్రతీ %1$s</string>
+  <string name="pref_theme_title_light">లేత</string>
+  <string name="pref_theme_title_dark">నల్లని</string>
+  <string name="pref_episode_cache_unlimited">అపరిమితం</string>
   <string name="pref_update_interval_hours_plural">గంటలు</string>
   <string name="pref_update_interval_hours_singular">గంట</string>
   <string name="experimental_pref">ప్రయోగాత్మకం</string>
   <string name="pref_proxy_title">ప్రాక్సీ</string>
+  <string name="pref_known_issues">తెలిసిన సమస్యలు</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
+  <string name="search_label">వెతుకు</string>
   <!--OPML import and export-->
   <string name="select_all_label">అన్నీ ఎంచుకోండి</string>
   <!--Sleep timer-->
@@ -80,9 +118,14 @@
   </plurals>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">వర్గాలు</string>
+  <string name="gpodnet_toplist_header">మేటి పాడ్‌కాస్టులు</string>
+  <string name="gpodnet_suggestions_header">సలహాలు</string>
   <string name="username_label">వాడుకరి పేరు</string>
   <string name="password_label">సంకేతపదం</string>
+  <string name="gpodnetsync_pref_report_successful">విజయవంతం</string>
+  <string name="gpodnetsync_pref_report_failed">విఫలమైంది</string>
   <!--Directory chooser-->
+  <string name="folder_not_empty_dialog_title">సంచయం ఖాళీగా లేదు</string>
   <!--Online feed view-->
   <!--Content descriptions for image buttons-->
   <!--Feed information screen-->
@@ -99,6 +142,10 @@
   <string name="proxy_type_label">రకం</string>
   <string name="optional_hint">(ఐచ్చికం)</string>
   <!--Database import/export-->
+  <string name="label_import">దిగుమతి</string>
+  <string name="label_export">దిగుమతి</string>
+  <string name="export_ok">ఎగుమతి విజయవంతం.</string>
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <!--Notification channels-->
 </resources>

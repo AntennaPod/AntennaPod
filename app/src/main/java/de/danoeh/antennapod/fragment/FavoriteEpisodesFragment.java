@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -50,6 +51,8 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
+        ((TextView)root.findViewById(R.id.emptyViewTitle)).setText(R.string.no_fav_episodes_head_label);
+        ((TextView)root.findViewById(R.id.emptyViewMessage)).setText(R.string.no_fav_episodes_label);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -62,8 +65,8 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
                 AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder)viewHolder;
                 Log.d(TAG, "remove(" + holder.getItemId() + ")");
 
-                if (subscription != null) {
-                    subscription.unsubscribe();
+                if (disposable != null) {
+                    disposable.dispose();
                 }
                 FeedItem item = holder.getFeedItem();
                 if (item != null) {
