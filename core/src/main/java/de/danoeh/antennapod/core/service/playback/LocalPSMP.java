@@ -63,16 +63,16 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     /**
      * All ExoPlayer methods must be executed on the same thread.
      * We use the main application thread. This class allows to
-     * "fake" an executor that just calls the method instead of
-     * submitting to another thread. Other players are still
-     * executed in a background thread.
+     * "fake" an executor that just calls the methods on the
+     * calling thread instead of submitting to an executor.
+     * Other players are still executed in a background thread.
      */
     private class PlayerExecutor {
-        private boolean useMainThread = true;
+        private boolean useCallerThread = true;
         private ThreadPoolExecutor threadPool;
 
         public Future<?> submit(Runnable r) {
-            if (useMainThread) {
+            if (useCallerThread) {
                 r.run();
                 return new FutureTask<Void>(() -> {}, null);
             } else {
@@ -132,7 +132,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject(...)");
-        executor.useMainThread = UserPreferences.useExoplayer();
+        executor.useCallerThread = UserPreferences.useExoplayer();
         executor.submit(() -> {
             playerLock.lock();
             try {
@@ -400,7 +400,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     @Override
     public void reinit() {
-        executor.useMainThread = UserPreferences.useExoplayer();
+        executor.useCallerThread = UserPreferences.useExoplayer();
         executor.submit(() -> {
             playerLock.lock();
             Log.d(TAG, "reinit()");
@@ -850,7 +850,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     protected Future<?> endPlayback(final boolean hasEnded, final boolean wasSkipped,
                                     final boolean shouldContinue, final boolean toStoppedState) {
-        executor.useMainThread = UserPreferences.useExoplayer();
+        executor.useCallerThread = UserPreferences.useExoplayer();
         return executor.submit(() -> {
             playerLock.lock();
             releaseWifiLockIfNecessary();
@@ -1057,7 +1057,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             playerLock.unlock();
         };
 
-        if (executor.useMainThread) {
+        if (executor.useCallerThread) {
             r.run();
         } else {
             new Thread(r).start();
