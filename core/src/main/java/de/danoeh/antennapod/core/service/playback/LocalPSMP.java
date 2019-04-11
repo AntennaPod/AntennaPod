@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -57,16 +58,42 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private final ReentrantLock playerLock;
     private CountDownLatch seekLatch;
 
-    private final ThreadPoolExecutor executor;
+    private final PlayerExecutor executor;
+
+    /**
+     * All ExoPlayer methods must be executed on the same thread.
+     * We use the main application thread. This class allows to
+     * "fake" an executor that just calls the methods on the
+     * calling thread instead of submitting to an executor.
+     * Other players are still executed in a background thread.
+     */
+    private class PlayerExecutor {
+        private boolean useCallerThread = true;
+        private ThreadPoolExecutor threadPool;
+
+        public Future<?> submit(Runnable r) {
+            if (useCallerThread) {
+                r.run();
+                return new FutureTask<Void>(() -> {}, null);
+            } else {
+                return threadPool.submit(r);
+            }
+        }
+
+        public void shutdown() {
+            threadPool.shutdown();
+        }
+    }
 
     public LocalPSMP(@NonNull Context context,
                      @NonNull PSMPCallback callback) {
         super(context, callback);
-
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new ReentrantLock();
         this.startWhenPrepared = new AtomicBoolean(false);
-        executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
+
+        executor = new PlayerExecutor();
+        executor.threadPool = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
                 (r, executor) -> Log.d(TAG, "Rejected execution of runnable"));
 
         mediaPlayer = null;
@@ -105,6 +132,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject(...)");
+        executor.useCallerThread = UserPreferences.useExoplayer();
         executor.submit(() -> {
             playerLock.lock();
             try {
@@ -372,6 +400,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     @Override
     public void reinit() {
+        executor.useCallerThread = UserPreferences.useExoplayer();
         executor.submit(() -> {
             playerLock.lock();
             Log.d(TAG, "reinit()");
@@ -821,6 +850,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     protected Future<?> endPlayback(final boolean hasEnded, final boolean wasSkipped,
                                     final boolean shouldContinue, final boolean toStoppedState) {
+        executor.useCallerThread = UserPreferences.useExoplayer();
         return executor.submit(() -> {
             playerLock.lock();
             releaseWifiLockIfNecessary();
@@ -1012,7 +1042,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mp -> genericSeekCompleteListener();
 
     private void genericSeekCompleteListener() {
-        Thread t = new Thread(() -> {
+        Runnable r = () -> {
             Log.d(TAG, "genericSeekCompleteListener");
             if(seekLatch != null) {
                 seekLatch.countDown();
@@ -1025,7 +1055,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 setPlayerStatus(statusBeforeSeeking, media, getPosition());
             }
             playerLock.unlock();
-        });
-        t.start();
+        };
+
+        if (executor.useCallerThread) {
+            r.run();
+        } else {
+            new Thread(r).start();
+        }
     }
 }

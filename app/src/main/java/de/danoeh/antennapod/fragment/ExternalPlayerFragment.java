@@ -18,11 +18,13 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.greenrobot.event.EventBus;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -90,8 +92,11 @@ public class ExternalPlayerFragment extends Fragment {
         loadMediaInfo();
     }
 
-    public void connectToPlaybackService() {
-        controller.init();
+    public void onEventMainThread(ServiceEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
+            controller.init();
+        }
     }
 
     private PlaybackController setupPlaybackController() {
@@ -109,12 +114,12 @@ public class ExternalPlayerFragment extends Fragment {
 
             @Override
             public boolean loadMediaInfo() {
-                ExternalPlayerFragment fragment = ExternalPlayerFragment.this;
-                if (fragment != null) {
-                    return fragment.loadMediaInfo();
-                } else {
-                    return false;
-                }
+                return ExternalPlayerFragment.this.loadMediaInfo();
+            }
+
+            @Override
+            public void setupGUI() {
+                ExternalPlayerFragment.this.loadMediaInfo();
             }
 
             @Override
@@ -133,17 +138,28 @@ public class ExternalPlayerFragment extends Fragment {
     public void onResume() {
         super.onResume();
         onPositionObserverUpdate();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         controller.init();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (controller != null) {
+            controller.release();
+        }
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Fragment is about to be destroyed");
-        if (controller != null) {
-            controller.release();
-        }
         if (disposable != null) {
             disposable.dispose();
         }
