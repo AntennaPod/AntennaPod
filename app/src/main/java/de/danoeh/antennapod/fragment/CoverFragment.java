@@ -13,37 +13,24 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.greenrobot.event.EventBus;
 
 /**
  * Displays the cover and the title of a FeedItem.
  */
-public class CoverFragment extends Fragment implements MediaplayerInfoContentFragment {
+public class CoverFragment extends Fragment {
 
     private static final String TAG = "CoverFragment";
-
-    private Playable media;
 
     private View root;
     private TextView txtvPodcastTitle;
     private TextView txtvEpisodeTitle;
     private ImageView imgvCover;
-
-    public static CoverFragment newInstance(Playable item) {
-        CoverFragment f = new CoverFragment();
-        f.media = item;
-        return f;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (media == null) {
-            Log.e(TAG, TAG + " was called without media");
-        }
-    }
+    private PlaybackController controller;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,31 +44,20 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
     }
 
     private void loadMediaInfo() {
-        if (media != null) {
-            txtvPodcastTitle.setText(media.getFeedTitle());
-            txtvEpisodeTitle.setText(media.getEpisodeTitle());
-            Glide.with(this)
-                    .load(media.getImageLocation())
-                    .apply(new RequestOptions()
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .dontAnimate()
-                        .fitCenter())
-                    .into(imgvCover);
-        } else {
+        Playable media = controller.getMedia();
+        if (media == null) {
             Log.w(TAG, "loadMediaInfo was called while media was null");
+            return;
         }
-    }
-
-    @Override
-    public void onStart() {
-        Log.d(TAG, "On Start");
-        super.onStart();
-        if (media != null) {
-            Log.d(TAG, "Loading media info");
-            loadMediaInfo();
-        } else {
-            Log.w(TAG, "Unable to load media info: media was null");
-        }
+        txtvPodcastTitle.setText(media.getFeedTitle());
+        txtvEpisodeTitle.setText(media.getEpisodeTitle());
+        Glide.with(this)
+                .load(media.getImageLocation())
+                .apply(new RequestOptions()
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .dontAnimate()
+                    .fitCenter())
+                .into(imgvCover);
     }
 
     @Override
@@ -92,14 +68,35 @@ public class CoverFragment extends Fragment implements MediaplayerInfoContentFra
     }
 
     @Override
-    public void onMediaChanged(Playable media) {
-        if(this.media == media) {
-            return;
-        }
-        this.media = media;
-        if (isAdded()) {
-            loadMediaInfo();
+    public void onStart() {
+        super.onStart();
+        controller = new PlaybackController(getActivity(), false) {
+            @Override
+            public boolean loadMediaInfo() {
+                if (getMedia() == null) {
+                    return false;
+                }
+                CoverFragment.this.loadMediaInfo();
+                return true;
+            }
+
+        };
+        controller.init();
+        loadMediaInfo();
+        EventBus.getDefault().register(this);
+    }
+
+    public void onEventMainThread(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
+            controller.init();
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+        controller.release();
+        controller = null;
+    }
 }
