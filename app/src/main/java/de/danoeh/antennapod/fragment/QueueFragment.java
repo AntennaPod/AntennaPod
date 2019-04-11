@@ -102,11 +102,6 @@ public class QueueFragment extends Fragment {
         if (queue != null) {
             onFragmentLoaded(true);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         loadItems(true);
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().registerSticky(this);
@@ -116,6 +111,11 @@ public class QueueFragment extends Fragment {
     public void onPause() {
         super.onPause();
         saveScrollPosition();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
         if(disposable != null) {
