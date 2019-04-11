@@ -776,15 +776,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         loadData();
     }
 
-    public void onEventMainThread(ServiceEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        switch(event.action) {
-            case SERVICE_STARTED:
-                externalPlayerFragment.connectToPlaybackService();
-                break;
-        }
-    }
-
     public void onEventMainThread(ProgressEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         switch(event.action) {
