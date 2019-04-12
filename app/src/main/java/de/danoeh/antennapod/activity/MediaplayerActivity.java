@@ -278,9 +278,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        if (controller != null) {
-            controller.release();
-        }
         controller = newPlaybackController();
         controller.init();
         loadMediaInfo();
