@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -101,14 +102,12 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
 
             try {
                 Bitmap icon = null;
-                int iconSize = getResources().getDimensionPixelSize(
-                        android.R.dimen.app_icon_size);
+                int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
                 icon = Glide.with(PlayerWidgetJobService.this)
-                        .load(media.getImageLocation())
                         .asBitmap()
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .centerCrop()
-                        .into(iconSize, iconSize)
+                        .load(media.getImageLocation())
+                        .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                        .submit(iconSize, iconSize)
                         .get();
                 views.setImageViewBitmap(R.id.imgvCover, icon);
             } catch (Throwable tr) {
