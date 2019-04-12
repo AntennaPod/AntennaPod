@@ -353,13 +353,13 @@ public class AllEpisodesFragment extends Fragment {
             }
             emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+            listAdapter.notifyDataSetChanged();
         } else {
             listAdapter = null;
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         }
 
-        listAdapter.notifyDataSetChanged();
         restoreScrollPosition();
         getActivity().supportInvalidateOptionsMenu();
         updateShowOnlyEpisodesListViewState();
