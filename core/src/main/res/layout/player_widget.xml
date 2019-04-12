@@ -12,7 +12,7 @@
         <ImageButton
             android:id="@+id/butPlay"
             android:contentDescription="@string/play_label"
-            android:layout_width="72dp"
+            android:layout_width="@android:dimen/app_icon_size"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_margin="12dp"
@@ -31,11 +31,11 @@
 
             <ImageView
                 android:id="@+id/imgvCover"
-                android:layout_width="72dp"
+                android:layout_width="@android:dimen/app_icon_size"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@id/layout_center"
-                android:layout_margin="12dp" />
+                android:layout_margin="12dp"
+                android:layout_toLeftOf="@id/layout_center" />
 
             <LinearLayout
                 android:id="@+id/layout_center"
