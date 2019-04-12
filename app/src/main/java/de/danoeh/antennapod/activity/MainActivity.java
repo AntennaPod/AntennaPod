@@ -43,7 +43,6 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -68,11 +67,13 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -765,6 +766,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @Subscribe
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         // we are only interested in the number of queue items, not download status or position
@@ -776,6 +778,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         loadData();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ProgressEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         switch(event.action) {
@@ -794,6 +797,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         View parentLayout = findViewById(R.id.drawer_layout);

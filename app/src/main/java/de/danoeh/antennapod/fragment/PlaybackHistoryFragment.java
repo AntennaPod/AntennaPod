@@ -31,11 +31,13 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.view.EmptyViewHandler;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class PlaybackHistoryFragment extends ListFragment {
 
@@ -91,29 +93,18 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        EventBus.getDefault().registerSticky(this);
-        loadItems();
-    }
-
     @Override
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().register(this);
+        loadItems();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        EventBus.getDefault().unregister(this);
         EventDistributor.getInstance().unregister(contentUpdate);
         if(disposable != null) {
             disposable.dispose();
@@ -135,6 +126,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         viewsCreated = false;
     }
 
+    @Subscribe(sticky = true)
     public void onEvent(DownloadEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
@@ -193,6 +185,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if(playbackHistory == null) {

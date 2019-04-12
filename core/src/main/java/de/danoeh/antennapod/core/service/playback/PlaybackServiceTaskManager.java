@@ -18,7 +18,8 @@ import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 
 /**
@@ -74,6 +75,7 @@ public class PlaybackServiceTaskManager {
         EventBus.getDefault().register(this);
     }
 
+    @Subscribe
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(QueueEvent " + event +")");
         cancelQueueLoader();

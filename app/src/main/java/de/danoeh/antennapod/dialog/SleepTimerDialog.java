@@ -18,7 +18,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public abstract class SleepTimerDialog {
     

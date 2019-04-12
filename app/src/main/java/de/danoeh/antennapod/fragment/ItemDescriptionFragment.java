@@ -36,11 +36,13 @@ import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays the description of a Playable object in a Webview.
@@ -313,6 +315,7 @@ public class ItemDescriptionFragment extends Fragment {
         EventBus.getDefault().register(this);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ServiceEvent event) {
         if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
             controller.init();

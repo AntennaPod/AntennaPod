@@ -17,7 +17,9 @@ import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays the cover and the title of a FeedItem.
@@ -86,6 +88,7 @@ public class CoverFragment extends Fragment {
         EventBus.getDefault().register(this);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ServiceEvent event) {
         if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
             controller.init();

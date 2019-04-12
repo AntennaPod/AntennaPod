@@ -68,6 +68,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 /**
@@ -285,6 +288,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         controller.init();
         loadMediaInfo();
         onPositionObserverUpdate();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -297,6 +301,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (disposable != null) {
             disposable.dispose();
         }
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -664,6 +669,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         StorageUtils.checkStorageAvailability(this);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ServiceEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         if (event.action == ServiceEvent.Action.SERVICE_STARTED) {

@@ -51,11 +51,13 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Shows unread or recently published episodes
@@ -106,12 +108,12 @@ public class AllEpisodesFragment extends Fragment {
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        EventBus.getDefault().registerSticky(this);
         loadItems();
         registerForContextMenu(recyclerView);
     }
@@ -119,7 +121,6 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        EventBus.getDefault().unregister(this);
         saveScrollPosition();
         unregisterForContextMenu(recyclerView);
     }
@@ -127,6 +128,7 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        EventBus.getDefault().unregister(this);
         EventDistributor.getInstance().unregister(contentUpdate);
         if (disposable != null) {
             disposable.dispose();
@@ -429,6 +431,7 @@ public class AllEpisodesFragment extends Fragment {
 
     };
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if (episodes == null || listAdapter == null) {
@@ -452,6 +455,7 @@ public class AllEpisodesFragment extends Fragment {
         return true;
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;

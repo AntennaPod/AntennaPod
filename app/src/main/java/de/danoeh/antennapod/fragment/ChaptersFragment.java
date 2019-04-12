@@ -11,7 +11,9 @@ import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 public class ChaptersFragment extends ListFragment {
@@ -67,6 +69,7 @@ public class ChaptersFragment extends ListFragment {
         controller = null;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ServiceEvent event) {
         if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
             controller.init();
