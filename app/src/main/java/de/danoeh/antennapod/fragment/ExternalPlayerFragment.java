@@ -18,7 +18,6 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -28,9 +27,6 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
@@ -94,14 +90,6 @@ public class ExternalPlayerFragment extends Fragment {
         loadMediaInfo();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(ServiceEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
-            controller.init();
-        }
-    }
-
     private PlaybackController setupPlaybackController() {
         return new PlaybackController(getActivity(), true) {
 
@@ -147,7 +135,6 @@ public class ExternalPlayerFragment extends Fragment {
     public void onStart() {
         super.onStart();
         controller.init();
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -156,7 +143,6 @@ public class ExternalPlayerFragment extends Fragment {
         if (controller != null) {
             controller.release();
         }
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
