@@ -143,6 +143,7 @@ public class ExternalPlayerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        controller = setupPlaybackController();
         controller.init();
         EventBus.getDefault().register(this);
     }
@@ -152,6 +153,7 @@ public class ExternalPlayerFragment extends Fragment {
         super.onStop();
         if (controller != null) {
             controller.release();
+            controller = null;
         }
         EventBus.getDefault().unregister(this);
     }
@@ -233,7 +235,7 @@ public class ExternalPlayerFragment extends Fragment {
                     .into(imgvCover);
 
             fragmentLayout.setVisibility(View.VISIBLE);
-            if (controller.isPlayingVideoLocally()) {
+            if (controller != null && controller.isPlayingVideoLocally()) {
                 butPlay.setVisibility(View.GONE);
             } else {
                 butPlay.setVisibility(View.VISIBLE);
