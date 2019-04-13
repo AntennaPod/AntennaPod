@@ -145,6 +145,7 @@ public class ExternalPlayerFragment extends Fragment {
         super.onStart();
         controller = setupPlaybackController();
         controller.init();
+        loadMediaInfo();
         EventBus.getDefault().register(this);
     }
 
@@ -250,7 +251,9 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     private void onPositionObserverUpdate() {
-        if (controller.getPosition() == PlaybackService.INVALID_TIME
+        if (controller == null) {
+            return;
+        } else if (controller.getPosition() == PlaybackService.INVALID_TIME
                 || controller.getDuration() == PlaybackService.INVALID_TIME) {
             return;
         }
