@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.SafeJobIntentService;
@@ -74,10 +75,25 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         }
     }
 
+    /**
+     * Returns number of cells needed for given size of the widget.
+     *
+     * @param size Widget size in dp.
+     * @return Size in number of cells.
+     */
+    private static int getCellsForSize(int size) {
+        int n = 2;
+        while (70 * n - 30 < size) {
+            ++n;
+        }
+        return n - 1;
+    }
+
     private void updateViews() {
 
         ComponentName playerWidget = new ComponentName(this, PlayerWidget.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(this);
+        int[] widgetIds = manager.getAppWidgetIds(playerWidget);
         RemoteViews views = new RemoteViews(getPackageName(), R.layout.player_widget);
         PendingIntent startMediaplayer = PendingIntent.getActivity(this, 0,
                 PlaybackService.getPlayerActivityIntent(this), 0);
@@ -155,7 +171,21 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
         }
 
-        manager.updateAppWidget(playerWidget, views);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            for (int id : widgetIds) {
+                Bundle options = manager.getAppWidgetOptions(id);
+                int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                int columns = getCellsForSize(minWidth);
+                if(columns < 3) {
+                    views.setViewVisibility(R.id.layout_center, android.view.View.INVISIBLE);
+                } else {
+                    views.setViewVisibility(R.id.layout_center, android.view.View.VISIBLE);
+                }
+                manager.updateAppWidget(id, views);
+            }
+        } else {
+            manager.updateAppWidget(playerWidget, views);
+        }
     }
 
     /**
