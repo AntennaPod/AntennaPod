@@ -174,9 +174,9 @@ public class PlaybackServiceFlavorHelper {
         }
         callback.sendNotificationBroadcast(PlaybackService.NOTIFICATION_TYPE_RELOAD,
                 PlaybackService.EXTRA_CODE_CAST);
-        switchMediaPlayer(new RemotePSMP(context, callback.getMediaPlayerCallback()),
-                info,
-                wasLaunched);
+        RemotePSMP remotePSMP = new RemotePSMP(context, callback.getMediaPlayerCallback());
+        switchMediaPlayer(remotePSMP, info, wasLaunched);
+        remotePSMP.init();
         // hardware volume buttons control the remote device volume
         mediaRouter.setMediaSessionCompat(callback.getMediaSession());
         registerWifiBroadcastReceiver();
