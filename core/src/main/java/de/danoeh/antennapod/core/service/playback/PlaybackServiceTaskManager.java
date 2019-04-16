@@ -19,6 +19,9 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.greenrobot.event.EventBus;
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -262,18 +265,15 @@ public class PlaybackServiceTaskManager {
             cancelChapterLoader();
         }
 
-        Runnable chapterLoader = () -> {
-            Log.d(TAG, "Chapter loader started");
-            if (media.getChapters() == null) {
-                media.loadChapterMarks();
-                if (!Thread.currentThread().isInterrupted() && media.getChapters() != null) {
-                    callback.onChapterLoaded(media);
-                }
-            }
-            Log.d(TAG, "Chapter loader stopped");
-        };
-        chapterLoader = useMainThreadIfNecessary(chapterLoader);
-        chapterLoaderFuture = schedExecutor.submit(chapterLoader);
+        if (media.getChapters() == null) {
+            Completable.create(emitter -> {
+                        media.loadChapterMarks();
+                        emitter.onComplete();
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> callback.onChapterLoaded(media));
+        }
     }
 
 
