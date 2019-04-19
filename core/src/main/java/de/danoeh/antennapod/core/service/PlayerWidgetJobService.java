@@ -20,6 +20,8 @@ import android.widget.RemoteViews;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.concurrent.TimeUnit;
+
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
@@ -124,7 +126,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                         .load(media.getImageLocation())
                         .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                         .submit(iconSize, iconSize)
-                        .get();
+                        .get(500, TimeUnit.MILLISECONDS);
                 views.setImageViewBitmap(R.id.imgvCover, icon);
             } catch (Throwable tr) {
                 Log.e(TAG, "Error loading the media icon for the widget", tr);
