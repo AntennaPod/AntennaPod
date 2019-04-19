@@ -133,6 +133,8 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             }
 
             views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
+            views.setViewVisibility(R.id.txtvTitle, View.VISIBLE);
+            views.setViewVisibility(R.id.txtNoPlaying, View.GONE);
 
             String progressString;
             if (playbackService != null) {
@@ -166,10 +168,10 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startAppPending);
             views.setOnClickPendingIntent(R.id.butPlay, startAppPending);
-            views.setViewVisibility(R.id.txtvProgress, View.INVISIBLE);
+            views.setViewVisibility(R.id.txtvProgress, View.GONE);
+            views.setViewVisibility(R.id.txtvTitle, View.GONE);
+            views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
             views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_foreground);
-            views.setTextViewText(R.id.txtvTitle,
-                    this.getString(R.string.no_media_playing_label));
             views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
         }
 
