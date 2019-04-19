@@ -170,6 +170,7 @@ public class QueueFragment extends Fragment {
                 queue.remove(pos);
                 queue.add(pos, item);
                 recyclerAdapter.notifyItemChanged(pos);
+                refreshInfoBar();
             }
         }
     }
