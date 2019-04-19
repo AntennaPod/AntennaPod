@@ -165,7 +165,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             views.setOnClickPendingIntent(R.id.layout_left, startAppPending);
             views.setOnClickPendingIntent(R.id.butPlay, startAppPending);
             views.setViewVisibility(R.id.txtvProgress, View.INVISIBLE);
-            views.setImageViewResource(R.id.imgvCover, R.drawable.ic_stat_antenna_default);
+            views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_foreground);
             views.setTextViewText(R.id.txtvTitle,
                     this.getString(R.string.no_media_playing_label));
             views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
