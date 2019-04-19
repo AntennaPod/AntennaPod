@@ -178,7 +178,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 Bundle options = manager.getAppWidgetOptions(id);
                 int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
                 int columns = getCellsForSize(minWidth);
-                if(columns < 3) {
+                if (columns < 3) {
                     views.setViewVisibility(R.id.layout_center, android.view.View.INVISIBLE);
                 } else {
                     views.setViewVisibility(R.id.layout_center, android.view.View.VISIBLE);
