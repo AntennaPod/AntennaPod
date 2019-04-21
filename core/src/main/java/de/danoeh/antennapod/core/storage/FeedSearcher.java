@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,7 @@ import java.util.concurrent.FutureTask;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
-import de.danoeh.antennapod.core.util.comparator.SearchResultDateComparator;
+import de.danoeh.antennapod.core.util.comparator.InReverseChronologicalOrder;
 import de.danoeh.antennapod.core.util.comparator.SearchResultValueComparator;
 
 /**
@@ -79,7 +78,7 @@ public class FeedSearcher {
             e.printStackTrace();
         }
         Collections.sort(result, new SearchResultValueComparator());
-        Collections.sort(result, new SearchResultDateComparator());
+        Collections.sort(result, new InReverseChronologicalOrder ());
         return result;
     }
 }
