@@ -21,10 +21,10 @@
   <string name="playback_history_label">Історія відтворення</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">Синхронизація з іншими пристроями</string>
-  <string name="gpodnet_auth_label">gpodder.net логін</string>
+  <string name="gpodnet_auth_label">Автентифікуватися на gpodder.net</string>
   <string name="free_space_label">%1$s вільно</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
-  <string name="episode_cache_full_message">Досягнута межа розміра кеша епізодів. Розмір кеша можна збільшити в налаштуваннях.</string>
+  <string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Розмір кешу можна збільшити в налаштуваннях.</string>
   <string name="synchronizing">Синхронізується…</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Загальний час прослуханих подкастів:</string>
@@ -36,7 +36,7 @@
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
   <string name="drawer_close">Сховати меню</string>
-  <string name="drawer_preferences">Настройки меню навігації</string>
+  <string name="drawer_preferences">Налаштування меню навігації</string>
   <string name="drawer_feed_order_unplayed_episodes">Сортувати за лічильником</string>
   <string name="drawer_feed_order_alphabetical">Сортувати за абеткою</string>
   <string name="drawer_feed_order_last_update">Сортувати за датою публікації</string>
@@ -50,7 +50,7 @@
   <string name="open_in_browser_label">Відкрити в браузері</string>
   <string name="copy_url_label">Копіювати URL</string>
   <string name="share_url_label">Поділитися URL</string>
-  <string name="copied_url_msg">URL скопійовано в буфер</string>
+  <string name="copied_url_msg">Посилання скопійовано в буфер</string>
   <string name="go_to_position_label">До цієї позиції</string>
   <!--Playback history-->
   <string name="clear_history_label">Очистити історію</string>
@@ -62,7 +62,7 @@
   <string name="reset">Перезапуск</string>
   <string name="author_label">Автор(и)</string>
   <string name="language_label">Мова</string>
-  <string name="url_label">URL</string>
+  <string name="url_label">Посилання</string>
   <string name="podcast_settings_label">Налаштування</string>
   <string name="cover_label">Зображення</string>
   <string name="error_label">Помилка</string>
@@ -86,7 +86,7 @@
   <string name="auto_download_label">Включити до автозавантаження</string>
   <string name="auto_download_apply_to_items_title">Застосувати до попередніх епізодів</string>
   <string name="auto_download_apply_to_items_message">Нове налаштування <i>Автозавантаження</i> буде автоматично застосоване до нових епізодів.\nБажаєте також застосувати його до тих епізодів що були опубліковані раніше?</string>
-  <string name="auto_delete_label">Автовидалення епізода</string>
+  <string name="auto_delete_label">Автовидалення епізоду</string>
   <string name="parallel_downloads_suffix">\u0020паралельних завантажень</string>
   <string name="feed_auto_download_global">За замовчуванням</string>
   <string name="feed_auto_download_always">Завжди</string>
@@ -95,18 +95,25 @@
   <string name="episode_cleanup_never">Ніколи</string>
   <string name="episode_cleanup_queue_removal">Якщо не в черзі</string>
   <string name="episode_cleanup_after_listening">Після закінчення</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">1 година після завершення</item>
+    <item quantity="few">%d години після завершення </item>
+    <item quantity="many">%d годин після завершення </item>
+    <item quantity="other">%d годин після завершення</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 день після закінчення</item>
     <item quantity="few">%d дні після закінчення</item>
     <item quantity="many">%d днів після закінчення</item>
     <item quantity="other">%d днів після закінчення</item>
   </plurals>
+  <string name="num_selected_label">%d помічено</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Посилання на канал</string>
-  <string name="etxtFeedurlHint">URL канала або сайта</string>
+  <string name="etxtFeedurlHint">Посилання на канал чи сторінку</string>
   <string name="txtvfeedurl_label">Додати подкаст за URL</string>
   <string name="podcastdirectories_label">Знайти подкаст в каталозі</string>
-  <string name="podcastdirectories_descr">Нові подкасти можна шукати на iTunes або fyyd, або переглянути gpodder.net за іменами, категоріями або популярністю.</string>
+  <string name="podcastdirectories_descr">Нові подкасти можна шукати в iTunes або fyyd, або переглянути gpodder.net за іменами, категоріями або популярністю.</string>
   <string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Позначити всі як відтворені</string>
@@ -119,18 +126,18 @@
   <string name="show_info_label">Інформація</string>
   <string name="show_feed_settings_label">Показати налаштування подкасту</string>
   <string name="feed_info_label">Інформація про подкаст</string>
-  <string name="feed_settings_label">Налаштування подкаста</string>
+  <string name="feed_settings_label">Налаштування подкасту</string>
   <string name="rename_feed_label">Перейменувати подкаст</string>
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_label">Поділитися…</string>
   <string name="share_link_label">Поділитись посиланням на епізод</string>
-  <string name="share_link_with_position_label">Поділіться посиланням на епізод з позицією</string>
+  <string name="share_link_with_position_label">Поділіться посиланням на епізод з позицією відтворення</string>
   <string name="share_file_label">Поділитись файлом</string>
   <string name="share_feed_url_label">Поділитись посиланням на канал</string>
   <string name="share_item_url_label">Поділитись посиланням на медіа-файл</string>
-  <string name="share_item_url_with_position_label">Поділитись посиланням на медіа-файл з позицією</string>
+  <string name="share_item_url_with_position_label">Поділитись посиланням на медіа-файл з позицією відтворення</string>
   <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте видалити подкаст \"%1$s\" і ВСІ його епізоди (разом з завантаженими).</string>
-  <string name="feed_remover_msg">Видалення подкаста</string>
+  <string name="feed_remover_msg">Видалення подкасту</string>
   <string name="load_complete_feed">Оновити весь подкаст</string>
   <string name="hide_episodes_title">Приховати епізоди</string>
   <string name="batch_edit">Групове редагування</string>
@@ -150,6 +157,12 @@
   <string name="open_podcast">Відкрити подкаст</string>
   <!--actions on feeditems-->
   <string name="download_label">Завантажити</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Завантажується %d епізод.</item>
+    <item quantity="few">Завантажуються %d епізоди.</item>
+    <item quantity="many">Завантажуються %d епізодів.</item>
+    <item quantity="other">Завантажуються %d епізодів.</item>
+  </plurals>
   <string name="play_label">Грати</string>
   <string name="pause_label">Пауза</string>
   <string name="stop_label">Стоп</string>
@@ -157,7 +170,13 @@
   <string name="remove_label">Видалити</string>
   <string name="delete_label">Видалити</string>
   <string name="delete_failed">Файл не видалено. Можливо, перезавантаження пристрою допоможе.</string>
-  <string name="remove_episode_lable">Видалити епізод</string>
+  <string name="delete_episode_label">Видалити епізод</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d епізод видалено.</item>
+    <item quantity="few">%dепізода видалено. </item>
+    <item quantity="many">%dепізодів видалено. </item>
+    <item quantity="other">%d епізодів видалено.</item>
+  </plurals>
   <string name="mark_as_seen_label">Позначити як переглянутий</string>
   <string name="marked_as_seen_label">Позначено як переглянутий</string>
   <string name="mark_read_label">Позначити як відтворений</string>
@@ -165,7 +184,19 @@
   <string name="mark_unread_label">Позначити як не відтворений</string>
   <string name="add_to_queue_label">Додати до черги</string>
   <string name="added_to_queue_label">Додано до черги</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">%dепізод додано до черги. </item>
+    <item quantity="few">%dепізоди додано до черги. </item>
+    <item quantity="many">%dепізодів додано до черги. </item>
+    <item quantity="other">%d епізодів додано до черги.</item>
+  </plurals>
   <string name="remove_from_queue_label">Видалити з черги</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">%dепізод видалено з черги. </item>
+    <item quantity="few">%dепізоди видалено з черги. </item>
+    <item quantity="many">%dепізодів видалено з черги. </item>
+    <item quantity="other">%dепізодів видалено з черги.</item>
+  </plurals>
   <string name="add_to_favorite_label">Додати до улюблених</string>
   <string name="added_to_favorites">Додано до улюблених</string>
   <string name="remove_from_favorite_label">Видалити з улюблених</string>
@@ -190,15 +221,15 @@
   <string name="download_error_http_data_error">Помилка HTTP</string>
   <string name="download_error_error_unknown">Щось трапилось</string>
   <string name="download_error_parser_exception">Помилка парсера</string>
-  <string name="download_error_unsupported_type">Непідтримуваний тип каналу</string>
+  <string name="download_error_unsupported_type">Тип каналу не підтримується</string>
   <string name="download_error_connection_error">Помилка з\'єднання</string>
   <string name="download_error_unknown_host">Невідомий хост</string>
-  <string name="download_error_unauthorized">Помилка аутентифікації</string>
+  <string name="download_error_unauthorized">Помилка автентифікації</string>
   <string name="download_error_file_type_type">Помилка типу файлу</string>
   <string name="download_error_forbidden">Заборонено</string>
   <string name="cancel_all_downloads_label">Скасувати всі завантаження</string>
   <string name="download_canceled_msg">Завантаження скасоване</string>
-  <string name="download_canceled_autodownload_enabled_msg">Завантаження скасоване\n<i>Автозавантаження</i> для цього елемента вимкнуто</string>
+  <string name="download_canceled_autodownload_enabled_msg">Завантаження скасоване\n<i>Автозавантаження</i> для цього елементу вимкнуто</string>
   <string name="download_report_title">Завантаження завершені з помилками</string>
   <string name="download_report_content_title">Звіт про завантаження</string>
   <string name="download_error_malformed_url">Невірний URL</string>
@@ -219,11 +250,12 @@
   <string name="download_type_media">Файл з медіа</string>
   <string name="download_type_image">Зображення</string>
   <string name="download_request_error_dialog_message_prefix">Помилка при завантажені файлу:\u0020</string>
+  <string name="null_value_podcast_error">Не надано подкаст для перегляду.</string>
   <string name="authentication_notification_title">Потрібна автентифікація</string>
   <string name="authentication_notification_msg">Для доступа до цього ресурса потрібні ім\'я та пароль </string>
   <string name="confirm_mobile_download_dialog_title">Підтвердження завантажень через мобільні мережі</string>
-  <string name="confirm_mobile_download_dialog_message_not_in_queue">Завантаження через мобільні мережі вимкнено в настройках.\n\nВибрати додавання епізоду до черги чи тимчасове завантаження?\n\n<small>Ваш вибір запам\'ятається на 10 хвилин.</small></string>
-  <string name="confirm_mobile_download_dialog_message">Завантаження через мобільні мережі вимкнено в настройках.\n\nУвімкнути тимчасово?\n\n<small>Ваш вибір запам\'ятається на 10 хвилин.</small></string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Завантаження через мобільні мережі вимкнено в налаштуваннях.\n\nВибрати додавання епізоду до черги чи тимчасове завантаження?\n\n<small>Ваш вибір буде дійсним 10 хвилин.</small></string>
+  <string name="confirm_mobile_download_dialog_message">Завантаження через мобільні мережі вимкнено в налаштуваннях.\n\nУвімкнути тимчасово?\n\n<small>Ваш вибір буде дійсним 10 хвилин.</small></string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Лише додати до черги</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Увімкнути тимчасово</string>
   <!--Mediaplayer messages-->
@@ -292,10 +324,24 @@
   <string name="set_playback_speed_label">Швидкість програвання</string>
   <string name="enable_sonic">Включити Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Нічого в цьому списку</string>
+  <string name="no_items_header_label">В черзі немає епізодів.</string>
+  <string name="no_items_label">Епізоди додаються до черги за допомогою довгого натискання або коли їх завантажують.</string>
   <string name="no_feeds_label">Ви ще не підписалися на жодні подкасти.</string>
   <string name="no_chapters_label">В цьому епізоді немає розділів.</string>
   <string name="no_shownotes_label">До цього епізода немає нотаток.</string>
+  <string name="no_run_downloads_head_label">Зараз нічого не завантажується.</string>
+  <string name="no_run_downloads_label">Завантажувати епізоди можна з детального перегляда подкаста.</string>
+  <string name="no_comp_downloads_head_label">Немає завантажених епізодів</string>
+  <string name="no_log_downloads_head_label">Журнал завантажень пустий.</string>
+  <string name="no_log_downloads_label">Журнал завантажень з’явиться тут.</string>
+  <string name="no_history_head_label">Немає історії прослуховувань</string>
+  <string name="no_history_label">Коли ви прослухаєте епізод, ця інформація з’явиться тут.</string>
+  <string name="no_all_episodes_head_label">Немає епізодів</string>
+  <string name="no_all_episodes_label">Коли ви додасте подкаст, тут з’явиться перелік його епізодів.</string>
+  <string name="no_new_episodes_head_label">Немає нових епізодів</string>
+  <string name="no_new_episodes_label">Коли з’являться нові епізоди, іх буде показано тут.</string>
+  <string name="no_fav_episodes_head_label">Немає улюблених епізодів</string>
+  <string name="no_fav_episodes_label">Ви можете додавати епізоди до улюблених за допомогою довгого натискання.</string>
   <!--Preferences-->
   <string name="storage_pref">Зберігання</string>
   <string name="project_pref">Проект</string>
@@ -308,6 +354,7 @@
   <string name="automation">Автоматизація</string>
   <string name="download_pref_details">Детально</string>
   <string name="import_export_pref">Імпорт/Експорт</string>
+  <string name="import_export_search_keywords">backup, restore, бекап, зберегти, відновити</string>
   <string name="appearance">Вигляд</string>
   <string name="external_elements">Зовнішні елементи</string>
   <string name="interruptions">Тимчасові паузи</string>
@@ -349,6 +396,9 @@
   <string name="pref_unpauseOnBluetoothReconnect_title">Повторне під’єднання блютуз</string>
   <string name="pref_mobileUpdate_title">Мобільне оновлення</string>
   <string name="pref_mobileUpdate_sum">Дозволити оновлення через оператора зв\'язку</string>
+  <string name="pref_mobileUpdate_nothing">Нічого</string>
+  <string name="pref_mobileUpdate_images">Тільки зображення</string>
+  <string name="pref_mobileUpdate_everything">Все</string>
   <string name="refreshing_label">Оновлення</string>
   <string name="flattr_settings_label">Налаштування Flattr</string>
   <string name="pref_flattr_auth_title">Увійти до Flattr</string>
@@ -446,6 +496,7 @@
   <string name="pref_enqueue_downloaded_title">Додати завантаження до черги</string>
   <string name="pref_enqueue_downloaded_summary">Додавати завантажені епізоди до черги</string>
   <string name="media_player_builtin">Стандартний плеєр Android</string>
+  <string name="pref_skip_silence_title">Пропуск тиші</string>
   <string name="pref_videoBehavior_title"> При виході з відеорежиму</string>
   <string name="pref_videoBehavior_sum">Поведінка при виході з відео</string>
   <string name="stop_playback">Зупинити програвання</string>
@@ -461,6 +512,7 @@
   <string name="double_tap_toast">Натисніть кнопку назад ще раз, щоб вийти</string>
   <string name="back_button_go_to_page">Перейти на сторінку…</string>
   <string name="back_button_go_to_page_title">Вибрати сторінку</string>
+  <string name="pref_delete_removes_from_queue_title">Видалення з черги видалених епізодів</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -693,14 +745,14 @@
   <string name="cast_failed_perform_action">Помилка виконання дії</string>
   <string name="cast_failed_status_request">Помилка синхронизації з пристроєм програвання</string>
   <string name="cast_failed_seek">Помилка перехода на нову позицію програвання на пристрої.</string>
-  <string name="cast_failed_receiver_player_error">Серйозна помилка програвання на пристрої</string>
+  <string name="cast_failed_receiver_player_error">Серйозна помилка відтворення на пристрої</string>
   <string name="cast_failed_media_error_skipping">Помилка програвання файла. Пропускаю...</string>
   <!--Notification channels-->
   <string name="notification_channel_user_action">Потрібна дія</string>
   <string name="notification_channel_user_action_description">Відображається, якщо потрібна ваша дія, наприклад, якщо потрібно ввести пароль.</string>
   <string name="notification_channel_downloading">Завантаження</string>
   <string name="notification_channel_downloading_description">Показується під час завантаження.</string>
-  <string name="notification_channel_playing">Програється зараз</string>
+  <string name="notification_channel_playing">Відтворюється зараз</string>
   <string name="notification_channel_playing_description">Дозволяє керувати відтворенням. Це основне сповіщення, яке ви бачите під час відтворення подкасту.</string>
   <string name="notification_channel_error">Помилки</string>
   <string name="notification_channel_error_description">Відображається, якщо щось пішло не так, наприклад, якщо не вдалося завантажити або синхронізувати з gpodder.</string>

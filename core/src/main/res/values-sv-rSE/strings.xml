@@ -132,6 +132,8 @@
   <string name="load_complete_feed">Uppdatera hela podcasten</string>
   <string name="hide_episodes_title">Dölj Episoder</string>
   <string name="batch_edit">Batchredigering</string>
+  <string name="select_all_above">Välj alla ovanför</string>
+  <string name="select_all_below">Välj alla nedanför</string>
   <string name="hide_unplayed_episodes_label">Ospelade</string>
   <string name="hide_paused_episodes_label">Pausade</string>
   <string name="hide_played_episodes_label">Spelad</string>
@@ -153,7 +155,6 @@
   <string name="remove_label">Ta bort</string>
   <string name="delete_label">Ta bort</string>
   <string name="delete_failed">Kunde inte ta bort filen. Testa att starta om enheten.</string>
-  <string name="remove_episode_lable">Ta bort Episod</string>
   <string name="mark_as_seen_label">Markera som sedd</string>
   <string name="marked_as_seen_label">Markera som sedd</string>
   <string name="mark_read_label">Markera som spelad</string>
@@ -194,7 +195,7 @@
   <string name="download_error_forbidden">Förbjuden</string>
   <string name="cancel_all_downloads_label">Avbryt alla nedladdningar</string>
   <string name="download_canceled_msg">Nedladdning avbruten</string>
-  <string name="download_canceled_autodownload_enabled_msg">Nedladdning avbruten\nStängde av <i>Automatisk nedladdning</i> för denna sak</string>
+  <string name="download_canceled_autodownload_enabled_msg">Nedladdning avbruten\nStängde av <i>Automatisk nedladdning</i> för detta föremål</string>
   <string name="download_report_title">Nedladdningar avslutades med fel</string>
   <string name="download_report_content_title">Nedladdningsrapport</string>
   <string name="download_error_malformed_url">Felaktig webbadress</string>
@@ -286,7 +287,6 @@
   <string name="set_playback_speed_label">Uppspelningshastigheter</string>
   <string name="enable_sonic">Aktivera Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Det finns inget i denna lista.</string>
   <string name="no_feeds_label">Du har inte prenumererat på några podcasts än.</string>
   <string name="no_chapters_label">Denna episod har inga kapitel.</string>
   <string name="no_shownotes_label">Denna episod har inga shownotes.</string>
@@ -313,6 +313,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Fortsätt uppspelningen när hörlurarna återansluts</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsätt uppspelningen när bluetooth återansluts</string>
   <string name="pref_hardwareForwardButtonSkips_title">Knappen spola fram hoppar</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Hoppa till nästa episod istället för att snabbspola när snabbspolningsknappen trycks in på en blåtands-enhet.</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Knappen föregående startar om</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Starta om den nuvarande episoden när du trycker på hårdvaruknappen för föregående istället för att spola tillbaka</string>
   <string name="pref_followQueue_sum">Hoppa till nästa i kön när uppspelningen är klar</string>
@@ -360,7 +361,7 @@
   <string name="pref_nav_drawer_items_sum">Ändra vilka saker som visas på navigationsmenyn.</string>
   <string name="pref_nav_drawer_feed_order_title">Välj Prenumerationsordning</string>
   <string name="pref_nav_drawer_feed_order_sum">Ändra ordningen på dina prenumerationer</string>
-  <string name="pref_nav_drawer_feed_counter_title">Val För Prenumerationsräknaren</string>
+  <string name="pref_nav_drawer_feed_counter_title">Val för Prenumerationsräknaren</string>
   <string name="pref_nav_drawer_feed_counter_sum">Ändra informationen som visas vid prenumerationsräknaren. Påverkar även sorteringen av prenumerationer om \'Prenumerationsordning\' är satt till \'Räknare\'.</string>
   <string name="pref_set_theme_sum">Ändra utseendet på AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatisk Nedladdning</string>
@@ -404,6 +405,8 @@
   <string name="pref_rewind_sum">Anpassa antalet sekunder att hoppa bakåt när snabbspolningsknappen bakåt används</string>
   <string name="pref_gpodnet_sethostname_title">Sätt värdnamn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Använd standardvärden</string>
+  <string name="pref_expandNotify_title">Hög notifieringsprioritet</string>
+  <string name="pref_expandNotify_sum">Detta expanderar oftast notifieringen och visar uppspelningskontroller.</string>
   <string name="pref_persistNotify_title">Bestående Uppspelningskontroller</string>
   <string name="pref_persistNotify_sum">Behåll avisering och kontroller på låsskärmen när uppspelningen pausas.</string>
   <string name="pref_compact_notification_buttons_title">Sätt Låsskärmens Knappar</string>
@@ -441,6 +444,17 @@
   <string name="pref_videoBehavior_sum">Beteende när videouppspelning avslutas</string>
   <string name="stop_playback">Stoppa uppspelning</string>
   <string name="continue_playback">Fortsätt ljuduppspelning</string>
+  <string name="behavior">Beteende</string>
+  <string name="pref_back_button_behavior_title">Tillbakaknappens Beteende</string>
+  <string name="pref_back_button_behavior_sum">Byt tillbakaknappens beteende.</string>
+  <string name="back_button_default">Standard</string>
+  <string name="back_button_open_drawer">Öppna navigationsrutan</string>
+  <string name="back_button_double_tap">Dubbeltryck för att avsluta</string>
+  <string name="back_button_show_prompt">Bekräfta avslutning</string>
+  <string name="close_prompt">Är du säker på att du vill avsluta AntennaPod?</string>
+  <string name="double_tap_toast">Tryck på tillbakaknappen igen för att avsluta</string>
+  <string name="back_button_go_to_page">Gå till sida...</string>
+  <string name="back_button_go_to_page_title">Välj sida</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>

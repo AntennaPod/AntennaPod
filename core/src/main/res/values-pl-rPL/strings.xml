@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Uaktualnij subskrypcje</string>
   <string name="feeds_label">Kanały</string>
   <string name="statistics_label">Statystyki</string>
   <string name="add_feed_label">Dodaj podcast</string>
@@ -106,14 +107,26 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Oznacz wszystkie jako odtworzone</string>
   <string name="mark_all_read_msg">Wszystkie odcinki zaznaczono jako odtworzone</string>
-  <string name="mark_all_read_confirmation_msg">Proszę potwierdzić, że chcesz zaznaczyć wszystkie odcinki do odtworzenia.</string>
-  <string name="mark_all_seen_label">Oznacz wszystkie jako widziane</string>
+  <string name="mark_all_read_confirmation_msg">Proszę potwierdzić, że chcesz oznaczyć wszystkie odcinki jako odtworzone.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Proszę potwierdzić, że chcesz oznaczyć wszystkie odcinki tego podcastu jako odtworzone.</string>
+  <string name="mark_all_seen_label">Oznacz wszystkie jako wyświetlone</string>
+  <string name="mark_all_seen_msg">Oznacz wszystkie odcinki jako wyświetlone</string>
   <string name="mark_all_seen_confirmation_msg">Proszę potwierdzić chęć zaznaczenia wszystkich odcinków jako obejrzanych.</string>
   <string name="show_info_label">Pokaż informacje</string>
+  <string name="show_feed_settings_label">Pokaż ustawienia podcastu</string>
+  <string name="feed_settings_label">Ustawienia podcastu</string>
+  <string name="rename_feed_label">Zmień nazwę podcastu</string>
+  <string name="remove_feed_label">Usuń podcast</string>
   <string name="share_label">Udostępnij...</string>
+  <string name="share_link_label">Udostępnij adres URL odcinka</string>
+  <string name="share_link_with_position_label">Udostępnij adres URL odcinka z aktualną pozycją</string>
   <string name="share_file_label">Udostępnij plik</string>
   <string name="share_feed_url_label">Udostępnij adres kanału</string>
+  <string name="feed_remover_msg">Usuwanie podcastu</string>
+  <string name="load_complete_feed">Odśwież cały podcast</string>
   <string name="hide_episodes_title">Ukryj odcinki</string>
+  <string name="select_all_above">Zaznacz wszystkie powyżej</string>
+  <string name="select_all_below">Zaznacz wszystkie poniżej</string>
   <string name="hide_unplayed_episodes_label">Nieodtworzone</string>
   <string name="hide_paused_episodes_label">Zatrzymane</string>
   <string name="hide_played_episodes_label">Odtworzone</string>
@@ -134,8 +147,8 @@
   <string name="remove_label">Usuń</string>
   <string name="delete_label">Usuń</string>
   <string name="delete_failed">Nie można usunąć pliku. Restart urządzenia może w tym pomóc.</string>
-  <string name="remove_episode_lable">Usuń odcinek</string>
-  <string name="marked_as_seen_label">Zaznaczono jako wyświetlone</string>
+  <string name="mark_as_seen_label">Oznacz jako wyświetlone</string>
+  <string name="marked_as_seen_label">Oznaczono jako wyświetlone</string>
   <string name="mark_read_label">Oznacz jako odtworzone</string>
   <string name="marked_as_read_label">Oznaczone jako odtworzone</string>
   <string name="mark_unread_label">Oznacz jako nieodtworzone</string>
@@ -151,7 +164,7 @@
   <string name="skip_episode_label">Pomiń odcinek</string>
   <string name="activate_auto_download">Włącz automatyczne pobieranie</string>
   <string name="deactivate_auto_download">Wyłącz automatyczne pobieranie</string>
-  <string name="reset_position">Zresetowano pozycję odtwarzania</string>
+  <string name="reset_position">Zresetuj pozycję odtwarzania</string>
   <string name="removed_item">Pozycja usunięta</string>
   <!--Download messages and labels-->
   <string name="download_successful">Operacja zakończona sukcesem</string>
@@ -229,6 +242,7 @@
   <string name="date">Według daty</string>
   <string name="duration">Według długości</string>
   <string name="episode_title">Tytuł odcinka</string>
+  <string name="feed_title">Tytuł podcastu</string>
   <string name="ascending">Rosnąco</string>
   <string name="descending">Malejąco</string>
   <string name="clear_queue_confirmation_msg">Potwierdź usunięcie WSZYSTKICH pozycji z kolejki</string>
@@ -265,7 +279,7 @@
   <string name="set_playback_speed_label">Prędkość odtwarzania</string>
   <string name="enable_sonic">Włącz Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Brak elementów na tej liście.</string>
+  <string name="no_feeds_label">Nie subskrybowałeś jeszcze żadnego podcastu.</string>
   <string name="no_chapters_label">Ten odcinek nie ma rozdziałów.</string>
   <string name="no_shownotes_label">Ten epizod nie ma notatek.</string>
   <!--Preferences-->
@@ -275,6 +289,8 @@
   <string name="about_pref">O...</string>
   <string name="queue_label">Kolejka</string>
   <string name="flattr_label">Flattr</string>
+  <string name="download_pref_details">Szczegóły</string>
+  <string name="appearance">Wygląd</string>
   <string name="pref_episode_cleanup_title">Usuwanie odcinków</string>
   <string name="pref_episode_cleanup_summary">Odcinki niebędące w kolejce i niebędące na liście ulubiobych powinny nadawać się do usunięcia, jeśli Automatyczne Pobieranie potrzebuje miejsca na nowe odcinki.</string>
   <string name="pref_pauseOnDisconnect_sum">Wstrzymaj odtwarzanie po rozłączeniu słuchawek lub Bluetooth</string>

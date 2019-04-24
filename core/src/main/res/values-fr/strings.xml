@@ -95,10 +95,15 @@
   <string name="episode_cleanup_never">Jamais</string>
   <string name="episode_cleanup_queue_removal">Quand l’épisode n\'est pas dans la liste de lecture</string>
   <string name="episode_cleanup_after_listening">Après avoir terminé</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">1 heure après avoir été écouté</item>
+    <item quantity="other">%d heures après avoir été écouté</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 jour après avoir été écouté</item>
     <item quantity="other">%d jours après avoir été écouté</item>
   </plurals>
+  <string name="num_selected_label">%d sélectionné(s)</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Lien du flux</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -132,6 +137,8 @@
   <string name="load_complete_feed">Mettre à jour tout le podcast</string>
   <string name="hide_episodes_title">Cacher épisodes</string>
   <string name="batch_edit">Edition groupée</string>
+  <string name="select_all_above">Sélectionner avec ceux au-dessus</string>
+  <string name="select_all_below">Sélectionner avec ceux en-dessous</string>
   <string name="hide_unplayed_episodes_label">Non lus</string>
   <string name="hide_paused_episodes_label">En pause</string>
   <string name="hide_played_episodes_label">Lus</string>
@@ -146,6 +153,10 @@
   <string name="open_podcast">Ouvrir Podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Télécharger</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Téléchargement d\'%d épisode.</item>
+    <item quantity="other">Téléchargement de %d épisodes.</item>
+  </plurals>
   <string name="play_label">Lire</string>
   <string name="pause_label">Pause</string>
   <string name="stop_label">Stop</string>
@@ -153,15 +164,35 @@
   <string name="remove_label">Supprimer</string>
   <string name="delete_label">Effacer</string>
   <string name="delete_failed">Suppression du fichier impossible. Redémarrer pourrait aider.</string>
-  <string name="remove_episode_lable">Supprimer</string>
+  <string name="delete_episode_label">Suppression de l\'épisode</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d épisode supprimé.</item>
+    <item quantity="other">%d épisodes supprimés.</item>
+  </plurals>
   <string name="mark_as_seen_label">Marquer comme vu</string>
   <string name="marked_as_seen_label">Marqué comme vu</string>
   <string name="mark_read_label">Marquer comme lu</string>
   <string name="marked_as_read_label">Les épisodes ont été marqués comme lus</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%d épisode marqué comme lu.</item>
+    <item quantity="other">%d épisodes marqués comme lus.</item>
+  </plurals>
   <string name="mark_unread_label">Marquer comme non lu</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d épisode marqué comme non lu.</item>
+    <item quantity="other">%d épisodes marqués comme non lus.</item>
+  </plurals>
   <string name="add_to_queue_label">Ajouter à la liste de lecture</string>
   <string name="added_to_queue_label">Ajouté à la liste de lecture</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">%d épisode ajouté à la liste de lecture.</item>
+    <item quantity="other">%d épisodes ajoutés à la liste de lecture</item>
+  </plurals>
   <string name="remove_from_queue_label">Supprimer de la liste de lecture</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">%d épisode supprimé de la liste de lecture.</item>
+    <item quantity="other">%d épisodes supprimés de la liste de lecture.</item>
+  </plurals>
   <string name="add_to_favorite_label">Ajouter aux Favoris</string>
   <string name="added_to_favorites">Ajouté aux Favoris</string>
   <string name="remove_from_favorite_label">Supprimer des Favoris</string>
@@ -213,6 +244,7 @@
   <string name="download_type_media">Fichier média</string>
   <string name="download_type_image">Image</string>
   <string name="download_request_error_dialog_message_prefix">Une erreur s\'est produite durant le téléchargement du fichier :\u0020</string>
+  <string name="null_value_podcast_error">Aucun podcast correspondant.</string>
   <string name="authentication_notification_title">Authentification requise</string>
   <string name="authentication_notification_msg">La ressource que vous avez demandé nécessite un nom d\'utilisateur et un mot de passe</string>
   <string name="confirm_mobile_download_dialog_title">Confirmer le téléchargement mobile</string>
@@ -286,10 +318,25 @@
   <string name="set_playback_speed_label">Vitesses de lecture</string>
   <string name="enable_sonic">Activer Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Cette liste est vide.</string>
+  <string name="no_items_header_label">Aucun épisode dans la liste de lecture</string>
+  <string name="no_items_label">Vous pouvez ajouter des épisodes à la liste de lecture par une pression longue ou en les téléchargeant.</string>
   <string name="no_feeds_label">Vous n\'êtes encore abonné à aucun podcast.</string>
   <string name="no_chapters_label">Cet épisode n\'a pas de chapitres.</string>
   <string name="no_shownotes_label">Aucune notes pour cet épisode.</string>
+  <string name="no_run_downloads_head_label">Aucun téléchargement en cours</string>
+  <string name="no_run_downloads_label">Vous pouvez télécharger des épisodes à partir du détail d\'un podcast.</string>
+  <string name="no_comp_downloads_head_label">Aucun épisode téléchargé</string>
+  <string name="no_comp_downloads_label">Vous pouvez télécharger des épisodes à partir du détail d\'un podcast.</string>
+  <string name="no_log_downloads_head_label">Aucun téléchargement historisé</string>
+  <string name="no_log_downloads_label">L\'historique des téléchargements apparaîtra dès qu\'il ne sera pas vide. </string>
+  <string name="no_history_head_label">Aucun historique</string>
+  <string name="no_history_label">Après avoir écouté un épisode il apparaîtra ici.</string>
+  <string name="no_all_episodes_head_label">Aucun épisode</string>
+  <string name="no_all_episodes_label">Quand vous ajouterez un podcast ses épisodes seront montrés ici.</string>
+  <string name="no_new_episodes_head_label">Aucun nouvel épisode</string>
+  <string name="no_new_episodes_label">Quand de nouveaux épisodes seront disponibles ils apparaîtront ici.</string>
+  <string name="no_fav_episodes_head_label">Aucun épisode favori</string>
+  <string name="no_fav_episodes_label">Vous pouvez marquer des épisodes comme favoris par une pression longue dessus.</string>
   <!--Preferences-->
   <string name="storage_pref">Stockage</string>
   <string name="project_pref">Projet</string>
@@ -302,6 +349,7 @@
   <string name="automation">Automatisation</string>
   <string name="download_pref_details">Détails</string>
   <string name="import_export_pref">Importation / Exportation</string>
+  <string name="import_export_search_keywords">backup, restore, sauvegarde, restauration, import, export</string>
   <string name="appearance">Apparence</string>
   <string name="external_elements">Eléments externes</string>
   <string name="interruptions">Interruptions</string>
@@ -313,6 +361,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont connectés</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se connecte</string>
   <string name="pref_hardwareForwardButtonSkips_title">Le bouton \"saut avant\" saute l\'épisode</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\'épisode suivant au lieu de faire un saut avant quand \"saut avant\" est pressé sur un périphérique bluetooth</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Le bouton \"saut arrière\" redémarre l\'épisode</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Repartir de zéro au lieu de faire un saut arrière quand un bouton physique \"saut arrière\" est pressé</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
@@ -342,6 +391,9 @@
   <string name="pref_unpauseOnBluetoothReconnect_title">Connexion du Bluetooth</string>
   <string name="pref_mobileUpdate_title">Mises à jour mobile</string>
   <string name="pref_mobileUpdate_sum">Autoriser les mises à jour avec la connexion mobile</string>
+  <string name="pref_mobileUpdate_nothing">Rien</string>
+  <string name="pref_mobileUpdate_images">Seulement les images</string>
+  <string name="pref_mobileUpdate_everything">Tout</string>
   <string name="refreshing_label">Mise à jour en cours</string>
   <string name="flattr_settings_label">Paramètres Flattr</string>
   <string name="pref_flattr_auth_title">Connexion à Flattr</string>
@@ -404,6 +456,8 @@
   <string name="pref_rewind_sum">Nombre de secondes à sauter quand le bouton \"saut arrière\" est pressé</string>
   <string name="pref_gpodnet_sethostname_title">Choisir un nom de domaine</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utiliser le nom de domaine par défaut</string>
+  <string name="pref_expandNotify_title">Haute priorité de notification</string>
+  <string name="pref_expandNotify_sum">Permet, généralement, d\'étendre la notification pour montrer les boutons de lecture</string>
   <string name="pref_persistNotify_title">Boutons de lecture permanents</string>
   <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verouillage quand la lecture est en pause</string>
   <string name="pref_compact_notification_buttons_title">Définir les boutons de l\'écran de verrouillage</string>
@@ -437,10 +491,24 @@
   <string name="pref_enqueue_downloaded_title">Ajouter à la liste après téléchargement</string>
   <string name="pref_enqueue_downloaded_summary">Mettre les épisodes dans la la liste de lecture après téléchargement</string>
   <string name="media_player_builtin">Lecteur natif d\'Android</string>
+  <string name="pref_skip_silence_title">Sauter les silences audios</string>
   <string name="pref_videoBehavior_title">Sorti du lecteur pendant une vidéo</string>
   <string name="pref_videoBehavior_sum">Définir ce qu\'il se passe si une vidéo est quittée pendant sa lecture</string>
   <string name="stop_playback">Arrêter la lecture</string>
   <string name="continue_playback">Continuer la lecture</string>
+  <string name="behavior">Comportement</string>
+  <string name="pref_back_button_behavior_title">Comportement Bouton Retour</string>
+  <string name="pref_back_button_behavior_sum">Change le comportement du bouton retour</string>
+  <string name="back_button_default">Défaut</string>
+  <string name="back_button_open_drawer">Ouvrir le volet de navigation</string>
+  <string name="back_button_double_tap">Taper 2 fois pour quitter</string>
+  <string name="back_button_show_prompt">Confirmer la fermeture</string>
+  <string name="close_prompt">Etes-vous sur de vouloir fermer AntennaPod ?</string>
+  <string name="double_tap_toast">Taper encore une fois retour pour quitter</string>
+  <string name="back_button_go_to_page">Aller à la page...</string>
+  <string name="back_button_go_to_page_title">Sélectionner une page</string>
+  <string name="pref_delete_removes_from_queue_title">Supprimer retire de la liste de lecture</string>
+  <string name="pref_delete_removes_from_queue_sum">Retirer l\'épisode de la liste de lecture quand il est supprimé.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
   <string name="auto_flattr_after_percent">Lancer un paiement flattr quand %d pourcent de l\'épisode a été lu</string>
@@ -633,6 +701,7 @@
   <string name="audio_effects">Effets audio</string>
   <string name="stereo_to_mono">Mixage : stéréo à mono</string>
   <string name="sonic_only">Sonic seulement</string>
+  <string name="exoplayer_only">ExoPlayer seulement</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Type</string>
   <string name="host_label">Hôte</string>
