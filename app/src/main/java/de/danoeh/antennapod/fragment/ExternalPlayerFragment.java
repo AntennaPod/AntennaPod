@@ -215,7 +215,8 @@ public class ExternalPlayerFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(media -> updateUi((Playable) media),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+                        error -> Log.e(TAG, Log.getStackTraceString(error)),
+                        () -> fragmentLayout.setVisibility(View.GONE));
         return true;
     }
 
