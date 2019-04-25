@@ -74,4 +74,18 @@ public class StorageUtils {
         }
         return availableBlocks * blockSize;
     }
+
+    public static long getTotalSpaceAvailable(String path) {
+        StatFs stat = new StatFs(path);
+        long blockCount;
+        long blockSize;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            blockCount = stat.getBlockCountLong();
+            blockSize = stat.getBlockSizeLong();
+        } else {
+            blockCount = stat.getBlockCount();
+            blockSize = stat.getBlockSize();
+        }
+        return blockCount * blockSize;
+    }
 }

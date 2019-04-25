@@ -20,6 +20,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
 public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.ViewHolder> {
@@ -47,6 +48,7 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
         StoragePath storagePath = entries.get(position);
         holder.path.setText(storagePath.getShortPath());
         holder.size.setText(Converter.byteToString(storagePath.getAvailableSpace()));
+        holder.progressBar.setProgress(storagePath.getUsagePercentage());
         holder.root.setOnClickListener((View v) -> selectAndDismiss(storagePath));
         holder.radioButton.setOnClickListener((View v) -> selectAndDismiss(storagePath));
         if (storagePath.getFullPath().equals(currentPath)) {
@@ -98,6 +100,7 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
         private TextView path;
         private TextView size;
         private RadioButton radioButton;
+        private MaterialProgressBar progressBar;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -105,6 +108,7 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
             path = itemView.findViewById(R.id.path);
             size = itemView.findViewById(R.id.size);
             radioButton = itemView.findViewById(R.id.radio_button);
+            progressBar = itemView.findViewById(R.id.used_space);
         }
     }
 
@@ -126,6 +130,14 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
 
         long getAvailableSpace() {
             return StorageUtils.getFreeSpaceAvailable(path);
+        }
+
+        long getTotalSpace() {
+            return StorageUtils.getTotalSpaceAvailable(path);
+        }
+
+        int getUsagePercentage() {
+            return 100 - (int) (100 * getAvailableSpace() / (float) getTotalSpace());
         }
     }
 }
