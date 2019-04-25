@@ -66,7 +66,7 @@ public class CoverLoader {
             options = options.error(errorResource);
         }
 
-        RequestBuilder builder = Glide.with(activity)
+        RequestBuilder<Drawable> builder = Glide.with(activity)
                 .load(uri)
                 .apply(options);
 
