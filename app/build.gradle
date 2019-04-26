@@ -115,6 +115,10 @@ android {
     dexOptions {
         jumboMode true
     }
+
+    play {
+        track = 'alpha'
+    }
 }
 
 dependencies {
