@@ -495,7 +495,7 @@ public class QueueFragment extends Fragment {
         );
         itemTouchHelper.attachToRecyclerView(recyclerView);
         //empty view
-        emptyView = (View) root.findViewById(R.id.emptyView);
+        emptyView = root.findViewById(R.id.emptyView);
         emptyView.setVisibility(View.GONE);
         ((TextView)emptyView.findViewById(R.id.emptyViewTitle)).setText(R.string.no_items_header_label);
         ((TextView)emptyView.findViewById(R.id.emptyViewMessage)).setText(R.string.no_items_label);

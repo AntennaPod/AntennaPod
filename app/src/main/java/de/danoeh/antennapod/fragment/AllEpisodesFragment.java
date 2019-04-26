@@ -334,7 +334,7 @@ public class AllEpisodesFragment extends Fragment {
             onFragmentLoaded();
         }
 
-        emptyView = (View) root.findViewById(R.id.emptyView);
+        emptyView = root.findViewById(R.id.emptyView);
         emptyView.setVisibility(View.GONE);
         ((TextView)emptyView.findViewById(R.id.emptyViewTitle)).setText(R.string.no_all_episodes_head_label);
         ((TextView)emptyView.findViewById(R.id.emptyViewMessage)).setText(R.string.no_all_episodes_label);
