@@ -1,5 +1,5 @@
 plugins {
-    id('com.github.triplet.play') version '2.0.0'
+    id('com.github.triplet.play') version '2.2.0'
 }
 
 apply plugin: "com.android.application"
@@ -115,10 +115,6 @@ android {
     dexOptions {
         jumboMode true
     }
-
-    play {
-        track = 'alpha'
-    }
 }
 
 dependencies {
@@ -180,6 +176,8 @@ dependencies {
 }
 
 play {
+    track = 'alpha'
+
     if (project.hasProperty("antennaPodServiceAccountEmail")) {
         serviceAccountEmail = antennaPodServiceAccountEmail
     } else {
