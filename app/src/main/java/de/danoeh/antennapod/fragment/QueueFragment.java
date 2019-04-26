@@ -272,7 +272,9 @@ public class QueueFragment extends Fragment {
                     boolean newLockState = !UserPreferences.isQueueLocked();
                     UserPreferences.setQueueLocked(newLockState);
                     getActivity().supportInvalidateOptionsMenu();
-                    recyclerAdapter.setLocked(newLockState);
+                    if (recyclerAdapter != null) {
+                        recyclerAdapter.setLocked(newLockState);
+                    }
                     if (newLockState) {
                         Snackbar.make(getActivity().findViewById(R.id.content), R.string
                                 .queue_locked, Snackbar.LENGTH_SHORT).show();
