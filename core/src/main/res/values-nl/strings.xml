@@ -95,10 +95,15 @@
   <string name="episode_cleanup_never">Nooit</string>
   <string name="episode_cleanup_queue_removal">Indien niet in de wachtrij</string>
   <string name="episode_cleanup_after_listening">Als aflevering volledig is afgespeeld</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">1 uur na afronden</item>
+    <item quantity="other">%d uur na afronden</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 dag nadat de aflevering is gemarkeerd als afgespeeld</item>
     <item quantity="other">%d dagen nadat de aflevering is gemarkeerd als afgespeeld</item>
   </plurals>
+  <string name="num_selected_label">%d geselecteerd</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed-URL</string>
   <string name="etxtFeedurlHint">www.voorbeeld.nl/feed</string>
@@ -132,6 +137,8 @@
   <string name="load_complete_feed">Gehele podcast verversen</string>
   <string name="hide_episodes_title">Afleveringen verbergen</string>
   <string name="batch_edit">Bulkbewerking</string>
+  <string name="select_all_above">Alles hierboven selecteren</string>
+  <string name="select_all_below">Alles hieronder selecteren</string>
   <string name="hide_unplayed_episodes_label">Niet afgespeeld</string>
   <string name="hide_paused_episodes_label">Gepauzeerd</string>
   <string name="hide_played_episodes_label">Afgespeeld</string>
@@ -146,6 +153,10 @@
   <string name="open_podcast">Podcast openen</string>
   <!--actions on feeditems-->
   <string name="download_label">Downloaden</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Bezig met downloaden van %d aflevering.</item>
+    <item quantity="other">Bezig met downloaden van %d afleveringen.</item>
+  </plurals>
   <string name="play_label">Afspelen</string>
   <string name="pause_label">Pauzeren</string>
   <string name="stop_label">Stoppen</string>
@@ -153,15 +164,35 @@
   <string name="remove_label">Verwijderen</string>
   <string name="delete_label">Verwijderen</string>
   <string name="delete_failed">Kan bestand niet verwijderen; start je apparaat opnieuw op.</string>
-  <string name="remove_episode_lable">Aflevering verwijderen</string>
+  <string name="delete_episode_label">Aflevering verwijderen</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d aflevering verwijderd.</item>
+    <item quantity="other">%d afleveringen verwijderd.</item>
+  </plurals>
   <string name="mark_as_seen_label">Markeren als bekeken</string>
   <string name="marked_as_seen_label">Gemarkeerd als bekeken</string>
   <string name="mark_read_label">Markeren als afgespeeld</string>
   <string name="marked_as_read_label">Gemarkeerd als afgespeeld</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%d aflevering gemarkeerd als afgespeeld.</item>
+    <item quantity="other">%d afleveringen gemarkeerd als afgespeeld.</item>
+  </plurals>
   <string name="mark_unread_label">Markeren als niet-afgespeeld</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d aflevering gemarkeerd als niet-afgespeeld.</item>
+    <item quantity="other">%d afleveringen gemarkeerd als niet-afgespeeld.</item>
+  </plurals>
   <string name="add_to_queue_label">Toevoegen aan wachtrij</string>
   <string name="added_to_queue_label">Toegevoegd aan wachtrij</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">%d aflevering toegevoegd aan wachtrij.</item>
+    <item quantity="other">%d afleveringen toegevoegd aan wachtrij.</item>
+  </plurals>
   <string name="remove_from_queue_label">Verwijderen uit wachtrij</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">%d aflevering verwijderd uit wachtrij.</item>
+    <item quantity="other">%d afleveringen verwijderd uit wachtrij.</item>
+  </plurals>
   <string name="add_to_favorite_label">Toevoegen aan favorieten</string>
   <string name="added_to_favorites">Toegevoegd aan favorieten</string>
   <string name="remove_from_favorite_label">Verwijderen uit favorieten</string>
@@ -213,6 +244,7 @@
   <string name="download_type_media">Mediabestand</string>
   <string name="download_type_image">Afbeelding</string>
   <string name="download_request_error_dialog_message_prefix">Er is een fout opgetreden bij het ​​downloaden van het bestand:\u0020</string>
+  <string name="null_value_podcast_error">Er is geen te tonen podcast opgegeven.</string>
   <string name="authentication_notification_title">Authenticatie vereist</string>
   <string name="authentication_notification_msg">De opgevraagde bron vereist een gebruikersnaam en wachtwoord</string>
   <string name="confirm_mobile_download_dialog_title">Bevestig downloaden via mobiel internet</string>
@@ -286,10 +318,25 @@
   <string name="set_playback_speed_label">Afspeelsnelheden</string>
   <string name="enable_sonic">Sonic inschakelen</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Er staan geen items op deze lijst.</string>
+  <string name="no_items_header_label">Geen afleveringen in wachtrij</string>
+  <string name="no_items_label">Je kunt afleveringen toevoegen aan de wachtrij door ze lang ingedrukt te houden of te downloaden.</string>
   <string name="no_feeds_label">Je hebt nog geen abonnement op een podcast.</string>
   <string name="no_chapters_label">Deze aflevering bevat geen hoofdstukken.</string>
   <string name="no_shownotes_label">Deze aflevering bevat geen shownotities.</string>
+  <string name="no_run_downloads_head_label">Geen actieve downloads</string>
+  <string name="no_run_downloads_label">Je kunt afleveringen downloaden op het podcastinformatiescherm.</string>
+  <string name="no_comp_downloads_head_label">Geen gedownloade afleveringen</string>
+  <string name="no_comp_downloads_label">Je kunt afleveringen downloaden op het podcastinformatiescherm.</string>
+  <string name="no_log_downloads_head_label">Geen download-logbestand</string>
+  <string name="no_log_downloads_label">Download-logbestanden verschijnen hier.</string>
+  <string name="no_history_head_label">Geen geschiedenis</string>
+  <string name="no_history_label">Als je een aflevering hebt beluisterd, dan verschijnt deze hier.</string>
+  <string name="no_all_episodes_head_label">Geen afleveringen</string>
+  <string name="no_all_episodes_label">Als je een podcast toevoegt, dan verschijnen de afleveringen hier.</string>
+  <string name="no_new_episodes_head_label">Geen nieuwe afleveringen</string>
+  <string name="no_new_episodes_label">Als er nieuwe afleveringen zijn, dan verschijnen ze hier.</string>
+  <string name="no_fav_episodes_head_label">Geen favoriete afleveringen</string>
+  <string name="no_fav_episodes_label">Je kunt afleveringen toevoegen aan je favorieten door ze lang ingedrukt te houden.</string>
   <!--Preferences-->
   <string name="storage_pref">Opslag</string>
   <string name="project_pref">Project</string>
@@ -302,6 +349,7 @@
   <string name="automation">Automatische acties</string>
   <string name="download_pref_details">Details</string>
   <string name="import_export_pref">Importeren/Exporteren</string>
+  <string name="import_export_search_keywords">back-up, herstel</string>
   <string name="appearance">Uiterlijk</string>
   <string name="external_elements">Externe elementen</string>
   <string name="interruptions">Onderbrekingen</string>
@@ -313,6 +361,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten als de koptelefoon opnieuw wordt aangesloten</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten als de Bluetooth-verbinding hervat wordt</string>
   <string name="pref_hardwareForwardButtonSkips_title">\'Volgende\' voor overslaan</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Als je op de Vooruit-knop van een via Bluetooth verbonden apparaat drukt, dan wordt de volgende aflevering geladen i.p.v. doorgespoeld</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">\'Vorige\' voor opnieuw afspelen</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Aflevering afspelen vanaf het begin i.p.v. terugspoelen als er op een fysieke \'vorige\'-knop wordt gedrukt</string>
   <string name="pref_followQueue_sum">Volgende item in de wachtrij afspelen als de aflevering voltooid is</string>
@@ -342,6 +391,9 @@
   <string name="pref_unpauseOnBluetoothReconnect_title">Opnieuw verbinden met Bluetooth</string>
   <string name="pref_mobileUpdate_title">Bijwerken via mobiel internet</string>
   <string name="pref_mobileUpdate_sum">Bijwerken toestaan via mobiele internetverbinding</string>
+  <string name="pref_mobileUpdate_nothing">Niets</string>
+  <string name="pref_mobileUpdate_images">Alleen afbeeldingen</string>
+  <string name="pref_mobileUpdate_everything">Alles</string>
   <string name="refreshing_label">Bezig met verversen...</string>
   <string name="flattr_settings_label">Flattr-instellingen</string>
   <string name="pref_flattr_auth_title">Inloggen op Flattr</string>
@@ -404,6 +456,8 @@
   <string name="pref_rewind_sum">Pas het aantal seconden aan waarmee wordt teruggespoeld per druk op de knop</string>
   <string name="pref_gpodnet_sethostname_title">Hostnaam instellen</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Standaardhost gebruiken</string>
+  <string name="pref_expandNotify_title">Melding met hoge prioriteit</string>
+  <string name="pref_expandNotify_sum">Dit klapt meestal de melding uit zodat de bedieningsknoppen kunnen worden getoond.</string>
   <string name="pref_persistNotify_title">Bedieningsknoppen behouden</string>
   <string name="pref_persistNotify_sum">Ook bedieningsknoppen op het meldings- en vergrendelscherm behouden als het afspelen gepauzeerd wordt.</string>
   <string name="pref_compact_notification_buttons_title">Bedieningsknoppen vergrendelscherm</string>
@@ -437,10 +491,24 @@
   <string name="pref_enqueue_downloaded_title">Gedownloade afleveringen in wachtrij</string>
   <string name="pref_enqueue_downloaded_summary">Voeg gedownloade afleveringen toe aan de wachtrij</string>
   <string name="media_player_builtin">Ingebouwde Android-speler</string>
+  <string name="pref_skip_silence_title">Audiostiltes overslaan</string>
   <string name="pref_videoBehavior_title">Bij verlaten van video</string>
   <string name="pref_videoBehavior_sum">Wat te doen bij het verlaten van een spelende video</string>
   <string name="stop_playback">Afspelen stoppen</string>
   <string name="continue_playback">Audio af blijven spelen</string>
+  <string name="behavior">Gedrag</string>
+  <string name="pref_back_button_behavior_title">Gedrag van terugknop</string>
+  <string name="pref_back_button_behavior_sum">Pas het gedrag van de terugknop aan.</string>
+  <string name="back_button_default">Standaard</string>
+  <string name="back_button_open_drawer">Navigatiemenu openen</string>
+  <string name="back_button_double_tap">Dubbeltik om af te sluiten</string>
+  <string name="back_button_show_prompt">Afsluiten bevestigen</string>
+  <string name="close_prompt">Weet je zeker dat je AntennaPod wilt afsluiten?</string>
+  <string name="double_tap_toast">Druk nogmaals op de terugknop om af te sluiten</string>
+  <string name="back_button_go_to_page">Ga naar pagina...</string>
+  <string name="back_button_go_to_page_title">Kies een pagina</string>
+  <string name="pref_delete_removes_from_queue_title">Afleveringen verwijderen uit wachtrij na wissen</string>
+  <string name="pref_delete_removes_from_queue_sum">Verwijder een aflevering uit de wachtrij als de aflevering in kwestie is verwijderd.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisch flattr\'en inschakelen</string>
   <string name="auto_flattr_after_percent">Flattr een aflevering zodra deze %d procent is afgespeeld</string>
@@ -633,6 +701,7 @@
   <string name="audio_effects">Audio-effecten</string>
   <string name="stereo_to_mono">Stereo terugmixen tot monogeluid op beide kanalen</string>
   <string name="sonic_only">Sonic vereist</string>
+  <string name="exoplayer_only">Alleen ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Type</string>
   <string name="host_label">Host</string>

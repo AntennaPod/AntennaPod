@@ -134,6 +134,8 @@
   <string name="load_complete_feed">Обновить весь подкаст</string>
   <string name="hide_episodes_title">Скрыть выпуски</string>
   <string name="batch_edit">Групповая обработка</string>
+  <string name="select_all_above">Выбрать всё выше</string>
+  <string name="select_all_below">Выбрать всё ниже</string>
   <string name="hide_unplayed_episodes_label">Непрослушанное</string>
   <string name="hide_paused_episodes_label">Приостановленное</string>
   <string name="hide_played_episodes_label">Прослушанное</string>
@@ -155,7 +157,6 @@
   <string name="remove_label">Удалить</string>
   <string name="delete_label">Удалить</string>
   <string name="delete_failed">Невозможно удалить файл. Попробуйте перезагрузить устройство.</string>
-  <string name="remove_episode_lable">Удалить выпуск</string>
   <string name="mark_as_seen_label">Просмотрено</string>
   <string name="marked_as_seen_label">Отмечено как просмотренное</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
@@ -293,7 +294,6 @@ URL файла:
   <string name="set_playback_speed_label">Скорость воспроизведения</string>
   <string name="enable_sonic">Включить Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Список пуст</string>
   <string name="no_feeds_label">Вы ещё не подписаны ни на один подкаст.</string>
   <string name="no_chapters_label">Этот выпуск не содержит оглавления.</string>
   <string name="no_shownotes_label">Этот выпуск не содержит примечаний.</string>
@@ -305,7 +305,7 @@ URL файла:
   <string name="queue_label">Очередь</string>
   <string name="integrations_label">Интеграция</string>
   <string name="flattr_label">Flattr</string>
-  <string name="flattr_summary">Услуга микроплатежей</string>
+  <string name="flattr_summary">Сервис микроплатежей</string>
   <string name="automation">Автоматизация</string>
   <string name="download_pref_details">Подробнее</string>
   <string name="import_export_pref">Импорт/экспорт</string>
@@ -320,6 +320,7 @@ URL файла:
   <string name="pref_unpauseOnHeadsetReconnect_sum">Продолжать воспроизведение после подключения наушников</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Продолжать воспроизведение после восстановления bluetooth-соединения</string>
   <string name="pref_hardwareForwardButtonSkips_title">Пропускать кнопкой перемотки вперёд</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">При нажатии кнопки перемотки вперед на устройстве, подключенном по Bluetooth, вместо перемотки вперед переходить к следующему выпуску</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">В начало кнопкой перемотки назад</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">При нажатии на физическую кнопку перемотки назад переходить к началу выпуска вместо перемотки назад</string>
   <string name="pref_followQueue_sum">После завершения воспроизведения перейти к следующему в очереди</string>
@@ -374,8 +375,8 @@ URL файла:
   <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков.</string>
   <string name="pref_autodl_wifi_filter_title">Включить фильтр Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Разрешать автоматическую загрузку только для выбранных сетей Wi-Fi.</string>
-  <string name="pref_autodl_allow_on_mobile_title">Загрузка через мобильное интернет-подключение</string>
-  <string name="pref_autodl_allow_on_mobile_sum">Позволить автоматические загрузки через мобильное интернет-подключение.</string>
+  <string name="pref_autodl_allow_on_mobile_title">Загрузка через мобильное подключение к интернету</string>
+  <string name="pref_autodl_allow_on_mobile_sum">Позволить автоматические загрузки через мобильное подключение к интернету.</string>
   <string name="pref_automatic_download_on_battery_title">Загружать без зарядки</string>
   <string name="pref_automatic_download_on_battery_sum">Разрешать автоматическую загрузку когда батарея не заряжается</string>
   <string name="pref_parallel_downloads_title">Одновременные загрузки</string>
@@ -388,7 +389,7 @@ URL файла:
   <string name="pref_update_interval_hours_singular">ч.</string>
   <string name="pref_update_interval_hours_manual">Вручную</string>
   <string name="pref_gpodnet_authenticate_title">Войти</string>
-  <string name="pref_gpodnet_authenticate_sum">Вход в ваш аккаунт gpodder.net для синхронизации ваших подписок.</string>
+  <string name="pref_gpodnet_authenticate_sum">Вход в ваш аккаунт gpodder.net для синхронизации подписок.</string>
   <string name="pref_gpodnet_logout_title">Выход из gpodder.net</string>
   <string name="pref_gpodnet_logout_toast">Выход произведён успешно</string>
   <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
@@ -411,6 +412,8 @@ URL файла:
   <string name="pref_rewind_sum">Настройте длину шага в секундах при нажатии кнопки перемотки назад</string>
   <string name="pref_gpodnet_sethostname_title">Задать имя узла</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Использовать узел по умолчанию</string>
+  <string name="pref_expandNotify_title">Уведомление с высоким приоритетом</string>
+  <string name="pref_expandNotify_sum">Как правило, разворачивает уведомление, показывая кнопки управления воспроизведением.</string>
   <string name="pref_persistNotify_title">Постоянные кнопки воспроизведения</string>
   <string name="pref_persistNotify_sum">Сохранять уведомление и кнопки воспроизведения на экране блокировки во время паузы.</string>
   <string name="pref_compact_notification_buttons_title">Выбрать кнопки экрана блокировки</string>
@@ -446,8 +449,19 @@ URL файла:
   <string name="media_player_builtin">Встроенный в Android проигрыватель</string>
   <string name="pref_videoBehavior_title">При завершении видео</string>
   <string name="pref_videoBehavior_sum">При сворачивании проигрывателя видео</string>
-  <string name="stop_playback">остановить воспроизведение</string>
+  <string name="stop_playback">Остановить воспроизведение</string>
   <string name="continue_playback">Продолжить воспроизведение звука</string>
+  <string name="behavior">Поведение</string>
+  <string name="pref_back_button_behavior_title">Поведение кнопки «Назад»</string>
+  <string name="pref_back_button_behavior_sum">Изменить поведение кнопки «Назад»</string>
+  <string name="back_button_default">По умолчанию</string>
+  <string name="back_button_open_drawer">Открыть боковую панель</string>
+  <string name="back_button_double_tap">Выход двойным касанием</string>
+  <string name="back_button_show_prompt">Подтверджение выхода</string>
+  <string name="close_prompt">Уверены, что хотите закрыть AntennaPod?</string>
+  <string name="double_tap_toast">Коснитесь кнопки \"Назад\" ещё раз, чтобы выйти</string>
+  <string name="back_button_go_to_page">Загрузить страницу…</string>
+  <string name="back_button_go_to_page_title">Выбрать страницу</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включить автоматическую поддержку через Flattr</string>
   <string name="auto_flattr_after_percent">Поддерживать через Flattr эпизоды, прослушанные на %d процентов</string>

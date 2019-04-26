@@ -30,7 +30,7 @@
   <string name="total_time_listened_to_podcasts">Tiempo total de reproducción de pódcast:</string>
   <string name="statistics_details_dialog">%1$d episodios iniciados de %2$d.\n\nReproducidos %3$s de %4$s.</string>
   <string name="statistics_mode">Modo de estadísticas</string>
-  <string name="statistics_mode_normal">Calcula la duración real reproducida. Reproducir dos veces cuenta doble, y marcar como leído no cuenta como reproducido</string>
+  <string name="statistics_mode_normal">Calcula la duración real reproducida. Reproducir dos veces cuenta doble y marcar como leído no cuenta como reproducido</string>
   <string name="statistics_mode_count_all">Suma de todos los pódcast marcados como reproducidos</string>
   <string name="statistics_speed_not_counted">Aviso: La velocidad de reproducción nunca se tiene en cuenta.</string>
   <!--Main activity-->
@@ -132,6 +132,8 @@
   <string name="load_complete_feed">Actualizar el pódcast completo</string>
   <string name="hide_episodes_title">Ocultar episodios</string>
   <string name="batch_edit">Edición por lotes</string>
+  <string name="select_all_above">Seleccionar todo lo anterior</string>
+  <string name="select_all_below">Seleccionar todo lo siguiente</string>
   <string name="hide_unplayed_episodes_label">No reproducidos</string>
   <string name="hide_paused_episodes_label">Pausados</string>
   <string name="hide_played_episodes_label">Reproducidos</string>
@@ -153,7 +155,6 @@
   <string name="remove_label">Eliminar</string>
   <string name="delete_label">Borrar</string>
   <string name="delete_failed">No se puede borrar el fichero. Reiniciar el dispositivo podría ayudar.</string>
-  <string name="remove_episode_lable">Eliminar episodio</string>
   <string name="mark_as_seen_label">Marcar como visto</string>
   <string name="marked_as_seen_label">Marcado como visto</string>
   <string name="mark_read_label">Marcar como reproducido</string>
@@ -286,7 +287,6 @@
   <string name="set_playback_speed_label">Velocidades de reproducción</string>
   <string name="enable_sonic">Activar Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Esta lista no tiene elementos.</string>
   <string name="no_feeds_label">No se ha suscrito a ningún pódcast.</string>
   <string name="no_chapters_label">Este episodio no tiene capítulos.</string>
   <string name="no_shownotes_label">Este episodio no tiene notas del programa.</string>
@@ -313,6 +313,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reanudar la reproducción cuando se reconecten los auriculares</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reanudar la reproducción cuando se reconecte el bluetooth</string>
   <string name="pref_hardwareForwardButtonSkips_title">Botón avance: Saltar</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Al pulsar el botón de avance en un dispositivo conectado por bluetooth, salta al siguiente episodio en lugar de avanzar</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Botón retroceso: Reiniciar</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Al pulsar el botón físico de retroceso se comenzará el episodio de nuevo en lugar de retroceder</string>
   <string name="pref_followQueue_sum">Saltar al siguiente elemento de la cola al acabar la reproducción</string>
@@ -403,7 +404,9 @@
   <string name="pref_rewind">Intervalo de retroceso</string>
   <string name="pref_rewind_sum">Personalice el número de segundos que retrocederá cuando se pulsa el botón de retrocedeso</string>
   <string name="pref_gpodnet_sethostname_title">Establecer nombre del dispositivo</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">Usar el nombre por defecto</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Usar el nombre predeterminado</string>
+  <string name="pref_expandNotify_title">Alta prioridad de las notificaciones</string>
+  <string name="pref_expandNotify_sum">Esto suele expandir las notificaciones para mostrar los botones de reproducción.</string>
   <string name="pref_persistNotify_title">Controles de reproducción persistentes</string>
   <string name="pref_persistNotify_sum">Mantener las notificaciones y los controles en pantalla de bloqueo cuando se pausa la reproducción.</string>
   <string name="pref_compact_notification_buttons_title">Configurar botones en la pantalla de bloqueo</string>
@@ -441,6 +444,17 @@
   <string name="pref_videoBehavior_sum">Comportamiento al salir de la reproducción de video</string>
   <string name="stop_playback">Parar reproducción</string>
   <string name="continue_playback">Continuar la reproducción de audio</string>
+  <string name="behavior">Comportamiento</string>
+  <string name="pref_back_button_behavior_title">Comportamiento del botón de retroceso</string>
+  <string name="pref_back_button_behavior_sum">Cambiar el comportamiento del botón de retroceso.</string>
+  <string name="back_button_default">Predeterminado</string>
+  <string name="back_button_open_drawer">Abrir el cajón de navegación</string>
+  <string name="back_button_double_tap">Tocar dos veces para salir</string>
+  <string name="back_button_show_prompt">Confirmar para salir</string>
+  <string name="close_prompt">¿Estás seguro de que quieres cerrar AntennaPod?</string>
+  <string name="double_tap_toast">Pulsar el botón de nuevo para salir</string>
+  <string name="back_button_go_to_page">Ir a la página...</string>
+  <string name="back_button_go_to_page_title">Seleccionar página</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Valorar con Flattr el episodio cuando se haya reproducido el %d por ciento</string>

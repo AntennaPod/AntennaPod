@@ -95,9 +95,13 @@
   <string name="episode_cleanup_never">しない</string>
   <string name="episode_cleanup_queue_removal">キューにない時</string>
   <string name="episode_cleanup_after_listening">完了後</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="other">完了後 %d 時間</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="other">完了 %d 日後</item>
   </plurals>
+  <string name="num_selected_label">%d 選択</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">フィードURL</string>
   <string name="etxtFeedurlHint">フィードまたはWebサイトのURL</string>
@@ -131,6 +135,8 @@
   <string name="load_complete_feed">ポッドキャストをすべて更新</string>
   <string name="hide_episodes_title">エピソードを非表示にする</string>
   <string name="batch_edit">一括編集</string>
+  <string name="select_all_above">上のすべてを選択</string>
+  <string name="select_all_below">下のすべてを選択</string>
   <string name="hide_unplayed_episodes_label">未再生</string>
   <string name="hide_paused_episodes_label">一時停止しました</string>
   <string name="hide_played_episodes_label">再生しました</string>
@@ -145,6 +151,9 @@
   <string name="open_podcast">ポッドキャストを開く</string>
   <!--actions on feeditems-->
   <string name="download_label">ダウンロード</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="other">%d エピソードをダウンロード中。</item>
+  </plurals>
   <string name="play_label">再生</string>
   <string name="pause_label">一時停止</string>
   <string name="stop_label">停止</string>
@@ -152,15 +161,30 @@
   <string name="remove_label">削除</string>
   <string name="delete_label">削除</string>
   <string name="delete_failed">ファイルを削除できません。デバイスを再起動してみてください。</string>
-  <string name="remove_episode_lable">エピソードを削除</string>
+  <string name="delete_episode_label">エピソードを削除</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="other">%d エピソードを削除しました。</item>
+  </plurals>
   <string name="mark_as_seen_label">参照済</string>
   <string name="marked_as_seen_label">参照済としてマーク</string>
   <string name="mark_read_label">再生済としてマーク</string>
   <string name="marked_as_read_label">再生済としてマークしました</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="other">%d エピソードを再生済にしました。</item>
+  </plurals>
   <string name="mark_unread_label">未再生としてマーク</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="other">%d エピソードを未再生にしました。</item>
+  </plurals>
   <string name="add_to_queue_label">キューに追加</string>
   <string name="added_to_queue_label">キューに追加しました</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="other">%d エピソードをキューに追加しました。</item>
+  </plurals>
   <string name="remove_from_queue_label">キューから削除</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="other">%d エピソードをキューから削除しました。</item>
+  </plurals>
   <string name="add_to_favorite_label">お気に入りに追加</string>
   <string name="added_to_favorites">お気に入りに追加</string>
   <string name="remove_from_favorite_label">お気に入りから削除</string>
@@ -211,6 +235,7 @@
   <string name="download_type_media">メディアファイル</string>
   <string name="download_type_image">画像</string>
   <string name="download_request_error_dialog_message_prefix">ファイルのダウンロード中にエラーが発生しました:\u0020</string>
+  <string name="null_value_podcast_error">表示できるポッドキャストがありません。</string>
   <string name="authentication_notification_title">認証が必要です</string>
   <string name="authentication_notification_msg">リクエストしたリソースは、ユーザー名とパスワードが必要です</string>
   <string name="confirm_mobile_download_dialog_title">モバイルダウンロードの確認</string>
@@ -284,10 +309,25 @@
   <string name="set_playback_speed_label">再生速度</string>
   <string name="enable_sonic">Sonic を有効にする</string>
   <!--Empty list labels-->
-  <string name="no_items_label">このリストにはアイテムがありません。</string>
+  <string name="no_items_header_label">エピソードはキューにありません</string>
+  <string name="no_items_label">長押しまたはダウンロードしてキューにエピソードを追加できます。</string>
   <string name="no_feeds_label">まだポッドキャストを何も購読していません。</string>
   <string name="no_chapters_label">このエピソードにチャプターはありません。</string>
   <string name="no_shownotes_label">このエピソードにショーノートはありません。</string>
+  <string name="no_run_downloads_head_label">実行中のダウンロードはありません</string>
+  <string name="no_run_downloads_label">ポッドキャスト詳細画面でエピソードをダウンロードできます。</string>
+  <string name="no_comp_downloads_head_label">ダウンロード済のエピソードはありません</string>
+  <string name="no_comp_downloads_label">ポッドキャスト詳細画面でエピソードをダウンロードできます。</string>
+  <string name="no_log_downloads_head_label">ダウンロードログはありません</string>
+  <string name="no_log_downloads_label">利用可能な場合、ダウンロードログがここに表示されます。</string>
+  <string name="no_history_head_label">履歴はありません</string>
+  <string name="no_history_label">エピソードを視聴した後、ここに表示されます</string>
+  <string name="no_all_episodes_head_label">エピソードはありません</string>
+  <string name="no_all_episodes_label">ポッドキャストを追加すると、エピソードがここに表示されます。</string>
+  <string name="no_new_episodes_head_label">新しいエピソードはありません</string>
+  <string name="no_new_episodes_label">新しいエピソードが届くと、ここに表示されます。</string>
+  <string name="no_fav_episodes_head_label">お気に入りのエピソードはありません</string>
+  <string name="no_fav_episodes_label">長押ししてお気に入りにエピソードを追加できます。</string>
   <!--Preferences-->
   <string name="storage_pref">ストレージ</string>
   <string name="project_pref">プロジェクト</string>
@@ -300,6 +340,7 @@
   <string name="automation">自動</string>
   <string name="download_pref_details">詳細</string>
   <string name="import_export_pref">インポート/エクスポート</string>
+  <string name="import_export_search_keywords">バックアップ、復元</string>
   <string name="appearance">外観</string>
   <string name="external_elements">外部要素</string>
   <string name="interruptions">割り込み</string>
@@ -311,6 +352,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">ヘッドフォンが再接続された時に再生を再開します</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetoothが再接続された時に再生を再開します</string>
   <string name="pref_hardwareForwardButtonSkips_title">早送りボタンでスキップ</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Bluetoothで接続されたデバイスの早送りボタンを押したときに、早送りの代わりに次のエピソードにスキップします</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">戻るボタンで再開</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">ハードウェアの戻るボタンを押したときに、巻き戻しの代わりに現在のエピソードの再生を再開します</string>
   <string name="pref_followQueue_sum">再生が完了した時に次のキューのアイテムに移動します</string>
@@ -340,6 +382,9 @@
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth再接続</string>
   <string name="pref_mobileUpdate_title">モバイル更新</string>
   <string name="pref_mobileUpdate_sum">モバイルデータ接続時に更新を許可します</string>
+  <string name="pref_mobileUpdate_nothing">なし</string>
+  <string name="pref_mobileUpdate_images">画像のみ</string>
+  <string name="pref_mobileUpdate_everything">すべて</string>
   <string name="refreshing_label">更新中</string>
   <string name="flattr_settings_label">Flattr設定</string>
   <string name="pref_flattr_auth_title">Flattrにサインイン</string>
@@ -402,6 +447,8 @@
   <string name="pref_rewind_sum">巻き戻しボタンがクリックされたときに後方にジャンプする秒数をカスタマイズします</string>
   <string name="pref_gpodnet_sethostname_title">ホスト名をセット</string>
   <string name="pref_gpodnet_sethostname_use_default_host">デフォルトホストを使用</string>
+  <string name="pref_expandNotify_title">優先度の高い通知</string>
+  <string name="pref_expandNotify_sum">これは通常再生ボタンを表示するように通知を展開します。</string>
   <string name="pref_persistNotify_title">永続再生コントロール</string>
   <string name="pref_persistNotify_sum">再生が一時停止された時に、通知およびロック画面のコントロールを保持します。</string>
   <string name="pref_compact_notification_buttons_title">ロック画面ボタンを設定</string>
@@ -435,10 +482,24 @@
   <string name="pref_enqueue_downloaded_title">ダウンロードのキューに入れる</string>
   <string name="pref_enqueue_downloaded_summary">ダウンロードしたエピソードをキューに追加します</string>
   <string name="media_player_builtin">ビルトイン Android プレーヤー</string>
+  <string name="pref_skip_silence_title">音声の無音をスキップ</string>
   <string name="pref_videoBehavior_title">ビデオ終了時</string>
   <string name="pref_videoBehavior_sum">ビデオ再生から遷移時の動作</string>
   <string name="stop_playback">再生停止</string>
   <string name="continue_playback">音声の再生を続ける</string>
+  <string name="behavior">動作</string>
+  <string name="pref_back_button_behavior_title">戻るボタンの動作</string>
+  <string name="pref_back_button_behavior_sum">戻るボタンの動作を変更します。</string>
+  <string name="back_button_default">デフォルト</string>
+  <string name="back_button_open_drawer">ナビゲーションドロワーを開く</string>
+  <string name="back_button_double_tap">ダブルタップすると終了します</string>
+  <string name="back_button_show_prompt">終了の確認</string>
+  <string name="close_prompt">AntennaPodを終了してもよろしいですか?</string>
+  <string name="double_tap_toast">戻るボタンをもう一度タップすると終了します</string>
+  <string name="back_button_go_to_page">ページ移動…</string>
+  <string name="back_button_go_to_page_title">ページの選択</string>
+  <string name="pref_delete_removes_from_queue_title">キューから削除済を削除</string>
+  <string name="pref_delete_removes_from_queue_sum">削除した時に、自動的にキューからエピソードを削除します</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">自動Flattrを有効にする</string>
   <string name="auto_flattr_after_percent">%d ％再生したらエピソードをFlattr </string>
@@ -628,6 +689,7 @@
   <string name="audio_effects">オーディオエフェクト</string>
   <string name="stereo_to_mono">ダウンミックス: ステレオからモノラル</string>
   <string name="sonic_only">Sonic のみ</string>
+  <string name="exoplayer_only">ExoPlayer のみ</string>
   <!--proxy settings-->
   <string name="proxy_type_label">タイプ</string>
   <string name="host_label">ホスト</string>

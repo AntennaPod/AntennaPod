@@ -153,7 +153,6 @@
   <string name="remove_label">Suprimeix</string>
   <string name="delete_label">Esborrar</string>
   <string name="delete_failed">No s\'ha pogut esborrar el fitxer. Reiniciar el dispositiu pot ajudar.</string>
-  <string name="remove_episode_lable">Suprimeix episodi</string>
   <string name="mark_as_seen_label">Marcar com a visualitzat</string>
   <string name="marked_as_seen_label">Marcat com a vist</string>
   <string name="mark_read_label">Marca com a llegit</string>
@@ -286,7 +285,6 @@
   <string name="set_playback_speed_label">Velocitats de reproducció</string>
   <string name="enable_sonic">Activa Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">No hi ha elements a la llista.</string>
   <string name="no_feeds_label">Encara no us heu subscrit a cap podcast.</string>
   <string name="no_chapters_label">Aquest episodi no té capítols</string>
   <string name="no_shownotes_label">Aquest episodi no té notes.</string>

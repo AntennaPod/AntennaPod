@@ -132,6 +132,8 @@
   <string name="load_complete_feed">Actualizar o podcast completo</string>
   <string name="hide_episodes_title">Ocultar episodios</string>
   <string name="batch_edit">Edición por lote</string>
+  <string name="select_all_above">Seleccionar todo arriba</string>
+  <string name="select_all_below">Seleccionar todo debaixo</string>
   <string name="hide_unplayed_episodes_label">Non reproducido</string>
   <string name="hide_paused_episodes_label">En pausa</string>
   <string name="hide_played_episodes_label">Reproducido</string>
@@ -153,7 +155,6 @@
   <string name="remove_label">Eliminar</string>
   <string name="delete_label">Borrar</string>
   <string name="delete_failed">Non se puido eliminar o ficheiro. Reiniciar o dispositivo podería axudar.</string>
-  <string name="remove_episode_lable">Eliminar episodio</string>
   <string name="mark_as_seen_label">Marcar como visto</string>
   <string name="marked_as_seen_label">Marcar como visto</string>
   <string name="mark_read_label">Marcar como reproducido</string>
@@ -286,7 +287,6 @@
   <string name="set_playback_speed_label">Velocidade de reproducións</string>
   <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Non hai elementos na lista.</string>
   <string name="no_feeds_label">Aínda non está subscrito a ningún podcast.</string>
   <string name="no_chapters_label">Este episodio non ten capítulos.</string>
   <string name="no_shownotes_label">Este episodio non ten notas de episodio.</string>
@@ -313,6 +313,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Retomar a reprodución cando se conectan os auriculares</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Retomar a reprodución cando se reconecta o bluetooth</string>
   <string name="pref_hardwareForwardButtonSkips_title">O botón Adiante salta</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">A premer no botón de adiante nun dispositivo conectado por bluetooth ir ao episodio seguinte en vez dun avance rápido</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">O botón Anterior reinicia</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Cando se presiona Anterior no dispositivo reinicia o episodio no lugar de ir cara atrás</string>
   <string name="pref_followQueue_sum">Saltar ao seguinte elemento na cola cando remata o episodio</string>
@@ -404,6 +405,8 @@
   <string name="pref_rewind_sum">Personalice o número de segundos que se retrocede na reprodución cando se pulsa o botón retroceso</string>
   <string name="pref_gpodnet_sethostname_title">Establecer servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilizar servidor por omisión</string>
+  <string name="pref_expandNotify_title">Alta prioridade nas notificacións</string>
+  <string name="pref_expandNotify_sum">Isto expande as notificacións para mostrar os botóns de reprodución</string>
   <string name="pref_persistNotify_title">Controles persistentes de reprodución</string>
   <string name="pref_persistNotify_sum">Manter notificación e controles na pantalla de bloqueo cando a reprodución está pausada.</string>
   <string name="pref_compact_notification_buttons_title">Establecer botóns de pantalla de bloqueo</string>
@@ -441,6 +444,17 @@
   <string name="pref_videoBehavior_sum">Comportamento cando saia do vídeo</string>
   <string name="stop_playback">Para a reprodución</string>
   <string name="continue_playback">Continuar a reprodución de audio</string>
+  <string name="behavior">Comportamento</string>
+  <string name="pref_back_button_behavior_title">Comportamento do botón Atrás</string>
+  <string name="pref_back_button_behavior_sum">Cambiar o comportamento do botón atrás.</string>
+  <string name="back_button_default">Predeterminado</string>
+  <string name="back_button_open_drawer">Abrir a caixa de navegación</string>
+  <string name="back_button_double_tap">Dobre toque para saír</string>
+  <string name="back_button_show_prompt">Confirmar a saída</string>
+  <string name="close_prompt">Confirma o peche do AntennaPod?</string>
+  <string name="double_tap_toast">Tocar o botón Atrás outra vez para saír</string>
+  <string name="back_button_go_to_page">Ir á páxina...</string>
+  <string name="back_button_go_to_page_title">Seleccionar páxina</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Hablitar o flattring automático</string>
   <string name="auto_flattr_after_percent">Flattr o episodio tan pronto como o %d por cento foi reproducido</string>

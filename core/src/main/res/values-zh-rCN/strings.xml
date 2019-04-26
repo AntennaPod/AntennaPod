@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">更新订阅</string>
   <string name="feeds_label">订阅</string>
   <string name="statistics_label">统计</string>
   <string name="add_feed_label">添加播客</string>
   <string name="episodes_label">曲目</string>
   <string name="all_episodes_short_label">全部</string>
+  <string name="new_episodes_label">最新</string>
   <string name="favorite_episodes_label">收藏</string>
   <string name="new_label">最新</string>
   <string name="settings_label">设置</string>
@@ -93,9 +95,13 @@
   <string name="episode_cleanup_never">从不</string>
   <string name="episode_cleanup_queue_removal">当不在队列中</string>
   <string name="episode_cleanup_after_listening">结束后</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="other">结束后 %d 小时</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="other">结束后 %d 天</item>
   </plurals>
+  <string name="num_selected_label">已选中 %d 个</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">订阅 URL</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -110,10 +116,16 @@
   <string name="mark_all_seen_label">所有可见</string>
   <string name="mark_all_seen_confirmation_msg">请确认您要将所有曲目标记为已读。</string>
   <string name="show_info_label">查看信息</string>
+  <string name="feed_info_label">播客信息</string>
+  <string name="feed_settings_label">播客设置</string>
+  <string name="rename_feed_label">重命名播客</string>
+  <string name="remove_feed_label">移除播客</string>
   <string name="share_label">分享</string>
   <string name="share_file_label">分享文件</string>
   <string name="share_feed_url_label">分享订阅地址</string>
+  <string name="feed_remover_msg">正在移除播客</string>
   <string name="hide_episodes_title">隐藏曲目</string>
+  <string name="batch_edit">批量编辑</string>
   <string name="hide_unplayed_episodes_label">未播放</string>
   <string name="hide_paused_episodes_label">已暂停</string>
   <string name="hide_played_episodes_label">已播放</string>
@@ -133,7 +145,7 @@
   <string name="remove_label">删除</string>
   <string name="delete_label">删除</string>
   <string name="delete_failed">无法删除文件。重启可能解决该问题。</string>
-  <string name="remove_episode_lable">移除曲目</string>
+  <string name="mark_as_seen_label">标记为已读</string>
   <string name="marked_as_seen_label">标记为已读</string>
   <string name="mark_read_label">标记已播放</string>
   <string name="marked_as_read_label">已标记为已播放</string>
@@ -157,6 +169,7 @@
   <string name="download_failed">失败</string>
   <string name="download_pending">下载等待</string>
   <string name="download_running">下载中</string>
+  <string name="download_error_details">详细信息</string>
   <string name="download_error_device_not_found">没有找到存储设备</string>
   <string name="download_error_insufficient_space">空间不足</string>
   <string name="download_error_file_error">文件错误</string>
@@ -206,6 +219,7 @@
   <string name="playback_error_unknown">未知错误</string>
   <string name="no_media_playing_label">没有可播放的媒体</string>
   <string name="player_buffering_msg">缓冲中</string>
+  <string name="player_go_to_picture_in_picture">画中画模式</string>
   <string name="playbackservice_notification_title">播客播放中</string>
   <string name="unknown_media_key">AntennaPod - 未知媒体密钥: %1$d</string>
   <!--Queue operations-->
@@ -222,6 +236,9 @@
   <string name="date">按日期</string>
   <string name="duration">按时长</string>
   <string name="episode_title">剧集标题</string>
+  <string name="feed_title">播客标题</string>
+  <string name="random">随机</string>
+  <string name="smart_shuffle">智能随机</string>
   <string name="ascending">升序</string>
   <string name="descending">降序</string>
   <string name="clear_queue_confirmation_msg">请确认您要清除队列中的全部曲目</string>
@@ -257,7 +274,6 @@
   <string name="set_playback_speed_label">播放速度</string>
   <string name="enable_sonic">允许声音</string>
   <!--Empty list labels-->
-  <string name="no_items_label">列表为空.</string>
   <string name="no_chapters_label">此曲目没有章节信息</string>
   <string name="no_shownotes_label">本集不包含展示信息</string>
   <!--Preferences-->
@@ -267,6 +283,9 @@
   <string name="about_pref">关于</string>
   <string name="queue_label">播放列表</string>
   <string name="flattr_label">Flattr</string>
+  <string name="import_export_pref">导入/导出</string>
+  <string name="import_export_search_keywords">数据, 备份, 还原, backup, restore</string>
+  <string name="appearance">样式</string>
   <string name="pref_episode_cleanup_title">清理曲目</string>
   <string name="pref_pauseOnDisconnect_sum">暂停播放曲目当耳机或蓝牙重新连接</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
@@ -325,6 +344,7 @@
   <string name="pref_episode_cache_title">曲目缓存</string>
   <string name="pref_theme_title_light">浅色</string>
   <string name="pref_theme_title_dark">暗色</string>
+  <string name="pref_theme_title_trueblack">纯黑（适用于 AMOLED 设备）</string>
   <string name="pref_episode_cache_unlimited">无限</string>
   <string name="pref_update_interval_hours_plural">小时</string>
   <string name="pref_update_interval_hours_singular">时</string>
@@ -379,6 +399,8 @@
   <string name="pref_cast_message_play_flavor">启用在 Cast 设备（例如 Chromecast 、 Audio Speakers 和 Android TV ）上对于远端媒体回放的支持</string>
   <string name="pref_cast_message_free_flavor">Chromecast 所需要的第三方库文件在这个版本的 AntennaPod 中被禁用</string>
   <string name="pref_enqueue_downloaded_summary">向队列添加已下载的节目</string>
+  <string name="back_button_default">默认</string>
+  <string name="back_button_open_drawer">打开导航抽屉</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">启用自动 flattring</string>
   <string name="auto_flattr_after_percent">当播放到百分之%d时Flattr改曲目</string>
@@ -571,6 +593,9 @@
   <string name="proxy_host_invalid_error">主机地址为无效的IP地址或域名</string>
   <string name="proxy_port_invalid_error">端口不可用</string>
   <!--Database import/export-->
+  <string name="label_import">导入</string>
+  <string name="label_export">导出</string>
+  <string name="export_ok">导出成功。</string>
   <!--Casting-->
   <string name="cast_failed_to_play">媒体回放开始失败</string>
   <string name="cast_failed_to_stop">媒体回放停止失败</string>
@@ -579,4 +604,6 @@
   <string name="cast_failed_setting_volume">音量设置失败</string>
   <string name="cast_failed_media_error_skipping">媒体播放出错.跳转中...</string>
   <!--Notification channels-->
+  <string name="notification_channel_downloading">正在下载</string>
+  <string name="notification_channel_error">错误</string>
 </resources>

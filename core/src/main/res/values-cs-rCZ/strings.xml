@@ -131,7 +131,6 @@
   <string name="stream_label">Vysílat</string>
   <string name="remove_label">Odstranit</string>
   <string name="delete_label">Smazat</string>
-  <string name="remove_episode_lable">Odstranit epizodu</string>
   <string name="marked_as_seen_label">Označit jako shlédnuté</string>
   <string name="mark_read_label">Označit jako poslechnuté</string>
   <string name="marked_as_read_label">Označeno jako poslechnuté</string>
@@ -259,7 +258,6 @@
   <string name="set_playback_speed_label">Rychlosti přehrávání</string>
   <string name="enable_sonic">Povolit Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Žádné položky v seznamu.</string>
   <string name="no_chapters_label">Tato epizoda nemá žádné kapitoly.</string>
   <string name="no_shownotes_label">Tato epizoda neobsahuje žádné poznámky.</string>
   <!--Preferences-->
