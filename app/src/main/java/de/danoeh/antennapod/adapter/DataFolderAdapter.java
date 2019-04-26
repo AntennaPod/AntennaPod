@@ -27,12 +27,14 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
     private final ChooseDataFolderDialog.RunnableWithString selectionHandler;
     private final String currentPath;
     private final List<StoragePath> entries;
+    private final String freeSpaceString;
     private Dialog dialog;
 
     public DataFolderAdapter(Context context, ChooseDataFolderDialog.RunnableWithString selectionHandler) {
         this.entries = getStorageEntries(context);
         this.currentPath = getCurrentPath();
         this.selectionHandler = selectionHandler;
+        this.freeSpaceString = context.getString(R.string.choose_data_directory_available_space);
     }
 
     @NonNull
@@ -46,8 +48,10 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StoragePath storagePath = entries.get(position);
+        String freeSpace = Converter.byteToString(storagePath.getAvailableSpace());
+
         holder.path.setText(storagePath.getShortPath());
-        holder.size.setText(Converter.byteToString(storagePath.getAvailableSpace()));
+        holder.size.setText(String.format(freeSpaceString, freeSpace));
         holder.progressBar.setProgress(storagePath.getUsagePercentage());
         holder.root.setOnClickListener((View v) -> selectAndDismiss(storagePath));
         holder.radioButton.setOnClickListener((View v) -> selectAndDismiss(storagePath));
