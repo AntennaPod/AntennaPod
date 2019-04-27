@@ -191,8 +191,7 @@ public class PlaybackServiceTaskManager {
             sleepTimerFuture.cancel(true);
         }
         sleepTimer = new SleepTimer(waitingTime, shakeToReset, vibrate);
-        Runnable runnable = useMainThreadIfNecessary(sleepTimer);
-        sleepTimerFuture = schedExecutor.schedule(runnable, 0, TimeUnit.MILLISECONDS);
+        sleepTimerFuture = schedExecutor.schedule(sleepTimer, 0, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -321,6 +320,7 @@ public class PlaybackServiceTaskManager {
         private final boolean shakeToReset;
         private final boolean vibrate;
         private ShakeListener shakeListener;
+        private Handler handler;
 
         public SleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
             super();
@@ -328,6 +328,7 @@ public class PlaybackServiceTaskManager {
             this.timeLeft = waitingTime;
             this.shakeToReset = shakeToReset;
             this.vibrate = vibrate;
+            this.handler = new Handler(); // Use the same thread for callbacks (ExoPlayer)
         }
 
         @Override
@@ -353,7 +354,7 @@ public class PlaybackServiceTaskManager {
                         if(shakeListener == null && shakeToReset) {
                             shakeListener = new ShakeListener(context, this);
                         }
-                        callback.onSleepTimerAlmostExpired();
+                        handler.post(callback::onSleepTimerAlmostExpired);
                         notifiedAlmostExpired = true;
                     }
                     if (timeLeft <= 0) {
@@ -363,7 +364,7 @@ public class PlaybackServiceTaskManager {
                             shakeListener = null;
                         }
                         if (!Thread.currentThread().isInterrupted()) {
-                            callback.onSleepTimerExpired();
+                            handler.post(callback::onSleepTimerExpired);
                         } else {
                             Log.d(TAG, "Sleep timer interrupted");
                         }
@@ -381,8 +382,10 @@ public class PlaybackServiceTaskManager {
         }
 
         public void onShake() {
-            setSleepTimer(waitingTime, shakeToReset, vibrate);
-            callback.onSleepTimerReset();
+            handler.post(() -> {
+                setSleepTimer(waitingTime, shakeToReset, vibrate);
+                callback.onSleepTimerReset();
+            });
             shakeListener.pause();
             shakeListener = null;
         }
