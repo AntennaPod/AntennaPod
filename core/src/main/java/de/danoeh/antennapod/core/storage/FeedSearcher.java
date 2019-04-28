@@ -78,7 +78,7 @@ public class FeedSearcher {
             e.printStackTrace();
         }
         Collections.sort(result, new SearchResultValueComparator());
-        Collections.sort(result, new InReverseChronologicalOrder ());
+        Collections.sort(result, new InReverseChronologicalOrder());
         return result;
     }
 }
