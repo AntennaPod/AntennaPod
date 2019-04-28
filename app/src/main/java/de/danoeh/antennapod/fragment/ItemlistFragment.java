@@ -629,8 +629,11 @@ public class ItemlistFragment extends ListFragment {
     @Nullable
     private Feed loadData() {
         Feed feed = DBReader.getFeed(feedID);
+        if (feed == null) {
+            return null;
+        }
         DBReader.loadAdditionalFeedItemListData(feed.getItems());
-        if(feed != null && feed.getItemFilter() != null) {
+        if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             feed.setItems(filter.filter(feed.getItems()));
         }
