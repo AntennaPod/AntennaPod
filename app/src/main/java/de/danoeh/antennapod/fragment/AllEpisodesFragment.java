@@ -431,7 +431,10 @@ public class AllEpisodesFragment extends Fragment {
 
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (episodes == null || listAdapter == null) {
+        if (episodes == null) {
+            return;
+        } else if (listAdapter == null) {
+            loadItems();
             return;
         }
         for (FeedItem item : event.items) {
@@ -459,7 +462,11 @@ public class AllEpisodesFragment extends Fragment {
         if (isMenuInvalidationAllowed && isUpdatingFeeds != update.feedIds.length > 0) {
                 getActivity().supportInvalidateOptionsMenu();
         }
-        if(listAdapter != null && update.mediaIds.length > 0) {
+        if (listAdapter == null) {
+            loadItems();
+            return;
+        }
+        if (update.mediaIds.length > 0) {
             for(long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
                 if(pos >= 0) {

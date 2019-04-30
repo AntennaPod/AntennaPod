@@ -125,7 +125,10 @@ public class QueueFragment extends Fragment {
 
     public void onEventMainThread(QueueEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(queue == null || recyclerAdapter == null) {
+        if (queue == null) {
+            return;
+        } else if (recyclerAdapter == null) {
+            loadItems(true);
             return;
         }
         switch(event.action) {
@@ -160,7 +163,10 @@ public class QueueFragment extends Fragment {
 
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(queue == null || recyclerAdapter == null) {
+        if (queue == null) {
+            return;
+        } else if (recyclerAdapter == null) {
+            loadItems(true);
             return;
         }
         for(int i=0, size = event.items.size(); i < size; i++) {
