@@ -340,7 +340,7 @@
 
     <!-- Empty list labels -->
     <string name="no_items_header_label">No queued episodes</string>
-    <string name="no_items_label">You can add episodes to the queue by long-pressing or downloading them.</string>
+    <string name="no_items_label">Add an episode by downloading it, or long press an episode and select \"Add to queue\".</string>
     <string name="no_feeds_label">You haven\'t subscribed to any podcasts yet.</string>
     <string name="no_chapters_label">This episode has no chapters.</string>
     <string name="no_shownotes_label">This episode has no shownotes.</string>
