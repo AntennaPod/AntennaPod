@@ -279,11 +279,11 @@ public class AllEpisodesFragment extends Fragment {
             return true; // avoids that the position is reset when we need it in the submenu
         }
 
-        FeedItem selectedItem = listAdapter.getSelectedItem();
-        if (selectedItem == null) {
-            Log.i(TAG, "Selected item was null, ignoring selection");
+        if (listAdapter == null || listAdapter.getSelectedItem() == null) {
+            Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
+        FeedItem selectedItem = listAdapter.getSelectedItem();
 
         // Mark as seen contains UI logic specific to All/New/FavoriteSegments,
         // e.g., Undo with Snackbar,
