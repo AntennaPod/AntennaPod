@@ -31,7 +31,6 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
-import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
@@ -350,8 +349,7 @@ public class AllEpisodesFragment extends Fragment {
         if (episodes != null && episodes.size() > 0) {
             if (listAdapter == null) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess,
-                        new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
+                listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess, showOnlyNewEpisodes());
                 listAdapter.setHasStableIds(true);
                 recyclerView.setAdapter(listAdapter);
                 emptyView.updateAdapter(listAdapter);
