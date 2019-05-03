@@ -46,12 +46,10 @@ public class AboutActivity extends AppCompatActivity {
         webViewContainer = findViewById(R.id.webViewContainer);
         webView = findViewById(R.id.webViewAbout);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            }
-            webView.setBackgroundColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
+        webView.setBackgroundColor(Color.TRANSPARENT);
         webView.setWebViewClient(new WebViewClient() {
 
             @Override
