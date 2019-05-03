@@ -51,6 +51,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -76,7 +77,7 @@ public class AllEpisodesFragment extends Fragment {
     RecyclerView recyclerView;
     AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
-    private View emptyView;
+    EmptyViewHandler emptyView;
 
     List<FeedItem> episodes;
     private List<Downloader> downloaderList;
@@ -334,10 +335,10 @@ public class AllEpisodesFragment extends Fragment {
             onFragmentLoaded();
         }
 
-        emptyView = root.findViewById(R.id.emptyView);
-        emptyView.setVisibility(View.GONE);
-        ((TextView)emptyView.findViewById(R.id.emptyViewTitle)).setText(R.string.no_all_episodes_head_label);
-        ((TextView)emptyView.findViewById(R.id.emptyViewMessage)).setText(R.string.no_all_episodes_label);
+        emptyView = new EmptyViewHandler(getContext());
+        emptyView.attachToRecyclerView(recyclerView);
+        emptyView.setTitle(R.string.no_all_episodes_head_label);
+        emptyView.setMessage(R.string.no_all_episodes_label);
 
         return root;
     }
@@ -350,14 +351,14 @@ public class AllEpisodesFragment extends Fragment {
                         new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
                 listAdapter.setHasStableIds(true);
                 recyclerView.setAdapter(listAdapter);
+                emptyView.updateAdapter(listAdapter);
             }
-            emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             listAdapter.notifyDataSetChanged();
         } else {
             listAdapter = null;
             recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
+            emptyView.updateAdapter(listAdapter);
         }
 
         restoreScrollPosition();
@@ -497,7 +498,7 @@ public class AllEpisodesFragment extends Fragment {
         }
         if (viewsCreated && !itemsLoaded) {
             recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.GONE);
+            emptyView.hide();
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(this::loadData)
