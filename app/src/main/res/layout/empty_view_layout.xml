@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:layout_centerInParent="true"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView

@@ -52,6 +52,7 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -72,7 +73,7 @@ public class QueueFragment extends Fragment {
     private TextView infoBar;
     private RecyclerView recyclerView;
     private QueueRecyclerAdapter recyclerAdapter;
-    private View emptyView;
+    private EmptyViewHandler emptyView;
     private ProgressBar progLoading;
 
     private List<FeedItem> queue;
@@ -502,11 +503,11 @@ public class QueueFragment extends Fragment {
             }
         );
         itemTouchHelper.attachToRecyclerView(recyclerView);
-        //empty view
-        emptyView = root.findViewById(R.id.emptyView);
-        emptyView.setVisibility(View.GONE);
-        ((TextView)emptyView.findViewById(R.id.emptyViewTitle)).setText(R.string.no_items_header_label);
-        ((TextView)emptyView.findViewById(R.id.emptyViewMessage)).setText(R.string.no_items_label);
+
+        emptyView = new EmptyViewHandler(getContext());
+        emptyView.attachToRecyclerView(recyclerView);
+        emptyView.setTitle(R.string.no_items_header_label);
+        emptyView.setMessage(R.string.no_items_label);
 
         progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
@@ -522,13 +523,13 @@ public class QueueFragment extends Fragment {
                         new DefaultActionButtonCallback(activity), itemTouchHelper);
                 recyclerAdapter.setHasStableIds(true);
                 recyclerView.setAdapter(recyclerAdapter);
+                emptyView.updateAdapter(recyclerAdapter);
             }
-            emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
         } else {
             recyclerAdapter = null;
             recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
+            emptyView.updateAdapter(recyclerAdapter);
         }
 
         if (restoreScrollPosition) {
@@ -641,7 +642,7 @@ public class QueueFragment extends Fragment {
         }
         if (queue == null) {
             recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.GONE);
+            emptyView.hide();
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(DBReader::getQueue)
