@@ -5,10 +5,9 @@ import android.util.Log;
 
 import org.xml.sax.Attributes;
 
-import java.util.concurrent.TimeUnit;
-
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
+import de.danoeh.antennapod.core.syndication.parsers.DurationParser;
 
 public class NSITunes extends Namespace {
 
@@ -72,22 +71,12 @@ public class NSITunes extends Namespace {
         if (TextUtils.isEmpty(durationStr)) {
             return;
         }
-        String[] parts = durationStr.trim().split(":");
+
         try {
-            int durationMs = 0;
-            if (parts.length == 2) {
-                durationMs += TimeUnit.MINUTES.toMillis(Long.parseLong(parts[0])) +
-                        TimeUnit.SECONDS.toMillis((long) Float.parseFloat(parts[1]));
-            } else if (parts.length >= 3) {
-                durationMs += TimeUnit.HOURS.toMillis(Long.parseLong(parts[0])) +
-                        TimeUnit.MINUTES.toMillis(Long.parseLong(parts[1])) +
-                        TimeUnit.SECONDS.toMillis((long) Float.parseFloat(parts[2]));
-            } else {
-                return;
-            }
-            state.getTempObjects().put(DURATION, durationMs);
+            long durationMs = DurationParser.inMillis(durationStr);
+            state.getTempObjects().put(DURATION, (int) durationMs);
         } catch (NumberFormatException e) {
-            Log.e(NSTAG, "Duration \"" + durationStr + "\" could not be parsed");
+            Log.e(NSTAG, String.format("Duration '%s' could not be parsed", durationStr));
         }
     }
 
