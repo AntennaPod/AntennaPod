@@ -17,6 +17,13 @@ public class DurationParserTest {
     }
 
     @Test
+    public void testSingleNumberDurationInMillis() {
+        int twoHoursInSeconds = 2 * 60 * 60;
+        long duration = DurationParser.inMillis(String.valueOf(twoHoursInSeconds));
+        assertEquals(2 * hours, duration);
+    }
+
+    @Test
     public void testMinuteSecondDurationInMillis() {
         long duration = DurationParser.inMillis("05:10");
         assertEquals(5 * minutes + 10 * seconds, duration);

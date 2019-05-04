@@ -8,7 +8,9 @@ public class DurationParser {
     public static long inMillis(String durationStr) throws NumberFormatException {
         String[] parts = durationStr.trim().split(":");
 
-        if (parts.length == 2) {
+        if (parts.length == 1) {
+            return toMillis(parts[0]);
+        } else if (parts.length == 2) {
             return toMillis("0", parts[0], parts[1]);
         } else if (parts.length == 3) {
             return toMillis(parts[0], parts[1], parts[2]);
