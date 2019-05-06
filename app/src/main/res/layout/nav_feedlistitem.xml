@@ -5,6 +5,10 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/listitem_iconwithtext_height"
+                android:paddingLeft="@dimen/listitem_icon_leftpadding"
+                android:paddingStart="@dimen/listitem_icon_leftpadding"
+                android:paddingRight="@dimen/listitem_icon_rightpadding"
+                android:paddingEnd="@dimen/listitem_icon_rightpadding"
                 tools:background="@android:color/darker_gray"
                 android:foreground="?attr/selectableItemBackground">
 
@@ -21,8 +25,6 @@
         android:scaleType="centerCrop"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        android:layout_marginLeft="@dimen/listitem_icon_leftpadding"
-        android:layout_marginStart="@dimen/listitem_icon_leftpadding"
         tools:src="@drawable/ic_stat_antenna_default"
         tools:background="@android:color/holo_green_dark"/>
 
@@ -32,8 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/list_vertical_padding"
         android:layout_marginStart="@dimen/list_vertical_padding"
-        android:layout_marginRight="@dimen/listitem_icon_rightpadding"
-        android:layout_marginEnd="@dimen/listitem_icon_rightpadding"
         android:lines="1"
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="@dimen/text_size_navdrawer"
@@ -79,6 +79,5 @@
         android:layout_alignWithParentIfMissing="true"
         tools:text="Navigation feed item title"
         tools:background="@android:color/holo_green_dark"/>
-
 
 </RelativeLayout>
