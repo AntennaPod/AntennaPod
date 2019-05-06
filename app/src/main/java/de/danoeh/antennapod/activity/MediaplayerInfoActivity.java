@@ -178,7 +178,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     @Override
     protected void onResume() {
         super.onResume();
-        AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
 
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);

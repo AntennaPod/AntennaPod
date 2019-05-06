@@ -207,7 +207,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         checkFirstLaunch();
         NotificationUtils.createChannels(this);
-        UserPreferences.restartUpdateAlarm(false);
     }
 
     private void saveLastNavFragment(String tag) {
@@ -474,7 +473,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
 
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_FEED_ID) ||
