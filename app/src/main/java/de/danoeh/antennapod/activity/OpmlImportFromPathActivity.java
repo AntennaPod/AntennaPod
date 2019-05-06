@@ -25,7 +25,6 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
 
     private static final int CHOOSE_OPML_FILE = 1;
 
-    private Intent intentPickAction;
     private Intent intentGetContentAction;
 
     @Override
@@ -36,50 +35,30 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.opml_import);
 
-        final TextView txtvHeaderExplanation1 = findViewById(R.id.txtvHeadingExplanation1);
-        final TextView txtvExplanation1 = findViewById(R.id.txtvExplanation1);
-        final TextView txtvHeaderExplanation2 = findViewById(R.id.txtvHeadingExplanation2);
-        final TextView txtvExplanation2 = findViewById(R.id.txtvExplanation2);
-        final TextView txtvHeaderExplanation3 = findViewById(R.id.txtvHeadingExplanation3);
+        final TextView txtvHeaderExplanation = findViewById(R.id.txtvHeadingExplanation);
+        final TextView txtvExplanation = findViewById(R.id.txtvExplanation);
+        final TextView txtvHeaderExplanationOpenWith = findViewById(R.id.txtvHeadingExplanationOpenWith);
 
         Button butChooseFilesystem = findViewById(R.id.butChooseFileFromFilesystem);
-        butChooseFilesystem.setOnClickListener(v -> chooseFileFromFilesystem());
-
-        Button butChooseExternal = findViewById(R.id.butChooseFileFromExternal);
-        butChooseExternal.setOnClickListener(v -> chooseFileFromExternal());
+        butChooseFilesystem.setOnClickListener(v -> chooseFileFromExternal());
 
         int nextOption = 1;
         String optionLabel = getString(R.string.opml_import_option);
-        intentPickAction = new Intent(Intent.ACTION_PICK);
-
-        if(!IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
-            intentPickAction.setData(null);
-            if(!IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
-                txtvHeaderExplanation1.setVisibility(View.GONE);
-                txtvExplanation1.setVisibility(View.GONE);
-                findViewById(R.id.divider1).setVisibility(View.GONE);
-                butChooseFilesystem.setVisibility(View.GONE);
-            }
-        }
-        if(txtvExplanation1.getVisibility() == View.VISIBLE) {
-            txtvHeaderExplanation1.setText(String.format(optionLabel, nextOption));
-            nextOption++;
-        }
-
         intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
         intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
         intentGetContentAction.setType("*/*");
-        if(!IntentUtils.isCallable(getApplicationContext(), intentGetContentAction)) {
-            txtvHeaderExplanation2.setVisibility(View.GONE);
-            txtvExplanation2.setVisibility(View.GONE);
-            findViewById(R.id.divider2).setVisibility(View.GONE);
-            butChooseExternal.setVisibility(View.GONE);
-        } else {
-            txtvHeaderExplanation2.setText(String.format(optionLabel, nextOption));
+
+        if (IntentUtils.isCallable(getApplicationContext(), intentGetContentAction)) {
+            txtvHeaderExplanation.setText(String.format(optionLabel, nextOption));
             nextOption++;
+        } else {
+            txtvHeaderExplanation.setVisibility(View.GONE);
+            txtvExplanation.setVisibility(View.GONE);
+            findViewById(R.id.divider).setVisibility(View.GONE);
+            butChooseFilesystem.setVisibility(View.GONE);
         }
 
-        txtvHeaderExplanation3.setText(String.format(optionLabel, nextOption));
+        txtvHeaderExplanationOpenWith.setText(String.format(optionLabel, nextOption));
     }
 
     @Override
@@ -103,18 +82,6 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
                 return true;
             default:
                 return false;
-        }
-    }
-
-    /*
-     * Creates an implicit intent to launch a file manager which lets
-     * the user choose a specific OPML-file to import from.
-     */
-    private void chooseFileFromFilesystem() {
-        try {
-            startActivityForResult(intentPickAction, CHOOSE_OPML_FILE);
-        } catch (ActivityNotFoundException e) {
-            Log.e(TAG, "No activity found. Should never happen...");
         }
     }
 
