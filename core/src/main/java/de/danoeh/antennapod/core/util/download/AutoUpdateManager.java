@@ -68,7 +68,6 @@ public class AutoUpdateManager {
         } else {
             constraints.setRequiredNetworkType(NetworkType.UNMETERED);
         }
-        constraints.setRequiresCharging(!UserPreferences.isEnableAutodownloadOnBattery());
         return constraints.build();
     }
 }
