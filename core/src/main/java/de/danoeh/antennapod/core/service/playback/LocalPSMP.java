@@ -1106,7 +1106,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if (useCallerThread) {
             r.run();
         } else {
-            new Thread(r).start();
+            executor.submit(r);
         }
     }
 }

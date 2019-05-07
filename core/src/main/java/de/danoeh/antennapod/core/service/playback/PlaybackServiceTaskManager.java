@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.greenrobot.event.EventBus;
@@ -320,7 +321,7 @@ public class PlaybackServiceTaskManager {
         private final boolean shakeToReset;
         private final boolean vibrate;
         private ShakeListener shakeListener;
-        private Handler handler;
+        private final Handler handler;
 
         public SleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
             super();
@@ -328,7 +329,21 @@ public class PlaybackServiceTaskManager {
             this.timeLeft = waitingTime;
             this.shakeToReset = shakeToReset;
             this.vibrate = vibrate;
-            this.handler = new Handler(); // Use the same thread for callbacks (ExoPlayer)
+
+            if (UserPreferences.useExoplayer() && Looper.myLooper() == Looper.getMainLooper()) {
+                // Run callbacks in main thread so they can call ExoPlayer methods themselves
+                this.handler = new Handler();
+            } else {
+                this.handler = null;
+            }
+        }
+
+        private void postCallback(Runnable r) {
+            if (handler == null) {
+                r.run();
+            } else {
+                handler.post(r);
+            }
         }
 
         @Override
@@ -354,7 +369,7 @@ public class PlaybackServiceTaskManager {
                         if(shakeListener == null && shakeToReset) {
                             shakeListener = new ShakeListener(context, this);
                         }
-                        handler.post(callback::onSleepTimerAlmostExpired);
+                        postCallback(callback::onSleepTimerAlmostExpired);
                         notifiedAlmostExpired = true;
                     }
                     if (timeLeft <= 0) {
@@ -364,7 +379,7 @@ public class PlaybackServiceTaskManager {
                             shakeListener = null;
                         }
                         if (!Thread.currentThread().isInterrupted()) {
-                            handler.post(callback::onSleepTimerExpired);
+                            postCallback(callback::onSleepTimerExpired);
                         } else {
                             Log.d(TAG, "Sleep timer interrupted");
                         }
@@ -382,7 +397,7 @@ public class PlaybackServiceTaskManager {
         }
 
         public void onShake() {
-            handler.post(() -> {
+            postCallback(() -> {
                 setSleepTimer(waitingTime, shakeToReset, vibrate);
                 callback.onSleepTimerReset();
             });
