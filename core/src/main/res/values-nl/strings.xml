@@ -319,7 +319,7 @@
   <string name="enable_sonic">Sonic inschakelen</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Geen afleveringen in wachtrij</string>
-  <string name="no_items_label">Je kunt afleveringen toevoegen aan de wachtrij door ze lang ingedrukt te houden of te downloaden.</string>
+  <string name="no_items_label">Voeg een aflevering toe door deze te downloaden of houd een aflevering lang ingedrukt en kies \'Toevoegen aan wachtrij\'.</string>
   <string name="no_feeds_label">Je hebt nog geen abonnement op een podcast.</string>
   <string name="no_chapters_label">Deze aflevering bevat geen hoofdstukken.</string>
   <string name="no_shownotes_label">Deze aflevering bevat geen shownotities.</string>
@@ -714,6 +714,8 @@
   <string name="proxy_host_empty_error">Host mag niet blanco zijn</string>
   <string name="proxy_host_invalid_error">Host is geen geldig IP-adres of domeinnaam</string>
   <string name="proxy_port_invalid_error">Ongeldig poortnummer</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Aantal kolommen</string>
   <!--Database import/export-->
   <string name="import_export">Databank im-/exporteren</string>
   <string name="import_export_warning">Met deze experimentele functie kun je je abonnementen en afgespeelde afleveringen overzetten naar een ander apparaat.\n\nGeëxporteerde databanken kunnen alleen worden geïmporteerd in dezelfde versie van AntennaPod, anders kunnen zich problemen voordoen.\n\nNa het importeren kunnen afleveringen als \'gedownload\' aangemerkt zijn, terwijl dit niet het geval is. Druk op de afspeelknop om AntennaPod dit te laten detecteren.</string>

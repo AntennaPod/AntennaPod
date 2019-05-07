@@ -644,6 +644,7 @@
   <string name="proxy_host_empty_error">Vært kan ikke være tom</string>
   <string name="proxy_host_invalid_error">Vært er ikke en gyldig IP-adresse eller et gyldigt domæne</string>
   <string name="proxy_port_invalid_error">Port ikke gyldig</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="import_export">Database-import/eksport</string>
   <string name="label_import">Import</string>

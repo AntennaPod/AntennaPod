@@ -244,6 +244,7 @@
   <string name="download_type_media">Ficheiro multimédia</string>
   <string name="download_type_image">Imagem</string>
   <string name="download_request_error_dialog_message_prefix">Ocorreu um erro ao tentar descarregar o ficheiro:\u0020</string>
+  <string name="null_value_podcast_error">Não foi possível mostrar o podcast.</string>
   <string name="authentication_notification_title">Requer autenticação</string>
   <string name="authentication_notification_msg">O recurso solicitado requer um utilizador e uma palavra-passe</string>
   <string name="confirm_mobile_download_dialog_title">Confirmação de descarga</string>
@@ -318,7 +319,7 @@
   <string name="enable_sonic">Ativar Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Não existem episódios na fila</string>
-  <string name="no_items_label">Pode adicionar episódios à fila com um toque longo ou descarregando-os.</string>
+  <string name="no_items_label">Pode adicionar um episódio se o descarregar ou com um toque longo no episódio e escolher \"Adicionar à fila\".</string>
   <string name="no_feeds_label">Ainda não tem quaisquer podcasts subscritos.</string>
   <string name="no_chapters_label">Este episódio não tem capítulos.</string>
   <string name="no_shownotes_label">Este episódio não tem notas.</string>
@@ -713,6 +714,8 @@
   <string name="proxy_host_empty_error">Servidor não pode estar vazio</string>
   <string name="proxy_host_invalid_error">O servidor não tem um endereço ou domínio válido</string>
   <string name="proxy_port_invalid_error">Porta inválido</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Número de colunas</string>
   <!--Database import/export-->
   <string name="import_export">Importação/exportação da base de dados</string>
   <string name="import_export_warning">Esta função experimental  pode ser usada para transferir as suas subscrições e episódios para outros dispositivos.\n\nAs bases de dados exportadas apenas podem ser importadas se usar a mesma versão do AntennaPod. Caso contrário, esta função poderá produzir efeitos inesperados.\n\nDepois da importação, os episódios poderão ser apresentados como tendo sido descarregados mesmo que não seja verdade. Prima o botão de reprodução dos episódios para que o AntennaPod detete a situação.</string>

@@ -592,6 +592,7 @@
   <string name="proxy_host_empty_error">主机地址不能为空</string>
   <string name="proxy_host_invalid_error">主机地址为无效的IP地址或域名</string>
   <string name="proxy_port_invalid_error">端口不可用</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="label_import">导入</string>
   <string name="label_export">导出</string>

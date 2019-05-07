@@ -659,6 +659,7 @@
   <string name="proxy_host_empty_error">Host não pode ser vazio</string>
   <string name="proxy_host_invalid_error">Host não possui um endereço de IP ou domínio válidos</string>
   <string name="proxy_port_invalid_error">Porta inválida</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="import_export">Importar/exportar base de dados</string>
   <string name="import_export_warning">Essa funcionalidade experimental pode ser usada para transferir suas inscrições e episódios reproduzidos para outro dispositivo.\n\nBancos de dados exportados só podem ser importados pela mesma versão do AntennaPod. Caso contrário, poderá haver algum comportamento inesperado.\n\nApós a importação, os episódios poderão aparecer como baixados, mesmo que não estejam. Basta pressionar o botão de reprodução do episódio para que o AntennaPod perceba isso. </string>

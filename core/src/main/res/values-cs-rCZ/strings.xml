@@ -587,6 +587,7 @@
   <string name="proxy_host_empty_error">Host nesmí být prázdný</string>
   <string name="proxy_host_invalid_error">Host není platná IP nebo doména</string>
   <string name="proxy_port_invalid_error">Neplatný port</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <!--Casting-->
   <string name="cast_media_route_menu_title">Přehrát na...</string>

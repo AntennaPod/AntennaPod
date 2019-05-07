@@ -669,6 +669,7 @@
   <string name="proxy_host_empty_error">Serverio laukelis negali būti tuščias</string>
   <string name="proxy_host_invalid_error">Serverio laukelyje nurodytas netaisyklingas IP adresas ar sritis</string>
   <string name="proxy_port_invalid_error">Netinkamas prievadas</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="import_export">Duomenų bazės importas/eksportas</string>
   <string name="import_export_warning">Šis eksperimentinė funkcija leidžia perkelti jūsų prenumeratas bei duomenis apie perklausytus epizodus į kitą įrenginį.
