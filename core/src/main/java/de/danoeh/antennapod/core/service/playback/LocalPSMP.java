@@ -1088,25 +1088,17 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mp -> genericSeekCompleteListener();
 
     private void genericSeekCompleteListener() {
-        Runnable r = () -> {
-            Log.d(TAG, "genericSeekCompleteListener");
-            if(seekLatch != null) {
-                seekLatch.countDown();
-            }
-            playerLock.lock();
-            if (playerStatus == PlayerStatus.PLAYING) {
-                callback.onPlaybackStart(media, getPosition());
-            }
-            if (playerStatus == PlayerStatus.SEEKING) {
-                setPlayerStatus(statusBeforeSeeking, media, getPosition());
-            }
-            playerLock.unlock();
-        };
-
-        if (useCallerThread) {
-            r.run();
-        } else {
-            new Thread(r).start();
+        Log.d(TAG, "genericSeekCompleteListener");
+        if (seekLatch != null) {
+            seekLatch.countDown();
         }
+        playerLock.lock();
+        if (playerStatus == PlayerStatus.PLAYING) {
+            callback.onPlaybackStart(media, getPosition());
+        }
+        if (playerStatus == PlayerStatus.SEEKING) {
+            setPlayerStatus(statusBeforeSeeking, media, getPosition());
+        }
+        playerLock.unlock();
     }
 }
