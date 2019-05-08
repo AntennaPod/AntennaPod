@@ -421,7 +421,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             // Child List
             try {
                 for (FeedItem feedItem : taskManager.getQueue()) {
-                    mediaItems.add(feedItem.getMedia().getMediaItem());
+                    FeedMedia media = feedItem.getMedia();
+                    if (media != null) {
+                        mediaItems.add(media.getMediaItem());
+                    }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
