@@ -1092,13 +1092,22 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if (seekLatch != null) {
             seekLatch.countDown();
         }
-        playerLock.lock();
-        if (playerStatus == PlayerStatus.PLAYING) {
-            callback.onPlaybackStart(media, getPosition());
+
+        Runnable r = () -> {
+            playerLock.lock();
+            if (playerStatus == PlayerStatus.PLAYING) {
+                callback.onPlaybackStart(media, getPosition());
+            }
+            if (playerStatus == PlayerStatus.SEEKING) {
+                setPlayerStatus(statusBeforeSeeking, media, getPosition());
+            }
+            playerLock.unlock();
+        };
+
+        if (useCallerThread) {
+            r.run();
+        } else {
+            executor.submit(r);
         }
-        if (playerStatus == PlayerStatus.SEEKING) {
-            setPlayerStatus(statusBeforeSeeking, media, getPosition());
-        }
-        playerLock.unlock();
     }
 }
