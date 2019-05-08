@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -50,6 +52,7 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -75,6 +78,7 @@ public class QueueFragment extends Fragment {
     private QueueRecyclerAdapter recyclerAdapter;
     private EmptyViewHandler emptyView;
     private ProgressBar progLoading;
+    private PlaybackController controller;
 
     private List<FeedItem> queue;
     private List<Downloader> downloaderList;
@@ -103,6 +107,19 @@ public class QueueFragment extends Fragment {
         if (queue != null) {
             onFragmentLoaded(true);
         }
+        controller = new PlaybackController(getActivity(), true) {
+            @Override
+            public void onPositionObserverUpdate() {
+                if (recyclerAdapter != null) {
+                    recyclerAdapter.notifyCurrentItemChanged();
+                }
+            }
+        };
+        controller.init();
+
+        if (recyclerAdapter != null) {
+            recyclerAdapter.setPlaybackController(controller);
+        }
         loadItems(true);
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().registerSticky(this);
@@ -112,6 +129,9 @@ public class QueueFragment extends Fragment {
     public void onPause() {
         super.onPause();
         saveScrollPosition();
+        if (controller != null) {
+            controller.pause();
+        }
     }
 
     @Override
@@ -121,6 +141,17 @@ public class QueueFragment extends Fragment {
         EventBus.getDefault().unregister(this);
         if(disposable != null) {
             disposable.dispose();
+        }
+        if (controller != null) {
+            controller.release();
+            controller = null;
+        }
+    }
+
+    public void onEventMainThread(ServiceEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
+            controller.init();
         }
     }
 
@@ -522,6 +553,7 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
                         new DefaultActionButtonCallback(activity), itemTouchHelper);
                 recyclerAdapter.setHasStableIds(true);
+                recyclerAdapter.setPlaybackController(controller);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);
             }

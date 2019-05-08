@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -57,6 +58,8 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
     private final ItemTouchHelper itemTouchHelper;
+    private ViewHolder currentlyPlayingItem = null;
+    private PlaybackController playbackController;
 
     private boolean locked;
 
@@ -98,6 +101,10 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             selectedItem = item;
             return false;
         });
+
+        if (item.getMedia() != null && item.getMedia().isCurrentlyPlaying()) {
+            currentlyPlayingItem = holder;
+        }
     }
 
     @Nullable
@@ -113,6 +120,16 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     public int getItemCount() {
         return itemAccess.getCount();
+    }
+
+    public void notifyCurrentItemChanged() {
+        if (currentlyPlayingItem != null) {
+            notifyItemChanged(currentlyPlayingItem.getAdapterPosition());
+        }
+    }
+
+    public void setPlaybackController(PlaybackController playbackController) {
+        this.playbackController = playbackController;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
@@ -246,14 +263,25 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                     progressBar.setProgress(itemAccess.getItemDownloadProgressPercent(item));
                     progressBar.setVisibility(View.VISIBLE);
                 } else if (state == FeedItem.State.PLAYING
-                    || state == FeedItem.State.IN_PROGRESS) {
-                    if (media.getDuration() > 0) {
-                        int progress = (int) (100.0 * media.getPosition() / media.getDuration());
+                        || state == FeedItem.State.IN_PROGRESS) {
+                    int duration;
+                    int position;
+
+                    if (media.isCurrentlyPlaying()) {
+                        duration = playbackController.getDuration();
+                        position = playbackController.getPosition();
+                    } else {
+                        duration = media.getDuration();
+                        position = media.getPosition();
+                    }
+
+                    if (duration > 0) {
+                        int progress = (int) (100.0 * position / duration);
                         progressBar.setProgress(progress);
                         progressBar.setVisibility(View.VISIBLE);
                         progressLeft.setText(Converter
-                            .getDurationStringLong(media.getPosition()));
-                        progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
+                            .getDurationStringLong(position));
+                        progressRight.setText(Converter.getDurationStringLong(duration));
                     }
                 } else {
                     if(media.getSize() > 0) {
