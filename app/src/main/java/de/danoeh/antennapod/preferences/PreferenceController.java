@@ -57,6 +57,7 @@ import de.danoeh.antennapod.activity.DirectoryChooserActivity;
 import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
+import de.danoeh.antennapod.activity.OpmlExportToPathActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.StatisticsActivity;
@@ -266,7 +267,12 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 }
         );
         ui.findPreference(PreferenceController.PREF_OPML_EXPORT).setOnPreferenceClickListener(
-                preference -> export(new OpmlWriter()));
+                preference -> {
+                    activity.startActivity(new Intent(activity, OpmlExportToPathActivity.class));
+                    return true;
+                });
+        //ui.findPreference(PreferenceController.PREF_OPML_EXPORT).setOnPreferenceClickListener(
+        //        preference -> export(new OpmlWriter()));
         ui.findPreference(PreferenceController.PREF_HTML_EXPORT).setOnPreferenceClickListener(
                 preference -> export(new HtmlWriter()));
         ui.findPreference(PreferenceController.PREF_OPML_IMPORT).setOnPreferenceClickListener(
