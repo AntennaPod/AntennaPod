@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -9,7 +10,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.FileProvider;
+import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
@@ -18,11 +19,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.ExportWorker;
+import de.danoeh.antennapod.asynctask.DocumentFileExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -36,14 +36,14 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Lets the user select the path for the OPML-export process
  */
+@TargetApi(21)
 public class OpmlExportToPathActivity extends OpmlImportBaseActivity {
 
-    private static final String TAG = "OpmlImportFromPathAct";
+    private static final String TAG = "OpmlExportToPathActivity";
 
     private static final int CHOOSE_OPML_EXPORT_PATH = 1;
 
     private Intent intentPickAction;
-    private Intent intentGetContentAction;
 
     private Disposable disposable;
 
@@ -57,14 +57,9 @@ public class OpmlExportToPathActivity extends OpmlImportBaseActivity {
 
         final TextView txtvHeaderExplanation1 = findViewById(R.id.txtvHeadingExplanation1);
         final TextView txtvExplanation1 = findViewById(R.id.txtvExplanation1);
-        final TextView txtvHeaderExplanation2 = findViewById(R.id.txtvHeadingExplanation2);
-        final TextView txtvExplanation2 = findViewById(R.id.txtvExplanation2);
 
         Button butChooseFilesystem = findViewById(R.id.butChooseFileFromFilesystem);
         butChooseFilesystem.setOnClickListener(v -> chooseFileFromFilesystem());
-
-        Button butChooseExternal = findViewById(R.id.butChooseFileFromExternal);
-        butChooseExternal.setOnClickListener(v -> chooseFileFromExternal());
 
         int nextOption = 1;
         String optionLabel = getString(R.string.opml_import_option);
@@ -81,20 +76,6 @@ public class OpmlExportToPathActivity extends OpmlImportBaseActivity {
         }
         if(txtvExplanation1.getVisibility() == View.VISIBLE) {
             txtvHeaderExplanation1.setText(String.format(optionLabel, nextOption));
-            nextOption++;
-        }
-
-        intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
-        intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
-        intentGetContentAction.setType("*/*");
-        if(!IntentUtils.isCallable(getApplicationContext(), intentGetContentAction)) {
-            txtvHeaderExplanation2.setVisibility(View.GONE);
-            txtvExplanation2.setVisibility(View.GONE);
-            findViewById(R.id.divider2).setVisibility(View.GONE);
-            butChooseExternal.setVisibility(View.GONE);
-        } else {
-            txtvHeaderExplanation2.setText(String.format(optionLabel, nextOption));
-            nextOption++;
         }
     }
 
@@ -129,7 +110,7 @@ public class OpmlExportToPathActivity extends OpmlImportBaseActivity {
 
     /*
      * Creates an implicit intent to launch a file manager which lets
-     * the user choose a specific OPML-file to import from.
+     * the user choose a specific directory to export to.
      */
     private void chooseFileFromFilesystem() {
         try {
@@ -139,25 +120,14 @@ public class OpmlExportToPathActivity extends OpmlImportBaseActivity {
         }
     }
 
-    private void chooseFileFromExternal() {
-        try {
-            startActivityForResult(intentGetContentAction, CHOOSE_OPML_EXPORT_PATH);
-        } catch (ActivityNotFoundException e) {
-            Log.e(TAG, "No activity found. Should never happen...");
-        }
-    }
-
     /**
-      * Gets the path of the file chosen with chooseFileToImport()
+      * Gets the path of the directory chosen with chooseFileFromFilesystem()
       */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == CHOOSE_OPML_EXPORT_PATH) {
             Uri uri = data.getData();
-            if(uri != null && uri.toString().startsWith("/")) {
-                uri = Uri.parse("file://" + uri.toString());
-            }
             export(new OpmlWriter(), uri);
         }
     }
@@ -170,27 +140,25 @@ public class OpmlExportToPathActivity extends OpmlImportBaseActivity {
         progressDialog.show();
         final AlertDialog.Builder alert = new AlertDialog.Builder(context)
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
-        Observable<File> observable = new ExportWorker(exportWriter, context, uri).exportObservable();
+        Observable<DocumentFile> observable = new DocumentFileExportWorker(exportWriter, context, uri).exportObservable();
         disposable = observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(output -> {
                     alert.setTitle(R.string.export_success_title);
-                    String message = context.getString(R.string.export_success_sum, output.toString());
+                    String message = context.getString(R.string.export_success_sum, output.getUri());
                     alert.setMessage(message);
                     alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
-                        Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
-                                context.getString(R.string.provider_authority), output);
                         Intent sendIntent = new Intent(Intent.ACTION_SEND);
                         sendIntent.putExtra(Intent.EXTRA_SUBJECT,
                                 context.getResources().getText(R.string.opml_export_label));
-                        sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, output.getUri());
                         sendIntent.setType("text/plain");
                         sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
                             List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
                             for (ResolveInfo resolveInfo : resInfoList) {
                                 String packageName = resolveInfo.activityInfo.packageName;
-                                context.grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                context.grantUriPermission(packageName, output.getUri(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             }
                         }
                         context.startActivity(Intent.createChooser(sendIntent,

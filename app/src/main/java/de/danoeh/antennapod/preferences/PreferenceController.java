@@ -266,13 +266,16 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     return true;
                 }
         );
-        ui.findPreference(PreferenceController.PREF_OPML_EXPORT).setOnPreferenceClickListener(
-                preference -> {
-                    activity.startActivity(new Intent(activity, OpmlExportToPathActivity.class));
-                    return true;
-                });
-        //ui.findPreference(PreferenceController.PREF_OPML_EXPORT).setOnPreferenceClickListener(
-        //        preference -> export(new OpmlWriter()));
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) {
+            ui.findPreference(PreferenceController.PREF_OPML_EXPORT).setOnPreferenceClickListener(
+                    preference -> export(new OpmlWriter()));
+        } else {
+            ui.findPreference(PreferenceController.PREF_OPML_EXPORT).setOnPreferenceClickListener(
+                    preference -> {
+                        activity.startActivity(new Intent(activity, OpmlExportToPathActivity.class));
+                        return true;
+                    });
+        }
         ui.findPreference(PreferenceController.PREF_HTML_EXPORT).setOnPreferenceClickListener(
                 preference -> export(new HtmlWriter()));
         ui.findPreference(PreferenceController.PREF_OPML_IMPORT).setOnPreferenceClickListener(
