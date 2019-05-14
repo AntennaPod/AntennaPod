@@ -63,6 +63,15 @@ public class ChaptersFragment extends ListFragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
