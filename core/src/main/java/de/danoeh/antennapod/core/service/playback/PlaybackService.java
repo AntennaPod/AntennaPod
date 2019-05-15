@@ -471,8 +471,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "Received media button event");
             boolean handled = handleKeycode(keycode, true);
             if (!handled) {
-                // Just silently ignores unsupported keycode. Whether the service will
-                // continue to run is solely dependent on whether it is playing some media.
+                if (!serviceManager.serviceInStartedState) {
+                    startForegroundThenStop();
+                }
                 return Service.START_NOT_STICKY;
             }
         } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
@@ -486,9 +487,21 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
             }
             mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+        } else if (!serviceManager.serviceInStartedState) {
+            startForegroundThenStop();
         }
 
         return Service.START_NOT_STICKY;
+    }
+
+    /**
+     * If startForeground was not called, stop can not be called either.
+     * This is a hack to stop the service by showing an intermediate foreground notification
+     */
+    private void startForegroundThenStop() {
+        Log.d(TAG, "startForegroundThenStop");
+        startForeground(NOTIFICATION_ID, createBasicNotification().build());
+        stopForeground(true);
     }
 
     /**
