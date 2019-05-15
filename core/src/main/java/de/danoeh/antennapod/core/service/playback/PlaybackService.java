@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -24,7 +23,6 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
@@ -66,7 +64,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -95,7 +92,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * True if cast session should disconnect.
      */
-    private static final String EXTRA_CAST_DISCONNECT = "extra.de.danoeh.antennapod.core.service.castDisconnect";
+    public static final String EXTRA_CAST_DISCONNECT = "extra.de.danoeh.antennapod.core.service.castDisconnect";
     /**
      * True if media should be streamed.
      */
@@ -317,24 +314,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaSession.setActive(true);
 
         EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_STARTED));
-    }
-
-    private NotificationCompat.Builder createBasicNotification() {
-        final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
-
-        final PendingIntent pIntent = PendingIntent.getActivity(this, 0,
-                PlaybackService.getPlayerActivityIntent(this),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        return new NotificationCompat.Builder(
-                this, NotificationUtils.CHANNEL_ID_PLAYING)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText("Service is running") // Just in case the notification is not updated (should not occur)
-                .setOngoing(false)
-                .setContentIntent(pIntent)
-                .setWhen(0) // we don't need the time
-                .setSmallIcon(smallIcon)
-                .setPriority(NotificationCompat.PRIORITY_MIN);
     }
 
     @Override
@@ -1201,8 +1180,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return;
         }
         Runnable notificationSetupTask = new Runnable() {
-            Bitmap icon = null;
-
             @Override
             public void run() {
                 Log.d(TAG, "notificationSetupTask: Starting background work");
@@ -1215,115 +1192,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return;
                 }
 
-                int iconSize = getResources().getDimensionPixelSize(
-                        android.R.dimen.notification_large_icon_width);
-                try {
-                    icon = Glide.with(PlaybackService.this)
-                            .asBitmap()
-                            .load(playable.getImageLocation())
-                            .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                            .apply(new RequestOptions().centerCrop())
-                            .submit(iconSize, iconSize)
-                            .get();
-                } catch (Throwable tr) {
-                    Log.e(TAG, "Error loading the media icon for the notification", tr);
-                }
-
-                if (icon == null) {
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                            ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext()));
-                }
 
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-                Log.v(TAG, "notificationSetupTask: playerStatus=" + playerStatus);
+                PlaybackServiceNotificationBuilder builder = new PlaybackServiceNotificationBuilder(
+                        PlaybackService.this, NotificationUtils.CHANNEL_ID_PLAYING);
+                builder.setup(playable, mediaSession.getSessionToken(), playerStatus, isCasting);
+                Notification notification = builder.build();
 
                 if (!Thread.currentThread().isInterrupted() && isStarted()) {
-                    String contentText = playable.getEpisodeTitle();
-                    String contentTitle = playable.getFeedTitle();
-                    Notification notification;
-
-                    // Builder is v7, even if some not overwritten methods return its parent's v4 interface
-                    NotificationCompat.Builder notificationBuilder = createBasicNotification();
-                    notificationBuilder.setContentTitle(contentTitle)
-                            .setContentText(contentText)
-                            .setPriority(UserPreferences.getNotifyPriority())
-                            .setLargeIcon(icon); // set notification priority
-                    IntList compactActionList = new IntList();
-
-                    int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
-
-                    if (isCasting) {
-                        Intent stopCastingIntent = new Intent(PlaybackService.this, PlaybackService.class);
-                        stopCastingIntent.putExtra(EXTRA_CAST_DISCONNECT, true);
-                        PendingIntent stopCastingPendingIntent = PendingIntent.getService(PlaybackService.this,
-                                numActions, stopCastingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        notificationBuilder.addAction(R.drawable.ic_media_cast_disconnect,
-                                getString(R.string.cast_disconnect_label),
-                                stopCastingPendingIntent);
-                        numActions++;
-                    }
-
-                    // always let them rewind
-                    PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
-                    notificationBuilder.addAction(android.R.drawable.ic_media_rew,
-                            getString(R.string.rewind_label),
-                            rewindButtonPendingIntent);
-                    if (UserPreferences.showRewindOnCompactNotification()) {
-                        compactActionList.add(numActions);
-                    }
-                    numActions++;
-
-                    if (playerStatus == PlayerStatus.PLAYING) {
-                        PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
-                                KeyEvent.KEYCODE_MEDIA_PAUSE, numActions);
-                        notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
-                                getString(R.string.pause_label),
-                                pauseButtonPendingIntent);
-                        compactActionList.add(numActions++);
-                    } else {
-                        PendingIntent playButtonPendingIntent = getPendingIntentForMediaAction(
-                                KeyEvent.KEYCODE_MEDIA_PLAY, numActions);
-                        notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
-                                getString(R.string.play_label),
-                                playButtonPendingIntent);
-                        compactActionList.add(numActions++);
-                    }
-
-                    // ff follows play, then we have skip (if it's present)
-                    PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, numActions);
-                    notificationBuilder.addAction(android.R.drawable.ic_media_ff,
-                            getString(R.string.fast_forward_label),
-                            ffButtonPendingIntent);
-                    if (UserPreferences.showFastForwardOnCompactNotification()) {
-                        compactActionList.add(numActions);
-                    }
-                    numActions++;
-
-                    if (UserPreferences.isFollowQueue()) {
-                        PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
-                                KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
-                        notificationBuilder.addAction(android.R.drawable.ic_media_next,
-                                getString(R.string.skip_episode_label),
-                                skipButtonPendingIntent);
-                        if (UserPreferences.showSkipOnCompactNotification()) {
-                            compactActionList.add(numActions);
-                        }
-                        numActions++;
-                    }
-
-                    PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_STOP, numActions);
-                    notificationBuilder.setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
-                            .setMediaSession(mediaSession.getSessionToken())
-                            .setShowActionsInCompactView(compactActionList.toArray())
-                            .setShowCancelButton(true)
-                            .setCancelButtonIntent(stopButtonPendingIntent))
-                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                            .setColor(NotificationCompat.COLOR_DEFAULT);
-
-                    notification = notificationBuilder.build();
 
                     if (playerStatus == PlayerStatus.PLAYING ||
                             playerStatus == PlayerStatus.PREPARING ||
@@ -1359,18 +1235,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         };
         notificationSetupThread = new Thread(notificationSetupTask);
         notificationSetupThread.start();
-    }
-
-    private PendingIntent getPendingIntentForMediaAction(int keycodeValue, int requestCode) {
-        Intent intent = new Intent(
-                PlaybackService.this, PlaybackService.class);
-        intent.putExtra(
-                MediaButtonReceiver.EXTRA_KEYCODE,
-                keycodeValue);
-        return PendingIntent
-                .getService(PlaybackService.this, requestCode,
-                        intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
