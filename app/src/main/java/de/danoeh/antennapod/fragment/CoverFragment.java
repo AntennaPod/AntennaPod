@@ -115,4 +115,13 @@ public class CoverFragment extends Fragment {
         controller.release();
         controller = null;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
 }
