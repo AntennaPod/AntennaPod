@@ -497,7 +497,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
-            setupNotification(playable);
         }
 
         return Service.START_NOT_STICKY;
@@ -1218,7 +1217,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             notificationSetupThread.interrupt();
         }
         if (playable == null) {
-            Log.d(TAG, "setupNotification: playable is null");
+            Log.d(TAG, "setupNotification: playable is null" + Log.getStackTraceString(new Exception()));
             if (!started) {
                 stopService();
             }
