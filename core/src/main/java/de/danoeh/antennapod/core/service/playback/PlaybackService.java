@@ -25,7 +25,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -76,11 +75,6 @@ import de.greenrobot.event.EventBus;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
- *
- * Callers should connect to the service with either:
- * - .bindService()
- * - ContextCompat.startForegroundService(), optionally with arguments, such as media to be played, in intent extras
- *
  */
 public class PlaybackService extends MediaBrowserServiceCompat {
     /**
@@ -199,6 +193,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     public static boolean isRunning = false;
     /**
+     * Is true if service has received a valid start command.
+     */
+    public static boolean started = false;
+    /**
      * Is true if the service was running, but paused due to headphone disconnect
      */
     private static boolean transientPause = false;
@@ -265,6 +263,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         super.onCreate();
         Log.d(TAG, "Service created.");
         isRunning = true;
+
+        NotificationCompat.Builder notificationBuilder = createBasicNotification();
+        startForeground(NOTIFICATION_ID, notificationBuilder.build());
 
         registerReceiver(autoStateUpdated, new IntentFilter("com.google.android.gms.car.media.STATUS"));
         registerReceiver(headsetDisconnected, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
@@ -343,6 +344,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Service is about to be destroyed");
         stopForeground(true);
         isRunning = false;
+        started = false;
         currentMediaType = MediaType.UNKNOWN;
 
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -364,6 +366,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         taskManager.shutdown();
     }
     
+    private void stopService() {
+        stopForeground(true);
+        stopSelf();
+    }
+
     @Override
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, Bundle rootHints) {
         Log.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName +
@@ -460,32 +467,37 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         final boolean castDisconnect = intent.getBooleanExtra(EXTRA_CAST_DISCONNECT, false);
         Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
         if (keycode == -1 && playable == null && !castDisconnect) {
-            // Typical cases when the service was started with no argument
-            // - when it is first bound, and then moved to startedState, as in <code>serviceManager.moveServiceToStartedState()</code>
-            // - callers (e.g., Controller) explicitly
-            Log.d(TAG, "PlaybackService was started with no arguments.");
+            Log.e(TAG, "PlaybackService was started with no arguments");
+            stopService();
             return Service.START_NOT_STICKY;
         }
 
-        if (keycode != -1) {
-            Log.d(TAG, "Received media button event");
-            boolean handled = handleKeycode(keycode, true);
-            if (!handled) {
-                // Just silently ignores unsupported keycode. Whether the service will
-                // continue to run is solely dependent on whether it is playing some media.
-                return Service.START_NOT_STICKY;
+        if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
+            Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
+            stopForeground(true);
+        } else {
+            if (keycode != -1) {
+                Log.d(TAG, "Received media button event");
+                boolean handled = handleKeycode(keycode, true);
+                if (!handled) {
+                    stopService();
+                    return Service.START_NOT_STICKY;
+                }
+            } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
+                started = true;
+                boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
+                        true);
+                boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
+                boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
+                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+                //If the user asks to play External Media, the casting session, if on, should end.
+                flavorHelper.castDisconnect(playable instanceof ExternalMedia);
+                if (playable instanceof FeedMedia) {
+                    playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
+                }
+                mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             }
-        } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
-            boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM, true);
-            boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
-            boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
-            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
-            //If the user asks to play External Media, the casting session, if on, should end.
-            flavorHelper.castDisconnect(playable instanceof ExternalMedia);
-            if (playable instanceof FeedMedia) {
-                playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
-            }
-            mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+            setupNotification(playable);
         }
 
         return Service.START_NOT_STICKY;
@@ -559,23 +571,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
                 return true;
             case KeyEvent.KEYCODE_MEDIA_STOP:
-                // The logic gives UI illusion of stop by removing notification
-                // In the UI within AntennaPod, including widgets, it is seen as PAUSE, e.g.,
-                // users can still user on-screen widget to resume playing.
                 if (status == PlayerStatus.PLAYING) {
-                    // Implementation note: Use of a state in serviceManager to tell it to
-                    // show stop state UI (i.e., stopForeground(true)) is a bit awkward.
-                    //
-                    // More intuitive API would be for mediaPlayer.pause() returns a Future that
-                    // returns after pause, including the related async notification work completes.
-                    // However, it has its own complication, that mediaPlayer.pause() does not
-                    // really know when all the related work completes, as they are buried into
-                    // (asynchronous) callbacks.
-                    serviceManager.treatNextPauseAsStopOnUI();
                     mediaPlayer.pause(true, true);
-                } else {
-                    serviceManager.showUIForStopState();
+                    started = false;
                 }
+
+                stopForeground(true); // gets rid of persistent notification
                 return true;
             default:
                 Log.d(TAG, "Unhandled key code: " + keycode);
@@ -591,6 +592,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Playable playable = Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext());
         if (playable != null) {
             mediaPlayer.playMediaObject(playable, false, true, true);
+            started = true;
             PlaybackService.this.updateMediaSessionMetadata(playable);
         }
     }
@@ -605,9 +607,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void notifyVideoSurfaceAbandoned() {
-        Log.v(TAG, "notifyVideoSurfaceAbandoned()");
         mediaPlayer.pause(true, false);
         mediaPlayer.resetVideoSurface();
+        setupNotification(getPlayable());
+        stopForeground(!UserPreferences.isPersistNotify());
     }
 
     private final PlaybackServiceTaskManager.PSTMCallback taskManagerCallback = new PlaybackServiceTaskManager.PSTMCallback() {
@@ -670,15 +673,27 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
 
                 case PAUSED:
+                    if ((UserPreferences.isPersistNotify() || isCasting) &&
+                            android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        // do not remove notification on pause based on user pref and whether android version supports expanded notifications
+                        // Change [Play] button to [Pause]
+                        setupNotification(newInfo);
+                    } else if (!UserPreferences.isPersistNotify() && !isCasting) {
+                        // remove notification on pause
+                        stopForeground(true);
+                    }
                     writePlayerStatusPlaybackPreferences();
                     break;
 
                 case STOPPED:
                     //writePlaybackPreferencesNoMediaPlaying();
+                    //stopService();
                     break;
 
                 case PLAYING:
                     writePlayerStatusPlaybackPreferences();
+                    setupNotification(newInfo);
+                    started = true;
                     // set sleep timer if auto-enabled
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING &&
                             SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
@@ -689,6 +704,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 case ERROR:
                     writePlaybackPreferencesNoMediaPlaying();
+                    stopService();
                     break;
 
             }
@@ -701,7 +717,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void shouldStop() {
-            serviceManager.stopService();
+            stopService();
         }
 
         @Override
@@ -750,6 +766,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
             sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
             writePlaybackPreferencesNoMediaPlaying();
+            stopService();
             return true;
         }
 
@@ -833,6 +850,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             writePlaybackPreferencesNoMediaPlaying();
+            if (!isCasting) {
+                stopForeground(true);
+            }
         }
         if (mediaType == null) {
             sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
@@ -1046,7 +1066,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void updateMediaSession(final PlayerStatus playerStatus) {
         PlaybackStateCompat.Builder sessionState = new PlaybackStateCompat.Builder();
 
-        @PlaybackStateCompat.State
         int state;
         if (playerStatus != null) {
             switch (playerStatus) {
@@ -1110,9 +1129,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         flavorHelper.mediaSessionSetExtraForWear(mediaSession);
 
-        final PlaybackStateCompat sessionStateBuilt = sessionState.build();
-        mediaSession.setPlaybackState(sessionStateBuilt);
-        serviceManager.onPlaybackStateChange(sessionStateBuilt);
+        mediaSession.setPlaybackState(sessionState.build());
     }
 
     private static boolean useSkipToPreviousForRewindInLockscreen() {
@@ -1166,7 +1183,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, imageLocation);
                 }
             }
-            if (!Thread.currentThread().isInterrupted() && isStarted()) {
+            if (!Thread.currentThread().isInterrupted() && started) {
                 mediaSession.setSessionActivity(PendingIntent.getActivity(this, 0,
                         PlaybackService.getPlayerActivityIntent(this),
                         PendingIntent.FLAG_UPDATE_CURRENT));
@@ -1189,14 +1206,21 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private Thread notificationSetupThread;
 
-    private synchronized void setupNotification(final Playable playable, boolean treatPauseAsStop) {
+    /**
+     * Prepares notification and starts the service in the foreground.
+     */
+    private void setupNotification(final PlaybackServiceMediaPlayer.PSMPInfo info) {
+        setupNotification(info.playable);
+    }
+
+    private synchronized void setupNotification(final Playable playable) {
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
         }
         if (playable == null) {
             Log.d(TAG, "setupNotification: playable is null");
-            if (!isStarted()) {
-                serviceManager.stopService();
+            if (!started) {
+                stopService();
             }
             return;
         }
@@ -1205,12 +1229,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             @Override
             public void run() {
-                Log.d(TAG, "notificationSetupTask: Starting background work");
+                Log.d(TAG, "Starting background work");
 
                 if (mediaPlayer == null) {
                     Log.d(TAG, "notificationSetupTask: mediaPlayer is null");
-                    if (!isStarted()) {
-                        serviceManager.stopService();
+                    if (!started) {
+                        stopService();
                     }
                     return;
                 }
@@ -1235,9 +1259,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
 
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-                Log.v(TAG, "notificationSetupTask: playerStatus=" + playerStatus);
 
-                if (!Thread.currentThread().isInterrupted() && isStarted()) {
+                if (!Thread.currentThread().isInterrupted() && started) {
                     String contentText = playable.getEpisodeTitle();
                     String contentTitle = playable.getFeedTitle();
                     Notification notification;
@@ -1329,33 +1352,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             playerStatus == PlayerStatus.PREPARING ||
                             playerStatus == PlayerStatus.SEEKING ||
                             isCasting) {
-                        Log.v(TAG, "notificationSetupTask: make service foreground");
                         startForeground(NOTIFICATION_ID, notification);
-                    } else if (playerStatus == PlayerStatus.PAUSED) {
-                        if (treatPauseAsStop) {
-                            stopForeground(true);
-                        } else if ((UserPreferences.isPersistNotify() || isCasting) &&
-                                android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            // do not remove notification on pause based on user pref and whether android version supports expanded notifications
-                            // Change [Play] button to [Pause]
-                            leaveNotificationAsBackground(notification);
-                        } else if (!UserPreferences.isPersistNotify() && !isCasting) {
-                            // remove notification on pause
-                            stopForeground(true);
-                        }
                     } else {
-                        leaveNotificationAsBackground(notification);
+                        stopForeground(false);
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        mNotificationManager.notify(NOTIFICATION_ID, notification);
                     }
                     Log.d(TAG, "Notification set up");
                 }
             }
-
-            private void leaveNotificationAsBackground(@NonNull Notification notification) {
-                stopForeground(false);
-                NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                mNotificationManager.notify(NOTIFICATION_ID, notification);
-            }
-
         };
         notificationSetupThread = new Thread(notificationSetupTask);
         notificationSetupThread.start();
@@ -1550,7 +1555,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (TextUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
-                serviceManager.stopService();
+                stopService();
             }
         }
 
@@ -1848,6 +1853,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         void saveCurrentPosition(boolean fromMediaPlayer, Playable playable, int position);
 
+        void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info);
+
         MediaSessionCompat getMediaSession();
 
         Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter);
@@ -1887,6 +1894,24 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
+        public void setupNotification(boolean connected, PlaybackServiceMediaPlayer.PSMPInfo info) {
+            if (connected) {
+                PlaybackService.this.setupNotification(info);
+            } else {
+                PlayerStatus status = info.playerStatus;
+                if ((status == PlayerStatus.PLAYING ||
+                        status == PlayerStatus.SEEKING ||
+                        status == PlayerStatus.PREPARING ||
+                        UserPreferences.isPersistNotify()) &&
+                        android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    PlaybackService.this.setupNotification(info);
+                } else if (!UserPreferences.isPersistNotify()) {
+                    PlaybackService.this.stopForeground(true);
+                }
+            }
+        }
+
+        @Override
         public MediaSessionCompat getMediaSession() {
             return PlaybackService.this.mediaSession;
         }
@@ -1901,116 +1926,4 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             PlaybackService.this.unregisterReceiver(receiver);
         }
     };
-
-    private boolean isStarted() {
-        return serviceManager.serviceInStartedState;
-    }
-
-    /**
-     * The helper that manages PlaybackService's foreground service life cycle and the associated
-     * notification control.
-     *
-     * The logic is adapted from a sample app from The Android Open Source Project.
-     * See https://github.com/googlesamples/android-MediaBrowserService/blob/6cf01be9ef82ca2dd653f03e2a4af0b075cc0021/Application/src/main/java/com/example/android/mediasession/service/MusicService.java#L211
-     *
-     */
-    private class ServiceManager {
-        private boolean serviceInStartedState;
-        private boolean toTreatNextPauseAsStopOnUI = false;
-
-        /**
-         *
-         * Entry point method for callers. Upon PlaybackState changes,
-         * the manager start/stop the PlaybackService as well as relevant notification
-         */
-        void onPlaybackStateChange(PlaybackStateCompat state) {
-            // Report the state to the MediaSession.
-
-            Log.v(TAG, "onPlaybackStateChange(" + (state != null ? state.getState() : "null") + ")");
-            try {
-                // Manage the started state of this service.
-                switch (state.getState()) {
-                    case PlaybackStateCompat.STATE_CONNECTING:
-                        // move the service to started, aka, making it foreground
-                        // upon STATE_CONNECTING, i.e., in preparing to play a media.
-                        // This is done so that in case the preparation takes a long time, e.g.,
-                        // streaming over a slow network,
-                        // the service won't be killed by the system prematurely.
-                        moveServiceToStartedState(state);
-                        break;
-                    case PlaybackStateCompat.STATE_PLAYING:
-                        moveServiceToStartedState(state);
-                        break;
-                    case PlaybackStateCompat.STATE_PAUSED:
-                        updateNotificationForPause(state);
-                        break;
-                    case PlaybackStateCompat.STATE_STOPPED:
-                        moveServiceOutOfStartedState(state);
-                        break;
-                    case PlaybackStateCompat.STATE_ERROR:
-                        moveServiceOutOfStartedState(state);
-                        break;
-                }
-            } finally {
-                if (toTreatNextPauseAsStopOnUI) {
-                    Log.v(TAG, "onPlaybackStateChange() - toTreatNextPauseAsStopOnUI enabled. The actual state (should be PAUSED, aka 2): " + state.getState());
-                    toTreatNextPauseAsStopOnUI = false;
-                }
-            }
-        }
-
-        /**
-         * Tell service manager that on the next state change, if the state is STATE_PAUSED,
-         * give UI treatment as if it is stopped.
-         *
-         * @see #handleKeycode(int, boolean) the use case
-         */
-        public void treatNextPauseAsStopOnUI() {
-            this.toTreatNextPauseAsStopOnUI = true;
-        }
-
-        public void showUIForStopState() {
-            Log.v(TAG, "serviceManager.showUIForStopState()");
-            stopForeground(true); // gets rid of persistent notification, to give the UI illusion of STOP
-        }
-
-        public void stopService() {
-            stopForeground(true);
-            stopSelf();
-            serviceInStartedState = false;
-        }
-
-        private void moveServiceToStartedState(PlaybackStateCompat state) {
-            if (!serviceInStartedState) {
-                ContextCompat.startForegroundService(
-                        PlaybackService.this,
-                        new Intent(PlaybackService.this, PlaybackService.class));
-                serviceInStartedState = true;
-            }
-
-            doSetupNotification();
-        }
-
-        private void updateNotificationForPause(PlaybackStateCompat state) {
-            doSetupNotification();
-        }
-
-        private void moveServiceOutOfStartedState(PlaybackStateCompat state) {
-            stopService();
-        }
-
-        private void doSetupNotification() {
-            if (mediaPlayer != null && mediaPlayer.getPlayable() != null) {
-                // it updates notification and set foreground status
-                // based on player status (similar to PlaybackState)
-                setupNotification(mediaPlayer.getPlayable(), toTreatNextPauseAsStopOnUI);
-            } else {
-                // should not happen unless there are bugs.
-                Log.e(TAG, "doSetupNotification() - unexpectedly there is no playable. No notification setup done. mediaPlayer." + mediaPlayer);
-            }
-        }
-    }
-
-    private final ServiceManager serviceManager = new ServiceManager();
-
 }
