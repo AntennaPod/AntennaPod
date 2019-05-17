@@ -496,6 +496,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+            } else {
+                Log.d(TAG, "Did not handle intent to PlaybackService: " + intent);
+                Log.d(TAG, "Extras: " + intent.getExtras());
             }
         }
 
