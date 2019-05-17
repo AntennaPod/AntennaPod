@@ -153,6 +153,7 @@ public class PlaybackServiceFlavorHelper {
                 // hardware volume buttons control the local device volume
                 mediaRouter.setMediaSessionCompat(null);
                 unregisterWifiBroadcastReceiver();
+                callback.setupNotification(false, info);
             }
         };
     }
@@ -182,6 +183,7 @@ public class PlaybackServiceFlavorHelper {
         // hardware volume buttons control the remote device volume
         mediaRouter.setMediaSessionCompat(callback.getMediaSession());
         registerWifiBroadcastReceiver();
+        callback.setupNotification(true, info);
     }
 
     private void switchMediaPlayer(@NonNull PlaybackServiceMediaPlayer newPlayer,
