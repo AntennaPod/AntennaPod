@@ -68,6 +68,11 @@ public class NetworkUtils {
 						}
 					}
 				}
+			} else if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
+				Log.d(TAG, "Device is connected to Ethernet");
+				if (networkInfo.isConnected()) {
+					return true;
+				}
 			} else {
 				if (!UserPreferences.isEnableAutodownloadOnMobile()) {
 					Log.d(TAG, "Auto Download not enabled on Mobile");
