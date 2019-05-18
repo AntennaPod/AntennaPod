@@ -796,4 +796,5 @@
     <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
     <string name="notification_channel_error">Errors</string>
     <string name="notification_channel_error_description">Shown if something went wrong, for example if download or gpodder sync fails.</string>
+    <string name="import_bad_file">Invalid/corrupt file</string>
 </resources>
