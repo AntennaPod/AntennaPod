@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.List;
+import java.util.ListIterator;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
 import de.danoeh.antennapod.core.event.ServiceEvent;
@@ -17,7 +20,6 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
 
 public class ChaptersFragment extends ListFragment {
     private static final String TAG = "ChaptersFragment";
@@ -79,6 +81,23 @@ public class ChaptersFragment extends ListFragment {
         controller = null;
     }
 
+    private void scrollTo(int position) {
+        getListView().setSelection(position);
+    }
+
+    private int getCurrentChapter(Playable media) {
+        int currentPosition = controller.getPosition();
+
+        List<Chapter> chapters = media.getChapters();
+        for (final ListIterator<Chapter> it = chapters.listIterator(); it.hasNext(); ) {
+            Chapter chapter = it.next();
+            if (chapter.getStart() > currentPosition) {
+                return it.previousIndex() - 1;
+            }
+        }
+        return chapters.size() - 1;
+    }
+
     public void onEventMainThread(ServiceEvent event) {
         if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
             controller.init();
@@ -111,6 +130,7 @@ public class ChaptersFragment extends ListFragment {
                 setEmptyText(getString(R.string.no_chapters_label));
             } else {
                 setEmptyText(null);
+                scrollTo(getCurrentChapter(media));
             }
         }
     }
