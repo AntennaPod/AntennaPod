@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.activity;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -46,22 +48,23 @@ public class AboutActivity extends AppCompatActivity {
         webViewContainer = findViewById(R.id.webViewContainer);
         webView = findViewById(R.id.webViewAbout);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            }
-            webView.setBackgroundColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
+        webView.setBackgroundColor(Color.TRANSPARENT);
         webView.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (!url.startsWith("http")) {
+                if (url.startsWith("http")) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(browserIntent);
+                    return true;
+                } else {
                     url = url.replace("file:///android_asset/", "");
                     loadAsset(url);
                     return true;
                 }
-                return false;
             }
 
         });

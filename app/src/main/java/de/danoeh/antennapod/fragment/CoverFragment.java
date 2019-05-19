@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,10 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays the cover and the title of a FeedItem.
@@ -29,6 +34,7 @@ public class CoverFragment extends Fragment {
     private TextView txtvEpisodeTitle;
     private ImageView imgvCover;
     private PlaybackController controller;
+    private Disposable disposable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,11 +48,24 @@ public class CoverFragment extends Fragment {
     }
 
     private void loadMediaInfo() {
-        Playable media = controller.getMedia();
-        if (media == null) {
-            Log.w(TAG, "loadMediaInfo was called while media was null");
-            return;
+        if (disposable != null) {
+            disposable.dispose();
         }
+        disposable = Maybe.create(emitter -> {
+                    Playable media = controller.getMedia();
+                    if (media != null) {
+                        emitter.onSuccess(media);
+                    } else {
+                        emitter.onComplete();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> displayMediaInfo((Playable) media),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    private void displayMediaInfo(@NonNull Playable media) {
         txtvPodcastTitle.setText(media.getFeedTitle());
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         Glide.with(this)
@@ -71,9 +90,6 @@ public class CoverFragment extends Fragment {
         controller = new PlaybackController(getActivity(), false) {
             @Override
             public boolean loadMediaInfo() {
-                if (getMedia() == null) {
-                    return false;
-                }
                 CoverFragment.this.loadMediaInfo();
                 return true;
             }
@@ -88,5 +104,14 @@ public class CoverFragment extends Fragment {
         super.onStop();
         controller.release();
         controller = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 }

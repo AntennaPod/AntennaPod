@@ -51,6 +51,8 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -78,7 +80,7 @@ public class AllEpisodesFragment extends Fragment {
     RecyclerView recyclerView;
     AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
-    private View emptyView;
+    EmptyViewHandler emptyView;
 
     List<FeedItem> episodes;
     private List<Downloader> downloaderList;
@@ -281,11 +283,11 @@ public class AllEpisodesFragment extends Fragment {
             return true; // avoids that the position is reset when we need it in the submenu
         }
 
-        FeedItem selectedItem = listAdapter.getSelectedItem();
-        if (selectedItem == null) {
-            Log.i(TAG, "Selected item was null, ignoring selection");
+        if (listAdapter == null || listAdapter.getSelectedItem() == null) {
+            Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
+        FeedItem selectedItem = listAdapter.getSelectedItem();
 
         // Mark as seen contains UI logic specific to All/New/FavoriteSegments,
         // e.g., Undo with Snackbar,
@@ -336,10 +338,10 @@ public class AllEpisodesFragment extends Fragment {
             onFragmentLoaded();
         }
 
-        emptyView = (View) root.findViewById(R.id.emptyView);
-        emptyView.setVisibility(View.GONE);
-        ((TextView)emptyView.findViewById(R.id.emptyViewTitle)).setText(R.string.no_all_episodes_head_label);
-        ((TextView)emptyView.findViewById(R.id.emptyViewMessage)).setText(R.string.no_all_episodes_label);
+        emptyView = new EmptyViewHandler(getContext());
+        emptyView.attachToRecyclerView(recyclerView);
+        emptyView.setTitle(R.string.no_all_episodes_head_label);
+        emptyView.setMessage(R.string.no_all_episodes_label);
 
         return root;
     }
@@ -352,16 +354,16 @@ public class AllEpisodesFragment extends Fragment {
                         new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
                 listAdapter.setHasStableIds(true);
                 recyclerView.setAdapter(listAdapter);
+                emptyView.updateAdapter(listAdapter);
             }
-            emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+            listAdapter.notifyDataSetChanged();
         } else {
             listAdapter = null;
             recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
+            emptyView.updateAdapter(listAdapter);
         }
 
-        listAdapter.notifyDataSetChanged();
         restoreScrollPosition();
         getActivity().supportInvalidateOptionsMenu();
         updateShowOnlyEpisodesListViewState();
@@ -434,7 +436,10 @@ public class AllEpisodesFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (episodes == null || listAdapter == null) {
+        if (episodes == null) {
+            return;
+        } else if (listAdapter == null) {
+            loadItems();
             return;
         }
         for (FeedItem item : event.items) {
@@ -463,7 +468,11 @@ public class AllEpisodesFragment extends Fragment {
         if (isMenuInvalidationAllowed && isUpdatingFeeds != update.feedIds.length > 0) {
                 getActivity().supportInvalidateOptionsMenu();
         }
-        if(listAdapter != null && update.mediaIds.length > 0) {
+        if (listAdapter == null) {
+            loadItems();
+            return;
+        }
+        if (update.mediaIds.length > 0) {
             for(long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
                 if(pos >= 0) {
@@ -494,7 +503,7 @@ public class AllEpisodesFragment extends Fragment {
         }
         if (viewsCreated && !itemsLoaded) {
             recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.GONE);
+            emptyView.hide();
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(this::loadData)

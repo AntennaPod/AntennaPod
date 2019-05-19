@@ -152,7 +152,7 @@ public class DownloadService extends Service {
         }
     }
 
-    private final Thread downloadCompletionThread = new Thread() {
+    private final Thread downloadCompletionThread = new Thread("DownloadCompletionThread") {
         private static final String TAG = "downloadCompletionThd";
 
         @Override
@@ -594,6 +594,9 @@ public class DownloadService extends Service {
 
         private static final long WAIT_TIMEOUT = 3000;
 
+        FeedSyncThread() {
+            super("FeedSyncThread");
+        }
 
         /**
          * Waits for completed requests. Once the first request has been taken, the method will wait WAIT_TIMEOUT ms longer to

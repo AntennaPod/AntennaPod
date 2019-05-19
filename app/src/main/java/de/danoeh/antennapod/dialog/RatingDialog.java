@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -73,7 +74,8 @@ public class RatingDialog {
         return mPreferences.getBoolean(KEY_RATED, false);
     }
 
-    private static void saveRated() {
+    @VisibleForTesting
+    public static void saveRated() {
         mPreferences
                 .edit()
                 .putBoolean(KEY_RATED, true)

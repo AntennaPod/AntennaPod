@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Abonelikleri güncelle</string>
   <string name="feeds_label">Beslemeler</string>
   <string name="statistics_label">İstatistikler</string>
   <string name="add_feed_label">Cep yayını ekle</string>
   <string name="episodes_label">Bölümler</string>
   <string name="all_episodes_short_label">Tümü</string>
+  <string name="new_episodes_label">Yeni</string>
   <string name="favorite_episodes_label">Favoriler</string>
   <string name="new_label">Yeni</string>
   <string name="settings_label">Ayarlar</string>
@@ -18,10 +20,15 @@
   <string name="cancel_download_label">İndirmeyi İptal Et</string>
   <string name="playback_history_label">Çalma geçmişi</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Diğer cihazlarla senkronize et</string>
   <string name="gpodnet_auth_label">gpodder.net giriş</string>
   <string name="free_space_label">%1$s ücretsiz</string>
+  <string name="episode_cache_full_title">Bölüm önbelleği dolu</string>
+  <string name="episode_cache_full_message">Bölüm önbelleği limitine ulaşıldı. Ayarlardan önbellek limitini arttırabilirsiniz. </string>
+  <string name="synchronizing">Senkronize ediliyor... </string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Toplam cep yayını çalma zamanı:</string>
+  <string name="statistics_mode">İstatistik modu</string>
   <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
   <string name="drawer_close">Menüyü kapat</string>
@@ -29,6 +36,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Sayaca göre sırala</string>
   <string name="drawer_feed_order_alphabetical">Alfabetik olarak sırala</string>
   <string name="drawer_feed_order_last_update">Yayınlanma tarihine göre sırala</string>
+  <string name="drawer_feed_order_most_played">Oynatılan bölüm sayısına göre sırala</string>
   <string name="drawer_feed_counter_new_unplayed">Yeni ve çalınmamış bölümlerin sayısı</string>
   <string name="drawer_feed_counter_new">Yeni bölümlerin sayısı</string>
   <string name="drawer_feed_counter_unplayed">Çalınmamış bölümlerin sayısı</string>
@@ -48,15 +56,18 @@
   <string name="yes">Evet</string>
   <string name="no">Hayır</string>
   <string name="reset">Sıfırla</string>
+  <string name="author_label">Yazar(lar)</string>
   <string name="language_label">Dil</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Ayarlar</string>
   <string name="cover_label">Resim</string>
   <string name="error_label">Hata</string>
   <string name="error_msg_prefix">Bir hata oluştu:</string>
+  <string name="needs_storage_permission">Bu işlem için depolama izni gerekli</string>
   <string name="refresh_label">Yenile</string>
   <string name="external_storage_error_msg">Harici depolama yok. Lütfen uygulamanın düzgün çalışabilmesi için harici depolama aygıtının bağlandığından emin olun.</string>
   <string name="chapters_label">Kısımlar</string>
+  <string name="chapter_duration">Süre: %1$s</string>
   <string name="shownotes_label">Notlar</string>
   <string name="description_label">Tanım</string>
   <string name="most_recent_prefix">Son Bölüm:\u0020 </string>
@@ -70,6 +81,7 @@
   <string name="retry_label">Yeniden dene</string>
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
   <string name="auto_download_apply_to_items_title">Önceki Bölümlere Uygula</string>
+  <string name="auto_download_apply_to_items_message">Yeni <i>Otomatik İndirme</i> ayarı otomatik olarak yeni bölümlere uygulanacak.\nBunu önceki bölümlere de uygulamak ister misiniz?</string>
   <string name="auto_delete_label">Bölümü Otomatik Sil</string>
   <string name="parallel_downloads_suffix">\u0020paralel indirmeler</string>
   <string name="feed_auto_download_global">Varsayılan ayarlar</string>
@@ -88,17 +100,36 @@
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">URL ile cep yayını ekle</string>
   <string name="podcastdirectories_label">Dizinde cep yayını bul</string>
+  <string name="podcastdirectories_descr">Yeni podcast\'ler için iTunes, fyyd, veya gpodder.net adresinde isme, kategoriye, veya popülerliğe göre arama yapabilirsiniz.</string>
   <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Hepsini oynatıldı olarak işaretle</string>
   <string name="mark_all_read_msg">Tüm bölümleri oynatıldı olarak işaretle</string>
   <string name="mark_all_read_confirmation_msg">Lütfen tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Lütfen bu yayındaki bütün bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="mark_all_seen_label">Hepsini görüldü olarak işaretle</string>
+  <string name="mark_all_seen_msg">Bütün bölümler görüldü olarak işaretlendi</string>
   <string name="mark_all_seen_confirmation_msg">Lütfen tüm bölümleri görüldü olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="show_info_label">Bilgiyi göster</string>
+  <string name="show_feed_settings_label">Cepyayın ayarlarını göster</string>
+  <string name="feed_info_label">Cepyayın bilgisi</string>
+  <string name="feed_settings_label">Cepyayın ayarları</string>
+  <string name="rename_feed_label">Cepyayını yeniden adlandır</string>
+  <string name="remove_feed_label">Cepyayını kaldır</string>
   <string name="share_label">Paylaş...</string>
+  <string name="share_link_label">Bölüm Adresini paylaş</string>
+  <string name="share_link_with_position_label">Bölüm Adresini Konumla birlikte paylaş</string>
+  <string name="share_file_label">Dosyayı paylaş</string>
   <string name="share_feed_url_label">Besleme Adresini Paylaş</string>
+  <string name="share_item_url_label">Medya Dosyası URL\'si Paylaş</string>
+  <string name="share_item_url_with_position_label">Medya dosyasının adresini pozisyon ile birlikte paylaş</string>
+  <string name="feed_delete_confirmation_msg">Lütfen bu Cepyayını ve bu Cepyayınına ait indirilmiş BÜTÜN bölümleri silme isteğinizi onaylayın.</string>
+  <string name="feed_remover_msg">Cepyayını kaldırılıyor</string>
+  <string name="load_complete_feed">Tüm Cepyayınını yenile</string>
   <string name="hide_episodes_title">Bölümleri gizle</string>
+  <string name="batch_edit">Toplu düzenleme</string>
+  <string name="select_all_above">Üsttekilerin tümünü seç</string>
+  <string name="select_all_below">Alttakilerin tümünü seç</string>
   <string name="hide_unplayed_episodes_label">Oynatılmadı</string>
   <string name="hide_paused_episodes_label">Duraklatıldı</string>
   <string name="hide_played_episodes_label">Oynatıldı</string>
@@ -107,6 +138,7 @@
   <string name="hide_downloaded_episodes_label">İndirildi</string>
   <string name="hide_not_downloaded_episodes_label">İndirilmedi</string>
   <string name="hide_has_media_label">Medya var</string>
+  <string name="hide_is_favorite_label">Favori</string>
   <string name="filtered_label">Filtrelendi</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Son yenileme başarısız oldu</string>
   <string name="open_podcast">Cep yayını aç</string>
@@ -118,7 +150,8 @@
   <string name="stream_label">Akış</string>
   <string name="remove_label">Kaldır</string>
   <string name="delete_label">Sil</string>
-  <string name="remove_episode_lable">Bölümü kaldır</string>
+  <string name="delete_failed">Dosya silinemiyor. Cihazı yeniden başlatmak yardımcı olabilir.</string>
+  <string name="mark_as_seen_label">Hepsini görüldü olarak işaretle</string>
   <string name="marked_as_seen_label">Görüldü olarak işaretlendi</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>
   <string name="marked_as_read_label">Oynatıldı olarak işaretlendi</string>
@@ -142,6 +175,7 @@
   <string name="download_failed">başarısız</string>
   <string name="download_pending">İndirme bekleniyor</string>
   <string name="download_running">İndiriliyor</string>
+  <string name="download_error_details">Detaylar</string>
   <string name="download_error_device_not_found">Depolama aygıtı bulunamadı</string>
   <string name="download_error_insufficient_space">Yetersiz alan</string>
   <string name="download_error_file_error">Dosya hatası</string>
@@ -192,6 +226,7 @@
   <string name="playback_error_unknown">Bilinmeyen Hata</string>
   <string name="no_media_playing_label">Çalınan medya yok</string>
   <string name="player_buffering_msg">Ara belleğe alınıyor</string>
+  <string name="player_go_to_picture_in_picture">Resim içinde Resim modu</string>
   <string name="playbackservice_notification_title">Cep yayını çalınıyor</string>
   <string name="unknown_media_key">AntennaPod - Bilinmeyen medya anahtarı: %1$d</string>
   <!--Queue operations-->
@@ -208,6 +243,9 @@
   <string name="date">Tarih</string>
   <string name="duration">Süre</string>
   <string name="episode_title">Blüm başlığı</string>
+  <string name="feed_title">Cepyayın bilgisi</string>
+  <string name="random">Rastgele</string>
+  <string name="smart_shuffle">Akıllı karıştırma</string>
   <string name="ascending">Artan</string>
   <string name="descending">Azalan</string>
   <string name="clear_queue_confirmation_msg">Lütfen içerisindeki BÜTÜN ölümlerle birlikte kuyruğu temizleme isteğinizi onaylayın.</string>
@@ -240,25 +278,48 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Eklentiyi İndir</string>
   <string name="no_playback_plugin_title">Eklenti Yüklenmedi</string>
+  <string name="no_playback_plugin_or_sonic_msg">Değişken hızlı oynatmanın çalışması için, dahili Sonic mediaplayer tavsiye ediyoruz [Android 4.1+].\n\nAlternatif olarak, üçüncü parti <i>Prestissimo</i>eklentisini Play Store\'dan indirebilirsiniz.\nPrestissimo ilgili herhangi bir sorunda AntennaPod sorumlu değildir, sorun eklenti yazarına bildirilmelidir.</string>
   <string name="set_playback_speed_label">Çalma hızları</string>
   <string name="enable_sonic">Sonic\'i Etkinleştir</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Bu listede hiç öge yok.</string>
+  <string name="no_feeds_label">Henüz hiç bir Cepyayınına abone olmadınız.</string>
+  <string name="no_chapters_label">Bu dosya herhangi bir bölüm içermiyor.</string>
+  <string name="no_shownotes_label">Bu dosya herhangi bir bilgi notu içermiyor.</string>
   <!--Preferences-->
   <string name="storage_pref">Depolama</string>
   <string name="project_pref">Proje</string>
   <string name="other_pref">Diğer</string>
   <string name="about_pref">Hakkında</string>
   <string name="queue_label">Kuyruk</string>
+  <string name="integrations_label">Entegrasyon</string>
   <string name="flattr_label">Flattr</string>
+  <string name="flattr_summary">Mikro ödeme hizmeti</string>
+  <string name="automation">Otomasyon</string>
+  <string name="download_pref_details">Detaylar</string>
+  <string name="import_export_pref">Al/Aktar</string>
+  <string name="appearance">Görünüm</string>
+  <string name="external_elements">Dış elemanlar</string>
+  <string name="interruptions">Kesintiler</string>
+  <string name="buttons">Oynatıcı kontrol düğmeleri</string>
+  <string name="media_player">Medya oynatıcı</string>
   <string name="pref_episode_cleanup_title">Bölüm Temizliği</string>
+  <string name="pref_episode_cleanup_summary">Yeni bölümleri otomatik indirme için alan gerekirse, kuyrukta veya favorilerde olmayan bölümler otomatik olarak silinebilir</string>
   <string name="pref_pauseOnDisconnect_sum">Kulaklıklar çıkarıldığında veya bluetooth bağlantısı kesildiğinde çalmayı duraklat</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetooth yeniden bağlandığında çalmaya devam et</string>
+  <string name="pref_hardwareForwardButtonSkips_title">İleri düğmesi atlar</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Bluetooth ile bağlı bir cihazda ileri düğmesine basmak hızlı ileri sarmak yerine sonraki bölüme atlar</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">Geri düğmesi yeniden başlatır</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">Geri düğmesine basmak hızlı geri sarmak yerine mevcut bölümü yeniden oynatır</string>
   <string name="pref_followQueue_sum">Çalma tamamlandığında kuyruktaki diğer öğeye geç</string>
   <string name="pref_auto_delete_sum">Çalma bittiğinde bölümü sil</string>
   <string name="pref_auto_delete_title">Otomatik Silme</string>
   <string name="pref_smart_mark_as_played_sum">Bitmesine birkaç saniye kalmış olsa da bölümleri oynatıldı olarak işaretle</string>
+  <string name="pref_smart_mark_as_played_title">Akıllı oynatıldı işareti</string>
+  <string name="pref_skip_keeps_episodes_sum">Bölümler atlandığında tutmaya devam et</string>
+  <string name="pref_skip_keeps_episodes_title">Atlanan bölümleri tut</string>
+  <string name="pref_favorite_keeps_episodes_sum">Bölümler Favori olarak işaretlendiğinde tut</string>
+  <string name="pref_favorite_keeps_episodes_title">Favori bölümleri tut</string>
   <string name="playback_pref">Çalma</string>
   <string name="network_pref">Ağ</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Güncelleme Aralığı veya Belirli Zamanı</string>
@@ -267,11 +328,14 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Devre dışı</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Aralık ayarla</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Belirli saat ayarla</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">her%1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_at">süre%1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Medya dosyalarını sadece kablosuz bağlantı üzerinden indir</string>
   <string name="pref_followQueue_title">Devamlı çalma</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Kablosuz medya indirmesi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kulaklık bağlı değil</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kulaklıklar yeniden bağlı</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth yeniden bağlandı</string>
   <string name="pref_mobileUpdate_title">Mobil güncellemeler</string>
   <string name="pref_mobileUpdate_sum">Mobil veri üzerinden güncellemelere izin ver</string>
   <string name="refreshing_label">Yenileniyor</string>
@@ -290,6 +354,9 @@
   <string name="pref_nav_drawer_sum">Uygulama çekmecesinin görüntüsünü özelleştir.</string>
   <string name="pref_nav_drawer_items_title">Uygulama Çekmecesi öğelerini ayarla</string>
   <string name="pref_nav_drawer_items_sum">Hangi öğelerin uygulama çekmecesinde görüneceğini değiştir.</string>
+  <string name="pref_nav_drawer_feed_order_title">Abonelik sıralamasını ayarla</string>
+  <string name="pref_nav_drawer_feed_order_sum">Abonelik sırasını değiştir</string>
+  <string name="pref_nav_drawer_feed_counter_title">Abonelik sayacını ayarla</string>
   <string name="pref_set_theme_sum">AntennaPod\'un görüntüsünü değiştir.</string>
   <string name="pref_automatic_download_title">Otomatk indirme</string>
   <string name="pref_automatic_download_sum">Bölümlerin otomatik indirilmesini yapılandır.</string>
@@ -486,8 +553,10 @@
   <string name="proxy_test_label">Test</string>
   <string name="proxy_test_successful">Test başarılı</string>
   <string name="proxy_test_failed">Test başarısız</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
+  <string name="cast_failed_seek">Yayın aygıtındaki yeni pozisyona erişilemedi</string>
   <!--Notification channels-->
 </resources>

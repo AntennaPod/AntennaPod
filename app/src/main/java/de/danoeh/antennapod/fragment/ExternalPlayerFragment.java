@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -27,6 +28,9 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
@@ -134,14 +138,19 @@ public class ExternalPlayerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        controller = setupPlaybackController();
         controller.init();
+        loadMediaInfo();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        EventBus.getDefault().unregister(this);
         if (controller != null) {
             controller.release();
+            controller = null;
         }
     }
 
@@ -201,7 +210,8 @@ public class ExternalPlayerFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(media -> updateUi((Playable) media),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+                        error -> Log.e(TAG, Log.getStackTraceString(error)),
+                        () -> fragmentLayout.setVisibility(View.GONE));
         return true;
     }
 
@@ -222,7 +232,7 @@ public class ExternalPlayerFragment extends Fragment {
                     .into(imgvCover);
 
             fragmentLayout.setVisibility(View.VISIBLE);
-            if (controller.isPlayingVideoLocally()) {
+            if (controller != null && controller.isPlayingVideoLocally()) {
                 butPlay.setVisibility(View.GONE);
             } else {
                 butPlay.setVisibility(View.VISIBLE);
@@ -237,7 +247,9 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     private void onPositionObserverUpdate() {
-        if (controller.getPosition() == PlaybackService.INVALID_TIME
+        if (controller == null) {
+            return;
+        } else if (controller.getPosition() == PlaybackService.INVALID_TIME
                 || controller.getDuration() == PlaybackService.INVALID_TIME) {
             return;
         }

@@ -249,7 +249,7 @@ public class ItemDescriptionFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF,
                 Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        if (controller.getMedia() != null && webvDescription != null) {
+        if (controller != null && controller.getMedia() != null && webvDescription != null) {
             Log.d(TAG, "Saving scroll position: " + webvDescription.getScrollY());
             editor.putInt(PREF_SCROLL_Y, webvDescription.getScrollY());
             editor.putString(PREF_PLAYABLE_ID, controller.getMedia().getIdentifier()
@@ -270,7 +270,7 @@ public class ItemDescriptionFragment extends Fragment {
                     PREF, Activity.MODE_PRIVATE);
             String id = prefs.getString(PREF_PLAYABLE_ID, "");
             int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
-            if (scrollY != -1 && controller.getMedia() != null
+            if (controller != null && scrollY != -1 && controller.getMedia() != null
                     && id.equals(controller.getMedia().getIdentifier().toString())
                     && webvDescription != null) {
                 Log.d(TAG, "Restored scroll Position: " + scrollY);

@@ -1,5 +1,5 @@
 plugins {
-    id('com.github.triplet.play') version '2.0.0'
+    id('com.github.triplet.play') version '2.2.0'
 }
 
 apply plugin: "com.android.application"
@@ -18,8 +18,9 @@ android {
         // Version code schema:
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
-        versionCode 1070196
-        versionName "1.7.1"
+        // "1.2.3"          -> 1020395
+        versionCode 1070296
+        versionName "1.7.2b"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         generatedDensities = []
@@ -130,7 +131,6 @@ dependencies {
     implementation "com.android.support:design:$supportVersion"
     implementation "com.android.support:preference-v14:$supportVersion"
     implementation "com.android.support:gridlayout-v7:$supportVersion"
-    implementation "com.android.support:percent:$supportVersion"
     implementation "com.android.support:recyclerview-v7:$supportVersion"
     compileOnly 'com.google.android.wearable:wearable:2.2.0'
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
@@ -176,6 +176,8 @@ dependencies {
 }
 
 play {
+    track = 'alpha'
+
     if (project.hasProperty("antennaPodServiceAccountEmail")) {
         serviceAccountEmail = antennaPodServiceAccountEmail
     } else {

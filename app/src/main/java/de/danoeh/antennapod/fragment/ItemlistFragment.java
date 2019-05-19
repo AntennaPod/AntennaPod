@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -61,6 +61,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
@@ -623,7 +624,7 @@ public class ItemlistFragment extends ListFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    feed = result;
+                    feed = result.orElse(null);
                     itemsLoaded = true;
                     if (viewsCreated) {
                         onFragmentLoaded();
@@ -631,15 +632,15 @@ public class ItemlistFragment extends ListFragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    @Nullable
-    private Feed loadData() {
+    @NonNull
+    private Optional<Feed> loadData() {
         Feed feed = DBReader.getFeed(feedID);
-        DBReader.loadAdditionalFeedItemListData(feed.getItems());
-        if(feed != null && feed.getItemFilter() != null) {
+        if (feed != null && feed.getItemFilter() != null) {
+            DBReader.loadAdditionalFeedItemListData(feed.getItems());
             FeedItemFilter filter = feed.getItemFilter();
             feed.setItems(filter.filter(feed.getItems()));
         }
-        return feed;
+        return Optional.ofNullable(feed);
     }
 
 }

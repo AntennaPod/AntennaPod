@@ -27,10 +27,6 @@
         android:layout_below="@id/divider"
         android:scrollbars="vertical"/>
 
-    <include
-        android:id="@+id/emptyView"
-        layout="@layout/empty_view_layout"/>
-
     <ProgressBar
         android:id="@+id/progLoading"
         android:layout_width="wrap_content"
