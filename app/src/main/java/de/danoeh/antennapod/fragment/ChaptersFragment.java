@@ -11,11 +11,10 @@ import java.util.ListIterator;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
-import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.greenrobot.event.EventBus;
+
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -60,8 +59,8 @@ public class ChaptersFragment extends ListFragment {
             }
         };
         controller.init();
+
         loadMediaInfo();
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -76,7 +75,6 @@ public class ChaptersFragment extends ListFragment {
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
         controller.release();
         controller = null;
     }
@@ -96,12 +94,6 @@ public class ChaptersFragment extends ListFragment {
             }
         }
         return chapters.size() - 1;
-    }
-
-    public void onEventMainThread(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
-            controller.init();
-        }
     }
 
     private void loadMediaInfo() {

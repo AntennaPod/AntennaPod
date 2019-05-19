@@ -38,7 +38,6 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -659,15 +658,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         super.onResume();
         Log.d(TAG, "onResume()");
         StorageUtils.checkStorageAvailability(this);
-    }
-
-    public void onEventMainThread(ServiceEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
-            if (controller != null) {
-                controller.init();
-            }
-        }
     }
 
     /**

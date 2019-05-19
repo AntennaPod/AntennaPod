@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MediaplayerInfoActivity;
-import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -36,7 +35,6 @@ import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -310,19 +308,11 @@ public class ItemDescriptionFragment extends Fragment {
         };
         controller.init();
         load();
-        EventBus.getDefault().register(this);
-    }
-
-    public void onEventMainThread(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
-            controller.init();
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
         controller.release();
         controller = null;
     }

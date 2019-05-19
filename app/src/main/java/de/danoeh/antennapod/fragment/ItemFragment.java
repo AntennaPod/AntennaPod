@@ -68,11 +68,13 @@ import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.OnSwipeGesture;
 import de.danoeh.antennapod.view.SwipeGestureDetector;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays information about a FeedItem and actions.
@@ -266,10 +268,15 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().registerSticky(this);
         if(itemsLoaded) {
             progbarLoading.setVisibility(View.GONE);
             updateAppearance();
@@ -277,8 +284,8 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
     }
@@ -537,6 +544,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         ((MainActivity)getActivity()).loadChildFragment(fragment);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         for(FeedItem item : event.items) {
@@ -547,6 +555,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;

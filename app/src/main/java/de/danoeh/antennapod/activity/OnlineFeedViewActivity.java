@@ -31,6 +31,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -68,7 +71,6 @@ import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -123,6 +125,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     };
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         setSubscribeButtonState(feed);
@@ -193,24 +196,19 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         isPaused = false;
         EventDistributor.getInstance().register(listener);
         EventBus.getDefault().register(this);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         isPaused = true;
         EventDistributor.getInstance().unregister(listener);
         EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
         if (downloader != null && !downloader.isFinished()) {
             downloader.cancel();
         }

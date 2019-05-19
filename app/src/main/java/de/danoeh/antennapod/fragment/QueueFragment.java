@@ -52,12 +52,15 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+
 import de.danoeh.antennapod.view.EmptyViewHandler;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Shows all items in the queue
@@ -105,7 +108,7 @@ public class QueueFragment extends Fragment {
         }
         loadItems(true);
         EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().registerSticky(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -124,6 +127,7 @@ public class QueueFragment extends Fragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(QueueEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if (queue == null) {
@@ -162,6 +166,7 @@ public class QueueFragment extends Fragment {
         onFragmentLoaded(false);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if (queue == null) {
@@ -182,6 +187,7 @@ public class QueueFragment extends Fragment {
         }
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;

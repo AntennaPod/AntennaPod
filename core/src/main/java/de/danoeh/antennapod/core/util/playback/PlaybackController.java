@@ -26,6 +26,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -44,6 +45,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Communicates with the playback service. GUI classes should use this class to
@@ -70,6 +74,7 @@ public abstract class PlaybackController {
     private boolean mediaInfoLoaded = false;
     private boolean released = false;
     private boolean initialized = false;
+    private boolean eventsRegistered = false;
 
     private Disposable serviceBinder;
     private Disposable mediaLoader;
@@ -96,11 +101,22 @@ public abstract class PlaybackController {
     /**
      * Creates a new connection to the playbackService.
      */
-    public void init() {
+    public synchronized void init() {
+        if (!eventsRegistered) {
+            EventBus.getDefault().register(this);
+            eventsRegistered = true;
+        }
         if (PlaybackService.isRunning) {
             initServiceRunning();
         } else {
             initServiceNotRunning();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
+            init();
         }
     }
 
@@ -165,6 +181,10 @@ public abstract class PlaybackController {
         media = null;
         released = true;
 
+        if (eventsRegistered) {
+            EventBus.getDefault().unregister(this);
+            eventsRegistered = false;
+        }
     }
 
     /**

@@ -24,7 +24,6 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -92,13 +91,6 @@ public class ExternalPlayerFragment extends Fragment {
         loadMediaInfo();
     }
 
-    public void onEventMainThread(ServiceEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
-            controller.init();
-        }
-    }
-
     private PlaybackController setupPlaybackController() {
         return new PlaybackController(getActivity(), true) {
 
@@ -146,7 +138,6 @@ public class ExternalPlayerFragment extends Fragment {
         controller = setupPlaybackController();
         controller.init();
         loadMediaInfo();
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -156,7 +147,6 @@ public class ExternalPlayerFragment extends Fragment {
             controller.release();
             controller = null;
         }
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

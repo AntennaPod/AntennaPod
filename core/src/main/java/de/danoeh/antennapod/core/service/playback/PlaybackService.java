@@ -71,7 +71,7 @@ import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file

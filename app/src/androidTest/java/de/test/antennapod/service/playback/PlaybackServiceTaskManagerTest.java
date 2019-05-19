@@ -19,7 +19,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
