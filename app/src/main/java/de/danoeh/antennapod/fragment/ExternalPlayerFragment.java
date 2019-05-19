@@ -154,6 +154,13 @@ public class ExternalPlayerFragment extends Fragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
+            controller.init();
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
