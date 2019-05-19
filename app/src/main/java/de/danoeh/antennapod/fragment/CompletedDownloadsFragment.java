@@ -100,22 +100,27 @@ public class CompletedDownloadsFragment extends ListFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // add padding
-        final ListView lv = getListView();
-        lv.setClipToPadding(false);
-        final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
-        lv.setPadding(0, vertPadding, 0, vertPadding);
+        addVerticalPadding();
+        addEmptyView();
 
         viewCreated = true;
         if (items != null && getActivity() != null) {
             onFragmentLoaded();
         }
+    }
 
+    private void addEmptyView() {
         EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
         emptyView.setTitle(R.string.no_comp_downloads_head_label);
         emptyView.setMessage(R.string.no_comp_downloads_label);
         emptyView.attachToListView(getListView());
+    }
+
+    private void addVerticalPadding() {
+        final ListView lv = getListView();
+        lv.setClipToPadding(false);
+        final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
+        lv.setPadding(0, vertPadding, 0, vertPadding);
     }
 
     @Override
