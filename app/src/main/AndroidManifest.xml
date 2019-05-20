@@ -189,7 +189,7 @@
         <activity
             android:name=".activity.AddLocalFilesActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/singlefile_import_label">
+            android:label="@string/folder_import_label">
         </activity>
         <activity
             android:name=".activity.OpmlImportFromIntentActivity"

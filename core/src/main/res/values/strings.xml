@@ -531,11 +531,12 @@
     <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
 
-    <!-- Single file import -->
-    <string name="singlefile_import_button_label">Add a single file to the dummy feed.</string>
-    <string name="singlefile_import_option">Option %1$d</string>
-    <string name="singlefile_import_label">Single file Import</string>
-    <string name="singlefile_import_error">An error has occurred while adding the selected file:</string>
+    <!-- Folder import -->
+    <string name="folder_import_button_label">Add a single folder as a podcast.</string>
+    <string name="folder_import_explanation_1">Choose a specific folder path from the local filesystem.</string>
+    <string name="folder_import_option">Option %1$d</string>
+    <string name="folder_import_label">Folder Import</string>
+    <string name="folder_import_error">An error has occurred while adding the selected file:</string>
 
     <!-- Sleep timer -->
     <string name="set_sleeptimer_label">Set sleep timer</string>

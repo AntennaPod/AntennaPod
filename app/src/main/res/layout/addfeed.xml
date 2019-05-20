@@ -102,13 +102,13 @@
             style="@style/AntennaPod.TextView.Heading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/singlefile_import_label" />
+            android:text="@string/folder_import_label" />
 
         <TextView
             android:id="@+id/singleFileAddExpl2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/singlefile_import_button_label"
+            android:text="@string/folder_import_button_label"
             android:textSize="@dimen/text_size_medium" />
 
         <Button
@@ -116,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@string/singlefile_import_label" />
+            android:text="@string/folder_import_label" />
 
     </LinearLayout>
 

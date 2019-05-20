@@ -43,18 +43,18 @@ public class AddLocalFilesActivity extends AppCompatActivity implements DialogSe
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setContentView(R.layout.singlefile_add);
+        setContentView(R.layout.folder_add);
 
-        final TextView singleFileHeaderExplanation1 = findViewById(R.id.singleFileHeadingExplanation1);
-        final TextView singleFileExplanation1 = findViewById(R.id.singleFileExplanation1);
+        final TextView folderHeaderExplanation1 = findViewById(R.id.folderHeadingExplanation1);
+        final TextView folderExplanation1 = findViewById(R.id.folderExplanation1);
 
         Button butChooseFilesystem = findViewById(R.id.butChooseFileFromFilesystem);
         butChooseFilesystem.setOnClickListener(v -> chooseFileFromFilesystem());
 
         int nextOption = 1;
-        String optionLabel = getString(R.string.singlefile_import_option);
-        if (singleFileExplanation1.getVisibility() == View.VISIBLE) {
-            singleFileHeaderExplanation1.setText(String.format(optionLabel, nextOption));
+        String optionLabel = getString(R.string.folder_import_option);
+        if (folderExplanation1.getVisibility() == View.VISIBLE) {
+            folderHeaderExplanation1.setText(String.format(optionLabel, nextOption));
             nextOption++;
         }
     }
@@ -158,7 +158,7 @@ public class AddLocalFilesActivity extends AppCompatActivity implements DialogSe
                 return true;
             } catch (Exception e) {
                 Log.d(TAG, Log.getStackTraceString(e));
-                String message = getString(R.string.singlefile_import_error);
+                String message = getString(R.string.folder_import_error);
                 new MaterialDialog.Builder(this)
                         .content(message + " " + e.getMessage())
                         .positiveText(android.R.string.ok)
