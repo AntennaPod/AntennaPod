@@ -229,6 +229,15 @@ public class PlaybackServiceTaskManagerTest {
     }
 
     @Test
+    public void testStartWidgetUpdaterAfterShutdown() {
+        // Should not throw.
+        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
+        pstm.shutdown();
+        pstm.startWidgetUpdater();
+    }
+
+    @Test
     public void testIsWidgetUpdaterActive() {
         final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
