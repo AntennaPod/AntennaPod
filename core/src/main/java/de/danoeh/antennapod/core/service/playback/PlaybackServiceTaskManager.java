@@ -165,7 +165,7 @@ public class PlaybackServiceTaskManager {
      * Starts the widget updater task. If the widget updater is already active, nothing will happen.
      */
     public synchronized void startWidgetUpdater() {
-        if (!isWidgetUpdaterActive()) {
+        if (!isWidgetUpdaterActive() && !schedExecutor.isShutdown()) {
             Runnable widgetUpdater = callback::onWidgetUpdaterTick;
             widgetUpdater = useMainThreadIfNecessary(widgetUpdater);
             widgetUpdaterFuture = schedExecutor.scheduleWithFixedDelay(widgetUpdater, WIDGET_UPDATER_NOTIFICATION_INTERVAL,
