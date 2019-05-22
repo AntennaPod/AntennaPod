@@ -12,7 +12,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.DownloadError;
 
 public class LocalFeedUpdater {
 
@@ -37,7 +40,7 @@ public class LocalFeedUpdater {
         //create a feed object for this directory
         File f = new File(uri.getPath());
         String dirUrl = uri.toString();
-        Feed dirFeed = new Feed(dirUrl, null, dirUrl);
+        Feed dirFeed = new Feed(dirUrl, null, f.getName());
         dirFeed.setItems(new ArrayList<>()); //this seems useless but prevents an exception
         //find the feed for this directory (if it exists), or create one
         dirFeed = DBTasks.updateFeed(context, dirFeed)[0];
@@ -53,6 +56,11 @@ public class LocalFeedUpdater {
 
         String uriStr = dirFeed.getDownload_url();
         File f = new File(uriStr.substring("file:".length())); //ugly
+        //basic checks
+        if (!f.exists() || !f.canRead()) {
+            reportError(context, feed, "Cannot read local directory");
+            return;
+        }
 
         //find relevant files and create items for them
         File[] itemFiles = f.listFiles(
@@ -67,7 +75,7 @@ public class LocalFeedUpdater {
         for (File it: itemFiles) {
             FeedItem found = feedContainsFile(dirFeed, it.getAbsolutePath());
             if (found != null) {
-                //TODO update (not implemented yet)
+                //TODO make sure the media has not changed (type, duration)
             } else {
                 FeedItem item = createFeedItem(it, dirFeed);
                 newItems.add(item);
@@ -123,6 +131,15 @@ public class LocalFeedUpdater {
         item.setMedia(media);
 
         return item;
+    }
+
+    private static void reportError(Context context, Feed feed, String reasonDetailed) {
+        DownloadStatus status = new DownloadStatus(-1, Feed.FEEDFILETYPE_FEED, feed.getTitle(),
+                DownloadError.ERROR_IO_ERROR, false, reasonDetailed);
+        DBWriter.addDownloadStatus(status);
+
+        feed.setLastUpdateFailed(true);
+        DBTasks.updateFeed(context, feed);
     }
 
     private static String getMimeType(String path) {
