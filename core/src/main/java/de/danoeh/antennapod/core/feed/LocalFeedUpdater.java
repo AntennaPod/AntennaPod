@@ -24,12 +24,12 @@ public class LocalFeedUpdater {
     }
 
     /** Starts the import process. */
-    public static void startImport(Uri uri, Context context) {
+    public static Feed startImport(Uri uri, Context context) {
         File f = new File(uri.getPath());
         if (!f.isDirectory()) {
             throw new RuntimeException("invalid path");
         } else {
-            startImportDirectory(uri, context);
+            return startImportDirectory(uri, context);
         }
     }
 

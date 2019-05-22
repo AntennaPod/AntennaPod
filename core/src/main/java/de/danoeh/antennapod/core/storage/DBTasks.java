@@ -323,7 +323,7 @@ public final class DBTasks {
             String path = f.getDownload_url().substring("file:".length()); //this is ugly
             Uri uri = new Uri.Builder().scheme("file").path(path).build(); //very ugly
             f.setItems(feed.getItems()); //this prevents a null pointer exception when iterating
-            LocalFeedUpdater.updateFeed(f, context);
+            new Thread(() -> LocalFeedUpdater.updateFeed(f, context)).start();
         } else {
             DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force);
         }

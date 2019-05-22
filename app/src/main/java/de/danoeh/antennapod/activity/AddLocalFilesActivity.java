@@ -25,8 +25,10 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import java.io.File;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.StorageUtils;
 
 /**
@@ -154,7 +156,8 @@ public class AddLocalFilesActivity extends AppCompatActivity implements DialogSe
             }
 
             try {
-                LocalFeedUpdater.startImport(uri, this);
+                Feed feed = LocalFeedUpdater.startImport(uri, this);
+                DBTasks.forceRefreshFeed(this, feed);
                 return true;
             } catch (Exception e) {
                 Log.d(TAG, Log.getStackTraceString(e));
