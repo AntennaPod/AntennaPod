@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +27,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_ADD_TO_QUEUE;
+import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
 
 /**
  * Displays all running downloads and provides a button to delete them
@@ -94,7 +98,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // add padding
@@ -119,7 +123,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         position -= l.getHeaderViewsCount();
         long[] ids = FeedItemUtil.getIds(items);
-        ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(ids, position));
+        ((MainActivity) requireActivity()).loadChildFragment(ItemFragment.newInstance(ids, position));
     }
 
     private void onFragmentLoaded() {
@@ -129,7 +133,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
         setListShown(true);
         listAdapter.notifyDataSetChanged();
-        getActivity().supportInvalidateOptionsMenu();
+        requireActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -146,15 +150,12 @@ public class CompletedDownloadsFragment extends ListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.episode_actions:
-                EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
-                        .newInstance(items, EpisodesApplyActionFragment.ACTION_DELETE | EpisodesApplyActionFragment.ACTION_ADD_TO_QUEUE);
-                ((MainActivity) getActivity()).loadChildFragment(fragment);
-                return true;
-            default:
-                return false;
+        if (item.getItemId() == R.id.episode_actions) {
+            ((MainActivity) requireActivity())
+                    .loadChildFragment(EpisodesApplyActionFragment.newInstance(items, ACTION_DELETE | ACTION_ADD_TO_QUEUE));
+            return true;
         }
+        return false;
     }
 
     private final DownloadedEpisodesListAdapter.ItemAccess itemAccess = new DownloadedEpisodesListAdapter.ItemAccess() {
@@ -174,7 +175,7 @@ public class CompletedDownloadsFragment extends ListFragment {
 
         @Override
         public void onFeedItemSecondaryAction(FeedItem item) {
-            DBWriter.deleteFeedMediaOfItem(getActivity(), item.getMedia().getId());
+            DBWriter.deleteFeedMediaOfItem(requireActivity(), item.getMedia().getId());
         }
     };
 
