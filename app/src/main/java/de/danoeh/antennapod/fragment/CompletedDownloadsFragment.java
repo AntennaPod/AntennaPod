@@ -134,11 +134,11 @@ public class CompletedDownloadsFragment extends ListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(!isAdded()) {
+        if (!isAdded()) {
             return;
         }
         super.onCreateOptionsMenu(menu, inflater);
-        if(items != null) {
+        if (items != null) {
             inflater.inflate(R.menu.downloads_completed, menu);
             menu.findItem(R.id.episode_actions).setVisible(items.size() > 0);
         }
@@ -202,7 +202,7 @@ public class CompletedDownloadsFragment extends ListFragment {
                     if (viewCreated && getActivity() != null) {
                         onFragmentLoaded();
                     }
-                }, error ->  Log.e(TAG, Log.getStackTraceString(error)));
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
 }
