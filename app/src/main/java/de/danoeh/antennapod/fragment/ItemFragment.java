@@ -36,6 +36,9 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -71,9 +74,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays information about a FeedItem and actions.
@@ -266,7 +266,6 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        load();
     }
 
     @Override
@@ -274,6 +273,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
+        load();
     }
 
     @Override
@@ -306,19 +306,20 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
 
     @Override
     public boolean onSwipeLeftToRight() {
-        Log.d(TAG, "onSwipeLeftToRight()");
-        feedItemPos = feedItemPos - 1;
-        if(feedItemPos < 0) {
-            feedItemPos = feedItems.length - 1;
-        }
-        load();
-        return true;
+        return swipeFeedItem(-1);
     }
 
     @Override
     public boolean onSwipeRightToLeft() {
-        Log.d(TAG, "onSwipeRightToLeft()");
-        feedItemPos = (feedItemPos + 1) % feedItems.length;
+        return swipeFeedItem(+1);
+    }
+
+    private boolean swipeFeedItem(int position) {
+        Log.d(TAG, String.format("onSwipe() shift: %s", position));
+        feedItemPos = (feedItemPos + position) % feedItems.length;
+        if (feedItemPos < 0) {
+            feedItemPos = feedItems.length - 1;
+        }
         load();
         return true;
     }

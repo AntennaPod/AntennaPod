@@ -30,6 +30,9 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import org.apache.commons.lang3.Validate;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -71,9 +74,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays a list of FeedItems.
@@ -96,8 +96,6 @@ public class ItemlistFragment extends ListFragment {
     private long feedID;
     private Feed feed;
 
-    private boolean itemsLoaded = false;
-    private boolean viewsCreated = false;
     private boolean headerCreated = false;
 
     private List<Downloader> downloaderList;
@@ -105,7 +103,7 @@ public class ItemlistFragment extends ListFragment {
     private MoreContentListFooterUtil listFooter;
 
     private boolean isUpdatingFeed;
-    
+
     private TextView txtvTitle;
     private IconTextView txtvFailure;
     private ImageView imgvBackground;
@@ -146,9 +144,7 @@ public class ItemlistFragment extends ListFragment {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
-        if (viewsCreated && itemsLoaded) {
-            onFragmentLoaded();
-        }
+        loadItems();
     }
 
     @Override
@@ -156,7 +152,6 @@ public class ItemlistFragment extends ListFragment {
         super.onResume();
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
         updateProgressBarVisibility();
-        loadItems();
     }
 
     @Override
@@ -177,7 +172,6 @@ public class ItemlistFragment extends ListFragment {
 
     private void resetViewState() {
         adapter = null;
-        viewsCreated = false;
         listFooter = null;
     }
 
@@ -190,45 +184,43 @@ public class ItemlistFragment extends ListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(!isAdded()) {
+        if (!isAdded()) {
             return;
         }
         super.onCreateOptionsMenu(menu, inflater);
 
-        if (itemsLoaded) {
-            FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
+        FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
 
-            MenuItem searchItem = menu.findItem(R.id.action_search);
-            final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-            MenuItemUtils.adjustTextColor(getActivity(), sv);
-            sv.setQueryHint(getString(R.string.search_hint));
-            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    sv.clearFocus();
-                    if (itemsLoaded) {
-                        ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s, feed.getId()));
-                    }
-                    return true;
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+        MenuItemUtils.adjustTextColor(getActivity(), sv);
+        sv.setQueryHint(getString(R.string.search_hint));
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                if (feed != null) {
+                    ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s, feed.getId()));
                 }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    return false;
-                }
-            });
-            if(feed == null || feed.getLink() == null) {
-                menu.findItem(R.id.share_link_item).setVisible(false);
-                menu.findItem(R.id.visit_website_item).setVisible(false);
+                return true;
             }
 
-            isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        if (feed == null || feed.getLink() == null) {
+            menu.findItem(R.id.share_link_item).setVisible(false);
+            menu.findItem(R.id.visit_website_item).setVisible(false);
         }
+
+        isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        if (itemsLoaded) {
+        if (feed != null) {
             FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
         }
     }
@@ -341,11 +333,6 @@ public class ItemlistFragment extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         registerForContextMenu(getListView());
-
-        viewsCreated = true;
-        if (itemsLoaded) {
-            onFragmentLoaded();
-        }
     }
 
     @Override
@@ -503,7 +490,7 @@ public class ItemlistFragment extends ListFragment {
         butShowInfo.setOnClickListener(v -> showFeedInfo());
         imgvCover.setOnClickListener(v -> showFeedInfo());
         butShowSettings.setOnClickListener(v -> {
-            if (viewsCreated && itemsLoaded) {
+            if (feed != null) {
                 Intent startIntent = new Intent(getActivity(), FeedSettingsActivity.class);
                 startIntent.putExtra(FeedSettingsActivity.EXTRA_FEED_ID,
                         feed.getId());
@@ -514,7 +501,7 @@ public class ItemlistFragment extends ListFragment {
     }
 
     private void showFeedInfo() {
-        if (viewsCreated && itemsLoaded) {
+        if (feed != null) {
             Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
             startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
                     feed.getId());
@@ -624,10 +611,7 @@ public class ItemlistFragment extends ListFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result.orElse(null);
-                    itemsLoaded = true;
-                    if (viewsCreated) {
-                        onFragmentLoaded();
-                    }
+                    onFragmentLoaded();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
