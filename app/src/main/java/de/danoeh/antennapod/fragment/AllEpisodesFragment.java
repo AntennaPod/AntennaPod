@@ -21,10 +21,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -50,15 +53,11 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Shows unread or recently published episodes
@@ -93,8 +92,13 @@ public class AllEpisodesFragment extends Fragment {
     Disposable disposable;
     private LinearLayoutManager layoutManager;
 
-    boolean showOnlyNewEpisodes() { return false; }
-    String getPrefName() { return DEFAULT_PREF_NAME; }
+    boolean showOnlyNewEpisodes() {
+        return false;
+    }
+
+    String getPrefName() {
+        return DEFAULT_PREF_NAME;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,7 +150,7 @@ public class AllEpisodesFragment extends Fragment {
         int firstItem = layoutManager.findFirstVisibleItemPosition();
         View firstItemView = layoutManager.findViewByPosition(firstItem);
         float topOffset;
-        if(firstItemView == null) {
+        if (firstItemView == null) {
             topOffset = 0;
         } else {
             topOffset = firstItemView.getTop();
@@ -184,7 +188,7 @@ public class AllEpisodesFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(!isAdded()) {
+        if (!isAdded()) {
             return;
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -220,7 +224,7 @@ public class AllEpisodesFragment extends Fragment {
             markAllRead.setVisible(!showOnlyNewEpisodes() && episodes != null && !episodes.isEmpty());
         }
         MenuItem markAllSeen = menu.findItem(R.id.mark_all_seen_item);
-        if(markAllSeen != null) {
+        if (markAllSeen != null) {
             markAllSeen.setVisible(showOnlyNewEpisodes() && episodes != null && !episodes.isEmpty());
         }
     }
@@ -275,10 +279,10 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
-        if(!isVisible()) {
+        if (!isVisible()) {
             return false;
         }
-        if(item.getItemId() == R.id.share_item) {
+        if (item.getItemId() == R.id.share_item) {
             return true; // avoids that the position is reset when we need it in the submenu
         }
 
@@ -387,11 +391,11 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public LongList getItemsIds() {
-            if(episodes == null) {
+            if (episodes == null) {
                 return new LongList(0);
             }
             LongList ids = new LongList(episodes.size());
-            for(FeedItem episode : episodes) {
+            for (FeedItem episode : episodes) {
                 ids.add(episode.getId());
             }
             return ids;
@@ -418,11 +422,11 @@ public class AllEpisodesFragment extends Fragment {
         @Override
         public LongList getQueueIds() {
             LongList queueIds = new LongList();
-            if(episodes == null) {
+            if (episodes == null) {
                 return queueIds;
             }
-            for(FeedItem item : episodes) {
-                if(item.isTagged(FeedItem.TAG_QUEUE)) {
+            for (FeedItem item : episodes) {
+                if (item.isTagged(FeedItem.TAG_QUEUE)) {
                     queueIds.add(item.getId());
                 }
             }
@@ -464,16 +468,16 @@ public class AllEpisodesFragment extends Fragment {
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
         if (isMenuInvalidationAllowed && isUpdatingFeeds != update.feedIds.length > 0) {
-                getActivity().supportInvalidateOptionsMenu();
+            getActivity().supportInvalidateOptionsMenu();
         }
         if (listAdapter == null) {
             loadItems();
             return;
         }
         if (update.mediaIds.length > 0) {
-            for(long mediaId : update.mediaIds) {
+            for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
-                if(pos >= 0) {
+                if (pos >= 0) {
                     listAdapter.notifyItemChanged(pos);
                 }
             }
@@ -537,7 +541,7 @@ public class AllEpisodesFragment extends Fragment {
         DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
 
         final Handler h = new Handler(getActivity().getMainLooper());
-        final Runnable r  = () -> {
+        final Runnable r = () -> {
             FeedMedia media = item.getMedia();
             if (media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
                 DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
@@ -552,7 +556,6 @@ public class AllEpisodesFragment extends Fragment {
             h.removeCallbacks(r);
         });
         snackbar.show();
-        h.postDelayed(r, (int)Math.ceil(snackbar.getDuration() * 1.05f));
+        h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
     }
-
 }

@@ -3,34 +3,35 @@ package de.danoeh.antennapod.fragment;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
  * supports swiping to mark as read.
  */
-
 public class NewEpisodesFragment extends AllEpisodesFragment {
 
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
-    @Override
-    protected boolean showOnlyNewEpisodes() { return true; }
 
     @Override
-    protected String getPrefName() { return PREF_NAME; }
+    protected boolean showOnlyNewEpisodes() {
+        return true;
+    }
+
+    @Override
+    protected String getPrefName() {
+        return PREF_NAME;
+    }
 
     @Override
     protected void resetViewState() {
@@ -57,7 +58,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder)viewHolder;
+                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder) viewHolder;
                 markItemAsSeenWithUndo(holder.getFeedItem());
             }
 
@@ -75,6 +76,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
 
                 super.onSelectedChanged(viewHolder, actionState);
             }
+
             @Override
             public void clearView(RecyclerView recyclerView,
                                   RecyclerView.ViewHolder viewHolder) {
@@ -98,5 +100,4 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     protected List<FeedItem> loadData() {
         return DBReader.getNewItemsList();
     }
-
 }

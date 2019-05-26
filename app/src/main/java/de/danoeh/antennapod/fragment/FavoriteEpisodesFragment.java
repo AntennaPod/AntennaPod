@@ -8,7 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -18,15 +19,11 @@ import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 
 /**
  * Like 'EpisodesFragment' except that it only shows favorite episodes and
  * supports swiping to remove from favorites.
  */
-
 public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
     private static final String TAG = "FavoriteEpisodesFrag";
@@ -34,10 +31,14 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
 
     @Override
-    protected boolean showOnlyNewEpisodes() { return true; }
+    protected boolean showOnlyNewEpisodes() {
+        return true;
+    }
 
     @Override
-    protected String getPrefName() { return PREF_NAME; }
+    protected String getPrefName() {
+        return PREF_NAME;
+    }
 
     @Subscribe
     public void onEvent(FavoritesEvent event) {
@@ -65,7 +66,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder)viewHolder;
+                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder) viewHolder;
                 Log.d(TAG, "remove(" + holder.getItemId() + ")");
 
                 if (disposable != null) {
@@ -75,8 +76,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
                 if (item != null) {
                     DBWriter.removeFavoriteItem(item);
 
-                    Snackbar snackbar = Snackbar.make(root, getString(R.string.removed_item),
-                            Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(root, getString(R.string.removed_item), Snackbar.LENGTH_LONG);
                     snackbar.setAction(getString(R.string.undo), v -> DBWriter.addFavoriteItem(item));
                     snackbar.show();
                 }
