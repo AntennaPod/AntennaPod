@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -34,19 +35,14 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     }
 
     @Override
-    protected void resetViewState() {
-        super.resetViewState();
-    }
-
-    @Override
     protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
         return item.isNew();
     }
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
-                R.layout.all_episodes_fragment);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
         emptyView.setTitle(R.string.no_new_episodes_head_label);
         emptyView.setMessage(R.string.no_new_episodes_label);
 
@@ -96,6 +92,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         return root;
     }
 
+    @NonNull
     @Override
     protected List<FeedItem> loadData() {
         return DBReader.getNewItemsList();

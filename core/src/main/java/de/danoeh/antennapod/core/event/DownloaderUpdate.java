@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.event;
 
+import android.support.annotation.NonNull;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import de.danoeh.antennapod.core.util.LongList;
 public class DownloaderUpdate {
 
     /* Downloaders that are currently running */
+    @NonNull
     public final List<Downloader> downloaders;
 
     /**
@@ -25,7 +28,7 @@ public class DownloaderUpdate {
      */
     public final long[] mediaIds;
 
-    public DownloaderUpdate(List<Downloader> downloaders) {
+    DownloaderUpdate(@NonNull List<Downloader> downloaders) {
         this.downloaders = downloaders;
         LongList feedIds1 = new LongList(), mediaIds1 = new LongList();
         for(Downloader d1 : downloaders) {

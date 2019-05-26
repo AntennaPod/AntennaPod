@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -27,7 +28,6 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
     private static final String TAG = "FavoriteEpisodesFrag";
-
     private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
 
     @Override
@@ -42,19 +42,14 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
     @Subscribe
     public void onEvent(FavoritesEvent event) {
-        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
+        Log.d(TAG, String.format("onEvent() called with: event = [%s]", event));
         loadItems();
     }
 
+    @NonNull
     @Override
-    protected void resetViewState() {
-        super.resetViewState();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
-                R.layout.all_episodes_fragment);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
         emptyView.setTitle(R.string.no_fav_episodes_head_label);
         emptyView.setMessage(R.string.no_fav_episodes_label);
 
@@ -67,7 +62,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder) viewHolder;
-                Log.d(TAG, "remove(" + holder.getItemId() + ")");
+                Log.d(TAG, String.format("remove(%s)", holder.getItemId()));
 
                 if (disposable != null) {
                     disposable.dispose();
@@ -88,6 +83,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
         return root;
     }
 
+    @NonNull
     @Override
     protected List<FeedItem> loadData() {
         return DBReader.getFavoriteItemsList();
