@@ -188,7 +188,8 @@ public class DBWriter {
                         context.stopService(new Intent(context, PlaybackService.class));
                     }
                     if (item.getMedia() != null
-                            && item.getMedia().isDownloaded()) {
+                            && item.getMedia().isDownloaded()
+                            && !feed.isLocalFeed()) {
                         File mediaFile = new File(item.getMedia()
                                 .getFile_url());
                         mediaFile.delete();
