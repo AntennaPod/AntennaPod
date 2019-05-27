@@ -28,7 +28,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
@@ -525,8 +524,7 @@ public class QueueFragment extends Fragment {
         if (queue != null && queue.size() > 0) {
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
-                recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
-                        new DefaultActionButtonCallback(activity), itemTouchHelper);
+                recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess, itemTouchHelper);
                 recyclerAdapter.setHasStableIds(true);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);

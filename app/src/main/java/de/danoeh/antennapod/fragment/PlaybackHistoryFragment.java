@@ -17,7 +17,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
@@ -216,8 +215,7 @@ public class PlaybackHistoryFragment extends ListFragment {
             // played items shoudln't be transparent for this fragment since, *all* items
             // in this fragment will, by definition, be played. So it serves no purpose and can make
             // it harder to read.
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess,
-                    new DefaultActionButtonCallback(getActivity()), true, false);
+            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, true, false);
             setListAdapter(adapter);
         }
         setListShown(true);

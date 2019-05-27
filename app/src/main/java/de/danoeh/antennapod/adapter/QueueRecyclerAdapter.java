@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -22,8 +23,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -32,9 +31,9 @@ import java.lang.ref.WeakReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
@@ -54,8 +53,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     private final WeakReference<MainActivity> mainActivity;
     private final ItemAccess itemAccess;
-    private final ActionButtonCallback actionButtonCallback;
-    private final ActionButtonUtils actionButtonUtils;
     private final ItemTouchHelper itemTouchHelper;
 
     private boolean locked;
@@ -67,13 +64,10 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     public QueueRecyclerAdapter(MainActivity mainActivity,
                                 ItemAccess itemAccess,
-                                ActionButtonCallback actionButtonCallback,
                                 ItemTouchHelper itemTouchHelper) {
         super();
         this.mainActivity = new WeakReference<>(mainActivity);
         this.itemAccess = itemAccess;
-        this.actionButtonUtils = new ActionButtonUtils(mainActivity);
-        this.actionButtonCallback = actionButtonCallback;
         this.itemTouchHelper = itemTouchHelper;
         locked = UserPreferences.isQueueLocked();
 
@@ -287,10 +281,11 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 }
             }
 
-            actionButtonUtils.configureActionButton(butSecondary, item, true);
+            ItemActionButton actionButton = ItemActionButton.forItem(item, true);
+            actionButton.configure(butSecondary, mainActivity.get());
+
             butSecondary.setFocusable(false);
             butSecondary.setTag(item);
-            butSecondary.setOnClickListener(secondaryActionListener);
 
             new CoverLoader(mainActivity.get())
                     .withUri(item.getImageLocation())
@@ -301,15 +296,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         }
 
     }
-
-    private final View.OnClickListener secondaryActionListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            FeedItem item = (FeedItem) v.getTag();
-            actionButtonCallback.onActionButtonPressed(item, itemAccess.getQueueIds());
-        }
-    };
-
 
     public interface ItemAccess {
         FeedItem getItem(int position);

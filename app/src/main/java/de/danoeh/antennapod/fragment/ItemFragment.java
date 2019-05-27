@@ -42,7 +42,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
+import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
@@ -61,7 +61,6 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.Timeline;
@@ -232,9 +231,9 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             if (item == null) {
                 return;
             }
-            DefaultActionButtonCallback actionButtonCallback = new DefaultActionButtonCallback(getActivity());
-            actionButtonCallback.onActionButtonPressed(item, item.isTagged(FeedItem.TAG_QUEUE) ?
-                    LongList.of(item.getId()) : new LongList(0));
+            ItemActionButton actionButton = ItemActionButton.forItem(item, item.isTagged(FeedItem.TAG_QUEUE));
+            actionButton.onClick(getActivity());
+
             FeedMedia media = item.getMedia();
             if (media != null && media.isDownloaded()) {
                 // playback was started, dialog should close itself

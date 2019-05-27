@@ -37,7 +37,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -428,7 +427,7 @@ public class ItemlistFragment extends ListFragment {
             setListAdapter(null);
             setupHeaderView();
             setupFooterView();
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false, true);
+            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, false, true);
             setListAdapter(adapter);
         }
         refreshHeaderView();
