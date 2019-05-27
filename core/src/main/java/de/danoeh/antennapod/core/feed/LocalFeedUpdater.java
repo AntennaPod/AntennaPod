@@ -27,20 +27,17 @@ public class LocalFeedUpdater {
     }
 
     /** Starts the import process. */
-    public static Feed startImport(Uri uri, Context context) {
-        File f = new File(uri.getPath());
-        if (!f.isDirectory()) {
+    public static Feed startImport(File dir, Context context) {
+        if (!dir.isDirectory()) {
             throw new RuntimeException("invalid path");
         } else {
-            return startImportDirectory(uri, context);
+            return startImportDirectory(dir, context);
         }
     }
 
-    private static Feed startImportDirectory(Uri uri, Context context) {
+    private static Feed startImportDirectory(File dir, Context context) {
         //create a feed object for this directory
-        File f = new File(uri.getPath());
-        String dirUrl = uri.toString();
-        Feed dirFeed = new Feed(dirUrl, null, f.getName());
+        Feed dirFeed = new Feed("file:" + dir.getAbsolutePath(), null, dir.getName());
         dirFeed.setItems(new ArrayList<>()); //this seems useless but prevents an exception
         //find the feed for this directory (if it exists), or create one
         dirFeed = DBTasks.updateFeed(context, dirFeed)[0];
@@ -93,6 +90,7 @@ public class LocalFeedUpdater {
         );
         if (iconFiles.length > 0) {
             dirFeed.setImageUrl(
+                    //TODO do we really need this gigantic mess?
                     new Uri.Builder().scheme("file").path(iconFiles[0].getAbsolutePath())
                             .build().toString());
         }

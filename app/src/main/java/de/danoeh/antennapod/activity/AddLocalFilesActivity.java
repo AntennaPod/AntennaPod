@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.content.ActivityNotFoundException;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -122,9 +121,9 @@ public class AddLocalFilesActivity extends AppCompatActivity implements DialogSe
     @Override
     public void onSelectedFilePaths(String[] files) {
         for (String f: files) {
-            Uri uri = new Uri.Builder().scheme("file").path(f).build();
-            Log.d(TAG, "path is " + uri.getPath());
-            boolean ret = importUri(uri);
+            File dir = new File(f);
+            Log.d(TAG, "path is " + dir.getAbsolutePath());
+            boolean ret = importDirectory(dir);
             if (ret == false) {
                 Toast.makeText(this, "Could not import", Toast.LENGTH_LONG).show();
             } else {
@@ -141,10 +140,10 @@ public class AddLocalFilesActivity extends AppCompatActivity implements DialogSe
         ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_READ_EXTERNAL_STORAGE);
     }
 
-    boolean importUri(@Nullable Uri uri) {
-        if (uri == null) {
+    boolean importDirectory(File dir) {
+        if (!dir.isDirectory()) {
             new MaterialDialog.Builder(this)
-                    .content(R.string.opml_import_error_no_file)
+                    .content(R.string.folder_import_error_not_dir)
                     .positiveText(android.R.string.ok)
                     .show();
             return false;
@@ -156,7 +155,7 @@ public class AddLocalFilesActivity extends AppCompatActivity implements DialogSe
             }
 
             try {
-                Feed feed = LocalFeedUpdater.startImport(uri, this);
+                Feed feed = LocalFeedUpdater.startImport(dir, this);
                 DBTasks.forceRefreshFeed(this, feed);
                 return true;
             } catch (Exception e) {

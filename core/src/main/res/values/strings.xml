@@ -537,6 +537,7 @@
     <string name="folder_import_option">Option %1$d</string>
     <string name="folder_import_label">Folder Import</string>
     <string name="folder_import_error">An error has occurred while adding the selected file:</string>
+    <string name="folder_import_error_not_dir">Not a directory!</string>
 
     <!-- Sleep timer -->
     <string name="set_sleeptimer_label">Set sleep timer</string>
