@@ -302,6 +302,8 @@
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
     <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
+    <string name="sort_old_to_new">Old to new</string>
+    <string name="sort_new_to_old">New to old</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>
