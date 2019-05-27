@@ -165,6 +165,7 @@ public class ExoPlayerWrapper implements IPlayer {
     @Override
     public void seekTo(int i) throws IllegalStateException {
         mExoPlayer.seekTo(i);
+        audioSeekCompleteListener.onSeekComplete(null);
     }
 
     @Override

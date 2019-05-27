@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -34,7 +33,6 @@ import com.viewpagerindicator.CirclePageIndicator;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.ChaptersListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -62,11 +60,13 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Activity for playing files that do not require a video surface.
@@ -102,17 +102,10 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     private ActionBarDrawerToggle drawerToggle;
     private int mPosition = -1;
 
-    private Playable media;
     private ViewPager pager;
     private MediaplayerInfoPagerAdapter pagerAdapter;
 
     private Disposable disposable;
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,13 +117,11 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
-        if(pagerAdapter != null) {
-            pagerAdapter.setController(null);
-        }
         if (disposable != null) {
             disposable.dispose();
         }
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         saveCurrentFragment();
     }
 
@@ -180,15 +171,9 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if(pagerAdapter != null && controller != null && controller.getMedia() != media) {
-            media = controller.getMedia();
-            pagerAdapter.onMediaChanged(media);
-            pagerAdapter.setController(controller);
-        }
+    protected void onStart() {
+        super.onStart();
         AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
-
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadData();
@@ -279,8 +264,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
         pager = findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
-        pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager(), media);
-        pagerAdapter.setController(controller);
+        pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
         CirclePageIndicator pageIndicator = findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
@@ -288,37 +272,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         pager.onSaveInstanceState();
 
         navList.post(this::supportStartPostponedEnterTransition);
-    }
-
-    @Override
-    protected void onPositionObserverUpdate() {
-        super.onPositionObserverUpdate();
-        notifyMediaPositionChanged();
-    }
-
-    @Override
-    protected boolean loadMediaInfo() {
-        if (!super.loadMediaInfo()) {
-            return false;
-        }
-        if(controller != null && controller.getMedia() != media) {
-            media = controller.getMedia();
-            pagerAdapter.onMediaChanged(media);
-        }
-        return true;
-    }
-
-    private void notifyMediaPositionChanged() {
-        if(pagerAdapter == null) {
-            return;
-        }
-        ChaptersFragment chaptersFragment = pagerAdapter.getChaptersFragment();
-        if(chaptersFragment != null) {
-            ChaptersListAdapter adapter = (ChaptersListAdapter) chaptersFragment.getListAdapter();
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
-        }
     }
 
     @Override
@@ -484,6 +437,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         View parentLayout = findViewById(R.id.drawer_layout);
@@ -567,50 +521,11 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         }
     };
 
-    public interface MediaplayerInfoContentFragment {
-        void onMediaChanged(Playable media);
-    }
-
     private static class MediaplayerInfoPagerAdapter extends FragmentStatePagerAdapter {
-
         private static final String TAG = "MPInfoPagerAdapter";
 
-        private Playable media;
-        private PlaybackController controller;
-
-        public MediaplayerInfoPagerAdapter(FragmentManager fm, Playable media) {
+        public MediaplayerInfoPagerAdapter(FragmentManager fm) {
             super(fm);
-            this.media = media;
-        }
-
-        private CoverFragment coverFragment;
-        private ItemDescriptionFragment itemDescriptionFragment;
-        private ChaptersFragment chaptersFragment;
-
-        public void onMediaChanged(Playable media) {
-            Log.d(TAG, "media changing to " + ((media != null) ? media.getEpisodeTitle() : "null"));
-            this.media = media;
-            if(coverFragment != null) {
-                coverFragment.onMediaChanged(media);
-            }
-            if(itemDescriptionFragment != null) {
-                itemDescriptionFragment.onMediaChanged(media);
-            }
-            if(chaptersFragment != null) {
-                chaptersFragment.onMediaChanged(media);
-            }
-        }
-
-        public void setController(PlaybackController controller) {
-            this.controller = controller;
-            if(chaptersFragment != null) {
-                chaptersFragment.setController(controller);
-            }
-        }
-
-        @Nullable
-        public ChaptersFragment getChaptersFragment() {
-            return chaptersFragment;
         }
 
         @Override
@@ -618,21 +533,11 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             Log.d(TAG, "getItem(" + position + ")");
             switch (position) {
                 case POS_COVER:
-                    if(coverFragment == null) {
-                        coverFragment = CoverFragment.newInstance(media);
-                    }
-                    return coverFragment;
+                    return new CoverFragment();
                 case POS_DESCR:
-                    if(itemDescriptionFragment == null) {
-                        itemDescriptionFragment = ItemDescriptionFragment.newInstance(media, true, true);
-                    }
-                    return itemDescriptionFragment;
+                    return new ItemDescriptionFragment();
                 case POS_CHAPTERS:
-                    if(chaptersFragment == null) {
-                        chaptersFragment = ChaptersFragment.newInstance(media);
-                        chaptersFragment.setController(controller);
-                    }
-                    return chaptersFragment;
+                    return new ChaptersFragment();
                 default:
                     return null;
             }

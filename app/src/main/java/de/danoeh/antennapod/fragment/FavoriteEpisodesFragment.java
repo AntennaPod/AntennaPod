@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 /**
@@ -36,6 +39,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     @Override
     protected String getPrefName() { return PREF_NAME; }
 
+    @Subscribe
     public void onEvent(FavoritesEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         loadItems();
@@ -50,6 +54,8 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
+        emptyView.setTitle(R.string.no_fav_episodes_head_label);
+        emptyView.setMessage(R.string.no_fav_episodes_label);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override

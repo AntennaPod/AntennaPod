@@ -20,6 +20,7 @@ import android.util.Pair;
 import android.webkit.URLUtil;
 
 import org.apache.commons.io.FileUtils;
+import org.greenrobot.eventbus.EventBus;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -71,7 +72,6 @@ import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.InvalidFeedException;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
-import de.greenrobot.event.EventBus;
 
 /**
  * Manages the download of feedfiles in the app. Downloads can be enqueued via the startService intent.
@@ -152,7 +152,7 @@ public class DownloadService extends Service {
         }
     }
 
-    private final Thread downloadCompletionThread = new Thread() {
+    private final Thread downloadCompletionThread = new Thread("DownloadCompletionThread") {
         private static final String TAG = "downloadCompletionThd";
 
         @Override
@@ -594,6 +594,9 @@ public class DownloadService extends Service {
 
         private static final long WAIT_TIMEOUT = 3000;
 
+        FeedSyncThread() {
+            super("FeedSyncThread");
+        }
 
         /**
          * Waits for completed requests. Once the first request has been taken, the method will wait WAIT_TIMEOUT ms longer to

@@ -144,7 +144,6 @@
   <string name="remove_label"> हटाएँ</string>
   <string name="delete_label">डिलीट</string>
   <string name="delete_failed">फ़ाइल डिलीट करने में असमर्थ। डिवाइस को रिबूट करने से मदद मिल सकती है।</string>
-  <string name="remove_episode_lable">एपिसोड हटाएं</string>
   <string name="mark_as_seen_label">देखा गया के रूप में चिह्नित करें</string>
   <string name="marked_as_seen_label">देखा गया के रूप में चिह्नित किया गया</string>
   <string name="mark_read_label">चलाया गया के रूप में चिह्नित करें</string>
@@ -260,7 +259,6 @@
   <string name="set_playback_speed_label">प्लेबैक गति</string>
   <string name="enable_sonic">सॉनिक सक्षम करे</string>
   <!--Empty list labels-->
-  <string name="no_items_label">इस सूची में कोई आइटम नहीं हैं.</string>
   <string name="no_feeds_label">आपने अभी तक किसी भी पॉडकास्ट को सब्सक्राइब नहीं किया है।</string>
   <string name="no_chapters_label">इस एपिसोड में कोई अध्याय नहीं है।</string>
   <string name="no_shownotes_label">इस एपिसोड में कोई शोनोट्स नहीं है।</string>
@@ -401,6 +399,7 @@
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->

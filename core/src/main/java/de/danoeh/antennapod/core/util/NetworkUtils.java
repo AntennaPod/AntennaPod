@@ -68,6 +68,11 @@ public class NetworkUtils {
 						}
 					}
 				}
+			} else if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
+				Log.d(TAG, "Device is connected to Ethernet");
+				if (networkInfo.isConnected()) {
+					return true;
+				}
 			} else {
 				if (!UserPreferences.isEnableAutodownloadOnMobile()) {
 					Log.d(TAG, "Auto Download not enabled on Mobile");
@@ -90,9 +95,13 @@ public class NetworkUtils {
         return info != null && info.isConnected();
     }
 
-	public static boolean isDownloadAllowed() {
-		return UserPreferences.isAllowMobileUpdate() || !NetworkUtils.isNetworkMetered();
-	}
+    public static boolean isDownloadAllowed() {
+        return UserPreferences.isAllowMobileUpdate() || !NetworkUtils.isNetworkMetered();
+    }
+
+    public static boolean isImageAllowed() {
+        return UserPreferences.isAllowMobileImages() || !NetworkUtils.isNetworkMetered();
+    }
 
 	private static boolean isNetworkMetered() {
 		ConnectivityManager connManager = (ConnectivityManager) context

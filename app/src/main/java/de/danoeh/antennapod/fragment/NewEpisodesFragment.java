@@ -7,9 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.TextView;
 import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
@@ -26,9 +25,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 public class NewEpisodesFragment extends AllEpisodesFragment {
 
     public static final String TAG = "NewEpisodesFragment";
-
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
-
     @Override
     protected boolean showOnlyNewEpisodes() { return true; }
 
@@ -41,24 +38,16 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     }
 
     @Override
-    public void onEventMainThread(FeedItemEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(episodes == null) {
-            return;
-        }
-        for(FeedItem item : event.items) {
-            int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
-            if(pos >= 0 && item.isTagged(FeedItem.TAG_QUEUE)) {
-                episodes.remove(pos);
-                listAdapter.notifyItemRemoved(pos);
-            }
-        }
+    protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
+        return item.isNew();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.all_episodes_fragment);
+        emptyView.setTitle(R.string.no_new_episodes_head_label);
+        emptyView.setMessage(R.string.no_new_episodes_label);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override

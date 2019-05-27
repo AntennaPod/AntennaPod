@@ -20,7 +20,9 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.greenrobot.event.EventBus;
+import de.danoeh.antennapod.view.EmptyViewHandler;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Displays all running downloads and provides actions to cancel them
@@ -44,17 +46,23 @@ public class RunningDownloadsFragment extends ListFragment {
 
         adapter = new DownloadlistAdapter(getActivity(), itemAccess);
         setListAdapter(adapter);
+
+        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView.setTitle(R.string.no_run_downloads_head_label);
+        emptyView.setMessage(R.string.no_run_downloads_label);
+        emptyView.attachToListView(getListView());
+
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        EventBus.getDefault().registerSticky(this);
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         EventBus.getDefault().unregister(this);
     }
 
@@ -65,6 +73,7 @@ public class RunningDownloadsFragment extends ListFragment {
         adapter = null;
     }
 
+    @Subscribe(sticky = true)
     public void onEvent(DownloadEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;

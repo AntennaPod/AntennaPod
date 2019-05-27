@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.text.TextUtils;
@@ -58,6 +59,7 @@ public final class DBReader {
      * of the returned list does NOT have its list of FeedItems yet. The FeedItem-list
      * can be loaded separately with {@link #getFeedItemList(Feed)}.
      */
+    @NonNull
     public static List<Feed> getFeedList() {
         Log.d(TAG, "Extracting Feedlist");
 
@@ -70,6 +72,7 @@ public final class DBReader {
         }
     }
 
+    @NonNull
     private static List<Feed> getFeedList(PodDBAdapter adapter) {
         Cursor cursor = null;
         try {
@@ -199,6 +202,7 @@ public final class DBReader {
         }
     }
 
+    @NonNull
     private static List<FeedItem> extractItemlistFromCursor(PodDBAdapter adapter, Cursor cursor) {
         List<FeedItem> result = new ArrayList<>(cursor.getCount());
 
@@ -251,6 +255,7 @@ public final class DBReader {
         return feed;
     }
 
+    @NonNull
     static List<FeedItem> getQueue(PodDBAdapter adapter) {
         Log.d(TAG, "getQueue()");
         Cursor cursor = null;
@@ -307,6 +312,7 @@ public final class DBReader {
      * @return A list of FeedItems sorted by the same order as the queue. The caller can wrap the returned
      * list in a {@link de.danoeh.antennapod.core.util.QueueAccess} object for easier access to the queue's properties.
      */
+    @NonNull
     public static List<FeedItem> getQueue() {
         Log.d(TAG, "getQueue() called");
 
@@ -324,6 +330,7 @@ public final class DBReader {
      *
      * @return A list of FeedItems whose episdoe has been downloaded.
      */
+    @NonNull
     public static List<FeedItem> getDownloadedItems() {
         Log.d(TAG, "getDownloadedItems() called");
 
@@ -414,6 +421,7 @@ public final class DBReader {
      *
      * @param limit The maximum number of episodes that should be loaded.
      */
+    @NonNull
     public static List<FeedItem> getRecentlyPublishedEpisodes(int limit) {
         Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "limit = [" + limit + "]");
 
@@ -440,6 +448,7 @@ public final class DBReader {
      * @return The playback history. The FeedItems are sorted by their media's playbackCompletionDate in descending order.
      * The size of the returned list is limited by {@link #PLAYBACK_HISTORY_SIZE}.
      */
+    @NonNull
     public static List<FeedItem> getPlaybackHistory() {
         Log.d(TAG, "getPlaybackHistory() called");
 
@@ -595,6 +604,7 @@ public final class DBReader {
         }
     }
 
+    @Nullable
     private static FeedItem getFeedItem(final long itemId, PodDBAdapter adapter) {
         Log.d(TAG, "Loading feeditem with id " + itemId);
 
@@ -628,6 +638,7 @@ public final class DBReader {
      * @return The FeedItem or null if the FeedItem could not be found. All FeedComponent-attributes
      * as well as chapter marks of the FeedItem will also be loaded from the database.
      */
+    @Nullable
     public static FeedItem getFeedItem(final long itemId) {
         Log.d(TAG, "getFeedItem() called with: " + "itemId = [" + itemId + "]");
 
@@ -640,6 +651,7 @@ public final class DBReader {
         }
     }
 
+    @Nullable
     private static FeedItem getFeedItem(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
         Log.d(TAG, "Loading feeditem with podcast url " + podcastUrl + " and episode url " + episodeUrl);
         Cursor cursor = null;
@@ -859,6 +871,7 @@ public final class DBReader {
      *                       countAll calculation time
      * @return The StatisticsInfo object
      */
+    @NonNull
     public static StatisticsData getStatistics(boolean sortByCountAll) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -882,10 +895,6 @@ public final class DBReader {
                     continue;
                 }
 
-                // played duration used to be reset when the item is added to the playback history
-                if (media.getPlaybackCompletionDate() != null) {
-                    feedPlayedTime += media.getDuration() / 1000;
-                }
                 feedPlayedTime += media.getPlayedDuration() / 1000;
 
                 if (item.isPlayed()) {
@@ -1029,6 +1038,7 @@ public final class DBReader {
      * the list of subscriptions, the number of items in the queue and the number of unread
      * items.
      */
+    @NonNull
     public static NavDrawerData getNavDrawerData() {
         Log.d(TAG, "getNavDrawerData() called with: " + "");
         PodDBAdapter adapter = PodDBAdapter.getInstance();

@@ -92,7 +92,7 @@
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackground"
         android:clickable="false"
-        android:contentDescription="@string/remove_episode_lable"
+        android:contentDescription="@string/delete_episode_label"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:src="?attr/content_discard"

@@ -20,6 +20,8 @@ import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.libraries.cast.companionlibrary.cast.BaseCastManager;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import de.danoeh.antennapod.core.cast.CastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
@@ -175,9 +177,9 @@ public class PlaybackServiceFlavorHelper {
         }
         callback.sendNotificationBroadcast(PlaybackService.NOTIFICATION_TYPE_RELOAD,
                 PlaybackService.EXTRA_CODE_CAST);
-        switchMediaPlayer(new RemotePSMP(context, callback.getMediaPlayerCallback()),
-                info,
-                wasLaunched);
+        RemotePSMP remotePSMP = new RemotePSMP(context, callback.getMediaPlayerCallback());
+        switchMediaPlayer(remotePSMP, info, wasLaunched);
+        remotePSMP.init();
         // hardware volume buttons control the remote device volume
         mediaRouter.setMediaSessionCompat(callback.getMediaSession());
         registerWifiBroadcastReceiver();
@@ -190,8 +192,8 @@ public class PlaybackServiceFlavorHelper {
         PlaybackServiceMediaPlayer mediaPlayer = callback.getMediaPlayer();
         if (mediaPlayer != null) {
             try {
-                mediaPlayer.stopPlayback(false).get();
-            } catch (InterruptedException | ExecutionException e) {
+                mediaPlayer.stopPlayback(false).get(2, TimeUnit.SECONDS);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 Log.e(TAG, "There was a problem stopping playback while switching media players", e);
             }
             mediaPlayer.shutdownQuietly();

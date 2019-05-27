@@ -581,31 +581,24 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         config.setFragmentContainerViewId(R.id.content);
         config.setBreadcrumbsEnabled(true);
 
-        config.index()
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_user_interface))
-                .addFile(R.xml.preferences_user_interface);
-        config.index()
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_playback))
-                .addFile(R.xml.preferences_playback);
-        config.index()
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
-                .addFile(R.xml.preferences_network);
-        config.index()
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_storage))
-                .addFile(R.xml.preferences_storage);
-        config.index()
+        config.index(R.xml.preferences_user_interface)
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_user_interface));
+        config.index(R.xml.preferences_playback)
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_playback));
+        config.index(R.xml.preferences_network)
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_network));
+        config.index(R.xml.preferences_storage)
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_storage));
+        config.index(R.xml.preferences_autodownload)
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
                 .addBreadcrumb(R.string.automation)
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_autodownload))
-                .addFile(R.xml.preferences_autodownload);
-        config.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_autodownload));
+        config.index(R.xml.preferences_gpodder)
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_gpodder))
-                .addFile(R.xml.preferences_gpodder);
-        config.index()
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_gpodder));
+        config.index(R.xml.preferences_flattr)
                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr))
-                .addFile(R.xml.preferences_flattr);
+                .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr));
     }
 
     public PreferenceFragmentCompat openScreen(int preferences, AppCompatActivity activity) {
@@ -849,7 +842,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             } else if (v > 0 && v < 24) {
                 entries[x] = res.getQuantityString(R.plurals.episode_cleanup_hours_after_listening, v, v);
             } else {
-                int numDays = (int)(v / 24); // assume underlying value will be NOT fraction of days, e.g., 36 (hours)
+                int numDays = v / 24; // assume underlying value will be NOT fraction of days, e.g., 36 (hours)
                 entries[x] = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, numDays, numDays);
             }
         }

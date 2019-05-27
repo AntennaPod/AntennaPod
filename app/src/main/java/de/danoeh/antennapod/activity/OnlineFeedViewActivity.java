@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -27,10 +28,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-
 import com.bumptech.glide.request.RequestOptions;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -58,15 +61,16 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
+import de.danoeh.antennapod.core.syndication.handler.FeedHandlerResult;
 import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
+import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -121,6 +125,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     };
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         setSubscribeButtonState(feed);
@@ -191,24 +196,19 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         isPaused = false;
         EventDistributor.getInstance().register(listener);
         EventBus.getDefault().register(this);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         isPaused = true;
         EventDistributor.getInstance().unregister(listener);
         EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
         if (downloader != null && !downloader.isFinished()) {
             downloader.cancel();
         }
@@ -288,12 +288,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                         error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void checkDownloadResult(DownloadStatus status) {
-        if (status == null) {
-            Log.wtf(TAG, "DownloadStatus returned by Downloader was null");
-            finish();
-            return;
-        }
+    private void checkDownloadResult(@NonNull DownloadStatus status) {
         if (status.isCancelled()) {
             return;
         }
@@ -320,30 +315,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
         Log.d(TAG, "Parsing feed");
 
-        parser = Observable.fromCallable(() -> {
-                    FeedHandler handler = new FeedHandler();
-                    try {
-                        return handler.parseFeed(feed);
-                    } catch (UnsupportedFeedtypeException e) {
-                        Log.d(TAG, "Unsupported feed type detected");
-                        if ("html".equalsIgnoreCase(e.getRootElement())) {
-                            showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
-                            return null;
-                        } else {
-                            throw e;
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, Log.getStackTraceString(e));
-                        throw e;
-                    } finally {
-                        boolean rc = new File(feed.getFile_url()).delete();
-                        Log.d(TAG, "Deleted feed source file. Result: " + rc);
-                    }
-                })
+        parser = Observable.fromCallable(this::doParseFeed)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    if(result != null) {
+                .subscribe(optionalResult -> {
+                    if(optionalResult.isPresent()) {
+                        FeedHandlerResult result = optionalResult.get();
                         beforeShowFeedInformation(result.feed);
                         showFeedInformation(result.feed, result.alternateFeedUrls);
                     }
@@ -353,6 +330,33 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                     showErrorDialog(errorMsg);
                     Log.d(TAG, "Feed parser exception: " + Log.getStackTraceString(error));
                 });
+    }
+
+    @NonNull
+    private Optional<FeedHandlerResult> doParseFeed() throws Exception {
+        FeedHandler handler = new FeedHandler();
+        try {
+            return Optional.of(handler.parseFeed(feed));
+        } catch (UnsupportedFeedtypeException e) {
+            Log.d(TAG, "Unsupported feed type detected");
+            if ("html".equalsIgnoreCase(e.getRootElement())) {
+                boolean dialogShown = showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
+                if (dialogShown) {
+                    return Optional.empty();
+                } else {
+                    Log.d(TAG, "Supplied feed is an HTML web page that has no references to any feed");
+                    throw e;
+                }
+            } else {
+                throw e;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            throw e;
+        } finally {
+            boolean rc = new File(feed.getFile_url()).delete();
+            Log.d(TAG, "Deleted feed source file. Result: " + rc);
+        }
     }
 
     /**
@@ -538,21 +542,25 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     }
 
-    private void showFeedDiscoveryDialog(File feedFile, String baseUrl) {
+    /**
+     *
+     * @return true if a FeedDiscoveryDialog is shown, false otherwise (e.g., due to no feed found).
+     */
+    private boolean showFeedDiscoveryDialog(File feedFile, String baseUrl) {
         FeedDiscoverer fd = new FeedDiscoverer();
         final Map<String, String> urlsMap;
         try {
             urlsMap = fd.findLinks(feedFile, baseUrl);
             if (urlsMap == null || urlsMap.isEmpty()) {
-                return;
+                return false;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return;
+            return false;
         }
 
         if (isPaused || isFinishing()) {
-            return;
+            return false;
         }
 
         final List<String> titles = new ArrayList<>();
@@ -588,6 +596,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
             dialog = ab.show();
         });
+        return true;
     }
 
     private class FeedViewAuthenticationDialog extends AuthenticationDialog {

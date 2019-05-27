@@ -6,8 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.0'
-        // Exclude the version that the android plugin depends on.
-        configurations.classpath.exclude group: "com.android.tools.external.lombok"
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.5'
     }
 }
 
@@ -15,6 +14,13 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
+    }
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint" << "-Xlint:-deprecation" << "-Xlint:-serial"
+        }
     }
 }
 
@@ -35,7 +41,6 @@ subprojects {
 
 project.ext {
     compileSdkVersion = 26
-    buildToolsVersion = "28.0.3"
     minSdkVersion = 14
     targetSdkVersion = 26
 
@@ -44,7 +49,7 @@ project.ext {
     commonsioVersion = "2.5"
     commonslangVersion = "3.6"
     commonstextVersion = "1.3"
-    eventbusVersion = "2.4.0"
+    eventbusVersion = "3.1.1"
     flattr4jVersion = "2.14"
     glideVersion = "4.8.0"
     glideOkhttpIntegrationVersion = "4.8.0"

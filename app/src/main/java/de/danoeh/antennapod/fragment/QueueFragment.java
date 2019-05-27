@@ -52,11 +52,15 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.greenrobot.event.EventBus;
+
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Shows all items in the queue
@@ -72,7 +76,7 @@ public class QueueFragment extends Fragment {
     private TextView infoBar;
     private RecyclerView recyclerView;
     private QueueRecyclerAdapter recyclerAdapter;
-    private TextView txtvEmpty;
+    private EmptyViewHandler emptyView;
     private ProgressBar progLoading;
 
     private List<FeedItem> queue;
@@ -102,20 +106,20 @@ public class QueueFragment extends Fragment {
         if (queue != null) {
             onFragmentLoaded(true);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         loadItems(true);
         EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().registerSticky(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         saveScrollPosition();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
         if(disposable != null) {
@@ -123,9 +127,13 @@ public class QueueFragment extends Fragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(QueueEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(queue == null || recyclerAdapter == null) {
+        if (queue == null) {
+            return;
+        } else if (recyclerAdapter == null) {
+            loadItems(true);
             return;
         }
         switch(event.action) {
@@ -158,9 +166,13 @@ public class QueueFragment extends Fragment {
         onFragmentLoaded(false);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(queue == null || recyclerAdapter == null) {
+        if (queue == null) {
+            return;
+        } else if (recyclerAdapter == null) {
+            loadItems(true);
             return;
         }
         for(int i=0, size = event.items.size(); i < size; i++) {
@@ -170,10 +182,12 @@ public class QueueFragment extends Fragment {
                 queue.remove(pos);
                 queue.add(pos, item);
                 recyclerAdapter.notifyItemChanged(pos);
+                refreshInfoBar();
             }
         }
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
@@ -271,7 +285,9 @@ public class QueueFragment extends Fragment {
                     boolean newLockState = !UserPreferences.isQueueLocked();
                     UserPreferences.setQueueLocked(newLockState);
                     getActivity().supportInvalidateOptionsMenu();
-                    recyclerAdapter.setLocked(newLockState);
+                    if (recyclerAdapter != null) {
+                        recyclerAdapter.setLocked(newLockState);
+                    }
                     if (newLockState) {
                         Snackbar.make(getActivity().findViewById(R.id.content), R.string
                                 .queue_locked, Snackbar.LENGTH_SHORT).show();
@@ -431,7 +447,7 @@ public class QueueFragment extends Fragment {
                     final FeedItem item = queue.get(position);
                     final boolean isRead = item.isPlayed();
                     DBWriter.markItemPlayed(FeedItem.PLAYED, false, item.getId());
-                    DBWriter.removeQueueItem(getActivity(), item, true);
+                    DBWriter.removeQueueItem(getActivity(), true, item);
                     Snackbar snackbar = Snackbar.make(root, getString(R.string.marked_as_read_label), Snackbar.LENGTH_LONG);
                     snackbar.setAction(getString(R.string.undo), v -> {
                         DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false);
@@ -494,8 +510,11 @@ public class QueueFragment extends Fragment {
         );
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        txtvEmpty = root.findViewById(android.R.id.empty);
-        txtvEmpty.setVisibility(View.GONE);
+        emptyView = new EmptyViewHandler(getContext());
+        emptyView.attachToRecyclerView(recyclerView);
+        emptyView.setTitle(R.string.no_items_header_label);
+        emptyView.setMessage(R.string.no_items_label);
+
         progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
 
@@ -503,19 +522,20 @@ public class QueueFragment extends Fragment {
     }
 
     private void onFragmentLoaded(final boolean restoreScrollPosition) {
-        if (recyclerAdapter == null) {
-            MainActivity activity = (MainActivity) getActivity();
-            recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
-                new DefaultActionButtonCallback(activity), itemTouchHelper);
-            recyclerAdapter.setHasStableIds(true);
-            recyclerView.setAdapter(recyclerAdapter);
-        }
-        if(queue == null || queue.size() == 0) {
-            recyclerView.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.VISIBLE);
-        } else {
-            txtvEmpty.setVisibility(View.GONE);
+        if (queue != null && queue.size() > 0) {
+            if (recyclerAdapter == null) {
+                MainActivity activity = (MainActivity) getActivity();
+                recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
+                        new DefaultActionButtonCallback(activity), itemTouchHelper);
+                recyclerAdapter.setHasStableIds(true);
+                recyclerView.setAdapter(recyclerAdapter);
+                emptyView.updateAdapter(recyclerAdapter);
+            }
             recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerAdapter = null;
+            recyclerView.setVisibility(View.GONE);
+            emptyView.updateAdapter(recyclerAdapter);
         }
 
         if (restoreScrollPosition) {
@@ -628,20 +648,18 @@ public class QueueFragment extends Fragment {
         }
         if (queue == null) {
             recyclerView.setVisibility(View.GONE);
-            txtvEmpty.setVisibility(View.GONE);
+            emptyView.hide();
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(DBReader::getQueue)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
-                    if(items != null) {
-                        progLoading.setVisibility(View.GONE);
-                        queue = items;
-                        onFragmentLoaded(restoreScrollPosition);
-                        if(recyclerAdapter != null) {
-                            recyclerAdapter.notifyDataSetChanged();
-                        }
+                    progLoading.setVisibility(View.GONE);
+                    queue = items;
+                    onFragmentLoaded(restoreScrollPosition);
+                    if(recyclerAdapter != null) {
+                        recyclerAdapter.notifyDataSetChanged();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }

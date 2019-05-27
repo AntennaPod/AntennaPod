@@ -24,6 +24,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -75,6 +76,12 @@ public class DownloadLogFragment extends ListFragment {
         if (itemsLoaded) {
             onFragmentLoaded();
         }
+
+        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView.setTitle(R.string.no_log_downloads_head_label);
+        emptyView.setMessage(R.string.no_log_downloads_label);
+        emptyView.attachToListView(getListView());
+
     }
 
     private void onFragmentLoaded() {

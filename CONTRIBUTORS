@@ -3,14 +3,19 @@ DEVELOPERS
 
 Alan Orth
 Alexander Terczka
+Alexei Bendebury
+Ali
 alifeflow
 amhokies
 Anders Bo Rasmussen
+Anderson Mesquita
 Andrew Gaul
 Andrey Krutov
 Anthony Lieuallen
 axq
+Borjan Tchakaloff
 brad
+Burt Wiley Snyder
 ByteHamster
 Cameron Banga
 Christian Ludwig
@@ -32,6 +37,7 @@ EirikV
 Eoin Mcloughlin
 eraymond
 Ercan Erden
+falko
 Falko Lehmann
 Hannes Achleitner
 hannesa2
@@ -42,6 +48,7 @@ Humberto Fraga
 InsidE
 James Falcon
 Jan Niehusmann
+Jatin Kumar
 Jens Klingenberg
 Jens Müller
 Johan Liesén
@@ -61,8 +68,10 @@ Martin Fietz
 Martin Olsson
 mat tso
 mateoeh
+Matias de Andrea
 Matthew Gaffen
 Matthias Schütz
+Matthieu De Beule
 Maurice Gilden
 Meir Schwarz
 Michael Kaiser
@@ -70,12 +79,17 @@ Michael Scarito
 Mike Chelen
 minusf
 MolarAmbiguity
+Mostafa Ahangarha
 Mounir Lamouri
 mr-intj
+Nathan Mascitelli
 Nis Wechselberg
 Oliver Crow
 orelogo
+pachecosf
 Paul Ortyl
+Petar Kukolj
+qkolj
 Raghul
 Raghul Jagannathan
 recalculated
@@ -88,6 +102,7 @@ Serge
 Seth Golub
 sevenmaster
 Shantana Hardy
+Shinichiro Fujiwara
 Simon Danner
 Simon Rutishauser
 Simon Schubert
@@ -129,13 +144,13 @@ Dutch: e2jk, glotzbach, rwv, Vistaus
 English: mfietz, sterylmreep
 Estonian: Eraser
 Finnish: danieloeh
-French: cactux, ChaoticMind, clombion, e2jk, lacouture, Matth78, mfietz, Poussinou, PRIMOKORN, repat, sterylmreep, TacoTheDank, Tilwa, vcariven, whenrow
+French: cactux, ChaoticMind, clombion, e2jk, lacouture, Matth78, mfietz, Poussinou, PRIMOKORN, repat, Sioul, sterylmreep, TacoTheDank, Tilwa, vcariven, whenrow
 Galician: antiparvos, pikamoku, Raichely
-German: 112358, altegedanken, barilla, bitsunited, Buggi, ceving, ChaoticMind, Chaquotay, dab0015, dadosch, DerSilly, DJaeger, elkangaroo, enz, fidel, finsterwalder, Foso, GNi33, HolgerJeromin, kalei, lohmann, LostInWeb, mfietz, nilso, repat, SAPlayer, schafia, Schroedingberg, sevenmaster, sucaml, Teaspoon, theonlytruth, weltenwort, Wyrrrd, ypid
+German: 112358, altegedanken, barilla, benedikt.g, bitsunited, Buggi, ceving, ChaoticMind, Chaquotay, dab0015, dadosch, DerSilly, die_otto, DJaeger, elkangaroo, enz, fidel, finsterwalder, Foso, GNi33, hightower5, HolgerJeromin, kalei, lohmann, LostInWeb, mfietz, nilso, repat, SAPlayer, schafia, Schroedingberg, sevenmaster, sucaml, Teaspoon, theonlytruth, weltenwort, Wyrrrd, ypid
 Greek: antonist, danieloeh, hua2016s, MSavoritias, pavlosv
 Hebrew (Israel): amir.dafnyman, E1i9, mongoose4004, pinkasey, rellieberman, Yaron, הלוי11
-Hindi (India): nmabhinandan, purple.coder, siddhusengar
-Hungarian: glatz.balazs, lna91, naren93, tszauer, ttyborg42
+Hindi (India): ankitiitb1069, Isaasu, nmabhinandan, purple.coder, siddhusengar
+Hungarian: glatz.balazs, lna91, marthynw, naren93, tszauer, ttyborg42
 Icelandic: marthjod
 Indonesian: jff, luke137, rezafaiza, silvanael16
 Italian: aalex70, allin, apanontin, Bonnee, giuseppep, Guybrush88, marco_pag, neonsoftware, sevenmaster, theloca95
@@ -146,23 +161,24 @@ Korean: changwoo, seungrye, skcha
 Korean (South Korea): changwoo, seungrye
 Lithuanian: naglis
 Macedonian: krisfremen
-Norwegian: hakonanes, timbast
-Norwegian Bokmål: corkie, hakonanes
-Norwegian Bokmål (Norway): corkie, hakonanes, kongk, timbast
+Malayalam: rashivkp
+Norwegian: timbast
+Norwegian Bokmål: corkie, danieloeh, heraldo
+Norwegian Bokmål (Norway): corkie, heraldo, kongk, timbast
 Persian: ahangarha, F7D
-Polish: Iwangelion, maniexx, mfloryan, thedead4fun
-Polish (Poland): d6210809, Iwangelion, lomapur, mandlus, maniexx, Mephistofeles, shark103, tyle
-Portuguese: domingos86, emansije, smarquespt
-Portuguese (Brazil): alexupits, alysonborges, arua, caioau, carlo_valente, castrors, deandreamatias, edman, Firmino, jackmiras, Junin, lipefire, lluccia, lucasmotacr, mbaltar, rogervezaro, RubeensVinicius, SamWilliam, silvanael16
+Polish: Iwangelion, maniexx, mateossh, mfloryan
+Polish (Poland): d6210809, hiro2020, Iwangelion, lomapur, mandlus, maniexx, Mephistofeles, shark103, tyle
+Portuguese: andersonvom, domingos86, emansije, smarquespt
+Portuguese (Brazil): alexupits, alysonborges, andersonvom, arua, caioau, carlo_valente, castrors, deandreamatias, edman, Firmino, jackmiras, Junin, lipefire, lluccia, lucasmotacr, mbaltar, rogervezaro, RubeensVinicius, SamWilliam, silvanael16
 Romanian (Romania): corneliu.e, fuzzmz, ralienpp
 Russian (Russia): astra1, btimofeev, Duke_Raven, GaynullinDima, MegMasters98, mercutiy, null, overmind88, s.chebotar, shams4real, skvheadless, un_logic, whereisthetea, zhenya97
 Slovenian (Slovenia): panter23
-Spanish: AleksSyntek, coperfix, deandreamatias, domingos86, dvd1985, Fitoschido, frandavid100, hard_ware, javiercoll, Juanmuto, lambdani, LatinSuD, leogrignafini, palopezv, TacoTheDank, tres.14159, wakutiteo
-Spanish (Spain): dvd1985, e2jk, frandavid100, hard_ware, palopezv, Raichely, TacoTheDank
+Spanish: AleksSyntek, andersonvom, coperfix, deandreamatias, domingos86, dvd1985, Fitoschido, frandavid100, hard_ware, javiercoll, Juanmuto, lambdani, LatinSuD, leogrignafini, palopezv, TacoTheDank, tres.14159, wakutiteo
+Spanish (Spain): andersonvom, dvd1985, e2jk, frandavid100, hard_ware, palopezv, Raichely, TacoTheDank
 Swahili (Kenya): BonfaceKilz
 Swedish (Sweden): albin.brantin, Bio, bpnilsson, ChaoticMind, jony08, nilso, SharpMelon, TwoD
-Telugu: veeven
-Turkish: basarancaner, brsata, Erdy, golcuk, overbite
-Ukrainian (Ukraine): older, sergiyr, zhenya97
+Telugu: Isaasu, veeven
+Turkish: basarancaner, brsata, Erdy, golcuk, overbite, Slsdem
+Ukrainian (Ukraine): older, paul_sm, sergiyr, zhenya97
 Vietnamese: abnvolk, nguyenvui, ppanhh, vietnamesel10n
 Vietnamese (Vietnam): bizover

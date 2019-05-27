@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.7.2
+-------------
+* Added configurable behavior of the back button
+* Added delete option to episode's context menu
+* New UI for batch edit feature
+* Set number of columns in subscription list
+* Lots of bug fixes
 
 Version 1.7.1
 -------------

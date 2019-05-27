@@ -2,7 +2,6 @@ apply plugin: "com.android.library"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -41,16 +40,10 @@ android {
 
 }
 
-repositories {
-    maven { url "https://jitpack.io" }
-    mavenCentral()
-}
-
 dependencies {
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:preference-v14:$supportVersion"
-    implementation "com.android.support:percent:$supportVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "org.apache.commons:commons-text:$commonstextVersion"
     implementation ("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
@@ -65,7 +58,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "com.squareup.okio:okio:$okioVersion"
-    implementation "de.greenrobot:eventbus:$eventbusVersion"
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "org.awaitility:awaitility:$awaitilityVersion"
@@ -85,6 +78,7 @@ dependencies {
     }
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
@@ -97,13 +91,5 @@ tasks.withType(Test) {
         events "skipped", "passed", "failed"
         showStandardStreams true
         displayGranularity 2
-    }
-}
-
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint" << "-Xlint:-deprecation" << "-Xlint:-serial"
-        }
     }
 }

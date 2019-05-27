@@ -113,6 +113,7 @@
         <item quantity="one">1 day after finishing</item>
         <item quantity="other">%d days after finishing</item>
     </plurals>
+    <string name="num_selected_label">%d selected</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
@@ -165,6 +166,10 @@
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
+    <plurals name="downloading_batch_label">
+        <item quantity="one">Downloading %d episode.</item>
+        <item quantity="other">Downloading %d episodes.</item>
+    </plurals>
     <string name="play_label">Play</string>
     <string name="pause_label">Pause</string>
     <string name="stop_label">Stop</string>
@@ -172,15 +177,35 @@
     <string name="remove_label">Remove</string>
     <string name="delete_label">Delete</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
-    <string name="remove_episode_lable">Remove Episode</string>
+    <string name="delete_episode_label">Delete Episode</string>
+    <plurals name="deleted_episode_batch_label">
+        <item quantity="one">%d episode deleted.</item>
+        <item quantity="other">%d episodes deleted.</item>
+    </plurals>
     <string name="mark_as_seen_label">Mark as seen</string>
     <string name="marked_as_seen_label">Marked as seen</string>
     <string name="mark_read_label">Mark as played</string>
     <string name="marked_as_read_label">Marked as played</string>
+    <plurals name="marked_read_batch_label">
+        <item quantity="one">%d episode marked as played.</item>
+        <item quantity="other">%d episodes marked as played.</item>
+    </plurals>
     <string name="mark_unread_label">Mark as unplayed</string>
+    <plurals name="marked_unread_batch_label">
+        <item quantity="one">%d episode marked as unplayed.</item>
+        <item quantity="other">%d episodes marked as unplayed.</item>
+    </plurals>
     <string name="add_to_queue_label">Add to Queue</string>
     <string name="added_to_queue_label">Added to Queue</string>
+    <plurals name="added_to_queue_batch_label">
+        <item quantity="one">%d episode added to queue.</item>
+        <item quantity="other">%d episodes added to queue.</item>
+    </plurals>
     <string name="remove_from_queue_label">Remove from Queue</string>
+    <plurals name="removed_from_queue_batch_label">
+        <item quantity="one">%d episode removed from queue.</item>
+        <item quantity="other">%d episodes removed from queue.</item>
+    </plurals>
     <string name="add_to_favorite_label">Add to Favorites</string>
     <string name="added_to_favorites">Added to Favorites</string>
     <string name="remove_from_favorite_label">Remove from Favorites</string>
@@ -314,10 +339,25 @@
     <string name="enable_sonic">Enable Sonic</string>
 
     <!-- Empty list labels -->
-    <string name="no_items_label">There are no items in this list.</string>
+    <string name="no_items_header_label">No queued episodes</string>
+    <string name="no_items_label">Add an episode by downloading it, or long press an episode and select \"Add to queue\".</string>
     <string name="no_feeds_label">You haven\'t subscribed to any podcasts yet.</string>
     <string name="no_chapters_label">This episode has no chapters.</string>
     <string name="no_shownotes_label">This episode has no shownotes.</string>
+    <string name="no_run_downloads_head_label">No downloads running</string>
+    <string name="no_run_downloads_label">You can download episodes on the podcast details screen.</string>
+    <string name="no_comp_downloads_head_label">No downloaded episodes</string>
+    <string name="no_comp_downloads_label">You can download episodes on the podcast details screen.</string>
+    <string name="no_log_downloads_head_label">No download log</string>
+    <string name="no_log_downloads_label">Download logs will appear here when available.</string>
+    <string name="no_history_head_label">No History</string>
+    <string name="no_history_label">After you listen to an episode, it will appear here.</string>
+    <string name="no_all_episodes_head_label">No Episodes</string>
+    <string name="no_all_episodes_label">When you add a podcast, the episodes will be shown here.</string>
+    <string name="no_new_episodes_head_label">No new episodes</string>
+    <string name="no_new_episodes_label">When new episodes arrive, they will be shown here.</string>
+    <string name="no_fav_episodes_head_label">No favorite episodes</string>
+    <string name="no_fav_episodes_label">You can add episodes to the favorites by long-pressing them.</string>
 
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>
@@ -331,6 +371,7 @@
     <string name="automation">Automation</string>
     <string name="download_pref_details">Details</string>
     <string name="import_export_pref">Import/Export</string>
+    <string name="import_export_search_keywords">backup, restore</string>
     <string name="appearance">Appearance</string>
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
@@ -372,6 +413,9 @@
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
+    <string name="pref_mobileUpdate_nothing">Nothing</string>
+    <string name="pref_mobileUpdate_images">Images only</string>
+    <string name="pref_mobileUpdate_everything">Everything</string>
     <string name="refreshing_label">Refreshing</string>
     <string name="flattr_settings_label">Flattr settings</string>
     <string name="pref_flattr_auth_title">Flattr sign-in</string>
@@ -608,6 +652,7 @@
     <string name="choose_data_directory">Choose Data Folder</string>
     <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate sub-directories.</string>
     <string name="choose_data_directory_permission_rationale">Access to external storage is required to change the data folder</string>
+    <string name="choose_data_directory_available_space">%1$s free</string>
     <string name="create_folder_msg">Create new folder with name "%1$s"?</string>
     <string name="create_folder_success">Created new folder</string>
     <string name="create_folder_error_no_write_access">Cannot write to this folder</string>
@@ -721,6 +766,9 @@
     <string name="proxy_host_empty_error">Host can not be empty</string>
     <string name="proxy_host_invalid_error">Host is not a valid IP address or domain</string>
     <string name="proxy_port_invalid_error">Port not valid</string>
+
+    <!-- Subscriptions fragment -->
+    <string name="subscription_num_columns">Number of columns</string>
 
     <!-- Database import/export -->
     <string name="import_export">Database import/export</string>

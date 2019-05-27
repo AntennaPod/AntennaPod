@@ -116,7 +116,6 @@
   <string name="stream_label">Voogedastusena</string>
   <string name="remove_label">Eemalda</string>
   <string name="delete_label">Kustuta</string>
-  <string name="remove_episode_lable">Eemalda saade</string>
   <string name="marked_as_seen_label">Märgitud nähtuks</string>
   <string name="mark_read_label">Märgi esitatuks</string>
   <string name="marked_as_read_label">Märgitud kuulatuks</string>
@@ -215,7 +214,6 @@
   <string name="set_playback_speed_label">Esitamise kiirused</string>
   <string name="enable_sonic">Luba Sonicu kasutamine</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Selles nimekirjas pole midagi.</string>
   <string name="no_chapters_label">Saatel pole peatükke.</string>
   <string name="no_shownotes_label">Sellel saatel pole mingeid märkusi.</string>
   <!--Preferences-->
@@ -483,6 +481,7 @@
   <string name="proxy_host_empty_error">Hostinimi ei saa olla tühi</string>
   <string name="proxy_host_invalid_error">Se pole korrektne IP aadress või domeen</string>
   <string name="proxy_port_invalid_error">Port pole korrektne</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="import_export">Andmebaasi importimine/eksportimine</string>
   <string name="label_import">Impordi</string>

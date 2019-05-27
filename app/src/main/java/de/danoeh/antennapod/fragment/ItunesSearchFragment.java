@@ -238,42 +238,19 @@ public class ItunesSearchFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         disposable = Single.create((SingleOnSubscribe<List<Podcast>>) emitter -> {
                     String lang = Locale.getDefault().getLanguage();
-                    String url = "https://itunes.apple.com/" + lang + "/rss/toppodcasts/limit=25/explicit=true/json";
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
-                    Request.Builder httpReq = new Request.Builder()
-                            .url(url)
-                            .header("User-Agent", ClientConfig.USER_AGENT);
-                    List<Podcast> results = new ArrayList<>();
+                    String feedString;
                     try {
-                        Response response = client.newCall(httpReq.build()).execute();
-                        if(!response.isSuccessful()) {
-                            // toplist for language does not exist, fall back to united states
-                            url = "https://itunes.apple.com/us/rss/toppodcasts/limit=25/explicit=true/json";
-                            httpReq = new Request.Builder()
-                                    .url(url)
-                                    .header("User-Agent", ClientConfig.USER_AGENT);
-                            response = client.newCall(httpReq.build()).execute();
+                        try {
+                            feedString = getTopListFeed(client, lang);
+                        } catch (IOException e) {
+                            feedString = getTopListFeed(client, "us");
                         }
-                        if(response.isSuccessful()) {
-                            String resultString = response.body().string();
-                            JSONObject result = new JSONObject(resultString);
-                            JSONObject feed = result.getJSONObject("feed");
-                            JSONArray entries = feed.getJSONArray("entry");
-
-                            for(int i=0; i < entries.length(); i++) {
-                                JSONObject json = entries.getJSONObject(i);
-                                Podcast podcast = Podcast.fromToplist(json);
-                                results.add(podcast);
-                            }
-                        }
-                        else {
-                            String prefix = getString(R.string.error_msg_prefix);
-                            emitter.onError(new IOException(prefix + response));
-                        }
+                        List<Podcast> podcasts = parseFeed(feedString);
+                        emitter.onSuccess(podcasts);
                     } catch (IOException | JSONException e) {
                         emitter.onError(e);
                     }
-                    emitter.onSuccess(results);
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -289,6 +266,35 @@ public class ItunesSearchFragment extends Fragment {
                     butRetry.setOnClickListener(v -> loadToplist());
                     butRetry.setVisibility(View.VISIBLE);
                 });
+    }
+
+    private String getTopListFeed(OkHttpClient client, String language) throws IOException {
+        String url = "https://itunes.apple.com/%s/rss/toppodcasts/limit=25/explicit=true/json";
+        Request.Builder httpReq = new Request.Builder()
+                .header("User-Agent", ClientConfig.USER_AGENT)
+                .url(String.format(url, language));
+
+        try (Response response = client.newCall(httpReq.build()).execute()) {
+            if (response.isSuccessful()) {
+                return response.body().string();
+            }
+            String prefix = getString(R.string.error_msg_prefix);
+            throw new IOException(prefix + response);
+        }
+    }
+
+    private List<Podcast> parseFeed(String jsonString) throws JSONException {
+        JSONObject result = new JSONObject(jsonString);
+        JSONObject feed = result.getJSONObject("feed");
+        JSONArray entries = feed.getJSONArray("entry");
+
+        List<Podcast> results = new ArrayList<>();
+        for (int i=0; i < entries.length(); i++) {
+            JSONObject json = entries.getJSONObject(i);
+            results.add(Podcast.fromToplist(json));
+        }
+
+        return results;
     }
 
     private void search(String query) {
@@ -311,8 +317,7 @@ public class ItunesSearchFragment extends Fragment {
                         encodedQuery = query; // failsafe
                     }
 
-                    //Spaces in the query need to be replaced with '+' character.
-                    String formattedUrl = String.format(API_URL, query).replace(' ', '+');
+                    String formattedUrl = String.format(API_URL, encodedQuery);
 
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
                     Request.Builder httpReq = new Request.Builder()

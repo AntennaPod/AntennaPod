@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -106,6 +107,11 @@ public class CompletedDownloadsFragment extends ListFragment {
         if (items != null && getActivity() != null) {
             onFragmentLoaded();
         }
+
+        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView.setTitle(R.string.no_comp_downloads_head_label);
+        emptyView.setMessage(R.string.no_comp_downloads_label);
+        emptyView.attachToListView(getListView());
     }
 
     @Override
@@ -143,7 +149,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         switch (item.getItemId()) {
             case R.id.episode_actions:
                 EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
-                        .newInstance(items, EpisodesApplyActionFragment.ACTION_REMOVE | EpisodesApplyActionFragment.ACTION_QUEUE);
+                        .newInstance(items, EpisodesApplyActionFragment.ACTION_DELETE | EpisodesApplyActionFragment.ACTION_ADD_TO_QUEUE);
                 ((MainActivity) getActivity()).loadChildFragment(fragment);
                 return true;
             default:

@@ -39,7 +39,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 // TODO Remove media column from feeditem table
 
@@ -1253,9 +1253,15 @@ public class PodDBAdapter {
     }
 
     public final int getNumberOfNewItems() {
-        final String query = "SELECT COUNT(" + KEY_ID + ")"
-                + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " WHERE " + KEY_READ + "=" + FeedItem.NEW;
+        Object[] args = new String[]{
+                TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
+                TABLE_NAME_FEED_ITEMS,
+                TABLE_NAME_FEEDS,
+                TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID,
+                TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
+                        + " AND " + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + " > 0"
+        };
+        final String query = String.format("SELECT COUNT(%s) FROM %s INNER JOIN %s ON %s WHERE %s", args);
         Cursor c = db.rawQuery(query, null);
         int result = 0;
         if (c.moveToFirst()) {

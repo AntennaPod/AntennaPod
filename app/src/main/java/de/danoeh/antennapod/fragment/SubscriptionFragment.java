@@ -1,11 +1,14 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +44,8 @@ public class SubscriptionFragment extends Fragment {
 
     private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE
             | EventDistributor.UNREAD_ITEMS_UPDATE;
+    private static final String PREFS = "SubscriptionFragment";
+    private static final String PREF_NUM_COLUMNS = "columns";
 
     private GridView subscriptionGridLayout;
     private DBReader.NavDrawerData navDrawerData;
@@ -49,6 +54,7 @@ public class SubscriptionFragment extends Fragment {
     private int mPosition = -1;
 
     private Disposable disposable;
+    private SharedPreferences prefs;
 
     public SubscriptionFragment() {
     }
@@ -57,11 +63,9 @@ public class SubscriptionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        // So, we certainly *don't* have an options menu,
-        // but unless we say we do, old options menus sometimes
-        // persist.  mfietz thinks this causes the ActionBar to be invalidated
         setHasOptionsMenu(true);
+
+        prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -69,8 +73,50 @@ public class SubscriptionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_subscriptions, container, false);
         subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
+        subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, 3));
         registerForContextMenu(subscriptionGridLayout);
         return root;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.subscriptions, menu);
+
+        int columns = prefs.getInt(PREF_NUM_COLUMNS, 3);
+        menu.findItem(R.id.subscription_num_columns_2).setChecked(columns == 2);
+        menu.findItem(R.id.subscription_num_columns_3).setChecked(columns == 3);
+        menu.findItem(R.id.subscription_num_columns_4).setChecked(columns == 4);
+        menu.findItem(R.id.subscription_num_columns_5).setChecked(columns == 5);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (super.onOptionsItemSelected(item)) {
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.subscription_num_columns_2:
+                setColumnNumber(2);
+                return true;
+            case R.id.subscription_num_columns_3:
+                setColumnNumber(3);
+                return true;
+            case R.id.subscription_num_columns_4:
+                setColumnNumber(4);
+                return true;
+            case R.id.subscription_num_columns_5:
+                setColumnNumber(5);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void setColumnNumber(int columns) {
+        subscriptionGridLayout.setNumColumns(columns);
+        prefs.edit().putInt(PREF_NUM_COLUMNS, columns).apply();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override

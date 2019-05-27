@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -14,9 +16,14 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -72,6 +79,7 @@ public class PlaybackServiceTaskManager {
         EventBus.getDefault().register(this);
     }
 
+    @Subscribe
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(QueueEvent " + event +")");
         cancelQueueLoader();
@@ -126,6 +134,7 @@ public class PlaybackServiceTaskManager {
     public synchronized void startPositionSaver() {
         if (!isPositionSaverActive()) {
             Runnable positionSaver = callback::positionSaverTick;
+            positionSaver = useMainThreadIfNecessary(positionSaver);
             positionSaverFuture = schedExecutor.scheduleWithFixedDelay(positionSaver, POSITION_SAVER_WAITING_INTERVAL,
                     POSITION_SAVER_WAITING_INTERVAL, TimeUnit.MILLISECONDS);
 
@@ -156,8 +165,9 @@ public class PlaybackServiceTaskManager {
      * Starts the widget updater task. If the widget updater is already active, nothing will happen.
      */
     public synchronized void startWidgetUpdater() {
-        if (!isWidgetUpdaterActive()) {
+        if (!isWidgetUpdaterActive() && !schedExecutor.isShutdown()) {
             Runnable widgetUpdater = callback::onWidgetUpdaterTick;
+            widgetUpdater = useMainThreadIfNecessary(widgetUpdater);
             widgetUpdaterFuture = schedExecutor.scheduleWithFixedDelay(widgetUpdater, WIDGET_UPDATER_NOTIFICATION_INTERVAL,
                     WIDGET_UPDATER_NOTIFICATION_INTERVAL, TimeUnit.MILLISECONDS);
 
@@ -257,17 +267,15 @@ public class PlaybackServiceTaskManager {
             cancelChapterLoader();
         }
 
-        Runnable chapterLoader = () -> {
-            Log.d(TAG, "Chapter loader started");
-            if (media.getChapters() == null) {
-                media.loadChapterMarks();
-                if (!Thread.currentThread().isInterrupted() && media.getChapters() != null) {
-                    callback.onChapterLoaded(media);
-                }
-            }
-            Log.d(TAG, "Chapter loader stopped");
-        };
-        chapterLoaderFuture = schedExecutor.submit(chapterLoader);
+        if (media.getChapters() == null) {
+            Completable.create(emitter -> {
+                        media.loadChapterMarks();
+                        emitter.onComplete();
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> callback.onChapterLoaded(media));
+        }
     }
 
 
@@ -292,6 +300,17 @@ public class PlaybackServiceTaskManager {
         schedExecutor.shutdown();
     }
 
+    private Runnable useMainThreadIfNecessary(Runnable runnable) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            // Called in main thread => ExoPlayer is used
+            // Run on ui thread even if called from schedExecutor
+            Handler handler = new Handler();
+            return () -> handler.post(runnable);
+        } else {
+            return runnable;
+        }
+    }
+
     /**
      * Sleeps for a given time and then pauses playback.
      */
@@ -304,6 +323,7 @@ public class PlaybackServiceTaskManager {
         private final boolean shakeToReset;
         private final boolean vibrate;
         private ShakeListener shakeListener;
+        private final Handler handler;
 
         public SleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
             super();
@@ -311,6 +331,21 @@ public class PlaybackServiceTaskManager {
             this.timeLeft = waitingTime;
             this.shakeToReset = shakeToReset;
             this.vibrate = vibrate;
+
+            if (UserPreferences.useExoplayer() && Looper.myLooper() == Looper.getMainLooper()) {
+                // Run callbacks in main thread so they can call ExoPlayer methods themselves
+                this.handler = new Handler();
+            } else {
+                this.handler = null;
+            }
+        }
+
+        private void postCallback(Runnable r) {
+            if (handler == null) {
+                r.run();
+            } else {
+                handler.post(r);
+            }
         }
 
         @Override
@@ -336,7 +371,7 @@ public class PlaybackServiceTaskManager {
                         if(shakeListener == null && shakeToReset) {
                             shakeListener = new ShakeListener(context, this);
                         }
-                        callback.onSleepTimerAlmostExpired();
+                        postCallback(callback::onSleepTimerAlmostExpired);
                         notifiedAlmostExpired = true;
                     }
                     if (timeLeft <= 0) {
@@ -346,7 +381,7 @@ public class PlaybackServiceTaskManager {
                             shakeListener = null;
                         }
                         if (!Thread.currentThread().isInterrupted()) {
-                            callback.onSleepTimerExpired();
+                            postCallback(callback::onSleepTimerExpired);
                         } else {
                             Log.d(TAG, "Sleep timer interrupted");
                         }
@@ -364,8 +399,10 @@ public class PlaybackServiceTaskManager {
         }
 
         public void onShake() {
-            setSleepTimer(waitingTime, shakeToReset, vibrate);
-            callback.onSleepTimerReset();
+            postCallback(() -> {
+                setSleepTimer(waitingTime, shakeToReset, vibrate);
+                callback.onSleepTimerReset();
+            });
             shakeListener.pause();
             shakeListener = null;
         }

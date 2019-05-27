@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -49,11 +51,15 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.greenrobot.event.EventBus;
+
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Shows unread or recently published episodes
@@ -74,6 +80,7 @@ public class AllEpisodesFragment extends Fragment {
     RecyclerView recyclerView;
     AllEpisodesRecycleAdapter listAdapter;
     private ProgressBar progLoading;
+    EmptyViewHandler emptyView;
 
     List<FeedItem> episodes;
     private List<Downloader> downloaderList;
@@ -103,12 +110,12 @@ public class AllEpisodesFragment extends Fragment {
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        EventBus.getDefault().registerSticky(this);
         loadItems();
         registerForContextMenu(recyclerView);
     }
@@ -116,7 +123,6 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        EventBus.getDefault().unregister(this);
         saveScrollPosition();
         unregisterForContextMenu(recyclerView);
     }
@@ -124,6 +130,7 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        EventBus.getDefault().unregister(this);
         EventDistributor.getInstance().unregister(contentUpdate);
         if (disposable != null) {
             disposable.dispose();
@@ -276,11 +283,11 @@ public class AllEpisodesFragment extends Fragment {
             return true; // avoids that the position is reset when we need it in the submenu
         }
 
-        FeedItem selectedItem = listAdapter.getSelectedItem();
-        if (selectedItem == null) {
-            Log.i(TAG, "Selected item was null, ignoring selection");
+        if (listAdapter == null || listAdapter.getSelectedItem() == null) {
+            Log.i(TAG, "Selected item or listAdapter was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
+        FeedItem selectedItem = listAdapter.getSelectedItem();
 
         // Mark as seen contains UI logic specific to All/New/FavoriteSegments,
         // e.g., Undo with Snackbar,
@@ -331,18 +338,32 @@ public class AllEpisodesFragment extends Fragment {
             onFragmentLoaded();
         }
 
+        emptyView = new EmptyViewHandler(getContext());
+        emptyView.attachToRecyclerView(recyclerView);
+        emptyView.setTitle(R.string.no_all_episodes_head_label);
+        emptyView.setMessage(R.string.no_all_episodes_label);
+
         return root;
     }
 
     private void onFragmentLoaded() {
-        if (listAdapter == null) {
-            MainActivity mainActivity = (MainActivity) getActivity();
-            listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess,
-                    new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
-            listAdapter.setHasStableIds(true);
-            recyclerView.setAdapter(listAdapter);
+        if (episodes != null && episodes.size() > 0) {
+            if (listAdapter == null) {
+                MainActivity mainActivity = (MainActivity) getActivity();
+                listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess,
+                        new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
+                listAdapter.setHasStableIds(true);
+                recyclerView.setAdapter(listAdapter);
+                emptyView.updateAdapter(listAdapter);
+            }
+            recyclerView.setVisibility(View.VISIBLE);
+            listAdapter.notifyDataSetChanged();
+        } else {
+            listAdapter = null;
+            recyclerView.setVisibility(View.GONE);
+            emptyView.updateAdapter(listAdapter);
         }
-        listAdapter.notifyDataSetChanged();
+
         restoreScrollPosition();
         getActivity().supportInvalidateOptionsMenu();
         updateShowOnlyEpisodesListViewState();
@@ -412,23 +433,34 @@ public class AllEpisodesFragment extends Fragment {
 
     };
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(episodes == null || listAdapter == null) {
+        if (episodes == null) {
+            return;
+        } else if (listAdapter == null) {
+            loadItems();
             return;
         }
-        for(int i=0, size = event.items.size(); i < size; i++) {
-            FeedItem item = event.items.get(i);
+        for (FeedItem item : event.items) {
             int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
-            if(pos >= 0) {
+            if (pos >= 0) {
                 episodes.remove(pos);
-                episodes.add(pos, item);
-                listAdapter.notifyItemChanged(pos);
+                if (shouldUpdatedItemRemainInList(item)) {
+                    episodes.add(pos, item);
+                    listAdapter.notifyItemChanged(pos);
+                } else {
+                    listAdapter.notifyItemRemoved(pos);
+                }
             }
         }
     }
 
+    protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
+        return true;
+    }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
@@ -436,7 +468,11 @@ public class AllEpisodesFragment extends Fragment {
         if (isMenuInvalidationAllowed && isUpdatingFeeds != update.feedIds.length > 0) {
                 getActivity().supportInvalidateOptionsMenu();
         }
-        if(listAdapter != null && update.mediaIds.length > 0) {
+        if (listAdapter == null) {
+            loadItems();
+            return;
+        }
+        if (update.mediaIds.length > 0) {
             for(long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
                 if(pos >= 0) {
@@ -467,6 +503,7 @@ public class AllEpisodesFragment extends Fragment {
         }
         if (viewsCreated && !itemsLoaded) {
             recyclerView.setVisibility(View.GONE);
+            emptyView.hide();
             progLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(this::loadData)
@@ -475,16 +512,15 @@ public class AllEpisodesFragment extends Fragment {
                 .subscribe(data -> {
                     recyclerView.setVisibility(View.VISIBLE);
                     progLoading.setVisibility(View.GONE);
-                    if (data != null) {
-                        episodes = data;
-                        itemsLoaded = true;
-                        if (viewsCreated) {
-                            onFragmentLoaded();
-                        }
+                    episodes = data;
+                    itemsLoaded = true;
+                    if (viewsCreated) {
+                        onFragmentLoaded();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @NonNull
     List<FeedItem> loadData() {
         return DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
     }

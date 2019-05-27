@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import io.reactivex.annotations.NonNull;
+import org.greenrobot.eventbus.EventBus;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -48,7 +49,6 @@ import de.danoeh.antennapod.core.util.Permutor;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
-import de.greenrobot.event.EventBus;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -89,7 +89,7 @@ public class DBWriter {
                 boolean result = deleteFeedMediaSynchronous(context, media);
 
                 if (result && UserPreferences.shouldDeleteRemoveFromQueue()) {
-                    DBWriter.removeQueueItemSynchronous(context, media.getItem(), false);
+                    DBWriter.removeQueueItemSynchronous(context, false, media.getItem().getId());
                 }
             }
         });
@@ -424,30 +424,58 @@ public class DBWriter {
 
     /**
      * Removes a FeedItem object from the queue.
-     *
-     * @param context             A context that is used for opening a database connection.
-     * @param item                FeedItem that should be removed.
+     *  @param context             A context that is used for opening a database connection.
      * @param performAutoDownload true if an auto-download process should be started after the operation.
+     * @param item                FeedItem that should be removed.
      */
     public static Future<?> removeQueueItem(final Context context,
-                                            final FeedItem item, final boolean performAutoDownload) {
-        return dbExec.submit(() -> removeQueueItemSynchronous(context, item, performAutoDownload));
+                                            final boolean performAutoDownload, final FeedItem item) {
+        return dbExec.submit(() -> removeQueueItemSynchronous(context, performAutoDownload, item.getId()));
+    }
+
+    public static Future<?> removeQueueItem(final Context context, final boolean performAutoDownload,
+                                            final long... itemIds) {
+        return dbExec.submit(() -> removeQueueItemSynchronous(context, performAutoDownload, itemIds));
     }
 
     private static void removeQueueItemSynchronous(final Context context,
-                                            final FeedItem item, final boolean performAutoDownload) {
+                                                   final boolean performAutoDownload,
+                                                   final long... itemIds) {
+        if (itemIds.length < 1) {
+            return;
+        }
         final PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         final List<FeedItem> queue = DBReader.getQueue(adapter);
 
         if (queue != null) {
-            int position = queue.indexOf(item);
-            if (position >= 0) {
-                queue.remove(position);
+            boolean queueModified = false;
+            List<QueueEvent> events = new ArrayList<>();
+            List<FeedItem> updatedItems = new ArrayList<>();
+            for (long itemId : itemIds) {
+                int position = indexInItemList(queue, itemId);
+                if (position >= 0) {
+                    final FeedItem item = DBReader.getFeedItem(itemId);
+                    if (item == null) {
+                        Log.e(TAG, "removeQueueItem - item in queue but somehow cannot be loaded." +
+                                " Item ignored. It should never happen. id:" + itemId);
+                        continue;
+                    }
+                    queue.remove(position);
+                    item.removeTag(FeedItem.TAG_QUEUE);
+                    events.add(QueueEvent.removed(item));
+                    updatedItems.add(item);
+                    queueModified = true;
+                } else {
+                    Log.v(TAG, "removeQueueItem - item  not in queue:" + itemId);
+                }
+            }
+            if (queueModified) {
                 adapter.setQueue(queue);
-                item.removeTag(FeedItem.TAG_QUEUE);
-                EventBus.getDefault().post(QueueEvent.removed(item));
-                EventBus.getDefault().post(FeedItemEvent.updated(item));
+                for (QueueEvent event : events) {
+                    EventBus.getDefault().post(event);
+                }
+                EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
             } else {
                 Log.w(TAG, "Queue was not modified by call to removeQueueItem");
             }
@@ -606,11 +634,13 @@ public class DBWriter {
      *                           FeedItem.NEW, FeedItem.UNPLAYED
      * @param resetMediaPosition true if this method should also reset the position of the FeedItem's FeedMedia object.
      */
+    @NonNull
     public static Future<?> markItemPlayed(FeedItem item, int played, boolean resetMediaPosition) {
         long mediaId = (item.hasMedia()) ? item.getMedia().getId() : 0;
         return markItemPlayed(item.getId(), played, mediaId, resetMediaPosition);
     }
 
+    @NonNull
     private static Future<?> markItemPlayed(final long itemId,
                                             final int played,
                                             final long mediaId,
@@ -787,12 +817,17 @@ public class DBWriter {
     }
 
     private static boolean itemListContains(List<FeedItem> items, long itemId) {
-        for (FeedItem item : items) {
+        return  indexInItemList(items, itemId) >= 0;
+    }
+
+    private static int indexInItemList(List<FeedItem> items, long itemId) {
+        for (int i = 0; i < items.size(); i ++) {
+            FeedItem item = items.get(i);
             if (item.getId() == itemId) {
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 
     /**
