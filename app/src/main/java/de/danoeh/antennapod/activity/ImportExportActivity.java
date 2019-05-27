@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.FileChannel;
+import java.util.Arrays;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -109,9 +110,14 @@ public class ImportExportActivity extends AppCompatActivity {
     }
 
     private void restoreFrom(Uri inputUri) {
-        File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
         InputStream inputStream = null;
         try {
+            if (!validateDB(inputUri)) {
+                displayBadFileDialog();
+                return;
+            }
+
+            File currentDB = getDatabasePath(PodDBAdapter.DATABASE_NAME);
             inputStream = getContentResolver().openInputStream(inputUri);
             FileUtils.copyInputStreamToFile(inputStream, currentDB);
             displayImportSuccessDialog();
@@ -121,6 +127,28 @@ public class ImportExportActivity extends AppCompatActivity {
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
+    }
+
+    private static final byte[] SQLITE3_MAGIC = "SQLite format 3\0".getBytes();
+    private boolean validateDB(Uri inputUri) throws IOException {
+        try (InputStream inputStream = getContentResolver().openInputStream(inputUri)) {
+            byte[] magicBuf = new byte[SQLITE3_MAGIC.length];
+            if (inputStream.read(magicBuf) == magicBuf.length) {
+                return Arrays.equals(SQLITE3_MAGIC, magicBuf);
+            }
+        }
+
+        return false;
+    }
+
+    private void displayBadFileDialog() {
+        AlertDialog.Builder d = new AlertDialog.Builder(ImportExportActivity.this);
+        d.setMessage(R.string.import_bad_file)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, ((dialogInterface, i) -> {
+                    // do nothing
+                }))
+                .show();
     }
 
     private void displayImportSuccessDialog() {
