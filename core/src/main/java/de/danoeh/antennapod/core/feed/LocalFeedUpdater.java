@@ -49,10 +49,7 @@ public class LocalFeedUpdater {
 
     public static void updateFeed(Feed feed, Context context) {
         //make sure it is the latest 'version' of this feed from the db
-        //NOTE that, if the caller is always DBTasks, this is unnecessary; but maybe it comes from
-        //somewhere else in the future?
-        // Feed dirFeed = DBTasks.updateFeed(context, feed)[0];
-        Feed dirFeed = feed;
+        Feed dirFeed = DBTasks.updateFeed(context, feed)[0];
 
         String uriStr = dirFeed.getDownload_url();
         File f = new File(uriStr.substring("file:".length())); //ugly
