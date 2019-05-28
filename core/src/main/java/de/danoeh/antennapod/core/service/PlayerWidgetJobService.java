@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
@@ -152,6 +153,8 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
 
     private String getProgressString(int position, int duration) {
         if (position > 0 && duration > 0) {
+            position = TimeSpeedConverter.convert(position);
+            duration = TimeSpeedConverter.convert(duration);
             return Converter.getDurationStringLong(position) + " / "
                     + Converter.getDurationStringLong(duration);
         } else {

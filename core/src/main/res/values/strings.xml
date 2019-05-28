@@ -377,7 +377,7 @@
     <string name="appearance">Appearance</string>
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
-    <string name="buttons">Playback control buttons</string>
+    <string name="playback_control">Playback control</string>
     <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
     <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>
@@ -474,6 +474,8 @@
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
+    <string name="pref_playback_time_respects_speed_title">Adjust media info to playback speed</string>
+    <string name="pref_playback_time_respects_speed_sum">Displayed position and duration are adapted to playback speed</string>
     <string name="pref_fast_forward">Fast Forward Skip Time</string>
     <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast forward button is clicked</string>
     <string name="pref_rewind">Rewind Skip Time</string>
