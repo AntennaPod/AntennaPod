@@ -14,7 +14,7 @@ public class InReverseChronologicalOrder implements Comparator<SearchResult> {
         if ((o1.getComponent() instanceof FeedItem) && (o2.getComponent() instanceof FeedItem)) {
             FeedItem item1 = (FeedItem) o1.getComponent();
             FeedItem item2 = (FeedItem) o2.getComponent();
-            return item1.getPubDate().compareTo(item2.getPubDate());
+            return item2.getPubDate().compareTo(item1.getPubDate());
         }
         return 0;
     }
