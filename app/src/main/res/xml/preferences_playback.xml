@@ -46,7 +46,7 @@
                 app:useStockLayout="true"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/buttons">
+    <PreferenceCategory android:title="@string/playback_control">
         <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
