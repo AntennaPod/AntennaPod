@@ -1190,7 +1190,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
             timePickerDialog.show();
         });
         builder.onNeutral((dialog, which) -> {
-            UserPreferences.setUpdateInterval(0);
+            UserPreferences.disableAutoUpdate();
             setUpdateIntervalText();
         });
         builder.show();

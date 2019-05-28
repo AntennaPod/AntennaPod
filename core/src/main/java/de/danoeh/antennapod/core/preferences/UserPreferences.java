@@ -575,6 +575,13 @@ public class UserPreferences {
         restartUpdateAlarm();
     }
 
+    public static void disableAutoUpdate() {
+        prefs.edit()
+                .putString(PREF_UPDATE_INTERVAL, "0")
+                .apply();
+        AutoUpdateManager.disableAutoUpdate();
+    }
+
     /**
      * Change the auto-flattr settings
      *

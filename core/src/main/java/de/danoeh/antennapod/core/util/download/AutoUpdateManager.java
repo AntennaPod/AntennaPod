@@ -60,6 +60,10 @@ public class AutoUpdateManager {
         WorkManager.getInstance().enqueueUniqueWork(WORK_ID_FEED_UPDATE, ExistingWorkPolicy.REPLACE, workRequest);
     }
 
+    public static void disableAutoUpdate() {
+        WorkManager.getInstance().cancelUniqueWork(WORK_ID_FEED_UPDATE);
+    }
+
     private static Constraints getConstraints() {
         Constraints.Builder constraints = new Constraints.Builder();
 
