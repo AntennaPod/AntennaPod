@@ -15,7 +15,6 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.util.comparator.InReverseChronologicalOrder;
-import de.danoeh.antennapod.core.util.comparator.SearchResultValueComparator;
 
 /**
  * Performs search on Feeds and FeedItems
