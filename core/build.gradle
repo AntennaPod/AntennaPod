@@ -10,6 +10,12 @@ android {
         versionName "1.0"
         testApplicationId "de.danoeh.antennapod.core.tests"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ eventBusIndex : 'de.danoeh.antennapod.core.ApCoreEventBusIndex' ]
+            }
+        }
     }
     buildTypes {
         release {
@@ -59,6 +65,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "com.squareup.okio:okio:$okioVersion"
     implementation "org.greenrobot:eventbus:$eventbusVersion"
+    annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "org.awaitility:awaitility:$awaitilityVersion"
